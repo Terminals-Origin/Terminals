@@ -121,8 +121,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ServerFavorite.cs" />
-    <Compile Include="ServersGroup.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="TerminalsConfiguration.cs" />
     <None Include="WTSApi32.cs" />
