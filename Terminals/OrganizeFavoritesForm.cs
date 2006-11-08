@@ -67,8 +67,7 @@ namespace Terminals
             string oldName = favorite.Name;
             if (frmNewTerminal.ShowDialog() == DialogResult.OK)
             {
-                Settings.DeleteFavorite(oldName);
-                Settings.AddFavorite(frmNewTerminal.Favorite);
+                Settings.EditFavorite(oldName, frmNewTerminal.Favorite);
                 LoadConnections();
             }
         }
@@ -106,6 +105,7 @@ namespace Terminals
             if (favorite != null)
             {
                 Settings.DeleteFavorite(favorite.Name);
+                Settings.DeleteFavoriteButton(favorite.Name);
                 LoadConnections();
             }
         }

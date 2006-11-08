@@ -71,6 +71,20 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("favoritesButtonsList")]
+        [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]
+        public MRUItemConfigurationElementCollection FavoritesButtons
+        {
+            get
+            {
+                return (MRUItemConfigurationElementCollection)this["favoritesButtonsList"];
+            }
+            set
+            {
+                this["favoritesButtonsList"] = value;
+            }
+        }
+
         [ConfigurationProperty("groups")]
         [ConfigurationCollection(typeof(GroupConfigurationElementCollection))]
         public GroupConfigurationElementCollection Groups

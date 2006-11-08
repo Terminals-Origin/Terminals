@@ -64,8 +64,8 @@ namespace Terminals
             cmbServers.Text = favorite.ServerName;
             cmbDomains.Text = favorite.DomainName;
             cmbUsers.Text = favorite.UserName;
-            txtPassword.Text =favorite.Password;
-            chkSavePassword.Checked=(favorite.Password!="");
+            txtPassword.Text = favorite.Password;
+            chkSavePassword.Checked = favorite.Password != "";
             cmbResolution.SelectedIndex = (int)favorite.DesktopSize;
             cmbColors.SelectedIndex = (int)favorite.Colors;
             chkConnectToConsole.Checked = favorite.ConnectToConsole;

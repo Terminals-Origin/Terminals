@@ -91,6 +91,7 @@ namespace Terminals
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "NewGroupForm";
+            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "New Group";

@@ -39,16 +39,17 @@ namespace Terminals
             this.fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageFavoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.organizeFavoritesToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.terminalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.grabInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.organizeGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveTerminalsAsGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addTerminalToGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupsSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.terminalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.grabInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolbarStd = new System.Windows.Forms.ToolStrip();
             this.tsbNewTerminal = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -80,8 +81,8 @@ namespace Terminals
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
             this.favoritesToolStripMenuItem,
-            this.groupsToolStripMenuItem,
-            this.terminalToolStripMenuItem});
+            this.terminalToolStripMenuItem,
+            this.groupsToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(260, 24);
@@ -139,6 +140,7 @@ namespace Terminals
             // 
             this.favoritesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.manageFavoritesToolStripMenuItem,
+            this.organizeFavoritesToolbarToolStripMenuItem,
             this.favoritesSeparator});
             this.favoritesToolStripMenuItem.Name = "favoritesToolStripMenuItem";
             this.favoritesToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
@@ -147,14 +149,54 @@ namespace Terminals
             // manageFavoritesToolStripMenuItem
             // 
             this.manageFavoritesToolStripMenuItem.Name = "manageFavoritesToolStripMenuItem";
-            this.manageFavoritesToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.manageFavoritesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
             this.manageFavoritesToolStripMenuItem.Text = "&Organize Favorites...";
             this.manageFavoritesToolStripMenuItem.Click += new System.EventHandler(this.manageConnectionsToolStripMenuItem_Click);
+            // 
+            // organizeFavoritesToolbarToolStripMenuItem
+            // 
+            this.organizeFavoritesToolbarToolStripMenuItem.Name = "organizeFavoritesToolbarToolStripMenuItem";
+            this.organizeFavoritesToolbarToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.organizeFavoritesToolbarToolStripMenuItem.Text = "Organize Favorites Toolbar...";
+            this.organizeFavoritesToolbarToolStripMenuItem.Click += new System.EventHandler(this.organizeFavoritesToolbarToolStripMenuItem_Click);
             // 
             // favoritesSeparator
             // 
             this.favoritesSeparator.Name = "favoritesSeparator";
-            this.favoritesSeparator.Size = new System.Drawing.Size(174, 6);
+            this.favoritesSeparator.Size = new System.Drawing.Size(213, 6);
+            // 
+            // terminalToolStripMenuItem
+            // 
+            this.terminalToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.grabInputToolStripMenuItem,
+            this.toolStripSeparator5,
+            this.disconnectToolStripMenuItem});
+            this.terminalToolStripMenuItem.Name = "terminalToolStripMenuItem";
+            this.terminalToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
+            this.terminalToolStripMenuItem.Text = "&Terminal";
+            // 
+            // grabInputToolStripMenuItem
+            // 
+            this.grabInputToolStripMenuItem.Enabled = false;
+            this.grabInputToolStripMenuItem.Image = global::Terminals.Properties.Resources.arrow_out;
+            this.grabInputToolStripMenuItem.Name = "grabInputToolStripMenuItem";
+            this.grabInputToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
+            this.grabInputToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.grabInputToolStripMenuItem.Text = "&Grab Input";
+            this.grabInputToolStripMenuItem.Click += new System.EventHandler(this.tsbGrabInput_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(162, 6);
+            // 
+            // disconnectToolStripMenuItem
+            // 
+            this.disconnectToolStripMenuItem.Enabled = false;
+            this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.disconnectToolStripMenuItem.Text = "&Disconnect";
+            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.tsbDisconnect_Click);
             // 
             // groupsToolStripMenuItem
             // 
@@ -191,39 +233,6 @@ namespace Terminals
             // 
             this.groupsSeparator.Name = "groupsSeparator";
             this.groupsSeparator.Size = new System.Drawing.Size(258, 6);
-            // 
-            // terminalToolStripMenuItem
-            // 
-            this.terminalToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.grabInputToolStripMenuItem,
-            this.toolStripSeparator5,
-            this.disconnectToolStripMenuItem});
-            this.terminalToolStripMenuItem.Name = "terminalToolStripMenuItem";
-            this.terminalToolStripMenuItem.Size = new System.Drawing.Size(59, 20);
-            this.terminalToolStripMenuItem.Text = "&Terminal";
-            // 
-            // grabInputToolStripMenuItem
-            // 
-            this.grabInputToolStripMenuItem.Enabled = false;
-            this.grabInputToolStripMenuItem.Image = global::Terminals.Properties.Resources.arrow_out;
-            this.grabInputToolStripMenuItem.Name = "grabInputToolStripMenuItem";
-            this.grabInputToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
-            this.grabInputToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.grabInputToolStripMenuItem.Text = "&Grab Input";
-            this.grabInputToolStripMenuItem.Click += new System.EventHandler(this.tsbGrabInput_Click);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(162, 6);
-            // 
-            // disconnectToolStripMenuItem
-            // 
-            this.disconnectToolStripMenuItem.Enabled = false;
-            this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.disconnectToolStripMenuItem.Text = "&Disconnect";
-            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.tsbDisconnect_Click);
             // 
             // toolbarStd
             // 
@@ -455,6 +464,7 @@ namespace Terminals
         private System.Windows.Forms.ToolStripSeparator groupsSeparator;
         private System.Windows.Forms.ToolStripContainer toolStripContainer;
         private System.Windows.Forms.Timer timerHover;
+        private System.Windows.Forms.ToolStripMenuItem organizeFavoritesToolbarToolStripMenuItem;
 
 
       }

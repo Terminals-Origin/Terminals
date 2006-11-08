@@ -74,6 +74,27 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap application_get {
+            get {
+                object obj = ResourceManager.GetObject("application_get", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap application_put {
+            get {
+                object obj = ResourceManager.GetObject("application_put", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap arrow_down {
+            get {
+                object obj = ResourceManager.GetObject("arrow_down", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap arrow_in {
             get {
                 object obj = ResourceManager.GetObject("arrow_in", resourceCulture);
@@ -84,6 +105,13 @@ namespace Terminals.Properties {
         internal static System.Drawing.Bitmap arrow_out {
             get {
                 object obj = ResourceManager.GetObject("arrow_out", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap arrow_up {
+            get {
+                object obj = ResourceManager.GetObject("arrow_up", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -70,15 +70,29 @@ namespace Terminals
                 favoritesToolStripMenuItem.DropDownItems.RemoveAt(i);
             }
             tscConnectTo.Items.Clear();
+            foreach (FavoriteConfigurationElement favorite in favorites)
+            {
+                AddFavorite(favorite);
+            }
+            LoadFavoritesToolbar();
+        }
+
+        private void LoadFavoritesToolbar()
+        {
             for (int i = toolbarStd.Items.Count - 1; i >= 0; i--)
             {
                 ToolStripItem item = toolbarStd.Items[i];
                 if (item.Tag is FavoriteConfigurationElement)
                     toolbarStd.Items.Remove(item);
             }
-            foreach (FavoriteConfigurationElement favorite in favorites)
+            foreach (string favoriteButton in Settings.FavoritesToolbarButtons)
             {
-                AddFavorite(favorite);
+                FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+                FavoriteConfigurationElement favorite = favorites[favoriteButton];
+                ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name,
+                    Terminals.Properties.Resources.smallterm, serverToolStripMenuItem_Click);
+                favoriteBtn.Tag = favorite;
+                toolbarStd.Items.Add(favoriteBtn);
             }
         }
 
@@ -89,13 +103,6 @@ namespace Terminals
             serverToolStripMenuItem.Name = favorite.Name;
             serverToolStripMenuItem.Click += serverToolStripMenuItem_Click;
             favoritesToolStripMenuItem.DropDownItems.Add(serverToolStripMenuItem);
-            if (favorite.ShowOnToolbar)
-            {
-                ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name,
-                    Terminals.Properties.Resources.smallterm, serverToolStripMenuItem_Click);
-                favoriteBtn.Tag = favorite;
-                toolbarStd.Items.Add(favoriteBtn);
-            }
         }
 
         private void LoadGroups()
@@ -623,6 +630,15 @@ namespace Terminals
             {
                 timerHover.Enabled = false;
                 tcTerminals.ShowTabs = true;
+            }
+        }
+
+        private void organizeFavoritesToolbarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OrganizeFavoritesToolbarForm frmOrganizeFavoritesToolbar = new OrganizeFavoritesToolbarForm();
+            if (frmOrganizeFavoritesToolbar.ShowDialog() == DialogResult.OK)
+            {
+                LoadFavoritesToolbar();
             }
         }
     }

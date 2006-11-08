@@ -65,10 +65,9 @@
     <Compile Include="OrganizeFavoritesForm.Designer.cs">
       <DependentUpon>OrganizeFavoritesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Constants.cs" />
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -78,6 +77,12 @@
     </Compile>
     <Compile Include="NewTerminalForm.Designer.cs">
       <DependentUpon>NewTerminalForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OrganizeFavoritesToolbarForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OrganizeFavoritesToolbarForm.Designer.cs">
+      <DependentUpon>OrganizeFavoritesToolbarForm.cs</DependentUpon>
     </Compile>
     <Compile Include="OrganizeGroupsForm.cs">
       <SubType>Form</SubType>
@@ -106,6 +111,10 @@
     <EmbeddedResource Include="NewTerminalForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NewTerminalForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OrganizeFavoritesToolbarForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OrganizeFavoritesToolbarForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OrganizeGroupsForm.resx">
       <SubType>Designer</SubType>
@@ -166,6 +175,10 @@
     <None Include="Resources\application_edit.png" />
     <None Include="Resources\add.png" />
     <None Include="Resources\delete.png" />
+    <None Include="Resources\arrow_up.png" />
+    <None Include="Resources\arrow_down.png" />
+    <None Include="Resources\application_get.png" />
+    <None Include="Resources\application_put.png" />
     <Content Include="Resources\ico101.ico" />
     <Content Include="Resources\rdp.png" />
     <None Include="Resources\smallterm.png" />
