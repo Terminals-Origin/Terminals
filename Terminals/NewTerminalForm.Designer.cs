@@ -52,12 +52,20 @@ namespace Terminals
         this.cmbResolution = new System.Windows.Forms.ComboBox();
         this.label6 = new System.Windows.Forms.Label();
         this.chkConnectToConsole = new System.Windows.Forms.CheckBox();
+        this.tabPage3 = new System.Windows.Forms.TabPage();
+        this.chkSerialPorts = new System.Windows.Forms.CheckBox();
+        this.chkPrinters = new System.Windows.Forms.CheckBox();
+        this.chkDrives = new System.Windows.Forms.CheckBox();
+        this.label9 = new System.Windows.Forms.Label();
+        this.cmbSounds = new System.Windows.Forms.ComboBox();
+        this.label8 = new System.Windows.Forms.Label();
         this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         this.tabPage2.SuspendLayout();
         this.groupBox1.SuspendLayout();
+        this.tabPage3.SuspendLayout();
         this.SuspendLayout();
         // 
         // btnOk
@@ -99,6 +107,7 @@ namespace Terminals
         // 
         this.tabControl1.Controls.Add(this.tabPage1);
         this.tabControl1.Controls.Add(this.tabPage2);
+        this.tabControl1.Controls.Add(this.tabPage3);
         this.tabControl1.Location = new System.Drawing.Point(6, 77);
         this.tabControl1.Name = "tabControl1";
         this.tabControl1.SelectedIndex = 0;
@@ -311,6 +320,83 @@ namespace Terminals
         this.chkConnectToConsole.Text = "Co&nnect to Console";
         this.chkConnectToConsole.UseVisualStyleBackColor = true;
         // 
+        // tabPage3
+        // 
+        this.tabPage3.Controls.Add(this.chkSerialPorts);
+        this.tabPage3.Controls.Add(this.chkPrinters);
+        this.tabPage3.Controls.Add(this.chkDrives);
+        this.tabPage3.Controls.Add(this.label9);
+        this.tabPage3.Controls.Add(this.cmbSounds);
+        this.tabPage3.Controls.Add(this.label8);
+        this.tabPage3.Location = new System.Drawing.Point(4, 22);
+        this.tabPage3.Name = "tabPage3";
+        this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+        this.tabPage3.Size = new System.Drawing.Size(386, 183);
+        this.tabPage3.TabIndex = 2;
+        this.tabPage3.Text = "Local Resources";
+        this.tabPage3.UseVisualStyleBackColor = true;
+        // 
+        // chkSerialPorts
+        // 
+        this.chkSerialPorts.AutoSize = true;
+        this.chkSerialPorts.Location = new System.Drawing.Point(30, 122);
+        this.chkSerialPorts.Name = "chkSerialPorts";
+        this.chkSerialPorts.Size = new System.Drawing.Size(80, 17);
+        this.chkSerialPorts.TabIndex = 5;
+        this.chkSerialPorts.Text = "Se&rial ports";
+        this.chkSerialPorts.UseVisualStyleBackColor = true;
+        // 
+        // chkPrinters
+        // 
+        this.chkPrinters.AutoSize = true;
+        this.chkPrinters.Location = new System.Drawing.Point(30, 99);
+        this.chkPrinters.Name = "chkPrinters";
+        this.chkPrinters.Size = new System.Drawing.Size(63, 17);
+        this.chkPrinters.TabIndex = 4;
+        this.chkPrinters.Text = "&Printers";
+        this.chkPrinters.UseVisualStyleBackColor = true;
+        // 
+        // chkDrives
+        // 
+        this.chkDrives.AutoSize = true;
+        this.chkDrives.Location = new System.Drawing.Point(30, 76);
+        this.chkDrives.Name = "chkDrives";
+        this.chkDrives.Size = new System.Drawing.Size(77, 17);
+        this.chkDrives.TabIndex = 3;
+        this.chkDrives.Text = "&Disk drives";
+        this.chkDrives.UseVisualStyleBackColor = true;
+        // 
+        // label9
+        // 
+        this.label9.AutoSize = true;
+        this.label9.Location = new System.Drawing.Point(11, 50);
+        this.label9.Name = "label9";
+        this.label9.Size = new System.Drawing.Size(226, 13);
+        this.label9.TabIndex = 2;
+        this.label9.Text = "Connect automatically to these local devices :";
+        // 
+        // cmbSounds
+        // 
+        this.cmbSounds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+        this.cmbSounds.FormattingEnabled = true;
+        this.cmbSounds.Items.AddRange(new object[] {
+            "Play on remote computer",
+            "Play on this computer",
+            "Do not play"});
+        this.cmbSounds.Location = new System.Drawing.Point(102, 9);
+        this.cmbSounds.Name = "cmbSounds";
+        this.cmbSounds.Size = new System.Drawing.Size(172, 21);
+        this.cmbSounds.TabIndex = 1;
+        // 
+        // label8
+        // 
+        this.label8.AutoSize = true;
+        this.label8.Location = new System.Drawing.Point(11, 12);
+        this.label8.Name = "label8";
+        this.label8.Size = new System.Drawing.Size(85, 13);
+        this.label8.TabIndex = 0;
+        this.label8.Text = "Remote &sounds:";
+        // 
         // chkAddtoToolbar
         // 
         this.chkAddtoToolbar.AutoSize = true;
@@ -352,6 +438,8 @@ namespace Terminals
         this.tabPage2.PerformLayout();
         this.groupBox1.ResumeLayout(false);
         this.groupBox1.PerformLayout();
+        this.tabPage3.ResumeLayout(false);
+        this.tabPage3.PerformLayout();
         this.ResumeLayout(false);
         this.PerformLayout();
 
@@ -383,5 +471,12 @@ namespace Terminals
       private System.Windows.Forms.ComboBox cmbServers;
       private System.Windows.Forms.ComboBox cmbDomains;
       private System.Windows.Forms.CheckBox chkAddtoToolbar;
+    private System.Windows.Forms.TabPage tabPage3;
+    private System.Windows.Forms.CheckBox chkDrives;
+    private System.Windows.Forms.Label label9;
+    private System.Windows.Forms.ComboBox cmbSounds;
+    private System.Windows.Forms.Label label8;
+    private System.Windows.Forms.CheckBox chkSerialPorts;
+    private System.Windows.Forms.CheckBox chkPrinters;
   }
 }

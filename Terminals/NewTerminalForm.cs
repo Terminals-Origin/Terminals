@@ -22,6 +22,7 @@ namespace Terminals
             cmbServers.Text = server;
             cmbResolution.SelectedIndex = 3;
             cmbColors.SelectedIndex = 1;
+            cmbSounds.SelectedIndex = 2;
             SetOkButtonState();
             SetOkTitle(connect);
         }
@@ -70,6 +71,26 @@ namespace Terminals
             cmbColors.SelectedIndex = (int)favorite.Colors;
             chkConnectToConsole.Checked = favorite.ConnectToConsole;
             chkAddtoToolbar.Checked = favorite.ShowOnToolbar;
+            chkDrives.Checked = favorite.RedirectDrives;
+            chkSerialPorts.Checked = favorite.RedirectPorts;
+            chkPrinters.Checked = favorite.RedirectPrinters;
+            cmbSounds.SelectedIndex = (int)favorite.Sounds;
+        }
+
+        private void FillFavorite()
+        {
+            favorite.ServerName = cmbServers.Text;
+            favorite.DomainName = cmbDomains.Text;
+            favorite.UserName = cmbUsers.Text;
+            favorite.Password = (chkSavePassword.Checked ? txtPassword.Text : "");
+            favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
+            favorite.Colors = (Colors)cmbColors.SelectedIndex;
+            favorite.ConnectToConsole = chkConnectToConsole.Checked;
+            favorite.ShowOnToolbar = chkAddtoToolbar.Checked;
+            favorite.RedirectDrives = chkDrives.Checked;
+            favorite.RedirectPorts = chkSerialPorts.Checked;
+            favorite.RedirectPrinters = chkPrinters.Checked;
+            favorite.Sounds = (RemoteSounds)cmbSounds.SelectedIndex;
         }
 
         private FavoriteConfigurationElement favorite;
@@ -94,14 +115,7 @@ namespace Terminals
             }
             favorite = new FavoriteConfigurationElement();
             favorite.Name = name;
-            favorite.ServerName = cmbServers.Text;
-            favorite.DomainName = cmbDomains.Text;
-            favorite.UserName = cmbUsers.Text;
-            favorite.Password = (chkSavePassword.Checked ? txtPassword.Text : "");
-            favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
-            favorite.Colors = (Colors)cmbColors.SelectedIndex;
-            favorite.ConnectToConsole = chkConnectToConsole.Checked;
-            favorite.ShowOnToolbar = chkAddtoToolbar.Checked;
+            FillFavorite();
         }
 
         private void control_TextChanged(object sender, EventArgs e)

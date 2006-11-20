@@ -7,6 +7,7 @@ namespace Terminals
 {
     public enum DesktopSize { x640 = 0, x800, x1024, FitToWindow, FullScreen, AutoScale };
     public enum Colors { Bits8 = 0, Bit16, Bits24 };
+    public enum RemoteSounds { Redirect = 0, PlayOnServer = 1, DontPlay = 2 };
 
     public class TerminalsConfigurationSection : ConfigurationSection
     {
@@ -491,6 +492,58 @@ namespace Terminals
             set
             {
                 this["showOnToolbar"] = value;
+            }
+        }
+
+        [ConfigurationProperty("sounds", DefaultValue=RemoteSounds.DontPlay)]
+        public RemoteSounds Sounds
+        {
+            get
+            {
+                return (RemoteSounds)this["sounds"];
+            }
+            set
+            {
+                this["sounds"] = value;
+            }
+        }
+
+        [ConfigurationProperty("redirectDrives")]
+        public bool RedirectDrives
+        {
+            get
+            {
+                return (bool)this["redirectDrives"];
+            }
+            set
+            {
+                this["redirectDrives"] = value;
+            }
+        }
+
+        [ConfigurationProperty("redirectPorts")]
+        public bool RedirectPorts
+        {
+            get
+            {
+                return (bool)this["redirectPorts"];
+            }
+            set
+            {
+                this["redirectPorts"] = value;
+            }
+        }
+
+        [ConfigurationProperty("redirectPrinters")]
+        public bool RedirectPrinters
+        {
+            get
+            {
+                return (bool)this["redirectPrinters"];
+            }
+            set
+            {
+                this["redirectPrinters"] = value;
             }
         }
     }

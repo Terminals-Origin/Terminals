@@ -169,6 +169,10 @@ namespace Terminals
             bool shownOnToolbar = editedFavorite.ShowOnToolbar;
             editedFavorite.ShowOnToolbar = favorite.ShowOnToolbar;
             editedFavorite.UserName = favorite.UserName;
+            editedFavorite.RedirectDrives = favorite.RedirectDrives;
+            editedFavorite.RedirectPorts = favorite.RedirectPorts;
+            editedFavorite.RedirectPrinters = favorite.RedirectPrinters;
+            editedFavorite.Sounds = favorite.Sounds;
             configuration.Save();
             if (shownOnToolbar && !favorite.ShowOnToolbar)
             {

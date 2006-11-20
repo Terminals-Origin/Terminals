@@ -177,34 +177,38 @@ namespace Terminals
             Controls.Add(axMsRdpClient2);
             axMsRdpClient2.Parent = terminalTabPage;
             axMsRdpClient2.Dock = DockStyle.Fill;
+
+            int height = 0, width = 0;
             switch (favorite.DesktopSize)
             {
                 case DesktopSize.x640:
-                    axMsRdpClient2.DesktopWidth = 640;
-                    axMsRdpClient2.DesktopHeight = 480;
+                    width = 640;
+                    height = 480;
                     break;
                 case DesktopSize.x800:
-                    axMsRdpClient2.DesktopWidth = 800;
-                    axMsRdpClient2.DesktopHeight = 600;
+                    width = 800;
+                    height = 600;
                     break;
                 case DesktopSize.x1024:
-                    axMsRdpClient2.DesktopWidth = 1024;
-                    axMsRdpClient2.DesktopHeight = 768;
+                    width = 1024;
+                    height = 768;
                     break;
                 case DesktopSize.FitToWindow:
-                    axMsRdpClient2.DesktopWidth = terminalTabPage.Width;
-                    axMsRdpClient2.DesktopHeight = terminalTabPage.Height;
+                    width = terminalTabPage.Width;
+                    height = terminalTabPage.Height;
                     break;
                 case DesktopSize.FullScreen:
-                    axMsRdpClient2.DesktopWidth = Screen.FromControl(this).Bounds.Width;
-                    axMsRdpClient2.DesktopHeight = Screen.FromControl(this).Bounds.Height - 1;
+                    width = Screen.FromControl(this).Bounds.Width;
+                    height = Screen.FromControl(this).Bounds.Height - 1;
                     break;
                 case DesktopSize.AutoScale:
                     axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
-                    axMsRdpClient2.DesktopWidth = Screen.FromControl(this).Bounds.Width;
-                    axMsRdpClient2.DesktopHeight = Screen.FromControl(this).Bounds.Height - 1;
+                    width = Screen.FromControl(this).Bounds.Width;
+                    height = Screen.FromControl(this).Bounds.Height - 1;
                     break;
             }
+            axMsRdpClient2.DesktopWidth = Math.Min(1600,width);
+            axMsRdpClient2.DesktopHeight = Math.Min(1200, height); ;
 
             switch (favorite.Colors)
             {
@@ -218,6 +222,10 @@ namespace Terminals
                     axMsRdpClient2.ColorDepth = 24;
                     break;
             }
+            axMsRdpClient2.AdvancedSettings3.RedirectDrives = favorite.RedirectDrives;
+            axMsRdpClient2.AdvancedSettings3.RedirectPorts = favorite.RedirectPorts;
+            axMsRdpClient2.AdvancedSettings3.RedirectPrinters = favorite.RedirectPrinters;
+            axMsRdpClient2.SecuredSettings2.AudioRedirectionMode = (int)favorite.Sounds;
             axMsRdpClient2.Domain = favorite.DomainName;
             axMsRdpClient2.Server = favorite.ServerName;
             axMsRdpClient2.UserName = favorite.UserName;
