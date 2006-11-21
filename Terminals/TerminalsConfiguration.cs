@@ -546,6 +546,19 @@ namespace Terminals
                 this["redirectPrinters"] = value;
             }
         }
+
+        [ConfigurationProperty("port",DefaultValue=3389)]
+        public int Port
+        {
+            get
+            {
+                return (int)this["port"];
+            }
+            set
+            {
+                this["port"] = value;
+            }
+        }
     }
 
     public class GroupConfigurationElementCollection : ConfigurationElementCollection

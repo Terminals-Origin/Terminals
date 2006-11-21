@@ -173,6 +173,7 @@ namespace Terminals
             editedFavorite.RedirectPorts = favorite.RedirectPorts;
             editedFavorite.RedirectPrinters = favorite.RedirectPrinters;
             editedFavorite.Sounds = favorite.Sounds;
+            editedFavorite.Port = favorite.Port;
             configuration.Save();
             if (shownOnToolbar && !favorite.ShowOnToolbar)
             {

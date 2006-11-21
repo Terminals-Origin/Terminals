@@ -46,6 +46,8 @@ namespace Terminals
         this.cmbDomains = new System.Windows.Forms.ComboBox();
         this.label1 = new System.Windows.Forms.Label();
         this.tabPage2 = new System.Windows.Forms.TabPage();
+        this.txtPort = new System.Windows.Forms.TextBox();
+        this.lblPort = new System.Windows.Forms.Label();
         this.groupBox1 = new System.Windows.Forms.GroupBox();
         this.cmbColors = new System.Windows.Forms.ComboBox();
         this.label7 = new System.Windows.Forms.Label();
@@ -240,6 +242,8 @@ namespace Terminals
         // 
         // tabPage2
         // 
+        this.tabPage2.Controls.Add(this.txtPort);
+        this.tabPage2.Controls.Add(this.lblPort);
         this.tabPage2.Controls.Add(this.groupBox1);
         this.tabPage2.Controls.Add(this.chkConnectToConsole);
         this.tabPage2.Location = new System.Drawing.Point(4, 22);
@@ -249,6 +253,23 @@ namespace Terminals
         this.tabPage2.TabIndex = 1;
         this.tabPage2.Text = "Advanced";
         this.tabPage2.UseVisualStyleBackColor = true;
+        // 
+        // txtPort
+        // 
+        this.txtPort.Location = new System.Drawing.Point(130, 106);
+        this.txtPort.Name = "txtPort";
+        this.txtPort.Size = new System.Drawing.Size(234, 21);
+        this.txtPort.TabIndex = 2;
+        this.txtPort.Validating += new System.ComponentModel.CancelEventHandler(this.txtPort_Validating);
+        // 
+        // lblPort
+        // 
+        this.lblPort.AutoSize = true;
+        this.lblPort.Location = new System.Drawing.Point(8, 109);
+        this.lblPort.Name = "lblPort";
+        this.lblPort.Size = new System.Drawing.Size(105, 13);
+        this.lblPort.TabIndex = 1;
+        this.lblPort.Text = "&Remote server port:";
         // 
         // groupBox1
         // 
@@ -313,10 +334,10 @@ namespace Terminals
         // chkConnectToConsole
         // 
         this.chkConnectToConsole.AutoSize = true;
-        this.chkConnectToConsole.Location = new System.Drawing.Point(8, 110);
+        this.chkConnectToConsole.Location = new System.Drawing.Point(11, 139);
         this.chkConnectToConsole.Name = "chkConnectToConsole";
         this.chkConnectToConsole.Size = new System.Drawing.Size(120, 17);
-        this.chkConnectToConsole.TabIndex = 1;
+        this.chkConnectToConsole.TabIndex = 3;
         this.chkConnectToConsole.Text = "Co&nnect to Console";
         this.chkConnectToConsole.UseVisualStyleBackColor = true;
         // 
@@ -478,5 +499,7 @@ namespace Terminals
     private System.Windows.Forms.Label label8;
     private System.Windows.Forms.CheckBox chkSerialPorts;
     private System.Windows.Forms.CheckBox chkPrinters;
+      private System.Windows.Forms.TextBox txtPort;
+      private System.Windows.Forms.Label lblPort;
   }
 }

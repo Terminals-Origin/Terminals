@@ -75,6 +75,7 @@ namespace Terminals
             chkSerialPorts.Checked = favorite.RedirectPorts;
             chkPrinters.Checked = favorite.RedirectPrinters;
             cmbSounds.SelectedIndex = (int)favorite.Sounds;
+            txtPort.Text = favorite.Port.ToString();
         }
 
         private void FillFavorite()
@@ -91,6 +92,10 @@ namespace Terminals
             favorite.RedirectPorts = chkSerialPorts.Checked;
             favorite.RedirectPrinters = chkPrinters.Checked;
             favorite.Sounds = (RemoteSounds)cmbSounds.SelectedIndex;
+            if (txtPort.Text.Trim() != "")
+                favorite.Port = int.Parse(txtPort.Text);
+            else
+                favorite.Port = 3389;
         }
 
         private FavoriteConfigurationElement favorite;
@@ -149,6 +154,19 @@ namespace Terminals
             if (txtName.Text == String.Empty)
             {
                 txtName.Text = cmbServers.Text;
+            }
+        }
+
+        private void txtPort_Validating(object sender, CancelEventArgs e)
+        {
+            try
+            {
+                int.Parse(txtPort.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Port must be an integer");
+                txtPort.Text = "";
             }
         }
     }

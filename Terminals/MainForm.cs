@@ -228,6 +228,7 @@ namespace Terminals
             axMsRdpClient2.SecuredSettings2.AudioRedirectionMode = (int)favorite.Sounds;
             axMsRdpClient2.Domain = favorite.DomainName;
             axMsRdpClient2.Server = favorite.ServerName;
+            axMsRdpClient2.AdvancedSettings3.RDPPort = favorite.Port;
             axMsRdpClient2.UserName = favorite.UserName;
             axMsRdpClient2.AdvancedSettings3.ContainerHandledFullScreen = -1;
             axMsRdpClient2.AdvancedSettings3.DisplayConnectionBar = false;
