@@ -339,7 +339,7 @@ namespace Terminals
             {
                 if (frmNewTerminal.ShowDialog() == DialogResult.OK)
                 {
-                    Settings.AddFavorite(frmNewTerminal.Favorite);
+                    Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
                     LoadFavorites();
                     tscConnectTo.SelectedIndex = tscConnectTo.Items.IndexOf(frmNewTerminal.Favorite.Name);
                     CreateTerminalTab(frmNewTerminal.Favorite);

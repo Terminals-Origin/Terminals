@@ -67,7 +67,7 @@ namespace Terminals
             string oldName = favorite.Name;
             if (frmNewTerminal.ShowDialog() == DialogResult.OK)
             {
-                Settings.EditFavorite(oldName, frmNewTerminal.Favorite);
+                Settings.EditFavorite(oldName, frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
                 LoadConnections();
             }
         }
@@ -84,10 +84,12 @@ namespace Terminals
                     return;
                 }
                 FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
-                Settings.DeleteFavorite(favorite.Name);
+                string oldName = favorite.Name;
                 favorite.Name = e.Label;
                 item.Name = e.Label;
-                Settings.AddFavorite(favorite);
+                //Settings.DeleteFavorite(favorite.Name);
+                //Settings.AddFavorite(favorite);
+                Settings.EditFavorite(oldName, favorite);
             }
         }
 
@@ -122,9 +124,10 @@ namespace Terminals
             FavoriteConfigurationElement favorite = GetSelectedFavorite();
             if (favorite != null)
             {
+                string oldName = favorite.Name;
                 favorite.Name = GetUniqeName(favorite.Name);
                 Settings.DeleteFavorite(favorite.Name);
-                Settings.AddFavorite(favorite);
+                Settings.AddFavorite(favorite, Settings.HasToolbarButton(oldName));
                 LoadConnections();
             }
         }
@@ -147,7 +150,7 @@ namespace Terminals
             {
                 if (frmNewTerminal.ShowDialog() == DialogResult.OK)
                 {
-                    Settings.AddFavorite(frmNewTerminal.Favorite);
+                    Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
                     LoadConnections();
                 }
             }

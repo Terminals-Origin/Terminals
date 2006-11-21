@@ -166,8 +166,8 @@ namespace Terminals
             editedFavorite.EncryptedPassword = favorite.EncryptedPassword;
             editedFavorite.Name = favorite.Name;
             editedFavorite.ServerName = favorite.ServerName;
-            bool shownOnToolbar = editedFavorite.ShowOnToolbar;
-            editedFavorite.ShowOnToolbar = favorite.ShowOnToolbar;
+            //bool shownOnToolbar = editedFavorite.ShowOnToolbar;
+            //editedFavorite.ShowOnToolbar = favorite.ShowOnToolbar;
             editedFavorite.UserName = favorite.UserName;
             editedFavorite.RedirectDrives = favorite.RedirectDrives;
             editedFavorite.RedirectPorts = favorite.RedirectPorts;
@@ -175,7 +175,20 @@ namespace Terminals
             editedFavorite.Sounds = favorite.Sounds;
             editedFavorite.Port = favorite.Port;
             configuration.Save();
-            if (shownOnToolbar && !favorite.ShowOnToolbar)
+        }
+
+        public static bool HasToolbarButton(string name)
+        {
+            List<string> buttons = new List<string>();
+            buttons.AddRange(Settings.FavoritesToolbarButtons);
+            return buttons.IndexOf(name) > -1;
+        }
+
+        public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite, bool showOnToolbar)
+        {
+            EditFavorite(oldName, favorite);
+            bool shownOnToolbar = HasToolbarButton(oldName);
+            if (shownOnToolbar && !showOnToolbar)
             {
                 DeleteFavoriteButton(oldName);
             }
@@ -183,7 +196,7 @@ namespace Terminals
             {
                 EditFavoriteButton(oldName, favorite.Name);
             }
-            else if (!shownOnToolbar && favorite.ShowOnToolbar)
+            else if (!shownOnToolbar && showOnToolbar)
             {
                 AddFavoriteButton(favorite.Name);
             }
@@ -197,12 +210,12 @@ namespace Terminals
             DeleteFavoriteButton(name);
         }
 
-        public static void AddFavorite(FavoriteConfigurationElement favorite)
+        public static void AddFavorite(FavoriteConfigurationElement favorite, bool showOnToolbar)
         {
             Configuration configuration = GetConfiguration();
             GetSection(configuration).Favorites.Add(favorite);
             configuration.Save();
-            if (favorite.ShowOnToolbar)
+            if (showOnToolbar)
             {
                 AddFavoriteButton(favorite.Name);
             }

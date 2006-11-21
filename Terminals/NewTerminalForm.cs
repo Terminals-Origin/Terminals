@@ -70,7 +70,7 @@ namespace Terminals
             cmbResolution.SelectedIndex = (int)favorite.DesktopSize;
             cmbColors.SelectedIndex = (int)favorite.Colors;
             chkConnectToConsole.Checked = favorite.ConnectToConsole;
-            chkAddtoToolbar.Checked = favorite.ShowOnToolbar;
+            chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Name);
             chkDrives.Checked = favorite.RedirectDrives;
             chkSerialPorts.Checked = favorite.RedirectPorts;
             chkPrinters.Checked = favorite.RedirectPrinters;
@@ -87,11 +87,12 @@ namespace Terminals
             favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
             favorite.Colors = (Colors)cmbColors.SelectedIndex;
             favorite.ConnectToConsole = chkConnectToConsole.Checked;
-            favorite.ShowOnToolbar = chkAddtoToolbar.Checked;
+            //favorite.ShowOnToolbar = chkAddtoToolbar.Checked;
             favorite.RedirectDrives = chkDrives.Checked;
             favorite.RedirectPorts = chkSerialPorts.Checked;
             favorite.RedirectPrinters = chkPrinters.Checked;
             favorite.Sounds = (RemoteSounds)cmbSounds.SelectedIndex;
+            showOnToolbar = chkAddtoToolbar.Checked;
             if (txtPort.Text.Trim() != "")
                 favorite.Port = int.Parse(txtPort.Text);
             else
@@ -104,6 +105,14 @@ namespace Terminals
         {
             get { return favorite; }
         }
+
+        private bool showOnToolbar;
+
+        internal bool ShowOnToolbar
+        {
+            get { return showOnToolbar; }
+        }
+
 
         private void SetOkButtonState()
         {

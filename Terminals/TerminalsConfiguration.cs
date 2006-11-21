@@ -482,7 +482,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("showOnToolbar", IsRequired = true)]
+        /*[ConfigurationProperty("showOnToolbar", IsRequired = true)]
         public bool ShowOnToolbar
         {
             get
@@ -493,7 +493,7 @@ namespace Terminals
             {
                 this["showOnToolbar"] = value;
             }
-        }
+        }*/
 
         [ConfigurationProperty("sounds", DefaultValue=RemoteSounds.DontPlay)]
         public RemoteSounds Sounds
