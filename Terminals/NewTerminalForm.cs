@@ -78,25 +78,52 @@ namespace Terminals
             txtPort.Text = favorite.Port.ToString();
         }
 
-        private void FillFavorite()
+        private bool FillFavorite()
         {
-            favorite.ServerName = cmbServers.Text;
-            favorite.DomainName = cmbDomains.Text;
-            favorite.UserName = cmbUsers.Text;
-            favorite.Password = (chkSavePassword.Checked ? txtPassword.Text : "");
-            favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
-            favorite.Colors = (Colors)cmbColors.SelectedIndex;
-            favorite.ConnectToConsole = chkConnectToConsole.Checked;
-            //favorite.ShowOnToolbar = chkAddtoToolbar.Checked;
-            favorite.RedirectDrives = chkDrives.Checked;
-            favorite.RedirectPorts = chkSerialPorts.Checked;
-            favorite.RedirectPrinters = chkPrinters.Checked;
-            favorite.Sounds = (RemoteSounds)cmbSounds.SelectedIndex;
-            showOnToolbar = chkAddtoToolbar.Checked;
+            try
+            {
+                favorite.ServerName = ValidateServer(cmbServers.Text);
+                favorite.DomainName = cmbDomains.Text;
+                favorite.UserName = cmbUsers.Text;
+                favorite.Password = (chkSavePassword.Checked ? txtPassword.Text : "");
+                favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
+                favorite.Colors = (Colors)cmbColors.SelectedIndex;
+                favorite.ConnectToConsole = chkConnectToConsole.Checked;
+                //favorite.ShowOnToolbar = chkAddtoToolbar.Checked;
+                favorite.RedirectDrives = chkDrives.Checked;
+                favorite.RedirectPorts = chkSerialPorts.Checked;
+                favorite.RedirectPrinters = chkPrinters.Checked;
+                favorite.Sounds = (RemoteSounds)cmbSounds.SelectedIndex;
+                showOnToolbar = chkAddtoToolbar.Checked;
+                favorite.Port = ValidatePort(txtPort.Text);
+                return true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+        }
+
+        private string ValidateServer(string serverName)
+        {
+            if (Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
+                throw new ArgumentException("Server name is not valid");
+            return serverName;
+        }
+
+        private int ValidatePort(string port)
+        {
             if (txtPort.Text.Trim() != "")
-                favorite.Port = int.Parse(txtPort.Text);
+            {
+                int result;
+                if (int.TryParse(txtPort.Text, out result) && result < 65536 && result > 0)
+                    return result;
+                else
+                    throw new ArgumentException("Port must be a number between 0 and 65535");
+            }
             else
-                favorite.Port = 3389;
+                return 3389;
         }
 
         private FavoriteConfigurationElement favorite;
@@ -129,7 +156,10 @@ namespace Terminals
             }
             favorite = new FavoriteConfigurationElement();
             favorite.Name = name;
-            FillFavorite();
+            if (FillFavorite())
+            {
+                DialogResult = DialogResult.OK;
+            }
         }
 
         private void control_TextChanged(object sender, EventArgs e)
@@ -163,19 +193,6 @@ namespace Terminals
             if (txtName.Text == String.Empty)
             {
                 txtName.Text = cmbServers.Text;
-            }
-        }
-
-        private void txtPort_Validating(object sender, CancelEventArgs e)
-        {
-            try
-            {
-                int.Parse(txtPort.Text);
-            }
-            catch
-            {
-                MessageBox.Show("Port must be an integer");
-                txtPort.Text = "";
             }
         }
     }

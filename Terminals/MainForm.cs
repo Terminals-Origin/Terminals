@@ -445,7 +445,7 @@ namespace Terminals
                 this.WindowState = FormWindowState.Normal;
                 this.Width = Screen.FromControl(tcTerminals).Bounds.Width;
                 this.Height = Screen.FromControl(tcTerminals).Bounds.Height;
-                this.Location = new Point(0, 0);
+                this.Location = Screen.FromControl(tcTerminals).Bounds.Location;
                 //this.TopMost = true;
                 SetGrabInput(true);
                 this.BringToFront();

@@ -73,7 +73,6 @@ namespace Terminals
         // btnOk
         // 
         this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-        this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
         this.btnOk.Enabled = false;
         this.btnOk.Location = new System.Drawing.Point(249, 298);
         this.btnOk.Name = "btnOk";
@@ -260,7 +259,6 @@ namespace Terminals
         this.txtPort.Name = "txtPort";
         this.txtPort.Size = new System.Drawing.Size(234, 21);
         this.txtPort.TabIndex = 2;
-        this.txtPort.Validating += new System.ComponentModel.CancelEventHandler(this.txtPort_Validating);
         // 
         // lblPort
         // 
