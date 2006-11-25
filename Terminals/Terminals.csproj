@@ -59,6 +59,12 @@
     <Compile Include="NewGroupForm.Designer.cs">
       <DependentUpon>NewGroupForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="OrganizeFavoritesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,7 +73,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -99,6 +105,10 @@
     <EmbeddedResource Include="NewGroupForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NewGroupForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OrganizeFavoritesForm.resx">
       <SubType>Designer</SubType>
@@ -165,12 +175,6 @@
     <None Include="Resources\computer_link.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TabControl\TabControl.csproj">
-      <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
-      <Name>TabControl</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\keyboard.png" />
     <None Include="Resources\application_edit.png" />
     <None Include="Resources\add.png" />
@@ -185,6 +189,12 @@
     <None Include="Terminals.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TabControl\TabControl.csproj">
+      <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
+      <Name>TabControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

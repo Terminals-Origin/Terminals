@@ -249,6 +249,43 @@ namespace TabControl
             }
         }
 
+        protected override void OnDoubleClick(EventArgs e)
+        {
+            base.OnDoubleClick(e);
+            TabControlItem item = GetTabItemByPoint(PointToClient(Cursor.Position));
+            if (item != null)
+            {
+                CloseTab(item);
+            }
+        }
+
+        private bool showToolTipOnTitle;
+
+        public bool ShowToolTipOnTitle
+        {
+            get { return showToolTipOnTitle; }
+            set { showToolTipOnTitle = value; }
+        }
+
+        protected override void OnMouseHover(EventArgs e)
+        {
+            base.OnMouseHover(e);
+            if (showToolTipOnTitle)
+            {
+                TabControlItem item = GetTabItemByPoint(PointToClient(Cursor.Position));
+                if (item != null)
+                {
+                    ToolTip toolTip = new ToolTip();
+                    toolTip.ToolTipTitle = item.Title;
+                    toolTip.ToolTipIcon = ToolTipIcon.Info;
+                    toolTip.UseFading = true;
+                    toolTip.UseAnimation = true;
+                    toolTip.IsBalloon = false;
+                    toolTip.Show(item.ToolTipText, item, PointToClient(Cursor.Position), 5000);
+                }
+            }
+        }
+
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);

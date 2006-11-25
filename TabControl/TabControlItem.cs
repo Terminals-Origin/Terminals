@@ -22,6 +22,7 @@ namespace TabControl
         private bool visible = true;
         private bool isDrawn = false;
         private string title = string.Empty;
+        private string toolTipText = string.Empty;
 
         public event EventHandler Changed;
 
@@ -85,6 +86,16 @@ namespace TabControl
 
                 title = value;
                 OnChanged();
+            }
+        }
+
+        [DefaultValue("Name")]
+        public string ToolTipText
+        {
+            get { return toolTipText; }
+            set 
+            { 
+                toolTipText = value; 
             }
         }
 

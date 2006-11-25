@@ -51,6 +51,7 @@ namespace Terminals
 
         private void UpdateControls()
         {
+            tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
             addTerminalToGroupToolStripMenuItem.Enabled = (tcTerminals.SelectedItem != null);
             tsbGrabInput.Enabled = (tcTerminals.SelectedItem != null);
             tsbFullScreen.Enabled = (tcTerminals.SelectedItem != null);
@@ -166,9 +167,30 @@ namespace Terminals
             CreateTerminalTab(favorite);
         }
 
+        private string GetToolTipText(FavoriteConfigurationElement favorite)
+        {
+            return "Computer: " + favorite.ServerName + Environment.NewLine +
+                "User Name: " + favorite.UserName + Environment.NewLine +
+                "Domain: " + favorite.DomainName + Environment.NewLine +
+                "Port: " + favorite.Port + Environment.NewLine +
+                "Colors: " + favorite.Colors.ToString() + Environment.NewLine +
+                "Connect To Console: " + favorite.ConnectToConsole.ToString() + Environment.NewLine +
+                "Desktop Size: " + favorite.DesktopSize.ToString() + Environment.NewLine +
+                "Redirect Drives: " + favorite.RedirectDrives.ToString() + Environment.NewLine +
+                "Redirect Ports: " + favorite.RedirectPorts.ToString() + Environment.NewLine +
+                "Redirect Printers: " + favorite.RedirectPrinters.ToString() + Environment.NewLine +
+                "Sounds: " + favorite.Sounds.ToString() + Environment.NewLine;
+        }
+
         private void CreateTerminalTab(FavoriteConfigurationElement favorite)
         {
-            TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(favorite.Name);
+            string terminalTabTitle = favorite.Name;
+            if (Settings.ShowUserNameInTitle)
+            {
+                terminalTabTitle += " (" + favorite.UserName + ")";
+            }
+            TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
+            terminalTabPage.ToolTipText = GetToolTipText(favorite);
             terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
             tcTerminals.Items.Add(terminalTabPage);
             tcTerminals.SelectedItem = terminalTabPage;
@@ -207,7 +229,7 @@ namespace Terminals
                     height = Screen.FromControl(this).Bounds.Height - 1;
                     break;
             }
-            axMsRdpClient2.DesktopWidth = Math.Min(1600,width);
+            axMsRdpClient2.DesktopWidth = Math.Min(1600, width);
             axMsRdpClient2.DesktopHeight = Math.Min(1200, height); ;
 
             switch (favorite.Colors)
@@ -648,6 +670,15 @@ namespace Terminals
             if (frmOrganizeFavoritesToolbar.ShowDialog() == DialogResult.OK)
             {
                 LoadFavoritesToolbar();
+            }
+        }
+
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OptionsForm frmOptions = new OptionsForm();
+            if (frmOptions.ShowDialog() == DialogResult.OK)
+            {
+                tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
             }
         }
     }

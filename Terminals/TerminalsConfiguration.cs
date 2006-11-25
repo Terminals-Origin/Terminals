@@ -99,6 +99,32 @@ namespace Terminals
                 this["groups"] = value;
             }
         }
+
+        [ConfigurationProperty("showUserNameInTitle")]
+        public bool ShowUserNameInTitle
+        {
+            get
+            {
+                return (bool)this["showUserNameInTitle"];
+            }
+            set
+            {
+                this["showUserNameInTitle"] = value;
+            }
+        }
+
+        [ConfigurationProperty("showInformationToolTips")]
+        public bool ShowInformationToolTips
+        {
+            get
+            {
+                return (bool)this["showInformationToolTips"];
+            }
+            set
+            {
+                this["showInformationToolTips"] = value;
+            }
+        }
     }
 
     public class MRUItemConfigurationElementCollection : ConfigurationElementCollection
@@ -481,19 +507,6 @@ namespace Terminals
                 this["colors"] = value;
             }
         }
-
-        /*[ConfigurationProperty("showOnToolbar", IsRequired = true)]
-        public bool ShowOnToolbar
-        {
-            get
-            {
-                return (bool)this["showOnToolbar"];
-            }
-            set
-            {
-                this["showOnToolbar"] = value;
-            }
-        }*/
 
         [ConfigurationProperty("sounds", DefaultValue=RemoteSounds.DontPlay)]
         public RemoteSounds Sounds

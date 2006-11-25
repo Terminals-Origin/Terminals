@@ -66,6 +66,8 @@ namespace Terminals
             this.tcTerminals = new TabControl.TabControl();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.timerHover = new System.Windows.Forms.Timer(this.components);
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tcTerminals)).BeginInit();
@@ -82,10 +84,11 @@ namespace Terminals
             this.viewToolStripMenuItem,
             this.favoritesToolStripMenuItem,
             this.terminalToolStripMenuItem,
-            this.groupsToolStripMenuItem});
+            this.groupsToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(260, 24);
+            this.menuStrip.Size = new System.Drawing.Size(396, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -132,7 +135,7 @@ namespace Terminals
             // 
             this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
             this.fullScreenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
+            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.fullScreenToolStripMenuItem.Text = "&Full Screen";
             this.fullScreenToolStripMenuItem.Click += new System.EventHandler(this.tsbFullScreen_Click);
             // 
@@ -396,6 +399,21 @@ namespace Terminals
             this.timerHover.Interval = 200;
             this.timerHover.Tick += new System.EventHandler(this.timerHover_Tick);
             // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.optionsToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // optionsToolStripMenuItem
+            // 
+            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.optionsToolStripMenuItem.Text = "Options";
+            this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -465,6 +483,8 @@ namespace Terminals
         private System.Windows.Forms.ToolStripContainer toolStripContainer;
         private System.Windows.Forms.Timer timerHover;
         private System.Windows.Forms.ToolStripMenuItem organizeFavoritesToolbarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
 
 
       }

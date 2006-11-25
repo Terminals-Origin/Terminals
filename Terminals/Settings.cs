@@ -239,5 +239,33 @@ namespace Terminals
             GetSection(configuration).Groups.Add(group);
             configuration.Save();
         }
+
+        public static bool ShowUserNameInTitle
+        {
+            get
+            {
+                return GetSection().ShowUserNameInTitle;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ShowUserNameInTitle = value;
+                configuration.Save();
+            }
+        }
+
+        public static bool ShowInformationToolTips
+        {
+            get
+            {
+                return GetSection().ShowInformationToolTips;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ShowInformationToolTips = value;
+                configuration.Save();
+            }
+        }
     }
 }
