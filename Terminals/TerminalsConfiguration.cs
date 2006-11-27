@@ -572,6 +572,19 @@ namespace Terminals
                 this["port"] = value;
             }
         }
+
+        [ConfigurationProperty("desktopShare")]
+        public string DesktopShare
+        {
+            get
+            {
+                return (string)this["desktopShare"];
+            }
+            set
+            {
+                this["desktopShare"] = value;
+            }
+        }
     }
 
     public class GroupConfigurationElementCollection : ConfigurationElementCollection

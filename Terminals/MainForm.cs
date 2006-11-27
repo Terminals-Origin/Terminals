@@ -11,6 +11,7 @@ using Terminals.Properties;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using TabControl;
+using System.IO;
 
 namespace Terminals
 {
@@ -191,6 +192,7 @@ namespace Terminals
             }
             TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
             terminalTabPage.ToolTipText = GetToolTipText(favorite);
+            terminalTabPage.DesktopShare = favorite.DesktopShare;
             terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
             tcTerminals.Items.Add(terminalTabPage);
             tcTerminals.SelectedItem = terminalTabPage;
@@ -198,8 +200,10 @@ namespace Terminals
             AxMsRdpClient2 axMsRdpClient2 = new AxMsRdpClient2();
             Controls.Add(axMsRdpClient2);
             axMsRdpClient2.Parent = terminalTabPage;
+            axMsRdpClient2.AllowDrop = true;
+            ((Control)axMsRdpClient2).DragEnter += new DragEventHandler(axMsRdpClient2_DragEnter);
+            ((Control)axMsRdpClient2).DragDrop += new DragEventHandler(axMsRdpClient2_DragDrop);
             axMsRdpClient2.Dock = DockStyle.Fill;
-
             int height = 0, width = 0;
             switch (favorite.DesktopSize)
             {
@@ -270,6 +274,43 @@ namespace Terminals
             terminalTabPage.TerminalControl = axMsRdpClient2;
             if (favorite.DesktopSize == DesktopSize.FullScreen)
                 FullScreen = true;
+        }
+
+        private void SHCopyFiles(string[] sourceFiles, string destinationFolder)
+        {
+            SHFileOperationWrapper fo = new SHFileOperationWrapper();
+            List<string> destinationFiles = new List<string>();
+
+            foreach (string sourceFile in sourceFiles)
+            {
+                destinationFiles.Add(destinationFolder + @"\" + Path.GetFileName(sourceFile));
+            }
+
+            fo.Operation = SHFileOperationWrapper.FileOperations.FO_COPY;
+            fo.OwnerWindow = this.Handle;
+            fo.SourceFiles = sourceFiles;
+            fo.DestFiles = destinationFiles.ToArray();
+            
+            fo.DoOperation();
+        }
+
+        void axMsRdpClient2_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string desktopShare = ((TerminalTabControlItem)(tcTerminals.SelectedItem)).DesktopShare;
+            SHCopyFiles(files, desktopShare);
+        }
+
+        void axMsRdpClient2_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            {
+                e.Effect = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
         }
 
         void terminalTabPage_DoubleClick(object sender, EventArgs e)
@@ -741,6 +782,14 @@ namespace Terminals
             {
                 terminalControl = value;
             }
+        }
+
+        private string desktopShare;
+
+        public string DesktopShare
+        {
+            get { return desktopShare; }
+            set { desktopShare = value; }
         }
     }
 }

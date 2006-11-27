@@ -689,6 +689,12 @@ namespace Terminals
                 tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
             }
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutForm frmAbout = new AboutForm();
+            frmAbout.ShowDialog();
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem

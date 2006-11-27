@@ -76,6 +76,7 @@ namespace Terminals
             chkPrinters.Checked = favorite.RedirectPrinters;
             cmbSounds.SelectedIndex = (int)favorite.Sounds;
             txtPort.Text = favorite.Port.ToString();
+            txtDesktopShare.Text = favorite.DesktopShare;
         }
 
         private bool FillFavorite()
@@ -89,13 +90,13 @@ namespace Terminals
                 favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
                 favorite.Colors = (Colors)cmbColors.SelectedIndex;
                 favorite.ConnectToConsole = chkConnectToConsole.Checked;
-                //favorite.ShowOnToolbar = chkAddtoToolbar.Checked;
                 favorite.RedirectDrives = chkDrives.Checked;
                 favorite.RedirectPorts = chkSerialPorts.Checked;
                 favorite.RedirectPrinters = chkPrinters.Checked;
                 favorite.Sounds = (RemoteSounds)cmbSounds.SelectedIndex;
                 showOnToolbar = chkAddtoToolbar.Checked;
                 favorite.Port = ValidatePort(txtPort.Text);
+                favorite.DesktopShare = txtDesktopShare.Text;
                 return true;
             }
             catch (Exception e)
@@ -193,6 +194,15 @@ namespace Terminals
             if (txtName.Text == String.Empty)
             {
                 txtName.Text = cmbServers.Text;
+            }
+        }
+
+        private void btnBrowseShare_Click(object sender, EventArgs e)
+        {
+            folderBrowserDialog.SelectedPath = @"\\" + cmbServers.Text;
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                txtDesktopShare.Text = folderBrowserDialog.SelectedPath;
             }
         }
     }

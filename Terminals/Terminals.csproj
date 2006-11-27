@@ -79,7 +79,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -151,6 +151,8 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Settings.cs" />
+    <Compile Include="SHApi.cs" />
+    <Compile Include="SHFileOperationWrapper.cs" />
     <Compile Include="TerminalsConfiguration.cs" />
     <None Include="WTSApi32.cs" />
   </ItemGroup>
@@ -193,6 +195,7 @@
     <None Include="Resources\arrow_down.png" />
     <None Include="Resources\application_get.png" />
     <None Include="Resources\application_put.png" />
+    <None Include="Resources\folder.png" />
     <Content Include="Resources\ico101.ico" />
     <Content Include="Resources\rdp.png" />
     <None Include="Resources\smallterm.png" />

@@ -166,14 +166,13 @@ namespace Terminals
             editedFavorite.EncryptedPassword = favorite.EncryptedPassword;
             editedFavorite.Name = favorite.Name;
             editedFavorite.ServerName = favorite.ServerName;
-            //bool shownOnToolbar = editedFavorite.ShowOnToolbar;
-            //editedFavorite.ShowOnToolbar = favorite.ShowOnToolbar;
             editedFavorite.UserName = favorite.UserName;
             editedFavorite.RedirectDrives = favorite.RedirectDrives;
             editedFavorite.RedirectPorts = favorite.RedirectPorts;
             editedFavorite.RedirectPrinters = favorite.RedirectPrinters;
             editedFavorite.Sounds = favorite.Sounds;
             editedFavorite.Port = favorite.Port;
+            editedFavorite.DesktopShare = favorite.DesktopShare;
             configuration.Save();
         }
 
