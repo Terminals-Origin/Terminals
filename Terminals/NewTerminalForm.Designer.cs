@@ -28,6 +28,7 @@ namespace Terminals
     /// </summary>
     private void InitializeComponent()
     {
+        this.components = new System.ComponentModel.Container();
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewTerminalForm));
         this.btnOk = new System.Windows.Forms.Button();
         this.btnCancel = new System.Windows.Forms.Button();
@@ -66,6 +67,7 @@ namespace Terminals
         this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
         this.pictureBox1 = new System.Windows.Forms.PictureBox();
         this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+        this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         this.tabPage2.SuspendLayout();
@@ -367,15 +369,19 @@ namespace Terminals
         this.txtDesktopShare.Name = "txtDesktopShare";
         this.txtDesktopShare.Size = new System.Drawing.Size(248, 21);
         this.txtDesktopShare.TabIndex = 7;
+        this.toolTip1.SetToolTip(this.txtDesktopShare, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
+                "m your computer to the\r\nterminal window.");
         // 
         // label10
         // 
         this.label10.AutoSize = true;
-        this.label10.Location = new System.Drawing.Point(16, 152);
+        this.label10.Location = new System.Drawing.Point(11, 156);
         this.label10.Name = "label10";
         this.label10.Size = new System.Drawing.Size(81, 13);
         this.label10.TabIndex = 6;
         this.label10.Text = "Desktop Share:";
+        this.toolTip1.SetToolTip(this.label10, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
+                "m your computer to the\r\nterminal window.");
         // 
         // chkSerialPorts
         // 
@@ -466,8 +472,10 @@ namespace Terminals
         // 
         // NewTerminalForm
         // 
+        this.AcceptButton = this.btnOk;
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        this.CancelButton = this.btnCancel;
         this.ClientSize = new System.Drawing.Size(407, 334);
         this.Controls.Add(this.chkAddtoToolbar);
         this.Controls.Add(this.tabControl1);
@@ -539,5 +547,6 @@ namespace Terminals
       private System.Windows.Forms.Label label10;
       private System.Windows.Forms.Button btnBrowseShare;
       private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+      private System.Windows.Forms.ToolTip toolTip1;
   }
 }

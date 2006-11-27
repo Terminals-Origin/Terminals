@@ -15,12 +15,14 @@ namespace Terminals
             InitializeComponent();
             cbShowInformationToolTips.Checked = Settings.ShowInformationToolTips;
             cbShowUserNameInTitle.Checked = Settings.ShowUserNameInTitle;
+            chkShowFullinfo.Checked = Settings.ShowFullInformationToolTips;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
             Settings.ShowInformationToolTips = cbShowInformationToolTips.Checked;
             Settings.ShowUserNameInTitle = cbShowUserNameInTitle.Checked;
+            Settings.ShowFullInformationToolTips = chkShowFullinfo.Checked;
         }
     }
 }

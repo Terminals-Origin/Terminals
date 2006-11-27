@@ -170,17 +170,23 @@ namespace Terminals
 
         private string GetToolTipText(FavoriteConfigurationElement favorite)
         {
-            return "Computer: " + favorite.ServerName + Environment.NewLine +
-                "User Name: " + favorite.UserName + Environment.NewLine +
-                "Domain: " + favorite.DomainName + Environment.NewLine +
+            string toolTip =
+                "Computer: " + favorite.ServerName + Environment.NewLine+
+                "User: " + Functions.UserDisplayName(favorite.DomainName,favorite.UserName) + Environment.NewLine;
+
+            if (Settings.ShowFullInformationToolTips)
+            {
+                toolTip +=
                 "Port: " + favorite.Port + Environment.NewLine +
                 "Colors: " + favorite.Colors.ToString() + Environment.NewLine +
-                "Connect To Console: " + favorite.ConnectToConsole.ToString() + Environment.NewLine +
-                "Desktop Size: " + favorite.DesktopSize.ToString() + Environment.NewLine +
-                "Redirect Drives: " + favorite.RedirectDrives.ToString() + Environment.NewLine +
-                "Redirect Ports: " + favorite.RedirectPorts.ToString() + Environment.NewLine +
-                "Redirect Printers: " + favorite.RedirectPrinters.ToString() + Environment.NewLine +
+                "Connect to Console: " + favorite.ConnectToConsole.ToString() + Environment.NewLine +
+                "Desktop size: " + favorite.DesktopSize.ToString() + Environment.NewLine +
+                "Redirect drives: " + favorite.RedirectDrives.ToString() + Environment.NewLine +
+                "Redirect ports: " + favorite.RedirectPorts.ToString() + Environment.NewLine +
+                "Redirect printers: " + favorite.RedirectPrinters.ToString() + Environment.NewLine +
                 "Sounds: " + favorite.Sounds.ToString() + Environment.NewLine;
+            }
+            return toolTip;
         }
 
         private void CreateTerminalTab(FavoriteConfigurationElement favorite)
@@ -188,7 +194,7 @@ namespace Terminals
             string terminalTabTitle = favorite.Name;
             if (Settings.ShowUserNameInTitle)
             {
-                terminalTabTitle += " (" + favorite.UserName + ")";
+                terminalTabTitle += " (" + Functions.UserDisplayName(favorite.DomainName,favorite.UserName) + ")";
             }
             TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
             terminalTabPage.ToolTipText = GetToolTipText(favorite);
@@ -298,7 +304,14 @@ namespace Terminals
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             string desktopShare = ((TerminalTabControlItem)(tcTerminals.SelectedItem)).DesktopShare;
-            SHCopyFiles(files, desktopShare);
+            if (String.IsNullOrEmpty(desktopShare))
+            {
+                MessageBox.Show("A Desktop Share was not defined for this connection.\n"+
+                    "Please define a share in the connection properties window (under the Local Resources tab)."
+                    , "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+                SHCopyFiles(files, desktopShare);
         }
 
         void axMsRdpClient2_DragEnter(object sender, DragEventArgs e)
@@ -744,7 +757,7 @@ namespace Terminals
                 {
                     currentToolTip.Hide(currentToolTipItem);
                 }
-                currentToolTip.ToolTipTitle = e.Item.Title;
+                currentToolTip.ToolTipTitle = "Connection information";
                 currentToolTip.ToolTipIcon = ToolTipIcon.Info;
                 currentToolTip.UseFading = true;
                 currentToolTip.UseAnimation = true;

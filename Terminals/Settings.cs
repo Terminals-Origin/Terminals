@@ -266,5 +266,19 @@ namespace Terminals
                 configuration.Save();
             }
         }
+
+        public static bool ShowFullInformationToolTips
+        {
+            get
+            {
+                return GetSection().ShowFullInformationToolTips;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ShowFullInformationToolTips = value;
+                configuration.Save();
+            }
+        }
     }
 }

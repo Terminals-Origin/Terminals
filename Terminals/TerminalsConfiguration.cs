@@ -125,6 +125,19 @@ namespace Terminals
                 this["showInformationToolTips"] = value;
             }
         }
+
+        [ConfigurationProperty("showFullInformationToolTips")]
+        public bool ShowFullInformationToolTips
+        {
+            get
+            {
+                return (bool)this["showFullInformationToolTips"];
+            }
+            set
+            {
+                this["showFullInformationToolTips"] = value;
+            }
+        }
     }
 
     public class MRUItemConfigurationElementCollection : ConfigurationElementCollection
