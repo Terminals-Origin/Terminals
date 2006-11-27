@@ -289,7 +289,7 @@ namespace Terminals
 
             foreach (string sourceFile in sourceFiles)
             {
-                destinationFiles.Add(destinationFolder + @"\" + Path.GetFileName(sourceFile));
+                destinationFiles.Add(Path.Combine(destinationFolder,Path.GetFileName(sourceFile)));
             }
 
             fo.Operation = SHFileOperationWrapper.FileOperations.FO_COPY;
@@ -306,7 +306,7 @@ namespace Terminals
             string desktopShare = ((TerminalTabControlItem)(tcTerminals.SelectedItem)).DesktopShare;
             if (String.IsNullOrEmpty(desktopShare))
             {
-                MessageBox.Show("A Desktop Share was not defined for this connection.\n"+
+                MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n"+
                     "Please define a share in the connection properties window (under the Local Resources tab)."
                     , "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -368,7 +368,7 @@ namespace Terminals
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show(this, e.Message);
             }
         }
 
@@ -546,7 +546,7 @@ namespace Terminals
 
         private void tcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e)
         {
-            if (MessageBox.Show("Are you sure that you want to disconnect from the active terminal?",
+            if (MessageBox.Show(this, "Are you sure that you want to disconnect from the active terminal?",
                "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 CurrentTerminal.Disconnect();

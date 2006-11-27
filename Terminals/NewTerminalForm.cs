@@ -101,7 +101,7 @@ namespace Terminals
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this, e.Message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
