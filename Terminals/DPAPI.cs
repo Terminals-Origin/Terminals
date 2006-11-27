@@ -10,11 +10,11 @@ namespace Terminals
         // Wrapper for DPAPI CryptProtectData function.
         [DllImport("crypt32.dll", SetLastError = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
         private static extern bool CryptProtectData(ref DATA_BLOB pPlainText,
-                                        string szDescription,
+                                    string szDescription,
                                     ref DATA_BLOB pEntropy,
-                                        IntPtr pReserved,
+                                    IntPtr pReserved,
                                     ref CRYPTPROTECT_PROMPTSTRUCT pPrompt,
-                                        int dwFlags,
+                                    int dwFlags,
                                     ref DATA_BLOB pCipherText);
 
         // Wrapper for DPAPI CryptUnprotectData function.
