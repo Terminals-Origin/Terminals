@@ -552,6 +552,10 @@ namespace Terminals
             {
                 tcTerminals.ShowTabs = false;
             }
+            if (currentToolTipItem != null)
+            {
+                currentToolTip.Hide(currentToolTipItem);
+            }
         }
 
         public bool FullScreen
@@ -686,6 +690,35 @@ namespace Terminals
         {
             AboutForm frmAbout = new AboutForm();
             frmAbout.ShowDialog();
+        }
+
+        private TabControlItem currentToolTipItem = null;
+        private ToolTip currentToolTip = new ToolTip();
+
+        private void tcTerminals_TabControlMouseOnTitle(TabControlMouseOnTitleEventArgs e)
+        {
+            if (Settings.ShowInformationToolTips)
+            {
+                if ((currentToolTipItem != null) && (currentToolTipItem != e.Item))
+                {
+                    currentToolTip.Hide(currentToolTipItem);
+                }
+                currentToolTip.ToolTipTitle = e.Item.Title;
+                currentToolTip.ToolTipIcon = ToolTipIcon.Info;
+                currentToolTip.UseFading = true;
+                currentToolTip.UseAnimation = true;
+                currentToolTip.IsBalloon = false;
+                currentToolTip.Show(e.Item.ToolTipText, e.Item, PointToClient(e.Item.Location));
+                currentToolTipItem = e.Item;
+            }
+        }
+
+        private void tcTerminals_TabControlMouseLeftTitle(EventArgs e)
+        {
+            if (currentToolTipItem != null)
+            {
+                currentToolTip.Hide(currentToolTipItem);
+            }
         }
     }
 
