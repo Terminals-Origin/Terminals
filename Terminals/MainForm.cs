@@ -254,6 +254,8 @@ namespace Terminals
                     axMsRdpClient2.ColorDepth = 24;
                     break;
             }
+            axMsRdpClient2.ConnectingText = "Connecting. Please wait...";
+            axMsRdpClient2.DisconnectedText = "Disconnecting...";
             axMsRdpClient2.AdvancedSettings3.RedirectDrives = favorite.RedirectDrives;
             axMsRdpClient2.AdvancedSettings3.RedirectPorts = favorite.RedirectPorts;
             axMsRdpClient2.AdvancedSettings3.RedirectPrinters = favorite.RedirectPrinters;
