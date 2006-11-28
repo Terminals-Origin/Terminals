@@ -91,7 +91,7 @@ namespace Terminals
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(436, 24);
+            this.menuStrip.Size = new System.Drawing.Size(344, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -138,7 +138,7 @@ namespace Terminals
             // 
             this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
             this.fullScreenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.fullScreenToolStripMenuItem.Text = "&Full Screen";
             this.fullScreenToolStripMenuItem.Click += new System.EventHandler(this.tsbFullScreen_Click);
             // 
@@ -251,7 +251,7 @@ namespace Terminals
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(111, 22);
             this.optionsToolStripMenuItem.Text = "&Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
@@ -412,6 +412,7 @@ namespace Terminals
             // 
             // tcTerminals
             // 
+            this.tcTerminals.AllowDrop = true;
             this.tcTerminals.AlwaysShowClose = false;
             this.tcTerminals.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcTerminals.Font = new System.Drawing.Font("Tahoma", 8.25F);

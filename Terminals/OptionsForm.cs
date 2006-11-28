@@ -13,16 +13,25 @@ namespace Terminals
         public OptionsForm()
         {
             InitializeComponent();
-            cbShowInformationToolTips.Checked = Settings.ShowInformationToolTips;
-            cbShowUserNameInTitle.Checked = Settings.ShowUserNameInTitle;
-            chkShowFullinfo.Checked = Settings.ShowFullInformationToolTips;
+            chkShowInformationToolTips.Checked = Settings.ShowInformationToolTips;
+            chkShowUserNameInTitle.Checked = Settings.ShowUserNameInTitle;
+            chkShowFullInfo.Checked = Settings.ShowFullInformationToolTips;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            Settings.ShowInformationToolTips = cbShowInformationToolTips.Checked;
-            Settings.ShowUserNameInTitle = cbShowUserNameInTitle.Checked;
-            Settings.ShowFullInformationToolTips = chkShowFullinfo.Checked;
+            Settings.ShowInformationToolTips = chkShowInformationToolTips.Checked;
+            Settings.ShowUserNameInTitle = chkShowUserNameInTitle.Checked;
+            Settings.ShowFullInformationToolTips = chkShowFullInfo.Checked;
+        }
+
+        private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)
+        {
+            chkShowFullInfo.Enabled = chkShowInformationToolTips.Checked;
+            if (!chkShowInformationToolTips.Checked)
+            {
+                chkShowFullInfo.Checked = false;                
+            }
         }
     }
 }

@@ -197,8 +197,11 @@ namespace Terminals
                 terminalTabTitle += " (" + Functions.UserDisplayName(favorite.DomainName,favorite.UserName) + ")";
             }
             TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
+            terminalTabPage.AllowDrop = true;
+            terminalTabPage.DragOver += terminalTabPage_DragOver;
+            terminalTabPage.DragEnter += new DragEventHandler(terminalTabPage_DragEnter);
             terminalTabPage.ToolTipText = GetToolTipText(favorite);
-            terminalTabPage.DesktopShare = favorite.DesktopShare;
+            terminalTabPage.Favorite = favorite;
             terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
             tcTerminals.Items.Add(terminalTabPage);
             tcTerminals.SelectedItem = terminalTabPage;
@@ -284,6 +287,28 @@ namespace Terminals
                 FullScreen = true;
         }
 
+        void terminalTabPage_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void terminalTabPage_DragOver(object sender, DragEventArgs e)
+        {
+            /*TabControlItem item = tcTerminals.GetTabItemByPoint(new Point(e.X, e.Y));
+            if (item != null)
+            {
+                tcTerminals.SelectedItem = item;
+            }*/
+            tcTerminals.SelectedItem = (TerminalTabControlItem)sender;
+        }
+
         private void SHCopyFiles(string[] sourceFiles, string destinationFolder)
         {
             SHFileOperationWrapper fo = new SHFileOperationWrapper();
@@ -305,7 +330,7 @@ namespace Terminals
         void axMsRdpClient2_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            string desktopShare = ((TerminalTabControlItem)(tcTerminals.SelectedItem)).DesktopShare;
+            string desktopShare = ((TerminalTabControlItem)(tcTerminals.SelectedItem)).Favorite.DesktopShare;
             if (String.IsNullOrEmpty(desktopShare))
             {
                 MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n"+
@@ -320,7 +345,7 @@ namespace Terminals
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
             {
-                e.Effect = DragDropEffects.All;
+                e.Effect = DragDropEffects.Copy;
             }
             else
             {
@@ -739,6 +764,7 @@ namespace Terminals
             if (frmOptions.ShowDialog() == DialogResult.OK)
             {
                 tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
+                tcTerminals.SelectedItem.ToolTipText = GetToolTipText(((TerminalTabControlItem)tcTerminals.SelectedItem).Favorite);
             }
         }
 
@@ -776,6 +802,27 @@ namespace Terminals
                 currentToolTip.Hide(currentToolTipItem);
             }
         }
+
+        /*private void tcTerminals_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void tcTerminals_DragOver(object sender, DragEventArgs e)
+        {
+            TerminalTabControlItem item = (TerminalTabControlItem)tcTerminals.GetChildAtPoint(new Point(e.X, e.Y));
+            if ((item != null) && (item != tcTerminals.SelectedItem))
+            {
+                tcTerminals.SelectedItem = (TerminalTabControlItem)item;
+            }
+        }*/
     }
 
     public class TerminalTabControlItem : TabControlItem
@@ -799,12 +846,12 @@ namespace Terminals
             }
         }
 
-        private string desktopShare;
+        private FavoriteConfigurationElement favorite;
 
-        public string DesktopShare
+        public FavoriteConfigurationElement Favorite
         {
-            get { return desktopShare; }
-            set { desktopShare = value; }
+            get { return favorite; }
+            set { favorite = value; }
         }
     }
 }

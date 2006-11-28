@@ -28,36 +28,37 @@ namespace Terminals
         /// </summary>
         private void InitializeComponent()
         {
-            this.cbShowUserNameInTitle = new System.Windows.Forms.CheckBox();
-            this.cbShowInformationToolTips = new System.Windows.Forms.CheckBox();
+            this.chkShowUserNameInTitle = new System.Windows.Forms.CheckBox();
+            this.chkShowInformationToolTips = new System.Windows.Forms.CheckBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkShowFullInfo = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.chkShowFullinfo = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // cbShowUserNameInTitle
+            // chkShowUserNameInTitle
             // 
-            this.cbShowUserNameInTitle.AutoSize = true;
-            this.cbShowUserNameInTitle.Location = new System.Drawing.Point(6, 20);
-            this.cbShowUserNameInTitle.Name = "cbShowUserNameInTitle";
-            this.cbShowUserNameInTitle.Size = new System.Drawing.Size(159, 17);
-            this.cbShowUserNameInTitle.TabIndex = 0;
-            this.cbShowUserNameInTitle.Text = "Show  &user name in tab title";
-            this.cbShowUserNameInTitle.UseVisualStyleBackColor = true;
+            this.chkShowUserNameInTitle.AutoSize = true;
+            this.chkShowUserNameInTitle.Location = new System.Drawing.Point(6, 20);
+            this.chkShowUserNameInTitle.Name = "chkShowUserNameInTitle";
+            this.chkShowUserNameInTitle.Size = new System.Drawing.Size(159, 17);
+            this.chkShowUserNameInTitle.TabIndex = 0;
+            this.chkShowUserNameInTitle.Text = "Show  &user name in tab title";
+            this.chkShowUserNameInTitle.UseVisualStyleBackColor = true;
             // 
-            // cbShowInformationToolTips
+            // chkShowInformationToolTips
             // 
-            this.cbShowInformationToolTips.AutoSize = true;
-            this.cbShowInformationToolTips.Location = new System.Drawing.Point(6, 43);
-            this.cbShowInformationToolTips.Name = "cbShowInformationToolTips";
-            this.cbShowInformationToolTips.Size = new System.Drawing.Size(216, 17);
-            this.cbShowInformationToolTips.TabIndex = 1;
-            this.cbShowInformationToolTips.Text = "Show &connection information in tool tips";
-            this.cbShowInformationToolTips.UseVisualStyleBackColor = true;
+            this.chkShowInformationToolTips.AutoSize = true;
+            this.chkShowInformationToolTips.Location = new System.Drawing.Point(6, 43);
+            this.chkShowInformationToolTips.Name = "chkShowInformationToolTips";
+            this.chkShowInformationToolTips.Size = new System.Drawing.Size(216, 17);
+            this.chkShowInformationToolTips.TabIndex = 1;
+            this.chkShowInformationToolTips.Text = "Show &connection information in tool tips";
+            this.chkShowInformationToolTips.UseVisualStyleBackColor = true;
+            this.chkShowInformationToolTips.CheckedChanged += new System.EventHandler(this.chkShowInformationToolTips_CheckedChanged);
             // 
             // btnOk
             // 
@@ -84,15 +85,25 @@ namespace Terminals
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.chkShowFullinfo);
-            this.groupBox1.Controls.Add(this.cbShowUserNameInTitle);
-            this.groupBox1.Controls.Add(this.cbShowInformationToolTips);
+            this.groupBox1.Controls.Add(this.chkShowFullInfo);
+            this.groupBox1.Controls.Add(this.chkShowUserNameInTitle);
+            this.groupBox1.Controls.Add(this.chkShowInformationToolTips);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(389, 147);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "&General";
+            // 
+            // chkShowFullInfo
+            // 
+            this.chkShowFullInfo.AutoSize = true;
+            this.chkShowFullInfo.Location = new System.Drawing.Point(26, 66);
+            this.chkShowFullInfo.Name = "chkShowFullInfo";
+            this.chkShowFullInfo.Size = new System.Drawing.Size(126, 17);
+            this.chkShowFullInfo.TabIndex = 2;
+            this.chkShowFullInfo.Text = "Show &full information";
+            this.chkShowFullInfo.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
@@ -115,16 +126,6 @@ namespace Terminals
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "http://www.codeplex.com/Terminals";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // chkShowFullinfo
-            // 
-            this.chkShowFullinfo.AutoSize = true;
-            this.chkShowFullinfo.Location = new System.Drawing.Point(26, 66);
-            this.chkShowFullinfo.Name = "chkShowFullinfo";
-            this.chkShowFullinfo.Size = new System.Drawing.Size(126, 17);
-            this.chkShowFullinfo.TabIndex = 2;
-            this.chkShowFullinfo.Text = "Show &full information";
-            this.chkShowFullinfo.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -156,13 +157,13 @@ namespace Terminals
 
         #endregion
 
-        private System.Windows.Forms.CheckBox cbShowUserNameInTitle;
-        private System.Windows.Forms.CheckBox cbShowInformationToolTips;
+        private System.Windows.Forms.CheckBox chkShowUserNameInTitle;
+        private System.Windows.Forms.CheckBox chkShowInformationToolTips;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.CheckBox chkShowFullinfo;
+        private System.Windows.Forms.CheckBox chkShowFullInfo;
     }
 }
