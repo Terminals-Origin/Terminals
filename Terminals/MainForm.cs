@@ -804,7 +804,7 @@ namespace Terminals
                 currentToolTip.UseFading = true;
                 currentToolTip.UseAnimation = true;
                 currentToolTip.IsBalloon = false;
-                currentToolTip.Show(e.Item.ToolTipText, e.Item, PointToClient(e.Item.Location));
+                currentToolTip.Show(e.Item.ToolTipText, e.Item, (int)e.Item.StripRect.X, 2);
                 currentToolTipItem = e.Item;
             }
         }
