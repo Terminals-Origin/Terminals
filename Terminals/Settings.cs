@@ -280,5 +280,19 @@ namespace Terminals
                 configuration.Save();
             }
         }
+
+        public static string DefaultDesktopShare
+        {
+            get
+            {
+                return GetSection().DefaultDesktopShare;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).DefaultDesktopShare = value;
+                configuration.Save();
+            }
+        }
     }
 }

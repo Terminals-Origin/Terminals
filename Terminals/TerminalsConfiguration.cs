@@ -138,6 +138,19 @@ namespace Terminals
                 this["showFullInformationToolTips"] = value;
             }
         }
+
+        [ConfigurationProperty("defaultDesktopShare")]
+        public string DefaultDesktopShare
+        {
+            get
+            {
+                return (string)this["defaultDesktopShare"];
+            }
+            set
+            {
+                this["defaultDesktopShare"] = value;
+            }
+        }
     }
 
     public class MRUItemConfigurationElementCollection : ConfigurationElementCollection

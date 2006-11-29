@@ -327,10 +327,21 @@ namespace Terminals
             fo.DoOperation();
         }
 
+        private string GetDesktopShare()
+        {
+            string desktopShare = ((TerminalTabControlItem)(tcTerminals.SelectedItem)).Favorite.DesktopShare;
+            if (String.IsNullOrEmpty(desktopShare))
+            {
+                desktopShare = Settings.DefaultDesktopShare.Replace("%SERVER%", CurrentTerminal.Server).Replace(
+                    "%USER%", CurrentTerminal.UserName);
+            }
+            return desktopShare;
+        }
+
         void axMsRdpClient2_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            string desktopShare = ((TerminalTabControlItem)(tcTerminals.SelectedItem)).Favorite.DesktopShare;
+            string desktopShare = GetDesktopShare();
             if (String.IsNullOrEmpty(desktopShare))
             {
                 MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n"+
@@ -760,11 +771,14 @@ namespace Terminals
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsForm frmOptions = new OptionsForm();
+            OptionsForm frmOptions = new OptionsForm(CurrentTerminal);
             if (frmOptions.ShowDialog() == DialogResult.OK)
             {
                 tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
-                tcTerminals.SelectedItem.ToolTipText = GetToolTipText(((TerminalTabControlItem)tcTerminals.SelectedItem).Favorite);
+                if (tcTerminals.SelectedItem != null)
+                {
+                    tcTerminals.SelectedItem.ToolTipText = GetToolTipText(((TerminalTabControlItem)tcTerminals.SelectedItem).Favorite);
+                }
             }
         }
 
