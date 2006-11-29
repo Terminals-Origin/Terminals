@@ -59,6 +59,7 @@
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DPAPI.cs" />
+    <Compile Include="FormSettings.cs" />
     <Compile Include="NewGroupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +151,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SHApi.cs" />
     <Compile Include="SHFileOperationWrapper.cs" />
@@ -187,6 +193,10 @@
     <None Include="Resources\computer_link.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Resources\keyboard.png" />
     <None Include="Resources\application_edit.png" />
     <None Include="Resources\add.png" />

@@ -397,11 +397,11 @@ namespace Terminals
             // 
             this.toolStripContainer.ContentPanel.AutoScroll = true;
             this.toolStripContainer.ContentPanel.Controls.Add(this.tcTerminals);
-            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(873, 673);
+            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(792, 524);
             this.toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer.Name = "toolStripContainer";
-            this.toolStripContainer.Size = new System.Drawing.Size(873, 722);
+            this.toolStripContainer.Size = new System.Drawing.Size(792, 573);
             this.toolStripContainer.TabIndex = 0;
             this.toolStripContainer.Text = "toolStripContainer1";
             // 
@@ -419,7 +419,7 @@ namespace Terminals
             this.tcTerminals.Location = new System.Drawing.Point(0, 0);
             this.tcTerminals.Name = "tcTerminals";
             this.tcTerminals.ShowToolTipOnTitle = false;
-            this.tcTerminals.Size = new System.Drawing.Size(873, 673);
+            this.tcTerminals.Size = new System.Drawing.Size(792, 524);
             this.tcTerminals.TabIndex = 3;
             this.tcTerminals.DoubleClick += new System.EventHandler(this.tcTerminals_DoubleClick);
             this.tcTerminals.TabControlMouseOnTitle += new TabControl.TabControlMouseOnTitleHandler(this.tcTerminals_TabControlMouseOnTitle);
@@ -440,14 +440,15 @@ namespace Terminals
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(873, 722);
+            this.ClientSize = new System.Drawing.Size(792, 573);
             this.Controls.Add(this.toolStripContainer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
+            this.Location = new System.Drawing.Point(100, 100);
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Terminals";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);

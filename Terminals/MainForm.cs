@@ -25,15 +25,22 @@ namespace Terminals
         private Point lastLocation;
         private Size lastSize;
         private FormWindowState lastState;
+        FormSettings _formSettings;
 
         public MainForm()
         {
+            _formSettings = new FormSettings(this);
             InitializeComponent();
             LoadFavorites();
             LoadGroups();
             UpdateControls();
         }
 
+        protected override void SetVisibleCore(bool value)
+        {
+            _formSettings.LoadFormSize();
+            base.SetVisibleCore(value);
+        }
         public AxMsRdpClient2 CurrentTerminal
         {
             get
