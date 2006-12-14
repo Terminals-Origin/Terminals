@@ -18,17 +18,22 @@ namespace Terminals
 
         private void lblTerminals_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("iexplore", "http://www.codeplex.com/Terminals"));
+            Process.Start("http://www.codeplex.com/Terminals");
         }
 
         private void lblEyal_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("iexplore", "http://www.epocalipse.com/blog/"));
+            Process.Start("http://www.epocalipse.com/blog/");
         }
 
         private void lblDudu_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(new ProcessStartInfo("iexplore", "http://notsosmartbuilder.blogspot.com/"));
+            Process.Start("http://notsosmartbuilder.blogspot.com/");
+        }
+
+        private void linkHiro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://www.nbc.com/Heroes/cast/hiro.shtml");
         }
     }
 }
