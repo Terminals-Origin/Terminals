@@ -35,5 +35,15 @@ namespace Terminals
         {
             Process.Start("http://www.nbc.com/Heroes/cast/hiro.shtml");
         }
+
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://www.nbc.com/Heroes/cast/peter.shtml");
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("http://www.epocalipse.com/blog/");
+        }
     }
 }

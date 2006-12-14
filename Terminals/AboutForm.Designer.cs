@@ -38,6 +38,8 @@ namespace Terminals
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.lblHiro = new System.Windows.Forms.LinkLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -88,12 +90,12 @@ namespace Terminals
             this.lblEyal.AutoSize = true;
             this.lblEyal.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.lblEyal.LinkColor = System.Drawing.Color.Blue;
-            this.lblEyal.Location = new System.Drawing.Point(29, 193);
+            this.lblEyal.Location = new System.Drawing.Point(32, 192);
             this.lblEyal.Name = "lblEyal";
-            this.lblEyal.Size = new System.Drawing.Size(51, 13);
+            this.lblEyal.Size = new System.Drawing.Size(27, 13);
             this.lblEyal.TabIndex = 2;
             this.lblEyal.TabStop = true;
-            this.lblEyal.Text = "Eyal Post";
+            this.lblEyal.Text = "Eyal";
             this.lblEyal.VisitedLinkColor = System.Drawing.Color.Blue;
             this.lblEyal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblEyal_LinkClicked);
             // 
@@ -102,7 +104,7 @@ namespace Terminals
             this.lblDudu.AutoSize = true;
             this.lblDudu.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.lblDudu.LinkColor = System.Drawing.Color.Blue;
-            this.lblDudu.Location = new System.Drawing.Point(29, 217);
+            this.lblDudu.Location = new System.Drawing.Point(32, 216);
             this.lblDudu.Name = "lblDudu";
             this.lblDudu.Size = new System.Drawing.Size(32, 13);
             this.lblDudu.TabIndex = 3;
@@ -116,7 +118,7 @@ namespace Terminals
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel1.Location = new System.Drawing.Point(143, 217);
+            this.linkLabel1.Location = new System.Drawing.Point(144, 216);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(45, 13);
             this.linkLabel1.TabIndex = 5;
@@ -130,7 +132,7 @@ namespace Terminals
             this.lblHiro.AutoSize = true;
             this.lblHiro.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.lblHiro.LinkColor = System.Drawing.Color.Blue;
-            this.lblHiro.Location = new System.Drawing.Point(58, 217);
+            this.lblHiro.Location = new System.Drawing.Point(61, 216);
             this.lblHiro.Name = "lblHiro";
             this.lblHiro.Size = new System.Drawing.Size(85, 13);
             this.lblHiro.TabIndex = 4;
@@ -149,6 +151,34 @@ namespace Terminals
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
             // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel2.LinkColor = System.Drawing.Color.Blue;
+            this.linkLabel2.Location = new System.Drawing.Point(131, 192);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(28, 13);
+            this.linkLabel2.TabIndex = 7;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "Post";
+            this.linkLabel2.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
+            // linkLabel3
+            // 
+            this.linkLabel3.AutoSize = true;
+            this.linkLabel3.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel3.LinkColor = System.Drawing.Color.Blue;
+            this.linkLabel3.Location = new System.Drawing.Point(56, 192);
+            this.linkLabel3.Name = "linkLabel3";
+            this.linkLabel3.Size = new System.Drawing.Size(76, 13);
+            this.linkLabel3.TabIndex = 8;
+            this.linkLabel3.TabStop = true;
+            this.linkLabel3.Text = "\"Peter Petrelli\"";
+            this.linkLabel3.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+            // 
             // AboutForm
             // 
             this.AcceptButton = this.btnClose;
@@ -157,6 +187,8 @@ namespace Terminals
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(432, 281);
+            this.Controls.Add(this.linkLabel3);
+            this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblHiro);
             this.Controls.Add(this.linkLabel1);
@@ -192,5 +224,7 @@ namespace Terminals
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.LinkLabel lblHiro;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.LinkLabel linkLabel3;
     }
 }
