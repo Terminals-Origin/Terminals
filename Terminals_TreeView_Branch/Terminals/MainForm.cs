@@ -11,6 +11,7 @@ using Terminals.Properties;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using TabControl;
+using System.IO;
 
 namespace Terminals
 {
@@ -24,15 +25,22 @@ namespace Terminals
         private Point lastLocation;
         private Size lastSize;
         private FormWindowState lastState;
+        FormSettings _formSettings;
 
         public MainForm()
         {
+            _formSettings = new FormSettings(this);
             InitializeComponent();
             LoadFavorites();
             LoadGroups();
             UpdateControls();
         }
 
+        protected override void SetVisibleCore(bool value)
+        {
+            _formSettings.LoadFormSize();
+            base.SetVisibleCore(value);
+        }
         public AxMsRdpClient2 CurrentTerminal
         {
             get
@@ -177,17 +185,23 @@ namespace Terminals
 
         private string GetToolTipText(FavoriteConfigurationElement favorite)
         {
-            return "Computer: " + favorite.ServerName + Environment.NewLine +
-                "User Name: " + favorite.UserName + Environment.NewLine +
-                "Domain: " + favorite.DomainName + Environment.NewLine +
+            string toolTip =
+                "Computer: " + favorite.ServerName + Environment.NewLine+
+                "User: " + Functions.UserDisplayName(favorite.DomainName,favorite.UserName) + Environment.NewLine;
+
+            if (Settings.ShowFullInformationToolTips)
+            {
+                toolTip +=
                 "Port: " + favorite.Port + Environment.NewLine +
                 "Colors: " + favorite.Colors.ToString() + Environment.NewLine +
-                "Connect To Console: " + favorite.ConnectToConsole.ToString() + Environment.NewLine +
-                "Desktop Size: " + favorite.DesktopSize.ToString() + Environment.NewLine +
-                "Redirect Drives: " + favorite.RedirectDrives.ToString() + Environment.NewLine +
-                "Redirect Ports: " + favorite.RedirectPorts.ToString() + Environment.NewLine +
-                "Redirect Printers: " + favorite.RedirectPrinters.ToString() + Environment.NewLine +
+                "Connect to Console: " + favorite.ConnectToConsole.ToString() + Environment.NewLine +
+                "Desktop size: " + favorite.DesktopSize.ToString() + Environment.NewLine +
+                "Redirect drives: " + favorite.RedirectDrives.ToString() + Environment.NewLine +
+                "Redirect ports: " + favorite.RedirectPorts.ToString() + Environment.NewLine +
+                "Redirect printers: " + favorite.RedirectPrinters.ToString() + Environment.NewLine +
                 "Sounds: " + favorite.Sounds.ToString() + Environment.NewLine;
+            }
+            return toolTip;
         }
 
         private void CreateTerminalTab(FavoriteConfigurationElement favorite)
@@ -195,10 +209,14 @@ namespace Terminals
             string terminalTabTitle = favorite.Name;
             if (Settings.ShowUserNameInTitle)
             {
-                terminalTabTitle += " (" + favorite.UserName + ")";
+                terminalTabTitle += " (" + Functions.UserDisplayName(favorite.DomainName,favorite.UserName) + ")";
             }
             TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
+            terminalTabPage.AllowDrop = true;
+            terminalTabPage.DragOver += terminalTabPage_DragOver;
+            terminalTabPage.DragEnter += new DragEventHandler(terminalTabPage_DragEnter);
             terminalTabPage.ToolTipText = GetToolTipText(favorite);
+            terminalTabPage.Favorite = favorite;
             terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
             tcTerminals.Items.Add(terminalTabPage);
             tcTerminals.SelectedItem = terminalTabPage;
@@ -206,8 +224,10 @@ namespace Terminals
             AxMsRdpClient2 axMsRdpClient2 = new AxMsRdpClient2();
             Controls.Add(axMsRdpClient2);
             axMsRdpClient2.Parent = terminalTabPage;
+            axMsRdpClient2.AllowDrop = true;
+            ((Control)axMsRdpClient2).DragEnter += new DragEventHandler(axMsRdpClient2_DragEnter);
+            ((Control)axMsRdpClient2).DragDrop += new DragEventHandler(axMsRdpClient2_DragDrop);
             axMsRdpClient2.Dock = DockStyle.Fill;
-
             int height = 0, width = 0;
             switch (favorite.DesktopSize)
             {
@@ -252,6 +272,8 @@ namespace Terminals
                     axMsRdpClient2.ColorDepth = 24;
                     break;
             }
+            axMsRdpClient2.ConnectingText = "Connecting. Please wait...";
+            axMsRdpClient2.DisconnectedText = "Disconnecting...";
             axMsRdpClient2.AdvancedSettings3.RedirectDrives = favorite.RedirectDrives;
             axMsRdpClient2.AdvancedSettings3.RedirectPorts = favorite.RedirectPorts;
             axMsRdpClient2.AdvancedSettings3.RedirectPrinters = favorite.RedirectPrinters;
@@ -278,6 +300,83 @@ namespace Terminals
             terminalTabPage.TerminalControl = axMsRdpClient2;
             if (favorite.DesktopSize == DesktopSize.FullScreen)
                 FullScreen = true;
+        }
+
+        void terminalTabPage_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void terminalTabPage_DragOver(object sender, DragEventArgs e)
+        {
+            /*TabControlItem item = tcTerminals.GetTabItemByPoint(new Point(e.X, e.Y));
+            if (item != null)
+            {
+                tcTerminals.SelectedItem = item;
+            }*/
+            tcTerminals.SelectedItem = (TerminalTabControlItem)sender;
+        }
+
+        private void SHCopyFiles(string[] sourceFiles, string destinationFolder)
+        {
+            SHFileOperationWrapper fo = new SHFileOperationWrapper();
+            List<string> destinationFiles = new List<string>();
+
+            foreach (string sourceFile in sourceFiles)
+            {
+                destinationFiles.Add(Path.Combine(destinationFolder,Path.GetFileName(sourceFile)));
+            }
+
+            fo.Operation = SHFileOperationWrapper.FileOperations.FO_COPY;
+            fo.OwnerWindow = this.Handle;
+            fo.SourceFiles = sourceFiles;
+            fo.DestFiles = destinationFiles.ToArray();
+            
+            fo.DoOperation();
+        }
+
+        private string GetDesktopShare()
+        {
+            string desktopShare = ((TerminalTabControlItem)(tcTerminals.SelectedItem)).Favorite.DesktopShare;
+            if (String.IsNullOrEmpty(desktopShare))
+            {
+                desktopShare = Settings.DefaultDesktopShare.Replace("%SERVER%", CurrentTerminal.Server).Replace(
+                    "%USER%", CurrentTerminal.UserName);
+            }
+            return desktopShare;
+        }
+
+        void axMsRdpClient2_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string desktopShare = GetDesktopShare();
+            if (String.IsNullOrEmpty(desktopShare))
+            {
+                MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n"+
+                    "Please define a share in the connection properties window (under the Local Resources tab)."
+                    , "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+                SHCopyFiles(files, desktopShare);
+        }
+
+        void axMsRdpClient2_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
         }
 
         void terminalTabPage_DoubleClick(object sender, EventArgs e)
@@ -322,7 +421,7 @@ namespace Terminals
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show(this, e.Message);
             }
         }
 
@@ -500,7 +599,7 @@ namespace Terminals
 
         private void tcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e)
         {
-            if (MessageBox.Show("Are you sure that you want to disconnect from the active terminal?",
+            if (MessageBox.Show(this, "Are you sure that you want to disconnect from the active terminal?",
                "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 CurrentTerminal.Disconnect();
@@ -559,6 +658,10 @@ namespace Terminals
             if (FullScreen && tcTerminals.ShowTabs && !tcTerminals.MenuOpen)
             {
                 tcTerminals.ShowTabs = false;
+            }
+            if (currentToolTipItem != null)
+            {
+                currentToolTip.Hide(currentToolTipItem);
             }
         }
 
@@ -683,10 +786,14 @@ namespace Terminals
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsForm frmOptions = new OptionsForm();
+            OptionsForm frmOptions = new OptionsForm(CurrentTerminal);
             if (frmOptions.ShowDialog() == DialogResult.OK)
             {
                 tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
+                if (tcTerminals.SelectedItem != null)
+                {
+                    tcTerminals.SelectedItem.ToolTipText = GetToolTipText(((TerminalTabControlItem)tcTerminals.SelectedItem).Favorite);
+                }
             }
         }
 
@@ -695,6 +802,56 @@ namespace Terminals
             AboutForm frmAbout = new AboutForm();
             frmAbout.ShowDialog();
         }
+
+        private TabControlItem currentToolTipItem = null;
+        private ToolTip currentToolTip = new ToolTip();
+
+        private void tcTerminals_TabControlMouseOnTitle(TabControlMouseOnTitleEventArgs e)
+        {
+            if (Settings.ShowInformationToolTips)
+            {
+                if ((currentToolTipItem != null) && (currentToolTipItem != e.Item))
+                {
+                    currentToolTip.Hide(currentToolTipItem);
+                }
+                currentToolTip.ToolTipTitle = "Connection information";
+                currentToolTip.ToolTipIcon = ToolTipIcon.Info;
+                currentToolTip.UseFading = true;
+                currentToolTip.UseAnimation = true;
+                currentToolTip.IsBalloon = false;
+                currentToolTip.Show(e.Item.ToolTipText, e.Item, (int)e.Item.StripRect.X, 2);
+                currentToolTipItem = e.Item;
+            }
+        }
+
+        private void tcTerminals_TabControlMouseLeftTitle(EventArgs e)
+        {
+            if (currentToolTipItem != null)
+            {
+                currentToolTip.Hide(currentToolTipItem);
+            }
+        }
+
+        /*private void tcTerminals_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None;
+            }
+        }
+
+        private void tcTerminals_DragOver(object sender, DragEventArgs e)
+        {
+            TerminalTabControlItem item = (TerminalTabControlItem)tcTerminals.GetChildAtPoint(new Point(e.X, e.Y));
+            if ((item != null) && (item != tcTerminals.SelectedItem))
+            {
+                tcTerminals.SelectedItem = (TerminalTabControlItem)item;
+            }
+        }*/
     }
 
     public class TerminalTabControlItem : TabControlItem
@@ -716,6 +873,14 @@ namespace Terminals
             {
                 terminalControl = value;
             }
+        }
+
+        private FavoriteConfigurationElement favorite;
+
+        public FavoriteConfigurationElement Favorite
+        {
+            get { return favorite; }
+            set { favorite = value; }
         }
     }
 }

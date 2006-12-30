@@ -27,5 +27,10 @@ namespace Terminals
         {
             return DPAPI.Encrypt(DPAPI.KeyType.UserKey, decryptedPassword);
         }
+
+        internal static string UserDisplayName(string domain, string user)
+        {
+            return String.IsNullOrEmpty(domain) ? (user) : (domain + "\\" + user);
+        }
     }
 }

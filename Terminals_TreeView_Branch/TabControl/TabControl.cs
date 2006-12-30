@@ -51,6 +51,8 @@ namespace TabControl
 
         public event TabControlItemClosingHandler TabControlItemClosing;
         public event TabControlItemChangedHandler TabControlItemSelectionChanged;
+        public event TabControlMouseOnTitleHandler TabControlMouseOnTitle;
+        public event TabControlMouseLeftTitleHandler TabControlMouseLeftTitle;
         public event HandledEventHandler MenuItemsLoading;
         public event EventHandler MenuItemsLoaded;
         public event EventHandler TabControlItemClosed;
@@ -270,10 +272,10 @@ namespace TabControl
         protected override void OnMouseHover(EventArgs e)
         {
             base.OnMouseHover(e);
-            if (showToolTipOnTitle)
+            /*if (showToolTipOnTitle)
             {
                 TabControlItem item = GetTabItemByPoint(PointToClient(Cursor.Position));
-                if (item != null)
+                if ((item != null) && (item != selectedItem))
                 {
                     ToolTip toolTip = new ToolTip();
                     toolTip.ToolTipTitle = item.Title;
@@ -283,7 +285,7 @@ namespace TabControl
                     toolTip.IsBalloon = false;
                     toolTip.Show(item.ToolTipText, item, PointToClient(Cursor.Position), 5000);
                 }
-            }
+            }*/
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -360,6 +362,26 @@ namespace TabControl
 
             //// Setup its position
             //_toolTip.ShowWithoutFocus(new Point(Control.MousePosition.X, Control.MousePosition.Y + 24));
+        }
+
+        private bool mouseWasOnTitle;
+
+        protected internal virtual void OnTabControlMouseOnTitle(TabControlMouseOnTitleEventArgs e)
+        {
+            mouseWasOnTitle = true;
+            if (TabControlMouseOnTitle != null)
+            {
+                TabControlMouseOnTitle(e);
+            }
+        }
+
+        protected internal virtual void OnTabControlMouseLeftTitle(EventArgs e)
+        {
+            mouseWasOnTitle = false;
+            if (TabControlMouseLeftTitle != null)
+            {
+                TabControlMouseLeftTitle(e);
+            }
         }
 
         protected internal virtual void OnTabControlItemClosing(TabControlItemClosingEventArgs e)
@@ -508,6 +530,17 @@ namespace TabControl
                     closeButton.IsMouseOver = false;
                     this.Invalidate(closeButton.Rect);
                 }
+            }
+
+            TabControlItem item = GetTabItemByPoint(e.Location);
+            if (item != null)
+            {
+                TabControlMouseOnTitleEventArgs args = new TabControlMouseOnTitleEventArgs(item, e.Location);
+                OnTabControlMouseOnTitle(args);
+            }
+            else if (mouseWasOnTitle)
+            {
+                OnTabControlMouseLeftTitle(new EventArgs());
             }
         }
 

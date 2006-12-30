@@ -28,10 +28,10 @@ namespace Terminals
     /// </summary>
     private void InitializeComponent()
     {
+        this.components = new System.ComponentModel.Container();
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewTerminalForm));
         this.btnOk = new System.Windows.Forms.Button();
         this.btnCancel = new System.Windows.Forms.Button();
-        this.pictureBox1 = new System.Windows.Forms.PictureBox();
         this.tabControl1 = new System.Windows.Forms.TabControl();
         this.tabPage1 = new System.Windows.Forms.TabPage();
         this.chkSavePassword = new System.Windows.Forms.CheckBox();
@@ -55,6 +55,9 @@ namespace Terminals
         this.label6 = new System.Windows.Forms.Label();
         this.chkConnectToConsole = new System.Windows.Forms.CheckBox();
         this.tabPage3 = new System.Windows.Forms.TabPage();
+        this.btnBrowseShare = new System.Windows.Forms.Button();
+        this.txtDesktopShare = new System.Windows.Forms.TextBox();
+        this.label10 = new System.Windows.Forms.Label();
         this.chkSerialPorts = new System.Windows.Forms.CheckBox();
         this.chkPrinters = new System.Windows.Forms.CheckBox();
         this.chkDrives = new System.Windows.Forms.CheckBox();
@@ -62,12 +65,15 @@ namespace Terminals
         this.cmbSounds = new System.Windows.Forms.ComboBox();
         this.label8 = new System.Windows.Forms.Label();
         this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
-        ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+        this.pictureBox1 = new System.Windows.Forms.PictureBox();
+        this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+        this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         this.tabPage2.SuspendLayout();
         this.groupBox1.SuspendLayout();
         this.tabPage3.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
         this.SuspendLayout();
         // 
         // btnOk
@@ -92,17 +98,6 @@ namespace Terminals
         this.btnCancel.TabIndex = 2;
         this.btnCancel.Text = "Cancel";
         this.btnCancel.UseVisualStyleBackColor = true;
-        // 
-        // pictureBox1
-        // 
-        this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
-        this.pictureBox1.Image = global::Terminals.Properties.Resources.rdp;
-        this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-        this.pictureBox1.Name = "pictureBox1";
-        this.pictureBox1.Size = new System.Drawing.Size(407, 67);
-        this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-        this.pictureBox1.TabIndex = 9;
-        this.pictureBox1.TabStop = false;
         // 
         // tabControl1
         // 
@@ -341,6 +336,9 @@ namespace Terminals
         // 
         // tabPage3
         // 
+        this.tabPage3.Controls.Add(this.btnBrowseShare);
+        this.tabPage3.Controls.Add(this.txtDesktopShare);
+        this.tabPage3.Controls.Add(this.label10);
         this.tabPage3.Controls.Add(this.chkSerialPorts);
         this.tabPage3.Controls.Add(this.chkPrinters);
         this.tabPage3.Controls.Add(this.chkDrives);
@@ -354,6 +352,36 @@ namespace Terminals
         this.tabPage3.TabIndex = 2;
         this.tabPage3.Text = "Local Resources";
         this.tabPage3.UseVisualStyleBackColor = true;
+        // 
+        // btnBrowseShare
+        // 
+        this.btnBrowseShare.Image = global::Terminals.Properties.Resources.folder;
+        this.btnBrowseShare.Location = new System.Drawing.Point(352, 152);
+        this.btnBrowseShare.Name = "btnBrowseShare";
+        this.btnBrowseShare.Size = new System.Drawing.Size(21, 21);
+        this.btnBrowseShare.TabIndex = 8;
+        this.btnBrowseShare.UseVisualStyleBackColor = true;
+        this.btnBrowseShare.Click += new System.EventHandler(this.btnBrowseShare_Click);
+        // 
+        // txtDesktopShare
+        // 
+        this.txtDesktopShare.Location = new System.Drawing.Point(104, 152);
+        this.txtDesktopShare.Name = "txtDesktopShare";
+        this.txtDesktopShare.Size = new System.Drawing.Size(248, 21);
+        this.txtDesktopShare.TabIndex = 7;
+        this.toolTip1.SetToolTip(this.txtDesktopShare, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
+                "m your computer to the\r\nterminal window.");
+        // 
+        // label10
+        // 
+        this.label10.AutoSize = true;
+        this.label10.Location = new System.Drawing.Point(11, 156);
+        this.label10.Name = "label10";
+        this.label10.Size = new System.Drawing.Size(81, 13);
+        this.label10.TabIndex = 6;
+        this.label10.Text = "Desktop Share:";
+        this.toolTip1.SetToolTip(this.label10, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
+                "m your computer to the\r\nterminal window.");
         // 
         // chkSerialPorts
         // 
@@ -426,6 +454,22 @@ namespace Terminals
         this.chkAddtoToolbar.Text = "Add to &Toolbar";
         this.chkAddtoToolbar.UseVisualStyleBackColor = true;
         // 
+        // pictureBox1
+        // 
+        this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
+        this.pictureBox1.Image = global::Terminals.Properties.Resources.rdp;
+        this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+        this.pictureBox1.Name = "pictureBox1";
+        this.pictureBox1.Size = new System.Drawing.Size(407, 67);
+        this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+        this.pictureBox1.TabIndex = 9;
+        this.pictureBox1.TabStop = false;
+        // 
+        // folderBrowserDialog
+        // 
+        this.folderBrowserDialog.Description = "Select Desktop Share:";
+        this.folderBrowserDialog.ShowNewFolderButton = false;
+        // 
         // NewTerminalForm
         // 
         this.AcceptButton = this.btnOk;
@@ -449,7 +493,6 @@ namespace Terminals
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text = "New Connection";
         this.Shown += new System.EventHandler(this.NewTerminalForm_Shown);
-        ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
         this.tabControl1.ResumeLayout(false);
         this.tabPage1.ResumeLayout(false);
         this.tabPage1.PerformLayout();
@@ -459,6 +502,7 @@ namespace Terminals
         this.groupBox1.PerformLayout();
         this.tabPage3.ResumeLayout(false);
         this.tabPage3.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
         this.ResumeLayout(false);
         this.PerformLayout();
 
@@ -499,5 +543,10 @@ namespace Terminals
     private System.Windows.Forms.CheckBox chkPrinters;
       private System.Windows.Forms.TextBox txtPort;
       private System.Windows.Forms.Label lblPort;
+      private System.Windows.Forms.TextBox txtDesktopShare;
+      private System.Windows.Forms.Label label10;
+      private System.Windows.Forms.Button btnBrowseShare;
+      private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+      private System.Windows.Forms.ToolTip toolTip1;
   }
 }

@@ -66,10 +66,10 @@ namespace TabControl
             set { canClose = value; }
         }
 
-        internal RectangleF StripRect
+        public RectangleF StripRect
         {
             get { return stripRect; }
-            set { stripRect = value; }
+            internal set { stripRect = value; }
         }
 
         [DefaultValue("Name")]

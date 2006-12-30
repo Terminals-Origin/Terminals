@@ -125,6 +125,32 @@ namespace Terminals
                 this["showInformationToolTips"] = value;
             }
         }
+
+        [ConfigurationProperty("showFullInformationToolTips")]
+        public bool ShowFullInformationToolTips
+        {
+            get
+            {
+                return (bool)this["showFullInformationToolTips"];
+            }
+            set
+            {
+                this["showFullInformationToolTips"] = value;
+            }
+        }
+
+        [ConfigurationProperty("defaultDesktopShare")]
+        public string DefaultDesktopShare
+        {
+            get
+            {
+                return (string)this["defaultDesktopShare"];
+            }
+            set
+            {
+                this["defaultDesktopShare"] = value;
+            }
+        }
     }
 
     public class MRUItemConfigurationElementCollection : ConfigurationElementCollection
@@ -570,6 +596,19 @@ namespace Terminals
             set
             {
                 this["port"] = value;
+            }
+        }
+
+        [ConfigurationProperty("desktopShare")]
+        public string DesktopShare
+        {
+            get
+            {
+                return (string)this["desktopShare"];
+            }
+            set
+            {
+                this["desktopShare"] = value;
             }
         }
     }

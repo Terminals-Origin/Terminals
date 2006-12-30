@@ -59,7 +59,35 @@ namespace TabControl
 
     #endregion
 
+    #region TabControlItemChangedEventArgs
+
+    public class TabControlMouseOnTitleEventArgs : EventArgs
+    {
+        TabControlItem item;
+        Point location;
+
+        public TabControlMouseOnTitleEventArgs(TabControlItem item, Point location)
+        {
+            this.location = location;
+            this.item = item;
+        }
+
+        public Point Location
+        {
+            get { return location; }
+        }
+
+        public TabControlItem Item
+        {
+            get { return item; }
+        }
+    }
+
+    #endregion
+
     public delegate void TabControlItemChangedHandler(TabControlItemChangedEventArgs e);
     public delegate void TabControlItemClosingHandler(TabControlItemClosingEventArgs e);
+    public delegate void TabControlMouseOnTitleHandler(TabControlMouseOnTitleEventArgs e);
+    public delegate void TabControlMouseLeftTitleHandler(EventArgs e);
 
 }

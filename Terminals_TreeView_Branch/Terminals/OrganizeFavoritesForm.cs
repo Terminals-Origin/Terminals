@@ -80,7 +80,7 @@ namespace Terminals
                 if (lvConnections.Items.ContainsKey(e.Label))
                 {
                     e.CancelEdit = true;
-                    MessageBox.Show("A connection named " + e.Label + " already exists", "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(this, "A connection named " + e.Label + " already exists", "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;

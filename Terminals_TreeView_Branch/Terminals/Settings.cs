@@ -166,14 +166,13 @@ namespace Terminals
             editedFavorite.EncryptedPassword = favorite.EncryptedPassword;
             editedFavorite.Name = favorite.Name;
             editedFavorite.ServerName = favorite.ServerName;
-            //bool shownOnToolbar = editedFavorite.ShowOnToolbar;
-            //editedFavorite.ShowOnToolbar = favorite.ShowOnToolbar;
             editedFavorite.UserName = favorite.UserName;
             editedFavorite.RedirectDrives = favorite.RedirectDrives;
             editedFavorite.RedirectPorts = favorite.RedirectPorts;
             editedFavorite.RedirectPrinters = favorite.RedirectPrinters;
             editedFavorite.Sounds = favorite.Sounds;
             editedFavorite.Port = favorite.Port;
+            editedFavorite.DesktopShare = favorite.DesktopShare;
             configuration.Save();
         }
 
@@ -264,6 +263,34 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ShowInformationToolTips = value;
+                configuration.Save();
+            }
+        }
+
+        public static bool ShowFullInformationToolTips
+        {
+            get
+            {
+                return GetSection().ShowFullInformationToolTips;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ShowFullInformationToolTips = value;
+                configuration.Save();
+            }
+        }
+
+        public static string DefaultDesktopShare
+        {
+            get
+            {
+                return GetSection().DefaultDesktopShare;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).DefaultDesktopShare = value;
                 configuration.Save();
             }
         }
