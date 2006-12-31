@@ -173,6 +173,11 @@ namespace Terminals
             editedFavorite.Sounds = favorite.Sounds;
             editedFavorite.Port = favorite.Port;
             editedFavorite.DesktopShare = favorite.DesktopShare;
+            editedFavorite.ExecuteBeforeConnect = favorite.ExecuteBeforeConnect;
+            editedFavorite.ExecuteBeforeConnectCommand = favorite.ExecuteBeforeConnectCommand;
+            editedFavorite.ExecuteBeforeConnectArgs = favorite.ExecuteBeforeConnectArgs;
+            editedFavorite.ExecuteBeforeConnectInitialDirectory = favorite.ExecuteBeforeConnectInitialDirectory;
+            editedFavorite.ExecuteBeforeConnectWaitForExit = favorite.ExecuteBeforeConnectWaitForExit;
             configuration.Save();
         }
 
@@ -291,6 +296,76 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).DefaultDesktopShare = value;
+                configuration.Save();
+            }
+        }
+
+        public static bool ExecuteBeforeConnect
+        {
+            get
+            {
+                return GetSection().ExecuteBeforeConnect;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ExecuteBeforeConnect = value;
+                configuration.Save();
+            }
+        }
+
+        public static string ExecuteBeforeConnectCommand
+        {
+            get
+            {
+                return GetSection().ExecuteBeforeConnectCommand;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ExecuteBeforeConnectCommand = value;
+                configuration.Save();
+            }
+        }
+
+        public static string ExecuteBeforeConnectArgs
+        {
+            get
+            {
+                return GetSection().ExecuteBeforeConnectArgs;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ExecuteBeforeConnectArgs = value;
+                configuration.Save();
+            }
+        }
+
+        public static string ExecuteBeforeConnectInitialDirectory
+        {
+            get
+            {
+                return GetSection().ExecuteBeforeConnectInitialDirectory;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ExecuteBeforeConnectInitialDirectory = value;
+                configuration.Save();
+            }
+        }
+
+        public static bool ExecuteBeforeConnectWaitForExit
+        {
+            get
+            {
+                return GetSection().ExecuteBeforeConnectWaitForExit;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ExecuteBeforeConnectWaitForExit = value;
                 configuration.Save();
             }
         }

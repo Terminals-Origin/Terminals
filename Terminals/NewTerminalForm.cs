@@ -77,6 +77,11 @@ namespace Terminals
             cmbSounds.SelectedIndex = (int)favorite.Sounds;
             txtPort.Text = favorite.Port.ToString();
             txtDesktopShare.Text = favorite.DesktopShare;
+            chkExecuteBeforeConnect.Checked = favorite.ExecuteBeforeConnect;
+            txtCommand.Text = favorite.ExecuteBeforeConnectCommand;
+            txtArguments.Text = favorite.ExecuteBeforeConnectArgs;
+            txtInitialDirectory.Text = favorite.ExecuteBeforeConnectInitialDirectory;
+            chkWaitForExit.Checked = favorite.ExecuteBeforeConnectWaitForExit;
         }
 
         private bool FillFavorite()
@@ -97,6 +102,11 @@ namespace Terminals
                 showOnToolbar = chkAddtoToolbar.Checked;
                 favorite.Port = ValidatePort(txtPort.Text);
                 favorite.DesktopShare = txtDesktopShare.Text;
+                favorite.ExecuteBeforeConnect = chkExecuteBeforeConnect.Checked;
+                favorite.ExecuteBeforeConnectCommand = txtCommand.Text;
+                favorite.ExecuteBeforeConnectArgs = txtArguments.Text;
+                favorite.ExecuteBeforeConnectInitialDirectory = txtInitialDirectory.Text;
+                favorite.ExecuteBeforeConnectWaitForExit = chkWaitForExit.Checked;
                 return true;
             }
             catch (Exception e)

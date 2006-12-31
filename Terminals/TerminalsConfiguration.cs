@@ -151,6 +151,71 @@ namespace Terminals
                 this["defaultDesktopShare"] = value;
             }
         }
+
+        [ConfigurationProperty("executeBeforeConnect")]
+        public bool ExecuteBeforeConnect
+        {
+            get
+            {
+                return (bool)this["executeBeforeConnect"];
+            }
+            set
+            {
+                this["executeBeforeConnect"] = value;
+            }
+        }
+
+        [ConfigurationProperty("executeBeforeConnectCommand")]
+        public string ExecuteBeforeConnectCommand
+        {
+            get
+            {
+                return (string)this["executeBeforeConnectCommand"];
+            }
+            set
+            {
+                this["executeBeforeConnectCommand"] = value;
+            }
+        }
+
+        [ConfigurationProperty("executeBeforeConnectArgs")]
+        public string ExecuteBeforeConnectArgs
+        {
+            get
+            {
+                return (string)this["executeBeforeConnectArgs"];
+            }
+            set
+            {
+                this["executeBeforeConnectArgs"] = value;
+            }
+        }
+
+        [ConfigurationProperty("executeBeforeConnectInitialDirectory")]
+        public string ExecuteBeforeConnectInitialDirectory
+        {
+            get
+            {
+                return (string)this["executeBeforeConnectInitialDirectory"];
+            }
+            set
+            {
+                this["executeBeforeConnectInitialDirectory"] = value;
+            }
+        }
+
+        [ConfigurationProperty("executeBeforeConnectWaitForExit")]
+        public bool ExecuteBeforeConnectWaitForExit
+        {
+            get
+            {
+                return (bool)this["executeBeforeConnectWaitForExit"];
+            }
+            set
+            {
+                this["executeBeforeConnectWaitForExit"] = value;
+            }
+        }
     }
 
     public class MRUItemConfigurationElementCollection : ConfigurationElementCollection
@@ -609,6 +674,71 @@ namespace Terminals
             set
             {
                 this["desktopShare"] = value;
+            }
+        }
+
+        [ConfigurationProperty("executeBeforeConnect")]
+        public bool ExecuteBeforeConnect
+        {
+            get
+            {
+                return (bool)this["executeBeforeConnect"];
+            }
+            set
+            {
+                this["executeBeforeConnect"] = value;
+            }
+        }
+
+        [ConfigurationProperty("executeBeforeConnectCommand")]
+        public string ExecuteBeforeConnectCommand
+        {
+            get
+            {
+                return (string)this["executeBeforeConnectCommand"];
+            }
+            set
+            {
+                this["executeBeforeConnectCommand"] = value;
+            }
+        }
+
+        [ConfigurationProperty("executeBeforeConnectArgs")]
+        public string ExecuteBeforeConnectArgs
+        {
+            get
+            {
+                return (string)this["executeBeforeConnectArgs"];
+            }
+            set
+            {
+                this["executeBeforeConnectArgs"] = value;
+            }
+        }
+
+        [ConfigurationProperty("executeBeforeConnectInitialDirectory")]
+        public string ExecuteBeforeConnectInitialDirectory
+        {
+            get
+            {
+                return (string)this["executeBeforeConnectInitialDirectory"];
+            }
+            set
+            {
+                this["executeBeforeConnectInitialDirectory"] = value;
+            }
+        }
+
+        [ConfigurationProperty("executeBeforeConnectWaitForExit")]
+        public bool ExecuteBeforeConnectWaitForExit
+        {
+            get
+            {
+                return (bool)this["executeBeforeConnectWaitForExit"];
+            }
+            set
+            {
+                this["executeBeforeConnectWaitForExit"] = value;
             }
         }
     }

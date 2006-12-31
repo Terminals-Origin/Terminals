@@ -17,8 +17,13 @@ namespace Terminals
             chkShowInformationToolTips.Checked = Settings.ShowInformationToolTips;
             chkShowUserNameInTitle.Checked = Settings.ShowUserNameInTitle;
             chkShowFullInfo.Checked = Settings.ShowFullInformationToolTips;
-            currentTerminal = terminal;
             txtDefaultDesktopShare.Text = Settings.DefaultDesktopShare;
+            chkExecuteBeforeConnect.Checked = Settings.ExecuteBeforeConnect;
+            txtArguments.Text = Settings.ExecuteBeforeConnectArgs;
+            txtCommand.Text = Settings.ExecuteBeforeConnectCommand;
+            txtInitialDirectory.Text = Settings.ExecuteBeforeConnectInitialDirectory;
+            chkWaitForExit.Checked = Settings.ExecuteBeforeConnectWaitForExit;
+            currentTerminal = terminal;
         }
 
         private AxMsRdpClient2 currentTerminal;
@@ -29,6 +34,11 @@ namespace Terminals
             Settings.ShowUserNameInTitle = chkShowUserNameInTitle.Checked;
             Settings.ShowFullInformationToolTips = chkShowFullInfo.Checked;
             Settings.DefaultDesktopShare = txtDefaultDesktopShare.Text;
+            Settings.ExecuteBeforeConnect = chkExecuteBeforeConnect.Checked;
+            Settings.ExecuteBeforeConnectArgs = txtArguments.Text;
+            Settings.ExecuteBeforeConnectCommand = txtCommand.Text;
+            Settings.ExecuteBeforeConnectInitialDirectory = txtInitialDirectory.Text;
+            Settings.ExecuteBeforeConnectWaitForExit = chkWaitForExit.Checked;
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)

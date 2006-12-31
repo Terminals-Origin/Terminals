@@ -28,41 +28,32 @@ namespace Terminals
         /// </summary>
         private void InitializeComponent()
         {
-            this.chkShowUserNameInTitle = new System.Windows.Forms.CheckBox();
-            this.chkShowInformationToolTips = new System.Windows.Forms.CheckBox();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.tpExecuteBeforeConnect = new System.Windows.Forms.TabPage();
+            this.lblEvaluatedDesktopShare = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.txtDefaultDesktopShare = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.chkShowFullInfo = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lblEvaluatedDesktopShare = new System.Windows.Forms.Label();
-            this.groupBox1.SuspendLayout();
+            this.chkShowUserNameInTitle = new System.Windows.Forms.CheckBox();
+            this.chkShowInformationToolTips = new System.Windows.Forms.CheckBox();
+            this.txtInitialDirectory = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.chkExecuteBeforeConnect = new System.Windows.Forms.CheckBox();
+            this.txtArguments = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.chkWaitForExit = new System.Windows.Forms.CheckBox();
+            this.txtCommand = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.tabControl1.SuspendLayout();
+            this.tpGeneral.SuspendLayout();
+            this.tpExecuteBeforeConnect.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // chkShowUserNameInTitle
-            // 
-            this.chkShowUserNameInTitle.AutoSize = true;
-            this.chkShowUserNameInTitle.Location = new System.Drawing.Point(6, 20);
-            this.chkShowUserNameInTitle.Name = "chkShowUserNameInTitle";
-            this.chkShowUserNameInTitle.Size = new System.Drawing.Size(159, 17);
-            this.chkShowUserNameInTitle.TabIndex = 0;
-            this.chkShowUserNameInTitle.Text = "Show  &user name in tab title";
-            this.chkShowUserNameInTitle.UseVisualStyleBackColor = true;
-            // 
-            // chkShowInformationToolTips
-            // 
-            this.chkShowInformationToolTips.AutoSize = true;
-            this.chkShowInformationToolTips.Location = new System.Drawing.Point(6, 43);
-            this.chkShowInformationToolTips.Name = "chkShowInformationToolTips";
-            this.chkShowInformationToolTips.Size = new System.Drawing.Size(216, 17);
-            this.chkShowInformationToolTips.TabIndex = 1;
-            this.chkShowInformationToolTips.Text = "Show &connection information in tool tips";
-            this.chkShowInformationToolTips.UseVisualStyleBackColor = true;
-            this.chkShowInformationToolTips.CheckedChanged += new System.EventHandler(this.chkShowInformationToolTips_CheckedChanged);
             // 
             // btnOk
             // 
@@ -87,49 +78,6 @@ namespace Terminals
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.lblEvaluatedDesktopShare);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.txtDefaultDesktopShare);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.chkShowFullInfo);
-            this.groupBox1.Controls.Add(this.chkShowUserNameInTitle);
-            this.groupBox1.Controls.Add(this.chkShowInformationToolTips);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(389, 196);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "&General";
-            // 
-            // txtDefaultDesktopShare
-            // 
-            this.txtDefaultDesktopShare.Location = new System.Drawing.Point(8, 120);
-            this.txtDefaultDesktopShare.Name = "txtDefaultDesktopShare";
-            this.txtDefaultDesktopShare.Size = new System.Drawing.Size(368, 21);
-            this.txtDefaultDesktopShare.TabIndex = 4;
-            this.txtDefaultDesktopShare.TextChanged += new System.EventHandler(this.txtDefaultDesktopShare_TextChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 96);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(283, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Default Desktop Share (Use %SERVER% and %USER%):";
-            // 
-            // chkShowFullInfo
-            // 
-            this.chkShowFullInfo.AutoSize = true;
-            this.chkShowFullInfo.Location = new System.Drawing.Point(26, 66);
-            this.chkShowFullInfo.Name = "chkShowFullInfo";
-            this.chkShowFullInfo.Size = new System.Drawing.Size(126, 17);
-            this.chkShowFullInfo.TabIndex = 2;
-            this.chkShowFullInfo.Text = "Show &full information";
-            this.chkShowFullInfo.UseVisualStyleBackColor = true;
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -152,23 +100,184 @@ namespace Terminals
             this.linkLabel1.Text = "http://www.codeplex.com/Terminals";
             this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label3
+            // tabControl1
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(8, 152);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(264, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Evaluated Desktop Share (according to selected tab):";
+            this.tabControl1.Controls.Add(this.tpGeneral);
+            this.tabControl1.Controls.Add(this.tpExecuteBeforeConnect);
+            this.tabControl1.Location = new System.Drawing.Point(8, 8);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(400, 208);
+            this.tabControl1.TabIndex = 5;
+            // 
+            // tpGeneral
+            // 
+            this.tpGeneral.Controls.Add(this.lblEvaluatedDesktopShare);
+            this.tpGeneral.Controls.Add(this.label3);
+            this.tpGeneral.Controls.Add(this.txtDefaultDesktopShare);
+            this.tpGeneral.Controls.Add(this.label2);
+            this.tpGeneral.Controls.Add(this.chkShowFullInfo);
+            this.tpGeneral.Controls.Add(this.chkShowUserNameInTitle);
+            this.tpGeneral.Controls.Add(this.chkShowInformationToolTips);
+            this.tpGeneral.Location = new System.Drawing.Point(4, 22);
+            this.tpGeneral.Name = "tpGeneral";
+            this.tpGeneral.Padding = new System.Windows.Forms.Padding(3);
+            this.tpGeneral.Size = new System.Drawing.Size(392, 182);
+            this.tpGeneral.TabIndex = 0;
+            this.tpGeneral.Text = "General";
+            this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // tpExecuteBeforeConnect
+            // 
+            this.tpExecuteBeforeConnect.Controls.Add(this.txtInitialDirectory);
+            this.tpExecuteBeforeConnect.Controls.Add(this.label13);
+            this.tpExecuteBeforeConnect.Controls.Add(this.chkExecuteBeforeConnect);
+            this.tpExecuteBeforeConnect.Controls.Add(this.txtArguments);
+            this.tpExecuteBeforeConnect.Controls.Add(this.label12);
+            this.tpExecuteBeforeConnect.Controls.Add(this.chkWaitForExit);
+            this.tpExecuteBeforeConnect.Controls.Add(this.txtCommand);
+            this.tpExecuteBeforeConnect.Controls.Add(this.label11);
+            this.tpExecuteBeforeConnect.Location = new System.Drawing.Point(4, 22);
+            this.tpExecuteBeforeConnect.Name = "tpExecuteBeforeConnect";
+            this.tpExecuteBeforeConnect.Padding = new System.Windows.Forms.Padding(3);
+            this.tpExecuteBeforeConnect.Size = new System.Drawing.Size(392, 182);
+            this.tpExecuteBeforeConnect.TabIndex = 1;
+            this.tpExecuteBeforeConnect.Text = "Execute Before Connect";
+            this.tpExecuteBeforeConnect.UseVisualStyleBackColor = true;
             // 
             // lblEvaluatedDesktopShare
             // 
             this.lblEvaluatedDesktopShare.AutoSize = true;
             this.lblEvaluatedDesktopShare.ForeColor = System.Drawing.Color.Blue;
-            this.lblEvaluatedDesktopShare.Location = new System.Drawing.Point(8, 176);
+            this.lblEvaluatedDesktopShare.Location = new System.Drawing.Point(16, 163);
             this.lblEvaluatedDesktopShare.Name = "lblEvaluatedDesktopShare";
             this.lblEvaluatedDesktopShare.Size = new System.Drawing.Size(0, 13);
-            this.lblEvaluatedDesktopShare.TabIndex = 6;
+            this.lblEvaluatedDesktopShare.TabIndex = 13;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(16, 139);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(264, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "Evaluated Desktop Share (according to selected tab):";
+            // 
+            // txtDefaultDesktopShare
+            // 
+            this.txtDefaultDesktopShare.Location = new System.Drawing.Point(16, 107);
+            this.txtDefaultDesktopShare.Name = "txtDefaultDesktopShare";
+            this.txtDefaultDesktopShare.Size = new System.Drawing.Size(360, 21);
+            this.txtDefaultDesktopShare.TabIndex = 11;
+            this.txtDefaultDesktopShare.TextChanged += new System.EventHandler(this.txtDefaultDesktopShare_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(16, 83);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(283, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Default Desktop Share (Use %SERVER% and %USER%):";
+            // 
+            // chkShowFullInfo
+            // 
+            this.chkShowFullInfo.AutoSize = true;
+            this.chkShowFullInfo.Location = new System.Drawing.Point(40, 53);
+            this.chkShowFullInfo.Name = "chkShowFullInfo";
+            this.chkShowFullInfo.Size = new System.Drawing.Size(126, 17);
+            this.chkShowFullInfo.TabIndex = 9;
+            this.chkShowFullInfo.Text = "Show &full information";
+            this.chkShowFullInfo.UseVisualStyleBackColor = true;
+            // 
+            // chkShowUserNameInTitle
+            // 
+            this.chkShowUserNameInTitle.AutoSize = true;
+            this.chkShowUserNameInTitle.Location = new System.Drawing.Point(16, 7);
+            this.chkShowUserNameInTitle.Name = "chkShowUserNameInTitle";
+            this.chkShowUserNameInTitle.Size = new System.Drawing.Size(159, 17);
+            this.chkShowUserNameInTitle.TabIndex = 7;
+            this.chkShowUserNameInTitle.Text = "Show  &user name in tab title";
+            this.chkShowUserNameInTitle.UseVisualStyleBackColor = true;
+            // 
+            // chkShowInformationToolTips
+            // 
+            this.chkShowInformationToolTips.AutoSize = true;
+            this.chkShowInformationToolTips.Location = new System.Drawing.Point(16, 30);
+            this.chkShowInformationToolTips.Name = "chkShowInformationToolTips";
+            this.chkShowInformationToolTips.Size = new System.Drawing.Size(216, 17);
+            this.chkShowInformationToolTips.TabIndex = 8;
+            this.chkShowInformationToolTips.Text = "Show &connection information in tool tips";
+            this.chkShowInformationToolTips.UseVisualStyleBackColor = true;
+            this.chkShowInformationToolTips.CheckedChanged += new System.EventHandler(this.chkShowInformationToolTips_CheckedChanged);
+            // 
+            // txtInitialDirectory
+            // 
+            this.txtInitialDirectory.Location = new System.Drawing.Point(112, 88);
+            this.txtInitialDirectory.Name = "txtInitialDirectory";
+            this.txtInitialDirectory.Size = new System.Drawing.Size(265, 21);
+            this.txtInitialDirectory.TabIndex = 14;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(16, 88);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(84, 13);
+            this.label13.TabIndex = 18;
+            this.label13.Text = "Initial Directory:";
+            // 
+            // chkExecuteBeforeConnect
+            // 
+            this.chkExecuteBeforeConnect.AutoSize = true;
+            this.chkExecuteBeforeConnect.Location = new System.Drawing.Point(16, 8);
+            this.chkExecuteBeforeConnect.Name = "chkExecuteBeforeConnect";
+            this.chkExecuteBeforeConnect.Size = new System.Drawing.Size(141, 17);
+            this.chkExecuteBeforeConnect.TabIndex = 11;
+            this.chkExecuteBeforeConnect.Text = "&Execute before connect";
+            this.chkExecuteBeforeConnect.UseVisualStyleBackColor = true;
+            // 
+            // txtArguments
+            // 
+            this.txtArguments.Location = new System.Drawing.Point(112, 64);
+            this.txtArguments.Name = "txtArguments";
+            this.txtArguments.Size = new System.Drawing.Size(265, 21);
+            this.txtArguments.TabIndex = 13;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(16, 64);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(59, 13);
+            this.label12.TabIndex = 17;
+            this.label12.Text = "Arguments";
+            // 
+            // chkWaitForExit
+            // 
+            this.chkWaitForExit.AutoSize = true;
+            this.chkWaitForExit.Location = new System.Drawing.Point(16, 120);
+            this.chkWaitForExit.Name = "chkWaitForExit";
+            this.chkWaitForExit.Size = new System.Drawing.Size(86, 17);
+            this.chkWaitForExit.TabIndex = 16;
+            this.chkWaitForExit.Text = "&Wait for exit";
+            this.chkWaitForExit.UseVisualStyleBackColor = true;
+            // 
+            // txtCommand
+            // 
+            this.txtCommand.Location = new System.Drawing.Point(112, 40);
+            this.txtCommand.Name = "txtCommand";
+            this.txtCommand.Size = new System.Drawing.Size(265, 21);
+            this.txtCommand.TabIndex = 12;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(16, 40);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(58, 13);
+            this.label11.TabIndex = 15;
+            this.label11.Text = "Command:";
             // 
             // OptionsForm
             // 
@@ -177,9 +286,9 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(413, 335);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
@@ -191,8 +300,11 @@ namespace Terminals
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tpGeneral.ResumeLayout(false);
+            this.tpGeneral.PerformLayout();
+            this.tpExecuteBeforeConnect.ResumeLayout(false);
+            this.tpExecuteBeforeConnect.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -200,17 +312,27 @@ namespace Terminals
 
         #endregion
 
-        private System.Windows.Forms.CheckBox chkShowUserNameInTitle;
-        private System.Windows.Forms.CheckBox chkShowInformationToolTips;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.CheckBox chkShowFullInfo;
-        private System.Windows.Forms.TextBox txtDefaultDesktopShare;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tpGeneral;
         private System.Windows.Forms.Label lblEvaluatedDesktopShare;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtDefaultDesktopShare;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox chkShowFullInfo;
+        private System.Windows.Forms.CheckBox chkShowUserNameInTitle;
+        private System.Windows.Forms.CheckBox chkShowInformationToolTips;
+        private System.Windows.Forms.TabPage tpExecuteBeforeConnect;
+        private System.Windows.Forms.TextBox txtInitialDirectory;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.CheckBox chkExecuteBeforeConnect;
+        private System.Windows.Forms.TextBox txtArguments;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.CheckBox chkWaitForExit;
+        private System.Windows.Forms.TextBox txtCommand;
+        private System.Windows.Forms.Label label11;
     }
 }

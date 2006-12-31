@@ -198,6 +198,30 @@ namespace Terminals
 
         private void CreateTerminalTab(FavoriteConfigurationElement favorite)
         {
+            if (Settings.ExecuteBeforeConnect)
+            {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo(Settings.ExecuteBeforeConnectCommand,
+                    Settings.ExecuteBeforeConnectArgs);
+                processStartInfo.WorkingDirectory = Settings.ExecuteBeforeConnectInitialDirectory;
+                Process process = Process.Start(processStartInfo);
+                if (Settings.ExecuteBeforeConnectWaitForExit)
+                {
+                    process.WaitForExit();
+                }
+            }
+
+            if (favorite.ExecuteBeforeConnect)
+            {
+                ProcessStartInfo processStartInfo = new ProcessStartInfo(favorite.ExecuteBeforeConnectCommand,
+                    favorite.ExecuteBeforeConnectArgs);
+                processStartInfo.WorkingDirectory = favorite.ExecuteBeforeConnectInitialDirectory;
+                Process process = Process.Start(processStartInfo);
+                if (favorite.ExecuteBeforeConnectWaitForExit)
+                {
+                    process.WaitForExit();
+                }
+            }
+
             string terminalTabTitle = favorite.Name;
             if (Settings.ShowUserNameInTitle)
             {

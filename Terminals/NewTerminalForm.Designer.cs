@@ -64,15 +64,25 @@ namespace Terminals
         this.label9 = new System.Windows.Forms.Label();
         this.cmbSounds = new System.Windows.Forms.ComboBox();
         this.label8 = new System.Windows.Forms.Label();
+        this.tabPage4 = new System.Windows.Forms.TabPage();
+        this.chkExecuteBeforeConnect = new System.Windows.Forms.CheckBox();
+        this.txtArguments = new System.Windows.Forms.TextBox();
+        this.label12 = new System.Windows.Forms.Label();
+        this.chkWaitForExit = new System.Windows.Forms.CheckBox();
+        this.txtCommand = new System.Windows.Forms.TextBox();
+        this.label11 = new System.Windows.Forms.Label();
         this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
         this.pictureBox1 = new System.Windows.Forms.PictureBox();
         this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
         this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+        this.txtInitialDirectory = new System.Windows.Forms.TextBox();
+        this.label13 = new System.Windows.Forms.Label();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         this.tabPage2.SuspendLayout();
         this.groupBox1.SuspendLayout();
         this.tabPage3.SuspendLayout();
+        this.tabPage4.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
         this.SuspendLayout();
         // 
@@ -104,6 +114,7 @@ namespace Terminals
         this.tabControl1.Controls.Add(this.tabPage1);
         this.tabControl1.Controls.Add(this.tabPage2);
         this.tabControl1.Controls.Add(this.tabPage3);
+        this.tabControl1.Controls.Add(this.tabPage4);
         this.tabControl1.Location = new System.Drawing.Point(6, 77);
         this.tabControl1.Name = "tabControl1";
         this.tabControl1.SelectedIndex = 0;
@@ -444,6 +455,76 @@ namespace Terminals
         this.label8.TabIndex = 0;
         this.label8.Text = "Remote &sounds:";
         // 
+        // tabPage4
+        // 
+        this.tabPage4.Controls.Add(this.txtInitialDirectory);
+        this.tabPage4.Controls.Add(this.label13);
+        this.tabPage4.Controls.Add(this.chkExecuteBeforeConnect);
+        this.tabPage4.Controls.Add(this.txtArguments);
+        this.tabPage4.Controls.Add(this.label12);
+        this.tabPage4.Controls.Add(this.chkWaitForExit);
+        this.tabPage4.Controls.Add(this.txtCommand);
+        this.tabPage4.Controls.Add(this.label11);
+        this.tabPage4.Location = new System.Drawing.Point(4, 22);
+        this.tabPage4.Name = "tabPage4";
+        this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+        this.tabPage4.Size = new System.Drawing.Size(386, 183);
+        this.tabPage4.TabIndex = 3;
+        this.tabPage4.Text = "Execute Before Connect";
+        this.tabPage4.UseVisualStyleBackColor = true;
+        // 
+        // chkExecuteBeforeConnect
+        // 
+        this.chkExecuteBeforeConnect.AutoSize = true;
+        this.chkExecuteBeforeConnect.Location = new System.Drawing.Point(8, 8);
+        this.chkExecuteBeforeConnect.Name = "chkExecuteBeforeConnect";
+        this.chkExecuteBeforeConnect.Size = new System.Drawing.Size(141, 17);
+        this.chkExecuteBeforeConnect.TabIndex = 0;
+        this.chkExecuteBeforeConnect.Text = "&Execute before connect";
+        this.chkExecuteBeforeConnect.UseVisualStyleBackColor = true;
+        // 
+        // txtArguments
+        // 
+        this.txtArguments.Location = new System.Drawing.Point(104, 64);
+        this.txtArguments.Name = "txtArguments";
+        this.txtArguments.Size = new System.Drawing.Size(265, 21);
+        this.txtArguments.TabIndex = 2;
+        // 
+        // label12
+        // 
+        this.label12.AutoSize = true;
+        this.label12.Location = new System.Drawing.Point(8, 64);
+        this.label12.Name = "label12";
+        this.label12.Size = new System.Drawing.Size(59, 13);
+        this.label12.TabIndex = 7;
+        this.label12.Text = "Arguments";
+        // 
+        // chkWaitForExit
+        // 
+        this.chkWaitForExit.AutoSize = true;
+        this.chkWaitForExit.Location = new System.Drawing.Point(8, 120);
+        this.chkWaitForExit.Name = "chkWaitForExit";
+        this.chkWaitForExit.Size = new System.Drawing.Size(86, 17);
+        this.chkWaitForExit.TabIndex = 4;
+        this.chkWaitForExit.Text = "&Wait for exit";
+        this.chkWaitForExit.UseVisualStyleBackColor = true;
+        // 
+        // txtCommand
+        // 
+        this.txtCommand.Location = new System.Drawing.Point(104, 40);
+        this.txtCommand.Name = "txtCommand";
+        this.txtCommand.Size = new System.Drawing.Size(265, 21);
+        this.txtCommand.TabIndex = 1;
+        // 
+        // label11
+        // 
+        this.label11.AutoSize = true;
+        this.label11.Location = new System.Drawing.Point(8, 40);
+        this.label11.Name = "label11";
+        this.label11.Size = new System.Drawing.Size(58, 13);
+        this.label11.TabIndex = 4;
+        this.label11.Text = "Command:";
+        // 
         // chkAddtoToolbar
         // 
         this.chkAddtoToolbar.AutoSize = true;
@@ -469,6 +550,22 @@ namespace Terminals
         // 
         this.folderBrowserDialog.Description = "Select Desktop Share:";
         this.folderBrowserDialog.ShowNewFolderButton = false;
+        // 
+        // txtInitialDirectory
+        // 
+        this.txtInitialDirectory.Location = new System.Drawing.Point(104, 88);
+        this.txtInitialDirectory.Name = "txtInitialDirectory";
+        this.txtInitialDirectory.Size = new System.Drawing.Size(265, 21);
+        this.txtInitialDirectory.TabIndex = 3;
+        // 
+        // label13
+        // 
+        this.label13.AutoSize = true;
+        this.label13.Location = new System.Drawing.Point(8, 88);
+        this.label13.Name = "label13";
+        this.label13.Size = new System.Drawing.Size(84, 13);
+        this.label13.TabIndex = 10;
+        this.label13.Text = "Initial Directory:";
         // 
         // NewTerminalForm
         // 
@@ -502,6 +599,8 @@ namespace Terminals
         this.groupBox1.PerformLayout();
         this.tabPage3.ResumeLayout(false);
         this.tabPage3.PerformLayout();
+        this.tabPage4.ResumeLayout(false);
+        this.tabPage4.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
         this.ResumeLayout(false);
         this.PerformLayout();
@@ -548,5 +647,14 @@ namespace Terminals
       private System.Windows.Forms.Button btnBrowseShare;
       private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
       private System.Windows.Forms.ToolTip toolTip1;
+      private System.Windows.Forms.TabPage tabPage4;
+      private System.Windows.Forms.TextBox txtCommand;
+      private System.Windows.Forms.Label label11;
+      private System.Windows.Forms.CheckBox chkWaitForExit;
+      private System.Windows.Forms.TextBox txtArguments;
+      private System.Windows.Forms.Label label12;
+      private System.Windows.Forms.CheckBox chkExecuteBeforeConnect;
+      private System.Windows.Forms.TextBox txtInitialDirectory;
+      private System.Windows.Forms.Label label13;
   }
 }
