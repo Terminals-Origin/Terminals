@@ -41,7 +41,7 @@ namespace Terminals
             _formSettings.LoadFormSize();
             base.SetVisibleCore(value);
         }
-        public AxMsRdpClient2 CurrentTerminal
+        public AxMsRdpClient2NotSafeForScripting CurrentTerminal
         {
             get
             {
@@ -237,7 +237,7 @@ namespace Terminals
             tcTerminals.Items.Add(terminalTabPage);
             tcTerminals.SelectedItem = terminalTabPage;
             tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
-            AxMsRdpClient2 axMsRdpClient2 = new AxMsRdpClient2();
+            AxMsRdpClient2NotSafeForScripting axMsRdpClient2 = new AxMsRdpClient2NotSafeForScripting();
             Controls.Add(axMsRdpClient2);
             axMsRdpClient2.Parent = terminalTabPage;
             axMsRdpClient2.AllowDrop = true;
@@ -900,9 +900,9 @@ namespace Terminals
         {
         }
 
-        private AxMsRdpClient2 terminalControl;
+        private AxMsRdpClient2NotSafeForScripting terminalControl;
 
-        public AxMsRdpClient2 TerminalControl
+        public AxMsRdpClient2NotSafeForScripting TerminalControl
         {
             get
             {

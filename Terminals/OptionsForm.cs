@@ -11,7 +11,7 @@ namespace Terminals
 {
     public partial class OptionsForm : Form
     {
-        public OptionsForm(AxMsRdpClient2 terminal)
+        public OptionsForm(AxMsRdpClient2NotSafeForScripting terminal)
         {
             InitializeComponent();
             chkShowInformationToolTips.Checked = Settings.ShowInformationToolTips;
@@ -26,7 +26,7 @@ namespace Terminals
             currentTerminal = terminal;
         }
 
-        private AxMsRdpClient2 currentTerminal;
+        private AxMsRdpClient2NotSafeForScripting currentTerminal;
 
         private void btnOk_Click(object sender, EventArgs e)
         {
