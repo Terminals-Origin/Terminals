@@ -32,11 +32,6 @@ namespace Terminals
                     item.SubItems.Add(favorite.UserName);
                     item.Tag = favorite;
                 }
-                if (lvConnections.Items.Count > 0)
-                {
-                    lvConnections.Items[0].Focused = true;
-                    lvConnections.Items[0].Selected = true;
-                }
             }
             finally
             {
@@ -153,6 +148,14 @@ namespace Terminals
                     Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
                     LoadConnections();
                 }
+            }
+        }
+
+        private void OrganizeFavoritesForm_Shown(object sender, EventArgs e)
+        {
+            if (lvConnections.Items.Count > 0)
+            {
+                lvConnections.Items[0].Selected = true;
             }
         }
     }

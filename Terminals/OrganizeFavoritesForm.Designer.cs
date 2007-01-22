@@ -187,6 +187,7 @@ namespace Terminals
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Organize Favorites";
+            this.Shown += new System.EventHandler(this.OrganizeFavoritesForm_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionManager_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
