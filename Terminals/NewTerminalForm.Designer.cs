@@ -55,6 +55,9 @@ namespace Terminals
         this.label6 = new System.Windows.Forms.Label();
         this.chkConnectToConsole = new System.Windows.Forms.CheckBox();
         this.tabPage3 = new System.Windows.Forms.TabPage();
+        this.chkRedirectSmartcards = new System.Windows.Forms.CheckBox();
+        this.chkRedirectClipboard = new System.Windows.Forms.CheckBox();
+        this.chkRedirectDevices = new System.Windows.Forms.CheckBox();
         this.btnBrowseShare = new System.Windows.Forms.Button();
         this.txtDesktopShare = new System.Windows.Forms.TextBox();
         this.label10 = new System.Windows.Forms.Label();
@@ -65,6 +68,8 @@ namespace Terminals
         this.cmbSounds = new System.Windows.Forms.ComboBox();
         this.label8 = new System.Windows.Forms.Label();
         this.tabPage4 = new System.Windows.Forms.TabPage();
+        this.txtInitialDirectory = new System.Windows.Forms.TextBox();
+        this.label13 = new System.Windows.Forms.Label();
         this.chkExecuteBeforeConnect = new System.Windows.Forms.CheckBox();
         this.txtArguments = new System.Windows.Forms.TextBox();
         this.label12 = new System.Windows.Forms.Label();
@@ -75,8 +80,6 @@ namespace Terminals
         this.pictureBox1 = new System.Windows.Forms.PictureBox();
         this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
         this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-        this.txtInitialDirectory = new System.Windows.Forms.TextBox();
-        this.label13 = new System.Windows.Forms.Label();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         this.tabPage2.SuspendLayout();
@@ -295,7 +298,8 @@ namespace Terminals
         this.cmbColors.Items.AddRange(new object[] {
             "256 Colors",
             "High Color (16 Bit)",
-            "True Color (24 Bit)"});
+            "True Color (24 Bit)",
+            "Highest Quality (32 Bit)"});
         this.cmbColors.Location = new System.Drawing.Point(124, 50);
         this.cmbColors.Name = "cmbColors";
         this.cmbColors.Size = new System.Drawing.Size(234, 21);
@@ -347,6 +351,9 @@ namespace Terminals
         // 
         // tabPage3
         // 
+        this.tabPage3.Controls.Add(this.chkRedirectSmartcards);
+        this.tabPage3.Controls.Add(this.chkRedirectClipboard);
+        this.tabPage3.Controls.Add(this.chkRedirectDevices);
         this.tabPage3.Controls.Add(this.btnBrowseShare);
         this.tabPage3.Controls.Add(this.txtDesktopShare);
         this.tabPage3.Controls.Add(this.label10);
@@ -364,50 +371,82 @@ namespace Terminals
         this.tabPage3.Text = "Local Resources";
         this.tabPage3.UseVisualStyleBackColor = true;
         // 
+        // chkRedirectSmartcards
+        // 
+        this.chkRedirectSmartcards.AutoSize = true;
+        this.chkRedirectSmartcards.Location = new System.Drawing.Point(160, 120);
+        this.chkRedirectSmartcards.Name = "chkRedirectSmartcards";
+        this.chkRedirectSmartcards.Size = new System.Drawing.Size(126, 17);
+        this.chkRedirectSmartcards.TabIndex = 8;
+        this.chkRedirectSmartcards.Text = "Redirect Smart ca&rds";
+        this.chkRedirectSmartcards.UseVisualStyleBackColor = true;
+        // 
+        // chkRedirectClipboard
+        // 
+        this.chkRedirectClipboard.AutoSize = true;
+        this.chkRedirectClipboard.Checked = true;
+        this.chkRedirectClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
+        this.chkRedirectClipboard.Location = new System.Drawing.Point(160, 97);
+        this.chkRedirectClipboard.Name = "chkRedirectClipboard";
+        this.chkRedirectClipboard.Size = new System.Drawing.Size(114, 17);
+        this.chkRedirectClipboard.TabIndex = 7;
+        this.chkRedirectClipboard.Text = "Redirect &Clipboard";
+        this.chkRedirectClipboard.UseVisualStyleBackColor = true;
+        // 
+        // chkRedirectDevices
+        // 
+        this.chkRedirectDevices.AutoSize = true;
+        this.chkRedirectDevices.Location = new System.Drawing.Point(160, 74);
+        this.chkRedirectDevices.Name = "chkRedirectDevices";
+        this.chkRedirectDevices.Size = new System.Drawing.Size(129, 17);
+        this.chkRedirectDevices.TabIndex = 6;
+        this.chkRedirectDevices.Text = "Plu&g and Play devices";
+        this.chkRedirectDevices.UseVisualStyleBackColor = true;
+        // 
         // btnBrowseShare
         // 
         this.btnBrowseShare.Image = global::Terminals.Properties.Resources.folder;
-        this.btnBrowseShare.Location = new System.Drawing.Point(352, 152);
+        this.btnBrowseShare.Location = new System.Drawing.Point(352, 149);
         this.btnBrowseShare.Name = "btnBrowseShare";
         this.btnBrowseShare.Size = new System.Drawing.Size(21, 21);
-        this.btnBrowseShare.TabIndex = 8;
+        this.btnBrowseShare.TabIndex = 11;
         this.btnBrowseShare.UseVisualStyleBackColor = true;
         this.btnBrowseShare.Click += new System.EventHandler(this.btnBrowseShare_Click);
         // 
         // txtDesktopShare
         // 
-        this.txtDesktopShare.Location = new System.Drawing.Point(104, 152);
+        this.txtDesktopShare.Location = new System.Drawing.Point(104, 149);
         this.txtDesktopShare.Name = "txtDesktopShare";
         this.txtDesktopShare.Size = new System.Drawing.Size(248, 21);
-        this.txtDesktopShare.TabIndex = 7;
+        this.txtDesktopShare.TabIndex = 10;
         this.toolTip1.SetToolTip(this.txtDesktopShare, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
                 "m your computer to the\r\nterminal window.");
         // 
         // label10
         // 
         this.label10.AutoSize = true;
-        this.label10.Location = new System.Drawing.Point(11, 156);
+        this.label10.Location = new System.Drawing.Point(11, 153);
         this.label10.Name = "label10";
         this.label10.Size = new System.Drawing.Size(81, 13);
-        this.label10.TabIndex = 6;
-        this.label10.Text = "Desktop Share:";
+        this.label10.TabIndex = 9;
+        this.label10.Text = "Desktop S&hare:";
         this.toolTip1.SetToolTip(this.label10, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
                 "m your computer to the\r\nterminal window.");
         // 
         // chkSerialPorts
         // 
         this.chkSerialPorts.AutoSize = true;
-        this.chkSerialPorts.Location = new System.Drawing.Point(30, 122);
+        this.chkSerialPorts.Location = new System.Drawing.Point(30, 120);
         this.chkSerialPorts.Name = "chkSerialPorts";
         this.chkSerialPorts.Size = new System.Drawing.Size(80, 17);
         this.chkSerialPorts.TabIndex = 5;
-        this.chkSerialPorts.Text = "Se&rial ports";
+        this.chkSerialPorts.Text = "Seria&l ports";
         this.chkSerialPorts.UseVisualStyleBackColor = true;
         // 
         // chkPrinters
         // 
         this.chkPrinters.AutoSize = true;
-        this.chkPrinters.Location = new System.Drawing.Point(30, 99);
+        this.chkPrinters.Location = new System.Drawing.Point(30, 97);
         this.chkPrinters.Name = "chkPrinters";
         this.chkPrinters.Size = new System.Drawing.Size(63, 17);
         this.chkPrinters.TabIndex = 4;
@@ -417,7 +456,7 @@ namespace Terminals
         // chkDrives
         // 
         this.chkDrives.AutoSize = true;
-        this.chkDrives.Location = new System.Drawing.Point(30, 76);
+        this.chkDrives.Location = new System.Drawing.Point(30, 74);
         this.chkDrives.Name = "chkDrives";
         this.chkDrives.Size = new System.Drawing.Size(77, 17);
         this.chkDrives.TabIndex = 3;
@@ -427,11 +466,11 @@ namespace Terminals
         // label9
         // 
         this.label9.AutoSize = true;
-        this.label9.Location = new System.Drawing.Point(11, 50);
+        this.label9.Location = new System.Drawing.Point(11, 52);
         this.label9.Name = "label9";
-        this.label9.Size = new System.Drawing.Size(226, 13);
+        this.label9.Size = new System.Drawing.Size(225, 13);
         this.label9.TabIndex = 2;
-        this.label9.Text = "Connect automatically to these local devices :";
+        this.label9.Text = "Automatically connect to these local devices :";
         // 
         // cmbSounds
         // 
@@ -441,7 +480,7 @@ namespace Terminals
             "Play on remote computer",
             "Play on this computer",
             "Do not play"});
-        this.cmbSounds.Location = new System.Drawing.Point(102, 9);
+        this.cmbSounds.Location = new System.Drawing.Point(102, 12);
         this.cmbSounds.Name = "cmbSounds";
         this.cmbSounds.Size = new System.Drawing.Size(172, 21);
         this.cmbSounds.TabIndex = 1;
@@ -449,7 +488,7 @@ namespace Terminals
         // label8
         // 
         this.label8.AutoSize = true;
-        this.label8.Location = new System.Drawing.Point(11, 12);
+        this.label8.Location = new System.Drawing.Point(11, 15);
         this.label8.Name = "label8";
         this.label8.Size = new System.Drawing.Size(85, 13);
         this.label8.TabIndex = 0;
@@ -472,6 +511,22 @@ namespace Terminals
         this.tabPage4.TabIndex = 3;
         this.tabPage4.Text = "Execute Before Connect";
         this.tabPage4.UseVisualStyleBackColor = true;
+        // 
+        // txtInitialDirectory
+        // 
+        this.txtInitialDirectory.Location = new System.Drawing.Point(104, 88);
+        this.txtInitialDirectory.Name = "txtInitialDirectory";
+        this.txtInitialDirectory.Size = new System.Drawing.Size(265, 21);
+        this.txtInitialDirectory.TabIndex = 3;
+        // 
+        // label13
+        // 
+        this.label13.AutoSize = true;
+        this.label13.Location = new System.Drawing.Point(8, 88);
+        this.label13.Name = "label13";
+        this.label13.Size = new System.Drawing.Size(84, 13);
+        this.label13.TabIndex = 10;
+        this.label13.Text = "Initial Directory:";
         // 
         // chkExecuteBeforeConnect
         // 
@@ -550,22 +605,6 @@ namespace Terminals
         // 
         this.folderBrowserDialog.Description = "Select Desktop Share:";
         this.folderBrowserDialog.ShowNewFolderButton = false;
-        // 
-        // txtInitialDirectory
-        // 
-        this.txtInitialDirectory.Location = new System.Drawing.Point(104, 88);
-        this.txtInitialDirectory.Name = "txtInitialDirectory";
-        this.txtInitialDirectory.Size = new System.Drawing.Size(265, 21);
-        this.txtInitialDirectory.TabIndex = 3;
-        // 
-        // label13
-        // 
-        this.label13.AutoSize = true;
-        this.label13.Location = new System.Drawing.Point(8, 88);
-        this.label13.Name = "label13";
-        this.label13.Size = new System.Drawing.Size(84, 13);
-        this.label13.TabIndex = 10;
-        this.label13.Text = "Initial Directory:";
         // 
         // NewTerminalForm
         // 
@@ -656,5 +695,8 @@ namespace Terminals
       private System.Windows.Forms.CheckBox chkExecuteBeforeConnect;
       private System.Windows.Forms.TextBox txtInitialDirectory;
       private System.Windows.Forms.Label label13;
+      private System.Windows.Forms.CheckBox chkRedirectDevices;
+      private System.Windows.Forms.CheckBox chkRedirectClipboard;
+      private System.Windows.Forms.CheckBox chkRedirectSmartcards;
   }
 }

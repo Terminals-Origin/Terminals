@@ -6,7 +6,7 @@ using System.Configuration;
 namespace Terminals
 {
     public enum DesktopSize { x640 = 0, x800, x1024, FitToWindow, FullScreen, AutoScale };
-    public enum Colors { Bits8 = 0, Bit16, Bits24 };
+    public enum Colors { Bits8 = 0, Bit16, Bits24, Bits32 };
     public enum RemoteSounds { Redirect = 0, PlayOnServer = 1, DontPlay = 2 };
 
     public class TerminalsConfigurationSection : ConfigurationSection
@@ -648,6 +648,45 @@ namespace Terminals
             set
             {
                 this["redirectPrinters"] = value;
+            }
+        }
+
+        [ConfigurationProperty("redirectSmartCards")]
+        public bool RedirectSmartCards
+        {
+            get
+            {
+                return (bool)this["redirectSmartCards"];
+            }
+            set
+            {
+                this["redirectSmartCards"] = value;
+            }
+        }
+
+        [ConfigurationProperty("redirectClipboard", DefaultValue=true)]
+        public bool RedirectClipboard
+        {
+            get
+            {
+                return (bool)this["redirectClipboard"];
+            }
+            set
+            {
+                this["redirectClipboard"] = value;
+            }
+        }
+
+        [ConfigurationProperty("redirectDevices")]
+        public bool RedirectDevices
+        {
+            get
+            {
+                return (bool)this["redirectDevices"];
+            }
+            set
+            {
+                this["redirectDevices"] = value;
             }
         }
 

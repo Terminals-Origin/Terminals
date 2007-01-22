@@ -178,8 +178,8 @@ namespace Terminals
         private string GetToolTipText(FavoriteConfigurationElement favorite)
         {
             string toolTip =
-                "Computer: " + favorite.ServerName + Environment.NewLine+
-                "User: " + Functions.UserDisplayName(favorite.DomainName,favorite.UserName) + Environment.NewLine;
+                "Computer: " + favorite.ServerName + Environment.NewLine +
+                "User: " + Functions.UserDisplayName(favorite.DomainName, favorite.UserName) + Environment.NewLine;
 
             if (Settings.ShowFullInformationToolTips)
             {
@@ -225,7 +225,7 @@ namespace Terminals
             string terminalTabTitle = favorite.Name;
             if (Settings.ShowUserNameInTitle)
             {
-                terminalTabTitle += " (" + Functions.UserDisplayName(favorite.DomainName,favorite.UserName) + ")";
+                terminalTabTitle += " (" + Functions.UserDisplayName(favorite.DomainName, favorite.UserName) + ")";
             }
             TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
             terminalTabPage.AllowDrop = true;
@@ -241,6 +241,7 @@ namespace Terminals
             Controls.Add(axMsRdpClient2);
             axMsRdpClient2.Parent = terminalTabPage;
             axMsRdpClient2.AllowDrop = true;
+
             ((Control)axMsRdpClient2).DragEnter += new DragEventHandler(axMsRdpClient2_DragEnter);
             ((Control)axMsRdpClient2).DragDrop += new DragEventHandler(axMsRdpClient2_DragDrop);
             axMsRdpClient2.Dock = DockStyle.Fill;
@@ -273,8 +274,11 @@ namespace Terminals
                     height = Screen.FromControl(this).Bounds.Height - 1;
                     break;
             }
-            axMsRdpClient2.DesktopWidth = Math.Min(1600, width);
-            axMsRdpClient2.DesktopHeight = Math.Min(1200, height); ;
+            int maxWidth = Settings.SupportsRDP6 ? 4096 : 1600;
+            int maxHeight = Settings.SupportsRDP6 ? 2048 : 1200;
+
+            axMsRdpClient2.DesktopWidth = Math.Min(maxWidth, width);
+            axMsRdpClient2.DesktopHeight = Math.Min(maxHeight, height); ;
 
             switch (favorite.Colors)
             {
@@ -287,12 +291,31 @@ namespace Terminals
                 case Colors.Bits24:
                     axMsRdpClient2.ColorDepth = 24;
                     break;
+                case Colors.Bits32:
+                    if (Settings.SupportsRDP6)
+                        axMsRdpClient2.ColorDepth = 32;
+                    else
+                        axMsRdpClient2.ColorDepth = 24;
+                    break;
             }
             axMsRdpClient2.ConnectingText = "Connecting. Please wait...";
             axMsRdpClient2.DisconnectedText = "Disconnecting...";
             axMsRdpClient2.AdvancedSettings3.RedirectDrives = favorite.RedirectDrives;
             axMsRdpClient2.AdvancedSettings3.RedirectPorts = favorite.RedirectPorts;
             axMsRdpClient2.AdvancedSettings3.RedirectPrinters = favorite.RedirectPrinters;
+            axMsRdpClient2.AdvancedSettings3.RedirectSmartCards = favorite.RedirectSmartCards;
+            if (Settings.SupportsRDP6)
+            {
+                MSTSCLib.IMsRdpClientAdvancedSettings5 advancedSettings5 = (axMsRdpClient2.AdvancedSettings3 as MSTSCLib.IMsRdpClientAdvancedSettings5);
+                if (advancedSettings5 != null)
+                {
+                    advancedSettings5.RedirectClipboard = favorite.RedirectClipboard;
+                    advancedSettings5.RedirectDevices = favorite.RedirectDevices;
+                    advancedSettings5.ConnectionBarShowMinimizeButton = false;
+                    advancedSettings5.ConnectionBarShowPinButton = false;
+                    advancedSettings5.ConnectionBarShowRestoreButton = false;
+                }
+            }
             axMsRdpClient2.SecuredSettings2.AudioRedirectionMode = (int)favorite.Sounds;
             axMsRdpClient2.Domain = favorite.DomainName;
             axMsRdpClient2.Server = favorite.ServerName;
@@ -347,14 +370,14 @@ namespace Terminals
 
             foreach (string sourceFile in sourceFiles)
             {
-                destinationFiles.Add(Path.Combine(destinationFolder,Path.GetFileName(sourceFile)));
+                destinationFiles.Add(Path.Combine(destinationFolder, Path.GetFileName(sourceFile)));
             }
 
             fo.Operation = SHFileOperationWrapper.FileOperations.FO_COPY;
             fo.OwnerWindow = this.Handle;
             fo.SourceFiles = sourceFiles;
             fo.DestFiles = destinationFiles.ToArray();
-            
+
             fo.DoOperation();
         }
 
@@ -375,7 +398,7 @@ namespace Terminals
             string desktopShare = GetDesktopShare();
             if (String.IsNullOrEmpty(desktopShare))
             {
-                MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n"+
+                MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n" +
                     "Please define a share in the connection properties window (under the Local Resources tab)."
                     , "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }

@@ -74,6 +74,9 @@ namespace Terminals
             chkDrives.Checked = favorite.RedirectDrives;
             chkSerialPorts.Checked = favorite.RedirectPorts;
             chkPrinters.Checked = favorite.RedirectPrinters;
+            chkRedirectClipboard.Checked = favorite.RedirectClipboard;
+            chkRedirectDevices.Checked = favorite.RedirectDevices;
+            chkRedirectSmartcards.Checked = favorite.RedirectSmartCards;
             cmbSounds.SelectedIndex = (int)favorite.Sounds;
             txtPort.Text = favorite.Port.ToString();
             txtDesktopShare.Text = favorite.DesktopShare;
@@ -98,6 +101,9 @@ namespace Terminals
                 favorite.RedirectDrives = chkDrives.Checked;
                 favorite.RedirectPorts = chkSerialPorts.Checked;
                 favorite.RedirectPrinters = chkPrinters.Checked;
+                favorite.RedirectClipboard = chkRedirectClipboard.Checked;
+                favorite.RedirectDevices = chkRedirectDevices.Checked;
+                favorite.RedirectSmartCards = chkRedirectSmartcards.Checked;
                 favorite.Sounds = (RemoteSounds)cmbSounds.SelectedIndex;
                 showOnToolbar = chkAddtoToolbar.Checked;
                 favorite.Port = ValidatePort(txtPort.Text);

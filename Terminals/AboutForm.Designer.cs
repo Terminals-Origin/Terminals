@@ -40,12 +40,13 @@ namespace Terminals
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
+            this.lblVersion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(12, 89);
+            this.label1.Location = new System.Drawing.Point(12, 114);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(408, 32);
             this.label1.TabIndex = 0;
@@ -56,7 +57,7 @@ namespace Terminals
             // 
             this.lblTerminals.AutoSize = true;
             this.lblTerminals.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.lblTerminals.Location = new System.Drawing.Point(131, 134);
+            this.lblTerminals.Location = new System.Drawing.Point(131, 159);
             this.lblTerminals.Name = "lblTerminals";
             this.lblTerminals.Size = new System.Drawing.Size(170, 13);
             this.lblTerminals.TabIndex = 1;
@@ -69,7 +70,7 @@ namespace Terminals
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.BackColor = System.Drawing.SystemColors.Control;
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(340, 243);
+            this.btnClose.Location = new System.Drawing.Point(340, 258);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(80, 26);
             this.btnClose.TabIndex = 0;
@@ -79,7 +80,7 @@ namespace Terminals
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 170);
+            this.label3.Location = new System.Drawing.Point(12, 195);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(134, 13);
             this.label3.TabIndex = 4;
@@ -90,7 +91,7 @@ namespace Terminals
             this.lblEyal.AutoSize = true;
             this.lblEyal.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.lblEyal.LinkColor = System.Drawing.Color.Blue;
-            this.lblEyal.Location = new System.Drawing.Point(32, 192);
+            this.lblEyal.Location = new System.Drawing.Point(32, 217);
             this.lblEyal.Name = "lblEyal";
             this.lblEyal.Size = new System.Drawing.Size(27, 13);
             this.lblEyal.TabIndex = 2;
@@ -104,7 +105,7 @@ namespace Terminals
             this.lblDudu.AutoSize = true;
             this.lblDudu.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.lblDudu.LinkColor = System.Drawing.Color.Blue;
-            this.lblDudu.Location = new System.Drawing.Point(32, 216);
+            this.lblDudu.Location = new System.Drawing.Point(32, 241);
             this.lblDudu.Name = "lblDudu";
             this.lblDudu.Size = new System.Drawing.Size(32, 13);
             this.lblDudu.TabIndex = 3;
@@ -118,7 +119,7 @@ namespace Terminals
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel1.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel1.Location = new System.Drawing.Point(144, 216);
+            this.linkLabel1.Location = new System.Drawing.Point(144, 241);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(45, 13);
             this.linkLabel1.TabIndex = 5;
@@ -132,7 +133,7 @@ namespace Terminals
             this.lblHiro.AutoSize = true;
             this.lblHiro.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.lblHiro.LinkColor = System.Drawing.Color.Blue;
-            this.lblHiro.Location = new System.Drawing.Point(61, 216);
+            this.lblHiro.Location = new System.Drawing.Point(61, 241);
             this.lblHiro.Name = "lblHiro";
             this.lblHiro.Size = new System.Drawing.Size(85, 13);
             this.lblHiro.TabIndex = 4;
@@ -156,7 +157,7 @@ namespace Terminals
             this.linkLabel2.AutoSize = true;
             this.linkLabel2.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel2.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel2.Location = new System.Drawing.Point(131, 192);
+            this.linkLabel2.Location = new System.Drawing.Point(131, 217);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(28, 13);
             this.linkLabel2.TabIndex = 7;
@@ -170,7 +171,7 @@ namespace Terminals
             this.linkLabel3.AutoSize = true;
             this.linkLabel3.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel3.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel3.Location = new System.Drawing.Point(56, 192);
+            this.linkLabel3.Location = new System.Drawing.Point(56, 217);
             this.linkLabel3.Name = "linkLabel3";
             this.linkLabel3.Size = new System.Drawing.Size(76, 13);
             this.linkLabel3.TabIndex = 8;
@@ -179,6 +180,16 @@ namespace Terminals
             this.linkLabel3.VisitedLinkColor = System.Drawing.Color.Blue;
             this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
             // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.lblVersion.Location = new System.Drawing.Point(12, 91);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(71, 13);
+            this.lblVersion.TabIndex = 9;
+            this.lblVersion.Text = "Terminals 1.0";
+            // 
             // AboutForm
             // 
             this.AcceptButton = this.btnClose;
@@ -186,7 +197,8 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(432, 281);
+            this.ClientSize = new System.Drawing.Size(432, 296);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.linkLabel3);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.pictureBox1);
@@ -226,5 +238,6 @@ namespace Terminals
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.Label lblVersion;
     }
 }

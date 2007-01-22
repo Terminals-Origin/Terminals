@@ -4,6 +4,7 @@ using System.Text;
 using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Terminals
 {
@@ -170,6 +171,9 @@ namespace Terminals
             editedFavorite.RedirectDrives = favorite.RedirectDrives;
             editedFavorite.RedirectPorts = favorite.RedirectPorts;
             editedFavorite.RedirectPrinters = favorite.RedirectPrinters;
+            editedFavorite.RedirectDevices = favorite.RedirectDevices;
+            editedFavorite.RedirectClipboard = favorite.RedirectClipboard;
+            editedFavorite.RedirectSmartCards = favorite.RedirectSmartCards;
             editedFavorite.Sounds = favorite.Sounds;
             editedFavorite.Port = favorite.Port;
             editedFavorite.DesktopShare = favorite.DesktopShare;
@@ -367,6 +371,29 @@ namespace Terminals
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ExecuteBeforeConnectWaitForExit = value;
                 configuration.Save();
+            }
+        }
+
+        private static bool? _supportsRDP6;
+
+        public static bool SupportsRDP6
+        {
+            get
+            {
+                if (!_supportsRDP6.HasValue)
+                {
+                    try
+                    {
+                        MSTSCLib.IMsRdpClient2 rdpClient = new MSTSCLib.MsRdpClient2Class();
+                        _supportsRDP6 = ((rdpClient as MSTSCLib.IMsRdpClient5) != null);
+                    }
+                    catch
+                    {
+                        _supportsRDP6 = false;
+                    }
+                    
+                }
+                return _supportsRDP6.Value;
             }
         }
     }
