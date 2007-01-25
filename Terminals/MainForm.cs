@@ -41,7 +41,7 @@ namespace Terminals
             _formSettings.LoadFormSize();
             base.SetVisibleCore(value);
         }
-        public AxMsRdpClient2NotSafeForScripting CurrentTerminal
+        public AxMsRdpClient2 CurrentTerminal
         {
             get
             {
@@ -237,7 +237,7 @@ namespace Terminals
             tcTerminals.Items.Add(terminalTabPage);
             tcTerminals.SelectedItem = terminalTabPage;
             tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
-            AxMsRdpClient2NotSafeForScripting axMsRdpClient2 = new AxMsRdpClient2NotSafeForScripting();
+            AxMsRdpClient2 axMsRdpClient2 = new AxMsRdpClient2();
             Controls.Add(axMsRdpClient2);
             axMsRdpClient2.Parent = terminalTabPage;
             axMsRdpClient2.AllowDrop = true;
@@ -306,7 +306,7 @@ namespace Terminals
             axMsRdpClient2.AdvancedSettings3.RedirectSmartCards = favorite.RedirectSmartCards;
             if (Settings.SupportsRDP6)
             {
-                MSTSCLib.IMsRdpClientAdvancedSettings5 advancedSettings5 = (axMsRdpClient2.AdvancedSettings3 as MSTSCLib.IMsRdpClientAdvancedSettings5);
+                MSTSCLib6.IMsRdpClientAdvancedSettings5 advancedSettings5 = (axMsRdpClient2.AdvancedSettings3 as MSTSCLib6.IMsRdpClientAdvancedSettings5);
                 if (advancedSettings5 != null)
                 {
                     advancedSettings5.RedirectClipboard = favorite.RedirectClipboard;
@@ -900,9 +900,9 @@ namespace Terminals
         {
         }
 
-        private AxMsRdpClient2NotSafeForScripting terminalControl;
+        private AxMsRdpClient2 terminalControl;
 
-        public AxMsRdpClient2NotSafeForScripting TerminalControl
+        public AxMsRdpClient2 TerminalControl
         {
             get
             {

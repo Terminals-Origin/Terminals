@@ -385,7 +385,7 @@ namespace Terminals
                     try
                     {
                         MSTSCLib.IMsRdpClient2 rdpClient = new MSTSCLib.MsRdpClient2Class();
-                        _supportsRDP6 = ((rdpClient as MSTSCLib.IMsRdpClient5) != null);
+                        _supportsRDP6 = ((rdpClient as MSTSCLib6.IMsRdpClient5) != null);
                     }
                     catch
                     {
