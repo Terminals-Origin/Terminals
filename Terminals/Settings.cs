@@ -182,6 +182,7 @@ namespace Terminals
             editedFavorite.ExecuteBeforeConnectArgs = favorite.ExecuteBeforeConnectArgs;
             editedFavorite.ExecuteBeforeConnectInitialDirectory = favorite.ExecuteBeforeConnectInitialDirectory;
             editedFavorite.ExecuteBeforeConnectWaitForExit = favorite.ExecuteBeforeConnectWaitForExit;
+            editedFavorite.ShowDesktopBackground = favorite.ShowDesktopBackground;
             configuration.Save();
         }
 

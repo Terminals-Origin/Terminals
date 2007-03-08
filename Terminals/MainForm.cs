@@ -303,6 +303,7 @@ namespace Terminals
             axMsRdpClient2.AdvancedSettings3.RedirectPorts = favorite.RedirectPorts;
             axMsRdpClient2.AdvancedSettings3.RedirectPrinters = favorite.RedirectPrinters;
             axMsRdpClient2.AdvancedSettings3.RedirectSmartCards = favorite.RedirectSmartCards;
+            axMsRdpClient2.AdvancedSettings3.PerformanceFlags = favorite.PerformanceFlags;
             if (Settings.SupportsRDP6)
             {
                 MSTSCLib6.IMsRdpClientAdvancedSettings5 advancedSettings5 = (axMsRdpClient2.AdvancedSettings3 as MSTSCLib6.IMsRdpClientAdvancedSettings5);
@@ -517,7 +518,15 @@ namespace Terminals
 
         void axMsTscAx_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            TabControlItem selectedTabPage = (TabControlItem)((AxMsRdpClient2)sender).Parent;
+            AxMsRdpClient2 client = (AxMsRdpClient2)sender;
+
+            string error = Functions.GetErrorMessage(e.discReason);
+            if (error != null)
+            {
+                MessageBox.Show(this, String.Format("error connecting to {0} ({1})", client.Server, error), "Terminals",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            TabControlItem selectedTabPage = (TabControlItem)(client.Parent);
             tcTerminals.RemoveTab(selectedTabPage);
             tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
             NativeApi.PostMessage(new HandleRef(this, this.Handle), WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);

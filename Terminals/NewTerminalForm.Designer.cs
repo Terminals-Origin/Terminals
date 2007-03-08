@@ -80,6 +80,7 @@ namespace Terminals
         this.pictureBox1 = new System.Windows.Forms.PictureBox();
         this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
         this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+        this.chkAllowDesktopBG = new System.Windows.Forms.CheckBox();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         this.tabPage2.SuspendLayout();
@@ -264,7 +265,7 @@ namespace Terminals
         // 
         // txtPort
         // 
-        this.txtPort.Location = new System.Drawing.Point(130, 106);
+        this.txtPort.Location = new System.Drawing.Point(130, 123);
         this.txtPort.Name = "txtPort";
         this.txtPort.Size = new System.Drawing.Size(234, 21);
         this.txtPort.TabIndex = 2;
@@ -272,7 +273,7 @@ namespace Terminals
         // lblPort
         // 
         this.lblPort.AutoSize = true;
-        this.lblPort.Location = new System.Drawing.Point(8, 109);
+        this.lblPort.Location = new System.Drawing.Point(8, 126);
         this.lblPort.Name = "lblPort";
         this.lblPort.Size = new System.Drawing.Size(105, 13);
         this.lblPort.TabIndex = 1;
@@ -280,13 +281,14 @@ namespace Terminals
         // 
         // groupBox1
         // 
+        this.groupBox1.Controls.Add(this.chkAllowDesktopBG);
         this.groupBox1.Controls.Add(this.cmbColors);
         this.groupBox1.Controls.Add(this.label7);
         this.groupBox1.Controls.Add(this.cmbResolution);
         this.groupBox1.Controls.Add(this.label6);
         this.groupBox1.Location = new System.Drawing.Point(6, 6);
         this.groupBox1.Name = "groupBox1";
-        this.groupBox1.Size = new System.Drawing.Size(374, 89);
+        this.groupBox1.Size = new System.Drawing.Size(374, 102);
         this.groupBox1.TabIndex = 0;
         this.groupBox1.TabStop = false;
         this.groupBox1.Text = "Display settings";
@@ -342,7 +344,7 @@ namespace Terminals
         // chkConnectToConsole
         // 
         this.chkConnectToConsole.AutoSize = true;
-        this.chkConnectToConsole.Location = new System.Drawing.Point(11, 139);
+        this.chkConnectToConsole.Location = new System.Drawing.Point(11, 151);
         this.chkConnectToConsole.Name = "chkConnectToConsole";
         this.chkConnectToConsole.Size = new System.Drawing.Size(120, 17);
         this.chkConnectToConsole.TabIndex = 3;
@@ -606,6 +608,16 @@ namespace Terminals
         this.folderBrowserDialog.Description = "Select Desktop Share:";
         this.folderBrowserDialog.ShowNewFolderButton = false;
         // 
+        // chkAllowDesktopBG
+        // 
+        this.chkAllowDesktopBG.AutoSize = true;
+        this.chkAllowDesktopBG.Location = new System.Drawing.Point(124, 77);
+        this.chkAllowDesktopBG.Name = "chkAllowDesktopBG";
+        this.chkAllowDesktopBG.Size = new System.Drawing.Size(151, 17);
+        this.chkAllowDesktopBG.TabIndex = 4;
+        this.chkAllowDesktopBG.Text = "Allow desktop &background";
+        this.chkAllowDesktopBG.UseVisualStyleBackColor = true;
+        // 
         // NewTerminalForm
         // 
         this.AcceptButton = this.btnOk;
@@ -698,5 +710,6 @@ namespace Terminals
       private System.Windows.Forms.CheckBox chkRedirectDevices;
       private System.Windows.Forms.CheckBox chkRedirectClipboard;
       private System.Windows.Forms.CheckBox chkRedirectSmartcards;
+      private System.Windows.Forms.CheckBox chkAllowDesktopBG;
   }
 }

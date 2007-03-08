@@ -70,6 +70,7 @@ namespace Terminals
             cmbResolution.SelectedIndex = (int)favorite.DesktopSize;
             cmbColors.SelectedIndex = (int)favorite.Colors;
             chkConnectToConsole.Checked = favorite.ConnectToConsole;
+            chkAllowDesktopBG.Checked = favorite.ShowDesktopBackground;
             chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Name);
             chkDrives.Checked = favorite.RedirectDrives;
             chkSerialPorts.Checked = favorite.RedirectPorts;
@@ -98,6 +99,7 @@ namespace Terminals
                 favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
                 favorite.Colors = (Colors)cmbColors.SelectedIndex;
                 favorite.ConnectToConsole = chkConnectToConsole.Checked;
+                favorite.ShowDesktopBackground = chkAllowDesktopBG.Checked;
                 favorite.RedirectDrives = chkDrives.Checked;
                 favorite.RedirectPorts = chkSerialPorts.Checked;
                 favorite.RedirectPrinters = chkPrinters.Checked;

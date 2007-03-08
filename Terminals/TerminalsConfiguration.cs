@@ -794,6 +794,31 @@ namespace Terminals
                 this["executeBeforeConnectWaitForExit"] = value;
             }
         }
+
+        [ConfigurationProperty("showDesktopBackground")]
+        public bool ShowDesktopBackground
+        {
+            get
+            {
+                return (bool)this["showDesktopBackground"];
+            }
+            set
+            {
+                this["showDesktopBackground"] = value;
+            }
+        }
+
+        public int PerformanceFlags
+        {
+            get
+            {
+                int result = 0;
+                if (!ShowDesktopBackground)
+                    result = result | 1;
+                //TODO: Add more performance flags
+                return result;
+            }
+        }
     }
 
     public class GroupConfigurationElementCollection : ConfigurationElementCollection
