@@ -527,9 +527,11 @@ namespace Terminals
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             TabControlItem selectedTabPage = (TabControlItem)(client.Parent);
+            bool wasSelected = selectedTabPage.Selected;
             tcTerminals.RemoveTab(selectedTabPage);
             tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
-            NativeApi.PostMessage(new HandleRef(this, this.Handle), WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+            if (wasSelected)
+                NativeApi.PostMessage(new HandleRef(this, this.Handle), WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
             UpdateControls();
         }
 

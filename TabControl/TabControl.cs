@@ -201,6 +201,7 @@ namespace TabControl
         public void RemoveTab(TabControlItem tabItem)
         {
             int tabIndex = Items.IndexOf(tabItem);
+            bool wasSelected = tabItem.Selected;
 
             if (tabIndex >= 0)
             {
@@ -208,7 +209,7 @@ namespace TabControl
                 Items.Remove(tabItem);
             }
 
-            if (Items.Count > 0)
+            if (wasSelected && Items.Count > 0)
             {
                 if (RightToLeft == RightToLeft.No)
                 {
