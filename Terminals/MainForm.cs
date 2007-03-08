@@ -441,7 +441,13 @@ namespace Terminals
                             SetGrabInput(true);
                         }
                         else
-                            SetGrabInput(false);
+                        {
+                            TabControlItem item = tcTerminals.GetTabItemByPoint(tcTerminals.PointToClient(Form.MousePosition));
+                            if (item == null)
+                                SetGrabInput(false);
+                            else if (item == selectedTab)
+                                SetGrabInput(true); //Grab input if clicking on currently selected tab
+                        }
                     }
                     else
                         SetGrabInput(false);
@@ -674,6 +680,7 @@ namespace Terminals
             {
                 tsbDisconnect.Enabled = e.Item != null;
                 disconnectToolStripMenuItem.Enabled = e.Item != null;
+                SetGrabInput(true);
             }
         }
 
