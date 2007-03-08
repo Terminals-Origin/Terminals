@@ -216,6 +216,19 @@ namespace Terminals
                 this["executeBeforeConnectWaitForExit"] = value;
             }
         }
+
+        [ConfigurationProperty("singleInstance")]
+        public bool SingleInstance
+        {
+            get
+            {
+                return (bool)this["singleInstance"];
+            }
+            set
+            {
+                this["singleInstance"] = value;
+            }
+        }
     }
 
     public class MRUItemConfigurationElementCollection : ConfigurationElementCollection
@@ -382,7 +395,8 @@ namespace Terminals
 
     public class FavoriteConfigurationElementCollection : ConfigurationElementCollection
     {
-        public FavoriteConfigurationElementCollection():base(StringComparer.CurrentCultureIgnoreCase)
+        public FavoriteConfigurationElementCollection()
+            : base(StringComparer.CurrentCultureIgnoreCase)
         {
         }
 
@@ -573,7 +587,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("desktopSize", IsRequired = true)]
+        [ConfigurationProperty("desktopSize", IsRequired = true, DefaultValue = DesktopSize.FitToWindow)]
         public DesktopSize DesktopSize
         {
             get
@@ -586,7 +600,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("colors", IsRequired = true)]
+        [ConfigurationProperty("colors", IsRequired = true, DefaultValue = Colors.Bits32)]
         public Colors Colors
         {
             get
@@ -599,7 +613,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("sounds", DefaultValue=RemoteSounds.DontPlay)]
+        [ConfigurationProperty("sounds", DefaultValue = RemoteSounds.DontPlay)]
         public RemoteSounds Sounds
         {
             get
@@ -664,7 +678,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("redirectClipboard", DefaultValue=true)]
+        [ConfigurationProperty("redirectClipboard", DefaultValue = true)]
         public bool RedirectClipboard
         {
             get
@@ -690,7 +704,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("port",DefaultValue=3389)]
+        [ConfigurationProperty("port", DefaultValue = 3389)]
         public int Port
         {
             get

@@ -34,7 +34,6 @@ namespace Terminals
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
-            this.tpExecuteBeforeConnect = new System.Windows.Forms.TabPage();
             this.lblEvaluatedDesktopShare = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtDefaultDesktopShare = new System.Windows.Forms.TextBox();
@@ -42,6 +41,7 @@ namespace Terminals
             this.chkShowFullInfo = new System.Windows.Forms.CheckBox();
             this.chkShowUserNameInTitle = new System.Windows.Forms.CheckBox();
             this.chkShowInformationToolTips = new System.Windows.Forms.CheckBox();
+            this.tpExecuteBeforeConnect = new System.Windows.Forms.TabPage();
             this.txtInitialDirectory = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this.chkExecuteBeforeConnect = new System.Windows.Forms.CheckBox();
@@ -50,6 +50,7 @@ namespace Terminals
             this.chkWaitForExit = new System.Windows.Forms.CheckBox();
             this.txtCommand = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
+            this.chkSingleInstance = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
@@ -112,6 +113,7 @@ namespace Terminals
             // 
             // tpGeneral
             // 
+            this.tpGeneral.Controls.Add(this.chkSingleInstance);
             this.tpGeneral.Controls.Add(this.lblEvaluatedDesktopShare);
             this.tpGeneral.Controls.Add(this.label3);
             this.tpGeneral.Controls.Add(this.txtDefaultDesktopShare);
@@ -127,24 +129,6 @@ namespace Terminals
             this.tpGeneral.Text = "General";
             this.tpGeneral.UseVisualStyleBackColor = true;
             // 
-            // tpExecuteBeforeConnect
-            // 
-            this.tpExecuteBeforeConnect.Controls.Add(this.txtInitialDirectory);
-            this.tpExecuteBeforeConnect.Controls.Add(this.label13);
-            this.tpExecuteBeforeConnect.Controls.Add(this.chkExecuteBeforeConnect);
-            this.tpExecuteBeforeConnect.Controls.Add(this.txtArguments);
-            this.tpExecuteBeforeConnect.Controls.Add(this.label12);
-            this.tpExecuteBeforeConnect.Controls.Add(this.chkWaitForExit);
-            this.tpExecuteBeforeConnect.Controls.Add(this.txtCommand);
-            this.tpExecuteBeforeConnect.Controls.Add(this.label11);
-            this.tpExecuteBeforeConnect.Location = new System.Drawing.Point(4, 22);
-            this.tpExecuteBeforeConnect.Name = "tpExecuteBeforeConnect";
-            this.tpExecuteBeforeConnect.Padding = new System.Windows.Forms.Padding(3);
-            this.tpExecuteBeforeConnect.Size = new System.Drawing.Size(392, 182);
-            this.tpExecuteBeforeConnect.TabIndex = 1;
-            this.tpExecuteBeforeConnect.Text = "Execute Before Connect";
-            this.tpExecuteBeforeConnect.UseVisualStyleBackColor = true;
-            // 
             // lblEvaluatedDesktopShare
             // 
             this.lblEvaluatedDesktopShare.AutoSize = true;
@@ -157,7 +141,7 @@ namespace Terminals
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(16, 139);
+            this.label3.Location = new System.Drawing.Point(13, 159);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(264, 13);
             this.label3.TabIndex = 12;
@@ -165,7 +149,7 @@ namespace Terminals
             // 
             // txtDefaultDesktopShare
             // 
-            this.txtDefaultDesktopShare.Location = new System.Drawing.Point(16, 107);
+            this.txtDefaultDesktopShare.Location = new System.Drawing.Point(13, 127);
             this.txtDefaultDesktopShare.Name = "txtDefaultDesktopShare";
             this.txtDefaultDesktopShare.Size = new System.Drawing.Size(360, 21);
             this.txtDefaultDesktopShare.TabIndex = 11;
@@ -174,7 +158,7 @@ namespace Terminals
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 83);
+            this.label2.Location = new System.Drawing.Point(13, 103);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(283, 13);
             this.label2.TabIndex = 10;
@@ -210,6 +194,24 @@ namespace Terminals
             this.chkShowInformationToolTips.Text = "Show &connection information in tool tips";
             this.chkShowInformationToolTips.UseVisualStyleBackColor = true;
             this.chkShowInformationToolTips.CheckedChanged += new System.EventHandler(this.chkShowInformationToolTips_CheckedChanged);
+            // 
+            // tpExecuteBeforeConnect
+            // 
+            this.tpExecuteBeforeConnect.Controls.Add(this.txtInitialDirectory);
+            this.tpExecuteBeforeConnect.Controls.Add(this.label13);
+            this.tpExecuteBeforeConnect.Controls.Add(this.chkExecuteBeforeConnect);
+            this.tpExecuteBeforeConnect.Controls.Add(this.txtArguments);
+            this.tpExecuteBeforeConnect.Controls.Add(this.label12);
+            this.tpExecuteBeforeConnect.Controls.Add(this.chkWaitForExit);
+            this.tpExecuteBeforeConnect.Controls.Add(this.txtCommand);
+            this.tpExecuteBeforeConnect.Controls.Add(this.label11);
+            this.tpExecuteBeforeConnect.Location = new System.Drawing.Point(4, 22);
+            this.tpExecuteBeforeConnect.Name = "tpExecuteBeforeConnect";
+            this.tpExecuteBeforeConnect.Padding = new System.Windows.Forms.Padding(3);
+            this.tpExecuteBeforeConnect.Size = new System.Drawing.Size(392, 182);
+            this.tpExecuteBeforeConnect.TabIndex = 1;
+            this.tpExecuteBeforeConnect.Text = "Execute Before Connect";
+            this.tpExecuteBeforeConnect.UseVisualStyleBackColor = true;
             // 
             // txtInitialDirectory
             // 
@@ -279,6 +281,16 @@ namespace Terminals
             this.label11.TabIndex = 15;
             this.label11.Text = "Command:";
             // 
+            // chkSingleInstance
+            // 
+            this.chkSingleInstance.AutoSize = true;
+            this.chkSingleInstance.Location = new System.Drawing.Point(13, 76);
+            this.chkSingleInstance.Name = "chkSingleInstance";
+            this.chkSingleInstance.Size = new System.Drawing.Size(219, 17);
+            this.chkSingleInstance.TabIndex = 14;
+            this.chkSingleInstance.Text = "Allow a &single instance of the application";
+            this.chkSingleInstance.UseVisualStyleBackColor = true;
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOk;
@@ -334,5 +346,6 @@ namespace Terminals
         private System.Windows.Forms.CheckBox chkWaitForExit;
         private System.Windows.Forms.TextBox txtCommand;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.CheckBox chkSingleInstance;
     }
 }

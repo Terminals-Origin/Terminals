@@ -23,6 +23,7 @@ namespace Terminals
             txtCommand.Text = Settings.ExecuteBeforeConnectCommand;
             txtInitialDirectory.Text = Settings.ExecuteBeforeConnectInitialDirectory;
             chkWaitForExit.Checked = Settings.ExecuteBeforeConnectWaitForExit;
+            chkSingleInstance.Checked = Settings.SingleInstance;
             currentTerminal = terminal;
         }
 
@@ -39,6 +40,7 @@ namespace Terminals
             Settings.ExecuteBeforeConnectCommand = txtCommand.Text;
             Settings.ExecuteBeforeConnectInitialDirectory = txtInitialDirectory.Text;
             Settings.ExecuteBeforeConnectWaitForExit = chkWaitForExit.Checked;
+            Settings.SingleInstance = chkSingleInstance.Checked;
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)

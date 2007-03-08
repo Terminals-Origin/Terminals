@@ -17,8 +17,6 @@ namespace Terminals
 {
     public partial class MainForm : Form
     {
-        [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        public static extern int PostMessage(HandleRef hwnd, int msg, IntPtr wparam, IntPtr lparam);
         const int WM_LEAVING_FULLSCREEN = 0x4ff;
 
         private bool fullScreen;
@@ -34,6 +32,7 @@ namespace Terminals
             LoadFavorites();
             LoadGroups();
             UpdateControls();
+            ProtocolHandler.Register();
         }
 
         protected override void SetVisibleCore(bool value)
@@ -327,6 +326,8 @@ namespace Terminals
             axMsRdpClient2.OnRequestGoFullScreen += new EventHandler(axMsTscAx_OnRequestGoFullScreen);
             axMsRdpClient2.OnRequestLeaveFullScreen += new EventHandler(axMsTscAx_OnRequestLeaveFullScreen);
             axMsRdpClient2.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(axMsTscAx_OnDisconnected);
+            axMsRdpClient2.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(axMsRdpClient2_OnWarning);
+            axMsRdpClient2.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(axMsRdpClient2_OnFatalError);
 
             if (!String.IsNullOrEmpty(favorite.Password))
             {
@@ -339,6 +340,16 @@ namespace Terminals
             terminalTabPage.TerminalControl = axMsRdpClient2;
             if (favorite.DesktopSize == DesktopSize.FullScreen)
                 FullScreen = true;
+        }
+
+        void axMsRdpClient2_OnFatalError(object sender, IMsTscAxEvents_OnFatalErrorEvent e)
+        {
+            //throw new Exception("The method or operation is not implemented.");
+        }
+
+        void axMsRdpClient2_OnWarning(object sender, IMsTscAxEvents_OnWarningEvent e)
+        {
+            //throw new Exception("The method or operation is not implemented.");
         }
 
         void terminalTabPage_DragEnter(object sender, DragEventArgs e)
@@ -462,6 +473,17 @@ namespace Terminals
                     else
                         this.BringToFront();
                 }
+                else if (msg.Msg == NativeApi.WM_COPYDATA)
+                {
+                    NativeApi.COPYDATASTRUCT data = (NativeApi.COPYDATASTRUCT)Marshal.PtrToStructure(msg.LParam, typeof(NativeApi.COPYDATASTRUCT));
+                    byte[] buffer = new byte[data.cbData];
+                    Marshal.Copy(data.lpData, buffer, 0, buffer.Length);
+                    string args = Encoding.Unicode.GetString(buffer);
+                    if (WindowState == FormWindowState.Minimized)
+                        WindowState = FormWindowState.Normal;
+                    Activate();
+                    ParseCommandline(args.Split('>'));
+                }
                 base.WndProc(ref msg);
             }
             catch (Exception e)
@@ -484,7 +506,7 @@ namespace Terminals
         {
             tsbGrabInput.Checked = false;
             UpdateControls();
-            PostMessage(new HandleRef(this, this.Handle), WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+            NativeApi.PostMessage(new HandleRef(this, this.Handle), WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
         }
 
         void axMsTscAx_OnRequestGoFullScreen(object sender, EventArgs e)
@@ -498,7 +520,7 @@ namespace Terminals
             TabControlItem selectedTabPage = (TabControlItem)((AxMsRdpClient2)sender).Parent;
             tcTerminals.RemoveTab(selectedTabPage);
             tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
-            PostMessage(new HandleRef(this, this.Handle), WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+            NativeApi.PostMessage(new HandleRef(this, this.Handle), WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
             UpdateControls();
         }
 
@@ -659,12 +681,43 @@ namespace Terminals
         private void ParseCommandline()
         {
             string[] cmdLineArgs = Environment.GetCommandLineArgs();
+            ParseCommandline(cmdLineArgs);
+        }
+
+        private void ParseCommandline(string[] cmdLineArgs)
+        {
             if (cmdLineArgs.Length > 1)
             {
                 for (int i = 1; i < cmdLineArgs.Length; i++)
                 {
-                    Connect(cmdLineArgs[i]);
+                    string arg = cmdLineArgs[i];
+                    if (arg[0] != '/')
+                        QuickConnect(arg, 0);
+                    else if (arg.StartsWith("/url:"))
+                    {
+                        string server; int port;
+                        ProtocolHandler.Parse(arg, out server, out port);
+                        QuickConnect(server, port);
+                    }
                 }
+            }
+        }
+
+        private void QuickConnect(string server, int port)
+        {
+            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            FavoriteConfigurationElement favorite = favorites[server];
+            if (favorite != null)
+                CreateTerminalTab(favorite);
+            else
+            {
+                //create a temporaty favorite and connect to it
+                favorite = new FavoriteConfigurationElement();
+                favorite.ServerName = server;
+                favorite.Name = server;
+                if (port != 0)
+                    favorite.Port = port;
+                CreateTerminalTab(favorite);
             }
         }
 

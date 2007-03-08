@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="DPAPI.cs" />
     <Compile Include="FormSettings.cs" />
+    <Compile Include="NativeApi.cs" />
     <Compile Include="NewGroupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -168,6 +169,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ProtocolHandler.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SHApi.cs" />
     <Compile Include="SHFileOperationWrapper.cs" />

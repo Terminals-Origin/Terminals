@@ -396,5 +396,19 @@ namespace Terminals
                 return _supportsRDP6.Value;
             }
         }
+
+        public static bool SingleInstance
+        {
+            get
+            {
+                return GetSection().SingleInstance;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).SingleInstance = value;
+                configuration.Save();
+            }
+        }
     }
 }
