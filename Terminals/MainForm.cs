@@ -622,7 +622,7 @@ namespace Terminals
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //ToolStripManager.LoadSettings(this);
+            ToolStripManager.LoadSettings(this);
             tscConnectTo.Focus();
         }
 
@@ -873,7 +873,7 @@ namespace Terminals
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            //ToolStripManager.SaveSettings(this);
+            ToolStripManager.SaveSettings(this);
         }
 
         private void timerHover_Tick(object sender, EventArgs e)
