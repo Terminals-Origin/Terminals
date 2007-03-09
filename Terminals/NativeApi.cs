@@ -22,6 +22,8 @@ namespace Terminals
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessage(HandleRef hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern bool ShowWindow(HandleRef hWnd, int nCmdShow);
 
         public static IntPtr PinObject(object obj)
         {

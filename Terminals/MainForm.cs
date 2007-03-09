@@ -481,7 +481,8 @@ namespace Terminals
                     Marshal.Copy(data.lpData, buffer, 0, buffer.Length);
                     string args = Encoding.Unicode.GetString(buffer);
                     if (WindowState == FormWindowState.Minimized)
-                        WindowState = FormWindowState.Normal;
+                        NativeApi.ShowWindow(new HandleRef(this, this.Handle), 9);
+                        //WindowState = FormWindowState.Normal;
                     Activate();
                     ParseCommandline(args.Split('>'));
                 }
