@@ -25,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis Condition="'$(USERNAME)' == 'tfsservice1'">True</RunCodeAnalysis>
     <!-- <RunCodeAnalysis Condition="'$(ComputerName)' == 'ILBUILD01'">True</RunCodeAnalysis>-->
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -93,7 +94,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -173,6 +174,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="SHApi.cs" />
     <Compile Include="SHFileOperationWrapper.cs" />
+    <Compile Include="SingleInstanceApplication.cs" />
     <Compile Include="TerminalsConfiguration.cs" />
     <None Include="WTSApi32.cs" />
   </ItemGroup>

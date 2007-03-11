@@ -33,6 +33,17 @@ namespace Terminals
             LoadGroups();
             UpdateControls();
             ProtocolHandler.Register();
+            SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
+        }
+
+        void SingleInstanceApplication_NewInstanceMessage(object sender, object message)
+        {
+            if (WindowState == FormWindowState.Minimized)
+                NativeApi.ShowWindow(new HandleRef(this, this.Handle), 9);
+            Activate();
+            string[] commandLine = (string[])message;
+            if (commandLine != null)
+                ParseCommandline(commandLine);
         }
 
         protected override void SetVisibleCore(bool value)
@@ -474,18 +485,18 @@ namespace Terminals
                     else
                         this.BringToFront();
                 }
-                else if (msg.Msg == NativeApi.WM_COPYDATA)
-                {
-                    NativeApi.COPYDATASTRUCT data = (NativeApi.COPYDATASTRUCT)Marshal.PtrToStructure(msg.LParam, typeof(NativeApi.COPYDATASTRUCT));
-                    byte[] buffer = new byte[data.cbData];
-                    Marshal.Copy(data.lpData, buffer, 0, buffer.Length);
-                    string args = Encoding.Unicode.GetString(buffer);
-                    if (WindowState == FormWindowState.Minimized)
-                        NativeApi.ShowWindow(new HandleRef(this, this.Handle), 9);
-                        //WindowState = FormWindowState.Normal;
-                    Activate();
-                    ParseCommandline(args.Split('>'));
-                }
+                //else if (msg.Msg == NativeApi.WM_COPYDATA)
+                //{
+                //    NativeApi.COPYDATASTRUCT data = (NativeApi.COPYDATASTRUCT)Marshal.PtrToStructure(msg.LParam, typeof(NativeApi.COPYDATASTRUCT));
+                //    byte[] buffer = new byte[data.cbData];
+                //    Marshal.Copy(data.lpData, buffer, 0, buffer.Length);
+                //    string args = Encoding.Unicode.GetString(buffer);
+                //    if (WindowState == FormWindowState.Minimized)
+                //        NativeApi.ShowWindow(new HandleRef(this, this.Handle), 9);
+                //        //WindowState = FormWindowState.Normal;
+                //    Activate();
+                //    ParseCommandline(args.Split('>'));
+                //}
                 base.WndProc(ref msg);
             }
             catch (Exception e)
