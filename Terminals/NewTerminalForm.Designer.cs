@@ -49,6 +49,7 @@ namespace Terminals
         this.txtPort = new System.Windows.Forms.TextBox();
         this.lblPort = new System.Windows.Forms.Label();
         this.groupBox1 = new System.Windows.Forms.GroupBox();
+        this.chkAllowDesktopBG = new System.Windows.Forms.CheckBox();
         this.cmbColors = new System.Windows.Forms.ComboBox();
         this.label7 = new System.Windows.Forms.Label();
         this.cmbResolution = new System.Windows.Forms.ComboBox();
@@ -76,17 +77,27 @@ namespace Terminals
         this.chkWaitForExit = new System.Windows.Forms.CheckBox();
         this.txtCommand = new System.Windows.Forms.TextBox();
         this.label11 = new System.Windows.Forms.Label();
+        this.tpTags = new System.Windows.Forms.TabPage();
+        this.btnAddNewTag = new System.Windows.Forms.Button();
+        this.txtTag = new System.Windows.Forms.TextBox();
+        this.label14 = new System.Windows.Forms.Label();
+        this.panel1 = new System.Windows.Forms.Panel();
+        this.groupBox3 = new System.Windows.Forms.GroupBox();
+        this.btnRemoveTag = new System.Windows.Forms.Button();
+        this.lvConnectionTags = new System.Windows.Forms.ListView();
         this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
-        this.pictureBox1 = new System.Windows.Forms.PictureBox();
         this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
         this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-        this.chkAllowDesktopBG = new System.Windows.Forms.CheckBox();
+        this.pictureBox1 = new System.Windows.Forms.PictureBox();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         this.tabPage2.SuspendLayout();
         this.groupBox1.SuspendLayout();
         this.tabPage3.SuspendLayout();
         this.tabPage4.SuspendLayout();
+        this.tpTags.SuspendLayout();
+        this.panel1.SuspendLayout();
+        this.groupBox3.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
         this.SuspendLayout();
         // 
@@ -119,6 +130,7 @@ namespace Terminals
         this.tabControl1.Controls.Add(this.tabPage2);
         this.tabControl1.Controls.Add(this.tabPage3);
         this.tabControl1.Controls.Add(this.tabPage4);
+        this.tabControl1.Controls.Add(this.tpTags);
         this.tabControl1.Location = new System.Drawing.Point(6, 77);
         this.tabControl1.Name = "tabControl1";
         this.tabControl1.SelectedIndex = 0;
@@ -292,6 +304,16 @@ namespace Terminals
         this.groupBox1.TabIndex = 0;
         this.groupBox1.TabStop = false;
         this.groupBox1.Text = "Display settings";
+        // 
+        // chkAllowDesktopBG
+        // 
+        this.chkAllowDesktopBG.AutoSize = true;
+        this.chkAllowDesktopBG.Location = new System.Drawing.Point(124, 77);
+        this.chkAllowDesktopBG.Name = "chkAllowDesktopBG";
+        this.chkAllowDesktopBG.Size = new System.Drawing.Size(151, 17);
+        this.chkAllowDesktopBG.TabIndex = 4;
+        this.chkAllowDesktopBG.Text = "Allow desktop &background";
+        this.chkAllowDesktopBG.UseVisualStyleBackColor = true;
         // 
         // cmbColors
         // 
@@ -582,6 +604,91 @@ namespace Terminals
         this.label11.TabIndex = 4;
         this.label11.Text = "Command:";
         // 
+        // tpTags
+        // 
+        this.tpTags.Controls.Add(this.btnAddNewTag);
+        this.tpTags.Controls.Add(this.txtTag);
+        this.tpTags.Controls.Add(this.label14);
+        this.tpTags.Controls.Add(this.panel1);
+        this.tpTags.Location = new System.Drawing.Point(4, 22);
+        this.tpTags.Name = "tpTags";
+        this.tpTags.Padding = new System.Windows.Forms.Padding(3);
+        this.tpTags.Size = new System.Drawing.Size(386, 183);
+        this.tpTags.TabIndex = 4;
+        this.tpTags.Text = "Tags";
+        this.tpTags.UseVisualStyleBackColor = true;
+        // 
+        // btnAddNewTag
+        // 
+        this.btnAddNewTag.Image = global::Terminals.Properties.Resources.tag_blue_add;
+        this.btnAddNewTag.Location = new System.Drawing.Point(355, 8);
+        this.btnAddNewTag.Name = "btnAddNewTag";
+        this.btnAddNewTag.Size = new System.Drawing.Size(21, 21);
+        this.btnAddNewTag.TabIndex = 12;
+        this.btnAddNewTag.UseVisualStyleBackColor = true;
+        this.btnAddNewTag.Click += new System.EventHandler(this.btnAddNewTag_Click);
+        // 
+        // txtTag
+        // 
+        this.txtTag.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+        this.txtTag.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+        this.txtTag.Location = new System.Drawing.Point(64, 8);
+        this.txtTag.Name = "txtTag";
+        this.txtTag.Size = new System.Drawing.Size(288, 21);
+        this.txtTag.TabIndex = 2;
+        // 
+        // label14
+        // 
+        this.label14.AutoSize = true;
+        this.label14.Location = new System.Drawing.Point(8, 8);
+        this.label14.Name = "label14";
+        this.label14.Size = new System.Drawing.Size(53, 13);
+        this.label14.TabIndex = 1;
+        this.label14.Text = "New Tag:";
+        // 
+        // panel1
+        // 
+        this.panel1.Controls.Add(this.groupBox3);
+        this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+        this.panel1.Location = new System.Drawing.Point(3, 40);
+        this.panel1.Name = "panel1";
+        this.panel1.Size = new System.Drawing.Size(380, 140);
+        this.panel1.TabIndex = 0;
+        // 
+        // groupBox3
+        // 
+        this.groupBox3.Controls.Add(this.btnRemoveTag);
+        this.groupBox3.Controls.Add(this.lvConnectionTags);
+        this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.groupBox3.Location = new System.Drawing.Point(0, 0);
+        this.groupBox3.Name = "groupBox3";
+        this.groupBox3.Size = new System.Drawing.Size(380, 140);
+        this.groupBox3.TabIndex = 1;
+        this.groupBox3.TabStop = false;
+        this.groupBox3.Text = "Connection Tags";
+        // 
+        // btnRemoveTag
+        // 
+        this.btnRemoveTag.Image = global::Terminals.Properties.Resources.tag_blue_delete;
+        this.btnRemoveTag.Location = new System.Drawing.Point(352, 24);
+        this.btnRemoveTag.Name = "btnRemoveTag";
+        this.btnRemoveTag.Size = new System.Drawing.Size(21, 21);
+        this.btnRemoveTag.TabIndex = 13;
+        this.btnRemoveTag.UseVisualStyleBackColor = true;
+        this.btnRemoveTag.Click += new System.EventHandler(this.btnRemoveTag_Click);
+        // 
+        // lvConnectionTags
+        // 
+        this.lvConnectionTags.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                    | System.Windows.Forms.AnchorStyles.Left)
+                    | System.Windows.Forms.AnchorStyles.Right)));
+        this.lvConnectionTags.HideSelection = false;
+        this.lvConnectionTags.Location = new System.Drawing.Point(8, 24);
+        this.lvConnectionTags.Name = "lvConnectionTags";
+        this.lvConnectionTags.Size = new System.Drawing.Size(344, 104);
+        this.lvConnectionTags.TabIndex = 1;
+        this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
+        // 
         // chkAddtoToolbar
         // 
         this.chkAddtoToolbar.AutoSize = true;
@@ -591,6 +698,11 @@ namespace Terminals
         this.chkAddtoToolbar.TabIndex = 10;
         this.chkAddtoToolbar.Text = "Add to &Toolbar";
         this.chkAddtoToolbar.UseVisualStyleBackColor = true;
+        // 
+        // folderBrowserDialog
+        // 
+        this.folderBrowserDialog.Description = "Select Desktop Share:";
+        this.folderBrowserDialog.ShowNewFolderButton = false;
         // 
         // pictureBox1
         // 
@@ -603,27 +715,10 @@ namespace Terminals
         this.pictureBox1.TabIndex = 9;
         this.pictureBox1.TabStop = false;
         // 
-        // folderBrowserDialog
-        // 
-        this.folderBrowserDialog.Description = "Select Desktop Share:";
-        this.folderBrowserDialog.ShowNewFolderButton = false;
-        // 
-        // chkAllowDesktopBG
-        // 
-        this.chkAllowDesktopBG.AutoSize = true;
-        this.chkAllowDesktopBG.Location = new System.Drawing.Point(124, 77);
-        this.chkAllowDesktopBG.Name = "chkAllowDesktopBG";
-        this.chkAllowDesktopBG.Size = new System.Drawing.Size(151, 17);
-        this.chkAllowDesktopBG.TabIndex = 4;
-        this.chkAllowDesktopBG.Text = "Allow desktop &background";
-        this.chkAllowDesktopBG.UseVisualStyleBackColor = true;
-        // 
         // NewTerminalForm
         // 
-        this.AcceptButton = this.btnOk;
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.CancelButton = this.btnCancel;
         this.ClientSize = new System.Drawing.Size(407, 334);
         this.Controls.Add(this.chkAddtoToolbar);
         this.Controls.Add(this.tabControl1);
@@ -652,6 +747,10 @@ namespace Terminals
         this.tabPage3.PerformLayout();
         this.tabPage4.ResumeLayout(false);
         this.tabPage4.PerformLayout();
+        this.tpTags.ResumeLayout(false);
+        this.tpTags.PerformLayout();
+        this.panel1.ResumeLayout(false);
+        this.groupBox3.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
         this.ResumeLayout(false);
         this.PerformLayout();
@@ -711,5 +810,13 @@ namespace Terminals
       private System.Windows.Forms.CheckBox chkRedirectClipboard;
       private System.Windows.Forms.CheckBox chkRedirectSmartcards;
       private System.Windows.Forms.CheckBox chkAllowDesktopBG;
+      private System.Windows.Forms.TabPage tpTags;
+      private System.Windows.Forms.Label label14;
+      private System.Windows.Forms.Panel panel1;
+      private System.Windows.Forms.GroupBox groupBox3;
+      private System.Windows.Forms.Button btnAddNewTag;
+      private System.Windows.Forms.ListView lvConnectionTags;
+      private System.Windows.Forms.Button btnRemoveTag;
+      private System.Windows.Forms.TextBox txtTag;
   }
 }

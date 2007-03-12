@@ -81,6 +81,13 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap application_lightning {
+            get {
+                object obj = ResourceManager.GetObject("application_lightning", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap application_put {
             get {
                 object obj = ResourceManager.GetObject("application_put", resourceCulture);
@@ -161,6 +168,27 @@ namespace Terminals.Properties {
         internal static System.Drawing.Bitmap smallterm {
             get {
                 object obj = ResourceManager.GetObject("smallterm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap tag {
+            get {
+                object obj = ResourceManager.GetObject("tag", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap tag_blue_add {
+            get {
+                object obj = ResourceManager.GetObject("tag_blue_add", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap tag_blue_delete {
+            get {
+                object obj = ResourceManager.GetObject("tag_blue_delete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

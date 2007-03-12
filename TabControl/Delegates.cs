@@ -28,7 +28,6 @@ namespace TabControl
             get { return _cancel; }
             set { _cancel = value; }
         }
-
     }
 
     #endregion
@@ -87,7 +86,8 @@ namespace TabControl
 
     public delegate void TabControlItemChangedHandler(TabControlItemChangedEventArgs e);
     public delegate void TabControlItemClosingHandler(TabControlItemClosingEventArgs e);
+    public delegate void TabControlMouseEnteredTitleHandler(TabControlMouseOnTitleEventArgs e);
     public delegate void TabControlMouseOnTitleHandler(TabControlMouseOnTitleEventArgs e);
-    public delegate void TabControlMouseLeftTitleHandler(EventArgs e);
+    public delegate void TabControlMouseLeftTitleHandler(TabControlMouseOnTitleEventArgs e);
 
 }

@@ -12,6 +12,8 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using TabControl;
 using System.IO;
+using Crownwood.Magic.Docking;
+using Crownwood.Magic.Common;
 
 namespace Terminals
 {
@@ -24,14 +26,21 @@ namespace Terminals
         private Size lastSize;
         private FormWindowState lastState;
         FormSettings _formSettings;
+        private ImageFormatHandler imageFormatHandler;
+        private ScreenCapture screenCapture;
+        private PictureBox previewPictureBox;
+        private DockingManager dockingManager;
 
         public MainForm()
         {
+            imageFormatHandler = new ImageFormatHandler();
+            screenCapture = new ScreenCapture(imageFormatHandler);
             _formSettings = new FormSettings(this);
             InitializeComponent();
             LoadFavorites();
             LoadGroups();
             UpdateControls();
+            CreateDocking();
             ProtocolHandler.Register();
             SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
         }
@@ -46,11 +55,23 @@ namespace Terminals
                 ParseCommandline(commandLine);
         }
 
+        private void CreateDocking()
+        {
+            dockingManager = new DockingManager(this, VisualStyle.IDE);
+            Content tagsContent = new Content(dockingManager);
+            tagsContent.Title = "Tags";
+            dockingManager.Contents.Add(tagsContent);
+            dockingManager.AddContentWithState(tagsContent, State.DockLeft);
+            dockingManager.HideContent(tagsContent);
+            dockingManager.ShowContent(tagsContent);
+        }
+
         protected override void SetVisibleCore(bool value)
         {
             _formSettings.LoadFormSize();
             base.SetVisibleCore(value);
         }
+
         public AxMsRdpClient2 CurrentTerminal
         {
             get
@@ -65,6 +86,15 @@ namespace Terminals
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void OpenSavedConnections()
+        {
+            foreach (string name in Settings.SavedConnections)
+            {
+                Connect(name);
+            }
+            Settings.ClearSavedConnectionsList();
         }
 
         private void UpdateControls()
@@ -580,7 +610,7 @@ namespace Terminals
             }
         }
 
-        private void Connect(string connectionName)
+        internal void Connect(string connectionName)
         {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             FavoriteConfigurationElement favorite = favorites[connectionName];
@@ -636,6 +666,7 @@ namespace Terminals
         {
             ToolStripManager.LoadSettings(this);
             tscConnectTo.Focus();
+            OpenSavedConnections();
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
@@ -785,6 +816,10 @@ namespace Terminals
             {
                 currentToolTip.Hide(currentToolTipItem);
             }
+            if (previewPictureBox != null)
+            {
+                previewPictureBox.Hide();
+            }
         }
 
         public bool FullScreen
@@ -883,8 +918,42 @@ namespace Terminals
             }
         }
 
+        private void SaveActiveConnections()
+        {
+            List<String> activeConnections = new List<string>();
+            foreach (TabControlItem item in tcTerminals.Items)
+            {
+                activeConnections.Add(item.Title);
+            }
+            Settings.CreateSavedConnectionsList(activeConnections.ToArray());
+        }
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (tcTerminals.Items.Count > 0)
+            {
+                if (Settings.ShowConfirmDialog)
+                {
+                    SaveActiveConnectionsForm frmSaveActiveConnections = new SaveActiveConnectionsForm();
+                    if (frmSaveActiveConnections.ShowDialog() == DialogResult.OK)
+                    {
+                        Settings.ShowConfirmDialog = !frmSaveActiveConnections.chkDontShowDialog.Checked;
+                        if (frmSaveActiveConnections.chkOpenOnNextTime.Checked)
+                        {
+                            SaveActiveConnections();
+                        }
+                        e.Cancel = false;
+                    }
+                    else
+                    {
+                        e.Cancel = true;
+                    }
+                }
+                else if (Settings.SaveConnectionsOnClose)
+                {
+                    SaveActiveConnections();
+                }                
+            }
             ToolStripManager.SaveSettings(this);
         }
 
@@ -932,6 +1001,7 @@ namespace Terminals
         {
             if (Settings.ShowInformationToolTips)
             {
+                //ToolTip
                 if ((currentToolTipItem != null) && (currentToolTipItem != e.Item))
                 {
                     currentToolTip.Hide(currentToolTipItem);
@@ -941,39 +1011,74 @@ namespace Terminals
                 currentToolTip.UseFading = true;
                 currentToolTip.UseAnimation = true;
                 currentToolTip.IsBalloon = false;
-                currentToolTip.Show(e.Item.ToolTipText, e.Item, (int)e.Item.StripRect.X, 2);
+                currentToolTip.Show(e.Item.ToolTipText, e.Item, (int)e.Item.StripRect.X + 322, 2);
                 currentToolTipItem = e.Item;
             }
         }
 
-        private void tcTerminals_TabControlMouseLeftTitle(EventArgs e)
+        private void tcTerminals_TabControlMouseLeftTitle(TabControlMouseOnTitleEventArgs e)
         {
             if (currentToolTipItem != null)
             {
                 currentToolTip.Hide(currentToolTipItem);
             }
-        }
-
-        /*private void tcTerminals_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            if (previewPictureBox != null)
             {
-                e.Effect = DragDropEffects.Copy;
-            }
-            else
-            {
-                e.Effect = DragDropEffects.None;
+                previewPictureBox.Image.Dispose();
+                previewPictureBox.Dispose();
+                previewPictureBox = null;
             }
         }
 
-        private void tcTerminals_DragOver(object sender, DragEventArgs e)
+        private void tcTerminals_TabControlMouseEnteredTitle(TabControlMouseOnTitleEventArgs e)
         {
-            TerminalTabControlItem item = (TerminalTabControlItem)tcTerminals.GetChildAtPoint(new Point(e.X, e.Y));
-            if ((item != null) && (item != tcTerminals.SelectedItem))
+            //Picture
+            previewPictureBox = new PictureBox();
+            previewPictureBox.BorderStyle = BorderStyle.FixedSingle;
+            previewPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            previewPictureBox.Size = new Size(320, 240);
+            Image capturedImage = screenCapture.CaptureControl(((TerminalTabControlItem)e.Item).TerminalControl);
+            previewPictureBox.Image = capturedImage;
+            previewPictureBox.Parent = tcTerminals.SelectedItem;
+            previewPictureBox.Location = new Point((int)e.Item.StripRect.X, 2);
+            previewPictureBox.BringToFront();
+            previewPictureBox.Show();
+            if (Settings.ShowInformationToolTips)
             {
-                tcTerminals.SelectedItem = (TerminalTabControlItem)item;
+                /*TerminalTabControlItem item = (TerminalTabControlItem)e.Item;
+                previewPictureBox = new PictureBox();
+                previewPictureBox.BorderStyle = BorderStyle.FixedSingle;
+                previewPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+                previewPictureBox.Size = new Size(320, 240);
+                string fileName = Path.GetTempPath() + e.Item.Title;
+                screenCapture.CaptureControl(((TerminalTabControlItem)e.Item).TerminalControl, fileName, ImageFormatHandler.ImageFormatTypes.imgPNG);
+                FileStream fileStream = new FileStream(fileName + ".PNG", FileMode.Open, FileAccess.Read);
+                previewPictureBox.Image = Image.FromStream(fileStream);
+                fileStream.Close();
+                previewPictureBox.Parent = item;
+                previewPictureBox.Location = new Point((int)e.Item.StripRect.X, 2);
+                previewPictureBox.BringToFront();
+                previewPictureBox.Show();*/
+                /*if ((currentToolTipItem != null) && (currentToolTipItem != e.Item))
+                {
+                    currentToolTip.Hide(currentToolTipItem);
+                }
+                currentToolTip.ToolTipTitle = "Connection information";
+                currentToolTip.ToolTipIcon = ToolTipIcon.Info;
+                currentToolTip.UseFading = true;
+                currentToolTip.UseAnimation = true;
+                currentToolTip.IsBalloon = false;
+                currentToolTip.Show(e.Item.ToolTipText, e.Item, (int)e.Item.StripRect.X, 2);
+                currentToolTipItem = e.Item;*/
             }
-        }*/
+        }
+
+        private void tsbTags_Click(object sender, EventArgs e)
+        {
+            /*TagsForm frmTags = new TagsForm(this);
+            frmTags.Show(this);*/
+            //if (tsbTags.Checked 
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem

@@ -97,6 +97,20 @@ namespace Terminals
             configuration.Save();
         }
 
+        public static void AddTag(string tag)
+        {
+            Configuration configuration = GetConfiguration();
+            AddMRUItemConfigurationElement(GetSection(configuration).Tags, tag);
+            configuration.Save();
+        }
+
+        public static void DeleteTag(string tag)
+        {
+            Configuration configuration = GetConfiguration();
+            DeleteMRUItemConfigurationElement(GetSection(configuration).Tags, tag);
+            configuration.Save();
+        }
+
         public static void CreateFavoritesToolbarButtonsList(string[] names)
         {
             Configuration configuration = GetConfiguration();
@@ -106,6 +120,31 @@ namespace Terminals
             {
                 AddFavoriteButton(name);
             }
+        }
+
+        public static void AddConnection(string name)
+        {
+            Configuration configuration = GetConfiguration();
+            AddMRUItemConfigurationElement(GetSection(configuration).SavedConnections, name);
+            configuration.Save();
+        }
+
+        public static void CreateSavedConnectionsList(string[] names)
+        {
+            Configuration configuration = GetConfiguration();
+            GetSection(configuration).SavedConnections.Clear();
+            configuration.Save();
+            foreach (string name in names)
+            {
+                AddConnection(name);
+            }
+        }
+
+        public static void ClearSavedConnectionsList()
+        {
+            Configuration configuration = GetConfiguration();
+            GetSection(configuration).SavedConnections.Clear();
+            configuration.Save();
         }
 
         private static List<string> ReadList(MRUItemConfigurationElementCollection configurationElementCollection)
@@ -150,6 +189,22 @@ namespace Terminals
             }
         }
 
+        public static string[] SavedConnections
+        {
+            get
+            {
+                return ReadList(GetSection().SavedConnections).ToArray();
+            }
+        }
+
+        public static string[] Tags
+        {
+            get
+            {
+                return ReadList(GetSection().Tags).ToArray();
+            }
+        }
+
         public static FavoriteConfigurationElementCollection GetFavorites()
         {
             return GetSection().Favorites;
@@ -183,6 +238,7 @@ namespace Terminals
             editedFavorite.ExecuteBeforeConnectInitialDirectory = favorite.ExecuteBeforeConnectInitialDirectory;
             editedFavorite.ExecuteBeforeConnectWaitForExit = favorite.ExecuteBeforeConnectWaitForExit;
             editedFavorite.ShowDesktopBackground = favorite.ShowDesktopBackground;
+            editedFavorite.Tags = favorite.Tags;
             configuration.Save();
         }
 
@@ -374,6 +430,35 @@ namespace Terminals
                 configuration.Save();
             }
         }
+
+        public static bool ShowConfirmDialog
+        {
+            get
+            {
+                return GetSection().ShowConfirmDialog;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ShowConfirmDialog = value;
+                configuration.Save();
+            }
+        }
+
+        public static bool SaveConnectionsOnClose
+        {
+            get
+            {
+                return GetSection().SaveConnectionsOnClose;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).SaveConnectionsOnClose = value;
+                configuration.Save();
+            }
+        }
+
 
         private static bool? _supportsRDP6;
 

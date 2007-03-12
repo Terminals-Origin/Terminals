@@ -100,6 +100,20 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("tags")]
+        [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]
+        public MRUItemConfigurationElementCollection Tags
+        {
+            get
+            {
+                return (MRUItemConfigurationElementCollection)this["tags"];
+            }
+            set
+            {
+                this["tags"] = value;
+            }
+        }
+
         [ConfigurationProperty("showUserNameInTitle")]
         public bool ShowUserNameInTitle
         {
@@ -214,6 +228,46 @@ namespace Terminals
             set
             {
                 this["executeBeforeConnectWaitForExit"] = value;
+            }
+        }
+
+        [ConfigurationProperty("showConfirmDialog")]
+        public bool ShowConfirmDialog
+        {
+            get
+            {
+                return (bool)this["showConfirmDialog"];
+            }
+            set
+            {
+                this["showConfirmDialog"] = value;
+            }
+        }
+
+        [ConfigurationProperty("saveConnectionsOnClose")]
+        public bool SaveConnectionsOnClose
+        {
+            get
+            {
+                return (bool)this["saveConnectionsOnClose"];
+            }
+            set
+            {
+                this["saveConnectionsOnClose"] = value;
+            }
+        }
+
+        [ConfigurationProperty("savedConnectionsList")]
+        [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]
+        public MRUItemConfigurationElementCollection SavedConnections
+        {
+            get
+            {
+                return (MRUItemConfigurationElementCollection)this["savedConnectionsList"];
+            }
+            set
+            {
+                this["savedConnectionsList"] = value;
             }
         }
 
@@ -805,6 +859,36 @@ namespace Terminals
             set
             {
                 this["showDesktopBackground"] = value;
+            }
+        }
+
+        [ConfigurationProperty("tags")]
+        public string Tags
+        {
+            get
+            {
+                return (string)this["tags"];
+            }
+            set
+            {
+                this["tags"] =  value;
+            }
+        }
+
+        public List<string> TagList
+        {
+            get
+            {
+                List<string> tagList = new List<string>();
+                string[] splittedTags = Tags.Split(',');
+                if (!((splittedTags.Length == 1) && (String.IsNullOrEmpty(splittedTags[0]))))
+                {
+                    foreach (string tag in splittedTags)
+                    {
+                        tagList.Add(tag);
+                    }
+                }
+                return tagList;
             }
         }
 

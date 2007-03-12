@@ -50,6 +50,7 @@ namespace Terminals
             cmbServers.Items.AddRange(Settings.MRUServerNames);
             cmbDomains.Items.AddRange(Settings.MRUDomainNames);
             cmbUsers.Items.AddRange(Settings.MRUUserNames);
+            txtTag.AutoCompleteCustomSource.AddRange(Settings.Tags);
         }
 
         private void SaveMRUs()
@@ -86,6 +87,14 @@ namespace Terminals
             txtArguments.Text = favorite.ExecuteBeforeConnectArgs;
             txtInitialDirectory.Text = favorite.ExecuteBeforeConnectInitialDirectory;
             chkWaitForExit.Checked = favorite.ExecuteBeforeConnectWaitForExit;
+            string[] tagsArray = favorite.Tags.Split(',');
+            if (!((tagsArray.Length == 1) && (String.IsNullOrEmpty(tagsArray[0]))))
+            {
+                foreach (string tag in tagsArray)
+                {
+                    lvConnectionTags.Items.Add(tag, tag, -1);
+                }
+            }
         }
 
         private bool FillFavorite()
@@ -115,6 +124,12 @@ namespace Terminals
                 favorite.ExecuteBeforeConnectArgs = txtArguments.Text;
                 favorite.ExecuteBeforeConnectInitialDirectory = txtInitialDirectory.Text;
                 favorite.ExecuteBeforeConnectWaitForExit = chkWaitForExit.Checked;
+                List<string> tagList = new List<string>();
+                foreach (ListViewItem listViewItem in lvConnectionTags.Items)
+                {
+                    tagList.Add(listViewItem.Text);
+                }
+                favorite.Tags = String.Join(",", tagList.ToArray());
                 return true;
             }
             catch (Exception e)
@@ -222,6 +237,34 @@ namespace Terminals
             {
                 txtDesktopShare.Text = folderBrowserDialog.SelectedPath;
             }
+        }
+
+        private void AddTag()
+        {
+            ListViewItem[] items = lvConnectionTags.Items.Find(txtTag.Text, false);
+            if (items.Length == 0)
+            {
+                Settings.AddTag(txtTag.Text);
+                lvConnectionTags.Items.Add(txtTag.Text);
+            }
+        }
+
+        private void btnAddNewTag_Click(object sender, EventArgs e)
+        {
+            AddTag();            
+        }
+
+        private void DeleteTag()
+        {
+            foreach (ListViewItem item in lvConnectionTags.SelectedItems)
+            {
+                lvConnectionTags.Items.Remove(item);
+            }
+        }
+
+        private void btnRemoveTag_Click(object sender, EventArgs e)
+        {
+            DeleteTag();
         }
     }
 }

@@ -67,6 +67,7 @@ namespace Terminals
             this.tsbGrabInput = new System.Windows.Forms.ToolStripButton();
             this.tsbFullScreen = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbTags = new System.Windows.Forms.ToolStripButton();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.tcTerminals = new TabControl.TabControl();
             this.timerHover = new System.Windows.Forms.Timer(this.components);
@@ -285,10 +286,11 @@ namespace Terminals
             this.toolStripSeparator2,
             this.tsbGrabInput,
             this.tsbFullScreen,
-            this.toolStripSeparator6});
+            this.toolStripSeparator6,
+            this.tsbTags});
             this.toolbarStd.Location = new System.Drawing.Point(3, 24);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(361, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(384, 25);
             this.toolbarStd.TabIndex = 2;
             // 
             // tsbNewTerminal
@@ -326,7 +328,7 @@ namespace Terminals
             // 
             this.tsbConnect.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tsbConnect.Enabled = false;
-            this.tsbConnect.Image = ((System.Drawing.Image)(resources.GetObject("tsbConnect.Image")));
+            this.tsbConnect.Image = global::Terminals.Properties.Resources.application_lightning;
             this.tsbConnect.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbConnect.Name = "tsbConnect";
             this.tsbConnect.Size = new System.Drawing.Size(23, 22);
@@ -390,6 +392,17 @@ namespace Terminals
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
             // 
+            // tsbTags
+            // 
+            this.tsbTags.CheckOnClick = true;
+            this.tsbTags.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbTags.Image = global::Terminals.Properties.Resources.tag;
+            this.tsbTags.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbTags.Name = "tsbTags";
+            this.tsbTags.Size = new System.Drawing.Size(23, 22);
+            this.tsbTags.Text = "toolStripButton1";
+            this.tsbTags.Click += new System.EventHandler(this.tsbTags_Click);
+            // 
             // toolStripContainer
             // 
             // 
@@ -430,6 +443,7 @@ namespace Terminals
             this.tcTerminals.TabControlItemClosed += new System.EventHandler(this.tcTerminals_TabControlItemClosed);
             this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.tcTerminals_TabControlMouseLeftTitle);
             this.tcTerminals.MouseHover += new System.EventHandler(this.tcTerminals_MouseHover);
+            this.tcTerminals.TabControlMouseEnteredTitle += new TabControl.TabControlMouseEnteredTitleHandler(this.tcTerminals_TabControlMouseEnteredTitle);
             // 
             // timerHover
             // 
@@ -510,8 +524,7 @@ namespace Terminals
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-
-
+        private System.Windows.Forms.ToolStripButton tsbTags;
       }
 }
 

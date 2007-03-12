@@ -94,7 +94,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -160,6 +160,14 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="SaveActiveConnectionsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TagsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TagsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -170,10 +178,23 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SaveActiveConnectionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SaveActiveConnectionsForm.Designer.cs">
+      <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenCapture.cs" />
     <Compile Include="ProtocolHandler.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SHApi.cs" />
     <Compile Include="SHFileOperationWrapper.cs" />
+    <Compile Include="TagsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TagsForm.Designer.cs">
+      <DependentUpon>TagsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SingleInstanceApplication.cs" />
     <Compile Include="TerminalsConfiguration.cs" />
     <None Include="WTSApi32.cs" />
@@ -204,14 +225,22 @@
     <None Include="Resources\application_get.png" />
     <None Include="Resources\application_put.png" />
     <None Include="Resources\folder.png" />
+    <None Include="Resources\application_lightning.png" />
     <Content Include="Resources\ico101.ico" />
     <Content Include="Resources\rdp.png" />
+    <None Include="Resources\tag_blue_delete.png" />
+    <None Include="Resources\tag_blue_add.png" />
+    <None Include="Resources\tag.png" />
     <None Include="Resources\smallterm.png" />
     <None Include="Terminals.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MagicLibrary\MagicLibrary.csproj">
+      <Project>{92F94EA0-9910-4895-B8A1-FED1543A9DA1}</Project>
+      <Name>MagicLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TabControl\TabControl.csproj">
       <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
       <Name>TabControl</Name>

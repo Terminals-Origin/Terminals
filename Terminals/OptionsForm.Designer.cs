@@ -34,6 +34,8 @@ namespace Terminals
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.chkShowConfirmDialog = new System.Windows.Forms.CheckBox();
+            this.chkSingleInstance = new System.Windows.Forms.CheckBox();
             this.lblEvaluatedDesktopShare = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.txtDefaultDesktopShare = new System.Windows.Forms.TextBox();
@@ -50,7 +52,7 @@ namespace Terminals
             this.chkWaitForExit = new System.Windows.Forms.CheckBox();
             this.txtCommand = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.chkSingleInstance = new System.Windows.Forms.CheckBox();
+            this.chkSaveConnections = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
@@ -60,7 +62,7 @@ namespace Terminals
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(233, 302);
+            this.btnOk.Location = new System.Drawing.Point(233, 369);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(80, 24);
             this.btnOk.TabIndex = 1;
@@ -72,7 +74,7 @@ namespace Terminals
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(321, 302);
+            this.btnCancel.Location = new System.Drawing.Point(321, 369);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(80, 24);
             this.btnCancel.TabIndex = 2;
@@ -81,8 +83,9 @@ namespace Terminals
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(81, 224);
+            this.label1.Location = new System.Drawing.Point(81, 286);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(241, 39);
             this.label1.TabIndex = 3;
@@ -92,8 +95,9 @@ namespace Terminals
             // 
             // linkLabel1
             // 
+            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(111, 276);
+            this.linkLabel1.Location = new System.Drawing.Point(111, 338);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(182, 13);
             this.linkLabel1.TabIndex = 4;
@@ -103,16 +107,21 @@ namespace Terminals
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tpGeneral);
             this.tabControl1.Controls.Add(this.tpExecuteBeforeConnect);
             this.tabControl1.Location = new System.Drawing.Point(8, 8);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(400, 208);
+            this.tabControl1.Size = new System.Drawing.Size(400, 272);
             this.tabControl1.TabIndex = 5;
             // 
             // tpGeneral
             // 
+            this.tpGeneral.Controls.Add(this.chkSaveConnections);
+            this.tpGeneral.Controls.Add(this.chkShowConfirmDialog);
             this.tpGeneral.Controls.Add(this.chkSingleInstance);
             this.tpGeneral.Controls.Add(this.lblEvaluatedDesktopShare);
             this.tpGeneral.Controls.Add(this.label3);
@@ -124,16 +133,36 @@ namespace Terminals
             this.tpGeneral.Location = new System.Drawing.Point(4, 22);
             this.tpGeneral.Name = "tpGeneral";
             this.tpGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tpGeneral.Size = new System.Drawing.Size(392, 182);
+            this.tpGeneral.Size = new System.Drawing.Size(392, 246);
             this.tpGeneral.TabIndex = 0;
             this.tpGeneral.Text = "General";
             this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // chkShowConfirmDialog
+            // 
+            this.chkShowConfirmDialog.AutoSize = true;
+            this.chkShowConfirmDialog.Location = new System.Drawing.Point(16, 104);
+            this.chkShowConfirmDialog.Name = "chkShowConfirmDialog";
+            this.chkShowConfirmDialog.Size = new System.Drawing.Size(172, 17);
+            this.chkShowConfirmDialog.TabIndex = 4;
+            this.chkShowConfirmDialog.Text = "Show &close confirmation dialog";
+            this.chkShowConfirmDialog.UseVisualStyleBackColor = true;
+            // 
+            // chkSingleInstance
+            // 
+            this.chkSingleInstance.AutoSize = true;
+            this.chkSingleInstance.Location = new System.Drawing.Point(16, 80);
+            this.chkSingleInstance.Name = "chkSingleInstance";
+            this.chkSingleInstance.Size = new System.Drawing.Size(219, 17);
+            this.chkSingleInstance.TabIndex = 3;
+            this.chkSingleInstance.Text = "Allow a &single instance of the application";
+            this.chkSingleInstance.UseVisualStyleBackColor = true;
             // 
             // lblEvaluatedDesktopShare
             // 
             this.lblEvaluatedDesktopShare.AutoSize = true;
             this.lblEvaluatedDesktopShare.ForeColor = System.Drawing.Color.Blue;
-            this.lblEvaluatedDesktopShare.Location = new System.Drawing.Point(16, 163);
+            this.lblEvaluatedDesktopShare.Location = new System.Drawing.Point(16, 192);
             this.lblEvaluatedDesktopShare.Name = "lblEvaluatedDesktopShare";
             this.lblEvaluatedDesktopShare.Size = new System.Drawing.Size(0, 13);
             this.lblEvaluatedDesktopShare.TabIndex = 13;
@@ -141,27 +170,27 @@ namespace Terminals
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 159);
+            this.label3.Location = new System.Drawing.Point(13, 213);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(264, 13);
-            this.label3.TabIndex = 12;
+            this.label3.TabIndex = 8;
             this.label3.Text = "Evaluated Desktop Share (according to selected tab):";
             // 
             // txtDefaultDesktopShare
             // 
-            this.txtDefaultDesktopShare.Location = new System.Drawing.Point(13, 127);
+            this.txtDefaultDesktopShare.Location = new System.Drawing.Point(13, 181);
             this.txtDefaultDesktopShare.Name = "txtDefaultDesktopShare";
             this.txtDefaultDesktopShare.Size = new System.Drawing.Size(360, 21);
-            this.txtDefaultDesktopShare.TabIndex = 11;
+            this.txtDefaultDesktopShare.TabIndex = 7;
             this.txtDefaultDesktopShare.TextChanged += new System.EventHandler(this.txtDefaultDesktopShare_TextChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(13, 103);
+            this.label2.Location = new System.Drawing.Point(13, 157);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(283, 13);
-            this.label2.TabIndex = 10;
+            this.label2.TabIndex = 6;
             this.label2.Text = "Default Desktop Share (Use %SERVER% and %USER%):";
             // 
             // chkShowFullInfo
@@ -170,7 +199,7 @@ namespace Terminals
             this.chkShowFullInfo.Location = new System.Drawing.Point(40, 53);
             this.chkShowFullInfo.Name = "chkShowFullInfo";
             this.chkShowFullInfo.Size = new System.Drawing.Size(126, 17);
-            this.chkShowFullInfo.TabIndex = 9;
+            this.chkShowFullInfo.TabIndex = 2;
             this.chkShowFullInfo.Text = "Show &full information";
             this.chkShowFullInfo.UseVisualStyleBackColor = true;
             // 
@@ -180,7 +209,7 @@ namespace Terminals
             this.chkShowUserNameInTitle.Location = new System.Drawing.Point(16, 7);
             this.chkShowUserNameInTitle.Name = "chkShowUserNameInTitle";
             this.chkShowUserNameInTitle.Size = new System.Drawing.Size(159, 17);
-            this.chkShowUserNameInTitle.TabIndex = 7;
+            this.chkShowUserNameInTitle.TabIndex = 0;
             this.chkShowUserNameInTitle.Text = "Show  &user name in tab title";
             this.chkShowUserNameInTitle.UseVisualStyleBackColor = true;
             // 
@@ -190,7 +219,7 @@ namespace Terminals
             this.chkShowInformationToolTips.Location = new System.Drawing.Point(16, 30);
             this.chkShowInformationToolTips.Name = "chkShowInformationToolTips";
             this.chkShowInformationToolTips.Size = new System.Drawing.Size(216, 17);
-            this.chkShowInformationToolTips.TabIndex = 8;
+            this.chkShowInformationToolTips.TabIndex = 1;
             this.chkShowInformationToolTips.Text = "Show &connection information in tool tips";
             this.chkShowInformationToolTips.UseVisualStyleBackColor = true;
             this.chkShowInformationToolTips.CheckedChanged += new System.EventHandler(this.chkShowInformationToolTips_CheckedChanged);
@@ -208,7 +237,7 @@ namespace Terminals
             this.tpExecuteBeforeConnect.Location = new System.Drawing.Point(4, 22);
             this.tpExecuteBeforeConnect.Name = "tpExecuteBeforeConnect";
             this.tpExecuteBeforeConnect.Padding = new System.Windows.Forms.Padding(3);
-            this.tpExecuteBeforeConnect.Size = new System.Drawing.Size(392, 182);
+            this.tpExecuteBeforeConnect.Size = new System.Drawing.Size(392, 208);
             this.tpExecuteBeforeConnect.TabIndex = 1;
             this.tpExecuteBeforeConnect.Text = "Execute Before Connect";
             this.tpExecuteBeforeConnect.UseVisualStyleBackColor = true;
@@ -281,23 +310,21 @@ namespace Terminals
             this.label11.TabIndex = 15;
             this.label11.Text = "Command:";
             // 
-            // chkSingleInstance
+            // chkSaveConnections
             // 
-            this.chkSingleInstance.AutoSize = true;
-            this.chkSingleInstance.Location = new System.Drawing.Point(13, 76);
-            this.chkSingleInstance.Name = "chkSingleInstance";
-            this.chkSingleInstance.Size = new System.Drawing.Size(219, 17);
-            this.chkSingleInstance.TabIndex = 14;
-            this.chkSingleInstance.Text = "Allow a &single instance of the application";
-            this.chkSingleInstance.UseVisualStyleBackColor = true;
+            this.chkSaveConnections.AutoSize = true;
+            this.chkSaveConnections.Location = new System.Drawing.Point(16, 128);
+            this.chkSaveConnections.Name = "chkSaveConnections";
+            this.chkSaveConnections.Size = new System.Drawing.Size(152, 17);
+            this.chkSaveConnections.TabIndex = 5;
+            this.chkSaveConnections.Text = "Sa&ve connections on close";
+            this.chkSaveConnections.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
-            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(413, 335);
+            this.ClientSize = new System.Drawing.Size(413, 402);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label1);
@@ -347,5 +374,7 @@ namespace Terminals
         private System.Windows.Forms.TextBox txtCommand;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox chkSingleInstance;
+        private System.Windows.Forms.CheckBox chkShowConfirmDialog;
+        private System.Windows.Forms.CheckBox chkSaveConnections;
     }
 }

@@ -53,6 +53,7 @@ namespace TabControl
         public event TabControlItemChangedHandler TabControlItemSelectionChanged;
         public event TabControlMouseOnTitleHandler TabControlMouseOnTitle;
         public event TabControlMouseLeftTitleHandler TabControlMouseLeftTitle;
+        public event TabControlMouseEnteredTitleHandler TabControlMouseEnteredTitle;
         public event HandledEventHandler MenuItemsLoading;
         public event EventHandler MenuItemsLoaded;
         public event EventHandler TabControlItemClosed;
@@ -366,19 +367,26 @@ namespace TabControl
         }
 
         private bool mouseWasOnTitle;
+        private bool mouseEnteredTitle;
 
         protected internal virtual void OnTabControlMouseOnTitle(TabControlMouseOnTitleEventArgs e)
         {
-            mouseWasOnTitle = true;
             if (TabControlMouseOnTitle != null)
             {
                 TabControlMouseOnTitle(e);
             }
         }
 
-        protected internal virtual void OnTabControlMouseLeftTitle(EventArgs e)
+        protected internal virtual void OnTabControlMouseEnteredTitle(TabControlMouseOnTitleEventArgs e)
         {
-            mouseWasOnTitle = false;
+            if (TabControlMouseEnteredTitle != null)
+            {
+                TabControlMouseEnteredTitle(e);
+            }
+        }
+
+        protected internal virtual void OnTabControlMouseLeftTitle(TabControlMouseOnTitleEventArgs e)
+        {
             if (TabControlMouseLeftTitle != null)
             {
                 TabControlMouseLeftTitle(e);
@@ -536,13 +544,36 @@ namespace TabControl
             TabControlItem item = GetTabItemByPoint(e.Location);
             if (item != null)
             {
+                bool inTitle = (((item.StripRect.X + item.StripRect.Width - 1) > e.Location.X) &&
+                    ((item.StripRect.Y + item.StripRect.Height - 1) > e.Location.Y));
+
                 TabControlMouseOnTitleEventArgs args = new TabControlMouseOnTitleEventArgs(item, e.Location);
-                OnTabControlMouseOnTitle(args);
+                if (inTitle)
+                {
+                    //mouseWasOnTitle = true;
+                    OnTabControlMouseOnTitle(args);
+                    if (!mouseEnteredTitle)
+                    {
+                        mouseEnteredTitle = true;
+                        OnTabControlMouseEnteredTitle(args);
+                    }
+                }
+                else if (mouseEnteredTitle)// if (mouseWasOnTitle)
+                {
+                    //mouseWasOnTitle = false;
+                    mouseEnteredTitle = false;
+                    OnTabControlMouseLeftTitle(args);
+                }
             }
-            else if (mouseWasOnTitle)
+            /*else
             {
-                OnTabControlMouseLeftTitle(new EventArgs());
-            }
+                if (mouseWasOnTitle)
+                {
+                    mouseWasOnTitle = false;
+                    mouseEnteredTitle = false;
+                    OnTabControlMouseLeftTitle(new EventArgs());
+                }
+            }*/
         }
 
         protected override void OnMouseLeave(EventArgs e)
