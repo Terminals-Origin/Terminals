@@ -12,8 +12,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using TabControl;
 using System.IO;
-using Crownwood.Magic.Docking;
-using Crownwood.Magic.Common;
 
 namespace Terminals
 {
@@ -27,20 +25,21 @@ namespace Terminals
         private FormWindowState lastState;
         FormSettings _formSettings;
         private ImageFormatHandler imageFormatHandler;
-        private ScreenCapture screenCapture;
-        private PictureBox previewPictureBox;
-        private DockingManager dockingManager;
+        /*private ScreenCapture screenCapture;
+        private PictureBox previewPictureBox;*/
 
         public MainForm()
         {
             imageFormatHandler = new ImageFormatHandler();
-            screenCapture = new ScreenCapture(imageFormatHandler);
+            //screenCapture = new ScreenCapture(imageFormatHandler);
             _formSettings = new FormSettings(this);
             InitializeComponent();
             LoadFavorites();
+            LoadFavorites("");
             LoadGroups();
             UpdateControls();
-            CreateDocking();
+            pnlTagsFavorites.Width = 7;
+            LoadTags("");
             ProtocolHandler.Register();
             SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
         }
@@ -53,17 +52,6 @@ namespace Terminals
             string[] commandLine = (string[])message;
             if (commandLine != null)
                 ParseCommandline(commandLine);
-        }
-
-        private void CreateDocking()
-        {
-            dockingManager = new DockingManager(this, VisualStyle.IDE);
-            Content tagsContent = new Content(dockingManager);
-            tagsContent.Title = "Tags";
-            dockingManager.Contents.Add(tagsContent);
-            dockingManager.AddContentWithState(tagsContent, State.DockLeft);
-            dockingManager.HideContent(tagsContent);
-            dockingManager.ShowContent(tagsContent);
         }
 
         protected override void SetVisibleCore(bool value)
@@ -590,6 +578,8 @@ namespace Terminals
                 {
                     Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
                     LoadFavorites();
+                    LoadFavorites(txtSearchFavorites.Text);
+                    LoadTags(txtSearchTags.Text);
                     tscConnectTo.SelectedIndex = tscConnectTo.Items.IndexOf(frmNewTerminal.Favorite.Name);
                     CreateTerminalTab(frmNewTerminal.Favorite);
                 }
@@ -816,10 +806,10 @@ namespace Terminals
             {
                 currentToolTip.Hide(currentToolTipItem);
             }
-            if (previewPictureBox != null)
+            /*if (previewPictureBox != null)
             {
                 previewPictureBox.Hide();
-            }
+            }*/
         }
 
         public bool FullScreen
@@ -1011,7 +1001,7 @@ namespace Terminals
                 currentToolTip.UseFading = true;
                 currentToolTip.UseAnimation = true;
                 currentToolTip.IsBalloon = false;
-                currentToolTip.Show(e.Item.ToolTipText, e.Item, (int)e.Item.StripRect.X + 322, 2);
+                currentToolTip.Show(e.Item.ToolTipText, e.Item, (int)e.Item.StripRect.X, 2);
                 currentToolTipItem = e.Item;
             }
         }
@@ -1022,18 +1012,18 @@ namespace Terminals
             {
                 currentToolTip.Hide(currentToolTipItem);
             }
-            if (previewPictureBox != null)
+            /*if (previewPictureBox != null)
             {
                 previewPictureBox.Image.Dispose();
                 previewPictureBox.Dispose();
                 previewPictureBox = null;
-            }
+            }*/
         }
 
         private void tcTerminals_TabControlMouseEnteredTitle(TabControlMouseOnTitleEventArgs e)
         {
             //Picture
-            previewPictureBox = new PictureBox();
+            /*previewPictureBox = new PictureBox();
             previewPictureBox.BorderStyle = BorderStyle.FixedSingle;
             previewPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             previewPictureBox.Size = new Size(320, 240);
@@ -1042,7 +1032,7 @@ namespace Terminals
             previewPictureBox.Parent = tcTerminals.SelectedItem;
             previewPictureBox.Location = new Point((int)e.Item.StripRect.X, 2);
             previewPictureBox.BringToFront();
-            previewPictureBox.Show();
+            previewPictureBox.Show();*/
             if (Settings.ShowInformationToolTips)
             {
                 /*TerminalTabControlItem item = (TerminalTabControlItem)e.Item;
@@ -1075,9 +1065,239 @@ namespace Terminals
 
         private void tsbTags_Click(object sender, EventArgs e)
         {
-            /*TagsForm frmTags = new TagsForm(this);
-            frmTags.Show(this);*/
-            //if (tsbTags.Checked 
+            if (tsbTags.Checked)
+            {
+                ShowTags();
+            }
+            else
+            {
+                HideTagsFavorites();
+            }
+        }
+
+        private void pbShowTags_Click(object sender, EventArgs e)
+        {
+            ShowTags();
+        }
+
+        private void pbHideTags_Click(object sender, EventArgs e)
+        {
+            HideTagsFavorites();
+        }
+
+        private void LoadFavorites(string filter)
+        {
+            lvFavorites.Items.Clear();
+            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            foreach (FavoriteConfigurationElement favorite in favorites)
+            {
+                if ((String.IsNullOrEmpty(filter) || (favorite.Name.ToUpper().StartsWith(filter.ToUpper()))))
+                {
+                    ListViewItem item = new ListViewItem();
+                    item.ImageIndex = 0;
+                    item.StateImageIndex = 0;
+                    item.Tag = favorite;
+                    item.Text = favorite.Name;
+                    lvFavorites.Items.Add(item);
+                }
+            }
+        }
+
+        private void LoadTags(string filter)
+        {
+            lvTags.Items.Clear();
+            ListViewItem unTaggedListViewItem = new ListViewItem();
+            unTaggedListViewItem.ImageIndex = 0;
+            unTaggedListViewItem.StateImageIndex = 0;
+            List<FavoriteConfigurationElement> unTaggedFavorites = new List<FavoriteConfigurationElement>();
+            foreach (string tag in Settings.Tags)
+            {
+                if ((String.IsNullOrEmpty(filter) || (tag.ToUpper().StartsWith(filter.ToUpper()))))
+                {
+                    ListViewItem item = new ListViewItem();
+                    item.ImageIndex = 0;
+                    item.StateImageIndex = 0;
+                    FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+                    List<FavoriteConfigurationElement> tagFavorites = new List<FavoriteConfigurationElement>();
+                    foreach (FavoriteConfigurationElement favorite in favorites)
+                    {
+                        if (favorite.TagList.IndexOf(tag) >= 0)
+                        {
+                            tagFavorites.Add(favorite);
+                        }
+                        else if (favorite.TagList.Count == 0)
+                        {
+                            if (unTaggedFavorites.IndexOf(favorite) < 0)
+                            {
+                                unTaggedFavorites.Add(favorite);
+                            }
+                        }
+                    }
+                    item.Tag = tagFavorites;
+                    item.Text = tag + " (" + tagFavorites.Count.ToString() + ")";
+                    lvTags.Items.Add(item);
+                }
+            }
+            unTaggedListViewItem.Tag = unTaggedFavorites;
+            unTaggedListViewItem.Text = "UnTagged (" + unTaggedFavorites.Count.ToString() + ")";
+            lvTags.Items.Add(unTaggedListViewItem);
+        }
+
+        private void ShowTagsFavorites(TabControlItem activeTab)
+        {
+            pnlTagsFavorites.Width = 300;
+            tcTagsFavorites.SelectedItem = activeTab;
+            pnlHideTagsFavorites.Show();
+            pnlShowTagsFavorites.Hide();
+            txtSearchTags.Focus();
+        }
+
+        private void ShowTags()
+        {
+            ShowTagsFavorites(tciTags);
+            tsbFavorites.Checked = false;
+        }
+
+        private void HideTagsFavorites()
+        {
+            pnlTagsFavorites.Width = 7;
+            pnlHideTagsFavorites.Hide();
+            pnlShowTagsFavorites.Show();
+            tsbTags.Checked = false;
+            tsbFavorites.Checked = false;
+        }
+
+        private void ShowFavorites()
+        {
+            ShowTagsFavorites(tciFavorites);
+            tsbTags.Checked = false;
+        }
+
+        private void lvTags_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            connectToolStripMenuItem.Enabled = lvTags.SelectedItems.Count > 0;
+            lvTagConnections.Items.Clear();
+            if (lvTags.SelectedItems.Count > 0)
+            {
+                List<FavoriteConfigurationElement> tagFavorites = (List<FavoriteConfigurationElement>)lvTags.SelectedItems[0].Tag;
+                foreach (FavoriteConfigurationElement favorite in tagFavorites)
+                {
+                    ListViewItem item = lvTagConnections.Items.Add(favorite.Name);
+                    item.ImageIndex = 0;
+                    item.StateImageIndex = 0;
+                    item.Tag = favorite;
+                }
+            }
+        }
+
+        private void lvTagConnections_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            connectToolStripMenuItem.Enabled = lvTagConnections.SelectedItems.Count > 0;
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lvTagConnections.SelectedItems)
+            {
+                FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
+                HideTagsFavorites();
+                Connect(favorite.Name);
+            }
+        }
+
+        private void connectToAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lvTagConnections.Items)
+            {
+                FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
+                HideTagsFavorites();
+                Connect(favorite.Name);
+            }
+        }
+
+        private void txtSearchTags_TextChanged(object sender, EventArgs e)
+        {
+            LoadTags(txtSearchTags.Text);
+        }
+
+        private void lvTags_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) && (lvTags.SelectedItems.Count == 1))
+            {
+                connectToAllToolStripMenuItem.PerformClick();
+            }
+        }
+
+        private void lvTagConnections_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) && (lvTagConnections.SelectedItems.Count == 1))
+            {
+                connectToolStripMenuItem.PerformClick();
+            }
+        }
+
+        private void lvTags_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (lvTags.SelectedItems.Count == 1)
+            {
+                connectToAllToolStripMenuItem.PerformClick();
+            }
+        }
+
+        private void lvTagConnections_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (lvTagConnections.SelectedItems.Count == 1)
+            {
+                connectToolStripMenuItem.PerformClick();
+            }
+        }
+
+        private void tsbFavorites_Click(object sender, EventArgs e)
+        {
+            if (tsbFavorites.Checked)
+            {
+                ShowFavorites();
+            }
+            else
+            {
+                HideTagsFavorites();
+            }
+        }
+
+        private void txtSearchFavorites_TextChanged(object sender, EventArgs e)
+        {
+            LoadFavorites(txtSearchFavorites.Text);
+        }
+
+        private void lvFavorites_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) && (lvFavorites.SelectedItems.Count == 1))
+            {
+                connectToolStripMenuItem1.PerformClick();
+            }
+        }
+
+        private void lvFavorites_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (lvFavorites.SelectedItems.Count == 1)
+            {
+                connectToolStripMenuItem1.PerformClick();
+            }
+        }
+
+        private void connectToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in lvFavorites.SelectedItems)
+            {
+                FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
+                HideTagsFavorites();
+                Connect(favorite.Name);
+            }
+        }
+
+        private void lvFavorites_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            connectToolStripMenuItem1.Enabled = lvFavorites.SelectedItems.Count > 0;
         }
     }
 

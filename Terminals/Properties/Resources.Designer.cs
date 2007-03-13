@@ -151,6 +151,13 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap HidePanel {
+            get {
+                object obj = ResourceManager.GetObject("HidePanel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap keyboard {
             get {
                 object obj = ResourceManager.GetObject("keyboard", resourceCulture);
@@ -165,9 +172,23 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap ShowPanel {
+            get {
+                object obj = ResourceManager.GetObject("ShowPanel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap smallterm {
             get {
                 object obj = ResourceManager.GetObject("smallterm", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap star {
+            get {
+                object obj = ResourceManager.GetObject("star", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

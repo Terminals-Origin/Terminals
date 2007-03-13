@@ -68,8 +68,33 @@ namespace Terminals
             this.tsbFullScreen = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbTags = new System.Windows.Forms.ToolStripButton();
+            this.tsbFavorites = new System.Windows.Forms.ToolStripButton();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.tcTerminals = new TabControl.TabControl();
+            this.pnlTagsFavorites = new System.Windows.Forms.Panel();
+            this.tcTagsFavorites = new TabControl.TabControl();
+            this.tciTags = new TabControl.TabControlItem();
+            this.lvTagConnections = new System.Windows.Forms.ListView();
+            this.chConnection = new System.Windows.Forms.ColumnHeader();
+            this.cmsTagConnections = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ilTagConnections = new System.Windows.Forms.ImageList(this.components);
+            this.lvTags = new System.Windows.Forms.ListView();
+            this.chTag = new System.Windows.Forms.ColumnHeader();
+            this.cmsTags = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.connectToAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ilTags = new System.Windows.Forms.ImageList(this.components);
+            this.txtSearchTags = new System.Windows.Forms.TextBox();
+            this.tciFavorites = new TabControl.TabControlItem();
+            this.lvFavorites = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
+            this.cmsFavorites = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.connectToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtSearchFavorites = new System.Windows.Forms.TextBox();
+            this.pnlHideTagsFavorites = new System.Windows.Forms.Panel();
+            this.pbHideTagsFavorites = new System.Windows.Forms.PictureBox();
+            this.pnlShowTagsFavorites = new System.Windows.Forms.Panel();
+            this.pbShowTagsFavorites = new System.Windows.Forms.PictureBox();
             this.timerHover = new System.Windows.Forms.Timer(this.components);
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
@@ -77,6 +102,18 @@ namespace Terminals
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tcTerminals)).BeginInit();
+            this.pnlTagsFavorites.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tcTagsFavorites)).BeginInit();
+            this.tcTagsFavorites.SuspendLayout();
+            this.tciTags.SuspendLayout();
+            this.cmsTagConnections.SuspendLayout();
+            this.cmsTags.SuspendLayout();
+            this.tciFavorites.SuspendLayout();
+            this.cmsFavorites.SuspendLayout();
+            this.pnlHideTagsFavorites.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbHideTagsFavorites)).BeginInit();
+            this.pnlShowTagsFavorites.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbShowTagsFavorites)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -287,10 +324,11 @@ namespace Terminals
             this.tsbGrabInput,
             this.tsbFullScreen,
             this.toolStripSeparator6,
-            this.tsbTags});
+            this.tsbTags,
+            this.tsbFavorites});
             this.toolbarStd.Location = new System.Drawing.Point(3, 24);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(384, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(407, 25);
             this.toolbarStd.TabIndex = 2;
             // 
             // tsbNewTerminal
@@ -400,8 +438,19 @@ namespace Terminals
             this.tsbTags.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbTags.Name = "tsbTags";
             this.tsbTags.Size = new System.Drawing.Size(23, 22);
-            this.tsbTags.Text = "toolStripButton1";
+            this.tsbTags.ToolTipText = "Tags";
             this.tsbTags.Click += new System.EventHandler(this.tsbTags_Click);
+            // 
+            // tsbFavorites
+            // 
+            this.tsbFavorites.CheckOnClick = true;
+            this.tsbFavorites.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbFavorites.Image = global::Terminals.Properties.Resources.star;
+            this.tsbFavorites.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbFavorites.Name = "tsbFavorites";
+            this.tsbFavorites.Size = new System.Drawing.Size(23, 22);
+            this.tsbFavorites.ToolTipText = "Favorites";
+            this.tsbFavorites.Click += new System.EventHandler(this.tsbFavorites_Click);
             // 
             // toolStripContainer
             // 
@@ -410,6 +459,7 @@ namespace Terminals
             // 
             this.toolStripContainer.ContentPanel.AutoScroll = true;
             this.toolStripContainer.ContentPanel.Controls.Add(this.tcTerminals);
+            this.toolStripContainer.ContentPanel.Controls.Add(this.pnlTagsFavorites);
             this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(792, 524);
             this.toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer.Location = new System.Drawing.Point(0, 0);
@@ -429,10 +479,10 @@ namespace Terminals
             this.tcTerminals.AlwaysShowClose = false;
             this.tcTerminals.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tcTerminals.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.tcTerminals.Location = new System.Drawing.Point(0, 0);
+            this.tcTerminals.Location = new System.Drawing.Point(300, 0);
             this.tcTerminals.Name = "tcTerminals";
             this.tcTerminals.ShowToolTipOnTitle = false;
-            this.tcTerminals.Size = new System.Drawing.Size(792, 524);
+            this.tcTerminals.Size = new System.Drawing.Size(492, 524);
             this.tcTerminals.TabIndex = 3;
             this.tcTerminals.DoubleClick += new System.EventHandler(this.tcTerminals_DoubleClick);
             this.tcTerminals.TabControlMouseOnTitle += new TabControl.TabControlMouseOnTitleHandler(this.tcTerminals_TabControlMouseOnTitle);
@@ -444,6 +494,248 @@ namespace Terminals
             this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.tcTerminals_TabControlMouseLeftTitle);
             this.tcTerminals.MouseHover += new System.EventHandler(this.tcTerminals_MouseHover);
             this.tcTerminals.TabControlMouseEnteredTitle += new TabControl.TabControlMouseEnteredTitleHandler(this.tcTerminals_TabControlMouseEnteredTitle);
+            // 
+            // pnlTagsFavorites
+            // 
+            this.pnlTagsFavorites.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlTagsFavorites.Controls.Add(this.tcTagsFavorites);
+            this.pnlTagsFavorites.Controls.Add(this.pnlHideTagsFavorites);
+            this.pnlTagsFavorites.Controls.Add(this.pnlShowTagsFavorites);
+            this.pnlTagsFavorites.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlTagsFavorites.Location = new System.Drawing.Point(0, 0);
+            this.pnlTagsFavorites.Name = "pnlTagsFavorites";
+            this.pnlTagsFavorites.Size = new System.Drawing.Size(300, 524);
+            this.pnlTagsFavorites.TabIndex = 6;
+            // 
+            // tcTagsFavorites
+            // 
+            this.tcTagsFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tcTagsFavorites.Font = new System.Drawing.Font("Tahoma", 8.25F);
+            this.tcTagsFavorites.Items.AddRange(new TabControl.TabControlItem[] {
+            this.tciTags,
+            this.tciFavorites});
+            this.tcTagsFavorites.Location = new System.Drawing.Point(5, 0);
+            this.tcTagsFavorites.Name = "tcTagsFavorites";
+            this.tcTagsFavorites.SelectedItem = this.tciTags;
+            this.tcTagsFavorites.ShowToolTipOnTitle = false;
+            this.tcTagsFavorites.Size = new System.Drawing.Size(288, 522);
+            this.tcTagsFavorites.TabIndex = 9;
+            // 
+            // tciTags
+            // 
+            this.tciTags.Controls.Add(this.lvTagConnections);
+            this.tciTags.Controls.Add(this.lvTags);
+            this.tciTags.Controls.Add(this.txtSearchTags);
+            this.tciTags.IsDrawn = true;
+            this.tciTags.Name = "tciTags";
+            this.tciTags.Selected = true;
+            this.tciTags.TabIndex = 0;
+            this.tciTags.Title = "Tags";
+            this.tciTags.ToolTipText = "";
+            // 
+            // lvTagConnections
+            // 
+            this.lvTagConnections.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chConnection});
+            this.lvTagConnections.ContextMenuStrip = this.cmsTagConnections;
+            this.lvTagConnections.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvTagConnections.HideSelection = false;
+            this.lvTagConnections.Location = new System.Drawing.Point(0, 308);
+            this.lvTagConnections.Name = "lvTagConnections";
+            this.lvTagConnections.Size = new System.Drawing.Size(286, 193);
+            this.lvTagConnections.SmallImageList = this.ilTagConnections;
+            this.lvTagConnections.TabIndex = 7;
+            this.lvTagConnections.UseCompatibleStateImageBehavior = false;
+            this.lvTagConnections.View = System.Windows.Forms.View.Details;
+            this.lvTagConnections.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvTagConnections_MouseDoubleClick);
+            this.lvTagConnections.SelectedIndexChanged += new System.EventHandler(this.lvTagConnections_SelectedIndexChanged);
+            this.lvTagConnections.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvTagConnections_KeyDown);
+            // 
+            // chConnection
+            // 
+            this.chConnection.Text = "Connection";
+            this.chConnection.Width = 263;
+            // 
+            // cmsTagConnections
+            // 
+            this.cmsTagConnections.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectToolStripMenuItem});
+            this.cmsTagConnections.Name = "cmsTagConnections";
+            this.cmsTagConnections.Size = new System.Drawing.Size(115, 26);
+            // 
+            // connectToolStripMenuItem
+            // 
+            this.connectToolStripMenuItem.Enabled = false;
+            this.connectToolStripMenuItem.Image = global::Terminals.Properties.Resources.application_lightning;
+            this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.connectToolStripMenuItem.Text = "&Connect";
+            this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+            // 
+            // ilTagConnections
+            // 
+            this.ilTagConnections.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilTagConnections.ImageStream")));
+            this.ilTagConnections.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilTagConnections.Images.SetKeyName(0, "");
+            // 
+            // lvTags
+            // 
+            this.lvTags.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chTag});
+            this.lvTags.ContextMenuStrip = this.cmsTags;
+            this.lvTags.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lvTags.HideSelection = false;
+            this.lvTags.Location = new System.Drawing.Point(0, 21);
+            this.lvTags.MultiSelect = false;
+            this.lvTags.Name = "lvTags";
+            this.lvTags.Size = new System.Drawing.Size(286, 287);
+            this.lvTags.SmallImageList = this.ilTags;
+            this.lvTags.TabIndex = 6;
+            this.lvTags.UseCompatibleStateImageBehavior = false;
+            this.lvTags.View = System.Windows.Forms.View.Details;
+            this.lvTags.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvTags_MouseDoubleClick);
+            this.lvTags.SelectedIndexChanged += new System.EventHandler(this.lvTags_SelectedIndexChanged);
+            this.lvTags.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvTags_KeyDown);
+            // 
+            // chTag
+            // 
+            this.chTag.Text = "Tag";
+            this.chTag.Width = 259;
+            // 
+            // cmsTags
+            // 
+            this.cmsTags.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectToAllToolStripMenuItem});
+            this.cmsTags.Name = "cmsTags";
+            this.cmsTags.Size = new System.Drawing.Size(144, 26);
+            // 
+            // connectToAllToolStripMenuItem
+            // 
+            this.connectToAllToolStripMenuItem.Image = global::Terminals.Properties.Resources.application_lightning;
+            this.connectToAllToolStripMenuItem.Name = "connectToAllToolStripMenuItem";
+            this.connectToAllToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.connectToAllToolStripMenuItem.Text = "&Connect To All";
+            this.connectToAllToolStripMenuItem.Click += new System.EventHandler(this.connectToAllToolStripMenuItem_Click);
+            // 
+            // ilTags
+            // 
+            this.ilTags.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilTags.ImageStream")));
+            this.ilTags.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilTags.Images.SetKeyName(0, "tag.png");
+            // 
+            // txtSearchTags
+            // 
+            this.txtSearchTags.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtSearchTags.Location = new System.Drawing.Point(0, 0);
+            this.txtSearchTags.Name = "txtSearchTags";
+            this.txtSearchTags.Size = new System.Drawing.Size(286, 21);
+            this.txtSearchTags.TabIndex = 8;
+            this.txtSearchTags.TextChanged += new System.EventHandler(this.txtSearchTags_TextChanged);
+            // 
+            // tciFavorites
+            // 
+            this.tciFavorites.Controls.Add(this.lvFavorites);
+            this.tciFavorites.Controls.Add(this.txtSearchFavorites);
+            this.tciFavorites.IsDrawn = true;
+            this.tciFavorites.Name = "tciFavorites";
+            this.tciFavorites.TabIndex = 1;
+            this.tciFavorites.Title = "Favorites";
+            this.tciFavorites.ToolTipText = "";
+            // 
+            // lvFavorites
+            // 
+            this.lvFavorites.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.lvFavorites.ContextMenuStrip = this.cmsFavorites;
+            this.lvFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lvFavorites.HideSelection = false;
+            this.lvFavorites.Location = new System.Drawing.Point(0, 21);
+            this.lvFavorites.Name = "lvFavorites";
+            this.lvFavorites.Size = new System.Drawing.Size(286, 480);
+            this.lvFavorites.SmallImageList = this.ilTagConnections;
+            this.lvFavorites.TabIndex = 10;
+            this.lvFavorites.UseCompatibleStateImageBehavior = false;
+            this.lvFavorites.View = System.Windows.Forms.View.Details;
+            this.lvFavorites.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvFavorites_MouseDoubleClick);
+            this.lvFavorites.SelectedIndexChanged += new System.EventHandler(this.lvFavorites_SelectedIndexChanged);
+            this.lvFavorites.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvFavorites_KeyDown);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Connection";
+            this.columnHeader1.Width = 263;
+            // 
+            // cmsFavorites
+            // 
+            this.cmsFavorites.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectToolStripMenuItem1});
+            this.cmsFavorites.Name = "cmsFavorites";
+            this.cmsFavorites.Size = new System.Drawing.Size(115, 26);
+            // 
+            // connectToolStripMenuItem1
+            // 
+            this.connectToolStripMenuItem1.Enabled = false;
+            this.connectToolStripMenuItem1.Image = global::Terminals.Properties.Resources.application_lightning;
+            this.connectToolStripMenuItem1.Name = "connectToolStripMenuItem1";
+            this.connectToolStripMenuItem1.Size = new System.Drawing.Size(114, 22);
+            this.connectToolStripMenuItem1.Text = "&Connect";
+            this.connectToolStripMenuItem1.Click += new System.EventHandler(this.connectToolStripMenuItem1_Click);
+            // 
+            // txtSearchFavorites
+            // 
+            this.txtSearchFavorites.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txtSearchFavorites.Location = new System.Drawing.Point(0, 0);
+            this.txtSearchFavorites.Name = "txtSearchFavorites";
+            this.txtSearchFavorites.Size = new System.Drawing.Size(286, 21);
+            this.txtSearchFavorites.TabIndex = 9;
+            this.txtSearchFavorites.TextChanged += new System.EventHandler(this.txtSearchFavorites_TextChanged);
+            // 
+            // pnlHideTagsFavorites
+            // 
+            this.pnlHideTagsFavorites.BackColor = System.Drawing.Color.Gray;
+            this.pnlHideTagsFavorites.Controls.Add(this.pbHideTagsFavorites);
+            this.pnlHideTagsFavorites.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(293, 0);
+            this.pnlHideTagsFavorites.Name = "pnlHideTagsFavorites";
+            this.pnlHideTagsFavorites.Size = new System.Drawing.Size(5, 522);
+            this.pnlHideTagsFavorites.TabIndex = 1;
+            this.pnlHideTagsFavorites.Visible = false;
+            // 
+            // pbHideTagsFavorites
+            // 
+            this.pbHideTagsFavorites.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbHideTagsFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbHideTagsFavorites.Image = global::Terminals.Properties.Resources.HidePanel;
+            this.pbHideTagsFavorites.Location = new System.Drawing.Point(0, 0);
+            this.pbHideTagsFavorites.Name = "pbHideTagsFavorites";
+            this.pbHideTagsFavorites.Size = new System.Drawing.Size(5, 522);
+            this.pbHideTagsFavorites.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbHideTagsFavorites.TabIndex = 2;
+            this.pbHideTagsFavorites.TabStop = false;
+            this.pbHideTagsFavorites.Click += new System.EventHandler(this.pbHideTags_Click);
+            // 
+            // pnlShowTagsFavorites
+            // 
+            this.pnlShowTagsFavorites.BackColor = System.Drawing.Color.Gray;
+            this.pnlShowTagsFavorites.Controls.Add(this.pbShowTagsFavorites);
+            this.pnlShowTagsFavorites.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlShowTagsFavorites.Location = new System.Drawing.Point(0, 0);
+            this.pnlShowTagsFavorites.Name = "pnlShowTagsFavorites";
+            this.pnlShowTagsFavorites.Size = new System.Drawing.Size(5, 522);
+            this.pnlShowTagsFavorites.TabIndex = 0;
+            // 
+            // pbShowTagsFavorites
+            // 
+            this.pbShowTagsFavorites.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.pbShowTagsFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pbShowTagsFavorites.Image = global::Terminals.Properties.Resources.ShowPanel;
+            this.pbShowTagsFavorites.Location = new System.Drawing.Point(0, 0);
+            this.pbShowTagsFavorites.Name = "pbShowTagsFavorites";
+            this.pbShowTagsFavorites.Size = new System.Drawing.Size(5, 522);
+            this.pbShowTagsFavorites.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pbShowTagsFavorites.TabIndex = 0;
+            this.pbShowTagsFavorites.TabStop = false;
+            this.pbShowTagsFavorites.Click += new System.EventHandler(this.pbShowTags_Click);
             // 
             // timerHover
             // 
@@ -478,6 +770,20 @@ namespace Terminals
             this.toolStripContainer.ResumeLayout(false);
             this.toolStripContainer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tcTerminals)).EndInit();
+            this.pnlTagsFavorites.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.tcTagsFavorites)).EndInit();
+            this.tcTagsFavorites.ResumeLayout(false);
+            this.tciTags.ResumeLayout(false);
+            this.tciTags.PerformLayout();
+            this.cmsTagConnections.ResumeLayout(false);
+            this.cmsTags.ResumeLayout(false);
+            this.tciFavorites.ResumeLayout(false);
+            this.tciFavorites.PerformLayout();
+            this.cmsFavorites.ResumeLayout(false);
+            this.pnlHideTagsFavorites.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbHideTagsFavorites)).EndInit();
+            this.pnlShowTagsFavorites.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbShowTagsFavorites)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -525,6 +831,31 @@ namespace Terminals
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton tsbTags;
+        private System.Windows.Forms.Panel pnlTagsFavorites;
+        private System.Windows.Forms.Panel pnlHideTagsFavorites;
+        private System.Windows.Forms.PictureBox pbHideTagsFavorites;
+        private System.Windows.Forms.Panel pnlShowTagsFavorites;
+        private System.Windows.Forms.PictureBox pbShowTagsFavorites;
+        private System.Windows.Forms.ListView lvTagConnections;
+        private System.Windows.Forms.ColumnHeader chConnection;
+        private System.Windows.Forms.ListView lvTags;
+        private System.Windows.Forms.ColumnHeader chTag;
+        internal System.Windows.Forms.TextBox txtSearchTags;
+        private System.Windows.Forms.ContextMenuStrip cmsTagConnections;
+        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
+        private System.Windows.Forms.ImageList ilTagConnections;
+        private System.Windows.Forms.ContextMenuStrip cmsTags;
+        private System.Windows.Forms.ToolStripMenuItem connectToAllToolStripMenuItem;
+        private System.Windows.Forms.ImageList ilTags;
+        private TabControl.TabControl tcTagsFavorites;
+        private TabControl.TabControlItem tciTags;
+        private TabControl.TabControlItem tciFavorites;
+        private System.Windows.Forms.ToolStripButton tsbFavorites;
+        internal System.Windows.Forms.TextBox txtSearchFavorites;
+        private System.Windows.Forms.ListView lvFavorites;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ContextMenuStrip cmsFavorites;
+        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem1;
       }
 }
 
