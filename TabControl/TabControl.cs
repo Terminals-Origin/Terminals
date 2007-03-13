@@ -184,7 +184,7 @@ namespace TabControl
 
             if (showTabs)
             {
-                if ((AlwaysShowMenuGlyph && Items.VisibleCount>0) || Items.DrawnCount > Items.VisibleCount)
+                if ((AlwaysShowMenuGlyph && Items.VisibleCount > 0) || Items.DrawnCount > Items.VisibleCount)
                     menuGlyph.DrawGlyph(e.Graphics);
 
                 if (AlwaysShowClose || (SelectedItem != null && SelectedItem.CanClose))
@@ -210,33 +210,36 @@ namespace TabControl
                 Items.Remove(tabItem);
             }
 
-            if (wasSelected && Items.Count > 0)
+            if (wasSelected)
             {
-                if (RightToLeft == RightToLeft.No)
+                if (Items.Count > 0)
                 {
-                    if (Items[tabIndex - 1] != null)
+                    if (RightToLeft == RightToLeft.No)
                     {
-                        SelectedItem = Items[tabIndex - 1];
+                        if (Items[tabIndex - 1] != null)
+                        {
+                            SelectedItem = Items[tabIndex - 1];
+                        }
+                        else
+                        {
+                            SelectedItem = Items.FirstVisible;
+                        }
                     }
                     else
                     {
-                        SelectedItem = Items.FirstVisible;
+                        if (Items[tabIndex + 1] != null)
+                        {
+                            SelectedItem = Items[tabIndex + 1];
+                        }
+                        else
+                        {
+                            SelectedItem = Items.LastVisible;
+                        }
                     }
                 }
                 else
-                {
-                    if (Items[tabIndex + 1] != null)
-                    {
-                        SelectedItem = Items[tabIndex + 1];
-                    }
-                    else
-                    {
-                        SelectedItem = Items.LastVisible;
-                    }
-                }
+                    SelectedItem = null;
             }
-            else
-                SelectedItem = null;
         }
 
         public void CloseTab(TabControlItem tabItem)
@@ -459,11 +462,11 @@ namespace TabControl
             {
                 if (RightToLeft == RightToLeft.No)
                 {
-                    menu.Show(this, new Point(menuGlyph.Rect.Left, menuGlyph.Rect.Bottom+2));
+                    menu.Show(this, new Point(menuGlyph.Rect.Left, menuGlyph.Rect.Bottom + 2));
                 }
                 else
                 {
-                    menu.Show(this, new Point(menuGlyph.Rect.Right, menuGlyph.Rect.Bottom+2));
+                    menu.Show(this, new Point(menuGlyph.Rect.Right, menuGlyph.Rect.Bottom + 2));
                 }
 
                 menuOpen = true;
@@ -654,7 +657,7 @@ namespace TabControl
                 }
 
                 g.FillPath(brush, path);
-                Pen pen=SystemPens.ControlDark;
+                Pen pen = SystemPens.ControlDark;
                 if (currentItem == SelectedItem)
                 {
                     pen = new Pen(ToolStripRenderer.ColorTable.MenuStripGradientBegin);
