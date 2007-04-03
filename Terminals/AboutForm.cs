@@ -45,5 +45,9 @@ namespace Terminals
         {
             Process.Start("http://www.epocalipse.com/blog/");
         }
+
+        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+            Process.Start("http://weblogs.asp.net/rchartier/");
+        }
     }
 }

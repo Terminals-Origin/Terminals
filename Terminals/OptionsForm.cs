@@ -27,12 +27,17 @@ namespace Terminals
             chkShowConfirmDialog.Checked = Settings.ShowConfirmDialog;
             chkSaveConnections.Checked = Settings.SaveConnectionsOnClose;
             currentTerminal = terminal;
+            this.PortscanTimeoutTextBox.Text = Settings.PortScanTimeoutSeconds.ToString();
         }
 
         private AxMsRdpClient2 currentTerminal;
 
         private void btnOk_Click(object sender, EventArgs e)
         {
+            int timeout = 5;
+            int.TryParse(this.PortscanTimeoutTextBox.Text, out timeout);
+            if (Settings.PortScanTimeoutSeconds <= 0 || Settings.PortScanTimeoutSeconds >= 60) timeout = 5;
+            Settings.PortScanTimeoutSeconds = timeout;
             Settings.ShowInformationToolTips = chkShowInformationToolTips.Checked;
             Settings.ShowUserNameInTitle = chkShowUserNameInTitle.Checked;
             Settings.ShowFullInformationToolTips = chkShowFullInfo.Checked;

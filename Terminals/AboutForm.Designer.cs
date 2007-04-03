@@ -41,6 +41,7 @@ namespace Terminals
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.linkLabel3 = new System.Windows.Forms.LinkLabel();
             this.lblVersion = new System.Windows.Forms.Label();
+            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -186,9 +187,23 @@ namespace Terminals
             this.lblVersion.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.lblVersion.Location = new System.Drawing.Point(12, 91);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(71, 13);
+            this.lblVersion.Size = new System.Drawing.Size(327, 13);
             this.lblVersion.TabIndex = 9;
-            this.lblVersion.Text = "Terminals 1.0";
+            this.lblVersion.Text = "Terminals 1.6  (RDP, VNC, VMRC, RAS, Telnet and SSH Supported)";
+            // 
+            // linkLabel4
+            // 
+            this.linkLabel4.AutoSize = true;
+            this.linkLabel4.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.linkLabel4.LinkColor = System.Drawing.Color.Blue;
+            this.linkLabel4.Location = new System.Drawing.Point(32, 262);
+            this.linkLabel4.Name = "linkLabel4";
+            this.linkLabel4.Size = new System.Drawing.Size(68, 13);
+            this.linkLabel4.TabIndex = 10;
+            this.linkLabel4.TabStop = true;
+            this.linkLabel4.Text = "Rob Chartier";
+            this.linkLabel4.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
             // 
             // AboutForm
             // 
@@ -198,6 +213,7 @@ namespace Terminals
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(432, 296);
+            this.Controls.Add(this.linkLabel4);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.linkLabel3);
             this.Controls.Add(this.linkLabel2);
@@ -239,5 +255,6 @@ namespace Terminals
         private System.Windows.Forms.LinkLabel linkLabel2;
         private System.Windows.Forms.LinkLabel linkLabel3;
         private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.LinkLabel linkLabel4;
     }
 }

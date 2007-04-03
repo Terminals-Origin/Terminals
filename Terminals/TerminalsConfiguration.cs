@@ -115,15 +115,21 @@ namespace Terminals
         }
 
         [ConfigurationProperty("showUserNameInTitle")]
-        public bool ShowUserNameInTitle
-        {
-            get
-            {
+        public bool ShowUserNameInTitle {
+            get {
                 return (bool)this["showUserNameInTitle"];
             }
-            set
-            {
+            set {
                 this["showUserNameInTitle"] = value;
+            }
+        }
+        [ConfigurationProperty("portScanTimeoutSeconds", DefaultValue=5)]
+        public int PortScanTimeoutSeconds {
+            get {
+                return Convert.ToInt32(this["portScanTimeoutSeconds"]);
+            }
+            set {
+                this["portScanTimeoutSeconds"] = value;
             }
         }
 
@@ -549,6 +555,97 @@ namespace Terminals
         public FavoriteConfigurationElement(string name)
         {
             Name = name;
+        }
+        [ConfigurationProperty("vmrcreducedcolorsmode", IsRequired = true, DefaultValue=false)]
+        public bool VMRCReducedColorsMode {
+            get {
+                return (bool)this["vmrcreducedcolorsmode"];
+            }
+            set {
+                this["vmrcreducedcolorsmode"] = value;
+            }
+        }
+        [ConfigurationProperty("telnet", IsRequired = true, DefaultValue = true)]
+        public bool Telnet {
+            get {
+                return (bool)this["telnet"];
+            }
+            set {
+                this["telnet"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetrows", IsRequired = true, DefaultValue = 33)]
+        public int TelnetRows {
+            get {
+                return (int)this["telnetrows"];
+            }
+            set {
+                this["telnetrows"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetcols", IsRequired = true, DefaultValue = 110)]
+        public int TelnetCols {
+            get {
+                return (int)this["telnetcols"];
+            }
+            set {
+                this["telnetcols"] = value;
+            }
+        }
+        [ConfigurationProperty("vmrcadministratormode", IsRequired = true, DefaultValue = false)]
+        public bool VMRCAdministratorMode {
+            get {
+                return (bool)this["vmrcadministratormode"];
+            }
+            set {
+                this["vmrcadministratormode"] = value;
+            }
+        }
+        [ConfigurationProperty("protocol", IsRequired = true, DefaultValue = "RDP")]
+        public string Protocol {
+            get {
+                return (string)this["protocol"];
+            }
+            set {
+                this["protocol"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetfont", IsRequired = true, DefaultValue = "[Font: Name=Microsoft Sans Serif, Size=10]")]
+        public string TelnetFont {
+            get {
+                return (string)this["telnetfont"];
+            }
+            set {
+                this["telnetfont"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetbackcolor", IsRequired = true, DefaultValue = "Black")]
+        public string TelnetBackColor {
+            get {
+                return (string)this["telnetbackcolor"];
+            }
+            set {
+                this["telnetbackcolor"] = value;
+            }
+        }
+
+        [ConfigurationProperty("telnettextcolor", IsRequired = true, DefaultValue = "White")]
+        public string TelnetTextColor {
+            get {
+                return (string)this["telnettextcolor"];
+            }
+            set {
+                this["telnettextcolor"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetcursorcolor", IsRequired = true, DefaultValue = "Green")]
+        public string TelnetCursorColor {
+            get {
+                return (string)this["telnetcursorcolor"];
+            }
+            set {
+                this["telnetcursorcolor"] = value;
+            }
         }
 
         [ConfigurationProperty("name", IsRequired = true)]

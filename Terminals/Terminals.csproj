@@ -9,10 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Terminals</RootNamespace>
     <AssemblyName>Terminals</AssemblyName>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>%24/Terminals/Terminals</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>https://tfs01.codeplex.com</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
     <ApplicationIcon>Resources\ico101.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -57,6 +57,22 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="TerminalControl, Version=1.0.2646.27407, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TerminalControl\TerminalControl\bin\Release\TerminalControl.dll</HintPath>
+    </Reference>
+    <Reference Include="TransPort2006, Version=3.0.1.7, Culture=neutral, PublicKeyToken=4bc5eb9a373f42a1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TransPort_STD_3.0.1.7\TransPortStd\Bin\TransPort2006.dll</HintPath>
+    </Reference>
+    <Reference Include="TransPort2006.Design, Version=3.0.1.7, Culture=neutral, PublicKeyToken=4bc5eb9a373f42a1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\TransPort_STD_3.0.1.7\TransPortStd\Bin\TransPort2006.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="VncSharp, Version=0.88.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\vncsharp-0.88.0\framework 2.0\VncSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutForm.cs">
@@ -71,9 +87,42 @@
     <Compile Include="AddConnectionForm.Designer.cs">
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Connections\Connection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Connections\ConnectionManager.cs" />
+    <Compile Include="Connections\IConnection.cs" />
+    <Compile Include="Connections\RASConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Connections\RASProperties.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Connections\RASProperties.Designer.cs">
+      <DependentUpon>RASProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Connections\RDPConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Connections\TerminalConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Connections\VMRCConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Connections\VNCConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DPAPI.cs" />
+    <Compile Include="FontParser.cs" />
     <Compile Include="FormSettings.cs" />
     <Compile Include="NativeApi.cs" />
+    <Compile Include="NetworkScanner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NetworkScanner.Designer.cs">
+      <DependentUpon>NetworkScanner.cs</DependentUpon>
+    </Compile>
     <Compile Include="NewGroupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,6 +175,18 @@
     <EmbeddedResource Include="AddConnectionForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connections\Connection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Connection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connections\RASProperties.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RASProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NetworkScanner.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NetworkScanner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewGroupForm.resx">
       <SubType>Designer</SubType>
@@ -180,6 +241,9 @@
     <Compile Include="SaveActiveConnectionsForm.Designer.cs">
       <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Scanner\NetworkScanItem.cs" />
+    <Compile Include="Scanner\NetworkScanManager.cs" />
+    <Compile Include="Scanner\ScanItemEventArgs.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Compile Include="ProtocolHandler.cs" />
     <Compile Include="Settings.cs" />
@@ -218,13 +282,17 @@
     <None Include="Resources\application_lightning.png" />
     <None Include="Resources\HidePanel.PNG" />
     <Content Include="Resources\ico101.ico" />
+    <None Include="Resources\ico_scapture.png" />
+    <Content Include="Resources\polarized-glasses.jpg" />
     <Content Include="Resources\rdp.png" />
+    <Content Include="Resources\server-administrator-icon.png" />
     <None Include="Resources\star.png" />
     <None Include="Resources\ShowPanel.PNG" />
     <None Include="Resources\tag_blue_delete.png" />
     <None Include="Resources\tag_blue_add.png" />
     <None Include="Resources\tag.png" />
     <None Include="Resources\smallterm.png" />
+    <None Include="Resources\Terminals.config" />
     <None Include="Terminals.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -234,6 +302,24 @@
       <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
       <Name>TabControl</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="AxVMRCClientControlLib">
+      <Guid>{9D2367D8-8221-4433-98C7-58C1A2CFA384}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>aximp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="VMRCClientControlLib">
+      <Guid>{9D2367D8-8221-4433-98C7-58C1A2CFA384}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

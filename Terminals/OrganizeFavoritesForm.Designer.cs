@@ -31,6 +31,7 @@ namespace Terminals
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrganizeFavoritesForm));
             this.lvConnections = new System.Windows.Forms.ListView();
             this.colName = new System.Windows.Forms.ColumnHeader();
+            this.colProtocol = new System.Windows.Forms.ColumnHeader();
             this.colComputer = new System.Windows.Forms.ColumnHeader();
             this.colDomain = new System.Windows.Forms.ColumnHeader();
             this.colUser = new System.Windows.Forms.ColumnHeader();
@@ -50,6 +51,7 @@ namespace Terminals
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lvConnections.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colName,
+            this.colProtocol,
             this.colComputer,
             this.colDomain,
             this.colUser});
@@ -59,7 +61,7 @@ namespace Terminals
             this.lvConnections.Location = new System.Drawing.Point(12, 25);
             this.lvConnections.Name = "lvConnections";
             this.lvConnections.ShowItemToolTips = true;
-            this.lvConnections.Size = new System.Drawing.Size(455, 275);
+            this.lvConnections.Size = new System.Drawing.Size(501, 275);
             this.lvConnections.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvConnections.TabIndex = 1;
             this.lvConnections.UseCompatibleStateImageBehavior = false;
@@ -72,10 +74,14 @@ namespace Terminals
             this.colName.Text = "Name";
             this.colName.Width = 100;
             // 
+            // colProtocol
+            // 
+            this.colProtocol.Text = "Protocol";
+            // 
             // colComputer
             // 
             this.colComputer.Text = "Computer";
-            this.colComputer.Width = 126;
+            this.colComputer.Width = 123;
             // 
             // colDomain
             // 
@@ -91,7 +97,7 @@ namespace Terminals
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(477, 316);
+            this.btnClose.Location = new System.Drawing.Point(523, 316);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 25);
             this.btnClose.TabIndex = 7;
@@ -101,7 +107,7 @@ namespace Terminals
             // btnEdit
             // 
             this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEdit.Location = new System.Drawing.Point(477, 55);
+            this.btnEdit.Location = new System.Drawing.Point(523, 55);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(75, 24);
             this.btnEdit.TabIndex = 3;
@@ -112,7 +118,7 @@ namespace Terminals
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Location = new System.Drawing.Point(477, 85);
+            this.btnDelete.Location = new System.Drawing.Point(523, 85);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 24);
             this.btnDelete.TabIndex = 4;
@@ -123,7 +129,7 @@ namespace Terminals
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(477, 115);
+            this.btnCopy.Location = new System.Drawing.Point(523, 115);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(75, 24);
             this.btnCopy.TabIndex = 5;
@@ -134,7 +140,7 @@ namespace Terminals
             // btnRename
             // 
             this.btnRename.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRename.Location = new System.Drawing.Point(477, 145);
+            this.btnRename.Location = new System.Drawing.Point(523, 145);
             this.btnRename.Name = "btnRename";
             this.btnRename.Size = new System.Drawing.Size(75, 24);
             this.btnRename.TabIndex = 6;
@@ -154,7 +160,7 @@ namespace Terminals
             // btnNew
             // 
             this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNew.Location = new System.Drawing.Point(477, 25);
+            this.btnNew.Location = new System.Drawing.Point(523, 25);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(75, 24);
             this.btnNew.TabIndex = 2;
@@ -168,7 +174,7 @@ namespace Terminals
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(564, 352);
+            this.ClientSize = new System.Drawing.Size(610, 352);
             this.Controls.Add(this.btnNew);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnRename);
@@ -188,6 +194,7 @@ namespace Terminals
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Organize Favorites";
             this.Shown += new System.EventHandler(this.OrganizeFavoritesForm_Shown);
+            this.Activated += new System.EventHandler(this.OrganizeFavoritesForm_Activated);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionManager_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -208,5 +215,6 @@ namespace Terminals
         private System.Windows.Forms.Button btnRename;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnNew;
+        private System.Windows.Forms.ColumnHeader colProtocol;
     }
 }

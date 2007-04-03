@@ -34,6 +34,7 @@ namespace Terminals
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.chkSaveConnections = new System.Windows.Forms.CheckBox();
             this.chkShowConfirmDialog = new System.Windows.Forms.CheckBox();
             this.chkSingleInstance = new System.Windows.Forms.CheckBox();
             this.lblEvaluatedDesktopShare = new System.Windows.Forms.Label();
@@ -52,7 +53,9 @@ namespace Terminals
             this.chkWaitForExit = new System.Windows.Forms.CheckBox();
             this.txtCommand = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.chkSaveConnections = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.PortscanTimeoutTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
@@ -85,7 +88,7 @@ namespace Terminals
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(81, 286);
+            this.label1.Location = new System.Drawing.Point(81, 301);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(241, 39);
             this.label1.TabIndex = 3;
@@ -97,7 +100,7 @@ namespace Terminals
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(111, 338);
+            this.linkLabel1.Location = new System.Drawing.Point(111, 346);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(182, 13);
             this.linkLabel1.TabIndex = 4;
@@ -115,11 +118,14 @@ namespace Terminals
             this.tabControl1.Location = new System.Drawing.Point(8, 8);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(400, 272);
+            this.tabControl1.Size = new System.Drawing.Size(400, 290);
             this.tabControl1.TabIndex = 5;
             // 
             // tpGeneral
             // 
+            this.tpGeneral.Controls.Add(this.PortscanTimeoutTextBox);
+            this.tpGeneral.Controls.Add(this.label5);
+            this.tpGeneral.Controls.Add(this.label4);
             this.tpGeneral.Controls.Add(this.chkSaveConnections);
             this.tpGeneral.Controls.Add(this.chkShowConfirmDialog);
             this.tpGeneral.Controls.Add(this.chkSingleInstance);
@@ -133,10 +139,20 @@ namespace Terminals
             this.tpGeneral.Location = new System.Drawing.Point(4, 22);
             this.tpGeneral.Name = "tpGeneral";
             this.tpGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tpGeneral.Size = new System.Drawing.Size(392, 246);
+            this.tpGeneral.Size = new System.Drawing.Size(392, 264);
             this.tpGeneral.TabIndex = 0;
             this.tpGeneral.Text = "General";
             this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // chkSaveConnections
+            // 
+            this.chkSaveConnections.AutoSize = true;
+            this.chkSaveConnections.Location = new System.Drawing.Point(16, 128);
+            this.chkSaveConnections.Name = "chkSaveConnections";
+            this.chkSaveConnections.Size = new System.Drawing.Size(152, 17);
+            this.chkSaveConnections.TabIndex = 5;
+            this.chkSaveConnections.Text = "Sa&ve connections on close";
+            this.chkSaveConnections.UseVisualStyleBackColor = true;
             // 
             // chkShowConfirmDialog
             // 
@@ -237,7 +253,7 @@ namespace Terminals
             this.tpExecuteBeforeConnect.Location = new System.Drawing.Point(4, 22);
             this.tpExecuteBeforeConnect.Name = "tpExecuteBeforeConnect";
             this.tpExecuteBeforeConnect.Padding = new System.Windows.Forms.Padding(3);
-            this.tpExecuteBeforeConnect.Size = new System.Drawing.Size(392, 208);
+            this.tpExecuteBeforeConnect.Size = new System.Drawing.Size(392, 246);
             this.tpExecuteBeforeConnect.TabIndex = 1;
             this.tpExecuteBeforeConnect.Text = "Execute Before Connect";
             this.tpExecuteBeforeConnect.UseVisualStyleBackColor = true;
@@ -310,15 +326,30 @@ namespace Terminals
             this.label11.TabIndex = 15;
             this.label11.Text = "Command:";
             // 
-            // chkSaveConnections
+            // label4
             // 
-            this.chkSaveConnections.AutoSize = true;
-            this.chkSaveConnections.Location = new System.Drawing.Point(16, 128);
-            this.chkSaveConnections.Name = "chkSaveConnections";
-            this.chkSaveConnections.Size = new System.Drawing.Size(152, 17);
-            this.chkSaveConnections.TabIndex = 5;
-            this.chkSaveConnections.Text = "Sa&ve connections on close";
-            this.chkSaveConnections.UseVisualStyleBackColor = true;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 237);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(114, 13);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Port Scanner Timeout:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(197, 237);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(51, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Seconds.";
+            // 
+            // PortscanTimeoutTextBox
+            // 
+            this.PortscanTimeoutTextBox.Location = new System.Drawing.Point(130, 234);
+            this.PortscanTimeoutTextBox.Name = "PortscanTimeoutTextBox";
+            this.PortscanTimeoutTextBox.Size = new System.Drawing.Size(58, 21);
+            this.PortscanTimeoutTextBox.TabIndex = 16;
             // 
             // OptionsForm
             // 
@@ -376,5 +407,8 @@ namespace Terminals
         private System.Windows.Forms.CheckBox chkSingleInstance;
         private System.Windows.Forms.CheckBox chkShowConfirmDialog;
         private System.Windows.Forms.CheckBox chkSaveConnections;
+        private System.Windows.Forms.TextBox PortscanTimeoutTextBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
     }
 }

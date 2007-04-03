@@ -34,6 +34,11 @@ namespace Terminals
         this.btnCancel = new System.Windows.Forms.Button();
         this.tabControl1 = new System.Windows.Forms.TabControl();
         this.tabPage1 = new System.Windows.Forms.TabPage();
+        this.DetectButton = new System.Windows.Forms.Button();
+        this.txtPort = new System.Windows.Forms.TextBox();
+        this.lblPort = new System.Windows.Forms.Label();
+        this.ProtocolComboBox = new System.Windows.Forms.ComboBox();
+        this.ProtocolLabel = new System.Windows.Forms.Label();
         this.chkSavePassword = new System.Windows.Forms.CheckBox();
         this.txtName = new System.Windows.Forms.TextBox();
         this.label5 = new System.Windows.Forms.Label();
@@ -46,8 +51,8 @@ namespace Terminals
         this.cmbDomains = new System.Windows.Forms.ComboBox();
         this.label1 = new System.Windows.Forms.Label();
         this.tabPage2 = new System.Windows.Forms.TabPage();
-        this.txtPort = new System.Windows.Forms.TextBox();
-        this.lblPort = new System.Windows.Forms.Label();
+        this.RDPSubTabPage = new System.Windows.Forms.TabControl();
+        this.RDPDisplayTabPage = new System.Windows.Forms.TabPage();
         this.groupBox1 = new System.Windows.Forms.GroupBox();
         this.chkAllowDesktopBG = new System.Windows.Forms.CheckBox();
         this.cmbColors = new System.Windows.Forms.ComboBox();
@@ -55,19 +60,47 @@ namespace Terminals
         this.cmbResolution = new System.Windows.Forms.ComboBox();
         this.label6 = new System.Windows.Forms.Label();
         this.chkConnectToConsole = new System.Windows.Forms.CheckBox();
-        this.tabPage3 = new System.Windows.Forms.TabPage();
-        this.chkRedirectSmartcards = new System.Windows.Forms.CheckBox();
-        this.chkRedirectClipboard = new System.Windows.Forms.CheckBox();
-        this.chkRedirectDevices = new System.Windows.Forms.CheckBox();
-        this.btnBrowseShare = new System.Windows.Forms.Button();
-        this.txtDesktopShare = new System.Windows.Forms.TextBox();
-        this.label10 = new System.Windows.Forms.Label();
-        this.chkSerialPorts = new System.Windows.Forms.CheckBox();
-        this.chkPrinters = new System.Windows.Forms.CheckBox();
-        this.chkDrives = new System.Windows.Forms.CheckBox();
-        this.label9 = new System.Windows.Forms.Label();
+        this.RDPLocalResourcesTabPage = new System.Windows.Forms.TabPage();
+        this.LocalResourceGroupBox = new System.Windows.Forms.GroupBox();
         this.cmbSounds = new System.Windows.Forms.ComboBox();
+        this.chkRedirectSmartcards = new System.Windows.Forms.CheckBox();
         this.label8 = new System.Windows.Forms.Label();
+        this.chkRedirectClipboard = new System.Windows.Forms.CheckBox();
+        this.label9 = new System.Windows.Forms.Label();
+        this.chkRedirectDevices = new System.Windows.Forms.CheckBox();
+        this.chkDrives = new System.Windows.Forms.CheckBox();
+        this.btnBrowseShare = new System.Windows.Forms.Button();
+        this.chkPrinters = new System.Windows.Forms.CheckBox();
+        this.txtDesktopShare = new System.Windows.Forms.TextBox();
+        this.chkSerialPorts = new System.Windows.Forms.CheckBox();
+        this.label10 = new System.Windows.Forms.Label();
+        this.tabPage7 = new System.Windows.Forms.TabPage();
+        this.VMRCReducedColorsCheckbox = new System.Windows.Forms.CheckBox();
+        this.VMRCAdminModeCheckbox = new System.Windows.Forms.CheckBox();
+        this.tabPage3 = new System.Windows.Forms.TabPage();
+        this.TelnetGroupBox = new System.Windows.Forms.GroupBox();
+        this.groupBox2 = new System.Windows.Forms.GroupBox();
+        this.label20 = new System.Windows.Forms.Label();
+        this.TelnetCursorColorTextBox = new System.Windows.Forms.TextBox();
+        this.TelnetCursorColorButton = new System.Windows.Forms.Button();
+        this.label19 = new System.Windows.Forms.Label();
+        this.TelnetTextColorTextBox = new System.Windows.Forms.TextBox();
+        this.TelnetTextColorButton = new System.Windows.Forms.Button();
+        this.label18 = new System.Windows.Forms.Label();
+        this.BackColorTextBox = new System.Windows.Forms.TextBox();
+        this.BackcolorButton = new System.Windows.Forms.Button();
+        this.label17 = new System.Windows.Forms.Label();
+        this.TelnetFontTextbox = new System.Windows.Forms.TextBox();
+        this.RowsTextBox = new System.Windows.Forms.TextBox();
+        this.TelnetFontButton = new System.Windows.Forms.Button();
+        this.label15 = new System.Windows.Forms.Label();
+        this.ColumnsTextBox = new System.Windows.Forms.TextBox();
+        this.label16 = new System.Windows.Forms.Label();
+        this.SSHRadioButton = new System.Windows.Forms.RadioButton();
+        this.TelnetRadioButton = new System.Windows.Forms.RadioButton();
+        this.tabPage5 = new System.Windows.Forms.TabPage();
+        this.RASGroupBox = new System.Windows.Forms.GroupBox();
+        this.RASDetailsListBox = new System.Windows.Forms.ListBox();
         this.tabPage4 = new System.Windows.Forms.TabPage();
         this.txtInitialDirectory = new System.Windows.Forms.TextBox();
         this.label13 = new System.Windows.Forms.Label();
@@ -85,15 +118,28 @@ namespace Terminals
         this.groupBox3 = new System.Windows.Forms.GroupBox();
         this.btnRemoveTag = new System.Windows.Forms.Button();
         this.lvConnectionTags = new System.Windows.Forms.ListView();
+        this.tabPage6 = new System.Windows.Forms.TabPage();
         this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
         this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
         this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
         this.pictureBox1 = new System.Windows.Forms.PictureBox();
+        this.fontDialog1 = new System.Windows.Forms.FontDialog();
+        this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+        this.ras1 = new FalafelSoftware.TransPort.Ras();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         this.tabPage2.SuspendLayout();
+        this.RDPSubTabPage.SuspendLayout();
+        this.RDPDisplayTabPage.SuspendLayout();
         this.groupBox1.SuspendLayout();
+        this.RDPLocalResourcesTabPage.SuspendLayout();
+        this.LocalResourceGroupBox.SuspendLayout();
+        this.tabPage7.SuspendLayout();
         this.tabPage3.SuspendLayout();
+        this.TelnetGroupBox.SuspendLayout();
+        this.groupBox2.SuspendLayout();
+        this.tabPage5.SuspendLayout();
+        this.RASGroupBox.SuspendLayout();
         this.tabPage4.SuspendLayout();
         this.tpTags.SuspendLayout();
         this.panel1.SuspendLayout();
@@ -105,7 +151,7 @@ namespace Terminals
         // 
         this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
         this.btnOk.Enabled = false;
-        this.btnOk.Location = new System.Drawing.Point(249, 298);
+        this.btnOk.Location = new System.Drawing.Point(253, 355);
         this.btnOk.Name = "btnOk";
         this.btnOk.Size = new System.Drawing.Size(72, 24);
         this.btnOk.TabIndex = 1;
@@ -117,7 +163,7 @@ namespace Terminals
         // 
         this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
         this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-        this.btnCancel.Location = new System.Drawing.Point(327, 298);
+        this.btnCancel.Location = new System.Drawing.Point(331, 355);
         this.btnCancel.Name = "btnCancel";
         this.btnCancel.Size = new System.Drawing.Size(72, 24);
         this.btnCancel.TabIndex = 2;
@@ -128,17 +174,25 @@ namespace Terminals
         // 
         this.tabControl1.Controls.Add(this.tabPage1);
         this.tabControl1.Controls.Add(this.tabPage2);
+        this.tabControl1.Controls.Add(this.tabPage7);
         this.tabControl1.Controls.Add(this.tabPage3);
+        this.tabControl1.Controls.Add(this.tabPage5);
         this.tabControl1.Controls.Add(this.tabPage4);
         this.tabControl1.Controls.Add(this.tpTags);
+        this.tabControl1.Controls.Add(this.tabPage6);
         this.tabControl1.Location = new System.Drawing.Point(6, 77);
         this.tabControl1.Name = "tabControl1";
         this.tabControl1.SelectedIndex = 0;
-        this.tabControl1.Size = new System.Drawing.Size(394, 209);
+        this.tabControl1.Size = new System.Drawing.Size(401, 265);
         this.tabControl1.TabIndex = 0;
         // 
         // tabPage1
         // 
+        this.tabPage1.Controls.Add(this.DetectButton);
+        this.tabPage1.Controls.Add(this.txtPort);
+        this.tabPage1.Controls.Add(this.lblPort);
+        this.tabPage1.Controls.Add(this.ProtocolComboBox);
+        this.tabPage1.Controls.Add(this.ProtocolLabel);
         this.tabPage1.Controls.Add(this.chkSavePassword);
         this.tabPage1.Controls.Add(this.txtName);
         this.tabPage1.Controls.Add(this.label5);
@@ -153,15 +207,66 @@ namespace Terminals
         this.tabPage1.Location = new System.Drawing.Point(4, 22);
         this.tabPage1.Name = "tabPage1";
         this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPage1.Size = new System.Drawing.Size(386, 183);
+        this.tabPage1.Size = new System.Drawing.Size(393, 239);
         this.tabPage1.TabIndex = 0;
         this.tabPage1.Text = "General";
         this.tabPage1.UseVisualStyleBackColor = true;
         // 
+        // DetectButton
+        // 
+        this.DetectButton.Location = new System.Drawing.Point(296, 6);
+        this.DetectButton.Name = "DetectButton";
+        this.DetectButton.Size = new System.Drawing.Size(75, 23);
+        this.DetectButton.TabIndex = 15;
+        this.DetectButton.Text = "Detect...";
+        this.DetectButton.UseVisualStyleBackColor = true;
+        this.DetectButton.Click += new System.EventHandler(this.DetectButton_Click);
+        // 
+        // txtPort
+        // 
+        this.txtPort.Location = new System.Drawing.Point(321, 35);
+        this.txtPort.Name = "txtPort";
+        this.txtPort.Size = new System.Drawing.Size(50, 21);
+        this.txtPort.TabIndex = 14;
+        // 
+        // lblPort
+        // 
+        this.lblPort.AutoSize = true;
+        this.lblPort.Location = new System.Drawing.Point(284, 38);
+        this.lblPort.Name = "lblPort";
+        this.lblPort.Size = new System.Drawing.Size(31, 13);
+        this.lblPort.TabIndex = 13;
+        this.lblPort.Text = "Port:";
+        // 
+        // ProtocolComboBox
+        // 
+        this.ProtocolComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+        this.ProtocolComboBox.FormattingEnabled = true;
+        this.ProtocolComboBox.Items.AddRange(new object[] {
+            "RDP",
+            "VNC",
+            "VMRC",
+            "Telnet",
+            "RAS"});
+        this.ProtocolComboBox.Location = new System.Drawing.Point(106, 6);
+        this.ProtocolComboBox.Name = "ProtocolComboBox";
+        this.ProtocolComboBox.Size = new System.Drawing.Size(172, 21);
+        this.ProtocolComboBox.TabIndex = 12;
+        this.ProtocolComboBox.SelectedIndexChanged += new System.EventHandler(this.ProtocolComboBox_SelectedIndexChanged);
+        // 
+        // ProtocolLabel
+        // 
+        this.ProtocolLabel.AutoSize = true;
+        this.ProtocolLabel.Location = new System.Drawing.Point(7, 9);
+        this.ProtocolLabel.Name = "ProtocolLabel";
+        this.ProtocolLabel.Size = new System.Drawing.Size(50, 13);
+        this.ProtocolLabel.TabIndex = 11;
+        this.ProtocolLabel.Text = "&Protocol:";
+        // 
         // chkSavePassword
         // 
         this.chkSavePassword.AutoSize = true;
-        this.chkSavePassword.Location = new System.Drawing.Point(110, 142);
+        this.chkSavePassword.Location = new System.Drawing.Point(106, 169);
         this.chkSavePassword.Name = "chkSavePassword";
         this.chkSavePassword.Size = new System.Drawing.Size(99, 17);
         this.chkSavePassword.TabIndex = 10;
@@ -171,7 +276,7 @@ namespace Terminals
         // 
         // txtName
         // 
-        this.txtName.Location = new System.Drawing.Point(110, 36);
+        this.txtName.Location = new System.Drawing.Point(106, 62);
         this.txtName.Name = "txtName";
         this.txtName.Size = new System.Drawing.Size(265, 21);
         this.txtName.TabIndex = 3;
@@ -179,7 +284,7 @@ namespace Terminals
         // label5
         // 
         this.label5.AutoSize = true;
-        this.label5.Location = new System.Drawing.Point(11, 39);
+        this.label5.Location = new System.Drawing.Point(7, 65);
         this.label5.Name = "label5";
         this.label5.Size = new System.Drawing.Size(94, 13);
         this.label5.TabIndex = 2;
@@ -187,7 +292,7 @@ namespace Terminals
         // 
         // txtPassword
         // 
-        this.txtPassword.Location = new System.Drawing.Point(110, 116);
+        this.txtPassword.Location = new System.Drawing.Point(106, 142);
         this.txtPassword.Name = "txtPassword";
         this.txtPassword.PasswordChar = '*';
         this.txtPassword.Size = new System.Drawing.Size(265, 21);
@@ -197,7 +302,7 @@ namespace Terminals
         // label4
         // 
         this.label4.AutoSize = true;
-        this.label4.Location = new System.Drawing.Point(11, 119);
+        this.label4.Location = new System.Drawing.Point(7, 145);
         this.label4.Name = "label4";
         this.label4.Size = new System.Drawing.Size(57, 13);
         this.label4.TabIndex = 8;
@@ -207,7 +312,7 @@ namespace Terminals
         // 
         this.cmbUsers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
         this.cmbUsers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-        this.cmbUsers.Location = new System.Drawing.Point(110, 89);
+        this.cmbUsers.Location = new System.Drawing.Point(106, 115);
         this.cmbUsers.Name = "cmbUsers";
         this.cmbUsers.Size = new System.Drawing.Size(265, 21);
         this.cmbUsers.TabIndex = 7;
@@ -216,7 +321,7 @@ namespace Terminals
         // label3
         // 
         this.label3.AutoSize = true;
-        this.label3.Location = new System.Drawing.Point(11, 92);
+        this.label3.Location = new System.Drawing.Point(7, 118);
         this.label3.Name = "label3";
         this.label3.Size = new System.Drawing.Size(62, 13);
         this.label3.TabIndex = 6;
@@ -226,27 +331,28 @@ namespace Terminals
         // 
         this.cmbServers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
         this.cmbServers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-        this.cmbServers.Location = new System.Drawing.Point(110, 9);
+        this.cmbServers.Location = new System.Drawing.Point(106, 35);
         this.cmbServers.Name = "cmbServers";
-        this.cmbServers.Size = new System.Drawing.Size(265, 21);
+        this.cmbServers.Size = new System.Drawing.Size(172, 21);
         this.cmbServers.TabIndex = 1;
         this.cmbServers.Leave += new System.EventHandler(this.cmbServers_Leave);
+        this.cmbServers.SelectedIndexChanged += new System.EventHandler(this.cmbServers_SelectedIndexChanged);
         this.cmbServers.TextChanged += new System.EventHandler(this.cmbServers_TextChanged);
         // 
         // label2
         // 
         this.label2.AutoSize = true;
-        this.label2.Location = new System.Drawing.Point(11, 12);
+        this.label2.Location = new System.Drawing.Point(7, 38);
         this.label2.Name = "label2";
-        this.label2.Size = new System.Drawing.Size(54, 13);
+        this.label2.Size = new System.Drawing.Size(58, 13);
         this.label2.TabIndex = 0;
-        this.label2.Text = "&Computer";
+        this.label2.Text = "&Computer:";
         // 
         // cmbDomains
         // 
         this.cmbDomains.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
         this.cmbDomains.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-        this.cmbDomains.Location = new System.Drawing.Point(110, 62);
+        this.cmbDomains.Location = new System.Drawing.Point(106, 88);
         this.cmbDomains.Name = "cmbDomains";
         this.cmbDomains.Size = new System.Drawing.Size(265, 21);
         this.cmbDomains.TabIndex = 5;
@@ -255,7 +361,7 @@ namespace Terminals
         // label1
         // 
         this.label1.AutoSize = true;
-        this.label1.Location = new System.Drawing.Point(11, 65);
+        this.label1.Location = new System.Drawing.Point(7, 91);
         this.label1.Name = "label1";
         this.label1.Size = new System.Drawing.Size(46, 13);
         this.label1.TabIndex = 4;
@@ -263,33 +369,37 @@ namespace Terminals
         // 
         // tabPage2
         // 
-        this.tabPage2.Controls.Add(this.txtPort);
-        this.tabPage2.Controls.Add(this.lblPort);
-        this.tabPage2.Controls.Add(this.groupBox1);
-        this.tabPage2.Controls.Add(this.chkConnectToConsole);
+        this.tabPage2.Controls.Add(this.RDPSubTabPage);
         this.tabPage2.Location = new System.Drawing.Point(4, 22);
         this.tabPage2.Name = "tabPage2";
         this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPage2.Size = new System.Drawing.Size(386, 183);
+        this.tabPage2.Size = new System.Drawing.Size(393, 239);
         this.tabPage2.TabIndex = 1;
-        this.tabPage2.Text = "Advanced";
+        this.tabPage2.Text = "RDP";
         this.tabPage2.UseVisualStyleBackColor = true;
         // 
-        // txtPort
+        // RDPSubTabPage
         // 
-        this.txtPort.Location = new System.Drawing.Point(130, 123);
-        this.txtPort.Name = "txtPort";
-        this.txtPort.Size = new System.Drawing.Size(234, 21);
-        this.txtPort.TabIndex = 2;
+        this.RDPSubTabPage.Controls.Add(this.RDPDisplayTabPage);
+        this.RDPSubTabPage.Controls.Add(this.RDPLocalResourcesTabPage);
+        this.RDPSubTabPage.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.RDPSubTabPage.Location = new System.Drawing.Point(3, 3);
+        this.RDPSubTabPage.Name = "RDPSubTabPage";
+        this.RDPSubTabPage.SelectedIndex = 0;
+        this.RDPSubTabPage.Size = new System.Drawing.Size(387, 233);
+        this.RDPSubTabPage.TabIndex = 4;
         // 
-        // lblPort
+        // RDPDisplayTabPage
         // 
-        this.lblPort.AutoSize = true;
-        this.lblPort.Location = new System.Drawing.Point(8, 126);
-        this.lblPort.Name = "lblPort";
-        this.lblPort.Size = new System.Drawing.Size(105, 13);
-        this.lblPort.TabIndex = 1;
-        this.lblPort.Text = "&Remote server port:";
+        this.RDPDisplayTabPage.Controls.Add(this.groupBox1);
+        this.RDPDisplayTabPage.Controls.Add(this.chkConnectToConsole);
+        this.RDPDisplayTabPage.Location = new System.Drawing.Point(4, 22);
+        this.RDPDisplayTabPage.Name = "RDPDisplayTabPage";
+        this.RDPDisplayTabPage.Padding = new System.Windows.Forms.Padding(3);
+        this.RDPDisplayTabPage.Size = new System.Drawing.Size(379, 207);
+        this.RDPDisplayTabPage.TabIndex = 0;
+        this.RDPDisplayTabPage.Text = "Display Settings";
+        this.RDPDisplayTabPage.UseVisualStyleBackColor = true;
         // 
         // groupBox1
         // 
@@ -366,135 +476,43 @@ namespace Terminals
         // chkConnectToConsole
         // 
         this.chkConnectToConsole.AutoSize = true;
-        this.chkConnectToConsole.Location = new System.Drawing.Point(11, 151);
+        this.chkConnectToConsole.Location = new System.Drawing.Point(6, 114);
         this.chkConnectToConsole.Name = "chkConnectToConsole";
         this.chkConnectToConsole.Size = new System.Drawing.Size(120, 17);
         this.chkConnectToConsole.TabIndex = 3;
         this.chkConnectToConsole.Text = "Co&nnect to Console";
         this.chkConnectToConsole.UseVisualStyleBackColor = true;
         // 
-        // tabPage3
+        // RDPLocalResourcesTabPage
         // 
-        this.tabPage3.Controls.Add(this.chkRedirectSmartcards);
-        this.tabPage3.Controls.Add(this.chkRedirectClipboard);
-        this.tabPage3.Controls.Add(this.chkRedirectDevices);
-        this.tabPage3.Controls.Add(this.btnBrowseShare);
-        this.tabPage3.Controls.Add(this.txtDesktopShare);
-        this.tabPage3.Controls.Add(this.label10);
-        this.tabPage3.Controls.Add(this.chkSerialPorts);
-        this.tabPage3.Controls.Add(this.chkPrinters);
-        this.tabPage3.Controls.Add(this.chkDrives);
-        this.tabPage3.Controls.Add(this.label9);
-        this.tabPage3.Controls.Add(this.cmbSounds);
-        this.tabPage3.Controls.Add(this.label8);
-        this.tabPage3.Location = new System.Drawing.Point(4, 22);
-        this.tabPage3.Name = "tabPage3";
-        this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPage3.Size = new System.Drawing.Size(386, 183);
-        this.tabPage3.TabIndex = 2;
-        this.tabPage3.Text = "Local Resources";
-        this.tabPage3.UseVisualStyleBackColor = true;
+        this.RDPLocalResourcesTabPage.Controls.Add(this.LocalResourceGroupBox);
+        this.RDPLocalResourcesTabPage.Location = new System.Drawing.Point(4, 22);
+        this.RDPLocalResourcesTabPage.Name = "RDPLocalResourcesTabPage";
+        this.RDPLocalResourcesTabPage.Padding = new System.Windows.Forms.Padding(3);
+        this.RDPLocalResourcesTabPage.Size = new System.Drawing.Size(379, 207);
+        this.RDPLocalResourcesTabPage.TabIndex = 1;
+        this.RDPLocalResourcesTabPage.Text = "Local Resources";
+        this.RDPLocalResourcesTabPage.UseVisualStyleBackColor = true;
         // 
-        // chkRedirectSmartcards
+        // LocalResourceGroupBox
         // 
-        this.chkRedirectSmartcards.AutoSize = true;
-        this.chkRedirectSmartcards.Location = new System.Drawing.Point(160, 120);
-        this.chkRedirectSmartcards.Name = "chkRedirectSmartcards";
-        this.chkRedirectSmartcards.Size = new System.Drawing.Size(126, 17);
-        this.chkRedirectSmartcards.TabIndex = 8;
-        this.chkRedirectSmartcards.Text = "Redirect Smart ca&rds";
-        this.chkRedirectSmartcards.UseVisualStyleBackColor = true;
-        // 
-        // chkRedirectClipboard
-        // 
-        this.chkRedirectClipboard.AutoSize = true;
-        this.chkRedirectClipboard.Checked = true;
-        this.chkRedirectClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
-        this.chkRedirectClipboard.Location = new System.Drawing.Point(160, 97);
-        this.chkRedirectClipboard.Name = "chkRedirectClipboard";
-        this.chkRedirectClipboard.Size = new System.Drawing.Size(114, 17);
-        this.chkRedirectClipboard.TabIndex = 7;
-        this.chkRedirectClipboard.Text = "Redirect &Clipboard";
-        this.chkRedirectClipboard.UseVisualStyleBackColor = true;
-        // 
-        // chkRedirectDevices
-        // 
-        this.chkRedirectDevices.AutoSize = true;
-        this.chkRedirectDevices.Location = new System.Drawing.Point(160, 74);
-        this.chkRedirectDevices.Name = "chkRedirectDevices";
-        this.chkRedirectDevices.Size = new System.Drawing.Size(129, 17);
-        this.chkRedirectDevices.TabIndex = 6;
-        this.chkRedirectDevices.Text = "Plu&g and Play devices";
-        this.chkRedirectDevices.UseVisualStyleBackColor = true;
-        // 
-        // btnBrowseShare
-        // 
-        this.btnBrowseShare.Image = global::Terminals.Properties.Resources.folder;
-        this.btnBrowseShare.Location = new System.Drawing.Point(352, 149);
-        this.btnBrowseShare.Name = "btnBrowseShare";
-        this.btnBrowseShare.Size = new System.Drawing.Size(21, 21);
-        this.btnBrowseShare.TabIndex = 11;
-        this.btnBrowseShare.UseVisualStyleBackColor = true;
-        this.btnBrowseShare.Click += new System.EventHandler(this.btnBrowseShare_Click);
-        // 
-        // txtDesktopShare
-        // 
-        this.txtDesktopShare.Location = new System.Drawing.Point(104, 149);
-        this.txtDesktopShare.Name = "txtDesktopShare";
-        this.txtDesktopShare.Size = new System.Drawing.Size(248, 21);
-        this.txtDesktopShare.TabIndex = 10;
-        this.toolTip1.SetToolTip(this.txtDesktopShare, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
-                "m your computer to the\r\nterminal window.");
-        // 
-        // label10
-        // 
-        this.label10.AutoSize = true;
-        this.label10.Location = new System.Drawing.Point(11, 153);
-        this.label10.Name = "label10";
-        this.label10.Size = new System.Drawing.Size(81, 13);
-        this.label10.TabIndex = 9;
-        this.label10.Text = "Desktop S&hare:";
-        this.toolTip1.SetToolTip(this.label10, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
-                "m your computer to the\r\nterminal window.");
-        // 
-        // chkSerialPorts
-        // 
-        this.chkSerialPorts.AutoSize = true;
-        this.chkSerialPorts.Location = new System.Drawing.Point(30, 120);
-        this.chkSerialPorts.Name = "chkSerialPorts";
-        this.chkSerialPorts.Size = new System.Drawing.Size(80, 17);
-        this.chkSerialPorts.TabIndex = 5;
-        this.chkSerialPorts.Text = "Seria&l ports";
-        this.chkSerialPorts.UseVisualStyleBackColor = true;
-        // 
-        // chkPrinters
-        // 
-        this.chkPrinters.AutoSize = true;
-        this.chkPrinters.Location = new System.Drawing.Point(30, 97);
-        this.chkPrinters.Name = "chkPrinters";
-        this.chkPrinters.Size = new System.Drawing.Size(63, 17);
-        this.chkPrinters.TabIndex = 4;
-        this.chkPrinters.Text = "&Printers";
-        this.chkPrinters.UseVisualStyleBackColor = true;
-        // 
-        // chkDrives
-        // 
-        this.chkDrives.AutoSize = true;
-        this.chkDrives.Location = new System.Drawing.Point(30, 74);
-        this.chkDrives.Name = "chkDrives";
-        this.chkDrives.Size = new System.Drawing.Size(77, 17);
-        this.chkDrives.TabIndex = 3;
-        this.chkDrives.Text = "&Disk drives";
-        this.chkDrives.UseVisualStyleBackColor = true;
-        // 
-        // label9
-        // 
-        this.label9.AutoSize = true;
-        this.label9.Location = new System.Drawing.Point(11, 52);
-        this.label9.Name = "label9";
-        this.label9.Size = new System.Drawing.Size(225, 13);
-        this.label9.TabIndex = 2;
-        this.label9.Text = "Automatically connect to these local devices :";
+        this.LocalResourceGroupBox.Controls.Add(this.cmbSounds);
+        this.LocalResourceGroupBox.Controls.Add(this.chkRedirectSmartcards);
+        this.LocalResourceGroupBox.Controls.Add(this.label8);
+        this.LocalResourceGroupBox.Controls.Add(this.chkRedirectClipboard);
+        this.LocalResourceGroupBox.Controls.Add(this.label9);
+        this.LocalResourceGroupBox.Controls.Add(this.chkRedirectDevices);
+        this.LocalResourceGroupBox.Controls.Add(this.chkDrives);
+        this.LocalResourceGroupBox.Controls.Add(this.btnBrowseShare);
+        this.LocalResourceGroupBox.Controls.Add(this.chkPrinters);
+        this.LocalResourceGroupBox.Controls.Add(this.txtDesktopShare);
+        this.LocalResourceGroupBox.Controls.Add(this.chkSerialPorts);
+        this.LocalResourceGroupBox.Controls.Add(this.label10);
+        this.LocalResourceGroupBox.Location = new System.Drawing.Point(6, 6);
+        this.LocalResourceGroupBox.Name = "LocalResourceGroupBox";
+        this.LocalResourceGroupBox.Size = new System.Drawing.Size(366, 192);
+        this.LocalResourceGroupBox.TabIndex = 12;
+        this.LocalResourceGroupBox.TabStop = false;
         // 
         // cmbSounds
         // 
@@ -504,19 +522,397 @@ namespace Terminals
             "Play on remote computer",
             "Play on this computer",
             "Do not play"});
-        this.cmbSounds.Location = new System.Drawing.Point(102, 12);
+        this.cmbSounds.Location = new System.Drawing.Point(106, 20);
         this.cmbSounds.Name = "cmbSounds";
         this.cmbSounds.Size = new System.Drawing.Size(172, 21);
         this.cmbSounds.TabIndex = 1;
         // 
+        // chkRedirectSmartcards
+        // 
+        this.chkRedirectSmartcards.AutoSize = true;
+        this.chkRedirectSmartcards.Location = new System.Drawing.Point(164, 128);
+        this.chkRedirectSmartcards.Name = "chkRedirectSmartcards";
+        this.chkRedirectSmartcards.Size = new System.Drawing.Size(126, 17);
+        this.chkRedirectSmartcards.TabIndex = 8;
+        this.chkRedirectSmartcards.Text = "Redirect Smart ca&rds";
+        this.chkRedirectSmartcards.UseVisualStyleBackColor = true;
+        // 
         // label8
         // 
         this.label8.AutoSize = true;
-        this.label8.Location = new System.Drawing.Point(11, 15);
+        this.label8.Location = new System.Drawing.Point(15, 23);
         this.label8.Name = "label8";
         this.label8.Size = new System.Drawing.Size(85, 13);
         this.label8.TabIndex = 0;
         this.label8.Text = "Remote &sounds:";
+        // 
+        // chkRedirectClipboard
+        // 
+        this.chkRedirectClipboard.AutoSize = true;
+        this.chkRedirectClipboard.Checked = true;
+        this.chkRedirectClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
+        this.chkRedirectClipboard.Location = new System.Drawing.Point(164, 105);
+        this.chkRedirectClipboard.Name = "chkRedirectClipboard";
+        this.chkRedirectClipboard.Size = new System.Drawing.Size(114, 17);
+        this.chkRedirectClipboard.TabIndex = 7;
+        this.chkRedirectClipboard.Text = "Redirect &Clipboard";
+        this.chkRedirectClipboard.UseVisualStyleBackColor = true;
+        // 
+        // label9
+        // 
+        this.label9.AutoSize = true;
+        this.label9.Location = new System.Drawing.Point(15, 60);
+        this.label9.Name = "label9";
+        this.label9.Size = new System.Drawing.Size(225, 13);
+        this.label9.TabIndex = 2;
+        this.label9.Text = "Automatically connect to these local devices :";
+        // 
+        // chkRedirectDevices
+        // 
+        this.chkRedirectDevices.AutoSize = true;
+        this.chkRedirectDevices.Location = new System.Drawing.Point(164, 82);
+        this.chkRedirectDevices.Name = "chkRedirectDevices";
+        this.chkRedirectDevices.Size = new System.Drawing.Size(129, 17);
+        this.chkRedirectDevices.TabIndex = 6;
+        this.chkRedirectDevices.Text = "Plu&g and Play devices";
+        this.chkRedirectDevices.UseVisualStyleBackColor = true;
+        // 
+        // chkDrives
+        // 
+        this.chkDrives.AutoSize = true;
+        this.chkDrives.Location = new System.Drawing.Point(34, 82);
+        this.chkDrives.Name = "chkDrives";
+        this.chkDrives.Size = new System.Drawing.Size(77, 17);
+        this.chkDrives.TabIndex = 3;
+        this.chkDrives.Text = "&Disk drives";
+        this.chkDrives.UseVisualStyleBackColor = true;
+        // 
+        // btnBrowseShare
+        // 
+        this.btnBrowseShare.Image = global::Terminals.Properties.Resources.folder;
+        this.btnBrowseShare.Location = new System.Drawing.Point(338, 156);
+        this.btnBrowseShare.Name = "btnBrowseShare";
+        this.btnBrowseShare.Size = new System.Drawing.Size(21, 21);
+        this.btnBrowseShare.TabIndex = 11;
+        this.btnBrowseShare.UseVisualStyleBackColor = true;
+        this.btnBrowseShare.Click += new System.EventHandler(this.btnBrowseShare_Click);
+        // 
+        // chkPrinters
+        // 
+        this.chkPrinters.AutoSize = true;
+        this.chkPrinters.Location = new System.Drawing.Point(34, 105);
+        this.chkPrinters.Name = "chkPrinters";
+        this.chkPrinters.Size = new System.Drawing.Size(63, 17);
+        this.chkPrinters.TabIndex = 4;
+        this.chkPrinters.Text = "&Printers";
+        this.chkPrinters.UseVisualStyleBackColor = true;
+        // 
+        // txtDesktopShare
+        // 
+        this.txtDesktopShare.Location = new System.Drawing.Point(108, 157);
+        this.txtDesktopShare.Name = "txtDesktopShare";
+        this.txtDesktopShare.Size = new System.Drawing.Size(224, 21);
+        this.txtDesktopShare.TabIndex = 10;
+        this.toolTip1.SetToolTip(this.txtDesktopShare, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
+                "m your computer to the\r\nterminal window.");
+        // 
+        // chkSerialPorts
+        // 
+        this.chkSerialPorts.AutoSize = true;
+        this.chkSerialPorts.Location = new System.Drawing.Point(34, 128);
+        this.chkSerialPorts.Name = "chkSerialPorts";
+        this.chkSerialPorts.Size = new System.Drawing.Size(80, 17);
+        this.chkSerialPorts.TabIndex = 5;
+        this.chkSerialPorts.Text = "Seria&l ports";
+        this.chkSerialPorts.UseVisualStyleBackColor = true;
+        // 
+        // label10
+        // 
+        this.label10.AutoSize = true;
+        this.label10.Location = new System.Drawing.Point(15, 161);
+        this.label10.Name = "label10";
+        this.label10.Size = new System.Drawing.Size(81, 13);
+        this.label10.TabIndex = 9;
+        this.label10.Text = "Desktop S&hare:";
+        this.toolTip1.SetToolTip(this.label10, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
+                "m your computer to the\r\nterminal window.");
+        // 
+        // tabPage7
+        // 
+        this.tabPage7.Controls.Add(this.VMRCReducedColorsCheckbox);
+        this.tabPage7.Controls.Add(this.VMRCAdminModeCheckbox);
+        this.tabPage7.Location = new System.Drawing.Point(4, 22);
+        this.tabPage7.Name = "tabPage7";
+        this.tabPage7.Size = new System.Drawing.Size(393, 239);
+        this.tabPage7.TabIndex = 7;
+        this.tabPage7.Text = "VMRC";
+        this.tabPage7.UseVisualStyleBackColor = true;
+        // 
+        // VMRCReducedColorsCheckbox
+        // 
+        this.VMRCReducedColorsCheckbox.AutoSize = true;
+        this.VMRCReducedColorsCheckbox.Location = new System.Drawing.Point(21, 40);
+        this.VMRCReducedColorsCheckbox.Name = "VMRCReducedColorsCheckbox";
+        this.VMRCReducedColorsCheckbox.Size = new System.Drawing.Size(101, 17);
+        this.VMRCReducedColorsCheckbox.TabIndex = 1;
+        this.VMRCReducedColorsCheckbox.Text = "Reduced Colors";
+        this.VMRCReducedColorsCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // VMRCAdminModeCheckbox
+        // 
+        this.VMRCAdminModeCheckbox.AutoSize = true;
+        this.VMRCAdminModeCheckbox.Location = new System.Drawing.Point(21, 16);
+        this.VMRCAdminModeCheckbox.Name = "VMRCAdminModeCheckbox";
+        this.VMRCAdminModeCheckbox.Size = new System.Drawing.Size(119, 17);
+        this.VMRCAdminModeCheckbox.TabIndex = 0;
+        this.VMRCAdminModeCheckbox.Text = "Administrator Mode";
+        this.VMRCAdminModeCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // tabPage3
+        // 
+        this.tabPage3.Controls.Add(this.TelnetGroupBox);
+        this.tabPage3.Location = new System.Drawing.Point(4, 22);
+        this.tabPage3.Name = "tabPage3";
+        this.tabPage3.Size = new System.Drawing.Size(393, 239);
+        this.tabPage3.TabIndex = 8;
+        this.tabPage3.Text = "Telnet";
+        this.tabPage3.UseVisualStyleBackColor = true;
+        // 
+        // TelnetGroupBox
+        // 
+        this.TelnetGroupBox.Controls.Add(this.groupBox2);
+        this.TelnetGroupBox.Controls.Add(this.SSHRadioButton);
+        this.TelnetGroupBox.Controls.Add(this.TelnetRadioButton);
+        this.TelnetGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.TelnetGroupBox.Location = new System.Drawing.Point(0, 0);
+        this.TelnetGroupBox.Name = "TelnetGroupBox";
+        this.TelnetGroupBox.Size = new System.Drawing.Size(393, 239);
+        this.TelnetGroupBox.TabIndex = 0;
+        this.TelnetGroupBox.TabStop = false;
+        // 
+        // groupBox2
+        // 
+        this.groupBox2.Controls.Add(this.label20);
+        this.groupBox2.Controls.Add(this.TelnetCursorColorTextBox);
+        this.groupBox2.Controls.Add(this.TelnetCursorColorButton);
+        this.groupBox2.Controls.Add(this.label19);
+        this.groupBox2.Controls.Add(this.TelnetTextColorTextBox);
+        this.groupBox2.Controls.Add(this.TelnetTextColorButton);
+        this.groupBox2.Controls.Add(this.label18);
+        this.groupBox2.Controls.Add(this.BackColorTextBox);
+        this.groupBox2.Controls.Add(this.BackcolorButton);
+        this.groupBox2.Controls.Add(this.label17);
+        this.groupBox2.Controls.Add(this.TelnetFontTextbox);
+        this.groupBox2.Controls.Add(this.RowsTextBox);
+        this.groupBox2.Controls.Add(this.TelnetFontButton);
+        this.groupBox2.Controls.Add(this.label15);
+        this.groupBox2.Controls.Add(this.ColumnsTextBox);
+        this.groupBox2.Controls.Add(this.label16);
+        this.groupBox2.Location = new System.Drawing.Point(101, 9);
+        this.groupBox2.Name = "groupBox2";
+        this.groupBox2.Size = new System.Drawing.Size(286, 224);
+        this.groupBox2.TabIndex = 7;
+        this.groupBox2.TabStop = false;
+        this.groupBox2.Text = "Formatting";
+        // 
+        // label20
+        // 
+        this.label20.AutoSize = true;
+        this.label20.Location = new System.Drawing.Point(19, 171);
+        this.label20.Name = "label20";
+        this.label20.Size = new System.Drawing.Size(43, 13);
+        this.label20.TabIndex = 17;
+        this.label20.Text = "Cursor:";
+        // 
+        // TelnetCursorColorTextBox
+        // 
+        this.TelnetCursorColorTextBox.Location = new System.Drawing.Point(72, 168);
+        this.TelnetCursorColorTextBox.Name = "TelnetCursorColorTextBox";
+        this.TelnetCursorColorTextBox.ReadOnly = true;
+        this.TelnetCursorColorTextBox.Size = new System.Drawing.Size(160, 21);
+        this.TelnetCursorColorTextBox.TabIndex = 16;
+        this.TelnetCursorColorTextBox.Text = "Red";
+        // 
+        // TelnetCursorColorButton
+        // 
+        this.TelnetCursorColorButton.Location = new System.Drawing.Point(238, 166);
+        this.TelnetCursorColorButton.Name = "TelnetCursorColorButton";
+        this.TelnetCursorColorButton.Size = new System.Drawing.Size(31, 23);
+        this.TelnetCursorColorButton.TabIndex = 15;
+        this.TelnetCursorColorButton.Text = "...";
+        this.TelnetCursorColorButton.UseVisualStyleBackColor = true;
+        this.TelnetCursorColorButton.Click += new System.EventHandler(this.TelnetCursorColorButton_Click);
+        // 
+        // label19
+        // 
+        this.label19.AutoSize = true;
+        this.label19.Location = new System.Drawing.Point(19, 144);
+        this.label19.Name = "label19";
+        this.label19.Size = new System.Drawing.Size(33, 13);
+        this.label19.TabIndex = 14;
+        this.label19.Text = "Text:";
+        // 
+        // TelnetTextColorTextBox
+        // 
+        this.TelnetTextColorTextBox.Location = new System.Drawing.Point(72, 141);
+        this.TelnetTextColorTextBox.Name = "TelnetTextColorTextBox";
+        this.TelnetTextColorTextBox.ReadOnly = true;
+        this.TelnetTextColorTextBox.Size = new System.Drawing.Size(160, 21);
+        this.TelnetTextColorTextBox.TabIndex = 13;
+        this.TelnetTextColorTextBox.Text = "White";
+        // 
+        // TelnetTextColorButton
+        // 
+        this.TelnetTextColorButton.Location = new System.Drawing.Point(238, 139);
+        this.TelnetTextColorButton.Name = "TelnetTextColorButton";
+        this.TelnetTextColorButton.Size = new System.Drawing.Size(31, 23);
+        this.TelnetTextColorButton.TabIndex = 12;
+        this.TelnetTextColorButton.Text = "...";
+        this.TelnetTextColorButton.UseVisualStyleBackColor = true;
+        this.TelnetTextColorButton.Click += new System.EventHandler(this.TelnetTextColorButton_Click);
+        // 
+        // label18
+        // 
+        this.label18.AutoSize = true;
+        this.label18.Location = new System.Drawing.Point(19, 117);
+        this.label18.Name = "label18";
+        this.label18.Size = new System.Drawing.Size(33, 13);
+        this.label18.TabIndex = 11;
+        this.label18.Text = "Back:";
+        // 
+        // BackColorTextBox
+        // 
+        this.BackColorTextBox.Location = new System.Drawing.Point(72, 114);
+        this.BackColorTextBox.Name = "BackColorTextBox";
+        this.BackColorTextBox.ReadOnly = true;
+        this.BackColorTextBox.Size = new System.Drawing.Size(160, 21);
+        this.BackColorTextBox.TabIndex = 10;
+        this.BackColorTextBox.Text = "Black";
+        // 
+        // BackcolorButton
+        // 
+        this.BackcolorButton.Location = new System.Drawing.Point(238, 112);
+        this.BackcolorButton.Name = "BackcolorButton";
+        this.BackcolorButton.Size = new System.Drawing.Size(31, 23);
+        this.BackcolorButton.TabIndex = 9;
+        this.BackcolorButton.Text = "...";
+        this.BackcolorButton.UseVisualStyleBackColor = true;
+        this.BackcolorButton.Click += new System.EventHandler(this.BackcolorButton_Click);
+        // 
+        // label17
+        // 
+        this.label17.AutoSize = true;
+        this.label17.Location = new System.Drawing.Point(19, 90);
+        this.label17.Name = "label17";
+        this.label17.Size = new System.Drawing.Size(33, 13);
+        this.label17.TabIndex = 8;
+        this.label17.Text = "Font:";
+        // 
+        // TelnetFontTextbox
+        // 
+        this.TelnetFontTextbox.Location = new System.Drawing.Point(72, 87);
+        this.TelnetFontTextbox.Name = "TelnetFontTextbox";
+        this.TelnetFontTextbox.ReadOnly = true;
+        this.TelnetFontTextbox.Size = new System.Drawing.Size(160, 21);
+        this.TelnetFontTextbox.TabIndex = 7;
+        this.TelnetFontTextbox.Text = "[Font: Name=Arial, Size=12]";
+        // 
+        // RowsTextBox
+        // 
+        this.RowsTextBox.Location = new System.Drawing.Point(72, 23);
+        this.RowsTextBox.Name = "RowsTextBox";
+        this.RowsTextBox.Size = new System.Drawing.Size(38, 21);
+        this.RowsTextBox.TabIndex = 4;
+        this.RowsTextBox.Text = "38";
+        // 
+        // TelnetFontButton
+        // 
+        this.TelnetFontButton.Location = new System.Drawing.Point(238, 85);
+        this.TelnetFontButton.Name = "TelnetFontButton";
+        this.TelnetFontButton.Size = new System.Drawing.Size(31, 23);
+        this.TelnetFontButton.TabIndex = 6;
+        this.TelnetFontButton.Text = "...";
+        this.TelnetFontButton.UseVisualStyleBackColor = true;
+        this.TelnetFontButton.Click += new System.EventHandler(this.TelnetFontButton_Click);
+        // 
+        // label15
+        // 
+        this.label15.AutoSize = true;
+        this.label15.Location = new System.Drawing.Point(17, 26);
+        this.label15.Name = "label15";
+        this.label15.Size = new System.Drawing.Size(37, 13);
+        this.label15.TabIndex = 2;
+        this.label15.Text = "Rows:";
+        // 
+        // ColumnsTextBox
+        // 
+        this.ColumnsTextBox.Location = new System.Drawing.Point(72, 52);
+        this.ColumnsTextBox.Name = "ColumnsTextBox";
+        this.ColumnsTextBox.Size = new System.Drawing.Size(38, 21);
+        this.ColumnsTextBox.TabIndex = 5;
+        this.ColumnsTextBox.Text = "110";
+        // 
+        // label16
+        // 
+        this.label16.AutoSize = true;
+        this.label16.Location = new System.Drawing.Point(17, 55);
+        this.label16.Name = "label16";
+        this.label16.Size = new System.Drawing.Size(51, 13);
+        this.label16.TabIndex = 3;
+        this.label16.Text = "Columns:";
+        // 
+        // SSHRadioButton
+        // 
+        this.SSHRadioButton.AutoSize = true;
+        this.SSHRadioButton.Checked = true;
+        this.SSHRadioButton.Location = new System.Drawing.Point(25, 45);
+        this.SSHRadioButton.Name = "SSHRadioButton";
+        this.SSHRadioButton.Size = new System.Drawing.Size(44, 17);
+        this.SSHRadioButton.TabIndex = 1;
+        this.SSHRadioButton.TabStop = true;
+        this.SSHRadioButton.Text = "SSH";
+        this.SSHRadioButton.UseVisualStyleBackColor = true;
+        this.SSHRadioButton.CheckedChanged += new System.EventHandler(this.SSHRadioButton_CheckedChanged);
+        // 
+        // TelnetRadioButton
+        // 
+        this.TelnetRadioButton.AutoSize = true;
+        this.TelnetRadioButton.Location = new System.Drawing.Point(25, 21);
+        this.TelnetRadioButton.Name = "TelnetRadioButton";
+        this.TelnetRadioButton.Size = new System.Drawing.Size(55, 17);
+        this.TelnetRadioButton.TabIndex = 0;
+        this.TelnetRadioButton.Text = "Telnet";
+        this.TelnetRadioButton.UseVisualStyleBackColor = true;
+        this.TelnetRadioButton.CheckedChanged += new System.EventHandler(this.TelnetRadioButton_CheckedChanged);
+        // 
+        // tabPage5
+        // 
+        this.tabPage5.Controls.Add(this.RASGroupBox);
+        this.tabPage5.Location = new System.Drawing.Point(4, 22);
+        this.tabPage5.Name = "tabPage5";
+        this.tabPage5.Size = new System.Drawing.Size(393, 239);
+        this.tabPage5.TabIndex = 9;
+        this.tabPage5.Text = "RAS";
+        this.tabPage5.UseVisualStyleBackColor = true;
+        // 
+        // RASGroupBox
+        // 
+        this.RASGroupBox.Controls.Add(this.RASDetailsListBox);
+        this.RASGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.RASGroupBox.Location = new System.Drawing.Point(0, 0);
+        this.RASGroupBox.Name = "RASGroupBox";
+        this.RASGroupBox.Size = new System.Drawing.Size(393, 239);
+        this.RASGroupBox.TabIndex = 0;
+        this.RASGroupBox.TabStop = false;
+        // 
+        // RASDetailsListBox
+        // 
+        this.RASDetailsListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.RASDetailsListBox.FormattingEnabled = true;
+        this.RASDetailsListBox.Location = new System.Drawing.Point(3, 17);
+        this.RASDetailsListBox.Name = "RASDetailsListBox";
+        this.RASDetailsListBox.Size = new System.Drawing.Size(387, 212);
+        this.RASDetailsListBox.TabIndex = 0;
         // 
         // tabPage4
         // 
@@ -531,9 +927,9 @@ namespace Terminals
         this.tabPage4.Location = new System.Drawing.Point(4, 22);
         this.tabPage4.Name = "tabPage4";
         this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPage4.Size = new System.Drawing.Size(386, 183);
+        this.tabPage4.Size = new System.Drawing.Size(393, 239);
         this.tabPage4.TabIndex = 3;
-        this.tabPage4.Text = "Execute Before Connect";
+        this.tabPage4.Text = "Execute";
         this.tabPage4.UseVisualStyleBackColor = true;
         // 
         // txtInitialDirectory
@@ -613,7 +1009,7 @@ namespace Terminals
         this.tpTags.Location = new System.Drawing.Point(4, 22);
         this.tpTags.Name = "tpTags";
         this.tpTags.Padding = new System.Windows.Forms.Padding(3);
-        this.tpTags.Size = new System.Drawing.Size(386, 183);
+        this.tpTags.Size = new System.Drawing.Size(393, 239);
         this.tpTags.TabIndex = 4;
         this.tpTags.Text = "Tags";
         this.tpTags.UseVisualStyleBackColor = true;
@@ -650,9 +1046,9 @@ namespace Terminals
         // 
         this.panel1.Controls.Add(this.groupBox3);
         this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-        this.panel1.Location = new System.Drawing.Point(3, 40);
+        this.panel1.Location = new System.Drawing.Point(3, 96);
         this.panel1.Name = "panel1";
-        this.panel1.Size = new System.Drawing.Size(380, 140);
+        this.panel1.Size = new System.Drawing.Size(387, 140);
         this.panel1.TabIndex = 0;
         // 
         // groupBox3
@@ -662,7 +1058,7 @@ namespace Terminals
         this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
         this.groupBox3.Location = new System.Drawing.Point(0, 0);
         this.groupBox3.Name = "groupBox3";
-        this.groupBox3.Size = new System.Drawing.Size(380, 140);
+        this.groupBox3.Size = new System.Drawing.Size(387, 140);
         this.groupBox3.TabIndex = 1;
         this.groupBox3.TabStop = false;
         this.groupBox3.Text = "Connection Tags";
@@ -685,14 +1081,24 @@ namespace Terminals
         this.lvConnectionTags.HideSelection = false;
         this.lvConnectionTags.Location = new System.Drawing.Point(8, 24);
         this.lvConnectionTags.Name = "lvConnectionTags";
-        this.lvConnectionTags.Size = new System.Drawing.Size(344, 104);
+        this.lvConnectionTags.Size = new System.Drawing.Size(351, 104);
         this.lvConnectionTags.TabIndex = 1;
         this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
         // 
+        // tabPage6
+        // 
+        this.tabPage6.Location = new System.Drawing.Point(4, 22);
+        this.tabPage6.Name = "tabPage6";
+        this.tabPage6.Size = new System.Drawing.Size(393, 239);
+        this.tabPage6.TabIndex = 6;
+        this.tabPage6.Text = "VNC";
+        this.tabPage6.UseVisualStyleBackColor = true;
+        // 
         // chkAddtoToolbar
         // 
+        this.chkAddtoToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
         this.chkAddtoToolbar.AutoSize = true;
-        this.chkAddtoToolbar.Location = new System.Drawing.Point(10, 303);
+        this.chkAddtoToolbar.Location = new System.Drawing.Point(6, 360);
         this.chkAddtoToolbar.Name = "chkAddtoToolbar";
         this.chkAddtoToolbar.Size = new System.Drawing.Size(97, 17);
         this.chkAddtoToolbar.TabIndex = 10;
@@ -710,16 +1116,28 @@ namespace Terminals
         this.pictureBox1.Image = global::Terminals.Properties.Resources.rdp;
         this.pictureBox1.Location = new System.Drawing.Point(0, 0);
         this.pictureBox1.Name = "pictureBox1";
-        this.pictureBox1.Size = new System.Drawing.Size(407, 67);
+        this.pictureBox1.Size = new System.Drawing.Size(411, 67);
         this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
         this.pictureBox1.TabIndex = 9;
         this.pictureBox1.TabStop = false;
         // 
+        // ras1
+        // 
+        this.ras1.CallBackNumber = null;
+        this.ras1.Domain = null;
+        this.ras1.EntryName = null;
+        this.ras1.Password = null;
+        this.ras1.PhoneNumber = null;
+        this.ras1.UserName = null;
+        this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
+        // 
         // NewTerminalForm
         // 
+        this.AcceptButton = this.btnOk;
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.ClientSize = new System.Drawing.Size(407, 334);
+        this.CancelButton = this.btnCancel;
+        this.ClientSize = new System.Drawing.Size(411, 391);
         this.Controls.Add(this.chkAddtoToolbar);
         this.Controls.Add(this.tabControl1);
         this.Controls.Add(this.pictureBox1);
@@ -736,15 +1154,28 @@ namespace Terminals
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text = "New Connection";
         this.Shown += new System.EventHandler(this.NewTerminalForm_Shown);
+        this.Load += new System.EventHandler(this.NewTerminalForm_Load);
         this.tabControl1.ResumeLayout(false);
         this.tabPage1.ResumeLayout(false);
         this.tabPage1.PerformLayout();
         this.tabPage2.ResumeLayout(false);
-        this.tabPage2.PerformLayout();
+        this.RDPSubTabPage.ResumeLayout(false);
+        this.RDPDisplayTabPage.ResumeLayout(false);
+        this.RDPDisplayTabPage.PerformLayout();
         this.groupBox1.ResumeLayout(false);
         this.groupBox1.PerformLayout();
+        this.RDPLocalResourcesTabPage.ResumeLayout(false);
+        this.LocalResourceGroupBox.ResumeLayout(false);
+        this.LocalResourceGroupBox.PerformLayout();
+        this.tabPage7.ResumeLayout(false);
+        this.tabPage7.PerformLayout();
         this.tabPage3.ResumeLayout(false);
-        this.tabPage3.PerformLayout();
+        this.TelnetGroupBox.ResumeLayout(false);
+        this.TelnetGroupBox.PerformLayout();
+        this.groupBox2.ResumeLayout(false);
+        this.groupBox2.PerformLayout();
+        this.tabPage5.ResumeLayout(false);
+        this.RASGroupBox.ResumeLayout(false);
         this.tabPage4.ResumeLayout(false);
         this.tabPage4.PerformLayout();
         this.tpTags.ResumeLayout(false);
@@ -783,15 +1214,12 @@ namespace Terminals
       private System.Windows.Forms.ComboBox cmbServers;
       private System.Windows.Forms.ComboBox cmbDomains;
       private System.Windows.Forms.CheckBox chkAddtoToolbar;
-    private System.Windows.Forms.TabPage tabPage3;
     private System.Windows.Forms.CheckBox chkDrives;
     private System.Windows.Forms.Label label9;
     private System.Windows.Forms.ComboBox cmbSounds;
     private System.Windows.Forms.Label label8;
     private System.Windows.Forms.CheckBox chkSerialPorts;
-    private System.Windows.Forms.CheckBox chkPrinters;
-      private System.Windows.Forms.TextBox txtPort;
-      private System.Windows.Forms.Label lblPort;
+      private System.Windows.Forms.CheckBox chkPrinters;
       private System.Windows.Forms.TextBox txtDesktopShare;
       private System.Windows.Forms.Label label10;
       private System.Windows.Forms.Button btnBrowseShare;
@@ -818,5 +1246,45 @@ namespace Terminals
       private System.Windows.Forms.ListView lvConnectionTags;
       private System.Windows.Forms.Button btnRemoveTag;
       private System.Windows.Forms.TextBox txtTag;
+      private System.Windows.Forms.ComboBox ProtocolComboBox;
+      private System.Windows.Forms.Label ProtocolLabel;
+      private System.Windows.Forms.GroupBox LocalResourceGroupBox;
+      private System.Windows.Forms.TextBox txtPort;
+      private System.Windows.Forms.Label lblPort;
+      private System.Windows.Forms.TabPage tabPage6;
+      private System.Windows.Forms.TabPage tabPage7;
+      private System.Windows.Forms.CheckBox VMRCAdminModeCheckbox;
+      private System.Windows.Forms.CheckBox VMRCReducedColorsCheckbox;
+      private System.Windows.Forms.TabControl RDPSubTabPage;
+      private System.Windows.Forms.TabPage RDPDisplayTabPage;
+      private System.Windows.Forms.TabPage RDPLocalResourcesTabPage;
+      private System.Windows.Forms.TabPage tabPage3;
+      private System.Windows.Forms.GroupBox TelnetGroupBox;
+      private System.Windows.Forms.RadioButton SSHRadioButton;
+      private System.Windows.Forms.RadioButton TelnetRadioButton;
+      private System.Windows.Forms.TextBox ColumnsTextBox;
+      private System.Windows.Forms.TextBox RowsTextBox;
+      private System.Windows.Forms.Label label16;
+      private System.Windows.Forms.Label label15;
+      private System.Windows.Forms.Button TelnetFontButton;
+      private System.Windows.Forms.FontDialog fontDialog1;
+      private System.Windows.Forms.GroupBox groupBox2;
+      private System.Windows.Forms.Label label17;
+      private System.Windows.Forms.TextBox TelnetFontTextbox;
+      private System.Windows.Forms.Label label18;
+      private System.Windows.Forms.TextBox BackColorTextBox;
+      private System.Windows.Forms.Button BackcolorButton;
+      private System.Windows.Forms.ColorDialog colorDialog1;
+      private System.Windows.Forms.Label label20;
+      private System.Windows.Forms.TextBox TelnetCursorColorTextBox;
+      private System.Windows.Forms.Button TelnetCursorColorButton;
+      private System.Windows.Forms.Label label19;
+      private System.Windows.Forms.TextBox TelnetTextColorTextBox;
+      private System.Windows.Forms.Button TelnetTextColorButton;
+      private System.Windows.Forms.Button DetectButton;
+      private System.Windows.Forms.TabPage tabPage5;
+      private System.Windows.Forms.GroupBox RASGroupBox;
+      private FalafelSoftware.TransPort.Ras ras1;
+      private System.Windows.Forms.ListBox RASDetailsListBox;
   }
 }

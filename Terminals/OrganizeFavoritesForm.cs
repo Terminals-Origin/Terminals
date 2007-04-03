@@ -27,6 +27,7 @@ namespace Terminals
                 {
                     ListViewItem item = lvConnections.Items.Add(favorite.Name);
                     item.Name = favorite.Name;
+                    item.SubItems.Add(favorite.Protocol);
                     item.SubItems.Add(favorite.ServerName);
                     item.SubItems.Add(favorite.DomainName);
                     item.SubItems.Add(favorite.UserName);
@@ -157,6 +158,10 @@ namespace Terminals
             {
                 lvConnections.Items[0].Selected = true;
             }
+        }
+
+        private void OrganizeFavoritesForm_Activated(object sender, EventArgs e) {
+            LoadConnections();
         }
     }
 }

@@ -158,6 +158,13 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap ico_scapture {
+            get {
+                object obj = ResourceManager.GetObject("ico_scapture", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap keyboard {
             get {
                 object obj = ResourceManager.GetObject("keyboard", resourceCulture);
@@ -165,9 +172,23 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap polarized_glasses {
+            get {
+                object obj = ResourceManager.GetObject("polarized_glasses", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap rdp {
             get {
                 object obj = ResourceManager.GetObject("rdp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap server_administrator_icon {
+            get {
+                object obj = ResourceManager.GetObject("server_administrator_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -211,6 +232,25 @@ namespace Terminals.Properties {
             get {
                 object obj = ResourceManager.GetObject("tag_blue_delete", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;configuration&gt;
+        ///    &lt;configSections&gt;
+        ///        &lt;section name=&quot;settings&quot; type=&quot;Terminals.TerminalsConfigurationSection, Terminals&quot;/&gt;
+        ///    &lt;/configSections&gt;
+        ///    &lt;settings&gt;
+        ///        &lt;savedConnectionsList&gt;
+        ///            &lt;clear /&gt;
+        ///        &lt;/savedConnectionsList&gt;
+        ///    &lt;/settings&gt;
+        ///&lt;/configuration&gt;.
+        /// </summary>
+        internal static string Terminals {
+            get {
+                return ResourceManager.GetString("Terminals", resourceCulture);
             }
         }
     }

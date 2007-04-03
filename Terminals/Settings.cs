@@ -12,15 +12,30 @@ namespace Terminals
     {
         private static Configuration GetConfiguration()
         {
+            string configFile =Path.GetDirectoryName(Application.ExecutablePath) + @"\Terminals.config";
+            if(!System.IO.File.Exists(configFile)) {
+                string templateConfigFile = global::Terminals.Properties.Resources.Terminals;
+                using(System.IO.StreamWriter sr = new StreamWriter(configFile)) {
+                    sr.Write(templateConfigFile);
+                }
+            }
             ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
-            configFileMap.ExeConfigFilename = Path.GetDirectoryName(Application.ExecutablePath) + @"\Terminals.config";
+            configFileMap.ExeConfigFilename = configFile;
             return ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
         }
 
         private static TerminalsConfigurationSection GetSection()
         {
             Configuration configuration = GetConfiguration();
-            return (TerminalsConfigurationSection)configuration.GetSection("settings");
+            TerminalsConfigurationSection c=null;
+            try {
+                c = (TerminalsConfigurationSection)configuration.GetSection("settings");
+            } catch (Exception exc) {
+                if (System.IO.File.Exists(configuration.FilePath)) System.IO.File.Delete(configuration.FilePath);
+                configuration = GetConfiguration();
+                c = (TerminalsConfigurationSection)configuration.GetSection("settings");
+            }
+            return c;
         }
 
         private static TerminalsConfigurationSection GetSection(Configuration configuration)
@@ -215,6 +230,16 @@ namespace Terminals
             Configuration configuration = GetConfiguration();
             TerminalsConfigurationSection section = GetSection(configuration);
             FavoriteConfigurationElement editedFavorite = section.Favorites[oldName];
+            editedFavorite.VMRCAdministratorMode = favorite.VMRCAdministratorMode;
+            editedFavorite.VMRCReducedColorsMode = favorite.VMRCReducedColorsMode;
+            editedFavorite.Telnet = favorite.Telnet;
+            editedFavorite.TelnetRows = favorite.TelnetRows;
+            editedFavorite.TelnetCols = favorite.TelnetCols;
+            editedFavorite.TelnetFont = favorite.TelnetFont;
+            editedFavorite.TelnetCursorColor = favorite.TelnetCursorColor;
+            editedFavorite.TelnetTextColor = favorite.TelnetTextColor;
+            editedFavorite.TelnetBackColor = favorite.TelnetBackColor;
+            editedFavorite.Protocol = favorite.Protocol;
             editedFavorite.Colors = favorite.Colors;
             editedFavorite.ConnectToConsole = favorite.ConnectToConsole;
             editedFavorite.DesktopSize = favorite.DesktopSize;
@@ -318,7 +343,16 @@ namespace Terminals
                 configuration.Save();
             }
         }
-
+        public static int PortScanTimeoutSeconds {
+            get {
+                return GetSection().PortScanTimeoutSeconds;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).PortScanTimeoutSeconds = value;
+                configuration.Save();
+            }
+        }
         public static bool ShowInformationToolTips
         {
             get
