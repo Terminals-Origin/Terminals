@@ -59,19 +59,19 @@
     <Reference Include="System.Xml" />
     <Reference Include="TerminalControl, Version=1.0.2646.27407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TerminalControl\TerminalControl\bin\Release\TerminalControl.dll</HintPath>
+      <HintPath>..\Resources\TerminalControl.dll</HintPath>
     </Reference>
     <Reference Include="TransPort2006, Version=3.0.1.7, Culture=neutral, PublicKeyToken=4bc5eb9a373f42a1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TransPort_STD_3.0.1.7\TransPortStd\Bin\TransPort2006.dll</HintPath>
+      <HintPath>..\Resources\TransPort2006.dll</HintPath>
     </Reference>
     <Reference Include="TransPort2006.Design, Version=3.0.1.7, Culture=neutral, PublicKeyToken=4bc5eb9a373f42a1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TransPort_STD_3.0.1.7\TransPortStd\Bin\TransPort2006.Design.dll</HintPath>
+      <HintPath>..\Resources\TransPort2006.Design.dll</HintPath>
     </Reference>
     <Reference Include="VncSharp, Version=0.88.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\vncsharp-0.88.0\framework 2.0\VncSharp.dll</HintPath>
+      <HintPath>..\Resources\VncSharp.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +143,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
