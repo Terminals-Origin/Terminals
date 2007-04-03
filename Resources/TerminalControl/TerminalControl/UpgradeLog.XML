@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="TerminalControl">
+</Property><Property Name="Solution File" Value="C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\TerminalControl.sln">
+</Property><Property Name="Date" Value="Saturday, March 31, 2007">
+</Property><Property Name="Time" Value="15:03 PM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="TerminalControl.sln" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\TerminalControl.sln">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="TerminalControl.csproj" Description="Project file successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\TerminalControl.csproj">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="TerminalControl.csproj.user" Description="Project user file successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\TerminalControl.csproj.user">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="AlgorithmSupport.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\AlgorithmSupport.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="AssemblyInfo.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="Base64.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\Base64.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="BigInteger.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\BigInteger.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="Blowfish.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\Blowfish.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="CipherUtil.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\CipherUtil.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="ConnectionInfo.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\ConnectionInfo.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="ConnectionParameter.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\ConnectionParameter.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="ConnectionRoot.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\ConnectionRoot.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="CRC.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\CRC.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="DES.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\DES.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="DSA.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\DSA.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="LibraryClient.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\LibraryClient.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="PKIBase.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\PKIBase.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="PrimeSieve.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\PrimeSieve.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="ReaderWriter.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\ReaderWriter.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="Rijndael.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\Rijndael.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="RSA.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\RSA.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="Socket.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\Socket.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="SSH1Connection.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\SSH1Connection.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="SSH1Packet.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\SSH1Packet.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="SSH1UserAuthKey.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\SSH1UserAuthKey.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="SSH1Util.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\SSH1Util.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="SSH2Connection.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\SSH2Connection.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="SSH2Packet.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\SSH2Packet.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="SSH2UserAuthKey.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\SSH2UserAuthKey.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="SSH2Util.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\SSH2Util.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="SSHUtil.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\SSHUtil.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="StringResource.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\StringResource.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="TerminalControl.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\TerminalControl.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="strings.resx" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\strings.resx">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="TerminalControl.resx" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\TerminalControl.resx">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="TerminalControl.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="TerminalControl" Source="TerminalControl.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="TerminalControlTest" Source="..\TerminalControlTest\TerminalControlTest.csproj" Description="Project file successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\TerminalControlTest.csproj">
+</Event><Event ErrorLevel="0" Project="TerminalControlTest" Source="..\TerminalControlTest\TerminalControlTest.csproj.user" Description="Project user file successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\TerminalControlTest.csproj.user">
+</Event><Event ErrorLevel="0" Project="TerminalControlTest" Source="..\TerminalControlTest\AssemblyInfo.cs" Description="Backup file name conflict.  Renaming file to:  C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\AssemblyInfo(2).cs">
+</Event><Event ErrorLevel="0" Project="TerminalControlTest" Source="..\TerminalControlTest\AssemblyInfo.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\AssemblyInfo(2).cs">
+</Event><Event ErrorLevel="0" Project="TerminalControlTest" Source="..\TerminalControlTest\TerminalControlTest.cs" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\TerminalControlTest.cs">
+</Event><Event ErrorLevel="0" Project="TerminalControlTest" Source="..\TerminalControlTest\App.ico" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\App.ico">
+</Event><Event ErrorLevel="0" Project="TerminalControlTest" Source="..\TerminalControlTest\TerminalControlTest.resx" Description="File successfully backed up as C:\Documents and Settings\Rob\Desktop\TerminalControl\TerminalControl\Backup\TerminalControlTest.resx">
+</Event><Event ErrorLevel="0" Project="TerminalControlTest" Source="..\TerminalControlTest\TerminalControlTest.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="TerminalControlTest" Source="..\TerminalControlTest\TerminalControlTest.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="TerminalControl.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="TerminalControl.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="TerminalControl" Source="TerminalControl.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="TerminalControlTest" Source="..\TerminalControlTest\TerminalControlTest.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

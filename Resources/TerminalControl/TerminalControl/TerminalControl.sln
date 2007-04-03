@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminalControl", "TerminalControl.csproj", "{3545E021-A75E-4558-8EA3-234DF99FB49A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminalControlTest", "..\TerminalControlTest\TerminalControlTest.csproj", "{0D571C8A-91F1-42B4-BA34-9635993E92B4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D571C8A-91F1-42B4-BA34-9635993E92B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D571C8A-91F1-42B4-BA34-9635993E92B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D571C8A-91F1-42B4-BA34-9635993E92B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D571C8A-91F1-42B4-BA34-9635993E92B4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
