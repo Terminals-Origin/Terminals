@@ -28,6 +28,7 @@ namespace Terminals {
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTerminalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quickConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -103,7 +104,7 @@ namespace Terminals {
             this.newConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
-            this.quickConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.QuickContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
@@ -138,7 +139,7 @@ namespace Terminals {
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(436, 24);
+            this.menuStrip.Size = new System.Drawing.Size(344, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -161,6 +162,14 @@ namespace Terminals {
             this.newTerminalToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.newTerminalToolStripMenuItem.Text = "&New Connection...";
             this.newTerminalToolStripMenuItem.Click += new System.EventHandler(this.newTerminalToolStripMenuItem_Click_1);
+            // 
+            // quickConnectToolStripMenuItem
+            // 
+            this.quickConnectToolStripMenuItem.Name = "quickConnectToolStripMenuItem";
+            this.quickConnectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.quickConnectToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.quickConnectToolStripMenuItem.Text = "Quick Connect...";
+            this.quickConnectToolStripMenuItem.Click += new System.EventHandler(this.quickConnectToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -864,13 +873,10 @@ namespace Terminals {
             this.remoteDesktop1.TabIndex = 0;
             this.remoteDesktop1.Text = "remoteDesktop1";
             // 
-            // quickConnectToolStripMenuItem
+            // QuickContextMenu
             // 
-            this.quickConnectToolStripMenuItem.Name = "quickConnectToolStripMenuItem";
-            this.quickConnectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.quickConnectToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
-            this.quickConnectToolStripMenuItem.Text = "Quick Connect...";
-            this.quickConnectToolStripMenuItem.Click += new System.EventHandler(this.quickConnectToolStripMenuItem_Click);
+            this.QuickContextMenu.Name = "QuickContextMenu";
+            this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
             // 
             // MainForm
             // 
@@ -1001,5 +1007,6 @@ namespace Terminals {
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripButton QuickConnectButton;
         private System.Windows.Forms.ToolStripMenuItem quickConnectToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip QuickContextMenu;
     }
 }

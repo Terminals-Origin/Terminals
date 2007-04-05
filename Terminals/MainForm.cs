@@ -41,6 +41,8 @@ namespace Terminals {
                 LoadTags("");
                 ProtocolHandler.Register();
                 SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
+                tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
+                QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
 
             } catch (Exception exc) {
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
@@ -48,6 +50,23 @@ namespace Terminals {
 
 
         }
+        void tcTerminals_MouseClick(object sender, MouseEventArgs e) {
+            if(e.Button == MouseButtons.Right) {
+                
+                QuickContextMenu.Items.Clear();
+                FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();                
+                foreach(FavoriteConfigurationElement favorite in favorites) {
+                    QuickContextMenu.Items.Add(favorite.Name);
+                }
+
+                QuickContextMenu.Show(tcTerminals, e.Location);
+            }
+        }
+
+        void QuickContextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
+            Connect(e.ClickedItem.Text);
+        }
+
         private void MainForm_Load(object sender, EventArgs e) {
             try {
                 ToolStripManager.LoadSettings(this);
