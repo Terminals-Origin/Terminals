@@ -172,6 +172,13 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap lightning_go {
+            get {
+                object obj = ResourceManager.GetObject("lightning_go", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap polarized_glasses {
             get {
                 object obj = ResourceManager.GetObject("polarized_glasses", resourceCulture);

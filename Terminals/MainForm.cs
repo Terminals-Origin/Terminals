@@ -617,7 +617,7 @@ namespace Terminals {
         }
 
         private void tsbFullScreen_Click(object sender, EventArgs e) {
-            FullScreen = true;
+            FullScreen = !FullScreen;
             UpdateControls();
         }
 
@@ -1046,6 +1046,18 @@ namespace Terminals {
                 }
             }
             UpdateControls();
+        }
+
+        private void QuickConnectButton_Click(object sender, EventArgs e) {
+            QuickConnect qc = new QuickConnect();
+            DialogResult result = qc.ShowDialog();
+            if(result == DialogResult.OK && qc.ConnectionName!="") {
+                Connect(qc.ConnectionName);
+            }
+        }
+
+        private void quickConnectToolStripMenuItem_Click(object sender, EventArgs e) {
+            QuickConnectButton_Click(null, null);
         }
 
     }
