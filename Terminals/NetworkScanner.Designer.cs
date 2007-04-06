@@ -36,8 +36,9 @@ namespace Terminals {
             this.SSHCheckbox = new System.Windows.Forms.CheckBox();
             this.ScanResultsListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.panel1 = new System.Windows.Forms.Panel();
             this.AddAllButton = new System.Windows.Forms.Button();
             this.AllCheckbox = new System.Windows.Forms.CheckBox();
@@ -47,7 +48,7 @@ namespace Terminals {
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ScanStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.scanProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
+            this.TagsTextbox = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -190,18 +191,24 @@ namespace Terminals {
             this.columnHeader1.Text = "Server";
             this.columnHeader1.Width = 151;
             // 
-            // columnHeader3
+            // columnHeader4
             // 
-            this.columnHeader3.Text = "Service";
-            this.columnHeader3.Width = 72;
+            this.columnHeader4.Text = "Host";
+            this.columnHeader4.Width = 122;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Port";
             this.columnHeader2.Width = 46;
             // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Service";
+            this.columnHeader3.Width = 72;
+            // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.TagsTextbox);
             this.panel1.Controls.Add(this.AddAllButton);
             this.panel1.Controls.Add(this.AllCheckbox);
             this.panel1.Controls.Add(this.OKButton);
@@ -226,7 +233,6 @@ namespace Terminals {
             // 
             // AddAllButton
             // 
-            this.AddAllButton.Enabled = false;
             this.AddAllButton.Location = new System.Drawing.Point(6, 56);
             this.AddAllButton.Name = "AddAllButton";
             this.AddAllButton.Size = new System.Drawing.Size(75, 23);
@@ -302,10 +308,13 @@ namespace Terminals {
             this.scanProgressBar.Name = "scanProgressBar";
             this.scanProgressBar.Size = new System.Drawing.Size(150, 16);
             // 
-            // columnHeader4
+            // TagsTextbox
             // 
-            this.columnHeader4.Text = "Host";
-            this.columnHeader4.Width = 122;
+            this.TagsTextbox.Location = new System.Drawing.Point(87, 58);
+            this.TagsTextbox.Name = "TagsTextbox";
+            this.TagsTextbox.Size = new System.Drawing.Size(79, 20);
+            this.TagsTextbox.TabIndex = 18;
+            this.TagsTextbox.Text = "Tags...";
             // 
             // NetworkScanner
             // 
@@ -354,5 +363,6 @@ namespace Terminals {
         private System.Windows.Forms.Button AddAllButton;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.TextBox TagsTextbox;
     }
 }

@@ -75,7 +75,7 @@ namespace Terminals {
                 this.ScanButton.Text = "Scan";
                 ScanStatusLabel.Text = string.Format("Completed scan, found: {0} items.", manager.OpenPorts.Count);
                 scanProgressBar.Value = 0;
-                if(manager.OpenPorts.Count>0) this.AddAllButton.Enabled = true;
+                //if(manager.OpenPorts.Count>0) this.AddAllButton.Enabled = true;
             }
             Application.DoEvents();
         }
@@ -157,6 +157,9 @@ namespace Terminals {
                 fav.ServerName = item.IPAddress;
                 fav.Port = item.Port;
                 fav.Protocol = Connections.ConnectionManager.GetPortName(fav.Port, item.IsVMRC);
+                string tags = TagsTextbox.Text;
+                tags = tags.Replace("Tags...","").Trim();
+                if (tags != string.Empty)  fav.Tags = tags;
                 if (fav.Protocol == "SSH") {
                     fav.Protocol = "Telnet";
                     fav.Telnet = false;

@@ -357,7 +357,10 @@ namespace Terminals {
                     if (item.Port == Terminals.Connections.ConnectionManager.SSHPort) this.SSHRadioButton.Checked = true;
                     if (item.Port == Terminals.Connections.ConnectionManager.TelnetPort) this.TelnetRadioButton.Checked = true;
                     this.txtName.Text = string.Format("{0}_{1}", item.HostName, this.ProtocolComboBox.Text);
-
+                    if (this.ProtocolComboBox.Text == "RDP") {
+                        this.chkConnectToConsole.Checked = true;
+                        this.cmbResolution.SelectedIndex = this.cmbResolution.Items.Count-1;
+                    }
                 }
             }
         }
