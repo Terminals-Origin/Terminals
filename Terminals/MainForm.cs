@@ -43,13 +43,17 @@ namespace Terminals {
                 SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
                 tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
-
+                SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
 
             } catch (Exception exc) {
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
 
 
+        }
+
+        void SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
+            Connect(e.ClickedItem.Text);
         }
         void tcTerminals_MouseClick(object sender, MouseEventArgs e) {
             if(e.Button == MouseButtons.Right) {
@@ -1018,10 +1022,22 @@ namespace Terminals {
         private void lvFavorites_SelectedIndexChanged(object sender, EventArgs e) {
             connectToolStripMenuItem1.Enabled = lvFavorites.SelectedItems.Count > 0;
         }
+        private void MainForm_Resize(object sender, EventArgs e) {
+            if (this.WindowState == FormWindowState.Minimized) //{
+                if (Settings.MinimizeToTray) this.Visible = false;
+        }
 
         private void MainWindowNotifyIcon_MouseClick(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Left) {
-                this.Visible = !this.Visible;
+                if (Settings.MinimizeToTray) {
+                    this.Visible = !this.Visible;
+                    if (this.Visible && this.WindowState == FormWindowState.Minimized) this.WindowState = FormWindowState.Normal;
+                } else {
+                    if(this.WindowState==FormWindowState.Normal) 
+                        this.WindowState = FormWindowState.Minimized;
+                    else
+                        this.WindowState = FormWindowState.Normal;
+                }
             }
         }
 
@@ -1034,11 +1050,9 @@ namespace Terminals {
         }
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e) {
+            //SystemTracyQuickConnectToolStripMenuItem
             this.Visible = !this.Visible;
-            if (this.Visible) 
-                showToolStripMenuItem.Text = "&Hide";
-            else
-                showToolStripMenuItem.Text = "&Show";
+            showToolStripMenuItem.Text = "&Hide / Show";
         }
 
         private void CaptureScreenToolStripButton_Click(object sender, EventArgs e) {
@@ -1090,6 +1104,19 @@ namespace Terminals {
         private void quickConnectToolStripMenuItem_Click(object sender, EventArgs e) {
             QuickConnectButton_Click(null, null);
         }
+
+        private void SystemTrayContextMenuStrip_Opening(object sender, CancelEventArgs e) {
+
+            SystemTrayQuickConnectToolStripMenuItem.DropDownItems.Clear();
+            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            foreach (FavoriteConfigurationElement favorite in favorites) {
+                SystemTrayQuickConnectToolStripMenuItem.DropDownItems.Add(favorite.Name);
+            }
+
+        }
+
+
+   
 
     }
 

@@ -137,6 +137,19 @@ namespace Terminals
                 this["portScanTimeoutSeconds"] = value;
             }
         }
+
+        [ConfigurationProperty("minimizeToTray", DefaultValue = true)]
+        public bool MinimizeToTray {
+            get {
+                if (this["minimizeToTray"] == null || this["minimizeToTray"].ToString() == string.Empty) return true;
+                bool min = true;
+                bool.TryParse(this["minimizeToTray"].ToString(), out min);
+                return min;
+            }
+            set {
+                this["minimizeToTray"] = value;
+            }
+        }
         [ConfigurationProperty("terminalsPassword", DefaultValue = "")]
         public string TerminalsPassword {
             get {

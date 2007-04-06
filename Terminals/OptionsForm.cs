@@ -11,8 +11,7 @@ namespace Terminals
 {
     public partial class OptionsForm : Form
     {
-        public OptionsForm(AxMsRdpClient2 terminal)
-        {
+        public OptionsForm(AxMsRdpClient2 terminal) {
             InitializeComponent();
             chkShowInformationToolTips.Checked = Settings.ShowInformationToolTips;
             chkShowUserNameInTitle.Checked = Settings.ShowUserNameInTitle;
@@ -28,6 +27,13 @@ namespace Terminals
             chkSaveConnections.Checked = Settings.SaveConnectionsOnClose;
             currentTerminal = terminal;
             this.PortscanTimeoutTextBox.Text = Settings.PortScanTimeoutSeconds.ToString();
+            if (Settings.TerminalsPassword != string.Empty) {
+                PasswordProtectTerminalsCheckbox.Checked = true;
+                PasswordProtectTerminalsCheckbox.Enabled = false;
+                PasswordTextbox.Enabled = false;
+                ConfirmPasswordTextBox.Enabled = false;
+            }
+            this.MinimizeToTrayCheckbox.Checked = Settings.MinimizeToTray;
         }
 
         private AxMsRdpClient2 currentTerminal;
@@ -53,6 +59,7 @@ namespace Terminals
             if (this.PasswordProtectTerminalsCheckbox.Checked && PasswordTextbox.Text!=string.Empty && ConfirmPasswordTextBox.Text!=string.Empty && PasswordTextbox.Text == ConfirmPasswordTextBox.Text) {
                 Settings.TerminalsPassword = PasswordTextbox.Text;
             }
+            Settings.MinimizeToTray = this.MinimizeToTrayCheckbox.Checked;
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)

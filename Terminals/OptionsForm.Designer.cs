@@ -57,12 +57,13 @@ namespace Terminals
             this.txtCommand = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.PasswordProtectTerminalsCheckbox = new System.Windows.Forms.CheckBox();
-            this.PasswordTextbox = new System.Windows.Forms.TextBox();
-            this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.PasswordsMatchLabel = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
+            this.PasswordTextbox = new System.Windows.Forms.TextBox();
+            this.PasswordProtectTerminalsCheckbox = new System.Windows.Forms.CheckBox();
+            this.MinimizeToTrayCheckbox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
@@ -132,6 +133,7 @@ namespace Terminals
             // 
             // tpGeneral
             // 
+            this.tpGeneral.Controls.Add(this.MinimizeToTrayCheckbox);
             this.tpGeneral.Controls.Add(this.PortscanTimeoutTextBox);
             this.tpGeneral.Controls.Add(this.label5);
             this.tpGeneral.Controls.Add(this.label4);
@@ -181,6 +183,8 @@ namespace Terminals
             // chkSaveConnections
             // 
             this.chkSaveConnections.AutoSize = true;
+            this.chkSaveConnections.Checked = true;
+            this.chkSaveConnections.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkSaveConnections.Location = new System.Drawing.Point(16, 128);
             this.chkSaveConnections.Name = "chkSaveConnections";
             this.chkSaveConnections.Size = new System.Drawing.Size(152, 17);
@@ -191,6 +195,8 @@ namespace Terminals
             // chkShowConfirmDialog
             // 
             this.chkShowConfirmDialog.AutoSize = true;
+            this.chkShowConfirmDialog.Checked = true;
+            this.chkShowConfirmDialog.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShowConfirmDialog.Location = new System.Drawing.Point(16, 104);
             this.chkShowConfirmDialog.Name = "chkShowConfirmDialog";
             this.chkShowConfirmDialog.Size = new System.Drawing.Size(172, 17);
@@ -201,6 +207,8 @@ namespace Terminals
             // chkSingleInstance
             // 
             this.chkSingleInstance.AutoSize = true;
+            this.chkSingleInstance.Checked = true;
+            this.chkSingleInstance.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkSingleInstance.Location = new System.Drawing.Point(16, 80);
             this.chkSingleInstance.Name = "chkSingleInstance";
             this.chkSingleInstance.Size = new System.Drawing.Size(219, 17);
@@ -256,6 +264,8 @@ namespace Terminals
             // chkShowUserNameInTitle
             // 
             this.chkShowUserNameInTitle.AutoSize = true;
+            this.chkShowUserNameInTitle.Checked = true;
+            this.chkShowUserNameInTitle.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShowUserNameInTitle.Location = new System.Drawing.Point(16, 7);
             this.chkShowUserNameInTitle.Name = "chkShowUserNameInTitle";
             this.chkShowUserNameInTitle.Size = new System.Drawing.Size(159, 17);
@@ -266,6 +276,8 @@ namespace Terminals
             // chkShowInformationToolTips
             // 
             this.chkShowInformationToolTips.AutoSize = true;
+            this.chkShowInformationToolTips.Checked = true;
+            this.chkShowInformationToolTips.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShowInformationToolTips.Location = new System.Drawing.Point(16, 30);
             this.chkShowInformationToolTips.Name = "chkShowInformationToolTips";
             this.chkShowInformationToolTips.Size = new System.Drawing.Size(216, 17);
@@ -375,26 +387,31 @@ namespace Terminals
             this.tabPage1.Text = "Security";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // PasswordProtectTerminalsCheckbox
+            // PasswordsMatchLabel
             // 
-            this.PasswordProtectTerminalsCheckbox.AutoSize = true;
-            this.PasswordProtectTerminalsCheckbox.Location = new System.Drawing.Point(14, 15);
-            this.PasswordProtectTerminalsCheckbox.Name = "PasswordProtectTerminalsCheckbox";
-            this.PasswordProtectTerminalsCheckbox.Size = new System.Drawing.Size(110, 17);
-            this.PasswordProtectTerminalsCheckbox.TabIndex = 0;
-            this.PasswordProtectTerminalsCheckbox.Text = "Password Protect";
-            this.PasswordProtectTerminalsCheckbox.UseVisualStyleBackColor = true;
-            this.PasswordProtectTerminalsCheckbox.CheckedChanged += new System.EventHandler(this.PasswordProtectTerminalsCheckbox_CheckedChanged);
+            this.PasswordsMatchLabel.AutoSize = true;
+            this.PasswordsMatchLabel.Location = new System.Drawing.Point(239, 73);
+            this.PasswordsMatchLabel.Name = "PasswordsMatchLabel";
+            this.PasswordsMatchLabel.Size = new System.Drawing.Size(0, 13);
+            this.PasswordsMatchLabel.TabIndex = 5;
             // 
-            // PasswordTextbox
+            // label7
             // 
-            this.PasswordTextbox.Enabled = false;
-            this.PasswordTextbox.Location = new System.Drawing.Point(72, 38);
-            this.PasswordTextbox.Name = "PasswordTextbox";
-            this.PasswordTextbox.PasswordChar = '*';
-            this.PasswordTextbox.Size = new System.Drawing.Size(147, 21);
-            this.PasswordTextbox.TabIndex = 1;
-            this.PasswordTextbox.TextChanged += new System.EventHandler(this.PasswordTextbox_TextChanged);
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 69);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(48, 13);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Confirm:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 41);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(57, 13);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "Password:";
             // 
             // ConfirmPasswordTextBox
             // 
@@ -406,31 +423,38 @@ namespace Terminals
             this.ConfirmPasswordTextBox.TabIndex = 2;
             this.ConfirmPasswordTextBox.TextChanged += new System.EventHandler(this.ConfirmPasswordTextBox_TextChanged);
             // 
-            // label6
+            // PasswordTextbox
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 41);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(57, 13);
-            this.label6.TabIndex = 3;
-            this.label6.Text = "Password:";
+            this.PasswordTextbox.Enabled = false;
+            this.PasswordTextbox.Location = new System.Drawing.Point(72, 38);
+            this.PasswordTextbox.Name = "PasswordTextbox";
+            this.PasswordTextbox.PasswordChar = '*';
+            this.PasswordTextbox.Size = new System.Drawing.Size(147, 21);
+            this.PasswordTextbox.TabIndex = 1;
+            this.PasswordTextbox.TextChanged += new System.EventHandler(this.PasswordTextbox_TextChanged);
             // 
-            // label7
+            // PasswordProtectTerminalsCheckbox
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 69);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(48, 13);
-            this.label7.TabIndex = 4;
-            this.label7.Text = "Confirm:";
+            this.PasswordProtectTerminalsCheckbox.AutoSize = true;
+            this.PasswordProtectTerminalsCheckbox.Location = new System.Drawing.Point(14, 15);
+            this.PasswordProtectTerminalsCheckbox.Name = "PasswordProtectTerminalsCheckbox";
+            this.PasswordProtectTerminalsCheckbox.Size = new System.Drawing.Size(110, 17);
+            this.PasswordProtectTerminalsCheckbox.TabIndex = 0;
+            this.PasswordProtectTerminalsCheckbox.Text = "Password Protect";
+            this.PasswordProtectTerminalsCheckbox.UseVisualStyleBackColor = true;
+            this.PasswordProtectTerminalsCheckbox.CheckedChanged += new System.EventHandler(this.PasswordProtectTerminalsCheckbox_CheckedChanged);
             // 
-            // PasswordsMatchLabel
+            // MinimizeToTrayCheckbox
             // 
-            this.PasswordsMatchLabel.AutoSize = true;
-            this.PasswordsMatchLabel.Location = new System.Drawing.Point(239, 73);
-            this.PasswordsMatchLabel.Name = "PasswordsMatchLabel";
-            this.PasswordsMatchLabel.Size = new System.Drawing.Size(0, 13);
-            this.PasswordsMatchLabel.TabIndex = 5;
+            this.MinimizeToTrayCheckbox.AutoSize = true;
+            this.MinimizeToTrayCheckbox.Checked = true;
+            this.MinimizeToTrayCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.MinimizeToTrayCheckbox.Location = new System.Drawing.Point(270, 6);
+            this.MinimizeToTrayCheckbox.Name = "MinimizeToTrayCheckbox";
+            this.MinimizeToTrayCheckbox.Size = new System.Drawing.Size(105, 17);
+            this.MinimizeToTrayCheckbox.TabIndex = 17;
+            this.MinimizeToTrayCheckbox.Text = "Minimize To Tray";
+            this.MinimizeToTrayCheckbox.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -500,5 +524,6 @@ namespace Terminals
         private System.Windows.Forms.TextBox PasswordTextbox;
         private System.Windows.Forms.CheckBox PasswordProtectTerminalsCheckbox;
         private System.Windows.Forms.Label PasswordsMatchLabel;
+        private System.Windows.Forms.CheckBox MinimizeToTrayCheckbox;
     }
 }

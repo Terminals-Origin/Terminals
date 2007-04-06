@@ -100,11 +100,12 @@ namespace Terminals {
             this.timerHover = new System.Windows.Forms.Timer(this.components);
             this.MainWindowNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SystemTrayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.newConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.QuickContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.SystemTrayQuickConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
@@ -835,19 +836,14 @@ namespace Terminals {
             // SystemTrayContextMenuStrip
             // 
             this.SystemTrayContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
+            this.SystemTrayQuickConnectToolStripMenuItem,
             this.newConnectionToolStripMenuItem,
-            this.showToolStripMenuItem});
+            this.showToolStripMenuItem,
+            this.toolStripMenuItem2});
             this.SystemTrayContextMenuStrip.Name = "SystemTrayContextMenuStrip";
-            this.SystemTrayContextMenuStrip.Size = new System.Drawing.Size(177, 70);
+            this.SystemTrayContextMenuStrip.Size = new System.Drawing.Size(177, 114);
             this.SystemTrayContextMenuStrip.Text = "Terminals";
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(176, 22);
-            this.toolStripMenuItem2.Text = "E&xit";
-            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
+            this.SystemTrayContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.SystemTrayContextMenuStrip_Opening);
             // 
             // newConnectionToolStripMenuItem
             // 
@@ -860,8 +856,15 @@ namespace Terminals {
             // 
             this.showToolStripMenuItem.Name = "showToolStripMenuItem";
             this.showToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.showToolStripMenuItem.Text = "Show";
+            this.showToolStripMenuItem.Text = "&Hide / Show";
             this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(176, 22);
+            this.toolStripMenuItem2.Text = "E&xit";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // remoteDesktop1
             // 
@@ -878,6 +881,12 @@ namespace Terminals {
             this.QuickContextMenu.Name = "QuickContextMenu";
             this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
             // 
+            // SystemTrayQuickConnectToolStripMenuItem
+            // 
+            this.SystemTrayQuickConnectToolStripMenuItem.Name = "SystemTrayQuickConnectToolStripMenuItem";
+            this.SystemTrayQuickConnectToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.SystemTrayQuickConnectToolStripMenuItem.Text = "Quick Connect...";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -891,6 +900,7 @@ namespace Terminals {
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Terminals 1.6 (RDP, VNC, VMRC, RAS, Telnet, SSH)";
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
@@ -1008,5 +1018,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripButton QuickConnectButton;
         private System.Windows.Forms.ToolStripMenuItem quickConnectToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip QuickContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem SystemTrayQuickConnectToolStripMenuItem;
     }
 }

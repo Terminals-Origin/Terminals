@@ -364,6 +364,7 @@ namespace Terminals
                 configuration.Save();
             }
         }
+
         public static string TerminalsPassword {
             get {
                 return GetSection().TerminalsPassword;
@@ -371,6 +372,16 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).TerminalsPassword = value;
+                configuration.Save();
+            }
+        }
+        public static bool MinimizeToTray {
+            get {
+                return GetSection().MinimizeToTray;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).MinimizeToTray = value;
                 configuration.Save();
             }
         }
