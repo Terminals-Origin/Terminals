@@ -356,6 +356,8 @@ namespace Terminals {
                     this.ProtocolComboBox.Text = Terminals.Connections.ConnectionManager.GetPortName(item.Port, item.IsVMRC);
                     if (item.Port == Terminals.Connections.ConnectionManager.SSHPort) this.SSHRadioButton.Checked = true;
                     if (item.Port == Terminals.Connections.ConnectionManager.TelnetPort) this.TelnetRadioButton.Checked = true;
+                    this.txtName.Text = string.Format("{0}_{1}", item.HostName, this.ProtocolComboBox.Text);
+
                 }
             }
         }

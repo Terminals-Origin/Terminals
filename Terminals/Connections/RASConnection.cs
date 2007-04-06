@@ -9,7 +9,7 @@ namespace Terminals.Connections {
         }
         public override void ChangeDesktopSize(Terminals.DesktopSize Size) {
         }
-        FalafelSoftware.TransPort.Ras ras = new FalafelSoftware.TransPort.Ras();
+        public FalafelSoftware.TransPort.Ras ras = new FalafelSoftware.TransPort.Ras();
 
         private void EnsureConnection() {
         }

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Terminals.Scanner {
+    
     public class NetworkScanItem {
-
+        public static Dictionary<string, string> KnownHostNames = new Dictionary<string, string>();
         public delegate void ScanHitHandler(ScanItemEventArgs args);
         public event ScanHitHandler OnScanHit;
 
@@ -14,6 +15,7 @@ namespace Terminals.Scanner {
         public string IPAddress;
         public int Port;
         public bool IsOpen = false;
+        public string HostName;
 
         public void Scan(object data) {
             System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient();
@@ -70,11 +72,22 @@ namespace Terminals.Scanner {
                     ScanItemEventArgs args = new ScanItemEventArgs();
                     if (Port == Connections.ConnectionManager.VNCVMRCPort) {
                         IsVMRC = !IsPortVNC();
-                    }
-
-                    
+                    }                    
                     args.DateTime = DateTime.Now;
                     args.NetworkScanItem = this;
+                    try {
+                        if (KnownHostNames.ContainsKey(args.NetworkScanItem.IPAddress)) {
+                            args.NetworkScanItem.HostName = KnownHostNames[args.NetworkScanItem.IPAddress];
+                        } else {
+                            System.Net.IPHostEntry entry = System.Net.Dns.Resolve(args.NetworkScanItem.IPAddress);
+                            args.NetworkScanItem.HostName = entry.HostName;
+                            if (!KnownHostNames.ContainsKey(args.NetworkScanItem.IPAddress)) KnownHostNames.Add(args.NetworkScanItem.IPAddress, args.NetworkScanItem.HostName);
+                        }
+
+                    } catch (Exception exc) {
+                        args.NetworkScanItem.HostName = args.NetworkScanItem.IPAddress;
+                        if(!KnownHostNames.ContainsKey(args.NetworkScanItem.IPAddress)) KnownHostNames.Add(args.NetworkScanItem.IPAddress, args.NetworkScanItem.IPAddress);
+                    }
                     this.IsOpen = true;
                     OnScanHit(args);
                 }

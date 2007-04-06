@@ -32,13 +32,30 @@ namespace Terminals {
         private object updateListLock = new object();
         private object scanCountLock = new object();
 
+        private void AddPort(Terminals.Scanner.NetworkScanItem port) {
+            bool add = true;
+            foreach (Scanner.NetworkScanItem item in this.OpenPorts) {
+                if (item.IPAddress == port.IPAddress && item.Port == port.Port && item.IsVMRC == port.IsVMRC) {
+                    add = false;
+                    break;
+                }
+            }
+            if (add) this.openPorts.Add(port);
+        }
+
+        System.Collections.Generic.List<Terminals.Scanner.NetworkScanItem> openPorts = new List<Terminals.Scanner.NetworkScanItem>();
+        public System.Collections.Generic.List<Terminals.Scanner.NetworkScanItem> OpenPorts {
+            get { return openPorts; }
+            set { openPorts = value; }
+        }
 
         private void UpdateScanItemList() {
             lock (updateListLock) {
                 this.ScanResultsListView.Items.Clear();
-                foreach (Scanner.NetworkScanItem item in manager.OpenPorts) {
+                foreach (Scanner.NetworkScanItem item in this.OpenPorts) {
                     ListViewItem lvi = new ListViewItem(item.IPAddress);
                     lvi.Tag = item;
+                    lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, item.HostName));
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, item.Port.ToString()));
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, Connections.ConnectionManager.GetPortName(item.Port, item.IsVMRC)));
                     this.ScanResultsListView.Items.Add(lvi);
@@ -63,7 +80,9 @@ namespace Terminals {
             Application.DoEvents();
         }
         private void ScanButton_Click(object sender, EventArgs e) {
-            this.ScanResultsListView.Items.Clear();
+            scanCount = 0;
+            scanProgressBar.Value = 0;
+            //this.ScanResultsListView.Items.Clear();
             if (ScanButton.Text == "Scan") {
                 ScanStatusLabel.Text = "Initiating Scan...";
                 ScanButton.Text = "Stop";
@@ -101,6 +120,7 @@ namespace Terminals {
 
         void manager_OnScanHit(Terminals.Scanner.ScanItemEventArgs args) {
             scanCount--;
+            AddPort(args.NetworkScanItem);
             this.Invoke(miv);
 
         }
@@ -140,9 +160,9 @@ namespace Terminals {
                 if (fav.Protocol == "SSH") {
                     fav.Protocol = "Telnet";
                     fav.Telnet = false;
-                    fav.Name = string.Format("{0}_{1}", item.IPAddress, "SSH");
+                    fav.Name = string.Format("{0}_{1}", item.HostName, "SSH");
                 } else {
-                    fav.Name = string.Format("{0}_{1}", item.IPAddress, fav.Protocol);
+                    fav.Name = string.Format("{0}_{1}", item.HostName, fav.Protocol);
                 }
                 fav.DomainName = System.Environment.UserDomainName;
                 fav.UserName = System.Environment.UserName;

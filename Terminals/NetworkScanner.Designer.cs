@@ -47,6 +47,7 @@ namespace Terminals {
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.ScanStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.scanProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -165,8 +166,9 @@ namespace Terminals {
             this.ScanResultsListView.Activation = System.Windows.Forms.ItemActivation.OneClick;
             this.ScanResultsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
-            this.columnHeader3,
-            this.columnHeader2});
+            this.columnHeader4,
+            this.columnHeader2,
+            this.columnHeader3});
             this.ScanResultsListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ScanResultsListView.FullRowSelect = true;
             this.ScanResultsListView.GridLines = true;
@@ -186,7 +188,7 @@ namespace Terminals {
             // columnHeader1
             // 
             this.columnHeader1.Text = "Server";
-            this.columnHeader1.Width = 196;
+            this.columnHeader1.Width = 151;
             // 
             // columnHeader3
             // 
@@ -196,7 +198,7 @@ namespace Terminals {
             // columnHeader2
             // 
             this.columnHeader2.Text = "Port";
-            this.columnHeader2.Width = 52;
+            this.columnHeader2.Width = 46;
             // 
             // panel1
             // 
@@ -300,6 +302,11 @@ namespace Terminals {
             this.scanProgressBar.Name = "scanProgressBar";
             this.scanProgressBar.Size = new System.Drawing.Size(150, 16);
             // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Host";
+            this.columnHeader4.Width = 122;
+            // 
             // NetworkScanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -346,5 +353,6 @@ namespace Terminals {
         private System.Windows.Forms.CheckBox AllCheckbox;
         private System.Windows.Forms.Button AddAllButton;
         private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
     }
 }

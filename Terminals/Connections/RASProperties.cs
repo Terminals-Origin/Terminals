@@ -73,26 +73,20 @@ namespace Terminals.Connections {
         public bool Connected {
             get { return RASConnection.Connected; }
         }
-
+        System.DateTime connectedTime = DateTime.MinValue;
         private void UpdateStats() {
             lbDetails1.Items.Clear();
             this.BringToFront();
             if (this.Connected) {
-                ConnectionStats stats = new ConnectionStats();
-                ras1.ConnectionStatistics(ref stats);
+                if (connectedTime == DateTime.MinValue) connectedTime = DateTime.Now;
+                RASENTRY entry = new RASENTRY();
+                rASConnection.ras.GetEntry(rASConnection.ras.EntryName, ref entry);
                 AddDetailsText("Connection Status", "Connected");
-                AddDetailsText("Alignment Errors", stats.AlignmentErrors);
-                AddDetailsText("Bps", stats.Bps);
-                AddDetailsText("Bytes Received", stats.BytesReceived);
-                AddDetailsText("Bytes Transmitted", stats.BytesTransmitted);
-                AddDetailsText("Compression Ratio In", stats.CompressionRatioIn);
-                AddDetailsText("Compression Ratio Out", stats.CompressionRatioOut);
-                AddDetailsText("Connection Duration", stats.ConnectionDuration);
-                AddDetailsText("Crc Errors", stats.CrcErrors);
-                AddDetailsText("Frames Received", stats.FramesReceived);
-                AddDetailsText("Frames Transmitted", stats.FramesTransmitted);
-                AddDetailsText("Framing Errors", stats.FramingErrors);
-                AddDetailsText("Timeout Errors", stats.TimeoutErrors);
+                AddDetailsText("Host", entry.LocalPhoneNumber);
+                AddDetailsText("IP Address", rASConnection.ras.IPAddress());
+                System.TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - connectedTime.Ticks);
+                AddDetailsText("Connection Duration:", string.Format("{0} Days, {1} Hours, {2} Minutes, {3} Seconds", ts.Days, ts.Hours, ts.Minutes, ts.Seconds));
+
             } else {
                 AddDetailsText("Connection Status", "Not Connected");
             }
