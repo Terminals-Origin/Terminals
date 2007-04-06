@@ -21,7 +21,18 @@ namespace Terminals
             }
             ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
             configFileMap.ExeConfigFilename = configFile;
-            return ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+            Configuration config = null;
+            try {
+                config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+            } catch (Exception exc) {
+                if (System.IO.File.Exists(configFile)) System.IO.File.Delete(configFile);
+                string templateConfigFile = global::Terminals.Properties.Resources.Terminals;
+                using (System.IO.StreamWriter sr = new StreamWriter(configFile)) {
+                    sr.Write(templateConfigFile);
+                }
+                config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+            }
+            return config;
         }
 
         private static TerminalsConfigurationSection GetSection()
@@ -350,6 +361,16 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).PortScanTimeoutSeconds = value;
+                configuration.Save();
+            }
+        }
+        public static string TerminalsPassword {
+            get {
+                return GetSection().TerminalsPassword;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).TerminalsPassword = value;
                 configuration.Save();
             }
         }

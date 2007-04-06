@@ -44,6 +44,7 @@ namespace Terminals {
                 tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
 
+
             } catch (Exception exc) {
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
@@ -68,13 +69,24 @@ namespace Terminals {
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
-            try {
-                ToolStripManager.LoadSettings(this);
-                tscConnectTo.Focus();
-                OpenSavedConnections();
-            } catch(Exception exc) {
-                System.Windows.Forms.MessageBox.Show(exc.ToString());
+            if (Settings.TerminalsPassword != "") {
+                Security.RequestPassword rp = new Terminals.Security.RequestPassword();
+                DialogResult result = rp.ShowDialog();
+                if (result == DialogResult.Cancel) {
+                    this.Close();
+                    Application.Exit();
+                } else {
+                    try {
+                        ToolStripManager.LoadSettings(this);
+                        tscConnectTo.Focus();
+                        OpenSavedConnections();
+                    } catch (Exception exc) {
+                        System.Windows.Forms.MessageBox.Show(exc.ToString());
+                    }
+                }
             }
+
+
         }
         void SingleInstanceApplication_NewInstanceMessage(object sender, object message) {
             if(WindowState == FormWindowState.Minimized)

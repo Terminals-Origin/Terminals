@@ -143,7 +143,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -229,6 +229,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Security\RequestPassword.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>RequestPassword.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -256,6 +260,18 @@
     <Compile Include="Scanner\ScanItemEventArgs.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Compile Include="ProtocolHandler.cs" />
+    <Compile Include="Security\Decryptor.cs" />
+    <Compile Include="Security\DecryptTransformer.cs" />
+    <Compile Include="Security\EncryptionAlgorithm.cs" />
+    <Compile Include="Security\Encryptor.cs" />
+    <Compile Include="Security\EncryptTransformer.cs" />
+    <Compile Include="Security\Hash.cs" />
+    <Compile Include="Security\RequestPassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Security\RequestPassword.Designer.cs">
+      <DependentUpon>RequestPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SHApi.cs" />
     <Compile Include="SHFileOperationWrapper.cs" />

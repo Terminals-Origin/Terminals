@@ -2,42 +2,68 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Security.Cryptography; 
+using System.Security.Cryptography;
 
-namespace Terminals
-{
-    internal static class Functions
-    {
-        internal static string DecryptPassword(string encryptedPassword)
-        {
+namespace Terminals {
+    internal static class Functions {
+        public static Unified.Encryption.EncryptionAlgorithm EncryptionAlgorithm = Unified.Encryption.EncryptionAlgorithm.Rijndael;
+        internal static string DecryptPassword(string encryptedPassword) {
             if (String.IsNullOrEmpty(encryptedPassword))
                 return encryptedPassword;
-
-            try
-            {
-                return DPAPI.Decrypt(encryptedPassword);
-            }
-            catch
-            {
+            try {
+                if(Settings.TerminalsPassword==string.Empty) {
+                    return DPAPI.Decrypt(encryptedPassword);
+                } else {
+                    string hashedPass = Settings.TerminalsPassword.Substring(0, keyLength);
+                    byte[] IV = System.Text.Encoding.Default.GetBytes(Settings.TerminalsPassword.Substring(Settings.TerminalsPassword.Length - ivLength));
+                    //string hashedPass = Settings.TerminalsPassword.Substring(0, keyLength);
+                    string password = "";
+                    //System.Text.Encoding.Default.GetString(System.Convert.FromBase64String(encryptedPassword))
+                    Unified.Encryption.Decryptor dec = new Unified.Encryption.Decryptor(EncryptionAlgorithm);
+                    dec.IV = IV;
+                    byte[] data = dec.Decrypt(System.Convert.FromBase64String(encryptedPassword), System.Text.Encoding.Default.GetBytes(hashedPass));
+                    if (data != null && data.Length > 0) {
+                        password = System.Text.Encoding.Default.GetString(data);
+                    }
+                    return password;
+                }
+            } catch (Exception e) {
+                //string f = e.ToString();
                 return "";
             }
         }
-
-        internal static string EncryptPassword(string decryptedPassword)
-        {
-            return DPAPI.Encrypt(DPAPI.KeyType.UserKey, decryptedPassword);
+        internal static int keyLength = 24;
+        internal static int ivLength = 16;
+        internal static string EncryptPassword(string decryptedPassword) {
+            if (Settings.TerminalsPassword == string.Empty) {
+                return DPAPI.Encrypt(DPAPI.KeyType.UserKey, decryptedPassword);
+            } else {
+                string password = "";
+                try {
+                    string hashedPass = Settings.TerminalsPassword.Substring(0, keyLength);
+                    byte[] IV = System.Text.Encoding.Default.GetBytes(Settings.TerminalsPassword.Substring(Settings.TerminalsPassword.Length - ivLength));
+                    Unified.Encryption.Encryptor enc = new Unified.Encryption.Encryptor(EncryptionAlgorithm);
+                    enc.IV = IV;
+                    byte[] data = enc.Encrypt(System.Text.Encoding.Default.GetBytes(decryptedPassword), System.Text.Encoding.Default.GetBytes(hashedPass));
+                    if (data != null && data.Length > 0) {
+                        password = Convert.ToBase64String(data);
+                        //password = System.Text.Encoding.Default.GetString(data);
+                    }
+                } catch (Exception ec) {
+                    //string f = ec.ToString();
+                }
+                return password;
+                
+            }
         }
 
-        internal static string UserDisplayName(string domain, string user)
-        {
+        internal static string UserDisplayName(string domain, string user) {
             return String.IsNullOrEmpty(domain) ? (user) : (domain + "\\" + user);
         }
 
-        internal static string GetErrorMessage(int code)
-        {
+        internal static string GetErrorMessage(int code) {
             //error messages from: http://msdn2.microsoft.com/en-us/aa382170.aspx
-            switch (code)
-            {
+            switch (code) {
                 case 260: return "DNS name lookup failure";
                 case 262: return "Out of memory";
                 case 264: return "Connection timed out";

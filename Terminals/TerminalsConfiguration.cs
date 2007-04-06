@@ -123,13 +123,31 @@ namespace Terminals
                 this["showUserNameInTitle"] = value;
             }
         }
-        [ConfigurationProperty("portScanTimeoutSeconds", DefaultValue=5)]
+
+    [ConfigurationProperty("portScanTimeoutSeconds", DefaultValue=5)]
         public int PortScanTimeoutSeconds {
             get {
-                return Convert.ToInt32(this["portScanTimeoutSeconds"]);
+                int timeout = 5;
+                if (this["portScanTimeoutSeconds"] != null && this["portScanTimeoutSeconds"].ToString() != string.Empty) {
+                    int.TryParse(this["portScanTimeoutSeconds"].ToString(),out timeout);
+                }
+                return timeout;
             }
             set {
                 this["portScanTimeoutSeconds"] = value;
+            }
+        }
+        [ConfigurationProperty("terminalsPassword", DefaultValue = "")]
+        public string TerminalsPassword {
+            get {
+                return Convert.ToString(this["terminalsPassword"]);
+            }
+            set {
+                this["terminalsPassword"] = "";
+                //hash the password
+                if (value != string.Empty) {
+                    this["terminalsPassword"] = Unified.Encryption.Hash.Hash.GetHash(value, Unified.Encryption.Hash.Hash.HashType.SHA512);
+                }
             }
         }
 

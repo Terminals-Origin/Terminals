@@ -50,6 +50,9 @@ namespace Terminals
             Settings.SingleInstance = chkSingleInstance.Checked;
             Settings.ShowConfirmDialog = chkShowConfirmDialog.Checked;
             Settings.SaveConnectionsOnClose = chkSaveConnections.Checked;
+            if (this.PasswordProtectTerminalsCheckbox.Checked && PasswordTextbox.Text!=string.Empty && ConfirmPasswordTextBox.Text!=string.Empty && PasswordTextbox.Text == ConfirmPasswordTextBox.Text) {
+                Settings.TerminalsPassword = PasswordTextbox.Text;
+            }
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)
@@ -77,6 +80,27 @@ namespace Terminals
         private void txtDefaultDesktopShare_TextChanged(object sender, EventArgs e)
         {
             EvaluateDesktopShare();
+        }
+
+        private void PasswordProtectTerminalsCheckbox_CheckedChanged(object sender, EventArgs e) {
+            PasswordTextbox.Enabled = PasswordProtectTerminalsCheckbox.Checked;
+            ConfirmPasswordTextBox.Enabled = PasswordProtectTerminalsCheckbox.Checked;
+            PasswordsMatchLabel.Visible = PasswordProtectTerminalsCheckbox.Checked;
+        }
+
+        private void PasswordTextbox_TextChanged(object sender, EventArgs e) {
+            CheckPasswords();
+        }
+
+        private void ConfirmPasswordTextBox_TextChanged(object sender, EventArgs e) {
+            CheckPasswords();
+        }
+        private void CheckPasswords() {
+            if (PasswordTextbox.Text != ConfirmPasswordTextBox.Text) {
+                PasswordsMatchLabel.Text = "Passwords do not match";
+            } else {
+                PasswordsMatchLabel.Text = "Passwords match";
+            }
         }
     }
 }

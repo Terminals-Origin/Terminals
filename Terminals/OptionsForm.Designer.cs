@@ -34,6 +34,9 @@ namespace Terminals
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.PortscanTimeoutTextBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.chkSaveConnections = new System.Windows.Forms.CheckBox();
             this.chkShowConfirmDialog = new System.Windows.Forms.CheckBox();
             this.chkSingleInstance = new System.Windows.Forms.CheckBox();
@@ -53,12 +56,17 @@ namespace Terminals
             this.chkWaitForExit = new System.Windows.Forms.CheckBox();
             this.txtCommand = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.PortscanTimeoutTextBox = new System.Windows.Forms.TextBox();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.PasswordProtectTerminalsCheckbox = new System.Windows.Forms.CheckBox();
+            this.PasswordTextbox = new System.Windows.Forms.TextBox();
+            this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.PasswordsMatchLabel = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOk
@@ -115,6 +123,7 @@ namespace Terminals
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tpGeneral);
             this.tabControl1.Controls.Add(this.tpExecuteBeforeConnect);
+            this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Location = new System.Drawing.Point(8, 8);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -143,6 +152,31 @@ namespace Terminals
             this.tpGeneral.TabIndex = 0;
             this.tpGeneral.Text = "General";
             this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // PortscanTimeoutTextBox
+            // 
+            this.PortscanTimeoutTextBox.Location = new System.Drawing.Point(130, 234);
+            this.PortscanTimeoutTextBox.Name = "PortscanTimeoutTextBox";
+            this.PortscanTimeoutTextBox.Size = new System.Drawing.Size(58, 21);
+            this.PortscanTimeoutTextBox.TabIndex = 16;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(197, 237);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(51, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "Seconds.";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(10, 237);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(114, 13);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Port Scanner Timeout:";
             // 
             // chkSaveConnections
             // 
@@ -253,7 +287,7 @@ namespace Terminals
             this.tpExecuteBeforeConnect.Location = new System.Drawing.Point(4, 22);
             this.tpExecuteBeforeConnect.Name = "tpExecuteBeforeConnect";
             this.tpExecuteBeforeConnect.Padding = new System.Windows.Forms.Padding(3);
-            this.tpExecuteBeforeConnect.Size = new System.Drawing.Size(392, 246);
+            this.tpExecuteBeforeConnect.Size = new System.Drawing.Size(392, 264);
             this.tpExecuteBeforeConnect.TabIndex = 1;
             this.tpExecuteBeforeConnect.Text = "Execute Before Connect";
             this.tpExecuteBeforeConnect.UseVisualStyleBackColor = true;
@@ -326,30 +360,77 @@ namespace Terminals
             this.label11.TabIndex = 15;
             this.label11.Text = "Command:";
             // 
-            // label4
+            // tabPage1
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 237);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(114, 13);
-            this.label4.TabIndex = 14;
-            this.label4.Text = "Port Scanner Timeout:";
+            this.tabPage1.Controls.Add(this.PasswordsMatchLabel);
+            this.tabPage1.Controls.Add(this.label7);
+            this.tabPage1.Controls.Add(this.label6);
+            this.tabPage1.Controls.Add(this.ConfirmPasswordTextBox);
+            this.tabPage1.Controls.Add(this.PasswordTextbox);
+            this.tabPage1.Controls.Add(this.PasswordProtectTerminalsCheckbox);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(392, 264);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Security";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // label5
+            // PasswordProtectTerminalsCheckbox
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(197, 237);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(51, 13);
-            this.label5.TabIndex = 15;
-            this.label5.Text = "Seconds.";
+            this.PasswordProtectTerminalsCheckbox.AutoSize = true;
+            this.PasswordProtectTerminalsCheckbox.Location = new System.Drawing.Point(14, 15);
+            this.PasswordProtectTerminalsCheckbox.Name = "PasswordProtectTerminalsCheckbox";
+            this.PasswordProtectTerminalsCheckbox.Size = new System.Drawing.Size(110, 17);
+            this.PasswordProtectTerminalsCheckbox.TabIndex = 0;
+            this.PasswordProtectTerminalsCheckbox.Text = "Password Protect";
+            this.PasswordProtectTerminalsCheckbox.UseVisualStyleBackColor = true;
+            this.PasswordProtectTerminalsCheckbox.CheckedChanged += new System.EventHandler(this.PasswordProtectTerminalsCheckbox_CheckedChanged);
             // 
-            // PortscanTimeoutTextBox
+            // PasswordTextbox
             // 
-            this.PortscanTimeoutTextBox.Location = new System.Drawing.Point(130, 234);
-            this.PortscanTimeoutTextBox.Name = "PortscanTimeoutTextBox";
-            this.PortscanTimeoutTextBox.Size = new System.Drawing.Size(58, 21);
-            this.PortscanTimeoutTextBox.TabIndex = 16;
+            this.PasswordTextbox.Enabled = false;
+            this.PasswordTextbox.Location = new System.Drawing.Point(72, 38);
+            this.PasswordTextbox.Name = "PasswordTextbox";
+            this.PasswordTextbox.PasswordChar = '*';
+            this.PasswordTextbox.Size = new System.Drawing.Size(147, 21);
+            this.PasswordTextbox.TabIndex = 1;
+            this.PasswordTextbox.TextChanged += new System.EventHandler(this.PasswordTextbox_TextChanged);
+            // 
+            // ConfirmPasswordTextBox
+            // 
+            this.ConfirmPasswordTextBox.Enabled = false;
+            this.ConfirmPasswordTextBox.Location = new System.Drawing.Point(72, 66);
+            this.ConfirmPasswordTextBox.Name = "ConfirmPasswordTextBox";
+            this.ConfirmPasswordTextBox.PasswordChar = '*';
+            this.ConfirmPasswordTextBox.Size = new System.Drawing.Size(147, 21);
+            this.ConfirmPasswordTextBox.TabIndex = 2;
+            this.ConfirmPasswordTextBox.TextChanged += new System.EventHandler(this.ConfirmPasswordTextBox_TextChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 41);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(57, 13);
+            this.label6.TabIndex = 3;
+            this.label6.Text = "Password:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 69);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(48, 13);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Confirm:";
+            // 
+            // PasswordsMatchLabel
+            // 
+            this.PasswordsMatchLabel.AutoSize = true;
+            this.PasswordsMatchLabel.Location = new System.Drawing.Point(239, 73);
+            this.PasswordsMatchLabel.Name = "PasswordsMatchLabel";
+            this.PasswordsMatchLabel.Size = new System.Drawing.Size(0, 13);
+            this.PasswordsMatchLabel.TabIndex = 5;
             // 
             // OptionsForm
             // 
@@ -375,6 +456,8 @@ namespace Terminals
             this.tpGeneral.PerformLayout();
             this.tpExecuteBeforeConnect.ResumeLayout(false);
             this.tpExecuteBeforeConnect.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -410,5 +493,12 @@ namespace Terminals
         private System.Windows.Forms.TextBox PortscanTimeoutTextBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox ConfirmPasswordTextBox;
+        private System.Windows.Forms.TextBox PasswordTextbox;
+        private System.Windows.Forms.CheckBox PasswordProtectTerminalsCheckbox;
+        private System.Windows.Forms.Label PasswordsMatchLabel;
     }
 }
