@@ -8,7 +8,7 @@ namespace Terminals
     public enum DesktopSize { x640 = 0, x800, x1024, FitToWindow, FullScreen, AutoScale };
     public enum Colors { Bits8 = 0, Bit16, Bits24, Bits32 };
     public enum RemoteSounds { Redirect = 0, PlayOnServer = 1, DontPlay = 2 };
-
+    
     public class TerminalsConfigurationSection : ConfigurationSection
     {
         public TerminalsConfigurationSection()
@@ -321,7 +321,7 @@ namespace Terminals
             }
         }
     }
-
+    
     public class MRUItemConfigurationElementCollection : ConfigurationElementCollection
     {
         public MRUItemConfigurationElementCollection()
@@ -457,7 +457,7 @@ namespace Terminals
             BaseClear();
         }
     }
-
+    
     public class MRUItemConfigurationElement : ConfigurationElement
     {
         public MRUItemConfigurationElement()
@@ -483,7 +483,7 @@ namespace Terminals
             }
         }
     }
-
+    
     public class FavoriteConfigurationElementCollection : ConfigurationElementCollection
     {
         public FavoriteConfigurationElementCollection()
@@ -575,7 +575,7 @@ namespace Terminals
             BaseClear();
         }
     }
-
+    
     public class FavoriteConfigurationElement : ConfigurationElement
     {
         public FavoriteConfigurationElement()
@@ -1032,7 +1032,7 @@ namespace Terminals
             }
         }
     }
-
+    
     public class GroupConfigurationElementCollection : ConfigurationElementCollection
     {
         public GroupConfigurationElementCollection()
@@ -1168,7 +1168,7 @@ namespace Terminals
             BaseClear();
         }
     }
-
+    
     public class FavoriteAliasConfigurationElementCollection : ConfigurationElementCollection
     {
         public FavoriteAliasConfigurationElementCollection()
@@ -1304,7 +1304,7 @@ namespace Terminals
             BaseClear();
         }
     }
-
+    
     public class FavoriteAliasConfigurationElement : ConfigurationElement
     {
         public FavoriteAliasConfigurationElement()
@@ -1330,7 +1330,7 @@ namespace Terminals
             }
         }
     }
-
+    
     public class GroupConfigurationElement : ConfigurationElement
     {
         public GroupConfigurationElement()

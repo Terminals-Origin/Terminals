@@ -55,6 +55,8 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="TerminalControl, Version=1.0.2646.27407, Culture=neutral, processorArchitecture=MSIL">
@@ -123,6 +125,15 @@
     <Compile Include="NetworkScanner.Designer.cs">
       <DependentUpon>NetworkScanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\Server.cs" />
+    <Compile Include="Network\ShareConnectionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Network\ShareConnectionsForm.Designer.cs">
+      <DependentUpon>ShareConnectionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Network\SharedFavorite.cs" />
     <Compile Include="NewGroupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,6 +198,10 @@
     <EmbeddedResource Include="NetworkScanner.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkScanner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\ShareConnectionsForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ShareConnectionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewGroupForm.resx">
       <SubType>Designer</SubType>
@@ -258,6 +273,7 @@
     <Compile Include="Scanner\NetworkScanItem.cs" />
     <Compile Include="Scanner\NetworkScanManager.cs" />
     <Compile Include="Scanner\ScanItemEventArgs.cs" />
+    <Compile Include="Scanner\Serialize.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Compile Include="ProtocolHandler.cs" />
     <Compile Include="Security\Decryptor.cs" />

@@ -21,8 +21,14 @@ namespace Terminals {
             ATextbox.Text = ipList[0];
             BTextbox.Text = ipList[1];
             CTextbox.Text = ipList[2];
-            
+            ServerAddressLabel.Text = localIP;
+            Network.Server.OnClientConnection += new Terminals.Network.Server.ClientConnection(Server_OnClientConnection);
+            Network.Client.OnServerConnection += new Terminals.Network.Client.ServerConnection(Client_OnServerConnection);
         }
+
+
+
+
         int scanCount = 0;
 
         System.Windows.Forms.MethodInvoker miv;
@@ -173,6 +179,75 @@ namespace Terminals {
                 count++;
             }
             MessageBox.Show(string.Format("{0} items were added to your favorites.", count));
+        }
+
+        private void button1_Click(object sender, EventArgs e) {
+            if (Network.Server.ServerOnline) {
+                this.button1.Text = "Start Server";
+                Network.Server.Stop();
+            } else {
+                this.button1.Text = "Stop Server";
+                Network.Server.Start();
+            }
+            if (Network.Server.ServerOnline) {
+                this.ServerStatusLabel.Text = "Server is ONLINE";
+            } else {
+                this.ServerStatusLabel.Text = "Server is OFFLINE";
+            }
+            
+        }
+
+        void Client_OnServerConnection(System.IO.MemoryStream Response) {
+
+            if(Response.Length==0) {
+                System.Windows.Forms.MessageBox.Show("The server has nothing to share with you.");
+            } else {
+                int count = 0;
+                System.Collections.ArrayList favs = (System.Collections.ArrayList)Unified.Serialize.DeSerializeBinary(Response);
+                foreach (object fav in favs) {
+                    FavoriteConfigurationElement newfav = Network.SharedFavorite.ConvertFromFavorite((Network.SharedFavorite)fav);
+                    newfav.Name = newfav.Name + "_new";
+                    newfav.UserName = System.Environment.UserName;
+                    newfav.DomainName = System.Environment.UserDomainName;
+                    Settings.AddFavorite(newfav, false);
+                    count++;
+                }
+
+                System.Windows.Forms.MessageBox.Show(string.Format("Successfully imported {0} connections.", count));
+            }
+        }
+
+        void Server_OnClientConnection(string Username, System.Net.Sockets.Socket Socket) {
+            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            System.Collections.ArrayList list = new System.Collections.ArrayList();
+            foreach (FavoriteConfigurationElement elem in favorites) {
+                list.Add(Network.SharedFavorite.ConvertFromFavorite(elem));
+            }
+
+            System.IO.MemoryStream favs = Unified.Serialize.SerializeBinary(list);
+            byte[] data = null;
+            if (favs != null &&  favs.Length > 0) {
+                if (favs.CanRead && favs.Position > 0) favs.Position = 0;
+                data = favs.ToArray();
+                favs.Close();
+                favs.Dispose();
+            } else {
+                data = new byte[0];
+            }
+            Socket.Send(data);
+            Network.Server.FinishDisconnect(Socket);
+
+        }
+
+        private void button2_Click(object sender, EventArgs e) {
+            Network.Client.Start(this.ServerAddressTextbox.Text);
+        }
+
+        private void NetworkScanner_FormClosing(object sender, FormClosingEventArgs e) {
+            try {
+                Network.Server.Stop();
+                Network.Client.Stop();
+            } catch (Exception exc) { }
         }
 	
     }
