@@ -112,9 +112,10 @@ namespace Terminals.Connections {
         }
 
         #endregion
+
         void axMsRdpClient2_DragDrop(object sender, DragEventArgs e) {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            string desktopShare = (this.Parent as MainForm).GetDesktopShare();
+            string desktopShare = ParentForm.GetDesktopShare();
             if (String.IsNullOrEmpty(desktopShare)) {
                 MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n" +
                     "Please define a share in the connection properties window (under the Local Resources tab)."
@@ -131,14 +132,14 @@ namespace Terminals.Connections {
             }
         }
         void axMsTscAx_OnRequestLeaveFullScreen(object sender, EventArgs e) {
-            (Parent as MainForm).tsbGrabInput.Checked = false;
-            (Parent as MainForm).UpdateControls();
+            ParentForm.tsbGrabInput.Checked = false;
+            ParentForm.UpdateControls();
             NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
         }
 
         void axMsTscAx_OnRequestGoFullScreen(object sender, EventArgs e) {
-            (Parent as MainForm).tsbGrabInput.Checked = true;
-            (Parent as MainForm).UpdateControls();
+            ParentForm.tsbGrabInput.Checked = true;
+            ParentForm.UpdateControls();
         }
 
         void axMsTscAx_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e) {
@@ -151,11 +152,11 @@ namespace Terminals.Connections {
             }
             TabControlItem selectedTabPage = (TabControlItem)(client.Parent);
             bool wasSelected = selectedTabPage.Selected;
-            (Parent as MainForm).tcTerminals.RemoveTab(selectedTabPage);
-            (Parent as MainForm).tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
+            ParentForm.tcTerminals.RemoveTab(selectedTabPage);
+            ParentForm.tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
             if (wasSelected)
                 NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
-            (Parent as MainForm).UpdateControls();
+            ParentForm.UpdateControls();
         }
         void axMsRdpClient2_OnFatalError(object sender, IMsTscAxEvents_OnFatalErrorEvent e) {
             //throw new Exception("The method or operation is not implemented.");

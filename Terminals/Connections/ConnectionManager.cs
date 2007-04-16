@@ -58,7 +58,7 @@ namespace Terminals.Connections {
             Height = Math.Min(maxHeight, Height); ;
 
         }
-        public static IConnection CreateConnection(FavoriteConfigurationElement Favorite, TerminalTabControlItem TerminalTabPage) {
+        public static IConnection CreateConnection(FavoriteConfigurationElement Favorite, TerminalTabControlItem TerminalTabPage, MainForm parentForm) {
             IConnection conn = null; ;
             switch (Favorite.Protocol) {
                 case "VNC":
@@ -80,6 +80,7 @@ namespace Terminals.Connections {
             conn.Favorite = Favorite;
             TerminalTabPage.Connection = conn;
             conn.TerminalTabPage = TerminalTabPage;
+            conn.ParentForm = parentForm;
             return conn;
         }
         public static int GetPort(string Name) {

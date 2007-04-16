@@ -329,7 +329,7 @@ namespace Terminals {
                 tcTerminals.Items.Add(terminalTabPage);
                 tcTerminals.SelectedItem = terminalTabPage;
                 tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
-                Connections.IConnection conn = Connections.ConnectionManager.CreateConnection(favorite, terminalTabPage);
+                Connections.IConnection conn = Connections.ConnectionManager.CreateConnection(favorite, terminalTabPage, this);
                 conn.Connect();
                 (conn as Control).BringToFront();
                 (conn as Control).Update();

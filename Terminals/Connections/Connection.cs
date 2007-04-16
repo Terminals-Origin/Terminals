@@ -19,6 +19,15 @@ namespace Terminals.Connections {
         public FavoriteConfigurationElement Favorite { get { return favorite; } set { favorite = value; } }
         TerminalTabControlItem terminalTabPage;
         public TerminalTabControlItem TerminalTabPage{get{return terminalTabPage;}set{terminalTabPage=value;}}
+
+        private MainForm parentForm;
+
+        public MainForm ParentForm
+        {
+            get { return parentForm; }
+            set { parentForm = value; }
+        }
+
         public abstract bool Connect();
 
         public abstract void Disconnect();

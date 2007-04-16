@@ -61,6 +61,14 @@ namespace Terminals.Connections {
             }
         }
 
+        private MainForm parentForm;
+
+        public MainForm ParentForm
+        {
+            get { return parentForm; }
+            set { parentForm = value; }
+        }
+
         public bool Connect() {
             return RASConnection.Connect();
         }
