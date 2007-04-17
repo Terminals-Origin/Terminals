@@ -476,8 +476,6 @@ namespace Terminals
         // chkConnectToConsole
         // 
         this.chkConnectToConsole.AutoSize = true;
-        this.chkConnectToConsole.Checked = true;
-        this.chkConnectToConsole.CheckState = System.Windows.Forms.CheckState.Checked;
         this.chkConnectToConsole.Location = new System.Drawing.Point(6, 114);
         this.chkConnectToConsole.Name = "chkConnectToConsole";
         this.chkConnectToConsole.Size = new System.Drawing.Size(120, 17);
