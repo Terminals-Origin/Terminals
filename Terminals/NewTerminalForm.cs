@@ -12,12 +12,12 @@ using System.Configuration;
 using System.IO;
 using FalafelSoftware.TransPort;
 
-
-namespace Terminals {
-    internal partial class NewTerminalForm : Form {
-
-
-        public NewTerminalForm(string server, bool connect) {
+namespace Terminals
+{
+    internal partial class NewTerminalForm : Form
+    {
+        public NewTerminalForm(string server, bool connect)
+        {
             InitializeComponent();
             LoadMRUs();
             cmbServers.Text = server;
@@ -28,32 +28,37 @@ namespace Terminals {
             SetOkTitle(connect);
             this.ProtocolComboBox.SelectedIndex = 0;
         }
-        private void NewTerminalForm_Load(object sender, EventArgs e) {
+        private void NewTerminalForm_Load(object sender, EventArgs e)
+        {
             //LoadDialupConnections();
 
         }
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
-        private void LoadDialupConnections() {
+        private void LoadDialupConnections()
+        {
             dialupList = new Dictionary<string, RASENTRY>();
             System.Collections.ArrayList rasEntries = new System.Collections.ArrayList();
             RasError error = ras1.ListEntries(ref rasEntries);
-            foreach (string item in rasEntries) {
+            foreach (string item in rasEntries)
+            {
                 RASENTRY details = new RASENTRY();
                 ras1.GetEntry(item, ref details);
                 dialupList.Add(item, details);
                 if (!cmbServers.Items.Contains(item)) this.cmbServers.Items.Add(item);
-                
+
             }
         }
 
-        private void SetOkTitle(bool connect) {
+        private void SetOkTitle(bool connect)
+        {
             if (connect)
                 btnOk.Text = "Co&nnect";
             else
                 btnOk.Text = "OK";
         }
 
-        public NewTerminalForm(FavoriteConfigurationElement favorite) {
+        public NewTerminalForm(FavoriteConfigurationElement favorite)
+        {
             InitializeComponent();
             LoadMRUs();
             SetOkTitle(false);
@@ -62,20 +67,23 @@ namespace Terminals {
             SetOkButtonState();
         }
 
-        private void LoadMRUs() {
+        private void LoadMRUs()
+        {
             cmbServers.Items.AddRange(Settings.MRUServerNames);
             cmbDomains.Items.AddRange(Settings.MRUDomainNames);
             cmbUsers.Items.AddRange(Settings.MRUUserNames);
             txtTag.AutoCompleteCustomSource.AddRange(Settings.Tags);
         }
 
-        private void SaveMRUs() {
+        private void SaveMRUs()
+        {
             Settings.AddServerMRUItem(cmbServers.Text);
             Settings.AddDomainMRUItem(cmbDomains.Text);
             Settings.AddUserMRUItem(cmbUsers.Text);
         }
 
-        private void FillControls(FavoriteConfigurationElement favorite) {
+        private void FillControls(FavoriteConfigurationElement favorite)
+        {
             BackColorTextBox.Text = favorite.TelnetBackColor;
             TelnetFontTextbox.Text = favorite.TelnetFont;
             TelnetCursorColorTextBox.Text = favorite.TelnetCursorColor;
@@ -114,15 +122,19 @@ namespace Terminals {
             txtInitialDirectory.Text = favorite.ExecuteBeforeConnectInitialDirectory;
             chkWaitForExit.Checked = favorite.ExecuteBeforeConnectWaitForExit;
             string[] tagsArray = favorite.Tags.Split(',');
-            if (!((tagsArray.Length == 1) && (String.IsNullOrEmpty(tagsArray[0])))) {
-                foreach (string tag in tagsArray) {
+            if (!((tagsArray.Length == 1) && (String.IsNullOrEmpty(tagsArray[0]))))
+            {
+                foreach (string tag in tagsArray)
+                {
                     lvConnectionTags.Items.Add(tag, tag, -1);
                 }
             }
         }
 
-        private bool FillFavorite() {
-            try {
+        private bool FillFavorite()
+        {
+            try
+            {
                 favorite.VMRCAdministratorMode = VMRCAdminModeCheckbox.Checked;
                 favorite.VMRCReducedColorsMode = VMRCReducedColorsCheckbox.Checked;
                 favorite.Telnet = TelnetRadioButton.Checked;
@@ -158,121 +170,156 @@ namespace Terminals {
                 favorite.ExecuteBeforeConnectInitialDirectory = txtInitialDirectory.Text;
                 favorite.ExecuteBeforeConnectWaitForExit = chkWaitForExit.Checked;
                 List<string> tagList = new List<string>();
-                foreach (ListViewItem listViewItem in lvConnectionTags.Items) {
+                foreach (ListViewItem listViewItem in lvConnectionTags.Items)
+                {
                     tagList.Add(listViewItem.Text);
                 }
                 favorite.Tags = String.Join(",", tagList.ToArray());
                 return true;
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 MessageBox.Show(this, e.Message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
 
-        private string ValidateServer(string serverName) {
+        private string ValidateServer(string serverName)
+        {
             if (Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
                 throw new ArgumentException("Server name is not valid");
             return serverName;
         }
 
-        private int ValidatePort(string port) {
-            if (txtPort.Text.Trim() != "") {
+        private int ValidatePort(string port)
+        {
+            if (txtPort.Text.Trim() != "")
+            {
                 int result;
                 if (int.TryParse(txtPort.Text, out result) && result < 65536 && result > 0)
                     return result;
                 else
                     throw new ArgumentException("Port must be a number between 0 and 65535");
-            } else
+            }
+            else
                 return 3389;
         }
 
         private FavoriteConfigurationElement favorite;
 
-        internal FavoriteConfigurationElement Favorite {
-            get { return favorite; }
+        internal FavoriteConfigurationElement Favorite
+        {
+            get
+            {
+                return favorite;
+            }
         }
 
         private bool showOnToolbar;
 
-        internal bool ShowOnToolbar {
-            get { return showOnToolbar; }
+        internal bool ShowOnToolbar
+        {
+            get
+            {
+                return showOnToolbar;
+            }
         }
 
 
-        private void SetOkButtonState() {
+        private void SetOkButtonState()
+        {
             btnOk.Enabled = cmbServers.Text != String.Empty;
         }
 
-        private void btnOk_Click(object sender, EventArgs e) {
+        private void btnOk_Click(object sender, EventArgs e)
+        {
             SaveMRUs();
             string name = txtName.Text;
-            if (name == String.Empty) {
+            if (name == String.Empty)
+            {
                 name = cmbServers.Text;
             }
             favorite = new FavoriteConfigurationElement();
             favorite.Name = name;
-            if (FillFavorite()) {
+            if (FillFavorite())
+            {
                 DialogResult = DialogResult.OK;
             }
         }
 
-        private void control_TextChanged(object sender, EventArgs e) {
+        private void control_TextChanged(object sender, EventArgs e)
+        {
             SetOkButtonState();
         }
 
-        private void chkSavePassword_CheckedChanged(object sender, EventArgs e) {
+        private void chkSavePassword_CheckedChanged(object sender, EventArgs e)
+        {
             txtPassword.ReadOnly = !chkSavePassword.Checked;
         }
 
-        private void txtPassword_TextChanged(object sender, EventArgs e) {
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
             SetOkButtonState();
             chkSavePassword.Checked = (txtPassword.Text != "");
         }
 
-        private void NewTerminalForm_Shown(object sender, EventArgs e) {
+        private void NewTerminalForm_Shown(object sender, EventArgs e)
+        {
             cmbServers.Focus();
         }
 
-        private void cmbServers_TextChanged(object sender, EventArgs e) {
+        private void cmbServers_TextChanged(object sender, EventArgs e)
+        {
             SetOkButtonState();
         }
 
-        private void cmbServers_Leave(object sender, EventArgs e) {
-            if (txtName.Text == String.Empty) {
+        private void cmbServers_Leave(object sender, EventArgs e)
+        {
+            if (txtName.Text == String.Empty)
+            {
                 txtName.Text = cmbServers.Text;
             }
         }
 
-        private void btnBrowseShare_Click(object sender, EventArgs e) {
+        private void btnBrowseShare_Click(object sender, EventArgs e)
+        {
             folderBrowserDialog.SelectedPath = @"\\" + cmbServers.Text;
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK) {
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
                 txtDesktopShare.Text = folderBrowserDialog.SelectedPath;
             }
         }
 
-        private void AddTag() {
+        private void AddTag()
+        {
             ListViewItem[] items = lvConnectionTags.Items.Find(txtTag.Text, false);
-            if (items.Length == 0) {
+            if (items.Length == 0)
+            {
                 Settings.AddTag(txtTag.Text);
                 lvConnectionTags.Items.Add(txtTag.Text);
             }
         }
 
-        private void btnAddNewTag_Click(object sender, EventArgs e) {
+        private void btnAddNewTag_Click(object sender, EventArgs e)
+        {
             AddTag();
         }
 
-        private void DeleteTag() {
-            foreach (ListViewItem item in lvConnectionTags.SelectedItems) {
+        private void DeleteTag()
+        {
+            foreach (ListViewItem item in lvConnectionTags.SelectedItems)
+            {
                 lvConnectionTags.Items.Remove(item);
             }
         }
 
-        private void btnRemoveTag_Click(object sender, EventArgs e) {
+        private void btnRemoveTag_Click(object sender, EventArgs e)
+        {
             DeleteTag();
         }
 
-        private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e) {
+        private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
             string defaultPort = Connections.ConnectionManager.VNCVMRCPort.ToString();
 
             groupBox1.Enabled = false;
@@ -285,71 +332,93 @@ namespace Terminals {
             txtPort.Enabled = true;
 
             TelnetGroupBox.Enabled = false;
-            if (ProtocolComboBox.Text == "RDP") {
+            if (ProtocolComboBox.Text == "RDP")
+            {
                 defaultPort = Connections.ConnectionManager.RDPPort.ToString();
                 groupBox1.Enabled = true;
                 chkConnectToConsole.Enabled = true;
                 LocalResourceGroupBox.Enabled = true;
-            } else if (ProtocolComboBox.Text == "VMRC") {
+            }
+            else if (ProtocolComboBox.Text == "VMRC")
+            {
                 VMRCReducedColorsCheckbox.Enabled = true;
                 VMRCAdminModeCheckbox.Enabled = true;
-            } else if (ProtocolComboBox.Text == "RAS") {
+            }
+            else if (ProtocolComboBox.Text == "RAS")
+            {
                 this.cmbServers.Items.Clear();
                 LoadDialupConnections();
                 RASGroupBox.Enabled = true;
                 txtPort.Enabled = false;
                 RASDetailsListBox.Items.Clear();
-            } else if (ProtocolComboBox.Text == "VNC") {
+            }
+            else if (ProtocolComboBox.Text == "VNC")
+            {
                 //vnc settings
-            } else if (ProtocolComboBox.Text == "Telnet") {
+            }
+            else if (ProtocolComboBox.Text == "Telnet")
+            {
                 TelnetGroupBox.Enabled = true;
                 defaultPort = Connections.ConnectionManager.SSHPort.ToString();
             }
             txtPort.Text = defaultPort;
         }
 
-        private void TelnetRadioButton_CheckedChanged(object sender, EventArgs e) {
+        private void TelnetRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
             txtPort.Text = Connections.ConnectionManager.TelnetPort.ToString();
         }
 
-        private void SSHRadioButton_CheckedChanged(object sender, EventArgs e) {
+        private void SSHRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
             txtPort.Text = Connections.ConnectionManager.SSHPort.ToString();
         }
 
-        private void TelnetFontButton_Click(object sender, EventArgs e) {
+        private void TelnetFontButton_Click(object sender, EventArgs e)
+        {
             DialogResult result = this.fontDialog1.ShowDialog();
-            if (result == DialogResult.OK) {
+            if (result == DialogResult.OK)
+            {
                 this.TelnetFontTextbox.Text = this.fontDialog1.Font.ToString();
             }
         }
 
-        private void BackcolorButton_Click(object sender, EventArgs e) {
+        private void BackcolorButton_Click(object sender, EventArgs e)
+        {
             DialogResult result = this.colorDialog1.ShowDialog();
-            if (result == DialogResult.OK) {
+            if (result == DialogResult.OK)
+            {
                 this.BackColorTextBox.Text = this.colorDialog1.Color.Name;
             }
         }
 
-        private void TelnetTextColorButton_Click(object sender, EventArgs e) {
+        private void TelnetTextColorButton_Click(object sender, EventArgs e)
+        {
             DialogResult result = this.colorDialog1.ShowDialog();
-            if (result == DialogResult.OK) {
+            if (result == DialogResult.OK)
+            {
                 this.TelnetTextColorTextBox.Text = this.colorDialog1.Color.Name;
             }
         }
 
-        private void TelnetCursorColorButton_Click(object sender, EventArgs e) {
+        private void TelnetCursorColorButton_Click(object sender, EventArgs e)
+        {
             DialogResult result = this.colorDialog1.ShowDialog();
-            if (result == DialogResult.OK) {
+            if (result == DialogResult.OK)
+            {
                 this.TelnetCursorColorTextBox.Text = this.colorDialog1.Color.Name;
             }
         }
         NetworkScanner ns = new NetworkScanner();
-        private void DetectButton_Click(object sender, EventArgs e) {
+        private void DetectButton_Click(object sender, EventArgs e)
+        {
 
             DialogResult result = ns.ShowDialog();
-            if (result == DialogResult.OK) {
+            if (result == DialogResult.OK)
+            {
                 LoadMRUs();
-                if (ns.SelectedScanItem != null) {
+                if (ns.SelectedScanItem != null)
+                {
                     Terminals.Scanner.NetworkScanItem item = ns.SelectedScanItem;
                     this.txtPort.Text = item.Port.ToString();
                     cmbServers.Text = item.IPAddress;
@@ -357,23 +426,28 @@ namespace Terminals {
                     if (item.Port == Terminals.Connections.ConnectionManager.SSHPort) this.SSHRadioButton.Checked = true;
                     if (item.Port == Terminals.Connections.ConnectionManager.TelnetPort) this.TelnetRadioButton.Checked = true;
                     this.txtName.Text = string.Format("{0}_{1}", item.HostName, this.ProtocolComboBox.Text);
-                    if (this.ProtocolComboBox.Text == "RDP") {
+                    if (this.ProtocolComboBox.Text == "RDP")
+                    {
                         this.chkConnectToConsole.Checked = true;
-                        this.cmbResolution.SelectedIndex = this.cmbResolution.Items.Count-1;
+                        this.cmbResolution.SelectedIndex = this.cmbResolution.Items.Count - 1;
                     }
                 }
             }
         }
 
-        private void ras1_ConnectionChanged(object sender, ConnectionChangedEventArgs e) {
+        private void ras1_ConnectionChanged(object sender, ConnectionChangedEventArgs e)
+        {
 
         }
 
-        private void cmbServers_SelectedIndexChanged(object sender, EventArgs e) {
-            if (ProtocolComboBox.Text == "RAS") {
+        private void cmbServers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ProtocolComboBox.Text == "RAS")
+            {
                 LoadDialupConnections();
                 RASDetailsListBox.Items.Clear();
-                if (dialupList != null && dialupList.ContainsKey(cmbServers.Text)) {
+                if (dialupList != null && dialupList.ContainsKey(cmbServers.Text))
+                {
                     RASENTRY selectedRAS = dialupList[cmbServers.Text];
                     RASDetailsListBox.Items.Add(string.Format("{0}:{1}", "Connection", cmbServers.Text));
                     RASDetailsListBox.Items.Add(string.Format("{0}:{1}", "Area Code", selectedRAS.AreaCode));

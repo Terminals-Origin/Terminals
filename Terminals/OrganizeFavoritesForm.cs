@@ -71,7 +71,7 @@ namespace Terminals
         private void lvConnections_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
             ListViewItem item = lvConnections.Items[e.Item];
-            if (!String.IsNullOrEmpty(e.Label) &&  e.Label != item.Text)
+            if (!String.IsNullOrEmpty(e.Label) && e.Label != item.Text)
             {
                 if (lvConnections.Items.ContainsKey(e.Label))
                 {
@@ -160,7 +160,8 @@ namespace Terminals
             }
         }
 
-        private void OrganizeFavoritesForm_Activated(object sender, EventArgs e) {
+        private void OrganizeFavoritesForm_Activated(object sender, EventArgs e)
+        {
             LoadConnections();
         }
     }

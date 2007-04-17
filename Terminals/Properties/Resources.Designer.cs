@@ -123,6 +123,13 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap camera {
+            get {
+                object obj = ResourceManager.GetObject("camera", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap computer_link {
             get {
                 object obj = ResourceManager.GetObject("computer_link", resourceCulture);

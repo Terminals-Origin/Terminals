@@ -154,7 +154,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -323,6 +323,7 @@
     <None Include="Resources\folder.png" />
     <None Include="Resources\application_lightning.png" />
     <None Include="Resources\HidePanel.PNG" />
+    <None Include="Resources\camera.png" />
     <Content Include="Resources\ico101.ico" />
     <None Include="Resources\ico_scapture.png" />
     <Content Include="Resources\lightning_go.png" />
