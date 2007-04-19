@@ -1380,10 +1380,11 @@ namespace Terminals
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            List<SessionInfo> sessions = TSManager.ListSessions(CurrentTerminal.Server);
-            foreach (SessionInfo session in sessions)
+            SessionInfo currentSession = TSManager.GetCurrentSession(CurrentTerminal.Server, CurrentTerminal.UserName, 
+                CurrentTerminal.Domain, Environment.MachineName);
+            if (currentSession!=null)
             {
-                MessageBox.Show(session.DomainName + @"\" + session.UserName + "@" + session.ClientName);
+                MessageBox.Show(currentSession.UserName + "@" + currentSession.ClientName);
             }
         }
     }

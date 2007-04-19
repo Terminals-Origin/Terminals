@@ -88,13 +88,13 @@ namespace Terminals
             WTSCloseServer(serverHandle);
         }
 
-        public static string QuerySessionInfo(int sessionId, WTS_INFO_CLASS infoClass)
+        public static string QuerySessionInfo(IntPtr server, int sessionId, WTS_INFO_CLASS infoClass)
         {
             System.IntPtr buffer = IntPtr.Zero;
             uint bytesReturned;
             try
             {
-                WTSQuerySessionInformation(System.IntPtr.Zero, sessionId, infoClass, out buffer, out bytesReturned);
+                WTSQuerySessionInformation(server, sessionId, infoClass, out buffer, out bytesReturned);
                 return Marshal.PtrToStringAnsi(buffer);
             }
             catch
@@ -110,17 +110,20 @@ namespace Terminals
 
         public static List<SessionInfo> ListSessions(string serverName)
         {
+            return ListSessions(serverName, null, null, null, null);
+        }
+
+        public static List<SessionInfo> ListSessions(string serverName, string userName, string domainName, 
+            string clientName, WTS_CONNECTSTATE_CLASS? state)
+        {
             IntPtr server = IntPtr.Zero;
             List<SessionInfo> sessions = new List<SessionInfo>();
             server = OpenServer(serverName);
             try
             {
-                /*IntPtr ppSessionInfo = IntPtr.Zero;
+                IntPtr ppSessionInfo = IntPtr.Zero;
                 Int32 count = 0;
                 Int32 retval = WTSEnumerateSessions(server, 0, 1, ref ppSessionInfo, ref count);
-                WTS_SESSION_INFO[] wtsSessionInfo = new WTS_SESSION_INFO[count];
-                Marshal.Copy(ppSessionInfo,               
-
                 Int32 dataSize = Marshal.SizeOf(typeof(WTS_SESSION_INFO));
                 Int32 current = (int)ppSessionInfo;
                 if (retval != 0)
@@ -130,14 +133,29 @@ namespace Terminals
                         SessionInfo sessionInfo = new SessionInfo();
                         WTS_SESSION_INFO si = (WTS_SESSION_INFO)Marshal.PtrToStructure((System.IntPtr)current, typeof(WTS_SESSION_INFO));
                         current += dataSize;
+                        
                         sessionInfo.Id = si.SessionID;
-                        sessionInfo.UserName = QuerySessionInfo(wtsSessionInfo[0].SessionID, WTS_INFO_CLASS.WTSUserName);
-                        sessionInfo.DomainName = QuerySessionInfo(wtsSessionInfo[0].SessionID, WTS_INFO_CLASS.WTSDomainName);
-                        sessionInfo.ClientName = QuerySessionInfo(wtsSessionInfo[0].SessionID, WTS_INFO_CLASS.WTSClientName);
+                        sessionInfo.UserName = QuerySessionInfo(server, sessionInfo.Id, WTS_INFO_CLASS.WTSUserName);
+                        sessionInfo.DomainName = QuerySessionInfo(server, sessionInfo.Id, WTS_INFO_CLASS.WTSDomainName);
+                        sessionInfo.ClientName = QuerySessionInfo(server, sessionInfo.Id, WTS_INFO_CLASS.WTSClientName);
+                        sessionInfo.State = si.State;
+
+                        if (userName != null || domainName!=null || clientName != null || state!=null) //In this case, the caller is asking to return only matching sessions
+                        {
+                            if (userName != null && !String.Equals(userName, sessionInfo.UserName, StringComparison.CurrentCultureIgnoreCase))
+                                continue; //Not matching
+                            if (clientName != null && !String.Equals(clientName, sessionInfo.ClientName, StringComparison.CurrentCultureIgnoreCase))
+                                continue; //Not matching
+                            if (domainName != null && !String.Equals(domainName, sessionInfo.DomainName, StringComparison.CurrentCultureIgnoreCase))
+                                continue; //Not matching
+                            if (state != null && sessionInfo.State != state.Value)
+                                continue;
+                        }
+
                         sessions.Add(sessionInfo);
                     }
                     WTSFreeMemory(ppSessionInfo);
-                }*/
+                }
             }
             finally
             {
@@ -146,10 +164,15 @@ namespace Terminals
             return sessions;
         }
 
-        /*public bool CheckForDoubleSessions(string domain, string server, string userName)
+        public static SessionInfo GetCurrentSession(string serverName, string userName, string domainName, string clientName)
         {
-
-        }*/
+            List<SessionInfo> sessions = ListSessions(serverName, userName, domainName, clientName, WTS_CONNECTSTATE_CLASS.WTSActive);
+            if (sessions.Count == 0)
+                return null;
+            if (sessions.Count > 1)
+                throw new Exception("Duplicate sessions found for user");
+            return sessions[0];
+        }
     }
 
     public class SessionInfo
@@ -184,6 +207,14 @@ namespace Terminals
         {
             get { return clientName; }
             set { clientName = value; }
+        }
+
+        private TSManager.WTS_CONNECTSTATE_CLASS state;
+
+        public TSManager.WTS_CONNECTSTATE_CLASS State
+        {
+            get { return state; }
+            set { state = value; }
         }
     }
 }
