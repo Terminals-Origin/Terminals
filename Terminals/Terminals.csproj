@@ -293,6 +293,7 @@
     <Compile Include="SHFileOperationWrapper.cs" />
     <Compile Include="SingleInstanceApplication.cs" />
     <Compile Include="TerminalsConfiguration.cs" />
+    <Compile Include="TSManager.cs" />
     <None Include="WTSApi32.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -324,6 +325,7 @@
     <None Include="Resources\application_lightning.png" />
     <None Include="Resources\HidePanel.PNG" />
     <None Include="Resources\camera.png" />
+    <None Include="Resources\application_xp_terminal.png" />
     <Content Include="Resources\ico101.ico" />
     <None Include="Resources\ico_scapture.png" />
     <Content Include="Resources\lightning_go.png" />

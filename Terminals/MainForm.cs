@@ -1377,6 +1377,15 @@ namespace Terminals
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItems.Add(favorite.Name);
             }
         }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            List<SessionInfo> sessions = TSManager.ListSessions(CurrentTerminal.Server);
+            foreach (SessionInfo session in sessions)
+            {
+                MessageBox.Show(session.DomainName + @"\" + session.UserName + "@" + session.ClientName);
+            }
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem
