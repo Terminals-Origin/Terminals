@@ -320,6 +320,19 @@ namespace Terminals
                 this["singleInstance"] = value;
             }
         }
+
+        [ConfigurationProperty("psexecLocation")]
+        public string PsexecLocation
+        {
+            get
+            {
+                return (string)this["psexecLocation"];
+            }
+            set
+            {
+                this["psexecLocation"] = value;
+            }
+        }
     }
     
     public class MRUItemConfigurationElementCollection : ConfigurationElementCollection

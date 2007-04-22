@@ -562,5 +562,19 @@ namespace Terminals
                 configuration.Save();
             }
         }
+
+        public static string PsexecLocation
+        {
+            get
+            {
+                return GetSection().PsexecLocation;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).PsexecLocation = value;
+                configuration.Save();
+            }
+        }
     }
 }

@@ -192,7 +192,7 @@
         ARADAAEBAQABIAYAARD/AP8A/wD/ACYAAQ0CAQEPAV8CAwHGAW4CCQHwCAABbgIJAfABXwIDAcYBDQIB
         AQ/cAAEPAgEBEgFfAgMBxgHlAaMBgQH/AWYCBAHeCAABZgIEAd4B5wGoAYEB/wFfAgMBxgEPAgEBEtQA
         ATcCAQFYAXACDwH3AegBqgGBAf8BZgIEAd4BFQIBARsIAAEVAgEBGwFmAgQB3gHoAaoBgQH/AXACDwH3
-        ATcCAQFYzAABBgIBAQYBdgIJAfEB7AG4AYEB/wFmAh8B+wEkAgEBMxAAASQCAQEzAWYCHwH7AekBsgGB
+        ATcCAQFYzAABBgIBAQYBdgIJAfEB7AG4AYEB/wFkAh8B+wEkAgEBMxAAASQCAQEzAWQCHwH7AekBsgGB
         Af8BdgIJAfEBBgIBAQbMAAE3AgEBWAFwAg8B9wHqAbUBgQH/AWYCBAHeARUCAQEbCAABFQIBARsBZgIE
         Ad4B6gG1AYEB/wFwAg8B9wE3AgEBWNQAAQ8CAQESAV8CAwHGAesBtgGBAf8BZgIEAd4IAAFmAgQB3gHs
         AbsBgQH/AV8CAwHGAQ8CAQES3AABDQIBAQ8BXwIDAcYBbgIJAfAIAAFuAgkB8AFfAgMBxgENAgEBD+QA
@@ -204,7 +204,7 @@
   <metadata name="cmsFavorites.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>775, 12</value>
   </metadata>
-  <metadata name="tsNetworkToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="tsRemoteToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>448, 2</value>
   </metadata>
   <data name="toolStripButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

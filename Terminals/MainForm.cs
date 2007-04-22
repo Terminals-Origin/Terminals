@@ -1380,11 +1380,57 @@ namespace Terminals
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            SessionInfo currentSession = TSManager.GetCurrentSession(CurrentTerminal.Server, CurrentTerminal.UserName, 
-                CurrentTerminal.Domain, Environment.MachineName);
-            if (currentSession!=null)
+            Cursor = Cursors.WaitCursor;
+            try
             {
-                MessageBox.Show(currentSession.UserName + "@" + currentSession.ClientName);
+                string sessionId = String.Empty;
+                if (!CurrentTerminal.AdvancedSettings3.ConnectToServerConsole)
+                {
+                    sessionId = TSManager.GetCurrentSession(CurrentTerminal.Server,
+                    CurrentTerminal.UserName, CurrentTerminal.Domain,
+                    Environment.MachineName).Id.ToString();
+                }
+                Process process = new Process();
+                string args = " \\\\" + CurrentTerminal.Server +
+                    " -i " + sessionId + " -d notepad";
+                ProcessStartInfo startInfo = new ProcessStartInfo(Settings.PsexecLocation,
+                    args);
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+                process.StartInfo = startInfo;
+                process.Start();
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+            }
+        }
+
+        private void tsbCMD_Click(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            try
+            {
+                string sessionId = String.Empty;
+                if (!CurrentTerminal.AdvancedSettings3.ConnectToServerConsole)
+                {
+                    sessionId = TSManager.GetCurrentSession(CurrentTerminal.Server,
+                    CurrentTerminal.UserName, CurrentTerminal.Domain,
+                    Environment.MachineName).Id.ToString();
+                }
+                Process process = new Process();
+                string args = " \\\\" + CurrentTerminal.Server +
+                    " -i " + sessionId + " -d cmd";
+                ProcessStartInfo startInfo = new ProcessStartInfo(Settings.PsexecLocation,
+                    args);
+                startInfo.UseShellExecute = false;
+                startInfo.CreateNoWindow = true;
+                process.StartInfo = startInfo;
+                process.Start();
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
             }
         }
     }
