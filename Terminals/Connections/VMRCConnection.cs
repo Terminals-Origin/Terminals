@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using VMRCClientControlLib;
 
 namespace Terminals.Connections {
     public class VMRCConnection : Connection {
@@ -10,18 +11,18 @@ namespace Terminals.Connections {
         public override bool Connected { get { return connected; } }
         public override void ChangeDesktopSize(Terminals.DesktopSize Size) {
         }
-
-        AxVMRCClientControlLib.AxVMRCClientControl vmrc = new AxVMRCClientControlLib.AxVMRCClientControl();
+        VMRCClientControlLib.IVMRCClientControl vmrc = new VMRCClientControlLib.VMRCClientControlClass();
+        //AxVMRCClientControlLib.AxVMRCClientControl vmrc = new AxVMRCClientControlLib.AxVMRCClientControl();
         public override bool Connect() {
-            Controls.Add(vmrc);
-            vmrc.BringToFront();
+            Controls.Add((System.Windows.Forms.Control)vmrc);
+           // vmrc.BringToFront();
             this.BringToFront();
-            vmrc.Parent = base.TerminalTabPage;
+            //vmrc.Parent = base.TerminalTabPage;
             this.Parent = TerminalTabPage;
 
-            vmrc.CtlAutoSize = true;
+            //vmrc.CtlAutoSize = true;
 
-            vmrc.Dock = DockStyle.Fill;
+           // vmrc.Dock = DockStyle.Fill;
             vmrc.UserName = Favorite.UserName;
             vmrc.ServerAddress = Favorite.ServerName;
             vmrc.ServerPort = Favorite.Port;
@@ -35,19 +36,26 @@ namespace Terminals.Connections {
             
             //vmrc.ServerDisplayHeight = height;
             //vmrc.ServerDisplayWidth = width;
-
-            vmrc.OnStateChanged += new AxVMRCClientControlLib._IVMRCClientControlEvents_OnStateChangedEventHandler(vmrc_OnStateChanged);
+            (vmrc as VMRCClientControlLib.VMRCClientControl).OnStateChanged += new _IVMRCClientControlEvents_OnStateChangedEventHandler(VMRCConnection_OnStateChanged);
             
             //vmrc.ServerDisplayHeight;
             //vmrc.ServerDisplayWidth;
 
-            vmrc.OnSwitchedDisplay += new AxVMRCClientControlLib._IVMRCClientControlEvents_OnSwitchedDisplayEventHandler(vmrc_OnSwitchedDisplay);
+            (vmrc as VMRCClientControlLib.VMRCClientControl).OnSwitchedDisplay += new _IVMRCClientControlEvents_OnSwitchedDisplayEventHandler(VMRCConnection_OnSwitchedDisplay);
 
             Text = "Connecting to VMRC Server...";
             vmrc.Connect();
-            vmrc.BringToFront();
-            vmrc.Update();
+            //vmrc.BringToFront();
+            //vmrc.Update();
             return true;
+        }
+
+        void VMRCConnection_OnSwitchedDisplay(string displayName) {
+            Text = displayName;
+        }
+
+        void VMRCConnection_OnStateChanged(VMRCState State) {
+            if(State == VMRCClientControlLib.VMRCState.vmrcState_Connected) this.connected = true;
         }
         public bool ViewOnlyMode  {
             get {
@@ -69,14 +77,6 @@ namespace Terminals.Connections {
             }
         }
 
-        void vmrc_OnSwitchedDisplay(object sender, AxVMRCClientControlLib._IVMRCClientControlEvents_OnSwitchedDisplayEvent e) {
-            Text = e.displayName;
-        }
-
-        void vmrc_OnStateChanged(object sender, AxVMRCClientControlLib._IVMRCClientControlEvents_OnStateChangedEvent e) {
-            if (e.state == VMRCClientControlLib.VMRCState.vmrcState_Connected) this.connected = true;
-
-        }
 
         public override void Disconnect() {
             try {

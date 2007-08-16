@@ -501,7 +501,9 @@ namespace TabControl
         private void OnMenuItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             TabControlItem clickedItem = (TabControlItem)e.ClickedItem.Tag;
-            SelectedItem = clickedItem;
+            if(clickedItem != null) {
+                SelectedItem = clickedItem;
+            }
         }
 
         private void OnMenuVisibleChanged(object sender, EventArgs e)
