@@ -82,11 +82,11 @@ namespace Terminals
         void QuickContextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
 
             switch(e.ClickedItem.Text) {
-                case "Restore Screen":
-                case "Full Screen":
+                case "&Restore Screen":
+                case "&Full Screen":
                     this.FullScreen = !this.FullScreen;
                     break;
-                case "Exit":
+                case "&Exit":
                     Close();
                     break;
                 default:
