@@ -931,6 +931,18 @@ namespace Terminals
                     lvTags.Items.Add(item);
                 }
             }
+            if (Settings.Tags.Length == 0)
+            {
+                FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+                List<FavoriteConfigurationElement> tagFavorites = new List<FavoriteConfigurationElement>();
+                foreach (FavoriteConfigurationElement favorite in favorites)
+                {
+                    if (unTaggedFavorites.IndexOf(favorite) < 0)
+                    {
+                        unTaggedFavorites.Add(favorite);
+                    }
+                }
+            } 
             unTaggedListViewItem.Tag = unTaggedFavorites;
             unTaggedListViewItem.Text = "UnTagged (" + unTaggedFavorites.Count.ToString() + ")";
             lvTags.Items.Add(unTaggedListViewItem);

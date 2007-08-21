@@ -154,7 +154,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -351,9 +351,9 @@
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="VMRCClientControlLib">
-      <Guid>{3D860FB2-26D2-43E0-8C6F-BA06178CF68A}</Guid>
+      <Guid>{9D2367D8-8221-4433-98C7-58C1A2CFA384}</Guid>
       <VersionMajor>1</VersionMajor>
-      <VersionMinor>1</VersionMinor>
+      <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
