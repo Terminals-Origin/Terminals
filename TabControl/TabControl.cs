@@ -257,7 +257,7 @@ namespace TabControl
         }
         protected override void OnClick(EventArgs e)
         {
-            //if its the middle button, close the tab
+            //If its the middle button, close the tab
             MouseEventArgs mouse = (e as MouseEventArgs);
             if(mouse != null)
             {
