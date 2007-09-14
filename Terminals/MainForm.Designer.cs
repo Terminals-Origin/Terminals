@@ -142,7 +142,7 @@ namespace Terminals {
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(436, 24);
+            this.menuStrip.Size = new System.Drawing.Size(344, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -353,7 +353,7 @@ namespace Terminals {
             this.VMRCViewOnlyButton});
             this.toolbarStd.Location = new System.Drawing.Point(3, 24);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(561, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(592, 25);
             this.toolbarStd.TabIndex = 2;
             // 
             // tsbNewTerminal
@@ -379,7 +379,7 @@ namespace Terminals {
             // 
             // tscConnectTo
             // 
-            this.tscConnectTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.tscConnectTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.tscConnectTo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.tscConnectTo.Name = "tscConnectTo";
             this.tscConnectTo.Size = new System.Drawing.Size(200, 25);
@@ -717,7 +717,7 @@ namespace Terminals {
             this.lvFavorites.HideSelection = false;
             this.lvFavorites.Location = new System.Drawing.Point(0, 21);
             this.lvFavorites.Name = "lvFavorites";
-            //this.lvFavorites.Size = new System.Drawing.Size(200, 79);
+            this.lvFavorites.Size = new System.Drawing.Size(200, 79);
             this.lvFavorites.SmallImageList = this.ilTagConnections;
             this.lvFavorites.TabIndex = 10;
             this.lvFavorites.UseCompatibleStateImageBehavior = false;
