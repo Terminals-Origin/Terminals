@@ -315,7 +315,7 @@ namespace TabControl
                 {
                     TabControlItemClosingEventArgs args = new TabControlItemClosingEventArgs(SelectedItem);
                     OnTabControlItemClosing(args);
-                    if (!args.Cancel && SelectedItem.CanClose)
+                    if (SelectedItem!=null && !args.Cancel && SelectedItem.CanClose)
                     {
                         RemoveTab(SelectedItem);
                         OnTabControlItemClosed(EventArgs.Empty);
