@@ -255,7 +255,19 @@ namespace TabControl
                 }
             }
         }
-
+        protected override void OnClick(EventArgs e)
+        {
+            MouseEventArgs mouse = (e as MouseEventArgs);
+            if(mouse != null)
+            {
+                if(mouse.Button == MouseButtons.Middle)
+                {
+                    TabControlItem item = GetTabItemByPoint(PointToClient(Cursor.Position));
+                    if(item!=null) CloseTab(item);
+                }
+            }
+            base.OnClick(e);
+        }
         protected override void OnDoubleClick(EventArgs e)
         {
             base.OnDoubleClick(e);
