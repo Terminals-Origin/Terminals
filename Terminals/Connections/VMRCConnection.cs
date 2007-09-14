@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
-using VMRCClientControlLib;
+using Microsoft.VMRCClientControl;
+using Microsoft.VMRCClientControl.Interop;
 
 namespace Terminals.Connections {
     public class VMRCConnection : Connection {
@@ -11,7 +12,7 @@ namespace Terminals.Connections {
         public override bool Connected { get { return connected; } }
         public override void ChangeDesktopSize(Terminals.DesktopSize Size) {
         }
-        VMRCClientControlLib.IVMRCClientControl vmrc = new VMRCClientControlLib.VMRCClientControlClass();
+        Microsoft.VMRCClientControl.Interop.IVMRCClientControl vmrc = new VMRCClientControl();
         //AxVMRCClientControlLib.AxVMRCClientControl vmrc = new AxVMRCClientControlLib.AxVMRCClientControl();
         public override bool Connect() {
             Controls.Add((System.Windows.Forms.Control)vmrc);
@@ -36,12 +37,12 @@ namespace Terminals.Connections {
             
             //vmrc.ServerDisplayHeight = height;
             //vmrc.ServerDisplayWidth = width;
-            (vmrc as VMRCClientControlLib.VMRCClientControl).OnStateChanged += new _IVMRCClientControlEvents_OnStateChangedEventHandler(VMRCConnection_OnStateChanged);
+            (vmrc as VMRCClientControl).OnStateChanged += new _IVMRCClientControlEvents_OnStateChangedEventHandler(VMRCConnection_OnStateChanged);
             
             //vmrc.ServerDisplayHeight;
             //vmrc.ServerDisplayWidth;
 
-            (vmrc as VMRCClientControlLib.VMRCClientControl).OnSwitchedDisplay += new _IVMRCClientControlEvents_OnSwitchedDisplayEventHandler(VMRCConnection_OnSwitchedDisplay);
+            (vmrc as VMRCClientControl).OnSwitchedDisplay += new _IVMRCClientControlEvents_OnSwitchedDisplayEventHandler(VMRCConnection_OnSwitchedDisplay);
 
             Text = "Connecting to VMRC Server...";
             vmrc.Connect();
@@ -55,7 +56,7 @@ namespace Terminals.Connections {
         }
 
         void VMRCConnection_OnStateChanged(VMRCState State) {
-            if(State == VMRCClientControlLib.VMRCState.vmrcState_Connected) this.connected = true;
+            if(State == VMRCState.vmrcState_Connected) this.connected = true;
         }
         public bool ViewOnlyMode  {
             get {

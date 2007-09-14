@@ -137,7 +137,7 @@ namespace Terminals
                 this["portScanTimeoutSeconds"] = value;
             }
         }
-
+        
         [ConfigurationProperty("minimizeToTray", DefaultValue = true)]
         public bool MinimizeToTray {
             get {
@@ -148,6 +148,19 @@ namespace Terminals
             }
             set {
                 this["minimizeToTray"] = value;
+            }
+        }
+        [ConfigurationProperty("forceComputerNamesAsURI", DefaultValue = true)]
+        public bool ForceComputerNamesAsURI
+        {
+            get {
+                if(this["forceComputerNamesAsURI"] == null || this["forceComputerNamesAsURI"].ToString() == string.Empty) return true;
+                bool min = true;
+                bool.TryParse(this["forceComputerNamesAsURI"].ToString(), out min);
+                return min;
+            }
+            set {
+                this["forceComputerNamesAsURI"] = value;
             }
         }
         [ConfigurationProperty("terminalsPassword", DefaultValue = "")]

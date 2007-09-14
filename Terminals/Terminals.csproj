@@ -350,6 +350,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="Microsoft.VMRCClientControl.Interop">
+      <Guid>{9D2367D8-8221-4433-98C7-58C1A2CFA384}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="VMRCClientControlLib">
       <Guid>{9D2367D8-8221-4433-98C7-58C1A2CFA384}</Guid>
       <VersionMajor>1</VersionMajor>

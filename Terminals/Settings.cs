@@ -375,6 +375,19 @@ namespace Terminals
                 configuration.Save();
             }
         }
+        public static bool ForceComputerNamesAsURI
+        {
+            get
+            {
+                return GetSection().ForceComputerNamesAsURI;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ForceComputerNamesAsURI = value;
+                configuration.Save();
+            }
+        }
         public static bool MinimizeToTray {
             get {
                 return GetSection().MinimizeToTray;

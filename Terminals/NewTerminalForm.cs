@@ -186,8 +186,17 @@ namespace Terminals
 
         private string ValidateServer(string serverName)
         {
-            if (Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
-                throw new ArgumentException("Server name is not valid");
+            serverName = serverName.Trim();
+            if(Settings.ForceComputerNamesAsURI)
+            {
+                if(Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
+                    throw new ArgumentException("Server name is not valid");
+            }
+            else
+            {
+                if(serverName == null) throw new ArgumentException("Server name was not specified.");
+                if(serverName.Length < 0) throw new ArgumentException("Server name was not specified.");
+            }
             return serverName;
         }
 
