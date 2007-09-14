@@ -150,6 +150,19 @@ namespace Terminals
                 this["minimizeToTray"] = value;
             }
         }
+        [ConfigurationProperty("warnOnConnectionClose", DefaultValue = true)]
+        public bool WarnOnConnectionClose
+        {
+            get {
+                if(this["warnOnConnectionClose"] == null || this["warnOnConnectionClose"].ToString() == string.Empty) return true;
+                bool min = true;
+                bool.TryParse(this["warnOnConnectionClose"].ToString(), out min);
+                return min;
+            }
+            set {
+                this["warnOnConnectionClose"] = value;
+            }
+        }
         [ConfigurationProperty("forceComputerNamesAsURI", DefaultValue = true)]
         public bool ForceComputerNamesAsURI
         {

@@ -398,6 +398,19 @@ namespace Terminals
                 configuration.Save();
             }
         }
+        public static bool WarnOnConnectionClose
+        {
+            get
+            {
+                return GetSection().WarnOnConnectionClose;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).WarnOnConnectionClose = value;
+                configuration.Save();
+            }
+        }
         public static bool ShowInformationToolTips
         {
             get

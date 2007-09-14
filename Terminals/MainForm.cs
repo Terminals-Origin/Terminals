@@ -594,8 +594,17 @@ namespace Terminals
 
         private void tcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e) {
             if(CurrentConnection != null && CurrentConnection.Connected) {
-                if(MessageBox.Show(this, "Are you sure that you want to disconnect from the active terminal?",
-                   "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                bool close = false;
+                if(Settings.WarnOnConnectionClose)
+                {
+                    close = (MessageBox.Show(this, "Are you sure that you want to disconnect from the active terminal?",
+                   "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
+                }
+                else
+                {
+                    close = true;
+                }
+                if(close) {
                     if(CurrentTerminal != null) CurrentTerminal.Disconnect();
                     if(CurrentConnection != null) CurrentConnection.Disconnect();
                     e.Cancel = false;
