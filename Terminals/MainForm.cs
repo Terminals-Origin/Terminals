@@ -212,8 +212,23 @@ namespace Terminals
                 favoritesToolStripMenuItem.DropDownItems.RemoveAt(i);
             }
             tscConnectTo.Items.Clear();
+
+            string longestFav = "";
+
             foreach(FavoriteConfigurationElement favorite in favorites) {
                 AddFavorite(favorite);
+                if(favorite.Name.Length > longestFav.Length) longestFav = favorite.Name;
+            }
+
+            using(System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(this.Handle))
+            {
+                int Width = (int)g.MeasureString(longestFav, lvFavorites.Font).Width;
+                Width = Width + 1;
+                if(Width > lvFavorites.Size.Width)
+                {
+                    //dynamically expand the size of the control to accomodate for longer names
+                    tscConnectTo.Size = new Size(Width, tscConnectTo.Height);
+                }
             }
             LoadFavoritesToolbar();
         }
@@ -903,6 +918,7 @@ namespace Terminals
                 }
             }
         }
+
 
         private void LoadTags(string filter) {
             lvTags.Items.Clear();

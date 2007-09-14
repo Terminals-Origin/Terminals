@@ -717,7 +717,7 @@ namespace Terminals {
             this.lvFavorites.HideSelection = false;
             this.lvFavorites.Location = new System.Drawing.Point(0, 21);
             this.lvFavorites.Name = "lvFavorites";
-            this.lvFavorites.Size = new System.Drawing.Size(200, 79);
+            //this.lvFavorites.Size = new System.Drawing.Size(200, 79);
             this.lvFavorites.SmallImageList = this.ilTagConnections;
             this.lvFavorites.TabIndex = 10;
             this.lvFavorites.UseCompatibleStateImageBehavior = false;
