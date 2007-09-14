@@ -28,7 +28,6 @@ namespace Terminals {
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTerminalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.quickConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,7 +57,6 @@ namespace Terminals {
             this.tscConnectTo = new System.Windows.Forms.ToolStripComboBox();
             this.tsbConnect = new System.Windows.Forms.ToolStripButton();
             this.tsbDisconnect = new System.Windows.Forms.ToolStripButton();
-            this.QuickConnectButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbManageConnections = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -144,7 +142,7 @@ namespace Terminals {
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(344, 24);
+            this.menuStrip.Size = new System.Drawing.Size(436, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -153,7 +151,6 @@ namespace Terminals {
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newTerminalToolStripMenuItem,
-            this.quickConnectToolStripMenuItem,
             this.toolStripMenuItem1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -167,14 +164,6 @@ namespace Terminals {
             this.newTerminalToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.newTerminalToolStripMenuItem.Text = "&New Connection...";
             this.newTerminalToolStripMenuItem.Click += new System.EventHandler(this.newTerminalToolStripMenuItem_Click_1);
-            // 
-            // quickConnectToolStripMenuItem
-            // 
-            this.quickConnectToolStripMenuItem.Name = "quickConnectToolStripMenuItem";
-            this.quickConnectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
-            this.quickConnectToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
-            this.quickConnectToolStripMenuItem.Text = "Quick Connect...";
-            this.quickConnectToolStripMenuItem.Click += new System.EventHandler(this.quickConnectToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -350,7 +339,6 @@ namespace Terminals {
             this.tscConnectTo,
             this.tsbConnect,
             this.tsbDisconnect,
-            this.QuickConnectButton,
             this.toolStripSeparator3,
             this.tsbManageConnections,
             this.toolStripSeparator2,
@@ -365,7 +353,7 @@ namespace Terminals {
             this.VMRCViewOnlyButton});
             this.toolbarStd.Location = new System.Drawing.Point(3, 24);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(584, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(561, 25);
             this.toolbarStd.TabIndex = 2;
             // 
             // tsbNewTerminal
@@ -420,16 +408,6 @@ namespace Terminals {
             this.tsbDisconnect.Size = new System.Drawing.Size(23, 22);
             this.tsbDisconnect.ToolTipText = "Disconnect From Server";
             this.tsbDisconnect.Click += new System.EventHandler(this.tsbDisconnect_Click);
-            // 
-            // QuickConnectButton
-            // 
-            this.QuickConnectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.QuickConnectButton.Image = global::Terminals.Properties.Resources.lightning_go;
-            this.QuickConnectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.QuickConnectButton.Name = "QuickConnectButton";
-            this.QuickConnectButton.Size = new System.Drawing.Size(23, 22);
-            this.QuickConnectButton.Text = "Quick Connect...";
-            this.QuickConnectButton.Click += new System.EventHandler(this.QuickConnectButton_Click);
             // 
             // toolStripSeparator3
             // 
@@ -1057,8 +1035,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripButton VMRCAdminSwitchButton;
         private System.Windows.Forms.ToolStripButton VMRCViewOnlyButton;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ToolStripButton QuickConnectButton;
-        private System.Windows.Forms.ToolStripMenuItem quickConnectToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip QuickContextMenu;
         private System.Windows.Forms.ToolStripMenuItem SystemTrayQuickConnectToolStripMenuItem;
         private System.Windows.Forms.ToolStrip tsRemoteToolbar;
