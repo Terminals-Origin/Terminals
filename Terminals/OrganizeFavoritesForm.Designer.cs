@@ -42,6 +42,8 @@ namespace Terminals
             this.btnRename = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btnNew = new System.Windows.Forms.Button();
+            this.ImportButton = new System.Windows.Forms.Button();
+            this.ImportOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // lvConnections
@@ -168,6 +170,16 @@ namespace Terminals
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
+            // ImportButton
+            // 
+            this.ImportButton.Location = new System.Drawing.Point(523, 277);
+            this.ImportButton.Name = "ImportButton";
+            this.ImportButton.Size = new System.Drawing.Size(75, 23);
+            this.ImportButton.TabIndex = 8;
+            this.ImportButton.Text = "&Import...";
+            this.ImportButton.UseVisualStyleBackColor = true;
+            this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
+            // 
             // OrganizeFavoritesForm
             // 
             this.AcceptButton = this.btnClose;
@@ -175,6 +187,7 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(610, 352);
+            this.Controls.Add(this.ImportButton);
             this.Controls.Add(this.btnNew);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnRename);
@@ -216,5 +229,7 @@ namespace Terminals
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnNew;
         private System.Windows.Forms.ColumnHeader colProtocol;
+        private System.Windows.Forms.Button ImportButton;
+        private System.Windows.Forms.OpenFileDialog ImportOpenFileDialog;
     }
 }

@@ -164,5 +164,26 @@ namespace Terminals
         {
             LoadConnections();
         }
+
+        private void ImportButton_Click(object sender, EventArgs e)
+        {
+            bool needsReload = false;
+            if(ImportOpenFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filename = ImportOpenFileDialog.FileName;
+                Integration.Integration i = new Terminals.Integration.Integration();
+                
+                FavoriteConfigurationElementCollection coll = i.ImportFavorites(filename);
+                if(coll != null)
+                {
+                    needsReload = true;
+                    foreach(FavoriteConfigurationElement fav in coll)
+                    {
+                        Settings.AddFavorite(fav, false);
+                    }
+                }
+            }
+            if(needsReload) LoadConnections();
+        }
     }
 }
