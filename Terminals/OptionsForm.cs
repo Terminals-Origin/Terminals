@@ -25,6 +25,7 @@ namespace Terminals
             chkSingleInstance.Checked = Settings.SingleInstance;
             chkShowConfirmDialog.Checked = Settings.ShowConfirmDialog;
             chkSaveConnections.Checked = Settings.SaveConnectionsOnClose;
+            validateServerNamesCheckbox.Checked= Settings.ForceComputerNamesAsURI;
             currentTerminal = terminal;
             this.PortscanTimeoutTextBox.Text = Settings.PortScanTimeoutSeconds.ToString();
             if (Settings.TerminalsPassword != string.Empty) {
@@ -56,6 +57,7 @@ namespace Terminals
             Settings.SingleInstance = chkSingleInstance.Checked;
             Settings.ShowConfirmDialog = chkShowConfirmDialog.Checked;
             Settings.SaveConnectionsOnClose = chkSaveConnections.Checked;
+            Settings.ForceComputerNamesAsURI = validateServerNamesCheckbox.Checked;
             if (this.PasswordProtectTerminalsCheckbox.Checked && PasswordTextbox.Text!=string.Empty && ConfirmPasswordTextBox.Text!=string.Empty && PasswordTextbox.Text == ConfirmPasswordTextBox.Text) {
                 Settings.TerminalsPassword = PasswordTextbox.Text;
             }

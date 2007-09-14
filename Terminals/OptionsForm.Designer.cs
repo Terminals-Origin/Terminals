@@ -34,6 +34,7 @@ namespace Terminals
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.MinimizeToTrayCheckbox = new System.Windows.Forms.CheckBox();
             this.PortscanTimeoutTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -63,7 +64,7 @@ namespace Terminals
             this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
             this.PasswordTextbox = new System.Windows.Forms.TextBox();
             this.PasswordProtectTerminalsCheckbox = new System.Windows.Forms.CheckBox();
-            this.MinimizeToTrayCheckbox = new System.Windows.Forms.CheckBox();
+            this.validateServerNamesCheckbox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
@@ -133,6 +134,7 @@ namespace Terminals
             // 
             // tpGeneral
             // 
+            this.tpGeneral.Controls.Add(this.validateServerNamesCheckbox);
             this.tpGeneral.Controls.Add(this.MinimizeToTrayCheckbox);
             this.tpGeneral.Controls.Add(this.PortscanTimeoutTextBox);
             this.tpGeneral.Controls.Add(this.label5);
@@ -154,6 +156,18 @@ namespace Terminals
             this.tpGeneral.TabIndex = 0;
             this.tpGeneral.Text = "General";
             this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // MinimizeToTrayCheckbox
+            // 
+            this.MinimizeToTrayCheckbox.AutoSize = true;
+            this.MinimizeToTrayCheckbox.Checked = true;
+            this.MinimizeToTrayCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.MinimizeToTrayCheckbox.Location = new System.Drawing.Point(258, 6);
+            this.MinimizeToTrayCheckbox.Name = "MinimizeToTrayCheckbox";
+            this.MinimizeToTrayCheckbox.Size = new System.Drawing.Size(105, 17);
+            this.MinimizeToTrayCheckbox.TabIndex = 17;
+            this.MinimizeToTrayCheckbox.Text = "Minimize To Tray";
+            this.MinimizeToTrayCheckbox.UseVisualStyleBackColor = true;
             // 
             // PortscanTimeoutTextBox
             // 
@@ -444,17 +458,17 @@ namespace Terminals
             this.PasswordProtectTerminalsCheckbox.UseVisualStyleBackColor = true;
             this.PasswordProtectTerminalsCheckbox.CheckedChanged += new System.EventHandler(this.PasswordProtectTerminalsCheckbox_CheckedChanged);
             // 
-            // MinimizeToTrayCheckbox
+            // validateServerNamesCheckbox
             // 
-            this.MinimizeToTrayCheckbox.AutoSize = true;
-            this.MinimizeToTrayCheckbox.Checked = true;
-            this.MinimizeToTrayCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.MinimizeToTrayCheckbox.Location = new System.Drawing.Point(270, 6);
-            this.MinimizeToTrayCheckbox.Name = "MinimizeToTrayCheckbox";
-            this.MinimizeToTrayCheckbox.Size = new System.Drawing.Size(105, 17);
-            this.MinimizeToTrayCheckbox.TabIndex = 17;
-            this.MinimizeToTrayCheckbox.Text = "Minimize To Tray";
-            this.MinimizeToTrayCheckbox.UseVisualStyleBackColor = true;
+            this.validateServerNamesCheckbox.AutoSize = true;
+            this.validateServerNamesCheckbox.Checked = true;
+            this.validateServerNamesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.validateServerNamesCheckbox.Location = new System.Drawing.Point(258, 30);
+            this.validateServerNamesCheckbox.Name = "validateServerNamesCheckbox";
+            this.validateServerNamesCheckbox.Size = new System.Drawing.Size(134, 17);
+            this.validateServerNamesCheckbox.TabIndex = 18;
+            this.validateServerNamesCheckbox.Text = "Validate Server Names";
+            this.validateServerNamesCheckbox.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -525,5 +539,6 @@ namespace Terminals
         private System.Windows.Forms.CheckBox PasswordProtectTerminalsCheckbox;
         private System.Windows.Forms.Label PasswordsMatchLabel;
         private System.Windows.Forms.CheckBox MinimizeToTrayCheckbox;
+        private System.Windows.Forms.CheckBox validateServerNamesCheckbox;
     }
 }
