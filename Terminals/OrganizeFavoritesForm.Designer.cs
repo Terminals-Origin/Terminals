@@ -63,7 +63,7 @@ namespace Terminals
             this.lvConnections.Location = new System.Drawing.Point(12, 25);
             this.lvConnections.Name = "lvConnections";
             this.lvConnections.ShowItemToolTips = true;
-            this.lvConnections.Size = new System.Drawing.Size(501, 275);
+            this.lvConnections.Size = new System.Drawing.Size(557, 292);
             this.lvConnections.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvConnections.TabIndex = 1;
             this.lvConnections.UseCompatibleStateImageBehavior = false;
@@ -99,7 +99,7 @@ namespace Terminals
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(523, 316);
+            this.btnClose.Location = new System.Drawing.Point(579, 333);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 25);
             this.btnClose.TabIndex = 7;
@@ -109,7 +109,7 @@ namespace Terminals
             // btnEdit
             // 
             this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEdit.Location = new System.Drawing.Point(523, 55);
+            this.btnEdit.Location = new System.Drawing.Point(579, 55);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.Size = new System.Drawing.Size(75, 24);
             this.btnEdit.TabIndex = 3;
@@ -120,7 +120,7 @@ namespace Terminals
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Location = new System.Drawing.Point(523, 85);
+            this.btnDelete.Location = new System.Drawing.Point(579, 85);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 24);
             this.btnDelete.TabIndex = 4;
@@ -131,7 +131,7 @@ namespace Terminals
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(523, 115);
+            this.btnCopy.Location = new System.Drawing.Point(579, 115);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(75, 24);
             this.btnCopy.TabIndex = 5;
@@ -142,7 +142,7 @@ namespace Terminals
             // btnRename
             // 
             this.btnRename.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRename.Location = new System.Drawing.Point(523, 145);
+            this.btnRename.Location = new System.Drawing.Point(579, 145);
             this.btnRename.Name = "btnRename";
             this.btnRename.Size = new System.Drawing.Size(75, 24);
             this.btnRename.TabIndex = 6;
@@ -162,7 +162,7 @@ namespace Terminals
             // btnNew
             // 
             this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNew.Location = new System.Drawing.Point(523, 25);
+            this.btnNew.Location = new System.Drawing.Point(579, 25);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(75, 24);
             this.btnNew.TabIndex = 2;
@@ -172,7 +172,8 @@ namespace Terminals
             // 
             // ImportButton
             // 
-            this.ImportButton.Location = new System.Drawing.Point(523, 277);
+            this.ImportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ImportButton.Location = new System.Drawing.Point(579, 175);
             this.ImportButton.Name = "ImportButton";
             this.ImportButton.Size = new System.Drawing.Size(75, 23);
             this.ImportButton.TabIndex = 8;
@@ -186,7 +187,7 @@ namespace Terminals
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(610, 352);
+            this.ClientSize = new System.Drawing.Size(666, 369);
             this.Controls.Add(this.ImportButton);
             this.Controls.Add(this.btnNew);
             this.Controls.Add(this.label1);
