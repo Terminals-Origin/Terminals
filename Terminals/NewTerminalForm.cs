@@ -129,6 +129,13 @@ namespace Terminals
                     lvConnectionTags.Items.Add(tag, tag, -1);
                 }
             }
+
+            if(favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+            {
+                this.pictureBox2.Load(favorite.ToolBarIcon);
+                this.currentToolBarFileName = favorite.ToolBarIcon;
+            }
+
         }
 
         private bool FillFavorite()
@@ -169,14 +176,17 @@ namespace Terminals
                 favorite.ExecuteBeforeConnectArgs = txtArguments.Text;
                 favorite.ExecuteBeforeConnectInitialDirectory = txtInitialDirectory.Text;
                 favorite.ExecuteBeforeConnectWaitForExit = chkWaitForExit.Checked;
-                favorite.ToolBarIcon = currentToolBarFileName;
-
+                favorite.ToolBarIcon = currentToolBarFileName;                
+                
                 List<string> tagList = new List<string>();
                 foreach(ListViewItem listViewItem in lvConnectionTags.Items)
                 {
                     tagList.Add(listViewItem.Text);
                 }
                 favorite.Tags = String.Join(",", tagList.ToArray());
+
+                Settings.AddFavorite(favorite, showOnToolbar);
+
                 return true;
             }
             catch(Exception e)
@@ -495,7 +505,7 @@ namespace Terminals
                     {                        
                         this.pictureBox2.Image = i;
                         string newFile = System.IO.Path.Combine(thumbsFolder, System.IO.Path.GetFileName(filename));
-                        System.IO.File.Copy(filename, newFile);
+                        if(newFile!=filename && !System.IO.File.Exists(newFile)) System.IO.File.Copy(filename, newFile);
                         currentToolBarFileName = newFile;
                     }
                 }
