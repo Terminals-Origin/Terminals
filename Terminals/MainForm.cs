@@ -82,6 +82,7 @@ namespace Terminals
         void QuickContextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
 
             switch(e.ClickedItem.Text) {
+                case "&Restore":
                 case "&Restore Screen":
                 case "&Full Screen":
                     this.FullScreen = !this.FullScreen;
@@ -690,7 +691,7 @@ namespace Terminals
         }
 
         private void tcTerminals_DoubleClick(object sender, EventArgs e) {
-            //FullScreen = !fullScreen;
+            FullScreen = !fullScreen;
            // UpdateControls();
         }
 
