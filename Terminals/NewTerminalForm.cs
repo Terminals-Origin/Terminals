@@ -39,19 +39,19 @@ namespace Terminals
             dialupList = new Dictionary<string, RASENTRY>();
             System.Collections.ArrayList rasEntries = new System.Collections.ArrayList();
             RasError error = ras1.ListEntries(ref rasEntries);
-            foreach (string item in rasEntries)
+            foreach(string item in rasEntries)
             {
                 RASENTRY details = new RASENTRY();
                 ras1.GetEntry(item, ref details);
                 dialupList.Add(item, details);
-                if (!cmbServers.Items.Contains(item)) this.cmbServers.Items.Add(item);
+                if(!cmbServers.Items.Contains(item)) this.cmbServers.Items.Add(item);
 
             }
         }
 
         private void SetOkTitle(bool connect)
         {
-            if (connect)
+            if(connect)
                 btnOk.Text = "Co&nnect";
             else
                 btnOk.Text = "OK";
@@ -122,9 +122,9 @@ namespace Terminals
             txtInitialDirectory.Text = favorite.ExecuteBeforeConnectInitialDirectory;
             chkWaitForExit.Checked = favorite.ExecuteBeforeConnectWaitForExit;
             string[] tagsArray = favorite.Tags.Split(',');
-            if (!((tagsArray.Length == 1) && (String.IsNullOrEmpty(tagsArray[0]))))
+            if(!((tagsArray.Length == 1) && (String.IsNullOrEmpty(tagsArray[0]))))
             {
-                foreach (string tag in tagsArray)
+                foreach(string tag in tagsArray)
                 {
                     lvConnectionTags.Items.Add(tag, tag, -1);
                 }
@@ -169,15 +169,17 @@ namespace Terminals
                 favorite.ExecuteBeforeConnectArgs = txtArguments.Text;
                 favorite.ExecuteBeforeConnectInitialDirectory = txtInitialDirectory.Text;
                 favorite.ExecuteBeforeConnectWaitForExit = chkWaitForExit.Checked;
+                favorite.ToolBarIcon = currentToolBarFileName;
+
                 List<string> tagList = new List<string>();
-                foreach (ListViewItem listViewItem in lvConnectionTags.Items)
+                foreach(ListViewItem listViewItem in lvConnectionTags.Items)
                 {
                     tagList.Add(listViewItem.Text);
                 }
                 favorite.Tags = String.Join(",", tagList.ToArray());
                 return true;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 MessageBox.Show(this, e.Message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -202,10 +204,10 @@ namespace Terminals
 
         private int ValidatePort(string port)
         {
-            if (txtPort.Text.Trim() != "")
+            if(txtPort.Text.Trim() != "")
             {
                 int result;
-                if (int.TryParse(txtPort.Text, out result) && result < 65536 && result > 0)
+                if(int.TryParse(txtPort.Text, out result) && result < 65536 && result > 0)
                     return result;
                 else
                     throw new ArgumentException("Port must be a number between 0 and 65535");
@@ -244,13 +246,13 @@ namespace Terminals
         {
             SaveMRUs();
             string name = txtName.Text;
-            if (name == String.Empty)
+            if(name == String.Empty)
             {
                 name = cmbServers.Text;
             }
             favorite = new FavoriteConfigurationElement();
             favorite.Name = name;
-            if (FillFavorite())
+            if(FillFavorite())
             {
                 DialogResult = DialogResult.OK;
             }
@@ -284,7 +286,7 @@ namespace Terminals
 
         private void cmbServers_Leave(object sender, EventArgs e)
         {
-            if (txtName.Text == String.Empty)
+            if(txtName.Text == String.Empty)
             {
                 txtName.Text = cmbServers.Text;
             }
@@ -293,7 +295,7 @@ namespace Terminals
         private void btnBrowseShare_Click(object sender, EventArgs e)
         {
             folderBrowserDialog.SelectedPath = @"\\" + cmbServers.Text;
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            if(folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 txtDesktopShare.Text = folderBrowserDialog.SelectedPath;
             }
@@ -302,7 +304,7 @@ namespace Terminals
         private void AddTag()
         {
             ListViewItem[] items = lvConnectionTags.Items.Find(txtTag.Text, false);
-            if (items.Length == 0)
+            if(items.Length == 0)
             {
                 Settings.AddTag(txtTag.Text);
                 lvConnectionTags.Items.Add(txtTag.Text);
@@ -316,7 +318,7 @@ namespace Terminals
 
         private void DeleteTag()
         {
-            foreach (ListViewItem item in lvConnectionTags.SelectedItems)
+            foreach(ListViewItem item in lvConnectionTags.SelectedItems)
             {
                 lvConnectionTags.Items.Remove(item);
             }
@@ -341,19 +343,19 @@ namespace Terminals
             txtPort.Enabled = true;
 
             TelnetGroupBox.Enabled = false;
-            if (ProtocolComboBox.Text == "RDP")
+            if(ProtocolComboBox.Text == "RDP")
             {
                 defaultPort = Connections.ConnectionManager.RDPPort.ToString();
                 groupBox1.Enabled = true;
                 chkConnectToConsole.Enabled = true;
                 LocalResourceGroupBox.Enabled = true;
             }
-            else if (ProtocolComboBox.Text == "VMRC")
+            else if(ProtocolComboBox.Text == "VMRC")
             {
                 VMRCReducedColorsCheckbox.Enabled = true;
                 VMRCAdminModeCheckbox.Enabled = true;
             }
-            else if (ProtocolComboBox.Text == "RAS")
+            else if(ProtocolComboBox.Text == "RAS")
             {
                 this.cmbServers.Items.Clear();
                 LoadDialupConnections();
@@ -361,11 +363,11 @@ namespace Terminals
                 txtPort.Enabled = false;
                 RASDetailsListBox.Items.Clear();
             }
-            else if (ProtocolComboBox.Text == "VNC")
+            else if(ProtocolComboBox.Text == "VNC")
             {
                 //vnc settings
             }
-            else if (ProtocolComboBox.Text == "Telnet")
+            else if(ProtocolComboBox.Text == "Telnet")
             {
                 TelnetGroupBox.Enabled = true;
                 defaultPort = Connections.ConnectionManager.SSHPort.ToString();
@@ -386,7 +388,7 @@ namespace Terminals
         private void TelnetFontButton_Click(object sender, EventArgs e)
         {
             DialogResult result = this.fontDialog1.ShowDialog();
-            if (result == DialogResult.OK)
+            if(result == DialogResult.OK)
             {
                 this.TelnetFontTextbox.Text = this.fontDialog1.Font.ToString();
             }
@@ -395,7 +397,7 @@ namespace Terminals
         private void BackcolorButton_Click(object sender, EventArgs e)
         {
             DialogResult result = this.colorDialog1.ShowDialog();
-            if (result == DialogResult.OK)
+            if(result == DialogResult.OK)
             {
                 this.BackColorTextBox.Text = this.colorDialog1.Color.Name;
             }
@@ -404,7 +406,7 @@ namespace Terminals
         private void TelnetTextColorButton_Click(object sender, EventArgs e)
         {
             DialogResult result = this.colorDialog1.ShowDialog();
-            if (result == DialogResult.OK)
+            if(result == DialogResult.OK)
             {
                 this.TelnetTextColorTextBox.Text = this.colorDialog1.Color.Name;
             }
@@ -413,7 +415,7 @@ namespace Terminals
         private void TelnetCursorColorButton_Click(object sender, EventArgs e)
         {
             DialogResult result = this.colorDialog1.ShowDialog();
-            if (result == DialogResult.OK)
+            if(result == DialogResult.OK)
             {
                 this.TelnetCursorColorTextBox.Text = this.colorDialog1.Color.Name;
             }
@@ -423,19 +425,19 @@ namespace Terminals
         {
 
             DialogResult result = ns.ShowDialog();
-            if (result == DialogResult.OK)
+            if(result == DialogResult.OK)
             {
                 LoadMRUs();
-                if (ns.SelectedScanItem != null)
+                if(ns.SelectedScanItem != null)
                 {
                     Terminals.Scanner.NetworkScanItem item = ns.SelectedScanItem;
                     this.txtPort.Text = item.Port.ToString();
                     cmbServers.Text = item.IPAddress;
                     this.ProtocolComboBox.Text = Terminals.Connections.ConnectionManager.GetPortName(item.Port, item.IsVMRC);
-                    if (item.Port == Terminals.Connections.ConnectionManager.SSHPort) this.SSHRadioButton.Checked = true;
-                    if (item.Port == Terminals.Connections.ConnectionManager.TelnetPort) this.TelnetRadioButton.Checked = true;
+                    if(item.Port == Terminals.Connections.ConnectionManager.SSHPort) this.SSHRadioButton.Checked = true;
+                    if(item.Port == Terminals.Connections.ConnectionManager.TelnetPort) this.TelnetRadioButton.Checked = true;
                     this.txtName.Text = string.Format("{0}_{1}", item.HostName, this.ProtocolComboBox.Text);
-                    if (this.ProtocolComboBox.Text == "RDP")
+                    if(this.ProtocolComboBox.Text == "RDP")
                     {
                         this.chkConnectToConsole.Checked = true;
                         this.cmbResolution.SelectedIndex = this.cmbResolution.Items.Count - 1;
@@ -451,11 +453,11 @@ namespace Terminals
 
         private void cmbServers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ProtocolComboBox.Text == "RAS")
+            if(ProtocolComboBox.Text == "RAS")
             {
                 LoadDialupConnections();
                 RASDetailsListBox.Items.Clear();
-                if (dialupList != null && dialupList.ContainsKey(cmbServers.Text))
+                if(dialupList != null && dialupList.ContainsKey(cmbServers.Text))
                 {
                     RASENTRY selectedRAS = dialupList[cmbServers.Text];
                     RASDetailsListBox.Items.Add(string.Format("{0}:{1}", "Connection", cmbServers.Text));
@@ -465,6 +467,44 @@ namespace Terminals
                     RASDetailsListBox.Items.Add(string.Format("{0}:{1}", "Device Type", selectedRAS.DeviceType));
                     RASDetailsListBox.Items.Add(string.Format("{0}:{1}", "Local Phone Number", selectedRAS.LocalPhoneNumber));
                 }
+            }
+        }
+
+        private string currentToolBarFileName = "";
+        System.Windows.Forms.OpenFileDialog fd = new OpenFileDialog();
+        string appFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            fd.CheckFileExists = true;
+            fd.InitialDirectory = appFolder;
+            fd.Filter = "PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|All files (*.*)|*.*";
+            fd.Multiselect = false;
+            fd.Title = "Select Custom Terminal Image .";
+            string thumbsFolder = System.IO.Path.Combine(appFolder, "Thumbs");
+            if(!System.IO.Directory.Exists(thumbsFolder)) System.IO.Directory.CreateDirectory(thumbsFolder);
+
+            currentToolBarFileName = "";
+            if(fd.ShowDialog() == DialogResult.OK)
+            {
+                //make it relative to the current application executable
+                string filename = fd.FileName;
+                try
+                {
+                    Image i = Image.FromFile(filename);
+                    if(i != null)
+                    {                        
+                        this.pictureBox2.Image = i;
+                        string newFile = System.IO.Path.Combine(thumbsFolder, System.IO.Path.GetFileName(filename));
+                        System.IO.File.Copy(filename, newFile);
+                        currentToolBarFileName = newFile;
+                    }
+                }
+                catch(Exception)
+                {
+                    currentToolBarFileName = "";
+                    System.Windows.Forms.MessageBox.Show("You have chosen an invalid image. Try again.");
+                }
+
             }
         }
 

@@ -73,7 +73,14 @@ namespace Terminals
 
                 FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
                 foreach(FavoriteConfigurationElement favorite in favorites) {
-                    QuickContextMenu.Items.Add(favorite.Name);
+                    if(favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                    {
+                        QuickContextMenu.Items.Add(favorite.Name, Image.FromFile(favorite.ToolBarIcon));
+                    }
+                    else
+                    {
+                        QuickContextMenu.Items.Add(favorite.Name);
+                    }
                 }
 
                 QuickContextMenu.Items.Add("-");

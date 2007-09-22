@@ -126,6 +126,7 @@ namespace Terminals
         this.fontDialog1 = new System.Windows.Forms.FontDialog();
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
+        this.pictureBox2 = new System.Windows.Forms.PictureBox();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         this.tabPage2.SuspendLayout();
@@ -145,6 +146,7 @@ namespace Terminals
         this.panel1.SuspendLayout();
         this.groupBox3.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
         this.SuspendLayout();
         // 
         // btnOk
@@ -188,6 +190,7 @@ namespace Terminals
         // 
         // tabPage1
         // 
+        this.tabPage1.Controls.Add(this.pictureBox2);
         this.tabPage1.Controls.Add(this.DetectButton);
         this.tabPage1.Controls.Add(this.txtPort);
         this.tabPage1.Controls.Add(this.lblPort);
@@ -278,7 +281,7 @@ namespace Terminals
         // 
         this.txtName.Location = new System.Drawing.Point(106, 62);
         this.txtName.Name = "txtName";
-        this.txtName.Size = new System.Drawing.Size(265, 21);
+        this.txtName.Size = new System.Drawing.Size(243, 21);
         this.txtName.TabIndex = 3;
         // 
         // label5
@@ -1131,6 +1134,18 @@ namespace Terminals
         this.ras1.UserName = null;
         this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
         // 
+        // pictureBox2
+        // 
+        this.pictureBox2.Image = global::Terminals.Properties.Resources.smallterm;
+        this.pictureBox2.InitialImage = global::Terminals.Properties.Resources.smallterm;
+        this.pictureBox2.Location = new System.Drawing.Point(355, 62);
+        this.pictureBox2.Name = "pictureBox2";
+        this.pictureBox2.Size = new System.Drawing.Size(16, 16);
+        this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+        this.pictureBox2.TabIndex = 16;
+        this.pictureBox2.TabStop = false;
+        this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+        // 
         // NewTerminalForm
         // 
         this.AcceptButton = this.btnOk;
@@ -1183,6 +1198,7 @@ namespace Terminals
         this.panel1.ResumeLayout(false);
         this.groupBox3.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+        ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
         this.ResumeLayout(false);
         this.PerformLayout();
 
@@ -1286,5 +1302,6 @@ namespace Terminals
       private System.Windows.Forms.GroupBox RASGroupBox;
       private FalafelSoftware.TransPort.Ras ras1;
       private System.Windows.Forms.ListBox RASDetailsListBox;
+      private System.Windows.Forms.PictureBox pictureBox2;
   }
 }
