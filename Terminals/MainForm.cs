@@ -97,25 +97,30 @@ namespace Terminals
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
-            if(Settings.TerminalsPassword != "") {
+            if(Settings.TerminalsPassword != "")
+            {
                 Security.RequestPassword rp = new Terminals.Security.RequestPassword();
                 DialogResult result = rp.ShowDialog();
                 if(result == DialogResult.Cancel) {
                     this.Close();
-                    Application.Exit();
+                    Application.Exit(); 
                 } else {
-                    try {
-                        ToolStripManager.LoadSettings(this);
-                        tscConnectTo.Focus();
-                        OpenSavedConnections();
-                    } catch(Exception exc) {
-                        System.Windows.Forms.MessageBox.Show(exc.ToString());
-                    }
+                    //do nothing for now
+
+                    //try
+                    //{
+                    //    ToolStripManager.LoadSettings(this);
+                    //    tscConnectTo.Focus();
+                    //    OpenSavedConnections();
+                    //}
+                    //catch(Exception exc)
+                    //{
+                    //    System.Windows.Forms.MessageBox.Show(exc.ToString());
+                    //}
                 }
             }
-
-
         }
+
         void SingleInstanceApplication_NewInstanceMessage(object sender, object message) {
             if(WindowState == FormWindowState.Minimized)
                 NativeApi.ShowWindow(new HandleRef(this, this.Handle), 9);

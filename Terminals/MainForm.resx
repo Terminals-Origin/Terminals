@@ -138,9 +138,6 @@
         8N/nDzLhp+l4R/+dAAAAAElFTkSuQmCC
 </value>
   </data>
-  <metadata name="tsRemoteToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>448, 2</value>
-  </metadata>
   <metadata name="cmsTagConnections.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>153, 86</value>
   </metadata>
@@ -204,6 +201,9 @@
         Av8GAAL/BgAC/wYAAv8GAAs=
 </value>
   </data>
+  <metadata name="tsRemoteToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>448, 2</value>
+  </metadata>
   <metadata name="cmsFavorites.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>775, 12</value>
   </metadata>
