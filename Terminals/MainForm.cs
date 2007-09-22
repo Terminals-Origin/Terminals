@@ -13,12 +13,10 @@ using System.Runtime.InteropServices;
 using TabControl;
 using System.IO;
 
-
 namespace Terminals
 {
     public partial class MainForm : Form {
         public const int WM_LEAVING_FULLSCREEN = 0x4ff;
-
         private bool fullScreen;
         private Point lastLocation;
         private Size lastSize;
@@ -361,9 +359,10 @@ namespace Terminals
                 if(favorite.DesktopSize == DesktopSize.FullScreen)
                     FullScreen = true;
             } catch(Exception exc) {
-                System.Windows.Forms.MessageBox.Show("Could not connect to host.");
-                terminalTabPage.Parent.Controls.Remove(terminalTabPage);
+                tcTerminals.Items.Remove(terminalTabPage);
+                tcTerminals.SelectedItem = null;
                 terminalTabPage.Dispose();
+                System.Windows.Forms.MessageBox.Show(exc.Message);
             }
         }
 
