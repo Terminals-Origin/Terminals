@@ -232,8 +232,19 @@ namespace Terminals
                 foreach(string favoriteButton in Settings.FavoritesToolbarButtons) {
                     FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
                     FavoriteConfigurationElement favorite = favorites[favoriteButton];
-                    ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name,
-                        Terminals.Properties.Resources.smallterm, serverToolStripMenuItem_Click);
+                    Bitmap button = Terminals.Properties.Resources.smallterm;
+                    if(favorite.ToolBarIcon != null && favorite.ToolBarIcon != "" && System.IO.File.Exists(favorite.ToolBarIcon))
+                    {
+                        try
+                        {
+                            button = (Bitmap)Bitmap.FromFile(favorite.ToolBarIcon);
+                        }
+                        catch(Exception)
+                        {
+                            if(button != Terminals.Properties.Resources.smallterm) button = Terminals.Properties.Resources.smallterm;
+                        }
+                    }
+                    ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, button, serverToolStripMenuItem_Click);
                     favoriteBtn.Tag = favorite;
                     toolbarStd.Items.Add(favoriteBtn);
                 }

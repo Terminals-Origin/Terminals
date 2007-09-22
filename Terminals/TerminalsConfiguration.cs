@@ -680,6 +680,18 @@ namespace Terminals
                 this["protocol"] = value;
             }
         }
+        [ConfigurationProperty("toolBarIcon", IsRequired = false, DefaultValue = "")]
+        public string ToolBarIcon
+        {
+            get
+            {
+                return (string)this["toolBarIcon"];
+            }
+            set
+            {
+                this["toolBarIcon"] = value;
+            }
+        }
         [ConfigurationProperty("telnetfont", IsRequired = true, DefaultValue = "[Font: Name=Microsoft Sans Serif, Size=10]")]
         public string TelnetFont {
             get {
