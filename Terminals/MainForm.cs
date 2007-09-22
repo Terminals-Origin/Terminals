@@ -12,6 +12,8 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using TabControl;
 using System.IO;
+using rpaulo.toolbar;
+
 
 namespace Terminals
 {
@@ -25,6 +27,8 @@ namespace Terminals
         private ImageFormatHandler imageFormatHandler;
         /*private ScreenCapture screenCapture;
         private PictureBox previewPictureBox;*/
+
+        ToolBarManager toolBarManager;
 
         public MainForm() {
             try {
@@ -43,11 +47,13 @@ namespace Terminals
                 tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
-
+                toolBarManager = new ToolBarManager(this.toolStripContainer.ContentPanel, this);
+                toolBarManager.AddControl(this.toolbarStd);
+                toolBarManager.MainForm.BackColor = this.toolStripContainer.ContentPanel.BackColor;
             } catch(Exception exc) {
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
-
+            
 
         }
 
@@ -1203,6 +1209,21 @@ namespace Terminals
                 Cursor = Cursors.Default;
             }
         }
+
+        private void toolStripContainer_TopToolStripPanel_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                //contextMenuStrip1.Show(toolStripContainer, e.X, e.Y);
+            }
+        }
+
+        private void manageToolbarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ManageToolStrip mgr = new ManageToolStrip();
+            mgr.ShowDialog(this);
+        }
+
 
     }
 

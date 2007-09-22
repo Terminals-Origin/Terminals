@@ -51,6 +51,8 @@ namespace Terminals {
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolbarStd = new System.Windows.Forms.ToolStrip();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.manageToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbNewTerminal = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
@@ -109,6 +111,7 @@ namespace Terminals {
             this.QuickContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer.SuspendLayout();
@@ -333,6 +336,7 @@ namespace Terminals {
             // 
             this.toolbarStd.AllowItemReorder = true;
             this.toolbarStd.Dock = System.Windows.Forms.DockStyle.None;
+            this.toolbarStd.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.toolbarStd.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbNewTerminal,
             this.toolStripSeparator1,
@@ -355,8 +359,22 @@ namespace Terminals {
             this.toolbarStd.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.toolbarStd.Location = new System.Drawing.Point(3, 24);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(592, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(554, 25);
             this.toolbarStd.TabIndex = 2;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.manageToolbarToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 26);
+            // 
+            // manageToolbarToolStripMenuItem
+            // 
+            this.manageToolbarToolStripMenuItem.Name = "manageToolbarToolStripMenuItem";
+            this.manageToolbarToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.manageToolbarToolStripMenuItem.Text = "&Manage Toolbar";
+            this.manageToolbarToolStripMenuItem.Click += new System.EventHandler(this.manageToolbarToolStripMenuItem_Click);
             // 
             // tsbNewTerminal
             // 
@@ -930,6 +948,7 @@ namespace Terminals {
             this.menuStrip.PerformLayout();
             this.toolbarStd.ResumeLayout(false);
             this.toolbarStd.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.toolStripContainer.ContentPanel.ResumeLayout(false);
             this.toolStripContainer.TopToolStripPanel.ResumeLayout(false);
             this.toolStripContainer.TopToolStripPanel.PerformLayout();
@@ -1042,5 +1061,7 @@ namespace Terminals {
         private System.Windows.Forms.ToolStrip tsRemoteToolbar;
         private System.Windows.Forms.ToolStripButton tsbCMD;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem manageToolbarToolStripMenuItem;
     }
 }
