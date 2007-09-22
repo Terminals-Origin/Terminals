@@ -97,28 +97,7 @@ namespace Terminals
         }
 
         private void MainForm_Load(object sender, EventArgs e) {
-            if(Settings.TerminalsPassword != "")
-            {
-                Security.RequestPassword rp = new Terminals.Security.RequestPassword();
-                DialogResult result = rp.ShowDialog();
-                if(result == DialogResult.Cancel) {
-                    this.Close();
-                    Application.Exit(); 
-                } else {
-                    //do nothing for now
 
-                    //try
-                    //{
-                    //    ToolStripManager.LoadSettings(this);
-                    //    tscConnectTo.Focus();
-                    //    OpenSavedConnections();
-                    //}
-                    //catch(Exception exc)
-                    //{
-                    //    System.Windows.Forms.MessageBox.Show(exc.ToString());
-                    //}
-                }
-            }
         }
 
         void SingleInstanceApplication_NewInstanceMessage(object sender, object message) {
