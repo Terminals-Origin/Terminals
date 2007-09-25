@@ -57,9 +57,12 @@ namespace Terminals
 
         }
 
+
         void SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
             Connect(e.ClickedItem.Text);
         }
+
+
         void tcTerminals_MouseClick(object sender, MouseEventArgs e) {
             if(e.Button == MouseButtons.Right) {
 
@@ -563,9 +566,20 @@ namespace Terminals
             }
         }
 
+        private void HideToolBar(bool fullScreen)
+        {
+            this.toolBarManager.Top.Visible = !fullScreen;
+            this.toolBarManager.Left.Visible = !fullScreen;
+            this.toolBarManager.Right.Visible = !fullScreen;
+            this.toolBarManager.Bottom.Visible = !fullScreen;
+        }
+
         private void SetFullScreen(bool fullScreen) {
             tcTerminals.ShowTabs = !fullScreen;
             tcTerminals.ShowBorder = !fullScreen;
+
+            HideToolBar(fullScreen);
+
             if(fullScreen) {
                 toolbarStd.Visible = false;
                 menuStrip.Visible = false;
@@ -583,7 +597,7 @@ namespace Terminals
                 //this.TopMost = true;
                 SetGrabInput(true);
                 this.BringToFront();
-            } else {
+            } else {                
                 this.TopMost = false;
                 this.FormBorderStyle = FormBorderStyle.Sizable;
                 this.WindowState = this.lastState;
