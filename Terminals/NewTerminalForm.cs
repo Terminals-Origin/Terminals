@@ -20,13 +20,21 @@ namespace Terminals
         {
             InitializeComponent();
             LoadMRUs();
-            cmbServers.Text = server;
+
             cmbResolution.SelectedIndex = 3;
             cmbColors.SelectedIndex = 1;
             cmbSounds.SelectedIndex = 2;
             SetOkButtonState();
             SetOkTitle(connect);
             this.ProtocolComboBox.SelectedIndex = 0;
+
+
+            string Server = server;
+            int port = 3389;
+            GetServerAndPort(server, out Server, out port);
+            cmbServers.Text = Server;
+            txtPort.Text = port.ToString();
+
         }
         private void NewTerminalForm_Load(object sender, EventArgs e)
         {
@@ -294,10 +302,40 @@ namespace Terminals
             SetOkButtonState();
         }
 
+        private void GetServerAndPort(string Connection, out string Server, out int Port)
+        {
+            Server = Connection;
+            Port = 3389;
+            if(Connection.Contains(":"))
+            {
+                string server = Connection.Substring(0, Connection.IndexOf(":"));
+                string rawPort = Connection.Substring(Connection.IndexOf(":") + 1);
+                int port = 3389;
+                if(rawPort != null && rawPort.Trim() != "")
+                {
+                    rawPort = rawPort.Trim();
+                    int.TryParse(rawPort, out port);
+                }
+                Server= server;
+                Port = port;
+            }
+        }
+
         private void cmbServers_Leave(object sender, EventArgs e)
         {
             if(txtName.Text == String.Empty)
             {
+                if(cmbServers.Text.Contains(":"))
+                {
+                    string server = "";
+                    int port = 3389;
+                    GetServerAndPort(cmbServers.Text, out server, out port);
+                    cmbServers.Text = server;
+                    txtPort.Text = port.ToString();
+                    cmbServers.Text = server;
+
+                    
+                }
                 txtName.Text = cmbServers.Text;
             }
         }
