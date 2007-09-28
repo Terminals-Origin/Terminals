@@ -306,7 +306,7 @@ namespace Terminals
         {
             Server = Connection;
             Port = 3389;
-            if(Connection.Contains(":"))
+            if(Connection != null && Connection.Trim() != "" && Connection.Contains(":"))
             {
                 string server = Connection.Substring(0, Connection.IndexOf(":"));
                 string rawPort = Connection.Substring(Connection.IndexOf(":") + 1);
@@ -316,7 +316,7 @@ namespace Terminals
                     rawPort = rawPort.Trim();
                     int.TryParse(rawPort, out port);
                 }
-                Server= server;
+                Server = server;
                 Port = port;
             }
         }

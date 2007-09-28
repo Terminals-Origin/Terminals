@@ -93,6 +93,7 @@
     <Compile Include="AddConnectionForm.Designer.cs">
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CommandLine\TerminalsCA.cs" />
     <Compile Include="Connections\Connection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -180,7 +181,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -332,6 +333,7 @@
     <Compile Include="SingleInstanceApplication.cs" />
     <Compile Include="TerminalsConfiguration.cs" />
     <Compile Include="TSManager.cs" />
+    <Compile Include="CommandLine\CommandLineArguments.cs" />
     <None Include="WTSApi32.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -40,7 +40,7 @@ namespace Terminals
 
         public static void Parse(string url, out string server, out int port)
         {
-            server = url.Substring(("/url:trm://").Length);
+            server = url.Substring(("trm://").Length);
             if (server.EndsWith("/"))
                 server = server.TrimEnd('/');
             port = 0;

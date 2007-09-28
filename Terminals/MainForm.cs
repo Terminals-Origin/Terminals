@@ -643,18 +643,21 @@ namespace Terminals
             ParseCommandline(cmdLineArgs);
         }
 
-        private void ParseCommandline(string[] cmdLineArgs) {
-            if(cmdLineArgs.Length > 1) {
-                for(int i = 1; i < cmdLineArgs.Length; i++) {
-                    string arg = cmdLineArgs[i];
-                    if(arg[0] != '/')
-                        QuickConnect(arg, 0);
-                    else if(arg.StartsWith("/url:")) {
-                        string server; int port;
-                        ProtocolHandler.Parse(arg, out server, out port);
-                        QuickConnect(server, port);
-                    }
-                }
+        private void ParseCommandline(string[] cmdLineArgs)
+        {
+
+            Terminals.CommandLine.TerminalsCA args = new Terminals.CommandLine.TerminalsCA();
+
+            Terminals.CommandLine.Parser.ParseArguments(cmdLineArgs, args);
+            if(args.config != null && args.config != "")
+            {
+                string f = "";
+            }
+            if(args.url != null && args.url != "")
+            {
+                string server; int port;
+                ProtocolHandler.Parse(args.url, out server, out port);
+                QuickConnect(server, port);
             }
         }
 
