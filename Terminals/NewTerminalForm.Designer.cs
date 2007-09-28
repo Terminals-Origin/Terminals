@@ -34,6 +34,7 @@ namespace Terminals
         this.btnCancel = new System.Windows.Forms.Button();
         this.tabControl1 = new System.Windows.Forms.TabControl();
         this.tabPage1 = new System.Windows.Forms.TabPage();
+        this.pictureBox2 = new System.Windows.Forms.PictureBox();
         this.DetectButton = new System.Windows.Forms.Button();
         this.txtPort = new System.Windows.Forms.TextBox();
         this.lblPort = new System.Windows.Forms.Label();
@@ -119,6 +120,9 @@ namespace Terminals
         this.btnRemoveTag = new System.Windows.Forms.Button();
         this.lvConnectionTags = new System.Windows.Forms.ListView();
         this.tabPage6 = new System.Windows.Forms.TabPage();
+        this.ICAtabPage = new System.Windows.Forms.TabPage();
+        this.ApplicationNameTextBox = new System.Windows.Forms.TextBox();
+        this.label21 = new System.Windows.Forms.Label();
         this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
         this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
         this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -126,9 +130,11 @@ namespace Terminals
         this.fontDialog1 = new System.Windows.Forms.FontDialog();
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
-        this.pictureBox2 = new System.Windows.Forms.PictureBox();
+        this.ICAWorkingFolderTextBox = new System.Windows.Forms.TextBox();
+        this.label22 = new System.Windows.Forms.Label();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
         this.tabPage2.SuspendLayout();
         this.RDPSubTabPage.SuspendLayout();
         this.RDPDisplayTabPage.SuspendLayout();
@@ -145,15 +151,15 @@ namespace Terminals
         this.tpTags.SuspendLayout();
         this.panel1.SuspendLayout();
         this.groupBox3.SuspendLayout();
+        this.ICAtabPage.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-        ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
         this.SuspendLayout();
         // 
         // btnOk
         // 
         this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
         this.btnOk.Enabled = false;
-        this.btnOk.Location = new System.Drawing.Point(253, 355);
+        this.btnOk.Location = new System.Drawing.Point(276, 355);
         this.btnOk.Name = "btnOk";
         this.btnOk.Size = new System.Drawing.Size(72, 24);
         this.btnOk.TabIndex = 1;
@@ -165,7 +171,7 @@ namespace Terminals
         // 
         this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
         this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-        this.btnCancel.Location = new System.Drawing.Point(331, 355);
+        this.btnCancel.Location = new System.Drawing.Point(354, 355);
         this.btnCancel.Name = "btnCancel";
         this.btnCancel.Size = new System.Drawing.Size(72, 24);
         this.btnCancel.TabIndex = 2;
@@ -182,10 +188,11 @@ namespace Terminals
         this.tabControl1.Controls.Add(this.tabPage4);
         this.tabControl1.Controls.Add(this.tpTags);
         this.tabControl1.Controls.Add(this.tabPage6);
+        this.tabControl1.Controls.Add(this.ICAtabPage);
         this.tabControl1.Location = new System.Drawing.Point(6, 77);
         this.tabControl1.Name = "tabControl1";
         this.tabControl1.SelectedIndex = 0;
-        this.tabControl1.Size = new System.Drawing.Size(401, 265);
+        this.tabControl1.Size = new System.Drawing.Size(420, 265);
         this.tabControl1.TabIndex = 0;
         // 
         // tabPage1
@@ -210,10 +217,22 @@ namespace Terminals
         this.tabPage1.Location = new System.Drawing.Point(4, 22);
         this.tabPage1.Name = "tabPage1";
         this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPage1.Size = new System.Drawing.Size(393, 239);
+        this.tabPage1.Size = new System.Drawing.Size(412, 239);
         this.tabPage1.TabIndex = 0;
         this.tabPage1.Text = "General";
         this.tabPage1.UseVisualStyleBackColor = true;
+        // 
+        // pictureBox2
+        // 
+        this.pictureBox2.Image = global::Terminals.Properties.Resources.smallterm;
+        this.pictureBox2.InitialImage = global::Terminals.Properties.Resources.smallterm;
+        this.pictureBox2.Location = new System.Drawing.Point(355, 62);
+        this.pictureBox2.Name = "pictureBox2";
+        this.pictureBox2.Size = new System.Drawing.Size(16, 16);
+        this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+        this.pictureBox2.TabIndex = 16;
+        this.pictureBox2.TabStop = false;
+        this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
         // 
         // DetectButton
         // 
@@ -250,7 +269,8 @@ namespace Terminals
             "VNC",
             "VMRC",
             "Telnet",
-            "RAS"});
+            "RAS",
+            "ICA Citrix"});
         this.ProtocolComboBox.Location = new System.Drawing.Point(106, 6);
         this.ProtocolComboBox.Name = "ProtocolComboBox";
         this.ProtocolComboBox.Size = new System.Drawing.Size(172, 21);
@@ -376,7 +396,7 @@ namespace Terminals
         this.tabPage2.Location = new System.Drawing.Point(4, 22);
         this.tabPage2.Name = "tabPage2";
         this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPage2.Size = new System.Drawing.Size(393, 239);
+        this.tabPage2.Size = new System.Drawing.Size(412, 239);
         this.tabPage2.TabIndex = 1;
         this.tabPage2.Text = "RDP";
         this.tabPage2.UseVisualStyleBackColor = true;
@@ -389,7 +409,7 @@ namespace Terminals
         this.RDPSubTabPage.Location = new System.Drawing.Point(3, 3);
         this.RDPSubTabPage.Name = "RDPSubTabPage";
         this.RDPSubTabPage.SelectedIndex = 0;
-        this.RDPSubTabPage.Size = new System.Drawing.Size(387, 233);
+        this.RDPSubTabPage.Size = new System.Drawing.Size(406, 233);
         this.RDPSubTabPage.TabIndex = 4;
         // 
         // RDPDisplayTabPage
@@ -399,7 +419,7 @@ namespace Terminals
         this.RDPDisplayTabPage.Location = new System.Drawing.Point(4, 22);
         this.RDPDisplayTabPage.Name = "RDPDisplayTabPage";
         this.RDPDisplayTabPage.Padding = new System.Windows.Forms.Padding(3);
-        this.RDPDisplayTabPage.Size = new System.Drawing.Size(379, 207);
+        this.RDPDisplayTabPage.Size = new System.Drawing.Size(398, 207);
         this.RDPDisplayTabPage.TabIndex = 0;
         this.RDPDisplayTabPage.Text = "Display Settings";
         this.RDPDisplayTabPage.UseVisualStyleBackColor = true;
@@ -646,7 +666,7 @@ namespace Terminals
         this.tabPage7.Controls.Add(this.VMRCAdminModeCheckbox);
         this.tabPage7.Location = new System.Drawing.Point(4, 22);
         this.tabPage7.Name = "tabPage7";
-        this.tabPage7.Size = new System.Drawing.Size(393, 239);
+        this.tabPage7.Size = new System.Drawing.Size(412, 239);
         this.tabPage7.TabIndex = 7;
         this.tabPage7.Text = "VMRC";
         this.tabPage7.UseVisualStyleBackColor = true;
@@ -676,7 +696,7 @@ namespace Terminals
         this.tabPage3.Controls.Add(this.TelnetGroupBox);
         this.tabPage3.Location = new System.Drawing.Point(4, 22);
         this.tabPage3.Name = "tabPage3";
-        this.tabPage3.Size = new System.Drawing.Size(393, 239);
+        this.tabPage3.Size = new System.Drawing.Size(412, 239);
         this.tabPage3.TabIndex = 8;
         this.tabPage3.Text = "Telnet";
         this.tabPage3.UseVisualStyleBackColor = true;
@@ -689,7 +709,7 @@ namespace Terminals
         this.TelnetGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
         this.TelnetGroupBox.Location = new System.Drawing.Point(0, 0);
         this.TelnetGroupBox.Name = "TelnetGroupBox";
-        this.TelnetGroupBox.Size = new System.Drawing.Size(393, 239);
+        this.TelnetGroupBox.Size = new System.Drawing.Size(412, 239);
         this.TelnetGroupBox.TabIndex = 0;
         this.TelnetGroupBox.TabStop = false;
         // 
@@ -893,7 +913,7 @@ namespace Terminals
         this.tabPage5.Controls.Add(this.RASGroupBox);
         this.tabPage5.Location = new System.Drawing.Point(4, 22);
         this.tabPage5.Name = "tabPage5";
-        this.tabPage5.Size = new System.Drawing.Size(393, 239);
+        this.tabPage5.Size = new System.Drawing.Size(412, 239);
         this.tabPage5.TabIndex = 9;
         this.tabPage5.Text = "RAS";
         this.tabPage5.UseVisualStyleBackColor = true;
@@ -904,7 +924,7 @@ namespace Terminals
         this.RASGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
         this.RASGroupBox.Location = new System.Drawing.Point(0, 0);
         this.RASGroupBox.Name = "RASGroupBox";
-        this.RASGroupBox.Size = new System.Drawing.Size(393, 239);
+        this.RASGroupBox.Size = new System.Drawing.Size(412, 239);
         this.RASGroupBox.TabIndex = 0;
         this.RASGroupBox.TabStop = false;
         // 
@@ -914,7 +934,7 @@ namespace Terminals
         this.RASDetailsListBox.FormattingEnabled = true;
         this.RASDetailsListBox.Location = new System.Drawing.Point(3, 17);
         this.RASDetailsListBox.Name = "RASDetailsListBox";
-        this.RASDetailsListBox.Size = new System.Drawing.Size(387, 212);
+        this.RASDetailsListBox.Size = new System.Drawing.Size(406, 212);
         this.RASDetailsListBox.TabIndex = 0;
         // 
         // tabPage4
@@ -930,7 +950,7 @@ namespace Terminals
         this.tabPage4.Location = new System.Drawing.Point(4, 22);
         this.tabPage4.Name = "tabPage4";
         this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-        this.tabPage4.Size = new System.Drawing.Size(393, 239);
+        this.tabPage4.Size = new System.Drawing.Size(412, 239);
         this.tabPage4.TabIndex = 3;
         this.tabPage4.Text = "Execute";
         this.tabPage4.UseVisualStyleBackColor = true;
@@ -1012,7 +1032,7 @@ namespace Terminals
         this.tpTags.Location = new System.Drawing.Point(4, 22);
         this.tpTags.Name = "tpTags";
         this.tpTags.Padding = new System.Windows.Forms.Padding(3);
-        this.tpTags.Size = new System.Drawing.Size(393, 239);
+        this.tpTags.Size = new System.Drawing.Size(412, 239);
         this.tpTags.TabIndex = 4;
         this.tpTags.Text = "Tags";
         this.tpTags.UseVisualStyleBackColor = true;
@@ -1051,7 +1071,7 @@ namespace Terminals
         this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
         this.panel1.Location = new System.Drawing.Point(3, 96);
         this.panel1.Name = "panel1";
-        this.panel1.Size = new System.Drawing.Size(387, 140);
+        this.panel1.Size = new System.Drawing.Size(406, 140);
         this.panel1.TabIndex = 0;
         // 
         // groupBox3
@@ -1061,7 +1081,7 @@ namespace Terminals
         this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
         this.groupBox3.Location = new System.Drawing.Point(0, 0);
         this.groupBox3.Name = "groupBox3";
-        this.groupBox3.Size = new System.Drawing.Size(387, 140);
+        this.groupBox3.Size = new System.Drawing.Size(406, 140);
         this.groupBox3.TabIndex = 1;
         this.groupBox3.TabStop = false;
         this.groupBox3.Text = "Connection Tags";
@@ -1084,7 +1104,7 @@ namespace Terminals
         this.lvConnectionTags.HideSelection = false;
         this.lvConnectionTags.Location = new System.Drawing.Point(8, 24);
         this.lvConnectionTags.Name = "lvConnectionTags";
-        this.lvConnectionTags.Size = new System.Drawing.Size(351, 104);
+        this.lvConnectionTags.Size = new System.Drawing.Size(370, 104);
         this.lvConnectionTags.TabIndex = 1;
         this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
         // 
@@ -1092,10 +1112,40 @@ namespace Terminals
         // 
         this.tabPage6.Location = new System.Drawing.Point(4, 22);
         this.tabPage6.Name = "tabPage6";
-        this.tabPage6.Size = new System.Drawing.Size(393, 239);
+        this.tabPage6.Size = new System.Drawing.Size(412, 239);
         this.tabPage6.TabIndex = 6;
         this.tabPage6.Text = "VNC";
         this.tabPage6.UseVisualStyleBackColor = true;
+        // 
+        // ICAtabPage
+        // 
+        this.ICAtabPage.Controls.Add(this.ICAWorkingFolderTextBox);
+        this.ICAtabPage.Controls.Add(this.label22);
+        this.ICAtabPage.Controls.Add(this.ApplicationNameTextBox);
+        this.ICAtabPage.Controls.Add(this.label21);
+        this.ICAtabPage.Location = new System.Drawing.Point(4, 22);
+        this.ICAtabPage.Name = "ICAtabPage";
+        this.ICAtabPage.Size = new System.Drawing.Size(412, 239);
+        this.ICAtabPage.TabIndex = 10;
+        this.ICAtabPage.Text = "ICA Citrix";
+        this.ICAtabPage.UseVisualStyleBackColor = true;
+        // 
+        // ApplicationNameTextBox
+        // 
+        this.ApplicationNameTextBox.Enabled = false;
+        this.ApplicationNameTextBox.Location = new System.Drawing.Point(102, 10);
+        this.ApplicationNameTextBox.Name = "ApplicationNameTextBox";
+        this.ApplicationNameTextBox.Size = new System.Drawing.Size(226, 21);
+        this.ApplicationNameTextBox.TabIndex = 1;
+        // 
+        // label21
+        // 
+        this.label21.AutoSize = true;
+        this.label21.Location = new System.Drawing.Point(3, 13);
+        this.label21.Name = "label21";
+        this.label21.Size = new System.Drawing.Size(93, 13);
+        this.label21.TabIndex = 0;
+        this.label21.Text = "Application Name:";
         // 
         // chkAddtoToolbar
         // 
@@ -1119,7 +1169,7 @@ namespace Terminals
         this.pictureBox1.Image = global::Terminals.Properties.Resources.rdp;
         this.pictureBox1.Location = new System.Drawing.Point(0, 0);
         this.pictureBox1.Name = "pictureBox1";
-        this.pictureBox1.Size = new System.Drawing.Size(411, 67);
+        this.pictureBox1.Size = new System.Drawing.Size(434, 67);
         this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
         this.pictureBox1.TabIndex = 9;
         this.pictureBox1.TabStop = false;
@@ -1134,17 +1184,22 @@ namespace Terminals
         this.ras1.UserName = null;
         this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
         // 
-        // pictureBox2
+        // ICAWorkingFolderTextBox
         // 
-        this.pictureBox2.Image = global::Terminals.Properties.Resources.smallterm;
-        this.pictureBox2.InitialImage = global::Terminals.Properties.Resources.smallterm;
-        this.pictureBox2.Location = new System.Drawing.Point(355, 62);
-        this.pictureBox2.Name = "pictureBox2";
-        this.pictureBox2.Size = new System.Drawing.Size(16, 16);
-        this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-        this.pictureBox2.TabIndex = 16;
-        this.pictureBox2.TabStop = false;
-        this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+        this.ICAWorkingFolderTextBox.Enabled = false;
+        this.ICAWorkingFolderTextBox.Location = new System.Drawing.Point(102, 37);
+        this.ICAWorkingFolderTextBox.Name = "ICAWorkingFolderTextBox";
+        this.ICAWorkingFolderTextBox.Size = new System.Drawing.Size(226, 21);
+        this.ICAWorkingFolderTextBox.TabIndex = 3;
+        // 
+        // label22
+        // 
+        this.label22.AutoSize = true;
+        this.label22.Location = new System.Drawing.Point(3, 40);
+        this.label22.Name = "label22";
+        this.label22.Size = new System.Drawing.Size(83, 13);
+        this.label22.TabIndex = 2;
+        this.label22.Text = "Working Folder:";
         // 
         // NewTerminalForm
         // 
@@ -1152,7 +1207,7 @@ namespace Terminals
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.CancelButton = this.btnCancel;
-        this.ClientSize = new System.Drawing.Size(411, 391);
+        this.ClientSize = new System.Drawing.Size(434, 391);
         this.Controls.Add(this.chkAddtoToolbar);
         this.Controls.Add(this.tabControl1);
         this.Controls.Add(this.pictureBox1);
@@ -1173,6 +1228,7 @@ namespace Terminals
         this.tabControl1.ResumeLayout(false);
         this.tabPage1.ResumeLayout(false);
         this.tabPage1.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
         this.tabPage2.ResumeLayout(false);
         this.RDPSubTabPage.ResumeLayout(false);
         this.RDPDisplayTabPage.ResumeLayout(false);
@@ -1197,8 +1253,9 @@ namespace Terminals
         this.tpTags.PerformLayout();
         this.panel1.ResumeLayout(false);
         this.groupBox3.ResumeLayout(false);
+        this.ICAtabPage.ResumeLayout(false);
+        this.ICAtabPage.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-        ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
         this.ResumeLayout(false);
         this.PerformLayout();
 
@@ -1303,5 +1360,10 @@ namespace Terminals
       private FalafelSoftware.TransPort.Ras ras1;
       private System.Windows.Forms.ListBox RASDetailsListBox;
       private System.Windows.Forms.PictureBox pictureBox2;
+      private System.Windows.Forms.TabPage ICAtabPage;
+      private System.Windows.Forms.TextBox ApplicationNameTextBox;
+      private System.Windows.Forms.Label label21;
+      private System.Windows.Forms.TextBox ICAWorkingFolderTextBox;
+      private System.Windows.Forms.Label label22;
   }
 }

@@ -20,6 +20,7 @@ namespace Terminals.Connections {
         public const int VNCVMRCPort = 5900;
         public const int TelnetPort = 23;
         public const int SSHPort = 22;
+        public const int ICAPort = 1494;
 
         public static void GetSize(out int Height, out int Width, Connections.Connection Connection, DesktopSize Size) {
             Height = 0;
@@ -73,6 +74,9 @@ namespace Terminals.Connections {
                 case "Telnet":
                     conn = new TerminalConnection();
                     break;
+                case "ICA Citrix":
+                    conn = new ICAConnection();
+                    break;
                 default:
                     conn = new RDPConnection();
                     break;
@@ -94,9 +98,12 @@ namespace Terminals.Connections {
                     break;
                 case "Telnet":
                     port = TelnetPort;
-                    break;                
+                    break;
                 case "RDP":
                     port = RDPPort;
+                    break;
+                case "ICA Citrix":
+                    port = ICAPort;
                     break;
                 default:
                     port = 0;
@@ -119,6 +126,9 @@ namespace Terminals.Connections {
                     break;
                 case SSHPort:
                     port = "SSH";
+                    break;
+                case ICAPort:
+                    port = "ICA Citrix";
                     break;
                 default:
                     port = "RDP";

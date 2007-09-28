@@ -626,6 +626,31 @@ namespace Terminals
         {
             Name = name;
         }
+
+        [ConfigurationProperty("applicationName", IsRequired = false, DefaultValue = "")]
+        public string ApplicationName
+        {
+            get
+            {
+                return (string)this["applicationName"];
+            }
+            set
+            {
+                this["applicationName"] = value;
+            }
+        }
+        [ConfigurationProperty("applicationWorkingFolder", IsRequired = false, DefaultValue = "")]
+        public string ApplicationWorkingFolder
+        {
+            get
+            {
+                return (string)this["applicationWorkingFolder"];
+            }
+            set
+            {
+                this["applicationWorkingFolder"] = value;
+            }
+        }
         [ConfigurationProperty("vmrcreducedcolorsmode", IsRequired = true, DefaultValue=false)]
         public bool VMRCReducedColorsMode {
             get {

@@ -388,6 +388,9 @@ namespace Terminals
             VMRCAdminModeCheckbox.Enabled = false;
             RASGroupBox.Enabled = false;
 
+            ApplicationNameTextBox.Enabled = false;
+            ICAWorkingFolderTextBox.Enabled = false;
+
             txtPort.Enabled = true;
 
             TelnetGroupBox.Enabled = false;
@@ -420,6 +423,13 @@ namespace Terminals
                 TelnetGroupBox.Enabled = true;
                 defaultPort = Connections.ConnectionManager.SSHPort.ToString();
             }
+            else if(ProtocolComboBox.Text == "ICA Citrix")
+            {
+                ApplicationNameTextBox.Enabled = true;
+                ICAWorkingFolderTextBox.Enabled = true;
+                defaultPort = Connections.ConnectionManager.ICAPort.ToString();
+            }
+
             txtPort.Text = defaultPort;
         }
 

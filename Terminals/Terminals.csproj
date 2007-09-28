@@ -41,6 +41,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Interops\AxInterop.MSTSCLib.dll</HintPath>
     </Reference>
+    <Reference Include="AxWFICALib, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\Citrix\AxWFICALib.dll</HintPath>
+    </Reference>
     <Reference Include="Interop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Interops\Interop.MSTSCLib.dll</HintPath>
@@ -93,6 +97,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\ConnectionManager.cs" />
+    <Compile Include="Connections\ICAConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Connections\IConnection.cs" />
     <Compile Include="Connections\RASConnection.cs">
       <SubType>Component</SubType>
