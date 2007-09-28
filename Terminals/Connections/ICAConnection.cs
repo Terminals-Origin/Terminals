@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Terminals.Connections {
     public class ICAConnection : Connection {
@@ -82,16 +83,16 @@ namespace Terminals.Connections {
 
         void ICAConnection_DragDrop(object sender, DragEventArgs e)
         {
-            //string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            //string desktopShare = this.Parent.GetDesktopShare();
-            //if(String.IsNullOrEmpty(desktopShare))
-            //{
-            //    MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n" +
-            //        "Please define a share in the connection properties window (under the Local Resources tab)."
-            //        , "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            //}
-            //else
-            //    SHCopyFiles(files, desktopShare);
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string desktopShare = ParentForm.GetDesktopShare();
+            if(String.IsNullOrEmpty(desktopShare))
+            {
+                MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n" +
+                    "Please define a share in the connection properties window (under the Local Resources tab)."
+                    , "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+                SHCopyFiles(files, desktopShare);
         }
 
         void ICAConnection_DragEnter(object sender, DragEventArgs e)
@@ -112,15 +113,6 @@ namespace Terminals.Connections {
             return icaPassword;
         }
 
-        void rd_ConnectComplete(object sender, VncSharp.ConnectEventArgs e) {
-            // Update Form to match geometry of remote desktop
-            //ClientSize = new Size(e.DesktopWidth, e.DesktopHeight);
-            connected = true;
-            VncSharp.RemoteDesktop rd = (VncSharp.RemoteDesktop)sender;
-            rd.BringToFront();
-            rd.FullScreenUpdate();
-            // Change the Form's title to match desktop name
-        }
 
         public override void Disconnect() {
             try {
@@ -128,7 +120,23 @@ namespace Terminals.Connections {
                 iIcaClient.Disconnect();
             } catch (Exception e) { }
         }
+        private void SHCopyFiles(string[] sourceFiles, string destinationFolder)
+        {
+            SHFileOperationWrapper fo = new SHFileOperationWrapper();
+            List<string> destinationFiles = new List<string>();
 
+            foreach(string sourceFile in sourceFiles)
+            {
+                destinationFiles.Add(Path.Combine(destinationFolder, Path.GetFileName(sourceFile)));
+            }
+
+            fo.Operation = SHFileOperationWrapper.FileOperations.FO_COPY;
+            fo.OwnerWindow = this.Handle;
+            fo.SourceFiles = sourceFiles;
+            fo.DestFiles = destinationFiles.ToArray();
+
+            fo.DoOperation();
+        }
         #endregion
     }
 }

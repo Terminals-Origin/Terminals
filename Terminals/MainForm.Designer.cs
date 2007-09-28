@@ -51,8 +51,6 @@ namespace Terminals {
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolbarStd = new System.Windows.Forms.ToolStrip();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.manageToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbNewTerminal = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
@@ -71,6 +69,8 @@ namespace Terminals {
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.VMRCAdminSwitchButton = new System.Windows.Forms.ToolStripButton();
             this.VMRCViewOnlyButton = new System.Windows.Forms.ToolStripButton();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.manageToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.tcTerminals = new TabControl.TabControl();
             this.pnlTagsFavorites = new System.Windows.Forms.Panel();
@@ -362,20 +362,6 @@ namespace Terminals {
             this.toolbarStd.Size = new System.Drawing.Size(554, 25);
             this.toolbarStd.TabIndex = 2;
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.manageToolbarToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 26);
-            // 
-            // manageToolbarToolStripMenuItem
-            // 
-            this.manageToolbarToolStripMenuItem.Name = "manageToolbarToolStripMenuItem";
-            this.manageToolbarToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-            this.manageToolbarToolStripMenuItem.Text = "&Manage Toolbar";
-            this.manageToolbarToolStripMenuItem.Click += new System.EventHandler(this.manageToolbarToolStripMenuItem_Click);
-            // 
             // tsbNewTerminal
             // 
             this.tsbNewTerminal.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -532,6 +518,20 @@ namespace Terminals {
             this.VMRCViewOnlyButton.Size = new System.Drawing.Size(23, 22);
             this.VMRCViewOnlyButton.Text = "VMRC: View Only Mode";
             this.VMRCViewOnlyButton.Click += new System.EventHandler(this.VMRCViewOnlyButton_Click);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.manageToolbarToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(163, 26);
+            // 
+            // manageToolbarToolStripMenuItem
+            // 
+            this.manageToolbarToolStripMenuItem.Name = "manageToolbarToolStripMenuItem";
+            this.manageToolbarToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.manageToolbarToolStripMenuItem.Text = "&Manage Toolbar";
+            this.manageToolbarToolStripMenuItem.Click += new System.EventHandler(this.manageToolbarToolStripMenuItem_Click);
             // 
             // toolStripContainer
             // 
@@ -937,7 +937,7 @@ namespace Terminals {
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Terminals 1.6 (RDP, VNC, VMRC, RAS, Telnet, SSH)";
+            this.Text = "Terminals 1.6a (RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix)";
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Activated += new System.EventHandler(this.MainForm_Activated);
