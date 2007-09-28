@@ -18,6 +18,10 @@ using rpaulo.toolbar;
 namespace Terminals
 {
     public partial class MainForm : Form {
+
+        public static string ConfigurationFileLocation = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"\Terminals.config");
+        public static Terminals.CommandLine.TerminalsCA CommandLineArgs = new Terminals.CommandLine.TerminalsCA();
+
         public const int WM_LEAVING_FULLSCREEN = 0x4ff;
         private bool fullScreen;
         private Point lastLocation;
@@ -32,6 +36,7 @@ namespace Terminals
 
         public MainForm() {
             try {
+                
                 imageFormatHandler = new ImageFormatHandler();
                 //screenCapture = new ScreenCapture(imageFormatHandler);
                 _formSettings = new FormSettings(this);
@@ -119,9 +124,6 @@ namespace Terminals
             if(WindowState == FormWindowState.Minimized)
                 NativeApi.ShowWindow(new HandleRef(this, this.Handle), 9);
             Activate();
-            string[] commandLine = (string[])message;
-            if(commandLine != null)
-                ParseCommandline(commandLine);
         }
 
         protected override void SetVisibleCore(bool value) {
@@ -638,28 +640,6 @@ namespace Terminals
             }
         }
 
-        private void ParseCommandline() {
-            string[] cmdLineArgs = Environment.GetCommandLineArgs();
-            ParseCommandline(cmdLineArgs);
-        }
-
-        private void ParseCommandline(string[] cmdLineArgs)
-        {
-
-            Terminals.CommandLine.TerminalsCA args = new Terminals.CommandLine.TerminalsCA();
-
-            Terminals.CommandLine.Parser.ParseArguments(cmdLineArgs, args);
-            if(args.config != null && args.config != "")
-            {
-                string f = "";
-            }
-            if(args.url != null && args.url != "")
-            {
-                string server; int port;
-                ProtocolHandler.Parse(args.url, out server, out port);
-                QuickConnect(server, port);
-            }
-        }
 
         private void QuickConnect(string server, int port) {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
@@ -678,7 +658,16 @@ namespace Terminals
         }
 
         private void MainForm_Shown(object sender, EventArgs e) {
-            ParseCommandline();
+            HandleCommandLineActions();
+        }
+        private void HandleCommandLineActions()
+        {
+            if(Terminals.MainForm.CommandLineArgs.url != null && Terminals.MainForm.CommandLineArgs.url != "")
+            {
+                string server; int port;
+                ProtocolHandler.Parse(Terminals.MainForm.CommandLineArgs.url, out server, out port);
+                QuickConnect(server, port);
+            }
         }
 
         private void tcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e) {

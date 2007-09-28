@@ -13,11 +13,14 @@ namespace Terminals
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
+        [ComVisible(true)]
         static void Main()
         {
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            ParseCommandline();
 
             if(ReuseExistingInstance() && SingleInstanceApplication.NotifyExistingInstance(Environment.GetCommandLineArgs()))
                 return;
@@ -44,6 +47,20 @@ namespace Terminals
                 return true;
             string[] cmdLineArgs = Environment.GetCommandLineArgs();
             return (cmdLineArgs.Length > 1 && cmdLineArgs[1] == "/reuse");
+        }
+        private static void ParseCommandline()
+        {
+            string[] cmdLineArgs = Environment.GetCommandLineArgs();
+            ParseCommandline(cmdLineArgs);
+        }
+
+        private static void ParseCommandline(string[] cmdLineArgs)
+        {
+            Terminals.CommandLine.Parser.ParseArguments(cmdLineArgs, Terminals.MainForm.CommandLineArgs);
+            if(Terminals.MainForm.CommandLineArgs.config != null && Terminals.MainForm.CommandLineArgs.config != "")
+            {
+                Terminals.MainForm.ConfigurationFileLocation = Terminals.MainForm.CommandLineArgs.config;
+            }
         }
     }
 }

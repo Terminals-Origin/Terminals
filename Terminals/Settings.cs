@@ -12,7 +12,7 @@ namespace Terminals
     {
         private static Configuration GetConfiguration()
         {
-            string configFile =Path.GetDirectoryName(Application.ExecutablePath) + @"\Terminals.config";
+            string configFile = Terminals.MainForm.ConfigurationFileLocation;
             if(!System.IO.File.Exists(configFile)) {
                 string templateConfigFile = global::Terminals.Properties.Resources.Terminals;
                 using(System.IO.StreamWriter sr = new StreamWriter(configFile)) {
