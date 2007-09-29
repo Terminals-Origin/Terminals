@@ -102,6 +102,8 @@
     </Compile>
     <Compile Include="CommandLine\TerminalsCA.cs" />
     <Compile Include="Configuration\CommonEnums.cs" />
+    <Compile Include="Configuration\SpecialCommandConfigurationElement.cs" />
+    <Compile Include="Configuration\SpecialCommandConfigurationElementCollection.cs" />
     <Compile Include="Configuration\FavoriteAliasConfigurationElement.cs" />
     <Compile Include="Configuration\FavoriteAliasConfigurationElementCollection.cs" />
     <Compile Include="Configuration\FavoriteConfigurationElement.cs" />

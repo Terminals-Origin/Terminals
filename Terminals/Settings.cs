@@ -155,7 +155,20 @@ namespace Terminals
             configuration.Save();
         }
 
-
+        public static SpecialCommandConfigurationElementCollection SpecialCommands
+        {
+            get
+            {
+                Configuration configuration = GetConfiguration();
+                return GetSection(configuration).SpecialCommands;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).SpecialCommands = value;
+                configuration.Save();
+            }
+        }
         public static DockBarConfigurationElementCollection DockBars
         {
             get

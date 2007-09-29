@@ -13,6 +13,19 @@ namespace Terminals
 
         }
 
+        [ConfigurationProperty("specialCommands")]
+        [ConfigurationCollection(typeof(DockBarConfigurationElementCollection))]
+        public SpecialCommandConfigurationElementCollection SpecialCommands
+        {
+            get
+            {
+                return (SpecialCommandConfigurationElementCollection)this["specialCommands"];
+            }
+            set
+            {
+                this["specialCommands"] = value;
+            }
+        }
 
         [ConfigurationProperty("dockBars")]
         [ConfigurationCollection(typeof(DockBarConfigurationElementCollection))]

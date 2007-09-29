@@ -7,9 +7,9 @@ namespace Terminals
 {
 
 
-    public class DockBarConfigurationElementCollection : ConfigurationElementCollection
+    public class SpecialCommandConfigurationElementCollection : ConfigurationElementCollection
     {
-        public DockBarConfigurationElementCollection()
+        public SpecialCommandConfigurationElementCollection()
         {
         }
 
@@ -23,18 +23,18 @@ namespace Terminals
 
         protected override ConfigurationElement CreateNewElement()
         {
-            return new DockBarConfigurationElement();
+            return new SpecialCommandConfigurationElement();
         }
 
 
         protected override ConfigurationElement CreateNewElement(string elementName)
         {
-            return new DockBarConfigurationElement();
+            return new SpecialCommandConfigurationElement();
         }
 
         protected override Object GetElementKey(ConfigurationElement element)
         {
-            return ((DockBarConfigurationElement)element).Name;
+            return ((SpecialCommandConfigurationElement)element).Name;
         }
 
         public new string AddElementName
@@ -77,11 +77,11 @@ namespace Terminals
             }
         }
 
-        public DockBarConfigurationElement this[int index]
+        public SpecialCommandConfigurationElement this[int index]
         {
             get
             {
-                return (DockBarConfigurationElement)BaseGet(index);
+                return (SpecialCommandConfigurationElement)BaseGet(index);
             }
             set
             {
@@ -93,25 +93,25 @@ namespace Terminals
             }
         }
 
-        new public DockBarConfigurationElement this[string Name]
+        new public SpecialCommandConfigurationElement this[string Name]
         {
             get
             {
-                return (DockBarConfigurationElement)BaseGet(Name);
+                return (SpecialCommandConfigurationElement)BaseGet(Name);
             }
         }
 
-        public int IndexOf(DockBarConfigurationElement item)
+        public int IndexOf(SpecialCommandConfigurationElement item)
         {
             return BaseIndexOf(item);
         }
 
-        public DockBarConfigurationElement ItemByName(string name)
+        public SpecialCommandConfigurationElement ItemByName(string name)
         {
-            return (DockBarConfigurationElement)BaseGet(name);
+            return (SpecialCommandConfigurationElement)BaseGet(name);
         }
 
-        public void Add(DockBarConfigurationElement item)
+        public void Add(SpecialCommandConfigurationElement item)
         {
             BaseAdd(item);
         }
@@ -121,7 +121,7 @@ namespace Terminals
             BaseAdd(element, false);
         }
 
-        public void Remove(DockBarConfigurationElement item)
+        public void Remove(SpecialCommandConfigurationElement item)
         {
             if (BaseIndexOf(item) >= 0)
                 BaseRemove(item.Name);
