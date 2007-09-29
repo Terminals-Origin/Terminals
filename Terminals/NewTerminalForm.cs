@@ -188,7 +188,7 @@ namespace Terminals
 
                 favorite.ICAApplicationName = ICAApplicationNameTextBox.Text;
                 favorite.ICAApplicationPath = ICAApplicationPath.Text;
-                favorite.ICAApplicationWorkingFolder = ICAWorkingFolder;
+                favorite.ICAApplicationWorkingFolder = ICAWorkingFolder.Text;
 
                 List<string> tagList = new List<string>();
                 foreach(ListViewItem listViewItem in lvConnectionTags.Items)

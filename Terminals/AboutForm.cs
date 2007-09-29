@@ -49,5 +49,10 @@ namespace Terminals
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             Process.Start("http://weblogs.asp.net/rchartier/");
         }
+
+        private void AboutForm_Load(object sender, EventArgs e)
+        {
+            this.textBox1.Text = this.textBox1.Text + "\r\nConfig File:\r\n" + MainForm.ConfigurationFileLocation;
+        }
     }
 }

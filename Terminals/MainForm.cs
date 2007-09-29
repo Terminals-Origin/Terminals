@@ -19,7 +19,7 @@ namespace Terminals
 {
     public partial class MainForm : Form {
 
-        public static string ConfigurationFileLocation = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), @"\Terminals.config");
+        public static string ConfigurationFileLocation = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), @"Terminals.config");
         public static Terminals.CommandLine.TerminalsCA CommandLineArgs = new Terminals.CommandLine.TerminalsCA();
 
         public const int WM_LEAVING_FULLSCREEN = 0x4ff;
@@ -36,7 +36,7 @@ namespace Terminals
 
         public MainForm() {
             try {
-                
+
                 imageFormatHandler = new ImageFormatHandler();
                 //screenCapture = new ScreenCapture(imageFormatHandler);
                 _formSettings = new FormSettings(this);

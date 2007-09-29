@@ -58,9 +58,9 @@ namespace Terminals.Connections {
             iIcaClient.Address = Favorite.ServerName;
             iIcaClient.Username = Favorite.UserName;
 
-            if(Favorite.ApplicationName != "")
+            if(Favorite.ICAApplicationName != "")
             {
-                iIcaClient.ConnectionEntry = Favorite.ApplicationName;
+                iIcaClient.ConnectionEntry = Favorite.ICAApplicationName;
                 //iIcaClient.Application = favorite.applicationName;
                 iIcaClient.InitialProgram = Favorite.ICAApplicationName;
                 iIcaClient.Application = Favorite.ICAApplicationPath;
