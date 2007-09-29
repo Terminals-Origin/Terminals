@@ -101,6 +101,18 @@
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CommandLine\TerminalsCA.cs" />
+    <Compile Include="Configuration\CommonEnums.cs" />
+    <Compile Include="Configuration\FavoriteAliasConfigurationElement.cs" />
+    <Compile Include="Configuration\FavoriteAliasConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\FavoriteConfigurationElement.cs" />
+    <Compile Include="Configuration\FavoriteConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\GroupConfigurationElement.cs" />
+    <Compile Include="Configuration\GroupConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\MRUItemConfigurationElement.cs" />
+    <Compile Include="Configuration\MRUItemConfigurationElementCollection.cs" />
+    <Compile Include="Configuration\TerminalsConfigurationSection.cs" />
+    <Compile Include="Configuration\DockBarConfigurationElement.cs" />
+    <Compile Include="Configuration\DockBarConfigurationElementCollection.cs" />
     <Compile Include="Connections\Connection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -132,8 +144,6 @@
     </Compile>
     <Compile Include="Docking\AllowedBorders.cs" />
     <Compile Include="Docking\DockLocation.cs" />
-    <Compile Include="Docking\DockSavePosition.cs" />
-    <Compile Include="Docking\DockSavePositions.cs" />
     <Compile Include="Docking\ToolBarDockArea.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -340,7 +350,6 @@
     <Compile Include="SHApi.cs" />
     <Compile Include="SHFileOperationWrapper.cs" />
     <Compile Include="SingleInstanceApplication.cs" />
-    <Compile Include="TerminalsConfiguration.cs" />
     <Compile Include="TSManager.cs" />
     <Compile Include="CommandLine\CommandLineArguments.cs" />
     <None Include="WTSApi32.cs" />

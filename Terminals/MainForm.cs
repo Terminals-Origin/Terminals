@@ -48,12 +48,16 @@ namespace Terminals
                 InitializeComponent();
 
                 toolBarManager = new ToolBarManager(this.toolStripContainer.ContentPanel, this);
+                
                 MainMenuHolder = toolBarManager.AddControl(this.MainMenuStrip);
                 MainMenuHolder.ToolbarTitle = "Main Menu";
-                StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd);
+
+                StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd,DockStyle.Top,MainMenuStrip, DockStyle.Bottom);
                 StandardToolbarHolder.ToolbarTitle = "Standard Toolbar";
-                FavoriteToolBarHolder= toolBarManager.AddControl(this.favoriteToolBar);
+
+                FavoriteToolBarHolder = toolBarManager.AddControl(this.favoriteToolBar);
                 FavoriteToolBarHolder.ToolbarTitle = "Favorites";
+
                 toolBarManager.MainForm.BackColor = this.toolStripContainer.ContentPanel.BackColor;
 
 
@@ -80,13 +84,10 @@ namespace Terminals
 
         void ApplyUISettings()
         {
-            UIConfigurationElement UISettings = Settings.UISettings;
+            DockBarConfigurationElementCollection UISettings = Settings.UISettings;
             if (UISettings != null)
             {
-                if (Settings.UIDockSavePositions != null)
-                {
-                    this.toolBarManager.Positions = Settings.UIDockSavePositions;
-                }
+
             }
         }
 

@@ -15,24 +15,7 @@ namespace rpaulo.toolbar
 			get { return _dockManager; }
 		}
 
-        public Terminals.Docking.DockSavePosition Position
-        {
-            get
-            {
-                Terminals.Docking.DockSavePosition p = new Terminals.Docking.DockSavePosition();
-                p.Left = this.Left;
-                p.Top = this.Top;
-                return p;
-            }
-            set
-            {
-                if (value != null)
-                {
-                    this.Left = value.Left;
-                    this.Top = value.Top;
-                }
-            }
-        }
+
 		private System.ComponentModel.Container components = null;
 
 		public ToolBarDockArea(ToolBarManager dockManager, DockStyle dockStyle)

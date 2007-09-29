@@ -72,7 +72,7 @@ namespace Terminals
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.BackColor = System.Drawing.SystemColors.Control;
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(340, 299);
+            this.btnClose.Location = new System.Drawing.Point(341, 381);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(80, 26);
             this.btnClose.TabIndex = 0;
@@ -208,15 +208,15 @@ namespace Terminals
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(35, 278);
+            this.textBox1.Location = new System.Drawing.Point(35, 289);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(266, 47);
+            this.textBox1.Size = new System.Drawing.Size(266, 118);
             this.textBox1.TabIndex = 11;
             this.textBox1.Text = "Special Thanks To:\r\nThe CodePlex Team\r\nDustin Coates (DemonBob) for the ICA Citri" +
-                "x bits\r\n";
+                "x bits\r\nRogério Paulo for ToolBarManager\r\n";
             // 
             // AboutForm
             // 
@@ -225,7 +225,7 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(432, 337);
+            this.ClientSize = new System.Drawing.Size(433, 419);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.linkLabel4);
             this.Controls.Add(this.lblVersion);
