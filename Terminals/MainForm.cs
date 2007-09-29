@@ -33,14 +33,30 @@ namespace Terminals
         private PictureBox previewPictureBox;*/
 
         ToolBarManager toolBarManager;
+        ToolBarDockHolder MainMenuHolder;
+        ToolBarDockHolder StandardToolbarHolder;
+        ToolBarDockHolder FavoriteToolBarHolder;
 
-        public MainForm() {
-            try {
+        public MainForm()
+        {
+            try
+            {
 
                 imageFormatHandler = new ImageFormatHandler();
                 //screenCapture = new ScreenCapture(imageFormatHandler);
                 _formSettings = new FormSettings(this);
                 InitializeComponent();
+
+                toolBarManager = new ToolBarManager(this.toolStripContainer.ContentPanel, this);
+                MainMenuHolder = toolBarManager.AddControl(this.MainMenuStrip);
+                MainMenuHolder.ToolbarTitle = "Main Menu";
+                StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd);
+                StandardToolbarHolder.ToolbarTitle = "Standard Toolbar";
+                FavoriteToolBarHolder= toolBarManager.AddControl(this.favoriteToolBar);
+                FavoriteToolBarHolder.ToolbarTitle = "Favorites";
+                toolBarManager.MainForm.BackColor = this.toolStripContainer.ContentPanel.BackColor;
+
+
                 LoadFavorites();
                 LoadFavorites("");
                 LoadGroups();
@@ -52,19 +68,14 @@ namespace Terminals
                 tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
-                toolBarManager = new ToolBarManager(this.toolStripContainer.ContentPanel, this);
-                toolBarManager.AddControl(this.toolbarStd);
-                
-                toolBarManager.MainForm.BackColor = this.toolStripContainer.ContentPanel.BackColor;
 
                 //ApplyUISettings();
 
-
-            } catch(Exception exc) {
+            }
+            catch (Exception exc)
+            {
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
-            
-
         }
 
         void ApplyUISettings()
@@ -253,11 +264,9 @@ namespace Terminals
 
         private void LoadFavoritesToolbar() {
             try {
-                for(int i = toolbarStd.Items.Count - 1; i >= 0; i--) {
-                    ToolStripItem item = toolbarStd.Items[i];
-                    if(item.Tag is FavoriteConfigurationElement)
-                        toolbarStd.Items.Remove(item);
-                }
+                bool favvisible = false;
+                favoriteToolBar.Items.Clear();
+
                 foreach(string favoriteButton in Settings.FavoritesToolbarButtons) {
                     FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
                     FavoriteConfigurationElement favorite = favorites[favoriteButton];
@@ -275,12 +284,16 @@ namespace Terminals
                     }
                     ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, button, serverToolStripMenuItem_Click);
                     favoriteBtn.Tag = favorite;
-                    toolbarStd.Items.Add(favoriteBtn);
+                    favoriteToolBar.Items.Add(favoriteBtn);
+                    favvisible = true;
                 }
+                FavoriteToolBarHolder.Visible = favvisible;
             } catch(Exception exc) {
                 System.Windows.Forms.MessageBox.Show("LoadFavoritesToolbar:" + exc.ToString());
             }
+            
         }
+
 
         private void AddFavorite(FavoriteConfigurationElement favorite) {
             tscConnectTo.Items.Add(favorite.Name);
