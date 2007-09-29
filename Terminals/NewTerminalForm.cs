@@ -184,8 +184,12 @@ namespace Terminals
                 favorite.ExecuteBeforeConnectArgs = txtArguments.Text;
                 favorite.ExecuteBeforeConnectInitialDirectory = txtInitialDirectory.Text;
                 favorite.ExecuteBeforeConnectWaitForExit = chkWaitForExit.Checked;
-                favorite.ToolBarIcon = currentToolBarFileName;                
-                
+                favorite.ToolBarIcon = currentToolBarFileName;
+
+                favorite.ICAApplicationName = ICAApplicationNameTextBox.Text;
+                favorite.ICAApplicationPath = ICAApplicationPath.Text;
+                favorite.ICAApplicationWorkingFolder = ICAWorkingFolder;
+
                 List<string> tagList = new List<string>();
                 foreach(ListViewItem listViewItem in lvConnectionTags.Items)
                 {
@@ -388,8 +392,8 @@ namespace Terminals
             VMRCAdminModeCheckbox.Enabled = false;
             RASGroupBox.Enabled = false;
 
-            ApplicationNameTextBox.Enabled = false;
-            ICAWorkingFolderTextBox.Enabled = false;
+            ICAApplicationNameTextBox.Enabled = false;
+            ICAApplicationPath.Enabled = false;
 
             txtPort.Enabled = true;
 
@@ -425,8 +429,8 @@ namespace Terminals
             }
             else if(ProtocolComboBox.Text == "ICA Citrix")
             {
-                ApplicationNameTextBox.Enabled = true;
-                ICAWorkingFolderTextBox.Enabled = true;
+                ICAApplicationNameTextBox.Enabled = true;
+                ICAApplicationPath.Enabled = true;
                 defaultPort = Connections.ConnectionManager.ICAPort.ToString();
             }
 

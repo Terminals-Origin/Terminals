@@ -627,28 +627,40 @@ namespace Terminals
             Name = name;
         }
 
-        [ConfigurationProperty("applicationName", IsRequired = false, DefaultValue = "")]
-        public string ApplicationName
+        [ConfigurationProperty("ICAApplicationName", IsRequired = false, DefaultValue = "")]
+        public string ICAApplicationName
         {
             get
             {
-                return (string)this["applicationName"];
+                return (string)this["ICAApplicationName"];
             }
             set
             {
-                this["applicationName"] = value;
+                this["ICAApplicationName"] = value;
             }
         }
-        [ConfigurationProperty("applicationWorkingFolder", IsRequired = false, DefaultValue = "")]
-        public string ApplicationWorkingFolder
+        [ConfigurationProperty("ICAApplicationWorkingFolder", IsRequired = false, DefaultValue = "")]
+        public string ICAApplicationWorkingFolder
         {
             get
             {
-                return (string)this["applicationWorkingFolder"];
+                return (string)this["ICAApplicationWorkingFolder"];
             }
             set
             {
-                this["applicationWorkingFolder"] = value;
+                this["ICAApplicationWorkingFolder"] = value;
+            }
+        }
+        [ConfigurationProperty("ICAApplicationPath", IsRequired = false, DefaultValue = "")]
+        public string ICAApplicationPath
+        {
+            get
+            {
+                return (string)this["ICAApplicationPath"];
+            }
+            set
+            {
+                this["ICAApplicationPath"] = value;
             }
         }
         [ConfigurationProperty("vmrcreducedcolorsmode", IsRequired = true, DefaultValue=false)]

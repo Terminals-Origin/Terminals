@@ -121,7 +121,9 @@ namespace Terminals
         this.lvConnectionTags = new System.Windows.Forms.ListView();
         this.tabPage6 = new System.Windows.Forms.TabPage();
         this.ICAtabPage = new System.Windows.Forms.TabPage();
-        this.ApplicationNameTextBox = new System.Windows.Forms.TextBox();
+        this.ICAApplicationPath = new System.Windows.Forms.TextBox();
+        this.label22 = new System.Windows.Forms.Label();
+        this.ICAApplicationNameTextBox = new System.Windows.Forms.TextBox();
         this.label21 = new System.Windows.Forms.Label();
         this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
         this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -130,8 +132,8 @@ namespace Terminals
         this.fontDialog1 = new System.Windows.Forms.FontDialog();
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
-        this.ICAWorkingFolderTextBox = new System.Windows.Forms.TextBox();
-        this.label22 = new System.Windows.Forms.Label();
+        this.ICAWorkingFolder = new System.Windows.Forms.TextBox();
+        this.label23 = new System.Windows.Forms.Label();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -512,7 +514,7 @@ namespace Terminals
         this.RDPLocalResourcesTabPage.Location = new System.Drawing.Point(4, 22);
         this.RDPLocalResourcesTabPage.Name = "RDPLocalResourcesTabPage";
         this.RDPLocalResourcesTabPage.Padding = new System.Windows.Forms.Padding(3);
-        this.RDPLocalResourcesTabPage.Size = new System.Drawing.Size(379, 207);
+        this.RDPLocalResourcesTabPage.Size = new System.Drawing.Size(398, 207);
         this.RDPLocalResourcesTabPage.TabIndex = 1;
         this.RDPLocalResourcesTabPage.Text = "Local Resources";
         this.RDPLocalResourcesTabPage.UseVisualStyleBackColor = true;
@@ -1119,9 +1121,11 @@ namespace Terminals
         // 
         // ICAtabPage
         // 
-        this.ICAtabPage.Controls.Add(this.ICAWorkingFolderTextBox);
+        this.ICAtabPage.Controls.Add(this.ICAWorkingFolder);
+        this.ICAtabPage.Controls.Add(this.label23);
+        this.ICAtabPage.Controls.Add(this.ICAApplicationPath);
         this.ICAtabPage.Controls.Add(this.label22);
-        this.ICAtabPage.Controls.Add(this.ApplicationNameTextBox);
+        this.ICAtabPage.Controls.Add(this.ICAApplicationNameTextBox);
         this.ICAtabPage.Controls.Add(this.label21);
         this.ICAtabPage.Location = new System.Drawing.Point(4, 22);
         this.ICAtabPage.Name = "ICAtabPage";
@@ -1130,22 +1134,39 @@ namespace Terminals
         this.ICAtabPage.Text = "ICA Citrix";
         this.ICAtabPage.UseVisualStyleBackColor = true;
         // 
-        // ApplicationNameTextBox
+        // ICAApplicationPath
         // 
-        this.ApplicationNameTextBox.Enabled = false;
-        this.ApplicationNameTextBox.Location = new System.Drawing.Point(102, 10);
-        this.ApplicationNameTextBox.Name = "ApplicationNameTextBox";
-        this.ApplicationNameTextBox.Size = new System.Drawing.Size(226, 21);
-        this.ApplicationNameTextBox.TabIndex = 1;
+        this.ICAApplicationPath.Enabled = false;
+        this.ICAApplicationPath.Location = new System.Drawing.Point(145, 37);
+        this.ICAApplicationPath.Name = "ICAApplicationPath";
+        this.ICAApplicationPath.Size = new System.Drawing.Size(226, 21);
+        this.ICAApplicationPath.TabIndex = 3;
+        // 
+        // label22
+        // 
+        this.label22.AutoSize = true;
+        this.label22.Location = new System.Drawing.Point(3, 40);
+        this.label22.Name = "label22";
+        this.label22.Size = new System.Drawing.Size(88, 13);
+        this.label22.TabIndex = 2;
+        this.label22.Text = "Application Path:";
+        // 
+        // ICAApplicationNameTextBox
+        // 
+        this.ICAApplicationNameTextBox.Enabled = false;
+        this.ICAApplicationNameTextBox.Location = new System.Drawing.Point(145, 10);
+        this.ICAApplicationNameTextBox.Name = "ICAApplicationNameTextBox";
+        this.ICAApplicationNameTextBox.Size = new System.Drawing.Size(226, 21);
+        this.ICAApplicationNameTextBox.TabIndex = 1;
         // 
         // label21
         // 
         this.label21.AutoSize = true;
         this.label21.Location = new System.Drawing.Point(3, 13);
         this.label21.Name = "label21";
-        this.label21.Size = new System.Drawing.Size(93, 13);
+        this.label21.Size = new System.Drawing.Size(38, 13);
         this.label21.TabIndex = 0;
-        this.label21.Text = "Application Name:";
+        this.label21.Text = "Name:";
         // 
         // chkAddtoToolbar
         // 
@@ -1184,22 +1205,22 @@ namespace Terminals
         this.ras1.UserName = null;
         this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
         // 
-        // ICAWorkingFolderTextBox
+        // ICAWorkingFolder
         // 
-        this.ICAWorkingFolderTextBox.Enabled = false;
-        this.ICAWorkingFolderTextBox.Location = new System.Drawing.Point(102, 37);
-        this.ICAWorkingFolderTextBox.Name = "ICAWorkingFolderTextBox";
-        this.ICAWorkingFolderTextBox.Size = new System.Drawing.Size(226, 21);
-        this.ICAWorkingFolderTextBox.TabIndex = 3;
+        this.ICAWorkingFolder.Enabled = false;
+        this.ICAWorkingFolder.Location = new System.Drawing.Point(145, 64);
+        this.ICAWorkingFolder.Name = "ICAWorkingFolder";
+        this.ICAWorkingFolder.Size = new System.Drawing.Size(226, 21);
+        this.ICAWorkingFolder.TabIndex = 5;
         // 
-        // label22
+        // label23
         // 
-        this.label22.AutoSize = true;
-        this.label22.Location = new System.Drawing.Point(3, 40);
-        this.label22.Name = "label22";
-        this.label22.Size = new System.Drawing.Size(83, 13);
-        this.label22.TabIndex = 2;
-        this.label22.Text = "Working Folder:";
+        this.label23.AutoSize = true;
+        this.label23.Location = new System.Drawing.Point(3, 67);
+        this.label23.Name = "label23";
+        this.label23.Size = new System.Drawing.Size(138, 13);
+        this.label23.TabIndex = 4;
+        this.label23.Text = "Application Working Folder:";
         // 
         // NewTerminalForm
         // 
@@ -1361,9 +1382,11 @@ namespace Terminals
       private System.Windows.Forms.ListBox RASDetailsListBox;
       private System.Windows.Forms.PictureBox pictureBox2;
       private System.Windows.Forms.TabPage ICAtabPage;
-      private System.Windows.Forms.TextBox ApplicationNameTextBox;
+      private System.Windows.Forms.TextBox ICAApplicationNameTextBox;
       private System.Windows.Forms.Label label21;
-      private System.Windows.Forms.TextBox ICAWorkingFolderTextBox;
+      private System.Windows.Forms.TextBox ICAApplicationPath;
       private System.Windows.Forms.Label label22;
+      private System.Windows.Forms.TextBox ICAWorkingFolder;
+      private System.Windows.Forms.Label label23;
   }
 }

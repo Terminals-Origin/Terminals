@@ -62,8 +62,9 @@ namespace Terminals.Connections {
             {
                 iIcaClient.ConnectionEntry = Favorite.ApplicationName;
                 //iIcaClient.Application = favorite.applicationName;
-                iIcaClient.InitialProgram = Favorite.ApplicationName;
-                iIcaClient.WorkDirectory = Favorite.ApplicationWorkingFolder;
+                iIcaClient.InitialProgram = Favorite.ICAApplicationName;
+                iIcaClient.Application = Favorite.ICAApplicationPath;
+                iIcaClient.WorkDirectory = Favorite.ICAApplicationWorkingFolder;
             }
 
 
