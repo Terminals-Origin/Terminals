@@ -156,12 +156,18 @@ namespace Terminals
         }
 
 
-        public static DockBarConfigurationElementCollection UISettings
+        public static DockBarConfigurationElementCollection DockBars
         {
             get
             {
                 Configuration configuration = GetConfiguration();
                 return GetSection(configuration).DockBars;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).DockBars = value;
+                configuration.Save();
             }
         }
 

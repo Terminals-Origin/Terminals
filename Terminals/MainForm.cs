@@ -81,16 +81,78 @@ namespace Terminals
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
         }
+        void SaveUISettings()
+        {
+            //ToolStripManager.SaveSettings(this);
+            DockBarConfigurationElementCollection DockBars = Settings.DockBars;
 
+            DockBars.Clear();
+
+            SaveMenuSettings(DockBars, "MainMenu", this.MainMenuHolder);
+            SaveMenuSettings(DockBars, "Standard", this.StandardToolbarHolder);
+            SaveMenuSettings(DockBars, "Favorites", this.FavoriteToolBarHolder);
+
+            Settings.DockBars = DockBars;
+
+        }
+        void SaveMenuSettings(DockBarConfigurationElementCollection DockBars, string ConfigName, ToolBarDockHolder Holder)
+        {
+            DockBarConfigurationElement Config = new DockBarConfigurationElement(ConfigName);
+
+            Config.DockStyle = Holder.DockStyle.ToString();
+            Config.ToolbarTitle = Holder.ToolbarTitle;
+            Config.Visible = Holder.Visible;
+            if (Holder.DockStyle == DockStyle.None)
+            {
+                Config.X = Holder.FloatForm.Location.X;
+                Config.Y = Holder.FloatForm.Location.Y;
+            }
+            else
+            {
+                Config.X = Holder.PreferredDockedLocation.X;
+                Config.Y = Holder.PreferredDockedLocation.Y;
+            }
+
+            DockBars.Add(Config);
+        }
         void ApplyUISettings()
         {
-            DockBarConfigurationElementCollection UISettings = Settings.UISettings;
-            if (UISettings != null)
+            DockBarConfigurationElementCollection DockBars = Settings.DockBars;
+
+            ApplyDockBarSettings(DockBars, "MainMenu", this.MainMenuHolder);
+            ApplyDockBarSettings(DockBars, "Standard", this.StandardToolbarHolder);
+            ApplyDockBarSettings(DockBars, "Favorites", this.FavoriteToolBarHolder);
+
+
+        }
+        void ApplyDockBarSettings(DockBarConfigurationElementCollection DockBars, string ConfigName, ToolBarDockHolder MainMenuHolder)
+        {
+            DockBarConfigurationElement mainMenuConfig = DockBars[ConfigName];
+
+            if (mainMenuConfig != null)
             {
 
-            }
-        }
+                MainMenuHolder.ToolbarTitle = mainMenuConfig.ToolbarTitle;
+                MainMenuHolder.Visible = mainMenuConfig.Visible;
 
+
+                MainMenuHolder.DockStyle = (DockStyle)System.Enum.Parse(typeof(DockStyle), mainMenuConfig.DockStyle);
+
+                if (MainMenuHolder.DockStyle == DockStyle.None)
+                {
+                    MainMenuHolder.FloatForm.Location = new Point(mainMenuConfig.X, mainMenuConfig.Y);
+
+                }
+                else
+                {
+                    MainMenuHolder.Location = new Point(mainMenuConfig.X, mainMenuConfig.Y);
+                    MainMenuHolder.PreferredDockedLocation = new Point(mainMenuConfig.X, mainMenuConfig.Y);
+
+
+                }
+            }
+           
+        }
 
         void SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
             Connect(e.ClickedItem.Text);
@@ -821,29 +883,33 @@ namespace Terminals
             Settings.CreateSavedConnectionsList(activeConnections.ToArray());
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            if(tcTerminals.Items.Count > 0) {
-                if(Settings.ShowConfirmDialog) {
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (tcTerminals.Items.Count > 0)
+            {
+                if (Settings.ShowConfirmDialog)
+                {
                     SaveActiveConnectionsForm frmSaveActiveConnections = new SaveActiveConnectionsForm();
-                    if(frmSaveActiveConnections.ShowDialog() == DialogResult.OK) {
+                    if (frmSaveActiveConnections.ShowDialog() == DialogResult.OK)
+                    {
                         Settings.ShowConfirmDialog = !frmSaveActiveConnections.chkDontShowDialog.Checked;
-                        if(frmSaveActiveConnections.chkOpenOnNextTime.Checked) {
+                        if (frmSaveActiveConnections.chkOpenOnNextTime.Checked)
+                        {
                             SaveActiveConnections();
                         }
                         e.Cancel = false;
-                    } else {
+                    }
+                    else
+                    {
                         e.Cancel = true;
                     }
-                } else if(Settings.SaveConnectionsOnClose) {
+                }
+                else if (Settings.SaveConnectionsOnClose)
+                {
                     SaveActiveConnections();
                 }
             }
-            if (e.Cancel)
-            {
-            //    Terminals.Docking.DockSavePositions pos = toolBarManager.Positions;
-            //    Settings.UIDockSavePositions = pos;
-                ToolStripManager.SaveSettings(this);
-            }
+            SaveUISettings();
 
         }
 
