@@ -155,6 +155,52 @@ namespace Terminals
             configuration.Save();
         }
 
+        private static Terminals.Docking.DockSavePositions _DockSavePositions = null;
+        public static Terminals.Docking.DockSavePositions UIDockSavePositions
+        {
+            get
+            {
+                if (_DockSavePositions != null) return _DockSavePositions;
+
+                Configuration configuration = GetConfiguration();
+
+                string pos = GetSection(configuration).UISettings.DockSavePositions;
+
+                if (pos != null && pos != "")
+                {
+                    _DockSavePositions = (Terminals.Docking.DockSavePositions)Unified.Serialize.DeSerializeXML(pos, typeof(Terminals.Docking.DockSavePositions), false);
+                }
+                return _DockSavePositions;
+            }
+            set
+            {
+                string pos = "";
+                if (value != null)
+                {
+                    _DockSavePositions = value;
+                    using (System.IO.MemoryStream stm = Unified.Serialize.SerializeXML(_DockSavePositions, typeof(Terminals.Docking.DockSavePositions), false))
+                    {
+                        if (stm.CanSeek && stm.Position > 0) stm.Position = 0;
+                        byte[] buff = new byte[(int)stm.Length];
+                        stm.Read(buff, 0, buff.Length);
+                        pos = System.Text.ASCIIEncoding.Default.GetString(buff);
+                    }
+                }
+
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).UISettings.DockSavePositions = pos;
+                configuration.Save();
+            }
+        }
+        public static UIConfigurationElement UISettings
+        {
+            get
+            {
+                Configuration configuration = GetConfiguration();
+                return GetSection(configuration).UISettings;
+            }
+        }
+
         public static void CreateSavedConnectionsList(string[] names)
         {
             Configuration configuration = GetConfiguration();

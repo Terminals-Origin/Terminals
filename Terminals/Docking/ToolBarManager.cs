@@ -33,6 +33,53 @@ namespace rpaulo.toolbar
 		ToolBarDockArea _bottom;
 		public ToolBarDockArea Bottom { get { return _bottom; } }
 
+        public Terminals.Docking.DockSavePositions Positions
+        {
+            get
+            {
+                Terminals.Docking.DockSavePositions positions = new Terminals.Docking.DockSavePositions();
+                foreach (ToolBarDockHolder holder in _holders)
+                {
+                    
+                }
+                if (Left != null) positions.Left = Left.Position;
+                if (Right != null) positions.Right = Right.Position;
+                if (Top != null) positions.Top = Top.Position;
+                if (Bottom != null) positions.Bottom = Bottom.Position;
+                return positions;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    if (value.Left != null)
+                    {
+                        if (_left == null) _left = new ToolBarDockArea(this, DockStyle.Left);
+                        _left.Visible = true;
+                        Left.Position = value.Left;
+                    }
+                    if (value.Right != null)
+                    {
+                        if (_right == null) _right = new ToolBarDockArea(this, DockStyle.Right);
+                        _right.Visible = true;
+                        Right.Position = value.Right;
+                    }
+                    if (value.Top != null)
+                    {
+                        if (_top == null) _top = new ToolBarDockArea(this, DockStyle.Top);
+                        _top.Visible = true;
+                        Top.Position = value.Top;
+                    }
+                    if (value.Bottom != null)
+                    {
+                        if (_bottom == null) _bottom = new ToolBarDockArea(this, DockStyle.Bottom);
+                        _bottom.Visible = true;
+                        Bottom.Position = value.Bottom;
+                    }
+                }
+            }
+        }
+
 
 		public ToolBarManager(ScrollableControl dockStation, Form mainForm)
 		{

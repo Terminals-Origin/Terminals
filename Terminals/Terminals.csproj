@@ -78,6 +78,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\TransPort2006.Design.dll</HintPath>
     </Reference>
+    <Reference Include="VMRCClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\VMRCActiveXClient\VMRCClient.dll</HintPath>
+    </Reference>
     <Reference Include="VncSharp, Version=0.88.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\VncSharp.dll</HintPath>
@@ -128,6 +132,8 @@
     </Compile>
     <Compile Include="Docking\AllowedBorders.cs" />
     <Compile Include="Docking\DockLocation.cs" />
+    <Compile Include="Docking\DockSavePosition.cs" />
+    <Compile Include="Docking\DockSavePositions.cs" />
     <Compile Include="Docking\ToolBarDockArea.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -391,24 +397,6 @@
       <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
       <Name>TabControl</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="Microsoft.VMRCClientControl.Interop">
-      <Guid>{9D2367D8-8221-4433-98C7-58C1A2CFA384}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>1</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
-    <COMReference Include="VMRCClientControlLib">
-      <Guid>{9D2367D8-8221-4433-98C7-58C1A2CFA384}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

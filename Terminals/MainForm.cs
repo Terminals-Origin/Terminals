@@ -54,12 +54,29 @@ namespace Terminals
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
                 toolBarManager = new ToolBarManager(this.toolStripContainer.ContentPanel, this);
                 toolBarManager.AddControl(this.toolbarStd);
+                
                 toolBarManager.MainForm.BackColor = this.toolStripContainer.ContentPanel.BackColor;
+
+                //ApplyUISettings();
+
+
             } catch(Exception exc) {
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
             
 
+        }
+
+        void ApplyUISettings()
+        {
+            UIConfigurationElement UISettings = Settings.UISettings;
+            if (UISettings != null)
+            {
+                if (Settings.UIDockSavePositions != null)
+                {
+                    this.toolBarManager.Positions = Settings.UIDockSavePositions;
+                }
+            }
         }
 
 
@@ -807,7 +824,13 @@ namespace Terminals
                     SaveActiveConnections();
                 }
             }
-            ToolStripManager.SaveSettings(this);
+            if (e.Cancel)
+            {
+            //    Terminals.Docking.DockSavePositions pos = toolBarManager.Positions;
+            //    Settings.UIDockSavePositions = pos;
+                ToolStripManager.SaveSettings(this);
+            }
+
         }
 
         private void timerHover_Tick(object sender, EventArgs e) {

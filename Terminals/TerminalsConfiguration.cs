@@ -8,7 +8,7 @@ namespace Terminals
     public enum DesktopSize { x640 = 0, x800, x1024, FitToWindow, FullScreen, AutoScale };
     public enum Colors { Bits8 = 0, Bit16, Bits24, Bits32 };
     public enum RemoteSounds { Redirect = 0, PlayOnServer = 1, DontPlay = 2 };
-    
+
     public class TerminalsConfigurationSection : ConfigurationSection
     {
         public TerminalsConfigurationSection()
@@ -100,6 +100,20 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("ui")]
+        [ConfigurationCollection(typeof(UIConfigurationElement))]
+        public UIConfigurationElement UISettings
+        {
+            get
+            {
+                return (UIConfigurationElement)this["ui"];
+            }
+            set
+            {
+                this["ui"] = value;
+            }
+        }
+
         [ConfigurationProperty("tags")]
         [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]
         public MRUItemConfigurationElementCollection Tags
@@ -115,76 +129,94 @@ namespace Terminals
         }
 
         [ConfigurationProperty("showUserNameInTitle")]
-        public bool ShowUserNameInTitle {
-            get {
+        public bool ShowUserNameInTitle
+        {
+            get
+            {
                 return (bool)this["showUserNameInTitle"];
             }
-            set {
+            set
+            {
                 this["showUserNameInTitle"] = value;
             }
         }
 
-    [ConfigurationProperty("portScanTimeoutSeconds", DefaultValue=5)]
-        public int PortScanTimeoutSeconds {
-            get {
+        [ConfigurationProperty("portScanTimeoutSeconds", DefaultValue = 5)]
+        public int PortScanTimeoutSeconds
+        {
+            get
+            {
                 int timeout = 5;
-                if (this["portScanTimeoutSeconds"] != null && this["portScanTimeoutSeconds"].ToString() != string.Empty) {
-                    int.TryParse(this["portScanTimeoutSeconds"].ToString(),out timeout);
+                if (this["portScanTimeoutSeconds"] != null && this["portScanTimeoutSeconds"].ToString() != string.Empty)
+                {
+                    int.TryParse(this["portScanTimeoutSeconds"].ToString(), out timeout);
                 }
                 return timeout;
             }
-            set {
+            set
+            {
                 this["portScanTimeoutSeconds"] = value;
             }
         }
-        
+
         [ConfigurationProperty("minimizeToTray", DefaultValue = true)]
-        public bool MinimizeToTray {
-            get {
+        public bool MinimizeToTray
+        {
+            get
+            {
                 if (this["minimizeToTray"] == null || this["minimizeToTray"].ToString() == string.Empty) return true;
                 bool min = true;
                 bool.TryParse(this["minimizeToTray"].ToString(), out min);
                 return min;
             }
-            set {
+            set
+            {
                 this["minimizeToTray"] = value;
             }
         }
         [ConfigurationProperty("warnOnConnectionClose", DefaultValue = true)]
         public bool WarnOnConnectionClose
         {
-            get {
-                if(this["warnOnConnectionClose"] == null || this["warnOnConnectionClose"].ToString() == string.Empty) return true;
+            get
+            {
+                if (this["warnOnConnectionClose"] == null || this["warnOnConnectionClose"].ToString() == string.Empty) return true;
                 bool min = true;
                 bool.TryParse(this["warnOnConnectionClose"].ToString(), out min);
                 return min;
             }
-            set {
+            set
+            {
                 this["warnOnConnectionClose"] = value;
             }
         }
         [ConfigurationProperty("forceComputerNamesAsURI", DefaultValue = true)]
         public bool ForceComputerNamesAsURI
         {
-            get {
-                if(this["forceComputerNamesAsURI"] == null || this["forceComputerNamesAsURI"].ToString() == string.Empty) return true;
+            get
+            {
+                if (this["forceComputerNamesAsURI"] == null || this["forceComputerNamesAsURI"].ToString() == string.Empty) return true;
                 bool min = true;
                 bool.TryParse(this["forceComputerNamesAsURI"].ToString(), out min);
                 return min;
             }
-            set {
+            set
+            {
                 this["forceComputerNamesAsURI"] = value;
             }
         }
         [ConfigurationProperty("terminalsPassword", DefaultValue = "")]
-        public string TerminalsPassword {
-            get {
+        public string TerminalsPassword
+        {
+            get
+            {
                 return Convert.ToString(this["terminalsPassword"]);
             }
-            set {
+            set
+            {
                 this["terminalsPassword"] = "";
                 //hash the password
-                if (value != string.Empty) {
+                if (value != string.Empty)
+                {
                     this["terminalsPassword"] = Unified.Encryption.Hash.Hash.GetHash(value, Unified.Encryption.Hash.Hash.HashType.SHA512);
                 }
             }
@@ -360,7 +392,7 @@ namespace Terminals
             }
         }
     }
-    
+
     public class MRUItemConfigurationElementCollection : ConfigurationElementCollection
     {
         public MRUItemConfigurationElementCollection()
@@ -496,7 +528,7 @@ namespace Terminals
             BaseClear();
         }
     }
-    
+
     public class MRUItemConfigurationElement : ConfigurationElement
     {
         public MRUItemConfigurationElement()
@@ -522,7 +554,7 @@ namespace Terminals
             }
         }
     }
-    
+
     public class FavoriteConfigurationElementCollection : ConfigurationElementCollection
     {
         public FavoriteConfigurationElementCollection()
@@ -614,7 +646,7 @@ namespace Terminals
             BaseClear();
         }
     }
-    
+
     public class FavoriteConfigurationElement : ConfigurationElement
     {
         public FavoriteConfigurationElement()
@@ -626,6 +658,7 @@ namespace Terminals
         {
             Name = name;
         }
+
 
         [ConfigurationProperty("ICAApplicationName", IsRequired = false, DefaultValue = "")]
         public string ICAApplicationName
@@ -663,57 +696,75 @@ namespace Terminals
                 this["ICAApplicationPath"] = value;
             }
         }
-        [ConfigurationProperty("vmrcreducedcolorsmode", IsRequired = true, DefaultValue=false)]
-        public bool VMRCReducedColorsMode {
-            get {
+        [ConfigurationProperty("vmrcreducedcolorsmode", IsRequired = true, DefaultValue = false)]
+        public bool VMRCReducedColorsMode
+        {
+            get
+            {
                 return (bool)this["vmrcreducedcolorsmode"];
             }
-            set {
+            set
+            {
                 this["vmrcreducedcolorsmode"] = value;
             }
         }
         [ConfigurationProperty("telnet", IsRequired = true, DefaultValue = true)]
-        public bool Telnet {
-            get {
+        public bool Telnet
+        {
+            get
+            {
                 return (bool)this["telnet"];
             }
-            set {
+            set
+            {
                 this["telnet"] = value;
             }
         }
         [ConfigurationProperty("telnetrows", IsRequired = true, DefaultValue = 33)]
-        public int TelnetRows {
-            get {
+        public int TelnetRows
+        {
+            get
+            {
                 return (int)this["telnetrows"];
             }
-            set {
+            set
+            {
                 this["telnetrows"] = value;
             }
         }
         [ConfigurationProperty("telnetcols", IsRequired = true, DefaultValue = 110)]
-        public int TelnetCols {
-            get {
+        public int TelnetCols
+        {
+            get
+            {
                 return (int)this["telnetcols"];
             }
-            set {
+            set
+            {
                 this["telnetcols"] = value;
             }
         }
         [ConfigurationProperty("vmrcadministratormode", IsRequired = true, DefaultValue = false)]
-        public bool VMRCAdministratorMode {
-            get {
+        public bool VMRCAdministratorMode
+        {
+            get
+            {
                 return (bool)this["vmrcadministratormode"];
             }
-            set {
+            set
+            {
                 this["vmrcadministratormode"] = value;
             }
         }
         [ConfigurationProperty("protocol", IsRequired = true, DefaultValue = "RDP")]
-        public string Protocol {
-            get {
+        public string Protocol
+        {
+            get
+            {
                 return (string)this["protocol"];
             }
-            set {
+            set
+            {
                 this["protocol"] = value;
             }
         }
@@ -730,39 +781,51 @@ namespace Terminals
             }
         }
         [ConfigurationProperty("telnetfont", IsRequired = true, DefaultValue = "[Font: Name=Microsoft Sans Serif, Size=10]")]
-        public string TelnetFont {
-            get {
+        public string TelnetFont
+        {
+            get
+            {
                 return (string)this["telnetfont"];
             }
-            set {
+            set
+            {
                 this["telnetfont"] = value;
             }
         }
         [ConfigurationProperty("telnetbackcolor", IsRequired = true, DefaultValue = "Black")]
-        public string TelnetBackColor {
-            get {
+        public string TelnetBackColor
+        {
+            get
+            {
                 return (string)this["telnetbackcolor"];
             }
-            set {
+            set
+            {
                 this["telnetbackcolor"] = value;
             }
         }
 
         [ConfigurationProperty("telnettextcolor", IsRequired = true, DefaultValue = "White")]
-        public string TelnetTextColor {
-            get {
+        public string TelnetTextColor
+        {
+            get
+            {
                 return (string)this["telnettextcolor"];
             }
-            set {
+            set
+            {
                 this["telnettextcolor"] = value;
             }
         }
         [ConfigurationProperty("telnetcursorcolor", IsRequired = true, DefaultValue = "Green")]
-        public string TelnetCursorColor {
-            get {
+        public string TelnetCursorColor
+        {
+            get
+            {
                 return (string)this["telnetcursorcolor"];
             }
-            set {
+            set
+            {
                 this["telnetcursorcolor"] = value;
             }
         }
@@ -1087,7 +1150,7 @@ namespace Terminals
             }
             set
             {
-                this["tags"] =  value;
+                this["tags"] = value;
             }
         }
 
@@ -1120,7 +1183,7 @@ namespace Terminals
             }
         }
     }
-    
+
     public class GroupConfigurationElementCollection : ConfigurationElementCollection
     {
         public GroupConfigurationElementCollection()
@@ -1256,7 +1319,7 @@ namespace Terminals
             BaseClear();
         }
     }
-    
+
     public class FavoriteAliasConfigurationElementCollection : ConfigurationElementCollection
     {
         public FavoriteAliasConfigurationElementCollection()
@@ -1392,7 +1455,7 @@ namespace Terminals
             BaseClear();
         }
     }
-    
+
     public class FavoriteAliasConfigurationElement : ConfigurationElement
     {
         public FavoriteAliasConfigurationElement()
@@ -1418,7 +1481,7 @@ namespace Terminals
             }
         }
     }
-    
+
     public class GroupConfigurationElement : ConfigurationElement
     {
         public GroupConfigurationElement()
@@ -1444,6 +1507,8 @@ namespace Terminals
             }
         }
 
+
+
         [ConfigurationProperty("favoriteAliases")]
         [ConfigurationCollection(typeof(FavoriteAliasConfigurationElementCollection))]
         public FavoriteAliasConfigurationElementCollection FavoriteAliases
@@ -1455,6 +1520,23 @@ namespace Terminals
             set
             {
                 this["favoriteAliases"] = value;
+            }
+        }
+
+    }
+
+    public class UIConfigurationElement : ConfigurationElement
+    {
+        [ConfigurationProperty("dockSavePositions")]
+        public string DockSavePositions
+        {
+            get
+            {
+                return (string)this["dockSavePositions"];
+            }
+            set
+            {
+                this["dockSavePositions"] = value;
             }
         }
     }
