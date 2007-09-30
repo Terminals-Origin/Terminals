@@ -48,18 +48,18 @@ namespace Terminals
                 _formSettings = new FormSettings(this);
                 InitializeComponent();
 
-                toolBarManager = new ToolBarManager(this.toolStripContainer.ContentPanel, this);
+                toolBarManager = new ToolBarManager(this, this);
 
                 MainMenuHolder = toolBarManager.AddControl(this.MainMenuStrip);
                 MainMenuHolder.ToolbarTitle = "Main Menu";
 
-                StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd, DockStyle.Top, MainMenuStrip, DockStyle.Bottom);
+                StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd);
                 StandardToolbarHolder.ToolbarTitle = "Standard Toolbar";
 
                 FavoriteToolBarHolder = toolBarManager.AddControl(this.favoriteToolBar);
                 FavoriteToolBarHolder.ToolbarTitle = "Favorites";
 
-                SpecialCommandsToolBarHolder = toolBarManager.AddControl(this.SpecialCommandsToolStrip, DockStyle.Top, MainMenuStrip, DockStyle.Bottom);
+                SpecialCommandsToolBarHolder = toolBarManager.AddControl(this.SpecialCommandsToolStrip);
                 SpecialCommandsToolBarHolder.ToolbarTitle = "Special Commands";
 
                 toolBarManager.MainForm.BackColor = this.toolStripContainer.ContentPanel.BackColor;
@@ -78,7 +78,7 @@ namespace Terminals
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
 
-                ApplyUISettings();
+                LoadToolbarSettings();
 
             }
             catch (Exception exc)
@@ -86,78 +86,25 @@ namespace Terminals
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
         }
-        void SaveUISettings()
+        private void LoadToolbarSettings()
         {
-            //ToolStripManager.SaveSettings(this);
-            DockBarConfigurationElementCollection DockBars = Settings.DockBars;
-
-            DockBars.Clear();
-
-            SaveMenuSettings(DockBars, "MainMenu", this.MainMenuHolder);
-            SaveMenuSettings(DockBars, "Standard", this.StandardToolbarHolder);
-            SaveMenuSettings(DockBars, "Favorites", this.FavoriteToolBarHolder);
-            SaveMenuSettings(DockBars, "Special", this.SpecialCommandsToolBarHolder);
-
-
-            Settings.DockBars = DockBars;
-
-        }
-        void SaveMenuSettings(DockBarConfigurationElementCollection DockBars, string ConfigName, ToolBarDockHolder Holder)
-        {
-            DockBarConfigurationElement Config = new DockBarConfigurationElement(ConfigName);
-
-            Config.DockStyle = Holder.DockStyle.ToString();
-            Config.ToolbarTitle = Holder.ToolbarTitle;
-            Config.Visible = Holder.Visible;
-            if (Holder.DockStyle == DockStyle.None)
+            if (toolBarManager != null)
             {
-                Config.X = Holder.FloatForm.Location.X;
-                Config.Y = Holder.FloatForm.Location.Y;
+                string fileName = "toolbars.settings";
+
+                if (File.Exists(fileName))
+                {
+                    StreamReader reader = new StreamReader(fileName);
+                    Debug.Assert(reader != null);
+                    if (reader != null)
+                    {
+                        toolBarManager.Load(reader);
+
+                        reader.Close();
+                        reader = null;
+                    }
+                }
             }
-            else
-            {
-                Config.X = Holder.PreferredDockedLocation.X;
-                Config.Y = Holder.PreferredDockedLocation.Y;
-            }
-
-            DockBars.Add(Config);
-        }
-        void ApplyUISettings()
-        {
-            DockBarConfigurationElementCollection DockBars = Settings.DockBars;
-
-            ApplyDockBarSettings(DockBars, "MainMenu", this.MainMenuHolder);
-            ApplyDockBarSettings(DockBars, "Standard", this.StandardToolbarHolder);
-            ApplyDockBarSettings(DockBars, "Favorites", this.FavoriteToolBarHolder);
-            ApplyDockBarSettings(DockBars, "Special", this.SpecialCommandsToolBarHolder);
-
-
-
-        }
-        void ApplyDockBarSettings(DockBarConfigurationElementCollection DockBars, string ConfigName, ToolBarDockHolder MainMenuHolder)
-        {
-            DockBarConfigurationElement mainMenuConfig = DockBars[ConfigName];
-
-            if (mainMenuConfig != null)
-            {
-
-                MainMenuHolder.ToolbarTitle = mainMenuConfig.ToolbarTitle;
-                MainMenuHolder.Visible = mainMenuConfig.Visible;
-
-
-                //MainMenuHolder.DockStyle = (DockStyle)System.Enum.Parse(typeof(DockStyle), mainMenuConfig.DockStyle);
-
-                //if (MainMenuHolder.DockStyle == DockStyle.None)
-                //{
-                //    MainMenuHolder.FloatForm.Location = new Point(mainMenuConfig.X, mainMenuConfig.Y);
-                //}
-                //else
-                //{
-                //    MainMenuHolder.Location = new Point(mainMenuConfig.X, mainMenuConfig.Y);
-                //    MainMenuHolder.PreferredDockedLocation = new Point(mainMenuConfig.X, mainMenuConfig.Y);
-                //}
-            }
-
         }
         void LoadSpecialCommands()
         {
@@ -1089,10 +1036,27 @@ namespace Terminals
                     SaveActiveConnections();
                 }
             }
-            SaveUISettings();
+            SaveToolbarSettings();
 
         }
 
+        private void SaveToolbarSettings()
+        {
+            if (toolBarManager != null)
+            {
+                string fileName = "toolbars.settings";
+
+                StreamWriter writer = new StreamWriter(fileName);
+                Debug.Assert(writer != null);
+                if (writer != null)
+                {
+                    toolBarManager.Save(writer);
+
+                    writer.Close();
+                    writer = null;
+                }
+            }
+        }
         private void timerHover_Tick(object sender, EventArgs e)
         {
             if (timerHover.Enabled)
@@ -1630,6 +1594,40 @@ namespace Terminals
 
             SpecialCommandConfigurationElement elm = (e.ClickedItem.Tag as SpecialCommandConfigurationElement);
             if (elm != null) elm.Launch();
+        }
+
+        private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            MainMenuHolder.Visible = !MainMenuHolder.Visible;
+            mainMenuToolStripMenuItem.Checked = MainMenuHolder.Visible;
+        }
+
+        private void standardToolbarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StandardToolbarHolder.Visible = !StandardToolbarHolder.Visible;
+            standardToolbarToolStripMenuItem.Checked = StandardToolbarHolder.Visible;
+        }
+
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            FavoriteToolBarHolder.Visible = !FavoriteToolBarHolder.Visible;
+            toolStripMenuItem4.Checked = FavoriteToolBarHolder.Visible;
+        }
+
+        private void shortcutsToolStripMenuItem_Click(object sender, EventArgs e)
+        {            
+            SpecialCommandsToolBarHolder.Visible = !SpecialCommandsToolBarHolder.Visible;
+            shortcutsToolStripMenuItem.Checked = SpecialCommandsToolBarHolder.Visible;
+        }
+
+        private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            this.shortcutsToolStripMenuItem.Checked = this.SpecialCommandsToolBarHolder.Visible;
+            this.mainMenuToolStripMenuItem.Checked = this.MainMenuHolder.Visible;
+            this.toolStripMenuItem4.Checked = this.FavoriteToolBarHolder.Visible;
+            this.standardToolbarToolStripMenuItem.Checked = this.StandardToolbarHolder.Visible;
+
         }
     }
 

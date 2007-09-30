@@ -113,8 +113,6 @@
     <Compile Include="Configuration\MRUItemConfigurationElement.cs" />
     <Compile Include="Configuration\MRUItemConfigurationElementCollection.cs" />
     <Compile Include="Configuration\TerminalsConfigurationSection.cs" />
-    <Compile Include="Configuration\DockBarConfigurationElement.cs" />
-    <Compile Include="Configuration\DockBarConfigurationElementCollection.cs" />
     <Compile Include="Connections\Connection.cs">
       <SubType>Component</SubType>
     </Compile>

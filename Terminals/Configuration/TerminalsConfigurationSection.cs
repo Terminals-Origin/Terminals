@@ -14,7 +14,7 @@ namespace Terminals
         }
 
         [ConfigurationProperty("specialCommands")]
-        [ConfigurationCollection(typeof(DockBarConfigurationElementCollection))]
+        [ConfigurationCollection(typeof(SpecialCommandConfigurationElement))]
         public SpecialCommandConfigurationElementCollection SpecialCommands
         {
             get
@@ -27,19 +27,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("dockBars")]
-        [ConfigurationCollection(typeof(DockBarConfigurationElementCollection))]
-        public DockBarConfigurationElementCollection DockBars
-        {
-            get
-            {
-                return (DockBarConfigurationElementCollection)this["dockBars"];
-            }
-            set
-            {
-                this["dockBars"] = value;
-            }
-        }
+     
 
         [ConfigurationProperty("serversMRUList")]
         [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]

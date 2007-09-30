@@ -4,6 +4,10 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Windows.Forms;
+using System.IO;
+using System.Xml;
+using System.Diagnostics;
+
 
 namespace rpaulo.toolbar
 {
@@ -466,6 +470,369 @@ namespace rpaulo.toolbar
 
 			#endregion
 		}
+
+        public void Save(StreamWriter streamWriter)
+        {
+            //			int	index	= 0;
+            //			int	count	= holders.Count;
+
+            XmlTextWriter writer = new XmlTextWriter(streamWriter);
+
+            writer.Formatting = Formatting.Indented;
+
+            writer.WriteStartElement("root");
+
+            foreach (ToolBarDockHolder holder in _holders)
+            {
+                Debug.Assert(holder != null);
+                if (holder != null)
+                {
+                    Point prefLocation = holder.PreferredDockedLocation;
+                    ToolBarDockArea area = holder.PreferredDockedArea;
+                    Control parent = holder.Parent;
+                    Point location = holder.Location;
+                    DockStyle style = holder.DockStyle;
+                    string areaString = "null";
+                    string parentString = "null";
+                    Point floatFormLocation = holder.FloatForm.Location;
+                    Size floatFormSize = holder.FloatForm.Size;
+
+                    // FloatForm
+
+                    // Area
+                    if (area == this._left)
+                        areaString = "Left";
+                    else if (area == this._right)
+                        areaString = "Right";
+                    else if (area == this._top)
+                        areaString = "Top";
+                    else if (area == this._bottom)
+                        areaString = "Bottom";
+
+                    // Parent
+                    if (parent == this._left)
+                        parentString = "Left";
+                    else if (parent == this._right)
+                        parentString = "Right";
+                    else if (parent == this._top)
+                        parentString = "Top";
+                    else if (parent == this._bottom)
+                        parentString = "Bottom";
+                    else if (parent == holder.FloatForm)
+                        parentString = "FloatForm";
+
+                    WriteToolBarDockHolder(
+                        writer,
+                        holder.ToolbarTitle,
+                        holder.Visible,
+                        prefLocation,
+                        location,
+                        areaString,
+                        parentString,
+                        style,
+                        holder.FloatForm.Visible,
+                        floatFormLocation,
+                        floatFormSize);
+
+                    // holder
+                    /*
+                                        // holder.FloatForm
+                                        writer.WriteLine(holder.FloatForm.Visible.ToString());
+                                        writer.WriteLine(floatFormLocation.X + "," + floatFormLocation.Y);
+                                        writer.WriteLine(floatFormSize.Width + "," + floatFormSize.Height);
+                    */
+                    //					index++;
+                }
+            }
+
+            writer.WriteEndElement();
+
+            writer.Flush();
+            writer.Close();
+        }
+
+        public void WriteToolBarDockHolder(
+            XmlTextWriter writer,
+            string title,
+            bool visible,
+            Point prefLocation,
+            Point location,
+            string areaString,
+            string parentString,
+            DockStyle style,
+            bool floatFormVisible,
+            Point floatFormLocation,
+            Size floatFormSize)
+        {
+            writer.WriteStartElement("ToolBarDockHolder");
+            writer.WriteAttributeString("Title", title);
+            writer.WriteElementString("Visible", XmlConvert.ToString(visible));
+
+            //writer.WriteElementString("PrefLocation", XmlConvert.ToString(prefLocation));
+            writer.WriteStartElement("PrefLocation");
+            writer.WriteElementString("X", XmlConvert.ToString(prefLocation.X));
+            writer.WriteElementString("Y", XmlConvert.ToString(prefLocation.Y));
+            writer.WriteEndElement();
+
+            //writer.WriteElementString("Location", XmlConvert.ToString(location));
+            writer.WriteStartElement("Location");
+            writer.WriteElementString("X", XmlConvert.ToString(location.X));
+            writer.WriteElementString("Y", XmlConvert.ToString(location.Y));
+            writer.WriteEndElement();
+
+            writer.WriteElementString("Area", areaString);
+            writer.WriteElementString("Parent", parentString);
+            writer.WriteElementString("Style", style.ToString());
+
+
+            writer.WriteStartElement("FloatForm");
+
+            writer.WriteElementString("Visible", XmlConvert.ToString(floatFormVisible));
+
+            writer.WriteStartElement("Location");
+            writer.WriteElementString("X", XmlConvert.ToString(floatFormLocation.X));
+            writer.WriteElementString("Y", XmlConvert.ToString(floatFormLocation.Y));
+            writer.WriteEndElement();
+
+            writer.WriteStartElement("Size");
+            writer.WriteElementString("Width", XmlConvert.ToString(floatFormSize.Width));
+            writer.WriteElementString("Height", XmlConvert.ToString(floatFormSize.Height));
+            writer.WriteEndElement();
+
+            writer.WriteEndElement();
+
+            writer.WriteEndElement();
+        }
+
+        public void Load(StreamReader streamReader)
+        {
+            Debug.Assert(streamReader != null);
+
+            try
+            {
+                XmlTextReader reader = new XmlTextReader(streamReader);
+
+                reader.WhitespaceHandling = WhitespaceHandling.None;
+
+                _left.SuspendLayout();
+                _right.SuspendLayout();
+                _top.SuspendLayout();
+                _bottom.SuspendLayout();
+
+                reader.Read();			// <root>
+                if (reader.NodeType == XmlNodeType.Element)
+                {
+                    while (!reader.EOF)
+                    {
+                        string title = "";
+                        bool visible = false;
+                        Point prefLocation = new Point();
+                        Point location = new Point();
+                        string areaString = "";
+                        string parentString = "";
+                        string styleString = "";
+                        bool floatFormVisible = false;
+                        Point floatFormLocation = new Point();
+                        Size floatFormSize = new Size();
+
+                        ReadToolBarDockHolder(
+                            reader,
+                            ref title,
+                            ref visible,
+                            ref prefLocation,
+                            ref location,
+                            ref areaString,
+                            ref parentString,
+                            ref styleString,
+                            ref floatFormVisible,
+                            ref floatFormLocation,
+                            ref floatFormSize);
+
+
+                        if (title.Length > 0)
+                        {
+                            ToolBarDockHolder holder = this.GetHolder(title);
+                            if (holder != null)
+                            {
+                                ToolBarDockArea area = null;
+                                Control parent = null;
+
+                                switch (areaString)
+                                {
+                                    case "Left":
+                                        area = this._left;
+                                        break;
+
+                                    case "Right":
+                                        area = this._right;
+                                        break;
+
+                                    case "Top":
+                                        area = this._top;
+                                        break;
+
+                                    case "Bottom":
+                                        area = this._bottom;
+                                        break;
+                                }
+
+                                switch (parentString)
+                                {
+                                    case "Left":
+                                        parent = this._left;
+                                        break;
+
+                                    case "Right":
+                                        parent = this._right;
+                                        break;
+
+                                    case "Top":
+                                        parent = this._top;
+                                        break;
+
+                                    case "Bottom":
+                                        parent = this._bottom;
+                                        break;
+
+                                    case "FloatForm":
+                                        parent = holder.FloatForm;
+                                        break;
+                                }
+
+                                //							TypeConverter pointConverter	= TypeDescriptor.GetConverter(typeof(Point));
+                                //							TypeConverter sizeConverter		= TypeDescriptor.GetConverter(typeof(Size));
+
+                                //							Point	prefLocation		= (Point)pointConverter.ConvertFromString(prefLocationString);
+                                //							Point	location			= (Point)pointConverter.ConvertFromString(locationString);
+                                //							Point	floatFormLocation	= (Point)pointConverter.ConvertFromString(floatFormLocationString);
+                                //							Size	floatFormSize		= (Size)sizeConverter.ConvertFromString(floatFormSizeString);
+
+                                if (parent == holder.FloatForm)
+                                {
+                                    // i.e. Floating Toolbar
+                                    holder.Parent = parent;
+                                    holder.Location = location;
+                                    holder.DockStyle = DockStyle.None;
+                                    //holder.Visible					= visible;
+                                    //holder.Size						= floatFormSize;
+                                    holder.FloatForm.Visible = true;
+                                    holder.FloatForm.Location = floatFormLocation;
+                                    holder.FloatForm.Size = holder.Size;
+                                    //holder.FloatForm.Size			= floatFormSize;
+
+                                    holder.FloatForm.Visible = floatFormVisible;
+                                }
+                                else
+                                {
+                                    //holder.DockStyle				= (DockStyle)Enum.Parse(typeof(DockStyle), styleString, true);
+                                    holder.DockStyle = parent.Dock;
+                                    holder.Parent = parent;
+                                    holder.PreferredDockedLocation = prefLocation;
+                                    //holder.Location					= location;
+                                    holder.Visible = visible;
+                                    holder.FloatForm.Visible = floatFormVisible;
+                                    holder.PreferredDockedArea = area;
+                                    //holder.FloatForm.Location		= floatFormLocation;
+                                    //holder.FloatForm.Size			= floatFormSize;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                _left.ResumeLayout();
+                _right.ResumeLayout();
+                _top.ResumeLayout();
+                _bottom.ResumeLayout();
+
+                _left.PerformLayout();
+                _right.PerformLayout();
+                _top.PerformLayout();
+                _bottom.PerformLayout();
+            }
+            catch (Exception ex)
+            {
+                Debug.Assert(false, ex.Message);
+            }
+        }
+
+        private bool ReadToolBarDockHolder(
+            XmlTextReader reader,
+            ref string title,
+            ref bool visible,
+            ref Point prefLocation,
+            ref Point location,
+            ref string areaString,
+            ref string parentString,
+            ref string styleString,
+            ref bool floatFormVisible,
+            ref Point floatFormLocation,
+            ref Size floatFormSize)
+        {
+            reader.Read();
+            if (reader.NodeType == XmlNodeType.Element)
+            {
+                title = reader.GetAttribute("Title");
+
+                visible = Convert.ToBoolean(reader.ReadElementString());
+
+                reader.Read();
+                if (reader.NodeType == XmlNodeType.Element)
+                {
+                    string prefLocationXString = reader.ReadElementString();
+                    string prefLocationYString = reader.ReadElementString();
+
+                    prefLocation = new Point(Convert.ToInt32(prefLocationXString), Convert.ToInt32(prefLocationYString));
+
+                    reader.Read();
+                    if (reader.NodeType == XmlNodeType.Element)
+                    {
+                        string locationXString = reader.ReadElementString();
+                        string locationYString = reader.ReadElementString();
+
+                        location = new Point(Convert.ToInt32(locationXString), Convert.ToInt32(locationYString));
+
+                        reader.Read();
+                        if (reader.NodeType == XmlNodeType.Element)
+                        {
+                            areaString = reader.ReadElementString();
+                            parentString = reader.ReadElementString();
+                            styleString = reader.ReadElementString();
+
+                            reader.Read();
+                            if (reader.NodeType == XmlNodeType.Element)
+                            {
+                                floatFormVisible = Convert.ToBoolean(reader.ReadElementString());
+
+                                reader.Read();
+                                if (reader.NodeType == XmlNodeType.Element)
+                                {
+                                    string floatFormLocationXString = reader.ReadElementString();
+                                    string floatFormLocationYString = reader.ReadElementString();
+
+                                    floatFormLocation = new Point(Convert.ToInt32(floatFormLocationXString), Convert.ToInt32(floatFormLocationYString));
+
+                                    reader.Read();
+                                    if (reader.NodeType == XmlNodeType.Element)
+                                    {
+                                        string floatFormSizeWidthString = reader.ReadElementString();
+                                        string floatFormSizeHeightString = reader.ReadElementString();
+
+                                        floatFormSize = new Size(Convert.ToInt32(floatFormSizeWidthString), Convert.ToInt32(floatFormSizeHeightString));
+
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+
 
 	}
 }

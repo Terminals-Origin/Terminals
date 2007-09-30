@@ -169,20 +169,7 @@ namespace Terminals
                 configuration.Save();
             }
         }
-        public static DockBarConfigurationElementCollection DockBars
-        {
-            get
-            {
-                Configuration configuration = GetConfiguration();
-                return GetSection(configuration).DockBars;
-            }
-            set
-            {
-                Configuration configuration = GetConfiguration();
-                GetSection(configuration).DockBars = value;
-                configuration.Save();
-            }
-        }
+
 
         public static void CreateSavedConnectionsList(string[] names)
         {
