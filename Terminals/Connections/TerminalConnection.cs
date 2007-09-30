@@ -36,13 +36,14 @@ namespace Terminals.Connections {
             term.BackColor = Color.FromName(Favorite.TelnetBackColor);
             term.Font = FontParser.ParseFontName(Favorite.TelnetFont);
             //term.ForeColor = Color.FromName(Favorite.TelnetTextColor);
-            term.CursorColor = Color.FromName(Favorite.TelnetCursorColor);
-            term.TextColor = Color.FromName(Favorite.TelnetTextColor);
+            //term.CursorColor = Color.FromName(Favorite.TelnetCursorColor);
+            //term.TextColor = Color.FromName(Favorite.TelnetTextColor);
+            term.ForeColor = Color.FromName(Favorite.TelnetTextColor);
             
             term.Username = Favorite.UserName;
             term.Password = Favorite.Password;
             term.Hostname = Favorite.ServerName;
-            term.Port = Favorite.Port;
+            //term.Port = Favorite.Port;
             term.Rows = Favorite.TelnetRows;
             
             term.Columns = Favorite.TelnetCols;

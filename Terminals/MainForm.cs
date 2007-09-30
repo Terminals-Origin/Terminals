@@ -185,7 +185,7 @@ namespace Terminals
                     Connect(e.ClickedItem.Text);
                     break;
             }
-
+            QuickContextMenu.Visible = false;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
