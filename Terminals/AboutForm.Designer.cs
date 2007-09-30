@@ -215,8 +215,7 @@ namespace Terminals
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBox1.Size = new System.Drawing.Size(266, 118);
             this.textBox1.TabIndex = 11;
-            this.textBox1.Text = "Special Thanks To:\r\nThe CodePlex Team\r\nDustin Coates (DemonBob) for the ICA Citri" +
-                "x bits\r\nRogério Paulo for ToolBarManager\r\n";
+            this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
             // AboutForm
             // 
