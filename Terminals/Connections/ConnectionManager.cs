@@ -39,6 +39,10 @@ namespace Terminals.Connections {
                     Width = 1024;
                     Height = 768;
                     break;
+                case DesktopSize.x1280:
+                    Width = 1280;
+                    Height = 1024;
+                    break;
                 case DesktopSize.FitToWindow:
                     Width = Connection.TerminalTabPage.Width;
                     Height = Connection.TerminalTabPage.Height;

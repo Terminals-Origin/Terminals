@@ -121,6 +121,8 @@ namespace Terminals
         this.lvConnectionTags = new System.Windows.Forms.ListView();
         this.tabPage6 = new System.Windows.Forms.TabPage();
         this.ICAtabPage = new System.Windows.Forms.TabPage();
+        this.ICAWorkingFolder = new System.Windows.Forms.TextBox();
+        this.label23 = new System.Windows.Forms.Label();
         this.ICAApplicationPath = new System.Windows.Forms.TextBox();
         this.label22 = new System.Windows.Forms.Label();
         this.ICAApplicationNameTextBox = new System.Windows.Forms.TextBox();
@@ -132,8 +134,6 @@ namespace Terminals
         this.fontDialog1 = new System.Windows.Forms.FontDialog();
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
-        this.ICAWorkingFolder = new System.Windows.Forms.TextBox();
-        this.label23 = new System.Windows.Forms.Label();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -481,6 +481,7 @@ namespace Terminals
             "640x480",
             "800x600",
             "1024x768",
+            "1280x1024",
             "Fit to Window",
             "Full Screen",
             "Auto Scale"});
@@ -1134,6 +1135,23 @@ namespace Terminals
         this.ICAtabPage.Text = "ICA Citrix";
         this.ICAtabPage.UseVisualStyleBackColor = true;
         // 
+        // ICAWorkingFolder
+        // 
+        this.ICAWorkingFolder.Enabled = false;
+        this.ICAWorkingFolder.Location = new System.Drawing.Point(145, 64);
+        this.ICAWorkingFolder.Name = "ICAWorkingFolder";
+        this.ICAWorkingFolder.Size = new System.Drawing.Size(226, 21);
+        this.ICAWorkingFolder.TabIndex = 5;
+        // 
+        // label23
+        // 
+        this.label23.AutoSize = true;
+        this.label23.Location = new System.Drawing.Point(3, 67);
+        this.label23.Name = "label23";
+        this.label23.Size = new System.Drawing.Size(138, 13);
+        this.label23.TabIndex = 4;
+        this.label23.Text = "Application Working Folder:";
+        // 
         // ICAApplicationPath
         // 
         this.ICAApplicationPath.Enabled = false;
@@ -1204,23 +1222,6 @@ namespace Terminals
         this.ras1.PhoneNumber = null;
         this.ras1.UserName = null;
         this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
-        // 
-        // ICAWorkingFolder
-        // 
-        this.ICAWorkingFolder.Enabled = false;
-        this.ICAWorkingFolder.Location = new System.Drawing.Point(145, 64);
-        this.ICAWorkingFolder.Name = "ICAWorkingFolder";
-        this.ICAWorkingFolder.Size = new System.Drawing.Size(226, 21);
-        this.ICAWorkingFolder.TabIndex = 5;
-        // 
-        // label23
-        // 
-        this.label23.AutoSize = true;
-        this.label23.Location = new System.Drawing.Point(3, 67);
-        this.label23.Name = "label23";
-        this.label23.Size = new System.Drawing.Size(138, 13);
-        this.label23.TabIndex = 4;
-        this.label23.Text = "Application Working Folder:";
         // 
         // NewTerminalForm
         // 
