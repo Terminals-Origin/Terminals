@@ -60,7 +60,7 @@ namespace Terminals
                 FavoriteToolBarHolder.ToolbarTitle = "Favorites";
 
                 SpecialCommandsToolBarHolder = toolBarManager.AddControl(this.SpecialCommandsToolStrip);
-                SpecialCommandsToolBarHolder.ToolbarTitle = "Special Commands";
+                SpecialCommandsToolBarHolder.ToolbarTitle = "Shortcuts";
 
                 toolBarManager.MainForm.BackColor = this.toolStripContainer.ContentPanel.BackColor;
 
@@ -108,16 +108,17 @@ namespace Terminals
         }
         void LoadSpecialCommands()
         {
+            SpecialCommandsToolStrip.Items.Clear();
             SpecialCommandConfigurationElementCollection cmdList = Settings.SpecialCommands;
 
-            if (cmdList == null || cmdList.Count == 0)
-            {
-                //add the command prompt
-                SpecialCommandConfigurationElement elm = new SpecialCommandConfigurationElement("Command Shell");
-                elm.Executable = @"%systemroot%\system32\cmd.exe";
-                cmdList.Add(elm);
-                Settings.SpecialCommands = cmdList;
-            }
+            //if (cmdList == null || cmdList.Count == 0)
+            //{
+            //    //add the command prompt
+            //    SpecialCommandConfigurationElement elm = new SpecialCommandConfigurationElement("Command Shell");
+            //    elm.Executable = @"%systemroot%\system32\cmd.exe";
+            //    cmdList.Add(elm);
+            //    Settings.SpecialCommands = cmdList;
+            //}
             foreach (SpecialCommandConfigurationElement cmd in Settings.SpecialCommands)
             {
                 ToolStripMenuItem mi = new ToolStripMenuItem(cmd.Name);
@@ -125,7 +126,7 @@ namespace Terminals
                 mi.ToolTipText = cmd.Name;
                 mi.Text = cmd.Name;
                 mi.Tag = cmd;
-                mi.Image = Terminals.Properties.Resources.application_xp_terminal;
+                mi.Image = cmd.LoadThumbnail();
                 SpecialCommandsToolStrip.Items.Add(mi);
             }
         }
@@ -1628,6 +1629,25 @@ namespace Terminals
             this.toolStripMenuItem4.Checked = this.FavoriteToolBarHolder.Visible;
             this.standardToolbarToolStripMenuItem.Checked = this.StandardToolbarHolder.Visible;
 
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            OrganizeShortcuts org = new OrganizeShortcuts();
+            org.ShowDialog(this);
+            LoadSpecialCommands();
+        }
+
+
+
+        private void ShortcutsContextMenu_MouseClick(object sender, MouseEventArgs e)
+        {
+            toolStripMenuItem3_Click(null, null);
+        }
+
+        private void SpecialCommandsToolStrip_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right) ShortcutsContextMenu.Show(e.X, e.Y);
         }
     }
 

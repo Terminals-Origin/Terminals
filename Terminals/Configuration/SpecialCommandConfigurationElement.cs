@@ -71,7 +71,27 @@ namespace Terminals
                 this["workingFolder"] = value;
             }
         }
-
+        [ConfigurationProperty("thumbnail", IsRequired = false)]
+        public string Thumbnail
+        {
+            get
+            {
+                return (string)this["thumbnail"];
+            }
+            set
+            {
+                this["thumbnail"] = value;
+            }
+        }
+        public System.Drawing.Image LoadThumbnail()
+        {
+            System.Drawing.Image img = Terminals.Properties.Resources.application_xp_terminal;
+            if (this.Thumbnail != null && this.Thumbnail != "")
+            {
+                if (System.IO.File.Exists(this.Thumbnail)) img = System.Drawing.Image.FromFile(this.Thumbnail);
+            }
+            return img;
+        }
         public void Launch()
         {
             System.Diagnostics.Process p = new System.Diagnostics.Process();

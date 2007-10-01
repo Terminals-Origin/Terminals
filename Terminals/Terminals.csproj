@@ -150,6 +150,7 @@
     <Compile Include="DPAPI.cs" />
     <Compile Include="FontParser.cs" />
     <Compile Include="FormSettings.cs" />
+    <Compile Include="IconHandler.cs" />
     <Compile Include="Integration\Import\ImportRDP.cs" />
     <Compile Include="Integration\Import\IImport.cs" />
     <Compile Include="Integration\Import\ImportMuRD.cs" />
@@ -219,6 +220,12 @@
     <Compile Include="OrganizeGroupsForm.Designer.cs">
       <DependentUpon>OrganizeGroupsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="OrganizeShortcuts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OrganizeShortcuts.Designer.cs">
+      <DependentUpon>OrganizeShortcuts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutForm.resx">
@@ -284,6 +291,10 @@
     <EmbeddedResource Include="OrganizeGroupsForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OrganizeGroupsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OrganizeShortcuts.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>OrganizeShortcuts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
