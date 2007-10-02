@@ -1590,13 +1590,6 @@ namespace Terminals
             mgr.ShowDialog(this);
         }
 
-        private void SpecialCommandsToolStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-            SpecialCommandConfigurationElement elm = (e.ClickedItem.Tag as SpecialCommandConfigurationElement);
-            if (elm != null) elm.Launch();
-        }
-
         private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -1648,6 +1641,12 @@ namespace Terminals
         private void SpecialCommandsToolStrip_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right) ShortcutsContextMenu.Show(e.X, e.Y);
+        }
+
+        private void SpecialCommandsToolStrip_ItemClicked_1(object sender, ToolStripItemClickedEventArgs e)
+        {
+            SpecialCommandConfigurationElement elm = (e.ClickedItem.Tag as SpecialCommandConfigurationElement);
+            if(elm != null) elm.Launch();
         }
     }
 
