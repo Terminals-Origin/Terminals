@@ -68,11 +68,18 @@ namespace Terminals
                         System.IO.Path.Combine(exeFolder, "Thumbs")
                         , imageName
                         );
-
-                this.iconPicturebox.Image.Save(imageFullName);
+                if(this.iconPicturebox.Image != null)
+                {
+                    this.iconPicturebox.Image.Save(imageFullName);
+                }
+                else
+                {
+                    imageFullName = "";
+                }
                 shortcut.Thumbnail = imageFullName;
                 shortucts.Remove(shortcut);
                 shortucts.Add(shortcut);
+                
                 Settings.SpecialCommands = shortucts;
                 shortucts = Settings.SpecialCommands;
             }

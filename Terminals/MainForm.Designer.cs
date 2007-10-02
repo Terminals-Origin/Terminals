@@ -104,10 +104,10 @@ namespace Terminals {
             this.pbHideTagsFavorites = new System.Windows.Forms.PictureBox();
             this.pnlShowTagsFavorites = new System.Windows.Forms.Panel();
             this.pbShowTagsFavorites = new System.Windows.Forms.PictureBox();
+            this.favoriteToolBar = new System.Windows.Forms.ToolStrip();
             this.tsRemoteToolbar = new System.Windows.Forms.ToolStrip();
             this.tsbCMD = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.favoriteToolBar = new System.Windows.Forms.ToolStrip();
             this.SpecialCommandsToolStrip = new System.Windows.Forms.ToolStrip();
             this.ShortcutsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -899,6 +899,17 @@ namespace Terminals {
             this.pbShowTagsFavorites.TabStop = false;
             this.pbShowTagsFavorites.Click += new System.EventHandler(this.pbShowTags_Click);
             // 
+            // favoriteToolBar
+            // 
+            this.favoriteToolBar.AutoSize = false;
+            this.favoriteToolBar.Dock = System.Windows.Forms.DockStyle.None;
+            this.favoriteToolBar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.favoriteToolBar.Location = new System.Drawing.Point(0, 49);
+            this.favoriteToolBar.Name = "favoriteToolBar";
+            this.favoriteToolBar.Size = new System.Drawing.Size(792, 25);
+            this.favoriteToolBar.Stretch = true;
+            this.favoriteToolBar.TabIndex = 4;
+            // 
             // tsRemoteToolbar
             // 
             this.tsRemoteToolbar.Dock = System.Windows.Forms.DockStyle.None;
@@ -931,26 +942,17 @@ namespace Terminals {
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
-            // favoriteToolBar
-            // 
-            this.favoriteToolBar.AutoSize = false;
-            this.favoriteToolBar.Dock = System.Windows.Forms.DockStyle.None;
-            this.favoriteToolBar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.favoriteToolBar.Location = new System.Drawing.Point(0, 49);
-            this.favoriteToolBar.Name = "favoriteToolBar";
-            this.favoriteToolBar.Size = new System.Drawing.Size(792, 25);
-            this.favoriteToolBar.Stretch = true;
-            this.favoriteToolBar.TabIndex = 4;
-            // 
             // SpecialCommandsToolStrip
             // 
+            this.SpecialCommandsToolStrip.AllowItemReorder = true;
             this.SpecialCommandsToolStrip.AutoSize = false;
             this.SpecialCommandsToolStrip.ContextMenuStrip = this.ShortcutsContextMenu;
             this.SpecialCommandsToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.SpecialCommandsToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.SpecialCommandsToolStrip.Location = new System.Drawing.Point(57, 74);
+            this.SpecialCommandsToolStrip.Location = new System.Drawing.Point(0, 74);
             this.SpecialCommandsToolStrip.Name = "SpecialCommandsToolStrip";
-            this.SpecialCommandsToolStrip.Size = new System.Drawing.Size(34, 25);
+            this.SpecialCommandsToolStrip.Size = new System.Drawing.Size(50, 25);
+            this.SpecialCommandsToolStrip.Stretch = true;
             this.SpecialCommandsToolStrip.TabIndex = 6;
             this.SpecialCommandsToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.SpecialCommandsToolStrip_ItemClicked_1);
             // 
