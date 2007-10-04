@@ -35,8 +35,15 @@ namespace Terminals
                 {
                     Application.Exit();
                 }
+                else
+                {
+                    Application.Run(new MainForm());
+                }
             }
-            Application.Run(new MainForm());
+            else
+            {
+                Application.Run(new MainForm());
+            }
             SingleInstanceApplication.Close();
 
         }
