@@ -186,6 +186,12 @@
       <DependentUpon>NetworkScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\LocalConnections.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\LocalConnections.Designer.cs">
+      <DependentUpon>LocalConnections.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\ShareConnectionsForm.cs">
       <SubType>Form</SubType>
@@ -434,6 +440,10 @@
     <None Include="Resources\HidePanel.PNG" />
     <None Include="Resources\camera.png" />
     <None Include="Resources\application_xp_terminal.png" />
+    <EmbeddedResource Include="Network\LocalConnections.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LocalConnections.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\BasicTree.xml" />
     <Content Include="Resources\ico101.ico" />
     <None Include="Resources\ico_scapture.png" />
