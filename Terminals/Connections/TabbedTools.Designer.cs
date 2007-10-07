@@ -33,21 +33,26 @@ namespace Terminals.Connections
             this.ping1 = new Metro.Ping();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.traceRoute1 = new Metro.TraceRoute();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.wmiControl1 = new WMITestClient.WMIControl();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(523, 335);
             this.tabControl1.TabIndex = 0;
+            this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
             // tabPage1
             // 
@@ -87,6 +92,24 @@ namespace Terminals.Connections
             this.traceRoute1.Size = new System.Drawing.Size(509, 303);
             this.traceRoute1.TabIndex = 0;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.wmiControl1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(515, 309);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "WMI";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // wmiControl1
+            // 
+            this.wmiControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.wmiControl1.Location = new System.Drawing.Point(0, 0);
+            this.wmiControl1.Name = "wmiControl1";
+            this.wmiControl1.Size = new System.Drawing.Size(515, 309);
+            this.wmiControl1.TabIndex = 0;
+            // 
             // TabbedTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -97,6 +120,7 @@ namespace Terminals.Connections
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -108,5 +132,7 @@ namespace Terminals.Connections
         private Metro.Ping ping1;
         private System.Windows.Forms.TabPage tabPage2;
         private Metro.TraceRoute traceRoute1;
+        private System.Windows.Forms.TabPage tabPage3;
+        private WMITestClient.WMIControl wmiControl1;
     }
 }

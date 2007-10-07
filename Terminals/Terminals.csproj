@@ -62,6 +62,7 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
@@ -193,6 +194,12 @@
       <DependentUpon>ShareConnectionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\SharedFavorite.cs" />
+    <Compile Include="Network\WMI\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Network\WMI\WMIControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="NewGroupForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -291,6 +298,14 @@
     <EmbeddedResource Include="Network\ShareConnectionsForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ShareConnectionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\WMI\LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\WMI\WMIControl.resx">
+      <DependentUpon>WMIControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="NewGroupForm.resx">
       <SubType>Designer</SubType>
@@ -419,6 +434,7 @@
     <None Include="Resources\HidePanel.PNG" />
     <None Include="Resources\camera.png" />
     <None Include="Resources\application_xp_terminal.png" />
+    <EmbeddedResource Include="Resources\BasicTree.xml" />
     <Content Include="Resources\ico101.ico" />
     <None Include="Resources\ico_scapture.png" />
     <Content Include="Resources\lightning_go.png" />

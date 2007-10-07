@@ -130,6 +130,20 @@ namespace Terminals.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;tree Text=&quot;WMI Classes&quot;&gt;
+        /// &lt;node Text=&quot;WMI System Classes&quot; Type=&quot;&quot; Alt=&quot;Predefined classes based on the Common Information Model (CIM) and included in every namespace in the Windows Management Instrumentation (WMI) core.&quot;&gt;
+        ///  &lt;node Text=&quot;Abstract Base Classes&quot;&gt;
+        ///   &lt;node Text=&quot;__NotifyStatus&quot; Type=&quot;ClassNode&quot; Alt=&quot;The __NotifyStatus system class is an abstract base class that can be the superclass for provider-defined error classes.&quot;&gt;&lt;/node&gt;
+        ///   &lt;node Text=&quot;__PARAMETERS&quot; Type=&quot;ClassN [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BasicTree {
+            get {
+                return ResourceManager.GetString("BasicTree", resourceCulture);
+            }
+        }
+        
         internal static System.Drawing.Bitmap camera {
             get {
                 object obj = ResourceManager.GetObject("camera", resourceCulture);

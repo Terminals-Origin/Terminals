@@ -14,5 +14,13 @@ namespace Terminals.Connections
         {
             InitializeComponent();
         }
+
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+            if (e.TabPage == tabPage3)
+            {
+                
+            }
+        }
     }
 }
