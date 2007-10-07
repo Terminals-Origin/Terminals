@@ -37,11 +37,17 @@ namespace Terminals.Connections
             this.wmiControl1 = new WMITestClient.WMIControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.localConnections1 = new Terminals.Network.LocalConnections();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.interfacesList1 = new Terminals.Network.InterfacesList();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.whoIs1 = new Terminals.Network.WhoIs.WhoIs();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -50,6 +56,8 @@ namespace Terminals.Connections
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -133,6 +141,44 @@ namespace Terminals.Connections
             this.localConnections1.Size = new System.Drawing.Size(509, 303);
             this.localConnections1.TabIndex = 0;
             // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.interfacesList1);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(515, 309);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "Interfaces";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // interfacesList1
+            // 
+            this.interfacesList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.interfacesList1.Location = new System.Drawing.Point(3, 3);
+            this.interfacesList1.Name = "interfacesList1";
+            this.interfacesList1.Size = new System.Drawing.Size(509, 303);
+            this.interfacesList1.TabIndex = 0;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.whoIs1);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(515, 309);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "Whois";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // whoIs1
+            // 
+            this.whoIs1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.whoIs1.Location = new System.Drawing.Point(3, 3);
+            this.whoIs1.Name = "whoIs1";
+            this.whoIs1.Size = new System.Drawing.Size(509, 303);
+            this.whoIs1.TabIndex = 0;
+            // 
             // TabbedTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -145,6 +191,8 @@ namespace Terminals.Connections
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage6.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -160,5 +208,9 @@ namespace Terminals.Connections
         private WMITestClient.WMIControl wmiControl1;
         private System.Windows.Forms.TabPage tabPage4;
         private Terminals.Network.LocalConnections localConnections1;
+        private System.Windows.Forms.TabPage tabPage5;
+        private Terminals.Network.InterfacesList interfacesList1;
+        private System.Windows.Forms.TabPage tabPage6;
+        private Terminals.Network.WhoIs.WhoIs whoIs1;
     }
 }

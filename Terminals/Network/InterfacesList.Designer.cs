@@ -1,6 +1,6 @@
 namespace Terminals.Network
 {
-    partial class LocalConnections
+    partial class InterfacesList
     {
         /// <summary> 
         /// Required designer variable.
@@ -43,22 +43,22 @@ namespace Terminals.Network
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(421, 282);
+            this.dataGridView1.Size = new System.Drawing.Size(413, 258);
             this.dataGridView1.TabIndex = 0;
             // 
             // timer1
             // 
-            this.timer1.Interval = 5000;
+            this.timer1.Interval = 10000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // LocalConnections
+            // InterfacesList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dataGridView1);
-            this.Name = "LocalConnections";
-            this.Size = new System.Drawing.Size(421, 282);
-            this.Load += new System.EventHandler(this.LocalConnections_Load);
+            this.Name = "InterfacesList";
+            this.Size = new System.Drawing.Size(413, 258);
+            this.Load += new System.EventHandler(this.InterfacesList_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 

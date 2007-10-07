@@ -186,6 +186,12 @@
       <DependentUpon>NetworkScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\InterfacesList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\InterfacesList.Designer.cs">
+      <DependentUpon>InterfacesList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\LocalConnections.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -200,6 +206,13 @@
       <DependentUpon>ShareConnectionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\SharedFavorite.cs" />
+    <Compile Include="Network\WhoIs\WhoIs.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\WhoIs\WhoIs.Designer.cs">
+      <DependentUpon>WhoIs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Network\WhoIs\WhoisResolver.cs" />
     <Compile Include="Network\WMI\LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -440,9 +453,17 @@
     <None Include="Resources\HidePanel.PNG" />
     <None Include="Resources\camera.png" />
     <None Include="Resources\application_xp_terminal.png" />
+    <EmbeddedResource Include="Network\InterfacesList.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>InterfacesList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\LocalConnections.resx">
       <SubType>Designer</SubType>
       <DependentUpon>LocalConnections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\WhoIs\WhoIs.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>WhoIs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\BasicTree.xml" />
     <Content Include="Resources\ico101.ico" />
