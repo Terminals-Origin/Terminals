@@ -178,6 +178,12 @@
     <Compile Include="Scanning\TcpSynScanner.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TraceRoute.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TraceRoute.Designer.cs">
+      <DependentUpon>TraceRoute.cs</DependentUpon>
+    </Compile>
     <Compile Include="TransportLayer\ICMP\IcmpMessages.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -217,6 +223,10 @@
     <EmbeddedResource Include="Ping.resx">
       <SubType>Designer</SubType>
       <DependentUpon>Ping.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TraceRoute.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TraceRoute.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

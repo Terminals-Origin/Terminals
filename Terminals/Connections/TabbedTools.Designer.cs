@@ -32,8 +32,10 @@ namespace Terminals.Connections
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.ping1 = new Metro.Ping();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.traceRoute1 = new Metro.TraceRoute();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -68,6 +70,7 @@ namespace Terminals.Connections
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.traceRoute1);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -75,6 +78,14 @@ namespace Terminals.Connections
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Trace Route";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // traceRoute1
+            // 
+            this.traceRoute1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.traceRoute1.Location = new System.Drawing.Point(3, 3);
+            this.traceRoute1.Name = "traceRoute1";
+            this.traceRoute1.Size = new System.Drawing.Size(509, 303);
+            this.traceRoute1.TabIndex = 0;
             // 
             // TabbedTools
             // 
@@ -85,6 +96,7 @@ namespace Terminals.Connections
             this.Size = new System.Drawing.Size(523, 335);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -95,5 +107,6 @@ namespace Terminals.Connections
         private System.Windows.Forms.TabPage tabPage1;
         private Metro.Ping ping1;
         private System.Windows.Forms.TabPage tabPage2;
+        private Metro.TraceRoute traceRoute1;
     }
 }

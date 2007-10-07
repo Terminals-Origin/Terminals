@@ -1,112 +1,43 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System.ComponentModel;
 using Metro.TransportLayer.Icmp;
 using System.Net;
 using System.Net.Sockets;
 using ZedGraph;
 
-
 namespace Metro
 {
-    public partial class Ping : UserControl
+    public partial class TraceRoute : UserControl
     {
-        public Ping()
+        public TraceRoute()
         {
             InitializeComponent();
-            mivPing = new MethodInvoker(UpdatePing);
-            string data = new string('x', 32);
-            payload = System.Text.ASCIIEncoding.ASCII.GetBytes(data);
-            t = new System.Threading.Timer(new System.Threading.TimerCallback(TryPing), null, 1000, 100);
+
+            miv = new MethodInvoker(UpdateRoute);
+
+            trace = new Metro.TransportLayer.Icmp.IcmpTraceRoute(nil.Interfaces[0].Address);
+            trace.RouteUpdate += new Metro.TransportLayer.Icmp.RouteUpdateHandler(trace_RouteUpdate);
+            trace.TraceFinished += new Metro.TransportLayer.Icmp.TraceFinishedHandler(trace_TraceFinished);
 
         }
-        private void TryPing(object state)
-        {
-            if (pingRunning && pingReady)
-            {
-                SendPing();
-            }
-        }
-        private void SendPing()
-        {
-            IPAddress[] list = null;
-            try
-            {
-                list = System.Net.Dns.GetHostAddresses(this.textBox1.Text);
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show("Could not resolve address:" + this.textBox1.Text);
-            }
-            try
-            {
-                if (list != null) ping.SendPing(list[0], payload, true, 2000);
-            }
-            catch (Exception exc) { }
-        }
-        System.Threading.Timer t;
-        bool pingRunning = false;
-        bool pingReady = false;
-        byte[] payload;
-        MethodInvoker mivPing;
         Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();
-        Metro.TransportLayer.Icmp.IcmpPingManager ping;
-        System.Collections.Generic.List<PingUpdate> PingList = new List<PingUpdate>();
+        Metro.TransportLayer.Icmp.IcmpTraceRoute trace = null;
+        System.Collections.Generic.List<RouteUpdate> RUList = new List<RouteUpdate>();
 
-        private void button1_Click(object sender, EventArgs e)
+        private void UpdateRoute()
         {
-            PingList = new List<PingUpdate>();
-            if (ping == null)
-            {
-                ping = new Metro.TransportLayer.Icmp.IcmpPingManager(nil.Interfaces[0].Address);
-            }
-            if (!pingRunning)
-            {
-                
-
-                ping.PingReply += new Metro.TransportLayer.Icmp.IcmpPingReplyHandler(ping_PingReply);
-                ping.PingTimeout += new Metro.TransportLayer.Icmp.IcmpPingTimeOutHandler(ping_PingTimeout);
-                pingRunning = true;
-                pingReady = false;
-                SendPing();
-            }
-
-        }
-        void ping_PingTimeout()
-        {
-            ping.CancelPing();
-            PingUpdate pu = new PingUpdate();
-            pu.ipHeader = null;
-            pu.icmpHeader = null;
-            pu.RoundTripTime = 0;
-            PingList.Add(pu);
-            this.Invoke(mivPing);
-            pingReady = true;
-            pingRunning = false;
-
-        }
-
-        void ping_PingReply(Metro.NetworkLayer.IpV4.IpV4Packet ipHeader, Metro.TransportLayer.Icmp.IcmpPacket icmpHeader, int roundTripTime)
-        {
-            PingUpdate pu = new PingUpdate();
-            pu.ipHeader = ipHeader;
-            pu.icmpHeader = icmpHeader;
-            pu.RoundTripTime = roundTripTime;
-            PingList.Add(pu);
-            pingReady = true;
-            this.Invoke(mivPing);
-        }
-        private void UpdatePing()
-        {
-
             this.dataGridView1.DataSource = null;
-            this.dataGridView1.DataSource = PingList;
+            this.dataGridView1.DataSource = RUList;
             UpdateGraph();
-            Application.DoEvents();
+        }
+        void trace_TraceFinished()
+        {
+            MessageBox.Show("Trace Route Finished.");
         }
         private void UpdateGraph()
         {
@@ -118,15 +49,14 @@ namespace Metro
             int yMax = 0;
             string destination = "";
             int sum = 0;
-            foreach (PingUpdate p in PingList)
+            foreach (RouteUpdate p in RUList)
             {
-                if(destination=="") destination = p.DestinationAddress;
                 if (p.RoundTripTime > yMax) yMax = p.RoundTripTime;
-                list.Add(x, p.RoundTripTime);
+                list.Add(x, p.RoundTripTime,p.Gateway.ToString());
 
                 sum += p.RoundTripTime;
 
-                avgList.Add(x, (int)(sum/x));
+                avgList.Add(x, (int)(sum / x));
                 x++;
             }
 
@@ -137,7 +67,7 @@ namespace Metro
             myPane.XAxis.Scale.Max = x;
 
             myPane.CurveList.Clear();
-            LineItem myCurve = myPane.AddCurve(destination, list, Color.Blue, SymbolType.Diamond);
+            LineItem myCurve = myPane.AddCurve(this.textBox1.Text, list, Color.Blue, SymbolType.Diamond);
             LineItem avgCurve = myPane.AddCurve("Average", avgList, Color.Red, SymbolType.Diamond);
 
 
@@ -156,17 +86,49 @@ namespace Metro
             // Make sure the Graph gets redrawn
             zg1.Invalidate();
         }
+        GraphPane myPane;
+
+        void trace_RouteUpdate(System.Net.IPAddress gateway, int roundTripTime, byte currentHop)
+        {
+            RouteUpdate ru = new RouteUpdate();
+            ru.Gateway = gateway;
+            ru.RoundTripTime = roundTripTime;
+            ru.CurrentHop = currentHop;
+            this.RUList.Add(ru);
+            this.Invoke(miv);
+        }
+        MethodInvoker miv;
+        private void button1_Click(object sender, EventArgs e)
+        {
+            RUList = new List<RouteUpdate>();
+
+            Trace();
+        }
+
+        private void Trace()
+        {
+            IPAddress[] list = null;
+            try
+            {
+                list = System.Net.Dns.GetHostAddresses(this.textBox1.Text);
+            }
+            catch (Exception exc)
+            {
+                MessageBox.Show("Could not resolve address:" + this.textBox1.Text);
+            }
+            try
+            {
+                if (list != null) trace.TraceRoute(list[0], true, 2000, 30);
+            }
+            catch (Exception exc) { }
+        }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(pingRunning) ping.CancelPing();
-            pingReady = false;
-            pingRunning = false;
-            
+            trace.CancelTrace();
         }
 
-        GraphPane myPane;
-        private void Ping_Load(object sender, EventArgs e)
+        private void TraceRoute_Load(object sender, EventArgs e)
         {
             myPane = zg1.GraphPane;
             // Set the titles and axis labels
@@ -213,19 +175,16 @@ namespace Metro
                             MyContextMenuBuilder);
 
             // OPTIONAL: Handle the Zoom Event
-            
+
             // Size the control to fit the window
             SetSize();
 
-
-
         }
 
-        private void Ping_Resize(object sender, EventArgs e)
+        private void TraceRoute_Resize(object sender, EventArgs e)
         {
             SetSize();
         }
-
         private void SetSize()
         {
             zg1.Location = new Point(10, 10);
@@ -245,7 +204,7 @@ namespace Metro
                 // Get the PointPair that is under the mouse
                 PointPair pt = curve[iPt];
 
-                return curve.Label.Text + " is " + pt.Y.ToString("f2") + " milliseconds at " + pt.X.ToString("f1");
+                return pt.Tag.ToString() + " is " + pt.Y.ToString("f2") + " milliseconds at " + pt.X.ToString("f1");
             }
             catch (Exception) { }
             return "";
@@ -265,68 +224,29 @@ namespace Metro
 
             //menuStrip.Items.Add(item);
         }
-
-        /// 
     }
 
-
-
-    public class PingUpdate
+    public class RouteUpdate
     {
-        public Metro.NetworkLayer.IpV4.IpV4Packet ipHeader;
-        public Metro.TransportLayer.Icmp.IcmpPacket icmpHeader;
+        private System.Net.IPAddress gateway;
         private int roundTripTime;
+        private byte currentHop;
 
-        public string Counter
+        public System.Net.IPAddress Gateway
         {
-            get
-            {
-                if (ipHeader != null)
-                {
-                    return ipHeader.Identification.ToString();
-                }
-                else
-                {
-                    return "*";
-                }
-            }
-        }
-
-        public string DestinationAddress 
-        {
-            get {
-                if (ipHeader != null)
-                {
-                    return ipHeader.DestinationAddress.ToString();
-                }
-                else
-                {
-                    return "*";
-                }
-            }
-        }
-        public string TimeToLive 
-        {
-            get {
-                if (ipHeader != null)
-                {
-                    return ipHeader.TimeToLive.ToString();
-                }
-                else
-                {
-                    return "*";
-                }
-            }
+            get { return gateway; }
+            set { gateway = value; }
         }
         public int RoundTripTime
         {
             get { return roundTripTime; }
             set { roundTripTime = value; }
         }
-
-
-
-
+        public byte CurrentHop
+        {
+            get { return currentHop; }
+            set { currentHop = value; }
+        }
 
     }
 }
