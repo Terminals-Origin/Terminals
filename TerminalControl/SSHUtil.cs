@@ -193,7 +193,7 @@ namespace Routrek.SSHC
 
 		//load resource corresponding to current culture
 		public static void Reload() {
-			_strings = new StringResources("WalburySoftware.strings", typeof(Strings).Assembly);
+			_strings = new StringResources("TerminalControl.strings", typeof(Strings).Assembly);
 		}
 	}
 

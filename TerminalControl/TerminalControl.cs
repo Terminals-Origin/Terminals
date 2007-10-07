@@ -187,12 +187,17 @@ namespace WalburySoftware
 		private delegate void CaretOffEventHandler ();
 		private delegate void CaretOnEventHandler ();
 		private delegate void ParserEventHandler (object Sender, ParserEventArgs e);
+
+        public delegate void Disconnected(object Sender, string Message);
+
 		#endregion
 		#region Events
 		private event RefreshEventHandler RefreshEvent;
 		private event RxdTextEventHandler RxdTextEvent;
 		private event CaretOffEventHandler CaretOffEvent;
 		private event CaretOnEventHandler CaretOnEvent;
+
+        public event Disconnected OnDisconnected;
 		#endregion
 		#region Constructors
 
@@ -960,9 +965,9 @@ namespace WalburySoftware
 					{
 						reader._pf.Transmit(smk);
 					}
-					catch
+					catch(Exception exc)
 					{
-						MessageBox.Show("error communicating with socket");
+                        if (this.OnDisconnected != null) this.OnDisconnected(this, exc.Message);
 					}				
 				}
 				else
@@ -977,10 +982,10 @@ namespace WalburySoftware
 							callbackEndDispatch, 
 							this.CurSocket);
 					}
-					catch
-					{
-						MessageBox.Show("error communicating with socket");
-					}
+                    catch (Exception exc)
+                    {
+                        if (this.OnDisconnected != null) this.OnDisconnected(this, exc.Message);
+                    }
 				}
 
 			}
@@ -989,9 +994,9 @@ namespace WalburySoftware
 				//System.Console.WriteLine ("DispatchMessage: " + CurException.Message);
 				//System.Console.WriteLine ("DispatchMessage: Character is " + System.Convert.ToInt32 (strText[i]));
 				//System.Console.WriteLine ("DispatchMessage: String is " + strText);
-				MessageBox.Show("DispatchMessage: " + CurException.Message);
-				MessageBox.Show("DispatchMessage: Character is " + System.Convert.ToInt32 (strText[i]));
-				MessageBox.Show("DispatchMessage: String is " + strText);
+                //MessageBox.Show("DispatchMessage: " + CurException.Message);
+                //MessageBox.Show("DispatchMessage: Character is " + System.Convert.ToInt32 (strText[i]));
+                //MessageBox.Show("DispatchMessage: String is " + strText);
 			}
 		}
 

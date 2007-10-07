@@ -241,7 +241,11 @@ namespace TabControl
                     SelectedItem = null;
             }
         }
-
+        public void ForceCloseTab(TabControlItem tabItem)
+        {
+            RemoveTab(tabItem);
+            OnTabControlItemClosed(EventArgs.Empty);
+        }
         public void CloseTab(TabControlItem tabItem)
         {
             if (tabItem != null)
