@@ -26,10 +26,15 @@ namespace Terminals.Connections {
 
         public override bool Connect()
         {
-
+            networkingToolsLayout1.OnTabChanged += new NetworkingToolsLayout.TabChanged(networkingToolsLayout1_OnTabChanged);
             networkingToolsLayout1.Parent = base.TerminalTabPage;
             this.Parent = TerminalTabPage;
             return true;
+        }
+
+        void networkingToolsLayout1_OnTabChanged(object sender, TabControlEventArgs e)
+        {
+            this.TerminalTabPage.Title = e.TabPage.Text;
         }
 
 

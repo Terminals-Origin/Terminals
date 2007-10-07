@@ -14,5 +14,16 @@ namespace Terminals.Connections
         {
             InitializeComponent();
         }
+        public delegate void TabChanged(object sender, TabControlEventArgs e);
+        public event TabChanged OnTabChanged;
+        private void tabbedTools1_Load(object sender, EventArgs e)
+        {
+            this.tabbedTools1.OnTabChanged += new TabbedTools.TabChanged(tabbedTools1_OnTabChanged);
+        }
+
+        void tabbedTools1_OnTabChanged(object sender, TabControlEventArgs e)
+        {
+            if (OnTabChanged != null) OnTabChanged(sender, e);
+        }
     }
 }

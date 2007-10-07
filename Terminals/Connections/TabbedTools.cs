@@ -14,13 +14,12 @@ namespace Terminals.Connections
         {
             InitializeComponent();
         }
+        public delegate void TabChanged(object sender, TabControlEventArgs e);
+        public event TabChanged OnTabChanged;
 
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
         {
-            if (e.TabPage == tabPage3)
-            {
-                
-            }
+            if (OnTabChanged != null) OnTabChanged(sender, e);
         }
     }
 }
