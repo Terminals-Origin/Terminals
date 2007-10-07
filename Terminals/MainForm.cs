@@ -1648,6 +1648,35 @@ namespace Terminals
             SpecialCommandConfigurationElement elm = (e.ClickedItem.Tag as SpecialCommandConfigurationElement);
             if(elm != null) elm.Launch();
         }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            TerminalTabControlItem terminalTabPage = new TerminalTabControlItem("Networking Tools");
+            try
+            {
+                terminalTabPage.AllowDrop = false;
+                terminalTabPage.ToolTipText = "Networking Tools";
+                terminalTabPage.Favorite = null;
+                terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
+                tcTerminals.Items.Add(terminalTabPage);
+                tcTerminals.SelectedItem = terminalTabPage;
+                tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
+                Connections.IConnection conn = new Terminals.Connections.NetworkingToolsConnection();
+                conn.TerminalTabPage = terminalTabPage;
+                conn.ParentForm = this;
+                conn.Connect();
+                (conn as Control).BringToFront();
+                (conn as Control).Update();
+                UpdateControls();
+            }
+            catch (Exception exc)
+            {
+                tcTerminals.Items.Remove(terminalTabPage);
+                tcTerminals.SelectedItem = null;
+                terminalTabPage.Dispose();
+                System.Windows.Forms.MessageBox.Show(exc.Message);
+            }
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem

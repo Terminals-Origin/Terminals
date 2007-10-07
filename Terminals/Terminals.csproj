@@ -113,10 +113,19 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\ConnectionManager.cs" />
+    <Compile Include="Connections\NetworkingToolsConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Connections\ICAConnection.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\IConnection.cs" />
+    <Compile Include="Connections\NetworkingToolsLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Connections\NetworkingToolsLayout.Designer.cs">
+      <DependentUpon>NetworkingToolsLayout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Connections\RASConnection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -128,6 +137,12 @@
     </Compile>
     <Compile Include="Connections\RDPConnection.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Connections\TabbedTools.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Connections\TabbedTools.Designer.cs">
+      <DependentUpon>TabbedTools.cs</DependentUpon>
     </Compile>
     <Compile Include="Connections\TerminalConnection.cs">
       <SubType>Component</SubType>
@@ -241,9 +256,21 @@
       <SubType>Designer</SubType>
       <DependentUpon>Connection.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Connections\NetworkingToolsConnection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NetworkingToolsConnection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connections\NetworkingToolsLayout.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NetworkingToolsLayout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Connections\RASProperties.resx">
       <SubType>Designer</SubType>
       <DependentUpon>RASProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connections\TabbedTools.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TabbedTools.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Docking\ToolBarDockArea.resx">
       <DependentUpon>ToolBarDockArea.cs</DependentUpon>
@@ -410,6 +437,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Metro\Metro.csproj">
+      <Project>{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}</Project>
+      <Name>Metro</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TabControl\TabControl.csproj">
       <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
       <Name>TabControl</Name>
