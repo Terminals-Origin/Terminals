@@ -214,6 +214,13 @@
     <Compile Include="Network\LocalConnections.Designer.cs">
       <DependentUpon>LocalConnections.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\NTP\NetworkTime.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\NTP\NetworkTime.Designer.cs">
+      <DependentUpon>NetworkTime.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Network\NTP\NTPClient.cs" />
     <Compile Include="Network\WMI\NetworkShares.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -490,6 +497,10 @@
     <EmbeddedResource Include="Network\LocalConnections.resx">
       <SubType>Designer</SubType>
       <DependentUpon>LocalConnections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\NTP\NetworkTime.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NetworkTime.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\WMI\NetworkShares.resx">
       <SubType>Designer</SubType>
