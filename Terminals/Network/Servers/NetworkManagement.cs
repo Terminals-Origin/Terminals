@@ -378,7 +378,7 @@ namespace NetworkManagement
 
 			IntPtr serverInfoPtr = IntPtr.Zero;
 			uint rc = Win32API.NetServerGetInfo( serverName, 101, ref serverInfoPtr );
-			if ( rc != 0 )
+            if(rc != 0 && serverInfoPtr!=System.IntPtr.Zero)
 			{
 				Win32API.SERVER_INFO_101 si = (Win32API.SERVER_INFO_101) Marshal.PtrToStructure(serverInfoPtr, typeof(Win32API.SERVER_INFO_101));
 				result = (ServerType) si.dwType;
