@@ -90,7 +90,7 @@
     </Reference>
     <Reference Include="ZedGraph, Version=5.1.1.428, Culture=neutral, PublicKeyToken=02a83cbd123fcd60, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\ZedGraph.dll</HintPath>
+      <HintPath>..\Resources\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
