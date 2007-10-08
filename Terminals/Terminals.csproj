@@ -214,6 +214,9 @@
     <Compile Include="Network\LocalConnections.Designer.cs">
       <DependentUpon>LocalConnections.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\Servers\NetworkManagement.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Network\NTP\NetworkTime.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -221,6 +224,12 @@
       <DependentUpon>NetworkTime.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\NTP\NTPClient.cs" />
+    <Compile Include="Network\Servers\ServerList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\Servers\ServerList.Designer.cs">
+      <DependentUpon>ServerList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\WMI\NetworkShares.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -498,9 +507,17 @@
       <SubType>Designer</SubType>
       <DependentUpon>LocalConnections.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Network\Servers\NetworkManagement.resx">
+      <DependentUpon>NetworkManagement.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\NTP\NetworkTime.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\Servers\ServerList.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ServerList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\WMI\NetworkShares.resx">
       <SubType>Designer</SubType>
