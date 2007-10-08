@@ -214,6 +214,12 @@
     <Compile Include="Network\LocalConnections.Designer.cs">
       <DependentUpon>LocalConnections.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\WMI\NetworkShares.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\WMI\NetworkShares.Designer.cs">
+      <DependentUpon>NetworkShares.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\ShareConnectionsForm.cs">
       <SubType>Form</SubType>
@@ -484,6 +490,10 @@
     <EmbeddedResource Include="Network\LocalConnections.resx">
       <SubType>Designer</SubType>
       <DependentUpon>LocalConnections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\WMI\NetworkShares.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>NetworkShares.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\WhoIs\WhoIs.resx">
       <SubType>Designer</SubType>
