@@ -83,6 +83,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\VncSharp.dll</HintPath>
     </Reference>
+    <Reference Include="ZedGraph, Version=5.1.1.428, Culture=neutral, PublicKeyToken=02a83cbd123fcd60" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutForm.cs">
@@ -186,6 +187,15 @@
       <DependentUpon>NetworkScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\CPU\CPU.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\CPU\CPU.Designer.cs">
+      <DependentUpon>CPU.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Network\CPU\CpuUsage.cs" />
+    <Compile Include="Network\CPU\CpuUsage9x.cs" />
+    <Compile Include="Network\CPU\CpuUsageNt.cs" />
     <Compile Include="Network\DNSLookup.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -245,7 +255,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -459,6 +469,10 @@
     <None Include="Resources\HidePanel.PNG" />
     <None Include="Resources\camera.png" />
     <None Include="Resources\application_xp_terminal.png" />
+    <EmbeddedResource Include="Network\CPU\CPU.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CPU.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\DNSLookup.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DNSLookup.cs</DependentUpon>
