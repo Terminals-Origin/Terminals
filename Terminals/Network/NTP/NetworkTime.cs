@@ -17,7 +17,7 @@ namespace Terminals.Network.NTP
 
         private void LookupButton_Click(object sender, EventArgs e)
         {
-            this.dataGridView1.DataSource = null;
+            this.propertyGrid1.SelectedObject = null;
             Application.DoEvents();
             Unified.Network.SNTP.NTPClient client = null;
             string server = TimeServerTextBox.Text;
@@ -26,14 +26,12 @@ namespace Terminals.Network.NTP
             else
                 client = Unified.Network.SNTP.NTPClient.GetTime();
 
-            List<Unified.Network.SNTP.NTPClient> l = new List<Unified.Network.SNTP.NTPClient>();
-            l.Add(client);
-            this.dataGridView1.DataSource = l;
+            this.propertyGrid1.SelectedObject = client;
         }
 
         private void UpdateButton_Click(object sender, EventArgs e)
         {
-            this.dataGridView1.DataSource = null;
+            this.propertyGrid1.SelectedObject = null;
             Application.DoEvents();
             Unified.Network.SNTP.NTPClient client = null;
             string server = TimeServerTextBox.Text;
@@ -42,9 +40,8 @@ namespace Terminals.Network.NTP
             else
                 client = Unified.Network.SNTP.NTPClient.GetTime();
 
-            List<Unified.Network.SNTP.NTPClient> l = new List<Unified.Network.SNTP.NTPClient>();
-            l.Add(client);
-            this.dataGridView1.DataSource = l;
+
+            this.propertyGrid1.SelectedObject = client;
 
         }
 

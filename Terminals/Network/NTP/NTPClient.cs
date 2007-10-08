@@ -442,11 +442,11 @@ namespace Unified.Network.SNTP {
                 System.Threading.Thread.Sleep(1000);
 				NTPData = TimeSocket.Receive(ref EPhost);
 				if(!IsResponseValid()) {
-					throw new Exception("Invalid response from " + TimeServer);
+					//throw new Exception("Invalid response from " + TimeServer);
 				}
 				ReceptionTimestamp = DateTime.Now;
 			} catch(SocketException e) {
-				throw new Exception(e.Message);
+				//throw new Exception(e.Message);
 			}
 		}
 
