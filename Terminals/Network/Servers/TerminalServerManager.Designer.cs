@@ -29,19 +29,19 @@ namespace Terminals.Network.Servers
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.ServerNameTextBox = new System.Windows.Forms.TextBox();
             this.ConnectButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.sendMessageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.rebootServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logoffSessionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.shutdownServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.rebootServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shutdownServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.ServerNameComboBox = new System.Windows.Forms.ComboBox();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -52,17 +52,9 @@ namespace Terminals.Network.Servers
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // ServerNameTextBox
-            // 
-            this.ServerNameTextBox.Location = new System.Drawing.Point(93, 10);
-            this.ServerNameTextBox.Name = "ServerNameTextBox";
-            this.ServerNameTextBox.Size = new System.Drawing.Size(140, 20);
-            this.ServerNameTextBox.TabIndex = 0;
-            this.ServerNameTextBox.Text = "localhost";
-            // 
             // ConnectButton
             // 
-            this.ConnectButton.Location = new System.Drawing.Point(239, 8);
+            this.ConnectButton.Location = new System.Drawing.Point(274, 8);
             this.ConnectButton.Name = "ConnectButton";
             this.ConnectButton.Size = new System.Drawing.Size(75, 23);
             this.ConnectButton.TabIndex = 1;
@@ -88,8 +80,8 @@ namespace Terminals.Network.Servers
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.ServerNameComboBox);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
-            this.splitContainer1.Panel1.Controls.Add(this.ServerNameTextBox);
             this.splitContainer1.Panel1.Controls.Add(this.ConnectButton);
             // 
             // splitContainer1.Panel2
@@ -130,14 +122,6 @@ namespace Terminals.Network.Servers
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_RowEnter);
             // 
-            // propertyGrid1
-            // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(176, 376);
-            this.propertyGrid1.TabIndex = 0;
-            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -147,7 +131,7 @@ namespace Terminals.Network.Servers
             this.rebootServerToolStripMenuItem,
             this.shutdownServerToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(169, 120);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(169, 98);
             // 
             // sendMessageToolStripMenuItem
             // 
@@ -156,19 +140,24 @@ namespace Terminals.Network.Servers
             this.sendMessageToolStripMenuItem.Text = "Send Message";
             this.sendMessageToolStripMenuItem.Click += new System.EventHandler(this.sendMessageToolStripMenuItem_Click);
             // 
-            // rebootServerToolStripMenuItem
-            // 
-            this.rebootServerToolStripMenuItem.Name = "rebootServerToolStripMenuItem";
-            this.rebootServerToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
-            this.rebootServerToolStripMenuItem.Text = "Reboot Server";
-            this.rebootServerToolStripMenuItem.Click += new System.EventHandler(this.rebootServerToolStripMenuItem_Click);
-            // 
             // logoffSessionToolStripMenuItem
             // 
             this.logoffSessionToolStripMenuItem.Name = "logoffSessionToolStripMenuItem";
             this.logoffSessionToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.logoffSessionToolStripMenuItem.Text = "Logoff Session";
             this.logoffSessionToolStripMenuItem.Click += new System.EventHandler(this.logoffSessionToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(165, 6);
+            // 
+            // rebootServerToolStripMenuItem
+            // 
+            this.rebootServerToolStripMenuItem.Name = "rebootServerToolStripMenuItem";
+            this.rebootServerToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.rebootServerToolStripMenuItem.Text = "Reboot Server";
+            this.rebootServerToolStripMenuItem.Click += new System.EventHandler(this.rebootServerToolStripMenuItem_Click);
             // 
             // shutdownServerToolStripMenuItem
             // 
@@ -177,10 +166,22 @@ namespace Terminals.Network.Servers
             this.shutdownServerToolStripMenuItem.Text = "Shutdown Server";
             this.shutdownServerToolStripMenuItem.Click += new System.EventHandler(this.shutdownServerToolStripMenuItem_Click);
             // 
-            // toolStripSeparator1
+            // propertyGrid1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(165, 6);
+            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
+            this.propertyGrid1.Name = "propertyGrid1";
+            this.propertyGrid1.Size = new System.Drawing.Size(176, 376);
+            this.propertyGrid1.TabIndex = 0;
+            // 
+            // ServerNameComboBox
+            // 
+            this.ServerNameComboBox.FormattingEnabled = true;
+            this.ServerNameComboBox.Location = new System.Drawing.Point(93, 10);
+            this.ServerNameComboBox.Name = "ServerNameComboBox";
+            this.ServerNameComboBox.Size = new System.Drawing.Size(175, 21);
+            this.ServerNameComboBox.TabIndex = 3;
+            this.ServerNameComboBox.Text = "localhost";
             // 
             // TerminalServerManager
             // 
@@ -205,7 +206,6 @@ namespace Terminals.Network.Servers
 
         #endregion
 
-        private System.Windows.Forms.TextBox ServerNameTextBox;
         private System.Windows.Forms.Button ConnectButton;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.SplitContainer splitContainer1;
@@ -218,5 +218,6 @@ namespace Terminals.Network.Servers
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem rebootServerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem shutdownServerToolStripMenuItem;
+        private System.Windows.Forms.ComboBox ServerNameComboBox;
     }
 }

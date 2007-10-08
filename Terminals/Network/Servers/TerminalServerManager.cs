@@ -18,55 +18,88 @@ namespace Terminals.Network.Servers
         TerminalServices.TerminalServer server;
         private void button1_Click(object sender, EventArgs e)
         {
-            server = TerminalServices.TerminalServer.LoadServer(this.ServerNameTextBox.Text);
-            dataGridView1.DataSource = server.Sessions;
-            dataGridView1.Columns[1].Visible = false;
+            SelectedSession = null;
+            dataGridView1.DataSource = null;
+            this.propertyGrid1.SelectedObject = null;
+            Application.DoEvents();
+            server = TerminalServices.TerminalServer.LoadServer(this.ServerNameComboBox.Text);
+            if(server.IsATerminalServer)
+            {
+                dataGridView1.DataSource = server.Sessions;
+                dataGridView1.Columns[1].Visible = false;
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("This machine does not appear to be a Terminal Server");
+            }
+
         }
 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            if(dataGridView1.DataSource != null)
+            if(server.IsATerminalServer)
             {
-                SelectedSession= server.Sessions[e.RowIndex];
-                this.propertyGrid1.SelectedObject = SelectedSession.Client;
+                if(dataGridView1.DataSource != null)
+                {
+                    SelectedSession = server.Sessions[e.RowIndex];
+                    this.propertyGrid1.SelectedObject = SelectedSession.Client;
+                }
             }
         }
         TerminalServices.Session SelectedSession = null;
         private void TerminalServerManager_Load(object sender, EventArgs e)
         {
-
+            ServerNameComboBox.Items.Clear();
+            foreach(FavoriteConfigurationElement elm in Settings.GetFavorites())
+            {
+                if(elm.Protocol == "RDP")
+                {
+                    this.ServerNameComboBox.Items.Add(elm.ServerName);
+                }
+            }
         }
+
 
         private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Terminals.InputBoxResult result = Terminals.InputBox.Show("Please enter the message to send..");
-            if(result.ReturnCode == DialogResult.OK && result.Text.Trim()!=null)
+            if(SelectedSession != null)
             {
-                TerminalServices.TerminalServicesAPI.SendMessage(SelectedSession, "Message from your Administrator", result.Text.Trim(), 0, 10, false);
+                Terminals.InputBoxResult result = Terminals.InputBox.Show("Please enter the message to send..");
+                if(result.ReturnCode == DialogResult.OK && result.Text.Trim() != null)
+                {
+                    TerminalServices.TerminalServicesAPI.SendMessage(SelectedSession, "Message from your Administrator", result.Text.Trim(), 0, 10, false);
+                }
             }
         }
 
         private void logoffSessionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(System.Windows.Forms.MessageBox.Show("Are you sure you want to log off the selected session?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+            if(SelectedSession != null)
             {
-                TerminalServices.TerminalServicesAPI.LogOffSession(SelectedSession, false);
+                if(System.Windows.Forms.MessageBox.Show("Are you sure you want to log off the selected session?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                {
+                    TerminalServices.TerminalServicesAPI.LogOffSession(SelectedSession, false);
+                }
             }
         }
-
         private void rebootServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(System.Windows.Forms.MessageBox.Show("Are you sure you want to reboot this server?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+            if(server.IsATerminalServer)
             {
-                TerminalServices.TerminalServicesAPI.ShutdownSystem(this.server, true);
+                if(System.Windows.Forms.MessageBox.Show("Are you sure you want to reboot this server?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                {
+                    TerminalServices.TerminalServicesAPI.ShutdownSystem(this.server, true);
+                }
             }
         }
-
         private void shutdownServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(System.Windows.Forms.MessageBox.Show("Are you sure you want to shutdown this server?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+            if(server.IsATerminalServer)
             {
-                TerminalServices.TerminalServicesAPI.ShutdownSystem(this.server, false);
+                if(System.Windows.Forms.MessageBox.Show("Are you sure you want to shutdown this server?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                {
+                    TerminalServices.TerminalServicesAPI.ShutdownSystem(this.server, false);
+                }
             }
         }
     }
