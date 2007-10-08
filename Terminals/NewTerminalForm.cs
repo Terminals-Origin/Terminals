@@ -144,6 +144,27 @@ namespace Terminals
                 this.currentToolBarFileName = favorite.ToolBarIcon;
             }
 
+            //extended settings
+            this.ShutdownTimeoutTextBox.Text = favorite.ShutdownTimeout.ToString();
+            this.OverallTimeoutTextbox.Text = favorite.OverallTimeout.ToString();
+            this.SingleTimeOutTextbox.Text = favorite.ConnectionTimeout.ToString();
+            this.IdleTimeoutMinutesTextBox.Text = favorite.IdleTimeout.ToString();
+            this.SecurityWorkingFolderTextBox.Text = favorite.SecurityWorkingFolder;
+            this.SecuriytStartProgramTextbox.Text = favorite.SecurityStartProgram;
+            this.SecurityStartFullScreenCheckbox.Checked = favorite.SecurityFullScreen;
+            this.SecuritySettingsEnabledCheckbox.Checked = favorite.EnableSecuritySettings;
+            this.GrabFocusOnConnectCheckbox.Checked = favorite.GrabFocusOnConnect;
+            this.EnableEncryptionCheckbox.Checked = favorite.EnableEncryption;
+            this.DisableWindowsKeyCheckbox.Checked = favorite.DisableWindowsKey;
+            this.DetectDoubleClicksCheckbox.Checked = favorite.DoubleClickDetect;
+            this.DisplayConnectionBarCheckbox.Checked = favorite.DisplayConnectionBar;
+            this.DisableControlAltDeleteCheckbox.Checked= favorite.DisableControlAltDelete;
+            this.AcceleratorPassthroughCheckBox.Checked = favorite.AcceleratorPassthrough;
+            this.EnableCompressionCheckbox.Checked = favorite.EnableCompression;
+            this.EnableBitmapPersistanceCheckbox.Checked = favorite.BitmapPeristence;
+            this.AllowBackgroundInputCheckBox.Checked = favorite.AllowBackgroundInput;
+
+
         }
 
         private bool FillFavorite()
@@ -196,6 +217,46 @@ namespace Terminals
                     tagList.Add(listViewItem.Text);
                 }
                 favorite.Tags = String.Join(",", tagList.ToArray());
+
+
+                //extended settings
+                if (ShutdownTimeoutTextBox.Text.Trim() != "")
+                {
+                    favorite.ShutdownTimeout = Convert.ToInt32(ShutdownTimeoutTextBox.Text.Trim());
+                }
+                if (OverallTimeoutTextbox.Text.Trim() != "")
+                {
+                    favorite.OverallTimeout = Convert.ToInt32(OverallTimeoutTextbox.Text.Trim());
+                }
+                if (SingleTimeOutTextbox.Text.Trim() != "")
+                {
+                    favorite.ConnectionTimeout = Convert.ToInt32(SingleTimeOutTextbox.Text.Trim());
+                }
+                if (IdleTimeoutMinutesTextBox.Text.Trim() != "")
+                {
+                    favorite.IdleTimeout = Convert.ToInt32(IdleTimeoutMinutesTextBox.Text.Trim());
+                }
+
+                favorite.EnableSecuritySettings = SecuritySettingsEnabledCheckbox.Checked;
+                if (SecuritySettingsEnabledCheckbox.Checked)
+                {
+                    favorite.SecurityWorkingFolder = SecurityWorkingFolderTextBox.Text;
+                    favorite.SecurityStartProgram = SecuriytStartProgramTextbox.Text;
+                    favorite.SecurityFullScreen = SecurityStartFullScreenCheckbox.Checked;
+                }
+                favorite.GrabFocusOnConnect = GrabFocusOnConnectCheckbox.Checked;
+                favorite.EnableEncryption = EnableEncryptionCheckbox.Checked;
+                favorite.DisableWindowsKey = DisableWindowsKeyCheckbox.Checked;
+                favorite.DoubleClickDetect = DetectDoubleClicksCheckbox.Checked;
+                favorite.DisplayConnectionBar = DisplayConnectionBarCheckbox.Checked;
+                favorite.DisableControlAltDelete = DisableControlAltDeleteCheckbox.Checked;
+                favorite.AcceleratorPassthrough = AcceleratorPassthroughCheckBox.Checked;
+                favorite.EnableCompression = EnableCompressionCheckbox.Checked;
+                favorite.BitmapPeristence = EnableBitmapPersistanceCheckbox.Checked;
+                favorite.AllowBackgroundInput = AllowBackgroundInputCheckBox.Checked;
+
+
+
 
                 Settings.AddFavorite(favorite, showOnToolbar);
 
@@ -568,6 +629,11 @@ namespace Terminals
                 }
 
             }
+        }
+
+        private void SecuritySettingsEnabledCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            panel2.Enabled = SecuritySettingsEnabledCheckbox.Checked;
         }
 
     }

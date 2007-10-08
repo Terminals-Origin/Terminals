@@ -75,6 +75,33 @@ namespace Terminals
         this.txtDesktopShare = new System.Windows.Forms.TextBox();
         this.chkSerialPorts = new System.Windows.Forms.CheckBox();
         this.label10 = new System.Windows.Forms.Label();
+        this.tabPage8 = new System.Windows.Forms.TabPage();
+        this.label29 = new System.Windows.Forms.Label();
+        this.ShutdownTimeoutTextBox = new System.Windows.Forms.TextBox();
+        this.label28 = new System.Windows.Forms.Label();
+        this.OverallTimeoutTextbox = new System.Windows.Forms.TextBox();
+        this.label27 = new System.Windows.Forms.Label();
+        this.SingleTimeOutTextbox = new System.Windows.Forms.TextBox();
+        this.label26 = new System.Windows.Forms.Label();
+        this.IdleTimeoutMinutesTextBox = new System.Windows.Forms.TextBox();
+        this.GrabFocusOnConnectCheckbox = new System.Windows.Forms.CheckBox();
+        this.EnableEncryptionCheckbox = new System.Windows.Forms.CheckBox();
+        this.DisableWindowsKeyCheckbox = new System.Windows.Forms.CheckBox();
+        this.DetectDoubleClicksCheckbox = new System.Windows.Forms.CheckBox();
+        this.DisplayConnectionBarCheckbox = new System.Windows.Forms.CheckBox();
+        this.DisableControlAltDeleteCheckbox = new System.Windows.Forms.CheckBox();
+        this.AcceleratorPassthroughCheckBox = new System.Windows.Forms.CheckBox();
+        this.EnableCompressionCheckbox = new System.Windows.Forms.CheckBox();
+        this.EnableBitmapPersistanceCheckbox = new System.Windows.Forms.CheckBox();
+        this.AllowBackgroundInputCheckBox = new System.Windows.Forms.CheckBox();
+        this.tabPage9 = new System.Windows.Forms.TabPage();
+        this.panel2 = new System.Windows.Forms.Panel();
+        this.SecurityStartFullScreenCheckbox = new System.Windows.Forms.CheckBox();
+        this.label25 = new System.Windows.Forms.Label();
+        this.SecurityWorkingFolderTextBox = new System.Windows.Forms.TextBox();
+        this.label24 = new System.Windows.Forms.Label();
+        this.SecuriytStartProgramTextbox = new System.Windows.Forms.TextBox();
+        this.SecuritySettingsEnabledCheckbox = new System.Windows.Forms.CheckBox();
         this.tabPage7 = new System.Windows.Forms.TabPage();
         this.VMRCReducedColorsCheckbox = new System.Windows.Forms.CheckBox();
         this.VMRCAdminModeCheckbox = new System.Windows.Forms.CheckBox();
@@ -134,6 +161,7 @@ namespace Terminals
         this.fontDialog1 = new System.Windows.Forms.FontDialog();
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
+        this.label30 = new System.Windows.Forms.Label();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -143,6 +171,9 @@ namespace Terminals
         this.groupBox1.SuspendLayout();
         this.RDPLocalResourcesTabPage.SuspendLayout();
         this.LocalResourceGroupBox.SuspendLayout();
+        this.tabPage8.SuspendLayout();
+        this.tabPage9.SuspendLayout();
+        this.panel2.SuspendLayout();
         this.tabPage7.SuspendLayout();
         this.tabPage3.SuspendLayout();
         this.TelnetGroupBox.SuspendLayout();
@@ -407,6 +438,8 @@ namespace Terminals
         // 
         this.RDPSubTabPage.Controls.Add(this.RDPDisplayTabPage);
         this.RDPSubTabPage.Controls.Add(this.RDPLocalResourcesTabPage);
+        this.RDPSubTabPage.Controls.Add(this.tabPage8);
+        this.RDPSubTabPage.Controls.Add(this.tabPage9);
         this.RDPSubTabPage.Dock = System.Windows.Forms.DockStyle.Fill;
         this.RDPSubTabPage.Location = new System.Drawing.Point(3, 3);
         this.RDPSubTabPage.Name = "RDPSubTabPage";
@@ -662,6 +695,281 @@ namespace Terminals
         this.label10.Text = "Desktop S&hare:";
         this.toolTip1.SetToolTip(this.label10, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
                 "m your computer to the\r\nterminal window.");
+        // 
+        // tabPage8
+        // 
+        this.tabPage8.Controls.Add(this.label30);
+        this.tabPage8.Controls.Add(this.label29);
+        this.tabPage8.Controls.Add(this.ShutdownTimeoutTextBox);
+        this.tabPage8.Controls.Add(this.label28);
+        this.tabPage8.Controls.Add(this.OverallTimeoutTextbox);
+        this.tabPage8.Controls.Add(this.label27);
+        this.tabPage8.Controls.Add(this.SingleTimeOutTextbox);
+        this.tabPage8.Controls.Add(this.label26);
+        this.tabPage8.Controls.Add(this.IdleTimeoutMinutesTextBox);
+        this.tabPage8.Controls.Add(this.GrabFocusOnConnectCheckbox);
+        this.tabPage8.Controls.Add(this.EnableEncryptionCheckbox);
+        this.tabPage8.Controls.Add(this.DisableWindowsKeyCheckbox);
+        this.tabPage8.Controls.Add(this.DetectDoubleClicksCheckbox);
+        this.tabPage8.Controls.Add(this.DisplayConnectionBarCheckbox);
+        this.tabPage8.Controls.Add(this.DisableControlAltDeleteCheckbox);
+        this.tabPage8.Controls.Add(this.AcceleratorPassthroughCheckBox);
+        this.tabPage8.Controls.Add(this.EnableCompressionCheckbox);
+        this.tabPage8.Controls.Add(this.EnableBitmapPersistanceCheckbox);
+        this.tabPage8.Controls.Add(this.AllowBackgroundInputCheckBox);
+        this.tabPage8.Location = new System.Drawing.Point(4, 22);
+        this.tabPage8.Name = "tabPage8";
+        this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
+        this.tabPage8.Size = new System.Drawing.Size(398, 207);
+        this.tabPage8.TabIndex = 2;
+        this.tabPage8.Text = "Extended Settings";
+        this.tabPage8.UseVisualStyleBackColor = true;
+        // 
+        // label29
+        // 
+        this.label29.AutoSize = true;
+        this.label29.Location = new System.Drawing.Point(239, 177);
+        this.label29.Name = "label29";
+        this.label29.Size = new System.Drawing.Size(100, 13);
+        this.label29.TabIndex = 18;
+        this.label29.Text = "Shutdown Timeout:";
+        // 
+        // ShutdownTimeoutTextBox
+        // 
+        this.ShutdownTimeoutTextBox.Location = new System.Drawing.Point(344, 174);
+        this.ShutdownTimeoutTextBox.Name = "ShutdownTimeoutTextBox";
+        this.ShutdownTimeoutTextBox.Size = new System.Drawing.Size(36, 21);
+        this.ShutdownTimeoutTextBox.TabIndex = 17;
+        this.ShutdownTimeoutTextBox.Text = "10";
+        // 
+        // label28
+        // 
+        this.label28.AutoSize = true;
+        this.label28.Location = new System.Drawing.Point(239, 123);
+        this.label28.Name = "label28";
+        this.label28.Size = new System.Drawing.Size(86, 13);
+        this.label28.TabIndex = 16;
+        this.label28.Text = "Overall Timeout:";
+        // 
+        // OverallTimeoutTextbox
+        // 
+        this.OverallTimeoutTextbox.Location = new System.Drawing.Point(344, 120);
+        this.OverallTimeoutTextbox.Name = "OverallTimeoutTextbox";
+        this.OverallTimeoutTextbox.Size = new System.Drawing.Size(36, 21);
+        this.OverallTimeoutTextbox.TabIndex = 15;
+        this.OverallTimeoutTextbox.Text = "600";
+        // 
+        // label27
+        // 
+        this.label27.AutoSize = true;
+        this.label27.Location = new System.Drawing.Point(239, 150);
+        this.label27.Name = "label27";
+        this.label27.Size = new System.Drawing.Size(80, 13);
+        this.label27.TabIndex = 14;
+        this.label27.Text = "Single Timeout:";
+        // 
+        // SingleTimeOutTextbox
+        // 
+        this.SingleTimeOutTextbox.Location = new System.Drawing.Point(344, 147);
+        this.SingleTimeOutTextbox.Name = "SingleTimeOutTextbox";
+        this.SingleTimeOutTextbox.Size = new System.Drawing.Size(36, 21);
+        this.SingleTimeOutTextbox.TabIndex = 13;
+        this.SingleTimeOutTextbox.Text = "600";
+        // 
+        // label26
+        // 
+        this.label26.AutoSize = true;
+        this.label26.Location = new System.Drawing.Point(239, 100);
+        this.label26.Name = "label26";
+        this.label26.Size = new System.Drawing.Size(70, 13);
+        this.label26.TabIndex = 12;
+        this.label26.Text = "Idle Timeout:";
+        // 
+        // IdleTimeoutMinutesTextBox
+        // 
+        this.IdleTimeoutMinutesTextBox.Location = new System.Drawing.Point(344, 97);
+        this.IdleTimeoutMinutesTextBox.Name = "IdleTimeoutMinutesTextBox";
+        this.IdleTimeoutMinutesTextBox.Size = new System.Drawing.Size(36, 21);
+        this.IdleTimeoutMinutesTextBox.TabIndex = 11;
+        this.IdleTimeoutMinutesTextBox.Text = "240";
+        // 
+        // GrabFocusOnConnectCheckbox
+        // 
+        this.GrabFocusOnConnectCheckbox.AutoSize = true;
+        this.GrabFocusOnConnectCheckbox.Location = new System.Drawing.Point(6, 30);
+        this.GrabFocusOnConnectCheckbox.Name = "GrabFocusOnConnectCheckbox";
+        this.GrabFocusOnConnectCheckbox.Size = new System.Drawing.Size(138, 17);
+        this.GrabFocusOnConnectCheckbox.TabIndex = 10;
+        this.GrabFocusOnConnectCheckbox.Text = "Grab Focus on Connect";
+        this.GrabFocusOnConnectCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // EnableEncryptionCheckbox
+        // 
+        this.EnableEncryptionCheckbox.AutoSize = true;
+        this.EnableEncryptionCheckbox.Location = new System.Drawing.Point(242, 30);
+        this.EnableEncryptionCheckbox.Name = "EnableEncryptionCheckbox";
+        this.EnableEncryptionCheckbox.Size = new System.Drawing.Size(112, 17);
+        this.EnableEncryptionCheckbox.TabIndex = 9;
+        this.EnableEncryptionCheckbox.Text = "Enable Encryption";
+        this.EnableEncryptionCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // DisableWindowsKeyCheckbox
+        // 
+        this.DisableWindowsKeyCheckbox.AutoSize = true;
+        this.DisableWindowsKeyCheckbox.Location = new System.Drawing.Point(6, 145);
+        this.DisableWindowsKeyCheckbox.Name = "DisableWindowsKeyCheckbox";
+        this.DisableWindowsKeyCheckbox.Size = new System.Drawing.Size(127, 17);
+        this.DisableWindowsKeyCheckbox.TabIndex = 8;
+        this.DisableWindowsKeyCheckbox.Text = "Disable Windows Key";
+        this.DisableWindowsKeyCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // DetectDoubleClicksCheckbox
+        // 
+        this.DetectDoubleClicksCheckbox.AutoSize = true;
+        this.DetectDoubleClicksCheckbox.Location = new System.Drawing.Point(6, 122);
+        this.DetectDoubleClicksCheckbox.Name = "DetectDoubleClicksCheckbox";
+        this.DetectDoubleClicksCheckbox.Size = new System.Drawing.Size(123, 17);
+        this.DetectDoubleClicksCheckbox.TabIndex = 6;
+        this.DetectDoubleClicksCheckbox.Text = "Detect Double Clicks";
+        this.DetectDoubleClicksCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // DisplayConnectionBarCheckbox
+        // 
+        this.DisplayConnectionBarCheckbox.AutoSize = true;
+        this.DisplayConnectionBarCheckbox.Location = new System.Drawing.Point(6, 99);
+        this.DisplayConnectionBarCheckbox.Name = "DisplayConnectionBarCheckbox";
+        this.DisplayConnectionBarCheckbox.Size = new System.Drawing.Size(136, 17);
+        this.DisplayConnectionBarCheckbox.TabIndex = 5;
+        this.DisplayConnectionBarCheckbox.Text = "Display Connection Bar";
+        this.DisplayConnectionBarCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // DisableControlAltDeleteCheckbox
+        // 
+        this.DisableControlAltDeleteCheckbox.AutoSize = true;
+        this.DisableControlAltDeleteCheckbox.Location = new System.Drawing.Point(6, 76);
+        this.DisableControlAltDeleteCheckbox.Name = "DisableControlAltDeleteCheckbox";
+        this.DisableControlAltDeleteCheckbox.Size = new System.Drawing.Size(148, 17);
+        this.DisableControlAltDeleteCheckbox.TabIndex = 4;
+        this.DisableControlAltDeleteCheckbox.Text = "Disable Control Alt Delete";
+        this.DisableControlAltDeleteCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // AcceleratorPassthroughCheckBox
+        // 
+        this.AcceleratorPassthroughCheckBox.AutoSize = true;
+        this.AcceleratorPassthroughCheckBox.Location = new System.Drawing.Point(6, 53);
+        this.AcceleratorPassthroughCheckBox.Name = "AcceleratorPassthroughCheckBox";
+        this.AcceleratorPassthroughCheckBox.Size = new System.Drawing.Size(231, 17);
+        this.AcceleratorPassthroughCheckBox.TabIndex = 3;
+        this.AcceleratorPassthroughCheckBox.Text = "Enable Keyboard Accelerator Passthrough ";
+        this.AcceleratorPassthroughCheckBox.UseVisualStyleBackColor = true;
+        // 
+        // EnableCompressionCheckbox
+        // 
+        this.EnableCompressionCheckbox.AutoSize = true;
+        this.EnableCompressionCheckbox.Location = new System.Drawing.Point(242, 7);
+        this.EnableCompressionCheckbox.Name = "EnableCompressionCheckbox";
+        this.EnableCompressionCheckbox.Size = new System.Drawing.Size(122, 17);
+        this.EnableCompressionCheckbox.TabIndex = 2;
+        this.EnableCompressionCheckbox.Text = "Enable Compression";
+        this.EnableCompressionCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // EnableBitmapPersistanceCheckbox
+        // 
+        this.EnableBitmapPersistanceCheckbox.AutoSize = true;
+        this.EnableBitmapPersistanceCheckbox.Location = new System.Drawing.Point(241, 53);
+        this.EnableBitmapPersistanceCheckbox.Name = "EnableBitmapPersistanceCheckbox";
+        this.EnableBitmapPersistanceCheckbox.Size = new System.Drawing.Size(151, 17);
+        this.EnableBitmapPersistanceCheckbox.TabIndex = 1;
+        this.EnableBitmapPersistanceCheckbox.Text = "Enable Bitmap Persistance";
+        this.EnableBitmapPersistanceCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // AllowBackgroundInputCheckBox
+        // 
+        this.AllowBackgroundInputCheckBox.AutoSize = true;
+        this.AllowBackgroundInputCheckBox.Location = new System.Drawing.Point(6, 7);
+        this.AllowBackgroundInputCheckBox.Name = "AllowBackgroundInputCheckBox";
+        this.AllowBackgroundInputCheckBox.Size = new System.Drawing.Size(139, 17);
+        this.AllowBackgroundInputCheckBox.TabIndex = 0;
+        this.AllowBackgroundInputCheckBox.Text = "Allow Background Input";
+        this.AllowBackgroundInputCheckBox.UseVisualStyleBackColor = true;
+        // 
+        // tabPage9
+        // 
+        this.tabPage9.Controls.Add(this.panel2);
+        this.tabPage9.Controls.Add(this.SecuritySettingsEnabledCheckbox);
+        this.tabPage9.Location = new System.Drawing.Point(4, 22);
+        this.tabPage9.Name = "tabPage9";
+        this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+        this.tabPage9.Size = new System.Drawing.Size(398, 207);
+        this.tabPage9.TabIndex = 3;
+        this.tabPage9.Text = "Security Settings";
+        this.tabPage9.UseVisualStyleBackColor = true;
+        // 
+        // panel2
+        // 
+        this.panel2.Controls.Add(this.SecurityStartFullScreenCheckbox);
+        this.panel2.Controls.Add(this.label25);
+        this.panel2.Controls.Add(this.SecurityWorkingFolderTextBox);
+        this.panel2.Controls.Add(this.label24);
+        this.panel2.Controls.Add(this.SecuriytStartProgramTextbox);
+        this.panel2.Enabled = false;
+        this.panel2.Location = new System.Drawing.Point(7, 30);
+        this.panel2.Name = "panel2";
+        this.panel2.Size = new System.Drawing.Size(385, 171);
+        this.panel2.TabIndex = 1;
+        // 
+        // SecurityStartFullScreenCheckbox
+        // 
+        this.SecurityStartFullScreenCheckbox.AutoSize = true;
+        this.SecurityStartFullScreenCheckbox.Location = new System.Drawing.Point(6, 66);
+        this.SecurityStartFullScreenCheckbox.Name = "SecurityStartFullScreenCheckbox";
+        this.SecurityStartFullScreenCheckbox.Size = new System.Drawing.Size(105, 17);
+        this.SecurityStartFullScreenCheckbox.TabIndex = 4;
+        this.SecurityStartFullScreenCheckbox.Text = "Start Full Screen";
+        this.SecurityStartFullScreenCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // label25
+        // 
+        this.label25.AutoSize = true;
+        this.label25.Location = new System.Drawing.Point(3, 37);
+        this.label25.Name = "label25";
+        this.label25.Size = new System.Drawing.Size(83, 13);
+        this.label25.TabIndex = 3;
+        this.label25.Text = "Working Folder:";
+        // 
+        // SecurityWorkingFolderTextBox
+        // 
+        this.SecurityWorkingFolderTextBox.Location = new System.Drawing.Point(87, 34);
+        this.SecurityWorkingFolderTextBox.Name = "SecurityWorkingFolderTextBox";
+        this.SecurityWorkingFolderTextBox.Size = new System.Drawing.Size(286, 21);
+        this.SecurityWorkingFolderTextBox.TabIndex = 2;
+        // 
+        // label24
+        // 
+        this.label24.AutoSize = true;
+        this.label24.Location = new System.Drawing.Point(3, 10);
+        this.label24.Name = "label24";
+        this.label24.Size = new System.Drawing.Size(78, 13);
+        this.label24.TabIndex = 1;
+        this.label24.Text = "Start Program:";
+        // 
+        // SecuriytStartProgramTextbox
+        // 
+        this.SecuriytStartProgramTextbox.Location = new System.Drawing.Point(87, 7);
+        this.SecuriytStartProgramTextbox.Name = "SecuriytStartProgramTextbox";
+        this.SecuriytStartProgramTextbox.Size = new System.Drawing.Size(286, 21);
+        this.SecuriytStartProgramTextbox.TabIndex = 0;
+        // 
+        // SecuritySettingsEnabledCheckbox
+        // 
+        this.SecuritySettingsEnabledCheckbox.AutoSize = true;
+        this.SecuritySettingsEnabledCheckbox.Location = new System.Drawing.Point(7, 7);
+        this.SecuritySettingsEnabledCheckbox.Name = "SecuritySettingsEnabledCheckbox";
+        this.SecuritySettingsEnabledCheckbox.Size = new System.Drawing.Size(64, 17);
+        this.SecuritySettingsEnabledCheckbox.TabIndex = 0;
+        this.SecuritySettingsEnabledCheckbox.Text = "Enabled";
+        this.SecuritySettingsEnabledCheckbox.UseVisualStyleBackColor = true;
+        this.SecuritySettingsEnabledCheckbox.CheckedChanged += new System.EventHandler(this.SecuritySettingsEnabledCheckbox_CheckedChanged);
         // 
         // tabPage7
         // 
@@ -1223,12 +1531,19 @@ namespace Terminals
         this.ras1.UserName = null;
         this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
         // 
+        // label30
+        // 
+        this.label30.AutoSize = true;
+        this.label30.Location = new System.Drawing.Point(6, 182);
+        this.label30.Name = "label30";
+        this.label30.Size = new System.Drawing.Size(195, 13);
+        this.label30.TabIndex = 19;
+        this.label30.Text = "Note: These are experimental settings.";
+        // 
         // NewTerminalForm
         // 
-        this.AcceptButton = this.btnOk;
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        this.CancelButton = this.btnCancel;
         this.ClientSize = new System.Drawing.Size(434, 391);
         this.Controls.Add(this.chkAddtoToolbar);
         this.Controls.Add(this.tabControl1);
@@ -1260,6 +1575,12 @@ namespace Terminals
         this.RDPLocalResourcesTabPage.ResumeLayout(false);
         this.LocalResourceGroupBox.ResumeLayout(false);
         this.LocalResourceGroupBox.PerformLayout();
+        this.tabPage8.ResumeLayout(false);
+        this.tabPage8.PerformLayout();
+        this.tabPage9.ResumeLayout(false);
+        this.tabPage9.PerformLayout();
+        this.panel2.ResumeLayout(false);
+        this.panel2.PerformLayout();
         this.tabPage7.ResumeLayout(false);
         this.tabPage7.PerformLayout();
         this.tabPage3.ResumeLayout(false);
@@ -1389,5 +1710,33 @@ namespace Terminals
       private System.Windows.Forms.Label label22;
       private System.Windows.Forms.TextBox ICAWorkingFolder;
       private System.Windows.Forms.Label label23;
+      private System.Windows.Forms.TabPage tabPage8;
+      private System.Windows.Forms.CheckBox AllowBackgroundInputCheckBox;
+      private System.Windows.Forms.CheckBox EnableCompressionCheckbox;
+      private System.Windows.Forms.CheckBox EnableBitmapPersistanceCheckbox;
+      private System.Windows.Forms.CheckBox AcceleratorPassthroughCheckBox;
+      private System.Windows.Forms.CheckBox DisableControlAltDeleteCheckbox;
+      private System.Windows.Forms.CheckBox DisplayConnectionBarCheckbox;
+      private System.Windows.Forms.CheckBox DetectDoubleClicksCheckbox;
+      private System.Windows.Forms.CheckBox DisableWindowsKeyCheckbox;
+      private System.Windows.Forms.CheckBox EnableEncryptionCheckbox;
+      private System.Windows.Forms.CheckBox GrabFocusOnConnectCheckbox;
+      private System.Windows.Forms.TabPage tabPage9;
+      private System.Windows.Forms.CheckBox SecuritySettingsEnabledCheckbox;
+      private System.Windows.Forms.Panel panel2;
+      private System.Windows.Forms.CheckBox SecurityStartFullScreenCheckbox;
+      private System.Windows.Forms.Label label25;
+      private System.Windows.Forms.TextBox SecurityWorkingFolderTextBox;
+      private System.Windows.Forms.Label label24;
+      private System.Windows.Forms.TextBox SecuriytStartProgramTextbox;
+      private System.Windows.Forms.Label label26;
+      private System.Windows.Forms.TextBox IdleTimeoutMinutesTextBox;
+      private System.Windows.Forms.Label label28;
+      private System.Windows.Forms.TextBox OverallTimeoutTextbox;
+      private System.Windows.Forms.Label label27;
+      private System.Windows.Forms.TextBox SingleTimeOutTextbox;
+      private System.Windows.Forms.Label label29;
+      private System.Windows.Forms.TextBox ShutdownTimeoutTextBox;
+      private System.Windows.Forms.Label label30;
   }
 }

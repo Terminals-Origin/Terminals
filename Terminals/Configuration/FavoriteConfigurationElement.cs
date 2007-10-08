@@ -17,6 +17,254 @@ namespace Terminals
         {
             Name = name;
         }
+        [ConfigurationProperty("shutdownTimeout", IsRequired = true, DefaultValue = 10)]
+        public int ShutdownTimeout
+        {
+            get
+            {
+                int val = (int)this["shutdownTimeout"];
+                if (val > 600) val = 600;
+                if (val < 10) val = 10;
+                return val;
+            }
+            set
+            {
+                if (value > 600) value = 600;
+                if (value < 10) value = 10;
+                this["shutdownTimeout"] = value;
+            }
+        }
+        [ConfigurationProperty("overallTimeout", IsRequired = true, DefaultValue = 600)]
+        public int OverallTimeout
+        {
+            get
+            {
+                int val = (int)this["overallTimeout"];
+                if (val > 600) val = 600;
+                if (val < 10) val = 10;
+                return val;
+            }
+            set
+            {
+                if (value > 600) value = 600;
+                if (value < 0) value = 0;
+                this["overallTimeout"] = value;
+            }
+        }
+        [ConfigurationProperty("connectionTimeout", IsRequired = true, DefaultValue = 600)]
+        public int ConnectionTimeout
+        {
+            get
+            {
+                int val = (int)this["connectionTimeout"];
+                if (val > 600) val = 600;
+                if (val < 10) val = 10;
+                return val;
+            }
+            set
+            {
+                if (value > 600) value = 600;
+                if (value < 0) value = 0;
+                this["connectionTimeout"] = value;
+            }
+        }
+
+
+        [ConfigurationProperty("idleTimeout", IsRequired = true, DefaultValue = 240)]
+        public int IdleTimeout
+        {
+            get
+            {
+                int val = (int)this["idleTimeout"];
+                if (val > 600) val = 600;
+                if (val < 10) val = 10;
+                return val;
+            }
+            set
+            {
+                if (value > 240) value = 240;
+                if (value < 0) value = 0;
+                this["idleTimeout"] = value;
+            }
+        }
+        [ConfigurationProperty("securityWorkingFolder", IsRequired = false, DefaultValue = "")]
+        public string SecurityWorkingFolder
+        {
+            get
+            {
+                return (string)this["securityWorkingFolder"];
+            }
+            set
+            {
+                this["securityWorkingFolder"] = value;
+            }
+        }
+        [ConfigurationProperty("securityStartProgram", IsRequired = false, DefaultValue = "")]
+        public string SecurityStartProgram
+        {
+            get
+            {
+                return (string)this["securityStartProgram"];
+            }
+            set
+            {
+                this["securityStartProgram"] = value;
+            }
+        }
+
+        [ConfigurationProperty("securityFullScreen", IsRequired = false, DefaultValue = false)]
+        public bool SecurityFullScreen
+        {
+            get
+            {
+                return (bool)this["securityFullScreen"];
+            }
+            set
+            {
+                this["securityFullScreen"] = value;
+            }
+        }
+        [ConfigurationProperty("enableSecuritySettings", IsRequired = false, DefaultValue = false)]
+        public bool EnableSecuritySettings
+        {
+            get
+            {
+                return (bool)this["enableSecuritySettings"];
+            }
+            set
+            {
+                this["enableSecuritySettings"] = value;
+            }
+        }
+        [ConfigurationProperty("grabFocusOnConnect", IsRequired = false, DefaultValue = false)]
+        public bool GrabFocusOnConnect
+        {
+            get
+            {
+                return (bool)this["grabFocusOnConnect"];
+            }
+            set
+            {
+                this["grabFocusOnConnect"] = value;
+            }
+        }
+
+        [ConfigurationProperty("enableEncryption", IsRequired = false, DefaultValue = false)]
+        public bool EnableEncryption
+        {
+            get
+            {
+                return (bool)this["enableEncryption"];
+            }
+            set
+            {
+                this["enableEncryption"] = value;
+            }
+        }
+
+        
+        [ConfigurationProperty("disableWindowsKey", IsRequired = false, DefaultValue = false)]
+        public bool DisableWindowsKey
+        {
+            get
+            {
+                return (bool)this["disableWindowsKey"];
+            }
+            set
+            {
+                this["disableWindowsKey"] = value;
+            }
+        }
+
+
+
+        [ConfigurationProperty("doubleClickDetect", IsRequired = false, DefaultValue = false)]
+        public bool DoubleClickDetect
+        {
+            get
+            {
+                return (bool)this["doubleClickDetect"];
+            }
+            set
+            {
+                this["doubleClickDetect"] = value;
+            }
+        }
+
+        [ConfigurationProperty("displayConnectionBar", IsRequired = false, DefaultValue = false)]
+        public bool DisplayConnectionBar
+        {
+            get
+            {
+                return (bool)this["displayConnectionBar"];
+            }
+            set
+            {
+                this["displayConnectionBar"] = value;
+            }
+        }
+
+        [ConfigurationProperty("disableControlAltDelete", IsRequired = false, DefaultValue = false)]
+        public bool DisableControlAltDelete
+        {
+            get
+            {
+                return (bool)this["disableControlAltDelete"];
+            }
+            set
+            {
+                this["disableControlAltDelete"] = value;
+            }
+        }
+        [ConfigurationProperty("acceleratorPassthrough", IsRequired = false, DefaultValue = false)]
+        public bool AcceleratorPassthrough
+        {
+            get
+            {
+                return (bool)this["acceleratorPassthrough"];
+            }
+            set
+            {
+                this["acceleratorPassthrough"] = value;
+            }
+        }
+        [ConfigurationProperty("enableCompression", IsRequired = false, DefaultValue = false)]
+        public bool EnableCompression
+        {
+            get
+            {
+                return (bool)this["enableCompression"];
+            }
+            set
+            {
+                this["enableCompression"] = value;
+            }
+        }
+        [ConfigurationProperty("bitmapPeristence", IsRequired = false, DefaultValue = false)]
+        public bool BitmapPeristence
+        {
+            get
+            {
+                return (bool)this["bitmapPeristence"];
+            }
+            set
+            {
+                this["bitmapPeristence"] = value;
+            }
+        }
+        [ConfigurationProperty("allowBackgroundInput", IsRequired = false, DefaultValue = false)]
+        public bool AllowBackgroundInput
+        {
+            get
+            {
+                return (bool)this["allowBackgroundInput"];
+            }
+            set
+            {
+                this["allowBackgroundInput"] = value;
+            }
+        }
+
 
 
         [ConfigurationProperty("ICAApplicationName", IsRequired = false, DefaultValue = "")]

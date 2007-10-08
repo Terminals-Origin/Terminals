@@ -17,6 +17,23 @@
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
+    <ManifestCertificateThumbprint>200FB5A1E56B57D807AAEEC6C4E021804D6435FD</ManifestCertificateThumbprint>
+    <ManifestKeyFile>Terminals_TemporaryKey.pfx</ManifestKeyFile>
+    <GenerateManifests>true</GenerateManifests>
+    <SignManifests>true</SignManifests>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationVersion>1.6.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -229,6 +246,12 @@
     </Compile>
     <Compile Include="Network\Servers\ServerList.Designer.cs">
       <DependentUpon>ServerList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Network\Servers\TerminalServerManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\Servers\TerminalServerManager.Designer.cs">
+      <DependentUpon>TerminalServerManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\WMI\NetworkShares.cs">
       <SubType>UserControl</SubType>
@@ -457,6 +480,8 @@
     <Compile Include="SHApi.cs" />
     <Compile Include="SHFileOperationWrapper.cs" />
     <Compile Include="SingleInstanceApplication.cs" />
+    <Compile Include="TerminalServices\TerminalServicesAPI.cs" />
+    <Compile Include="TerminalServices\TerminalServer.cs" />
     <Compile Include="TSManager.cs" />
     <Compile Include="CommandLine\CommandLineArguments.cs" />
     <None Include="WTSApi32.cs" />
@@ -519,6 +544,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>ServerList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Network\Servers\TerminalServerManager.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TerminalServerManager.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\WMI\NetworkShares.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkShares.cs</DependentUpon>
@@ -558,6 +587,13 @@
       <Project>{3545E021-A75E-4558-8EA3-234DF99FB49A}</Project>
       <Name>TerminalControl</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
