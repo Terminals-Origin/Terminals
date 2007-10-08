@@ -186,6 +186,12 @@
       <DependentUpon>NetworkScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\DNSLookup.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\DNSLookup.Designer.cs">
+      <DependentUpon>DNSLookup.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\InterfacesList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -453,6 +459,10 @@
     <None Include="Resources\HidePanel.PNG" />
     <None Include="Resources\camera.png" />
     <None Include="Resources\application_xp_terminal.png" />
+    <EmbeddedResource Include="Network\DNSLookup.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>DNSLookup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\InterfacesList.resx">
       <SubType>Designer</SubType>
       <DependentUpon>InterfacesList.cs</DependentUpon>
