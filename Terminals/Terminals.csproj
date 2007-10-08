@@ -206,15 +206,6 @@
       <DependentUpon>NetworkScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Client.cs" />
-    <Compile Include="Network\CPU\CPU.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\CPU\CPU.Designer.cs">
-      <DependentUpon>CPU.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Network\CPU\CpuUsage.cs" />
-    <Compile Include="Network\CPU\CpuUsage9x.cs" />
-    <Compile Include="Network\CPU\CpuUsageNt.cs" />
     <Compile Include="Network\DNSLookup.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -482,6 +473,9 @@
     <Compile Include="SHApi.cs" />
     <Compile Include="SHFileOperationWrapper.cs" />
     <Compile Include="SingleInstanceApplication.cs" />
+    <Compile Include="TerminalServices\Client.cs" />
+    <Compile Include="TerminalServices\ConnectionStates.cs" />
+    <Compile Include="TerminalServices\Session.cs" />
     <Compile Include="TerminalServices\TerminalServicesAPI.cs" />
     <Compile Include="TerminalServices\TerminalServer.cs" />
     <Compile Include="TSManager.cs" />
@@ -518,10 +512,6 @@
     <None Include="Resources\HidePanel.PNG" />
     <None Include="Resources\camera.png" />
     <None Include="Resources\application_xp_terminal.png" />
-    <EmbeddedResource Include="Network\CPU\CPU.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>CPU.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Network\DNSLookup.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DNSLookup.cs</DependentUpon>

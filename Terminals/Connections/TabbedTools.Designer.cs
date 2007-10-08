@@ -43,14 +43,14 @@ namespace Terminals.Connections
             this.whoIs1 = new Terminals.Network.WhoIs.WhoIs();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.dnsLookup1 = new Terminals.Network.DNSLookup();
-            this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.cpu1 = new Terminals.Network.CPU.CPU();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.networkShares1 = new Terminals.Network.NetworkShares();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.networkTime1 = new Terminals.Network.NTP.NetworkTime();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.serverList1 = new Terminals.Network.Servers.ServerList();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.terminalServerManager1 = new Terminals.Network.Servers.TerminalServerManager();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -59,10 +59,10 @@ namespace Terminals.Connections
             this.tabPage5.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
-            this.tabPage8.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.tabPage10.SuspendLayout();
             this.tabPage11.SuspendLayout();
+            this.tabPage8.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -74,10 +74,10 @@ namespace Terminals.Connections
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
-            this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Controls.Add(this.tabPage9);
             this.tabControl1.Controls.Add(this.tabPage10);
             this.tabControl1.Controls.Add(this.tabPage11);
+            this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -218,25 +218,6 @@ namespace Terminals.Connections
             this.dnsLookup1.Size = new System.Drawing.Size(742, 303);
             this.dnsLookup1.TabIndex = 0;
             // 
-            // tabPage8
-            // 
-            this.tabPage8.Controls.Add(this.cpu1);
-            this.tabPage8.Location = new System.Drawing.Point(4, 22);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(748, 309);
-            this.tabPage8.TabIndex = 7;
-            this.tabPage8.Text = "CPU History";
-            this.tabPage8.UseVisualStyleBackColor = true;
-            // 
-            // cpu1
-            // 
-            this.cpu1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cpu1.Location = new System.Drawing.Point(3, 3);
-            this.cpu1.Name = "cpu1";
-            this.cpu1.Size = new System.Drawing.Size(742, 303);
-            this.cpu1.TabIndex = 0;
-            // 
             // tabPage9
             // 
             this.tabPage9.Controls.Add(this.networkShares1);
@@ -294,6 +275,24 @@ namespace Terminals.Connections
             this.serverList1.Size = new System.Drawing.Size(742, 303);
             this.serverList1.TabIndex = 0;
             // 
+            // tabPage8
+            // 
+            this.tabPage8.Controls.Add(this.terminalServerManager1);
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(748, 309);
+            this.tabPage8.TabIndex = 11;
+            this.tabPage8.Text = "TS Admin";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // terminalServerManager1
+            // 
+            this.terminalServerManager1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.terminalServerManager1.Location = new System.Drawing.Point(0, 0);
+            this.terminalServerManager1.Name = "terminalServerManager1";
+            this.terminalServerManager1.Size = new System.Drawing.Size(748, 309);
+            this.terminalServerManager1.TabIndex = 0;
+            // 
             // TabbedTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -309,10 +308,10 @@ namespace Terminals.Connections
             this.tabPage5.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
-            this.tabPage8.ResumeLayout(false);
             this.tabPage9.ResumeLayout(false);
             this.tabPage10.ResumeLayout(false);
             this.tabPage11.ResumeLayout(false);
+            this.tabPage8.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -334,13 +333,13 @@ namespace Terminals.Connections
         private Terminals.Network.WhoIs.WhoIs whoIs1;
         private System.Windows.Forms.TabPage tabPage7;
         private Terminals.Network.DNSLookup dnsLookup1;
-        private System.Windows.Forms.TabPage tabPage8;
-        private Terminals.Network.CPU.CPU cpu1;
         private System.Windows.Forms.TabPage tabPage9;
         private Terminals.Network.NetworkShares networkShares1;
         private System.Windows.Forms.TabPage tabPage10;
         private Terminals.Network.NTP.NetworkTime networkTime1;
         private System.Windows.Forms.TabPage tabPage11;
         private Terminals.Network.Servers.ServerList serverList1;
+        private System.Windows.Forms.TabPage tabPage8;
+        private Terminals.Network.Servers.TerminalServerManager terminalServerManager1;
     }
 }

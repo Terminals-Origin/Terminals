@@ -7,74 +7,21 @@ namespace Terminals.TerminalServices
 {
     public class TerminalServicesAPI
     {
-        [DllImport("wtsapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern IntPtr WTSOpenServer(string pServerName);
 
-        [DllImport("wtsapi32.dll")]
-        public static extern void WTSCloseServer(IntPtr hServer);
+        [DllImport("WtsApi32.dll", EntryPoint = "WTSQuerySessionInformationW", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        public static extern bool WTSQuerySessionInformation(System.IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, ref System.IntPtr ppBuffer, ref int pBytesReturned);
 
-        [DllImport("kernel32.dll")]
-        public static extern uint GetCurrentProcessId();
-
-        [DllImport("wtsapi32.dll", SetLastError = true)]
-        public static extern bool WTSDisconnectSession(IntPtr hServer, int sessionId, bool bWait);
-
-
-        [DllImport("wtsapi32.dll", SetLastError = true)]
-        public static extern bool WTSEnumerateProcesses(
-            IntPtr serverHandle, // Handle to a terminal server. 
-            Int32 reserved,     // must be 0
-            Int32 version,      // must be 1
-            ref IntPtr ppProcessInfo, // pointer to array of WTS_PROCESS_INFO
-            ref Int32 pCount);       // pointer to number of processes
+        [DllImport("WtsApi32.dll", EntryPoint = "WTSQuerySessionInformationW", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        private static extern bool WTSQuerySessionInformation2(System.IntPtr hServer, int SessionId, WTS_INFO_CLASS WTSInfoClass, ref IntPtr ppBuffer, ref Int32 pCount);
+        [DllImport("Kernel32.dll", EntryPoint = "GetCurrentProcessId", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        private static extern Int32 GetCurrentProcessId();
+        [DllImport("Kernel32.dll", EntryPoint = "ProcessIdToSessionId", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        private static extern bool ProcessIdToSessionId(Int32 processID, ref Int32 sessionID);
+        [DllImport("Kernel32.dll", EntryPoint = "WTSGetActiveConsoleSessionId", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        private static extern Int32 WTSGetActiveConsoleSessionId();
 
         [DllImport("wtsapi32.dll", SetLastError = true)]
-        public static extern int WTSEnumerateSessions(
-                System.IntPtr hServer,
-                int Reserved,
-                int Version,
-                ref System.IntPtr ppSessionInfo,
-                ref int pCount);
-
-        [DllImport("wtsapi32.dll", SetLastError = true)]
-        public static extern void WTSEnumerateSessions(
-                        System.IntPtr hServer,
-                        ref System.IntPtr ppSessionInfo,
-                        ref int pCount);
-        //{
-        //    WTSEnumerateSessions(hServer, 0, 1, ppSessionInfo, pCount);
-        //}
-
-        [DllImport("wtsapi32.dll", ExactSpelling = true, SetLastError = false)]
-        public static extern void WTSFreeMemory(IntPtr memory);
-
-        [DllImport("wtsapi32.dll", SetLastError = true)]
-        public static extern bool WTSLogoffSession(IntPtr hServer, int SessionId, bool bWait);
-
-        /// <summary>
-        /// The WTSQuerySessionInformation function retrieves session information for the specified 
-        /// session on the specified terminal server. 
-        /// It can be used to query session information on local and remote terminal servers.
-        /// http://msdn.microsoft.com/library/default.asp?url=/library/en-us/termserv/termserv/wtsquerysessioninformation.asp
-        /// </summary>
-        /// <param name="hServer">Handle to a terminal server. Specify a handle opened by the WTSOpenServer function, 
-        /// or specify <see cref="WTS_CURRENT_SERVER_HANDLE"/> to indicate the terminal server on which your application is running.</param>
-        /// <param name="sessionId">A Terminal Services session identifier. To indicate the session in which the calling application is running 
-        /// (or the current session) specify <see cref="WTS_CURRENT_SESSION"/>. Only specify <see cref="WTS_CURRENT_SESSION"/> when obtaining session information on the 
-        /// local server. If it is specified when querying session information on a remote server, the returned session 
-        /// information will be inconsistent. Do not use the returned data in this situation.</param>
-        /// <param name="wtsInfoClass">Specifies the type of information to retrieve. This parameter can be one of the values from the <see cref="WTSInfoClass"/> enumeration type. </param>
-        /// <param name="ppBuffer">Pointer to a variable that receives a pointer to the requested information. The format and contents of the data depend on the information class specified in the <see cref="WTSInfoClass"/> parameter. 
-        /// To free the returned buffer, call the <see cref="WTSFreeMemory"/> function. </param>
-        /// <param name="pBytesReturned">Pointer to a variable that receives the size, in bytes, of the data returned in ppBuffer.</param>
-        /// <returns>If the function succeeds, the return value is a nonzero value.
-        /// If the function fails, the return value is zero. To get extended error information, call GetLastError.
-        /// </returns>
-        [DllImport("Wtsapi32.dll")]
-        public static extern bool WTSQuerySessionInformation(
-            System.IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, out System.IntPtr ppBuffer, out uint pBytesReturned);
-        [DllImport("wtsapi32.dll", SetLastError = true)]
-        public static extern bool WTSSendMessage(
+        static extern bool WTSSendMessage(
                     IntPtr hServer,
                     [MarshalAs(UnmanagedType.I4)] int SessionId,
                     String pTitle,
@@ -87,63 +34,325 @@ namespace Terminals.TerminalServices
                     bool bWait);
 
 
+        //Function for TS Client IP Address 
+
+        [DllImport("wtsapi32.dll", SetLastError = true)]
+        private static extern bool WTSLogoffSession(IntPtr hServer, int SessionId, bool bWait);
+
+        [DllImport("wtsapi32.dll", BestFitMapping = true, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto, EntryPoint = "WTSEnumerateSessions", SetLastError = true, ThrowOnUnmappableChar = true)]
+        private static extern Int32 WTSEnumerateSessions(
+            [MarshalAs(UnmanagedType.SysInt)] 
+            IntPtr hServer, 
+            [MarshalAs(UnmanagedType.U4)] 
+            int Reserved,
+           [MarshalAs(UnmanagedType.U4)] 
+            int Vesrion, 
+            [MarshalAs(UnmanagedType.SysInt)] 
+            ref IntPtr ppSessionInfo,
+           [MarshalAs(UnmanagedType.U4)] 
+            ref int pCount);
+
+        [DllImport("wtsapi32.dll")]
+        private static extern void WTSFreeMemory(IntPtr pMemory);
+
+        [DllImport("wtsapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern IntPtr WTSOpenServer(string pServerName);
+
+        [DllImport("wtsapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern void WTSCloseServer(IntPtr hServer);
         [DllImport("wtsapi32.dll", SetLastError = true)]
         public static extern int WTSShutdownSystem(IntPtr ServerHandle, long ShutdownFlags);
-        [DllImport("wtsapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern Int32 WTSVirtualChannelClose(IntPtr hChannelHandle);
+        private const long WTS_WSD_REBOOT = 0x00000004;
+        private const long WTS_WSD_SHUTDOWN = 0x00000002;
 
-        [DllImport("wtsapi32.dll", CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
-        public static extern IntPtr WTSVirtualChannelOpen(IntPtr hServer, Int32 dwSessionID, IntPtr pChannelName);
-        [DllImport("kernel32.dll")]
-        public static extern bool ProcessIdToSessionId(uint dwProcessId, out uint pSessionId);
-    }
-    public enum WTS_CONNECTSTATE_CLASS
-    {
-        WTSActive,
-        WTSConnected,
-        WTSConnectQuery,
-        WTSShadow,
-        WTSDisconnected,
-        WTSIdle,
-        WTSListen,
-        WTSReset,
-        WTSDown,
-        WTSInit
-    }
+        public static void ShutdownSystem(TerminalServer Server, bool Reboot)
+        {
+            long action = WTS_WSD_REBOOT;
+            if(!Reboot) action = WTS_WSD_SHUTDOWN;
+            System.IntPtr server = WTSOpenServer(Server.ServerName);
+            if(server!=System.IntPtr.Zero) TerminalServicesAPI.WTSShutdownSystem(server, action);
+        }
 
-    public enum WTS_INFO_CLASS
-    {
-        WTSInitialProgram = 0,
-        WTSApplicationName = 1,
-        WTSWorkingDirectory = 2,
-        WTSOEMId = 3,
-        WTSSessionId = 4,
-        WTSUserName = 5,
-        WTSWinStationName = 6,
-        WTSDomainName = 7,
-        WTSConnectState = 8,
-        WTSClientBuildNumber = 9,
-        WTSClientName = 10,
-        WTSClientDirectory = 11,
-        WTSClientProductId = 12,
-        WTSClientHardwareId = 13,
-        WTSClientAddress = 14,
-        WTSClientDisplay = 15,
-        WTSClientProtocolType = 16,
-        WTSIdleTime = 17,
-        WTSLogonTime = 18,
-        WTSIncomingBytes = 19,
-        WTSOutgoingBytes = 20,
-        WTSIncomingFrames = 21,
-        WTSOutgoingFrames = 22
-    }
-    public struct WTS_PROCESS_INFO
-    {
-        public int SessionID;
-        public int ProcessID;
-        //This is a pointer to string...
-        public int ProcessName;
-        public int UserSid;
-    }
+        public static bool SendMessage(Session Session, string Title, string Message, int Style, int Timeout, bool Wait)
+        {
+            System.IntPtr server = WTSOpenServer(Session.ServerName);
+            if(server != System.IntPtr.Zero)
+            {
+                int respose = 0;
+                return TerminalServicesAPI.WTSSendMessage(server, Session.SessionID, Title, Title.Length, Message, Message.Length, Style, Timeout, out respose, Wait);
+            }
+            return false;
+        }
 
+
+
+        public static bool LogOffSession(Session Session, bool Wait) {
+            System.IntPtr server = WTSOpenServer(Session.ServerName);
+            if(server != System.IntPtr.Zero)
+            {
+                return TerminalServicesAPI.WTSLogoffSession(server, Session.SessionID, Wait);
+            }
+            return false;
+        }
+
+        public static TerminalServer GetSessions(string ServerName)
+        {
+
+            TerminalServer Data = new TerminalServer();
+            Data.ServerName = ServerName;
+
+
+            IntPtr ptrOpenedServer = IntPtr.Zero;
+            try
+            {
+                ptrOpenedServer = WTSOpenServer(ServerName);
+                if(ptrOpenedServer == System.IntPtr.Zero)
+                {
+                    Data.IsATerminalServer = false;
+                    return Data;
+                }
+                Data.ServerPointer = ptrOpenedServer;
+                Data.IsATerminalServer = true;
+
+                Int32 FRetVal;
+                IntPtr ppSessionInfo = IntPtr.Zero;
+                Int32 Count = 0;
+                try
+                {
+                    FRetVal = WTSEnumerateSessions(ptrOpenedServer, 0, 1, ref ppSessionInfo, ref Count);
+                    if(FRetVal != 0)
+                    {
+                        Data.Sessions = new List<Session>();
+                        WTS_SESSION_INFO[] sessionInfo = new WTS_SESSION_INFO[Count + 1];
+                        int i;
+                        System.IntPtr session_ptr;
+                        for(i = 0; i <= Count - 1; i++)
+                        {
+                            session_ptr = new System.IntPtr(ppSessionInfo.ToInt32() + (i * Marshal.SizeOf(sessionInfo[i])));
+                            sessionInfo[i] = (WTS_SESSION_INFO)Marshal.PtrToStructure(session_ptr, typeof(WTS_SESSION_INFO));
+                            Session s = new Session();
+                            s.SessionID = sessionInfo[i].SessionID;
+                            s.State = (ConnectionStates)(int)sessionInfo[i].State;
+                            s.WindowsStationName = sessionInfo[i].pWinStationName;
+                            s.ServerName = ServerName;
+                            Data.Sessions.Add(s);
+                        }
+                        WTSFreeMemory(ppSessionInfo);
+                        strSessionsInfo[] tmpArr = new strSessionsInfo[sessionInfo.GetUpperBound(0) + 1];
+                        for(i = 0; i <= tmpArr.GetUpperBound(0); i++)
+                        {
+                            tmpArr[i].SessionID = sessionInfo[i].SessionID;
+                            tmpArr[i].StationName = sessionInfo[i].pWinStationName;
+                            tmpArr[i].ConnectionState = GetConnectionState(sessionInfo[i].State);
+                            //MessageBox.Show(tmpArr(i).StationName & " " & tmpArr(i).SessionID & " " & tmpArr(i).ConnectionState) 
+                        }
+                        // ERROR: Not supported in C#: ReDimStatement 
+                    }
+                }
+                catch(Exception ex)
+                {
+                    Data.Errors.Add(ex.Message + "\r\n" + System.Runtime.InteropServices.Marshal.GetLastWin32Error());
+                }
+            }
+            catch(Exception ex)
+            {
+                Data.Errors.Add(ex.Message + "\r\n" + System.Runtime.InteropServices.Marshal.GetLastWin32Error());
+            }
+
+            //Get ProcessID of TS Session that executed this TS Session 
+            Int32 active_process = GetCurrentProcessId();
+            Int32 active_session = 0;
+            bool success1 = ProcessIdToSessionId(active_process, ref active_session);
+
+            foreach(Session s in Data.Sessions)
+            {
+                if(s.Client == null) s.Client = new Client();
+                
+                WTS_CLIENT_INFO ClientInfo = LoadClientInfoForSession(Data.ServerPointer, s.SessionID);
+                s.Client.Address = ClientInfo.Address;
+                s.Client.AddressFamily = ClientInfo.AddressFamily;
+                s.Client.ClientName = ClientInfo.WTSClientName;
+                s.Client.DomianName = ClientInfo.WTSDomainName;
+                s.Client.StationName = ClientInfo.WTSStationName;
+                s.Client.Status = ClientInfo.WTSStatus;
+                s.Client.UserName = ClientInfo.WTSUserName;
+                s.IsTheActiveSession=false;
+                if(s.SessionID == active_session) s.IsTheActiveSession = true;
+            }
+
+
+
+            WTSCloseServer(ptrOpenedServer);
+            return Data;
+        }
+        private static WTS_CLIENT_INFO LoadClientInfoForSession(IntPtr ptrOpenedServer, int active_session)
+        {
+
+            int returned = 0;
+            IntPtr str = IntPtr.Zero;
+
+            WTS_CLIENT_INFO ClientInfo = new WTS_CLIENT_INFO();
+            ClientInfo.WTSStationName = "";
+            ClientInfo.WTSClientName = "";
+            ClientInfo.Address = new byte[6];
+            ClientInfo.Address[2] = 0;
+            ClientInfo.Address[3] = 0;
+            ClientInfo.Address[4] = 0;
+            ClientInfo.Address[5] = 0;
+
+            ClientInfo.WTSClientName = GetString(ptrOpenedServer, active_session, WTS_INFO_CLASS.WTSClientName);
+            ClientInfo.WTSStationName = GetString(ptrOpenedServer, active_session, WTS_INFO_CLASS.WTSWinStationName);
+            ClientInfo.WTSDomainName = GetString(ptrOpenedServer, active_session, WTS_INFO_CLASS.WTSDomainName);
+
+            //Get client IP address 
+            IntPtr addr = System.IntPtr.Zero;
+            if(WTSQuerySessionInformation2(ptrOpenedServer, active_session, WTS_INFO_CLASS.WTSClientAddress, ref addr, ref returned) == true)
+            {
+                _WTS_CLIENT_ADDRESS obj = new _WTS_CLIENT_ADDRESS();
+                obj = (_WTS_CLIENT_ADDRESS)Marshal.PtrToStructure(addr, obj.GetType());
+                ClientInfo.Address[2] = obj.Address[2];
+                ClientInfo.Address[3] = obj.Address[3];
+                ClientInfo.Address[4] = obj.Address[4];
+                ClientInfo.Address[5] = obj.Address[5];
+            }
+            return ClientInfo;
+        }
+        private static string GetString(System.IntPtr ptrOpenedServer, int active_session, WTS_INFO_CLASS whichOne)
+        {
+            System.IntPtr str = System.IntPtr.Zero;
+            int returned = 0;
+            if(WTSQuerySessionInformation(ptrOpenedServer, active_session, WTS_INFO_CLASS.WTSUserName, ref str, ref returned) == true)
+            {
+                return Marshal.PtrToStringAuto(str);
+            }
+            return "";
+        }
+        private static string GetConnectionState(WTS_CONNECTSTATE_CLASS State)
+        {
+            string RetVal;
+            switch(State)
+            {
+                case WTS_CONNECTSTATE_CLASS.WTSActive:
+                    RetVal = "Active";
+                    break;
+                case WTS_CONNECTSTATE_CLASS.WTSConnected:
+                    RetVal = "Connected";
+                    break;
+                case WTS_CONNECTSTATE_CLASS.WTSConnectQuery:
+                    RetVal = "Query";
+                    break;
+                case WTS_CONNECTSTATE_CLASS.WTSDisconnected:
+                    RetVal = "Disconnected";
+                    break;
+                case WTS_CONNECTSTATE_CLASS.WTSDown:
+                    RetVal = "Down";
+                    break;
+                case WTS_CONNECTSTATE_CLASS.WTSIdle:
+                    RetVal = "Idle";
+                    break;
+                case WTS_CONNECTSTATE_CLASS.WTSInit:
+                    RetVal = "Initializing.";
+                    break;
+                case WTS_CONNECTSTATE_CLASS.WTSListen:
+                    RetVal = "Listen";
+                    break;
+                case WTS_CONNECTSTATE_CLASS.WTSReset:
+                    RetVal = "reset";
+                    break;
+                case WTS_CONNECTSTATE_CLASS.WTSShadow:
+                    RetVal = "Shadowing";
+                    break;
+                default:
+                    RetVal = "Unknown connect state";
+                    break;
+            }
+            return RetVal;
+        }
+
+
+        public enum WTS_CONNECTSTATE_CLASS
+        {
+            WTSActive,
+            WTSConnected,
+            WTSConnectQuery,
+            WTSShadow,
+            WTSDisconnected,
+            WTSIdle,
+            WTSListen,
+            WTSReset,
+            WTSDown,
+            WTSInit
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        public struct WTS_SESSION_INFO
+        {
+            //DWORD integer 
+            public Int32 SessionID;
+            // integer LPTSTR - Pointer to a null-terminated string containing the name of the WinStation for this session 
+            public string pWinStationName;
+            public WTS_CONNECTSTATE_CLASS State;
+        }
+
+        internal struct strSessionsInfo
+        {
+            public int SessionID;
+            public string StationName;
+            public string ConnectionState;
+        }
+
+        public enum WTS_INFO_CLASS
+        {
+            WTSInitialProgram,
+            WTSApplicationName,
+            WTSWorkingDirectory,
+            WTSOEMId,
+            WTSSessionId,
+            WTSUserName,
+            WTSWinStationName,
+            WTSDomainName,
+            WTSConnectState,
+            WTSClientBuildNumber,
+            WTSClientName,
+            WTSClientDirectory,
+            WTSClientProductId,
+            WTSClientHardwareId,
+            WTSClientAddress,
+            WTSClientDisplay,
+            WTSClientProtocolType,
+            WTSIdleTime,
+            WTSLogonTime,
+            WTSIncomingBytes,
+            WTSOutgoingBytes,
+            WTSIncomingFrames,
+            WTSOutgoingFrames
+        }
+        //Structure for TS Client IP Address 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct _WTS_CLIENT_ADDRESS
+        {
+            public int AddressFamily;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+            public byte[] Address;
+        }
+        //Structure for TS Client Information 
+        public struct WTS_CLIENT_INFO
+        {
+            [MarshalAs(UnmanagedType.Bool)] 
+            public bool WTSStatus;
+            [MarshalAs(UnmanagedType.LPWStr)] 
+            public string WTSUserName;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string WTSStationName;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string WTSDomainName;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public string WTSClientName;
+            [MarshalAs(UnmanagedType.LPWStr)]
+            public int AddressFamily;
+            [MarshalAs(UnmanagedType.ByValArray)]
+            public byte[] Address;
+        }
+
+    }
 }

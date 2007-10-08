@@ -483,18 +483,25 @@ namespace Metro
 			// loop through each entry
 			for (int i = 0; i < nEntries; i++)
 			{
-				// read the address
-				IPAddress ip = new IPAddress (Marshal.ReadInt32 (new IntPtr (pBuffer.ToInt32() + 4 + i*24)));
-				
-				// find the interface which this matches
-				for (int j = 0; j < interfaces.Length; j++)
-				{
-					if (interfaces[j].Address.Equals (ip))
-					{
-						// read the interface index
-						interfaces[j].InterfaceIndex = Marshal.ReadInt32 (new IntPtr (pBuffer.ToInt32() + 8 + i*24));
-					}
-				}
+                try
+                {
+                    // read the address
+                    IPAddress ip = new IPAddress(Marshal.ReadInt32(new IntPtr(pBuffer.ToInt32() + 4 + i * 24)));
+
+                    // find the interface which this matches
+                    for(int j = 0; j < interfaces.Length; j++)
+                    {
+                        if(interfaces[j].Address.Equals(ip))
+                        {
+                            // read the interface index
+                            interfaces[j].InterfaceIndex = Marshal.ReadInt32(new IntPtr(pBuffer.ToInt32() + 8 + i * 24));
+                        }
+                    }
+                }
+                catch(Exception exc)
+                {
+                    //System.Diagnostics.Debug.Fail(exc.Message);
+                }
 			}
 			
 			// free the allocated memory
