@@ -126,6 +126,9 @@ Rogério Paulo for ToolBarManager
 Jonathan Hill : Toolbar Saving/Loading
 </value>
   </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Terminals also handles a variety of networking operations such as: Ping, Trace Route, WMI Explorer, TCP Connections, Network Interfaces, Whois, DNS Lookups, CPU History Graph, Shares List, Time Syncronization, Servers List</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

@@ -1686,6 +1686,11 @@ namespace Terminals
                 System.Windows.Forms.MessageBox.Show(exc.Message);
             }
         }
+
+        private void networkingToolsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            toolStripButton2_Click(null, null);
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem

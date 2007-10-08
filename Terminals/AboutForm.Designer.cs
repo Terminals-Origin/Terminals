@@ -43,6 +43,7 @@ namespace Terminals
             this.lblVersion = new System.Windows.Forms.Label();
             this.linkLabel4 = new System.Windows.Forms.LinkLabel();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,16 +51,15 @@ namespace Terminals
             // 
             this.label1.Location = new System.Drawing.Point(12, 114);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(408, 32);
+            this.label1.Size = new System.Drawing.Size(408, 18);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Terminals is a multi tab terminal services/remote desktop client. It uses the Ter" +
-                "minal Services ActiveX Client (mstscax.dll).";
+            this.label1.Text = "Terminals is a multi tab terminal services/remote desktop client.";
             // 
             // lblTerminals
             // 
             this.lblTerminals.AutoSize = true;
             this.lblTerminals.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.lblTerminals.Location = new System.Drawing.Point(131, 159);
+            this.lblTerminals.Location = new System.Drawing.Point(144, 178);
             this.lblTerminals.Name = "lblTerminals";
             this.lblTerminals.Size = new System.Drawing.Size(170, 13);
             this.lblTerminals.TabIndex = 1;
@@ -188,9 +188,9 @@ namespace Terminals
             this.lblVersion.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.lblVersion.Location = new System.Drawing.Point(12, 91);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(386, 13);
+            this.lblVersion.Size = new System.Drawing.Size(380, 13);
             this.lblVersion.TabIndex = 9;
-            this.lblVersion.Text = "Terminals 1.6a  (RDP, VNC, VMRC, RAS, ICA Citrix, Telnet and SSH Supported)";
+            this.lblVersion.Text = "Terminals 1.6  (RDP, VNC, VMRC, RAS, ICA Citrix, Telnet and SSH Supported)";
             // 
             // linkLabel4
             // 
@@ -217,6 +217,14 @@ namespace Terminals
             this.textBox1.TabIndex = 11;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(12, 132);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(408, 39);
+            this.label2.TabIndex = 12;
+            this.label2.Text = resources.GetString("label2.Text");
+            // 
             // AboutForm
             // 
             this.AcceptButton = this.btnClose;
@@ -225,6 +233,7 @@ namespace Terminals
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(433, 419);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.linkLabel4);
             this.Controls.Add(this.lblVersion);
@@ -271,5 +280,6 @@ namespace Terminals
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.LinkLabel linkLabel4;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label2;
     }
 }
