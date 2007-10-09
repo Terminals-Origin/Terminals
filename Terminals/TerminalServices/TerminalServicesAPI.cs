@@ -221,7 +221,7 @@ namespace Terminals.TerminalServices
         {
             System.IntPtr str = System.IntPtr.Zero;
             int returned = 0;
-            if(WTSQuerySessionInformation(ptrOpenedServer, active_session, WTS_INFO_CLASS.WTSUserName, ref str, ref returned) == true)
+            if(WTSQuerySessionInformation(ptrOpenedServer, active_session, whichOne, ref str, ref returned) == true)
             {
                 return Marshal.PtrToStringAuto(str);
             }
