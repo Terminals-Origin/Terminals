@@ -75,37 +75,26 @@ namespace Terminals.Connections
 
 
             //advanced settings
-
             //bool, 0 is false, other is true
-            axMsRdpClient2.AdvancedSettings.allowBackgroundInput = (Favorite.AllowBackgroundInput ? -1 : 0);
-            axMsRdpClient2.AdvancedSettings.BitmapPeristence = (Favorite.BitmapPeristence ? -1 : 0);
-            axMsRdpClient2.AdvancedSettings.Compress = (Favorite.EnableCompression ? -1 : 0);            
+            if(Favorite.AllowBackgroundInput) axMsRdpClient2.AdvancedSettings.allowBackgroundInput = -1;
+            if(Favorite.BitmapPeristence) axMsRdpClient2.AdvancedSettings.BitmapPeristence = -1;
+            if(Favorite.EnableCompression) axMsRdpClient2.AdvancedSettings.Compress = -1;
 
-            axMsRdpClient2.AdvancedSettings2.AcceleratorPassthrough = (Favorite.AcceleratorPassthrough ? -1 : 0);
-            axMsRdpClient2.AdvancedSettings2.DisableCtrlAltDel = (Favorite.DisableControlAltDelete ? -1 : 0);
-            axMsRdpClient2.AdvancedSettings2.DisplayConnectionBar = Favorite.DisplayConnectionBar;
-            axMsRdpClient2.AdvancedSettings2.DoubleClickDetect = (Favorite.DoubleClickDetect ? -1 : 0);
-           
-            axMsRdpClient2.AdvancedSettings2.EnableWindowsKey = (Favorite.DisableWindowsKey ? -1 : 0);
-            axMsRdpClient2.AdvancedSettings2.EncryptionEnabled = (Favorite.EnableEncryption ? -1 : 0);
+            if(Favorite.AcceleratorPassthrough) axMsRdpClient2.AdvancedSettings2.AcceleratorPassthrough = -1;
+            if(Favorite.DisableControlAltDelete) axMsRdpClient2.AdvancedSettings2.DisableCtrlAltDel = -1;
+            if(Favorite.DisplayConnectionBar) axMsRdpClient2.AdvancedSettings2.DisplayConnectionBar=true;
+            if(Favorite.DoubleClickDetect) axMsRdpClient2.AdvancedSettings2.DoubleClickDetect = -1;
+
+            if(Favorite.DisableWindowsKey) axMsRdpClient2.AdvancedSettings2.EnableWindowsKey = -1;
+            if(Favorite.EnableEncryption) axMsRdpClient2.AdvancedSettings2.EncryptionEnabled = -1;
 
 
-            axMsRdpClient2.AdvancedSettings2.GrabFocusOnConnect = Favorite.GrabFocusOnConnect;
+            if(Favorite.GrabFocusOnConnect) axMsRdpClient2.AdvancedSettings2.GrabFocusOnConnect = true;
 
-            //axMsRdpClient2.AdvancedSettings2.HotKeyAltEsc;
-            //axMsRdpClient2.AdvancedSettings2.HotKeyAltShiftTab;
-            //axMsRdpClient2.AdvancedSettings2.HotKeyAltSpace;
-            //axMsRdpClient2.AdvancedSettings2.HotKeyAltTab;
-            //axMsRdpClient2.AdvancedSettings2.HotKeyCtrlAltDel;
-            //axMsRdpClient2.AdvancedSettings2.HotKeyCtrlEsc;
-            //axMsRdpClient2.AdvancedSettings2.HotKeyFullScreen;
+            if(Favorite.EnableSecuritySettings)
+            {
 
-            //axMsRdpClient2.AdvancedSettings2.keepAliveInterval;           
-            //axMsRdpClient2.AdvancedSettings2.LoadBalanceInfo;
-            if(Favorite.EnableSecuritySettings) {
-                //axMsRdpClient2.SecuredSettingsEnabled = -1;
-                
-                axMsRdpClient2.SecuredSettings2.FullScreen = (Favorite.SecurityFullScreen ? -1 : 0);
+                if(Favorite.SecurityFullScreen) axMsRdpClient2.SecuredSettings2.FullScreen = -1;
                 axMsRdpClient2.SecuredSettings2.StartProgram = Favorite.SecurityStartProgram;
                 axMsRdpClient2.SecuredSettings2.WorkDir = Favorite.SecurityWorkingFolder;
             }
