@@ -120,7 +120,6 @@ namespace Metro
             int sum = 0;
             foreach (PingUpdate p in PingList)
             {
-                if(destination=="") destination = p.DestinationAddress;
                 if (p.RoundTripTime > yMax) yMax = p.RoundTripTime;
                 list.Add(x, p.RoundTripTime);
 
@@ -136,8 +135,10 @@ namespace Metro
             myPane.XAxis.Scale.Min = 0;
             myPane.XAxis.Scale.Max = x;
 
+            myPane.Title.Text = "Ping results for " + this.textBox1.Text;
+
             myPane.CurveList.Clear();
-            LineItem myCurve = myPane.AddCurve(destination, list, Color.Blue, SymbolType.Diamond);
+            LineItem myCurve = myPane.AddCurve(this.textBox1.Text, list, Color.Blue, SymbolType.Diamond);
             LineItem avgCurve = myPane.AddCurve("Average", avgList, Color.Red, SymbolType.Diamond);
 
 
@@ -292,11 +293,25 @@ namespace Metro
             }
         }
 
-        public string DestinationAddress 
+        public string Destination
         {
             get {
                 if (ipHeader != null)
                 {
+                    return ipHeader.SourceAddress.ToString();
+                }
+                else
+                {
+                    return "*";
+                }
+            }
+        }
+        public string Source
+        {
+            get {
+                if (ipHeader != null)
+                {
+
                     return ipHeader.DestinationAddress.ToString();
                 }
                 else
@@ -305,6 +320,8 @@ namespace Metro
                 }
             }
         }
+    
+        
         public string TimeToLive 
         {
             get {

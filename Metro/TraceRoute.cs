@@ -66,6 +66,8 @@ namespace Metro
             myPane.XAxis.Scale.Min = 0;
             myPane.XAxis.Scale.Max = x;
 
+            myPane.Title.Text = "Trace Route results for " + this.textBox1.Text;
+
             myPane.CurveList.Clear();
             LineItem myCurve = myPane.AddCurve(this.textBox1.Text, list, Color.Blue, SymbolType.Diamond);
             LineItem avgCurve = myPane.AddCurve("Average", avgList, Color.Red, SymbolType.Diamond);
@@ -132,7 +134,7 @@ namespace Metro
         {
             myPane = zg1.GraphPane;
             // Set the titles and axis labels
-            myPane.Title.Text = "Ping results";
+            myPane.Title.Text = "Trace Route results";
             myPane.XAxis.Title.Text = "Counter";
             myPane.YAxis.Title.Text = "Time, Milliseconds";
 
