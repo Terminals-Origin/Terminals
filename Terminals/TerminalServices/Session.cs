@@ -53,6 +53,13 @@ namespace Terminals.TerminalServices
             get { return state; }
             set { state = value; }
         }
-	
+        private List<SessionProcess> processes = new List<SessionProcess>();
+
+        public List<SessionProcess> Processes
+        {
+            get { return processes; }
+            set { processes = value; }
+        }
+
     }
 }

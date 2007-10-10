@@ -11,6 +11,15 @@ namespace Terminals.TerminalServices
         [DllImport("WtsApi32.dll", EntryPoint = "WTSQuerySessionInformationW", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
         public static extern bool WTSQuerySessionInformation(System.IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, ref System.IntPtr ppBuffer, ref int pBytesReturned);
 
+        [DllImport("wtsapi32.dll", SetLastError=true)]
+            static extern bool WTSEnumerateProcesses(
+                IntPtr serverHandle, // Handle to a terminal server. 
+                Int32  reserved,     // must be 0
+                Int32  version,      // must be 1
+                ref IntPtr ppProcessInfo, // pointer to array of WTS_PROCESS_INFO
+                ref Int32  pCount);       // pointer to number of processes
+            
+
         [DllImport("WtsApi32.dll", EntryPoint = "WTSQuerySessionInformationW", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
         private static extern bool WTSQuerySessionInformation2(System.IntPtr hServer, int SessionId, WTS_INFO_CLASS WTSInfoClass, ref IntPtr ppBuffer, ref Int32 pCount);
         [DllImport("Kernel32.dll", EntryPoint = "GetCurrentProcessId", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
@@ -38,6 +47,18 @@ namespace Terminals.TerminalServices
 
         [DllImport("wtsapi32.dll", SetLastError = true)]
         private static extern bool WTSLogoffSession(IntPtr hServer, int SessionId, bool bWait);
+
+        [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        static extern bool LookupAccountSid(
+            string lpSystemName,
+            [MarshalAs(UnmanagedType.LPArray)] byte[] Sid,
+            System.Text.StringBuilder lpName,
+            ref uint cchName,
+            System.Text.StringBuilder ReferencedDomainName,
+            ref uint cchReferencedDomainName,
+            out SID_NAME_USE peUse);    
+
+
 
         [DllImport("wtsapi32.dll", BestFitMapping = true, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto, EntryPoint = "WTSEnumerateSessions", SetLastError = true, ThrowOnUnmappableChar = true)]
         private static extern Int32 WTSEnumerateSessions(
@@ -120,6 +141,7 @@ namespace Terminals.TerminalServices
                 try
                 {
                     FRetVal = WTSEnumerateSessions(ptrOpenedServer, 0, 1, ref ppSessionInfo, ref Count);
+
                     if(FRetVal != 0)
                     {
                         Data.Sessions = new List<Session>();
@@ -135,7 +157,7 @@ namespace Terminals.TerminalServices
                             s.State = (ConnectionStates)(int)sessionInfo[i].State;
                             s.WindowsStationName = sessionInfo[i].pWinStationName;
                             s.ServerName = ServerName;
-                            Data.Sessions.Add(s);
+                            Data.Sessions.Add(s);                                                      
                         }
                         WTSFreeMemory(ppSessionInfo);
                         strSessionsInfo[] tmpArr = new strSessionsInfo[sessionInfo.GetUpperBound(0) + 1];
@@ -158,6 +180,8 @@ namespace Terminals.TerminalServices
             {
                 Data.Errors.Add(ex.Message + "\r\n" + System.Runtime.InteropServices.Marshal.GetLastWin32Error());
             }
+
+            WTS_PROCESS_INFO[] plist = WTSEnumerateProcesses(ptrOpenedServer, Data);
 
             //Get ProcessID of TS Session that executed this TS Session 
             Int32 active_process = GetCurrentProcessId();
@@ -185,6 +209,78 @@ namespace Terminals.TerminalServices
             WTSCloseServer(ptrOpenedServer);
             return Data;
         }
+
+
+        public static WTS_PROCESS_INFO[] WTSEnumerateProcesses(IntPtr WTS_CURRENT_SERVER_HANDLE, TerminalServer Data)
+        {
+            IntPtr pProcessInfo = IntPtr.Zero;
+            int processCount = 0;
+
+            if(!WTSEnumerateProcesses(WTS_CURRENT_SERVER_HANDLE, 0, 1, ref pProcessInfo, ref processCount))
+                return null;
+
+            const int NO_ERROR = 0;
+            const int ERROR_INSUFFICIENT_BUFFER = 122;
+            int err = NO_ERROR;
+            IntPtr pMemory = pProcessInfo;
+            WTS_PROCESS_INFO[] processInfos = new WTS_PROCESS_INFO[processCount];
+            for(int i = 0; i < processCount; i++)
+            {
+                processInfos[i] = (WTS_PROCESS_INFO)Marshal.PtrToStructure(pProcessInfo, typeof(WTS_PROCESS_INFO));
+                pProcessInfo = (IntPtr)((int)pProcessInfo + Marshal.SizeOf(processInfos[i]));
+
+                SessionProcess p = new SessionProcess();
+                p.ProcessID = processInfos[i].ProcessID;
+                p.ProcessName = Marshal.PtrToStringAnsi(processInfos[i].ProcessName);
+                
+                if(processInfos[i].UserSid != IntPtr.Zero)
+                {
+                    byte[] Sid = new byte[] {0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+                    Marshal.Copy(processInfos[i].UserSid, Sid, 0, 14);
+                    System.Text.StringBuilder name = new StringBuilder();
+                    uint cchName = (uint)name.Capacity;
+                    SID_NAME_USE sidUse;
+                    StringBuilder referencedDomainName = new StringBuilder();
+                    uint cchReferencedDomainName = (uint)referencedDomainName.Capacity;
+                    if(LookupAccountSid(Data.ServerName, Sid, name, ref cchName, referencedDomainName, ref cchReferencedDomainName, out sidUse))
+                    {
+                        err = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+                        if(err == ERROR_INSUFFICIENT_BUFFER)
+                        {
+                            name.EnsureCapacity((int)cchName);
+                            referencedDomainName.EnsureCapacity((int)cchReferencedDomainName);
+                            err = NO_ERROR;
+                            if(!LookupAccountSid(null, Sid, name, ref cchName, referencedDomainName, ref cchReferencedDomainName, out sidUse))
+                                err = System.Runtime.InteropServices.Marshal.GetLastWin32Error();
+                        }
+
+
+                        p.UserType = sidUse.ToString();
+                        p.User = name.ToString();
+                    }
+                }
+                //string userSID = Marshal.PtrToStringAuto(processInfos[i].UserSid);
+                p.SessionID = processInfos[i].SessionID;
+                
+                //LookupAccountSid(Data.ServerName, 
+                //p.User = Marshal.PtrToStringAnsi(processInfos[i].UserSid);
+                foreach(Session s in Data.Sessions)
+                {
+                    if(s.SessionID == p.SessionID)
+                    {
+                        if(s.Processes == null) s.Processes = new List<SessionProcess>();
+                        s.Processes.Add(p);
+                        break;
+                    }
+                }
+            }
+
+            
+
+            WTSFreeMemory(pMemory);
+            return processInfos;
+        }
+
         private static WTS_CLIENT_INFO LoadClientInfoForSession(IntPtr ptrOpenedServer, int active_session)
         {
 
@@ -268,7 +364,14 @@ namespace Terminals.TerminalServices
             }
             return RetVal;
         }
-
+        public struct WTS_PROCESS_INFO
+        {
+            public int SessionID;
+            public int ProcessID;
+            //This is a pointer to string...
+            public IntPtr ProcessName;
+            public IntPtr UserSid;
+        }
 
         public enum WTS_CONNECTSTATE_CLASS
         {
@@ -353,6 +456,17 @@ namespace Terminals.TerminalServices
             [MarshalAs(UnmanagedType.ByValArray)]
             public byte[] Address;
         }
-
+       public enum SID_NAME_USE
+        {
+            User = 1,
+            Group,
+            Domain,
+            Alias,
+            WellKnownGroup,
+            DeletedAccount,
+            Invalid,
+            Unknown,
+            Computer
+        }
     }
 }

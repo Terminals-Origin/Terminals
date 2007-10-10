@@ -20,6 +20,7 @@ namespace Terminals.Network.Servers
         {
             SelectedSession = null;
             dataGridView1.DataSource = null;
+            dataGridView2.DataSource = null;
             this.propertyGrid1.SelectedObject = null;
             Application.DoEvents();
             server = TerminalServices.TerminalServer.LoadServer(this.ServerNameComboBox.Text);
@@ -43,8 +44,10 @@ namespace Terminals.Network.Servers
                 {
                     SelectedSession = server.Sessions[e.RowIndex];
                     this.propertyGrid1.SelectedObject = SelectedSession.Client;
+                    this.dataGridView2.DataSource = SelectedSession.Processes;
                 }
             }
+            
         }
         TerminalServices.Session SelectedSession = null;
         private void TerminalServerManager_Load(object sender, EventArgs e)
