@@ -1022,6 +1022,7 @@ namespace Terminals
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if(FullScreen) FullScreen = false;
             if (tcTerminals.Items.Count > 0)
             {
                 if (Settings.ShowConfirmDialog)
