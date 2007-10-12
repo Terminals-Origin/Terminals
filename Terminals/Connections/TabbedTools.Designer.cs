@@ -29,8 +29,6 @@ namespace Terminals.Connections
         private void InitializeComponent()
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.ping1 = new Metro.Ping();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.traceRoute1 = new Metro.TraceRoute();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -47,12 +45,11 @@ namespace Terminals.Connections
             this.networkShares1 = new Terminals.Network.NetworkShares();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.networkTime1 = new Terminals.Network.NTP.NetworkTime();
-            this.tabPage11 = new System.Windows.Forms.TabPage();
-            this.serverList1 = new Terminals.Network.Servers.ServerList();
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.terminalServerManager1 = new Terminals.Network.Servers.TerminalServerManager();
+            this.ping1 = new Metro.Ping();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -61,8 +58,8 @@ namespace Terminals.Connections
             this.tabPage7.SuspendLayout();
             this.tabPage9.SuspendLayout();
             this.tabPage10.SuspendLayout();
-            this.tabPage11.SuspendLayout();
             this.tabPage8.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -76,7 +73,6 @@ namespace Terminals.Connections
             this.tabControl1.Controls.Add(this.tabPage7);
             this.tabControl1.Controls.Add(this.tabPage9);
             this.tabControl1.Controls.Add(this.tabPage10);
-            this.tabControl1.Controls.Add(this.tabPage11);
             this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -85,25 +81,6 @@ namespace Terminals.Connections
             this.tabControl1.Size = new System.Drawing.Size(756, 335);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.ping1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(748, 309);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Ping";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // ping1
-            // 
-            this.ping1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ping1.Location = new System.Drawing.Point(3, 3);
-            this.ping1.Name = "ping1";
-            this.ping1.Size = new System.Drawing.Size(742, 303);
-            this.ping1.TabIndex = 0;
             // 
             // tabPage2
             // 
@@ -256,25 +233,6 @@ namespace Terminals.Connections
             this.networkTime1.Size = new System.Drawing.Size(742, 303);
             this.networkTime1.TabIndex = 0;
             // 
-            // tabPage11
-            // 
-            this.tabPage11.Controls.Add(this.serverList1);
-            this.tabPage11.Location = new System.Drawing.Point(4, 22);
-            this.tabPage11.Name = "tabPage11";
-            this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage11.Size = new System.Drawing.Size(748, 309);
-            this.tabPage11.TabIndex = 10;
-            this.tabPage11.Text = "Servers";
-            this.tabPage11.UseVisualStyleBackColor = true;
-            // 
-            // serverList1
-            // 
-            this.serverList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.serverList1.Location = new System.Drawing.Point(3, 3);
-            this.serverList1.Name = "serverList1";
-            this.serverList1.Size = new System.Drawing.Size(742, 303);
-            this.serverList1.TabIndex = 0;
-            // 
             // tabPage8
             // 
             this.tabPage8.Controls.Add(this.terminalServerManager1);
@@ -293,6 +251,25 @@ namespace Terminals.Connections
             this.terminalServerManager1.Size = new System.Drawing.Size(748, 309);
             this.terminalServerManager1.TabIndex = 0;
             // 
+            // ping1
+            // 
+            this.ping1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ping1.Location = new System.Drawing.Point(3, 3);
+            this.ping1.Name = "ping1";
+            this.ping1.Size = new System.Drawing.Size(742, 303);
+            this.ping1.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.ping1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(748, 309);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Ping";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // TabbedTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -301,7 +278,6 @@ namespace Terminals.Connections
             this.Name = "TabbedTools";
             this.Size = new System.Drawing.Size(756, 335);
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
@@ -310,8 +286,8 @@ namespace Terminals.Connections
             this.tabPage7.ResumeLayout(false);
             this.tabPage9.ResumeLayout(false);
             this.tabPage10.ResumeLayout(false);
-            this.tabPage11.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -319,8 +295,6 @@ namespace Terminals.Connections
         #endregion
 
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private Metro.Ping ping1;
         private System.Windows.Forms.TabPage tabPage2;
         private Metro.TraceRoute traceRoute1;
         private System.Windows.Forms.TabPage tabPage3;
@@ -337,9 +311,9 @@ namespace Terminals.Connections
         private Terminals.Network.NetworkShares networkShares1;
         private System.Windows.Forms.TabPage tabPage10;
         private Terminals.Network.NTP.NetworkTime networkTime1;
-        private System.Windows.Forms.TabPage tabPage11;
-        private Terminals.Network.Servers.ServerList serverList1;
         private System.Windows.Forms.TabPage tabPage8;
         private Terminals.Network.Servers.TerminalServerManager terminalServerManager1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private Metro.Ping ping1;
     }
 }
