@@ -246,6 +246,12 @@
     <Compile Include="Network\LocalConnections.Designer.cs">
       <DependentUpon>LocalConnections.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\Ping.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\Ping.Designer.cs">
+      <DependentUpon>Ping.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\Servers\NetworkManagement.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -267,6 +273,12 @@
     </Compile>
     <Compile Include="Network\Servers\TerminalServerManager.Designer.cs">
       <DependentUpon>TerminalServerManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Network\TraceRoute.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\TraceRoute.Designer.cs">
+      <DependentUpon>TraceRoute.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\WMI\NetworkShares.cs">
       <SubType>UserControl</SubType>
@@ -563,6 +575,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>LocalConnections.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Network\Ping.resx">
+      <DependentUpon>Ping.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\Servers\NetworkManagement.resx">
       <DependentUpon>NetworkManagement.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -578,6 +594,10 @@
     <EmbeddedResource Include="Network\Servers\TerminalServerManager.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TerminalServerManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\TraceRoute.resx">
+      <DependentUpon>TraceRoute.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\WMI\NetworkShares.resx">
       <SubType>Designer</SubType>

@@ -166,23 +166,11 @@
     <Compile Include="PacketUtils.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Ping.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Ping.Designer.cs">
-      <DependentUpon>Ping.cs</DependentUpon>
-    </Compile>
     <Compile Include="Scanning\Common.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Scanning\TcpSynScanner.cs">
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="TraceRoute.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TraceRoute.Designer.cs">
-      <DependentUpon>TraceRoute.cs</DependentUpon>
     </Compile>
     <Compile Include="TransportLayer\ICMP\IcmpMessages.cs">
       <SubType>Code</SubType>
@@ -218,16 +206,6 @@
     <Content Include="TransportLayer\TCP\Docs\rfc0793.txt" />
     <Content Include="TransportLayer\UDP\Docs\rfc0768.txt" />
     <None Include="Docs\Metro.chm" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Ping.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>Ping.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TraceRoute.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>TraceRoute.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Filtering\Docs\" />
