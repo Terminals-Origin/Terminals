@@ -38,6 +38,7 @@ namespace Metro
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.ResolveCheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -72,6 +73,7 @@ namespace Metro
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
@@ -142,10 +144,22 @@ namespace Metro
             this.textBox1.Size = new System.Drawing.Size(145, 20);
             this.textBox1.TabIndex = 6;
             // 
+            // ResolveCheckBox
+            // 
+            this.ResolveCheckBox.AutoSize = true;
+            this.ResolveCheckBox.Location = new System.Drawing.Point(376, 7);
+            this.ResolveCheckBox.Name = "ResolveCheckBox";
+            this.ResolveCheckBox.Size = new System.Drawing.Size(126, 17);
+            this.ResolveCheckBox.TabIndex = 11;
+            this.ResolveCheckBox.Text = "Resolve Host Names";
+            this.ResolveCheckBox.UseVisualStyleBackColor = true;
+            this.ResolveCheckBox.CheckedChanged += new System.EventHandler(this.ResolveCheckBox_CheckedChanged);
+            // 
             // TraceRoute
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ResolveCheckBox);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -175,5 +189,6 @@ namespace Metro
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox ResolveCheckBox;
     }
 }

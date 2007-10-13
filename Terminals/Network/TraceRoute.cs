@@ -9,6 +9,8 @@ using Metro.TransportLayer.Icmp;
 using System.Net;
 using System.Net.Sockets;
 using ZedGraph;
+using Bdev.Net.Dns;
+using Terminals.Network;
 
 namespace Metro
 {
@@ -23,8 +25,8 @@ namespace Metro
             trace = new Metro.TransportLayer.Icmp.IcmpTraceRoute(nil.Interfaces[0].Address);
             trace.RouteUpdate += new Metro.TransportLayer.Icmp.RouteUpdateHandler(trace_RouteUpdate);
             trace.TraceFinished += new Metro.TransportLayer.Icmp.TraceFinishedHandler(trace_TraceFinished);
-
         }
+        System.Threading.Timer t;
         Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();
         Metro.TransportLayer.Icmp.IcmpTraceRoute trace = null;
         System.Collections.Generic.List<RouteUpdate> RUList = new List<RouteUpdate>();
@@ -90,13 +92,25 @@ namespace Metro
         }
         GraphPane myPane;
 
+
+
         void trace_RouteUpdate(System.Net.IPAddress gateway, int roundTripTime, byte currentHop)
         {
-            RouteUpdate ru = new RouteUpdate();
-            ru.Gateway = gateway;
-            ru.RoundTripTime = roundTripTime;
-            ru.CurrentHop = currentHop;
-            this.RUList.Add(ru);
+            lock(RUList)
+            {
+                RouteUpdate ru = new RouteUpdate();
+                ru.Gateway = gateway;
+                ru.ResolveHostName = this.ResolveCheckBox.Checked;
+                ru.RoundTripTime = roundTripTime;
+                ru.CurrentHop = currentHop;
+                ru.OnHostnameResolved += new RouteUpdate.HostnameResolved(ru_OnHostnameResolved);
+                this.RUList.Add(ru);
+            }
+            this.Invoke(miv);
+        }
+
+        void ru_OnHostnameResolved(RouteUpdate Update)
+        {
             this.Invoke(miv);
         }
         MethodInvoker miv;
@@ -226,6 +240,18 @@ namespace Metro
 
             //menuStrip.Items.Add(item);
         }
+
+        private void ResolveCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            lock(RUList)
+            {
+                foreach(RouteUpdate ru in RUList)
+                {
+                    ru.ResolveHostName = ResolveCheckBox.Checked;
+                }
+            }
+            if(ResolveCheckBox.Checked) this.Invoke(miv);
+        }
     }
 
     public class RouteUpdate
@@ -233,6 +259,49 @@ namespace Metro
         private System.Net.IPAddress gateway;
         private int roundTripTime;
         private byte currentHop;
+
+        public delegate void HostnameResolved(RouteUpdate Update);
+        public event HostnameResolved OnHostnameResolved;
+
+        public bool ResolveHostName = false;
+
+        private string hostName;
+
+        private void UpdateHostName(object nullstate)
+        {
+            System.Net.IPHostEntry entry;
+            try
+            {
+                entry = System.Net.Dns.GetHostEntry(this.gateway);
+            }
+            catch(Exception e)
+            {
+                entry = null;
+            }
+            if(entry != null && entry.HostName != null)
+            {
+                hostName = entry.HostName;
+                if(OnHostnameResolved != null) OnHostnameResolved(this);
+            }
+            else
+            {
+                hostName = " ";
+            }
+        }
+
+        public string HostName
+        {
+            get {
+                if(!ResolveHostName) return hostName;
+                if(hostName == null || hostName == "")
+                {
+                    System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(UpdateHostName), null);
+                }
+                return hostName;
+
+            }
+        }
+	
 
         public System.Net.IPAddress Gateway
         {
