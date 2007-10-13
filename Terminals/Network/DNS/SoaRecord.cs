@@ -52,7 +52,7 @@ namespace Bdev.Net.Dns
 
 		public override string ToString()
 		{
-			return string.Format("primary name server = {0}\nresponsible mail addr = {1}\nserial  = {2}\nrefresh = {3}\nretry   = {4}\nexpire  = {5}\ndefault TTL = {6}",
+            return string.Format("primary name server = {0}, responsible mail addr = {1}, serial  = {2}, refresh = {3}, retry   = {4}, expire  = {5}, default TTL = {6}",
 				_primaryNameServer,
 				_responsibleMailAddress,
 				_serial.ToString(),
