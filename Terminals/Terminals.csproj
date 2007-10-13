@@ -184,6 +184,12 @@
     </Compile>
     <Compile Include="Docking\ToolBarManager.cs" />
     <Compile Include="DPAPI.cs" />
+    <Compile Include="FirstRunWizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FirstRunWizard.Designer.cs">
+      <DependentUpon>FirstRunWizard.cs</DependentUpon>
+    </Compile>
     <Compile Include="FontParser.cs" />
     <Compile Include="FormSettings.cs" />
     <Compile Include="IconHandler.cs" />
@@ -309,7 +315,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -497,6 +503,18 @@
     <Compile Include="TerminalServices\TerminalServer.cs" />
     <Compile Include="TSManager.cs" />
     <Compile Include="CommandLine\CommandLineArguments.cs" />
+    <Compile Include="Wizard\AddExistingRDPConnections.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Wizard\AddExistingRDPConnections.Designer.cs">
+      <DependentUpon>AddExistingRDPConnections.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard\IntroForm.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Wizard\IntroForm.Designer.cs">
+      <DependentUpon>IntroForm.cs</DependentUpon>
+    </Compile>
     <None Include="WTSApi32.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -529,6 +547,10 @@
     <None Include="Resources\HidePanel.PNG" />
     <None Include="Resources\camera.png" />
     <None Include="Resources\application_xp_terminal.png" />
+    <EmbeddedResource Include="FirstRunWizard.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>FirstRunWizard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\DNSLookup.resx">
       <SubType>Designer</SubType>
       <DependentUpon>DNSLookup.cs</DependentUpon>
@@ -566,11 +588,20 @@
       <DependentUpon>WhoIs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\BasicTree.xml" />
+    <EmbeddedResource Include="Wizard\AddExistingRDPConnections.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>AddExistingRDPConnections.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Wizard\IntroForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>IntroForm.cs</DependentUpon>
+    </EmbeddedResource>
     <Content Include="Resources\ico101.ico" />
     <None Include="Resources\ico_scapture.png" />
     <Content Include="Resources\lightning_go.png" />
     <Content Include="Resources\polarized-glasses.jpg" />
     <Content Include="Resources\rdp.png" />
+    <None Include="Resources\RotatedHeaderForWizard.bmp" />
     <Content Include="Resources\server-administrator-icon.png" />
     <None Include="Resources\star.png" />
     <None Include="Resources\ShowPanel.PNG" />

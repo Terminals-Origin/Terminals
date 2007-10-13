@@ -42,6 +42,15 @@ namespace Terminals
         {
             try
             {
+                //check for wizard
+                if(!System.IO.File.Exists(Terminals.MainForm.ConfigurationFileLocation))
+                {
+                    //settings file doesnt exist, wizard!
+                    //this.Hide();
+                    FirstRunWizard wzrd = new FirstRunWizard();
+                    wzrd.ShowDialog(this);
+                }
+
 
                 imageFormatHandler = new ImageFormatHandler();
                 //screenCapture = new ScreenCapture(imageFormatHandler);

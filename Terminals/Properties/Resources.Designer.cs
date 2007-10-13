@@ -221,6 +221,13 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap RotatedHeaderForWizard {
+            get {
+                object obj = ResourceManager.GetObject("RotatedHeaderForWizard", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap server_administrator_icon {
             get {
                 object obj = ResourceManager.GetObject("server_administrator_icon", resourceCulture);
