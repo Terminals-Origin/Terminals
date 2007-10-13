@@ -95,9 +95,13 @@ namespace Terminals
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FirstRunWizard";
             this.Text = "Welcome to Terminals...";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FirstRunWizard_FormClosing);
             this.Load += new System.EventHandler(this.FirstRunWizard_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);

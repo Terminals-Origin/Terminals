@@ -43,7 +43,8 @@ namespace Terminals
             try
             {
                 //check for wizard
-                if(!System.IO.File.Exists(Terminals.MainForm.ConfigurationFileLocation))
+
+                if(Settings.GetFavorites().Count <= 0)
                 {
                     //settings file doesnt exist, wizard!
                     //this.Hide();

@@ -1,6 +1,6 @@
 namespace Terminals.Wizard
 {
-    partial class IntroForm
+    partial class MasterPassword
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,19 +28,10 @@ namespace Terminals.Wizard
         /// </summary>
         private void InitializeComponent()
         {
-            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.enterPassword1 = new Terminals.Wizard.EnterPassword();
             this.SuspendLayout();
-            // 
-            // label3
-            // 
-            this.label3.Location = new System.Drawing.Point(4, 131);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(360, 62);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "This wizard is intended to help you get started with the tool.  If, at any time, " +
-                "you want to skip this just hit cancel.";
             // 
             // label2
             // 
@@ -48,9 +39,9 @@ namespace Terminals.Wizard
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(360, 62);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Terminals is a multi tab terminal services/remote desktop client.  It also includ" +
-                "es the ability to connect to VNC, VMRC, Telnet, SSH, RAS, and ICA Citrix connect" +
-                "ions.";
+            this.label2.Text = "By setting your Master Password allows Terminals to store your connection informa" +
+                "tion in a much more secure manner.  Although it is not required, it is highly re" +
+                "commended that you do set it now.";
             // 
             // label1
             // 
@@ -62,16 +53,23 @@ namespace Terminals.Wizard
             this.label1.TabIndex = 3;
             this.label1.Text = "Welcome to Terminals";
             // 
-            // IntroForm
+            // enterPassword1
+            // 
+            this.enterPassword1.Location = new System.Drawing.Point(33, 120);
+            this.enterPassword1.Name = "enterPassword1";
+            this.enterPassword1.Size = new System.Drawing.Size(317, 115);
+            this.enterPassword1.TabIndex = 5;
+            // 
+            // MasterPassword
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.enterPassword1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "IntroForm";
+            this.Name = "MasterPassword";
             this.Size = new System.Drawing.Size(379, 283);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -80,8 +78,8 @@ namespace Terminals.Wizard
 
         #endregion
 
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private EnterPassword enterPassword1;
     }
 }
