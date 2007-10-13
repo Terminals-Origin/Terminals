@@ -21,7 +21,8 @@ namespace Metro
             mivPing = new MethodInvoker(UpdatePing);
             string data = new string('x', 32);
             payload = System.Text.ASCIIEncoding.ASCII.GetBytes(data);
-            t = new System.Threading.Timer(new System.Threading.TimerCallback(TryPing), null, 1000, 100);
+            currentDelay = (int)DelayNumericUpDown.Value;
+            t = new System.Threading.Timer(new System.Threading.TimerCallback(TryPing), null, currentDelay, this.currentDelay);
 
         }
         private void TryPing(object state)
@@ -31,6 +32,7 @@ namespace Metro
                 SendPing();
             }
         }
+        int currentDelay = 0;
         private void SendPing()
         {
             IPAddress[] list = null;
@@ -47,6 +49,16 @@ namespace Metro
                 if (list != null) ping.SendPing(list[0], payload, true, 2000);
             }
             catch (Exception exc) { }
+
+            lock(t)
+            {
+                if(this.DelayNumericUpDown.Value != this.currentDelay)
+                {
+                    currentDelay = (int)this.DelayNumericUpDown.Value;
+                    t.Change(currentDelay, currentDelay);
+                }
+            }
+            
         }
         System.Threading.Timer t;
         bool pingRunning = false;
@@ -66,8 +78,6 @@ namespace Metro
             }
             if (!pingRunning)
             {
-                
-
                 ping.PingReply += new Metro.TransportLayer.Icmp.IcmpPingReplyHandler(ping_PingReply);
                 ping.PingTimeout += new Metro.TransportLayer.Icmp.IcmpPingTimeOutHandler(ping_PingTimeout);
                 pingRunning = true;
@@ -76,29 +86,36 @@ namespace Metro
             }
 
         }
+        object threadLocker = new object();
         void ping_PingTimeout()
         {
-            ping.CancelPing();
-            PingUpdate pu = new PingUpdate();
-            pu.ipHeader = null;
-            pu.icmpHeader = null;
-            pu.RoundTripTime = 0;
-            PingList.Add(pu);
-            this.Invoke(mivPing);
-            pingReady = true;
-            pingRunning = false;
+            lock(threadLocker)
+            {
+                ping.CancelPing();
+                PingUpdate pu = new PingUpdate();
+                pu.ipHeader = null;
+                pu.icmpHeader = null;
+                pu.RoundTripTime = 0;
+                PingList.Add(pu);
+                this.Invoke(mivPing);
+                pingReady = true;
+            }
 
         }
 
         void ping_PingReply(Metro.NetworkLayer.IpV4.IpV4Packet ipHeader, Metro.TransportLayer.Icmp.IcmpPacket icmpHeader, int roundTripTime)
         {
-            PingUpdate pu = new PingUpdate();
-            pu.ipHeader = ipHeader;
-            pu.icmpHeader = icmpHeader;
-            pu.RoundTripTime = roundTripTime;
-            PingList.Add(pu);
-            pingReady = true;
-            this.Invoke(mivPing);
+            lock(threadLocker)
+            {
+                PingUpdate pu = new PingUpdate();
+                pu.ipHeader = ipHeader;
+                pu.icmpHeader = icmpHeader;
+                pu.RoundTripTime = roundTripTime;
+                pu.dateReceived = DateTime.Now;
+                PingList.Add(pu);
+                pingReady = true;
+                this.Invoke(mivPing);
+            }
         }
         private void UpdatePing()
         {
@@ -278,6 +295,14 @@ namespace Metro
         public Metro.TransportLayer.Icmp.IcmpPacket icmpHeader;
         private int roundTripTime;
 
+        public DateTime dateReceived = DateTime.Now;
+
+        public string DateReceived
+        {
+            get { return dateReceived.ToLongTimeString(); }
+        }
+	
+        
         public string Counter
         {
             get

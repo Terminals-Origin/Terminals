@@ -38,10 +38,13 @@ namespace Metro
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.zg1 = new ZedGraph.ZedGraphControl();
+            this.label2 = new System.Windows.Forms.Label();
+            this.DelayNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DelayNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox1
@@ -90,7 +93,7 @@ namespace Metro
             this.tabControl1.Location = new System.Drawing.Point(3, 29);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(415, 260);
+            this.tabControl1.Size = new System.Drawing.Size(491, 260);
             this.tabControl1.TabIndex = 5;
             // 
             // tabPage1
@@ -99,7 +102,7 @@ namespace Metro
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(407, 234);
+            this.tabPage1.Size = new System.Drawing.Size(483, 234);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Raw Results";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -113,7 +116,7 @@ namespace Metro
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(401, 228);
+            this.dataGridView1.Size = new System.Drawing.Size(477, 228);
             this.dataGridView1.TabIndex = 5;
             // 
             // tabPage2
@@ -122,7 +125,7 @@ namespace Metro
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(407, 234);
+            this.tabPage2.Size = new System.Drawing.Size(483, 234);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Graph";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -139,26 +142,62 @@ namespace Metro
             this.zg1.ScrollMinX = 0;
             this.zg1.ScrollMinY = 0;
             this.zg1.ScrollMinY2 = 0;
-            this.zg1.Size = new System.Drawing.Size(401, 228);
+            this.zg1.Size = new System.Drawing.Size(477, 228);
             this.zg1.TabIndex = 0;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(376, 6);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(37, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Delay:";
+            // 
+            // DelayNumericUpDown
+            // 
+            this.DelayNumericUpDown.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.DelayNumericUpDown.Location = new System.Drawing.Point(419, 4);
+            this.DelayNumericUpDown.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.DelayNumericUpDown.Name = "DelayNumericUpDown";
+            this.DelayNumericUpDown.ReadOnly = true;
+            this.DelayNumericUpDown.Size = new System.Drawing.Size(71, 20);
+            this.DelayNumericUpDown.TabIndex = 7;
+            this.DelayNumericUpDown.ThousandsSeparator = true;
+            this.DelayNumericUpDown.Value = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             // 
             // Ping
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.DelayNumericUpDown);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
             this.Name = "Ping";
-            this.Size = new System.Drawing.Size(421, 289);
+            this.Size = new System.Drawing.Size(497, 289);
             this.Load += new System.EventHandler(this.Ping_Load);
             this.Resize += new System.EventHandler(this.Ping_Resize);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DelayNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -175,5 +214,7 @@ namespace Metro
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TabPage tabPage2;
         private ZedGraph.ZedGraphControl zg1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown DelayNumericUpDown;
     }
 }
