@@ -212,6 +212,22 @@
     <Compile Include="Network\DNSLookup.Designer.cs">
       <DependentUpon>DNSLookup.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\DNS\AdapterInfo.cs" />
+    <Compile Include="Network\DNS\ANameRecord.cs" />
+    <Compile Include="Network\DNS\Enums.cs" />
+    <Compile Include="Network\DNS\InvalidResponseException.cs" />
+    <Compile Include="Network\DNS\MXRecord.cs" />
+    <Compile Include="Network\DNS\NoResponseException.cs" />
+    <Compile Include="Network\DNS\NSRecord.cs" />
+    <Compile Include="Network\DNS\Pointer.cs" />
+    <Compile Include="Network\DNS\Question.cs" />
+    <Compile Include="Network\DNS\RecordBase.cs" />
+    <Compile Include="Network\DNS\Request.cs" />
+    <Compile Include="Network\DNS\Resolver.cs" />
+    <Compile Include="Network\DNS\ResourceRecord.cs" />
+    <Compile Include="Network\DNS\Response.cs" />
+    <Compile Include="Network\DNS\Nameserver.cs" />
+    <Compile Include="Network\DNS\SoaRecord.cs" />
     <Compile Include="Network\InterfacesList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -293,7 +309,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>

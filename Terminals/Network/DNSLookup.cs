@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using Bdev.Net.Dns;
+using System.Net;
 
 namespace Terminals.Network
 {
@@ -16,29 +18,67 @@ namespace Terminals.Network
         }
         private void lookupButton_Click(object sender, EventArgs e)
         {
-            System.Collections.Generic.List<KnownAlias> aliases = new List<KnownAlias>();
-            System.Collections.Generic.List<IPRender> addresses = new List<IPRender>();
+            string serverIP = serverComboBox.Text.Trim();
+            if(serverIP == "") serverIP = "128.8.10.90";
+            serverComboBox.Text = serverIP.Trim();
+            string domain = this.hostnameTextBox.Text.Trim();
+            if(domain == "") domain = "codeplex.com";
+            this.hostnameTextBox.Text = domain.Trim();
+
             try
             {
-                System.Net.IPHostEntry entry = System.Net.Dns.GetHostEntry(this.hostnameTextBox.Text);
-                foreach (System.Net.IPAddress address in entry.AddressList)
-                {
-                    IPRender r = new IPRender();
-                    r.address = address;
-                    addresses.Add(r);
-                }
-                foreach (string a in entry.Aliases)
-                {
-                    KnownAlias ka = new KnownAlias();
-                    ka.Alias = a;
-                }
+                List<Answer> responses = new List<Answer>();
+
+                IPAddress dnsServer = IPAddress.Parse(serverIP);
+                // create a DNS request
+                Request request = new Request();
+                request.AddQuestion(new Question(domain, DnsType.ANAME, DnsClass.IN));
+                responses.Add(Resolver.Lookup(request, dnsServer).Answers[0]);
+
+                request = new Request();
+                request.AddQuestion(new Question(domain, DnsType.MX, DnsClass.IN));
+                responses.Add(Resolver.Lookup(request, dnsServer).Answers[0]);
+
+                request = new Request();
+                request.AddQuestion(new Question(domain, DnsType.NS, DnsClass.IN));
+                responses.Add(Resolver.Lookup(request, dnsServer).Answers[0]);
+
+                request = new Request();
+                request.AddQuestion(new Question(domain, DnsType.SOA, DnsClass.IN));
+                responses.Add(Resolver.Lookup(request, dnsServer).Answers[0]);
+
+                this.dataGridView1.DataSource = responses;
+                //this.propertyGrid1.SelectedObject = records;
+                // send it to the DNS server and get the response
+                //
+                //this.dataGridView1.DataSource = response.Answers;
+
             }
-            catch (Exception exc)
+            catch(Exception exc)
             {
                 System.Windows.Forms.MessageBox.Show(exc.Message);
             }
-            this.dataGridView1.DataSource = addresses;
-            this.dataGridView2.DataSource = aliases;
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DNSLookup_Load(object sender, EventArgs e)
+        {
+            List<string> totalList = new List<string>();
+            List<Terminals.Network.DNS.Adapter> adapters = Network.DNS.AdapterInfo.GetAdapters(); ;
+            foreach(Terminals.Network.DNS.Adapter a in adapters) {
+                if(a.DNSServers != null && a.DNSServers.Count > 0)
+                {
+                    List<string> l = a.DNSServers;
+                    totalList.AddRange(l);
+                }
+            }
+            this.serverComboBox.DataSource = totalList; ;
+            
         }
     }
     public class IPRender
