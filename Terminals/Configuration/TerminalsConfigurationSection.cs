@@ -365,7 +365,7 @@ namespace Terminals
                 this["savedConnectionsList"] = value;
             }
         }
-
+        
         [ConfigurationProperty("singleInstance")]
         public bool SingleInstance
         {
@@ -376,6 +376,18 @@ namespace Terminals
             set
             {
                 this["singleInstance"] = value;
+            }
+        }
+        [ConfigurationProperty("showWizard", DefaultValue=true)]
+        public bool ShowWizard
+        {
+            get
+            {
+                return (bool)this["showWizard"];
+            }
+            set
+            {
+                this["showWizard"] = value;
             }
         }
 

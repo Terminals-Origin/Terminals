@@ -44,12 +44,12 @@ namespace Terminals
             {
                 //check for wizard
 
-                if(Settings.GetFavorites().Count <= 0)
-                {
+                if(Settings.ShowWizard) {
                     //settings file doesnt exist, wizard!
                     //this.Hide();
                     FirstRunWizard wzrd = new FirstRunWizard();
                     wzrd.ShowDialog(this);
+                    Settings.ShowWizard = false;
                 }
 
 
