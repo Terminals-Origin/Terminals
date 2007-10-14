@@ -253,5 +253,39 @@ namespace Terminals.CaptureManager
                 cap.Save();
             }
         }
+
+        private void View_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch(ViewMode.Text)
+            {
+                case "Large Icons":
+                    this.imageList1.ImageSize = new Size(150, 150);
+                    this.listView1.View = View.LargeIcon;
+                    break;
+                case "Small Icons":
+                    this.imageList1.ImageSize = new Size(50, 50);
+                    this.listView1.View = View.LargeIcon;
+                    break;
+                case "List":
+                    this.imageList1.ImageSize = new Size(150, 150);
+                    this.listView1.View = View.List;
+                    break;
+                case "Tile":
+                    this.imageList1.ImageSize = new Size(150, 150);
+                    this.listView1.View = View.Tile;
+                    break;
+                default:
+                    break;
+            }
+            RefreshView();
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            this.imageList1.ImageSize = new Size(trackBar1.Value, trackBar1.Value);
+            this.listView1.View = View.LargeIcon;
+            RefreshView();
+
+        }
     }
 }
