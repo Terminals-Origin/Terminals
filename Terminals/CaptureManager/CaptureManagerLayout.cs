@@ -174,8 +174,11 @@ namespace Terminals.CaptureManager
         {
             if(listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)
             {
-                Capture cap = (listView1.SelectedItems[0].Tag as Capture);
-                cap.Show();
+                foreach(ListViewItem lvi in listView1.SelectedItems)
+                {
+                    Capture cap = (lvi.Tag as Capture);
+                    cap.Show();
+                }
             }
         }
 
@@ -208,9 +211,12 @@ namespace Terminals.CaptureManager
         {
             if(listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)
             {
-                Capture cap = (listView1.SelectedItems[0].Tag as Capture);
-                cap.Delete();
-                listView1.Items.Remove(listView1.SelectedItems[0]);
+                foreach(ListViewItem lvi in listView1.SelectedItems)
+                {
+                    Capture cap = (lvi.Tag as Capture);
+                    cap.Delete();
+                    listView1.Items.Remove(lvi);
+                }
             }
         }
 
