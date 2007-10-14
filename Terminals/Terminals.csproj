@@ -673,6 +673,7 @@
     <Content Include="Resources\polarized-glasses.jpg" />
     <Content Include="Resources\rdp.png" />
     <None Include="Resources\RotatedHeaderForWizard.bmp" />
+    <EmbeddedResource Include="Resources\screen-capture-box.gif" />
     <Content Include="Resources\server-administrator-icon.png" />
     <None Include="Resources\star.png" />
     <None Include="Resources\ShowPanel.PNG" />

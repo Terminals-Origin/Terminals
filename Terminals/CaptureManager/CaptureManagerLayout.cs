@@ -98,7 +98,7 @@ namespace Terminals.CaptureManager
 
         private void deleteFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(treeView1.SelectedNode != null)
+            if(treeView1.SelectedNode != null && treeView1.SelectedNode!=this.root)
             {
                 System.IO.DirectoryInfo dir = (treeView1.SelectedNode.Tag as System.IO.DirectoryInfo);
                 if(System.IO.Directory.Exists(dir.FullName))

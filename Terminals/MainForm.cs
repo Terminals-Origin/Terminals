@@ -1752,6 +1752,17 @@ namespace Terminals
                 }
             }
         }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            bool origval = Settings.AutoSwitchOnCapture;
+            if(!Settings.AutoSwitchOnCapture)
+            {
+                Settings.AutoSwitchOnCapture = true;
+            }
+            toolStripMenuItem5_Click(new object(), null);
+            Settings.AutoSwitchOnCapture = origval;
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem

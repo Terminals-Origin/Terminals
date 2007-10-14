@@ -47,6 +47,7 @@ namespace Terminals {
             this.groupsSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.captureTerminalScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.networkingToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -78,6 +79,7 @@ namespace Terminals {
             this.VMRCAdminSwitchButton = new System.Windows.Forms.ToolStripButton();
             this.VMRCViewOnlyButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.manageToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
@@ -122,7 +124,6 @@ namespace Terminals {
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.QuickContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -160,7 +161,7 @@ namespace Terminals {
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 25);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(436, 24);
+            this.menuStrip.Size = new System.Drawing.Size(344, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -335,6 +336,13 @@ namespace Terminals {
             this.captureTerminalScreenToolStripMenuItem.Text = "&Capture Terminal Screen";
             this.captureTerminalScreenToolStripMenuItem.Click += new System.EventHandler(this.captureTerminalScreenToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(205, 22);
+            this.toolStripMenuItem5.Text = "Screen Capture Manager";
+            this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
+            // 
             // networkingToolsToolStripMenuItem
             // 
             this.networkingToolsToolStripMenuItem.Name = "networkingToolsToolStripMenuItem";
@@ -438,6 +446,7 @@ namespace Terminals {
             this.tsbTags,
             this.tsbFavorites,
             this.CaptureScreenToolStripButton,
+            this.toolStripButton3,
             this.toolStripSeparator4,
             this.VMRCAdminSwitchButton,
             this.VMRCViewOnlyButton,
@@ -615,6 +624,16 @@ namespace Terminals {
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton2.Text = "Networking Tools";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = global::Terminals.Properties.Resources.screen_capture_box;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton3.Text = "Open the Screen Capture Manager";
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // contextMenuStrip1
             // 
@@ -1063,13 +1082,6 @@ namespace Terminals {
             this.QuickContextMenu.Name = "QuickContextMenu";
             this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
             // 
-            // toolStripMenuItem5
-            // 
-            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(205, 22);
-            this.toolStripMenuItem5.Text = "Screen Capture Manager";
-            this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1223,5 +1235,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripMenuItem networkingToolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
     }
 }

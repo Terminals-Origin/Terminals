@@ -228,6 +228,13 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap screen_capture_box {
+            get {
+                object obj = ResourceManager.GetObject("screen-capture-box", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap server_administrator_icon {
             get {
                 object obj = ResourceManager.GetObject("server_administrator_icon", resourceCulture);
