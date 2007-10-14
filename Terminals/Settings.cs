@@ -629,7 +629,19 @@ namespace Terminals
                 configuration.Save();
             }
         }
-
+        public static bool AutoSwitchOnCapture
+        {
+            get
+            {
+                return GetSection().AutoSwitchOnCapture;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).AutoSwitchOnCapture = value;
+                configuration.Save();
+            }
+        }
         public static bool SingleInstance
         {
             get

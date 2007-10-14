@@ -61,6 +61,7 @@ namespace Terminals
                 Settings.MinimizeToTray = co.MinimizeToTray;
                 Settings.SingleInstance = co.AllowOnlySingleInstance;
                 Settings.ShowConfirmDialog = co.WarnOnDisconnect;
+                Settings.AutoSwitchOnCapture = co.AutoSwitchOnCapture;
 
                 nextButton.Enabled = false;
                 nextButton.Text = "Finished!";

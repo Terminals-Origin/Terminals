@@ -22,6 +22,14 @@ namespace Terminals.CaptureManager
         {
             LoadRoot();
         }
+        public void RefreshView()
+        {
+            if(this.treeView1.SelectedNode != null)
+            {
+                System.IO.DirectoryInfo folder = (this.treeView1.SelectedNode.Tag as System.IO.DirectoryInfo);
+                LoadFolder(folder.FullName, this.treeView1.SelectedNode);
+            }
+        }
         private void LoadRoot()
         {
             root.Tag = new System.IO.DirectoryInfo(CaptureManager.CaptureRoot);
@@ -56,6 +64,11 @@ namespace Terminals.CaptureManager
         }
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            pictureBox1.Image = null;
+            pictureCommentsTextBox.Text = "";
+            saveButton.Enabled = false;
+            deleteButton.Enabled = false;
+
             System.IO.DirectoryInfo dir = (e.Node.Tag as System.IO.DirectoryInfo);
             LoadFolder(dir.FullName, e.Node);
         }
@@ -168,11 +181,17 @@ namespace Terminals.CaptureManager
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            pictureBox1.Image = null;
+            pictureCommentsTextBox.Text = "";
+            saveButton.Enabled = false;
+            deleteButton.Enabled = false;
             if(listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)
             {
                 Capture cap = (listView1.SelectedItems[0].Tag as Capture);
                 pictureBox1.Image = cap.Image;
                 pictureCommentsTextBox.Text = cap.Comments;
+                saveButton.Enabled = true;
+                deleteButton.Enabled = true;
             }
         }
 

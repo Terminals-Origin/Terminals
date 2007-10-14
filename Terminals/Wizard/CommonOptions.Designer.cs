@@ -33,6 +33,7 @@ namespace Terminals.Wizard
             this.MinimizeCheckbox = new System.Windows.Forms.CheckBox();
             this.SingleCheckbox = new System.Windows.Forms.CheckBox();
             this.WarnCheckbox = new System.Windows.Forms.CheckBox();
+            this.autoSwitchOnCapture = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label2
@@ -71,7 +72,7 @@ namespace Terminals.Wizard
             this.SingleCheckbox.AutoSize = true;
             this.SingleCheckbox.Checked = true;
             this.SingleCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.SingleCheckbox.Location = new System.Drawing.Point(28, 159);
+            this.SingleCheckbox.Location = new System.Drawing.Point(28, 158);
             this.SingleCheckbox.Name = "SingleCheckbox";
             this.SingleCheckbox.Size = new System.Drawing.Size(217, 17);
             this.SingleCheckbox.TabIndex = 6;
@@ -83,12 +84,24 @@ namespace Terminals.Wizard
             this.WarnCheckbox.AutoSize = true;
             this.WarnCheckbox.Checked = true;
             this.WarnCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.WarnCheckbox.Location = new System.Drawing.Point(28, 195);
+            this.WarnCheckbox.Location = new System.Drawing.Point(28, 194);
             this.WarnCheckbox.Name = "WarnCheckbox";
             this.WarnCheckbox.Size = new System.Drawing.Size(122, 17);
             this.WarnCheckbox.TabIndex = 7;
             this.WarnCheckbox.Text = "Warn on disconnect";
             this.WarnCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // autoSwitchOnCapture
+            // 
+            this.autoSwitchOnCapture.AutoSize = true;
+            this.autoSwitchOnCapture.Checked = true;
+            this.autoSwitchOnCapture.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoSwitchOnCapture.Location = new System.Drawing.Point(28, 230);
+            this.autoSwitchOnCapture.Name = "autoSwitchOnCapture";
+            this.autoSwitchOnCapture.Size = new System.Drawing.Size(218, 17);
+            this.autoSwitchOnCapture.TabIndex = 8;
+            this.autoSwitchOnCapture.Text = "Automatically switch to Capture Manager";
+            this.autoSwitchOnCapture.UseVisualStyleBackColor = true;
             // 
             // CommonOptions
             // 
@@ -96,6 +109,7 @@ namespace Terminals.Wizard
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.autoSwitchOnCapture);
             this.Controls.Add(this.WarnCheckbox);
             this.Controls.Add(this.SingleCheckbox);
             this.Controls.Add(this.MinimizeCheckbox);
@@ -115,5 +129,6 @@ namespace Terminals.Wizard
         private System.Windows.Forms.CheckBox MinimizeCheckbox;
         private System.Windows.Forms.CheckBox SingleCheckbox;
         private System.Windows.Forms.CheckBox WarnCheckbox;
+        private System.Windows.Forms.CheckBox autoSwitchOnCapture;
     }
 }

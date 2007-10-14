@@ -26,5 +26,9 @@ namespace Terminals.Wizard
         {
             get { return WarnCheckbox.Checked; }
         }
+        public bool AutoSwitchOnCapture
+        {
+            get { return autoSwitchOnCapture.Checked; }
+        }
     }
 }

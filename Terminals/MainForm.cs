@@ -468,21 +468,25 @@ namespace Terminals
 
         private string GetToolTipText(FavoriteConfigurationElement favorite)
         {
-            string toolTip =
-                "Computer: " + favorite.ServerName + Environment.NewLine +
-                "User: " + Functions.UserDisplayName(favorite.DomainName, favorite.UserName) + Environment.NewLine;
-
-            if (Settings.ShowFullInformationToolTips)
+            string toolTip = "";
+            if(favorite != null)
             {
-                toolTip +=
-                "Port: " + favorite.Port + Environment.NewLine +
-                "Colors: " + favorite.Colors.ToString() + Environment.NewLine +
-                "Connect to Console: " + favorite.ConnectToConsole.ToString() + Environment.NewLine +
-                "Desktop size: " + favorite.DesktopSize.ToString() + Environment.NewLine +
-                "Redirect drives: " + favorite.RedirectDrives.ToString() + Environment.NewLine +
-                "Redirect ports: " + favorite.RedirectPorts.ToString() + Environment.NewLine +
-                "Redirect printers: " + favorite.RedirectPrinters.ToString() + Environment.NewLine +
-                "Sounds: " + favorite.Sounds.ToString() + Environment.NewLine;
+                toolTip =
+                    "Computer: " + favorite.ServerName + Environment.NewLine +
+                    "User: " + Functions.UserDisplayName(favorite.DomainName, favorite.UserName) + Environment.NewLine;
+                
+                if(Settings.ShowFullInformationToolTips)
+                {
+                    toolTip +=
+                    "Port: " + favorite.Port + Environment.NewLine +
+                    "Colors: " + favorite.Colors.ToString() + Environment.NewLine +
+                    "Connect to Console: " + favorite.ConnectToConsole.ToString() + Environment.NewLine +
+                    "Desktop size: " + favorite.DesktopSize.ToString() + Environment.NewLine +
+                    "Redirect drives: " + favorite.RedirectDrives.ToString() + Environment.NewLine +
+                    "Redirect ports: " + favorite.RedirectPorts.ToString() + Environment.NewLine +
+                    "Redirect printers: " + favorite.RedirectPrinters.ToString() + Environment.NewLine +
+                    "Sounds: " + favorite.Sounds.ToString() + Environment.NewLine;
+                }
             }
             return toolTip;
         }
@@ -1703,30 +1707,49 @@ namespace Terminals
 
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
-            TerminalTabControlItem terminalTabPage = new TerminalTabControlItem("Capture Manager");
-            try
+            bool createNew = true;
+            foreach(TerminalTabControlItem tab in tcTerminals.Items)
             {
-                terminalTabPage.AllowDrop = false;
-                terminalTabPage.ToolTipText = "Capture Manager";
-                terminalTabPage.Favorite = null;
-                terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
-                tcTerminals.Items.Add(terminalTabPage);
-                tcTerminals.SelectedItem = terminalTabPage;
-                tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
-                Connections.IConnection conn = new Terminals.Connections.CaptureManagerConnection();
-                conn.TerminalTabPage = terminalTabPage;
-                conn.ParentForm = this;
-                conn.Connect();
-                (conn as Control).BringToFront();
-                (conn as Control).Update();
-                UpdateControls();
+                if(tab.Title == "Capture Manager")
+                {
+                    Terminals.Connections.CaptureManagerConnection conn = (tab.Connection as Terminals.Connections.CaptureManagerConnection);
+                    conn.RefreshView();
+                    if(Settings.AutoSwitchOnCapture) tcTerminals.SelectedItem = tab;
+                    createNew = false;
+                    break;
+                }
             }
-            catch(Exception exc)
+            if(createNew)
             {
-                tcTerminals.Items.Remove(terminalTabPage);
-                tcTerminals.SelectedItem = null;
-                terminalTabPage.Dispose();
-                System.Windows.Forms.MessageBox.Show(exc.Message);
+                if(sender == null && !Settings.AutoSwitchOnCapture) createNew = false;
+            }
+            if(createNew)
+            {
+                TerminalTabControlItem terminalTabPage = new TerminalTabControlItem("Capture Manager");
+                try
+                {
+                    terminalTabPage.AllowDrop = false;
+                    terminalTabPage.ToolTipText = "Capture Manager";
+                    terminalTabPage.Favorite = null;
+                    terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
+                    tcTerminals.Items.Add(terminalTabPage);
+                    tcTerminals.SelectedItem = terminalTabPage;
+                    tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
+                    Connections.IConnection conn = new Terminals.Connections.CaptureManagerConnection();
+                    conn.TerminalTabPage = terminalTabPage;
+                    conn.ParentForm = this;
+                    conn.Connect();
+                    (conn as Control).BringToFront();
+                    (conn as Control).Update();
+                    UpdateControls();
+                }
+                catch(Exception exc)
+                {
+                    tcTerminals.Items.Remove(terminalTabPage);
+                    tcTerminals.SelectedItem = null;
+                    terminalTabPage.Dispose();
+                    System.Windows.Forms.MessageBox.Show(exc.Message);
+                }
             }
         }
     }

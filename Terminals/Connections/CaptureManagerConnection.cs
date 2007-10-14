@@ -12,7 +12,10 @@ namespace Terminals.Connections {
         {
             InitializeComponent();
         }
-
+        public void RefreshView()
+        {
+            layout.RefreshView();
+        }
         private Terminals.CaptureManager.CaptureManagerLayout layout;
 
         #region IConnection Members
@@ -28,6 +31,7 @@ namespace Terminals.Connections {
         {
             layout.Parent = base.TerminalTabPage;
             this.Parent = TerminalTabPage;
+            TerminalTabPage.Connection = this;
             return true;
         }
 

@@ -34,6 +34,7 @@ namespace Terminals
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.warnDisconnectCheckBox = new System.Windows.Forms.CheckBox();
             this.validateServerNamesCheckbox = new System.Windows.Forms.CheckBox();
             this.MinimizeToTrayCheckbox = new System.Windows.Forms.CheckBox();
             this.PortscanTimeoutTextBox = new System.Windows.Forms.TextBox();
@@ -65,7 +66,7 @@ namespace Terminals
             this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
             this.PasswordTextbox = new System.Windows.Forms.TextBox();
             this.PasswordProtectTerminalsCheckbox = new System.Windows.Forms.CheckBox();
-            this.warnDisconnectCheckBox = new System.Windows.Forms.CheckBox();
+            this.autoSwitchToCaptureCheckbox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
@@ -135,6 +136,7 @@ namespace Terminals
             // 
             // tpGeneral
             // 
+            this.tpGeneral.Controls.Add(this.autoSwitchToCaptureCheckbox);
             this.tpGeneral.Controls.Add(this.warnDisconnectCheckBox);
             this.tpGeneral.Controls.Add(this.validateServerNamesCheckbox);
             this.tpGeneral.Controls.Add(this.MinimizeToTrayCheckbox);
@@ -159,12 +161,24 @@ namespace Terminals
             this.tpGeneral.Text = "General";
             this.tpGeneral.UseVisualStyleBackColor = true;
             // 
+            // warnDisconnectCheckBox
+            // 
+            this.warnDisconnectCheckBox.AutoSize = true;
+            this.warnDisconnectCheckBox.Checked = true;
+            this.warnDisconnectCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.warnDisconnectCheckBox.Location = new System.Drawing.Point(253, 53);
+            this.warnDisconnectCheckBox.Name = "warnDisconnectCheckBox";
+            this.warnDisconnectCheckBox.Size = new System.Drawing.Size(121, 17);
+            this.warnDisconnectCheckBox.TabIndex = 19;
+            this.warnDisconnectCheckBox.Text = "Warn on disconnect";
+            this.warnDisconnectCheckBox.UseVisualStyleBackColor = true;
+            // 
             // validateServerNamesCheckbox
             // 
             this.validateServerNamesCheckbox.AutoSize = true;
             this.validateServerNamesCheckbox.Checked = true;
             this.validateServerNamesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.validateServerNamesCheckbox.Location = new System.Drawing.Point(258, 30);
+            this.validateServerNamesCheckbox.Location = new System.Drawing.Point(253, 30);
             this.validateServerNamesCheckbox.Name = "validateServerNamesCheckbox";
             this.validateServerNamesCheckbox.Size = new System.Drawing.Size(134, 17);
             this.validateServerNamesCheckbox.TabIndex = 18;
@@ -176,7 +190,7 @@ namespace Terminals
             this.MinimizeToTrayCheckbox.AutoSize = true;
             this.MinimizeToTrayCheckbox.Checked = true;
             this.MinimizeToTrayCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.MinimizeToTrayCheckbox.Location = new System.Drawing.Point(258, 6);
+            this.MinimizeToTrayCheckbox.Location = new System.Drawing.Point(253, 6);
             this.MinimizeToTrayCheckbox.Name = "MinimizeToTrayCheckbox";
             this.MinimizeToTrayCheckbox.Size = new System.Drawing.Size(105, 17);
             this.MinimizeToTrayCheckbox.TabIndex = 17;
@@ -472,17 +486,17 @@ namespace Terminals
             this.PasswordProtectTerminalsCheckbox.UseVisualStyleBackColor = true;
             this.PasswordProtectTerminalsCheckbox.CheckedChanged += new System.EventHandler(this.PasswordProtectTerminalsCheckbox_CheckedChanged);
             // 
-            // warnDisconnectCheckBox
+            // autoSwitchToCaptureCheckbox
             // 
-            this.warnDisconnectCheckBox.AutoSize = true;
-            this.warnDisconnectCheckBox.Checked = true;
-            this.warnDisconnectCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.warnDisconnectCheckBox.Location = new System.Drawing.Point(258, 53);
-            this.warnDisconnectCheckBox.Name = "warnDisconnectCheckBox";
-            this.warnDisconnectCheckBox.Size = new System.Drawing.Size(121, 17);
-            this.warnDisconnectCheckBox.TabIndex = 19;
-            this.warnDisconnectCheckBox.Text = "Warn on disconnect";
-            this.warnDisconnectCheckBox.UseVisualStyleBackColor = true;
+            this.autoSwitchToCaptureCheckbox.AutoSize = true;
+            this.autoSwitchToCaptureCheckbox.Checked = true;
+            this.autoSwitchToCaptureCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoSwitchToCaptureCheckbox.Location = new System.Drawing.Point(253, 80);
+            this.autoSwitchToCaptureCheckbox.Name = "autoSwitchToCaptureCheckbox";
+            this.autoSwitchToCaptureCheckbox.Size = new System.Drawing.Size(139, 17);
+            this.autoSwitchToCaptureCheckbox.TabIndex = 20;
+            this.autoSwitchToCaptureCheckbox.Text = "Auto switch on Capture";
+            this.autoSwitchToCaptureCheckbox.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -555,5 +569,6 @@ namespace Terminals
         private System.Windows.Forms.CheckBox MinimizeToTrayCheckbox;
         private System.Windows.Forms.CheckBox validateServerNamesCheckbox;
         private System.Windows.Forms.CheckBox warnDisconnectCheckBox;
+        private System.Windows.Forms.CheckBox autoSwitchToCaptureCheckbox;
     }
 }

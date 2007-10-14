@@ -57,6 +57,7 @@ namespace Terminals
             Settings.ExecuteBeforeConnectInitialDirectory = txtInitialDirectory.Text;
             Settings.ExecuteBeforeConnectWaitForExit = chkWaitForExit.Checked;
             Settings.SingleInstance = chkSingleInstance.Checked;
+            Settings.AutoSwitchOnCapture = autoSwitchToCaptureCheckbox.Checked;
             Settings.ShowConfirmDialog = chkShowConfirmDialog.Checked;
             Settings.SaveConnectionsOnClose = chkSaveConnections.Checked;
             Settings.ForceComputerNamesAsURI = validateServerNamesCheckbox.Checked;

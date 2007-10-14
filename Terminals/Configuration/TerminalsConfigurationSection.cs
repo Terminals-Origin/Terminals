@@ -378,6 +378,19 @@ namespace Terminals
                 this["singleInstance"] = value;
             }
         }
+
+        [ConfigurationProperty("autoSwitchOnCapture", DefaultValue = true)]
+        public bool AutoSwitchOnCapture
+        {
+            get
+            {
+                return (bool)this["autoSwitchOnCapture"];
+            }
+            set
+            {
+                this["autoSwitchOnCapture"] = value;
+            }
+        }
         [ConfigurationProperty("showWizard", DefaultValue=true)]
         public bool ShowWizard
         {
