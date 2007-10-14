@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Terminals
 {
-    public enum WizardForms { Intro, MasterPassword, Scanner }
+    public enum WizardForms { Intro, MasterPassword, Options, Scanner }
     public partial class FirstRunWizard : Form
     {
         WizardForms SelectedForm = WizardForms.Intro;
@@ -31,6 +31,7 @@ namespace Terminals
         }
         Wizard.AddExistingRDPConnections rdp = new Terminals.Wizard.AddExistingRDPConnections();
         Wizard.MasterPassword mp = new Terminals.Wizard.MasterPassword();
+        Wizard.CommonOptions co = new Terminals.Wizard.CommonOptions();
 
         private void nextButton_Click(object sender, EventArgs e)
         {
@@ -49,6 +50,18 @@ namespace Terminals
                 {
                     Settings.TerminalsPassword = mp.Password;
                 }
+                nextButton.Enabled = true;
+                this.panel1.Controls.Clear();
+                this.panel1.Controls.Add(co);
+                this.SelectedForm = WizardForms.Options;
+                
+            }
+            else if(SelectedForm == WizardForms.Options)
+            {
+                Settings.MinimizeToTray = co.MinimizeToTray;
+                Settings.SingleInstance = co.AllowOnlySingleInstance;
+                Settings.ShowConfirmDialog = co.WarnOnDisconnect;
+
                 nextButton.Enabled = false;
                 nextButton.Text = "Finished!";
                 this.panel1.Controls.Clear();
