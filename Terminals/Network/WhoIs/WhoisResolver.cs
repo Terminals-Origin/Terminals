@@ -62,9 +62,9 @@ namespace Org.Mentalis.Utilities {
                 }
                 s.Shutdown(SocketShutdown.Both);
             }
-            catch
+            catch(Exception e)
             {
-                throw new SocketException();
+                ret = "Could not connect to WhoIs Server.  Please try again later.\r\n\r\nDetails:\r\n" + e.ToString();
             }
             finally
             {

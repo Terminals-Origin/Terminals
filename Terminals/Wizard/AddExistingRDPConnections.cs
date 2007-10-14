@@ -168,17 +168,32 @@ namespace Terminals.Wizard
         }
         public void AddFavorite(string server)
         {
-            AddFavorite(server, string.Format("{0}_MRU_RDP", server), Terminals.Connections.ConnectionManager.RDPPort);
+            AddFavorite(server, server, Terminals.Connections.ConnectionManager.RDPPort);
         }
         public void AddFavorite(string server, string name, int Port)
         {
             try
             {
                 FavoriteConfigurationElement elm = new FavoriteConfigurationElement();
+
+                try
+                {
+                    System.Net.IPAddress address;
+                    if(System.Net.IPAddress.TryParse(server, out address))
+                    {
+                        name = System.Net.Dns.GetHostByAddress(address).HostName;
+                    }
+                    name = string.Format("{0}_{1}", name, Terminals.Connections.ConnectionManager.GetPortName(Port, true));
+                }
+                catch(Exception exc)
+                {
+                }
+
                 elm.Name = name;
                 elm.ServerName = server;
                 elm.UserName = System.Environment.UserName;
                 elm.DomainName = System.Environment.UserDomainName;
+                elm.Tags = "Discovered Connections";
                 elm.Port = Port;
                 elm.Protocol = Terminals.Connections.ConnectionManager.GetPortName(Port, true);
                 lock(DiscoFavs)

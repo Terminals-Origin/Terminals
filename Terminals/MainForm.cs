@@ -158,17 +158,55 @@ namespace Terminals
                     QuickContextMenu.Items.Add("&Full Screen");
 
                 QuickContextMenu.Items.Add("-");
+                QuickContextMenu.Items.Add("&Networking Tools");
+                QuickContextMenu.Items.Add("&Screen Capture Manager");
+                QuickContextMenu.Items.Add("-");
 
                 FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+
+                Dictionary<string, ToolStripMenuItem> tagTools = new Dictionary<string, ToolStripMenuItem>();
+
                 foreach (FavoriteConfigurationElement favorite in favorites)
                 {
-                    if (favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                    if(favorite.TagList != null && favorite.TagList.Count > 0)
                     {
-                        QuickContextMenu.Items.Add(favorite.Name, Image.FromFile(favorite.ToolBarIcon));
+                        foreach(string tag in favorite.TagList)
+                        {
+                            System.Windows.Forms.ToolStripMenuItem parent;
+                            if(tagTools.ContainsKey(tag))
+                            {
+                                parent = tagTools[tag];
+                            }
+                            else
+                            {
+                                parent = new ToolStripMenuItem();
+                                parent.DropDownItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
+                                parent.Tag = "tag";
+                                parent.Text = tag;
+                                tagTools.Add(tag, parent);
+                                QuickContextMenu.Items.Add(parent);
+                            }
+                            System.Windows.Forms.ToolStripButton item = new ToolStripButton();
+                            item.Text = favorite.Name;
+                            item.Tag = "favorite";
+                            if(favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                                item.Image = Image.FromFile(favorite.ToolBarIcon);
+
+                            //parent.DropDown = new ToolStripDropDown();
+                            parent.DropDown.Items.Add(item);
+
+                            
+                        }                         
                     }
                     else
                     {
-                        QuickContextMenu.Items.Add(favorite.Name);
+                        ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
+                        item.Tag = "favorite";
+                        if(favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                            item.Image = Image.FromFile(favorite.ToolBarIcon);
+                        
+                        QuickContextMenu.Items.Add(item);
+
                     }
                 }
 
@@ -181,7 +219,7 @@ namespace Terminals
 
         void QuickContextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-
+            QuickContextMenu.Hide();
             switch (e.ClickedItem.Text)
             {
                 case "&Restore":
@@ -189,14 +227,35 @@ namespace Terminals
                 case "&Full Screen":
                     this.FullScreen = !this.FullScreen;
                     break;
+                case "&Networking Tools":
+                    toolStripButton2_Click(null, null);
+                    break;
+                case "&Screen Capture Manager":
+                    toolStripMenuItem5_Click(new Object(), null);
+                    break;
                 case "&Exit":
                     Close();
                     break;
                 default:
-                    Connect(e.ClickedItem.Text);
+                    string tag = (e.ClickedItem.Tag as string);
+                    if(tag!=null && tag=="favorite") Connect(e.ClickedItem.Text);
+                    if(tag != null && tag == "tag")
+                    {
+                        System.Windows.Forms.ToolStripMenuItem parent = (e.ClickedItem as System.Windows.Forms.ToolStripMenuItem);
+                        if(parent.DropDownItems.Count > 0)
+                        {
+                            if(System.Windows.Forms.MessageBox.Show("Are you sure you want to connect to all these " + parent.DropDownItems.Count + " terminals?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                            {
+                                foreach(ToolStripButton button in parent.DropDownItems)
+                                {
+                                    Connect(button.Text);
+                                }
+                            }
+                        }
+                    }
                     break;
             }
-            QuickContextMenu.Visible = false;
+            
         }
 
         private void MainForm_Load(object sender, EventArgs e)
