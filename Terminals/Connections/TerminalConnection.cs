@@ -13,16 +13,20 @@ using System.Runtime.InteropServices;
 using TabControl;
 using System.IO;
 
-namespace Terminals.Connections {
-    public class TerminalConnection : Connection {
+namespace Terminals.Connections
+{
+    public class TerminalConnection : Connection
+    {
         #region IConnection Members
         private bool connected = false;
         public override bool Connected { get { return connected; } }
-        public override void ChangeDesktopSize(Terminals.DesktopSize Size) {
+        public override void ChangeDesktopSize(Terminals.DesktopSize Size)
+        {
         }
 
         public WalburySoftware.TerminalEmulator term;
-        public override bool Connect() {
+        public override bool Connect()
+        {
             term = new WalburySoftware.TerminalEmulator();
 
             Controls.Add(term);
@@ -34,6 +38,7 @@ namespace Terminals.Connections {
             term.Dock = DockStyle.Fill;
 
             term.OnDisconnected += new WalburySoftware.TerminalEmulator.Disconnected(term_OnDisconnected);
+            
             term.BackColor = Color.FromName(Favorite.TelnetBackColor);
             term.Font = FontParser.ParseFontName(Favorite.TelnetFont);
             term.ForeColor = Color.FromName(Favorite.TelnetTextColor);
@@ -46,32 +51,35 @@ namespace Terminals.Connections {
             if(userName == null || userName == "") userName = Settings.DefaultUsername;
 
 
-            if(Favorite.UserName != null && Favorite.UserName.Trim() != "") term.Username = userName;
-            if(Favorite.Password != null && Favorite.Password.Trim() != "") term.Password = pass;
+            if(userName != null && userName != "") term.Username = userName;
+            if(pass != null && pass != "") term.Password = pass;
 
-            bool ForceClose = true;
-
-            if (term.Username == null)
+            if(term.Username == null || term.Username =="")
             {
-                
+
                 Terminals.InputBoxResult result = Terminals.InputBox.Show("Please provider your User name", "SSH User name");
-                if (result.ReturnCode == DialogResult.OK && result.Text != null && result.Text.Trim() != "")
+                if(result.ReturnCode == DialogResult.OK && result.Text != null && result.Text.Trim() != "")
                 {
                     term.Username = result.Text;
-                    if (term.Password == null)
+                    if(term.Password == null)
                     {
 
                         Terminals.InputBoxResult res = Terminals.InputBox.Show("Please provider your Password", "SSH Password", '*');
-                        if (res.ReturnCode == DialogResult.OK && res.Text != null && res.Text.Trim() != "")
+                        if(res.ReturnCode == DialogResult.OK && res.Text != null && res.Text.Trim() != "")
                         {
                             term.Password = res.Text;
-                            ForceClose = false;
                         }
                     }
 
                 }
             }
-            if (ForceClose)
+
+            bool ForceClose = true;
+
+            if(userName != null && userName != "" && pass != null && pass != "") ForceClose = false;
+
+
+            if(ForceClose)
             {
                 this.ParentForm.tcTerminals.ForceCloseTab(this.TerminalTabPage);
                 connected = false;
@@ -86,7 +94,7 @@ namespace Terminals.Connections {
 
                 term.Columns = Favorite.TelnetCols;
 
-                if (Favorite.Telnet)
+                if(Favorite.Telnet)
                     term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.Telnet;
                 else
                     term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.SSH2;
@@ -100,17 +108,20 @@ namespace Terminals.Connections {
 
         void term_OnDisconnected(object Sender, string Message)
         {
-            System.Windows.Forms.MessageBox.Show("There was an error with the Terminals connection.  It will now close.");
+            System.Windows.Forms.MessageBox.Show("There was an error with the Terminals connection.  It will now close.\r\nDetails:\r\n" + Message);
             this.ParentForm.tcTerminals.ForceCloseTab(this.TerminalTabPage);
         }
 
-        public override void Disconnect() {
-            try {
+        public override void Disconnect()
+        {
+            try
+            {
                 //term.Disconnect();
-            } catch (Exception e) { }
+            }
+            catch(Exception e) { }
         }
 
         #endregion
-        
+
     }
 }

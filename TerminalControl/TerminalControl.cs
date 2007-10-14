@@ -3399,8 +3399,8 @@ namespace WalburySoftware
 				System.Byte   Flags       = 0;
     
     
-				lBytes = System.BitConverter.GetBytes (KeyMess.LParam.ToInt32 ());
-				wBytes = System.BitConverter.GetBytes (KeyMess.WParam.ToInt32 ());
+				lBytes = System.BitConverter.GetBytes (KeyMess.LParam.ToInt64 ());
+                wBytes = System.BitConverter.GetBytes(KeyMess.WParam.ToInt64());
 				RepeatCount = System.BitConverter.ToUInt16 (lBytes, 0);
 				ScanCode    = lBytes[2];
 				Flags       = lBytes[3];
