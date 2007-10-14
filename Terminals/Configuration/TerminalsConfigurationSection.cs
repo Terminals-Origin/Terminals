@@ -27,7 +27,7 @@ namespace Terminals
             }
         }
 
-     
+
 
         [ConfigurationProperty("serversMRUList")]
         [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]
@@ -147,7 +147,7 @@ namespace Terminals
             get
             {
                 int timeout = 5;
-                if (this["portScanTimeoutSeconds"] != null && this["portScanTimeoutSeconds"].ToString() != string.Empty)
+                if(this["portScanTimeoutSeconds"] != null && this["portScanTimeoutSeconds"].ToString() != string.Empty)
                 {
                     int.TryParse(this["portScanTimeoutSeconds"].ToString(), out timeout);
                 }
@@ -164,7 +164,7 @@ namespace Terminals
         {
             get
             {
-                if (this["minimizeToTray"] == null || this["minimizeToTray"].ToString() == string.Empty) return true;
+                if(this["minimizeToTray"] == null || this["minimizeToTray"].ToString() == string.Empty) return true;
                 bool min = true;
                 bool.TryParse(this["minimizeToTray"].ToString(), out min);
                 return min;
@@ -179,7 +179,7 @@ namespace Terminals
         {
             get
             {
-                if (this["warnOnConnectionClose"] == null || this["warnOnConnectionClose"].ToString() == string.Empty) return true;
+                if(this["warnOnConnectionClose"] == null || this["warnOnConnectionClose"].ToString() == string.Empty) return true;
                 bool min = true;
                 bool.TryParse(this["warnOnConnectionClose"].ToString(), out min);
                 return min;
@@ -194,7 +194,7 @@ namespace Terminals
         {
             get
             {
-                if (this["forceComputerNamesAsURI"] == null || this["forceComputerNamesAsURI"].ToString() == string.Empty) return true;
+                if(this["forceComputerNamesAsURI"] == null || this["forceComputerNamesAsURI"].ToString() == string.Empty) return true;
                 bool min = true;
                 bool.TryParse(this["forceComputerNamesAsURI"].ToString(), out min);
                 return min;
@@ -215,12 +215,69 @@ namespace Terminals
             {
                 this["terminalsPassword"] = "";
                 //hash the password
-                if (value != string.Empty)
+                if(value != string.Empty)
                 {
                     this["terminalsPassword"] = Unified.Encryption.Hash.Hash.GetHash(value, Unified.Encryption.Hash.Hash.HashType.SHA512);
                 }
             }
         }
+        [ConfigurationProperty("defaultDomain", IsRequired=false)]
+        public string DefaultDomain
+        {
+            get
+            {
+                return (string)this["defaultDomain"];
+            }
+            set
+            {
+                this["defaultDomain"] = value;
+            }
+        }
+
+
+
+        [ConfigurationProperty("defaultUsername", IsRequired = false)]
+        public string DefaultUsername
+        {
+            get
+            {
+                return (string)this["defaultUsername"];
+            }
+            set
+            {
+                this["defaultUsername"] = value;
+            }
+        }
+
+        [ConfigurationProperty("encryptedDefaultPassword", IsRequired = false)]
+        public string EncryptedDefaultPassword
+        {
+            get
+            {
+                return (string)this["encryptedDefaultPassword"];
+            }
+            set
+            {
+                this["encryptedDefaultPassword"] = value;
+            }
+        }
+
+        public string DefaultPassword
+        {
+            get
+            {
+                return Functions.DecryptPassword(EncryptedDefaultPassword);
+            }
+            set
+            {
+                EncryptedDefaultPassword = Functions.EncryptPassword(value);
+            }
+        }
+
+
+
+
+
 
         [ConfigurationProperty("showInformationToolTips")]
         public bool ShowInformationToolTips
@@ -365,7 +422,7 @@ namespace Terminals
                 this["savedConnectionsList"] = value;
             }
         }
-        
+
         [ConfigurationProperty("singleInstance")]
         public bool SingleInstance
         {
@@ -391,7 +448,7 @@ namespace Terminals
                 this["autoSwitchOnCapture"] = value;
             }
         }
-        [ConfigurationProperty("showWizard", DefaultValue=true)]
+        [ConfigurationProperty("showWizard", DefaultValue = true)]
         public bool ShowWizard
         {
             get
@@ -415,7 +472,7 @@ namespace Terminals
                 this["captureRoot"] = value;
             }
         }
-        
+
 
         [ConfigurationProperty("psexecLocation")]
         public string PsexecLocation

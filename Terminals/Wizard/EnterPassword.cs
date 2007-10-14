@@ -14,10 +14,25 @@ namespace Terminals.Wizard
         {
             InitializeComponent();
 
-            this.masterPasswordTextbox.Text = Settings.TerminalsPassword;
-            this.confirmTextBox.Text = Settings.TerminalsPassword;
-        }
+            EnableMasterPassword.Checked = true;
+            EnableMasterPassword.Enabled = true;
+            panel1.Enabled = true;
 
+            if(Settings.TerminalsPassword != "")
+            {
+                EnableMasterPassword.Checked = true;
+                EnableMasterPassword.Enabled = false;
+                panel1.Enabled = false;
+            }
+        }
+        public bool StorePassword
+        {
+            get
+            {
+                if(EnableMasterPassword.Checked && masterPasswordTextbox.Text!="") return true;
+                return false;
+            }
+        }
         private void confirmTextBox_TextChanged(object sender, EventArgs e)
         {
             if(masterPasswordTextbox.Text != confirmTextBox.Text)
@@ -55,6 +70,11 @@ namespace Terminals.Wizard
                 }
                 return "";
             }
+        }
+
+        private void EnableMasterPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            panel1.Enabled = EnableMasterPassword.Checked; ;
         }
     }
 }

@@ -380,6 +380,45 @@ namespace Terminals
                 configuration.Save();
             }
         }
+        public static string DefaultDomain
+        {
+            get
+            {
+                return GetSection().DefaultDomain;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).DefaultDomain = value;
+                configuration.Save();
+            }
+        }
+        public static string DefaultUsername
+        {
+            get
+            {
+                return GetSection().DefaultUsername;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).DefaultUsername = value;
+                configuration.Save();
+            }
+        }
+        public static string DefaultPassword
+        {
+            get
+            {
+                return GetSection().DefaultPassword;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).DefaultPassword = value;
+                configuration.Save();
+            }
+        }
 
         public static string TerminalsPassword {
             get {

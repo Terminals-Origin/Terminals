@@ -25,9 +25,16 @@ namespace Terminals.Connections {
 
 
             Controls.Add(iIcaClient);
-            if (Favorite.Password != null && Favorite.Password.Trim() != "") {
-                icaPassword = Favorite.Password;
-            }
+
+
+            string domainName = Favorite.DomainName;
+            if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
+            string pass = Favorite.Password;
+            if(pass == null || pass == "") pass = Settings.DefaultPassword;
+            string userName = Favorite.UserName;
+            if(userName == null || userName == "") userName = Settings.DefaultUsername;
+
+            icaPassword = pass;
 
 
             //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
@@ -54,9 +61,9 @@ namespace Terminals.Connections {
             }
 
 
-            iIcaClient.Domain = Favorite.DomainName;
+            iIcaClient.Domain = domainName;
             iIcaClient.Address = Favorite.ServerName;
-            iIcaClient.Username = Favorite.UserName;
+            iIcaClient.Username = userName;
 
             if(Favorite.ICAApplicationName != "")
             {

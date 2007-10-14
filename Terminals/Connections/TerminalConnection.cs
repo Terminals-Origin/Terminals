@@ -37,9 +37,17 @@ namespace Terminals.Connections {
             term.BackColor = Color.FromName(Favorite.TelnetBackColor);
             term.Font = FontParser.ParseFontName(Favorite.TelnetFont);
             term.ForeColor = Color.FromName(Favorite.TelnetTextColor);
-            
-            if(Favorite.UserName!=null && Favorite.UserName.Trim()!="") term.Username = Favorite.UserName;
-            if (Favorite.Password != null && Favorite.Password.Trim() != "") term.Password = Favorite.Password;
+
+            string domainName = Favorite.DomainName;
+            if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
+            string pass = Favorite.Password;
+            if(pass == null || pass == "") pass = Settings.DefaultPassword;
+            string userName = Favorite.UserName;
+            if(userName == null || userName == "") userName = Settings.DefaultUsername;
+
+
+            if(Favorite.UserName != null && Favorite.UserName.Trim() != "") term.Username = userName;
+            if(Favorite.Password != null && Favorite.Password.Trim() != "") term.Password = pass;
 
             bool ForceClose = true;
 

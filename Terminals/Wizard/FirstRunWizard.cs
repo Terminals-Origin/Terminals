@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Terminals
 {
-    public enum WizardForms { Intro, MasterPassword, Options, Scanner }
+    public enum WizardForms { Intro, MasterPassword, DefaultCredentials, Options, Scanner }
     public partial class FirstRunWizard : Form
     {
         WizardForms SelectedForm = WizardForms.Intro;
@@ -32,6 +32,7 @@ namespace Terminals
         Wizard.AddExistingRDPConnections rdp = new Terminals.Wizard.AddExistingRDPConnections();
         Wizard.MasterPassword mp = new Terminals.Wizard.MasterPassword();
         Wizard.CommonOptions co = new Terminals.Wizard.CommonOptions();
+        Wizard.DefaultCredentials dc = new Terminals.Wizard.DefaultCredentials();
 
         private void nextButton_Click(object sender, EventArgs e)
         {
@@ -46,10 +47,29 @@ namespace Terminals
             }
             else if(SelectedForm == WizardForms.MasterPassword)
             {
-                if(mp.Password != "")
+                if(mp.StorePassword)
                 {
                     Settings.TerminalsPassword = mp.Password;
+                    nextButton.Enabled = true;
+                    this.panel1.Controls.Clear();
+                    this.panel1.Controls.Add(dc);
+                    this.SelectedForm = WizardForms.DefaultCredentials;
                 }
+                else
+                {
+                    nextButton.Enabled = true;
+                    this.panel1.Controls.Clear();
+                    this.panel1.Controls.Add(co);
+                    this.SelectedForm = WizardForms.Options;
+
+                }
+            }
+            else if(SelectedForm == WizardForms.DefaultCredentials)
+            {
+                Settings.DefaultDomain = dc.DefaultDomain;
+                Settings.DefaultPassword = dc.DefaultPassword;
+                Settings.DefaultUsername = dc.DefaultUsername;
+
                 nextButton.Enabled = true;
                 this.panel1.Controls.Clear();
                 this.panel1.Controls.Add(co);

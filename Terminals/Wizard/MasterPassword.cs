@@ -14,6 +14,14 @@ namespace Terminals.Wizard
         {
             InitializeComponent();
         }
+        public bool StorePassword
+        {
+            get
+            {
+                return this.enterPassword1.StorePassword;
+            }
+        }
+
         public string Password
         {
             get

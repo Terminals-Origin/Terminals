@@ -35,12 +35,21 @@ namespace Terminals.Connections {
             ras.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(ras_ConnectionChanged);
             ras.EntryName = Favorite.ServerName;
 
+            string domainName = Favorite.DomainName;
+            if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
+            string pass = Favorite.Password;
+            if(pass == null || pass == "") pass = Settings.DefaultPassword;
+            string userName = Favorite.UserName;
+            if(userName == null || userName == "") userName = Settings.DefaultUsername;
+
+
+
             FalafelSoftware.TransPort.RasError error;
             if (Favorite.UserName != null && Favorite.UserName.Trim() != string.Empty && Favorite.Password != null && Favorite.Password.Trim() != string.Empty) {
                 Log("Using Terminals Credentials, Dialing...");
-                ras.UserName = Favorite.UserName;
-                ras.Password = Favorite.Password;
-                ras.Domain = Favorite.DomainName;
+                ras.UserName = userName;
+                ras.Password = pass;
+                ras.Domain = domainName;
                 error = ras.Dial();
             } else {
                 Log("Terminals has no credentials, Showing Dial Dialog...");

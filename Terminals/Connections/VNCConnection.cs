@@ -15,10 +15,10 @@ namespace Terminals.Connections {
         public override bool Connect() {           
 
             Controls.Add(rd);
-            if (Favorite.Password != null && Favorite.Password.Trim() != "") {
-                vncPassword = Favorite.Password;
-            }
 
+            string pass = Favorite.Password;
+            if(pass == null || pass == "") pass = Settings.DefaultPassword;
+            this.vncPassword = pass;
 
             //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
             rd.Parent = base.TerminalTabPage;

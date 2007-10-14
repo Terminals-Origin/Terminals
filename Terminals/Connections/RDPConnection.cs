@@ -131,10 +131,29 @@ namespace Terminals.Connections
                 }
             }
             axMsRdpClient2.SecuredSettings2.AudioRedirectionMode = (int)Favorite.Sounds;
-            axMsRdpClient2.Domain = Favorite.DomainName;
+
+            string domainName = Favorite.DomainName;
+            if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
+
+            string pass = Favorite.Password;
+            if(pass == null || pass == "") pass = Settings.DefaultPassword;
+
+            
+            string userName = Favorite.UserName;
+            if(userName == null || userName == "") userName = Settings.DefaultUsername;
+
+
+            axMsRdpClient2.UserName = userName;
+            axMsRdpClient2.Domain = domainName;
+            if(!String.IsNullOrEmpty(pass))
+            {
+                MSTSC.IMsTscNonScriptable nonScriptable = (MSTSC.IMsTscNonScriptable)axMsRdpClient2.GetOcx();
+                nonScriptable.ClearTextPassword = pass;
+            }
+
+
             axMsRdpClient2.Server = Favorite.ServerName;
             axMsRdpClient2.AdvancedSettings3.RDPPort = Favorite.Port;
-            axMsRdpClient2.UserName = Favorite.UserName;
             axMsRdpClient2.AdvancedSettings3.ContainerHandledFullScreen = -1;
             axMsRdpClient2.AdvancedSettings3.DisplayConnectionBar = Favorite.DisplayConnectionBar;
             axMsRdpClient2.AdvancedSettings3.ConnectToServerConsole = Favorite.ConnectToConsole;
@@ -144,11 +163,6 @@ namespace Terminals.Connections
             axMsRdpClient2.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(axMsRdpClient2_OnWarning);
             axMsRdpClient2.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(axMsRdpClient2_OnFatalError);
 
-            if (!String.IsNullOrEmpty(Favorite.Password))
-            {
-                MSTSC.IMsTscNonScriptable nonScriptable = (MSTSC.IMsTscNonScriptable)axMsRdpClient2.GetOcx();
-                nonScriptable.ClearTextPassword = Favorite.Password;
-            }
             Text = "Connecting to RDP Server...";
             axMsRdpClient2.FullScreen = true;
             axMsRdpClient2.Connect();

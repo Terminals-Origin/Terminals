@@ -202,6 +202,12 @@
     <Compile Include="Wizard\CommonOptions.Designer.cs">
       <DependentUpon>CommonOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Wizard\DefaultCredentials.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Wizard\DefaultCredentials.Designer.cs">
+      <DependentUpon>DefaultCredentials.cs</DependentUpon>
+    </Compile>
     <Compile Include="Wizard\EnterPassword.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -357,7 +363,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -600,6 +606,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\CommonOptions.resx">
       <DependentUpon>CommonOptions.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Wizard\DefaultCredentials.resx">
+      <DependentUpon>DefaultCredentials.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\EnterPassword.resx">

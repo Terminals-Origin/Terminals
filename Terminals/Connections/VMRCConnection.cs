@@ -23,12 +23,23 @@ namespace Terminals.Connections {
 
             //vmrc.CtlAutoSize = true;
 
+            string domainName = Favorite.DomainName;
+            if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
+
+            string pass = Favorite.Password;
+            if(pass == null || pass == "") pass = Settings.DefaultPassword;
+
+
+            string userName = Favorite.UserName;
+            if(userName == null || userName == "") userName = Settings.DefaultUsername;
+
+
            // vmrc.Dock = DockStyle.Fill;
-            vmrc.UserName = Favorite.UserName;
+            vmrc.UserName = userName;
             vmrc.ServerAddress = Favorite.ServerName;
             vmrc.ServerPort = Favorite.Port;
-            vmrc.UserDomain = Favorite.DomainName;
-            vmrc.UserPassword = Favorite.Password;
+            vmrc.UserDomain = domainName;
+            vmrc.UserPassword = pass;
             vmrc.AdministratorMode = Favorite.VMRCAdministratorMode;
             vmrc.ReducedColorsMode = Favorite.VMRCReducedColorsMode;
 
