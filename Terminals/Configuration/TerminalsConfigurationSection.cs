@@ -390,6 +390,19 @@ namespace Terminals
                 this["showWizard"] = value;
             }
         }
+        [ConfigurationProperty("captureRoot")]
+        public string CaptureRoot
+        {
+            get
+            {
+                return (string)this["captureRoot"];
+            }
+            set
+            {
+                this["captureRoot"] = value;
+            }
+        }
+        
 
         [ConfigurationProperty("psexecLocation")]
         public string PsexecLocation

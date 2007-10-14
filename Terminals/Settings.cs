@@ -590,6 +590,32 @@ namespace Terminals
                 return _supportsRDP6.Value;
             }
         }
+        public static string CaptureRoot
+        {
+            get
+            {
+                string root = GetSection().CaptureRoot;
+                if(root == null || root == "")
+                {
+                    string asmFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                    root = System.IO.Path.Combine(asmFolder, "CaptureRoot");
+                    CaptureRoot = root;
+                }
+                if(!System.IO.Directory.Exists(root))
+                {
+                    System.IO.Directory.CreateDirectory(root);
+                }
+                return root;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).CaptureRoot = value;
+                configuration.Save();
+            }
+        }
+
+
         public static bool ShowWizard
         {
             get

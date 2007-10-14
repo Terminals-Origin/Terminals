@@ -117,6 +117,15 @@
     <Compile Include="AddConnectionForm.Designer.cs">
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CaptureManager\Capture.cs" />
+    <Compile Include="CaptureManager\CaptureManager.cs" />
+    <Compile Include="CaptureManager\CaptureManagerLayout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CaptureManager\CaptureManagerLayout.Designer.cs">
+      <DependentUpon>CaptureManagerLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CaptureManager\Captures.cs" />
     <Compile Include="CommandLine\TerminalsCA.cs" />
     <Compile Include="Configuration\CommonEnums.cs" />
     <Compile Include="Configuration\SpecialCommandConfigurationElement.cs" />
@@ -134,6 +143,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Connections\ConnectionManager.cs" />
+    <Compile Include="Connections\CaptureManagerConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Connections\NetworkingToolsConnection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -345,7 +357,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -578,6 +590,14 @@
     <None Include="Resources\HidePanel.PNG" />
     <None Include="Resources\camera.png" />
     <None Include="Resources\application_xp_terminal.png" />
+    <EmbeddedResource Include="CaptureManager\CaptureManagerLayout.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CaptureManagerLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connections\CaptureManagerConnection.resx">
+      <DependentUpon>CaptureManagerConnection.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Wizard\CommonOptions.resx">
       <DependentUpon>CommonOptions.cs</DependentUpon>
       <SubType>Designer</SubType>

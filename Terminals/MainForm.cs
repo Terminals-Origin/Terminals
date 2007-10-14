@@ -1487,11 +1487,9 @@ namespace Terminals
 
         private void CaptureScreenToolStripButton_Click(object sender, EventArgs e)
         {
-            ScreenCapture sc = new ScreenCapture();
-            string tempFile = System.IO.Path.GetTempFileName() + ".jpg";
+            Terminals.CaptureManager.Capture cap = Terminals.CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
 
-            using (sc.CaptureControl(this.tcTerminals, tempFile, ImageFormatHandler.ImageFormatTypes.imgJPEG)) ;
-            System.Diagnostics.Process.Start(tempFile);
+            toolStripMenuItem5_Click(null, null);
 
         }
 
@@ -1701,6 +1699,35 @@ namespace Terminals
         private void networkingToolsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toolStripButton2_Click(null, null);
+        }
+
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            TerminalTabControlItem terminalTabPage = new TerminalTabControlItem("Capture Manager");
+            try
+            {
+                terminalTabPage.AllowDrop = false;
+                terminalTabPage.ToolTipText = "Capture Manager";
+                terminalTabPage.Favorite = null;
+                terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
+                tcTerminals.Items.Add(terminalTabPage);
+                tcTerminals.SelectedItem = terminalTabPage;
+                tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
+                Connections.IConnection conn = new Terminals.Connections.CaptureManagerConnection();
+                conn.TerminalTabPage = terminalTabPage;
+                conn.ParentForm = this;
+                conn.Connect();
+                (conn as Control).BringToFront();
+                (conn as Control).Update();
+                UpdateControls();
+            }
+            catch(Exception exc)
+            {
+                tcTerminals.Items.Remove(terminalTabPage);
+                tcTerminals.SelectedItem = null;
+                terminalTabPage.Dispose();
+                System.Windows.Forms.MessageBox.Show(exc.Message);
+            }
         }
     }
 
