@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using Terminals;
+using Terminals.Network;
 
 namespace Terminals.Network.Servers
 {
@@ -48,6 +50,22 @@ namespace Terminals.Network.Servers
                 }
             }
             
+        }
+        
+        public void Connect(string server, bool headless)
+        {
+            try
+            {
+                splitContainer1.Panel1Collapsed = headless;
+                if(server != "")
+                {
+                    this.ServerNameComboBox.Text = server;
+                    button1_Click(null, null);
+                }
+            }
+            catch(Exception exc)
+            {
+            }
         }
         TerminalServices.Session SelectedSession = null;
         private void TerminalServerManager_Load(object sender, EventArgs e)

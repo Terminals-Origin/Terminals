@@ -16,9 +16,12 @@ namespace Terminals
 {
     internal partial class NewTerminalForm : Form
     {
+        Terminals.Network.Servers.TerminalServerManager terminalServerManager1 = new Terminals.Network.Servers.TerminalServerManager();
+
         public NewTerminalForm(string server, bool connect)
         {
             InitializeComponent();
+
             LoadMRUs();
 
             cmbResolution.SelectedIndex = 4;
@@ -39,6 +42,17 @@ namespace Terminals
         private void NewTerminalForm_Load(object sender, EventArgs e)
         {
             //LoadDialupConnections();
+            this.SuspendLayout();
+            // 
+            // terminalServerManager1
+            // 
+            this.terminalServerManager1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.terminalServerManager1.Location = new System.Drawing.Point(0, 0);
+            this.terminalServerManager1.Name = "terminalServerManager1";
+            this.terminalServerManager1.Size = new System.Drawing.Size(748, 309);
+            this.terminalServerManager1.TabIndex = 0;
+            this.tabPage10.Controls.Add(terminalServerManager1);
+            this.ResumeLayout(true);
 
         }
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
@@ -634,6 +648,24 @@ namespace Terminals
         private void SecuritySettingsEnabledCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             panel2.Enabled = SecuritySettingsEnabledCheckbox.Checked;
+        }
+
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(tabControl1.SelectedTab == tabPage2)
+            {
+                RDPSubTabPage_SelectedIndexChanged(null, null);
+            }
+        }
+
+        private void RDPSubTabPage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(RDPSubTabPage.SelectedTab == tabPage10)
+            {
+                terminalServerManager1.Connect(this.cmbServers.Text, true);
+                terminalServerManager1.Invalidate();
+            }
         }
 
     }
