@@ -13,6 +13,9 @@ namespace Terminals.Wizard
         public EnterPassword()
         {
             InitializeComponent();
+
+            this.masterPasswordTextbox.Text = Settings.TerminalsPassword;
+            this.confirmTextBox.Text = Settings.TerminalsPassword;
         }
 
         private void confirmTextBox_TextChanged(object sender, EventArgs e)

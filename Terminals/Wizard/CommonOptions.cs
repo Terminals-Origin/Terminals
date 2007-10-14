@@ -13,6 +13,10 @@ namespace Terminals.Wizard
         public CommonOptions()
         {
             InitializeComponent();
+            this.MinimizeCheckbox.Checked = Settings.MinimizeToTray;
+            this.SingleCheckbox.Checked = Settings.SingleInstance;
+            this.WarnCheckbox.Checked = Settings.WarnOnConnectionClose;
+            this.autoSwitchOnCapture.Checked = Settings.AutoSwitchOnCapture;
         }
         public bool MinimizeToTray
         {
