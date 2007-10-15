@@ -42,6 +42,7 @@ namespace Terminals.Connections
 
             ((Control)axMsRdpClient2).DragEnter += new DragEventHandler(axMsRdpClient2_DragEnter);
             ((Control)axMsRdpClient2).DragDrop += new DragEventHandler(axMsRdpClient2_DragDrop);
+            axMsRdpClient2.OnConnected += new EventHandler(axMsRdpClient2_OnConnected);
             axMsRdpClient2.Dock = DockStyle.Fill;
 
 
@@ -168,6 +169,15 @@ namespace Terminals.Connections
             axMsRdpClient2.Connect();
             return true;
         }
+
+        public delegate void Disconnected(RDPConnection Connection);
+        public event Disconnected OnDisconnected;
+        public delegate void ConnectionEstablish(RDPConnection Connection);
+        public event ConnectionEstablish OnConnected;
+        void axMsRdpClient2_OnConnected(object sender, EventArgs e)
+        {
+            if(OnConnected != null) OnConnected(this);
+        }
         
         public override void Disconnect()
         {
@@ -218,6 +228,7 @@ namespace Terminals.Connections
             ParentForm.UpdateControls();
         }
 
+
         void axMsTscAx_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
             AxMsRdpClient2 client = (AxMsRdpClient2)sender;
@@ -235,10 +246,13 @@ namespace Terminals.Connections
             if (wasSelected)
                 NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
             ParentForm.UpdateControls();
+
+            if(OnDisconnected != null) OnDisconnected(this);
         }
         void axMsRdpClient2_OnFatalError(object sender, IMsTscAxEvents_OnFatalErrorEvent e)
         {
             //throw new Exception("The method or operation is not implemented.");
+
         }
 
         void axMsRdpClient2_OnWarning(object sender, IMsTscAxEvents_OnWarningEvent e)

@@ -150,12 +150,65 @@ namespace Terminals
         {
             if (e.Button == MouseButtons.Right)
             {
-
                 QuickContextMenu.Items.Clear();
+
+
+                //TabControl.TabControl tabControl = (sender as TabControl.TabControl);
+                //if(tabControl.SelectedItem != null)
+                //{
+                //    TerminalTabControlItem item = (tabControl.SelectedItem as TerminalTabControlItem); ;
+                //    if(item.Connection != null)
+                //    {
+                //        if(item.Connection.Favorite.Protocol == "RDP")
+                //        {
+
+                //            //a connection to the RDP server happend
+                //            //lets query the machine to see if we can acutally do remote admin features in the menu
+                //            try
+                //            {
+                //                TerminalServices.TerminalServer server = TerminalServices.TerminalServer.LoadServer(item.Connection.Favorite.ServerName);
+                //                System.Windows.Forms.ToolStripMenuItem remoteAdmin = new ToolStripMenuItem("Remote Administration");
+                //                QuickContextMenu.Items.Add(remoteAdmin);
+                //                QuickContextMenu.Items.Add("-");
+                //                System.Windows.Forms.ToolStripMenuItem SessionsMenu = new ToolStripMenuItem("Sessions");
+                //                remoteAdmin.DropDownItems.Add(SessionsMenu);
+
+                //                foreach(TerminalServices.Session session in server.Sessions)
+                //                {
+                //                    System.Windows.Forms.ToolStripButton i = new ToolStripButton();
+                //                    i.AutoSize = true;
+                //                    string active = "";
+                //                    if(session.IsTheActiveSession) active = "(Active)";
+                //                    if(session.Client.ClientName != "")
+                //                    {
+                //                        i.Text = string.Format("{0}\\{1} ({2}) - {3}", session.Client.DomianName, session.Client.ClientName, session.State, active);
+                //                    }
+                //                    else
+                //                    {
+                //                        i.Text = string.Format("{0} - {1}", session.State, active);
+                //                    }
+
+                //                    i.Tag = "session";
+                //                    SessionsMenu.DropDownItems.Add(i);
+                //                }
+                //            }
+                //            catch(Exception exc)
+                //            {
+
+                //            }
+                //        }
+                //    }
+                //}
+
+                
                 if (this.FullScreen)
                     QuickContextMenu.Items.Add("&Restore Screen");
                 else
                     QuickContextMenu.Items.Add("&Full Screen");
+
+
+
+
 
                 QuickContextMenu.Items.Add("-");
                 QuickContextMenu.Items.Add("&Networking Tools");
@@ -606,6 +659,7 @@ namespace Terminals
                 tcTerminals.Items.Remove(terminalTabPage);
                 tcTerminals.SelectedItem = null;
                 terminalTabPage.Dispose();
+                tcTerminals = null;
                 System.Windows.Forms.MessageBox.Show(exc.Message);
             }
         }

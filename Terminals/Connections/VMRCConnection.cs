@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.VMRCClientControl;
+using Microsoft.VMRCClientControl.Interop;
 
 
 namespace Terminals.Connections {
@@ -12,7 +13,7 @@ namespace Terminals.Connections {
         public override bool Connected { get { return connected; } }
         public override void ChangeDesktopSize(Terminals.DesktopSize Size) {
         }
-        Microsoft.VMRCClientControl.IVMRCClientControl vmrc = new VMRCClientControl();
+        Microsoft.VMRCClientControl.Interop.IVMRCClientControl vmrc = new VMRCClientControl();
         //AxVMRCClientControlLib.AxVMRCClientControl vmrc = new AxVMRCClientControlLib.AxVMRCClientControl();
         public override bool Connect() {
             Controls.Add((System.Windows.Forms.Control)vmrc);
@@ -66,7 +67,7 @@ namespace Terminals.Connections {
             Text = displayName;
         }
 
-        void VMRCConnection_OnStateChanged(VMRCState State) {
+        void VMRCConnection_OnStateChanged(Microsoft.VMRCClientControl.Interop.VMRCState State) {
             if(State == VMRCState.vmrcState_Connected) this.connected = true;
         }
         public bool ViewOnlyMode  {
