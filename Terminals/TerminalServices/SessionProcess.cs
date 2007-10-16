@@ -6,9 +6,7 @@ namespace Terminals.TerminalServices
 {
     public class SessionProcess
     {
-
         private int sessionID;
-
         public int SessionID
         {
             get { return sessionID; }
