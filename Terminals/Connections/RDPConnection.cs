@@ -70,6 +70,7 @@ namespace Terminals.Connections
                         axMsRdpClient2.ColorDepth = 24;
                     break;
             }
+            
             axMsRdpClient2.ConnectingText = "Connecting. Please wait...";
             axMsRdpClient2.DisconnectedText = "Disconnecting...";
             axMsRdpClient2.AdvancedSettings3.RedirectDrives = Favorite.RedirectDrives;
@@ -119,6 +120,33 @@ namespace Terminals.Connections
             axMsRdpClient2.AdvancedSettings3.RedirectPrinters = Favorite.RedirectPrinters;
             axMsRdpClient2.AdvancedSettings3.RedirectSmartCards = Favorite.RedirectSmartCards;
             axMsRdpClient2.AdvancedSettings3.PerformanceFlags = Favorite.PerformanceFlags;
+
+            /*
+TS_PERF_DISABLE_CURSOR_SHADOW
+0x00000020
+ No shadow is displayed for the cursor.
+TS_PERF_DISABLE_CURSORSETTINGS
+0x00000040
+ Cursor blinking is disabled.
+TS_PERF_DISABLE_FULLWINDOWDRAG
+0x00000002
+ Full-window drag is disabled; only the window outline is displayed when the window is moved.
+TS_PERF_DISABLE_MENUANIMATIONS
+0x00000004
+ Menu animations are disabled.
+TS_PERF_DISABLE_NOTHING
+0x00000000
+ No features are disabled.
+TS_PERF_DISABLE_THEMING
+0x00000008
+ Themes are disabled.
+TS_PERF_DISABLE_WALLPAPER
+0x00000001
+ Wallpaper on the desktop is not displayed.
+ 
+             */
+
+
             if (Settings.SupportsRDP6)
             {
                 MSTSCLib6.IMsRdpClientAdvancedSettings5 advancedSettings5 = (axMsRdpClient2.AdvancedSettings3 as MSTSCLib6.IMsRdpClientAdvancedSettings5);

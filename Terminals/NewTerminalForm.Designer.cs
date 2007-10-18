@@ -573,7 +573,7 @@ namespace Terminals
         this.LocalResourceGroupBox.Controls.Add(this.label10);
         this.LocalResourceGroupBox.Location = new System.Drawing.Point(6, 6);
         this.LocalResourceGroupBox.Name = "LocalResourceGroupBox";
-        this.LocalResourceGroupBox.Size = new System.Drawing.Size(366, 192);
+        this.LocalResourceGroupBox.Size = new System.Drawing.Size(474, 192);
         this.LocalResourceGroupBox.TabIndex = 12;
         this.LocalResourceGroupBox.TabStop = false;
         // 
@@ -582,18 +582,18 @@ namespace Terminals
         this.cmbSounds.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
         this.cmbSounds.FormattingEnabled = true;
         this.cmbSounds.Items.AddRange(new object[] {
-            "Play on remote computer",
-            "Play on this computer",
-            "Do not play"});
+            "Redirect sounds to the client",
+            "Play sounds at the remote computer",
+            "Disable sound redirection; do not play sounds at the server"});
         this.cmbSounds.Location = new System.Drawing.Point(106, 20);
         this.cmbSounds.Name = "cmbSounds";
-        this.cmbSounds.Size = new System.Drawing.Size(172, 21);
+        this.cmbSounds.Size = new System.Drawing.Size(362, 21);
         this.cmbSounds.TabIndex = 1;
         // 
         // chkRedirectSmartcards
         // 
         this.chkRedirectSmartcards.AutoSize = true;
-        this.chkRedirectSmartcards.Location = new System.Drawing.Point(164, 128);
+        this.chkRedirectSmartcards.Location = new System.Drawing.Point(254, 123);
         this.chkRedirectSmartcards.Name = "chkRedirectSmartcards";
         this.chkRedirectSmartcards.Size = new System.Drawing.Size(126, 17);
         this.chkRedirectSmartcards.TabIndex = 8;
@@ -614,7 +614,7 @@ namespace Terminals
         this.chkRedirectClipboard.AutoSize = true;
         this.chkRedirectClipboard.Checked = true;
         this.chkRedirectClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
-        this.chkRedirectClipboard.Location = new System.Drawing.Point(164, 105);
+        this.chkRedirectClipboard.Location = new System.Drawing.Point(254, 100);
         this.chkRedirectClipboard.Name = "chkRedirectClipboard";
         this.chkRedirectClipboard.Size = new System.Drawing.Size(114, 17);
         this.chkRedirectClipboard.TabIndex = 7;
@@ -624,7 +624,7 @@ namespace Terminals
         // label9
         // 
         this.label9.AutoSize = true;
-        this.label9.Location = new System.Drawing.Point(15, 60);
+        this.label9.Location = new System.Drawing.Point(105, 55);
         this.label9.Name = "label9";
         this.label9.Size = new System.Drawing.Size(225, 13);
         this.label9.TabIndex = 2;
@@ -633,7 +633,7 @@ namespace Terminals
         // chkRedirectDevices
         // 
         this.chkRedirectDevices.AutoSize = true;
-        this.chkRedirectDevices.Location = new System.Drawing.Point(164, 82);
+        this.chkRedirectDevices.Location = new System.Drawing.Point(254, 77);
         this.chkRedirectDevices.Name = "chkRedirectDevices";
         this.chkRedirectDevices.Size = new System.Drawing.Size(129, 17);
         this.chkRedirectDevices.TabIndex = 6;
@@ -643,7 +643,7 @@ namespace Terminals
         // chkDrives
         // 
         this.chkDrives.AutoSize = true;
-        this.chkDrives.Location = new System.Drawing.Point(34, 82);
+        this.chkDrives.Location = new System.Drawing.Point(124, 77);
         this.chkDrives.Name = "chkDrives";
         this.chkDrives.Size = new System.Drawing.Size(77, 17);
         this.chkDrives.TabIndex = 3;
@@ -653,7 +653,7 @@ namespace Terminals
         // btnBrowseShare
         // 
         this.btnBrowseShare.Image = global::Terminals.Properties.Resources.folder;
-        this.btnBrowseShare.Location = new System.Drawing.Point(338, 156);
+        this.btnBrowseShare.Location = new System.Drawing.Point(447, 157);
         this.btnBrowseShare.Name = "btnBrowseShare";
         this.btnBrowseShare.Size = new System.Drawing.Size(21, 21);
         this.btnBrowseShare.TabIndex = 11;
@@ -663,7 +663,7 @@ namespace Terminals
         // chkPrinters
         // 
         this.chkPrinters.AutoSize = true;
-        this.chkPrinters.Location = new System.Drawing.Point(34, 105);
+        this.chkPrinters.Location = new System.Drawing.Point(124, 100);
         this.chkPrinters.Name = "chkPrinters";
         this.chkPrinters.Size = new System.Drawing.Size(63, 17);
         this.chkPrinters.TabIndex = 4;
@@ -674,7 +674,7 @@ namespace Terminals
         // 
         this.txtDesktopShare.Location = new System.Drawing.Point(108, 157);
         this.txtDesktopShare.Name = "txtDesktopShare";
-        this.txtDesktopShare.Size = new System.Drawing.Size(224, 21);
+        this.txtDesktopShare.Size = new System.Drawing.Size(333, 21);
         this.txtDesktopShare.TabIndex = 10;
         this.toolTip1.SetToolTip(this.txtDesktopShare, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
                 "m your computer to the\r\nterminal window.");
@@ -682,7 +682,7 @@ namespace Terminals
         // chkSerialPorts
         // 
         this.chkSerialPorts.AutoSize = true;
-        this.chkSerialPorts.Location = new System.Drawing.Point(34, 128);
+        this.chkSerialPorts.Location = new System.Drawing.Point(124, 123);
         this.chkSerialPorts.Name = "chkSerialPorts";
         this.chkSerialPorts.Size = new System.Drawing.Size(80, 17);
         this.chkSerialPorts.TabIndex = 5;
