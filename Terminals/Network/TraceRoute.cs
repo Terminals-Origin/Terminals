@@ -31,6 +31,12 @@ namespace Metro
         Metro.TransportLayer.Icmp.IcmpTraceRoute trace = null;
         System.Collections.Generic.List<RouteUpdate> RUList = new List<RouteUpdate>();
 
+        public void ForceTrace(string Host)
+        {
+            this.textBox1.Text = Host;
+            button1_Click(null, null);
+        }
+
         private void UpdateRoute()
         {
             this.dataGridView1.DataSource = null;

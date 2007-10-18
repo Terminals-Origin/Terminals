@@ -125,6 +125,9 @@ namespace Terminals {
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.QuickContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.dNSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.traceRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tSAdminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -764,9 +767,12 @@ namespace Terminals {
             // 
             this.cmsTagConnections.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.connectToolStripMenuItem,
-            this.pingToolStripMenuItem});
+            this.pingToolStripMenuItem,
+            this.dNSToolStripMenuItem,
+            this.traceRouteToolStripMenuItem,
+            this.tSAdminToolStripMenuItem});
             this.cmsTagConnections.Name = "cmsTagConnections";
-            this.cmsTagConnections.Size = new System.Drawing.Size(153, 70);
+            this.cmsTagConnections.Size = new System.Drawing.Size(153, 136);
             this.cmsTagConnections.Opening += new System.ComponentModel.CancelEventHandler(this.cmsTagConnections_Opening);
             // 
             // connectToolStripMenuItem
@@ -1092,6 +1098,27 @@ namespace Terminals {
             this.QuickContextMenu.Name = "QuickContextMenu";
             this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
             // 
+            // dNSToolStripMenuItem
+            // 
+            this.dNSToolStripMenuItem.Name = "dNSToolStripMenuItem";
+            this.dNSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dNSToolStripMenuItem.Text = "&DNS";
+            this.dNSToolStripMenuItem.Click += new System.EventHandler(this.dNSToolStripMenuItem_Click);
+            // 
+            // traceRouteToolStripMenuItem
+            // 
+            this.traceRouteToolStripMenuItem.Name = "traceRouteToolStripMenuItem";
+            this.traceRouteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.traceRouteToolStripMenuItem.Text = "&Trace Route";
+            this.traceRouteToolStripMenuItem.Click += new System.EventHandler(this.traceRouteToolStripMenuItem_Click);
+            // 
+            // tSAdminToolStripMenuItem
+            // 
+            this.tSAdminToolStripMenuItem.Name = "tSAdminToolStripMenuItem";
+            this.tSAdminToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tSAdminToolStripMenuItem.Text = "&TS Admin";
+            this.tSAdminToolStripMenuItem.Click += new System.EventHandler(this.tSAdminToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1247,5 +1274,8 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dNSToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem traceRouteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tSAdminToolStripMenuItem;
     }
 }

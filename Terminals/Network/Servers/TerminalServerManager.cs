@@ -17,6 +17,11 @@ namespace Terminals.Network.Servers
             InitializeComponent();
         }
 
+        public void ForceTSAdmin(string Host)
+        {
+            this.ServerNameComboBox.Text = Host;
+            this.button1_Click(null, null);
+        }
         TerminalServices.TerminalServer server;
         private void button1_Click(object sender, EventArgs e)
         {

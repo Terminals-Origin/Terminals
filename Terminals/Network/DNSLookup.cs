@@ -16,6 +16,13 @@ namespace Terminals.Network
         {
             InitializeComponent();
         }
+
+        public void ForceDNS(string Host)
+        {
+            this.hostnameTextBox.Text = Host;
+            this.lookupButton_Click(null, null);
+        }
+
         private void lookupButton_Click(object sender, EventArgs e)
         {
             string serverIP = serverComboBox.Text.Trim();

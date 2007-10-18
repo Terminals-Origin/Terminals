@@ -34,6 +34,18 @@ namespace Terminals.Connections
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[0];
                     ping1.ForcePing(Host);
                     break;
+                case "DNS":
+                    this.tabControl1.SelectedTab = this.tabControl1.TabPages[6];
+                    this.dnsLookup1.ForceDNS(Host);
+                    break;
+                case "Trace":
+                    this.tabControl1.SelectedTab = this.tabControl1.TabPages[1];
+                    traceRoute1.ForceTrace(Host);
+                    break;
+                case "TSAdmin":
+                    this.tabControl1.SelectedTab = this.tabControl1.TabPages[9];
+                    this.terminalServerManager1.ForceTSAdmin(Host);
+                    break;
                 default:
                     break;
             }

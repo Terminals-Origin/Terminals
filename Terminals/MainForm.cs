@@ -1885,11 +1885,6 @@ namespace Terminals
             Settings.AutoSwitchOnCapture = origval;
         }
 
-        private void pingToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void pingToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0)
@@ -1902,7 +1897,41 @@ namespace Terminals
 
         private void cmsTagConnections_Opening(object sender, CancelEventArgs e)
         {
-            pingToolStripMenuItem.Visible = (lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0);
+            bool itemSelected = (lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0);
+            pingToolStripMenuItem.Visible = itemSelected;
+            dNSToolStripMenuItem.Visible = itemSelected;
+            traceRouteToolStripMenuItem.Visible = itemSelected;
+            tSAdminToolStripMenuItem.Visible = itemSelected;
+        }
+
+        private void dNSToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0)
+            {
+                string host = lvTagConnections.SelectedItems[0].Text;
+                string action = "DNS";
+                this.OpenNetworkingTools(action, host);
+            }
+        }
+
+        private void traceRouteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0)
+            {
+                string host = lvTagConnections.SelectedItems[0].Text;
+                string action = "Trace";
+                this.OpenNetworkingTools(action, host);
+            }
+        }
+
+        private void tSAdminToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0)
+            {
+                string host = lvTagConnections.SelectedItems[0].Text;
+                string action = "TSAdmin";
+                this.OpenNetworkingTools(action, host);
+            }
         }
     }
 
