@@ -1917,6 +1917,10 @@ namespace Terminals
                 if(fav != null)
                 {
                     string host = lvTagConnections.SelectedItems[0].Text;
+                    if(host.ToLower().StartsWith("www."))
+                    {
+                        host = host.Substring(4);
+                    }
                     string action = "DNS";
                     this.OpenNetworkingTools(action, host);
                 }
