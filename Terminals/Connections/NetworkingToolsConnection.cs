@@ -65,5 +65,11 @@ namespace Terminals.Connections {
             this.ResumeLayout(false);
 
         }
+        public void Execute(string Action, string Host)
+        {
+            this.networkingToolsLayout1.Execute(Action, Host);
+
+        }
+        
     }
 }

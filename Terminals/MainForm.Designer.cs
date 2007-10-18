@@ -91,6 +91,7 @@ namespace Terminals {
             this.chConnection = new System.Windows.Forms.ColumnHeader();
             this.cmsTagConnections = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ilTagConnections = new System.Windows.Forms.ImageList(this.components);
             this.lvTags = new System.Windows.Forms.ListView();
             this.chTag = new System.Windows.Forms.ColumnHeader();
@@ -161,7 +162,7 @@ namespace Terminals {
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 25);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(436, 24);
+            this.menuStrip.Size = new System.Drawing.Size(344, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -421,7 +422,7 @@ namespace Terminals {
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
             this.aboutToolStripMenuItem.Text = "&About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -762,18 +763,27 @@ namespace Terminals {
             // cmsTagConnections
             // 
             this.cmsTagConnections.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.connectToolStripMenuItem});
+            this.connectToolStripMenuItem,
+            this.pingToolStripMenuItem});
             this.cmsTagConnections.Name = "cmsTagConnections";
-            this.cmsTagConnections.Size = new System.Drawing.Size(126, 26);
+            this.cmsTagConnections.Size = new System.Drawing.Size(153, 70);
+            this.cmsTagConnections.Opening += new System.ComponentModel.CancelEventHandler(this.cmsTagConnections_Opening);
             // 
             // connectToolStripMenuItem
             // 
             this.connectToolStripMenuItem.Enabled = false;
             this.connectToolStripMenuItem.Image = global::Terminals.Properties.Resources.application_lightning;
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.connectToolStripMenuItem.Text = "&Connect";
             this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+            // 
+            // pingToolStripMenuItem
+            // 
+            this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
+            this.pingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pingToolStripMenuItem.Text = "&Ping";
+            this.pingToolStripMenuItem.Click += new System.EventHandler(this.pingToolStripMenuItem_Click_1);
             // 
             // ilTagConnections
             // 
@@ -1236,5 +1246,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripMenuItem networkingToolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;
     }
 }

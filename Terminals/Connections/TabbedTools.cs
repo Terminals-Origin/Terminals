@@ -26,5 +26,17 @@ namespace Terminals.Connections
         {
 
         }
+        public void Execute(string Action, string Host)
+        {
+            switch(Action)
+            {
+                case "Ping":
+                    this.tabControl1.SelectedTab = this.tabControl1.TabPages[0];
+                    ping1.ForcePing(Host);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

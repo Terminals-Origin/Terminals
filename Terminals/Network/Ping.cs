@@ -25,6 +25,11 @@ namespace Metro
             t = new System.Threading.Timer(new System.Threading.TimerCallback(TryPing), null, currentDelay, this.currentDelay);
 
         }
+        public void ForcePing(string Host)
+        {
+            this.textBox1.Text = Host;
+            button1_Click(null, null);
+        }
         private void TryPing(object state)
         {
             if (pingRunning && pingReady)

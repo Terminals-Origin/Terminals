@@ -1784,7 +1784,8 @@ namespace Terminals
             if(elm != null) elm.Launch();
         }
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
+
+        private void OpenNetworkingTools(string Action, string Host)
         {
             TerminalTabControlItem terminalTabPage = new TerminalTabControlItem("Networking Tools");
             try
@@ -1796,15 +1797,16 @@ namespace Terminals
                 tcTerminals.Items.Add(terminalTabPage);
                 tcTerminals.SelectedItem = terminalTabPage;
                 tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
-                Connections.IConnection conn = new Terminals.Connections.NetworkingToolsConnection();
+                Terminals.Connections.NetworkingToolsConnection conn = new Terminals.Connections.NetworkingToolsConnection();
                 conn.TerminalTabPage = terminalTabPage;
                 conn.ParentForm = this;
                 conn.Connect();
                 (conn as Control).BringToFront();
                 (conn as Control).Update();
                 UpdateControls();
+                conn.Execute(Action, Host);
             }
-            catch (Exception exc)
+            catch(Exception exc)
             {
                 tcTerminals.Items.Remove(terminalTabPage);
                 tcTerminals.SelectedItem = null;
@@ -1812,11 +1814,17 @@ namespace Terminals
                 System.Windows.Forms.MessageBox.Show(exc.Message);
             }
         }
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            OpenNetworkingTools(null, null);
+        }
 
         private void networkingToolsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             toolStripButton2_Click(null, null);
         }
+
+        
 
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
@@ -1875,6 +1883,26 @@ namespace Terminals
             }
             toolStripMenuItem5_Click(new object(), null);
             Settings.AutoSwitchOnCapture = origval;
+        }
+
+        private void pingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pingToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0)
+            {
+                string host = lvTagConnections.SelectedItems[0].Text;
+                string action = "Ping";
+                this.OpenNetworkingTools(action, host);
+            }
+        }
+
+        private void cmsTagConnections_Opening(object sender, CancelEventArgs e)
+        {
+            pingToolStripMenuItem.Visible = (lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0);
         }
     }
 
