@@ -13,38 +13,142 @@ namespace Terminals
         private static Configuration GetConfiguration()
         {
             string configFile = Terminals.MainForm.ConfigurationFileLocation;
-            if(!System.IO.File.Exists(configFile)) {
+
+            if(!System.IO.File.Exists(configFile))
+            {
                 string templateConfigFile = global::Terminals.Properties.Resources.Terminals;
-                using(System.IO.StreamWriter sr = new StreamWriter(configFile)) {
+                using(System.IO.StreamWriter sr = new StreamWriter(configFile))
+                {
                     sr.Write(templateConfigFile);
                 }
             }
             ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
             configFileMap.ExeConfigFilename = configFile;
             Configuration config = null;
-            try {
+
+            try
+            {
                 config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
-            } catch (Exception exc) {
-                if (System.IO.File.Exists(configFile)) System.IO.File.Delete(configFile);
+            }
+            catch(Exception exc)
+            {
+
+                if(System.IO.File.Exists(configFile)) System.IO.File.Delete(configFile);
                 string templateConfigFile = global::Terminals.Properties.Resources.Terminals;
-                using (System.IO.StreamWriter sr = new StreamWriter(configFile)) {
+                using(System.IO.StreamWriter sr = new StreamWriter(configFile))
+                {
                     sr.Write(templateConfigFile);
                 }
                 config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
             }
             return config;
         }
+        private static Configuration ImportConfiguration(string Filename)
+        {
+            Configuration c=null;// = new TerminalsConfiguration();
+
+            string templateConfigFile = global::Terminals.Properties.Resources.Terminals;
+
+            //get a temp filename to hold the current settings which are failing
+            string tempFile = System.IO.Path.GetTempFileName();
+            //delete the zerobyte file which is created by default
+            if(System.IO.File.Exists(tempFile)) System.IO.File.Delete(tempFile);
+            //move the error file to the temp file
+            System.IO.File.Move(Filename, tempFile);
+
+            //if its still hanging around, kill it
+            if(System.IO.File.Exists(Filename)) System.IO.File.Delete(Filename);
+            //write out the template to work from
+            using(System.IO.StreamWriter sr = new StreamWriter(Filename))
+            {
+                sr.Write(templateConfigFile);
+            }
+            //load up the templated config file
+            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
+            configFileMap.ExeConfigFilename = Filename;
+            c = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+
+            //get a list of the properties on the Settings object (static props)
+            System.Reflection.PropertyInfo[] propList = typeof(Settings).GetProperties();
+
+            //read all the xml from the erroring file
+            string xml = System.IO.File.ReadAllText(tempFile);
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+            doc.LoadXml(xml);
+            //get the settings root
+            string settingsRoot = "/configuration/settings";
+            System.Xml.XmlNode root = doc.SelectSingleNode(settingsRoot);
+            
+            //for each setting's attribute
+            foreach(System.Xml.XmlAttribute att in root.Attributes) {
+                //scan for the related property if any
+                foreach(System.Reflection.PropertyInfo info in propList)
+                {
+                    if(info.Name.ToLower() == att.Name.ToLower())
+                    {
+                        //found a matching property, try to set it
+                        string val = att.Value;
+                        info.SetValue(null, System.Convert.ChangeType(val, info.PropertyType), null);
+                        break;
+                    }
+                }
+            }
+
+            string favorites = "/configuration/settings/favorites/add";
+            System.Xml.XmlNodeList favs = doc.SelectNodes(favorites);
+            foreach(System.Xml.XmlNode fav in favs)
+            {
+                FavoriteConfigurationElement newFav = new FavoriteConfigurationElement();
+                foreach(System.Xml.XmlAttribute att in fav.Attributes)
+                {
+                    foreach(System.Reflection.PropertyInfo info in newFav.GetType().GetProperties())
+                    {
+                        if(info.Name.ToLower() == att.Name.ToLower())
+                        {
+                            //found a matching property, try to set it
+                            string val = att.Value;
+                            if(info.PropertyType.IsEnum)
+                            {
+                                info.SetValue(newFav, System.Enum.Parse(info.PropertyType, val), null);
+                            }
+                            else
+                            {
+                                info.SetValue(newFav, System.Convert.ChangeType(val, info.PropertyType), null);
+                            }
+                            break;
+                        }
+                    }
+                }
+                Settings.AddFavorite(newFav, false);
+            }
+
+
+            return c;
+        }
 
         private static TerminalsConfigurationSection GetSection()
         {
             Configuration configuration = GetConfiguration();
-            TerminalsConfigurationSection c=null;
-            try {
+            TerminalsConfigurationSection c = null;
+            try
+            {
                 c = (TerminalsConfigurationSection)configuration.GetSection("settings");
-            } catch (Exception exc) {
-                if (System.IO.File.Exists(configuration.FilePath)) System.IO.File.Delete(configuration.FilePath);
-                configuration = GetConfiguration();
-                c = (TerminalsConfigurationSection)configuration.GetSection("settings");
+            }
+            catch(Exception exc)
+            {
+                try
+                {
+                    //kick into the import routine
+                    configuration = ImportConfiguration(Terminals.MainForm.ConfigurationFileLocation);
+                    configuration = GetConfiguration();
+                    c = (TerminalsConfigurationSection)configuration.GetSection("settings");
+                }
+                catch(Exception importException)
+                {
+                    //if(System.IO.File.Exists(configuration.FilePath)) System.IO.File.Delete(configuration.FilePath);
+                    //configuration = GetConfiguration();
+                    //c = (TerminalsConfigurationSection)configuration.GetSection("settings");
+                }
             }
             return c;
         }
@@ -57,7 +161,7 @@ namespace Terminals
         private static void AddMRUItemConfigurationElement(MRUItemConfigurationElementCollection configurationElementCollection, string name)
         {
             MRUItemConfigurationElement configurationElement = configurationElementCollection.ItemByName(name);
-            if (configurationElement == null)
+            if(configurationElement == null)
             {
                 configurationElementCollection.Add(new MRUItemConfigurationElement(name));
             }
@@ -66,7 +170,7 @@ namespace Terminals
         private static void DeleteMRUItemConfigurationElement(MRUItemConfigurationElementCollection configurationElementCollection, string name)
         {
             MRUItemConfigurationElement configurationElement = configurationElementCollection.ItemByName(name);
-            if (configurationElement != null)
+            if(configurationElement != null)
             {
                 configurationElementCollection.Remove(name);
             }
@@ -75,7 +179,7 @@ namespace Terminals
         private static void EditMRUItemConfigurationElement(MRUItemConfigurationElementCollection configurationElementCollection, string oldName, string newName)
         {
             MRUItemConfigurationElement configurationElement = configurationElementCollection.ItemByName(oldName);
-            if (configurationElement != null)
+            if(configurationElement != null)
             {
                 configurationElementCollection[oldName].Name = newName;
             }
@@ -142,7 +246,7 @@ namespace Terminals
             Configuration configuration = GetConfiguration();
             GetSection(configuration).FavoritesButtons.Clear();
             configuration.Save();
-            foreach (string name in names)
+            foreach(string name in names)
             {
                 AddFavoriteButton(name);
             }
@@ -176,7 +280,7 @@ namespace Terminals
             Configuration configuration = GetConfiguration();
             GetSection(configuration).SavedConnections.Clear();
             configuration.Save();
-            foreach (string name in names)
+            foreach(string name in names)
             {
                 AddConnection(name);
             }
@@ -192,7 +296,7 @@ namespace Terminals
         private static List<string> ReadList(MRUItemConfigurationElementCollection configurationElementCollection)
         {
             List<string> list = new List<string>();
-            foreach (MRUItemConfigurationElement configurationElement in configurationElementCollection)
+            foreach(MRUItemConfigurationElement configurationElement in configurationElementCollection)
             {
                 list.Add(configurationElement.Name);
             }
@@ -313,15 +417,15 @@ namespace Terminals
         {
             EditFavorite(oldName, favorite);
             bool shownOnToolbar = HasToolbarButton(oldName);
-            if (shownOnToolbar && !showOnToolbar)
+            if(shownOnToolbar && !showOnToolbar)
             {
                 DeleteFavoriteButton(oldName);
             }
-            else if (shownOnToolbar && (oldName != favorite.Name))
+            else if(shownOnToolbar && (oldName != favorite.Name))
             {
                 EditFavoriteButton(oldName, favorite.Name);
             }
-            else if (!shownOnToolbar && showOnToolbar)
+            else if(!shownOnToolbar && showOnToolbar)
             {
                 AddFavoriteButton(favorite.Name);
             }
@@ -340,7 +444,7 @@ namespace Terminals
             Configuration configuration = GetConfiguration();
             GetSection(configuration).Favorites.Add(favorite);
             configuration.Save();
-            if (showOnToolbar)
+            if(showOnToolbar)
             {
                 AddFavoriteButton(favorite.Name);
             }
@@ -378,11 +482,14 @@ namespace Terminals
                 configuration.Save();
             }
         }
-        public static int PortScanTimeoutSeconds {
-            get {
+        public static int PortScanTimeoutSeconds
+        {
+            get
+            {
                 return GetSection().PortScanTimeoutSeconds;
             }
-            set {
+            set
+            {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).PortScanTimeoutSeconds = value;
                 configuration.Save();
@@ -428,11 +535,14 @@ namespace Terminals
             }
         }
 
-        public static string TerminalsPassword {
-            get {
+        public static string TerminalsPassword
+        {
+            get
+            {
                 return GetSection().TerminalsPassword;
             }
-            set {
+            set
+            {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).TerminalsPassword = value;
                 configuration.Save();
@@ -451,11 +561,14 @@ namespace Terminals
                 configuration.Save();
             }
         }
-        public static bool MinimizeToTray {
-            get {
+        public static bool MinimizeToTray
+        {
+            get
+            {
                 return GetSection().MinimizeToTray;
             }
-            set {
+            set
+            {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).MinimizeToTray = value;
                 configuration.Save();
@@ -621,7 +734,7 @@ namespace Terminals
         {
             get
             {
-                if (!_supportsRDP6.HasValue)
+                if(!_supportsRDP6.HasValue)
                 {
                     try
                     {
@@ -632,7 +745,7 @@ namespace Terminals
                     {
                         _supportsRDP6 = false;
                     }
-                    
+
                 }
                 return _supportsRDP6.Value;
             }
