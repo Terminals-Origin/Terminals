@@ -55,7 +55,12 @@ namespace Terminals
         this.RDPSubTabPage = new System.Windows.Forms.TabControl();
         this.RDPDisplayTabPage = new System.Windows.Forms.TabPage();
         this.groupBox1 = new System.Windows.Forms.GroupBox();
-        this.chkAllowDesktopBG = new System.Windows.Forms.CheckBox();
+        this.chkDisableWallpaper = new System.Windows.Forms.CheckBox();
+        this.chkDisableThemes = new System.Windows.Forms.CheckBox();
+        this.chkDisableMenuAnimations = new System.Windows.Forms.CheckBox();
+        this.chkDisableFullWindowDrag = new System.Windows.Forms.CheckBox();
+        this.chkDisableCursorBlinking = new System.Windows.Forms.CheckBox();
+        this.chkDisableCursorShadow = new System.Windows.Forms.CheckBox();
         this.cmbColors = new System.Windows.Forms.ComboBox();
         this.label7 = new System.Windows.Forms.Label();
         this.cmbResolution = new System.Windows.Forms.ComboBox();
@@ -465,27 +470,82 @@ namespace Terminals
         // 
         // groupBox1
         // 
-        this.groupBox1.Controls.Add(this.chkAllowDesktopBG);
+        this.groupBox1.Controls.Add(this.chkDisableWallpaper);
+        this.groupBox1.Controls.Add(this.chkDisableThemes);
+        this.groupBox1.Controls.Add(this.chkDisableMenuAnimations);
+        this.groupBox1.Controls.Add(this.chkDisableFullWindowDrag);
+        this.groupBox1.Controls.Add(this.chkDisableCursorBlinking);
+        this.groupBox1.Controls.Add(this.chkDisableCursorShadow);
         this.groupBox1.Controls.Add(this.cmbColors);
         this.groupBox1.Controls.Add(this.label7);
         this.groupBox1.Controls.Add(this.cmbResolution);
         this.groupBox1.Controls.Add(this.label6);
         this.groupBox1.Location = new System.Drawing.Point(6, 6);
         this.groupBox1.Name = "groupBox1";
-        this.groupBox1.Size = new System.Drawing.Size(374, 102);
+        this.groupBox1.Size = new System.Drawing.Size(374, 204);
         this.groupBox1.TabIndex = 0;
         this.groupBox1.TabStop = false;
         this.groupBox1.Text = "Display settings";
         // 
-        // chkAllowDesktopBG
+        // chkDisableWallpaper
         // 
-        this.chkAllowDesktopBG.AutoSize = true;
-        this.chkAllowDesktopBG.Location = new System.Drawing.Point(124, 77);
-        this.chkAllowDesktopBG.Name = "chkAllowDesktopBG";
-        this.chkAllowDesktopBG.Size = new System.Drawing.Size(151, 17);
-        this.chkAllowDesktopBG.TabIndex = 4;
-        this.chkAllowDesktopBG.Text = "Allow desktop &background";
-        this.chkAllowDesktopBG.UseVisualStyleBackColor = true;
+        this.chkDisableWallpaper.AutoSize = true;
+        this.chkDisableWallpaper.Location = new System.Drawing.Point(124, 177);
+        this.chkDisableWallpaper.Name = "chkDisableWallpaper";
+        this.chkDisableWallpaper.Size = new System.Drawing.Size(153, 17);
+        this.chkDisableWallpaper.TabIndex = 9;
+        this.chkDisableWallpaper.Text = "Disable Desktop Wallpaper";
+        this.chkDisableWallpaper.UseVisualStyleBackColor = true;
+        // 
+        // chkDisableThemes
+        // 
+        this.chkDisableThemes.AutoSize = true;
+        this.chkDisableThemes.Location = new System.Drawing.Point(124, 157);
+        this.chkDisableThemes.Name = "chkDisableThemes";
+        this.chkDisableThemes.Size = new System.Drawing.Size(103, 17);
+        this.chkDisableThemes.TabIndex = 8;
+        this.chkDisableThemes.Text = "Disable Theming";
+        this.chkDisableThemes.UseVisualStyleBackColor = true;
+        // 
+        // chkDisableMenuAnimations
+        // 
+        this.chkDisableMenuAnimations.AutoSize = true;
+        this.chkDisableMenuAnimations.Location = new System.Drawing.Point(124, 137);
+        this.chkDisableMenuAnimations.Name = "chkDisableMenuAnimations";
+        this.chkDisableMenuAnimations.Size = new System.Drawing.Size(144, 17);
+        this.chkDisableMenuAnimations.TabIndex = 7;
+        this.chkDisableMenuAnimations.Text = "Disable Menu Animations";
+        this.chkDisableMenuAnimations.UseVisualStyleBackColor = true;
+        // 
+        // chkDisableFullWindowDrag
+        // 
+        this.chkDisableFullWindowDrag.AutoSize = true;
+        this.chkDisableFullWindowDrag.Location = new System.Drawing.Point(124, 117);
+        this.chkDisableFullWindowDrag.Name = "chkDisableFullWindowDrag";
+        this.chkDisableFullWindowDrag.Size = new System.Drawing.Size(146, 17);
+        this.chkDisableFullWindowDrag.TabIndex = 6;
+        this.chkDisableFullWindowDrag.Text = "Disable Full-Window drag";
+        this.chkDisableFullWindowDrag.UseVisualStyleBackColor = true;
+        // 
+        // chkDisableCursorBlinking
+        // 
+        this.chkDisableCursorBlinking.AutoSize = true;
+        this.chkDisableCursorBlinking.Location = new System.Drawing.Point(124, 97);
+        this.chkDisableCursorBlinking.Name = "chkDisableCursorBlinking";
+        this.chkDisableCursorBlinking.Size = new System.Drawing.Size(133, 17);
+        this.chkDisableCursorBlinking.TabIndex = 5;
+        this.chkDisableCursorBlinking.Text = "Disable Cursor Blinking";
+        this.chkDisableCursorBlinking.UseVisualStyleBackColor = true;
+        // 
+        // chkDisableCursorShadow
+        // 
+        this.chkDisableCursorShadow.AutoSize = true;
+        this.chkDisableCursorShadow.Location = new System.Drawing.Point(124, 77);
+        this.chkDisableCursorShadow.Name = "chkDisableCursorShadow";
+        this.chkDisableCursorShadow.Size = new System.Drawing.Size(136, 17);
+        this.chkDisableCursorShadow.TabIndex = 4;
+        this.chkDisableCursorShadow.Text = "Disable Cursor Shadow";
+        this.chkDisableCursorShadow.UseVisualStyleBackColor = true;
         // 
         // cmbColors
         // 
@@ -539,7 +599,7 @@ namespace Terminals
         // chkConnectToConsole
         // 
         this.chkConnectToConsole.AutoSize = true;
-        this.chkConnectToConsole.Location = new System.Drawing.Point(6, 114);
+        this.chkConnectToConsole.Location = new System.Drawing.Point(6, 216);
         this.chkConnectToConsole.Name = "chkConnectToConsole";
         this.chkConnectToConsole.Size = new System.Drawing.Size(120, 17);
         this.chkConnectToConsole.TabIndex = 3;
@@ -1667,7 +1727,7 @@ namespace Terminals
       private System.Windows.Forms.CheckBox chkRedirectDevices;
       private System.Windows.Forms.CheckBox chkRedirectClipboard;
       private System.Windows.Forms.CheckBox chkRedirectSmartcards;
-      private System.Windows.Forms.CheckBox chkAllowDesktopBG;
+      private System.Windows.Forms.CheckBox chkDisableCursorShadow;
       private System.Windows.Forms.TabPage tpTags;
       private System.Windows.Forms.Label label14;
       private System.Windows.Forms.Panel panel1;
@@ -1753,5 +1813,10 @@ namespace Terminals
       private System.Windows.Forms.TextBox ShutdownTimeoutTextBox;
       private System.Windows.Forms.Label label30;
       private System.Windows.Forms.TabPage tabPage10;
+      private System.Windows.Forms.CheckBox chkDisableMenuAnimations;
+      private System.Windows.Forms.CheckBox chkDisableFullWindowDrag;
+      private System.Windows.Forms.CheckBox chkDisableCursorBlinking;
+      private System.Windows.Forms.CheckBox chkDisableWallpaper;
+      private System.Windows.Forms.CheckBox chkDisableThemes;
   }
 }

@@ -103,8 +103,8 @@ namespace Terminals.Integration.Import
                                 case "BitmapPersistence":
                                     break;
                                 case "DisableWallpaper":
-                                    fav.ShowDesktopBackground = false;
-                                    if(pValue == "1") fav.ShowDesktopBackground = true;
+                                    fav.DisableWallPaper = false;
+                                    if(pValue == "1") fav.DisableWallPaper = true;
                                     break;
                                 case "DisableFullWindowDrag":
                                     break;

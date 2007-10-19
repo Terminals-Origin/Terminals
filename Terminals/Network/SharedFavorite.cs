@@ -22,7 +22,7 @@ namespace Terminals.Network {
             fav.RedirectPrinters = Favorite.RedirectPrinters;
             fav.RedirectSmartCards = Favorite.RedirectSmartCards;
             fav.ServerName = Favorite.ServerName;
-            fav.ShowDesktopBackground = Favorite.ShowDesktopBackground;
+            fav.DisableWallPaper = Favorite.DisableWallPaper;
             fav.Sounds = Favorite.Sounds;
             fav.Tags = Favorite.Tags;
             fav.Telnet = Favorite.Telnet;
@@ -54,7 +54,7 @@ namespace Terminals.Network {
             fav.RedirectPrinters = Favorite.RedirectPrinters;
             fav.RedirectSmartCards = Favorite.RedirectSmartCards;
             fav.ServerName = Favorite.ServerName;
-            fav.ShowDesktopBackground = Favorite.ShowDesktopBackground;
+            fav.DisableWallPaper = Favorite.DisableWallPaper;
             fav.Sounds = Favorite.Sounds;
             fav.Tags = Favorite.Tags;
             fav.Telnet = Favorite.Telnet;
@@ -93,7 +93,7 @@ namespace Terminals.Network {
         public bool RedirectDevices;
         public int Port;
         public string DesktopShare;
-        public bool ShowDesktopBackground;
+        public bool DisableWallPaper;
         public string Tags;
     }
 }

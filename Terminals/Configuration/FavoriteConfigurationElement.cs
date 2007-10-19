@@ -735,16 +735,83 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("showDesktopBackground")]
-        public bool ShowDesktopBackground
+        [ConfigurationProperty("disableTheming")]
+        public bool DisableTheming
         {
             get
             {
-                return (bool)this["showDesktopBackground"];
+                return (bool)this["disableTheming"];
             }
             set
             {
-                this["showDesktopBackground"] = value;
+                this["disableTheming"] = value;
+            }
+        }
+
+        [ConfigurationProperty("disableMenuAnimations")]
+        public bool DisableMenuAnimations
+        {
+            get
+            {
+                return (bool)this["disableMenuAnimations"];
+            }
+            set
+            {
+                this["disableMenuAnimations"] = value;
+            }
+        }
+
+        [ConfigurationProperty("disableFullWindowDrag")]
+        public bool DisableFullWindowDrag
+        {
+            get
+            {
+                return (bool)this["disableFullWindowDrag"];
+            }
+            set
+            {
+                this["disableFullWindowDrag"] = value;
+            }
+        }
+
+
+        [ConfigurationProperty("disableCursorBlinking")]
+        public bool DisableCursorBlinking
+        {
+            get
+            {
+                return (bool)this["disableCursorBlinking"];
+            }
+            set
+            {
+                this["disableCursorBlinking"] = value;
+            }
+        }
+
+
+        [ConfigurationProperty("disableCursorShadow")]
+        public bool DisableCursorShadow
+        {
+            get
+            {
+                return (bool)this["disableCursorShadow"];
+            }
+            set
+            {
+                this["disableCursorShadow"] = value;
+            }
+        }
+
+        [ConfigurationProperty("disableWallPaper")]
+        public bool DisableWallPaper
+        {
+            get
+            {
+                return (bool)this["disableWallPaper"];
+            }
+            set
+            {
+                this["disableWallPaper"] = value;
             }
         }
 
@@ -783,9 +850,15 @@ namespace Terminals
             get
             {
                 int result = 0;
-                if (!ShowDesktopBackground)
-                    result = result | 1;
-                //TODO: Add more performance flags
+
+                if(DisableCursorShadow) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSOR_SHADOW;
+                if(DisableCursorBlinking) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSORSETTINGS;
+                if(DisableFullWindowDrag) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_FULLWINDOWDRAG;
+                if(DisableMenuAnimations) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_MENUANIMATIONS;
+                if(DisableTheming) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_THEMING;
+                if(DisableWallPaper) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_WALLPAPER;
+
+
                 return result;
             }
         }

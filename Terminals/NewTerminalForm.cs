@@ -127,7 +127,7 @@ namespace Terminals
             cmbResolution.SelectedIndex = (int)favorite.DesktopSize;
             cmbColors.SelectedIndex = (int)favorite.Colors;
             chkConnectToConsole.Checked = favorite.ConnectToConsole;
-            chkAllowDesktopBG.Checked = favorite.ShowDesktopBackground;
+
             chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Name);
             chkDrives.Checked = favorite.RedirectDrives;
             chkSerialPorts.Checked = favorite.RedirectPorts;
@@ -178,6 +178,23 @@ namespace Terminals
             this.EnableBitmapPersistanceCheckbox.Checked = favorite.BitmapPeristence;
             this.AllowBackgroundInputCheckBox.Checked = favorite.AllowBackgroundInput;
 
+            chkDisableCursorShadow.Checked = false;
+            chkDisableCursorBlinking.Checked = false;
+            chkDisableFullWindowDrag.Checked = false;
+            chkDisableMenuAnimations.Checked = false;
+            chkDisableThemes.Checked = false;
+            chkDisableWallpaper.Checked = false;
+
+
+            if(favorite.PerformanceFlags > 0)
+            {
+                chkDisableCursorShadow.Checked = favorite.DisableCursorShadow;
+                chkDisableCursorBlinking.Checked = favorite.DisableCursorBlinking;
+                chkDisableFullWindowDrag.Checked = favorite.DisableFullWindowDrag;
+                chkDisableMenuAnimations.Checked = favorite.DisableMenuAnimations;
+                chkDisableThemes.Checked = favorite.DisableTheming;
+                chkDisableWallpaper.Checked = favorite.DisableWallPaper;
+            }
 
         }
 
@@ -203,7 +220,13 @@ namespace Terminals
                 favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
                 favorite.Colors = (Colors)cmbColors.SelectedIndex;
                 favorite.ConnectToConsole = chkConnectToConsole.Checked;
-                favorite.ShowDesktopBackground = chkAllowDesktopBG.Checked;
+                favorite.DisableWallPaper = chkDisableCursorShadow.Checked;
+                favorite.DisableCursorBlinking = chkDisableCursorBlinking.Checked;
+                favorite.DisableCursorShadow = chkDisableCursorShadow.Checked;
+                favorite.DisableFullWindowDrag = chkDisableFullWindowDrag.Checked;
+                favorite.DisableMenuAnimations = chkDisableMenuAnimations.Checked;
+                favorite.DisableTheming = chkDisableThemes.Checked;
+
                 favorite.RedirectDrives = chkDrives.Checked;
                 favorite.RedirectPorts = chkSerialPorts.Checked;
                 favorite.RedirectPrinters = chkPrinters.Checked;

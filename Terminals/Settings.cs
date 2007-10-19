@@ -289,7 +289,15 @@ namespace Terminals
             editedFavorite.ExecuteBeforeConnectArgs = favorite.ExecuteBeforeConnectArgs;
             editedFavorite.ExecuteBeforeConnectInitialDirectory = favorite.ExecuteBeforeConnectInitialDirectory;
             editedFavorite.ExecuteBeforeConnectWaitForExit = favorite.ExecuteBeforeConnectWaitForExit;
-            editedFavorite.ShowDesktopBackground = favorite.ShowDesktopBackground;
+            editedFavorite.DisableWallPaper = favorite.DisableWallPaper;
+
+            editedFavorite.DisableCursorBlinking = favorite.DisableCursorBlinking;
+            editedFavorite.DisableCursorShadow = favorite.DisableCursorShadow;
+            editedFavorite.DisableFullWindowDrag = favorite.DisableFullWindowDrag;
+            editedFavorite.DisableMenuAnimations = favorite.DisableMenuAnimations;
+            editedFavorite.DisableTheming = favorite.DisableTheming;
+
+
             editedFavorite.Tags = favorite.Tags;
             configuration.Save();
         }

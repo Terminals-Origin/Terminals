@@ -71,8 +71,8 @@ namespace Terminals.Integration.Import
                             if(pValue == "1") fav.ConnectToConsole = true;
                             break;
                         case "disable wallpaper":
-                            fav.ShowDesktopBackground = false;
-                            if(pValue == "1") fav.ShowDesktopBackground = true;
+                            fav.DisableWallPaper = false;
+                            if(pValue == "1") fav.DisableWallPaper = true;
                             break;
                         case "redirectsmartcards":
                             fav.RedirectSmartCards = false;
