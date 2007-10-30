@@ -121,7 +121,7 @@ namespace Routrek.SSHC
 				this.SetReady();
 			}
 			catch(Exception ex) {
-				OnError(ex, ex.Message);
+                OnError(ex, ex.Message);
 			}
 		}
 
@@ -207,7 +207,7 @@ namespace Routrek.SSHC
 					_handler.OnClosed();
 			}
 			catch(Exception ex) {
-				if((ex is SocketException) && ((SocketException)ex).ErrorCode==995) {
+                if((ex is SocketException) && ((SocketException)ex).ErrorCode==995) {
 					//in case of .NET1.1 on Win9x, EndReceive() changes the behavior. it throws SocketException with an error code 995. 
 					_socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, new AsyncCallback(RepeatCallback), null);
 				}

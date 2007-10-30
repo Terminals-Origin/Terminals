@@ -693,7 +693,7 @@ public class BigInteger
                                 bi2Neg = true; bi2 = -bi2;
                         }
                 }
-                catch(Exception) {}
+                catch (Exception exc) {  }
 
                 BigInteger result = new BigInteger();
 
@@ -719,8 +719,9 @@ public class BigInteger
                                         result.data[i+bi2.dataLength] = (uint)mcarry;
                         }
                 }
-                catch(Exception)
+                catch(Exception exc)
                 {
+                    
                         throw(new ArithmeticException("Multiplication overflow."));
                 }
 
@@ -1506,7 +1507,7 @@ public class BigInteger
                         {
                                 a = -a;
                         }
-                        catch(Exception) {}
+                        catch (Exception exc) { }
                 }
 
                 BigInteger quotient = new BigInteger();
@@ -2485,8 +2486,9 @@ public class BigInteger
                 {       // exception if maxLength = 1
                         val |= (long)data[1] << 32;
                 }
-                catch(Exception)
+                catch(Exception exc)
                 {
+                    
                         if((data[0] & 0x80000000) != 0) // negative
                                 val = (int)data[0];
                 }

@@ -93,7 +93,9 @@ namespace Terminals.Connections {
         public override void Disconnect() {
             try {
                 vmrc.Disconnect();
-            } catch (Exception e) { }
+            } catch (Exception e) {
+                Terminals.Logging.Log.Info("", e);
+            }
         }
 
         #endregion

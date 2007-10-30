@@ -78,6 +78,7 @@ namespace Bdev.Net.Dns
 				}
 				catch (Exception ex)
 				{
+                    Terminals.Logging.Log.Info("", ex);
 					// something grim has happened, we can't continue
 					throw new InvalidResponseException(ex);
 				}

@@ -16,6 +16,7 @@ namespace Terminals
         [ComVisible(true)]
         static void Main()
         {
+            Terminals.Logging.Log.Info("Terminals started");
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -26,6 +27,7 @@ namespace Terminals
                 return;
 
             SingleInstanceApplication.Initialize();
+
 
             if(Settings.TerminalsPassword != "")
             {

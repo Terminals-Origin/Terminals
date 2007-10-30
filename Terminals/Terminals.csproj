@@ -200,6 +200,7 @@
     </Compile>
     <Compile Include="Docking\ToolBarManager.cs" />
     <Compile Include="DPAPI.cs" />
+    <Compile Include="Logging\Log.cs" />
     <Compile Include="Network\DNS\Adapter.cs" />
     <Compile Include="Network\DNS\AdapterInfo.cs" />
     <Compile Include="Wizard\CommonOptions.cs">
@@ -698,6 +699,9 @@
     <None Include="Resources\smallterm.png" />
     <None Include="Resources\Terminals.config" />
     <None Include="Terminals.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Terminals.log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -503,6 +503,7 @@ namespace WMITestClient
             }
             catch (Exception exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 System.Windows.Forms.MessageBox.Show("Error Thrown:" + exc.Message);
             }
             this.progressBar1.Value = 0;
@@ -666,9 +667,9 @@ namespace WMITestClient
                     Application.DoEvents();
 
                     try { nAlt = n.Attributes["Alt"].Value; }
-                    catch (Exception exc) { nAlt = nText; }
+                    catch (Exception exc) { Terminals.Logging.Log.Info("", exc); nAlt = nText; }
                     try { nType = n.Attributes["Type"].Value; }
-                    catch (Exception exc) { nType = nAlt; }
+                    catch (Exception exc) { Terminals.Logging.Log.Info("", exc); nType = nAlt; }
 
                     if (nAlt == "" || nAlt == null)
                     {
@@ -691,6 +692,7 @@ namespace WMITestClient
                 }
                 catch (Exception ee)
                 {
+                    Terminals.Logging.Log.Info("", ee);
                     ee.ToString();
                 }
             }
@@ -728,6 +730,7 @@ namespace WMITestClient
             }
             catch (Exception xexc)
             {
+                Terminals.Logging.Log.Info("", xexc);
                 xexc.ToString();
             }
             System.Xml.XmlNode n = x.SelectSingleNode("/tree");

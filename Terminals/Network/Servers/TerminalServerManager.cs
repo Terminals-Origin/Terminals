@@ -70,6 +70,7 @@ namespace Terminals.Network.Servers
             }
             catch(Exception exc)
             {
+                Terminals.Logging.Log.Info("Connection Failure.", exc);
             }
         }
         TerminalServices.Session SelectedSession = null;

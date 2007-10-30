@@ -50,7 +50,7 @@ namespace Terminals.Wizard
                     }
                 }
             }
-            catch(Exception e) { }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
             string f = "";
             //then kick up the port scan for the entire subnet
 
@@ -67,7 +67,7 @@ namespace Terminals.Wizard
 
                 System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanSubnet), null);
             }
-            catch(Exception e) { }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
         Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();
         System.Net.IPAddress endPointAddress;
@@ -83,7 +83,7 @@ namespace Terminals.Wizard
                     System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanMachine), address);
                 }
             }
-            catch(Exception e) { }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
 
         List<Metro.Scanning.TcpSynScanner> scannerList = new List<Metro.Scanning.TcpSynScanner>(1275);
@@ -108,7 +108,7 @@ namespace Terminals.Wizard
                 }
                 this.Invoke(miv);
             }
-            catch(Exception e) { }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
 
         }
         object uiElementsLock = new object();
@@ -128,7 +128,7 @@ namespace Terminals.Wizard
                     }
                 }
             }
-            catch(Exception e) { }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
         void scanner_ScanComplete()
         {
@@ -141,7 +141,7 @@ namespace Terminals.Wizard
                 }
                 this.Invoke(miv);
             }
-            catch(Exception e) { }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
 
         void scanner_PortReply(System.Net.IPEndPoint remoteEndPoint, Metro.Scanning.TcpPortState state)
@@ -164,7 +164,7 @@ namespace Terminals.Wizard
 
                 this.Invoke(miv);
             }
-            catch(Exception e) { }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
         public void AddFavorite(string server)
         {
@@ -187,6 +187,7 @@ namespace Terminals.Wizard
                 }
                 catch(Exception exc)
                 {
+                    Terminals.Logging.Log.Info("", exc); 
                 }
 
                 elm.Name = name;
@@ -202,7 +203,7 @@ namespace Terminals.Wizard
                 }
                 this.Invoke(miv);
             }
-            catch(Exception e) { }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
         private void UpdateConnections()
         {
@@ -216,7 +217,7 @@ namespace Terminals.Wizard
                 }
                 Application.DoEvents();
             }
-            catch(Exception e) { }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
         private void ConnectionsCountLabel_Click(object sender, EventArgs e)
         {
@@ -235,7 +236,7 @@ namespace Terminals.Wizard
                 this.dataGridView1.Visible = true;
                 Application.DoEvents();
             }
-            catch(Exception exc) { }
+            catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
         }
 
     }

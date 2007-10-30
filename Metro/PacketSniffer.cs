@@ -534,10 +534,10 @@ namespace Metro
 				}
 				
 			}
-			catch (Exception)
+			catch (Exception exc)
 			{	
 				// if the object is disposed it has been closed because StopListen has been called
-				
+                
 				m_isRunning = false;
 				state.SocketObject = null;
 				m_bytesReceived = 0;

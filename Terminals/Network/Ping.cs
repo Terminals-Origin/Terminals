@@ -47,13 +47,14 @@ namespace Metro
             }
             catch (Exception exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 MessageBox.Show("Could not resolve address:" + this.textBox1.Text);
             }
             try
             {
                 if (list != null) ping.SendPing(list[0], payload, true, 2000);
             }
-            catch (Exception exc) { }
+            catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
 
             lock(t)
             {
@@ -270,7 +271,7 @@ namespace Metro
 
                 return curve.Label.Text + " is " + pt.Y.ToString("f2") + " milliseconds at " + pt.X.ToString("f1");
             }
-            catch (Exception) { }
+            catch (Exception ex) { Terminals.Logging.Log.Info("", ex); }
             return "";
         }
 

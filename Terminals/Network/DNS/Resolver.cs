@@ -152,8 +152,9 @@ namespace Bdev.Net.Dns
 						return responseMessage;
 					}
 				}
-				catch (SocketException)
+				catch (SocketException ex)
 				{
+                    Terminals.Logging.Log.Info("", ex);
 					// failure - we better try again, but remember how many attempts
 					attempts++;
 				}

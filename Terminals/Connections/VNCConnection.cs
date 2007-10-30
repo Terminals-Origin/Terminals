@@ -53,7 +53,9 @@ namespace Terminals.Connections {
             try {
                 connected = false;
                 rd.Disconnect();
-            } catch (Exception e) { }
+            } catch (Exception e) {
+                Terminals.Logging.Log.Info("", e);
+            }
         }
 
         #endregion

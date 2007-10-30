@@ -203,6 +203,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
+                Terminals.Logging.Log.Warn("There was an exception setting an RDP Value.", exc);
             }
 
 
@@ -226,7 +227,9 @@ namespace Terminals.Connections
             {
                 axMsRdpClient2.Disconnect();
             }
-            catch (Exception e) { }
+            catch (Exception e) {
+                Terminals.Logging.Log.Info("", e);
+            }
         }
 
         #endregion

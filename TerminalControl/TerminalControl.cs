@@ -611,7 +611,7 @@ namespace WalburySoftware
 			}
 			catch (System.Exception CurException)
 			{
-				//System.Console.WriteLine ("Connect: " + CurException.Message);
+                //System.Console.WriteLine ("Connect: " + CurException.Message);
 				MessageBox.Show(CurException.Message);
 			}
 		}
@@ -635,9 +635,9 @@ namespace WalburySoftware
 			{
 				ip = Dns.GetHostByName(hostname).AddressList[0];
 			}
-			catch
+			catch(Exception exc)
 			{
-				MessageBox.Show("Unable to resolve HostName");
+                MessageBox.Show("Unable to resolve HostName");
 				return;
 			}
 
@@ -886,7 +886,7 @@ namespace WalburySoftware
 
 			catch (System.Exception CurException)
 			{
-				//System.Console.WriteLine ("ConnectCallback: " + CurException.Message);
+                //System.Console.WriteLine ("ConnectCallback: " + CurException.Message);
 				MessageBox.Show(CurException.Message);
 			}
 		}
@@ -991,7 +991,7 @@ namespace WalburySoftware
 			}
 			catch (System.Exception CurException)
 			{
-				//System.Console.WriteLine ("DispatchMessage: " + CurException.Message);
+                //System.Console.WriteLine ("DispatchMessage: " + CurException.Message);
 				//System.Console.WriteLine ("DispatchMessage: Character is " + System.Convert.ToInt32 (strText[i]));
 				//System.Console.WriteLine ("DispatchMessage: String is " + strText);
                 //MessageBox.Show("DispatchMessage: " + CurException.Message);
@@ -1010,7 +1010,7 @@ namespace WalburySoftware
 			}
 			catch (System.Exception CurException)
 			{
-				//System.Console.WriteLine ("EndDispatchMessage: " + CurException.Message);
+                //System.Console.WriteLine ("EndDispatchMessage: " + CurException.Message);
 				MessageBox.Show("EndDispatchMessage: " + CurException.Message);
 			}
 		}		
@@ -2476,7 +2476,7 @@ namespace WalburySoftware
 				}
 				catch (System.Exception CurException)
 				{
-					//System.Console.WriteLine (CurException.Message);
+                    //System.Console.WriteLine (CurException.Message);
 					MessageBox.Show(CurException.Message);
 				}
 
@@ -2538,7 +2538,7 @@ namespace WalburySoftware
 				}
 				catch (System.Exception CurException)
 				{
-					//System.Console.WriteLine (CurException.Message);
+                    //System.Console.WriteLine (CurException.Message);
 					MessageBox.Show(CurException.Message);
 				}
 
@@ -2566,7 +2566,7 @@ namespace WalburySoftware
 				}
 				catch (System.Exception CurException)
 				{
-					//System.Console.WriteLine (CurException.Message);
+                    //System.Console.WriteLine (CurException.Message);
 					MessageBox.Show(CurException.Message);
 				}
 

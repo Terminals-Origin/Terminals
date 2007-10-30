@@ -32,9 +32,10 @@ namespace Terminals
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 //ignore any security errors and such
+                Terminals.Logging.Log.Info("", ex);
             }
         }
 

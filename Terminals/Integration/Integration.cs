@@ -42,12 +42,13 @@ namespace Terminals.Integration
                                             Importers.Add(t);
                                         }
                                     }
-                                    catch(Exception exc) { }
+                                    catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
                                 }
                             }
                         }
                         catch(Exception exc)
                         {
+                            Terminals.Logging.Log.Info("", exc);
                             //do nothing
                         }
 

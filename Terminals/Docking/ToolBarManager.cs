@@ -752,7 +752,7 @@ namespace rpaulo.toolbar
             }
             catch (Exception ex)
             {
-                Debug.Assert(false, ex.Message);
+                Terminals.Logging.Log.Info("", ex);
             }
         }
 

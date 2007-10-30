@@ -32,7 +32,7 @@ namespace Terminals
             }
             catch(Exception exc)
             {
-
+                Terminals.Logging.Log.Info("", exc);
                 if(System.IO.File.Exists(configFile)) System.IO.File.Delete(configFile);
                 string templateConfigFile = global::Terminals.Properties.Resources.Terminals;
                 using(System.IO.StreamWriter sr = new StreamWriter(configFile))
@@ -100,17 +100,20 @@ namespace Terminals
                             }
                             catch (Exception exc)
                             { //ignore the error
+                                Terminals.Logging.Log.Info("", exc);
                             }
 
                         }
                     }
                     catch (Exception exc)
                     { //ignore the error
+                        Terminals.Logging.Log.Info("", exc);
                     }
                 }
             }
             catch (Exception exc)
             { //ignore the error
+                Terminals.Logging.Log.Info("", exc);
             }
 
             string favorites = "/configuration/settings/favorites/add";
@@ -148,12 +151,14 @@ namespace Terminals
                                     }
                                     catch (Exception exc)
                                     { //ignore the error
+                                        Terminals.Logging.Log.Info("", exc);
                                     }
 
                                 }
                             }
                             catch (Exception exc)
                             { //ignore the error
+                                Terminals.Logging.Log.Info("", exc);
                             }
 
                         }
@@ -161,12 +166,14 @@ namespace Terminals
                     }
                     catch (Exception exc)
                     { //ignore the error
+                        Terminals.Logging.Log.Info("", exc);
                     }
 
                 }
             }
             catch (Exception exc)
             { //ignore the error
+                Terminals.Logging.Log.Info("", exc);
             }
 
 
@@ -183,6 +190,7 @@ namespace Terminals
             }
             catch(Exception exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 try
                 {
                     //kick into the import routine
@@ -196,6 +204,7 @@ namespace Terminals
                 }
                 catch(Exception importException)
                 {
+                    Terminals.Logging.Log.Info("", importException);
                     System.Windows.Forms.MessageBox.Show(string.Format("Terminals was NOT able to automatically upgrade your existing connections.\r\nError:{0}",importException.Message));
                     //if(System.IO.File.Exists(configuration.FilePath)) System.IO.File.Delete(configuration.FilePath);
                     //configuration = GetConfiguration();
@@ -793,8 +802,9 @@ namespace Terminals
                         MSTSCLib.IMsRdpClient2 rdpClient = new MSTSCLib.MsRdpClient2Class();
                         _supportsRDP6 = ((rdpClient as MSTSCLib6.IMsRdpClient5) != null);
                     }
-                    catch
+                    catch(Exception exc) 
                     {
+                        Terminals.Logging.Log.Info("", exc);
                         _supportsRDP6 = false;
                     }
 

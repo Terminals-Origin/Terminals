@@ -284,6 +284,7 @@ namespace Terminals
                 }
                 catch (Exception ex)
                 {
+                    Terminals.Logging.Log.Info("", ex);
                     throw new Exception(
                         "Cannot initialize plaintext BLOB.", ex);
                 }
@@ -295,6 +296,7 @@ namespace Terminals
                 }
                 catch (Exception ex)
                 {
+                    Terminals.Logging.Log.Info("", ex);
                     throw new Exception(
                         "Cannot initialize entropy BLOB.", ex);
                 }
@@ -340,6 +342,7 @@ namespace Terminals
             }
             catch (Exception ex)
             {
+                Terminals.Logging.Log.Info("", ex);
                 throw new Exception("DPAPI was unable to encrypt data.", ex);
             }
             // Free all memory allocated for BLOBs.
@@ -489,6 +492,7 @@ namespace Terminals
                 }
                 catch (Exception ex)
                 {
+                    Terminals.Logging.Log.Info("", ex);
                     throw new Exception(
                         "Cannot initialize ciphertext BLOB.", ex);
                 }
@@ -500,6 +504,7 @@ namespace Terminals
                 }
                 catch (Exception ex)
                 {
+                    Terminals.Logging.Log.Info("", ex);
                     throw new Exception(
                         "Cannot initialize entropy BLOB.", ex);
                 }
@@ -544,6 +549,7 @@ namespace Terminals
             }
             catch (Exception ex)
             {
+                Terminals.Logging.Log.Info("", ex);
                 throw new Exception("DPAPI was unable to decrypt data.", ex);
             }
             // Free all memory allocated for BLOBs.
@@ -596,9 +602,11 @@ namespace Terminals
             }
             catch (Exception ex)
             {
+                Terminals.Logging.Log.Info("", ex);
                 while (ex != null)
                 {
-                    Console.WriteLine(ex.Message);
+                    Terminals.Logging.Log.Info("", ex);
+                    //Console.WriteLine(ex.Message);
                     ex = ex.InnerException;
                 }
             }

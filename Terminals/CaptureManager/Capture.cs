@@ -19,6 +19,7 @@ namespace Terminals.CaptureManager
             }
             catch(Exception ec)
             {
+                Terminals.Logging.Log.Info("", ec);
             }
         }
         public void Move(string Destination)
@@ -48,6 +49,7 @@ namespace Terminals.CaptureManager
             }
             catch(Exception exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 string f = exc.ToString();
             }
             finally

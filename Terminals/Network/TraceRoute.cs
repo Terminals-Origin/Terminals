@@ -136,13 +136,14 @@ namespace Metro
             }
             catch (Exception exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 MessageBox.Show("Could not resolve address:" + this.textBox1.Text);
             }
             try
             {
                 if (list != null) trace.TraceRoute(list[0], true, 2000, 30);
             }
-            catch (Exception exc) { }
+            catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -228,7 +229,7 @@ namespace Metro
 
                 return pt.Tag.ToString() + " is " + pt.Y.ToString("f2") + " milliseconds at " + pt.X.ToString("f1");
             }
-            catch (Exception) { }
+            catch (Exception ex) { Terminals.Logging.Log.Info("", ex); }
             return "";
         }
 
@@ -282,6 +283,7 @@ namespace Metro
             }
             catch(Exception e)
             {
+                Terminals.Logging.Log.Info("", e);
                 entry = null;
             }
             if(entry != null && entry.HostName != null)

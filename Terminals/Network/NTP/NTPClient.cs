@@ -284,8 +284,9 @@ namespace Unified.Network.SNTP {
 								IPHostEntry Host = Dns.GetHostByAddress(RefAddr);
 								val = Host.HostName + " (" + Address + ")";
 							}
-							catch(Exception) {
+							catch(Exception e) {
 								val = "N/A";
+                                Terminals.Logging.Log.Info("", e);
 							}
 							break;
 						case 4: // Version 4, Reference ID is the timestamp of last update
@@ -447,6 +448,7 @@ namespace Unified.Network.SNTP {
 				ReceptionTimestamp = DateTime.Now;
 			} catch(SocketException e) {
 				//throw new Exception(e.Message);
+                Terminals.Logging.Log.Info("Socket Exception", e);
 			}
 		}
 

@@ -50,6 +50,7 @@ namespace Unified {
 			}
 			catch (Exception exc) {
 				local2 = null;
+                Terminals.Logging.Log.Info("", exc);
 				if(ThrowException) throw exc;
 			}
 			return local2;
@@ -65,7 +66,8 @@ namespace Unified {
 				XmlSerializer xmlSerializer = new XmlSerializer(type);
 				local2 = xmlSerializer.Deserialize(memStream);
 			}
-			catch (Exception) {
+			catch (Exception exc) {
+                Terminals.Logging.Log.Info("", exc);
 				local2 = null;
 			}
 			return local2;
@@ -86,6 +88,7 @@ namespace Unified {
 			}
 			catch (Exception exc) {
 				memoryStream2 = null;
+                Terminals.Logging.Log.Info("", exc);
 				if(ThrowException) throw exc;
 			}
 			return memoryStream2;
@@ -99,7 +102,8 @@ namespace Unified {
 				xmlSerializer.Serialize(memoryStream1, request);
 				memoryStream2 = memoryStream1;
 			}
-			catch (Exception) {
+			catch (Exception exc) {
+                Terminals.Logging.Log.Info("", exc);
 				memoryStream2 = null;
 			}
 			return memoryStream2;
@@ -116,6 +120,7 @@ namespace Unified {
 			}
 			catch (Exception exc) {
 				local2 = null;
+                Terminals.Logging.Log.Info("", exc);
 				if(ThrowException) throw exc;
 			}
 			return local2;
@@ -130,7 +135,8 @@ namespace Unified {
 				memoryStream.Close();
 				local2 = local1;
 			}
-			catch (Exception) {
+			catch (Exception exc) {
+                Terminals.Logging.Log.Info("", exc);
 				local2 = null;
 			}
 			return local2;

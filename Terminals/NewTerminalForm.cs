@@ -301,6 +301,7 @@ namespace Terminals
             }
             catch(Exception e)
             {
+                Terminals.Logging.Log.Info("", e);
                 MessageBox.Show(this, e.Message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -659,8 +660,9 @@ namespace Terminals
                         currentToolBarFileName = newFile;
                     }
                 }
-                catch(Exception)
+                catch(Exception ex)
                 {
+                    Terminals.Logging.Log.Info("", ex);
                     currentToolBarFileName = "";
                     System.Windows.Forms.MessageBox.Show("You have chosen an invalid image. Try again.");
                 }

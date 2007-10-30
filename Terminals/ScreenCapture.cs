@@ -400,6 +400,7 @@ namespace Terminals
 			}
 			catch ( Exception ex )
 			{
+                Terminals.Logging.Log.Info("", ex);
 				MessageBox.Show( ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
 			}
 			images[0] = memoryImage;
@@ -437,6 +438,7 @@ namespace Terminals
 			}
 			catch ( Exception ex )
 			{
+                Terminals.Logging.Log.Info("", ex);
 				MessageBox.Show( ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
 			}
 			images[0] = memoryImage;
@@ -497,6 +499,7 @@ namespace Terminals
 			}
 			catch ( Exception ex )
 			{
+                Terminals.Logging.Log.Info("", ex);
 				MessageBox.Show( ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
 			}
 			return images;
@@ -517,6 +520,7 @@ namespace Terminals
 				}
 				catch ( Exception ex )
 				{
+                    Terminals.Logging.Log.Info("", ex);
 					MessageBox.Show( ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
 				}
 			}
@@ -584,6 +588,7 @@ namespace Terminals
 			}
 			catch ( Exception ex )
 			{
+                Terminals.Logging.Log.Info("", ex);
 				string s = string.Format("Saving image to [{0}] in format [{1}].\n{2}", filename, format.ToString(), ex.ToString() );
 				MessageBox.Show( s, "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
 			}

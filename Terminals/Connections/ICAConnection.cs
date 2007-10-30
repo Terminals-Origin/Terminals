@@ -126,7 +126,9 @@ namespace Terminals.Connections {
             try {
                 connected = false;
                 iIcaClient.Disconnect();
-            } catch (Exception e) { }
+            } catch (Exception e) {
+                Terminals.Logging.Log.Info("", e);
+            }
         }
         private void SHCopyFiles(string[] sourceFiles, string destinationFolder)
         {

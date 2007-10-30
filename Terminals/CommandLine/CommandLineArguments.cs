@@ -916,6 +916,7 @@ namespace Terminals.CommandLine
             }
             catch (Exception e)
             {
+                Terminals.Logging.Log.Info("", e);
                 this.reporter(string.Format("Error: Can't open command line argument file '{0}' : '{1}'", fileName, e.Message));
                 arguments = null;
                 return false;
@@ -993,8 +994,9 @@ namespace Terminals.CommandLine
                     currentArg.Length = 0;
                 }
             }
-            catch (System.IndexOutOfRangeException)
+            catch (System.IndexOutOfRangeException exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 // got EOF 
                 if (inQuotes)
                 {
@@ -1233,8 +1235,9 @@ namespace Terminals.CommandLine
                             return true;
                         }
                     }
-                    catch
+                    catch(Exception exc)
                     {
+                        Terminals.Logging.Log.Info("", exc);
                         // catch parse errors
                     }
                 }

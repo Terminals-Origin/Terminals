@@ -42,7 +42,9 @@ namespace Terminals.Connections {
             {
                 connected = false;
             }
-            catch (Exception e) { }
+            catch (Exception e) {
+                Terminals.Logging.Log.Info("", e);
+            }
         }
 
         #endregion

@@ -97,8 +97,9 @@ namespace Terminals
                 WTSQuerySessionInformation(server, sessionId, infoClass, out buffer, out bytesReturned);
                 return Marshal.PtrToStringAnsi(buffer);
             }
-            catch
+            catch(Exception exc) 
             {
+                Terminals.Logging.Log.Info("", exc);
                 return String.Empty;
             }
             finally

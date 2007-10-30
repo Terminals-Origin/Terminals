@@ -249,7 +249,7 @@ namespace Routrek.SSHCV2
 				ReduceBuffer();
 			}
 			catch(Exception ex) {
-				OnError(ex, ex.Message);
+                OnError(ex, ex.Message);
 			}
 		}
 		//returns true if a new packet could be obtained

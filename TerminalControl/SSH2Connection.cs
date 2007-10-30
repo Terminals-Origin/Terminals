@@ -335,7 +335,7 @@ namespace Routrek.SSHCV2
 				ProcessPacket(packet);
 			}
 			catch(Exception ex) {
-				//Debug.WriteLine(ex.StackTrace);
+                //Debug.WriteLine(ex.StackTrace);
 				if(!_closed)
 					_eventReceiver.OnError(ex, ex.Message);
 			}

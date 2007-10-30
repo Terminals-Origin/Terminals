@@ -29,6 +29,7 @@ namespace Terminals {
                 }
             } catch (Exception e) {
                 //string f = e.ToString();
+                Terminals.Logging.Log.Info("", e);
                 return "";
             }
         }
@@ -51,6 +52,7 @@ namespace Terminals {
                     }
                 } catch (Exception ec) {
                     //string f = ec.ToString();
+                    Terminals.Logging.Log.Info("", ec);
                 }
                 return password;
                 

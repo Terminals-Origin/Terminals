@@ -63,6 +63,7 @@ namespace Terminals.Network
             }
             catch(Exception exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 System.Windows.Forms.MessageBox.Show("Could not resolve host.");
             }
 

@@ -527,7 +527,7 @@ namespace Routrek.SSHCV1
 				}
 			}
 			catch(Exception ex) {
-				if(!_closed)
+                if(!_closed)
 					_eventReceiver.OnError(ex, ex.Message);
 			}
 		}

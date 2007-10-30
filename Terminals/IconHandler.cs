@@ -147,6 +147,7 @@ namespace IconHandler
 			}
 			catch (Exception e)
 			{
+                Terminals.Logging.Log.Info("", e);
 				System.Diagnostics.Debug.WriteLine("error while trying to get icon for " + Extension + " :" + e.Message);
 				return null;
 			}

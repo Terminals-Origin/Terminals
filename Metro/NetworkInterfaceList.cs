@@ -500,6 +500,7 @@ namespace Metro
                 }
                 catch(Exception exc)
                 {
+                    
                     //System.Diagnostics.Debug.Fail(exc.Message);
                 }
 			}

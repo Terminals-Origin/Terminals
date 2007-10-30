@@ -198,6 +198,7 @@ namespace WMITestClient
                     }
                     catch (Exception exc)
                     {
+                        Terminals.Logging.Log.Info("", exc);
                         System.Windows.Forms.MessageBox.Show(exc.Message);
                     }
                     if (success)

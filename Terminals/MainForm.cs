@@ -94,6 +94,7 @@ namespace Terminals
             }
             catch(Exception exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
         }
@@ -489,8 +490,9 @@ namespace Terminals
                         {
                             button = (Bitmap)Bitmap.FromFile(favorite.ToolBarIcon);
                         }
-                        catch(Exception)
+                        catch(Exception ex)
                         {
+                            Terminals.Logging.Log.Info("", ex);
                             if(button != Terminals.Properties.Resources.smallterm) button = Terminals.Properties.Resources.smallterm;
                         }
                     }
@@ -503,6 +505,7 @@ namespace Terminals
             }
             catch(Exception exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 System.Windows.Forms.MessageBox.Show("LoadFavoritesToolbar:" + exc.ToString());
             }
 
@@ -657,6 +660,7 @@ namespace Terminals
             }
             catch(Exception exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 tcTerminals.Items.Remove(terminalTabPage);
                 tcTerminals.SelectedItem = null;
                 terminalTabPage.Dispose();
@@ -770,6 +774,7 @@ namespace Terminals
             }
             catch(Exception e)
             {
+                Terminals.Logging.Log.Info("", e);
                 MessageBox.Show(this, e.Message);
             }
         }
@@ -1812,6 +1817,7 @@ namespace Terminals
             }
             catch(Exception exc)
             {
+                Terminals.Logging.Log.Info("", exc);
                 tcTerminals.Items.Remove(terminalTabPage);
                 tcTerminals.SelectedItem = null;
                 terminalTabPage.Dispose();
@@ -1870,6 +1876,7 @@ namespace Terminals
                 }
                 catch(Exception exc)
                 {
+                    Terminals.Logging.Log.Info("", exc);
                     tcTerminals.Items.Remove(terminalTabPage);
                     tcTerminals.SelectedItem = null;
                     terminalTabPage.Dispose();

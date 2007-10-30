@@ -173,11 +173,13 @@ namespace Terminals.TerminalServices
                 }
                 catch(Exception ex)
                 {
+                    Terminals.Logging.Log.Info("", ex);
                     Data.Errors.Add(ex.Message + "\r\n" + System.Runtime.InteropServices.Marshal.GetLastWin32Error());
                 }
             }
             catch(Exception ex)
             {
+                Terminals.Logging.Log.Info("", ex);
                 Data.Errors.Add(ex.Message + "\r\n" + System.Runtime.InteropServices.Marshal.GetLastWin32Error());
             }
 

@@ -16,7 +16,8 @@ namespace Terminals {
             string localIP = "127.0.0.1";
             try {
                 localIP = IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpConnections()[0].LocalEndPoint.Address.ToString();
-            } catch (Exception e) {}
+            }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
             string[] ipList = localIP.Split('.');
             ATextbox.Text = ipList[0];
             BTextbox.Text = ipList[1];
@@ -247,7 +248,8 @@ namespace Terminals {
             try {
                 Network.Server.Stop();
                 Network.Client.Stop();
-            } catch (Exception exc) { }
+            }
+            catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
         }
 	
     }

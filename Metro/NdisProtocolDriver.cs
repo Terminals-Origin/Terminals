@@ -1048,8 +1048,9 @@ namespace Metro
 				{
 					CloseDevice ();
 				}
-				catch
+				catch(Exception exc)
 				{
+                    
 					// do nothing
 				}
 			}

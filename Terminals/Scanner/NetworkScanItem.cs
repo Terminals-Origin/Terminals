@@ -29,7 +29,9 @@ namespace Terminals.Scanner {
                 }
                 client.Close();
             } catch (Exception e) {
+                Terminals.Logging.Log.Info("", e);
             }
+
 
         }
         private string vncPassword = "";
@@ -47,9 +49,11 @@ namespace Terminals.Scanner {
                     rd.Disconnect();
                 }
                 return true;
-            }catch(System.Security.Cryptography.CryptographicException) {
+            }catch(System.Security.Cryptography.CryptographicException ce) {
+                Terminals.Logging.Log.Info("", ce);
                 return true;
             } catch (Exception exc) {
+                Terminals.Logging.Log.Info("", exc);
                 exc.ToString();
             }
             return false;
@@ -85,6 +89,7 @@ namespace Terminals.Scanner {
                         }
 
                     } catch (Exception exc) {
+                        Terminals.Logging.Log.Info("", exc);
                         args.NetworkScanItem.HostName = args.NetworkScanItem.IPAddress;
                         if(!KnownHostNames.ContainsKey(args.NetworkScanItem.IPAddress)) KnownHostNames.Add(args.NetworkScanItem.IPAddress, args.NetworkScanItem.IPAddress);
                     }
