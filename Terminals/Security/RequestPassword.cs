@@ -17,6 +17,8 @@ namespace Terminals.Security {
             string newHashed = Unified.Encryption.Hash.Hash.GetHash(newPass, Unified.Encryption.Hash.Hash.HashType.SHA512);
             if (newHashed != hashedPassword) {
                 this.PasswordTextBox.Focus();
+                this.PasswordTextBox.Text = "";
+                this.label2.Visible = true;
                 //System.Windows.Forms.MessageBox.Show("Invalid Password.");
             } else {
                 this.DialogResult = DialogResult.OK;
@@ -32,6 +34,11 @@ namespace Terminals.Security {
             this.DialogResult = DialogResult.Cancel;
             this.Hide();
 
+        }
+
+        private void PasswordTextBox_TextChanged(object sender, EventArgs e)
+        {
+            this.label2.Visible = false;
         }
     }
 }

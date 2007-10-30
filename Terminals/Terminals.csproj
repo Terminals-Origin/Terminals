@@ -254,7 +254,6 @@
     <Compile Include="Network\DNSLookup.Designer.cs">
       <DependentUpon>DNSLookup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\DNS\AdapterInfo.cs" />
     <Compile Include="Network\DNS\ANameRecord.cs" />
     <Compile Include="Network\DNS\Enums.cs" />
     <Compile Include="Network\DNS\InvalidResponseException.cs" />
@@ -363,7 +362,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>

@@ -27,6 +27,7 @@ namespace Terminals.Security {
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.CancelPasswordButton = new System.Windows.Forms.Button();
             this.OkButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -45,11 +46,12 @@ namespace Terminals.Security {
             this.PasswordTextBox.PasswordChar = '*';
             this.PasswordTextBox.Size = new System.Drawing.Size(182, 20);
             this.PasswordTextBox.TabIndex = 1;
+            this.PasswordTextBox.TextChanged += new System.EventHandler(this.PasswordTextBox_TextChanged);
             // 
             // CancelPasswordButton
             // 
             this.CancelPasswordButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelPasswordButton.Location = new System.Drawing.Point(176, 45);
+            this.CancelPasswordButton.Location = new System.Drawing.Point(176, 65);
             this.CancelPasswordButton.Name = "CancelPasswordButton";
             this.CancelPasswordButton.Size = new System.Drawing.Size(75, 23);
             this.CancelPasswordButton.TabIndex = 2;
@@ -59,7 +61,7 @@ namespace Terminals.Security {
             // 
             // OkButton
             // 
-            this.OkButton.Location = new System.Drawing.Point(95, 45);
+            this.OkButton.Location = new System.Drawing.Point(95, 65);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(75, 23);
             this.OkButton.TabIndex = 3;
@@ -67,14 +69,26 @@ namespace Terminals.Security {
             this.OkButton.UseVisualStyleBackColor = true;
             this.OkButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(69, 40);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(90, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Invalid Password.";
+            this.label2.Visible = false;
+            // 
             // RequestPassword
             // 
             this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelPasswordButton;
-            this.ClientSize = new System.Drawing.Size(257, 79);
+            this.ClientSize = new System.Drawing.Size(253, 90);
             this.ControlBox = false;
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.CancelPasswordButton);
             this.Controls.Add(this.PasswordTextBox);
@@ -99,5 +113,6 @@ namespace Terminals.Security {
         private System.Windows.Forms.TextBox PasswordTextBox;
         private System.Windows.Forms.Button CancelPasswordButton;
         private System.Windows.Forms.Button OkButton;
+        private System.Windows.Forms.Label label2;
     }
 }
