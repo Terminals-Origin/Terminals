@@ -1017,10 +1017,13 @@ namespace Terminals
 
         private void tcTerminals_MouseHover(object sender, EventArgs e)
         {
-            if(!tcTerminals.ShowTabs)
+            if (tcTerminals != null)
             {
-                timerHover.Enabled = true;
-                //tcTerminals.ShowTabs = true;
+                if (!tcTerminals.ShowTabs)
+                {
+                    timerHover.Enabled = true;
+                    //tcTerminals.ShowTabs = true;
+                }
             }
         }
 

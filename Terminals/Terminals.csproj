@@ -196,6 +196,8 @@
     </Compile>
     <Compile Include="Docking\ToolBarManager.cs" />
     <Compile Include="DPAPI.cs" />
+    <Compile Include="Network\DNS\Adapter.cs" />
+    <Compile Include="Network\DNS\AdapterInfo.cs" />
     <Compile Include="Wizard\CommonOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>

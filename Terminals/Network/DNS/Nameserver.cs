@@ -11,13 +11,12 @@ namespace Terminals.Network.DNS
             get
             {
                 List<Nameserver> l = new List<Nameserver>();
-                DNS.AdapterInfo.GetAdapters();
+                //DNS.AdapterInfo.GetAdapters();
                 Nameserver ns = new Nameserver("198.41.0.4", "ns.internic.net", "VeriSign", "Dulles, Virginia, U.S.", "BIND");
 
                 return l;
             }
         }
-        
         public static List<Nameserver> RootNameserverList
         {
             get

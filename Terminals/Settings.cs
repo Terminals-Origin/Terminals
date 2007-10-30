@@ -45,21 +45,21 @@ namespace Terminals
         }
         private static Configuration ImportConfiguration(string Filename)
         {
-            Configuration c=null;// = new TerminalsConfiguration();
+            Configuration c = null;// = new TerminalsConfiguration();
 
             string templateConfigFile = global::Terminals.Properties.Resources.Terminals;
 
             //get a temp filename to hold the current settings which are failing
             string tempFile = System.IO.Path.GetTempFileName();
             //delete the zerobyte file which is created by default
-            if(System.IO.File.Exists(tempFile)) System.IO.File.Delete(tempFile);
+            if (System.IO.File.Exists(tempFile)) System.IO.File.Delete(tempFile);
             //move the error file to the temp file
             System.IO.File.Move(Filename, tempFile);
 
             //if its still hanging around, kill it
-            if(System.IO.File.Exists(Filename)) System.IO.File.Delete(Filename);
+            if (System.IO.File.Exists(Filename)) System.IO.File.Delete(Filename);
             //write out the template to work from
-            using(System.IO.StreamWriter sr = new StreamWriter(Filename))
+            using (System.IO.StreamWriter sr = new StreamWriter(Filename))
             {
                 sr.Write(templateConfigFile);
             }
@@ -78,48 +78,95 @@ namespace Terminals
             //get the settings root
             string settingsRoot = "/configuration/settings";
             System.Xml.XmlNode root = doc.SelectSingleNode(settingsRoot);
-            
-            //for each setting's attribute
-            foreach(System.Xml.XmlAttribute att in root.Attributes) {
-                //scan for the related property if any
-                foreach(System.Reflection.PropertyInfo info in propList)
+            try
+            {
+                //for each setting's attribute
+                foreach (System.Xml.XmlAttribute att in root.Attributes)
                 {
-                    if(info.Name.ToLower() == att.Name.ToLower())
+                    //scan for the related property if any
+                    try
                     {
-                        //found a matching property, try to set it
-                        string val = att.Value;
-                        info.SetValue(null, System.Convert.ChangeType(val, info.PropertyType), null);
-                        break;
+                        foreach (System.Reflection.PropertyInfo info in propList)
+                        {
+                            try
+                            {
+                                if (info.Name.ToLower() == att.Name.ToLower())
+                                {
+                                    //found a matching property, try to set it
+                                    string val = att.Value;
+                                    info.SetValue(null, System.Convert.ChangeType(val, info.PropertyType), null);
+                                    break;
+                                }
+                            }
+                            catch (Exception exc)
+                            { //ignore the error
+                            }
+
+                        }
+                    }
+                    catch (Exception exc)
+                    { //ignore the error
                     }
                 }
+            }
+            catch (Exception exc)
+            { //ignore the error
             }
 
             string favorites = "/configuration/settings/favorites/add";
             System.Xml.XmlNodeList favs = doc.SelectNodes(favorites);
-            foreach(System.Xml.XmlNode fav in favs)
+
+            try
             {
-                FavoriteConfigurationElement newFav = new FavoriteConfigurationElement();
-                foreach(System.Xml.XmlAttribute att in fav.Attributes)
+                foreach (System.Xml.XmlNode fav in favs)
                 {
-                    foreach(System.Reflection.PropertyInfo info in newFav.GetType().GetProperties())
+                    try
                     {
-                        if(info.Name.ToLower() == att.Name.ToLower())
+                        FavoriteConfigurationElement newFav = new FavoriteConfigurationElement();
+                        foreach (System.Xml.XmlAttribute att in fav.Attributes)
                         {
-                            //found a matching property, try to set it
-                            string val = att.Value;
-                            if(info.PropertyType.IsEnum)
+                            try
                             {
-                                info.SetValue(newFav, System.Enum.Parse(info.PropertyType, val), null);
+                                foreach (System.Reflection.PropertyInfo info in newFav.GetType().GetProperties())
+                                {
+                                    try
+                                    {
+                                        if (info.Name.ToLower() == att.Name.ToLower())
+                                        {
+                                            //found a matching property, try to set it
+                                            string val = att.Value;
+                                            if (info.PropertyType.IsEnum)
+                                            {
+                                                info.SetValue(newFav, System.Enum.Parse(info.PropertyType, val), null);
+                                            }
+                                            else
+                                            {
+                                                info.SetValue(newFav, System.Convert.ChangeType(val, info.PropertyType), null);
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    catch (Exception exc)
+                                    { //ignore the error
+                                    }
+
+                                }
                             }
-                            else
-                            {
-                                info.SetValue(newFav, System.Convert.ChangeType(val, info.PropertyType), null);
+                            catch (Exception exc)
+                            { //ignore the error
                             }
-                            break;
+
                         }
+                        Settings.AddFavorite(newFav, false);
                     }
+                    catch (Exception exc)
+                    { //ignore the error
+                    }
+
                 }
-                Settings.AddFavorite(newFav, false);
+            }
+            catch (Exception exc)
+            { //ignore the error
             }
 
 
@@ -140,11 +187,16 @@ namespace Terminals
                 {
                     //kick into the import routine
                     configuration = ImportConfiguration(Terminals.MainForm.ConfigurationFileLocation);
+                    if (configuration!=null)
+                    {
+                        System.Windows.Forms.MessageBox.Show("Terminals was able to automatically upgrade your existing connections.");
+                    }
                     configuration = GetConfiguration();
                     c = (TerminalsConfigurationSection)configuration.GetSection("settings");
                 }
                 catch(Exception importException)
                 {
+                    System.Windows.Forms.MessageBox.Show(string.Format("Terminals was NOT able to automatically upgrade your existing connections.\r\nError:{0}",importException.Message));
                     //if(System.IO.File.Exists(configuration.FilePath)) System.IO.File.Delete(configuration.FilePath);
                     //configuration = GetConfiguration();
                     //c = (TerminalsConfigurationSection)configuration.GetSection("settings");
