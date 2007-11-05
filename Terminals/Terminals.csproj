@@ -96,7 +96,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\TransPort2006.Design.dll</HintPath>
     </Reference>
-    <Reference Include="VMRCClient, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="VMRCClient, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\VMRCActiveXClient\VMRCClient.dll</HintPath>
     </Reference>
@@ -369,7 +369,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
