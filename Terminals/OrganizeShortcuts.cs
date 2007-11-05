@@ -70,7 +70,15 @@ namespace Terminals
                         );
                 if(this.iconPicturebox.Image != null)
                 {
-                    this.iconPicturebox.Image.Save(imageFullName);
+                    try
+                    {
+                        this.iconPicturebox.Image.Save(imageFullName);
+                    }
+                    catch(Exception exc)
+                    {
+                        Terminals.Logging.Log.Debug("Saving icon picture box failed", exc);
+                        imageFullName = "";
+                    }
                 }
                 else
                 {

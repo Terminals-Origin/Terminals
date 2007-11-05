@@ -34,7 +34,7 @@ namespace Terminals
         private PictureBox previewPictureBox;*/
 
         ToolBarManager toolBarManager;
-        ToolBarDockHolder MainMenuHolder;
+        //ToolBarDockHolder MainMenuHolder;
         ToolBarDockHolder StandardToolbarHolder;
         ToolBarDockHolder FavoriteToolBarHolder;
         ToolBarDockHolder SpecialCommandsToolBarHolder;
@@ -53,25 +53,28 @@ namespace Terminals
                     Settings.ShowWizard = false;
                 }
 
-
+                
                 imageFormatHandler = new ImageFormatHandler();
                 //screenCapture = new ScreenCapture(imageFormatHandler);
                 _formSettings = new FormSettings(this);
                 InitializeComponent();
 
-                toolBarManager = new ToolBarManager(this, this);
+                toolBarManager = new ToolBarManager(this.panel1, this);
 
-                MainMenuHolder = toolBarManager.AddControl(this.MainMenuStrip);
-                MainMenuHolder.ToolbarTitle = "Main Menu";
+                //MainMenuHolder = toolBarManager.AddControl(this.MainMenuStrip);
+                //MainMenuHolder.ToolbarTitle = "Main Menu";
 
-                StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd);
+                StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd,DockStyle.Top, this.panel1, DockStyle.Top);
                 StandardToolbarHolder.ToolbarTitle = "Standard Toolbar";
+                StandardToolbarHolder.Visible = true;
 
-                FavoriteToolBarHolder = toolBarManager.AddControl(this.favoriteToolBar);
+                FavoriteToolBarHolder = toolBarManager.AddControl(this.favoriteToolBar, DockStyle.Top, this.panel1, DockStyle.Top);
                 FavoriteToolBarHolder.ToolbarTitle = "Favorites";
+                FavoriteToolBarHolder.Visible = false;
 
-                SpecialCommandsToolBarHolder = toolBarManager.AddControl(this.SpecialCommandsToolStrip);
+                SpecialCommandsToolBarHolder = toolBarManager.AddControl(this.SpecialCommandsToolStrip, DockStyle.Top, this.panel1, DockStyle.Top);
                 SpecialCommandsToolBarHolder.ToolbarTitle = "Shortcuts";
+                SpecialCommandsToolBarHolder.Visible = false;
 
                 toolBarManager.MainForm.BackColor = this.toolStripContainer.ContentPanel.BackColor;
 
@@ -90,6 +93,8 @@ namespace Terminals
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
 
                 LoadToolbarSettings();
+
+                this.panel1.BringToFront();
 
             }
             catch(Exception exc)
@@ -1734,12 +1739,12 @@ namespace Terminals
             mgr.ShowDialog(this);
         }
 
-        private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        //private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
+        //{
 
-            MainMenuHolder.Visible = !MainMenuHolder.Visible;
-            mainMenuToolStripMenuItem.Checked = MainMenuHolder.Visible;
-        }
+        //    MainMenuHolder.Visible = !MainMenuHolder.Visible;
+        //    mainMenuToolStripMenuItem.Checked = MainMenuHolder.Visible;
+        //}
 
         private void standardToolbarToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1762,7 +1767,7 @@ namespace Terminals
         private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             this.shortcutsToolStripMenuItem.Checked = this.SpecialCommandsToolBarHolder.Visible;
-            this.mainMenuToolStripMenuItem.Checked = this.MainMenuHolder.Visible;
+            //this.mainMenuToolStripMenuItem.Checked = this.MainMenuHolder.Visible;
             this.toolStripMenuItem4.Checked = this.FavoriteToolBarHolder.Visible;
             this.standardToolbarToolStripMenuItem.Checked = this.StandardToolbarHolder.Visible;
 
