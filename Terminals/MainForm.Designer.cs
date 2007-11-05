@@ -989,7 +989,7 @@ namespace Terminals {
             this.favoriteToolBar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.favoriteToolBar.Location = new System.Drawing.Point(749, 0);
             this.favoriteToolBar.Name = "favoriteToolBar";
-            this.favoriteToolBar.Size = new System.Drawing.Size(34, 25);
+            this.favoriteToolBar.Size = new System.Drawing.Size(102, 25);
             this.favoriteToolBar.Stretch = true;
             this.favoriteToolBar.TabIndex = 4;
             // 

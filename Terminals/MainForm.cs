@@ -63,8 +63,7 @@ namespace Terminals
 
                 //MainMenuHolder = toolBarManager.AddControl(this.MainMenuStrip);
                 //MainMenuHolder.ToolbarTitle = "Main Menu";
-
-                StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd,DockStyle.Top, this.panel1, DockStyle.Top);
+                StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd, DockStyle.Top, this.panel1, DockStyle.Top);
                 StandardToolbarHolder.ToolbarTitle = "Standard Toolbar";
                 StandardToolbarHolder.Visible = true;
 
@@ -93,9 +92,6 @@ namespace Terminals
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
 
                 LoadToolbarSettings();
-
-                this.panel1.BringToFront();
-
             }
             catch(Exception exc)
             {
@@ -892,8 +888,18 @@ namespace Terminals
             }
         }
 
+        bool stdToolbarState = true;
+        bool specialToolbarState = true;
+        bool favToolbarState = true;
         private void HideToolBar(bool fullScreen)
         {
+            if(!fullScreen)
+            {
+                StandardToolbarHolder.Visible = stdToolbarState;
+                SpecialCommandsToolBarHolder.Visible = specialToolbarState;
+                FavoriteToolBarHolder.Visible = favToolbarState;
+            }
+
             this.toolBarManager.Top.Visible = !fullScreen;
             this.toolBarManager.Left.Visible = !fullScreen;
             this.toolBarManager.Right.Visible = !fullScreen;
@@ -905,6 +911,12 @@ namespace Terminals
             tcTerminals.ShowTabs = !fullScreen;
             tcTerminals.ShowBorder = !fullScreen;
 
+            if(fullScreen)
+            {
+                stdToolbarState = StandardToolbarHolder.Visible;
+                specialToolbarState = SpecialCommandsToolBarHolder.Visible;
+                favToolbarState = FavoriteToolBarHolder.Visible;
+            }
             HideToolBar(fullScreen);
 
             if(fullScreen)
