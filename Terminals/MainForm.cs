@@ -59,13 +59,14 @@ namespace Terminals
                 _formSettings = new FormSettings(this);
                 InitializeComponent();
 
-                toolBarManager = new ToolBarManager(this.panel1, this);
+                toolBarManager = new ToolBarManager(this, this);
 
                 //MainMenuHolder = toolBarManager.AddControl(this.MainMenuStrip);
                 //MainMenuHolder.ToolbarTitle = "Main Menu";
                 StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd, DockStyle.Top, this.panel1, DockStyle.Top);
                 StandardToolbarHolder.ToolbarTitle = "Standard Toolbar";
                 StandardToolbarHolder.Visible = true;
+                
 
                 FavoriteToolBarHolder = toolBarManager.AddControl(this.favoriteToolBar, DockStyle.Top, this.panel1, DockStyle.Top);
                 FavoriteToolBarHolder.ToolbarTitle = "Favorites";
