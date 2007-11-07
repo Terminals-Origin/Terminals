@@ -332,6 +332,7 @@ namespace Terminals {
                 setting.Left = strip.Left;
                 setting.Top = strip.Top;
                 setting.Name = strip.Name;
+                setting.Visible = strip.Visible;
                 newSettings.Add(setting);
             }
             foreach(ToolStrip strip in this.toolStripContainer.LeftToolStripPanel.Controls) {
@@ -340,6 +341,7 @@ namespace Terminals {
                 setting.Left = strip.Left;
                 setting.Top = strip.Top;
                 setting.Name = strip.Name;
+                setting.Visible = strip.Visible;
                 newSettings.Add(setting);
             }
             foreach(ToolStrip strip in this.toolStripContainer.RightToolStripPanel.Controls) {
@@ -348,6 +350,7 @@ namespace Terminals {
                 setting.Left = strip.Left;
                 setting.Top = strip.Top;
                 setting.Name = strip.Name;
+                setting.Visible = strip.Visible;
                 newSettings.Add(setting);
             }
             
@@ -357,6 +360,7 @@ namespace Terminals {
                 setting.Left = strip.Left;
                 setting.Top = strip.Top;
                 setting.Name = strip.Name;
+                setting.Visible = strip.Visible;
                 newSettings.Add(setting);
             }
 
@@ -387,6 +391,7 @@ namespace Terminals {
                         }
                         strip.Left = setting.Left;
                         strip.Top = setting.Top;
+                        strip.Visible = setting.Visible;
                     }
                 }
             }

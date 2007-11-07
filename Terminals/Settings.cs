@@ -931,6 +931,13 @@ namespace Terminals
             set { name = value; }
         }
 
+        private bool visible;
+
+        public bool Visible {
+            get { return visible; }
+            set { visible = value; }
+        }
+	
         private string dock;
 
         public string Dock {
