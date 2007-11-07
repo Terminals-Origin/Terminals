@@ -453,10 +453,9 @@ namespace Terminals {
             this.VMRCViewOnlyButton,
             this.toolStripButton2,
             this.vncActionButton});
-            this.toolbarStd.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.toolbarStd.Location = new System.Drawing.Point(7, 0);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(660, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(599, 25);
             this.toolbarStd.Stretch = true;
             this.toolbarStd.TabIndex = 2;
             // 
@@ -486,7 +485,7 @@ namespace Terminals {
             this.tscConnectTo.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
             this.tscConnectTo.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.tscConnectTo.Name = "tscConnectTo";
-            this.tscConnectTo.Size = new System.Drawing.Size(200, 25);
+            this.tscConnectTo.Size = new System.Drawing.Size(199, 25);
             this.tscConnectTo.Sorted = true;
             this.tscConnectTo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscConnectTo_KeyDown);
             this.tscConnectTo.TextChanged += new System.EventHandler(this.tscConnectTo_TextChanged);
@@ -1057,9 +1056,10 @@ namespace Terminals {
             this.SpecialCommandsToolStrip.ContextMenuStrip = this.ShortcutsContextMenu;
             this.SpecialCommandsToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.SpecialCommandsToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.SpecialCommandsToolStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.SpecialCommandsToolStrip.Location = new System.Drawing.Point(624, 0);
             this.SpecialCommandsToolStrip.Name = "SpecialCommandsToolStrip";
-            this.SpecialCommandsToolStrip.Size = new System.Drawing.Size(102, 25);
+            this.SpecialCommandsToolStrip.Size = new System.Drawing.Size(34, 25);
             this.SpecialCommandsToolStrip.Stretch = true;
             this.SpecialCommandsToolStrip.TabIndex = 6;
             this.SpecialCommandsToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.SpecialCommandsToolStrip_ItemClicked_1);

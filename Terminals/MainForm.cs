@@ -54,14 +54,14 @@ namespace Terminals {
                 _formSettings = new FormSettings(this);
                 InitializeComponent();
 
-                toolBarManager = new ToolBarManager(this, this);
+                toolBarManager = new ToolBarManager(this.panel1, this);
 
                 //MainMenuHolder = toolBarManager.AddControl(this.MainMenuStrip);
                 //MainMenuHolder.ToolbarTitle = "Main Menu";
                 StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd, DockStyle.Top, this.panel1, DockStyle.Top);
                 StandardToolbarHolder.ToolbarTitle = "Standard Toolbar";
                 StandardToolbarHolder.Visible = true;
-
+                
 
                 FavoriteToolBarHolder = toolBarManager.AddControl(this.favoriteToolBar, DockStyle.Top, this.panel1, DockStyle.Top);
                 FavoriteToolBarHolder.ToolbarTitle = "Favorites";
@@ -70,7 +70,6 @@ namespace Terminals {
                 SpecialCommandsToolBarHolder = toolBarManager.AddControl(this.SpecialCommandsToolStrip, DockStyle.Top, this.panel1, DockStyle.Top);
                 SpecialCommandsToolBarHolder.ToolbarTitle = "Shortcuts";
                 SpecialCommandsToolBarHolder.Visible = false;
-
                 toolBarManager.MainForm.BackColor = this.toolStripContainer.ContentPanel.BackColor;
 
 
@@ -93,10 +92,15 @@ namespace Terminals {
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
         }
+
+
+
+
+       
         private void LoadToolbarSettings() {
             if(toolBarManager != null) {
                 string fileName = "toolbars.settings";
-
+                 
                 if(File.Exists(fileName)) {
                     StreamReader reader = new StreamReader(fileName);
                     Debug.Assert(reader != null);
@@ -1674,6 +1678,8 @@ namespace Terminals {
 
             }
         }
+
+   
     }
 
     public class TerminalTabControlItem : TabControlItem {
