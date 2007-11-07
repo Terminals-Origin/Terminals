@@ -25,6 +25,7 @@ namespace Terminals.Connections {
             this.Parent = TerminalTabPage;
             rd.Dock = DockStyle.Fill;
             rd.VncPort = Favorite.Port;
+            
             rd.ConnectComplete += new VncSharp.ConnectCompleteHandler(rd_ConnectComplete);
             rd.GetPassword = VNCPassword;
             Text = "Connecting to VNC Server...";
@@ -46,6 +47,7 @@ namespace Terminals.Connections {
             rd.Visible = true;
             rd.BringToFront();
             rd.FullScreenUpdate();
+            rd.Enabled = true;
             // Change the Form's title to match desktop name
         }
 

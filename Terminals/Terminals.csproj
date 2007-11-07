@@ -100,7 +100,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\VMRCActiveXClient\VMRCClient.dll</HintPath>
     </Reference>
-    <Reference Include="VncSharp, Version=0.88.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="VncSharp, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\VncSharp.dll</HintPath>
     </Reference>
