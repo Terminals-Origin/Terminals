@@ -448,6 +448,7 @@ namespace Terminals
                 this["autoSwitchOnCapture"] = value;
             }
         }
+
         [ConfigurationProperty("showWizard", DefaultValue = true)]
         public bool ShowWizard
         {

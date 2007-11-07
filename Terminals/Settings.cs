@@ -837,7 +837,20 @@ namespace Terminals
             }
         }
 
-
+        public static string ToolStripSettingsFile = "ToolStrip.settings";
+        public static ToolStripSettings ToolbarSettings {
+            get {
+                ToolStripSettings settings = null;
+                if(System.IO.File.Exists(ToolStripSettingsFile)) {
+                    string s = System.IO.File.ReadAllText(ToolStripSettingsFile);
+                    settings = ToolStripSettings.LoadFromString(s);
+                }
+                return settings;
+            }
+            set {
+                System.IO.File.WriteAllText(ToolStripSettingsFile, value.ToString());
+            }
+        }
         public static bool ShowWizard
         {
             get
@@ -891,5 +904,55 @@ namespace Terminals
                 configuration.Save();
             }
         }
+    }
+    public class ToolStripSettings : List<ToolStripSetting> {
+        public ToolStripSettings() { }
+        public static ToolStripSettings LoadFromString(string Settings) {
+            return (ToolStripSettings)Unified.Serialize.DeSerializeXML(Settings, typeof(ToolStripSettings), false);
+        }
+        public override string ToString() {
+            string val = "";
+            using(System.IO.MemoryStream stm = Unified.Serialize.SerializeXML(this, typeof(ToolStripSettings), false)) {
+                if(stm != null) {
+                    if(stm.CanSeek && stm.Position > 0) stm.Position = 0;
+                    using(System.IO.StreamReader sr = new StreamReader(stm)) {
+                        val = sr.ReadToEnd();                        
+                    }
+                }
+            }
+            return val;
+        }
+    }
+    public class ToolStripSetting {
+        private string name;
+
+        public string Name {
+            get { return name; }
+            set { name = value; }
+        }
+
+        private string dock;
+
+        public string Dock {
+            get { return dock; }
+            set { dock = value; }
+        }
+
+        private int left;
+
+        public int Left {
+            get { return left; }
+            set { left = value; }
+        }
+
+        private int top;
+
+        public int Top {
+            get { return top; }
+            set { top = value; }
+        }
+	
+	
+	
     }
 }

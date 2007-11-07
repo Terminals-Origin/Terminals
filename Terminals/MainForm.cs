@@ -32,6 +32,7 @@ namespace Terminals {
 
         public MainForm() {
             try {
+                
                 //check for wizard
                 if(Settings.ShowWizard) {
                     //settings file doesnt exist, wizard!
@@ -46,7 +47,7 @@ namespace Terminals {
                 //screenCapture = new ScreenCapture(imageFormatHandler);
                 _formSettings = new FormSettings(this);
                 InitializeComponent();
-                
+
                 //ToolStripManager.Renderer = new Office2007Renderer.Office2007Renderer();
                 
 
@@ -63,8 +64,9 @@ namespace Terminals {
                 tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
+                System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
 
-                
+                LoadWindowState();
             } catch(Exception exc) {
                 Terminals.Logging.Log.Info("", exc);
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
@@ -250,10 +252,6 @@ namespace Terminals {
 
         }
 
-        private void MainForm_Load(object sender, EventArgs e) {
-            System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
-        }
-
         void NetworkChange_NetworkAvailabilityChanged(object sender, System.Net.NetworkInformation.NetworkAvailabilityEventArgs e) {
             MainWindowNotifyIcon.BalloonTipText = (e.IsAvailable ? "Connected" : "Not Connected");
             MainWindowNotifyIcon.BalloonTipTitle = "Network Availability Changed";
@@ -324,6 +322,75 @@ namespace Terminals {
             Settings.ClearSavedConnectionsList();
         }
 
+
+        private void SaveWindowState() {            
+            //ToolStripManager.SaveSettings(this);
+            ToolStripSettings newSettings = new ToolStripSettings();
+            foreach(ToolStrip strip in this.toolStripContainer.TopToolStripPanel.Controls) {
+                ToolStripSetting setting = new ToolStripSetting();
+                setting.Dock = "Top";
+                setting.Left = strip.Left;
+                setting.Top = strip.Top;
+                setting.Name = strip.Name;
+                newSettings.Add(setting);
+            }
+            foreach(ToolStrip strip in this.toolStripContainer.LeftToolStripPanel.Controls) {
+                ToolStripSetting setting = new ToolStripSetting();
+                setting.Dock = "Left";
+                setting.Left = strip.Left;
+                setting.Top = strip.Top;
+                setting.Name = strip.Name;
+                newSettings.Add(setting);
+            }
+            foreach(ToolStrip strip in this.toolStripContainer.RightToolStripPanel.Controls) {
+                ToolStripSetting setting = new ToolStripSetting();
+                setting.Dock = "Right";
+                setting.Left = strip.Left;
+                setting.Top = strip.Top;
+                setting.Name = strip.Name;
+                newSettings.Add(setting);
+            }
+            
+            foreach(ToolStrip strip in this.toolStripContainer.BottomToolStripPanel.Controls) {
+                ToolStripSetting setting = new ToolStripSetting();
+                setting.Dock = "Bottom";
+                setting.Left = strip.Left;
+                setting.Top = strip.Top;
+                setting.Name = strip.Name;
+                newSettings.Add(setting);
+            }
+
+            Settings.ToolbarSettings = newSettings;
+        }
+        public void LoadWindowState() {
+            //ToolStripManager.LoadSettings(this);
+            ToolStripSettings newSettings = Settings.ToolbarSettings;
+            if(newSettings != null && newSettings.Count > 0) {
+                foreach(ToolStripSetting setting in newSettings) {
+                    ToolStrip strip = null;
+                    if(setting.Name == toolbarStd.Name) {
+                        strip = toolbarStd;
+                    } else if(setting.Name == favoriteToolBar.Name) {
+                        strip = favoriteToolBar;
+                    } else if(setting.Name == SpecialCommandsToolStrip.Name) {
+                        strip = SpecialCommandsToolStrip;
+                    }
+                    if(strip != null) {
+                        if(setting.Dock == "Top") {
+                            this.toolStripContainer.TopToolStripPanel.Controls.Add(strip);
+                        } else if(setting.Dock == "Left") {
+                            this.toolStripContainer.LeftToolStripPanel.Controls.Add(strip);
+                        } else if(setting.Dock == "Right") {
+                            this.toolStripContainer.RightToolStripPanel.Controls.Add(strip);
+                        } else if(setting.Dock == "Bottom") {
+                            this.toolStripContainer.BottomToolStripPanel.Controls.Add(strip);
+                        }
+                        strip.Left = setting.Left;
+                        strip.Top = setting.Top;
+                    }
+                }
+            }
+        }
         public void UpdateControls() {
             tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
             addTerminalToGroupToolStripMenuItem.Enabled = (tcTerminals.SelectedItem != null);
@@ -952,7 +1019,7 @@ namespace Terminals {
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            if(FullScreen) FullScreen = false;
+            if(FullScreen) FullScreen = false;           
             if(tcTerminals.Items.Count > 0) {
                 if(Settings.ShowConfirmDialog) {
                     SaveActiveConnectionsForm frmSaveActiveConnections = new SaveActiveConnectionsForm();
@@ -969,10 +1036,9 @@ namespace Terminals {
                     SaveActiveConnections();
                 }
             }
-            
+            SaveWindowState();
 
         }
-
        
         private void timerHover_Tick(object sender, EventArgs e) {
             if(timerHover.Enabled) {
