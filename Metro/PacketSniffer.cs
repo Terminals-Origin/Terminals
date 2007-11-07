@@ -398,6 +398,7 @@ namespace Metro
 			}
 		}
 		
+        private bool Wireless = false;
 		
 		/// <summary>
 		///		Start listening for packets.
@@ -432,10 +433,33 @@ namespace Metro
 			int outBuff		= 1;
 			
 			// set the socket to receive all packets
-			m_state.SocketObject.IOControl (RecieveAll, 
-											BitConverter.GetBytes(inBuff), 
-											BitConverter.GetBytes(outBuff));
-											
+            //0x4004667F
+            int ra = unchecked((int)0x4004667F);
+            if(!Wireless) {
+                try {
+                    m_state.SocketObject.IOControl(RecieveAll,
+                                                    BitConverter.GetBytes(inBuff),
+                                                    BitConverter.GetBytes(outBuff));
+                } catch(Exception exc) {
+                    //maybe a wireless card?
+                    m_state.SocketObject.IOControl(ra,
+                                    BitConverter.GetBytes(inBuff),
+                                    BitConverter.GetBytes(outBuff));
+                    Wireless=true;
+                }			
+            } else {
+                try {
+                    //maybe a wireless card?
+                    m_state.SocketObject.IOControl(ra,
+                                    BitConverter.GetBytes(inBuff),
+                                    BitConverter.GetBytes(outBuff));
+                } catch(Exception exc) {
+                    m_state.SocketObject.IOControl(RecieveAll,
+                                                    BitConverter.GetBytes(inBuff),
+                                                    BitConverter.GetBytes(outBuff));
+                    Wireless=false;
+                }			
+            }
 			// save some state variables
 			m_isRunning = true;
 			m_mode		= mode;
