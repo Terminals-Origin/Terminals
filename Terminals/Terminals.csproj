@@ -190,19 +190,13 @@
     <Compile Include="Connections\VNCConnection.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Docking\AllowedBorders.cs" />
-    <Compile Include="Docking\DockLocation.cs" />
-    <Compile Include="Docking\ToolBarDockArea.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Docking\ToolBarDockHolder.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Docking\ToolBarManager.cs" />
     <Compile Include="DPAPI.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Network\DNS\Adapter.cs" />
     <Compile Include="Network\DNS\AdapterInfo.cs" />
+    <Compile Include="OfficeRender\Office2007ColorTable.cs" />
+    <Compile Include="OfficeRender\Office2007Helpers.cs" />
+    <Compile Include="OfficeRender\Office2007Renderer.cs" />
     <Compile Include="Wizard\CommonOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -369,7 +363,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -427,14 +421,6 @@
     <EmbeddedResource Include="Connections\TabbedTools.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TabbedTools.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Docking\ToolBarDockArea.resx">
-      <DependentUpon>ToolBarDockArea.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Docking\ToolBarDockHolder.resx">
-      <DependentUpon>ToolBarDockHolder.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ManageToolStrip.resx">
       <SubType>Designer</SubType>

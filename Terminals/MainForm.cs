@@ -12,7 +12,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using TabControl;
 using System.IO;
-using rpaulo.toolbar;
 
 
 namespace Terminals {
@@ -31,15 +30,9 @@ namespace Terminals {
         /*private ScreenCapture screenCapture;
         private PictureBox previewPictureBox;*/
 
-        ToolBarManager toolBarManager;
-        //ToolBarDockHolder MainMenuHolder;
-        ToolBarDockHolder StandardToolbarHolder;
-        ToolBarDockHolder FavoriteToolBarHolder;
-        ToolBarDockHolder SpecialCommandsToolBarHolder;
         public MainForm() {
             try {
                 //check for wizard
-
                 if(Settings.ShowWizard) {
                     //settings file doesnt exist, wizard!
                     //this.Hide();
@@ -53,24 +46,9 @@ namespace Terminals {
                 //screenCapture = new ScreenCapture(imageFormatHandler);
                 _formSettings = new FormSettings(this);
                 InitializeComponent();
-
-                toolBarManager = new ToolBarManager(this.panel1, this);
-
-                //MainMenuHolder = toolBarManager.AddControl(this.MainMenuStrip);
-                //MainMenuHolder.ToolbarTitle = "Main Menu";
-                StandardToolbarHolder = toolBarManager.AddControl(this.toolbarStd, DockStyle.Top, this.panel1, DockStyle.Top);
-                StandardToolbarHolder.ToolbarTitle = "Standard Toolbar";
-                StandardToolbarHolder.Visible = true;
                 
-
-                FavoriteToolBarHolder = toolBarManager.AddControl(this.favoriteToolBar, DockStyle.Top, this.panel1, DockStyle.Top);
-                FavoriteToolBarHolder.ToolbarTitle = "Favorites";
-                FavoriteToolBarHolder.Visible = false;
-
-                SpecialCommandsToolBarHolder = toolBarManager.AddControl(this.SpecialCommandsToolStrip, DockStyle.Top, this.panel1, DockStyle.Top);
-                SpecialCommandsToolBarHolder.ToolbarTitle = "Shortcuts";
-                SpecialCommandsToolBarHolder.Visible = false;
-                toolBarManager.MainForm.BackColor = this.toolStripContainer.ContentPanel.BackColor;
+                //ToolStripManager.Renderer = new Office2007Renderer.Office2007Renderer();
+                
 
 
                 LoadFavorites();
@@ -86,7 +64,7 @@ namespace Terminals {
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
 
-                LoadToolbarSettings();
+                
             } catch(Exception exc) {
                 Terminals.Logging.Log.Info("", exc);
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
@@ -96,23 +74,6 @@ namespace Terminals {
 
 
 
-       
-        private void LoadToolbarSettings() {
-            if(toolBarManager != null) {
-                string fileName = "toolbars.settings";
-                 
-                if(File.Exists(fileName)) {
-                    StreamReader reader = new StreamReader(fileName);
-                    Debug.Assert(reader != null);
-                    if(reader != null) {
-                        toolBarManager.Load(reader);
-
-                        reader.Close();
-                        reader = null;
-                    }
-                }
-            }
-        }
         void LoadSpecialCommands() {
             SpecialCommandsToolStrip.Items.Clear();
             SpecialCommandConfigurationElementCollection cmdList = Settings.SpecialCommands;
@@ -441,7 +402,7 @@ namespace Terminals {
                     favoriteToolBar.Items.Add(favoriteBtn);
                     favvisible = true;
                 }
-                FavoriteToolBarHolder.Visible = favvisible;
+                favoriteToolBar.Visible = favvisible;
             } catch(Exception exc) {
                 Terminals.Logging.Log.Info("", exc);
                 System.Windows.Forms.MessageBox.Show("LoadFavoritesToolbar:" + exc.ToString());
@@ -762,17 +723,18 @@ namespace Terminals {
         bool stdToolbarState = true;
         bool specialToolbarState = true;
         bool favToolbarState = true;
+
         private void HideToolBar(bool fullScreen) {
             if(!fullScreen) {
-                StandardToolbarHolder.Visible = stdToolbarState;
-                SpecialCommandsToolBarHolder.Visible = specialToolbarState;
-                FavoriteToolBarHolder.Visible = favToolbarState;
+                toolbarStd.Visible = stdToolbarState;
+                SpecialCommandsToolStrip.Visible = specialToolbarState;
+                favoriteToolBar.Visible = favToolbarState;
+            } else {
+                toolbarStd.Visible = false;
+                SpecialCommandsToolStrip.Visible = false;
+                favoriteToolBar.Visible = false;
             }
 
-            this.toolBarManager.Top.Visible = !fullScreen;
-            this.toolBarManager.Left.Visible = !fullScreen;
-            this.toolBarManager.Right.Visible = !fullScreen;
-            this.toolBarManager.Bottom.Visible = !fullScreen;
         }
 
         private void SetFullScreen(bool fullScreen) {
@@ -780,14 +742,13 @@ namespace Terminals {
             tcTerminals.ShowBorder = !fullScreen;
 
             if(fullScreen) {
-                stdToolbarState = StandardToolbarHolder.Visible;
-                specialToolbarState = SpecialCommandsToolBarHolder.Visible;
-                favToolbarState = FavoriteToolBarHolder.Visible;
+                stdToolbarState = toolbarStd.Visible;
+                specialToolbarState = SpecialCommandsToolStrip.Visible;
+                favToolbarState = favoriteToolBar.Visible;
             }
             HideToolBar(fullScreen);
 
             if(fullScreen) {
-                toolbarStd.Visible = false;
                 menuStrip.Visible = false;
                 this.lastLocation = this.Location;
                 this.lastSize = this.RestoreBounds.Size;
@@ -813,7 +774,6 @@ namespace Terminals {
                     this.Size = this.lastSize;
                 }
                 menuStrip.Visible = true;
-                toolbarStd.Visible = true;
             }
             this.fullScreen = fullScreen;
             if(CurrentConnection != null) this.CurrentConnection.ChangeDesktopSize(DesktopSize.FullScreen);
@@ -1009,24 +969,11 @@ namespace Terminals {
                     SaveActiveConnections();
                 }
             }
-            SaveToolbarSettings();
+            
 
         }
 
-        private void SaveToolbarSettings() {
-            if(toolBarManager != null) {
-                string fileName = "toolbars.settings";
-
-                StreamWriter writer = new StreamWriter(fileName);
-                Debug.Assert(writer != null);
-                if(writer != null) {
-                    toolBarManager.Save(writer);
-
-                    writer.Close();
-                    writer = null;
-                }
-            }
-        }
+       
         private void timerHover_Tick(object sender, EventArgs e) {
             if(timerHover.Enabled) {
                 timerHover.Enabled = false;
@@ -1465,25 +1412,23 @@ namespace Terminals {
         //}
 
         private void standardToolbarToolStripMenuItem_Click(object sender, EventArgs e) {
-            StandardToolbarHolder.Visible = !StandardToolbarHolder.Visible;
-            standardToolbarToolStripMenuItem.Checked = StandardToolbarHolder.Visible;
+            toolbarStd.Visible = !toolbarStd.Visible;
+        
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e) {
-            FavoriteToolBarHolder.Visible = !FavoriteToolBarHolder.Visible;
-            toolStripMenuItem4.Checked = FavoriteToolBarHolder.Visible;
+            favoriteToolBar.Visible = !favoriteToolBar.Visible;
         }
 
         private void shortcutsToolStripMenuItem_Click(object sender, EventArgs e) {
-            SpecialCommandsToolBarHolder.Visible = !SpecialCommandsToolBarHolder.Visible;
-            shortcutsToolStripMenuItem.Checked = SpecialCommandsToolBarHolder.Visible;
+            SpecialCommandsToolStrip.Visible = !SpecialCommandsToolStrip.Visible;
         }
 
         private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e) {
-            this.shortcutsToolStripMenuItem.Checked = this.SpecialCommandsToolBarHolder.Visible;
+            this.shortcutsToolStripMenuItem.Checked = this.SpecialCommandsToolStrip.Visible;
             //this.mainMenuToolStripMenuItem.Checked = this.MainMenuHolder.Visible;
-            this.toolStripMenuItem4.Checked = this.FavoriteToolBarHolder.Visible;
-            this.standardToolbarToolStripMenuItem.Checked = this.StandardToolbarHolder.Visible;
+            this.toolStripMenuItem4.Checked = this.favoriteToolBar.Visible;
+            this.standardToolbarToolStripMenuItem.Checked = this.toolbarStd.Visible;
 
         }
 
