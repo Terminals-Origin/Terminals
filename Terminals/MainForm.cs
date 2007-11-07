@@ -32,7 +32,7 @@ namespace Terminals {
 
         public MainForm() {
             try {
-                
+
                 //check for wizard
                 if(Settings.ShowWizard) {
                     //settings file doesnt exist, wizard!
@@ -49,7 +49,7 @@ namespace Terminals {
                 InitializeComponent();
 
                 //ToolStripManager.Renderer = new Office2007Renderer.Office2007Renderer();
-                
+
 
 
                 LoadFavorites();
@@ -173,8 +173,21 @@ namespace Terminals {
                 FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
 
                 Dictionary<string, ToolStripMenuItem> tagTools = new Dictionary<string, ToolStripMenuItem>();
-
+                SortedDictionary<string, ToolStripMenuItem> sortedList = new SortedDictionary<string, ToolStripMenuItem>();
+                ToolStripMenuItem sortedMenu = new ToolStripMenuItem("Alphabetical");
+                sortedMenu.DropDownItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
+                
                 foreach(FavoriteConfigurationElement favorite in favorites) {
+
+                    System.Windows.Forms.ToolStripMenuItem sortedItem = new ToolStripMenuItem();
+                    sortedItem.Text = favorite.Name;
+                    sortedItem.Tag = "favorite";
+                    if(favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                        sortedItem.Image = Image.FromFile(favorite.ToolBarIcon);
+
+                    sortedList.Add(favorite.Name, sortedItem);
+
+
                     if(favorite.TagList != null && favorite.TagList.Count > 0) {
                         foreach(string tag in favorite.TagList) {
                             System.Windows.Forms.ToolStripMenuItem parent;
@@ -209,7 +222,14 @@ namespace Terminals {
 
                     }
                 }
+                if(sortedList != null && sortedList.Count > 0) {
+                    QuickContextMenu.Items.Add(sortedMenu);
 
+                    foreach(string name in sortedList.Keys) {
+                        sortedMenu.DropDownItems.Add(sortedList[name]);
+                    }
+                }
+                
                 QuickContextMenu.Items.Add("-");
                 QuickContextMenu.Items.Add("&Exit");
 
@@ -322,10 +342,10 @@ namespace Terminals {
             Settings.ClearSavedConnectionsList();
         }
 
-        private void SaveToolStripPanel(ToolStripPanel Panel,string Position, ToolStripSettings newSettings) {
+        private void SaveToolStripPanel(ToolStripPanel Panel, string Position, ToolStripSettings newSettings) {
             int rowIndex = 0;
             foreach(ToolStripPanelRow row in Panel.Rows) {
-                SaveToolStripRow(row,newSettings,Position, rowIndex);
+                SaveToolStripRow(row, newSettings, Position, rowIndex);
                 rowIndex++;
             }
         }
@@ -345,7 +365,7 @@ namespace Terminals {
             }
         }
 
-        private void SaveWindowState() {            
+        private void SaveWindowState() {
             //ToolStripManager.SaveSettings(this);
             ToolStripSettings newSettings = new ToolStripSettings();
             SaveToolStripPanel(this.toolStripContainer.TopToolStripPanel, "Top", newSettings);
@@ -1014,7 +1034,7 @@ namespace Terminals {
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e) {
-            if(FullScreen) FullScreen = false;           
+            if(FullScreen) FullScreen = false;
             if(tcTerminals.Items.Count > 0) {
                 if(Settings.ShowConfirmDialog) {
                     SaveActiveConnectionsForm frmSaveActiveConnections = new SaveActiveConnectionsForm();
@@ -1034,7 +1054,7 @@ namespace Terminals {
             SaveWindowState();
 
         }
-       
+
         private void timerHover_Tick(object sender, EventArgs e) {
             if(timerHover.Enabled) {
                 timerHover.Enabled = false;
@@ -1474,7 +1494,7 @@ namespace Terminals {
 
         private void standardToolbarToolStripMenuItem_Click(object sender, EventArgs e) {
             toolbarStd.Visible = !toolbarStd.Visible;
-        
+
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e) {
@@ -1685,7 +1705,7 @@ namespace Terminals {
             }
         }
 
-   
+
     }
 
     public class TerminalTabControlItem : TabControlItem {
