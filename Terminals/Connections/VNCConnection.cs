@@ -18,7 +18,7 @@ namespace Terminals.Connections {
 
             string pass = Favorite.Password;
             if(pass == null || pass == "") pass = Settings.DefaultPassword;
-            this.vncPassword = pass;
+            if(pass!=null && pass!="") this.vncPassword = pass;
 
             //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
             rd.Parent = base.TerminalTabPage;
@@ -29,8 +29,6 @@ namespace Terminals.Connections {
             rd.GetPassword = VNCPassword;
             Text = "Connecting to VNC Server...";
             rd.Connect(Favorite.ServerName);
-            rd.Visible = true;
-            rd.FullScreenUpdate();
             rd.BringToFront();
             return true;
         }
@@ -42,8 +40,10 @@ namespace Terminals.Connections {
         void rd_ConnectComplete(object sender, VncSharp.ConnectEventArgs e) {
             // Update Form to match geometry of remote desktop
             //ClientSize = new Size(e.DesktopWidth, e.DesktopHeight);
+
             connected = true;
             VncSharp.RemoteDesktop rd = (VncSharp.RemoteDesktop)sender;
+            rd.Visible = true;
             rd.BringToFront();
             rd.FullScreenUpdate();
             // Change the Form's title to match desktop name

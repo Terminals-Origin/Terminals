@@ -63,7 +63,7 @@ namespace Terminals
             string oldName = favorite.Name;
             if (frmNewTerminal.ShowDialog() == DialogResult.OK)
             {
-                Settings.DeleteFavorite(oldName);
+                if(oldName!=favorite.Name) Settings.DeleteFavorite(oldName);
                 LoadConnections();
             }
         }

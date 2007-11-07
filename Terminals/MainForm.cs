@@ -270,7 +270,7 @@ namespace Terminals
                 QuickContextMenu.Items.Add("-");
                 QuickContextMenu.Items.Add("&Exit");
 
-                QuickContextMenu.Show(tcTerminals, e.Location);
+                if(tcTerminals!=null) QuickContextMenu.Show(tcTerminals, e.Location);
             }
         }
 
@@ -666,7 +666,7 @@ namespace Terminals
                 tcTerminals.Items.Remove(terminalTabPage);
                 tcTerminals.SelectedItem = null;
                 terminalTabPage.Dispose();
-                tcTerminals = null;
+                //tcTerminals = null;
                 System.Windows.Forms.MessageBox.Show(exc.Message);
             }
         }
