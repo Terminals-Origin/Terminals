@@ -99,7 +99,7 @@ namespace Terminals.Wizard
                     Terminals.Connections.ConnectionManager.SSHPort, 
                     Terminals.Connections.ConnectionManager.TelnetPort, 
                     Terminals.Connections.ConnectionManager.VNCVMRCPort 
-                } , 10000, 1000, true);
+                } , 1000, 100, true);
                 scannerCount++;
             }
             catch (Exception e) { 
