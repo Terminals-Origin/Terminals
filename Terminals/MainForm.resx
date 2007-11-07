@@ -138,8 +138,53 @@
         8N/nDzLhp+l4R/+dAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="vncActionButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+        AAAASUVORK5CYII=
+</value>
+  </data>
   <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>448, 86</value>
+  </metadata>
+  <metadata name="favoriteToolBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>593, 86</value>
+  </metadata>
+  <metadata name="SpecialCommandsToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 6</value>
+  </metadata>
+  <metadata name="ShortcutsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>832, 22</value>
+  </metadata>
+  <metadata name="tsRemoteToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>448, 2</value>
   </metadata>
   <metadata name="cmsTagConnections.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>153, 86</value>
@@ -206,18 +251,6 @@
   </data>
   <metadata name="cmsFavorites.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>775, 12</value>
-  </metadata>
-  <metadata name="favoriteToolBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>593, 86</value>
-  </metadata>
-  <metadata name="SpecialCommandsToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 6</value>
-  </metadata>
-  <metadata name="ShortcutsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>832, 22</value>
-  </metadata>
-  <metadata name="tsRemoteToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>448, 2</value>
   </metadata>
   <data name="toolStripButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

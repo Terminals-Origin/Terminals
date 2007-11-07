@@ -10,10 +10,14 @@ namespace Terminals.Connections {
         public override void ChangeDesktopSize(Terminals.DesktopSize Size) {
         }
 
+        public void SendSpecialKeys(VncSharp.SpecialKeys Keys) {
+
+            rd.SendSpecialKeys(Keys);
+        }
         public override bool Connected { get { return connected; } }
         VncSharp.RemoteDesktop rd = new VncSharp.RemoteDesktop();
         public override bool Connect() {           
-
+            
             Controls.Add(rd);
 
             string pass = Favorite.Password;

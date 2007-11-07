@@ -79,6 +79,12 @@ namespace Terminals {
             this.VMRCAdminSwitchButton = new System.Windows.Forms.ToolStripButton();
             this.VMRCViewOnlyButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.vncActionButton = new System.Windows.Forms.ToolStripDropDownButton();
+            this.sendALTKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendALTF4KeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendCTRLKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sendCTRLESCKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sentCTRLALTDELETEKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.manageToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
@@ -155,6 +161,7 @@ namespace Terminals {
             // 
             // menuStrip
             // 
+            this.menuStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.viewToolStripMenuItem,
@@ -165,7 +172,7 @@ namespace Terminals {
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(436, 24);
+            this.menuStrip.Size = new System.Drawing.Size(344, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -444,11 +451,12 @@ namespace Terminals {
             this.toolStripSeparator4,
             this.VMRCAdminSwitchButton,
             this.VMRCViewOnlyButton,
-            this.toolStripButton2});
+            this.toolStripButton2,
+            this.vncActionButton});
             this.toolbarStd.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.toolbarStd.Location = new System.Drawing.Point(7, 0);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(600, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(660, 25);
             this.toolbarStd.Stretch = true;
             this.toolbarStd.TabIndex = 2;
             // 
@@ -628,6 +636,57 @@ namespace Terminals {
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton2.Text = "Networking Tools";
             this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
+            // vncActionButton
+            // 
+            this.vncActionButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.vncActionButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sendALTKeyToolStripMenuItem,
+            this.sendALTF4KeyToolStripMenuItem,
+            this.sendCTRLKeyToolStripMenuItem,
+            this.sendCTRLESCKeysToolStripMenuItem,
+            this.sentCTRLALTDELETEKeysToolStripMenuItem});
+            this.vncActionButton.Image = ((System.Drawing.Image)(resources.GetObject("vncActionButton.Image")));
+            this.vncActionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.vncActionButton.Name = "vncActionButton";
+            this.vncActionButton.Size = new System.Drawing.Size(29, 22);
+            this.vncActionButton.Text = "toolStripButton4";
+            this.vncActionButton.Visible = false;
+            // 
+            // sendALTKeyToolStripMenuItem
+            // 
+            this.sendALTKeyToolStripMenuItem.Name = "sendALTKeyToolStripMenuItem";
+            this.sendALTKeyToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.sendALTKeyToolStripMenuItem.Text = "Send ALT Key";
+            this.sendALTKeyToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
+            // 
+            // sendALTF4KeyToolStripMenuItem
+            // 
+            this.sendALTF4KeyToolStripMenuItem.Name = "sendALTF4KeyToolStripMenuItem";
+            this.sendALTF4KeyToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.sendALTF4KeyToolStripMenuItem.Text = "Send ALT-F4 Keys";
+            this.sendALTF4KeyToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
+            // 
+            // sendCTRLKeyToolStripMenuItem
+            // 
+            this.sendCTRLKeyToolStripMenuItem.Name = "sendCTRLKeyToolStripMenuItem";
+            this.sendCTRLKeyToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.sendCTRLKeyToolStripMenuItem.Text = "Send CTRL Key";
+            this.sendCTRLKeyToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
+            // 
+            // sendCTRLESCKeysToolStripMenuItem
+            // 
+            this.sendCTRLESCKeysToolStripMenuItem.Name = "sendCTRLESCKeysToolStripMenuItem";
+            this.sendCTRLESCKeysToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.sendCTRLESCKeysToolStripMenuItem.Text = "Send CTRL-ESC Keys";
+            this.sendCTRLESCKeysToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
+            // 
+            // sentCTRLALTDELETEKeysToolStripMenuItem
+            // 
+            this.sentCTRLALTDELETEKeysToolStripMenuItem.Name = "sentCTRLALTDELETEKeysToolStripMenuItem";
+            this.sentCTRLALTDELETEKeysToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.sentCTRLALTDELETEKeysToolStripMenuItem.Text = "Sent CTRL-ALT-DEL Keys";
+            this.sentCTRLALTDELETEKeysToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
             // 
             // contextMenuStrip1
             // 
@@ -1282,5 +1341,11 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripMenuItem traceRouteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tSAdminToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.ToolStripDropDownButton vncActionButton;
+        private System.Windows.Forms.ToolStripMenuItem sendALTKeyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendALTF4KeyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendCTRLKeyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sendCTRLESCKeysToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem sentCTRLALTDELETEKeysToolStripMenuItem;
     }
 }
