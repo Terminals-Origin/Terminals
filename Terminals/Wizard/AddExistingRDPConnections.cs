@@ -15,19 +15,9 @@ namespace Terminals.Wizard
             InitializeComponent();
             this.dataGridView1.Visible = false;
             miv = new MethodInvoker(this.UpdateConnections);
-            timer1.Enabled = true;
-            timer1.Start();
         }
 
         MethodInvoker miv;
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            //if(this.pendingRequests <= 0)
-            //{
-            //    this.timer1.Stop();
-            //    this.progressBar1.Visible = false;
-            //}
-        }
 
         public FavoriteConfigurationElementCollection DiscoFavs = new FavoriteConfigurationElementCollection();
         private void AddExistingRDPConnections_Load(object sender, EventArgs e)
@@ -46,6 +36,7 @@ namespace Terminals.Wizard
                     foreach(string name in key.GetValueNames())
                     {
                         string value = key.GetValue(name).ToString();
+                        //System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(AddFavorite), value);
                         AddFavorite(value);
                     }
                 }
@@ -75,12 +66,14 @@ namespace Terminals.Wizard
         {
             try
             {
+                pendingRequests = 254 * 5;
                 string ipAddress = endPointAddress.ToString();
                 string start = ipAddress.Substring(0, ipAddress.LastIndexOf('.')) + ".";
                 for(int x = 1; x < 255; x++)
                 {
                     System.Net.IPAddress address = System.Net.IPAddress.Parse(start + x.ToString());
                     System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanMachine), address);
+                    
                 }
             }
             catch (Exception e) { Terminals.Logging.Log.Info("", e); }
@@ -100,15 +93,24 @@ namespace Terminals.Wizard
 
                 System.Net.IPAddress address = (System.Net.IPAddress)machine;
                 scannerList.Add(scanner);
-                scanner.StartScan(address, new ushort[] { Terminals.Connections.ConnectionManager.ICAPort, Terminals.Connections.ConnectionManager.RDPPort, Terminals.Connections.ConnectionManager.SSHPort, Terminals.Connections.ConnectionManager.TelnetPort, Terminals.Connections.ConnectionManager.VNCVMRCPort }, 1000, 100, true);
-                lock(uiElementsLock)
-                {
-                    pendingRequests = pendingRequests + 5;
-                    scannerCount++;
-                }
-                this.Invoke(miv);
+                scanner.StartScan(address, new ushort[] { 
+                    Terminals.Connections.ConnectionManager.ICAPort, 
+                    Terminals.Connections.ConnectionManager.RDPPort, 
+                    Terminals.Connections.ConnectionManager.SSHPort, 
+                    Terminals.Connections.ConnectionManager.TelnetPort, 
+                    Terminals.Connections.ConnectionManager.VNCVMRCPort 
+                } , 10000, 1000, true);
+                scannerCount++;
             }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
+            catch (Exception e) { 
+                //its safe to ignore exceptions here as well  
+                //Terminals.Logging.Log.Info("", e); 
+                lock(uiElementsLock) {
+                    pendingRequests = pendingRequests - 5;
+                }
+            }
+            this.Invoke(miv);
+            Application.DoEvents();
 
         }
         object uiElementsLock = new object();
@@ -154,40 +156,34 @@ namespace Terminals.Wizard
                     string protocol = Terminals.Connections.ConnectionManager.GetPortName(remoteEndPoint.Port, true);
                     AddFavorite(remoteEndPoint.Address.ToString(), remoteEndPoint.Address.ToString() + "_" + protocol, remoteEndPoint.Port);
                 }
-                if(pendingRequests <= 0)
-                {
-                    this.timer1.Stop();
-
-                    //this.progressBar1.Value = this.progressBar1.Maximum;
-                    if(OnDiscoveryCompleted != null) OnDiscoveryCompleted();
-                }
 
                 this.Invoke(miv);
             }
             catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
+        public void AddFavorite(object server) {
+            string s = (string)server;
+            AddFavorite(s, s, Terminals.Connections.ConnectionManager.RDPPort);
+        }
+
         public void AddFavorite(string server)
         {
             AddFavorite(server, server, Terminals.Connections.ConnectionManager.RDPPort);
         }
-        public void AddFavorite(string server, string name, int Port)
-        {
-            try
-            {
+        public void AddFavorite(string server, string name, int Port) {
+           
+            try {
                 FavoriteConfigurationElement elm = new FavoriteConfigurationElement();
 
-                try
-                {
+                try {
                     System.Net.IPAddress address;
-                    if(System.Net.IPAddress.TryParse(server, out address))
-                    {
+                    if(System.Net.IPAddress.TryParse(server, out address)) {
                         name = System.Net.Dns.GetHostByAddress(address).HostName;
                     }
                     name = string.Format("{0}_{1}", name, Terminals.Connections.ConnectionManager.GetPortName(Port, true));
-                }
-                catch(Exception exc)
-                {
-                    Terminals.Logging.Log.Info("", exc); 
+                } catch(Exception exc) {
+                    //lets not log dns lookups!
+                    //Terminals.Logging.Log.Info("", exc); 
                 }
 
                 elm.Name = name;
@@ -197,27 +193,27 @@ namespace Terminals.Wizard
                 elm.Tags = "Discovered Connections";
                 elm.Port = Port;
                 elm.Protocol = Terminals.Connections.ConnectionManager.GetPortName(Port, true);
-                lock(DiscoFavs)
-                {
+                lock(DiscoFavs) {
                     DiscoFavs.Add(elm);
                 }
-                this.Invoke(miv);
-            }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
+                //if(this.IsHandleCreated) this.Invoke(miv);
+            } catch(Exception e) { Terminals.Logging.Log.Info("", e); }
+
         }
-        private void UpdateConnections()
-        {
-            try
-            {
+        private void UpdateConnections() {
+            try {
                 ConnectionsCountLabel.Text = DiscoFavs.Count.ToString();
                 PendingRequestsLabel.Text = pendingRequests.ToString();
-                if(pendingRequests <= 0)
-                {
-                    this.progressBar1.Visible = false;
+
+                if(pendingRequests <= 0) {
+                    //this.progressBar1.Value = this.progressBar1.Maximum;
+                    if(OnDiscoveryCompleted != null) {
+                        OnDiscoveryCompleted();
+                    }
                 }
+
                 Application.DoEvents();
-            }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
+            } catch(Exception e) { Terminals.Logging.Log.Info("", e); }
         }
         private void ConnectionsCountLabel_Click(object sender, EventArgs e)
         {
@@ -238,6 +234,7 @@ namespace Terminals.Wizard
             }
             catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
         }
+
 
     }
     public class BindingElement

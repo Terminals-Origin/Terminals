@@ -28,12 +28,10 @@ namespace Terminals.Wizard
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label4 = new System.Windows.Forms.Label();
             this.ConnectionsCountLabel = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
@@ -77,11 +75,6 @@ namespace Terminals.Wizard
             this.label3.Size = new System.Drawing.Size(249, 26);
             this.label3.TabIndex = 4;
             this.label3.Text = "Welcome to Terminals";
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // label4
             // 
@@ -161,7 +154,6 @@ namespace Terminals.Wizard
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label ConnectionsCountLabel;
         private System.Windows.Forms.DataGridView dataGridView1;
