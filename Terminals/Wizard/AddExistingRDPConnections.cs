@@ -77,6 +77,7 @@ namespace Terminals.Wizard
                 }
             }
             catch (Exception e) { Terminals.Logging.Log.Info("", e); }
+            this.Invoke(miv);
         }
 
         List<Metro.Scanning.TcpSynScanner> scannerList = new List<Metro.Scanning.TcpSynScanner>(1275);
