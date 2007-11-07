@@ -937,6 +937,14 @@ namespace Terminals
             get { return visible; }
             set { visible = value; }
         }
+
+        private int row;
+
+        public int Row {
+            get { return row; }
+            set { row = value; }
+        }
+	
 	
         private string dock;
 
