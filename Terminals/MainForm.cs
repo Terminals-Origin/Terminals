@@ -42,7 +42,6 @@ namespace Terminals {
                     Settings.ShowWizard = false;
                 }
 
-
                 imageFormatHandler = new ImageFormatHandler();
                 //screenCapture = new ScreenCapture(imageFormatHandler);
                 _formSettings = new FormSettings(this);
@@ -67,6 +66,9 @@ namespace Terminals {
                 System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
 
                 LoadWindowState();
+
+                this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
+
             } catch(Exception exc) {
                 Terminals.Logging.Log.Info("", exc);
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
@@ -1092,6 +1094,9 @@ namespace Terminals {
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e) {
             OptionsForm frmOptions = new OptionsForm(CurrentTerminal);
             if(frmOptions.ShowDialog() == DialogResult.OK) {
+
+                this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
+
                 if(Settings.Office2007Feel)
                     ToolStripManager.Renderer = new Office2007Renderer.Office2007Renderer();
                 else
