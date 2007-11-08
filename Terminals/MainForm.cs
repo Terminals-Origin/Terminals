@@ -201,7 +201,7 @@ namespace Terminals {
                                 tagTools.Add(tag, parent);
                                 QuickContextMenu.Items.Add(parent);
                             }
-                            System.Windows.Forms.ToolStripButton item = new ToolStripButton();
+                            System.Windows.Forms.ToolStripMenuItem item = new ToolStripMenuItem();
                             item.Text = favorite.Name;
                             item.Tag = "favorite";
                             if(favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
