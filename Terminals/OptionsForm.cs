@@ -27,7 +27,7 @@ namespace Terminals
             chkSaveConnections.Checked = Settings.SaveConnectionsOnClose;
             validateServerNamesCheckbox.Checked= Settings.ForceComputerNamesAsURI;
             warnDisconnectCheckBox.Checked = Settings.WarnOnConnectionClose;
-
+            office2007FeelCheckbox.Checked = Settings.Office2007Feel;
             currentTerminal = terminal;
             this.PortscanTimeoutTextBox.Text = Settings.PortScanTimeoutSeconds.ToString();
             if (Settings.TerminalsPassword != string.Empty) {
@@ -62,7 +62,7 @@ namespace Terminals
             Settings.SaveConnectionsOnClose = chkSaveConnections.Checked;
             Settings.ForceComputerNamesAsURI = validateServerNamesCheckbox.Checked;
             Settings.WarnOnConnectionClose = warnDisconnectCheckBox.Checked;
-
+            Settings.Office2007Feel = office2007FeelCheckbox.Checked;
             if (this.PasswordProtectTerminalsCheckbox.Checked && PasswordTextbox.Text!=string.Empty && ConfirmPasswordTextBox.Text!=string.Empty && PasswordTextbox.Text == ConfirmPasswordTextBox.Text) {
                 Settings.TerminalsPassword = PasswordTextbox.Text;
             }

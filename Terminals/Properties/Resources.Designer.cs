@@ -130,6 +130,13 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap atoz {
+            get {
+                object obj = ResourceManager.GetObject("atoz", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;tree Text=&quot;WMI Classes&quot;&gt;

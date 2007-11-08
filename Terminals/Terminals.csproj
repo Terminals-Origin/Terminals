@@ -363,7 +363,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -669,6 +669,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>IntroForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\atoz.png" />
     <Content Include="Resources\ico101.ico" />
     <None Include="Resources\ico_scapture.png" />
     <Content Include="Resources\lightning_go.png" />

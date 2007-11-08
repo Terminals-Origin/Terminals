@@ -851,6 +851,16 @@ namespace Terminals
                 System.IO.File.WriteAllText(ToolStripSettingsFile, value.ToString());
             }
         }
+        public static bool Office2007Feel {
+            get {
+                return GetSection().Office2007Feel;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).Office2007Feel = value;
+                configuration.Save();
+            }
+        }
         public static bool ShowWizard
         {
             get

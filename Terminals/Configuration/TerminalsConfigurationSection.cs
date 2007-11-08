@@ -449,6 +449,18 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("office2007Feel", DefaultValue = false)]
+        public bool Office2007Feel
+        {
+            get
+            {
+                return (bool)this["office2007Feel"];
+            }
+            set
+            {
+                this["office2007Feel"] = value;
+            }
+        }
         [ConfigurationProperty("showWizard", DefaultValue = true)]
         public bool ShowWizard
         {

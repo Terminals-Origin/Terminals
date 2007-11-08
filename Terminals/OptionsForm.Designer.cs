@@ -34,6 +34,7 @@ namespace Terminals
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.autoSwitchToCaptureCheckbox = new System.Windows.Forms.CheckBox();
             this.warnDisconnectCheckBox = new System.Windows.Forms.CheckBox();
             this.validateServerNamesCheckbox = new System.Windows.Forms.CheckBox();
             this.MinimizeToTrayCheckbox = new System.Windows.Forms.CheckBox();
@@ -66,7 +67,7 @@ namespace Terminals
             this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
             this.PasswordTextbox = new System.Windows.Forms.TextBox();
             this.PasswordProtectTerminalsCheckbox = new System.Windows.Forms.CheckBox();
-            this.autoSwitchToCaptureCheckbox = new System.Windows.Forms.CheckBox();
+            this.office2007FeelCheckbox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
@@ -136,6 +137,7 @@ namespace Terminals
             // 
             // tpGeneral
             // 
+            this.tpGeneral.Controls.Add(this.office2007FeelCheckbox);
             this.tpGeneral.Controls.Add(this.autoSwitchToCaptureCheckbox);
             this.tpGeneral.Controls.Add(this.warnDisconnectCheckBox);
             this.tpGeneral.Controls.Add(this.validateServerNamesCheckbox);
@@ -160,6 +162,18 @@ namespace Terminals
             this.tpGeneral.TabIndex = 0;
             this.tpGeneral.Text = "General";
             this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // autoSwitchToCaptureCheckbox
+            // 
+            this.autoSwitchToCaptureCheckbox.AutoSize = true;
+            this.autoSwitchToCaptureCheckbox.Checked = true;
+            this.autoSwitchToCaptureCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoSwitchToCaptureCheckbox.Location = new System.Drawing.Point(253, 80);
+            this.autoSwitchToCaptureCheckbox.Name = "autoSwitchToCaptureCheckbox";
+            this.autoSwitchToCaptureCheckbox.Size = new System.Drawing.Size(139, 17);
+            this.autoSwitchToCaptureCheckbox.TabIndex = 20;
+            this.autoSwitchToCaptureCheckbox.Text = "Auto switch on Capture";
+            this.autoSwitchToCaptureCheckbox.UseVisualStyleBackColor = true;
             // 
             // warnDisconnectCheckBox
             // 
@@ -486,17 +500,15 @@ namespace Terminals
             this.PasswordProtectTerminalsCheckbox.UseVisualStyleBackColor = true;
             this.PasswordProtectTerminalsCheckbox.CheckedChanged += new System.EventHandler(this.PasswordProtectTerminalsCheckbox_CheckedChanged);
             // 
-            // autoSwitchToCaptureCheckbox
+            // office2007FeelCheckbox
             // 
-            this.autoSwitchToCaptureCheckbox.AutoSize = true;
-            this.autoSwitchToCaptureCheckbox.Checked = true;
-            this.autoSwitchToCaptureCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.autoSwitchToCaptureCheckbox.Location = new System.Drawing.Point(253, 80);
-            this.autoSwitchToCaptureCheckbox.Name = "autoSwitchToCaptureCheckbox";
-            this.autoSwitchToCaptureCheckbox.Size = new System.Drawing.Size(139, 17);
-            this.autoSwitchToCaptureCheckbox.TabIndex = 20;
-            this.autoSwitchToCaptureCheckbox.Text = "Auto switch on Capture";
-            this.autoSwitchToCaptureCheckbox.UseVisualStyleBackColor = true;
+            this.office2007FeelCheckbox.AutoSize = true;
+            this.office2007FeelCheckbox.Location = new System.Drawing.Point(253, 104);
+            this.office2007FeelCheckbox.Name = "office2007FeelCheckbox";
+            this.office2007FeelCheckbox.Size = new System.Drawing.Size(105, 17);
+            this.office2007FeelCheckbox.TabIndex = 21;
+            this.office2007FeelCheckbox.Text = "Office 2007 Feel";
+            this.office2007FeelCheckbox.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -570,5 +582,6 @@ namespace Terminals
         private System.Windows.Forms.CheckBox validateServerNamesCheckbox;
         private System.Windows.Forms.CheckBox warnDisconnectCheckBox;
         private System.Windows.Forms.CheckBox autoSwitchToCaptureCheckbox;
+        private System.Windows.Forms.CheckBox office2007FeelCheckbox;
     }
 }

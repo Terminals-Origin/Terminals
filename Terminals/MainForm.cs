@@ -48,7 +48,7 @@ namespace Terminals {
                 _formSettings = new FormSettings(this);
                 InitializeComponent();
 
-                //ToolStripManager.Renderer = new Office2007Renderer.Office2007Renderer();
+                if(Settings.Office2007Feel) ToolStripManager.Renderer = new Office2007Renderer.Office2007Renderer();
 
 
 
@@ -224,7 +224,7 @@ namespace Terminals {
                 }
                 if(sortedList != null && sortedList.Count > 0) {
                     QuickContextMenu.Items.Add(sortedMenu);
-
+                    sortedMenu.Image = Terminals.Properties.Resources.atoz;
                     foreach(string name in sortedList.Keys) {
                         sortedMenu.DropDownItems.Add(sortedList[name]);
                     }
@@ -407,6 +407,7 @@ namespace Terminals {
             }
         }
         public void UpdateControls() {
+
             tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
             addTerminalToGroupToolStripMenuItem.Enabled = (tcTerminals.SelectedItem != null);
             tsbGrabInput.Enabled = (tcTerminals.SelectedItem != null);
@@ -1072,6 +1073,11 @@ namespace Terminals {
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e) {
             OptionsForm frmOptions = new OptionsForm(CurrentTerminal);
             if(frmOptions.ShowDialog() == DialogResult.OK) {
+                if(Settings.Office2007Feel)
+                    ToolStripManager.Renderer = new Office2007Renderer.Office2007Renderer();
+                else
+                    ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
+
                 tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
                 if(tcTerminals.SelectedItem != null) {
                     tcTerminals.SelectedItem.ToolTipText = GetToolTipText(((TerminalTabControlItem)tcTerminals.SelectedItem).Favorite);
