@@ -57,9 +57,17 @@
     <RunCodeAnalysis Condition="'$(USERNAME)' == 'tfsservice1'">True</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxInterop.Microsoft.VMRCClientControl.Interop, Version=1.1.603.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\VMRCActiveXClient\AxInterop.Microsoft.VMRCClientControl.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="AxInterop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Interops\AxInterop.MSTSCLib.dll</HintPath>
+    </Reference>
+    <Reference Include="AxInterop.VMRCClientControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\VMRCActiveXClient\AxInterop.VMRCClientControlLib.dll</HintPath>
     </Reference>
     <Reference Include="AxWFICALib, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -72,6 +80,10 @@
     <Reference Include="Interop.MSTSCLib6, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Interops\Interop.MSTSCLib6.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.VMRCClientControlLib, Version=1.0.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\VMRC\Interop.VMRCClientControlLib.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.0.30714, Culture=neutral, PublicKeyToken=b32731d11ce58905">
       <SpecificVersion>False</SpecificVersion>
@@ -95,10 +107,6 @@
     <Reference Include="TransPort2006.Design, Version=3.0.1.7, Culture=neutral, PublicKeyToken=4bc5eb9a373f42a1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\TransPort2006.Design.dll</HintPath>
-    </Reference>
-    <Reference Include="VMRCClient, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Resources\VMRCActiveXClient\VMRCClient.dll</HintPath>
     </Reference>
     <Reference Include="VncSharp, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -363,7 +371,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>

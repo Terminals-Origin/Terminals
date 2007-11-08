@@ -601,32 +601,51 @@ namespace Terminals {
             if(Settings.ShowUserNameInTitle) {
                 terminalTabTitle += " (" + Functions.UserDisplayName(favorite.DomainName, favorite.UserName) + ")";
             }
-            TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
-            try {
-                terminalTabPage.AllowDrop = true;
-                terminalTabPage.DragOver += terminalTabPage_DragOver;
-                terminalTabPage.DragEnter += new DragEventHandler(terminalTabPage_DragEnter);
-                terminalTabPage.ToolTipText = GetToolTipText(favorite);
-                terminalTabPage.Favorite = favorite;
-                terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
-                tcTerminals.Items.Add(terminalTabPage);
-                tcTerminals.SelectedItem = terminalTabPage;
-                tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
+            TerminalTabControlItem terminalTabPage=null;
+            try
+            {
+                terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
                 Connections.IConnection conn = Connections.ConnectionManager.CreateConnection(favorite, terminalTabPage, this);
-                conn.Connect();
-                (conn as Control).BringToFront();
-                (conn as Control).Update();
-                UpdateControls();
-                if(favorite.DesktopSize == DesktopSize.FullScreen)
-                    FullScreen = true;
-            } catch(Exception exc) {
+                if(conn.Connect())
+                {
+                    terminalTabPage.AllowDrop = true;
+                    terminalTabPage.DragOver += terminalTabPage_DragOver;
+                    terminalTabPage.DragEnter += new DragEventHandler(terminalTabPage_DragEnter);
+                    terminalTabPage.ToolTipText = GetToolTipText(favorite);
+                    terminalTabPage.Favorite = favorite;
+                    terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
+                    tcTerminals.Items.Add(terminalTabPage);
+                    tcTerminals.SelectedItem = terminalTabPage;
+                    tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
+                    (conn as Control).BringToFront();
+                    (conn as Control).Update();
+                    UpdateControls();
+                    if(favorite.DesktopSize == DesktopSize.FullScreen)
+                        FullScreen = true;
+                }
+                else
+                {
+                    string msg = "Sorry, Terminals was unable to connect to the remote machine.  Try again, or check the log for more information.";
+                    System.Windows.Forms.MessageBox.Show(msg);
+                }
+            }
+            catch(Exception exc)
+            {
                 Terminals.Logging.Log.Info("", exc);
-                tcTerminals.Items.Remove(terminalTabPage);
                 tcTerminals.SelectedItem = null;
-                terminalTabPage.Dispose();
                 //tcTerminals = null;
                 System.Windows.Forms.MessageBox.Show(exc.Message);
             }
+            finally
+            {
+                if(terminalTabPage != null)
+                {
+                    tcTerminals.Items.Remove(terminalTabPage);
+                    terminalTabPage.Dispose();
+                }
+
+            }
+            
         }
 
         //private void tcTerminals_Click(object sender, EventArgs e) {

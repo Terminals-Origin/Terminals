@@ -27,82 +27,90 @@ namespace Terminals.Connections
         public WalburySoftware.TerminalEmulator term;
         public override bool Connect()
         {
-            term = new WalburySoftware.TerminalEmulator();
-
-            Controls.Add(term);
-            term.BringToFront();
-            this.BringToFront();
-
-            term.Parent = base.TerminalTabPage;
-            this.Parent = TerminalTabPage;
-            term.Dock = DockStyle.Fill;
-
-            term.OnDisconnected += new WalburySoftware.TerminalEmulator.Disconnected(term_OnDisconnected);
-            
-            term.BackColor = Color.FromName(Favorite.TelnetBackColor);
-            term.Font = FontParser.ParseFontName(Favorite.TelnetFont);
-            term.ForeColor = Color.FromName(Favorite.TelnetTextColor);
-
-            string domainName = Favorite.DomainName;
-            if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
-            string pass = Favorite.Password;
-            if(pass == null || pass == "") pass = Settings.DefaultPassword;
-            string userName = Favorite.UserName;
-            if(userName == null || userName == "") userName = Settings.DefaultUsername;
-
-
-            if(userName != null && userName != "") term.Username = userName;
-            if(pass != null && pass != "") term.Password = pass;
-
-            if(term.Username == null || term.Username =="")
+            try
             {
+                term = new WalburySoftware.TerminalEmulator();
 
-                Terminals.InputBoxResult result = Terminals.InputBox.Show("Please provider your User name", "SSH User name");
-                if(result.ReturnCode == DialogResult.OK && result.Text != null && result.Text.Trim() != "")
+                Controls.Add(term);
+                term.BringToFront();
+                this.BringToFront();
+
+                term.Parent = base.TerminalTabPage;
+                this.Parent = TerminalTabPage;
+                term.Dock = DockStyle.Fill;
+
+                term.OnDisconnected += new WalburySoftware.TerminalEmulator.Disconnected(term_OnDisconnected);
+
+                term.BackColor = Color.FromName(Favorite.TelnetBackColor);
+                term.Font = FontParser.ParseFontName(Favorite.TelnetFont);
+                term.ForeColor = Color.FromName(Favorite.TelnetTextColor);
+
+                string domainName = Favorite.DomainName;
+                if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
+                string pass = Favorite.Password;
+                if(pass == null || pass == "") pass = Settings.DefaultPassword;
+                string userName = Favorite.UserName;
+                if(userName == null || userName == "") userName = Settings.DefaultUsername;
+
+
+                if(userName != null && userName != "") term.Username = userName;
+                if(pass != null && pass != "") term.Password = pass;
+
+                if(term.Username == null || term.Username == "")
                 {
-                    term.Username = result.Text;
-                    if(term.Password == null)
+
+                    Terminals.InputBoxResult result = Terminals.InputBox.Show("Please provider your User name", "SSH User name");
+                    if(result.ReturnCode == DialogResult.OK && result.Text != null && result.Text.Trim() != "")
                     {
-
-                        Terminals.InputBoxResult res = Terminals.InputBox.Show("Please provider your Password", "SSH Password", '*');
-                        if(res.ReturnCode == DialogResult.OK && res.Text != null && res.Text.Trim() != "")
+                        term.Username = result.Text;
+                        if(term.Password == null)
                         {
-                            term.Password = res.Text;
-                        }
-                    }
 
+                            Terminals.InputBoxResult res = Terminals.InputBox.Show("Please provider your Password", "SSH Password", '*');
+                            if(res.ReturnCode == DialogResult.OK && res.Text != null && res.Text.Trim() != "")
+                            {
+                                term.Password = res.Text;
+                            }
+                        }
+
+                    }
+                }
+
+                bool ForceClose = true;
+
+                if(userName != null && userName != "" && pass != null && pass != "") ForceClose = false;
+
+
+                if(ForceClose)
+                {
+                    this.ParentForm.tcTerminals.ForceCloseTab(this.TerminalTabPage);
+                    connected = false;
+                    return false;
+                }
+                else
+                {
+
+                    term.Hostname = Favorite.ServerName;
+                    //term.Port = Favorite.Port;
+                    term.Rows = Favorite.TelnetRows;
+
+                    term.Columns = Favorite.TelnetCols;
+
+                    if(Favorite.Telnet)
+                        term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.Telnet;
+                    else
+                        term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.SSH2;
+
+                    Text = "Connecting to Telnet Server...";
+                    term.Connect();
+                    connected = true;
+                    return true;
                 }
             }
-
-            bool ForceClose = true;
-
-            if(userName != null && userName != "" && pass != null && pass != "") ForceClose = false;
-
-
-            if(ForceClose)
+            catch(Exception exc)
             {
-                this.ParentForm.tcTerminals.ForceCloseTab(this.TerminalTabPage);
-                connected = false;
+                Terminals.Logging.Log.Fatal("Connecting to VMRC", exc);
                 return false;
-            }
-            else
-            {
-
-                term.Hostname = Favorite.ServerName;
-                //term.Port = Favorite.Port;
-                term.Rows = Favorite.TelnetRows;
-
-                term.Columns = Favorite.TelnetCols;
-
-                if(Favorite.Telnet)
-                    term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.Telnet;
-                else
-                    term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.SSH2;
-
-                Text = "Connecting to Telnet Server...";
-                term.Connect();
-                connected = true;
-                return true;
             }
         }
 
@@ -118,9 +126,10 @@ namespace Terminals.Connections
             {
                 //term.Disconnect();
             }
-            catch(Exception e) {
+            catch(Exception e)
+            {
                 Terminals.Logging.Log.Info("", e);
-            
+
             }
         }
 
