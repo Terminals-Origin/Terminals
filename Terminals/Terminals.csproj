@@ -45,7 +45,7 @@
     <WarningLevel>4</WarningLevel>
     <RunCodeAnalysis Condition="'$(USERNAME)' == 'tfsservice1'">True</RunCodeAnalysis>
     <!-- <RunCodeAnalysis Condition="'$(ComputerName)' == 'ILBUILD01'">True</RunCodeAnalysis>-->
-    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
