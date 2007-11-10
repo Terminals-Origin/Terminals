@@ -55,8 +55,8 @@ namespace Terminals.Connections
                 {
 
                     if(Favorite.DesktopSize == DesktopSize.AutoScale) axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
-                    //axMsRdpClient2.DesktopWidth = width;
-                    //axMsRdpClient2.DesktopHeight = height;
+                    axMsRdpClient2.DesktopWidth = width;
+                    axMsRdpClient2.DesktopHeight = height;
 
                     switch(Favorite.Colors)
                     {
