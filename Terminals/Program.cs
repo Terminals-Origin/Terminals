@@ -16,7 +16,7 @@ namespace Terminals
         [ComVisible(true)]
         static void Main()
         {
-            Terminals.Logging.Log.Info("Terminals started");
+            Terminals.Logging.Log.Info("Terminals 1.6e started");
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
