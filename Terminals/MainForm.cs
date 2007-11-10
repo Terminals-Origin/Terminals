@@ -178,7 +178,7 @@ namespace Terminals {
                 SortedDictionary<string, ToolStripMenuItem> sortedList = new SortedDictionary<string, ToolStripMenuItem>();
                 ToolStripMenuItem sortedMenu = new ToolStripMenuItem("Alphabetical");
                 sortedMenu.DropDownItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
-                
+
                 foreach(FavoriteConfigurationElement favorite in favorites) {
 
                     System.Windows.Forms.ToolStripMenuItem sortedItem = new ToolStripMenuItem();
@@ -231,7 +231,7 @@ namespace Terminals {
                         sortedMenu.DropDownItems.Add(sortedList[name]);
                     }
                 }
-                
+
                 QuickContextMenu.Items.Add("-");
                 QuickContextMenu.Items.Add("&Exit");
 
@@ -603,7 +603,7 @@ namespace Terminals {
             if(Settings.ShowUserNameInTitle) {
                 terminalTabTitle += " (" + Functions.UserDisplayName(favorite.DomainName, favorite.UserName) + ")";
             }
-            TerminalTabControlItem terminalTabPage= new TerminalTabControlItem(terminalTabTitle);
+            TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
             try {
                 terminalTabPage.AllowDrop = true;
                 terminalTabPage.DragOver += terminalTabPage_DragOver;
@@ -1719,7 +1719,16 @@ namespace Terminals {
             }
         }
 
-
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e) {
+            if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0) {
+                FavoriteConfigurationElement fav = (lvTagConnections.SelectedItems[0].Tag as FavoriteConfigurationElement);
+                if(fav != null) {
+                    using(NewTerminalForm frmNewTerminal = new NewTerminalForm(fav)) {
+                        frmNewTerminal.ShowDialog();
+                    }
+                }
+            }
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem {
