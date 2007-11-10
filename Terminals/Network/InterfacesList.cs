@@ -17,18 +17,16 @@ namespace Terminals.Network
         
         private void InterfacesList_Load(object sender, EventArgs e)
         {
-            this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-            timer1_Tick(null, null);
-            this.timer1.Enabled = true;
-            this.timer1.Start();
-            
-        }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
+            this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
             Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = nil.Interfaces;
+            this.dataGridView2.DataSource = null;
+            this.dataGridView2.DataSource = Terminals.Network.DNS.AdapterInfo.GetAdapters();
+
         }
     }
 }
