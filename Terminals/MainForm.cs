@@ -608,6 +608,7 @@ namespace Terminals {
             {
                 terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
                 Connections.IConnection conn = Connections.ConnectionManager.CreateConnection(favorite, terminalTabPage, this);
+                terminalTabPage.Connection = conn;                
                 if(conn.Connect())
                 {
                     terminalTabPage.AllowDrop = true;

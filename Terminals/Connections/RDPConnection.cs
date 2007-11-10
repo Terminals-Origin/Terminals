@@ -29,7 +29,7 @@ namespace Terminals.Connections
         }
 
         public override bool Connected { get { return Convert.ToBoolean(axMsRdpClient2.Connected); } }
-        public AxMsRdpClient2 axMsRdpClient2 = null;
+        public AxMsRdpClient2 axMsRdpClient2 = null; //new AxMsRdpClient2();
         public override bool Connect()
         {
             try
@@ -55,8 +55,8 @@ namespace Terminals.Connections
                 {
 
                     if(Favorite.DesktopSize == DesktopSize.AutoScale) axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
-                    axMsRdpClient2.DesktopWidth = width;
-                    axMsRdpClient2.DesktopHeight = height;
+                    //axMsRdpClient2.DesktopWidth = width;
+                    //axMsRdpClient2.DesktopHeight = height;
 
                     switch(Favorite.Colors)
                     {
@@ -101,7 +101,6 @@ namespace Terminals.Connections
 
                     if(Favorite.EnableSecuritySettings)
                     {
-
                         if(Favorite.SecurityFullScreen) axMsRdpClient2.SecuredSettings2.FullScreen = -1;
                         axMsRdpClient2.SecuredSettings2.StartProgram = Favorite.SecurityStartProgram;
                         axMsRdpClient2.SecuredSettings2.WorkDir = Favorite.SecurityWorkingFolder;
@@ -215,7 +214,7 @@ namespace Terminals.Connections
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Fatal("Connecting to VMRC", exc);
+                Terminals.Logging.Log.Fatal("Connecting to RDP", exc);
                 return false;
             }
         }
