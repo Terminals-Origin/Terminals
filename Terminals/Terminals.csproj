@@ -202,6 +202,12 @@
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Network\DNS\Adapter.cs" />
     <Compile Include="Network\DNS\AdapterInfo.cs" />
+    <Compile Include="Network\WMI\Services.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\WMI\Services.Designer.cs">
+      <DependentUpon>Services.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\WMI\WMIServerCredentials.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -609,6 +615,10 @@
     <EmbeddedResource Include="Connections\CaptureManagerConnection.resx">
       <DependentUpon>CaptureManagerConnection.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\WMI\Services.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Services.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\WMI\WMIServerCredentials.resx">
       <SubType>Designer</SubType>
