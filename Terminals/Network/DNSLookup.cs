@@ -76,16 +76,7 @@ namespace Terminals.Network
 
         private void DNSLookup_Load(object sender, EventArgs e)
         {
-            List<string> totalList = new List<string>();
-            List<Terminals.Network.DNS.Adapter> adapters = Network.DNS.AdapterInfo.GetAdapters(); ;
-            foreach(Terminals.Network.DNS.Adapter a in adapters) {
-                if(a.DNSServers != null && a.DNSServers.Count > 0)
-                {
-                    List<string> l = a.DNSServers;
-                    totalList.AddRange(l);
-                }
-            }
-            this.serverComboBox.DataSource = totalList; ;
+            this.serverComboBox.DataSource = Terminals.Network.DNS.AdapterInfo.DNSServers;
             
         }
     }
