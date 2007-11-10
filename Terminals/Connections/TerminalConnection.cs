@@ -29,6 +29,7 @@ namespace Terminals.Connections
         {
             try
             {
+                Terminals.Logging.Log.Info("Connecting to a Telnet/SSH Connection");
                 term = new WalburySoftware.TerminalEmulator();
 
                 Controls.Add(term);
@@ -56,17 +57,17 @@ namespace Terminals.Connections
                 if(userName != null && userName != "") term.Username = userName;
                 if(pass != null && pass != "") term.Password = pass;
 
-                if(term.Username == null || term.Username == "")
+                if(term.Username == null || term.Username == "" || term.Password == null || term.Password == "")
                 {
 
-                    Terminals.InputBoxResult result = Terminals.InputBox.Show("Please provider your User name", "SSH User name");
+                    Terminals.InputBoxResult result = Terminals.InputBox.Show("Please provider your User name", "Telnet/SSH User name");
                     if(result.ReturnCode == DialogResult.OK && result.Text != null && result.Text.Trim() != "")
                     {
                         term.Username = result.Text;
                         if(term.Password == null)
                         {
 
-                            Terminals.InputBoxResult res = Terminals.InputBox.Show("Please provider your Password", "SSH Password", '*');
+                            Terminals.InputBoxResult res = Terminals.InputBox.Show("Please provider your Password", "Telnet/SSH Password", '*');
                             if(res.ReturnCode == DialogResult.OK && res.Text != null && res.Text.Trim() != "")
                             {
                                 term.Password = res.Text;
@@ -78,7 +79,7 @@ namespace Terminals.Connections
 
                 bool ForceClose = true;
 
-                if(userName != null && userName != "" && pass != null && pass != "") ForceClose = false;
+                if(term.Username != null && term.Username != "" && term.Password != null && term.Password != "") ForceClose = false;
 
 
                 if(ForceClose)
@@ -101,7 +102,7 @@ namespace Terminals.Connections
                     else
                         term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.SSH2;
 
-                    Text = "Connecting to Telnet Server...";
+                    Text = "Connecting to Telnet/SSH Server...";
                     term.Connect();
                     connected = true;
                     return true;
@@ -109,14 +110,14 @@ namespace Terminals.Connections
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Fatal("Connecting to VMRC", exc);
+                Terminals.Logging.Log.Fatal("Connecting to Telnet/SSH Connection", exc);
                 return false;
             }
         }
 
         void term_OnDisconnected(object Sender, string Message)
         {
-            System.Windows.Forms.MessageBox.Show("There was an error with the Terminals connection.  It will now close.\r\nDetails:\r\n" + Message);
+            System.Windows.Forms.MessageBox.Show("There was an error with the Telnet/SSH connection.  It will now close.\r\nDetails:\r\n" + Message);
             this.ParentForm.tcTerminals.ForceCloseTab(this.TerminalTabPage);
         }
 

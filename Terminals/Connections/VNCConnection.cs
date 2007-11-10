@@ -46,7 +46,7 @@ namespace Terminals.Connections
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Fatal("Connecting to VMRC", exc);
+                Terminals.Logging.Log.Fatal("Connecting to VNC", exc);
                 return false;
             }
         }

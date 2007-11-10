@@ -263,7 +263,7 @@ namespace Terminals {
                         System.Windows.Forms.ToolStripMenuItem parent = (e.ClickedItem as System.Windows.Forms.ToolStripMenuItem);
                         if(parent.DropDownItems.Count > 0) {
                             if(System.Windows.Forms.MessageBox.Show("Are you sure you want to connect to all these " + parent.DropDownItems.Count + " terminals?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK) {
-                                foreach(ToolStripButton button in parent.DropDownItems) {
+                                foreach(ToolStripMenuItem button in parent.DropDownItems) {
                                     Connect(button.Text);
                                 }
                             }

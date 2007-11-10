@@ -73,7 +73,7 @@ namespace Terminals.Connections
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Fatal("Connecting to VMRC", exc);
+                Terminals.Logging.Log.Fatal("Connecting to RAS", exc);
                 return false;
             }
         }
