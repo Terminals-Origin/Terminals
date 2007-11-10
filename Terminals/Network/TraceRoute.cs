@@ -21,8 +21,13 @@ namespace Metro
             InitializeComponent();
 
             miv = new MethodInvoker(UpdateRoute);
-
-            trace = new Metro.TransportLayer.Icmp.IcmpTraceRoute(nil.Interfaces[0].Address);
+            NetworkInterface validNic = nil.Interfaces[0];
+            foreach(NetworkInterface nic in nil.Interfaces) {
+                if(nic.IsEnabled && !nic.isLoopback) {
+                    validNic = nic;
+                }
+            }
+            trace = new Metro.TransportLayer.Icmp.IcmpTraceRoute(validNic.Address);
             trace.RouteUpdate += new Metro.TransportLayer.Icmp.RouteUpdateHandler(trace_RouteUpdate);
             trace.TraceFinished += new Metro.TransportLayer.Icmp.TraceFinishedHandler(trace_TraceFinished);
         }
