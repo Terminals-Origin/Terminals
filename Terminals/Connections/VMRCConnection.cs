@@ -18,9 +18,9 @@ namespace Terminals.Connections {
             {
                 vmrc = new AxVMRCClientControlLib.AxVMRCClientControl();
                 Controls.Add((System.Windows.Forms.Control)vmrc);
-                // vmrc.BringToFront();
+                vmrc.BringToFront();
                 this.BringToFront();
-                //vmrc.Parent = base.TerminalTabPage;
+                vmrc.Parent = base.TerminalTabPage;
                 this.Parent = TerminalTabPage;
 
                 //vmrc.CtlAutoSize = true;

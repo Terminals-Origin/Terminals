@@ -57,17 +57,13 @@
     <RunCodeAnalysis Condition="'$(USERNAME)' == 'tfsservice1'">True</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AxInterop.Microsoft.VMRCClientControl.Interop, Version=1.1.603.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Resources\VMRCActiveXClient\AxInterop.Microsoft.VMRCClientControl.Interop.dll</HintPath>
-    </Reference>
     <Reference Include="AxInterop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Interops\AxInterop.MSTSCLib.dll</HintPath>
     </Reference>
     <Reference Include="AxInterop.VMRCClientControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Resources\VMRCActiveXClient\AxInterop.VMRCClientControlLib.dll</HintPath>
+      <HintPath>..\Resources\VMRCResources\AxInterop.VMRCClientControlLib.dll</HintPath>
     </Reference>
     <Reference Include="AxWFICALib, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -81,9 +77,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Interops\Interop.MSTSCLib6.dll</HintPath>
     </Reference>
-    <Reference Include="Interop.VMRCClientControlLib, Version=1.0.0.0, Culture=neutral">
+    <Reference Include="Interop.VMRCClientControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Resources\VMRC\Interop.VMRCClientControlLib.dll</HintPath>
+      <HintPath>..\Resources\VMRCResources\Interop.VMRCClientControlLib.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.0.30714, Culture=neutral, PublicKeyToken=b32731d11ce58905">
       <SpecificVersion>False</SpecificVersion>

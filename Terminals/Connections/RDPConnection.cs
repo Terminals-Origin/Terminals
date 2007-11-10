@@ -207,8 +207,6 @@ namespace Terminals.Connections
                     Terminals.Logging.Log.Warn("There was an exception setting an RDP Value.", exc);
                 }
 
-
-
                 axMsRdpClient2.Connect();
                 return true;
             }

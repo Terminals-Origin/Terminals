@@ -22,6 +22,7 @@ namespace Terminals
             txtCommand.Text = Settings.ExecuteBeforeConnectCommand;
             txtInitialDirectory.Text = Settings.ExecuteBeforeConnectInitialDirectory;
             chkWaitForExit.Checked = Settings.ExecuteBeforeConnectWaitForExit;
+            autoSwitchToCaptureCheckbox.Checked=Settings.AutoSwitchOnCapture;
             chkSingleInstance.Checked = Settings.SingleInstance;
             chkShowConfirmDialog.Checked = Settings.ShowConfirmDialog;
             chkSaveConnections.Checked = Settings.SaveConnectionsOnClose;
