@@ -915,6 +915,18 @@ namespace Terminals {
                 ProtocolHandler.Parse(Terminals.MainForm.CommandLineArgs.url, out server, out port);
                 QuickConnect(server, port);
             }
+            if(Terminals.MainForm.CommandLineArgs.favs != null && Terminals.MainForm.CommandLineArgs.favs != "") {
+                string favs = Terminals.MainForm.CommandLineArgs.favs;
+                if(favs.Contains(",")) {
+                    string[] favlist = favs.Split(',');
+                    foreach(string fav in favlist) {
+                        Connect(fav);
+                    }
+                } else {
+                    Connect(favs);
+                }
+                
+            }
         }
 
         private void tcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e) {
