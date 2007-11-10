@@ -45,6 +45,7 @@ namespace Metro
         }
         void trace_TraceFinished()
         {
+            button1.Enabled = true;
             MessageBox.Show("Trace Route Finished.");
         }
         private void UpdateGraph()
@@ -122,6 +123,9 @@ namespace Metro
         MethodInvoker miv;
         private void button1_Click(object sender, EventArgs e)
         {
+            button1.Enabled = false;
+            this.textBox1.Enabled = false;
+
             RUList = new List<RouteUpdate>();
 
             Trace();
@@ -138,6 +142,9 @@ namespace Metro
             {
                 Terminals.Logging.Log.Info("", exc);
                 MessageBox.Show("Could not resolve address:" + this.textBox1.Text);
+                button1.Enabled = true;
+                this.textBox1.Enabled = true;
+
             }
             try
             {
@@ -148,6 +155,9 @@ namespace Metro
 
         private void button2_Click(object sender, EventArgs e)
         {
+            button1.Enabled = true;
+            this.textBox1.Enabled = true;
+
             trace.CancelTrace();
         }
 

@@ -39,7 +39,7 @@ namespace Terminals.Network.WMI {
             int length = 0;
             object[] values = null;
             list.Clear();
-            foreach(System.Management.ManagementObject share in searcher.Get()) {                
+            foreach(System.Management.ManagementObject share in searcher.Get()) {
                 Share s = new Share();
                 list.Add(share);
                 if(needsSchema) {
@@ -139,15 +139,22 @@ namespace Terminals.Network.WMI {
             string name = this.dataGridView1.Rows[this.dataGridView1.SelectedCells[0].RowIndex].Cells["Name"].Value.ToString();
             if(name != null && name != "") {
                 System.Management.ManagementObject obj = FindWMIObject(name, "Name");
-                if(obj != null) obj.InvokeMethod("PauseService", null);
+                if(obj != null) {
+                    obj.InvokeMethod("PauseService", null);
+                    LoadServices(this.wmiServerCredentials1.Username, this.wmiServerCredentials1.Password, this.wmiServerCredentials1.SelectedServer);
+                }
             }
         }
-        
+
         private void stopToolStripMenuItem_Click(object sender, EventArgs e) {
             string name = this.dataGridView1.Rows[this.dataGridView1.SelectedCells[0].RowIndex].Cells["Name"].Value.ToString();
             if(name != null && name != "") {
                 System.Management.ManagementObject obj = FindWMIObject(name, "Name");
-                if(obj != null) obj.InvokeMethod("StopService", null);
+                if(obj != null) {
+                    obj.InvokeMethod("StopService", null);
+                    LoadServices(this.wmiServerCredentials1.Username, this.wmiServerCredentials1.Password, this.wmiServerCredentials1.SelectedServer);
+                }
+
             }
         }
 
@@ -155,10 +162,12 @@ namespace Terminals.Network.WMI {
             string name = this.dataGridView1.Rows[this.dataGridView1.SelectedCells[0].RowIndex].Cells["Name"].Value.ToString();
             if(name != null && name != "") {
                 System.Management.ManagementObject obj = FindWMIObject(name, "Name");
-                if(obj != null) obj.InvokeMethod("StartService", null);
+                if(obj != null) {
+                    obj.InvokeMethod("StartService", null);
+                    LoadServices(this.wmiServerCredentials1.Username, this.wmiServerCredentials1.Password, this.wmiServerCredentials1.SelectedServer);
+                }
+
             }
         }
-
-
     }
 }

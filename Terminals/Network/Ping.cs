@@ -49,6 +49,9 @@ namespace Metro
             {
                 Terminals.Logging.Log.Info("", exc);
                 MessageBox.Show("Could not resolve address:" + this.textBox1.Text);
+                this.button1.Enabled = true;
+                this.textBox1.Enabled = true;
+
             }
             try
             {
@@ -77,6 +80,8 @@ namespace Metro
 
         private void button1_Click(object sender, EventArgs e)
         {
+            this.button1.Enabled = false;
+            this.textBox1.Enabled = false;
             PingList = new List<PingUpdate>();
             if (ping == null)
             {
@@ -186,7 +191,9 @@ namespace Metro
             if(pingRunning) ping.CancelPing();
             pingReady = false;
             pingRunning = false;
-            
+            this.button1.Enabled = true;
+            this.textBox1.Enabled = true;
+
         }
 
         GraphPane myPane;
