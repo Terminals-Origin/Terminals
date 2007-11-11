@@ -51,6 +51,7 @@ namespace Metro
         void trace_TraceFinished()
         {
             button1.Enabled = true;
+            textBox1.Enabled = true;
             MessageBox.Show("Trace Route Finished.");
         }
         private void UpdateGraph()
