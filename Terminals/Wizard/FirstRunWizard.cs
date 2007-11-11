@@ -92,6 +92,21 @@ namespace Terminals
                         cmdList.Add(elm);
 
                         System.IO.DirectoryInfo systemroot = new System.IO.DirectoryInfo(System.Environment.GetFolderPath(System.Environment.SpecialFolder.System));
+
+                        string regEditFile = System.IO.Path.Combine(systemroot.FullName, "regedt32.exe");
+                        Icon[] regeditIcons = IconHandler.IconHandler.IconsFromFile(regEditFile, IconHandler.IconSize.Small);
+                        SpecialCommandConfigurationElement regEditElm = new SpecialCommandConfigurationElement(regEditFile);
+                        if(regeditIcons != null && regeditIcons.Length > 0) {
+                            if(!System.IO.Directory.Exists("Thumbs")) System.IO.Directory.CreateDirectory("Thumbs");
+                            string thumbName = string.Format(@"Thumbs\regedt32.exe.jpg", regEditFile);
+                            if(!System.IO.File.Exists(thumbName)) regeditIcons[0].ToBitmap().Save(thumbName);
+                            regEditElm.Thumbnail = thumbName;
+                        }
+
+                        //elm1.Thumbnail = "";
+                        regEditElm.Executable = regEditFile;
+                        cmdList.Add(regEditElm);
+
                         Icon[] IconsList = IconHandler.IconHandler.IconsFromFile(System.IO.Path.Combine(systemroot.FullName, "mmc.exe"), IconHandler.IconSize.Small);
                         System.Random rnd = new Random();
                         foreach(System.IO.FileInfo file in systemroot.GetFiles("*.msc")) {
