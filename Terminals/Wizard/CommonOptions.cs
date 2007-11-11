@@ -30,9 +30,11 @@ namespace Terminals.Wizard
         {
             get { return WarnCheckbox.Checked; }
         }
-        public bool AutoSwitchOnCapture
-        {
+        public bool AutoSwitchOnCapture {
             get { return autoSwitchOnCapture.Checked; }
+        }
+        public bool LoadDefaultShortcuts {
+            get { return LoadDefaultShortcutsCheckbox.Checked; }
         }
     }
 }

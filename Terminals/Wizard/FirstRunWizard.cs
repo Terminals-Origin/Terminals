@@ -83,6 +83,42 @@ namespace Terminals
                 Settings.ShowConfirmDialog = co.WarnOnDisconnect;
                 Settings.AutoSwitchOnCapture = co.AutoSwitchOnCapture;
 
+                try {
+                    if(co.LoadDefaultShortcuts) {
+                        SpecialCommandConfigurationElementCollection cmdList = Settings.SpecialCommands;
+                        //add the command prompt
+                        SpecialCommandConfigurationElement elm = new SpecialCommandConfigurationElement("Command Shell");
+                        elm.Executable = @"%systemroot%\system32\cmd.exe";
+                        cmdList.Add(elm);
+
+                        System.IO.DirectoryInfo systemroot = new System.IO.DirectoryInfo(System.Environment.GetFolderPath(System.Environment.SpecialFolder.System));
+                        Icon[] IconsList = IconHandler.IconHandler.IconsFromFile(System.IO.Path.Combine(systemroot.FullName, "mmc.exe"), IconHandler.IconSize.Small);
+                        System.Random rnd = new Random();
+                        foreach(System.IO.FileInfo file in systemroot.GetFiles("*.msc")) {
+                            SpecialCommandConfigurationElement elm1 = new SpecialCommandConfigurationElement(file.Name);
+
+                            if(IconsList != null && IconsList.Length > 0) {
+                                
+                                if(!System.IO.Directory.Exists("Thumbs")) System.IO.Directory.CreateDirectory("Thumbs");
+                                string thumbName = string.Format(@"Thumbs\{0}.jpg", file.Name);
+                                if(!System.IO.File.Exists(thumbName)) IconsList[rnd.Next(IconsList.Length - 1)].ToBitmap().Save(thumbName);
+                                elm1.Thumbnail = thumbName;
+                            }
+
+                            //elm1.Thumbnail = "";
+                            elm1.Executable = @"%systemroot%\system32\" + file.Name;
+                            cmdList.Add(elm1);
+                        }
+
+                        Settings.SpecialCommands = cmdList;
+
+
+
+                    }
+                } catch(Exception exc) {
+                    Terminals.Logging.Log.Error("Loading default shortcuts in the wizard.", exc);
+                }
+
                 nextButton.Enabled = false;
                 nextButton.Text = "Finished!";
                 this.panel1.Controls.Clear();

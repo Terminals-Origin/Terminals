@@ -97,6 +97,7 @@ namespace Terminals {
                 mi.Text = cmd.Name;
                 mi.Tag = cmd;
                 mi.Image = cmd.LoadThumbnail();
+                mi.Overflow = ToolStripItemOverflow.AsNeeded;
                 SpecialCommandsToolStrip.Items.Add(mi);
             }
         }
@@ -484,6 +485,7 @@ namespace Terminals {
                     }
                     ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, button, serverToolStripMenuItem_Click);
                     favoriteBtn.Tag = favorite;
+                    favoriteBtn.Overflow = ToolStripItemOverflow.AsNeeded;
                     favoriteToolBar.Items.Add(favoriteBtn);
                     favvisible = true;
                 }

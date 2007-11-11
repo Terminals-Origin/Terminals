@@ -110,7 +110,7 @@ namespace Terminals.Wizard
                     pendingRequests = pendingRequests - 5;
                 }
             }
-            this.Invoke(miv);
+            if(!this.IsDisposed) this.Invoke(miv);
             Application.DoEvents();
 
         }
