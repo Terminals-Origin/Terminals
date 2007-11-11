@@ -622,9 +622,10 @@ namespace Terminals {
                     if(favorite.DesktopSize == DesktopSize.FullScreen)
                         FullScreen = true;
                 } else {
-                    tcTerminals.Items.Remove(terminalTabPage);
                     string msg = "Sorry, Terminals was unable to connect to the remote machine.  Try again, or check the log for more information.";
                     System.Windows.Forms.MessageBox.Show(msg);
+                    tcTerminals.Items.Remove(terminalTabPage);
+                    tcTerminals.SelectedItem = null;
                 }
             } catch(Exception exc) {
                 Terminals.Logging.Log.Info("", exc);
