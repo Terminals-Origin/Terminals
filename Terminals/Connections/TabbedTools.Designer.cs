@@ -45,12 +45,14 @@ namespace Terminals.Connections
             this.dnsLookup1 = new Terminals.Network.DNSLookup();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.networkShares1 = new Terminals.Network.NetworkShares();
+            this.tabPage11 = new System.Windows.Forms.TabPage();
+            this.services1 = new Terminals.Network.WMI.Services();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.networkTime1 = new Terminals.Network.NTP.NetworkTime();
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.terminalServerManager1 = new Terminals.Network.Servers.TerminalServerManager();
-            this.tabPage11 = new System.Windows.Forms.TabPage();
-            this.services1 = new Terminals.Network.WMI.Services();
+            this.tabPage12 = new System.Windows.Forms.TabPage();
+            this.wakeOnLan1 = new Terminals.Network.WakeOnLan();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -60,9 +62,10 @@ namespace Terminals.Connections
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.tabPage9.SuspendLayout();
+            this.tabPage11.SuspendLayout();
             this.tabPage10.SuspendLayout();
             this.tabPage8.SuspendLayout();
-            this.tabPage11.SuspendLayout();
+            this.tabPage12.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -78,6 +81,7 @@ namespace Terminals.Connections
             this.tabControl1.Controls.Add(this.tabPage11);
             this.tabControl1.Controls.Add(this.tabPage10);
             this.tabControl1.Controls.Add(this.tabPage8);
+            this.tabControl1.Controls.Add(this.tabPage12);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -237,6 +241,24 @@ namespace Terminals.Connections
             this.networkShares1.Size = new System.Drawing.Size(742, 303);
             this.networkShares1.TabIndex = 0;
             // 
+            // tabPage11
+            // 
+            this.tabPage11.Controls.Add(this.services1);
+            this.tabPage11.Location = new System.Drawing.Point(4, 22);
+            this.tabPage11.Name = "tabPage11";
+            this.tabPage11.Size = new System.Drawing.Size(748, 309);
+            this.tabPage11.TabIndex = 12;
+            this.tabPage11.Text = "Services";
+            this.tabPage11.UseVisualStyleBackColor = true;
+            // 
+            // services1
+            // 
+            this.services1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.services1.Location = new System.Drawing.Point(0, 0);
+            this.services1.Name = "services1";
+            this.services1.Size = new System.Drawing.Size(748, 309);
+            this.services1.TabIndex = 0;
+            // 
             // tabPage10
             // 
             this.tabPage10.Controls.Add(this.networkTime1);
@@ -274,23 +296,24 @@ namespace Terminals.Connections
             this.terminalServerManager1.Size = new System.Drawing.Size(748, 309);
             this.terminalServerManager1.TabIndex = 0;
             // 
-            // tabPage11
+            // tabPage12
             // 
-            this.tabPage11.Controls.Add(this.services1);
-            this.tabPage11.Location = new System.Drawing.Point(4, 22);
-            this.tabPage11.Name = "tabPage11";
-            this.tabPage11.Size = new System.Drawing.Size(748, 309);
-            this.tabPage11.TabIndex = 12;
-            this.tabPage11.Text = "Services";
-            this.tabPage11.UseVisualStyleBackColor = true;
+            this.tabPage12.Controls.Add(this.wakeOnLan1);
+            this.tabPage12.Location = new System.Drawing.Point(4, 22);
+            this.tabPage12.Name = "tabPage12";
+            this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage12.Size = new System.Drawing.Size(748, 309);
+            this.tabPage12.TabIndex = 13;
+            this.tabPage12.Text = "Wake on Lan";
+            this.tabPage12.UseVisualStyleBackColor = true;
             // 
-            // services1
+            // wakeOnLan1
             // 
-            this.services1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.services1.Location = new System.Drawing.Point(0, 0);
-            this.services1.Name = "services1";
-            this.services1.Size = new System.Drawing.Size(748, 309);
-            this.services1.TabIndex = 0;
+            this.wakeOnLan1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.wakeOnLan1.Location = new System.Drawing.Point(3, 3);
+            this.wakeOnLan1.Name = "wakeOnLan1";
+            this.wakeOnLan1.Size = new System.Drawing.Size(742, 303);
+            this.wakeOnLan1.TabIndex = 0;
             // 
             // TabbedTools
             // 
@@ -308,9 +331,10 @@ namespace Terminals.Connections
             this.tabPage6.ResumeLayout(false);
             this.tabPage7.ResumeLayout(false);
             this.tabPage9.ResumeLayout(false);
+            this.tabPage11.ResumeLayout(false);
             this.tabPage10.ResumeLayout(false);
             this.tabPage8.ResumeLayout(false);
-            this.tabPage11.ResumeLayout(false);
+            this.tabPage12.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -340,5 +364,7 @@ namespace Terminals.Connections
         private Metro.Ping ping1;
         private System.Windows.Forms.TabPage tabPage11;
         private Terminals.Network.WMI.Services services1;
+        private System.Windows.Forms.TabPage tabPage12;
+        private Terminals.Network.WakeOnLan wakeOnLan1;
     }
 }
