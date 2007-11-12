@@ -28,7 +28,9 @@ namespace Terminals.CaptureManager
                 flckr.AuthToken = Settings.FlickrToken;
                 string c = this.Comments;
                 if(c == null) c = "";
-                flckr.UploadPicture(FilePath, System.IO.Path.GetFileName(FilePath), c, "screenshot");
+                using(System.IO.FileStream fs = new System.IO.FileStream(FilePath, System.IO.FileMode.Open)) {
+                    flckr.UploadPicture(fs, System.IO.Path.GetFileName(FilePath), c, "screenshot Terminals", 1, 1, 1, FlickrNet.ContentType.Screenshot, FlickrNet.SafetyLevel.Safe, FlickrNet.HiddenFromSearch.Visible);
+                }
             } else {
                 throw new Exception("You must authorize with Flickr prior to posting.  In Terminals, go to Tools, Options and then select the Flickr tab.");
             }
