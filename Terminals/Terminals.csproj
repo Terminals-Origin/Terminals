@@ -716,6 +716,7 @@
     <Content Include="Resources\rdp.png" />
     <None Include="Resources\RotatedHeaderForWizard.bmp" />
     <EmbeddedResource Include="Resources\screen-capture-box.gif" />
+    <EmbeddedResource Include="Resources\Refresh.gif" />
     <Content Include="Resources\server-administrator-icon.png" />
     <Content Include="Thumbs\certmgr.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

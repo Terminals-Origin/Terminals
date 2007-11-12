@@ -1747,6 +1747,15 @@ namespace Terminals {
                 }
             }
         }
+
+        private void toolStripButton4_Click(object sender, EventArgs e) {
+            if(tcTerminals.SelectedItem != null) {
+                TerminalTabControlItem terminalTabPage = (TerminalTabControlItem)tcTerminals.SelectedItem;
+                if(terminalTabPage.Connection != null) {
+                    terminalTabPage.Connection.ChangeDesktopSize(terminalTabPage.Connection.Favorite.DesktopSize);
+                }
+            }
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem {

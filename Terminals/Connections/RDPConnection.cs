@@ -20,12 +20,24 @@ namespace Terminals.Connections
         #region IConnection Members
         public override void ChangeDesktopSize(Terminals.DesktopSize Size)
         {
-            //int height; int width;
-            //ConnectionManager.GetSize(out height, out width, this, Size);
-            //axMsRdpClient2.DesktopWidth = width;
-            //axMsRdpClient2.DesktopHeight = height;
-            if(Size == DesktopSize.AutoScale) axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
-            if(Size == DesktopSize.FullScreen) axMsRdpClient2.FullScreen = true;
+            if(Size == DesktopSize.AutoScale) {
+                axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
+                return;
+            }
+            if(Size == DesktopSize.FullScreen) {
+                axMsRdpClient2.FullScreen = true;
+                return;
+            }
+
+            int height = 0, width = 0;
+            ConnectionManager.GetSize(out height, out width, this, Favorite.DesktopSize);
+            try {
+                axMsRdpClient2.DesktopWidth = width;
+                axMsRdpClient2.DesktopHeight = height;
+            } catch(Exception exc) {
+                
+            }
+
         }
 
         public override bool Connected { get { return Convert.ToBoolean(axMsRdpClient2.Connected); } }
