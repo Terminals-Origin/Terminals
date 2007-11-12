@@ -595,6 +595,16 @@ namespace Terminals
                 configuration.Save();
             }
         }
+        public static string FlickrToken {
+            get {
+                return GetSection().FlickrToken;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).FlickrToken = value;
+                configuration.Save();
+            }
+        }
 
         public static string TerminalsPassword
         {

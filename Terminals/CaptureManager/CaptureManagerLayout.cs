@@ -18,9 +18,37 @@ namespace Terminals.CaptureManager
         }
         TreeNode root = new TreeNode("Root");
 
+        ToolStripMenuItem flickrMenuItem;
         private void CaptureManagerLayout_Load(object sender, EventArgs e)
         {
+            flickrMenuItem = new ToolStripMenuItem("Post selected images to Flickr");
+            flickrMenuItem.Click += new EventHandler(flickrMenuItem_Click);
             LoadRoot();
+        }
+
+        private void SendToFlickr(object state) {
+            try {
+                List<ListViewItem> items = (List<ListViewItem>)state;
+                if(items != null && items.Count > 0) {
+                    foreach(ListViewItem lvi in items) {
+                        Capture cap = (lvi.Tag as Capture);
+                        cap.PostToFlickr();
+                    }
+                }
+                System.Windows.Forms.MessageBox.Show("All images have been uploaded to Flickr.");
+            } catch(Exception exc) {
+                System.Windows.Forms.MessageBox.Show("There was an error uploading your screen shots to Flickr:\r\n" + exc.Message);
+                Terminals.Logging.Log.Error("There was an error uploading your screen shots to Flickr.", exc);
+            }
+        }
+        void flickrMenuItem_Click(object sender, EventArgs e) {
+            List<ListViewItem> items = new List<ListViewItem>();
+            foreach(ListViewItem item in listView1.SelectedItems) {
+                items.Add(item);
+            }
+            System.Windows.Forms.MessageBox.Show("All items have been queued for upload to Flickr.  Once the upload has been completed you will be notified.");
+            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(SendToFlickr), items);
+
         }
         public void RefreshView()
         {
@@ -286,6 +314,12 @@ namespace Terminals.CaptureManager
             this.listView1.View = View.LargeIcon;
             RefreshView();
 
+        }
+
+        private void thumbsContextMenu_Opening(object sender, CancelEventArgs e) {
+            if(Settings.FlickrToken != "" && (listView1.SelectedItems != null && listView1.SelectedItems.Count > 0)) {
+                thumbsContextMenu.Items.Add(flickrMenuItem);
+            }
         }
     }
 }

@@ -204,6 +204,17 @@ namespace Terminals
                 this["forceComputerNamesAsURI"] = value;
             }
         }
+        [ConfigurationProperty("flickrToken", DefaultValue = "")]
+        public string FlickrToken {
+            get {
+                return Convert.ToString(this["flickrToken"]);
+            }
+            set {
+                this["flickrToken"] = value;
+            }
+        }
+
+
         [ConfigurationProperty("terminalsPassword", DefaultValue = "")]
         public string TerminalsPassword
         {

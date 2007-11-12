@@ -34,6 +34,7 @@ namespace Terminals
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.office2007FeelCheckbox = new System.Windows.Forms.CheckBox();
             this.autoSwitchToCaptureCheckbox = new System.Windows.Forms.CheckBox();
             this.warnDisconnectCheckBox = new System.Windows.Forms.CheckBox();
             this.validateServerNamesCheckbox = new System.Windows.Forms.CheckBox();
@@ -67,11 +68,17 @@ namespace Terminals
             this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
             this.PasswordTextbox = new System.Windows.Forms.TextBox();
             this.PasswordProtectTerminalsCheckbox = new System.Windows.Forms.CheckBox();
-            this.office2007FeelCheckbox = new System.Windows.Forms.CheckBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.label8 = new System.Windows.Forms.Label();
+            this.AuthorizeFlickrButton = new System.Windows.Forms.Button();
+            this.CompleteAuthButton = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOk
@@ -129,6 +136,7 @@ namespace Terminals
             this.tabControl1.Controls.Add(this.tpGeneral);
             this.tabControl1.Controls.Add(this.tpExecuteBeforeConnect);
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(8, 8);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -162,6 +170,16 @@ namespace Terminals
             this.tpGeneral.TabIndex = 0;
             this.tpGeneral.Text = "General";
             this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // office2007FeelCheckbox
+            // 
+            this.office2007FeelCheckbox.AutoSize = true;
+            this.office2007FeelCheckbox.Location = new System.Drawing.Point(253, 104);
+            this.office2007FeelCheckbox.Name = "office2007FeelCheckbox";
+            this.office2007FeelCheckbox.Size = new System.Drawing.Size(105, 17);
+            this.office2007FeelCheckbox.TabIndex = 21;
+            this.office2007FeelCheckbox.Text = "Office 2007 Feel";
+            this.office2007FeelCheckbox.UseVisualStyleBackColor = true;
             // 
             // autoSwitchToCaptureCheckbox
             // 
@@ -500,15 +518,68 @@ namespace Terminals
             this.PasswordProtectTerminalsCheckbox.UseVisualStyleBackColor = true;
             this.PasswordProtectTerminalsCheckbox.CheckedChanged += new System.EventHandler(this.PasswordProtectTerminalsCheckbox_CheckedChanged);
             // 
-            // office2007FeelCheckbox
+            // tabPage2
             // 
-            this.office2007FeelCheckbox.AutoSize = true;
-            this.office2007FeelCheckbox.Location = new System.Drawing.Point(253, 104);
-            this.office2007FeelCheckbox.Name = "office2007FeelCheckbox";
-            this.office2007FeelCheckbox.Size = new System.Drawing.Size(105, 17);
-            this.office2007FeelCheckbox.TabIndex = 21;
-            this.office2007FeelCheckbox.Text = "Office 2007 Feel";
-            this.office2007FeelCheckbox.UseVisualStyleBackColor = true;
+            this.tabPage2.Controls.Add(this.label10);
+            this.tabPage2.Controls.Add(this.label9);
+            this.tabPage2.Controls.Add(this.CompleteAuthButton);
+            this.tabPage2.Controls.Add(this.AuthorizeFlickrButton);
+            this.tabPage2.Controls.Add(this.label8);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(392, 264);
+            this.tabPage2.TabIndex = 3;
+            this.tabPage2.Text = "Flickr";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(239, 73);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(0, 13);
+            this.label8.TabIndex = 11;
+            // 
+            // AuthorizeFlickrButton
+            // 
+            this.AuthorizeFlickrButton.Location = new System.Drawing.Point(27, 17);
+            this.AuthorizeFlickrButton.Name = "AuthorizeFlickrButton";
+            this.AuthorizeFlickrButton.Size = new System.Drawing.Size(75, 23);
+            this.AuthorizeFlickrButton.TabIndex = 12;
+            this.AuthorizeFlickrButton.Text = "Authorize...";
+            this.AuthorizeFlickrButton.UseVisualStyleBackColor = true;
+            this.AuthorizeFlickrButton.Click += new System.EventHandler(this.AuthorizeFlickrButton_Click);
+            // 
+            // CompleteAuthButton
+            // 
+            this.CompleteAuthButton.Enabled = false;
+            this.CompleteAuthButton.Location = new System.Drawing.Point(27, 113);
+            this.CompleteAuthButton.Name = "CompleteAuthButton";
+            this.CompleteAuthButton.Size = new System.Drawing.Size(75, 23);
+            this.CompleteAuthButton.TabIndex = 13;
+            this.CompleteAuthButton.Text = "Complete...";
+            this.CompleteAuthButton.UseVisualStyleBackColor = true;
+            this.CompleteAuthButton.Click += new System.EventHandler(this.CompleteAuthButton_Click);
+            // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(131, 17);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(255, 59);
+            this.label9.TabIndex = 14;
+            this.label9.Text = "First you must first Authorize Terminals with your Flickr Account.  Press the Aut" +
+                "horize button now, login to your Flickr Account and allow Terminals limited acce" +
+                "ss to your account.";
+            // 
+            // label10
+            // 
+            this.label10.Location = new System.Drawing.Point(131, 113);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(255, 59);
+            this.label10.TabIndex = 15;
+            this.label10.Text = "Second you must click the Complete button to finish the process.  Only do this AF" +
+                "TER you have accepted Terminals access to your account on the Flickr Web Site.";
             // 
             // OptionsForm
             // 
@@ -536,6 +607,8 @@ namespace Terminals
             this.tpExecuteBeforeConnect.PerformLayout();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -583,5 +656,11 @@ namespace Terminals
         private System.Windows.Forms.CheckBox warnDisconnectCheckBox;
         private System.Windows.Forms.CheckBox autoSwitchToCaptureCheckbox;
         private System.Windows.Forms.CheckBox office2007FeelCheckbox;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button AuthorizeFlickrButton;
+        private System.Windows.Forms.Button CompleteAuthButton;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
     }
 }

@@ -41,14 +41,14 @@ namespace Terminals.CaptureManager
             this.copyImageToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyImagePathToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.ViewMode = new System.Windows.Forms.ToolStripComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.deleteButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.pictureCommentsTextBox = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.ViewMode = new System.Windows.Forms.ToolStripComboBox();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -57,10 +57,10 @@ namespace Terminals.CaptureManager
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.thumbsContextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -160,7 +160,8 @@ namespace Terminals.CaptureManager
             this.copyImageToClipboardToolStripMenuItem,
             this.copyImagePathToClipboardToolStripMenuItem});
             this.thumbsContextMenu.Name = "thumbsContextMenu";
-            this.thumbsContextMenu.Size = new System.Drawing.Size(228, 70);
+            this.thumbsContextMenu.Size = new System.Drawing.Size(228, 92);
+            this.thumbsContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.thumbsContextMenu_Opening);
             // 
             // deleteToolStripMenuItem
             // 
@@ -188,6 +189,43 @@ namespace Terminals.CaptureManager
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
             this.imageList1.ImageSize = new System.Drawing.Size(150, 150);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // trackBar1
+            // 
+            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.trackBar1.LargeChange = 50;
+            this.trackBar1.Location = new System.Drawing.Point(290, 1);
+            this.trackBar1.Maximum = 256;
+            this.trackBar1.Minimum = 25;
+            this.trackBar1.Name = "trackBar1";
+            this.trackBar1.Size = new System.Drawing.Size(104, 42);
+            this.trackBar1.SmallChange = 10;
+            this.trackBar1.TabIndex = 2;
+            this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.trackBar1.Value = 25;
+            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ViewMode});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(396, 25);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // ViewMode
+            // 
+            this.ViewMode.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.ViewMode.Items.AddRange(new object[] {
+            "Large Icons",
+            "Small Icons",
+            "Tile",
+            "List"});
+            this.ViewMode.Name = "ViewMode";
+            this.ViewMode.Size = new System.Drawing.Size(113, 21);
+            this.ViewMode.SelectedIndexChanged += new System.EventHandler(this.View_SelectedIndexChanged);
             // 
             // panel1
             // 
@@ -240,43 +278,6 @@ namespace Terminals.CaptureManager
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ViewMode});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(396, 25);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // ViewMode
-            // 
-            this.ViewMode.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.ViewMode.Items.AddRange(new object[] {
-            "Large Icons",
-            "Small Icons",
-            "Tile",
-            "List"});
-            this.ViewMode.Name = "ViewMode";
-            this.ViewMode.Size = new System.Drawing.Size(113, 21);
-            this.ViewMode.SelectedIndexChanged += new System.EventHandler(this.View_SelectedIndexChanged);
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.trackBar1.LargeChange = 50;
-            this.trackBar1.Location = new System.Drawing.Point(290, 1);
-            this.trackBar1.Maximum = 256;
-            this.trackBar1.Minimum = 25;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(104, 42);
-            this.trackBar1.SmallChange = 10;
-            this.trackBar1.TabIndex = 2;
-            this.trackBar1.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.trackBar1.Value = 25;
-            this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            // 
             // CaptureManagerLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -295,11 +296,11 @@ namespace Terminals.CaptureManager
             this.splitContainer2.Panel2.PerformLayout();
             this.splitContainer2.ResumeLayout(false);
             this.thumbsContextMenu.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

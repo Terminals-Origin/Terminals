@@ -22,6 +22,17 @@ namespace Terminals.CaptureManager
                 Terminals.Logging.Log.Info("", ec);
             }
         }
+        public void PostToFlickr() {
+            if(Settings.FlickrToken != "") {
+                FlickrNet.Flickr flckr = new FlickrNet.Flickr(MainForm.FlickrAPIKey, MainForm.FlickrSharedSecretKey);
+                flckr.AuthToken = Settings.FlickrToken;
+                string c = this.Comments;
+                if(c == null) c = "";
+                flckr.UploadPicture(FilePath, System.IO.Path.GetFileName(FilePath), c, "screenshot");
+            } else {
+                throw new Exception("You must authorize with Flickr prior to posting.  In Terminals, go to Tools, Options and then select the Flickr tab.");
+            }
+        }
         public void Move(string Destination)
         {
             try

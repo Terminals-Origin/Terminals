@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using AxMSTSCLib;
+using FlickrNet;
 
 namespace Terminals
 {
@@ -115,6 +116,38 @@ namespace Terminals
                 PasswordsMatchLabel.Text = "Passwords do not match";
             } else {
                 PasswordsMatchLabel.Text = "Passwords match";
+            }
+        }
+        string tempFrob;
+        private void AuthorizeFlickrButton_Click(object sender, EventArgs e) {
+            // Create Flickr instance    
+            Flickr flickr = new Flickr(MainForm.FlickrAPIKey, MainForm.FlickrSharedSecretKey);    
+            // Get Frob        
+            tempFrob = flickr.AuthGetFrob();
+            // Calculate the URL at Flickr to redirect the user to    
+            string flickrUrl = flickr.AuthCalcUrl(tempFrob, AuthLevel.Write);    
+            // The following line will load the URL in the users default browser.    
+            System.Diagnostics.Process.Start(flickrUrl);
+            CompleteAuthButton.Enabled = true;
+        }
+
+        private void CompleteAuthButton_Click(object sender, EventArgs e) {
+            // Create Flickr instance
+            Flickr flickr = new Flickr(MainForm.FlickrAPIKey, MainForm.FlickrSharedSecretKey);    
+            try {
+                // use the temporary Frob to get the authentication
+                Auth auth = flickr.AuthGetToken(tempFrob);
+                // Store this Token for later usage,
+                // or set your Flickr instance to use it.
+                System.Windows.Forms.MessageBox.Show("User authenticated successfully");
+                Terminals.Logging.Log.Info("User authenticated successfully. Authentication token is " + auth.Token + ".User id is " + auth.User.UserId + ", username is" + auth.User.Username);
+                flickr.AuthToken = auth.Token;
+                Settings.FlickrToken = auth.Token;
+            } catch(FlickrException ex) {
+                // If user did not authenticat your application
+                // then a FlickrException will be thrown.
+                Terminals.Logging.Log.Info("User not authenticated successfully", ex);
+                System.Windows.Forms.MessageBox.Show("User did not authenticate you" +ex.Message);
             }
         }
     }
