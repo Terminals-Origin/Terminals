@@ -46,9 +46,14 @@ namespace Terminals.CaptureManager
             foreach(ListViewItem item in listView1.SelectedItems) {
                 items.Add(item);
             }
-            System.Windows.Forms.MessageBox.Show("All items have been queued for upload to Flickr.  Once the upload has been completed you will be notified.");
-            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(SendToFlickr), items);
-
+            if(items.Count > 0) {
+                if(System.Windows.Forms.MessageBox.Show("Are you sure you want to post " + items.Count + " images to your Flickr account?", "Confirmation Required", MessageBoxButtons.OKCancel) == DialogResult.OK) {
+                    System.Windows.Forms.MessageBox.Show("All items have been queued for upload to Flickr.  Once the upload has been completed you will be notified.");
+                    System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(SendToFlickr), items);
+                }
+            } else {
+                System.Windows.Forms.MessageBox.Show("You must first select a screen capture to upload.");
+            }
         }
         public void RefreshView()
         {
