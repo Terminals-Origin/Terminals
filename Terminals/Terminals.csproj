@@ -203,6 +203,12 @@
     <Compile Include="Network\DNS\Adapter.cs" />
     <Compile Include="Network\DNS\AdapterInfo.cs" />
     <Compile Include="Network\MagicPaket.cs" />
+    <Compile Include="Network\PortScanner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\PortScanner.Designer.cs">
+      <DependentUpon>PortScanner.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\WakeOnLan.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -390,7 +396,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -622,6 +628,10 @@
     <EmbeddedResource Include="Connections\CaptureManagerConnection.resx">
       <DependentUpon>CaptureManagerConnection.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\PortScanner.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PortScanner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\WakeOnLan.resx">
       <SubType>Designer</SubType>
