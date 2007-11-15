@@ -63,7 +63,7 @@ namespace Terminals {
                 LoadTags("");
                 ProtocolHandler.Register();
                 SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
-                tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
+                tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);                
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
                 System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);

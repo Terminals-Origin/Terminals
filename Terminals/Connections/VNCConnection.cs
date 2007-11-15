@@ -29,8 +29,28 @@ namespace Terminals.Connections
 
                 string pass = Favorite.Password;
                 if(pass == null || pass == "") pass = Settings.DefaultPassword;
-                if(pass != null && pass != "") this.vncPassword = pass;
+                
+                this.vncPassword = pass;
 
+                if(pass == null || pass == "")
+                {
+                    Terminals.InputBoxResult result = Terminals.InputBox.Show("VNC Password", "Please specify your password now", '*');
+                    if(result.ReturnCode == DialogResult.OK)
+                    {
+                        if(result.Text != null && result.Text != "")
+                        {
+                            this.vncPassword = result.Text;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
                 rd.Parent = base.TerminalTabPage;
                 this.Parent = TerminalTabPage;
@@ -43,6 +63,7 @@ namespace Terminals.Connections
                 rd.Connect(Favorite.ServerName);
                 rd.BringToFront();
                 return true;
+
             }
             catch(Exception exc)
             {
