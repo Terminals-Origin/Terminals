@@ -32,11 +32,14 @@ namespace Terminals
             office2007FeelCheckbox.Checked = Settings.Office2007Feel;
             currentTerminal = terminal;
             this.PortscanTimeoutTextBox.Text = Settings.PortScanTimeoutSeconds.ToString();
+
+            ClearMasterButton.Enabled = false;
             if (Settings.TerminalsPassword != string.Empty) {
                 PasswordProtectTerminalsCheckbox.Checked = true;
                 PasswordProtectTerminalsCheckbox.Enabled = false;
                 PasswordTextbox.Enabled = false;
                 ConfirmPasswordTextBox.Enabled = false;
+                ClearMasterButton.Enabled = true;
             }
             this.MinimizeToTrayCheckbox.Checked = Settings.MinimizeToTray;
         }
@@ -148,6 +151,23 @@ namespace Terminals
                 // then a FlickrException will be thrown.
                 Terminals.Logging.Log.Info("User not authenticated successfully", ex);
                 System.Windows.Forms.MessageBox.Show("User did not authenticate you" +ex.Message);
+            }
+        }
+
+        private void ClearMasterButton_Click(object sender, EventArgs e)
+        {
+            if(System.Windows.Forms.MessageBox.Show("Are you sure you want to remove the master password?\r\n\r\n**Please be advised that this will render ALL saved passwords inactive!**", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+
+                Settings.TerminalsPassword = "";
+                ClearMasterButton.Enabled = false;
+
+                PasswordProtectTerminalsCheckbox.Checked = false;
+                PasswordProtectTerminalsCheckbox.Enabled = true;
+                PasswordTextbox.Enabled = true;
+                ConfirmPasswordTextBox.Enabled = true;
+                PasswordTextbox.Text = "";
+                ConfirmPasswordTextBox.Text = "";
             }
         }
     }
