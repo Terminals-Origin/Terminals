@@ -367,7 +367,7 @@ namespace Terminals {
 
         private void SaveToolStripRow(ToolStripPanelRow Row, ToolStripSettings newSettings, string Position, int rowIndex) {
             foreach(ToolStrip strip in Row.Controls) {
-                if(strip != menuStrip) {
+                //if(strip != menuStrip) {
                     ToolStripSetting setting = new ToolStripSetting();
                     setting.Dock = Position;
                     setting.Row = rowIndex;
@@ -376,7 +376,7 @@ namespace Terminals {
                     setting.Name = strip.Name;
                     setting.Visible = strip.Visible;
                     newSettings.Add(setting);
-                }
+                //}
             }
         }
 
@@ -391,31 +391,59 @@ namespace Terminals {
 
             Settings.ToolbarSettings = newSettings;
         }
-        public void LoadWindowState() {
+        public void LoadWindowState()
+        {
             //ToolStripManager.LoadSettings(this);
             ToolStripSettings newSettings = Settings.ToolbarSettings;
-            if(newSettings != null && newSettings.Count > 0) {
-                foreach(ToolStripSetting setting in newSettings) {
+            if(newSettings != null && newSettings.Count > 0)
+            {
+                foreach(ToolStripSetting setting in newSettings)
+                {
                     ToolStrip strip = null;
-                    if(setting.Name == toolbarStd.Name) {
+                    if(setting.Name == toolbarStd.Name)
+                    {
                         strip = toolbarStd;
-                    } else if(setting.Name == favoriteToolBar.Name) {
+                    }
+                    else if(setting.Name == favoriteToolBar.Name)
+                    {
                         strip = favoriteToolBar;
-                    } else if(setting.Name == SpecialCommandsToolStrip.Name) {
+                    }
+                    else if(setting.Name == SpecialCommandsToolStrip.Name)
+                    {
                         strip = SpecialCommandsToolStrip;
                     }
-                    if(strip != null) {
-                        if(setting.Dock == "Top") {
-                            this.toolStripContainer.TopToolStripPanel.Join(strip, setting.Row);
-                        } else if(setting.Dock == "Left") {
-                            this.toolStripContainer.LeftToolStripPanel.Join(strip, setting.Row);
-                        } else if(setting.Dock == "Right") {
-                            this.toolStripContainer.RightToolStripPanel.Join(strip, setting.Row);
-                        } else if(setting.Dock == "Bottom") {
-                            this.toolStripContainer.BottomToolStripPanel.Join(strip, setting.Row);
+                    else if(setting.Name == menuStrip.Name)
+                    {
+                        strip = menuStrip;
+                    }
+                    else if(setting.Name == tsRemoteToolbar.Name)
+                    {
+                        strip = tsRemoteToolbar;
+                    }
+
+                    if(strip != null)
+                    {
+                        Point p;
+                        int row = setting.Row + 1;
+                        p = new Point(setting.Left, (strip.Height * row) + 1);
+                        if(setting.Dock == "Top")
+                        {
+                            this.toolStripContainer.TopToolStripPanel.Join(strip, p);
                         }
-                        strip.Left = setting.Left;
-                        strip.Top = setting.Top;
+                        else if(setting.Dock == "Left")
+                        {
+                            this.toolStripContainer.LeftToolStripPanel.Join(strip, p);
+                        }
+                        else if(setting.Dock == "Right")
+                        {
+                            this.toolStripContainer.RightToolStripPanel.Join(strip, p);
+                        }
+                        else if(setting.Dock == "Bottom")
+                        {
+                            this.toolStripContainer.BottomToolStripPanel.Join(strip, p);
+                        }
+                        //strip.Left = setting.Left;
+                        //strip.Top = setting.Top;
                         strip.Visible = setting.Visible;
                     }
                 }
