@@ -172,8 +172,11 @@ namespace Terminals {
 
 
                 QuickContextMenu.Items.Add("-");
-                QuickContextMenu.Items.Add("&Networking Tools");
                 QuickContextMenu.Items.Add("&Screen Capture Manager");
+                QuickContextMenu.Items.Add("&Networking Tools");
+                QuickContextMenu.Items.Add("-");
+                QuickContextMenu.Items.Add("&Organize Favorites");
+                QuickContextMenu.Items.Add("Options");                
                 QuickContextMenu.Items.Add("-");
 
                 FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
@@ -250,6 +253,12 @@ namespace Terminals {
                 case "&Restore Screen":
                 case "&Full Screen":
                     this.FullScreen = !this.FullScreen;
+                    break;
+                case "&Organize Favorites":
+                    manageConnectionsToolStripMenuItem_Click(null, null);
+                    break;
+                case "Options":
+                    optionsToolStripMenuItem_Click(null, null);
                     break;
                 case "&Networking Tools":
                     toolStripButton2_Click(null, null);
