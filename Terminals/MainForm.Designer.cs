@@ -663,7 +663,7 @@ namespace Terminals {
             this.vncActionButton.Image = ((System.Drawing.Image)(resources.GetObject("vncActionButton.Image")));
             this.vncActionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.vncActionButton.Name = "vncActionButton";
-            this.vncActionButton.Size = new System.Drawing.Size(29, 20);
+            this.vncActionButton.Size = new System.Drawing.Size(29, 22);
             this.vncActionButton.Text = "toolStripButton4";
             this.vncActionButton.Visible = false;
             // 
@@ -1141,7 +1141,7 @@ namespace Terminals {
             this.showToolStripMenuItem,
             this.toolStripMenuItem2});
             this.SystemTrayContextMenuStrip.Name = "SystemTrayContextMenuStrip";
-            this.SystemTrayContextMenuStrip.Size = new System.Drawing.Size(177, 92);
+            this.SystemTrayContextMenuStrip.Size = new System.Drawing.Size(177, 114);
             this.SystemTrayContextMenuStrip.Text = "Terminals";
             this.SystemTrayContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.SystemTrayContextMenuStrip_Opening);
             // 

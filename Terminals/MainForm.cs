@@ -1436,12 +1436,18 @@ namespace Terminals {
 
         }
 
-        private void MainWindowNotifyIcon_MouseClick(object sender, MouseEventArgs e) {
-            if(e.Button == MouseButtons.Left) {
-                if(Settings.MinimizeToTray) {
+        private void MainWindowNotifyIcon_MouseClick(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Left)
+            {
+                if(Settings.MinimizeToTray)
+                {
                     this.Visible = !this.Visible;
                     if(this.Visible && this.WindowState == FormWindowState.Minimized) this.WindowState = FormWindowState.Normal;
-                } else {
+
+                }
+                else
+                {
                     if(this.WindowState == FormWindowState.Normal)
                         this.WindowState = FormWindowState.Minimized;
                     else
@@ -1450,7 +1456,9 @@ namespace Terminals {
             }
         }
 
-        private void toolStripMenuItem2_Click(object sender, EventArgs e) {
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            this.Visible = true;
             Close();
         }
 
