@@ -395,7 +395,7 @@ namespace Terminals
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
             SetOkButtonState();
-            chkSavePassword.Checked = (txtPassword.Text != "");
+            //chkSavePassword.Checked = (txtPassword.Text != "");
         }
 
         private void NewTerminalForm_Shown(object sender, EventArgs e)
