@@ -55,6 +55,11 @@ namespace Terminals
         this.RDPSubTabPage = new System.Windows.Forms.TabControl();
         this.RDPDisplayTabPage = new System.Windows.Forms.TabPage();
         this.groupBox1 = new System.Windows.Forms.GroupBox();
+        this.customSizePanel = new System.Windows.Forms.Panel();
+        this.widthUpDown = new System.Windows.Forms.NumericUpDown();
+        this.heightUpDown = new System.Windows.Forms.NumericUpDown();
+        this.label31 = new System.Windows.Forms.Label();
+        this.label32 = new System.Windows.Forms.Label();
         this.chkDisableWallpaper = new System.Windows.Forms.CheckBox();
         this.chkDisableThemes = new System.Windows.Forms.CheckBox();
         this.chkDisableMenuAnimations = new System.Windows.Forms.CheckBox();
@@ -175,6 +180,9 @@ namespace Terminals
         this.RDPSubTabPage.SuspendLayout();
         this.RDPDisplayTabPage.SuspendLayout();
         this.groupBox1.SuspendLayout();
+        this.customSizePanel.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)(this.heightUpDown)).BeginInit();
         this.RDPLocalResourcesTabPage.SuspendLayout();
         this.LocalResourceGroupBox.SuspendLayout();
         this.tabPage8.SuspendLayout();
@@ -470,6 +478,7 @@ namespace Terminals
         // 
         // groupBox1
         // 
+        this.groupBox1.Controls.Add(this.customSizePanel);
         this.groupBox1.Controls.Add(this.chkDisableWallpaper);
         this.groupBox1.Controls.Add(this.chkDisableThemes);
         this.groupBox1.Controls.Add(this.chkDisableMenuAnimations);
@@ -482,10 +491,74 @@ namespace Terminals
         this.groupBox1.Controls.Add(this.label6);
         this.groupBox1.Location = new System.Drawing.Point(6, 6);
         this.groupBox1.Name = "groupBox1";
-        this.groupBox1.Size = new System.Drawing.Size(374, 204);
+        this.groupBox1.Size = new System.Drawing.Size(474, 204);
         this.groupBox1.TabIndex = 0;
         this.groupBox1.TabStop = false;
         this.groupBox1.Text = "Display settings";
+        // 
+        // customSizePanel
+        // 
+        this.customSizePanel.Controls.Add(this.widthUpDown);
+        this.customSizePanel.Controls.Add(this.heightUpDown);
+        this.customSizePanel.Controls.Add(this.label31);
+        this.customSizePanel.Controls.Add(this.label32);
+        this.customSizePanel.Location = new System.Drawing.Point(297, 14);
+        this.customSizePanel.Name = "customSizePanel";
+        this.customSizePanel.Size = new System.Drawing.Size(142, 80);
+        this.customSizePanel.TabIndex = 14;
+        this.customSizePanel.Visible = false;
+        // 
+        // widthUpDown
+        // 
+        this.widthUpDown.Location = new System.Drawing.Point(56, 12);
+        this.widthUpDown.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+        this.widthUpDown.Name = "widthUpDown";
+        this.widthUpDown.Size = new System.Drawing.Size(72, 21);
+        this.widthUpDown.TabIndex = 11;
+        this.widthUpDown.Value = new decimal(new int[] {
+            800,
+            0,
+            0,
+            0});
+        // 
+        // heightUpDown
+        // 
+        this.heightUpDown.Location = new System.Drawing.Point(56, 39);
+        this.heightUpDown.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+        this.heightUpDown.Name = "heightUpDown";
+        this.heightUpDown.Size = new System.Drawing.Size(72, 21);
+        this.heightUpDown.TabIndex = 13;
+        this.heightUpDown.Value = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+        // 
+        // label31
+        // 
+        this.label31.AutoSize = true;
+        this.label31.Location = new System.Drawing.Point(9, 14);
+        this.label31.Name = "label31";
+        this.label31.Size = new System.Drawing.Size(39, 13);
+        this.label31.TabIndex = 10;
+        this.label31.Text = "Width:";
+        // 
+        // label32
+        // 
+        this.label32.AutoSize = true;
+        this.label32.Location = new System.Drawing.Point(9, 41);
+        this.label32.Name = "label32";
+        this.label32.Size = new System.Drawing.Size(42, 13);
+        this.label32.TabIndex = 12;
+        this.label32.Text = "Height:";
         // 
         // chkDisableWallpaper
         // 
@@ -558,7 +631,7 @@ namespace Terminals
             "Highest Quality (32 Bit)"});
         this.cmbColors.Location = new System.Drawing.Point(124, 50);
         this.cmbColors.Name = "cmbColors";
-        this.cmbColors.Size = new System.Drawing.Size(234, 21);
+        this.cmbColors.Size = new System.Drawing.Size(133, 21);
         this.cmbColors.TabIndex = 3;
         // 
         // label7
@@ -581,11 +654,13 @@ namespace Terminals
             "1280x1024",
             "Fit to Window",
             "Full Screen",
-            "Auto Scale"});
-        this.cmbResolution.Location = new System.Drawing.Point(124, 23);
+            "Auto Scale",
+            "Custom"});
+        this.cmbResolution.Location = new System.Drawing.Point(124, 18);
         this.cmbResolution.Name = "cmbResolution";
-        this.cmbResolution.Size = new System.Drawing.Size(234, 21);
+        this.cmbResolution.Size = new System.Drawing.Size(133, 21);
         this.cmbResolution.TabIndex = 1;
+        this.cmbResolution.SelectedIndexChanged += new System.EventHandler(this.cmbResolution_SelectedIndexChanged);
         // 
         // label6
         // 
@@ -1646,6 +1721,10 @@ namespace Terminals
         this.RDPDisplayTabPage.PerformLayout();
         this.groupBox1.ResumeLayout(false);
         this.groupBox1.PerformLayout();
+        this.customSizePanel.ResumeLayout(false);
+        this.customSizePanel.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).EndInit();
+        ((System.ComponentModel.ISupportInitialize)(this.heightUpDown)).EndInit();
         this.RDPLocalResourcesTabPage.ResumeLayout(false);
         this.LocalResourceGroupBox.ResumeLayout(false);
         this.LocalResourceGroupBox.PerformLayout();
@@ -1818,5 +1897,10 @@ namespace Terminals
       private System.Windows.Forms.CheckBox chkDisableCursorBlinking;
       private System.Windows.Forms.CheckBox chkDisableWallpaper;
       private System.Windows.Forms.CheckBox chkDisableThemes;
+      private System.Windows.Forms.Panel customSizePanel;
+      private System.Windows.Forms.NumericUpDown widthUpDown;
+      private System.Windows.Forms.NumericUpDown heightUpDown;
+      private System.Windows.Forms.Label label31;
+      private System.Windows.Forms.Label label32;
   }
 }

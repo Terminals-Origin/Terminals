@@ -527,6 +527,32 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("desktopSizeHeight", IsRequired = false)]
+        public int DesktopSizeHeight
+        {
+            get
+            {
+                return (int)this["desktopSizeHeight"];
+            }
+            set
+            {
+                this["desktopSizeHeight"] = value;
+            }
+        }
+
+        [ConfigurationProperty("desktopSizeWidth", IsRequired=false)]
+        public int DesktopSizeWidth
+        {
+            get
+            {
+                return (int)this["desktopSizeWidth"];
+            }
+            set
+            {
+                this["desktopSizeWidth"] = value;
+            }
+        }
+
         [ConfigurationProperty("desktopSize", IsRequired = true, DefaultValue = DesktopSize.FitToWindow)]
         public DesktopSize DesktopSize
         {

@@ -22,9 +22,8 @@ namespace Terminals.Connections {
         public const int SSHPort = 22;
         public const int ICAPort = 1494;
 
-        public static void GetSize(out int Height, out int Width, Connections.Connection Connection, DesktopSize Size) {
-            Height = 0;
-            Width = 0;
+        public static void GetSize(ref int Height, ref int Width, Connections.Connection Connection, DesktopSize Size) {
+
 
             switch(Size) {
                 case DesktopSize.x640:
@@ -54,6 +53,8 @@ namespace Terminals.Connections {
                 case DesktopSize.AutoScale:
                     Width = Screen.FromControl(Connection).Bounds.Width;
                     Height = Screen.FromControl(Connection).Bounds.Height - 1;
+                    break;
+                case DesktopSize.Custom:
                     break;
             }
             int maxWidth = Settings.SupportsRDP6 ? 4096 : 1600;

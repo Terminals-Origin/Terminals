@@ -143,6 +143,7 @@ namespace Terminals
             txtArguments.Text = favorite.ExecuteBeforeConnectArgs;
             txtInitialDirectory.Text = favorite.ExecuteBeforeConnectInitialDirectory;
             chkWaitForExit.Checked = favorite.ExecuteBeforeConnectWaitForExit;
+
             string[] tagsArray = favorite.Tags.Split(',');
             if(!((tagsArray.Length == 1) && (String.IsNullOrEmpty(tagsArray[0]))))
             {
@@ -195,6 +196,8 @@ namespace Terminals
                 chkDisableThemes.Checked = favorite.DisableTheming;
                 chkDisableWallpaper.Checked = favorite.DisableWallPaper;
             }
+            this.widthUpDown.Value = (decimal)favorite.DesktopSizeWidth;
+            this.heightUpDown.Value = (decimal)favorite.DesktopSizeHeight;
 
         }
 
@@ -292,8 +295,8 @@ namespace Terminals
                 favorite.BitmapPeristence = EnableBitmapPersistanceCheckbox.Checked;
                 favorite.AllowBackgroundInput = AllowBackgroundInputCheckBox.Checked;
 
-
-
+                favorite.DesktopSizeWidth = (int)this.widthUpDown.Value;
+                favorite.DesktopSizeHeight = (int)this.heightUpDown.Value;
 
                 Settings.AddFavorite(favorite, showOnToolbar);
 
@@ -691,6 +694,12 @@ namespace Terminals
                 terminalServerManager1.Connect(this.cmbServers.Text, true);
                 terminalServerManager1.Invalidate();
             }
+        }
+
+        private void cmbResolution_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            customSizePanel.Visible = false;
+            if(cmbResolution.Text == "Custom") customSizePanel.Visible = true;            
         }
 
     }

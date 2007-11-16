@@ -20,23 +20,40 @@ namespace Terminals.Connections
         #region IConnection Members
         public override void ChangeDesktopSize(Terminals.DesktopSize Size)
         {
-            if(Size == DesktopSize.AutoScale) {
-                axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
-                return;
-            }
-            if(Size == DesktopSize.FullScreen) {
-                axMsRdpClient2.FullScreen = true;
-                return;
-            }
 
-            int height = 0, width = 0;
-            ConnectionManager.GetSize(out height, out width, this, Favorite.DesktopSize);
-            try {
+
+
+            int height = Favorite.DesktopSizeHeight, width = Favorite.DesktopSizeWidth;
+            ConnectionManager.GetSize(ref height, ref width, this, Favorite.DesktopSize);
+
+            try
+            {
+
+                if(Size == DesktopSize.AutoScale)
+                {
+                    axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
+                    axMsRdpClient2.DesktopWidth = width;
+                    axMsRdpClient2.DesktopHeight = height;
+                    return;
+                }
+                if(Size == DesktopSize.FullScreen)
+                {
+                    axMsRdpClient2.FullScreen = true;
+                    axMsRdpClient2.DesktopWidth = width;
+                    axMsRdpClient2.DesktopHeight = height;
+                    return;
+                }
                 axMsRdpClient2.DesktopWidth = width;
                 axMsRdpClient2.DesktopHeight = height;
-            } catch(Exception exc) {
-                
+
             }
+            catch(Exception exc)
+            {
+                string f = "";
+            }
+
+
+
 
         }
 
@@ -59,14 +76,11 @@ namespace Terminals.Connections
                 axMsRdpClient2.OnConnected += new EventHandler(axMsRdpClient2_OnConnected);
                 axMsRdpClient2.Dock = DockStyle.Fill;
 
-
-                int height = 0, width = 0;
-                ConnectionManager.GetSize(out height, out width, this, Favorite.DesktopSize);
-
+                ChangeDesktopSize(Favorite.DesktopSize);
                 try
                 {
 
-                if(Favorite.DesktopSize == DesktopSize.AutoScale) axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
+                //if(Favorite.DesktopSize == DesktopSize.AutoScale) axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
                 //axMsRdpClient2.DesktopWidth = width;
                 //axMsRdpClient2.DesktopHeight = height;
 
@@ -244,6 +258,7 @@ namespace Terminals.Connections
         {
             try
             {
+                
                 axMsRdpClient2.Disconnect();
             }
             catch(Exception e)

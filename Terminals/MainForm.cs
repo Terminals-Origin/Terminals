@@ -613,6 +613,7 @@ namespace Terminals {
                 terminalTabPage.AllowDrop = true;
                 terminalTabPage.DragOver += terminalTabPage_DragOver;
                 terminalTabPage.DragEnter += new DragEventHandler(terminalTabPage_DragEnter);
+                this.Resize+=new EventHandler(MainForm_Resize);
                 terminalTabPage.ToolTipText = GetToolTipText(favorite);
                 terminalTabPage.Favorite = favorite;
                 terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
@@ -785,7 +786,14 @@ namespace Terminals {
         }
 
         private void tsbDisconnect_Click(object sender, EventArgs e) {
-            tcTerminals.CloseTab(tcTerminals.SelectedItem);
+            try
+            {
+                tcTerminals.CloseTab(tcTerminals.SelectedItem);
+            }
+            catch(Exception exc)
+            {
+                Terminals.Logging.Log.Error("Disconnecting a tab threw an exception", exc);
+            }
         }
 
         private void tcTerminals_SelectedIndexChanged(object sender, EventArgs e) {
@@ -870,7 +878,7 @@ namespace Terminals {
                 menuStrip.Visible = true;
             }
             this.fullScreen = fullScreen;
-            if(CurrentConnection != null) this.CurrentConnection.ChangeDesktopSize(DesktopSize.FullScreen);
+            //if(CurrentConnection != null) this.CurrentConnection.ChangeDesktopSize(DesktopSize.FullScreen);
             this.PerformLayout();
         }
 
@@ -1387,6 +1395,7 @@ namespace Terminals {
         private void MainForm_Resize(object sender, EventArgs e) {
             if(this.WindowState == FormWindowState.Minimized) //{
                 if(Settings.MinimizeToTray) this.Visible = false;
+
         }
 
         private void MainWindowNotifyIcon_MouseClick(object sender, MouseEventArgs e) {

@@ -45,8 +45,8 @@ namespace Terminals.Connections {
                 vmrc.AdministratorMode = Favorite.VMRCAdministratorMode;
                 vmrc.ReducedColorsMode = Favorite.VMRCReducedColorsMode;
 
-                int height = 0, width = 0;
-                ConnectionManager.GetSize(out height, out width, this, Favorite.DesktopSize);
+                int height = Favorite.DesktopSizeHeight, width = Favorite.DesktopSizeWidth;
+                ConnectionManager.GetSize(ref height, ref width, this, Favorite.DesktopSize);
 
                 //vmrc.ServerDisplayHeight = height;
                 //vmrc.ServerDisplayWidth = width;
