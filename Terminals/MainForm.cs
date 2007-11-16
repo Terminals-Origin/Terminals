@@ -425,7 +425,8 @@ namespace Terminals {
                     {
                         Point p;
                         int row = setting.Row + 1;
-                        p = new Point(setting.Left, (strip.Height * row) + 1);
+                        //p = new Point(setting.Left, (setting.Row * row) + 1);
+                        p = new Point(setting.Left, setting.Top);
                         if(setting.Dock == "Top")
                         {
                             this.toolStripContainer.TopToolStripPanel.Join(strip, p);
