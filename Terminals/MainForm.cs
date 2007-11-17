@@ -105,7 +105,7 @@ namespace Terminals {
             }
         }
         void SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e) {
-            Connect(e.ClickedItem.Text);
+            Connect(e.ClickedItem.Text, false);
         }
 
 
@@ -168,9 +168,6 @@ namespace Terminals {
                     QuickContextMenu.Items.Add("&Full Screen");
 
 
-
-
-
                 QuickContextMenu.Items.Add("-");
                 QuickContextMenu.Items.Add("&Screen Capture Manager");
                 QuickContextMenu.Items.Add("&Networking Tools");
@@ -205,6 +202,7 @@ namespace Terminals {
                             } else {
                                 parent = new ToolStripMenuItem();
                                 parent.DropDownItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
+                                parent.MouseUp += new MouseEventHandler(parent_MouseUp);
                                 parent.Tag = "tag";
                                 parent.Text = tag;
                                 tagTools.Add(tag, parent);
@@ -216,7 +214,6 @@ namespace Terminals {
                             if(favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
                                 item.Image = Image.FromFile(favorite.ToolBarIcon);
 
-                            //parent.DropDown = new ToolStripDropDown();
                             parent.DropDown.Items.Add(item);
 
 
@@ -246,6 +243,11 @@ namespace Terminals {
             }
         }
 
+        void parent_MouseUp(object sender, MouseEventArgs e)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
         void QuickContextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {
             QuickContextMenu.Hide();
             switch(e.ClickedItem.Text) {
@@ -271,13 +273,22 @@ namespace Terminals {
                     break;
                 default:
                     string tag = (e.ClickedItem.Tag as string);
-                    if(tag != null && tag == "favorite") Connect(e.ClickedItem.Text);
-                    if(tag != null && tag == "tag") {
-                        System.Windows.Forms.ToolStripMenuItem parent = (e.ClickedItem as System.Windows.Forms.ToolStripMenuItem);
-                        if(parent.DropDownItems.Count > 0) {
-                            if(System.Windows.Forms.MessageBox.Show("Are you sure you want to connect to all these " + parent.DropDownItems.Count + " terminals?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK) {
-                                foreach(ToolStripMenuItem button in parent.DropDownItems) {
-                                    Connect(button.Text);
+
+                    if(tag != null)
+                    {
+                        string itemName = e.ClickedItem.Text;
+                        if(tag == "favorite") Connect(itemName, false);
+                        if(tag == "tag")
+                        {
+                            System.Windows.Forms.ToolStripMenuItem parent = (e.ClickedItem as System.Windows.Forms.ToolStripMenuItem);
+                            if(parent.DropDownItems.Count > 0)
+                            {
+                                if(System.Windows.Forms.MessageBox.Show("Are you sure you want to connect to all these " + parent.DropDownItems.Count + " terminals?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                                {
+                                    foreach(ToolStripMenuItem button in parent.DropDownItems)
+                                    {
+                                        Connect(button.Text, false);
+                                    }
                                 }
                             }
                         }
@@ -352,7 +363,7 @@ namespace Terminals {
 
         private void OpenSavedConnections() {
             foreach(string name in Settings.SavedConnections) {
-                Connect(name);
+                Connect(name, false);
             }
             Settings.ClearSavedConnectionsList();
         }
@@ -799,13 +810,16 @@ namespace Terminals {
         private void tsbConnect_Click(object sender, EventArgs e) {
             string connectionName = tscConnectTo.Text;
             if(connectionName != "") {
-                Connect(connectionName);
+                Connect(connectionName, false);
             }
         }
 
-        internal void Connect(string connectionName) {
+        internal void Connect(string connectionName, bool ForceConsole) {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             FavoriteConfigurationElement favorite = favorites[connectionName];
+
+            if(ForceConsole) favorite.ConnectToConsole = true;
+
             if(favorite == null)
                 CreateNewTerminal(connectionName);
             else
@@ -972,10 +986,10 @@ namespace Terminals {
                 if(favs.Contains(",")) {
                     string[] favlist = favs.Split(',');
                     foreach(string fav in favlist) {
-                        Connect(fav);
+                        Connect(fav, false);
                     }
                 } else {
-                    Connect(favs);
+                    Connect(favs, false);
                 }
                 
             }
@@ -1355,7 +1369,7 @@ namespace Terminals {
             foreach(ListViewItem item in lvTagConnections.SelectedItems) {
                 FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
                 HideTagsFavorites();
-                Connect(favorite.Name);
+                Connect(favorite.Name, false);
             }
         }
 
@@ -1363,7 +1377,7 @@ namespace Terminals {
             foreach(ListViewItem item in lvTagConnections.Items) {
                 FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
                 HideTagsFavorites();
-                Connect(favorite.Name);
+                Connect(favorite.Name, false);
             }
         }
 
@@ -1423,7 +1437,7 @@ namespace Terminals {
             foreach(ListViewItem item in lvFavorites.SelectedItems) {
                 FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
                 HideTagsFavorites();
-                Connect(favorite.Name);
+                Connect(favorite.Name, false);
             }
         }
 
