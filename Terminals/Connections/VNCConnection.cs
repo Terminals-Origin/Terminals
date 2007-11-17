@@ -56,6 +56,7 @@ namespace Terminals.Connections
                 this.Parent = TerminalTabPage;
                 rd.Dock = DockStyle.Fill;
                 rd.VncPort = Favorite.Port;
+                
 
                 rd.ConnectComplete += new VncSharp.ConnectCompleteHandler(rd_ConnectComplete);
                 rd.GetPassword = VNCPassword;

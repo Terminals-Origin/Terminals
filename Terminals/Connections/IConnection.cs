@@ -11,5 +11,16 @@ namespace Terminals.Connections {
         void Disconnect();
         bool Connected { get;}
         void ChangeDesktopSize(Terminals.DesktopSize Size);
+
+
+        TerminalServices.TerminalServer Server {
+            get;
+            set;
+        }
+        bool IsTerminalServer {
+            get;
+            set;
+        }
+	
     }
 }

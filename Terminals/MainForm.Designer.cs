@@ -86,6 +86,7 @@ namespace Terminals {
             this.sendCTRLKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendCTRLESCKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sentCTRLALTDELETEKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TerminalServerMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.manageToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
@@ -456,11 +457,12 @@ namespace Terminals {
             this.VMRCAdminSwitchButton,
             this.VMRCViewOnlyButton,
             this.toolStripButton2,
-            this.vncActionButton});
+            this.vncActionButton,
+            this.TerminalServerMenuButton});
             this.toolbarStd.Location = new System.Drawing.Point(3, 25);
             this.toolbarStd.MinimumSize = new System.Drawing.Size(672, 0);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(672, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(727, 25);
             this.toolbarStd.TabIndex = 2;
             // 
             // tsbNewTerminal
@@ -701,6 +703,16 @@ namespace Terminals {
             this.sentCTRLALTDELETEKeysToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.sentCTRLALTDELETEKeysToolStripMenuItem.Text = "Sent CTRL-ALT-DEL Keys";
             this.sentCTRLALTDELETEKeysToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
+            // 
+            // TerminalServerMenuButton
+            // 
+            this.TerminalServerMenuButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.TerminalServerMenuButton.Image = global::Terminals.Properties.Resources.server_network;
+            this.TerminalServerMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.TerminalServerMenuButton.Name = "TerminalServerMenuButton";
+            this.TerminalServerMenuButton.Size = new System.Drawing.Size(29, 22);
+            this.TerminalServerMenuButton.Text = "Terminal Server";
+            this.TerminalServerMenuButton.DropDownOpening += new System.EventHandler(this.TerminalServerMenuButton_DropDownOpening);
             // 
             // contextMenuStrip1
             // 
@@ -1352,5 +1364,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripMenuItem sentCTRLALTDELETEKeysToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.ToolStripDropDownButton TerminalServerMenuButton;
     }
 }

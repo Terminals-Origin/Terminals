@@ -394,7 +394,7 @@
     </Compile>
     <Compile Include="Functions.cs" />
     <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -726,6 +726,7 @@
     <EmbeddedResource Include="Resources\screen-capture-box.gif" />
     <EmbeddedResource Include="Resources\Refresh.gif" />
     <Content Include="Resources\server-administrator-icon.png" />
+    <Content Include="Resources\server_network.gif" />
     <Content Include="Thumbs\certmgr.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

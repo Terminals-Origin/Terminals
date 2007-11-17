@@ -9,7 +9,41 @@ namespace Terminals.Connections {
 
         public delegate void LogHandler(string Entry);
         public event LogHandler OnLog;
-        
+
+        public delegate void TerminalServerStateDiscovery(FavoriteConfigurationElement Favorite, bool IsTerminalServer, TerminalServices.TerminalServer Server);
+        public event TerminalServerStateDiscovery OnTerminalServerStateDiscovery;
+
+        private TerminalServices.TerminalServer server;
+
+        public TerminalServices.TerminalServer Server {
+            get { return server; }
+            set { server = value; }
+        }
+        private bool isTerminalServer = false;
+        public bool IsTerminalServer {
+            get { return isTerminalServer; }
+            set { isTerminalServer = value; }
+        }
+	
+        private void CheckForTS(object state) {
+            isTerminalServer = false;
+            FavoriteConfigurationElement host = (FavoriteConfigurationElement)state;
+            try {
+                server = TerminalServices.TerminalServer.LoadServer(host.ServerName);
+                isTerminalServer = server.IsATerminalServer;
+            } catch(Exception Exc) {
+                Terminals.Logging.Log.Info(string.Format("checked to see if {0} is a terminal server.  {0} is not a terminal server", host.ServerName));
+            }
+            if(OnTerminalServerStateDiscovery != null) OnTerminalServerStateDiscovery(host, isTerminalServer, server);
+        }
+        public void CheckForTerminalServer(FavoriteConfigurationElement Fav) {
+            if(Fav.Protocol == "RDP") {
+                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(CheckForTS), (object)Fav);
+            }
+            isTerminalServer = false;
+        }
+
+
         protected void Log(string Text) {
             if (OnLog != null) OnLog(Text);
         }

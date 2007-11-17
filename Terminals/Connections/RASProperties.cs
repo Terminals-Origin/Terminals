@@ -23,7 +23,16 @@ namespace Terminals.Connections {
         }
         public void ChangeDesktopSize(Terminals.DesktopSize Size) {
         }
+        public TerminalServices.TerminalServer Server {
+            get { return null; }
+            set { }
+        }
 
+        public bool IsTerminalServer {
+            get { return false; }
+            set { }
+        }
+	
         System.Windows.Forms.Timer t;
         System.Windows.Forms.MethodInvoker logMiv;
         public RASProperties() {

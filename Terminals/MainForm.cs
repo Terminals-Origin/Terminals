@@ -475,6 +475,7 @@ namespace Terminals {
             tsbConnect.Enabled = (tscConnectTo.Text != String.Empty);
             saveTerminalsAsGroupToolStripMenuItem.Enabled = (tcTerminals.Items.Count > 0);
 
+            this.TerminalServerMenuButton.Visible = false;
             vncActionButton.Visible = false;
             VMRCAdminSwitchButton.Visible = false;
             VMRCViewOnlyButton.Visible = false;
@@ -490,7 +491,9 @@ namespace Terminals {
                 vnc = (this.CurrentConnection as Connections.VNCConnection);
                 if(vnc != null) {
                     vncActionButton.Visible = true;
-                }
+                }                
+                this.TerminalServerMenuButton.Visible = this.CurrentConnection.IsTerminalServer;
+                //this.TerminalServerMenuButton.Visible = true;
             }
         }
 
@@ -678,6 +681,10 @@ namespace Terminals {
                     UpdateControls();
                     if(favorite.DesktopSize == DesktopSize.FullScreen)
                         FullScreen = true;
+
+                    Terminals.Connections.Connection b = (conn as Terminals.Connections.Connection);
+                    b.OnTerminalServerStateDiscovery += new Terminals.Connections.Connection.TerminalServerStateDiscovery(b_OnTerminalServerStateDiscovery);
+                    b.CheckForTerminalServer(favorite);
                 } else {
                     string msg = "Sorry, Terminals was unable to connect to the remote machine.  Try again, or check the log for more information.";
                     System.Windows.Forms.MessageBox.Show(msg);
@@ -690,6 +697,54 @@ namespace Terminals {
                 //tcTerminals = null;
                 System.Windows.Forms.MessageBox.Show(exc.Message);
             }
+        }
+
+        void BuildTerminalServerButtonMenu() {
+            TerminalServerMenuButton.DropDownItems.Clear();
+
+            if(this.CurrentConnection != null && this.CurrentConnection.IsTerminalServer) {
+
+                //if(IsTerminalServer) {
+                ToolStripMenuItem Sessions = new ToolStripMenuItem("Sessions");
+                Sessions.Tag = this.CurrentConnection.Server;
+                TerminalServerMenuButton.DropDownItems.Add(Sessions);
+                ToolStripMenuItem Svr = new ToolStripMenuItem("Server");
+                Svr.Tag = this.CurrentConnection.Server;
+                TerminalServerMenuButton.DropDownItems.Add(Svr);
+                //TerminalServices.TerminalServicesAPI.ShutdownSystem(
+                ToolStripMenuItem sd = new ToolStripMenuItem("Shutdown");
+                sd.Tag = this.CurrentConnection.Server;
+                Svr.DropDownItems.Add(sd);
+                ToolStripMenuItem rb = new ToolStripMenuItem("Reboot");
+                rb.Tag = this.CurrentConnection.Server;
+                Svr.DropDownItems.Add(rb);
+
+
+                if(this.CurrentConnection.Server.Sessions != null) {
+                    foreach(TerminalServices.Session session in this.CurrentConnection.Server.Sessions) {
+                        ToolStripMenuItem sess = new ToolStripMenuItem(string.Format("{1} - {2} ({0})", session.SessionID.ToString(), session.Client.ClientName, session.Client.UserName));
+                        sess.Tag = session;
+                        Sessions.DropDownItems.Add(sess);
+                        ToolStripMenuItem msg = new ToolStripMenuItem("Send Message");
+                        msg.Tag = session;
+                        sess.DropDownItems.Add(msg);
+
+                        ToolStripMenuItem lo = new ToolStripMenuItem("Logoff");
+                        lo.Tag = session;
+                        Svr.DropDownItems.Add(lo);
+                        if(session.IsTheActiveSession) {
+                            ToolStripMenuItem lo1 = new ToolStripMenuItem("Logoff");
+                            lo1.Tag = session;
+                            Svr.DropDownItems.Add(lo1);
+                        }
+                    }
+                }
+            } else {
+                TerminalServerMenuButton.Visible = false;
+            }
+            
+        }
+        void b_OnTerminalServerStateDiscovery(FavoriteConfigurationElement Favorite, bool IsTerminalServer, TerminalServices.TerminalServer Server) {
         }
 
         //private void tcTerminals_Click(object sender, EventArgs e) {
@@ -1065,6 +1120,7 @@ namespace Terminals {
             foreach(ToolStripItem item in tcTerminals.Menu.Items) {
                 item.Image = Terminals.Properties.Resources.smallterm;
             }
+            string f = "";
             if(FullScreen) {
                 ToolStripSeparator sep = new ToolStripSeparator();
                 tcTerminals.Menu.Items.Add(sep);
@@ -1833,6 +1889,10 @@ namespace Terminals {
 
         private void pbShowTagsFavorites_MouseMove(object sender, MouseEventArgs e) {
             ShowTags();
+        }
+
+        private void TerminalServerMenuButton_DropDownOpening(object sender, EventArgs e) {
+            BuildTerminalServerButtonMenu();
         }
     }
 

@@ -256,6 +256,13 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap server_network {
+            get {
+                object obj = ResourceManager.GetObject("server_network", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap ShowPanel {
             get {
                 object obj = ResourceManager.GetObject("ShowPanel", resourceCulture);
