@@ -189,7 +189,7 @@ namespace Terminals.TerminalServices
             Int32 active_process = GetCurrentProcessId();
             Int32 active_session = 0;
             bool success1 = ProcessIdToSessionId(active_process, ref active_session);
-
+            if(active_session <= 0) success1 = false;
             foreach(Session s in Data.Sessions)
             {
                 if(s.Client == null) s.Client = new Client();
@@ -203,7 +203,7 @@ namespace Terminals.TerminalServices
                 s.Client.Status = ClientInfo.WTSStatus;
                 s.Client.UserName = ClientInfo.WTSUserName;
                 s.IsTheActiveSession=false;
-                if(s.SessionID == active_session) s.IsTheActiveSession = true;
+                if(success1 && s.SessionID == active_session) s.IsTheActiveSession = true;
             }
 
 

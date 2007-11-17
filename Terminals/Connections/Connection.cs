@@ -29,6 +29,7 @@ namespace Terminals.Connections {
             isTerminalServer = false;
             FavoriteConfigurationElement host = (FavoriteConfigurationElement)state;
             try {
+                System.Threading.Thread.Sleep(3000);
                 server = TerminalServices.TerminalServer.LoadServer(host.ServerName);
                 isTerminalServer = server.IsATerminalServer;
             } catch(Exception Exc) {
