@@ -550,7 +550,8 @@ namespace Terminals
         }
 
         private void TelnetFontButton_Click(object sender, EventArgs e)
-        {
+        {            
+            this.fontDialog1.Font = FontParser.ParseFontName(TelnetFontTextbox.Text);
             DialogResult result = this.fontDialog1.ShowDialog();
             if(result == DialogResult.OK)
             {
@@ -560,6 +561,7 @@ namespace Terminals
 
         private void BackcolorButton_Click(object sender, EventArgs e)
         {
+            this.colorDialog1.Color = Color.FromName(this.BackColorTextBox.Text);
             DialogResult result = this.colorDialog1.ShowDialog();
             if(result == DialogResult.OK)
             {
@@ -569,6 +571,7 @@ namespace Terminals
 
         private void TelnetTextColorButton_Click(object sender, EventArgs e)
         {
+            this.colorDialog1.Color = Color.FromName(this.TelnetTextColorTextBox.Text);
             DialogResult result = this.colorDialog1.ShowDialog();
             if(result == DialogResult.OK)
             {
@@ -578,6 +581,7 @@ namespace Terminals
 
         private void TelnetCursorColorButton_Click(object sender, EventArgs e)
         {
+            this.colorDialog1.Color = Color.FromName(this.TelnetCursorColorTextBox.Text);
             DialogResult result = this.colorDialog1.ShowDialog();
             if(result == DialogResult.OK)
             {

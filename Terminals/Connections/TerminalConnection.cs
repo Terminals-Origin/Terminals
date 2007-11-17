@@ -94,7 +94,6 @@ namespace Terminals.Connections
                     term.Hostname = Favorite.ServerName;
                     //term.Port = Favorite.Port;
                     term.Rows = Favorite.TelnetRows;
-
                     term.Columns = Favorite.TelnetCols;
 
                     if(Favorite.Telnet)
@@ -102,7 +101,7 @@ namespace Terminals.Connections
                     else
                         term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.SSH2;
 
-                    Text = "Connecting to Telnet/SSH Server...";
+                    Text = "Connecting to Telnet/SSH Server...";                    
                     term.Connect();
                     connected = true;
                     return true;

@@ -387,12 +387,14 @@ namespace Terminals
                 this["toolBarIcon"] = value;
             }
         }
-        [ConfigurationProperty("telnetfont", IsRequired = true, DefaultValue = "[Font: Name=Microsoft Sans Serif, Size=10]")]
+        [ConfigurationProperty("telnetfont", IsRequired = true)]
         public string TelnetFont
         {
             get
             {
-                return (string)this["telnetfont"];
+                string font =(string)this["telnetfont"];;
+                if(String.IsNullOrEmpty(font)) font = "[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False]";
+                return font;
             }
             set
             {
