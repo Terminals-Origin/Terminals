@@ -785,7 +785,7 @@ namespace Terminals {
             this.tciFavorites});
             this.tcTagsFavorites.Location = new System.Drawing.Point(5, 0);
             this.tcTagsFavorites.Name = "tcTagsFavorites";
-            this.tcTagsFavorites.SelectedItem = this.tciTags;
+            this.tcTagsFavorites.SelectedItem = this.tciFavorites;
             this.tcTagsFavorites.ShowToolTipOnTitle = false;
             this.tcTagsFavorites.Size = new System.Drawing.Size(272, 472);
             this.tcTagsFavorites.TabIndex = 9;
@@ -798,7 +798,6 @@ namespace Terminals {
             this.tciTags.Controls.Add(this.txtSearchTags);
             this.tciTags.IsDrawn = true;
             this.tciTags.Name = "tciTags";
-            this.tciTags.Selected = true;
             this.tciTags.TabIndex = 0;
             this.tciTags.Title = "Tags";
             this.tciTags.ToolTipText = "";
@@ -950,6 +949,7 @@ namespace Terminals {
             this.tciFavorites.Controls.Add(this.txtSearchFavorites);
             this.tciFavorites.IsDrawn = true;
             this.tciFavorites.Name = "tciFavorites";
+            this.tciFavorites.Selected = true;
             this.tciFavorites.TabIndex = 1;
             this.tciFavorites.Title = "Favorites";
             this.tciFavorites.ToolTipText = "";
@@ -958,12 +958,12 @@ namespace Terminals {
             // 
             this.lvFavorites.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
-            this.lvFavorites.ContextMenuStrip = this.cmsFavorites;
+            this.lvFavorites.ContextMenuStrip = this.cmsTagConnections;
             this.lvFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvFavorites.HideSelection = false;
             this.lvFavorites.Location = new System.Drawing.Point(0, 21);
             this.lvFavorites.Name = "lvFavorites";
-            this.lvFavorites.Size = new System.Drawing.Size(200, 79);
+            this.lvFavorites.Size = new System.Drawing.Size(270, 430);
             this.lvFavorites.SmallImageList = this.ilTagConnections;
             this.lvFavorites.TabIndex = 10;
             this.lvFavorites.UseCompatibleStateImageBehavior = false;
@@ -998,7 +998,7 @@ namespace Terminals {
             this.txtSearchFavorites.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtSearchFavorites.Location = new System.Drawing.Point(0, 0);
             this.txtSearchFavorites.Name = "txtSearchFavorites";
-            this.txtSearchFavorites.Size = new System.Drawing.Size(200, 21);
+            this.txtSearchFavorites.Size = new System.Drawing.Size(270, 21);
             this.txtSearchFavorites.TabIndex = 9;
             this.txtSearchFavorites.TextChanged += new System.EventHandler(this.txtSearchFavorites_TextChanged);
             // 
@@ -1141,7 +1141,7 @@ namespace Terminals {
             this.showToolStripMenuItem,
             this.toolStripMenuItem2});
             this.SystemTrayContextMenuStrip.Name = "SystemTrayContextMenuStrip";
-            this.SystemTrayContextMenuStrip.Size = new System.Drawing.Size(177, 114);
+            this.SystemTrayContextMenuStrip.Size = new System.Drawing.Size(177, 92);
             this.SystemTrayContextMenuStrip.Text = "Terminals";
             this.SystemTrayContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.SystemTrayContextMenuStrip_Opening);
             // 
