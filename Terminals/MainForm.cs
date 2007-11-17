@@ -713,29 +713,39 @@ namespace Terminals {
                 TerminalServerMenuButton.DropDownItems.Add(Svr);
                 //TerminalServices.TerminalServicesAPI.ShutdownSystem(
                 ToolStripMenuItem sd = new ToolStripMenuItem("Shutdown");
+                sd.Click += new EventHandler(sd_Click);
                 sd.Tag = this.CurrentConnection.Server;
                 Svr.DropDownItems.Add(sd);
                 ToolStripMenuItem rb = new ToolStripMenuItem("Reboot");
+                rb.Click += new EventHandler(sd_Click);
                 rb.Tag = this.CurrentConnection.Server;
                 Svr.DropDownItems.Add(rb);
 
 
                 if(this.CurrentConnection.Server.Sessions != null) {
                     foreach(TerminalServices.Session session in this.CurrentConnection.Server.Sessions) {
-                        ToolStripMenuItem sess = new ToolStripMenuItem(string.Format("{1} - {2} ({0})", session.SessionID.ToString(), session.Client.ClientName, session.Client.UserName));
-                        sess.Tag = session;
-                        Sessions.DropDownItems.Add(sess);
-                        ToolStripMenuItem msg = new ToolStripMenuItem("Send Message");
-                        msg.Tag = session;
-                        sess.DropDownItems.Add(msg);
+                        if(session.Client.ClientName != "")
+                        {
+                            ToolStripMenuItem sess = new ToolStripMenuItem(string.Format("{1} - {2} ({0})", session.State.ToString().Replace("WTS",""), session.Client.ClientName, session.Client.UserName));
+                            sess.Tag = session;
+                            Sessions.DropDownItems.Add(sess);
+                            ToolStripMenuItem msg = new ToolStripMenuItem("Send Message");
+                            msg.Click += new EventHandler(sd_Click);
+                            msg.Tag = session;
+                            sess.DropDownItems.Add(msg);
 
-                        ToolStripMenuItem lo = new ToolStripMenuItem("Logoff");
-                        lo.Tag = session;
-                        Svr.DropDownItems.Add(lo);
-                        if(session.IsTheActiveSession) {
-                            ToolStripMenuItem lo1 = new ToolStripMenuItem("Logoff");
-                            lo1.Tag = session;
-                            Svr.DropDownItems.Add(lo1);
+                            ToolStripMenuItem lo = new ToolStripMenuItem("Logoff");
+                            lo.Click += new EventHandler(sd_Click);
+                            lo.Tag = session;
+                            sess.DropDownItems.Add(lo);
+
+                            if(session.IsTheActiveSession)
+                            {
+                                ToolStripMenuItem lo1 = new ToolStripMenuItem("Logoff");
+                                lo1.Click += new EventHandler(sd_Click);
+                                lo1.Tag = session;
+                                Svr.DropDownItems.Add(lo1);
+                            }
                         }
                     }
                 }
@@ -743,6 +753,47 @@ namespace Terminals {
                 TerminalServerMenuButton.Visible = false;
             }
             
+        }
+
+        void sd_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem menu = (sender as ToolStripMenuItem);
+            if(menu != null)
+            {
+                if(menu.Text == "Shutdown")
+                {
+                    TerminalServices.TerminalServer server = (menu.Tag as TerminalServices.TerminalServer);
+                    if(server != null && System.Windows.Forms.MessageBox.Show("Are you sure you want to shut this machine off?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        TerminalServices.TerminalServicesAPI.ShutdownSystem(server, false);
+                }
+                else if(menu.Text == "Reboot")
+                {
+                    TerminalServices.TerminalServer server = (menu.Tag as TerminalServices.TerminalServer);
+                    if(server != null && System.Windows.Forms.MessageBox.Show("Are you sure you want to reboot this machine?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        TerminalServices.TerminalServicesAPI.ShutdownSystem(server, true);
+                }
+                else if(menu.Text == "Logoff")
+                {
+                    TerminalServices.Session session = (menu.Tag as TerminalServices.Session);
+                    if(session != null && System.Windows.Forms.MessageBox.Show("Are you sure you want to log this session off?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        TerminalServices.TerminalServicesAPI.LogOffSession(session, false);
+
+                }
+                else if(menu.Text == "Send Message")
+                {
+                    TerminalServices.Session session = (menu.Tag as TerminalServices.Session);
+                    if(session != null)
+                    {
+                        Terminals.InputBoxResult result = Terminals.InputBox.Show("Please enter the message to send..");
+                        if(result.ReturnCode == DialogResult.OK && result.Text.Trim() != null)
+                        {
+                            TerminalServices.TerminalServicesAPI.SendMessage(session, "Message from your Administrator", result.Text.Trim(), 0, 10, false);
+                        }
+
+                    }
+                }
+
+            }
         }
         void b_OnTerminalServerStateDiscovery(FavoriteConfigurationElement Favorite, bool IsTerminalServer, TerminalServices.TerminalServer Server) {
         }
