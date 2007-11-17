@@ -1830,6 +1830,10 @@ namespace Terminals {
                 }
             }
         }
+
+        private void pbShowTagsFavorites_MouseMove(object sender, MouseEventArgs e) {
+            ShowTags();
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem {

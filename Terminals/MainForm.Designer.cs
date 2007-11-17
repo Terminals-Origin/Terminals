@@ -112,8 +112,6 @@ namespace Terminals {
             this.tciFavorites = new TabControl.TabControlItem();
             this.lvFavorites = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.cmsFavorites = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.connectToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.txtSearchFavorites = new System.Windows.Forms.TextBox();
             this.pnlHideTagsFavorites = new System.Windows.Forms.Panel();
             this.pbHideTagsFavorites = new System.Windows.Forms.PictureBox();
@@ -126,6 +124,8 @@ namespace Terminals {
             this.SpecialCommandsToolStrip = new System.Windows.Forms.ToolStrip();
             this.ShortcutsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFavorites = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.connectToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.timerHover = new System.Windows.Forms.Timer(this.components);
             this.MainWindowNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SystemTrayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -149,13 +149,13 @@ namespace Terminals {
             this.cmsTagConnections.SuspendLayout();
             this.cmsTags.SuspendLayout();
             this.tciFavorites.SuspendLayout();
-            this.cmsFavorites.SuspendLayout();
             this.pnlHideTagsFavorites.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbHideTagsFavorites)).BeginInit();
             this.pnlShowTagsFavorites.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbShowTagsFavorites)).BeginInit();
             this.tsRemoteToolbar.SuspendLayout();
             this.ShortcutsContextMenu.SuspendLayout();
+            this.cmsFavorites.SuspendLayout();
             this.SystemTrayContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -811,7 +811,7 @@ namespace Terminals {
             this.lvTagConnections.HideSelection = false;
             this.lvTagConnections.Location = new System.Drawing.Point(0, 308);
             this.lvTagConnections.Name = "lvTagConnections";
-            this.lvTagConnections.Size = new System.Drawing.Size(270, 143);
+            this.lvTagConnections.Size = new System.Drawing.Size(200, 0);
             this.lvTagConnections.SmallImageList = this.ilTagConnections;
             this.lvTagConnections.TabIndex = 7;
             this.lvTagConnections.UseCompatibleStateImageBehavior = false;
@@ -898,7 +898,7 @@ namespace Terminals {
             this.lvTags.Location = new System.Drawing.Point(0, 21);
             this.lvTags.MultiSelect = false;
             this.lvTags.Name = "lvTags";
-            this.lvTags.Size = new System.Drawing.Size(270, 287);
+            this.lvTags.Size = new System.Drawing.Size(200, 287);
             this.lvTags.SmallImageList = this.ilTags;
             this.lvTags.TabIndex = 6;
             this.lvTags.UseCompatibleStateImageBehavior = false;
@@ -938,7 +938,7 @@ namespace Terminals {
             this.txtSearchTags.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtSearchTags.Location = new System.Drawing.Point(0, 0);
             this.txtSearchTags.Name = "txtSearchTags";
-            this.txtSearchTags.Size = new System.Drawing.Size(270, 21);
+            this.txtSearchTags.Size = new System.Drawing.Size(200, 21);
             this.txtSearchTags.TabIndex = 8;
             this.txtSearchTags.TextChanged += new System.EventHandler(this.txtSearchTags_TextChanged);
             // 
@@ -976,22 +976,6 @@ namespace Terminals {
             // 
             this.columnHeader1.Text = "Connection";
             this.columnHeader1.Width = 263;
-            // 
-            // cmsFavorites
-            // 
-            this.cmsFavorites.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.connectToolStripMenuItem1});
-            this.cmsFavorites.Name = "cmsFavorites";
-            this.cmsFavorites.Size = new System.Drawing.Size(126, 26);
-            // 
-            // connectToolStripMenuItem1
-            // 
-            this.connectToolStripMenuItem1.Enabled = false;
-            this.connectToolStripMenuItem1.Image = global::Terminals.Properties.Resources.application_lightning;
-            this.connectToolStripMenuItem1.Name = "connectToolStripMenuItem1";
-            this.connectToolStripMenuItem1.Size = new System.Drawing.Size(125, 22);
-            this.connectToolStripMenuItem1.Text = "&Connect";
-            this.connectToolStripMenuItem1.Click += new System.EventHandler(this.connectToolStripMenuItem1_Click);
             // 
             // txtSearchFavorites
             // 
@@ -1048,6 +1032,7 @@ namespace Terminals {
             this.pbShowTagsFavorites.TabIndex = 0;
             this.pbShowTagsFavorites.TabStop = false;
             this.pbShowTagsFavorites.Click += new System.EventHandler(this.pbShowTags_Click);
+            this.pbShowTagsFavorites.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbShowTagsFavorites_MouseMove);
             // 
             // favoriteToolBar
             // 
@@ -1116,6 +1101,22 @@ namespace Terminals {
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 22);
             this.toolStripMenuItem3.Text = "Organize Shortcuts";
+            // 
+            // cmsFavorites
+            // 
+            this.cmsFavorites.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectToolStripMenuItem1});
+            this.cmsFavorites.Name = "cmsFavorites";
+            this.cmsFavorites.Size = new System.Drawing.Size(126, 26);
+            // 
+            // connectToolStripMenuItem1
+            // 
+            this.connectToolStripMenuItem1.Enabled = false;
+            this.connectToolStripMenuItem1.Image = global::Terminals.Properties.Resources.application_lightning;
+            this.connectToolStripMenuItem1.Name = "connectToolStripMenuItem1";
+            this.connectToolStripMenuItem1.Size = new System.Drawing.Size(125, 22);
+            this.connectToolStripMenuItem1.Text = "&Connect";
+            this.connectToolStripMenuItem1.Click += new System.EventHandler(this.connectToolStripMenuItem1_Click);
             // 
             // timerHover
             // 
@@ -1225,7 +1226,6 @@ namespace Terminals {
             this.cmsTags.ResumeLayout(false);
             this.tciFavorites.ResumeLayout(false);
             this.tciFavorites.PerformLayout();
-            this.cmsFavorites.ResumeLayout(false);
             this.pnlHideTagsFavorites.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbHideTagsFavorites)).EndInit();
             this.pnlShowTagsFavorites.ResumeLayout(false);
@@ -1233,6 +1233,7 @@ namespace Terminals {
             this.tsRemoteToolbar.ResumeLayout(false);
             this.tsRemoteToolbar.PerformLayout();
             this.ShortcutsContextMenu.ResumeLayout(false);
+            this.cmsFavorites.ResumeLayout(false);
             this.SystemTrayContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
