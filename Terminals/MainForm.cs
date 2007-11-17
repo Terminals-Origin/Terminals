@@ -33,6 +33,7 @@ namespace Terminals {
         /*private ScreenCapture screenCapture;
         private PictureBox previewPictureBox;*/
 
+        string defaultText = "";
         public MainForm() {
             try {
 
@@ -72,6 +73,7 @@ namespace Terminals {
 
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
 
+                defaultText = this.Text;
             } catch(Exception exc) {
                 Terminals.Logging.Log.Info("", exc);
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
@@ -935,6 +937,7 @@ namespace Terminals {
         }
 
         private void tcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e) {
+            
             if(CurrentConnection != null && CurrentConnection.Connected) {
                 bool close = false;
                 if(Settings.WarnOnConnectionClose) {
@@ -946,6 +949,7 @@ namespace Terminals {
                 if(close) {
                     if(CurrentTerminal != null) CurrentTerminal.Disconnect();
                     if(CurrentConnection != null) CurrentConnection.Disconnect();
+                    this.Text = defaultText;
                     e.Cancel = false;
                 } else {
                     e.Cancel = true;
@@ -1001,6 +1005,7 @@ namespace Terminals {
                 tsbDisconnect.Enabled = e.Item != null;
                 disconnectToolStripMenuItem.Enabled = e.Item != null;
                 SetGrabInput(true);
+                if(e.Item.Selected && Settings.ShowInformationToolTips) this.Text = e.Item.ToolTipText.Replace("\r\n","; ");
             }
         }
 
