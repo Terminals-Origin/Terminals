@@ -605,7 +605,16 @@ namespace Terminals
                 configuration.Save();
             }
         }
-
+        public static int FavoritePanelWidth {
+            get {
+                return GetSection().FavoritePanelWidth;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).FavoritePanelWidth = value;
+                configuration.Save();
+            }
+        }
         public static string TerminalsPassword
         {
             get
@@ -868,6 +877,16 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).Office2007Feel = value;
+                configuration.Save();
+            }
+        }
+        public static bool AutoExapandTagsPanel {
+            get {
+                return GetSection().AutoExapandTagsPanel;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).AutoExapandTagsPanel = value;
                 configuration.Save();
             }
         }

@@ -204,6 +204,20 @@ namespace Terminals
                 this["forceComputerNamesAsURI"] = value;
             }
         }
+
+        [ConfigurationProperty("favoritePanelWidth", DefaultValue = 300)]
+        public int FavoritePanelWidth {
+            get {
+                if(this["favoritePanelWidth"] != null)
+                    return (int)this["favoritePanelWidth"];
+                else
+                    return 300;
+            }
+            set {
+                this["favoritePanelWidth"] = value;
+            }
+        }
+
         [ConfigurationProperty("flickrToken", DefaultValue = "")]
         public string FlickrToken {
             get {
@@ -213,7 +227,6 @@ namespace Terminals
                 this["flickrToken"] = value;
             }
         }
-
 
         [ConfigurationProperty("terminalsPassword", DefaultValue = "")]
         public string TerminalsPassword
@@ -460,6 +473,19 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("autoExapandTagsPanel", DefaultValue = false)]
+        public bool AutoExapandTagsPanel
+        {
+            get
+            {
+                return (bool)this["autoExapandTagsPanel"];
+            }
+            set
+            {
+                this["autoExapandTagsPanel"] = value;
+            }
+        }
+        
         [ConfigurationProperty("office2007Feel", DefaultValue = false)]
         public bool Office2007Feel
         {

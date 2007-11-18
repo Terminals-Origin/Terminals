@@ -62,6 +62,7 @@ namespace Terminals
             this.txtCommand = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.ClearMasterButton = new System.Windows.Forms.Button();
             this.PasswordsMatchLabel = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -74,7 +75,7 @@ namespace Terminals
             this.CompleteAuthButton = new System.Windows.Forms.Button();
             this.AuthorizeFlickrButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.ClearMasterButton = new System.Windows.Forms.Button();
+            this.AutoExapandTagsPanelCheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
@@ -146,6 +147,7 @@ namespace Terminals
             // 
             // tpGeneral
             // 
+            this.tpGeneral.Controls.Add(this.AutoExapandTagsPanelCheckBox);
             this.tpGeneral.Controls.Add(this.office2007FeelCheckbox);
             this.tpGeneral.Controls.Add(this.autoSwitchToCaptureCheckbox);
             this.tpGeneral.Controls.Add(this.warnDisconnectCheckBox);
@@ -463,6 +465,16 @@ namespace Terminals
             this.tabPage1.Text = "Security";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // ClearMasterButton
+            // 
+            this.ClearMasterButton.Location = new System.Drawing.Point(81, 93);
+            this.ClearMasterButton.Name = "ClearMasterButton";
+            this.ClearMasterButton.Size = new System.Drawing.Size(138, 23);
+            this.ClearMasterButton.TabIndex = 6;
+            this.ClearMasterButton.Text = "Clear Master Password";
+            this.ClearMasterButton.UseVisualStyleBackColor = true;
+            this.ClearMasterButton.Click += new System.EventHandler(this.ClearMasterButton_Click);
+            // 
             // PasswordsMatchLabel
             // 
             this.PasswordsMatchLabel.AutoSize = true;
@@ -583,15 +595,15 @@ namespace Terminals
             this.label8.Size = new System.Drawing.Size(0, 13);
             this.label8.TabIndex = 11;
             // 
-            // ClearMasterButton
+            // AutoExapandTagsPanelCheckBox
             // 
-            this.ClearMasterButton.Location = new System.Drawing.Point(81, 93);
-            this.ClearMasterButton.Name = "ClearMasterButton";
-            this.ClearMasterButton.Size = new System.Drawing.Size(138, 23);
-            this.ClearMasterButton.TabIndex = 6;
-            this.ClearMasterButton.Text = "Clear Master Password";
-            this.ClearMasterButton.UseVisualStyleBackColor = true;
-            this.ClearMasterButton.Click += new System.EventHandler(this.ClearMasterButton_Click);
+            this.AutoExapandTagsPanelCheckBox.AutoSize = true;
+            this.AutoExapandTagsPanelCheckBox.Location = new System.Drawing.Point(253, 128);
+            this.AutoExapandTagsPanelCheckBox.Name = "AutoExapandTagsPanelCheckBox";
+            this.AutoExapandTagsPanelCheckBox.Size = new System.Drawing.Size(136, 17);
+            this.AutoExapandTagsPanelCheckBox.TabIndex = 22;
+            this.AutoExapandTagsPanelCheckBox.Text = "Auto Expand Favorites";
+            this.AutoExapandTagsPanelCheckBox.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -675,5 +687,6 @@ namespace Terminals
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button ClearMasterButton;
+        private System.Windows.Forms.CheckBox AutoExapandTagsPanelCheckBox;
     }
 }

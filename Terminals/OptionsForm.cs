@@ -42,6 +42,8 @@ namespace Terminals
                 ClearMasterButton.Enabled = true;
             }
             this.MinimizeToTrayCheckbox.Checked = Settings.MinimizeToTray;
+
+            this.AutoExapandTagsPanelCheckBox.Checked = Settings.AutoExapandTagsPanel;
         }
 
         private AxMsRdpClient2 currentTerminal;
@@ -72,6 +74,8 @@ namespace Terminals
                 Settings.TerminalsPassword = PasswordTextbox.Text;
             }
             Settings.MinimizeToTray = this.MinimizeToTrayCheckbox.Checked;
+
+            Settings.AutoExapandTagsPanel = this.AutoExapandTagsPanelCheckBox.Checked;
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)

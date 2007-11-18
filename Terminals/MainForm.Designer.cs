@@ -90,7 +90,7 @@ namespace Terminals {
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.manageToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
-            this.tcTerminals = new TabControl.TabControl();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pnlTagsFavorites = new System.Windows.Forms.Panel();
             this.tcTagsFavorites = new TabControl.TabControl();
             this.tciTags = new TabControl.TabControlItem();
@@ -118,6 +118,7 @@ namespace Terminals {
             this.pbHideTagsFavorites = new System.Windows.Forms.PictureBox();
             this.pnlShowTagsFavorites = new System.Windows.Forms.Panel();
             this.pbShowTagsFavorites = new System.Windows.Forms.PictureBox();
+            this.tcTerminals = new TabControl.TabControl();
             this.favoriteToolBar = new System.Windows.Forms.ToolStrip();
             this.tsRemoteToolbar = new System.Windows.Forms.ToolStrip();
             this.tsbCMD = new System.Windows.Forms.ToolStripButton();
@@ -142,7 +143,9 @@ namespace Terminals {
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tcTerminals)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.pnlTagsFavorites.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tcTagsFavorites)).BeginInit();
             this.tcTagsFavorites.SuspendLayout();
@@ -154,6 +157,7 @@ namespace Terminals {
             ((System.ComponentModel.ISupportInitialize)(this.pbHideTagsFavorites)).BeginInit();
             this.pnlShowTagsFavorites.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbShowTagsFavorites)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tcTerminals)).BeginInit();
             this.tsRemoteToolbar.SuspendLayout();
             this.ShortcutsContextMenu.SuspendLayout();
             this.cmsFavorites.SuspendLayout();
@@ -734,9 +738,8 @@ namespace Terminals {
             // toolStripContainer.ContentPanel
             // 
             this.toolStripContainer.ContentPanel.AutoScroll = true;
-            this.toolStripContainer.ContentPanel.Controls.Add(this.tcTerminals);
-            this.toolStripContainer.ContentPanel.Controls.Add(this.pnlTagsFavorites);
-            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(792, 474);
+            this.toolStripContainer.ContentPanel.Controls.Add(this.splitContainer1);
+            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(767, 474);
             this.toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer.Name = "toolStripContainer";
@@ -752,27 +755,23 @@ namespace Terminals {
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.SpecialCommandsToolStrip);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.menuStrip);
             // 
-            // tcTerminals
+            // splitContainer1
             // 
-            this.tcTerminals.AllowDrop = true;
-            this.tcTerminals.AlwaysShowClose = false;
-            this.tcTerminals.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tcTerminals.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.tcTerminals.Location = new System.Drawing.Point(284, 0);
-            this.tcTerminals.Name = "tcTerminals";
-            this.tcTerminals.ShowToolTipOnTitle = false;
-            this.tcTerminals.Size = new System.Drawing.Size(508, 474);
-            this.tcTerminals.TabIndex = 3;
-            this.tcTerminals.DoubleClick += new System.EventHandler(this.tcTerminals_DoubleClick);
-            this.tcTerminals.TabControlMouseOnTitle += new TabControl.TabControlMouseOnTitleHandler(this.tcTerminals_TabControlMouseOnTitle);
-            this.tcTerminals.TabControlItemSelectionChanged += new TabControl.TabControlItemChangedHandler(this.tcTerminals_TabControlItemSelectionChanged);
-            this.tcTerminals.MenuItemsLoaded += new System.EventHandler(this.tcTerminals_MenuItemsLoaded);
-            this.tcTerminals.TabControlItemClosing += new TabControl.TabControlItemClosingHandler(this.tcTerminals_TabControlItemClosing);
-            this.tcTerminals.MouseLeave += new System.EventHandler(this.tcTerminals_MouseLeave);
-            this.tcTerminals.TabControlItemClosed += new System.EventHandler(this.tcTerminals_TabControlItemClosed);
-            this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.tcTerminals_TabControlMouseLeftTitle);
-            this.tcTerminals.MouseHover += new System.EventHandler(this.tcTerminals_MouseHover);
-            this.tcTerminals.TabControlMouseEnteredTitle += new TabControl.TabControlMouseEnteredTitleHandler(this.tcTerminals_TabControlMouseEnteredTitle);
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.pnlTagsFavorites);
+            this.splitContainer1.Panel1MinSize = 7;
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.tcTerminals);
+            this.splitContainer1.Size = new System.Drawing.Size(767, 474);
+            this.splitContainer1.SplitterDistance = 7;
+            this.splitContainer1.TabIndex = 7;
             // 
             // pnlTagsFavorites
             // 
@@ -780,10 +779,10 @@ namespace Terminals {
             this.pnlTagsFavorites.Controls.Add(this.tcTagsFavorites);
             this.pnlTagsFavorites.Controls.Add(this.pnlHideTagsFavorites);
             this.pnlTagsFavorites.Controls.Add(this.pnlShowTagsFavorites);
-            this.pnlTagsFavorites.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnlTagsFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTagsFavorites.Location = new System.Drawing.Point(0, 0);
             this.pnlTagsFavorites.Name = "pnlTagsFavorites";
-            this.pnlTagsFavorites.Size = new System.Drawing.Size(284, 474);
+            this.pnlTagsFavorites.Size = new System.Drawing.Size(7, 474);
             this.pnlTagsFavorites.TabIndex = 6;
             // 
             // tcTagsFavorites
@@ -799,7 +798,7 @@ namespace Terminals {
             this.tcTagsFavorites.Name = "tcTagsFavorites";
             this.tcTagsFavorites.SelectedItem = this.tciTags;
             this.tcTagsFavorites.ShowToolTipOnTitle = false;
-            this.tcTagsFavorites.Size = new System.Drawing.Size(272, 472);
+            this.tcTagsFavorites.Size = new System.Drawing.Size(0, 472);
             this.tcTagsFavorites.TabIndex = 9;
             // 
             // tciTags
@@ -808,7 +807,6 @@ namespace Terminals {
             this.tciTags.Controls.Add(this.lvTagConnections);
             this.tciTags.Controls.Add(this.lvTags);
             this.tciTags.Controls.Add(this.txtSearchTags);
-            this.tciTags.IsDrawn = true;
             this.tciTags.Name = "tciTags";
             this.tciTags.Selected = true;
             this.tciTags.TabIndex = 0;
@@ -825,7 +823,7 @@ namespace Terminals {
             this.lvTagConnections.HideSelection = false;
             this.lvTagConnections.Location = new System.Drawing.Point(0, 308);
             this.lvTagConnections.Name = "lvTagConnections";
-            this.lvTagConnections.Size = new System.Drawing.Size(270, 143);
+            this.lvTagConnections.Size = new System.Drawing.Size(0, 143);
             this.lvTagConnections.SmallImageList = this.ilTagConnections;
             this.lvTagConnections.TabIndex = 7;
             this.lvTagConnections.UseCompatibleStateImageBehavior = false;
@@ -914,7 +912,7 @@ namespace Terminals {
             this.lvTags.Location = new System.Drawing.Point(0, 21);
             this.lvTags.MultiSelect = false;
             this.lvTags.Name = "lvTags";
-            this.lvTags.Size = new System.Drawing.Size(270, 287);
+            this.lvTags.Size = new System.Drawing.Size(0, 287);
             this.lvTags.SmallImageList = this.ilTags;
             this.lvTags.TabIndex = 6;
             this.lvTags.UseCompatibleStateImageBehavior = false;
@@ -929,7 +927,7 @@ namespace Terminals {
             // chTag
             // 
             this.chTag.Text = "Tag";
-            this.chTag.Width = 259;
+            this.chTag.Width = 100;
             // 
             // cmsTags
             // 
@@ -957,7 +955,7 @@ namespace Terminals {
             this.txtSearchTags.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtSearchTags.Location = new System.Drawing.Point(0, 0);
             this.txtSearchTags.Name = "txtSearchTags";
-            this.txtSearchTags.Size = new System.Drawing.Size(270, 21);
+            this.txtSearchTags.Size = new System.Drawing.Size(0, 21);
             this.txtSearchTags.TabIndex = 8;
             this.txtSearchTags.TextChanged += new System.EventHandler(this.txtSearchTags_TextChanged);
             // 
@@ -1009,7 +1007,7 @@ namespace Terminals {
             this.pnlHideTagsFavorites.BackColor = System.Drawing.Color.Gray;
             this.pnlHideTagsFavorites.Controls.Add(this.pbHideTagsFavorites);
             this.pnlHideTagsFavorites.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(277, 0);
+            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(0, 0);
             this.pnlHideTagsFavorites.Name = "pnlHideTagsFavorites";
             this.pnlHideTagsFavorites.Size = new System.Drawing.Size(5, 472);
             this.pnlHideTagsFavorites.TabIndex = 1;
@@ -1051,6 +1049,28 @@ namespace Terminals {
             this.pbShowTagsFavorites.TabStop = false;
             this.pbShowTagsFavorites.Click += new System.EventHandler(this.pbShowTags_Click);
             this.pbShowTagsFavorites.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbShowTagsFavorites_MouseMove);
+            // 
+            // tcTerminals
+            // 
+            this.tcTerminals.AllowDrop = true;
+            this.tcTerminals.AlwaysShowClose = false;
+            this.tcTerminals.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tcTerminals.Font = new System.Drawing.Font("Tahoma", 8.25F);
+            this.tcTerminals.Location = new System.Drawing.Point(0, 0);
+            this.tcTerminals.Name = "tcTerminals";
+            this.tcTerminals.ShowToolTipOnTitle = false;
+            this.tcTerminals.Size = new System.Drawing.Size(756, 474);
+            this.tcTerminals.TabIndex = 3;
+            this.tcTerminals.DoubleClick += new System.EventHandler(this.tcTerminals_DoubleClick);
+            this.tcTerminals.TabControlMouseOnTitle += new TabControl.TabControlMouseOnTitleHandler(this.tcTerminals_TabControlMouseOnTitle);
+            this.tcTerminals.TabControlItemSelectionChanged += new TabControl.TabControlItemChangedHandler(this.tcTerminals_TabControlItemSelectionChanged);
+            this.tcTerminals.MenuItemsLoaded += new System.EventHandler(this.tcTerminals_MenuItemsLoaded);
+            this.tcTerminals.TabControlItemClosing += new TabControl.TabControlItemClosingHandler(this.tcTerminals_TabControlItemClosing);
+            this.tcTerminals.MouseLeave += new System.EventHandler(this.tcTerminals_MouseLeave);
+            this.tcTerminals.TabControlItemClosed += new System.EventHandler(this.tcTerminals_TabControlItemClosed);
+            this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.tcTerminals_TabControlMouseLeftTitle);
+            this.tcTerminals.MouseHover += new System.EventHandler(this.tcTerminals_MouseHover);
+            this.tcTerminals.TabControlMouseEnteredTitle += new TabControl.TabControlMouseEnteredTitleHandler(this.tcTerminals_TabControlMouseEnteredTitle);
             // 
             // favoriteToolBar
             // 
@@ -1234,7 +1254,9 @@ namespace Terminals {
             this.toolStripContainer.TopToolStripPanel.PerformLayout();
             this.toolStripContainer.ResumeLayout(false);
             this.toolStripContainer.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tcTerminals)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.ResumeLayout(false);
             this.pnlTagsFavorites.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tcTagsFavorites)).EndInit();
             this.tcTagsFavorites.ResumeLayout(false);
@@ -1248,6 +1270,7 @@ namespace Terminals {
             ((System.ComponentModel.ISupportInitialize)(this.pbHideTagsFavorites)).EndInit();
             this.pnlShowTagsFavorites.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbShowTagsFavorites)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tcTerminals)).EndInit();
             this.tsRemoteToolbar.ResumeLayout(false);
             this.tsRemoteToolbar.PerformLayout();
             this.ShortcutsContextMenu.ResumeLayout(false);
@@ -1371,5 +1394,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.ToolStripDropDownButton TerminalServerMenuButton;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

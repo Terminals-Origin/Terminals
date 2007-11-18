@@ -1352,6 +1352,7 @@ namespace Terminals {
 
         private void LoadTags(string filter) {
             lvTags.Items.Clear();
+            
             ListViewItem unTaggedListViewItem = new ListViewItem();
             unTaggedListViewItem.ImageIndex = 0;
             unTaggedListViewItem.StateImageIndex = 0;
@@ -1391,14 +1392,16 @@ namespace Terminals {
             unTaggedListViewItem.Tag = unTaggedFavorites;
             unTaggedListViewItem.Text = "UnTagged (" + unTaggedFavorites.Count.ToString() + ")";
             lvTags.Items.Add(unTaggedListViewItem);
+            lvTags.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void ShowTagsFavorites(TabControlItem activeTab) {
-            pnlTagsFavorites.Width = 300;
+            splitContainer1.SplitterDistance = Settings.FavoritePanelWidth;
+            //pnlTagsFavorites.Width = 300;
             tcTagsFavorites.SelectedItem = activeTab;
             pnlHideTagsFavorites.Show();
             pnlShowTagsFavorites.Hide();
-            txtSearchTags.Focus();
+            txtSearchTags.Focus();            
         }
 
         private void ShowTags() {
@@ -1406,8 +1409,10 @@ namespace Terminals {
             tsbFavorites.Checked = false;
         }
 
+        
         private void HideTagsFavorites() {
-            pnlTagsFavorites.Width = 7;
+            if(Settings.FavoritePanelWidth!=splitContainer1.SplitterDistance) Settings.FavoritePanelWidth = splitContainer1.SplitterDistance;
+            splitContainer1.SplitterDistance = 7;
             pnlHideTagsFavorites.Hide();
             pnlShowTagsFavorites.Show();
             tsbTags.Checked = false;
@@ -1431,6 +1436,7 @@ namespace Terminals {
                     item.Tag = favorite;
                 }
             }
+            lvTagConnections.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void lvTagConnections_SelectedIndexChanged(object sender, EventArgs e) {
@@ -1893,7 +1899,7 @@ namespace Terminals {
         }
 
         private void pbShowTagsFavorites_MouseMove(object sender, MouseEventArgs e) {
-            ShowTags();
+            if(Settings.AutoExapandTagsPanel) ShowTags();
         }
 
         private void TerminalServerMenuButton_DropDownOpening(object sender, EventArgs e) {
