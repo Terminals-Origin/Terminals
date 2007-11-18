@@ -64,7 +64,7 @@ namespace Terminals {
                 LoadTags("");
                 ProtocolHandler.Register();
                 SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
-                tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);                
+                tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
                 System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
@@ -175,7 +175,7 @@ namespace Terminals {
                 QuickContextMenu.Items.Add("&Networking Tools");
                 QuickContextMenu.Items.Add("-");
                 QuickContextMenu.Items.Add("&Organize Favorites");
-                QuickContextMenu.Items.Add("Options");                
+                QuickContextMenu.Items.Add("Options");
                 QuickContextMenu.Items.Add("-");
 
                 FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
@@ -245,8 +245,7 @@ namespace Terminals {
             }
         }
 
-        void parent_MouseUp(object sender, MouseEventArgs e)
-        {
+        void parent_MouseUp(object sender, MouseEventArgs e) {
             throw new Exception("The method or operation is not implemented.");
         }
 
@@ -276,19 +275,14 @@ namespace Terminals {
                 default:
                     string tag = (e.ClickedItem.Tag as string);
 
-                    if(tag != null)
-                    {
+                    if(tag != null) {
                         string itemName = e.ClickedItem.Text;
                         if(tag == "favorite") Connect(itemName, false);
-                        if(tag == "tag")
-                        {
+                        if(tag == "tag") {
                             System.Windows.Forms.ToolStripMenuItem parent = (e.ClickedItem as System.Windows.Forms.ToolStripMenuItem);
-                            if(parent.DropDownItems.Count > 0)
-                            {
-                                if(System.Windows.Forms.MessageBox.Show("Are you sure you want to connect to all these " + parent.DropDownItems.Count + " terminals?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                                {
-                                    foreach(ToolStripMenuItem button in parent.DropDownItems)
-                                    {
+                            if(parent.DropDownItems.Count > 0) {
+                                if(System.Windows.Forms.MessageBox.Show("Are you sure you want to connect to all these " + parent.DropDownItems.Count + " terminals?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK) {
+                                    foreach(ToolStripMenuItem button in parent.DropDownItems) {
                                         Connect(button.Text, false);
                                     }
                                 }
@@ -381,14 +375,14 @@ namespace Terminals {
         private void SaveToolStripRow(ToolStripPanelRow Row, ToolStripSettings newSettings, string Position, int rowIndex) {
             foreach(ToolStrip strip in Row.Controls) {
                 //if(strip != menuStrip) {
-                    ToolStripSetting setting = new ToolStripSetting();
-                    setting.Dock = Position;
-                    setting.Row = rowIndex;
-                    setting.Left = strip.Left;
-                    setting.Top = strip.Top;
-                    setting.Name = strip.Name;
-                    setting.Visible = strip.Visible;
-                    newSettings.Add(setting);
+                ToolStripSetting setting = new ToolStripSetting();
+                setting.Dock = Position;
+                setting.Row = rowIndex;
+                setting.Left = strip.Left;
+                setting.Top = strip.Top;
+                setting.Name = strip.Name;
+                setting.Visible = strip.Visible;
+                newSettings.Add(setting);
                 //}
             }
         }
@@ -404,56 +398,36 @@ namespace Terminals {
 
             Settings.ToolbarSettings = newSettings;
         }
-        public void LoadWindowState()
-        {
+        public void LoadWindowState() {
             //ToolStripManager.LoadSettings(this);
             ToolStripSettings newSettings = Settings.ToolbarSettings;
-            if(newSettings != null && newSettings.Count > 0)
-            {
-                foreach(ToolStripSetting setting in newSettings)
-                {
+            if(newSettings != null && newSettings.Count > 0) {
+                foreach(ToolStripSetting setting in newSettings) {
                     ToolStrip strip = null;
-                    if(setting.Name == toolbarStd.Name)
-                    {
+                    if(setting.Name == toolbarStd.Name) {
                         strip = toolbarStd;
-                    }
-                    else if(setting.Name == favoriteToolBar.Name)
-                    {
+                    } else if(setting.Name == favoriteToolBar.Name) {
                         strip = favoriteToolBar;
-                    }
-                    else if(setting.Name == SpecialCommandsToolStrip.Name)
-                    {
+                    } else if(setting.Name == SpecialCommandsToolStrip.Name) {
                         strip = SpecialCommandsToolStrip;
-                    }
-                    else if(setting.Name == menuStrip.Name)
-                    {
+                    } else if(setting.Name == menuStrip.Name) {
                         strip = menuStrip;
-                    }
-                    else if(setting.Name == tsRemoteToolbar.Name)
-                    {
+                    } else if(setting.Name == tsRemoteToolbar.Name) {
                         strip = tsRemoteToolbar;
                     }
 
-                    if(strip != null)
-                    {
+                    if(strip != null) {
                         Point p;
                         int row = setting.Row + 1;
                         //p = new Point(setting.Left, (setting.Row * row) + 1);
                         p = new Point(setting.Left, setting.Top);
-                        if(setting.Dock == "Top")
-                        {
+                        if(setting.Dock == "Top") {
                             this.toolStripContainer.TopToolStripPanel.Join(strip, p);
-                        }
-                        else if(setting.Dock == "Left")
-                        {
+                        } else if(setting.Dock == "Left") {
                             this.toolStripContainer.LeftToolStripPanel.Join(strip, p);
-                        }
-                        else if(setting.Dock == "Right")
-                        {
+                        } else if(setting.Dock == "Right") {
                             this.toolStripContainer.RightToolStripPanel.Join(strip, p);
-                        }
-                        else if(setting.Dock == "Bottom")
-                        {
+                        } else if(setting.Dock == "Bottom") {
                             this.toolStripContainer.BottomToolStripPanel.Join(strip, p);
                         }
                         //strip.Left = setting.Left;
@@ -491,7 +465,7 @@ namespace Terminals {
                 vnc = (this.CurrentConnection as Connections.VNCConnection);
                 if(vnc != null) {
                     vncActionButton.Visible = true;
-                }                
+                }
                 this.TerminalServerMenuButton.Visible = this.CurrentConnection.IsTerminalServer;
                 //this.TerminalServerMenuButton.Visible = true;
             }
@@ -667,7 +641,7 @@ namespace Terminals {
                 terminalTabPage.AllowDrop = true;
                 terminalTabPage.DragOver += terminalTabPage_DragOver;
                 terminalTabPage.DragEnter += new DragEventHandler(terminalTabPage_DragEnter);
-                this.Resize+=new EventHandler(MainForm_Resize);
+                this.Resize += new EventHandler(MainForm_Resize);
                 terminalTabPage.ToolTipText = GetToolTipText(favorite);
                 terminalTabPage.Favorite = favorite;
                 terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
@@ -724,9 +698,8 @@ namespace Terminals {
 
                 if(this.CurrentConnection.Server.Sessions != null) {
                     foreach(TerminalServices.Session session in this.CurrentConnection.Server.Sessions) {
-                        if(session.Client.ClientName != "")
-                        {
-                            ToolStripMenuItem sess = new ToolStripMenuItem(string.Format("{1} - {2} ({0})", session.State.ToString().Replace("WTS",""), session.Client.ClientName, session.Client.UserName));
+                        if(session.Client.ClientName != "") {
+                            ToolStripMenuItem sess = new ToolStripMenuItem(string.Format("{1} - {2} ({0})", session.State.ToString().Replace("WTS", ""), session.Client.ClientName, session.Client.UserName));
                             sess.Tag = session;
                             Sessions.DropDownItems.Add(sess);
                             ToolStripMenuItem msg = new ToolStripMenuItem("Send Message");
@@ -739,8 +712,7 @@ namespace Terminals {
                             lo.Tag = session;
                             sess.DropDownItems.Add(lo);
 
-                            if(session.IsTheActiveSession)
-                            {
+                            if(session.IsTheActiveSession) {
                                 ToolStripMenuItem lo1 = new ToolStripMenuItem("Logoff");
                                 lo1.Click += new EventHandler(sd_Click);
                                 lo1.Tag = session;
@@ -752,41 +724,30 @@ namespace Terminals {
             } else {
                 TerminalServerMenuButton.Visible = false;
             }
-            
+
         }
 
-        void sd_Click(object sender, EventArgs e)
-        {
+        void sd_Click(object sender, EventArgs e) {
             ToolStripMenuItem menu = (sender as ToolStripMenuItem);
-            if(menu != null)
-            {
-                if(menu.Text == "Shutdown")
-                {
+            if(menu != null) {
+                if(menu.Text == "Shutdown") {
                     TerminalServices.TerminalServer server = (menu.Tag as TerminalServices.TerminalServer);
                     if(server != null && System.Windows.Forms.MessageBox.Show("Are you sure you want to shut this machine off?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
                         TerminalServices.TerminalServicesAPI.ShutdownSystem(server, false);
-                }
-                else if(menu.Text == "Reboot")
-                {
+                } else if(menu.Text == "Reboot") {
                     TerminalServices.TerminalServer server = (menu.Tag as TerminalServices.TerminalServer);
                     if(server != null && System.Windows.Forms.MessageBox.Show("Are you sure you want to reboot this machine?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
                         TerminalServices.TerminalServicesAPI.ShutdownSystem(server, true);
-                }
-                else if(menu.Text == "Logoff")
-                {
+                } else if(menu.Text == "Logoff") {
                     TerminalServices.Session session = (menu.Tag as TerminalServices.Session);
                     if(session != null && System.Windows.Forms.MessageBox.Show("Are you sure you want to log this session off?", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
                         TerminalServices.TerminalServicesAPI.LogOffSession(session, false);
 
-                }
-                else if(menu.Text == "Send Message")
-                {
+                } else if(menu.Text == "Send Message") {
                     TerminalServices.Session session = (menu.Tag as TerminalServices.Session);
-                    if(session != null)
-                    {
+                    if(session != null) {
                         Terminals.InputBoxResult result = Terminals.InputBox.Show("Please enter the message to send..");
-                        if(result.ReturnCode == DialogResult.OK && result.Text.Trim() != null)
-                        {
+                        if(result.ReturnCode == DialogResult.OK && result.Text.Trim() != null) {
                             TerminalServices.TerminalServicesAPI.SendMessage(session, "Message from your Administrator", result.Text.Trim(), 0, 10, false);
                         }
 
@@ -946,12 +907,9 @@ namespace Terminals {
         }
 
         private void tsbDisconnect_Click(object sender, EventArgs e) {
-            try
-            {
+            try {
                 tcTerminals.CloseTab(tcTerminals.SelectedItem);
-            }
-            catch(Exception exc)
-            {
+            } catch(Exception exc) {
                 Terminals.Logging.Log.Error("Disconnecting a tab threw an exception", exc);
             }
         }
@@ -1043,7 +1001,7 @@ namespace Terminals {
         }
 
         private void tcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e) {
-            
+
             if(CurrentConnection != null && CurrentConnection.Connected) {
                 bool close = false;
                 if(Settings.WarnOnConnectionClose) {
@@ -1101,7 +1059,7 @@ namespace Terminals {
                 } else {
                     Connect(favs, false);
                 }
-                
+
             }
         }
 
@@ -1111,7 +1069,7 @@ namespace Terminals {
                 tsbDisconnect.Enabled = e.Item != null;
                 disconnectToolStripMenuItem.Enabled = e.Item != null;
                 SetGrabInput(true);
-                if(e.Item.Selected && Settings.ShowInformationToolTips) this.Text = e.Item.ToolTipText.Replace("\r\n","; ");
+                if(e.Item.Selected && Settings.ShowInformationToolTips) this.Text = e.Item.ToolTipText.Replace("\r\n", "; ");
             }
         }
 
@@ -1397,6 +1355,7 @@ namespace Terminals {
             ListViewItem unTaggedListViewItem = new ListViewItem();
             unTaggedListViewItem.ImageIndex = 0;
             unTaggedListViewItem.StateImageIndex = 0;
+            unTaggedListViewItem.ToolTipText = "UnTagged";
             List<FavoriteConfigurationElement> unTaggedFavorites = new List<FavoriteConfigurationElement>();
             foreach(string tag in Settings.Tags) {
                 if((String.IsNullOrEmpty(filter) || (tag.ToUpper().StartsWith(filter.ToUpper())))) {
@@ -1416,6 +1375,7 @@ namespace Terminals {
                     }
                     item.Tag = tagFavorites;
                     item.Text = tag + " (" + tagFavorites.Count.ToString() + ")";
+                    item.ToolTipText = tag;
                     lvTags.Items.Add(item);
                 }
             }
@@ -1562,18 +1522,13 @@ namespace Terminals {
 
         }
 
-        private void MainWindowNotifyIcon_MouseClick(object sender, MouseEventArgs e)
-        {
-            if(e.Button == MouseButtons.Left)
-            {
-                if(Settings.MinimizeToTray)
-                {
+        private void MainWindowNotifyIcon_MouseClick(object sender, MouseEventArgs e) {
+            if(e.Button == MouseButtons.Left) {
+                if(Settings.MinimizeToTray) {
                     this.Visible = !this.Visible;
                     if(this.Visible && this.WindowState == FormWindowState.Minimized) this.WindowState = FormWindowState.Normal;
 
-                }
-                else
-                {
+                } else {
                     if(this.WindowState == FormWindowState.Normal)
                         this.WindowState = FormWindowState.Minimized;
                     else
@@ -1582,8 +1537,7 @@ namespace Terminals {
             }
         }
 
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem2_Click(object sender, EventArgs e) {
             this.Visible = true;
             Close();
         }
@@ -1944,6 +1898,78 @@ namespace Terminals {
 
         private void TerminalServerMenuButton_DropDownOpening(object sender, EventArgs e) {
             BuildTerminalServerButtonMenu();
+        }
+
+        private void lvTags_ItemDrag(object sender, ItemDragEventArgs e) {
+
+        }
+
+        private void lvTagConnections_ItemDrag(object sender, ItemDragEventArgs e) {
+            lvTagConnections.DoDragDrop(lvTagConnections.SelectedItems, DragDropEffects.Move);
+        }
+
+        private void lvTags_DragEnter(object sender, DragEventArgs e) {
+
+            foreach(string format in e.Data.GetFormats()) {
+                if(format.Equals("System.Windows.Forms.ListView+SelectedListViewItemCollection")) {
+                    e.Effect = DragDropEffects.Move;
+                }
+            }
+        }
+
+        private void AddTagToFavorite(FavoriteConfigurationElement Favorite, string Tag) {
+            List<string> tagList = new List<string>();
+            foreach(string tag in Favorite.TagList) {
+                tagList.Add(tag);
+            }
+            tagList.Add(Tag);
+            Favorite.Tags = String.Join(",", tagList.ToArray());
+        }
+        private void RemoveTagFromFavorite(FavoriteConfigurationElement Favorite, string Tag) {
+            List<string> tagList = new List<string>();
+            string t = Tag.Trim().ToUpper();
+            foreach(string tag in Favorite.TagList) {
+                if(tag.Trim().ToUpper() != t) tagList.Add(tag);
+            }
+            Favorite.Tags = String.Join(",", tagList.ToArray());
+        }
+
+        private void lvTags_DragDrop(object sender, DragEventArgs e) {
+
+            bool needsUpdate = false;
+            //Returns the location of the mouse pointer in the ListView control.
+            Point p = lvTags.PointToClient(new Point(e.X, e.Y));
+            //Obtain the item that is located at the specified location of the mouse pointer.
+            //dragItem is the lvi upon which the drop is made
+            ListViewItem dragToItem = lvTags.GetItemAt(p.X, p.Y);
+            if(dragToItem != null && !String.IsNullOrEmpty(dragToItem.ToolTipText)) {
+
+                foreach(ListViewItem item in lvTagConnections.SelectedItems) {
+                    FavoriteConfigurationElement fav = (item.Tag as FavoriteConfigurationElement);
+                    if(fav != null) {
+                        if(lvTags.SelectedItems != null && lvTags.SelectedItems.Count>0) {
+                            string tag = lvTags.SelectedItems[0].ToolTipText;
+                            RemoveTagFromFavorite(fav, tag);
+                        }
+                        if(dragToItem.ToolTipText!="UnTagged") AddTagToFavorite(fav, dragToItem.ToolTipText);
+                        Settings.DeleteFavorite(fav.Name);
+                        Settings.AddFavorite(fav, false);
+                        needsUpdate = true;
+                    }
+                }
+            }
+            if(needsUpdate) {
+                ListViewItem sel = null;
+                if(lvTags.SelectedItems != null && lvTags.SelectedItems.Count > 0) {
+                    sel = lvTags.SelectedItems[0];
+                }
+                LoadTags(null);
+                foreach(ListViewItem item in lvTags.Items) {
+                    if(item.ToolTipText == sel.ToolTipText) {
+                        item.Selected = true;
+                    }
+                }
+            }
         }
     }
 

@@ -457,11 +457,12 @@ namespace Terminals
 
         private void AddTag()
         {
-            ListViewItem[] items = lvConnectionTags.Items.Find(txtTag.Text, false);
-            if(items.Length == 0)
-            {
-                Settings.AddTag(txtTag.Text);
-                lvConnectionTags.Items.Add(txtTag.Text);
+            if(!String.IsNullOrEmpty(txtTag.Text)) {
+                ListViewItem[] items = lvConnectionTags.Items.Find(txtTag.Text, false);
+                if(items.Length == 0) {
+                    Settings.AddTag(txtTag.Text);
+                    lvConnectionTags.Items.Add(txtTag.Text);
+                }
             }
         }
 

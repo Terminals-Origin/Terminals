@@ -462,7 +462,7 @@ namespace Terminals {
             this.toolbarStd.Location = new System.Drawing.Point(3, 25);
             this.toolbarStd.MinimumSize = new System.Drawing.Size(672, 0);
             this.toolbarStd.Name = "toolbarStd";
-            this.toolbarStd.Size = new System.Drawing.Size(727, 25);
+            this.toolbarStd.Size = new System.Drawing.Size(672, 25);
             this.toolbarStd.TabIndex = 2;
             // 
             // tsbNewTerminal
@@ -797,7 +797,7 @@ namespace Terminals {
             this.tciFavorites});
             this.tcTagsFavorites.Location = new System.Drawing.Point(5, 0);
             this.tcTagsFavorites.Name = "tcTagsFavorites";
-            this.tcTagsFavorites.SelectedItem = this.tciFavorites;
+            this.tcTagsFavorites.SelectedItem = this.tciTags;
             this.tcTagsFavorites.ShowToolTipOnTitle = false;
             this.tcTagsFavorites.Size = new System.Drawing.Size(272, 472);
             this.tcTagsFavorites.TabIndex = 9;
@@ -810,12 +810,14 @@ namespace Terminals {
             this.tciTags.Controls.Add(this.txtSearchTags);
             this.tciTags.IsDrawn = true;
             this.tciTags.Name = "tciTags";
+            this.tciTags.Selected = true;
             this.tciTags.TabIndex = 0;
             this.tciTags.Title = "Tags";
             this.tciTags.ToolTipText = "";
             // 
             // lvTagConnections
             // 
+            this.lvTagConnections.AllowDrop = true;
             this.lvTagConnections.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chConnection});
             this.lvTagConnections.ContextMenuStrip = this.cmsTagConnections;
@@ -823,7 +825,7 @@ namespace Terminals {
             this.lvTagConnections.HideSelection = false;
             this.lvTagConnections.Location = new System.Drawing.Point(0, 308);
             this.lvTagConnections.Name = "lvTagConnections";
-            this.lvTagConnections.Size = new System.Drawing.Size(200, 0);
+            this.lvTagConnections.Size = new System.Drawing.Size(270, 143);
             this.lvTagConnections.SmallImageList = this.ilTagConnections;
             this.lvTagConnections.TabIndex = 7;
             this.lvTagConnections.UseCompatibleStateImageBehavior = false;
@@ -831,6 +833,7 @@ namespace Terminals {
             this.lvTagConnections.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvTagConnections_MouseDoubleClick);
             this.lvTagConnections.SelectedIndexChanged += new System.EventHandler(this.lvTagConnections_SelectedIndexChanged);
             this.lvTagConnections.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvTagConnections_KeyDown);
+            this.lvTagConnections.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.lvTagConnections_ItemDrag);
             // 
             // chConnection
             // 
@@ -902,6 +905,7 @@ namespace Terminals {
             // 
             // lvTags
             // 
+            this.lvTags.AllowDrop = true;
             this.lvTags.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chTag});
             this.lvTags.ContextMenuStrip = this.cmsTags;
@@ -910,14 +914,17 @@ namespace Terminals {
             this.lvTags.Location = new System.Drawing.Point(0, 21);
             this.lvTags.MultiSelect = false;
             this.lvTags.Name = "lvTags";
-            this.lvTags.Size = new System.Drawing.Size(200, 287);
+            this.lvTags.Size = new System.Drawing.Size(270, 287);
             this.lvTags.SmallImageList = this.ilTags;
             this.lvTags.TabIndex = 6;
             this.lvTags.UseCompatibleStateImageBehavior = false;
             this.lvTags.View = System.Windows.Forms.View.Details;
             this.lvTags.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvTags_MouseDoubleClick);
+            this.lvTags.DragEnter += new System.Windows.Forms.DragEventHandler(this.lvTags_DragEnter);
+            this.lvTags.DragDrop += new System.Windows.Forms.DragEventHandler(this.lvTags_DragDrop);
             this.lvTags.SelectedIndexChanged += new System.EventHandler(this.lvTags_SelectedIndexChanged);
             this.lvTags.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvTags_KeyDown);
+            this.lvTags.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.lvTags_ItemDrag);
             // 
             // chTag
             // 
@@ -950,7 +957,7 @@ namespace Terminals {
             this.txtSearchTags.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtSearchTags.Location = new System.Drawing.Point(0, 0);
             this.txtSearchTags.Name = "txtSearchTags";
-            this.txtSearchTags.Size = new System.Drawing.Size(200, 21);
+            this.txtSearchTags.Size = new System.Drawing.Size(270, 21);
             this.txtSearchTags.TabIndex = 8;
             this.txtSearchTags.TextChanged += new System.EventHandler(this.txtSearchTags_TextChanged);
             // 
@@ -961,7 +968,6 @@ namespace Terminals {
             this.tciFavorites.Controls.Add(this.txtSearchFavorites);
             this.tciFavorites.IsDrawn = true;
             this.tciFavorites.Name = "tciFavorites";
-            this.tciFavorites.Selected = true;
             this.tciFavorites.TabIndex = 1;
             this.tciFavorites.Title = "Favorites";
             this.tciFavorites.ToolTipText = "";
@@ -975,7 +981,7 @@ namespace Terminals {
             this.lvFavorites.HideSelection = false;
             this.lvFavorites.Location = new System.Drawing.Point(0, 21);
             this.lvFavorites.Name = "lvFavorites";
-            this.lvFavorites.Size = new System.Drawing.Size(270, 430);
+            this.lvFavorites.Size = new System.Drawing.Size(200, 79);
             this.lvFavorites.SmallImageList = this.ilTagConnections;
             this.lvFavorites.TabIndex = 10;
             this.lvFavorites.UseCompatibleStateImageBehavior = false;
@@ -994,7 +1000,7 @@ namespace Terminals {
             this.txtSearchFavorites.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtSearchFavorites.Location = new System.Drawing.Point(0, 0);
             this.txtSearchFavorites.Name = "txtSearchFavorites";
-            this.txtSearchFavorites.Size = new System.Drawing.Size(270, 21);
+            this.txtSearchFavorites.Size = new System.Drawing.Size(200, 21);
             this.txtSearchFavorites.TabIndex = 9;
             this.txtSearchFavorites.TextChanged += new System.EventHandler(this.txtSearchFavorites_TextChanged);
             // 
