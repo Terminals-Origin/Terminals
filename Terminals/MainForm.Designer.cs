@@ -739,7 +739,7 @@ namespace Terminals {
             // 
             this.toolStripContainer.ContentPanel.AutoScroll = true;
             this.toolStripContainer.ContentPanel.Controls.Add(this.splitContainer1);
-            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(767, 474);
+            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(792, 474);
             this.toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer.Name = "toolStripContainer";
@@ -769,7 +769,7 @@ namespace Terminals {
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tcTerminals);
-            this.splitContainer1.Size = new System.Drawing.Size(767, 474);
+            this.splitContainer1.Size = new System.Drawing.Size(792, 474);
             this.splitContainer1.SplitterDistance = 7;
             this.splitContainer1.TabIndex = 7;
             // 
@@ -1059,7 +1059,7 @@ namespace Terminals {
             this.tcTerminals.Location = new System.Drawing.Point(0, 0);
             this.tcTerminals.Name = "tcTerminals";
             this.tcTerminals.ShowToolTipOnTitle = false;
-            this.tcTerminals.Size = new System.Drawing.Size(756, 474);
+            this.tcTerminals.Size = new System.Drawing.Size(781, 474);
             this.tcTerminals.TabIndex = 3;
             this.tcTerminals.DoubleClick += new System.EventHandler(this.tcTerminals_DoubleClick);
             this.tcTerminals.TabControlMouseOnTitle += new TabControl.TabControlMouseOnTitleHandler(this.tcTerminals_TabControlMouseOnTitle);
@@ -1166,7 +1166,7 @@ namespace Terminals {
             this.MainWindowNotifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.MainWindowNotifyIcon.BalloonTipText = "Click to Show or Hide Terminals Main Window";
             this.MainWindowNotifyIcon.BalloonTipTitle = "Terminals";
-            this.MainWindowNotifyIcon.ContextMenuStrip = this.SystemTrayContextMenuStrip;
+            this.MainWindowNotifyIcon.ContextMenuStrip = this.QuickContextMenu;
             this.MainWindowNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("MainWindowNotifyIcon.Icon")));
             this.MainWindowNotifyIcon.Text = "Click to Show or Hide Terminals Main Window";
             this.MainWindowNotifyIcon.Visible = true;
