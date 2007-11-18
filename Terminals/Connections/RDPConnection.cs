@@ -209,10 +209,10 @@ namespace Terminals.Connections
                 try {
                     if(!String.IsNullOrEmpty(pass)) {
                         MSTSC.IMsTscNonScriptable nonScriptable = (MSTSC.IMsTscNonScriptable)axMsRdpClient2.GetOcx();
-                        nonScriptable.ClearTextPassword = pass;
+                        if(nonScriptable!=null) nonScriptable.ClearTextPassword = pass;
                     }
                 } catch(Exception exc) {
-                    Terminals.Logging.Log.Error("Error when trying to set the cleartextpassword on the nonscriptable mstsc object", exc);
+                    Terminals.Logging.Log.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
                 }
 
 
