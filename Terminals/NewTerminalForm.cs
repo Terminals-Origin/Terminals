@@ -199,6 +199,14 @@ namespace Terminals
             this.widthUpDown.Value = (decimal)favorite.DesktopSizeWidth;
             this.heightUpDown.Value = (decimal)favorite.DesktopSizeHeight;
 
+
+            foreach(string tag in Settings.Tags) {
+                ListViewItem lvi = new ListViewItem(tag);
+                this.AllTagsListView.Items.Add(lvi);
+            }
+
+
+
         }
 
         private bool FillFavorite()
@@ -705,6 +713,17 @@ namespace Terminals
         {
             customSizePanel.Visible = false;
             if(cmbResolution.Text == "Custom") customSizePanel.Visible = true;            
+        }
+
+        private void AllTagsAddButton_Click(object sender, EventArgs e) {
+            foreach(ListViewItem lv in AllTagsListView.SelectedItems) {
+                ListViewItem[] items = lvConnectionTags.Items.Find(lv.Text, false);
+                if(items.Length == 0) {
+                    Settings.AddTag(lv.Text);
+                    lvConnectionTags.Items.Add(lv.Text);
+                }
+
+            }
         }
 
     }

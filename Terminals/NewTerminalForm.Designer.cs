@@ -138,9 +138,25 @@ namespace Terminals
         this.label16 = new System.Windows.Forms.Label();
         this.SSHRadioButton = new System.Windows.Forms.RadioButton();
         this.TelnetRadioButton = new System.Windows.Forms.RadioButton();
+        this.tabPage6 = new System.Windows.Forms.TabPage();
+        this.ICAtabPage = new System.Windows.Forms.TabPage();
+        this.ICAWorkingFolder = new System.Windows.Forms.TextBox();
+        this.label23 = new System.Windows.Forms.Label();
+        this.ICAApplicationPath = new System.Windows.Forms.TextBox();
+        this.label22 = new System.Windows.Forms.Label();
+        this.ICAApplicationNameTextBox = new System.Windows.Forms.TextBox();
+        this.label21 = new System.Windows.Forms.Label();
         this.tabPage5 = new System.Windows.Forms.TabPage();
         this.RASGroupBox = new System.Windows.Forms.GroupBox();
         this.RASDetailsListBox = new System.Windows.Forms.ListBox();
+        this.tpTags = new System.Windows.Forms.TabPage();
+        this.btnAddNewTag = new System.Windows.Forms.Button();
+        this.txtTag = new System.Windows.Forms.TextBox();
+        this.label14 = new System.Windows.Forms.Label();
+        this.panel1 = new System.Windows.Forms.Panel();
+        this.groupBox3 = new System.Windows.Forms.GroupBox();
+        this.btnRemoveTag = new System.Windows.Forms.Button();
+        this.lvConnectionTags = new System.Windows.Forms.ListView();
         this.tabPage4 = new System.Windows.Forms.TabPage();
         this.txtInitialDirectory = new System.Windows.Forms.TextBox();
         this.label13 = new System.Windows.Forms.Label();
@@ -150,22 +166,6 @@ namespace Terminals
         this.chkWaitForExit = new System.Windows.Forms.CheckBox();
         this.txtCommand = new System.Windows.Forms.TextBox();
         this.label11 = new System.Windows.Forms.Label();
-        this.tpTags = new System.Windows.Forms.TabPage();
-        this.btnAddNewTag = new System.Windows.Forms.Button();
-        this.txtTag = new System.Windows.Forms.TextBox();
-        this.label14 = new System.Windows.Forms.Label();
-        this.panel1 = new System.Windows.Forms.Panel();
-        this.groupBox3 = new System.Windows.Forms.GroupBox();
-        this.btnRemoveTag = new System.Windows.Forms.Button();
-        this.lvConnectionTags = new System.Windows.Forms.ListView();
-        this.tabPage6 = new System.Windows.Forms.TabPage();
-        this.ICAtabPage = new System.Windows.Forms.TabPage();
-        this.ICAWorkingFolder = new System.Windows.Forms.TextBox();
-        this.label23 = new System.Windows.Forms.Label();
-        this.ICAApplicationPath = new System.Windows.Forms.TextBox();
-        this.label22 = new System.Windows.Forms.Label();
-        this.ICAApplicationNameTextBox = new System.Windows.Forms.TextBox();
-        this.label21 = new System.Windows.Forms.Label();
         this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
         this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
         this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -173,6 +173,11 @@ namespace Terminals
         this.fontDialog1 = new System.Windows.Forms.FontDialog();
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
+        this.panel3 = new System.Windows.Forms.Panel();
+        this.panel4 = new System.Windows.Forms.Panel();
+        this.AllTagsListView = new System.Windows.Forms.ListView();
+        this.groupBox4 = new System.Windows.Forms.GroupBox();
+        this.AllTagsAddButton = new System.Windows.Forms.Button();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -192,14 +197,17 @@ namespace Terminals
         this.tabPage3.SuspendLayout();
         this.TelnetGroupBox.SuspendLayout();
         this.groupBox2.SuspendLayout();
+        this.ICAtabPage.SuspendLayout();
         this.tabPage5.SuspendLayout();
         this.RASGroupBox.SuspendLayout();
-        this.tabPage4.SuspendLayout();
         this.tpTags.SuspendLayout();
         this.panel1.SuspendLayout();
         this.groupBox3.SuspendLayout();
-        this.ICAtabPage.SuspendLayout();
+        this.tabPage4.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+        this.panel3.SuspendLayout();
+        this.panel4.SuspendLayout();
+        this.groupBox4.SuspendLayout();
         this.SuspendLayout();
         // 
         // btnOk
@@ -1378,6 +1386,81 @@ namespace Terminals
         this.TelnetRadioButton.UseVisualStyleBackColor = true;
         this.TelnetRadioButton.CheckedChanged += new System.EventHandler(this.TelnetRadioButton_CheckedChanged);
         // 
+        // tabPage6
+        // 
+        this.tabPage6.Location = new System.Drawing.Point(4, 22);
+        this.tabPage6.Name = "tabPage6";
+        this.tabPage6.Size = new System.Drawing.Size(500, 271);
+        this.tabPage6.TabIndex = 6;
+        this.tabPage6.Text = "VNC";
+        this.tabPage6.UseVisualStyleBackColor = true;
+        // 
+        // ICAtabPage
+        // 
+        this.ICAtabPage.Controls.Add(this.ICAWorkingFolder);
+        this.ICAtabPage.Controls.Add(this.label23);
+        this.ICAtabPage.Controls.Add(this.ICAApplicationPath);
+        this.ICAtabPage.Controls.Add(this.label22);
+        this.ICAtabPage.Controls.Add(this.ICAApplicationNameTextBox);
+        this.ICAtabPage.Controls.Add(this.label21);
+        this.ICAtabPage.Location = new System.Drawing.Point(4, 22);
+        this.ICAtabPage.Name = "ICAtabPage";
+        this.ICAtabPage.Size = new System.Drawing.Size(500, 271);
+        this.ICAtabPage.TabIndex = 10;
+        this.ICAtabPage.Text = "ICA Citrix";
+        this.ICAtabPage.UseVisualStyleBackColor = true;
+        // 
+        // ICAWorkingFolder
+        // 
+        this.ICAWorkingFolder.Enabled = false;
+        this.ICAWorkingFolder.Location = new System.Drawing.Point(145, 64);
+        this.ICAWorkingFolder.Name = "ICAWorkingFolder";
+        this.ICAWorkingFolder.Size = new System.Drawing.Size(226, 21);
+        this.ICAWorkingFolder.TabIndex = 5;
+        // 
+        // label23
+        // 
+        this.label23.AutoSize = true;
+        this.label23.Location = new System.Drawing.Point(3, 67);
+        this.label23.Name = "label23";
+        this.label23.Size = new System.Drawing.Size(138, 13);
+        this.label23.TabIndex = 4;
+        this.label23.Text = "Application Working Folder:";
+        // 
+        // ICAApplicationPath
+        // 
+        this.ICAApplicationPath.Enabled = false;
+        this.ICAApplicationPath.Location = new System.Drawing.Point(145, 37);
+        this.ICAApplicationPath.Name = "ICAApplicationPath";
+        this.ICAApplicationPath.Size = new System.Drawing.Size(226, 21);
+        this.ICAApplicationPath.TabIndex = 3;
+        // 
+        // label22
+        // 
+        this.label22.AutoSize = true;
+        this.label22.Location = new System.Drawing.Point(3, 40);
+        this.label22.Name = "label22";
+        this.label22.Size = new System.Drawing.Size(88, 13);
+        this.label22.TabIndex = 2;
+        this.label22.Text = "Application Path:";
+        // 
+        // ICAApplicationNameTextBox
+        // 
+        this.ICAApplicationNameTextBox.Enabled = false;
+        this.ICAApplicationNameTextBox.Location = new System.Drawing.Point(145, 10);
+        this.ICAApplicationNameTextBox.Name = "ICAApplicationNameTextBox";
+        this.ICAApplicationNameTextBox.Size = new System.Drawing.Size(226, 21);
+        this.ICAApplicationNameTextBox.TabIndex = 1;
+        // 
+        // label21
+        // 
+        this.label21.AutoSize = true;
+        this.label21.Location = new System.Drawing.Point(3, 13);
+        this.label21.Name = "label21";
+        this.label21.Size = new System.Drawing.Size(38, 13);
+        this.label21.TabIndex = 0;
+        this.label21.Text = "Name:";
+        // 
         // tabPage5
         // 
         this.tabPage5.Controls.Add(this.RASGroupBox);
@@ -1406,6 +1489,93 @@ namespace Terminals
         this.RASDetailsListBox.Name = "RASDetailsListBox";
         this.RASDetailsListBox.Size = new System.Drawing.Size(494, 251);
         this.RASDetailsListBox.TabIndex = 0;
+        // 
+        // tpTags
+        // 
+        this.tpTags.Controls.Add(this.panel4);
+        this.tpTags.Controls.Add(this.panel1);
+        this.tpTags.Controls.Add(this.panel3);
+        this.tpTags.Location = new System.Drawing.Point(4, 22);
+        this.tpTags.Name = "tpTags";
+        this.tpTags.Padding = new System.Windows.Forms.Padding(3);
+        this.tpTags.Size = new System.Drawing.Size(500, 271);
+        this.tpTags.TabIndex = 4;
+        this.tpTags.Text = "Tags";
+        this.tpTags.UseVisualStyleBackColor = true;
+        // 
+        // btnAddNewTag
+        // 
+        this.btnAddNewTag.Image = global::Terminals.Properties.Resources.tag_blue_add;
+        this.btnAddNewTag.Location = new System.Drawing.Point(421, 18);
+        this.btnAddNewTag.Name = "btnAddNewTag";
+        this.btnAddNewTag.Size = new System.Drawing.Size(21, 21);
+        this.btnAddNewTag.TabIndex = 12;
+        this.toolTip1.SetToolTip(this.btnAddNewTag, "Add Tag to Connection");
+        this.btnAddNewTag.UseVisualStyleBackColor = true;
+        this.btnAddNewTag.Click += new System.EventHandler(this.btnAddNewTag_Click);
+        // 
+        // txtTag
+        // 
+        this.txtTag.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+        this.txtTag.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+        this.txtTag.Location = new System.Drawing.Point(70, 19);
+        this.txtTag.Name = "txtTag";
+        this.txtTag.Size = new System.Drawing.Size(345, 21);
+        this.txtTag.TabIndex = 2;
+        // 
+        // label14
+        // 
+        this.label14.AutoSize = true;
+        this.label14.Location = new System.Drawing.Point(11, 19);
+        this.label14.Name = "label14";
+        this.label14.Size = new System.Drawing.Size(53, 13);
+        this.label14.TabIndex = 1;
+        this.label14.Text = "New Tag:";
+        // 
+        // panel1
+        // 
+        this.panel1.Controls.Add(this.groupBox3);
+        this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+        this.panel1.Location = new System.Drawing.Point(3, 53);
+        this.panel1.Name = "panel1";
+        this.panel1.Size = new System.Drawing.Size(494, 96);
+        this.panel1.TabIndex = 0;
+        // 
+        // groupBox3
+        // 
+        this.groupBox3.Controls.Add(this.btnRemoveTag);
+        this.groupBox3.Controls.Add(this.lvConnectionTags);
+        this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.groupBox3.Location = new System.Drawing.Point(0, 0);
+        this.groupBox3.Name = "groupBox3";
+        this.groupBox3.Size = new System.Drawing.Size(494, 96);
+        this.groupBox3.TabIndex = 1;
+        this.groupBox3.TabStop = false;
+        this.groupBox3.Text = "Connection Tags";
+        // 
+        // btnRemoveTag
+        // 
+        this.btnRemoveTag.Image = global::Terminals.Properties.Resources.tag_blue_delete;
+        this.btnRemoveTag.Location = new System.Drawing.Point(421, 24);
+        this.btnRemoveTag.Name = "btnRemoveTag";
+        this.btnRemoveTag.Size = new System.Drawing.Size(21, 21);
+        this.btnRemoveTag.TabIndex = 13;
+        this.toolTip1.SetToolTip(this.btnRemoveTag, "Remove Connection Tag");
+        this.btnRemoveTag.UseVisualStyleBackColor = true;
+        this.btnRemoveTag.Click += new System.EventHandler(this.btnRemoveTag_Click);
+        // 
+        // lvConnectionTags
+        // 
+        this.lvConnectionTags.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                    | System.Windows.Forms.AnchorStyles.Left)
+                    | System.Windows.Forms.AnchorStyles.Right)));
+        this.lvConnectionTags.HideSelection = false;
+        this.lvConnectionTags.Location = new System.Drawing.Point(8, 24);
+        this.lvConnectionTags.Name = "lvConnectionTags";
+        this.lvConnectionTags.Size = new System.Drawing.Size(407, 66);
+        this.lvConnectionTags.TabIndex = 1;
+        this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
+        this.lvConnectionTags.View = System.Windows.Forms.View.List;
         // 
         // tabPage4
         // 
@@ -1493,166 +1663,6 @@ namespace Terminals
         this.label11.TabIndex = 4;
         this.label11.Text = "Command:";
         // 
-        // tpTags
-        // 
-        this.tpTags.Controls.Add(this.btnAddNewTag);
-        this.tpTags.Controls.Add(this.txtTag);
-        this.tpTags.Controls.Add(this.label14);
-        this.tpTags.Controls.Add(this.panel1);
-        this.tpTags.Location = new System.Drawing.Point(4, 22);
-        this.tpTags.Name = "tpTags";
-        this.tpTags.Padding = new System.Windows.Forms.Padding(3);
-        this.tpTags.Size = new System.Drawing.Size(500, 271);
-        this.tpTags.TabIndex = 4;
-        this.tpTags.Text = "Tags";
-        this.tpTags.UseVisualStyleBackColor = true;
-        // 
-        // btnAddNewTag
-        // 
-        this.btnAddNewTag.Image = global::Terminals.Properties.Resources.tag_blue_add;
-        this.btnAddNewTag.Location = new System.Drawing.Point(355, 8);
-        this.btnAddNewTag.Name = "btnAddNewTag";
-        this.btnAddNewTag.Size = new System.Drawing.Size(21, 21);
-        this.btnAddNewTag.TabIndex = 12;
-        this.btnAddNewTag.UseVisualStyleBackColor = true;
-        this.btnAddNewTag.Click += new System.EventHandler(this.btnAddNewTag_Click);
-        // 
-        // txtTag
-        // 
-        this.txtTag.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-        this.txtTag.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-        this.txtTag.Location = new System.Drawing.Point(64, 8);
-        this.txtTag.Name = "txtTag";
-        this.txtTag.Size = new System.Drawing.Size(288, 21);
-        this.txtTag.TabIndex = 2;
-        // 
-        // label14
-        // 
-        this.label14.AutoSize = true;
-        this.label14.Location = new System.Drawing.Point(8, 8);
-        this.label14.Name = "label14";
-        this.label14.Size = new System.Drawing.Size(53, 13);
-        this.label14.TabIndex = 1;
-        this.label14.Text = "New Tag:";
-        // 
-        // panel1
-        // 
-        this.panel1.Controls.Add(this.groupBox3);
-        this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-        this.panel1.Location = new System.Drawing.Point(3, 128);
-        this.panel1.Name = "panel1";
-        this.panel1.Size = new System.Drawing.Size(494, 140);
-        this.panel1.TabIndex = 0;
-        // 
-        // groupBox3
-        // 
-        this.groupBox3.Controls.Add(this.btnRemoveTag);
-        this.groupBox3.Controls.Add(this.lvConnectionTags);
-        this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-        this.groupBox3.Location = new System.Drawing.Point(0, 0);
-        this.groupBox3.Name = "groupBox3";
-        this.groupBox3.Size = new System.Drawing.Size(494, 140);
-        this.groupBox3.TabIndex = 1;
-        this.groupBox3.TabStop = false;
-        this.groupBox3.Text = "Connection Tags";
-        // 
-        // btnRemoveTag
-        // 
-        this.btnRemoveTag.Image = global::Terminals.Properties.Resources.tag_blue_delete;
-        this.btnRemoveTag.Location = new System.Drawing.Point(352, 24);
-        this.btnRemoveTag.Name = "btnRemoveTag";
-        this.btnRemoveTag.Size = new System.Drawing.Size(21, 21);
-        this.btnRemoveTag.TabIndex = 13;
-        this.btnRemoveTag.UseVisualStyleBackColor = true;
-        this.btnRemoveTag.Click += new System.EventHandler(this.btnRemoveTag_Click);
-        // 
-        // lvConnectionTags
-        // 
-        this.lvConnectionTags.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                    | System.Windows.Forms.AnchorStyles.Left)
-                    | System.Windows.Forms.AnchorStyles.Right)));
-        this.lvConnectionTags.HideSelection = false;
-        this.lvConnectionTags.Location = new System.Drawing.Point(8, 24);
-        this.lvConnectionTags.Name = "lvConnectionTags";
-        this.lvConnectionTags.Size = new System.Drawing.Size(458, 104);
-        this.lvConnectionTags.TabIndex = 1;
-        this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
-        // 
-        // tabPage6
-        // 
-        this.tabPage6.Location = new System.Drawing.Point(4, 22);
-        this.tabPage6.Name = "tabPage6";
-        this.tabPage6.Size = new System.Drawing.Size(500, 271);
-        this.tabPage6.TabIndex = 6;
-        this.tabPage6.Text = "VNC";
-        this.tabPage6.UseVisualStyleBackColor = true;
-        // 
-        // ICAtabPage
-        // 
-        this.ICAtabPage.Controls.Add(this.ICAWorkingFolder);
-        this.ICAtabPage.Controls.Add(this.label23);
-        this.ICAtabPage.Controls.Add(this.ICAApplicationPath);
-        this.ICAtabPage.Controls.Add(this.label22);
-        this.ICAtabPage.Controls.Add(this.ICAApplicationNameTextBox);
-        this.ICAtabPage.Controls.Add(this.label21);
-        this.ICAtabPage.Location = new System.Drawing.Point(4, 22);
-        this.ICAtabPage.Name = "ICAtabPage";
-        this.ICAtabPage.Size = new System.Drawing.Size(500, 271);
-        this.ICAtabPage.TabIndex = 10;
-        this.ICAtabPage.Text = "ICA Citrix";
-        this.ICAtabPage.UseVisualStyleBackColor = true;
-        // 
-        // ICAWorkingFolder
-        // 
-        this.ICAWorkingFolder.Enabled = false;
-        this.ICAWorkingFolder.Location = new System.Drawing.Point(145, 64);
-        this.ICAWorkingFolder.Name = "ICAWorkingFolder";
-        this.ICAWorkingFolder.Size = new System.Drawing.Size(226, 21);
-        this.ICAWorkingFolder.TabIndex = 5;
-        // 
-        // label23
-        // 
-        this.label23.AutoSize = true;
-        this.label23.Location = new System.Drawing.Point(3, 67);
-        this.label23.Name = "label23";
-        this.label23.Size = new System.Drawing.Size(138, 13);
-        this.label23.TabIndex = 4;
-        this.label23.Text = "Application Working Folder:";
-        // 
-        // ICAApplicationPath
-        // 
-        this.ICAApplicationPath.Enabled = false;
-        this.ICAApplicationPath.Location = new System.Drawing.Point(145, 37);
-        this.ICAApplicationPath.Name = "ICAApplicationPath";
-        this.ICAApplicationPath.Size = new System.Drawing.Size(226, 21);
-        this.ICAApplicationPath.TabIndex = 3;
-        // 
-        // label22
-        // 
-        this.label22.AutoSize = true;
-        this.label22.Location = new System.Drawing.Point(3, 40);
-        this.label22.Name = "label22";
-        this.label22.Size = new System.Drawing.Size(88, 13);
-        this.label22.TabIndex = 2;
-        this.label22.Text = "Application Path:";
-        // 
-        // ICAApplicationNameTextBox
-        // 
-        this.ICAApplicationNameTextBox.Enabled = false;
-        this.ICAApplicationNameTextBox.Location = new System.Drawing.Point(145, 10);
-        this.ICAApplicationNameTextBox.Name = "ICAApplicationNameTextBox";
-        this.ICAApplicationNameTextBox.Size = new System.Drawing.Size(226, 21);
-        this.ICAApplicationNameTextBox.TabIndex = 1;
-        // 
-        // label21
-        // 
-        this.label21.AutoSize = true;
-        this.label21.Location = new System.Drawing.Point(3, 13);
-        this.label21.Name = "label21";
-        this.label21.Size = new System.Drawing.Size(38, 13);
-        this.label21.TabIndex = 0;
-        this.label21.Text = "Name:";
-        // 
         // chkAddtoToolbar
         // 
         this.chkAddtoToolbar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -1689,6 +1699,62 @@ namespace Terminals
         this.ras1.PhoneNumber = null;
         this.ras1.UserName = null;
         this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
+        // 
+        // panel3
+        // 
+        this.panel3.Controls.Add(this.txtTag);
+        this.panel3.Controls.Add(this.btnAddNewTag);
+        this.panel3.Controls.Add(this.label14);
+        this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+        this.panel3.Location = new System.Drawing.Point(3, 3);
+        this.panel3.Name = "panel3";
+        this.panel3.Size = new System.Drawing.Size(494, 50);
+        this.panel3.TabIndex = 13;
+        // 
+        // panel4
+        // 
+        this.panel4.Controls.Add(this.groupBox4);
+        this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.panel4.Location = new System.Drawing.Point(3, 149);
+        this.panel4.Name = "panel4";
+        this.panel4.Size = new System.Drawing.Size(494, 119);
+        this.panel4.TabIndex = 14;
+        // 
+        // AllTagsListView
+        // 
+        this.AllTagsListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                    | System.Windows.Forms.AnchorStyles.Left)
+                    | System.Windows.Forms.AnchorStyles.Right)));
+        this.AllTagsListView.HideSelection = false;
+        this.AllTagsListView.Location = new System.Drawing.Point(8, 20);
+        this.AllTagsListView.Name = "AllTagsListView";
+        this.AllTagsListView.Size = new System.Drawing.Size(407, 72);
+        this.AllTagsListView.TabIndex = 2;
+        this.AllTagsListView.UseCompatibleStateImageBehavior = false;
+        this.AllTagsListView.View = System.Windows.Forms.View.List;
+        // 
+        // groupBox4
+        // 
+        this.groupBox4.Controls.Add(this.AllTagsAddButton);
+        this.groupBox4.Controls.Add(this.AllTagsListView);
+        this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.groupBox4.Location = new System.Drawing.Point(0, 0);
+        this.groupBox4.Name = "groupBox4";
+        this.groupBox4.Size = new System.Drawing.Size(494, 119);
+        this.groupBox4.TabIndex = 3;
+        this.groupBox4.TabStop = false;
+        this.groupBox4.Text = "All Available Tags";
+        // 
+        // AllTagsAddButton
+        // 
+        this.AllTagsAddButton.Image = global::Terminals.Properties.Resources.tag_blue_add;
+        this.AllTagsAddButton.Location = new System.Drawing.Point(421, 20);
+        this.AllTagsAddButton.Name = "AllTagsAddButton";
+        this.AllTagsAddButton.Size = new System.Drawing.Size(21, 21);
+        this.AllTagsAddButton.TabIndex = 13;
+        this.toolTip1.SetToolTip(this.AllTagsAddButton, "Add Tag to Connection");
+        this.AllTagsAddButton.UseVisualStyleBackColor = true;
+        this.AllTagsAddButton.Click += new System.EventHandler(this.AllTagsAddButton_Click);
         // 
         // NewTerminalForm
         // 
@@ -1742,17 +1808,20 @@ namespace Terminals
         this.TelnetGroupBox.PerformLayout();
         this.groupBox2.ResumeLayout(false);
         this.groupBox2.PerformLayout();
-        this.tabPage5.ResumeLayout(false);
-        this.RASGroupBox.ResumeLayout(false);
-        this.tabPage4.ResumeLayout(false);
-        this.tabPage4.PerformLayout();
-        this.tpTags.ResumeLayout(false);
-        this.tpTags.PerformLayout();
-        this.panel1.ResumeLayout(false);
-        this.groupBox3.ResumeLayout(false);
         this.ICAtabPage.ResumeLayout(false);
         this.ICAtabPage.PerformLayout();
+        this.tabPage5.ResumeLayout(false);
+        this.RASGroupBox.ResumeLayout(false);
+        this.tpTags.ResumeLayout(false);
+        this.panel1.ResumeLayout(false);
+        this.groupBox3.ResumeLayout(false);
+        this.tabPage4.ResumeLayout(false);
+        this.tabPage4.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+        this.panel3.ResumeLayout(false);
+        this.panel3.PerformLayout();
+        this.panel4.ResumeLayout(false);
+        this.groupBox4.ResumeLayout(false);
         this.ResumeLayout(false);
         this.PerformLayout();
 
@@ -1903,5 +1972,10 @@ namespace Terminals
       private System.Windows.Forms.NumericUpDown heightUpDown;
       private System.Windows.Forms.Label label31;
       private System.Windows.Forms.Label label32;
+      private System.Windows.Forms.Panel panel4;
+      private System.Windows.Forms.Panel panel3;
+      private System.Windows.Forms.GroupBox groupBox4;
+      private System.Windows.Forms.Button AllTagsAddButton;
+      private System.Windows.Forms.ListView AllTagsListView;
   }
 }
