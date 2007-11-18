@@ -130,13 +130,13 @@ namespace Terminals {
             this.connectToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.timerHover = new System.Windows.Forms.Timer(this.components);
             this.MainWindowNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.QuickContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.SystemTrayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.SystemTrayQuickConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
-            this.QuickContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -1172,6 +1172,12 @@ namespace Terminals {
             this.MainWindowNotifyIcon.Visible = true;
             this.MainWindowNotifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MainWindowNotifyIcon_MouseClick);
             // 
+            // QuickContextMenu
+            // 
+            this.QuickContextMenu.Name = "QuickContextMenu";
+            this.QuickContextMenu.Size = new System.Drawing.Size(153, 26);
+            this.QuickContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.QuickContextMenu_Opening);
+            // 
             // SystemTrayContextMenuStrip
             // 
             this.SystemTrayContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1220,11 +1226,6 @@ namespace Terminals {
             this.remoteDesktop1.Size = new System.Drawing.Size(400, 200);
             this.remoteDesktop1.TabIndex = 0;
             this.remoteDesktop1.Text = "remoteDesktop1";
-            // 
-            // QuickContextMenu
-            // 
-            this.QuickContextMenu.Name = "QuickContextMenu";
-            this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
             // 
             // MainForm
             // 
