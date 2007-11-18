@@ -135,17 +135,20 @@ namespace Terminals.Connections
 
                 axMsRdpClient2.AdvancedSettings2.MinutesToIdleTimeout = Favorite.IdleTimeout;
 
-                axMsRdpClient2.AdvancedSettings2.overallConnectionTimeout = Favorite.OverallTimeout;
-                axMsRdpClient2.AdvancedSettings2.singleConnectionTimeout = Favorite.ConnectionTimeout;
+                try {
+                    axMsRdpClient2.AdvancedSettings2.overallConnectionTimeout = Favorite.OverallTimeout;
+                    axMsRdpClient2.AdvancedSettings2.singleConnectionTimeout = Favorite.ConnectionTimeout;
 
 
 
-                //axMsRdpClient2.AdvancedSettings2.PinConnectionBar;
-                axMsRdpClient2.AdvancedSettings2.shutdownTimeout = Favorite.ShutdownTimeout;
-                //axMsRdpClient2.AdvancedSettings2.TransportType;
-                //axMsRdpClient2.AdvancedSettings2.WinceFixedPalette;
-                //axMsRdpClient2.AdvancedSettings3.CanAutoReconnect = Favorite.CanAutoReconnect;
-
+                    //axMsRdpClient2.AdvancedSettings2.PinConnectionBar;
+                    axMsRdpClient2.AdvancedSettings2.shutdownTimeout = Favorite.ShutdownTimeout;
+                    //axMsRdpClient2.AdvancedSettings2.TransportType;
+                    //axMsRdpClient2.AdvancedSettings2.WinceFixedPalette;
+                    //axMsRdpClient2.AdvancedSettings3.CanAutoReconnect = Favorite.CanAutoReconnect;
+                } catch(Exception exc) {
+                    Terminals.Logging.Log.Error("Error when trying to set timeout values.", exc);
+                }
 
 
                 axMsRdpClient2.AdvancedSettings3.RedirectPorts = Favorite.RedirectPorts;
