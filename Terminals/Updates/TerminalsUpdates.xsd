@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="TerminalsUpdates" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+        </Connections>
+        <Tables>
+        </Tables>
+        <Sources>
+        </Sources>
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="TerminalsUpdates" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="TerminalsUpdates" msprop:Generator_DataSetName="TerminalsUpdates">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Update" msprop:Generator_UserTableName="Update" msprop:Generator_RowDeletedName="UpdateRowDeleted" msprop:Generator_TableClassName="UpdateDataTable" msprop:Generator_RowChangedName="UpdateRowChanged" msprop:Generator_RowClassName="UpdateRow" msprop:Generator_RowChangingName="UpdateRowChanging" msprop:Generator_RowEvArgName="UpdateRowChangeEvent" msprop:Generator_RowEvHandlerName="UpdateRowChangeEventHandler" msprop:Generator_TablePropName="Update" msprop:Generator_TableVarName="tableUpdate" msprop:Generator_RowDeletingName="UpdateRowDeleting">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Description" msprop:Generator_UserColumnName="Description" msprop:Generator_ColumnPropNameInRow="Description" msprop:Generator_ColumnVarNameInTable="columnDescription" msprop:Generator_ColumnPropNameInTable="DescriptionColumn" type="xs:string" minOccurs="0" msdata:Ordinal="0" />
+              <xs:element name="Url" msprop:Generator_UserColumnName="Url" msprop:Generator_ColumnPropNameInRow="Url" msprop:Generator_ColumnVarNameInTable="columnUrl" msprop:Generator_ColumnPropNameInTable="UrlColumn" type="xs:string" minOccurs="0" msdata:Ordinal="1" />
+              <xs:element name="MD5" msprop:Generator_UserColumnName="MD5" msprop:Generator_ColumnPropNameInRow="MD5" msprop:Generator_ColumnVarNameInTable="columnMD5" msprop:Generator_ColumnPropNameInTable="MD5Column" type="xs:string" minOccurs="0" msdata:Ordinal="3" />
+            </xs:sequence>
+            <xs:attribute name="Version" msprop:Generator_UserColumnName="Version" msprop:Generator_ColumnPropNameInRow="Version" msprop:Generator_ColumnVarNameInTable="columnVersion" msprop:Generator_ColumnPropNameInTable="VersionColumn" type="xs:string" />
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

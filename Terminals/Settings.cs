@@ -569,6 +569,16 @@ namespace Terminals
                 configuration.Save();
             }
         }
+        public static string UpdateSource {
+            get {
+                return GetSection().UpdateSource;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).UpdateSource = value;
+                configuration.Save();
+            }
+        }
         public static string DefaultUsername
         {
             get

@@ -1161,7 +1161,6 @@ namespace Terminals {
                 }
             }
             SaveWindowState();
-
         }
 
         private void timerHover_Tick(object sender, EventArgs e) {

@@ -245,6 +245,7 @@ namespace Terminals
                 }
             }
         }
+        
         [ConfigurationProperty("defaultDomain", IsRequired=false)]
         public string DefaultDomain
         {
@@ -258,6 +259,21 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("updateSource", IsRequired = false)]
+        public string UpdateSource
+        {
+            get
+            {
+                if(this["updateSource"] == null || (this["updateSource"] as string)=="") {
+                    this["updateSource"] = @"http://tools.mscorlib.com/Terminals/TerminalsUpdates.xml";
+                }
+                return (string)this["updateSource"];
+            }
+            set
+            {
+                this["updateSource"] = value;
+            }
+        }
 
 
         [ConfigurationProperty("defaultUsername", IsRequired = false)]

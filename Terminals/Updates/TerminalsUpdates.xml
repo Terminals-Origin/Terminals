@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<TerminalsUpdates>
+	<Update Version="1.6f">
+		<Description>This release includes many bug fix's and the first cut at updating Terminals dynamically</Description>
+		<Url>http://tools.mscorlib.com/Terminals/Terminals_1.6f.zip</Url>
+		<MD5>0afb5dd9f7aa19a088ef0f0c5eaf6f1a</MD5>
+	</Update>
+	<Update Version="1.6e">
+		<Description>This is the latest release</Description>
+		<Url>http://tools.mscorlib.com/Terminals/Terminals_1.6e.zip</Url>
+		<MD5>c3df7b7d95ca9f53be7247c704a36307</MD5>
+	</Update>
+	<Update Version="1.6d">
+		<Description>The Wizard and Glass Edition</Description>
+		<Url>http://tools.mscorlib.com/Terminals/Terminals_1.6d_The_Wizard_and_Glass_Edition.zip</Url>
+		<MD5>5c9a1ff6c67fb8e1bac0833df4753159</MD5>
+	</Update>
+</TerminalsUpdates>
+

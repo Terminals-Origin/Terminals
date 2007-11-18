@@ -174,5 +174,14 @@ namespace Terminals
                 ConfirmPasswordTextBox.Text = "";
             }
         }
+
+        private void label10_DoubleClick(object sender, EventArgs e) {
+            System.Windows.Forms.OpenFileDialog ofd = new OpenFileDialog();
+            if(ofd.ShowDialog(this) == DialogResult.OK) {
+                string md5 = Terminals.Updates.UpdateManager.GetMD5HashFromFile(ofd.FileName);
+                System.Windows.Forms.Clipboard.SetText(string.Format("{0}\r\n{1}", ofd.FileName, md5));
+                System.Windows.Forms.MessageBox.Show(string.Format("MD5 of {0}, value:{1}, was copied to the clipboard;", ofd.FileName, md5));
+            }
+        }
     }
 }

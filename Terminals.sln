@@ -9,9 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminalControl", "Terminal
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metro", "Metro\Metro.csproj", "{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminalsUpdater", "TerminalsUpdater\TerminalsUpdater.csproj", "{1809300B-6C6C-46B2-AF2F-29006FF2A30F}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 6
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs01.codeplex.com/
 		SccLocalPath0 = .
@@ -27,6 +29,9 @@ Global
 		SccProjectUniqueName4 = Metro\\Metro.csproj
 		SccProjectName4 = Metro
 		SccLocalPath4 = Metro
+		SccProjectUniqueName5 = TerminalsUpdater\\TerminalsUpdater.csproj
+		SccProjectName5 = TerminalsUpdater
+		SccLocalPath5 = TerminalsUpdater
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +63,12 @@ Global
 		{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
 		{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
+		{1809300B-6C6C-46B2-AF2F-29006FF2A30F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1809300B-6C6C-46B2-AF2F-29006FF2A30F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1809300B-6C6C-46B2-AF2F-29006FF2A30F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1809300B-6C6C-46B2-AF2F-29006FF2A30F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1809300B-6C6C-46B2-AF2F-29006FF2A30F}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
+		{1809300B-6C6C-46B2-AF2F-29006FF2A30F}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

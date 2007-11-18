@@ -34,6 +34,7 @@ namespace Terminals
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpGeneral = new System.Windows.Forms.TabPage();
+            this.AutoExapandTagsPanelCheckBox = new System.Windows.Forms.CheckBox();
             this.office2007FeelCheckbox = new System.Windows.Forms.CheckBox();
             this.autoSwitchToCaptureCheckbox = new System.Windows.Forms.CheckBox();
             this.warnDisconnectCheckBox = new System.Windows.Forms.CheckBox();
@@ -75,7 +76,6 @@ namespace Terminals
             this.CompleteAuthButton = new System.Windows.Forms.Button();
             this.AuthorizeFlickrButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.AutoExapandTagsPanelCheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
@@ -173,6 +173,16 @@ namespace Terminals
             this.tpGeneral.TabIndex = 0;
             this.tpGeneral.Text = "General";
             this.tpGeneral.UseVisualStyleBackColor = true;
+            // 
+            // AutoExapandTagsPanelCheckBox
+            // 
+            this.AutoExapandTagsPanelCheckBox.AutoSize = true;
+            this.AutoExapandTagsPanelCheckBox.Location = new System.Drawing.Point(253, 128);
+            this.AutoExapandTagsPanelCheckBox.Name = "AutoExapandTagsPanelCheckBox";
+            this.AutoExapandTagsPanelCheckBox.Size = new System.Drawing.Size(136, 17);
+            this.AutoExapandTagsPanelCheckBox.TabIndex = 22;
+            this.AutoExapandTagsPanelCheckBox.Text = "Auto Expand Favorites";
+            this.AutoExapandTagsPanelCheckBox.UseVisualStyleBackColor = true;
             // 
             // office2007FeelCheckbox
             // 
@@ -555,6 +565,7 @@ namespace Terminals
             this.label10.TabIndex = 15;
             this.label10.Text = "Second you must click the Complete button to finish the process.  Only do this AF" +
                 "TER you have accepted Terminals access to your account on the Flickr Web Site.";
+            this.label10.DoubleClick += new System.EventHandler(this.label10_DoubleClick);
             // 
             // label9
             // 
@@ -594,16 +605,6 @@ namespace Terminals
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(0, 13);
             this.label8.TabIndex = 11;
-            // 
-            // AutoExapandTagsPanelCheckBox
-            // 
-            this.AutoExapandTagsPanelCheckBox.AutoSize = true;
-            this.AutoExapandTagsPanelCheckBox.Location = new System.Drawing.Point(253, 128);
-            this.AutoExapandTagsPanelCheckBox.Name = "AutoExapandTagsPanelCheckBox";
-            this.AutoExapandTagsPanelCheckBox.Size = new System.Drawing.Size(136, 17);
-            this.AutoExapandTagsPanelCheckBox.TabIndex = 22;
-            this.AutoExapandTagsPanelCheckBox.Text = "Auto Expand Favorites";
-            this.AutoExapandTagsPanelCheckBox.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 

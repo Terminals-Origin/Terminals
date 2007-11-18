@@ -71,6 +71,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\FlickrNet.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Interop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Interops\Interop.MSTSCLib.dll</HintPath>
@@ -228,6 +232,16 @@
     <Compile Include="OfficeRender\Office2007ColorTable.cs" />
     <Compile Include="OfficeRender\Office2007Helpers.cs" />
     <Compile Include="OfficeRender\Office2007Renderer.cs" />
+    <Compile Include="Updates\HTTP.cs" />
+    <Compile Include="Updates\TerminalsUpdates.cs">
+      <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Updates\TerminalsUpdates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Updates\UpdateManager.cs" />
     <Compile Include="Wizard\CommonOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -784,6 +798,7 @@
     <Content Include="Thumbs\wmimgmt.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Updates\TerminalsUpdates.xml" />
     <None Include="Resources\star.png" />
     <None Include="Resources\ShowPanel.PNG" />
     <None Include="Resources\tag_blue_delete.png" />
@@ -796,6 +811,17 @@
     </None>
     <None Include="Terminals.log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Updates\TerminalsUpdates.xsc">
+      <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
+    </None>
+    <None Include="Updates\TerminalsUpdates.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>TerminalsUpdates.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Updates\TerminalsUpdates.xss">
+      <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

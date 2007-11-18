@@ -9,6 +9,7 @@ namespace Terminals
 {
     static class Program
     {
+        public static Mutex mtx;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -16,10 +17,15 @@ namespace Terminals
         [ComVisible(true)]
         static void Main()
         {
+
+
+            mtx = new Mutex(false, "TerminalsMutex");
+            
             Terminals.Logging.Log.Info("Terminals 1.6e started");
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
 
             ParseCommandline();
 
@@ -39,11 +45,13 @@ namespace Terminals
                 }
                 else
                 {
+                    Terminals.Updates.UpdateManager.CheckForUpdates();
                     Application.Run(new MainForm());
                 }
             }
             else
             {
+                Terminals.Updates.UpdateManager.CheckForUpdates();
                 Application.Run(new MainForm());
             }
             SingleInstanceApplication.Close();
