@@ -671,7 +671,18 @@ namespace Terminals
                 this["redirectDevices"] = value;
             }
         }
-
+        [ConfigurationProperty("url", DefaultValue = "http://www.codeplex.com/terminals")]
+        public string Url
+        {
+            get
+            {
+                return (string)this["url"];
+            }
+            set
+            {
+                this["url"] = value;
+            }
+        }
         [ConfigurationProperty("port", DefaultValue = 3389)]
         public int Port
         {

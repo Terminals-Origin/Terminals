@@ -149,14 +149,22 @@ namespace Terminals
         this.tabPage5 = new System.Windows.Forms.TabPage();
         this.RASGroupBox = new System.Windows.Forms.GroupBox();
         this.RASDetailsListBox = new System.Windows.Forms.ListBox();
+        this.HTTPTabPage = new System.Windows.Forms.TabPage();
+        this.httpUrlTextBox = new System.Windows.Forms.TextBox();
+        this.label33 = new System.Windows.Forms.Label();
         this.tpTags = new System.Windows.Forms.TabPage();
-        this.btnAddNewTag = new System.Windows.Forms.Button();
-        this.txtTag = new System.Windows.Forms.TextBox();
-        this.label14 = new System.Windows.Forms.Label();
+        this.panel4 = new System.Windows.Forms.Panel();
+        this.groupBox4 = new System.Windows.Forms.GroupBox();
+        this.AllTagsAddButton = new System.Windows.Forms.Button();
+        this.AllTagsListView = new System.Windows.Forms.ListView();
         this.panel1 = new System.Windows.Forms.Panel();
         this.groupBox3 = new System.Windows.Forms.GroupBox();
         this.btnRemoveTag = new System.Windows.Forms.Button();
         this.lvConnectionTags = new System.Windows.Forms.ListView();
+        this.panel3 = new System.Windows.Forms.Panel();
+        this.txtTag = new System.Windows.Forms.TextBox();
+        this.btnAddNewTag = new System.Windows.Forms.Button();
+        this.label14 = new System.Windows.Forms.Label();
         this.tabPage4 = new System.Windows.Forms.TabPage();
         this.txtInitialDirectory = new System.Windows.Forms.TextBox();
         this.label13 = new System.Windows.Forms.Label();
@@ -173,11 +181,6 @@ namespace Terminals
         this.fontDialog1 = new System.Windows.Forms.FontDialog();
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
-        this.panel3 = new System.Windows.Forms.Panel();
-        this.panel4 = new System.Windows.Forms.Panel();
-        this.AllTagsListView = new System.Windows.Forms.ListView();
-        this.groupBox4 = new System.Windows.Forms.GroupBox();
-        this.AllTagsAddButton = new System.Windows.Forms.Button();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -200,14 +203,15 @@ namespace Terminals
         this.ICAtabPage.SuspendLayout();
         this.tabPage5.SuspendLayout();
         this.RASGroupBox.SuspendLayout();
+        this.HTTPTabPage.SuspendLayout();
         this.tpTags.SuspendLayout();
-        this.panel1.SuspendLayout();
-        this.groupBox3.SuspendLayout();
-        this.tabPage4.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-        this.panel3.SuspendLayout();
         this.panel4.SuspendLayout();
         this.groupBox4.SuspendLayout();
+        this.panel1.SuspendLayout();
+        this.groupBox3.SuspendLayout();
+        this.panel3.SuspendLayout();
+        this.tabPage4.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
         this.SuspendLayout();
         // 
         // btnOk
@@ -242,6 +246,7 @@ namespace Terminals
         this.tabControl1.Controls.Add(this.tabPage6);
         this.tabControl1.Controls.Add(this.ICAtabPage);
         this.tabControl1.Controls.Add(this.tabPage5);
+        this.tabControl1.Controls.Add(this.HTTPTabPage);
         this.tabControl1.Controls.Add(this.tpTags);
         this.tabControl1.Controls.Add(this.tabPage4);
         this.tabControl1.Location = new System.Drawing.Point(3, 77);
@@ -326,7 +331,9 @@ namespace Terminals
             "VMRC",
             "Telnet",
             "RAS",
-            "ICA Citrix"});
+            "ICA Citrix",
+            "HTTP",
+            "HTTPS"});
         this.ProtocolComboBox.Location = new System.Drawing.Point(106, 6);
         this.ProtocolComboBox.Name = "ProtocolComboBox";
         this.ProtocolComboBox.Size = new System.Drawing.Size(172, 21);
@@ -1490,6 +1497,35 @@ namespace Terminals
         this.RASDetailsListBox.Size = new System.Drawing.Size(494, 251);
         this.RASDetailsListBox.TabIndex = 0;
         // 
+        // HTTPTabPage
+        // 
+        this.HTTPTabPage.Controls.Add(this.httpUrlTextBox);
+        this.HTTPTabPage.Controls.Add(this.label33);
+        this.HTTPTabPage.Location = new System.Drawing.Point(4, 22);
+        this.HTTPTabPage.Name = "HTTPTabPage";
+        this.HTTPTabPage.Padding = new System.Windows.Forms.Padding(3);
+        this.HTTPTabPage.Size = new System.Drawing.Size(500, 271);
+        this.HTTPTabPage.TabIndex = 11;
+        this.HTTPTabPage.Text = "HTTP";
+        this.HTTPTabPage.UseVisualStyleBackColor = true;
+        // 
+        // httpUrlTextBox
+        // 
+        this.httpUrlTextBox.Location = new System.Drawing.Point(52, 24);
+        this.httpUrlTextBox.Name = "httpUrlTextBox";
+        this.httpUrlTextBox.Size = new System.Drawing.Size(401, 21);
+        this.httpUrlTextBox.TabIndex = 4;
+        this.httpUrlTextBox.Text = "http://www.codeplex.com/terminals";
+        // 
+        // label33
+        // 
+        this.label33.AutoSize = true;
+        this.label33.Location = new System.Drawing.Point(16, 27);
+        this.label33.Name = "label33";
+        this.label33.Size = new System.Drawing.Size(30, 13);
+        this.label33.TabIndex = 3;
+        this.label33.Text = "URL:";
+        // 
         // tpTags
         // 
         this.tpTags.Controls.Add(this.panel4);
@@ -1503,34 +1539,50 @@ namespace Terminals
         this.tpTags.Text = "Tags";
         this.tpTags.UseVisualStyleBackColor = true;
         // 
-        // btnAddNewTag
+        // panel4
         // 
-        this.btnAddNewTag.Image = global::Terminals.Properties.Resources.tag_blue_add;
-        this.btnAddNewTag.Location = new System.Drawing.Point(421, 18);
-        this.btnAddNewTag.Name = "btnAddNewTag";
-        this.btnAddNewTag.Size = new System.Drawing.Size(21, 21);
-        this.btnAddNewTag.TabIndex = 12;
-        this.toolTip1.SetToolTip(this.btnAddNewTag, "Add Tag to Connection");
-        this.btnAddNewTag.UseVisualStyleBackColor = true;
-        this.btnAddNewTag.Click += new System.EventHandler(this.btnAddNewTag_Click);
+        this.panel4.Controls.Add(this.groupBox4);
+        this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.panel4.Location = new System.Drawing.Point(3, 149);
+        this.panel4.Name = "panel4";
+        this.panel4.Size = new System.Drawing.Size(494, 119);
+        this.panel4.TabIndex = 14;
         // 
-        // txtTag
+        // groupBox4
         // 
-        this.txtTag.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-        this.txtTag.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-        this.txtTag.Location = new System.Drawing.Point(70, 19);
-        this.txtTag.Name = "txtTag";
-        this.txtTag.Size = new System.Drawing.Size(345, 21);
-        this.txtTag.TabIndex = 2;
+        this.groupBox4.Controls.Add(this.AllTagsAddButton);
+        this.groupBox4.Controls.Add(this.AllTagsListView);
+        this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.groupBox4.Location = new System.Drawing.Point(0, 0);
+        this.groupBox4.Name = "groupBox4";
+        this.groupBox4.Size = new System.Drawing.Size(494, 119);
+        this.groupBox4.TabIndex = 3;
+        this.groupBox4.TabStop = false;
+        this.groupBox4.Text = "All Available Tags";
         // 
-        // label14
+        // AllTagsAddButton
         // 
-        this.label14.AutoSize = true;
-        this.label14.Location = new System.Drawing.Point(11, 19);
-        this.label14.Name = "label14";
-        this.label14.Size = new System.Drawing.Size(53, 13);
-        this.label14.TabIndex = 1;
-        this.label14.Text = "New Tag:";
+        this.AllTagsAddButton.Image = global::Terminals.Properties.Resources.tag_blue_add;
+        this.AllTagsAddButton.Location = new System.Drawing.Point(421, 20);
+        this.AllTagsAddButton.Name = "AllTagsAddButton";
+        this.AllTagsAddButton.Size = new System.Drawing.Size(21, 21);
+        this.AllTagsAddButton.TabIndex = 13;
+        this.toolTip1.SetToolTip(this.AllTagsAddButton, "Add Tag to Connection");
+        this.AllTagsAddButton.UseVisualStyleBackColor = true;
+        this.AllTagsAddButton.Click += new System.EventHandler(this.AllTagsAddButton_Click);
+        // 
+        // AllTagsListView
+        // 
+        this.AllTagsListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                    | System.Windows.Forms.AnchorStyles.Left)
+                    | System.Windows.Forms.AnchorStyles.Right)));
+        this.AllTagsListView.HideSelection = false;
+        this.AllTagsListView.Location = new System.Drawing.Point(8, 20);
+        this.AllTagsListView.Name = "AllTagsListView";
+        this.AllTagsListView.Size = new System.Drawing.Size(407, 72);
+        this.AllTagsListView.TabIndex = 2;
+        this.AllTagsListView.UseCompatibleStateImageBehavior = false;
+        this.AllTagsListView.View = System.Windows.Forms.View.List;
         // 
         // panel1
         // 
@@ -1576,6 +1628,46 @@ namespace Terminals
         this.lvConnectionTags.TabIndex = 1;
         this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
         this.lvConnectionTags.View = System.Windows.Forms.View.List;
+        // 
+        // panel3
+        // 
+        this.panel3.Controls.Add(this.txtTag);
+        this.panel3.Controls.Add(this.btnAddNewTag);
+        this.panel3.Controls.Add(this.label14);
+        this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
+        this.panel3.Location = new System.Drawing.Point(3, 3);
+        this.panel3.Name = "panel3";
+        this.panel3.Size = new System.Drawing.Size(494, 50);
+        this.panel3.TabIndex = 13;
+        // 
+        // txtTag
+        // 
+        this.txtTag.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+        this.txtTag.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+        this.txtTag.Location = new System.Drawing.Point(70, 19);
+        this.txtTag.Name = "txtTag";
+        this.txtTag.Size = new System.Drawing.Size(345, 21);
+        this.txtTag.TabIndex = 2;
+        // 
+        // btnAddNewTag
+        // 
+        this.btnAddNewTag.Image = global::Terminals.Properties.Resources.tag_blue_add;
+        this.btnAddNewTag.Location = new System.Drawing.Point(421, 18);
+        this.btnAddNewTag.Name = "btnAddNewTag";
+        this.btnAddNewTag.Size = new System.Drawing.Size(21, 21);
+        this.btnAddNewTag.TabIndex = 12;
+        this.toolTip1.SetToolTip(this.btnAddNewTag, "Add Tag to Connection");
+        this.btnAddNewTag.UseVisualStyleBackColor = true;
+        this.btnAddNewTag.Click += new System.EventHandler(this.btnAddNewTag_Click);
+        // 
+        // label14
+        // 
+        this.label14.AutoSize = true;
+        this.label14.Location = new System.Drawing.Point(11, 19);
+        this.label14.Name = "label14";
+        this.label14.Size = new System.Drawing.Size(53, 13);
+        this.label14.TabIndex = 1;
+        this.label14.Text = "New Tag:";
         // 
         // tabPage4
         // 
@@ -1700,62 +1792,6 @@ namespace Terminals
         this.ras1.UserName = null;
         this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
         // 
-        // panel3
-        // 
-        this.panel3.Controls.Add(this.txtTag);
-        this.panel3.Controls.Add(this.btnAddNewTag);
-        this.panel3.Controls.Add(this.label14);
-        this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
-        this.panel3.Location = new System.Drawing.Point(3, 3);
-        this.panel3.Name = "panel3";
-        this.panel3.Size = new System.Drawing.Size(494, 50);
-        this.panel3.TabIndex = 13;
-        // 
-        // panel4
-        // 
-        this.panel4.Controls.Add(this.groupBox4);
-        this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-        this.panel4.Location = new System.Drawing.Point(3, 149);
-        this.panel4.Name = "panel4";
-        this.panel4.Size = new System.Drawing.Size(494, 119);
-        this.panel4.TabIndex = 14;
-        // 
-        // AllTagsListView
-        // 
-        this.AllTagsListView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                    | System.Windows.Forms.AnchorStyles.Left)
-                    | System.Windows.Forms.AnchorStyles.Right)));
-        this.AllTagsListView.HideSelection = false;
-        this.AllTagsListView.Location = new System.Drawing.Point(8, 20);
-        this.AllTagsListView.Name = "AllTagsListView";
-        this.AllTagsListView.Size = new System.Drawing.Size(407, 72);
-        this.AllTagsListView.TabIndex = 2;
-        this.AllTagsListView.UseCompatibleStateImageBehavior = false;
-        this.AllTagsListView.View = System.Windows.Forms.View.List;
-        // 
-        // groupBox4
-        // 
-        this.groupBox4.Controls.Add(this.AllTagsAddButton);
-        this.groupBox4.Controls.Add(this.AllTagsListView);
-        this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-        this.groupBox4.Location = new System.Drawing.Point(0, 0);
-        this.groupBox4.Name = "groupBox4";
-        this.groupBox4.Size = new System.Drawing.Size(494, 119);
-        this.groupBox4.TabIndex = 3;
-        this.groupBox4.TabStop = false;
-        this.groupBox4.Text = "All Available Tags";
-        // 
-        // AllTagsAddButton
-        // 
-        this.AllTagsAddButton.Image = global::Terminals.Properties.Resources.tag_blue_add;
-        this.AllTagsAddButton.Location = new System.Drawing.Point(421, 20);
-        this.AllTagsAddButton.Name = "AllTagsAddButton";
-        this.AllTagsAddButton.Size = new System.Drawing.Size(21, 21);
-        this.AllTagsAddButton.TabIndex = 13;
-        this.toolTip1.SetToolTip(this.AllTagsAddButton, "Add Tag to Connection");
-        this.AllTagsAddButton.UseVisualStyleBackColor = true;
-        this.AllTagsAddButton.Click += new System.EventHandler(this.AllTagsAddButton_Click);
-        // 
         // NewTerminalForm
         // 
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1812,16 +1848,18 @@ namespace Terminals
         this.ICAtabPage.PerformLayout();
         this.tabPage5.ResumeLayout(false);
         this.RASGroupBox.ResumeLayout(false);
+        this.HTTPTabPage.ResumeLayout(false);
+        this.HTTPTabPage.PerformLayout();
         this.tpTags.ResumeLayout(false);
+        this.panel4.ResumeLayout(false);
+        this.groupBox4.ResumeLayout(false);
         this.panel1.ResumeLayout(false);
         this.groupBox3.ResumeLayout(false);
+        this.panel3.ResumeLayout(false);
+        this.panel3.PerformLayout();
         this.tabPage4.ResumeLayout(false);
         this.tabPage4.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-        this.panel3.ResumeLayout(false);
-        this.panel3.PerformLayout();
-        this.panel4.ResumeLayout(false);
-        this.groupBox4.ResumeLayout(false);
         this.ResumeLayout(false);
         this.PerformLayout();
 
@@ -1977,5 +2015,8 @@ namespace Terminals
       private System.Windows.Forms.GroupBox groupBox4;
       private System.Windows.Forms.Button AllTagsAddButton;
       private System.Windows.Forms.ListView AllTagsListView;
+      private System.Windows.Forms.TabPage HTTPTabPage;
+      private System.Windows.Forms.TextBox httpUrlTextBox;
+      private System.Windows.Forms.Label label33;
   }
 }

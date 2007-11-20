@@ -76,11 +76,19 @@ namespace Terminals
             this.CompleteAuthButton = new System.Windows.Forms.Button();
             this.AuthorizeFlickrButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
+            this.ProxyTabPage = new System.Windows.Forms.TabPage();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.ProxyTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOk
@@ -139,6 +147,7 @@ namespace Terminals
             this.tabControl1.Controls.Add(this.tpExecuteBeforeConnect);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.ProxyTabPage);
             this.tabControl1.Location = new System.Drawing.Point(8, 8);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -606,6 +615,70 @@ namespace Terminals
             this.label8.Size = new System.Drawing.Size(0, 13);
             this.label8.TabIndex = 11;
             // 
+            // ProxyTabPage
+            // 
+            this.ProxyTabPage.Controls.Add(this.textBox3);
+            this.ProxyTabPage.Controls.Add(this.label16);
+            this.ProxyTabPage.Controls.Add(this.textBox2);
+            this.ProxyTabPage.Controls.Add(this.label15);
+            this.ProxyTabPage.Controls.Add(this.textBox1);
+            this.ProxyTabPage.Controls.Add(this.label14);
+            this.ProxyTabPage.Location = new System.Drawing.Point(4, 22);
+            this.ProxyTabPage.Name = "ProxyTabPage";
+            this.ProxyTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.ProxyTabPage.Size = new System.Drawing.Size(392, 264);
+            this.ProxyTabPage.TabIndex = 4;
+            this.ProxyTabPage.Text = "Proxy";
+            this.ProxyTabPage.UseVisualStyleBackColor = true;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(17, 21);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(41, 13);
+            this.label14.TabIndex = 0;
+            this.label14.Text = "label14";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(72, 18);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 21);
+            this.textBox1.TabIndex = 2;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(72, 45);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(100, 21);
+            this.textBox2.TabIndex = 4;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(17, 48);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(41, 13);
+            this.label15.TabIndex = 3;
+            this.label15.Text = "label15";
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(72, 72);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(100, 21);
+            this.textBox3.TabIndex = 6;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(17, 75);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(41, 13);
+            this.label16.TabIndex = 5;
+            this.label16.Text = "label16";
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -634,6 +707,8 @@ namespace Terminals
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.ProxyTabPage.ResumeLayout(false);
+            this.ProxyTabPage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -689,5 +764,12 @@ namespace Terminals
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button ClearMasterButton;
         private System.Windows.Forms.CheckBox AutoExapandTagsPanelCheckBox;
+        private System.Windows.Forms.TabPage ProxyTabPage;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label14;
     }
 }

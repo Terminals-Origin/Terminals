@@ -160,6 +160,9 @@
     <Compile Include="Connections\CaptureManagerConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Connections\HTTPConnection.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Connections\NetworkingToolsConnection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -640,6 +643,10 @@
     <EmbeddedResource Include="Connections\CaptureManagerConnection.resx">
       <DependentUpon>CaptureManagerConnection.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Connections\HTTPConnection.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>HTTPConnection.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner.resx">
       <SubType>Designer</SubType>

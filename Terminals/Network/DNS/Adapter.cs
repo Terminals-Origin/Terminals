@@ -166,7 +166,12 @@ namespace Terminals.Network.DNS
         public UInt32 TcpMaxDataRetransmissions { get { return (share.Properties["TcpMaxDataRetransmissions"].Value == null) ? 0 : (UInt32)share.Properties["TcpMaxDataRetransmissions"].Value; } }
         public UInt32 TcpNumConnections { get { return (share.Properties["TcpNumConnections"].Value == null) ? 0 : (UInt32)share.Properties["TcpNumConnections"].Value; } }
         public Boolean TcpUseRFC1122UrgentPointer { get { return (share.Properties["TcpUseRFC1122UrgentPointer"].Value == null) ? false : (Boolean)share.Properties["TcpUseRFC1122UrgentPointer"].Value; } }
-        public int TcpWindowSize { get { return (share.Properties["TcpWindowSize"].Value == null) ? 0 : (int)share.Properties["TcpWindowSize"].Value; } }
+        public ushort TcpWindowSize
+        { 
+            get {
+                return (share.Properties["TcpWindowSize"].Value == null) ? (ushort)0 : (ushort)share.Properties["TcpWindowSize"].Value; 
+            } 
+        }
         public Boolean WINSEnableLMHostsLookup { get { return (share.Properties["WINSEnableLMHostsLookup"].Value == null) ? false : (Boolean)share.Properties["WINSEnableLMHostsLookup"].Value; } }
         public String WINSHostLookupFile { get { return (share.Properties["WINSHostLookupFile"].Value == null) ? "" : (string)share.Properties["WINSHostLookupFile"].Value; } }
         public String WINSPrimaryServer { get { return (share.Properties["WINSPrimaryServer"].Value == null) ? "" : (string)share.Properties["WINSPrimaryServer"].Value; } }

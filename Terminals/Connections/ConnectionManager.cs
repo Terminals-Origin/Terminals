@@ -21,6 +21,8 @@ namespace Terminals.Connections {
         public const int TelnetPort = 23;
         public const int SSHPort = 22;
         public const int ICAPort = 1494;
+        public const int HTTPPort = 80;
+        public const int HTTPSPort = 443;
 
         public static void GetSize(ref int Height, ref int Width, Connections.Connection Connection, DesktopSize Size) {
 
@@ -82,6 +84,12 @@ namespace Terminals.Connections {
                 case "ICA Citrix":
                     conn = new ICAConnection();
                     break;
+                case "HTTP":
+                    conn = new HTTPConnection();
+                    break;
+                case "HTTPS":
+                    conn = new HTTPConnection();
+                    break;
                 default:
                     conn = new RDPConnection();
                     break;
@@ -110,6 +118,12 @@ namespace Terminals.Connections {
                 case "ICA Citrix":
                     port = ICAPort;
                     break;
+                case "HTTP":
+                    port = HTTPPort;
+                    break;
+                case "HTTPS":
+                    port = HTTPSPort;
+                    break;
                 default:
                     port = 0;
                     break;
@@ -134,6 +148,12 @@ namespace Terminals.Connections {
                     break;
                 case ICAPort:
                     port = "ICA Citrix";
+                    break;
+                case HTTPPort:
+                    port = "HTTP";
+                    break;
+                case HTTPSPort:
+                    port = "HTTPS";
                     break;
                 default:
                     port = "RDP";

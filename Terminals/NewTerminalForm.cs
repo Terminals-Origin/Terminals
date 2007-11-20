@@ -205,7 +205,7 @@ namespace Terminals
                 this.AllTagsListView.Items.Add(lvi);
             }
 
-
+            httpUrlTextBox.Text = favorite.Url;
 
         }
 
@@ -305,6 +305,8 @@ namespace Terminals
 
                 favorite.DesktopSizeWidth = (int)this.widthUpDown.Value;
                 favorite.DesktopSizeHeight = (int)this.heightUpDown.Value;
+
+                favorite.Url = httpUrlTextBox.Text;
 
                 Settings.AddFavorite(favorite, showOnToolbar);
 
@@ -505,7 +507,7 @@ namespace Terminals
 
             ICAApplicationNameTextBox.Enabled = false;
             ICAApplicationPath.Enabled = false;
-
+            httpUrlTextBox.Enabled = false;
             txtPort.Enabled = true;
 
             TelnetGroupBox.Enabled = false;
@@ -543,6 +545,16 @@ namespace Terminals
                 ICAApplicationNameTextBox.Enabled = true;
                 ICAApplicationPath.Enabled = true;
                 defaultPort = Connections.ConnectionManager.ICAPort.ToString();
+            }
+            else if(ProtocolComboBox.Text == "HTTP")
+            {
+                httpUrlTextBox.Enabled = true;
+                defaultPort = Connections.ConnectionManager.HTTPPort.ToString();
+            }
+            else if(ProtocolComboBox.Text == "HTTPS")
+            {
+                httpUrlTextBox.Enabled = true;
+                defaultPort = Connections.ConnectionManager.HTTPSPort.ToString();
             }
 
             txtPort.Text = defaultPort;
