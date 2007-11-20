@@ -32,9 +32,16 @@ namespace Terminals.Connections
                 this.webBrowser1.Name = "webBrowser1";
                 this.webBrowser1.Size = new System.Drawing.Size(292, 273);
                 this.webBrowser1.TabIndex = 0;
-
+                
                 this.Dock = System.Windows.Forms.DockStyle.Fill;
-                this.webBrowser1.Navigate(Favorite.Url);
+                
+
+                if(!String.IsNullOrEmpty(Favorite.UserName) && !String.IsNullOrEmpty(Favorite.Password)) {
+                    string hdr = "Authorization: Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(Favorite.UserName + ":" + Favorite.Password)) + System.Environment.NewLine;
+                    this.webBrowser1.Navigate(Favorite.Url,null,null, hdr);
+                } else {
+                    this.webBrowser1.Navigate(Favorite.Url);
+                }
 
                 this.Controls.Add(this.webBrowser1);
                 this.webBrowser1.Parent = this;
