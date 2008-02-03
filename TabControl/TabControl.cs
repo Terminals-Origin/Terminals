@@ -665,16 +665,15 @@ namespace TabControl
                 path.AddLine(buttonRect.Right, mtop + 2, buttonRect.Right, buttonRect.Bottom - 1);
                 path.AddLine(buttonRect.Right - 4, buttonRect.Bottom - 1, buttonRect.Left, buttonRect.Bottom - 1);
                 path.CloseFigure();
-
-                if (currentItem == SelectedItem)
-                {
-                    brush = new LinearGradientBrush(buttonRect, SystemColors.ControlLightLight, SystemColors.Window, LinearGradientMode.Vertical);
+                try {
+                    if(currentItem == SelectedItem) {
+                        brush = new LinearGradientBrush(buttonRect, SystemColors.ControlLightLight, SystemColors.Window, LinearGradientMode.Vertical);
+                    } else {
+                        brush = new LinearGradientBrush(buttonRect, SystemColors.ControlLightLight, SystemColors.Control, LinearGradientMode.Vertical);
+                    }
+                }catch(Exception ex) {
+                    
                 }
-                else
-                {
-                    brush = new LinearGradientBrush(buttonRect, SystemColors.ControlLightLight, SystemColors.Control, LinearGradientMode.Vertical);
-                }
-
                 g.FillPath(brush, path);
                 Pen pen = SystemPens.ControlDark;
                 if (currentItem == SelectedItem)
