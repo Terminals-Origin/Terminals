@@ -14,8 +14,12 @@ namespace Terminals.Network {
         static TcpClient client;
         public static bool ClientOnline = false;
         public static void Stop() {
-            ClientOnline = false;
-            client.Close();
+            try {
+                ClientOnline = false;
+                client.Close();
+            } catch(Exception ex) {
+                Terminals.Logging.Log.Fatal("Client - Stop", ex);
+            }
         }
         public static void Start(string server) {
             System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(StartClient), server);

@@ -1186,7 +1186,7 @@ namespace Terminals {
             // QuickContextMenu
             // 
             this.QuickContextMenu.Name = "QuickContextMenu";
-            this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
+            this.QuickContextMenu.Size = new System.Drawing.Size(153, 26);
             this.QuickContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.QuickContextMenu_Opening);
             // 
             // SystemTrayContextMenuStrip
