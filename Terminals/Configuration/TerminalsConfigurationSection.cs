@@ -316,6 +316,38 @@ namespace Terminals
 
 
 
+        [ConfigurationProperty("useProxy")]
+        public bool UseProxy {
+            get {
+                return (bool)this["useProxy"];
+            }
+            set {
+                this["useProxy"] = value;
+            }
+        }
+
+
+        [ConfigurationProperty("proxyAddress")]
+        public string ProxyAddress {
+            get {
+                return (string)this["proxyAddress"];
+            }
+            set {
+                this["proxyAddress"] = value;
+            }
+        }
+
+
+        [ConfigurationProperty("proxyPort")]
+        public int ProxyPort {
+            get {
+                return (int)this["proxyPort"];
+            }
+            set {
+                this["proxyPort"] = value;
+            }
+        }
+
 
 
 

@@ -31,6 +31,12 @@ namespace Unified.Network.HTTP {
             return HTTPAsWebResponse(URL, null, "", "", "", "", 0, false);
         }
         public static System.Net.WebResponse HTTPAsWebResponse(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST) {
+
+            if(Terminals.Settings.UseProxy) {
+                ProxyAddress = Terminals.Settings.ProxyAddress;
+                ProxyPort = Terminals.Settings.ProxyPort;
+            }
+
             if(!DoPOST && Data != null && Data.Length > 0) {
                 string restoftheurl = System.Text.ASCIIEncoding.ASCII.GetString(Data);
                 if(URL.IndexOf("?") <= 0) URL = URL + "?";

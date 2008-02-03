@@ -44,6 +44,14 @@ namespace Terminals
             this.MinimizeToTrayCheckbox.Checked = Settings.MinimizeToTray;
 
             this.AutoExapandTagsPanelCheckBox.Checked = Settings.AutoExapandTagsPanel;
+
+            ProxyRadionButton.Checked = Settings.UseProxy;
+            if(Settings.UseProxy) {
+                ProxyAddressTextbox.Text = Settings.ProxyAddress;
+                ProxyPortTextbox.Text = Settings.ProxyPort.ToString();
+            }
+
+
         }
 
         private AxMsRdpClient2 currentTerminal;
@@ -76,6 +84,13 @@ namespace Terminals
             Settings.MinimizeToTray = this.MinimizeToTrayCheckbox.Checked;
 
             Settings.AutoExapandTagsPanel = this.AutoExapandTagsPanelCheckBox.Checked;
+
+
+            Settings.UseProxy = ProxyRadionButton.Checked;
+            if(Settings.UseProxy) {
+                Settings.ProxyAddress = ProxyAddressTextbox.Text;
+                Settings.ProxyPort = Convert.ToInt32(ProxyPortTextbox.Text);
+            }
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)
@@ -182,6 +197,14 @@ namespace Terminals
                 System.Windows.Forms.Clipboard.SetText(string.Format("{0}\r\n{1}", ofd.FileName, md5));
                 System.Windows.Forms.MessageBox.Show(string.Format("MD5 of {0}, value:{1}, was copied to the clipboard;", ofd.FileName, md5));
             }
+        }
+
+        private void ProxyRadionButton_CheckedChanged(object sender, EventArgs e) {
+            this.panel1.Enabled = ProxyRadionButton.Checked;
+        }
+
+        private void AutoProxyRadioButton_CheckedChanged(object sender, EventArgs e) {
+            this.panel1.Enabled = ProxyRadionButton.Checked;
         }
     }
 }

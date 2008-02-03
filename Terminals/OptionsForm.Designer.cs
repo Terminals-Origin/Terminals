@@ -83,12 +83,22 @@ namespace Terminals
             this.label15 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.AutoProxyRadioButton = new System.Windows.Forms.RadioButton();
+            this.ProxyRadionButton = new System.Windows.Forms.RadioButton();
+            this.label14 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.ProxyAddressTextbox = new System.Windows.Forms.TextBox();
+            this.ProxyPortTextbox = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tpExecuteBeforeConnect.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.ProxyTabPage.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOk
@@ -148,6 +158,7 @@ namespace Terminals
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.ProxyTabPage);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(8, 8);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -679,6 +690,88 @@ namespace Terminals
             this.label16.TabIndex = 5;
             this.label16.Text = "label16";
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.panel1);
+            this.tabPage3.Controls.Add(this.ProxyRadionButton);
+            this.tabPage3.Controls.Add(this.AutoProxyRadioButton);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(392, 264);
+            this.tabPage3.TabIndex = 4;
+            this.tabPage3.Text = "Proxy";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // AutoProxyRadioButton
+            // 
+            this.AutoProxyRadioButton.AutoSize = true;
+            this.AutoProxyRadioButton.Location = new System.Drawing.Point(17, 16);
+            this.AutoProxyRadioButton.Name = "AutoProxyRadioButton";
+            this.AutoProxyRadioButton.Size = new System.Drawing.Size(155, 17);
+            this.AutoProxyRadioButton.TabIndex = 0;
+            this.AutoProxyRadioButton.TabStop = true;
+            this.AutoProxyRadioButton.Text = "Automatically Detect Proxy";
+            this.AutoProxyRadioButton.UseVisualStyleBackColor = true;
+            this.AutoProxyRadioButton.CheckedChanged += new System.EventHandler(this.AutoProxyRadioButton_CheckedChanged);
+            // 
+            // ProxyRadionButton
+            // 
+            this.ProxyRadionButton.AutoSize = true;
+            this.ProxyRadionButton.Location = new System.Drawing.Point(17, 39);
+            this.ProxyRadionButton.Name = "ProxyRadionButton";
+            this.ProxyRadionButton.Size = new System.Drawing.Size(177, 17);
+            this.ProxyRadionButton.TabIndex = 1;
+            this.ProxyRadionButton.TabStop = true;
+            this.ProxyRadionButton.Text = "Use the following Proxy Server:";
+            this.ProxyRadionButton.UseVisualStyleBackColor = true;
+            this.ProxyRadionButton.CheckedChanged += new System.EventHandler(this.ProxyRadionButton_CheckedChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(4, 21);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(50, 13);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "Address:";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.label15);
+            this.panel1.Controls.Add(this.ProxyPortTextbox);
+            this.panel1.Controls.Add(this.ProxyAddressTextbox);
+            this.panel1.Controls.Add(this.label14);
+            this.panel1.Enabled = false;
+            this.panel1.Location = new System.Drawing.Point(17, 73);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(356, 59);
+            this.panel1.TabIndex = 3;
+            // 
+            // ProxyAddressTextbox
+            // 
+            this.ProxyAddressTextbox.Location = new System.Drawing.Point(56, 17);
+            this.ProxyAddressTextbox.Name = "ProxyAddressTextbox";
+            this.ProxyAddressTextbox.Size = new System.Drawing.Size(192, 21);
+            this.ProxyAddressTextbox.TabIndex = 3;
+            // 
+            // ProxyPortTextbox
+            // 
+            this.ProxyPortTextbox.Location = new System.Drawing.Point(295, 18);
+            this.ProxyPortTextbox.Name = "ProxyPortTextbox";
+            this.ProxyPortTextbox.Size = new System.Drawing.Size(34, 21);
+            this.ProxyPortTextbox.TabIndex = 4;
+            this.ProxyPortTextbox.Text = "80";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(258, 21);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(31, 13);
+            this.label15.TabIndex = 5;
+            this.label15.Text = "Port:";
+            // 
             // OptionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -709,6 +802,10 @@ namespace Terminals
             this.tabPage2.PerformLayout();
             this.ProxyTabPage.ResumeLayout(false);
             this.ProxyTabPage.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -771,5 +868,11 @@ namespace Terminals
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox ProxyPortTextbox;
+        private System.Windows.Forms.TextBox ProxyAddressTextbox;
+        private System.Windows.Forms.RadioButton ProxyRadionButton;
+        private System.Windows.Forms.RadioButton AutoProxyRadioButton;
     }
 }

@@ -592,6 +592,39 @@ namespace Terminals
                 configuration.Save();
             }
         }
+        public static bool UseProxy {
+            get {
+                return GetSection().UseProxy;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).UseProxy = value;
+                configuration.Save();
+            }
+        }
+        public static string ProxyAddress {
+            get {
+                return GetSection().ProxyAddress;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ProxyAddress = value;
+                configuration.Save();
+            }
+        }
+        public static int ProxyPort {
+            get {
+                return GetSection().ProxyPort;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ProxyPort = value;
+                configuration.Save();
+            }
+        }
+
+
+
         public static string DefaultPassword
         {
             get
