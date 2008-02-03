@@ -154,7 +154,7 @@ namespace Terminals {
                             } else {
                                 parent = new ToolStripMenuItem();
                                 parent.DropDownItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
-                                parent.MouseUp += new MouseEventHandler(parent_MouseUp);
+                                //parent.MouseUp += new MouseEventHandler(parent_MouseUp);
                                 parent.Tag = "tag";
                                 parent.Text = tag;
                                 tagTools.Add(tag, parent);
@@ -200,9 +200,6 @@ namespace Terminals {
                 tcTerminals_MouseClick(null, new MouseEventArgs(MouseButtons.Right, 1, 0, 0, 0));
                 e.Cancel = false;
             }
-        }
-        void parent_MouseUp(object sender, MouseEventArgs e) {
-            throw new Exception("The method or operation is not implemented.");
         }
 
         void QuickContextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e) {

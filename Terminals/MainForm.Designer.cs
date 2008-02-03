@@ -56,6 +56,7 @@ namespace Terminals {
             this.standardToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.shortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lockToolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolbarStd = new System.Windows.Forms.ToolStrip();
@@ -137,7 +138,6 @@ namespace Terminals {
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
-            this.lockToolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -420,6 +420,15 @@ namespace Terminals {
             this.shortcutsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.shortcutsToolStripMenuItem.Text = "&Shortcuts";
             this.shortcutsToolStripMenuItem.Click += new System.EventHandler(this.shortcutsToolStripMenuItem_Click);
+            // 
+            // lockToolbarsToolStripMenuItem
+            // 
+            this.lockToolbarsToolStripMenuItem.Checked = true;
+            this.lockToolbarsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.lockToolbarsToolStripMenuItem.Name = "lockToolbarsToolStripMenuItem";
+            this.lockToolbarsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.lockToolbarsToolStripMenuItem.Text = "&Lock Toolbars";
+            this.lockToolbarsToolStripMenuItem.Click += new System.EventHandler(this.lockToolbarsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -1228,15 +1237,6 @@ namespace Terminals {
             this.remoteDesktop1.Size = new System.Drawing.Size(400, 200);
             this.remoteDesktop1.TabIndex = 0;
             this.remoteDesktop1.Text = "remoteDesktop1";
-            // 
-            // lockToolbarsToolStripMenuItem
-            // 
-            this.lockToolbarsToolStripMenuItem.Checked = true;
-            this.lockToolbarsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.lockToolbarsToolStripMenuItem.Name = "lockToolbarsToolStripMenuItem";
-            this.lockToolbarsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.lockToolbarsToolStripMenuItem.Text = "&Lock Toolbars";
-            this.lockToolbarsToolStripMenuItem.Click += new System.EventHandler(this.lockToolbarsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
