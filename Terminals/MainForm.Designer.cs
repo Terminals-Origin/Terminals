@@ -137,6 +137,7 @@ namespace Terminals {
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
+            this.lockToolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -341,7 +342,8 @@ namespace Terminals {
             this.toolStripSeparator7,
             this.standardToolbarToolStripMenuItem,
             this.toolStripMenuItem4,
-            this.shortcutsToolStripMenuItem});
+            this.shortcutsToolStripMenuItem,
+            this.lockToolbarsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -918,9 +920,9 @@ namespace Terminals {
             this.lvTags.UseCompatibleStateImageBehavior = false;
             this.lvTags.View = System.Windows.Forms.View.Details;
             this.lvTags.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvTags_MouseDoubleClick);
-            this.lvTags.DragEnter += new System.Windows.Forms.DragEventHandler(this.lvTags_DragEnter);
-            this.lvTags.DragDrop += new System.Windows.Forms.DragEventHandler(this.lvTags_DragDrop);
             this.lvTags.SelectedIndexChanged += new System.EventHandler(this.lvTags_SelectedIndexChanged);
+            this.lvTags.DragDrop += new System.Windows.Forms.DragEventHandler(this.lvTags_DragDrop);
+            this.lvTags.DragEnter += new System.Windows.Forms.DragEventHandler(this.lvTags_DragEnter);
             this.lvTags.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvTags_KeyDown);
             this.lvTags.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.lvTags_ItemDrag);
             // 
@@ -1047,8 +1049,8 @@ namespace Terminals {
             this.pbShowTagsFavorites.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pbShowTagsFavorites.TabIndex = 0;
             this.pbShowTagsFavorites.TabStop = false;
-            this.pbShowTagsFavorites.Click += new System.EventHandler(this.pbShowTags_Click);
             this.pbShowTagsFavorites.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbShowTagsFavorites_MouseMove);
+            this.pbShowTagsFavorites.Click += new System.EventHandler(this.pbShowTags_Click);
             // 
             // tcTerminals
             // 
@@ -1061,15 +1063,15 @@ namespace Terminals {
             this.tcTerminals.ShowToolTipOnTitle = false;
             this.tcTerminals.Size = new System.Drawing.Size(781, 474);
             this.tcTerminals.TabIndex = 3;
-            this.tcTerminals.DoubleClick += new System.EventHandler(this.tcTerminals_DoubleClick);
-            this.tcTerminals.TabControlMouseOnTitle += new TabControl.TabControlMouseOnTitleHandler(this.tcTerminals_TabControlMouseOnTitle);
+            this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.tcTerminals_TabControlMouseLeftTitle);
             this.tcTerminals.TabControlItemSelectionChanged += new TabControl.TabControlItemChangedHandler(this.tcTerminals_TabControlItemSelectionChanged);
+            this.tcTerminals.TabControlMouseOnTitle += new TabControl.TabControlMouseOnTitleHandler(this.tcTerminals_TabControlMouseOnTitle);
+            this.tcTerminals.DoubleClick += new System.EventHandler(this.tcTerminals_DoubleClick);
             this.tcTerminals.MenuItemsLoaded += new System.EventHandler(this.tcTerminals_MenuItemsLoaded);
             this.tcTerminals.TabControlItemClosing += new TabControl.TabControlItemClosingHandler(this.tcTerminals_TabControlItemClosing);
-            this.tcTerminals.MouseLeave += new System.EventHandler(this.tcTerminals_MouseLeave);
             this.tcTerminals.TabControlItemClosed += new System.EventHandler(this.tcTerminals_TabControlItemClosed);
-            this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.tcTerminals_TabControlMouseLeftTitle);
             this.tcTerminals.MouseHover += new System.EventHandler(this.tcTerminals_MouseHover);
+            this.tcTerminals.MouseLeave += new System.EventHandler(this.tcTerminals_MouseLeave);
             this.tcTerminals.TabControlMouseEnteredTitle += new TabControl.TabControlMouseEnteredTitleHandler(this.tcTerminals_TabControlMouseEnteredTitle);
             // 
             // favoriteToolBar
@@ -1090,7 +1092,7 @@ namespace Terminals {
             this.toolStripButton1});
             this.tsRemoteToolbar.Location = new System.Drawing.Point(3, 49);
             this.tsRemoteToolbar.Name = "tsRemoteToolbar";
-            this.tsRemoteToolbar.Size = new System.Drawing.Size(56, 25);
+            this.tsRemoteToolbar.Size = new System.Drawing.Size(58, 25);
             this.tsRemoteToolbar.TabIndex = 3;
             this.tsRemoteToolbar.Visible = false;
             // 
@@ -1175,7 +1177,7 @@ namespace Terminals {
             // QuickContextMenu
             // 
             this.QuickContextMenu.Name = "QuickContextMenu";
-            this.QuickContextMenu.Size = new System.Drawing.Size(153, 26);
+            this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
             this.QuickContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.QuickContextMenu_Opening);
             // 
             // SystemTrayContextMenuStrip
@@ -1227,6 +1229,15 @@ namespace Terminals {
             this.remoteDesktop1.TabIndex = 0;
             this.remoteDesktop1.Text = "remoteDesktop1";
             // 
+            // lockToolbarsToolStripMenuItem
+            // 
+            this.lockToolbarsToolStripMenuItem.Checked = true;
+            this.lockToolbarsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.lockToolbarsToolStripMenuItem.Name = "lockToolbarsToolStripMenuItem";
+            this.lockToolbarsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.lockToolbarsToolStripMenuItem.Text = "&Lock Toolbars";
+            this.lockToolbarsToolStripMenuItem.Click += new System.EventHandler(this.lockToolbarsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1240,10 +1251,10 @@ namespace Terminals {
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Terminals 1.6 (RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix)";
-            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Activated += new System.EventHandler(this.MainForm_Activated);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
@@ -1396,5 +1407,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.ToolStripDropDownButton TerminalServerMenuButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ToolStripMenuItem lockToolbarsToolStripMenuItem;
     }
 }

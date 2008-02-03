@@ -514,6 +514,15 @@ namespace Terminals
                 this["office2007Feel"] = value;
             }
         }
+        [ConfigurationProperty("toolbarsLocked", DefaultValue = true)]
+        public bool ToolbarsLocked {
+            get {
+                return (bool)this["toolbarsLocked"];
+            }
+            set {
+                this["toolbarsLocked"] = value;
+            }
+        }
         [ConfigurationProperty("showWizard", DefaultValue = true)]
         public bool ShowWizard
         {

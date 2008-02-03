@@ -72,6 +72,7 @@ namespace Terminals {
                 LoadWindowState();
 
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
+                this.lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
 
                 defaultText = this.Text;
             } catch(Exception exc) {
@@ -343,17 +344,18 @@ namespace Terminals {
         }
 
         private void SaveWindowState() {
-            //ToolStripManager.SaveSettings(this);
-            ToolStripSettings newSettings = new ToolStripSettings();
-            SaveToolStripPanel(this.toolStripContainer.TopToolStripPanel, "Top", newSettings);
-            SaveToolStripPanel(this.toolStripContainer.LeftToolStripPanel, "Left", newSettings);
-            SaveToolStripPanel(this.toolStripContainer.RightToolStripPanel, "Right", newSettings);
-            SaveToolStripPanel(this.toolStripContainer.BottomToolStripPanel, "Bottom", newSettings);
-
-
-            Settings.ToolbarSettings = newSettings;
+            if(!Settings.ToolbarsLocked) {
+                //ToolStripManager.SaveSettings(this);
+                ToolStripSettings newSettings = new ToolStripSettings();
+                SaveToolStripPanel(this.toolStripContainer.TopToolStripPanel, "Top", newSettings);
+                SaveToolStripPanel(this.toolStripContainer.LeftToolStripPanel, "Left", newSettings);
+                SaveToolStripPanel(this.toolStripContainer.RightToolStripPanel, "Right", newSettings);
+                SaveToolStripPanel(this.toolStripContainer.BottomToolStripPanel, "Bottom", newSettings);
+                Settings.ToolbarSettings = newSettings;
+            }
         }
         public void LoadWindowState() {
+
             //ToolStripManager.LoadSettings(this);
             ToolStripSettings newSettings = Settings.ToolbarSettings;
             if(newSettings != null && newSettings.Count > 0) {
@@ -1930,6 +1932,12 @@ namespace Terminals {
                     }
                 }
             }
+        }
+
+        private void lockToolbarsToolStripMenuItem_Click(object sender, EventArgs e) {
+            SaveWindowState();
+            Settings.ToolbarsLocked = !lockToolbarsToolStripMenuItem.Checked;
+            lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
         }
 
 

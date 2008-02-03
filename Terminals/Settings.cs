@@ -900,6 +900,16 @@ namespace Terminals
                 configuration.Save();
             }
         }
+        public static bool ToolbarsLocked {
+            get {
+                return GetSection().ToolbarsLocked;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).ToolbarsLocked = value;
+                configuration.Save();
+            }
+        }
         public static bool ShowWizard
         {
             get
