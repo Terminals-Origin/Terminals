@@ -34,6 +34,7 @@ namespace Terminals
 
             SingleInstanceApplication.Initialize();
 
+            Terminals.Updates.UpdateManager.CheckForUpdates();
 
             if(Settings.TerminalsPassword != "")
             {
@@ -45,13 +46,11 @@ namespace Terminals
                 }
                 else
                 {
-                    Terminals.Updates.UpdateManager.CheckForUpdates();
                     Application.Run(new MainForm());
                 }
             }
             else
             {
-                Terminals.Updates.UpdateManager.CheckForUpdates();
                 Application.Run(new MainForm());
             }
             SingleInstanceApplication.Close();

@@ -17,6 +17,8 @@ namespace Terminals.CommandLine
         [Argument(ArgumentType.AtMostOnce, HelpText = "Local path the the config file to use.  Defaults to the standard Terminals.config")]
         public string config;
 
+        [Argument(ArgumentType.AtMostOnce, HelpText = "Enable Automatic Updates")]
+        public string AutomaticallyUpdate;
 
     }
 }
