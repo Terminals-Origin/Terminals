@@ -15,6 +15,12 @@ namespace Terminals.Updates {
 namespace Terminals.Updates {
 }
 
+namespace Terminals.Updates {
+}
+
+namespace Terminals.Updates {
+}
+
 namespace Terminals.UpdateManager {
 }
 
