@@ -349,27 +349,35 @@ namespace Terminals {
                 SaveToolStripPanel(this.toolStripContainer.RightToolStripPanel, "Right", newSettings);
                 SaveToolStripPanel(this.toolStripContainer.BottomToolStripPanel, "Bottom", newSettings);
                 Settings.ToolbarSettings = newSettings;
-            }
+            }            
         }
         public void LoadWindowState() {
 
             //ToolStripManager.LoadSettings(this);
             ToolStripSettings newSettings = Settings.ToolbarSettings;
+            ToolStripMenuItem menuItem = null;
             if(newSettings != null && newSettings.Count > 0) {
                 foreach(ToolStripSetting setting in newSettings) {
+                    menuItem = null;
                     ToolStrip strip = null;
                     if(setting.Name == toolbarStd.Name) {
                         strip = toolbarStd;
+                        menuItem = standardToolbarToolStripMenuItem;
                     } else if(setting.Name == favoriteToolBar.Name) {
                         strip = favoriteToolBar;
+                        menuItem = toolStripMenuItem4;
                     } else if(setting.Name == SpecialCommandsToolStrip.Name) {
                         strip = SpecialCommandsToolStrip;
+                        menuItem = shortcutsToolStripMenuItem;
                     } else if(setting.Name == menuStrip.Name) {
-                        strip = menuStrip;
+                        strip = menuStrip;                        
                     } else if(setting.Name == tsRemoteToolbar.Name) {
                         strip = tsRemoteToolbar;
                     }
 
+                    if(menuItem != null) {
+                        menuItem.Checked = setting.Visible;
+                    }
                     if(strip != null) {
                         Point p;
                         int row = setting.Row + 1;
