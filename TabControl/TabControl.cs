@@ -135,7 +135,11 @@ namespace TabControl
                 }
                 if (selectedTabItem != null && AllowDraw(selectedTabItem))
                 {
-                    OnDrawTabPage(e.Graphics, selectedTabItem);
+                    try {
+                        OnDrawTabPage(e.Graphics, selectedTabItem);
+                    } catch(Exception exc) {
+                        //black hole this for now
+                    }
                 }
             }
 
