@@ -32,6 +32,10 @@ namespace Terminals {
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.standardToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.shortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lockToolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manageFavoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.organizeFavoritesToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,10 +57,6 @@ namespace Terminals {
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripOrganizeShortucts = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.standardToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.shortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lockToolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolbarStd = new System.Windows.Forms.ToolStrip();
@@ -219,7 +219,11 @@ namespace Terminals {
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fullScreenToolStripMenuItem});
+            this.fullScreenToolStripMenuItem,
+            this.standardToolbarToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.shortcutsToolStripMenuItem,
+            this.lockToolbarsToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.viewToolStripMenuItem.Text = "&View";
@@ -228,9 +232,45 @@ namespace Terminals {
             // 
             this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
             this.fullScreenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.fullScreenToolStripMenuItem.Text = "&Full Screen";
             this.fullScreenToolStripMenuItem.Click += new System.EventHandler(this.tsbFullScreen_Click);
+            // 
+            // standardToolbarToolStripMenuItem
+            // 
+            this.standardToolbarToolStripMenuItem.Checked = true;
+            this.standardToolbarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.standardToolbarToolStripMenuItem.Name = "standardToolbarToolStripMenuItem";
+            this.standardToolbarToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.standardToolbarToolStripMenuItem.Text = "&Standard Toolbar";
+            this.standardToolbarToolStripMenuItem.Click += new System.EventHandler(this.standardToolbarToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Checked = true;
+            this.toolStripMenuItem4.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(168, 22);
+            this.toolStripMenuItem4.Text = "&Favorites";
+            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            // 
+            // shortcutsToolStripMenuItem
+            // 
+            this.shortcutsToolStripMenuItem.Checked = true;
+            this.shortcutsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.shortcutsToolStripMenuItem.Name = "shortcutsToolStripMenuItem";
+            this.shortcutsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.shortcutsToolStripMenuItem.Text = "&Shortcuts";
+            this.shortcutsToolStripMenuItem.Click += new System.EventHandler(this.shortcutsToolStripMenuItem_Click);
+            // 
+            // lockToolbarsToolStripMenuItem
+            // 
+            this.lockToolbarsToolStripMenuItem.Checked = true;
+            this.lockToolbarsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.lockToolbarsToolStripMenuItem.Name = "lockToolbarsToolStripMenuItem";
+            this.lockToolbarsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.lockToolbarsToolStripMenuItem.Text = "&Lock Toolbars";
+            this.lockToolbarsToolStripMenuItem.Click += new System.EventHandler(this.lockToolbarsToolStripMenuItem_Click);
             // 
             // favoritesToolStripMenuItem
             // 
@@ -339,11 +379,7 @@ namespace Terminals {
             this.optionsToolStripMenuItem,
             this.toolStripSeparator8,
             this.toolStripOrganizeShortucts,
-            this.toolStripSeparator7,
-            this.standardToolbarToolStripMenuItem,
-            this.toolStripMenuItem4,
-            this.shortcutsToolStripMenuItem,
-            this.lockToolbarsToolStripMenuItem});
+            this.toolStripSeparator7});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -393,42 +429,6 @@ namespace Terminals {
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(202, 6);
-            // 
-            // standardToolbarToolStripMenuItem
-            // 
-            this.standardToolbarToolStripMenuItem.Checked = true;
-            this.standardToolbarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.standardToolbarToolStripMenuItem.Name = "standardToolbarToolStripMenuItem";
-            this.standardToolbarToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.standardToolbarToolStripMenuItem.Text = "&Standard Toolbar";
-            this.standardToolbarToolStripMenuItem.Click += new System.EventHandler(this.standardToolbarToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem4
-            // 
-            this.toolStripMenuItem4.Checked = true;
-            this.toolStripMenuItem4.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(205, 22);
-            this.toolStripMenuItem4.Text = "&Favorites";
-            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
-            // 
-            // shortcutsToolStripMenuItem
-            // 
-            this.shortcutsToolStripMenuItem.Checked = true;
-            this.shortcutsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.shortcutsToolStripMenuItem.Name = "shortcutsToolStripMenuItem";
-            this.shortcutsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.shortcutsToolStripMenuItem.Text = "&Shortcuts";
-            this.shortcutsToolStripMenuItem.Click += new System.EventHandler(this.shortcutsToolStripMenuItem_Click);
-            // 
-            // lockToolbarsToolStripMenuItem
-            // 
-            this.lockToolbarsToolStripMenuItem.Checked = true;
-            this.lockToolbarsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.lockToolbarsToolStripMenuItem.Name = "lockToolbarsToolStripMenuItem";
-            this.lockToolbarsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.lockToolbarsToolStripMenuItem.Text = "&Lock Toolbars";
-            this.lockToolbarsToolStripMenuItem.Click += new System.EventHandler(this.lockToolbarsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -1186,7 +1186,7 @@ namespace Terminals {
             // QuickContextMenu
             // 
             this.QuickContextMenu.Name = "QuickContextMenu";
-            this.QuickContextMenu.Size = new System.Drawing.Size(153, 26);
+            this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
             this.QuickContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.QuickContextMenu_Opening);
             // 
             // SystemTrayContextMenuStrip
@@ -1381,9 +1381,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripMenuItem manageToolbarToolStripMenuItem;
         private System.Windows.Forms.ToolStrip favoriteToolBar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripMenuItem standardToolbarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
-        private System.Windows.Forms.ToolStripMenuItem shortcutsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
         private System.Windows.Forms.ToolStripMenuItem toolStripOrganizeShortucts;
         private System.Windows.Forms.ContextMenuStrip ShortcutsContextMenu;
@@ -1407,6 +1404,9 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.ToolStripDropDownButton TerminalServerMenuButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ToolStripMenuItem standardToolbarToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem shortcutsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lockToolbarsToolStripMenuItem;
     }
 }

@@ -1620,15 +1620,17 @@ namespace Terminals {
 
         private void standardToolbarToolStripMenuItem_Click(object sender, EventArgs e) {
             toolbarStd.Visible = !toolbarStd.Visible;
-
+            standardToolbarToolStripMenuItem.Checked = toolbarStd.Visible;
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e) {
             favoriteToolBar.Visible = !favoriteToolBar.Visible;
+            toolStripMenuItem4.Checked = favoriteToolBar.Visible;
         }
 
         private void shortcutsToolStripMenuItem_Click(object sender, EventArgs e) {
             SpecialCommandsToolStrip.Visible = !SpecialCommandsToolStrip.Visible;
+            shortcutsToolStripMenuItem.Checked = SpecialCommandsToolStrip.Visible;
         }
 
         private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e) {
