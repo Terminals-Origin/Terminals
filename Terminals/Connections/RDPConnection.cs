@@ -136,13 +136,23 @@ namespace Terminals.Connections
                 axMsRdpClient2.AdvancedSettings2.MinutesToIdleTimeout = Favorite.IdleTimeout;
 
                 try {
-                    axMsRdpClient2.AdvancedSettings2.overallConnectionTimeout = Favorite.OverallTimeout;
-                    axMsRdpClient2.AdvancedSettings2.singleConnectionTimeout = Favorite.ConnectionTimeout;
+                    int timeout = Favorite.OverallTimeout;
+                    if(timeout > 600) timeout = 10;
+                    if(timeout <= 0) timeout = 10;
+                    axMsRdpClient2.AdvancedSettings2.overallConnectionTimeout = timeout;
+                    timeout = Favorite.ConnectionTimeout;
+                    if(timeout > 600) timeout = 10;
+                    if(timeout <= 0) timeout = 10;
+                    
+                    axMsRdpClient2.AdvancedSettings2.singleConnectionTimeout = timeout;
 
-
+                    timeout = Favorite.ShutdownTimeout;
+                    if(timeout > 600) timeout = 10;
+                    if(timeout <= 0) timeout = 10;
+                    axMsRdpClient2.AdvancedSettings2.shutdownTimeout = timeout;
+                    
 
                     //axMsRdpClient2.AdvancedSettings2.PinConnectionBar;
-                    axMsRdpClient2.AdvancedSettings2.shutdownTimeout = Favorite.ShutdownTimeout;
                     //axMsRdpClient2.AdvancedSettings2.TransportType;
                     //axMsRdpClient2.AdvancedSettings2.WinceFixedPalette;
                     //axMsRdpClient2.AdvancedSettings3.CanAutoReconnect = Favorite.CanAutoReconnect;
