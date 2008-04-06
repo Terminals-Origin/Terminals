@@ -60,14 +60,14 @@ namespace Terminals.Connections
                 if(term.Username == null || term.Username == "" || term.Password == null || term.Password == "")
                 {
 
-                    Terminals.InputBoxResult result = Terminals.InputBox.Show("Please provider your User name", "Telnet/SSH User name");
+                    Terminals.InputBoxResult result = Terminals.InputBox.Show("Please provide your User name", "Telnet/SSH User name");
                     if(result.ReturnCode == DialogResult.OK && result.Text != null && result.Text.Trim() != "")
                     {
                         term.Username = result.Text;
                         if(term.Password == null)
                         {
 
-                            Terminals.InputBoxResult res = Terminals.InputBox.Show("Please provider your Password", "Telnet/SSH Password", '*');
+                            Terminals.InputBoxResult res = Terminals.InputBox.Show("Please provide your Password", "Telnet/SSH Password", '*');
                             if(res.ReturnCode == DialogResult.OK && res.Text != null && res.Text.Trim() != "")
                             {
                                 term.Password = res.Text;
