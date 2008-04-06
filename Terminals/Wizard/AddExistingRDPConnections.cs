@@ -190,7 +190,11 @@ namespace Terminals.Wizard
                 elm.Name = name;
                 elm.ServerName = server;
                 elm.UserName = System.Environment.UserName;
-                elm.DomainName = System.Environment.UserDomainName;
+                if(System.Environment.UserDomainName != System.Environment.MachineName) {
+                    elm.DomainName = System.Environment.UserDomainName;
+                } else {
+                    elm.DomainName = server;
+                }
                 elm.Tags = "Discovered Connections";
                 elm.Port = Port;
                 elm.Protocol = Terminals.Connections.ConnectionManager.GetPortName(Port, true);
