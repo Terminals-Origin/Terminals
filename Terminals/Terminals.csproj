@@ -244,6 +244,37 @@
     <Compile Include="OfficeRender\Office2007Helpers.cs" />
     <Compile Include="OfficeRender\Office2007Renderer.cs" />
     <Compile Include="Updates\HTTP.cs" />
+    <Compile Include="Updates\RSS\Collections\ExceptionCollection.cs" />
+    <Compile Include="Updates\RSS\Collections\RssCategoryCollection.cs" />
+    <Compile Include="Updates\RSS\Collections\RssChannelCollection.cs" />
+    <Compile Include="Updates\RSS\Collections\RssFeedCollection.cs" />
+    <Compile Include="Updates\RSS\Collections\RssItemCollection.cs" />
+    <Compile Include="Updates\RSS\Collections\RssModuleCollection.cs" />
+    <Compile Include="Updates\RSS\Collections\RssModuleItemCollection.cs" />
+    <Compile Include="Updates\RSS\Collections\RssModuleItemCollectionCollection.cs" />
+    <Compile Include="Updates\RSS\RssChannel\RssChannel.cs" />
+    <Compile Include="Updates\RSS\RssChannel\RssCloud.cs" />
+    <Compile Include="Updates\RSS\RssChannel\RssImage.cs" />
+    <Compile Include="Updates\RSS\RssChannel\RssTextInput.cs" />
+    <Compile Include="Updates\RSS\RssFeed.cs" />
+    <Compile Include="Updates\RSS\RssItem\RssEnclosure.cs" />
+    <Compile Include="Updates\RSS\RssItem\RssGuid.cs" />
+    <Compile Include="Updates\RSS\RssItem\RssItem.cs" />
+    <Compile Include="Updates\RSS\RssItem\RssSource.cs" />
+    <Compile Include="Updates\RSS\RssModule.cs" />
+    <Compile Include="Updates\RSS\RssModuleItem.cs" />
+    <Compile Include="Updates\RSS\RssModules\RssBlogChannel.cs" />
+    <Compile Include="Updates\RSS\RssModules\RssCreativeCommon.cs" />
+    <Compile Include="Updates\RSS\RssModules\RssPhotoAlbum.cs" />
+    <Compile Include="Updates\RSS\RssReader.cs" />
+    <Compile Include="Updates\RSS\RssWriter.cs" />
+    <Compile Include="Updates\RSS\Shared\DBBool.cs" />
+    <Compile Include="Updates\RSS\Shared\RssCategory.cs" />
+    <Compile Include="Updates\RSS\Shared\RssCompact.cs" />
+    <Compile Include="Updates\RSS\Shared\RssDefault.cs" />
+    <Compile Include="Updates\RSS\Shared\RssElement.cs" />
+    <Compile Include="Updates\RSS\Shared\RssEnumerators.cs" />
+    <Compile Include="Updates\RSS\Weather.cs" />
     <Compile Include="Updates\TerminalsUpdates.cs">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
     </Compile>
@@ -813,6 +844,12 @@
     <Content Include="Thumbs\wmimgmt.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Updates\RSS\bin\Debug\Unified.RSS.dll" />
+    <Content Include="Updates\RSS\bin\Debug\Unified.RSS.pdb" />
+    <Content Include="Updates\RSS\obj\Debug\Unified.RSS.dll" />
+    <Content Include="Updates\RSS\obj\Debug\Unified.RSS.pdb" />
+    <Content Include="Updates\RSS\obj\RSS.csproj.FileList.txt" />
+    <Content Include="Updates\RSS\RSS.csproj" />
     <Content Include="Updates\TerminalsUpdates.xml" />
     <None Include="Resources\star.png" />
     <None Include="Resources\ShowPanel.PNG" />
@@ -827,6 +864,9 @@
     <None Include="Terminals.log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Updates\RSS\AUTHORS" />
+    <None Include="Updates\RSS\ChangeLog" />
+    <None Include="Updates\RSS\Makefile" />
     <None Include="Updates\TerminalsUpdates.xsc">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
     </None>

@@ -1947,8 +1947,15 @@ namespace Terminals {
             lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
         }
 
-
-        
+        private static Unified.Rss.RssItemCollection rssFeedItems = null;
+        public static Unified.Rss.RssItemCollection RssFeedItems {
+            get {
+                return rssFeedItems;
+            }
+            set {
+                rssFeedItems = value;
+            }
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem {

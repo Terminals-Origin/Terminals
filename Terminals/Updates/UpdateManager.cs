@@ -29,7 +29,20 @@ namespace Terminals.Updates {
             } else
                 return null;
         }
+        private static void CheckForCodeplexRelease() {
+            //Unified.Rss.RssFeed feed = Unified.Rss.RssFeed.Read("http://www.codeplex.com/Terminals/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2fTerminals");
+            //if(feed != null) {
+            //    if(feed.Channels != null && feed.Channels.Count > 0) {
+            //        MainForm.RssFeedItems = feed.Channels[0].Items;                    
+            //    }
+            //}
+        }
         private static void PerformCheck(object state) {
+            try {
+                CheckForCodeplexRelease();
+            } catch(Exception exc) {
+                Terminals.Logging.Log.Error("Failed during update.", exc);
+            }
             try {
                 string autoUpdate = Terminals.MainForm.CommandLineArgs.AutomaticallyUpdate;
                 if(autoUpdate != null) {
@@ -95,18 +108,18 @@ namespace Terminals.Updates {
                 Terminals.Logging.Log.Error("Failed during update.", exc);
             }
         }
-        
-        
+
+
         private static DirectoryInfo FindFileInFolder(DirectoryInfo Path, string Filename) {
             if(Path.GetFiles(Filename).Length > 0) return Path;
             foreach(System.IO.DirectoryInfo dir in Path.GetDirectories()) {
                 DirectoryInfo found = FindFileInFolder(dir, Filename);
-                if(found!=null) return found;
+                if(found != null) return found;
             }
             return null;
         }
         private static bool DownloadNewBuild(string Url, string Filename) {
-                       
+
             return Unified.Network.HTTP.Web.SaveHTTPToFile(Url, Filename);
         }
 
