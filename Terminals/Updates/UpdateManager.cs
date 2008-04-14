@@ -30,24 +30,45 @@ namespace Terminals.Updates {
                 return null;
         }
         private static void CheckForCodeplexRelease() {
-            Unified.Rss.RssFeed feed = Unified.Rss.RssFeed.Read("http://www.codeplex.com/Terminals/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2fTerminals");
-            if(feed != null)
+            bool checkForUpdate = true;
+            string releaseFile = "LastUpdateCheck.txt";
+            if(System.IO.File.Exists(releaseFile))
             {
-                bool needsUpdate = false;
-                foreach(Unified.Rss.RssChannel chan in feed.Channels)
+                string text = System.IO.File.ReadAllText(releaseFile).Trim();
+                if(text != string.Empty)
                 {
-                    foreach(Unified.Rss.RssItem item in chan.Items)
+                    DateTime lastUpdate = DateTime.MinValue;
+                    if(DateTime.TryParse(text, out lastUpdate))
                     {
-                        if(item.PubDate > Program.BuildDate)
+                        if(lastUpdate.Date >= DateTime.Now.Date)
                         {
-                            MainForm.ReleaseAvailable = true;
-                            MainForm.ReleaseDescription = item.Title;
-                            needsUpdate = true;
-                            break;
+                            checkForUpdate = false;
                         }
                     }
-                    if(needsUpdate) break;
                 }
+            }
+            if(checkForUpdate)
+            {
+                Unified.Rss.RssFeed feed = Unified.Rss.RssFeed.Read("http://www.codeplex.com/Terminals/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2fTerminals");
+                if(feed != null)
+                {
+                    bool needsUpdate = false;
+                    foreach(Unified.Rss.RssChannel chan in feed.Channels)
+                    {
+                        foreach(Unified.Rss.RssItem item in chan.Items)
+                        {
+                            if(item.PubDate > Program.BuildDate)
+                            {
+                                MainForm.ReleaseAvailable = true;
+                                MainForm.ReleaseDescription = item.Title;
+                                needsUpdate = true;
+                                break;
+                            }
+                        }
+                        if(needsUpdate) break;
+                    }
+                }
+                System.IO.File.WriteAllText(releaseFile, DateTime.Now.ToString());
             }
         }
         private static void PerformCheck(object state) {
