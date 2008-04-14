@@ -30,18 +30,31 @@ namespace Terminals.Updates {
                 return null;
         }
         private static void CheckForCodeplexRelease() {
-            //Unified.Rss.RssFeed feed = Unified.Rss.RssFeed.Read("http://www.codeplex.com/Terminals/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2fTerminals");
-            //if(feed != null) {
-            //    if(feed.Channels != null && feed.Channels.Count > 0) {
-            //        MainForm.RssFeedItems = feed.Channels[0].Items;                    
-            //    }
-            //}
+            Unified.Rss.RssFeed feed = Unified.Rss.RssFeed.Read("http://www.codeplex.com/Terminals/Project/ProjectRss.aspx?ProjectRSSFeed=codeplex%3a%2f%2frelease%2fTerminals");
+            if(feed != null)
+            {
+                bool needsUpdate = false;
+                foreach(Unified.Rss.RssChannel chan in feed.Channels)
+                {
+                    foreach(Unified.Rss.RssItem item in chan.Items)
+                    {
+                        if(item.PubDate > Program.BuildDate)
+                        {
+                            MainForm.ReleaseAvailable = true;
+                            MainForm.ReleaseDescription = item.Title;
+                            needsUpdate = true;
+                            break;
+                        }
+                    }
+                    if(needsUpdate) break;
+                }
+            }
         }
         private static void PerformCheck(object state) {
             try {
                 CheckForCodeplexRelease();
             } catch(Exception exc) {
-                Terminals.Logging.Log.Error("Failed during update.", exc);
+                Terminals.Logging.Log.Error("Failed during CheckForCodeplexRelease.", exc);
             }
             try {
                 string autoUpdate = Terminals.MainForm.CommandLineArgs.AutomaticallyUpdate;

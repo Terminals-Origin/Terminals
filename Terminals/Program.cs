@@ -9,6 +9,8 @@ namespace Terminals
 {
     static class Program
     {
+        public static string TerminalsVersion = "1.6h";
+        public static DateTime BuildDate = new DateTime(2008, 4, 15);  //used for checking project releases.  yeah yeah, this could be smarter about things...
         public static Mutex mtx;
         /// <summary>
         /// The main entry point for the application.
@@ -20,8 +22,8 @@ namespace Terminals
 
 
             mtx = new Mutex(false, "TerminalsMutex");
-            
-            Terminals.Logging.Log.Info("Terminals 1.6e started");
+
+            Terminals.Logging.Log.Info("Terminals " + Program.TerminalsVersion + " started");
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
