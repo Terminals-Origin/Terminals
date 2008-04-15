@@ -2401,8 +2401,8 @@ namespace Terminals {
 
             }
         }
-        private static string releaseDescription = "";
-        public static string ReleaseDescription
+        private static Unified.Rss.RssItem releaseDescription = null;
+        public static Unified.Rss.RssItem ReleaseDescription
         {
             get
             {
@@ -2423,7 +2423,13 @@ namespace Terminals {
 
         private void updateToolStripItem_Click(object sender, EventArgs e)
         {
-            Process.Start("http://www.codeplex.com/Terminals/Release/ProjectReleases.aspx");
+            string output = ReleaseDescription.Description;
+            output = output.Replace("<br />", @"\r\n");
+
+            if(System.Windows.Forms.MessageBox.Show("Would you like to download this release?\r\n\r\n" + output, "New Terminals Release", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                Process.Start(ReleaseDescription.Link.ToString());
+            }
         }
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2433,9 +2439,9 @@ namespace Terminals {
                 if(ReleaseAvailable && updateToolStripItem != null)
                 {
                     updateToolStripItem.Visible = ReleaseAvailable;
-                    if(ReleaseDescription != null && ReleaseDescription != "")
+                    if(ReleaseDescription != null)
                     {
-                        updateToolStripItem.Text = string.Format("{0} - {1}", updateToolStripItem.Text, ReleaseDescription);
+                        updateToolStripItem.Text = string.Format("{0} - {1}", updateToolStripItem.Text, ReleaseDescription.Title);
                     }
                 }
             }

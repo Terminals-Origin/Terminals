@@ -29,6 +29,9 @@ namespace Terminals.Updates {
             } else
                 return null;
         }
+        /// <summary>
+        /// check codeplex's rss feed to see if we have a new release available.
+        /// </summary>
         private static void CheckForCodeplexRelease() {
             bool checkForUpdate = true;
             string releaseFile = "LastUpdateCheck.txt";
@@ -40,7 +43,7 @@ namespace Terminals.Updates {
                     DateTime lastUpdate = DateTime.MinValue;
                     if(DateTime.TryParse(text, out lastUpdate))
                     {
-                        if(lastUpdate.Date >= DateTime.Now.Date)
+                        if(lastUpdate.Date >= DateTime.Now.Date) //dont run the update if the file is today or later..if we have checked today or not
                         {
                             checkForUpdate = false;
                         }
@@ -57,10 +60,10 @@ namespace Terminals.Updates {
                     {
                         foreach(Unified.Rss.RssItem item in chan.Items)
                         {
-                            if(item.PubDate > Program.BuildDate)
+                            if(item.PubDate > Program.BuildDate)  //check the date the item was published.  is it after the currently executing application BuildDate? if so, then its probably a new build!
                             {
                                 MainForm.ReleaseAvailable = true;
-                                MainForm.ReleaseDescription = item.Title;
+                                MainForm.ReleaseDescription = item;
                                 needsUpdate = true;
                                 break;
                             }
