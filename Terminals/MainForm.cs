@@ -77,6 +77,7 @@ namespace Terminals {
 
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
                 this.lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
+                
 
                 defaultText = this.Text;
             }
@@ -496,6 +497,10 @@ namespace Terminals {
                         //strip.Left = setting.Left;
                         //strip.Top = setting.Top;
                         strip.Visible = setting.Visible;
+                        if(Settings.ToolbarsLocked) 
+                            strip.GripStyle = ToolStripGripStyle.Hidden;
+                        else
+                            strip.GripStyle = ToolStripGripStyle.Visible;
                     }
                 }
             }
@@ -1996,7 +2001,7 @@ namespace Terminals {
 
         private void toolStripContainer_TopToolStripPanel_MouseClick(object sender, MouseEventArgs e)
         {
-            if(e.Button == MouseButtons.Right)
+            if(e.Button == MouseButtons.Left)
             {
                 //contextMenuStrip1.Show(toolStripContainer, e.X, e.Y);
             }
@@ -2413,6 +2418,25 @@ namespace Terminals {
             SaveWindowState();
             Settings.ToolbarsLocked = !lockToolbarsToolStripMenuItem.Checked;
             lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
+
+            bool GripVisible = !Settings.ToolbarsLocked;
+            foreach(ToolStripPanelRow row in toolStripContainer.TopToolStripPanel.Rows) {
+                foreach(Control c in row.Controls) {
+                    ToolStrip item = (c as ToolStrip);
+                    if(item != null) {
+                        if(GripVisible) 
+                            item.GripStyle = ToolStripGripStyle.Visible;
+                        else
+                            item.GripStyle = ToolStripGripStyle.Hidden;
+                    }                    
+                }
+            }
+
+            //if(Settings.ToolbarsLocked)
+            //    strip.GripStyle = ToolStripGripStyle.Hidden;
+            //else
+            //    strip.GripStyle = ToolStripGripStyle.Hidden;
+
         }
 
         private static bool releaseAvailable = false;
