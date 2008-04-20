@@ -1222,16 +1222,17 @@ namespace Terminals {
         }
 
 
-        private void QuickConnect(string server, int port)
+        private void QuickConnect(string server, int port, bool ConnectToConsole)
         {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             FavoriteConfigurationElement favorite = favorites[server];
-            if(favorite != null)
+            if(favorite != null) {
+                if(favorite.ConnectToConsole != ConnectToConsole) favorite.ConnectToConsole = ConnectToConsole;
                 CreateTerminalTab(favorite);
-            else
-            {
+            } else {
                 //create a temporaty favorite and connect to it
                 favorite = new FavoriteConfigurationElement();
+                favorite.ConnectToConsole = ConnectToConsole;
                 favorite.ServerName = server;
                 favorite.Name = server;
                 if(port != 0)
@@ -1246,13 +1247,28 @@ namespace Terminals {
         }
         private void HandleCommandLineActions()
         {
+            
+            bool ConnectToConsole = Terminals.MainForm.CommandLineArgs.console;
+            this.FullScreen = Terminals.MainForm.CommandLineArgs.fullscreen;
             if(Terminals.MainForm.CommandLineArgs.url != null && Terminals.MainForm.CommandLineArgs.url != "")
             {
                 string server; int port;
                 ProtocolHandler.Parse(Terminals.MainForm.CommandLineArgs.url, out server, out port);
-                QuickConnect(server, port);
+                QuickConnect(server, port, ConnectToConsole);
             }
-            if(Terminals.MainForm.CommandLineArgs.favs != null && Terminals.MainForm.CommandLineArgs.favs != "")
+            if(Terminals.MainForm.CommandLineArgs.machine != null && Terminals.MainForm.CommandLineArgs.machine != "") {
+                string server=""; int port=3389;
+                server = Terminals.MainForm.CommandLineArgs.machine;
+                int index = Terminals.MainForm.CommandLineArgs.machine.IndexOf(":");
+                if(index>0) {
+                    server = Terminals.MainForm.CommandLineArgs.machine.Substring(0, index);
+                    string p = Terminals.MainForm.CommandLineArgs.machine.Substring(index+1);
+                    if(!int.TryParse(p, out port)) {
+                        port = 3389;
+                    }
+                }
+                QuickConnect(server, port, ConnectToConsole);
+            } if(Terminals.MainForm.CommandLineArgs.favs != null && Terminals.MainForm.CommandLineArgs.favs != "")
             {
                 string favs = Terminals.MainForm.CommandLineArgs.favs;
                 if(favs.Contains(","))

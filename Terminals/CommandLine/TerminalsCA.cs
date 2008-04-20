@@ -20,5 +20,15 @@ namespace Terminals.CommandLine
         [Argument(ArgumentType.AtMostOnce, HelpText = "Enable Automatic Updates")]
         public string AutomaticallyUpdate;
 
+        [Argument(ArgumentType.AtMostOnce, LongName="console", ShortName="c", HelpText = "Connect to the console")]
+        public bool console;
+
+        [Argument(ArgumentType.AtMostOnce, ShortName="v", HelpText = "Quick connect machine to match mstsc.exe's parameter")]
+        public string machine;
+
+        [Argument(ArgumentType.AtMostOnce, LongName = "fullscreen", ShortName = "f", HelpText = "Run terminals in Full Screen mode at startup")]
+        public bool fullscreen;
+
+
     }
 }
