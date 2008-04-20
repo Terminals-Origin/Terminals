@@ -684,16 +684,33 @@ namespace Terminals
                 configuration.Save();
             }
         }
-        public static bool MinimizeToTray
-        {
-            get
-            {
+        public static bool MinimizeToTray {
+            get {
                 return GetSection().MinimizeToTray;
             }
-            set
-            {
+            set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).MinimizeToTray = value;
+                configuration.Save();
+            }
+        }
+        public static bool EnableGroupsMenu {
+            get {
+                return GetSection().EnableGroupsMenu;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).EnableGroupsMenu = value;
+                configuration.Save();
+            }
+        }
+        public static bool EnableFavoritesPanel {
+            get {
+                return GetSection().EnableFavoritesPanel;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).EnableFavoritesPanel = value;
                 configuration.Save();
             }
         }

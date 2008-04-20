@@ -50,6 +50,8 @@ namespace Terminals
                 ProxyAddressTextbox.Text = Settings.ProxyAddress;
                 ProxyPortTextbox.Text = Settings.ProxyPort.ToString();
             }
+            this.EnableFavoritesPanel.Checked = Settings.EnableFavoritesPanel;
+            this.EnableGroupsMenu.Checked=Settings.EnableGroupsMenu;
 
 
         }
@@ -82,6 +84,8 @@ namespace Terminals
                 Settings.TerminalsPassword = PasswordTextbox.Text;
             }
             Settings.MinimizeToTray = this.MinimizeToTrayCheckbox.Checked;
+            Settings.EnableFavoritesPanel = this.EnableFavoritesPanel.Checked;
+            Settings.EnableGroupsMenu = this.EnableGroupsMenu.Checked;
 
             Settings.AutoExapandTagsPanel = this.AutoExapandTagsPanelCheckBox.Checked;
 

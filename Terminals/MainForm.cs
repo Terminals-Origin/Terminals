@@ -413,8 +413,26 @@ namespace Terminals {
                 Settings.ToolbarSettings = newSettings;
             }
         }
+        private void HideShowFavoritesPanel(bool Show) {
+
+            if(Show) {
+                //splitContainer1.Panel1.Show();
+                splitContainer1.SplitterDistance = 0;
+                splitContainer1.Panel1Collapsed = false;
+                splitContainer1.Panel1MinSize = 7;
+                //pnlHideTagsFavorites.Visible = true;
+            } else {
+                //splitContainer1.Panel1.Hide();
+                //splitContainer1.SplitterDistance = 0;
+                splitContainer1.Panel1Collapsed = true;
+                splitContainer1.Panel1MinSize = 0;
+                splitContainer1.SplitterDistance = 0;
+                //pnlHideTagsFavorites.Visible = false;
+            }
+        }
         public void LoadWindowState()
         {
+            HideShowFavoritesPanel(Settings.EnableFavoritesPanel);
 
             //ToolStripManager.LoadSettings(this);
             ToolStripSettings newSettings = Settings.ToolbarSettings;
@@ -1455,6 +1473,9 @@ namespace Terminals {
             OptionsForm frmOptions = new OptionsForm(CurrentTerminal);
             if(frmOptions.ShowDialog() == DialogResult.OK)
             {
+                this.groupsToolStripMenuItem.Visible = Settings.EnableGroupsMenu;
+                HideShowFavoritesPanel(Settings.EnableFavoritesPanel);
+
 
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
 
@@ -1672,12 +1693,18 @@ namespace Terminals {
 
         private void HideTagsFavorites()
         {
-            if(Settings.FavoritePanelWidth != splitContainer1.SplitterDistance) Settings.FavoritePanelWidth = splitContainer1.SplitterDistance;
-            splitContainer1.SplitterDistance = 7;
-            pnlHideTagsFavorites.Hide();
-            pnlShowTagsFavorites.Show();
-            tsbTags.Checked = false;
-            tsbFavorites.Checked = false;
+            if(Settings.EnableFavoritesPanel) {
+                if(Settings.FavoritePanelWidth != splitContainer1.SplitterDistance) Settings.FavoritePanelWidth = splitContainer1.SplitterDistance;
+                splitContainer1.SplitterDistance = 7;
+                pnlHideTagsFavorites.Hide();
+                pnlShowTagsFavorites.Show();
+                tsbTags.Checked = false;
+                tsbFavorites.Checked = false;
+            } else {
+                splitContainer1.SplitterDistance = 0;
+                pnlHideTagsFavorites.Visible = false;
+            }
+            if(Settings.FavoritePanelWidth <= 150) Settings.FavoritePanelWidth = 150;
         }
 
         private void ShowFavorites()

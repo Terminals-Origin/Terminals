@@ -345,6 +345,7 @@ namespace Terminals {
             this.groupsToolStripMenuItem.Name = "groupsToolStripMenuItem";
             this.groupsToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.groupsToolStripMenuItem.Text = "&Groups";
+            this.groupsToolStripMenuItem.Visible = false;
             // 
             // organizeGroupsToolStripMenuItem
             // 
@@ -1112,7 +1113,7 @@ namespace Terminals {
             this.toolStripButton1});
             this.tsRemoteToolbar.Location = new System.Drawing.Point(3, 49);
             this.tsRemoteToolbar.Name = "tsRemoteToolbar";
-            this.tsRemoteToolbar.Size = new System.Drawing.Size(56, 25);
+            this.tsRemoteToolbar.Size = new System.Drawing.Size(58, 25);
             this.tsRemoteToolbar.TabIndex = 3;
             this.tsRemoteToolbar.Visible = false;
             // 

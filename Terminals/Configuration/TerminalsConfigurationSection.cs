@@ -160,18 +160,39 @@ namespace Terminals
         }
 
         [ConfigurationProperty("minimizeToTray", DefaultValue = true)]
-        public bool MinimizeToTray
-        {
-            get
-            {
+        public bool MinimizeToTray {
+            get {
                 if(this["minimizeToTray"] == null || this["minimizeToTray"].ToString() == string.Empty) return true;
                 bool min = true;
                 bool.TryParse(this["minimizeToTray"].ToString(), out min);
                 return min;
             }
-            set
-            {
+            set {
                 this["minimizeToTray"] = value;
+            }
+        }
+        [ConfigurationProperty("enableFavoritesPanel", DefaultValue = true)]
+        public bool EnableFavoritesPanel {
+            get {
+                if(this["enableFavoritesPanel"] == null || this["enableFavoritesPanel"].ToString() == string.Empty) return true;
+                bool min = true;
+                bool.TryParse(this["enableFavoritesPanel"].ToString(), out min);
+                return min;
+            }
+            set {
+                this["enableFavoritesPanel"] = value;
+            }
+        }
+        [ConfigurationProperty("enableGroupsMenu", DefaultValue = true)]
+        public bool EnableGroupsMenu {
+            get {
+                if(this["enableGroupsMenu"] == null || this["enableGroupsMenu"].ToString() == string.Empty) return true;
+                bool min = true;
+                bool.TryParse(this["enableGroupsMenu"].ToString(), out min);
+                return min;
+            }
+            set {
+                this["enableGroupsMenu"] = value;
             }
         }
         [ConfigurationProperty("warnOnConnectionClose", DefaultValue = true)]
