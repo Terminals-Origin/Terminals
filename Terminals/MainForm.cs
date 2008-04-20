@@ -2508,6 +2508,15 @@ namespace Terminals {
                 }
             }
         }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e) {
+            //handle global keyup events
+            if(e.Control && e.KeyCode == Keys.F12) {
+                Terminals.CaptureManager.Capture cap = Terminals.CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
+                toolStripMenuItem5_Click(null, null);
+
+            }
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem {
