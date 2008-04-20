@@ -15,6 +15,11 @@ namespace Terminals.Wizard
             InitializeComponent();
             this.dataGridView1.Visible = false;
             miv = new MethodInvoker(this.UpdateConnections);
+            try {
+                nil = new Metro.NetworkInterfaceList();
+            } catch(Exception exc) {
+                Terminals.Logging.Log.Error("Could not new up Metro.NetworkInterfaceList in AddExistingRDPConnections", exc);
+            }
         }
 
         MethodInvoker miv;
@@ -45,22 +50,21 @@ namespace Terminals.Wizard
             string f = "";
             //then kick up the port scan for the entire subnet
 
-            try
-            {
-                foreach(Metro.NetworkInterface face in nil.Interfaces)
-                {
-                    if(face.IsEnabled && !face.isLoopback)
-                    {
-                        endPointAddress = face.Address;
-                        break;
-                    }
-                }
 
-                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanSubnet), null);
+            if(nil != null) {
+                try {
+                    foreach(Metro.NetworkInterface face in nil.Interfaces) {
+                        if(face.IsEnabled && !face.isLoopback) {
+                            endPointAddress = face.Address;
+                            break;
+                        }
+                    }
+
+                    System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanSubnet), null);
+                } catch(Exception e) { Terminals.Logging.Log.Info("", e); }
             }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
-        Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();
+        Metro.NetworkInterfaceList nil;
         System.Net.IPAddress endPointAddress;
         private void ScanSubnet(object nullstate)
         {
