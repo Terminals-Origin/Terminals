@@ -99,13 +99,15 @@ namespace Terminals
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement favorite = GetSelectedFavorite();
-            if (favorite != null)
-            {
-                Settings.DeleteFavorite(favorite.Name);
-                Settings.DeleteFavoriteButton(favorite.Name);
-                LoadConnections();
+
+            foreach(ListViewItem item in lvConnections.SelectedItems) {
+                FavoriteConfigurationElement favorite = (item.Tag as FavoriteConfigurationElement);
+                if(favorite != null) {
+                    Settings.DeleteFavorite(favorite.Name);
+                    Settings.DeleteFavoriteButton(favorite.Name);
+                }
             }
+            LoadConnections();
         }
 
         private FavoriteConfigurationElement GetSelectedFavorite()
