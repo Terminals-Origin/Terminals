@@ -87,7 +87,7 @@ namespace WalburySoftware
 		}
 		public void Write (byte[] data, int offset, int length)
 		{
-			string sReceived = Encoding.ASCII.GetString(data, offset, length);
+            string sReceived = Encoding.Default.GetString(data, offset, length);
 			
 
 			
@@ -232,8 +232,8 @@ namespace WalburySoftware
 			this.BoldColor    = System.Drawing.Color.FromArgb (255, 255, 255);
 			this.BlinkColor   = System.Drawing.Color.Red;
 
-			this.G0 = new uc_Chars (uc_Chars.Sets.ASCII);
-			this.G1 = new uc_Chars (uc_Chars.Sets.ASCII);
+            this.G0 = new uc_Chars(uc_Chars.Sets.ASCII);
+            this.G1 = new uc_Chars(uc_Chars.Sets.ASCII);
 			this.G2 = new uc_Chars (uc_Chars.Sets.DECSG);
 			this.G3 = new uc_Chars (uc_Chars.Sets.DECSG);
 
@@ -4551,16 +4551,16 @@ namespace WalburySoftware
 		public void OnData(byte[] data, int offset, int length) 
 		{
 			Terminal.Write(data, offset, length);
-			//rtb.AppendText(Encoding.ASCII.GetString(data, offset, length));
-			//System.Console.Write(Encoding.ASCII.GetString(data, offset, length));
+            //rtb.AppendText(Encoding.Default.GetString(data, offset, length));
+            //System.Console.Write(Encoding.Default.GetString(data, offset, length));
 		}
 		public void OnDebugMessage(bool always_display, byte[] data) 
 		{
-			//Debug.WriteLine("DEBUG: "+ Encoding.ASCII.GetString(data));
+            //Debug.WriteLine("DEBUG: "+ Encoding.Default.GetString(data));
 		}
 		public void OnIgnoreMessage(byte[] data) 
 		{
-			//Debug.WriteLine("Ignore: "+ Encoding.ASCII.GetString(data));
+            //Debug.WriteLine("Ignore: "+ Encoding.Default.GetString(data));
 		}
 		public void OnAuthenticationPrompt(string[] msg) 
 		{

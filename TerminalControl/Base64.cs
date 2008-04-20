@@ -130,7 +130,7 @@ namespace Routrek.Toolkit {
 		//for test
 		public static void test() {
 			string t = "hernan crespo";
-			string s = System.Text.Encoding.ASCII.GetString(Decode(Encode(System.Text.Encoding.ASCII.GetBytes(t))));
+            string s = System.Text.Encoding.Default.GetString(Decode(Encode(System.Text.Encoding.Default.GetBytes(t))));
 		
 		}
 	}

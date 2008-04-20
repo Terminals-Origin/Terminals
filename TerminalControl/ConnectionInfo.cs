@@ -80,7 +80,7 @@ namespace Routrek.SSHCV1 {
 			RSAPublicKey rsa = (RSAPublicKey)_hostkey;
 			wr.Write(rsa.Exponent);
 			wr.Write(rsa.Modulus);
-			bld.Append(Encoding.ASCII.GetString(Base64.Encode(wr.ToByteArray())));
+			bld.Append(Encoding.Default.GetString(Base64.Encode(wr.ToByteArray())));
 			return bld.ToString();
 		}
 
@@ -150,7 +150,7 @@ namespace Routrek.SSHCV2 {
 			else
 				throw new SSHException("Host key algorithm is unsupported");
 
-			bld.Append(Encoding.ASCII.GetString(Base64.Encode(wr.ToByteArray())));
+            bld.Append(Encoding.Default.GetString(Base64.Encode(wr.ToByteArray())));
 			return bld.ToString();
 		}
 	}

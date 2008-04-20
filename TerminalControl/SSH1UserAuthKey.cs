@@ -51,7 +51,7 @@ namespace Routrek.SSHCV1
 			Stream s = File.Open(path, FileMode.Open);
 			byte[] header = new byte[32];
 			s.Read(header, 0, header.Length);
-			if(Encoding.ASCII.GetString(header)!="SSH PRIVATE KEY FILE FORMAT 1.1\n")
+            if(Encoding.Default.GetString(header) != "SSH PRIVATE KEY FILE FORMAT 1.1\n")
 				throw new SSHException(String.Format(Strings.GetString("BrokenKeyFile"), path));
 
 			SSH1DataReader reader = new SSH1DataReader(ReadAll(s));
@@ -127,7 +127,7 @@ namespace Routrek.SSHCV1
 
 		//key from passphrase
 		private static byte[] ConvertToKey(string passphrase) {
-			byte[] t = Encoding.ASCII.GetBytes(passphrase);
+            byte[] t = Encoding.Default.GetBytes(passphrase);
 			byte[] md5 = new MD5CryptoServiceProvider().ComputeHash(t);
 			byte[] result = new byte[32];
 			Array.Copy(md5, 0, result, 0, 16);

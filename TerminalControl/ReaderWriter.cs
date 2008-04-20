@@ -130,7 +130,7 @@ namespace Routrek.SSHC {
 
 		public void Write(string data) {
 			Write(data.Length);
-			if(data.Length>0) Write(Encoding.ASCII.GetBytes(data));
+            if(data.Length > 0) Write(Encoding.Default.GetBytes(data));
 		}
 			
 		public void WriteAsString(byte[] data) {

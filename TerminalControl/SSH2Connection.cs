@@ -85,7 +85,7 @@ namespace Routrek.SSHCV2
 				throw new SSHException("service establishment failed "+t);
 			}
 
-			string s = Encoding.ASCII.GetString(re.ReadString());
+            string s = Encoding.Default.GetString(re.ReadString());
 			if(servicename!=s)
 				throw new SSHException("protocol error");
 		}
@@ -145,7 +145,7 @@ namespace Routrek.SSHCV2
 				SSH2DataReader response = new SSH2DataReader(ReceivePacket().Data);
 				PacketType h = response.ReadPacketType();
 				if(h==PacketType.SSH_MSG_USERAUTH_FAILURE) {
-					string msg = Encoding.ASCII.GetString(response.ReadString());
+                    string msg = Encoding.Default.GetString(response.ReadString());
 					return AuthenticationResult.Failure;
 				}
 				else if(h==PacketType.SSH_MSG_USERAUTH_BANNER) {
@@ -156,13 +156,13 @@ namespace Routrek.SSHCV2
 					return AuthenticationResult.Success; //successfully exit
 				}
 				else if(h==PacketType.SSH_MSG_USERAUTH_INFO_REQUEST) {
-					string name = Encoding.ASCII.GetString(response.ReadString());
-					string inst = Encoding.ASCII.GetString(response.ReadString());
-					string lang = Encoding.ASCII.GetString(response.ReadString());
+                    string name = Encoding.Default.GetString(response.ReadString());
+                    string inst = Encoding.Default.GetString(response.ReadString());
+                    string lang = Encoding.Default.GetString(response.ReadString());
 					int num = response.ReadInt32();
 					string[] prompts = new string[num];
 					for(int i=0; i<num; i++) {
-						prompts[i] = Encoding.ASCII.GetString(response.ReadString());
+                        prompts[i] = Encoding.Default.GetString(response.ReadString());
 						bool echo = response.ReadBool();
 					}
 					_eventReceiver.OnAuthenticationPrompt(prompts);
@@ -259,14 +259,14 @@ namespace Routrek.SSHCV2
 		}
 
 		private void ProcessPortforwardingRequest(ISSHConnectionEventReceiver receiver, SSH2DataReader reader) {
-			string method = Encoding.ASCII.GetString(reader.ReadString());
+            string method = Encoding.Default.GetString(reader.ReadString());
 
 			int remote_channel = reader.ReadInt32();
 			int window_size = reader.ReadInt32(); //skip initial window size
 			int servermaxpacketsize = reader.ReadInt32();
-			string host = Encoding.ASCII.GetString(reader.ReadString());
+            string host = Encoding.Default.GetString(reader.ReadString());
 			int port = reader.ReadInt32();
-			string originator_ip = Encoding.ASCII.GetString(reader.ReadString());
+            string originator_ip = Encoding.Default.GetString(reader.ReadString());
 			int originator_port = reader.ReadInt32();
 			
 			PortForwardingCheckResult r = receiver.CheckPortForwardingRequest(host,port,originator_ip,originator_port);
@@ -348,7 +348,7 @@ namespace Routrek.SSHCV2
 
 			if(pt==PacketType.SSH_MSG_DISCONNECT) {
 				int errorcode = r.ReadInt32();
-				//string description = Encoding.ASCII.GetString(r.ReadString());
+                //string description = Encoding.Default.GetString(r.ReadString());
 				_eventReceiver.OnConnectionClosed();
 				return false;
 			}
@@ -566,7 +566,7 @@ namespace Routrek.SSHCV2
 					}
 						break;
 					case PacketType.SSH_MSG_CHANNEL_REQUEST: {
-						string request = Encoding.ASCII.GetString(re.ReadString());
+                            string request = Encoding.Default.GetString(re.ReadString());
 						bool reply = re.ReadBool();
 						if(request=="exit-status") {
 							int status = re.ReadInt32();
@@ -611,7 +611,7 @@ namespace Routrek.SSHCV2
 						receiver.OnChannelError(null, "opening channel failed; packet type="+pt);
 					else {
 						int errcode = reader.ReadInt32();
-						string msg = Encoding.ASCII.GetString(reader.ReadString());
+                        string msg = Encoding.Default.GetString(reader.ReadString());
 						receiver.OnChannelError(null, msg);
 					}
 					Close();
@@ -675,7 +675,7 @@ namespace Routrek.SSHCV2
 						receiver.OnChannelError(null, "opening channel failed; packet type="+pt);
 					else {
 						int errcode = reader.ReadInt32();
-						string msg = Encoding.ASCII.GetString(reader.ReadString());
+                        string msg = Encoding.Default.GetString(reader.ReadString());
 						receiver.OnChannelError(null, msg);
 					}
 					Close();
@@ -698,7 +698,7 @@ namespace Routrek.SSHCV2
 					else {
 						int remote_id = reader.ReadInt32();
 						int errcode = reader.ReadInt32();
-						string msg = Encoding.ASCII.GetString(reader.ReadString());
+                        string msg = Encoding.Default.GetString(reader.ReadString());
 						receiver.OnChannelError(null, msg);
 					}
 					Close();
@@ -827,7 +827,7 @@ namespace Routrek.SSHCV2
 			SSH2DataReader re = new SSH2DataReader(_serverKEXINITPayload);
 			byte[] head = re.Read(17); //Type and cookie
 			if(head[0]!=(byte)PacketType.SSH_MSG_KEXINIT) throw new SSHException(String.Format("Server response is not SSH_MSG_KEXINIT but {0}", head[0]));
-			Encoding enc = Encoding.ASCII;
+            Encoding enc = Encoding.Default;
 			
 			string kex = enc.GetString(re.ReadString());
 			_cInfo._supportedKEXAlgorithms = kex;
@@ -942,12 +942,12 @@ namespace Routrek.SSHCV2
 
 		private bool VerifyHostKey(byte[] K_S, byte[] signature, byte[] hash) {
 			SSH2DataReader re1 = new SSH2DataReader(K_S);
-			string algorithm = Encoding.ASCII.GetString(re1.ReadString());
+            string algorithm = Encoding.Default.GetString(re1.ReadString());
 			if(algorithm!=SSH2Util.PublicKeyAlgorithmName(_cInfo._algorithmForHostKeyVerification))
 				throw new SSHException("Protocol Error: Host Key Algorithm Mismatch");
 
 			SSH2DataReader re2 = new SSH2DataReader(signature);
-			algorithm = Encoding.ASCII.GetString(re2.ReadString());
+            algorithm = Encoding.Default.GetString(re2.ReadString());
 			if(algorithm!=SSH2Util.PublicKeyAlgorithmName(_cInfo._algorithmForHostKeyVerification))
 				throw new SSHException("Protocol Error: Host Key Algorithm Mismatch");
 			byte[] sigbody = re2.ReadString();

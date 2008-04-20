@@ -247,7 +247,7 @@ namespace Routrek.SSHC
 				cv += param.SSH1VersionEOL;
 			else
 				cv += "\r\n";
-			byte[] data = Encoding.ASCII.GetBytes(cv);
+            byte[] data = Encoding.Default.GetBytes(cv);
 			stream.Write(data, 0, data.Length);
 		}
 	}

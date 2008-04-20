@@ -388,7 +388,7 @@ namespace Routrek.SSHCV1
 		private void ProcessPortforwardingRequest(ISSHConnectionEventReceiver receiver, SSH1Packet packet) {
 			SSH1DataReader reader = new SSH1DataReader(packet.Data);
 			int server_channel = reader.ReadInt32();
-			string host = Encoding.ASCII.GetString(reader.ReadString());
+            string host = Encoding.Default.GetString(reader.ReadString());
 			int port = reader.ReadInt32();
 
 			SSH1DataWriter writer = new SSH1DataWriter();

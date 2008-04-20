@@ -88,7 +88,7 @@ namespace Routrek.SSHCV2
 		 *  encrypted-body = array of BigInteger(algorithm-specific)
 		 */ 
 		public static SSH2UserAuthKey FromSECSHStyleStream(Stream strm, string passphrase) {
-			StreamReader r = new StreamReader(strm, Encoding.ASCII);
+            StreamReader r = new StreamReader(strm, Encoding.Default);
 			string l = r.ReadLine();
 			if(l==null || l!="---- BEGIN SSH2 ENCRYPTED PRIVATE KEY ----") throw new SSHException("Wrong key format");
 
@@ -105,7 +105,7 @@ namespace Routrek.SSHCV2
 			}
 			r.Close();
 
-			byte[] keydata = Base64.Decode(Encoding.ASCII.GetBytes(buf.ToString()));
+            byte[] keydata = Base64.Decode(Encoding.Default.GetBytes(buf.ToString()));
 			//Debug.WriteLine(DebugUtil.DumpByteArray(keydata));
 
 			/*
@@ -118,9 +118,9 @@ namespace Routrek.SSHCV2
 			int    magic         = re.ReadInt32();
 			if(magic!=MAGIC_VAL) throw new SSHException("key file is broken");
 			int    privateKeyLen = re.ReadInt32();
-			string type          = Encoding.ASCII.GetString(re.ReadString());
+            string type = Encoding.Default.GetString(re.ReadString());
 
-			string ciphername    = Encoding.ASCII.GetString(re.ReadString());
+            string ciphername = Encoding.Default.GetString(re.ReadString());
 			int    bufLen        = re.ReadInt32();
 			if(ciphername!="none") {
 				CipherAlgorithm algo = CipherFactory.SSH2NameToAlgorithm(ciphername);
@@ -220,18 +220,18 @@ namespace Routrek.SSHCV2
 			SSHUtil.WriteIntToByteArray(rawdata, 4, rawdata.Length); //fix total length
 
 			//step3 write final data
-			StreamWriter sw = new StreamWriter(dest, Encoding.ASCII);
+            StreamWriter sw = new StreamWriter(dest, Encoding.Default);
 			sw.WriteLine("---- BEGIN SSH2 ENCRYPTED PRIVATE KEY ----");
 			if(comment!=null)
 				WriteKeyFileBlock(sw, "Comment: " + comment, true);
-			WriteKeyFileBlock(sw, Encoding.ASCII.GetString(Base64.Encode(rawdata)), false);
+            WriteKeyFileBlock(sw, Encoding.Default.GetString(Base64.Encode(rawdata)), false);
 			sw.WriteLine("---- END SSH2 ENCRYPTED PRIVATE KEY ----");
 			sw.Close();
 
 		}
 
 		public void WritePublicPartInSECSHStyle(Stream dest, string comment) {
-			StreamWriter sw = new StreamWriter(dest, Encoding.ASCII);
+            StreamWriter sw = new StreamWriter(dest, Encoding.Default);
 			sw.WriteLine("---- BEGIN SSH2 PUBLIC KEY ----");
 			if(comment!=null)
 				WriteKeyFileBlock(sw, "Comment: " + comment, true);
@@ -241,7 +241,7 @@ namespace Routrek.SSHCV2
 
 		}
 		public void WritePublicPartInOpenSSHStyle(Stream dest) {
-			StreamWriter sw = new StreamWriter(dest, Encoding.ASCII);
+            StreamWriter sw = new StreamWriter(dest, Encoding.Default);
 			sw.Write(SSH2Util.PublicKeyAlgorithmName(_keypair.Algorithm));
 			sw.Write(' ');
 			sw.WriteLine(FormatBase64EncodedPublicKeyBody());
@@ -251,8 +251,8 @@ namespace Routrek.SSHCV2
 			SSH2DataWriter wr = new SSH2DataWriter();
 			wr.Write(SSH2Util.PublicKeyAlgorithmName(_keypair.Algorithm));
 			_keypair.PublicKey.WriteTo(wr);
-			
-			return Encoding.ASCII.GetString(Base64.Encode(wr.ToByteArray()));
+
+            return Encoding.Default.GetString(Base64.Encode(wr.ToByteArray()));
 		}
 
 		private static void WriteKeyFileBlock(StreamWriter sw, string data, bool escape_needed) {

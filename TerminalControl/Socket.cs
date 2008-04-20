@@ -96,7 +96,7 @@ namespace Routrek.SSHC
 				//the specification claims the version string ends with CRLF, however some servers send LF only
 				if(length<=2 || buf[offset+length-1]!=0x0A) throw new SSHException(Strings.GetString("NotSSHServer"));
 				//Debug.WriteLine(String.Format("receiveServerVersion len={0}",len));
-				string sv = Encoding.ASCII.GetString(buf, offset, length);
+                string sv = Encoding.Default.GetString(buf, offset, length);
 				_serverVersion = sv.Trim();
 				_endOfLine = sv.EndsWith("\r\n")? "\r\n" : "\n"; //quick hack
 
