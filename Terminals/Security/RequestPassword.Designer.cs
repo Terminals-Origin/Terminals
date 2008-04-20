@@ -86,7 +86,7 @@ namespace Terminals.Security {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelPasswordButton;
-            this.ClientSize = new System.Drawing.Size(253, 90);
+            this.ClientSize = new System.Drawing.Size(262, 92);
             this.ControlBox = false;
             this.Controls.Add(this.label2);
             this.Controls.Add(this.OkButton);
@@ -98,7 +98,6 @@ namespace Terminals.Security {
             this.MinimizeBox = false;
             this.Name = "RequestPassword";
             this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Terminals Password";
             this.Load += new System.EventHandler(this.RequestPassword_Load);
