@@ -32,7 +32,7 @@ namespace Terminals
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.chkShowOptions = new System.Windows.Forms.CheckBox();
+            this.MoreButton = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.pnlOptions = new System.Windows.Forms.Panel();
@@ -77,7 +77,7 @@ namespace Terminals
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.chkShowOptions);
+            this.panel2.Controls.Add(this.MoreButton);
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnCancel);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -86,18 +86,15 @@ namespace Terminals
             this.panel2.Size = new System.Drawing.Size(445, 53);
             this.panel2.TabIndex = 2;
             // 
-            // chkShowOptions
+            // MoreButton
             // 
-            this.chkShowOptions.AutoSize = true;
-            this.chkShowOptions.Checked = true;
-            this.chkShowOptions.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkShowOptions.Location = new System.Drawing.Point(16, 16);
-            this.chkShowOptions.Name = "chkShowOptions";
-            this.chkShowOptions.Size = new System.Drawing.Size(92, 17);
-            this.chkShowOptions.TabIndex = 2;
-            this.chkShowOptions.Text = "&Show Options";
-            this.chkShowOptions.UseVisualStyleBackColor = true;
-            this.chkShowOptions.CheckedChanged += new System.EventHandler(this.chkShowOptions_CheckedChanged);
+            this.MoreButton.Location = new System.Drawing.Point(16, 18);
+            this.MoreButton.Name = "MoreButton";
+            this.MoreButton.Size = new System.Drawing.Size(75, 23);
+            this.MoreButton.TabIndex = 3;
+            this.MoreButton.Text = "More...";
+            this.MoreButton.UseVisualStyleBackColor = true;
+            this.MoreButton.Click += new System.EventHandler(this.MoreButton_Click);
             // 
             // btnClose
             // 
@@ -171,7 +168,6 @@ namespace Terminals
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.pnlOptions.ResumeLayout(false);
             this.pnlOptions.PerformLayout();
             this.ResumeLayout(false);
@@ -187,8 +183,8 @@ namespace Terminals
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Panel pnlOptions;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.CheckBox chkShowOptions;
         internal System.Windows.Forms.CheckBox chkOpenOnNextTime;
         internal System.Windows.Forms.CheckBox chkDontShowDialog;
+        private System.Windows.Forms.Button MoreButton;
     }
 }

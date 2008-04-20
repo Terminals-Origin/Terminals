@@ -16,16 +16,16 @@ namespace Terminals
             Height = 160;
         }
 
-        private void chkShowOptions_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkShowOptions.Checked)
-            {
+        private void MoreButton_Click(object sender, EventArgs e) {
+
+            if(Height == 160) {
+                MoreButton.Text = "Less...";
+                Height = 230;
+            } else {
+                MoreButton.Text = "More...";
                 Height = 160;
             }
-            else
-            {
-                Height = 230;
-            }
+
         }
     }
 }
