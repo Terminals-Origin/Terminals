@@ -231,13 +231,14 @@ namespace Terminals
                 favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
                 favorite.Colors = (Colors)cmbColors.SelectedIndex;
                 favorite.ConnectToConsole = chkConnectToConsole.Checked;
-                favorite.DisableWallPaper = chkDisableCursorShadow.Checked;
+                favorite.DisableWallPaper = chkDisableWallpaper.Checked;
                 favorite.DisableCursorBlinking = chkDisableCursorBlinking.Checked;
                 favorite.DisableCursorShadow = chkDisableCursorShadow.Checked;
                 favorite.DisableFullWindowDrag = chkDisableFullWindowDrag.Checked;
                 favorite.DisableMenuAnimations = chkDisableMenuAnimations.Checked;
                 favorite.DisableTheming = chkDisableThemes.Checked;
 
+                
                 favorite.RedirectDrives = chkDrives.Checked;
                 favorite.RedirectPorts = chkSerialPorts.Checked;
                 favorite.RedirectPrinters = chkPrinters.Checked;
