@@ -692,7 +692,7 @@ namespace Terminals {
             this.vncActionButton.Image = ((System.Drawing.Image)(resources.GetObject("vncActionButton.Image")));
             this.vncActionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.vncActionButton.Name = "vncActionButton";
-            this.vncActionButton.Size = new System.Drawing.Size(29, 20);
+            this.vncActionButton.Size = new System.Drawing.Size(29, 22);
             this.vncActionButton.Text = "toolStripButton4";
             this.vncActionButton.Visible = false;
             // 
@@ -737,7 +737,7 @@ namespace Terminals {
             this.TerminalServerMenuButton.Image = global::Terminals.Properties.Resources.server_network;
             this.TerminalServerMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TerminalServerMenuButton.Name = "TerminalServerMenuButton";
-            this.TerminalServerMenuButton.Size = new System.Drawing.Size(29, 20);
+            this.TerminalServerMenuButton.Size = new System.Drawing.Size(29, 22);
             this.TerminalServerMenuButton.Text = "Terminal Server";
             this.TerminalServerMenuButton.DropDownOpening += new System.EventHandler(this.TerminalServerMenuButton_DropDownOpening);
             // 

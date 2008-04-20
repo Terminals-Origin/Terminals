@@ -1455,6 +1455,8 @@ namespace Terminals {
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if(FullScreen) FullScreen = false;
+            this.MainWindowNotifyIcon.Visible = false;
+
             if(tcTerminals.Items.Count > 0)
             {
                 if(Settings.ShowConfirmDialog)
