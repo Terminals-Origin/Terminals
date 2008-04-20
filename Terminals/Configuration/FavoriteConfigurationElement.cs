@@ -683,6 +683,47 @@ namespace Terminals
                 this["url"] = value;
             }
         }
+
+
+        [ConfigurationProperty("icaServerINI")]
+        public string IcaServerINI {
+            get {
+                return (string)this["icaServerINI"];
+            }
+            set {
+                this["icaServerINI"] = value;
+            }
+        }
+        [ConfigurationProperty("icaClientINI")]
+        public string IcaClientINI {
+            get {
+                return (string)this["icaClientINI"];
+            }
+            set {
+                this["icaClientINI"] = value;
+            }
+        }
+        [ConfigurationProperty("icaEnableEncryption")]
+        public bool IcaEnableEncryption {
+            get {
+                return (bool)this["icaEnableEncryption"];
+            }
+            set {
+                this["icaEnableEncryption"] = value;
+            }
+        }
+        [ConfigurationProperty("icaEncryptionLevel")]
+        public string IcaEncryptionLevel {
+            get {
+                return (string)this["icaEncryptionLevel"];
+            }
+            set {
+                this["icaEncryptionLevel"] = value;
+            }
+        }
+
+
+
         [ConfigurationProperty("port", DefaultValue = 3389)]
         public int Port
         {

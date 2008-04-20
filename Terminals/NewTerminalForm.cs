@@ -207,6 +207,13 @@ namespace Terminals
 
             httpUrlTextBox.Text = favorite.Url;
 
+            ICAClientINI.Text = favorite.IcaClientINI;
+            ICAServerINI.Text = favorite.IcaServerINI;
+            ICAEncryptionLevelCombobox.Text = favorite.IcaEncryptionLevel;
+            ICAEnableEncryptionCheckbox.Checked = favorite.IcaEnableEncryption;
+            ICAEncryptionLevelCombobox.Enabled = ICAEnableEncryptionCheckbox.Checked;
+
+
         }
 
         private bool FillFavorite()
@@ -308,6 +315,14 @@ namespace Terminals
                 favorite.DesktopSizeHeight = (int)this.heightUpDown.Value;
 
                 favorite.Url = httpUrlTextBox.Text;
+
+
+                favorite.IcaClientINI = ICAClientINI.Text;
+                favorite.IcaServerINI = ICAServerINI.Text;
+                favorite.IcaEncryptionLevel = ICAEncryptionLevelCombobox.Text;
+                ICAEnableEncryptionCheckbox.Checked = ICAEncryptionLevelCombobox.Enabled;
+
+
 
                 Settings.AddFavorite(favorite, showOnToolbar);
 
@@ -737,6 +752,10 @@ namespace Terminals
                 }
 
             }
+        }
+
+        private void ICAEnableEncryptionCheckbox_CheckedChanged(object sender, EventArgs e) {
+            ICAEncryptionLevelCombobox.Enabled = ICAEnableEncryptionCheckbox.Checked;
         }
 
     }

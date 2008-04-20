@@ -140,6 +140,12 @@ namespace Terminals
         this.TelnetRadioButton = new System.Windows.Forms.RadioButton();
         this.tabPage6 = new System.Windows.Forms.TabPage();
         this.ICAtabPage = new System.Windows.Forms.TabPage();
+        this.ICAEncryptionLevelCombobox = new System.Windows.Forms.ComboBox();
+        this.ICAEnableEncryptionCheckbox = new System.Windows.Forms.CheckBox();
+        this.ICAClientINI = new System.Windows.Forms.TextBox();
+        this.label35 = new System.Windows.Forms.Label();
+        this.ICAServerINI = new System.Windows.Forms.TextBox();
+        this.label34 = new System.Windows.Forms.Label();
         this.ICAWorkingFolder = new System.Windows.Forms.TextBox();
         this.label23 = new System.Windows.Forms.Label();
         this.ICAApplicationPath = new System.Windows.Forms.TextBox();
@@ -421,8 +427,8 @@ namespace Terminals
         this.cmbServers.Name = "cmbServers";
         this.cmbServers.Size = new System.Drawing.Size(172, 21);
         this.cmbServers.TabIndex = 1;
-        this.cmbServers.Leave += new System.EventHandler(this.cmbServers_Leave);
         this.cmbServers.SelectedIndexChanged += new System.EventHandler(this.cmbServers_SelectedIndexChanged);
+        this.cmbServers.Leave += new System.EventHandler(this.cmbServers_Leave);
         this.cmbServers.TextChanged += new System.EventHandler(this.cmbServers_TextChanged);
         // 
         // label2
@@ -1404,6 +1410,12 @@ namespace Terminals
         // 
         // ICAtabPage
         // 
+        this.ICAtabPage.Controls.Add(this.ICAEncryptionLevelCombobox);
+        this.ICAtabPage.Controls.Add(this.ICAEnableEncryptionCheckbox);
+        this.ICAtabPage.Controls.Add(this.ICAClientINI);
+        this.ICAtabPage.Controls.Add(this.label35);
+        this.ICAtabPage.Controls.Add(this.ICAServerINI);
+        this.ICAtabPage.Controls.Add(this.label34);
         this.ICAtabPage.Controls.Add(this.ICAWorkingFolder);
         this.ICAtabPage.Controls.Add(this.label23);
         this.ICAtabPage.Controls.Add(this.ICAApplicationPath);
@@ -1417,9 +1429,67 @@ namespace Terminals
         this.ICAtabPage.Text = "ICA Citrix";
         this.ICAtabPage.UseVisualStyleBackColor = true;
         // 
+        // ICAEncryptionLevelCombobox
+        // 
+        this.ICAEncryptionLevelCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+        this.ICAEncryptionLevelCombobox.Enabled = false;
+        this.ICAEncryptionLevelCombobox.FormattingEnabled = true;
+        this.ICAEncryptionLevelCombobox.Items.AddRange(new object[] {
+            "Encrypt / Basic (default)",
+            "EncRC5-0 / RC5 128 bit-logon only",
+            "EncRC5-40 / RC5 40 bit",
+            "EncRC5-56 / RC5 56 bit",
+            "EncRC5-128 / RC5 128 bit"});
+        this.ICAEncryptionLevelCombobox.Location = new System.Drawing.Point(145, 154);
+        this.ICAEncryptionLevelCombobox.Name = "ICAEncryptionLevelCombobox";
+        this.ICAEncryptionLevelCombobox.Size = new System.Drawing.Size(226, 21);
+        this.ICAEncryptionLevelCombobox.TabIndex = 11;
+        // 
+        // ICAEnableEncryptionCheckbox
+        // 
+        this.ICAEnableEncryptionCheckbox.AutoSize = true;
+        this.ICAEnableEncryptionCheckbox.Location = new System.Drawing.Point(6, 158);
+        this.ICAEnableEncryptionCheckbox.Name = "ICAEnableEncryptionCheckbox";
+        this.ICAEnableEncryptionCheckbox.Size = new System.Drawing.Size(112, 17);
+        this.ICAEnableEncryptionCheckbox.TabIndex = 10;
+        this.ICAEnableEncryptionCheckbox.Text = "Enable Encryption";
+        this.ICAEnableEncryptionCheckbox.UseVisualStyleBackColor = true;
+        this.ICAEnableEncryptionCheckbox.CheckedChanged += new System.EventHandler(this.ICAEnableEncryptionCheckbox_CheckedChanged);
+        // 
+        // ICAClientINI
+        // 
+        this.ICAClientINI.Location = new System.Drawing.Point(145, 118);
+        this.ICAClientINI.Name = "ICAClientINI";
+        this.ICAClientINI.Size = new System.Drawing.Size(226, 21);
+        this.ICAClientINI.TabIndex = 9;
+        // 
+        // label35
+        // 
+        this.label35.AutoSize = true;
+        this.label35.Location = new System.Drawing.Point(3, 121);
+        this.label35.Name = "label35";
+        this.label35.Size = new System.Drawing.Size(56, 13);
+        this.label35.TabIndex = 8;
+        this.label35.Text = "Client INI:";
+        // 
+        // ICAServerINI
+        // 
+        this.ICAServerINI.Location = new System.Drawing.Point(145, 91);
+        this.ICAServerINI.Name = "ICAServerINI";
+        this.ICAServerINI.Size = new System.Drawing.Size(226, 21);
+        this.ICAServerINI.TabIndex = 7;
+        // 
+        // label34
+        // 
+        this.label34.AutoSize = true;
+        this.label34.Location = new System.Drawing.Point(3, 94);
+        this.label34.Name = "label34";
+        this.label34.Size = new System.Drawing.Size(61, 13);
+        this.label34.TabIndex = 6;
+        this.label34.Text = "Server INI:";
+        // 
         // ICAWorkingFolder
         // 
-        this.ICAWorkingFolder.Enabled = false;
         this.ICAWorkingFolder.Location = new System.Drawing.Point(145, 64);
         this.ICAWorkingFolder.Name = "ICAWorkingFolder";
         this.ICAWorkingFolder.Size = new System.Drawing.Size(226, 21);
@@ -1812,8 +1882,8 @@ namespace Terminals
         this.ShowInTaskbar = false;
         this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
         this.Text = "New Connection";
-        this.Shown += new System.EventHandler(this.NewTerminalForm_Shown);
         this.Load += new System.EventHandler(this.NewTerminalForm_Load);
+        this.Shown += new System.EventHandler(this.NewTerminalForm_Shown);
         this.tabControl1.ResumeLayout(false);
         this.tabPage1.ResumeLayout(false);
         this.tabPage1.PerformLayout();
@@ -2018,5 +2088,11 @@ namespace Terminals
       private System.Windows.Forms.TabPage HTTPTabPage;
       private System.Windows.Forms.TextBox httpUrlTextBox;
       private System.Windows.Forms.Label label33;
+      private System.Windows.Forms.TextBox ICAServerINI;
+      private System.Windows.Forms.Label label34;
+      private System.Windows.Forms.TextBox ICAClientINI;
+      private System.Windows.Forms.Label label35;
+      private System.Windows.Forms.ComboBox ICAEncryptionLevelCombobox;
+      private System.Windows.Forms.CheckBox ICAEnableEncryptionCheckbox;
   }
 }

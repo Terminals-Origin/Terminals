@@ -62,6 +62,19 @@ namespace Terminals.Connections {
                         break;
 
                 }
+                iIcaClient.Application = "Terminals " + Program.TerminalsVersion.ToString();
+
+                iIcaClient.AppsrvIni = Favorite.IcaServerINI;
+                iIcaClient.WfclientIni = Favorite.IcaClientINI;
+                iIcaClient.Encrypt = Favorite.IcaEnableEncryption;
+                string encryptLevel = "Encrypt";
+                string specifiedLevel = Favorite.IcaEncryptionLevel.Trim();
+                if(specifiedLevel.Contains(" ")) {
+                    encryptLevel = specifiedLevel.Substring(0, specifiedLevel.IndexOf(" ")).Trim();
+                    if(encryptLevel != "") iIcaClient.EncryptionLevelSession = encryptLevel;
+                }
+                
+
 
 
                 iIcaClient.Domain = domainName;
