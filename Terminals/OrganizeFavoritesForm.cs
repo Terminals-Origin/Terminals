@@ -17,7 +17,7 @@ namespace Terminals
         }
 
         private void LoadConnections()
-        {
+        {            
             lvConnections.BeginUpdate();
             try
             {
@@ -25,12 +25,17 @@ namespace Terminals
                 FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
                 foreach (FavoriteConfigurationElement favorite in favorites)
                 {
+                    lvConnections.ShowItemToolTips = true;
                     ListViewItem item = lvConnections.Items.Add(favorite.Name);
+                    item.ToolTipText = favorite.Notes;
+                    
                     item.Name = favorite.Name;
                     item.SubItems.Add(favorite.Protocol);
                     item.SubItems.Add(favorite.ServerName);
                     item.SubItems.Add(favorite.DomainName);
                     item.SubItems.Add(favorite.UserName);
+                    item.SubItems.Add(favorite.Tags);
+                    item.SubItems.Add(favorite.Notes);
                     item.Tag = favorite;
                 }
             }
@@ -187,5 +192,7 @@ namespace Terminals
             }
             if(needsReload) LoadConnections();
         }
+
+
     }
 }

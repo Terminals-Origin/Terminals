@@ -44,6 +44,8 @@ namespace Terminals
             this.btnNew = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
             this.ImportOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.colTags = new System.Windows.Forms.ColumnHeader();
+            this.colNotes = new System.Windows.Forms.ColumnHeader();
             this.SuspendLayout();
             // 
             // lvConnections
@@ -56,7 +58,9 @@ namespace Terminals
             this.colProtocol,
             this.colComputer,
             this.colDomain,
-            this.colUser});
+            this.colUser,
+            this.colTags,
+            this.colNotes});
             this.lvConnections.FullRowSelect = true;
             this.lvConnections.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvConnections.LabelEdit = true;
@@ -68,8 +72,8 @@ namespace Terminals
             this.lvConnections.TabIndex = 1;
             this.lvConnections.UseCompatibleStateImageBehavior = false;
             this.lvConnections.View = System.Windows.Forms.View.Details;
-            this.lvConnections.DoubleClick += new System.EventHandler(this.btnEdit_Click);
             this.lvConnections.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.lvConnections_AfterLabelEdit);
+            this.lvConnections.DoubleClick += new System.EventHandler(this.btnEdit_Click);
             // 
             // colName
             // 
@@ -83,17 +87,17 @@ namespace Terminals
             // colComputer
             // 
             this.colComputer.Text = "Computer";
-            this.colComputer.Width = 123;
+            this.colComputer.Width = 89;
             // 
             // colDomain
             // 
             this.colDomain.Text = "Domain";
-            this.colDomain.Width = 100;
+            this.colDomain.Width = 63;
             // 
             // colUser
             // 
             this.colUser.Text = "User";
-            this.colUser.Width = 107;
+            this.colUser.Width = 51;
             // 
             // btnClose
             // 
@@ -181,6 +185,16 @@ namespace Terminals
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
+            // colTags
+            // 
+            this.colTags.Text = "Tags";
+            this.colTags.Width = 88;
+            // 
+            // colNotes
+            // 
+            this.colNotes.Text = "Notes";
+            this.colNotes.Width = 98;
+            // 
             // OrganizeFavoritesForm
             // 
             this.AcceptButton = this.btnClose;
@@ -232,5 +246,7 @@ namespace Terminals
         private System.Windows.Forms.ColumnHeader colProtocol;
         private System.Windows.Forms.Button ImportButton;
         private System.Windows.Forms.OpenFileDialog ImportOpenFileDialog;
+        private System.Windows.Forms.ColumnHeader colTags;
+        private System.Windows.Forms.ColumnHeader colNotes;
     }
 }

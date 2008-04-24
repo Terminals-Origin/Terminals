@@ -187,6 +187,8 @@ namespace Terminals
         this.fontDialog1 = new System.Windows.Forms.FontDialog();
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
+        this.NotesTextbox = new System.Windows.Forms.TextBox();
+        this.label36 = new System.Windows.Forms.Label();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -264,6 +266,8 @@ namespace Terminals
         // 
         // tabPage1
         // 
+        this.tabPage1.Controls.Add(this.NotesTextbox);
+        this.tabPage1.Controls.Add(this.label36);
         this.tabPage1.Controls.Add(this.pictureBox2);
         this.tabPage1.Controls.Add(this.DetectButton);
         this.tabPage1.Controls.Add(this.txtPort);
@@ -1862,6 +1866,24 @@ namespace Terminals
         this.ras1.UserName = null;
         this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
         // 
+        // NotesTextbox
+        // 
+        this.NotesTextbox.Location = new System.Drawing.Point(106, 192);
+        this.NotesTextbox.Multiline = true;
+        this.NotesTextbox.Name = "NotesTextbox";
+        this.NotesTextbox.PasswordChar = '*';
+        this.NotesTextbox.Size = new System.Drawing.Size(265, 73);
+        this.NotesTextbox.TabIndex = 18;
+        // 
+        // label36
+        // 
+        this.label36.AutoSize = true;
+        this.label36.Location = new System.Drawing.Point(7, 195);
+        this.label36.Name = "label36";
+        this.label36.Size = new System.Drawing.Size(39, 13);
+        this.label36.TabIndex = 17;
+        this.label36.Text = "Notes:";
+        // 
         // NewTerminalForm
         // 
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2094,5 +2116,7 @@ namespace Terminals
       private System.Windows.Forms.Label label35;
       private System.Windows.Forms.ComboBox ICAEncryptionLevelCombobox;
       private System.Windows.Forms.CheckBox ICAEnableEncryptionCheckbox;
+      private System.Windows.Forms.TextBox NotesTextbox;
+      private System.Windows.Forms.Label label36;
   }
 }

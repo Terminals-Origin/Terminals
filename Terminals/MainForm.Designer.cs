@@ -793,7 +793,7 @@ namespace Terminals {
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tcTerminals);
             this.splitContainer1.Size = new System.Drawing.Size(792, 474);
-            this.splitContainer1.SplitterDistance = 7;
+            this.splitContainer1.SplitterDistance = 215;
             this.splitContainer1.TabIndex = 7;
             // 
             // pnlTagsFavorites
@@ -805,7 +805,7 @@ namespace Terminals {
             this.pnlTagsFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTagsFavorites.Location = new System.Drawing.Point(0, 0);
             this.pnlTagsFavorites.Name = "pnlTagsFavorites";
-            this.pnlTagsFavorites.Size = new System.Drawing.Size(7, 474);
+            this.pnlTagsFavorites.Size = new System.Drawing.Size(215, 474);
             this.pnlTagsFavorites.TabIndex = 6;
             // 
             // tcTagsFavorites
@@ -821,7 +821,7 @@ namespace Terminals {
             this.tcTagsFavorites.Name = "tcTagsFavorites";
             this.tcTagsFavorites.SelectedItem = this.tciTags;
             this.tcTagsFavorites.ShowToolTipOnTitle = false;
-            this.tcTagsFavorites.Size = new System.Drawing.Size(0, 472);
+            this.tcTagsFavorites.Size = new System.Drawing.Size(203, 472);
             this.tcTagsFavorites.TabIndex = 9;
             // 
             // tciTags
@@ -830,6 +830,7 @@ namespace Terminals {
             this.tciTags.Controls.Add(this.lvTagConnections);
             this.tciTags.Controls.Add(this.lvTags);
             this.tciTags.Controls.Add(this.txtSearchTags);
+            this.tciTags.IsDrawn = true;
             this.tciTags.Name = "tciTags";
             this.tciTags.Selected = true;
             this.tciTags.TabIndex = 0;
@@ -844,9 +845,9 @@ namespace Terminals {
             this.lvTagConnections.ContextMenuStrip = this.cmsTagConnections;
             this.lvTagConnections.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvTagConnections.HideSelection = false;
-            this.lvTagConnections.Location = new System.Drawing.Point(0, 308);
+            this.lvTagConnections.Location = new System.Drawing.Point(0, 213);
             this.lvTagConnections.Name = "lvTagConnections";
-            this.lvTagConnections.Size = new System.Drawing.Size(0, 143);
+            this.lvTagConnections.Size = new System.Drawing.Size(201, 238);
             this.lvTagConnections.SmallImageList = this.ilTagConnections;
             this.lvTagConnections.TabIndex = 7;
             this.lvTagConnections.UseCompatibleStateImageBehavior = false;
@@ -935,7 +936,7 @@ namespace Terminals {
             this.lvTags.Location = new System.Drawing.Point(0, 21);
             this.lvTags.MultiSelect = false;
             this.lvTags.Name = "lvTags";
-            this.lvTags.Size = new System.Drawing.Size(0, 287);
+            this.lvTags.Size = new System.Drawing.Size(201, 192);
             this.lvTags.SmallImageList = this.ilTags;
             this.lvTags.TabIndex = 6;
             this.lvTags.UseCompatibleStateImageBehavior = false;
@@ -978,7 +979,7 @@ namespace Terminals {
             this.txtSearchTags.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtSearchTags.Location = new System.Drawing.Point(0, 0);
             this.txtSearchTags.Name = "txtSearchTags";
-            this.txtSearchTags.Size = new System.Drawing.Size(0, 21);
+            this.txtSearchTags.Size = new System.Drawing.Size(201, 21);
             this.txtSearchTags.TabIndex = 8;
             this.txtSearchTags.TextChanged += new System.EventHandler(this.txtSearchTags_TextChanged);
             // 
@@ -1030,7 +1031,7 @@ namespace Terminals {
             this.pnlHideTagsFavorites.BackColor = System.Drawing.Color.Gray;
             this.pnlHideTagsFavorites.Controls.Add(this.pbHideTagsFavorites);
             this.pnlHideTagsFavorites.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(0, 0);
+            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(208, 0);
             this.pnlHideTagsFavorites.Name = "pnlHideTagsFavorites";
             this.pnlHideTagsFavorites.Size = new System.Drawing.Size(5, 472);
             this.pnlHideTagsFavorites.TabIndex = 1;
@@ -1082,7 +1083,7 @@ namespace Terminals {
             this.tcTerminals.Location = new System.Drawing.Point(0, 0);
             this.tcTerminals.Name = "tcTerminals";
             this.tcTerminals.ShowToolTipOnTitle = false;
-            this.tcTerminals.Size = new System.Drawing.Size(781, 474);
+            this.tcTerminals.Size = new System.Drawing.Size(573, 474);
             this.tcTerminals.TabIndex = 3;
             this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.tcTerminals_TabControlMouseLeftTitle);
             this.tcTerminals.TabControlItemSelectionChanged += new TabControl.TabControlItemChangedHandler(this.tcTerminals_TabControlItemSelectionChanged);

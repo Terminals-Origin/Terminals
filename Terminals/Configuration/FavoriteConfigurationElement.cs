@@ -683,7 +683,29 @@ namespace Terminals
                 this["url"] = value;
             }
         }
+        static public string EncodeTo64(string toEncode) {
+            byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(toEncode);
+            string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
+            return returnValue;
+        }
+        static public string DecodeFrom64(string encodedData) {
+            byte[] encodedDataAsBytes = System.Convert.FromBase64String(encodedData);
+            string returnValue = System.Text.ASCIIEncoding.ASCII.GetString(encodedDataAsBytes);
+            return returnValue;
 
+        }
+
+
+        [ConfigurationProperty("notes")]
+        public string Notes {
+            get {
+                
+                return DecodeFrom64((string)this["notes"]);
+            }
+            set {
+                this["notes"] = EncodeTo64(value);
+            }
+        }
 
         [ConfigurationProperty("icaServerINI")]
         public string IcaServerINI {

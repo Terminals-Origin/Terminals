@@ -213,13 +213,13 @@ namespace Terminals
             ICAEnableEncryptionCheckbox.Checked = favorite.IcaEnableEncryption;
             ICAEncryptionLevelCombobox.Enabled = ICAEnableEncryptionCheckbox.Checked;
 
+            NotesTextbox.Text = favorite.Notes;
 
         }
 
         private bool FillFavorite()
         {
-            try
-            {
+            try {
                 favorite.VMRCAdministratorMode = VMRCAdminModeCheckbox.Checked;
                 favorite.VMRCReducedColorsMode = VMRCReducedColorsCheckbox.Checked;
                 favorite.Telnet = TelnetRadioButton.Checked;
@@ -245,7 +245,7 @@ namespace Terminals
                 favorite.DisableMenuAnimations = chkDisableMenuAnimations.Checked;
                 favorite.DisableTheming = chkDisableThemes.Checked;
 
-                
+
                 favorite.RedirectDrives = chkDrives.Checked;
                 favorite.RedirectPorts = chkSerialPorts.Checked;
                 favorite.RedirectPrinters = chkPrinters.Checked;
@@ -268,34 +268,28 @@ namespace Terminals
                 favorite.ICAApplicationWorkingFolder = ICAWorkingFolder.Text;
 
                 List<string> tagList = new List<string>();
-                foreach(ListViewItem listViewItem in lvConnectionTags.Items)
-                {
+                foreach(ListViewItem listViewItem in lvConnectionTags.Items) {
                     tagList.Add(listViewItem.Text);
                 }
                 favorite.Tags = String.Join(",", tagList.ToArray());
 
 
                 //extended settings
-                if (ShutdownTimeoutTextBox.Text.Trim() != "")
-                {
+                if(ShutdownTimeoutTextBox.Text.Trim() != "") {
                     favorite.ShutdownTimeout = Convert.ToInt32(ShutdownTimeoutTextBox.Text.Trim());
                 }
-                if (OverallTimeoutTextbox.Text.Trim() != "")
-                {
+                if(OverallTimeoutTextbox.Text.Trim() != "") {
                     favorite.OverallTimeout = Convert.ToInt32(OverallTimeoutTextbox.Text.Trim());
                 }
-                if (SingleTimeOutTextbox.Text.Trim() != "")
-                {
+                if(SingleTimeOutTextbox.Text.Trim() != "") {
                     favorite.ConnectionTimeout = Convert.ToInt32(SingleTimeOutTextbox.Text.Trim());
                 }
-                if (IdleTimeoutMinutesTextBox.Text.Trim() != "")
-                {
+                if(IdleTimeoutMinutesTextBox.Text.Trim() != "") {
                     favorite.IdleTimeout = Convert.ToInt32(IdleTimeoutMinutesTextBox.Text.Trim());
                 }
 
                 favorite.EnableSecuritySettings = SecuritySettingsEnabledCheckbox.Checked;
-                if (SecuritySettingsEnabledCheckbox.Checked)
-                {
+                if(SecuritySettingsEnabledCheckbox.Checked) {
                     favorite.SecurityWorkingFolder = SecurityWorkingFolderTextBox.Text;
                     favorite.SecurityStartProgram = SecuriytStartProgramTextbox.Text;
                     favorite.SecurityFullScreen = SecurityStartFullScreenCheckbox.Checked;
@@ -322,14 +316,12 @@ namespace Terminals
                 favorite.IcaEncryptionLevel = ICAEncryptionLevelCombobox.Text;
                 ICAEnableEncryptionCheckbox.Checked = ICAEncryptionLevelCombobox.Enabled;
 
-
+                favorite.Notes = NotesTextbox.Text;
 
                 Settings.AddFavorite(favorite, showOnToolbar);
 
                 return true;
-            }
-            catch(Exception e)
-            {
+            } catch(Exception e) {
                 Terminals.Logging.Log.Info("", e);
                 MessageBox.Show(this, e.Message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;

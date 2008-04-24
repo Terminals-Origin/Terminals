@@ -698,13 +698,15 @@ namespace Terminals {
                 {
                     toolTip +=
                     "Port: " + favorite.Port + Environment.NewLine +
-                    "Colors: " + favorite.Colors.ToString() + Environment.NewLine +
                     "Connect to Console: " + favorite.ConnectToConsole.ToString() + Environment.NewLine +
-                    "Desktop size: " + favorite.DesktopSize.ToString() + Environment.NewLine +
-                    "Redirect drives: " + favorite.RedirectDrives.ToString() + Environment.NewLine +
-                    "Redirect ports: " + favorite.RedirectPorts.ToString() + Environment.NewLine +
-                    "Redirect printers: " + favorite.RedirectPrinters.ToString() + Environment.NewLine +
-                    "Sounds: " + favorite.Sounds.ToString() + Environment.NewLine;
+                    "Notes: " + favorite.Notes + Environment.NewLine;
+
+                    //"Desktop size: " + favorite.DesktopSize.ToString() + Environment.NewLine +
+                    //"Colors: " + favorite.Colors.ToString() + Environment.NewLine +
+                    //"Redirect drives: " + favorite.RedirectDrives.ToString() + Environment.NewLine +
+                    //"Redirect ports: " + favorite.RedirectPorts.ToString() + Environment.NewLine +
+                    //"Redirect printers: " + favorite.RedirectPrinters.ToString() + Environment.NewLine +
+                    //"Sounds: " + favorite.Sounds.ToString() + Environment.NewLine;
                 }
             }
             return toolTip;
@@ -1751,6 +1753,7 @@ namespace Terminals {
         {
             connectToolStripMenuItem.Enabled = lvTags.SelectedItems.Count > 0;
             lvTagConnections.Items.Clear();
+            lvTagConnections.ShowItemToolTips = true;
             if(lvTags.SelectedItems.Count > 0)
             {
                 List<FavoriteConfigurationElement> tagFavorites = (List<FavoriteConfigurationElement>)lvTags.SelectedItems[0].Tag;
@@ -1759,7 +1762,8 @@ namespace Terminals {
                     ListViewItem item = lvTagConnections.Items.Add(favorite.Name);
                     item.ImageIndex = 0;
                     item.StateImageIndex = 0;
-                    item.Tag = favorite;
+                    item.Tag = favorite;                    
+                    item.ToolTipText = favorite.Notes;
                 }
             }
             lvTagConnections.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
