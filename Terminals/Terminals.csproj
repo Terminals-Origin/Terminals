@@ -222,6 +222,14 @@
     <Compile Include="Network\PortScanner.Designer.cs">
       <DependentUpon>PortScanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\WMI\PivotDataTable.cs" />
+    <Compile Include="SysInfo\SystemInformation.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SysInfo\SystemInformation.Designer.cs">
+      <DependentUpon>SystemInformation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SysInfo\SystemInformationNode.cs" />
     <Compile Include="Network\WakeOnLan.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -691,6 +699,10 @@
       <SubType>Designer</SubType>
       <DependentUpon>PortScanner.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SysInfo\SystemInformation.resx">
+      <DependentUpon>SystemInformation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\WakeOnLan.resx">
       <SubType>Designer</SubType>
       <DependentUpon>WakeOnLan.cs</DependentUpon>
@@ -787,6 +799,9 @@
     <EmbeddedResource Include="Resources\Refresh.gif" />
     <Content Include="Resources\server-administrator-icon.png" />
     <Content Include="Resources\server_network.gif" />
+    <None Include="SysInfo\Sysinfo.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="Thumbs\certmgr.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

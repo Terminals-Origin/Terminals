@@ -36,7 +36,7 @@ namespace Terminals.Connections
             this.tabbedTools1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabbedTools1.Location = new System.Drawing.Point(0, 0);
             this.tabbedTools1.Name = "tabbedTools1";
-            this.tabbedTools1.Size = new System.Drawing.Size(700, 500);
+            this.tabbedTools1.Size = new System.Drawing.Size(808, 500);
             this.tabbedTools1.TabIndex = 1;
             this.tabbedTools1.Load += new System.EventHandler(this.tabbedTools1_Load);
             // 
@@ -46,7 +46,7 @@ namespace Terminals.Connections
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabbedTools1);
             this.Name = "NetworkingToolsLayout";
-            this.Size = new System.Drawing.Size(700, 500);
+            this.Size = new System.Drawing.Size(808, 500);
             this.ResumeLayout(false);
 
         }

@@ -4,6 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Data;
+using System.Management;
 
 namespace WMITestClient
 {
@@ -38,7 +39,119 @@ namespace WMITestClient
         private Label ConnectionLabel;
         private IContainer components;
 
+        public static DataTable WMIToDataTable(string Query, string Computer, string Username, string Password)
+        {
+            
+            string qry = Query;
+            System.Management.ManagementObjectSearcher searcher;
+            System.Management.ObjectQuery query = new System.Management.ObjectQuery(qry);
 
+            if(Username != "" && Password != "" && Computer != "" && !Computer.StartsWith(@"\\localhost"))
+            {
+                System.Management.ConnectionOptions oConn = new System.Management.ConnectionOptions();
+                oConn.Username = Username;
+                oConn.Password = Password;
+                if(!Computer.StartsWith(@"\\")) Computer = @"\\" + Computer;
+                if(!Computer.ToLower().EndsWith(@"\root\cimv2")) Computer = Computer + @"\root\cimv2";
+                System.Management.ManagementScope oMs = new System.Management.ManagementScope(Computer, oConn);
+
+                searcher = new System.Management.ManagementObjectSearcher(oMs, query);
+            }
+            else
+            {
+                searcher = new System.Management.ManagementObjectSearcher(query);
+            }
+
+            System.Data.DataTable dt = new DataTable();
+            bool needsSchema = true;
+            int length = 0;
+            object[] values = null;
+            foreach(System.Management.ManagementObject share in searcher.Get())
+            {
+                if(needsSchema)
+                {
+                    foreach(System.Management.PropertyData p in share.Properties)
+                    {
+                        System.Data.DataColumn col = new DataColumn(p.Name, ConvertCimType(p.Type));
+                        dt.Columns.Add(col);
+                    }
+                    length = share.Properties.Count;
+                    needsSchema = false;
+                }
+
+                if(values == null) values = new object[length];
+                int x = 0;
+                foreach(System.Management.PropertyData p in share.Properties)
+                {
+                    if(p.Type == CimType.DateTime)
+                    {
+                        values[x] = System.Management.ManagementDateTimeConverter.ToDateTime(p.Value.ToString());
+                    }
+                    else
+                    {
+                        values[x] = p.Value;
+                    }
+                    x++;
+                }
+                dt.Rows.Add(values);
+                values = null;
+            }
+
+            return dt;
+        }
+        public static System.Type ConvertCimType(CimType ctValue)
+        {
+            System.Type tReturnVal = null;
+            switch(ctValue)
+            {
+                case CimType.Boolean:
+                    tReturnVal = typeof(System.Boolean);
+                    break;
+                case CimType.Char16:
+                    tReturnVal = typeof(System.String);
+                    break;
+                case CimType.DateTime:
+                    tReturnVal = typeof(System.DateTime);
+                    break;
+                case CimType.Object:
+                    tReturnVal = typeof(System.Object);
+                    break;
+                case CimType.Real32:
+                    tReturnVal = typeof(System.Decimal);
+                    break;
+                case CimType.Real64:
+                    tReturnVal = typeof(System.Decimal);
+                    break;
+                case CimType.Reference:
+                    tReturnVal = typeof(System.Object);
+                    break;
+                case CimType.SInt16:
+                    tReturnVal = typeof(System.Int16);
+                    break;
+                case CimType.SInt32:
+                    tReturnVal = typeof(System.Int32);
+                    break;
+                case CimType.SInt8:
+                    tReturnVal = typeof(System.Int16);
+                    break;
+                case CimType.String:
+                    tReturnVal = typeof(System.String);
+                    break;
+                case CimType.UInt16:
+                    tReturnVal = typeof(System.UInt16);
+                    break;
+                case CimType.UInt32:
+                    tReturnVal = typeof(System.UInt32);
+                    break;
+                case CimType.UInt64:
+                    tReturnVal = typeof(System.UInt64);
+                    break;
+                case CimType.UInt8:
+                    tReturnVal = typeof(System.UInt16);
+                    break;
+            }
+            return tReturnVal;
+        }
         public WMIControl()
         {
             //
