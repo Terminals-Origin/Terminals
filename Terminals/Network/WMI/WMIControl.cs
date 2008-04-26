@@ -28,15 +28,13 @@ namespace WMITestClient
         private System.Windows.Forms.MenuItem ClearmenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.MenuItem BasicTreemenuItem;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage QueryTabPage;
-        private System.Windows.Forms.TabPage ClassesTabPage;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.TreeView treeView2;
         private Button ConnectButton;
         private SplitContainer splitContainer1;
         private Panel panel1;
         private Label ConnectionLabel;
+        private SplitContainer splitContainer2;
         private IContainer components;
 
         public static DataTable WMIToDataTable(string Query, string Computer, string Username, string Password)
@@ -202,28 +200,26 @@ namespace WMITestClient
             this.BasicTreemenuItem = new System.Windows.Forms.MenuItem();
             this.ExitmenuItem = new System.Windows.Forms.MenuItem();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.QueryTabPage = new System.Windows.Forms.TabPage();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.ClassesTabPage = new System.Windows.Forms.TabPage();
             this.treeView2 = new System.Windows.Forms.TreeView();
             this.ConnectButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
             this.ConnectionLabel = new System.Windows.Forms.Label();
-            this.tabControl1.SuspendLayout();
-            this.QueryTabPage.SuspendLayout();
-            this.ClassesTabPage.SuspendLayout();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // QueryButton
             // 
             this.QueryButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.QueryButton.Location = new System.Drawing.Point(333, 7);
+            this.QueryButton.Location = new System.Drawing.Point(592, 7);
             this.QueryButton.Name = "QueryButton";
             this.QueryButton.Size = new System.Drawing.Size(67, 24);
             this.QueryButton.TabIndex = 1;
@@ -235,14 +231,14 @@ namespace WMITestClient
             this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.progressBar1.Location = new System.Drawing.Point(0, 56);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(494, 10);
+            this.progressBar1.Size = new System.Drawing.Size(753, 10);
             this.progressBar1.TabIndex = 5;
             // 
             // StopButton
             // 
             this.StopButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.StopButton.Enabled = false;
-            this.StopButton.Location = new System.Drawing.Point(408, 7);
+            this.StopButton.Location = new System.Drawing.Point(667, 7);
             this.StopButton.Name = "StopButton";
             this.StopButton.Size = new System.Drawing.Size(67, 24);
             this.StopButton.TabIndex = 2;
@@ -254,7 +250,7 @@ namespace WMITestClient
             this.QueryTextBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.QueryTextBox.Location = new System.Drawing.Point(0, 0);
             this.QueryTextBox.Name = "QueryTextBox";
-            this.QueryTextBox.Size = new System.Drawing.Size(494, 21);
+            this.QueryTextBox.Size = new System.Drawing.Size(753, 21);
             this.QueryTextBox.TabIndex = 0;
             this.QueryTextBox.Text = "select * from CIM_System";
             // 
@@ -318,44 +314,14 @@ namespace WMITestClient
             this.ExitmenuItem.Text = "E&xit";
             this.ExitmenuItem.Click += new System.EventHandler(this.ExitmenuItem_Click);
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.QueryTabPage);
-            this.tabControl1.Controls.Add(this.ClassesTabPage);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(494, 354);
-            this.tabControl1.TabIndex = 3;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
-            // 
-            // QueryTabPage
-            // 
-            this.QueryTabPage.Controls.Add(this.treeView1);
-            this.QueryTabPage.Location = new System.Drawing.Point(4, 22);
-            this.QueryTabPage.Name = "QueryTabPage";
-            this.QueryTabPage.Size = new System.Drawing.Size(486, 328);
-            this.QueryTabPage.TabIndex = 0;
-            this.QueryTabPage.Text = "Query";
-            // 
             // treeView1
             // 
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(486, 328);
+            this.treeView1.Size = new System.Drawing.Size(399, 399);
             this.treeView1.TabIndex = 3;
             this.treeView1.DoubleClick += new System.EventHandler(this.treeView1_DoubleClick);
-            // 
-            // ClassesTabPage
-            // 
-            this.ClassesTabPage.Controls.Add(this.treeView2);
-            this.ClassesTabPage.Location = new System.Drawing.Point(4, 22);
-            this.ClassesTabPage.Name = "ClassesTabPage";
-            this.ClassesTabPage.Size = new System.Drawing.Size(486, 328);
-            this.ClassesTabPage.TabIndex = 1;
-            this.ClassesTabPage.Text = "Classes";
             // 
             // treeView2
             // 
@@ -366,7 +332,7 @@ namespace WMITestClient
             treeNode1.Text = "To load-> Double Click";
             this.treeView2.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1});
-            this.treeView2.Size = new System.Drawing.Size(486, 328);
+            this.treeView2.Size = new System.Drawing.Size(350, 399);
             this.treeView2.TabIndex = 4;
             this.treeView2.DoubleClick += new System.EventHandler(this.treeView2_DoubleClick);
             this.treeView2.Click += new System.EventHandler(this.treeView2_Click);
@@ -397,8 +363,8 @@ namespace WMITestClient
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(494, 424);
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
+            this.splitContainer1.Size = new System.Drawing.Size(753, 469);
             this.splitContainer1.SplitterDistance = 66;
             this.splitContainer1.TabIndex = 7;
             // 
@@ -411,7 +377,7 @@ namespace WMITestClient
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 21);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(494, 35);
+            this.panel1.Size = new System.Drawing.Size(753, 35);
             this.panel1.TabIndex = 7;
             // 
             // ConnectionLabel
@@ -423,21 +389,38 @@ namespace WMITestClient
             this.ConnectionLabel.TabIndex = 7;
             this.ConnectionLabel.Text = "\\\\localhost\\root\\cimv2";
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.treeView2);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.treeView1);
+            this.splitContainer2.Size = new System.Drawing.Size(753, 399);
+            this.splitContainer2.SplitterDistance = 350;
+            this.splitContainer2.TabIndex = 5;
+            // 
             // WMIControl
             // 
             this.Controls.Add(this.splitContainer1);
             this.Name = "WMIControl";
-            this.Size = new System.Drawing.Size(494, 424);
+            this.Size = new System.Drawing.Size(753, 469);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
-            this.tabControl1.ResumeLayout(false);
-            this.QueryTabPage.ResumeLayout(false);
-            this.ClassesTabPage.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -510,8 +493,7 @@ namespace WMITestClient
         }
 
         private void QueryButton_Click(object sender, System.EventArgs e)
-        {
-            tabControl1.SelectedIndex = 0;
+        {            
             AddToHistory();
             StilRunning = true;
             this.QueryButton.Enabled = false;
@@ -540,6 +522,7 @@ namespace WMITestClient
                     }
                     System.Windows.Forms.TreeNode root = new TreeNode(qry);
                     root.Tag = "RootNode";
+                    root.Expand();
                     treeView1.Nodes.Add(root);
                     string path = "";
                     foreach (System.Management.ManagementObject share in searcher.Get())
@@ -824,8 +807,6 @@ namespace WMITestClient
         private void LoadBasicTree(string xml)
         {
 
-            tabControl1.SelectedIndex = 1;
-
             this.progressBar1.Value = 0;
 
             this.IncrementBar();
@@ -853,6 +834,8 @@ namespace WMITestClient
 
             LoadNode(n, root);
 
+            root.Expand();
+            if(root.Nodes != null && root.Nodes.Count > 0) root.Nodes[0].Expand();
 
             this.progressBar1.Value = 0;
         }
@@ -867,7 +850,6 @@ namespace WMITestClient
             else
             {
                 treeView1.Nodes.Clear();
-                tabControl1.SelectedIndex = 0;
                 Application.DoEvents();
                 treeView1_DoubleClick(treeView2, null);
                 Application.DoEvents();

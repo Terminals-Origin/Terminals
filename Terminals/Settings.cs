@@ -414,7 +414,9 @@ namespace Terminals
 
         public static FavoriteConfigurationElementCollection GetFavorites()
         {
-            return GetSection().Favorites;
+            TerminalsConfigurationSection section = GetSection();
+            if(section != null) return section.Favorites;
+            return null;
         }
 
         public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite)

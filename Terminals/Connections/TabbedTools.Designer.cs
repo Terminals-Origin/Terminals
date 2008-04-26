@@ -55,8 +55,6 @@ namespace Terminals.Connections
             this.wakeOnLan1 = new Terminals.Network.WakeOnLan();
             this.tabPage13 = new System.Windows.Forms.TabPage();
             this.portScanner1 = new Terminals.Network.PortScanner();
-            this.tabPage14 = new System.Windows.Forms.TabPage();
-            this.systemInformation1 = new Terminals.SysInfo.SystemInformation();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -71,7 +69,6 @@ namespace Terminals.Connections
             this.tabPage8.SuspendLayout();
             this.tabPage12.SuspendLayout();
             this.tabPage13.SuspendLayout();
-            this.tabPage14.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -89,14 +86,12 @@ namespace Terminals.Connections
             this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Controls.Add(this.tabPage12);
             this.tabControl1.Controls.Add(this.tabPage13);
-            this.tabControl1.Controls.Add(this.tabPage14);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(894, 335);
             this.tabControl1.TabIndex = 0;
-            this.tabControl1.Visible = false;
             this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
             // tabPage1
@@ -144,7 +139,7 @@ namespace Terminals.Connections
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(886, 309);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "WMI";
+            this.tabPage3.Text = "System";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // wmiControl1
@@ -302,7 +297,7 @@ namespace Terminals.Connections
             this.terminalServerManager1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.terminalServerManager1.Location = new System.Drawing.Point(0, 0);
             this.terminalServerManager1.Name = "terminalServerManager1";
-            this.terminalServerManager1.Size = new System.Drawing.Size(778, 309);
+            this.terminalServerManager1.Size = new System.Drawing.Size(886, 309);
             this.terminalServerManager1.TabIndex = 0;
             // 
             // tabPage12
@@ -343,25 +338,6 @@ namespace Terminals.Connections
             this.portScanner1.Size = new System.Drawing.Size(880, 303);
             this.portScanner1.TabIndex = 0;
             // 
-            // tabPage14
-            // 
-            this.tabPage14.Controls.Add(this.systemInformation1);
-            this.tabPage14.Location = new System.Drawing.Point(4, 22);
-            this.tabPage14.Name = "tabPage14";
-            this.tabPage14.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage14.Size = new System.Drawing.Size(886, 309);
-            this.tabPage14.TabIndex = 15;
-            this.tabPage14.Text = "System";
-            this.tabPage14.UseVisualStyleBackColor = true;
-            // 
-            // systemInformation1
-            // 
-            this.systemInformation1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.systemInformation1.Location = new System.Drawing.Point(3, 3);
-            this.systemInformation1.Name = "systemInformation1";
-            this.systemInformation1.Size = new System.Drawing.Size(880, 303);
-            this.systemInformation1.TabIndex = 0;
-            // 
             // TabbedTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -383,7 +359,6 @@ namespace Terminals.Connections
             this.tabPage8.ResumeLayout(false);
             this.tabPage12.ResumeLayout(false);
             this.tabPage13.ResumeLayout(false);
-            this.tabPage14.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -417,7 +392,5 @@ namespace Terminals.Connections
         private Terminals.Network.WakeOnLan wakeOnLan1;
         private System.Windows.Forms.TabPage tabPage13;
         private Terminals.Network.PortScanner portScanner1;
-        private System.Windows.Forms.TabPage tabPage14;
-        private Terminals.SysInfo.SystemInformation systemInformation1;
     }
 }

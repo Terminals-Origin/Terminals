@@ -77,11 +77,11 @@ namespace Terminals.Network.Servers
         private void TerminalServerManager_Load(object sender, EventArgs e)
         {
             ServerNameComboBox.Items.Clear();
-            foreach(FavoriteConfigurationElement elm in Settings.GetFavorites())
-            {
-                if(elm.Protocol == "RDP")
-                {
-                    this.ServerNameComboBox.Items.Add(elm.ServerName);
+            if(Settings.GetFavorites()!=null) {
+                foreach(FavoriteConfigurationElement elm in Settings.GetFavorites()) {
+                    if(elm.Protocol == "RDP") {
+                        this.ServerNameComboBox.Items.Add(elm.ServerName);
+                    }
                 }
             }
         }

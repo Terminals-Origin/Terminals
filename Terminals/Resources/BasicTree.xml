@@ -1,77 +1,5 @@
 <?xml version="1.0"?>
-<tree Text="WMI Classes">
- <node Text="WMI System Classes" Type="" Alt="Predefined classes based on the Common Information Model (CIM) and included in every namespace in the Windows Management Instrumentation (WMI) core.">
-  <node Text="Abstract Base Classes">
-   <node Text="__NotifyStatus" Type="ClassNode" Alt="The __NotifyStatus system class is an abstract base class that can be the superclass for provider-defined error classes."></node>
-   <node Text="__PARAMETERS" Type="ClassNode" Alt="The __PARAMETERS system class is an abstract class that defines the input and output parameters for methods. It is also used to pass input and output parameter values between a Windows Management Instrumentation (WMI) client and a method provider."></node>
-   <node Text="__SecurityRelatedClass" Type="ClassNode" Alt="The __SecurityRelatedClass system class is an abstract base class that serves as a superclass for all types of security classes. No instances of this class are ever created, and all security classes must derive from this base class."></node>
-   <node Text="__SystemClass" Type="ClassNode" Alt="The __SystemClass system class is the abstract base class from which most system classes derive. Instances of this class cannot be created."></node>
-   <node Text="__SystemSecurity" Type="ClassNode" Alt="The __SystemSecurity system class contains methods that let you access and modify the security settings for a namespace. The __SystemSecurity class is a singleton class."></node>
-  </node>
-  <node Text="System Classes You Can Use as Base Classes" Type="" Alt="">
-   <node Text="__EventConsumer" Type="ClassNode" Alt="Creates new consumer types."></node>
-   <node Text="__ExtendedStatus" Type="ClassNode" Alt="Creates new error object types."></node>
-   <node Text="__ExtrinsicEvent" Type="ClassNode" Alt="Creates new event types."></node>
-   <node Text="__Namespace" Type="ClassNode" Alt="Used to create namespaces."></node>
-   <node Text="__Win32Provider" Type="ClassNode" Alt="Registers information about a provider's physical implementation in WMI."></node>
-  </node>
-  <node Text="System Classes You Cannot Use as Base Classes" Type="" Alt="">
-   <node Text="__AbsoluteTimerInstruction" Type="ClassNode" Alt="Causes an event to be generated on a specific date at a specific time."></node>
-   <node Text="__ADAPStatus" Type="ClassNode" Alt="Reports the current status of the AutoDiscovery/AutoPurge (ADAP) process. This process collects and maintains performance counter objects in WMI."></node>
-   <node Text="__AggregateEvent" Type="ClassNode" Alt="Represents an aggregate event, which is an event that summarizes several individual intrinsic or extrinsic events."></node>
-   <node Text="__CacheControl" Type="ClassNode" Alt="Base class for classes used to determine when WMI should release a Component Object Model (COM) object."></node>
-   <node Text="__CIMOMIdentification" Type="ClassNode" Alt="Describes the specific installation of WMI."></node>
-   <node Text="__ClassCreationEvent" Type="ClassNode" Alt="Represents a class creation event."></node>
-   <node Text="__ClassDeletionEvent" Type="ClassNode" Alt="Represents a class deletion event."></node>
-   <node Text="__ClassModificationEvent" Type="ClassNode" Alt="Represents a class modification event."></node>
-   <node Text="__ClassOperationEvent" Type="ClassNode" Alt="Base class for all intrinsic events that relate to a class."></node>
-   <node Text="__ClassProviderRegistration" Type="ClassNode" Alt="Registers class providers in WMI."></node>
-   <node Text="__ConsumerFailureEvent" Type="ClassNode" Alt="Represents the occurrence of an event being dropped due to a failure of an event consumer."></node>
-   <node Text="__Event" Type="ClassNode" Alt="Abstract base class that serves as the superclass for all intrinsic and extrinsic events."></node>
-   <node Text="__EventConsumerProviderCacheControl" Type="ClassNode" Alt="Used to determine when WMI releases an event consumer provider."></node>
-   <node Text="__EventConsumerProviderRegistration" Type="ClassNode" Alt="Registers event consumer providers with WMI."></node>
-   <node Text="__EventDroppedEvent" Type="ClassNode" Alt="Represents the occurrence of an event being dropped."></node>
-   <node Text="__EventFilter" Type="ClassNode" Alt="Used by event consumers to register for specific types of events."></node>
-   <node Text="__EventGenerator" Type="ClassNode" Alt="Abstract base class that is a superclass for classes that generate events that are not based on classes or instances, for example, timed or repeating events."></node>
-   <node Text="__EventProviderCacheControl" Type="ClassNode" Alt="Used to control when an event provider is unloaded."></node>
-   <node Text="__EventProviderRegistration" Type="ClassNode" Alt="Registers event providers in WMI."></node>
-   <node Text="__EventQueueOverflowEvent" Type="ClassNode" Alt="Represents an event raised when an event is dropped because of delivery queue overflow."></node>
-   <node Text="__EventSinkCacheControl" Type="ClassNode" Alt="Used to determine when WMI releases an event consumer provider's IWbemUnboundObjectSink pointer."></node>
-   <node Text="__FilterToConsumerBinding" Type="ClassNode" Alt="Association class that relates an instance of the __EventConsumer system class to an instance of the __EventFilter system class."></node>
-   <node Text="__IndicationRelated" Type="ClassNode" Alt="Abstract base class that is a superclass for all event-related classes."></node>
-   <node Text="__InstanceCreationEvent" Type="ClassNode" Alt="Represents an instance creation event."></node>
-   <node Text="__InstanceDeletionEvent" Type="ClassNode" Alt="Represents an instance deletion event."></node>
-   <node Text="__InstanceModificationEvent" Type="ClassNode" Alt="Represents an instance modification event."></node>
-   <node Text="__InstanceOperationEvent" Type="ClassNode" Alt="Base class for all intrinsic events that relate to an instance."></node>
-   <node Text="__InstanceProviderRegistration" Type="ClassNode" Alt="Registers instance providers with WMI."></node>
-   <node Text="__IntervalTimerInstruction" Type="ClassNode" Alt="Used to generate events at intervals."></node>
-   <node Text="__MethodInvocationEvent" Type="ClassNode" Alt="Reports a method call event."></node>
-   <node Text="__MethodProviderRegistration" Type="ClassNode" Alt="Registers method providers with WMI."></node>
-   <node Text="__NamespaceCreationEvent" Type="ClassNode" Alt="Represents a namespace creation event."></node>
-   <node Text="__NamespaceDeletionEvent" Type="ClassNode" Alt="Represents a namespace deletion event."></node>
-   <node Text="__NamespaceModificationEvent" Type="ClassNode" Alt="Represents a namespace modification event."></node>
-   <node Text="__NamespaceOperationEvent" Type="ClassNode" Alt="Base class for all intrinsic events that relate to a namespace."></node>
-   <node Text="__NotifyStatus" Type="ClassNode" Alt="Abstract base class that can be the superclass for provider-defined error classes."></node>
-   <node Text="__NTLMUser9X" Type="ClassNode" Alt="Used to allow remote access to a Microsoft Windows Me/98/95 computer."></node>
-   <node Text="__ObjectProviderCacheControl" Type="ClassNode" Alt="Used to control when a provider is unloaded."></node>
-   <node Text="__ObjectProviderRegistration" Type="ClassNode" Alt="Abstract base class that serves as the superclass for classes used to register class and instance providers in WMI."></node>
-   <node Text="__PARAMETERS" Type="ClassNode" Alt="Abstract class used to define methods, and pass input and output arguments to a method provider."></node>
-   <node Text="__PropertyProviderCacheControl" Type="ClassNode" Alt="Used to control the cache when a property provider is unloaded."></node>
-   <node Text="__PropertyProviderRegistration" Type="ClassNode" Alt="Registers property providers with WMI."></node>
-   <node Text="__Provider" Type="ClassNode" Alt="Abstract base class that serves as the superclass for the __Win32Provider system class."></node>
-   <node Text="__ProviderHostQuotaConfiguration" Type="ClassNode" Alt="Configuration class for host provider processes."></node>
-   <node Text="__ProviderRegistration" Type="ClassNode" Alt="Abstract base class that serves as the superclass for registration classes of various types of providers."></node>
-   <node Text="__SecurityRelatedClass" Type="ClassNode" Alt="Abstract base class that serves as the superclass for all types of security classes."></node>
-   <node Text="__SystemClass" Type="ClassNode" Alt="Abstract base class from which all system classes derive."></node>
-   <node Text="__SystemEvent" Type="ClassNode" Alt="Represents a system event."></node>
-   <node Text="__SystemSecurity" Type="ClassNode" Alt="Used to manage WMI security in the Microsoft Windows Server 2003 family, Windows XP, Windows 2000, and Windows NT operating systems."></node>
-   <node Text="__thisNAMESPACE" Type="ClassNode" Alt="Holds the security rights for the namespace in the form of a security descriptor (SD)."></node>
-   <node Text="__TimerEvent" Type="ClassNode" Alt="Represents an event that WMI generates in response to a consumer request for an interval timer event, or an absolute timer event."></node>
-   <node Text="__TimerInstruction" Type="ClassNode" Alt="Abstract base class for classes used to specify instructions about how timer events are generated for consumers."></node>
-   <node Text="__TimerNextFiring" Type="ClassNode" Alt="Reserved class."></node>
-  </node>
- </node>
-  <node Text="Win32 Classes" Type="" Alt="Microsoftr Windowsr classes give you the means to manipulate a variety of objects. The following table identifies the categories of Windows classes.">
+<tree Text="Computer System Information" Alt="Double click a node to query the computer">
    <node Text="Computer system hardware" Type="" Alt="Classes that represent hardware related objects.">
     <node Text="Cooling device classes" Type="" Alt="The Cooling Devices subcategory groups classes that represent instrumentable fans, temperature probes, and refrigeration devices.">
      <node Text="Win32_Fan" Type="ClassNode" Alt="Represents the properties of a fan device in the computer system."></node>
@@ -592,7 +520,6 @@
       <node Text="Win32_PerfRawData_W3SVC_WebService" Type="ClassNode" Alt="Represents counters specific to the World Wide Web Publishing Service."></node>
     </node>   
    </node>
-  </node>
   <node Text="CIM Classes" Type="" Alt="Base schema classes.">
     <node Text="CIM_Action" Type="ClassNode" Alt="Creates a software element in its next state or  eliminates the software element in the current state."></node>
     <node Text="CIM_ActionSequence" Type="ClassNode" Alt="Defines a series of operations that transition the software element (referenced by the CIM_SoftwareElementActions association) to its next state, or removes the software element from its current state. "></node>
@@ -869,100 +796,5 @@
     <node Text="CIM_VoltageSensor" Type="ClassNode" Alt="Exists for backward compatibility with  earlier CIM schema definitions."></node>
     <node Text="CIM_VolumeSet" Type="ClassNode" Alt="Represents a contiguous range of logical blocks presented to the operating environment for reading and writing user data."></node>
     <node Text="CIM_WORMDrive" Type="ClassNode" Alt="Represents  the capabilities and management  of a WORM drive, a subtype of the media access device."></node>
-  </node>
-  
-  <node Text="MSFT Classes" Type="" Alt="Classes that offer the means to manipulate a variety of objects, including remote events and policy extensions.">
-    <node Text="Correlation classes " Type="" Alt="">
-        <node Text="Correlation Consumers" Type="" Alt="Classes for Event Correlator functionality.">
-          <node Text="MSFT_TemplateAssociation" Type="ClassNode" Alt="Represents an association between a template object and an object created by a template builder."></node>
-          <node Text="MSFT_TemplateBase" Type="ClassNode" Alt="Base class from which all template classes can optionally derive."></node>
-          <node Text="MSFT_TemplateBuilder" Type="ClassNode" Alt="Specifies a low-level object that is created when the user creates an instance of a template object."></node>
-          <node Text="MSFT_TemplateErrorStatus" Type="ClassNode" Alt="Represents error information returned by the template provider when creating template instances."></node>
-          <node Text="MSFT_TransientEggTimerEvent" Type="ClassNode" Alt="Represents the expiration of a particular timer associated with an transient provider instance."></node>
-          <node Text="MSFT_TransientRebootEvent" Type="ClassNode" Alt="Represents an event fired on Windows Management startup."></node>
-          <node Text="MSFT_UCScenario" Type="ClassNode" Alt="Logical grouping of updating consumers and correlation state instances."></node>
-          <node Text="MSFT_UCTraceEventBase" Type="ClassNode" Alt="Base class used to fire tracing events for observing the outcome of an updating consumer execution."></node>
-          <node Text="MSFT_UpdatingConsumer" Type="ClassNode" Alt="Regular WMI event consumer that is associated with one or more update commands describing the actions to take on event notification."></node>
-          <node Text="MSFT_UCEventBase" Type="ClassNode" Alt="The base class for updating consumer events that is derived from __ExtrinsicEvent."></node>
-        </node>
-        <node Text="Base Classes" Type="" Alt="Base classes used in correlation templates and scenarios.">
-            <node Text="MSFT_TransientStateBase" Type="ClassNode" Alt="Abstract base class for correlation state computers."></node>
-        </node>
-        <node Text="Supporting Classes for the Updating Consumer" Type="" Alt="Classes and template classes that are used to develop correlation scenarios.">    
-          <node Text="MSFT_UCCommandTraceEvent" Type="ClassNode" Alt="Permits you to observe the execution of individual statements within an updating consumer."></node>
-          <node Text="MSFT_UCDeleteCommandTraceEvent" Type="ClassNode" Alt="Permits you to observe the execution of an individual UQL deletion."></node>
-          <node Text="MSFT_UCDeleteInstanceTraceEvent" Type="ClassNode" Alt="Fired each time the updating consumer performs a Delete command on an object."></node>
-          <node Text="MSFT_UCInsertCommandTraceEvent" Type="ClassNode" Alt="Permits you to observe the execution of an individual UQL insertion."></node>
-          <node Text="MSFT_UCInsertInstanceTraceEvent" Type="ClassNode" Alt="Fired each time the updating consumer performs an Insert command on an object."></node>
-          <node Text="MSFT_UCInstanceTraceEvent" Type="ClassNode" Alt="Provides the ability to trace events at a very granular level."></node>
-          <node Text="MSFT_UCScenarioAssociation" Type="ClassNode" Alt="Associates elements of a correlation scenario with the correlation scenario."></node>
-          <node Text="MSFT_UCScenarioAssociationInfo" Type="ClassNode" Alt="Directs the association provider on how to determine exactly what instances are associated with the scenario."></node>
-          <node Text="MSFT_UCUpdateCommandTraceEvent" Type="ClassNode" Alt="Permits you to observe the execution of an individual UQL UPDATE statement."></node>
-          <node Text="MSFT_UCUpdateInstanceTraceEvent" Type="ClassNode" Alt="Fired each time the updating consumer performs an Insert command on an object."></node>
-        </node>
-    </node>
-    <node Text="Supporting Classes for the Forwarding Consumer" Type="" Alt="A forwarding consumer is a WMI event consumer that forwards WMI events to a target machine. When the events are received at the destination, they are then raised again as WMI events. This feature allows local actions to be taken on WMI events that originated on remote machines.">
-      <node Text="MSFT_FCExecutedTraceEvent" Type="ClassNode" Alt="Represents an execution of the forwarding consumer."></node>
-      <node Text="MSFT_FCTargetTraceEvent" Type="ClassNode" Alt="Represents an attempt to forward a message to a target."></node>
-      <node Text="MSFT_FCTraceEventBase" Type="ClassNode" Alt="Base class for all forwarding consumer trace events."></node>
-      <node Text="MSFT_ForwardingConsumer" Type="ClassNode" Alt="Represents an event consumer that forwards messages to target computer(s)."></node>
-      <node Text="MSFT_ForwardedEvent" Type="ClassNode" Alt="Indicates the arrival of a forwarded event."></node>
-      <node Text="MSFT_ForwardedMessageEvent" Type="ClassNode" Alt="Base class for all forwarded messages."></node>
-    </node>
-    <node Text="Policy provider classes" Type="" Alt="The WMI policy provider provides extensions to group policy, permitting refinements in the application of policy. Policy is set using the WMI Query Language (WQL) and resides in the Active Directory for easy deployment.">
-      <node Text="MSFT_Providers" Type="ClassNode" Alt="Exposes configuration relating to provider instances."></node>
-      <node Text="MSFT_Rule" Type="ClassNode" Alt="Defines a single rule within a Scope of Management (SOM)."></node>
-      <node Text="MSFT_SomFilter" Type="ClassNode" Alt="Provides a list of rules which are evaluated on a target machine."></node>
-    </node>
-    <node Text="Troubleshooting classes" Type="" Alt="The following table lists the classes for WMI provider troubleshooting. Each class is associated with the WMI provider event to which it is coupled.">
-      <node Text="MSFT_WmiProvider_AccessCheck_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemEventProviderSecurity::AccessCheck."></node>
-      <node Text="MSFT_WmiProvider_AccessCheck_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemEventProviderSecurity::AccessCheck."></node>
-      <node Text="MSFT_WmiProvider_CancelQuery_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemEventProviderQuerySink::CancelQuery."></node>
-      <node Text="MSFT_WmiProvider_CancelQuery_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemEventProviderQuerySink::CancelQuery."></node>
-      <node Text="MSFT_WmiProvider_ComServerLoadOperationEvent" Type="ClassNode" Alt="Event class instance generated for COM server instance activation."></node>
-      <node Text="MSFT_WmiProvider_ComServerLoadOperationFailureEvent" Type="ClassNode" Alt="Event class instance generated for COM server instance activation failure."></node>
-      <node Text="MSFT_WmiProvider_CreateClassEnumAsyncEvent_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemServices::CreateClassEnumAsync."></node>
-      <node Text="MSFT_WmiProvider_CreateClassEnumAsyncEvent_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemServices::CreateClassEnumAsync."></node>
-      <node Text="MSFT_WmiProvider_CreateInstanceEnumAsyncEvent_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemServices::CreateInstanceEnumAsync."></node>
-      <node Text="MSFT_WmiProvider_CreateInstanceEnumAsyncEvent_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemServices::CreateInstanceEnumAsync."></node>
-      <node Text="MSFT_WmiProvider_DeleteClassAsyncEvent_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemServices::DeleteClassAsync."></node>
-      <node Text="MSFT_WmiProvider_DeleteClassAsyncEvent_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemServices::DeleteClassAsync."></node>
-      <node Text="MSFT_WmiProvider_DeleteInstanceAsyncEvent_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemServices::DeleteInstanceAsync."></node>
-      <node Text="MSFT_WmiProvider_DeleteInstanceAsyncEvent_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemServices::DeleteInstanceAsync."></node>
-      <node Text="MSFT_WmiProvider_ExecMethodAsyncEvent_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemServices::ExecMethodAsync."></node>
-      <node Text="MSFT_WmiProvider_ExecMethodAsyncEvent_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemServices::ExecMethodAsync."></node>
-      <node Text="MSFT_WmiProvider_ExecQueryAsyncEvent_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemServices::ExecQueryAsync."></node>
-      <node Text="MSFT_WmiProvider_ExecQueryAsyncEvent_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemServices::ExecQueryAsync."></node>
-      <node Text="MSFT_WmiProvider_GetObjectAsyncEvent_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemServices::GetObjectAsync."></node>
-      <node Text="MSFT_WmiProvider_GetObjectAsyncEvent_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemServices::GetObjectAsync"></node>
-      <node Text="MSFT_WmiProvider_InitializationOperationEvent" Type="ClassNode" Alt="Event class instance generated for successful initialization of the provider server instance."></node>
-      <node Text="MSFT_WmiProvider_InitializationOperationFailureEvent" Type="ClassNode" Alt="Event class instance generated for failed initialization of the provider server instance."></node>
-      <node Text="MSFT_WmiProvider_LoadOperationEvent" Type="ClassNode" Alt="Event class instance generated or successful activation and initialization of the provider cache entry."></node>
-      <node Text="MSFT_WmiProvider_LoadOperationFailureEvent" Type="ClassNode" Alt="Event class instance generated for failed activation and initialization of the provider cache entry."></node>
-      <node Text="MSFT_WmiProvider_NewQuery_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemEventProviderQuerySink::NewQuery."></node>
-      <node Text="MSFT_WmiProvider_NewQuery_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemEventProviderQuerySink::NewQuery."></node>
-      <node Text="MSFT_WmiProvider_OperationEvent" Type="ClassNode" Alt="Base class for WMI provider troubleshooting event classes."></node>
-      <node Text="MSFT_WmiProvider_OperationEvent_Post" Type="ClassNode" Alt="Base class for troubleshooting events following completion of provider implementation."></node>
-      <node Text="MSFT_WmiProvider_OperationEvent_Pre" Type="ClassNode" Alt="Base class for troubleshooting events prior to calling provider implementation."></node>
-      <node Text="MSFT_WmiProvider_ProvideEvents_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemEventProvider::ProvideEvents."></node>
-      <node Text="MSFT_WmiProvider_ProvideEvents_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemEventProvider::ProvideEvents."></node>
-      <node Text="MSFT_WmiProvider_PutClassAsyncEvent_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemServices::PutClassAsync."></node>
-      <node Text="MSFT_WmiProvider_PutClassAsyncEvent_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemServices::PutClassAsync."></node>
-      <node Text="MSFT_WmiProvider_PutInstanceAsyncEvent_Post" Type="ClassNode" Alt="Event class instance generated immediately following completion of the provider's implementation of IWbemServices::PutInstanceAsync."></node>
-      <node Text="MSFT_WmiProvider_PutInstanceAsyncEvent_Pre" Type="ClassNode" Alt="Event class instance generated immediately prior to calling the provider's implementation of IWbemServices::PutInstanceAsync."></node>
-      <node Text="MSFT_WmiProvider_UnloadOperationEvent" Type="ClassNode" Alt="Event class instance generated for removal of the provider cache entry."></node>
-    </node>
-    <node Text="Event Classes" Type="" Alt="The following table identifies the MSFT classes for Windowsr Management Instrumentation (WMI) events.">
-      <node Text="MSFT_WmiConsumerProviderEvent" Type="ClassNode" Alt="Parent class for all consumer provider events."></node>
-      <node Text="MSFT_WmiConsumerProviderLoaded" Type="ClassNode" Alt="Defines the successful activation of the event consumer provider COM object."></node>
-      <node Text="MSFT_WmiConsumerProviderUnloaded" Type="ClassNode" Alt="Defines the successful deactivation of the event consumer provider COM object."></node>
-      <node Text="MSFT_WmiConsumerProviderSinkLoaded" Type="ClassNode" Alt="Defines the successful activation of the event consumer provider sink object."></node>
-      <node Text="MSFT_WmiConsumerProviderSinkUnloaded" Type="ClassNode" Alt="Defines the successful deactivation of the event consumer provider sink object."></node>
-      <node Text="MSFT_WmiEssEvent" Type="ClassNode" Alt="Parent class for all WMI Eventing SubSystem (ESS) self events."></node>
-      <node Text="MSFT_WmiFilterActivated" Type="ClassNode" Alt="Defines the successful activation of a subscription filter."></node>
-      <node Text="MSFT_WmiFilterDeactivated" Type="ClassNode" Alt="Defines the successful deactivation of a subscription filter."></node>
-      <node Text="MSFT_WmiFilterEvent" Type="ClassNode" Alt="Parent class for all filter events."></node>
-      <node Text="MSFT_WmiProviderEvent" Type="ClassNode" Alt="Parent class for all consumer provider events."></node>
-    </node>
   </node>  
 </tree>

@@ -22,10 +22,6 @@ namespace Terminals.Connections
             if (OnTabChanged != null) OnTabChanged(sender, e);
         }
 
-        private void terminalServerManager1_Load(object sender, EventArgs e)
-        {
-
-        }
         public void Execute(string Action, string Host)
         {
             switch(Action)
