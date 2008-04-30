@@ -119,10 +119,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\TransPort2006.Design.dll</HintPath>
     </Reference>
-    <Reference Include="VncSharp, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Resources\VncSharp.dll</HintPath>
-    </Reference>
     <Reference Include="ZedGraph, Version=5.1.1.428, Culture=neutral, PublicKeyToken=02a83cbd123fcd60">
       <HintPath>..\Resources\ZedGraph.dll</HintPath>
     </Reference>
@@ -895,6 +891,10 @@
     <ProjectReference Include="..\TerminalControl\TerminalControl.csproj">
       <Project>{3545E021-A75E-4558-8EA3-234DF99FB49A}</Project>
       <Name>TerminalControl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VncSharp\VncSharp.csproj">
+      <Project>{E0DED53A-C3E1-441D-9AD2-766E49EAD417}</Project>
+      <Name>VncSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

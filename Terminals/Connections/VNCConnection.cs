@@ -2,6 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using Terminals.Properties;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using TabControl;
+using System.IO;
 
 namespace Terminals.Connections {
     public class VNCConnection : Connection {
@@ -46,6 +51,7 @@ namespace Terminals.Connections {
 
 
                 rd.ConnectComplete += new VncSharp.ConnectCompleteHandler(rd_ConnectComplete);
+                rd.ConnectionLost += new EventHandler(rd_ConnectionLost);
                 rd.GetPassword = VNCPassword;
                 Text = "Connecting to VNC Server...";
                 rd.Connect(Favorite.ServerName);
@@ -56,6 +62,21 @@ namespace Terminals.Connections {
                 Terminals.Logging.Log.Fatal("Connecting to VNC", exc);
                 return false;
             }
+        }
+
+        void rd_ConnectionLost(object sender, EventArgs e)
+        {
+            Terminals.Logging.Log.Fatal("VNC Connection Lost" + this.Favorite.Name);
+            this.connected = false;
+
+            TabControlItem selectedTabPage = (TabControlItem)(this.Parent);
+            bool wasSelected = selectedTabPage.Selected;
+            ParentForm.tcTerminals.RemoveTab(selectedTabPage);
+            ParentForm.tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
+            if(wasSelected)
+                NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+            ParentForm.UpdateControls();
+
         }
         private string vncPassword = "";
         string VNCPassword() {

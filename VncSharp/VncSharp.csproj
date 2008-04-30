@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E0DED53A-C3E1-441D-9AD2-766E49EAD417}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VncSharp</RootNamespace>
+    <AssemblyName>VncSharp</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConnectEventArgs.cs" />
+    <Compile Include="EncodedRectangleFactory.cs" />
+    <Compile Include="Encodings\CopyRectRectangle.cs" />
+    <Compile Include="Encodings\CoRreRectangle.cs" />
+    <Compile Include="Encodings\EncodedRectangle.cs" />
+    <Compile Include="Encodings\HextileRectangle.cs" />
+    <Compile Include="Encodings\PixelReader.cs" />
+    <Compile Include="Encodings\PixelReader16.cs" />
+    <Compile Include="Encodings\PixelReader32.cs" />
+    <Compile Include="Encodings\PixelReader8.cs" />
+    <Compile Include="Encodings\RawRectangle.cs" />
+    <Compile Include="Encodings\RreRectangle.cs" />
+    <Compile Include="Framebuffer.cs" />
+    <Compile Include="IDesktopUpdater.cs" />
+    <Compile Include="IVncInputPolicy.cs" />
+    <Compile Include="PasswordDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RemoteDesktop.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RfbProtocol.cs" />
+    <Compile Include="VncClient.cs" />
+    <Compile Include="VncDefaultInputPolicy.cs" />
+    <Compile Include="VncEventArgs.cs" />
+    <Compile Include="VncProtocolException.cs" />
+    <Compile Include="VncViewInputPolicy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PasswordDialog.resx">
+      <DependentUpon>PasswordDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RemoteDesktop.resx">
+      <DependentUpon>RemoteDesktop.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\screenshot.png" />
+    <EmbeddedResource Include="Resources\vnccursor.cur" />
+    <EmbeddedResource Include="Resources\vncviewer.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TODO.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
