@@ -511,6 +511,10 @@ namespace Terminals
             {
                 AddFavoriteButton(favorite.Name);
             }
+            else
+            {
+                DeleteFavoriteButton(favorite.Name);
+            }
         }
 
         public static GroupConfigurationElementCollection GetGroups()

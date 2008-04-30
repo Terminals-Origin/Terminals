@@ -254,6 +254,7 @@ namespace Terminals
                 favorite.RedirectSmartCards = chkRedirectSmartcards.Checked;
                 favorite.Sounds = (RemoteSounds)cmbSounds.SelectedIndex;
                 showOnToolbar = chkAddtoToolbar.Checked;
+
                 favorite.Port = ValidatePort(txtPort.Text);
                 favorite.DesktopShare = txtDesktopShare.Text;
                 favorite.ExecuteBeforeConnect = chkExecuteBeforeConnect.Checked;

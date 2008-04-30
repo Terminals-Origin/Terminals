@@ -1036,6 +1036,7 @@ namespace Terminals {
                     CreateTerminalTab(frmNewTerminal.Favorite);
                 }
             }
+            LoadFavorites();
         }
 
         private void newTerminalToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1416,10 +1417,10 @@ namespace Terminals {
             using(OrganizeFavoritesForm conMgr = new OrganizeFavoritesForm())
             {
                 conMgr.ShowDialog();
-                LoadFavorites();
                 LoadFavorites(txtSearchFavorites.Text);
                 LoadTags(txtSearchTags.Text);
             }
+            LoadFavorites();
         }
 
         private void saveTerminalsAsGroupToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1503,10 +1504,7 @@ namespace Terminals {
         private void organizeFavoritesToolbarToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OrganizeFavoritesToolbarForm frmOrganizeFavoritesToolbar = new OrganizeFavoritesToolbarForm();
-            if(frmOrganizeFavoritesToolbar.ShowDialog() == DialogResult.OK)
-            {
-                LoadFavoritesToolbar();
-            }
+            LoadFavoritesToolbar();
         }
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2336,6 +2334,7 @@ namespace Terminals {
                     using(NewTerminalForm frmNewTerminal = new NewTerminalForm(fav))
                     {
                         frmNewTerminal.ShowDialog();
+                        LoadFavorites();
                     }
                 }
             }
