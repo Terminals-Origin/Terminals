@@ -448,7 +448,7 @@ namespace Terminals
             }
             set
             {
-                this["name"] = value;
+                this["name"] = Settings.ToTitleCase(value);
             }
         }
 
@@ -474,7 +474,7 @@ namespace Terminals
             }
             set
             {
-                this["domainName"] = value;
+                this["domainName"] = Settings.ToTitleCase(value);
             }
         }
 
@@ -926,7 +926,7 @@ namespace Terminals
             }
             set
             {
-                this["tags"] = value;
+                this["tags"] = Settings.ToTitleCase(value);
             }
         }
 
