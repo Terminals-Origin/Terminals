@@ -104,6 +104,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
@@ -213,6 +214,7 @@
     </Compile>
     <Compile Include="DPAPI.cs" />
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="Network\ActiveDirectoryClient.cs" />
     <Compile Include="Network\DNS\Adapter.cs" />
     <Compile Include="Network\DNS\AdapterInfo.cs" />
     <Compile Include="Network\MagicPaket.cs" />

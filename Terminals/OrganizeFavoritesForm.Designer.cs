@@ -35,6 +35,8 @@ namespace Terminals
             this.colComputer = new System.Windows.Forms.ColumnHeader();
             this.colDomain = new System.Windows.Forms.ColumnHeader();
             this.colUser = new System.Windows.Forms.ColumnHeader();
+            this.colTags = new System.Windows.Forms.ColumnHeader();
+            this.colNotes = new System.Windows.Forms.ColumnHeader();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
@@ -44,8 +46,7 @@ namespace Terminals
             this.btnNew = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
             this.ImportOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.colTags = new System.Windows.Forms.ColumnHeader();
-            this.colNotes = new System.Windows.Forms.ColumnHeader();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lvConnections
@@ -67,7 +68,7 @@ namespace Terminals
             this.lvConnections.Location = new System.Drawing.Point(12, 25);
             this.lvConnections.Name = "lvConnections";
             this.lvConnections.ShowItemToolTips = true;
-            this.lvConnections.Size = new System.Drawing.Size(557, 292);
+            this.lvConnections.Size = new System.Drawing.Size(562, 292);
             this.lvConnections.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvConnections.TabIndex = 1;
             this.lvConnections.UseCompatibleStateImageBehavior = false;
@@ -99,13 +100,23 @@ namespace Terminals
             this.colUser.Text = "User";
             this.colUser.Width = 51;
             // 
+            // colTags
+            // 
+            this.colTags.Text = "Tags";
+            this.colTags.Width = 88;
+            // 
+            // colNotes
+            // 
+            this.colNotes.Text = "Notes";
+            this.colNotes.Width = 98;
+            // 
             // btnClose
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(579, 333);
+            this.btnClose.Location = new System.Drawing.Point(580, 333);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 25);
+            this.btnClose.Size = new System.Drawing.Size(134, 25);
             this.btnClose.TabIndex = 7;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -113,9 +124,9 @@ namespace Terminals
             // btnEdit
             // 
             this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEdit.Location = new System.Drawing.Point(579, 55);
+            this.btnEdit.Location = new System.Drawing.Point(580, 55);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(75, 24);
+            this.btnEdit.Size = new System.Drawing.Size(134, 24);
             this.btnEdit.TabIndex = 3;
             this.btnEdit.Text = "&Edit...";
             this.btnEdit.UseVisualStyleBackColor = true;
@@ -124,9 +135,9 @@ namespace Terminals
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Location = new System.Drawing.Point(579, 85);
+            this.btnDelete.Location = new System.Drawing.Point(580, 85);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 24);
+            this.btnDelete.Size = new System.Drawing.Size(134, 24);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "&Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -135,9 +146,9 @@ namespace Terminals
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(579, 115);
+            this.btnCopy.Location = new System.Drawing.Point(580, 115);
             this.btnCopy.Name = "btnCopy";
-            this.btnCopy.Size = new System.Drawing.Size(75, 24);
+            this.btnCopy.Size = new System.Drawing.Size(134, 24);
             this.btnCopy.TabIndex = 5;
             this.btnCopy.Text = "&Copy";
             this.btnCopy.UseVisualStyleBackColor = true;
@@ -146,9 +157,9 @@ namespace Terminals
             // btnRename
             // 
             this.btnRename.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRename.Location = new System.Drawing.Point(579, 145);
+            this.btnRename.Location = new System.Drawing.Point(580, 145);
             this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(75, 24);
+            this.btnRename.Size = new System.Drawing.Size(134, 24);
             this.btnRename.TabIndex = 6;
             this.btnRename.Text = "&Rename";
             this.btnRename.UseVisualStyleBackColor = true;
@@ -166,9 +177,9 @@ namespace Terminals
             // btnNew
             // 
             this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNew.Location = new System.Drawing.Point(579, 25);
+            this.btnNew.Location = new System.Drawing.Point(580, 25);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(75, 24);
+            this.btnNew.Size = new System.Drawing.Size(134, 24);
             this.btnNew.TabIndex = 2;
             this.btnNew.Text = "&New...";
             this.btnNew.UseVisualStyleBackColor = true;
@@ -177,23 +188,24 @@ namespace Terminals
             // ImportButton
             // 
             this.ImportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ImportButton.Location = new System.Drawing.Point(579, 175);
+            this.ImportButton.Location = new System.Drawing.Point(580, 175);
             this.ImportButton.Name = "ImportButton";
-            this.ImportButton.Size = new System.Drawing.Size(75, 23);
+            this.ImportButton.Size = new System.Drawing.Size(134, 23);
             this.ImportButton.TabIndex = 8;
             this.ImportButton.Text = "&Import...";
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
-            // colTags
+            // button1
             // 
-            this.colTags.Text = "Tags";
-            this.colTags.Width = 88;
-            // 
-            // colNotes
-            // 
-            this.colNotes.Text = "Notes";
-            this.colNotes.Width = 98;
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(580, 204);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(134, 23);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "&Active Directory...";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // OrganizeFavoritesForm
             // 
@@ -201,7 +213,8 @@ namespace Terminals
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(666, 369);
+            this.ClientSize = new System.Drawing.Size(726, 369);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.ImportButton);
             this.Controls.Add(this.btnNew);
             this.Controls.Add(this.label1);
@@ -248,5 +261,6 @@ namespace Terminals
         private System.Windows.Forms.OpenFileDialog ImportOpenFileDialog;
         private System.Windows.Forms.ColumnHeader colTags;
         private System.Windows.Forms.ColumnHeader colNotes;
+        private System.Windows.Forms.Button button1;
     }
 }
