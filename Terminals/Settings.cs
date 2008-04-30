@@ -932,17 +932,34 @@ namespace Terminals
                 System.IO.File.WriteAllText(ToolStripSettingsFile, value.ToString());
             }
         }
-        public static bool Office2007Feel {
-            get {
-                return GetSection().Office2007Feel;
+        public static bool Office2007BlueFeel
+        {
+            get
+            {
+                return GetSection().Office2007BlueFeel;
             }
-            set {
+            set
+            {
                 Configuration configuration = GetConfiguration();
-                GetSection(configuration).Office2007Feel = value;
+                GetSection(configuration).Office2007BlueFeel = value;
                 configuration.Save();
             }
         }
-        public static bool AutoExapandTagsPanel {
+        public static bool Office2007BlackFeel
+        {
+            get
+            {
+                return GetSection().Office2007BlackFeel;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).Office2007BlackFeel = value;
+                configuration.Save();
+            }
+        }
+        public static bool AutoExapandTagsPanel
+        {
             get {
                 return GetSection().AutoExapandTagsPanel;
             }

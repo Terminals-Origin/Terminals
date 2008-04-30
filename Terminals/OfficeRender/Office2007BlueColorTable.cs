@@ -19,7 +19,7 @@ namespace Office2007Renderer
     /// <summary>
     /// Provide Office 2007 Blue Theme colors
     /// </summary>
-    public class Office2007ColorTable : ProfessionalColorTable
+    public class Office2007BlueColorTable : ProfessionalColorTable
     {
         #region Static Fixed Colors - Blue Color Scheme
         private static Color _contextMenuBack = Color.FromArgb(250, 250, 250);
@@ -56,7 +56,7 @@ namespace Office2007Renderer
         /// <summary>
         /// Initialize a new instance of the Office2007ColorTable class.
         /// </summary>
-        public Office2007ColorTable()
+        public Office2007BlueColorTable()
         {
         }
         #endregion

@@ -19,6 +19,8 @@ using System.Collections.Generic;
 
 namespace Office2007Renderer
 {
+    public enum RenderColors { Black, Blue };
+
     /// <summary>
     /// Draw ToolStrips using the Office 2007 themed appearance.
     /// </summary>
@@ -158,9 +160,21 @@ namespace Office2007Renderer
         /// <summary>
         /// Initialize a new instance of the Office2007Renderer class.
         /// </summary>
-        public Office2007Renderer()
-            : base(new Office2007ColorTable())
+        private Office2007Renderer()
+            : base(new Office2007BlueColorTable())
         {
+        }
+        private Office2007Renderer(bool BlackTable)
+            : base(new Office2007BlackColorTable())
+        {
+        }
+        public static Office2007Renderer GetRenderer(RenderColors Color)
+        {
+            if(Color == RenderColors.Black)
+            {
+                return new Office2007Renderer(true);
+            }
+            return new Office2007Renderer();
         }
         #endregion
 

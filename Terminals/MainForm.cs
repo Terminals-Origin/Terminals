@@ -55,8 +55,12 @@ namespace Terminals {
                 _formSettings = new FormSettings(this);
                 InitializeComponent();
 
-                if(Settings.Office2007Feel) ToolStripManager.Renderer = new Office2007Renderer.Office2007Renderer();
-
+                if(Settings.Office2007BlueFeel)
+                    ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Blue);
+                else if(Settings.Office2007BlackFeel)
+                    ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Black);
+                else
+                    ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
 
 
                 LoadFavorites();
@@ -1515,8 +1519,10 @@ namespace Terminals {
 
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
 
-                if(Settings.Office2007Feel)
-                    ToolStripManager.Renderer = new Office2007Renderer.Office2007Renderer();
+                if(Settings.Office2007BlueFeel)
+                    ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Blue);
+                else if(Settings.Office2007BlackFeel)
+                    ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Black);
                 else
                     ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
 

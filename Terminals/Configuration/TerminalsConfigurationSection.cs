@@ -554,19 +554,33 @@ namespace Terminals
                 this["autoExapandTagsPanel"] = value;
             }
         }
-        
-        [ConfigurationProperty("office2007Feel", DefaultValue = false)]
-        public bool Office2007Feel
+
+        [ConfigurationProperty("office2007BlueFeel", DefaultValue = false)]
+        public bool Office2007BlueFeel
         {
             get
             {
-                return (bool)this["office2007Feel"];
+                return (bool)this["office2007BlueFeel"];
             }
             set
             {
-                this["office2007Feel"] = value;
+                this["office2007BlueFeel"] = value;
             }
         }
+
+        [ConfigurationProperty("office2007BlackFeel", DefaultValue = false)]
+        public bool Office2007BlackFeel
+        {
+            get
+            {
+                return (bool)this["office2007BlackFeel"];
+            }
+            set
+            {
+                this["office2007BlackFeel"] = value;
+            }
+        }
+        
         [ConfigurationProperty("toolbarsLocked", DefaultValue = true)]
         public bool ToolbarsLocked {
             get {
