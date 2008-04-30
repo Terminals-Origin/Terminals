@@ -1347,8 +1347,8 @@ namespace Terminals {
             }
             set
             {
-                if(FullScreen != value)
-                    SetFullScreen(value);
+                if(FullScreen != value) SetFullScreen(value);
+                if(!FullScreen) LoadWindowState();  //try to restore the toolbars
             }
         }
 
