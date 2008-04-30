@@ -1338,7 +1338,7 @@ namespace Terminals {
                 previewPictureBox.Hide();
             }*/
         }
-
+        
         public bool FullScreen
         {
             get
@@ -1354,6 +1354,7 @@ namespace Terminals {
 
         public void tcTerminals_TabControlItemClosed(object sender, EventArgs e)
         {
+            this.Text = defaultText;
             if(tcTerminals.Items.Count == 0)
                 FullScreen = false;
         }
