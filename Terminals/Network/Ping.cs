@@ -86,11 +86,11 @@ namespace Metro
             if (ping == null)
             {
                 ping = new Metro.TransportLayer.Icmp.IcmpPingManager(nil.Interfaces[0].Address);
+                ping.PingReply += new Metro.TransportLayer.Icmp.IcmpPingReplyHandler(ping_PingReply);
+                ping.PingTimeout += new Metro.TransportLayer.Icmp.IcmpPingTimeOutHandler(ping_PingTimeout);
             }
             if (!pingRunning)
             {
-                ping.PingReply += new Metro.TransportLayer.Icmp.IcmpPingReplyHandler(ping_PingReply);
-                ping.PingTimeout += new Metro.TransportLayer.Icmp.IcmpPingTimeOutHandler(ping_PingTimeout);
                 pingRunning = true;
                 pingReady = false;
                 SendPing();
