@@ -9,32 +9,48 @@ namespace Terminals.Network {
         {
             Dictionary<string, string> Computers = new Dictionary<string, string>();
             try {
-                DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://{0}", Domain));
-                DirectorySearcher mySearcher = new DirectorySearcher(entry);
-                mySearcher.Filter = ("(objectClass=computer)");
-                foreach(SearchResult resEnt in mySearcher.FindAll()) {
-                    DirectoryEntry computer = resEnt.GetDirectoryEntry();
-                    string name = computer.Name.Replace("CN=", "");
-                    string tags = "";
-                    if(computer.Properties != null && computer.Properties["name"] != null && computer.Properties["name"].Count > 0)
+                using(DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://{0}", Domain)))
+                {
+                    using(DirectorySearcher mySearcher = new DirectorySearcher(entry))
                     {
-                        name = computer.Properties["name"][0].ToString();
-                    }
-                    if(computer.Properties != null && computer.Properties["operatingSystem"] != null && computer.Properties["operatingSystem"].Count > 0)
-                    {
-                        tags = computer.Properties["operatingSystem"][0].ToString();
-                    }
-                    Computers.Add(name, tags);   
-                    //foreach(string name in computer.Properties.PropertyNames)
-                    //{
+                        mySearcher.Filter = ("(objectClass=computer)");
+                        foreach(SearchResult resEnt in mySearcher.FindAll())
+                        {
+                            DirectoryEntry computer = resEnt.GetDirectoryEntry();
+                            string name = computer.Name.Replace("CN=", "");
+                            string tags = "";
+                            if(computer.Properties != null && computer.Properties["name"] != null && computer.Properties["name"].Count > 0)
+                            {
+                                name = computer.Properties["name"][0].ToString();
+                            }
+                            if(computer.Properties != null && computer.Properties["operatingSystem"] != null && computer.Properties["operatingSystem"].Count > 0)
+                            {
+                                tags = computer.Properties["operatingSystem"][0].ToString();
+                            }
+                            if(computer.Properties != null && computer.Properties["distinguishedName"] != null && computer.Properties["distinguishedName"].Count > 0)
+                            {
+                                string distinguishedName = computer.Properties["distinguishedName"][0].ToString();
+                                if(distinguishedName.Contains("OU=Domain Controllers"))
+                                {
+                                    tags += ",Domain Controllers";
+                                }
+                            }
+                            //Terminals.Logging.Log.Info("---------------");
+                            //Terminals.Logging.Log.Info(name);
+                            //Terminals.Logging.Log.Info("---------------");
+                            //foreach(string n in computer.Properties.PropertyNames)
+                            //{
+                            //    Terminals.Logging.Log.Info("-->" + n);
+                            //    for(int x = 0; x < computer.Properties[n].Count; x++)
+                            //    {
+                            //        Terminals.Logging.Log.Info(computer.Properties[n][x]);
+                            //    }
+                            //}
 
-                    //    Terminals.Logging.Log.Info("---------------------------name=" + name + "; ");
-                    //    for(int x = 0; x < computer.Properties[name].Count;x++ )
-                    //    {
-                    //        Terminals.Logging.Log.Info(computer.Properties[name][x]);
-                    //    }
-                    //}
-
+                            
+                            Computers.Add(name, tags);
+                        }
+                    }
                 }
             } catch(Exception exc) {
                 Terminals.Logging.Log.Error("Could not list the computers on the domain:" + Domain, exc);
