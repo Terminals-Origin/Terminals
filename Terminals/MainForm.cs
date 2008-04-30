@@ -82,6 +82,10 @@ namespace Terminals {
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
                 this.lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
                 
+                if(Settings.ToolbarsLocked)
+                    MainMenuStrip.GripStyle = ToolStripGripStyle.Hidden;
+                else
+                    MainMenuStrip.GripStyle = ToolStripGripStyle.Visible;
 
                 defaultText = this.Text;
             }
@@ -2060,20 +2064,42 @@ namespace Terminals {
 
         private void standardToolbarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            toolbarStd.Visible = !toolbarStd.Visible;
-            standardToolbarToolStripMenuItem.Checked = toolbarStd.Visible;
+            if(!Settings.ToolbarsLocked)
+            {
+                toolbarStd.Visible = !toolbarStd.Visible;
+                standardToolbarToolStripMenuItem.Checked = toolbarStd.Visible;
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("In order to change the toolbars, you must first unlock them.");
+            }
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            favoriteToolBar.Visible = !favoriteToolBar.Visible;
-            toolStripMenuItem4.Checked = favoriteToolBar.Visible;
+            if(!Settings.ToolbarsLocked)
+            {
+
+                favoriteToolBar.Visible = !favoriteToolBar.Visible;
+                toolStripMenuItem4.Checked = favoriteToolBar.Visible;
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("In order to change the toolbars, you must first unlock them.");
+            }
         }
 
         private void shortcutsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SpecialCommandsToolStrip.Visible = !SpecialCommandsToolStrip.Visible;
-            shortcutsToolStripMenuItem.Checked = SpecialCommandsToolStrip.Visible;
+            if(!Settings.ToolbarsLocked)
+            {
+                SpecialCommandsToolStrip.Visible = !SpecialCommandsToolStrip.Visible;
+                shortcutsToolStripMenuItem.Checked = SpecialCommandsToolStrip.Visible;
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("In order to change the toolbars, you must first unlock them.");
+            } 
         }
 
         private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
