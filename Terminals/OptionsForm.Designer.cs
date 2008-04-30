@@ -84,12 +84,12 @@ namespace Terminals
             this.chkShowInformationToolTips = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.MoreOptionsTabPage = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.RenderBlackRadio = new System.Windows.Forms.RadioButton();
+            this.RenderBlueRadio = new System.Windows.Forms.RadioButton();
+            this.RenderNormalRadio = new System.Windows.Forms.RadioButton();
             this.EnableFavoritesPanel = new System.Windows.Forms.CheckBox();
             this.EnableGroupsMenu = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.RenderNormalRadio = new System.Windows.Forms.RadioButton();
-            this.RenderBlueRadio = new System.Windows.Forms.RadioButton();
-            this.RenderBlackRadio = new System.Windows.Forms.RadioButton();
             this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -710,6 +710,51 @@ namespace Terminals
             this.MoreOptionsTabPage.Text = "More";
             this.MoreOptionsTabPage.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.RenderBlackRadio);
+            this.groupBox1.Controls.Add(this.RenderBlueRadio);
+            this.groupBox1.Controls.Add(this.RenderNormalRadio);
+            this.groupBox1.Location = new System.Drawing.Point(15, 71);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(135, 95);
+            this.groupBox1.TabIndex = 25;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Rendering";
+            // 
+            // RenderBlackRadio
+            // 
+            this.RenderBlackRadio.AutoSize = true;
+            this.RenderBlackRadio.Location = new System.Drawing.Point(15, 66);
+            this.RenderBlackRadio.Name = "RenderBlackRadio";
+            this.RenderBlackRadio.Size = new System.Drawing.Size(81, 17);
+            this.RenderBlackRadio.TabIndex = 2;
+            this.RenderBlackRadio.TabStop = true;
+            this.RenderBlackRadio.Text = "Office Black";
+            this.RenderBlackRadio.UseVisualStyleBackColor = true;
+            // 
+            // RenderBlueRadio
+            // 
+            this.RenderBlueRadio.AutoSize = true;
+            this.RenderBlueRadio.Location = new System.Drawing.Point(15, 43);
+            this.RenderBlueRadio.Name = "RenderBlueRadio";
+            this.RenderBlueRadio.Size = new System.Drawing.Size(77, 17);
+            this.RenderBlueRadio.TabIndex = 1;
+            this.RenderBlueRadio.TabStop = true;
+            this.RenderBlueRadio.Text = "Office Blue";
+            this.RenderBlueRadio.UseVisualStyleBackColor = true;
+            // 
+            // RenderNormalRadio
+            // 
+            this.RenderNormalRadio.AutoSize = true;
+            this.RenderNormalRadio.Location = new System.Drawing.Point(15, 20);
+            this.RenderNormalRadio.Name = "RenderNormalRadio";
+            this.RenderNormalRadio.Size = new System.Drawing.Size(58, 17);
+            this.RenderNormalRadio.TabIndex = 0;
+            this.RenderNormalRadio.TabStop = true;
+            this.RenderNormalRadio.Text = "Normal";
+            this.RenderNormalRadio.UseVisualStyleBackColor = true;
+            // 
             // EnableFavoritesPanel
             // 
             this.EnableFavoritesPanel.AutoSize = true;
@@ -734,55 +779,12 @@ namespace Terminals
             this.EnableGroupsMenu.Text = "Enable Groups Menu";
             this.EnableGroupsMenu.UseVisualStyleBackColor = true;
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.RenderBlackRadio);
-            this.groupBox1.Controls.Add(this.RenderBlueRadio);
-            this.groupBox1.Controls.Add(this.RenderNormalRadio);
-            this.groupBox1.Location = new System.Drawing.Point(15, 71);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(135, 95);
-            this.groupBox1.TabIndex = 25;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Rendering";
-            // 
-            // RenderNormalRadio
-            // 
-            this.RenderNormalRadio.AutoSize = true;
-            this.RenderNormalRadio.Location = new System.Drawing.Point(15, 20);
-            this.RenderNormalRadio.Name = "RenderNormalRadio";
-            this.RenderNormalRadio.Size = new System.Drawing.Size(58, 17);
-            this.RenderNormalRadio.TabIndex = 0;
-            this.RenderNormalRadio.TabStop = true;
-            this.RenderNormalRadio.Text = "Normal";
-            this.RenderNormalRadio.UseVisualStyleBackColor = true;
-            // 
-            // RenderBlueRadio
-            // 
-            this.RenderBlueRadio.AutoSize = true;
-            this.RenderBlueRadio.Location = new System.Drawing.Point(15, 43);
-            this.RenderBlueRadio.Name = "RenderBlueRadio";
-            this.RenderBlueRadio.Size = new System.Drawing.Size(77, 17);
-            this.RenderBlueRadio.TabIndex = 1;
-            this.RenderBlueRadio.TabStop = true;
-            this.RenderBlueRadio.Text = "Office Blue";
-            this.RenderBlueRadio.UseVisualStyleBackColor = true;
-            // 
-            // RenderBlackRadio
-            // 
-            this.RenderBlackRadio.AutoSize = true;
-            this.RenderBlackRadio.Location = new System.Drawing.Point(15, 66);
-            this.RenderBlackRadio.Name = "RenderBlackRadio";
-            this.RenderBlackRadio.Size = new System.Drawing.Size(81, 17);
-            this.RenderBlackRadio.TabIndex = 2;
-            this.RenderBlackRadio.TabStop = true;
-            this.RenderBlackRadio.Text = "Office Black";
-            this.RenderBlackRadio.UseVisualStyleBackColor = true;
-            // 
             // OptionsForm
             // 
+            this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(413, 402);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.linkLabel1);

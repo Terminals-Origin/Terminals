@@ -2089,6 +2089,7 @@ namespace Terminals {
         {
             OrganizeShortcuts org = new OrganizeShortcuts();
             org.ShowDialog(this);
+            if(Settings.EnableFavoritesPanel) LoadTags(null);
             LoadSpecialCommands();
         }
 

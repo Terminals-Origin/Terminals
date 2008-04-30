@@ -515,6 +515,15 @@ namespace Terminals
             {
                 DeleteFavoriteButton(favorite.Name);
             }
+
+            if(favorite.Tags != null && favorite.Tags.Trim() != "")
+            {
+                foreach(string tag in favorite.TagList)
+                {
+                    AddTag(tag);
+                }
+            }
+
         }
 
         public static GroupConfigurationElementCollection GetGroups()

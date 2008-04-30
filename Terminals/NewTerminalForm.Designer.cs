@@ -34,6 +34,8 @@ namespace Terminals
         this.btnCancel = new System.Windows.Forms.Button();
         this.tabControl1 = new System.Windows.Forms.TabControl();
         this.tabPage1 = new System.Windows.Forms.TabPage();
+        this.NotesTextbox = new System.Windows.Forms.TextBox();
+        this.label36 = new System.Windows.Forms.Label();
         this.pictureBox2 = new System.Windows.Forms.PictureBox();
         this.DetectButton = new System.Windows.Forms.Button();
         this.txtPort = new System.Windows.Forms.TextBox();
@@ -187,8 +189,6 @@ namespace Terminals
         this.fontDialog1 = new System.Windows.Forms.FontDialog();
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
-        this.NotesTextbox = new System.Windows.Forms.TextBox();
-        this.label36 = new System.Windows.Forms.Label();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -292,6 +292,24 @@ namespace Terminals
         this.tabPage1.TabIndex = 0;
         this.tabPage1.Text = "General";
         this.tabPage1.UseVisualStyleBackColor = true;
+        // 
+        // NotesTextbox
+        // 
+        this.NotesTextbox.Location = new System.Drawing.Point(106, 192);
+        this.NotesTextbox.Multiline = true;
+        this.NotesTextbox.Name = "NotesTextbox";
+        this.NotesTextbox.PasswordChar = '*';
+        this.NotesTextbox.Size = new System.Drawing.Size(265, 73);
+        this.NotesTextbox.TabIndex = 18;
+        // 
+        // label36
+        // 
+        this.label36.AutoSize = true;
+        this.label36.Location = new System.Drawing.Point(7, 195);
+        this.label36.Name = "label36";
+        this.label36.Size = new System.Drawing.Size(39, 13);
+        this.label36.TabIndex = 17;
+        this.label36.Text = "Notes:";
         // 
         // pictureBox2
         // 
@@ -1866,28 +1884,12 @@ namespace Terminals
         this.ras1.UserName = null;
         this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
         // 
-        // NotesTextbox
-        // 
-        this.NotesTextbox.Location = new System.Drawing.Point(106, 192);
-        this.NotesTextbox.Multiline = true;
-        this.NotesTextbox.Name = "NotesTextbox";
-        this.NotesTextbox.PasswordChar = '*';
-        this.NotesTextbox.Size = new System.Drawing.Size(265, 73);
-        this.NotesTextbox.TabIndex = 18;
-        // 
-        // label36
-        // 
-        this.label36.AutoSize = true;
-        this.label36.Location = new System.Drawing.Point(7, 195);
-        this.label36.Name = "label36";
-        this.label36.Size = new System.Drawing.Size(39, 13);
-        this.label36.TabIndex = 17;
-        this.label36.Text = "Notes:";
-        // 
         // NewTerminalForm
         // 
+        this.AcceptButton = this.btnOk;
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        this.CancelButton = this.btnCancel;
         this.ClientSize = new System.Drawing.Size(511, 416);
         this.Controls.Add(this.chkAddtoToolbar);
         this.Controls.Add(this.tabControl1);
