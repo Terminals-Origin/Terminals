@@ -45,5 +45,12 @@ namespace Terminals.Network
             get { return tags; }
             set { tags = value; }
         }
+        private string notes = "";
+
+        public string Notes
+        {
+            get { return notes; }
+            set { notes = value; }
+        }
     }
 }

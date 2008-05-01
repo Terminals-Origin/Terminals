@@ -52,7 +52,14 @@ namespace Terminals.Network
         {
             this.Computers = Computers;
             this.Success = Success;
-            this.Invoke(listComplete);
+            try
+            {
+                this.Invoke(listComplete);
+            }
+            catch(Exception exc)
+            {
+                Terminals.Logging.Log.Info("Could not call invoke on AD Client List, this probably means they closed the form before waiting for a response", exc);
+            }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -74,6 +81,7 @@ namespace Terminals.Network
                 elm.Tags = computer.Tags;                
                 elm.Port = Connections.ConnectionManager.GetPort(computer.Protocol);
                 elm.Protocol = computer.Protocol;
+                elm.Notes = computer.Notes;
                 Settings.AddFavorite(elm, false);
 
             }
