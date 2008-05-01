@@ -40,12 +40,11 @@ namespace Terminals {
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.AllCheckbox = new System.Windows.Forms.CheckBox();
+            this.ScanButton = new System.Windows.Forms.Button();
             this.TagsTextbox = new System.Windows.Forms.TextBox();
             this.AddAllButton = new System.Windows.Forms.Button();
-            this.AllCheckbox = new System.Windows.Forms.CheckBox();
-            this.OKButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
-            this.ScanButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -63,6 +62,8 @@ namespace Terminals {
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -70,6 +71,7 @@ namespace Terminals {
             this.tabPage2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -199,7 +201,7 @@ namespace Terminals {
             this.ScanResultsListView.MultiSelect = false;
             this.ScanResultsListView.Name = "ScanResultsListView";
             this.ScanResultsListView.ShowGroups = false;
-            this.ScanResultsListView.Size = new System.Drawing.Size(431, 216);
+            this.ScanResultsListView.Size = new System.Drawing.Size(475, 223);
             this.ScanResultsListView.TabIndex = 11;
             this.ScanResultsListView.UseCompatibleStateImageBehavior = false;
             this.ScanResultsListView.View = System.Windows.Forms.View.Details;
@@ -208,7 +210,7 @@ namespace Terminals {
             // columnHeader1
             // 
             this.columnHeader1.Text = "Server";
-            this.columnHeader1.Width = 151;
+            this.columnHeader1.Width = 96;
             // 
             // columnHeader4
             // 
@@ -222,16 +224,12 @@ namespace Terminals {
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "Service";
+            this.columnHeader3.Text = "Protocol";
             this.columnHeader3.Width = 72;
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.TagsTextbox);
-            this.panel1.Controls.Add(this.AddAllButton);
             this.panel1.Controls.Add(this.AllCheckbox);
-            this.panel1.Controls.Add(this.OKButton);
-            this.panel1.Controls.Add(this.CancelButton);
             this.panel1.Controls.Add(this.ScanButton);
             this.panel1.Controls.Add(this.ETextbox);
             this.panel1.Controls.Add(this.label1);
@@ -247,26 +245,8 @@ namespace Terminals {
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(431, 85);
+            this.panel1.Size = new System.Drawing.Size(475, 85);
             this.panel1.TabIndex = 12;
-            // 
-            // TagsTextbox
-            // 
-            this.TagsTextbox.Location = new System.Drawing.Point(87, 58);
-            this.TagsTextbox.Name = "TagsTextbox";
-            this.TagsTextbox.Size = new System.Drawing.Size(79, 20);
-            this.TagsTextbox.TabIndex = 18;
-            this.TagsTextbox.Text = "Tags...";
-            // 
-            // AddAllButton
-            // 
-            this.AddAllButton.Location = new System.Drawing.Point(6, 56);
-            this.AddAllButton.Name = "AddAllButton";
-            this.AddAllButton.Size = new System.Drawing.Size(75, 23);
-            this.AddAllButton.TabIndex = 17;
-            this.AddAllButton.Text = "Add All";
-            this.AddAllButton.UseVisualStyleBackColor = true;
-            this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
             // 
             // AllCheckbox
             // 
@@ -281,35 +261,46 @@ namespace Terminals {
             this.AllCheckbox.UseVisualStyleBackColor = true;
             this.AllCheckbox.CheckedChanged += new System.EventHandler(this.AllCheckbox_CheckedChanged);
             // 
-            // OKButton
-            // 
-            this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.Location = new System.Drawing.Point(258, 56);
-            this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(75, 23);
-            this.OKButton.TabIndex = 14;
-            this.OKButton.Text = "&OK";
-            this.OKButton.UseVisualStyleBackColor = true;
-            // 
-            // CancelButton
-            // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(339, 56);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 15;
-            this.CancelButton.Text = "&Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            // 
             // ScanButton
             // 
-            this.ScanButton.Location = new System.Drawing.Point(177, 56);
+            this.ScanButton.Location = new System.Drawing.Point(393, 23);
             this.ScanButton.Name = "ScanButton";
             this.ScanButton.Size = new System.Drawing.Size(75, 23);
             this.ScanButton.TabIndex = 11;
             this.ScanButton.Text = "Scan";
             this.ScanButton.UseVisualStyleBackColor = true;
             this.ScanButton.Click += new System.EventHandler(this.ScanButton_Click);
+            // 
+            // TagsTextbox
+            // 
+            this.TagsTextbox.Location = new System.Drawing.Point(92, 8);
+            this.TagsTextbox.Name = "TagsTextbox";
+            this.TagsTextbox.Size = new System.Drawing.Size(138, 20);
+            this.TagsTextbox.TabIndex = 18;
+            this.TagsTextbox.Text = "Tags...";
+            // 
+            // AddAllButton
+            // 
+            this.AddAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.AddAllButton.Location = new System.Drawing.Point(407, 6);
+            this.AddAllButton.Name = "AddAllButton";
+            this.AddAllButton.Size = new System.Drawing.Size(75, 23);
+            this.AddAllButton.TabIndex = 17;
+            this.AddAllButton.Text = "OK";
+            this.AddAllButton.UseVisualStyleBackColor = true;
+            this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
+            // 
+            // CancelButton
+            // 
+            this.CancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelButton.Location = new System.Drawing.Point(326, 6);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new System.Drawing.Size(75, 23);
+            this.CancelButton.TabIndex = 15;
+            this.CancelButton.Text = "&Cancel";
+            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // button2
             // 
@@ -337,9 +328,10 @@ namespace Terminals {
             this.ScanStatusLabel,
             this.scanProgressBar});
             this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 333);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 374);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(445, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(489, 22);
+            this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 13;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -363,7 +355,7 @@ namespace Terminals {
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(445, 333);
+            this.tabControl1.Size = new System.Drawing.Size(489, 340);
             this.tabControl1.TabIndex = 14;
             // 
             // tabPage1
@@ -373,7 +365,7 @@ namespace Terminals {
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(437, 307);
+            this.tabPage1.Size = new System.Drawing.Size(481, 314);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Port Scanner";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -388,7 +380,7 @@ namespace Terminals {
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(437, 307);
+            this.tabPage2.Size = new System.Drawing.Size(481, 314);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Direct Connection";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -479,14 +471,35 @@ namespace Terminals {
             this.label2.Text = "You can use this form to establish a direct connection with another machine on th" +
                 "e network in order to share connections.";
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.AddAllButton);
+            this.panel2.Controls.Add(this.CancelButton);
+            this.panel2.Controls.Add(this.label6);
+            this.panel2.Controls.Add(this.TagsTextbox);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel2.Location = new System.Drawing.Point(0, 340);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(489, 34);
+            this.panel2.TabIndex = 18;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(10, 11);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(76, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Optional Tags:";
+            // 
             // NetworkScanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(445, 355);
+            this.ClientSize = new System.Drawing.Size(489, 396);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.statusStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "NetworkScanner";
             this.Text = "Network Scanner";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NetworkScanner_FormClosing);
@@ -501,6 +514,8 @@ namespace Terminals {
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -527,7 +542,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripProgressBar scanProgressBar;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.Button OKButton;
         private System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.CheckBox AllCheckbox;
         private System.Windows.Forms.Button AddAllButton;
@@ -548,5 +562,7 @@ namespace Terminals {
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label ServerAddressLabel;
         private System.Windows.Forms.Label ServerStatusLabel;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label6;
     }
 }

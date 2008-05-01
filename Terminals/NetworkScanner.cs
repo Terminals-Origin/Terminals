@@ -15,13 +15,23 @@ namespace Terminals {
             mivStatus = new MethodInvoker(UpdateStatus);
             string localIP = "127.0.0.1";
             try {
-                localIP = IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpConnections()[0].LocalEndPoint.Address.ToString();
+                NetworkInterface[] nics = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces();
+                foreach(NetworkInterface nic in nics)
+                {
+                    if(nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
+                    {
+                        localIP = nic.GetIPProperties().GatewayAddresses[0].Address.ToString();
+                        break;
+                    }
+                }
             }
             catch (Exception e) { Terminals.Logging.Log.Info("", e); }
             string[] ipList = localIP.Split('.');
             ATextbox.Text = ipList[0];
             BTextbox.Text = ipList[1];
             CTextbox.Text = ipList[2];
+            DTextbox.Text = "1";
+            ETextbox.Text = "255";
             ServerAddressLabel.Text = localIP;
             Network.Server.OnClientConnection += new Terminals.Network.Server.ClientConnection(Server_OnClientConnection);
             Network.Client.OnServerConnection += new Terminals.Network.Client.ServerConnection(Client_OnServerConnection);
@@ -250,6 +260,10 @@ namespace Terminals {
                 Network.Client.Stop();
             }
             catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
+        }
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
 	
     }

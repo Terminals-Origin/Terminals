@@ -47,6 +47,7 @@ namespace Terminals
             this.ImportButton = new System.Windows.Forms.Button();
             this.ImportOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.button1 = new System.Windows.Forms.Button();
+            this.DetectButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lvConnections
@@ -74,6 +75,7 @@ namespace Terminals
             this.lvConnections.UseCompatibleStateImageBehavior = false;
             this.lvConnections.View = System.Windows.Forms.View.Details;
             this.lvConnections.AfterLabelEdit += new System.Windows.Forms.LabelEditEventHandler(this.lvConnections_AfterLabelEdit);
+            this.lvConnections.SelectedIndexChanged += new System.EventHandler(this.lvConnections_SelectedIndexChanged);
             this.lvConnections.DoubleClick += new System.EventHandler(this.btnEdit_Click);
             // 
             // colName
@@ -207,6 +209,17 @@ namespace Terminals
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // DetectButton
+            // 
+            this.DetectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.DetectButton.Location = new System.Drawing.Point(613, 233);
+            this.DetectButton.Name = "DetectButton";
+            this.DetectButton.Size = new System.Drawing.Size(106, 23);
+            this.DetectButton.TabIndex = 16;
+            this.DetectButton.Text = "Network Detect...";
+            this.DetectButton.UseVisualStyleBackColor = true;
+            this.DetectButton.Click += new System.EventHandler(this.DetectButton_Click);
+            // 
             // OrganizeFavoritesForm
             // 
             this.AcceptButton = this.btnClose;
@@ -214,6 +227,7 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(726, 315);
+            this.Controls.Add(this.DetectButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.ImportButton);
             this.Controls.Add(this.btnNew);
@@ -262,5 +276,6 @@ namespace Terminals
         private System.Windows.Forms.ColumnHeader colTags;
         private System.Windows.Forms.ColumnHeader colNotes;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button DetectButton;
     }
 }

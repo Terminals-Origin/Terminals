@@ -626,31 +626,7 @@ namespace Terminals
                 this.TelnetCursorColorTextBox.Text = this.colorDialog1.Color.Name;
             }
         }
-        NetworkScanner ns = new NetworkScanner();
-        private void DetectButton_Click(object sender, EventArgs e)
-        {
 
-            DialogResult result = ns.ShowDialog();
-            if(result == DialogResult.OK)
-            {
-                LoadMRUs();
-                if(ns.SelectedScanItem != null)
-                {
-                    Terminals.Scanner.NetworkScanItem item = ns.SelectedScanItem;
-                    this.txtPort.Text = item.Port.ToString();
-                    cmbServers.Text = item.IPAddress;
-                    this.ProtocolComboBox.Text = Terminals.Connections.ConnectionManager.GetPortName(item.Port, item.IsVMRC);
-                    if(item.Port == Terminals.Connections.ConnectionManager.SSHPort) this.SSHRadioButton.Checked = true;
-                    if(item.Port == Terminals.Connections.ConnectionManager.TelnetPort) this.TelnetRadioButton.Checked = true;
-                    this.txtName.Text = string.Format("{0}_{1}", item.HostName, this.ProtocolComboBox.Text);
-                    if(this.ProtocolComboBox.Text == "RDP")
-                    {
-                        this.chkConnectToConsole.Checked = true;
-                        this.cmbResolution.SelectedIndex = this.cmbResolution.Items.Count - 1;
-                    }
-                }
-            }
-        }
 
         private void ras1_ConnectionChanged(object sender, ConnectionChangedEventArgs e)
         {
