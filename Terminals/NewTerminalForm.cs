@@ -507,6 +507,10 @@ namespace Terminals
         {
             string defaultPort = Connections.ConnectionManager.VNCVMRCPort.ToString();
 
+            cmbServers.Enabled = true;
+            txtPort.Enabled = true;
+
+
             groupBox1.Enabled = false;
             chkConnectToConsole.Enabled = false;
             LocalResourceGroupBox.Enabled = false;
@@ -557,11 +561,15 @@ namespace Terminals
             }
             else if(ProtocolComboBox.Text == "HTTP")
             {
+                cmbServers.Enabled = false;
+                txtPort.Enabled = false;
                 httpUrlTextBox.Enabled = true;
                 defaultPort = Connections.ConnectionManager.HTTPPort.ToString();
             }
             else if(ProtocolComboBox.Text == "HTTPS")
             {
+                cmbServers.Enabled = false;
+                txtPort.Enabled = false;
                 httpUrlTextBox.Enabled = true;
                 defaultPort = Connections.ConnectionManager.HTTPSPort.ToString();
             }

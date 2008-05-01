@@ -2515,9 +2515,28 @@ namespace Terminals {
             set
             {
                 releaseAvailable = value;
-
+                if(releaseAvailable) {
+                    FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
+                    FavoriteConfigurationElement release = null;
+                    foreach(FavoriteConfigurationElement fav in favs) {
+                        if(fav.Name == TerminalsReleasesFavoriteName) {
+                            release = fav;
+                            break;
+                        }
+                    }
+                    if(release == null) {
+                        release = new FavoriteConfigurationElement(TerminalsReleasesFavoriteName);
+                        release.Url = "http://www.codeplex.com/Terminals/Wiki/View.aspx?title=Welcome%20To%20Terminals";
+                        release.Tags = "Terminals";
+                        release.Protocol = "HTTP";
+                        Settings.AddFavorite(release, false);
+                    }
+                    System.Threading.Thread.Sleep(5000);
+                    if(OnReleaseIsAvailable != null) OnReleaseIsAvailable(release);
+                }
             }
         }
+        private static string TerminalsReleasesFavoriteName = "Terminals News";
         private static Unified.Rss.RssItem releaseDescription = null;
         public static Unified.Rss.RssItem ReleaseDescription
         {
@@ -2532,21 +2551,26 @@ namespace Terminals {
             }
         }
 
+        public delegate void ReleaseIsAvailable(FavoriteConfigurationElement ReleaseFavorite);
+        public static event ReleaseIsAvailable OnReleaseIsAvailable;
+
+        MethodInvoker releaseMIV;
+        private void OpenReleasePage() {
+            Connect(TerminalsReleasesFavoriteName, false);
+        }
         private void MainForm_Load(object sender, EventArgs e)
         {
+            releaseMIV = new MethodInvoker(OpenReleasePage);
             this.Text = string.Format("Terminals {0} (RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix)", Program.TerminalsVersion);
+            MainForm.OnReleaseIsAvailable += new ReleaseIsAvailable(MainForm_OnReleaseIsAvailable);
+        }
 
+        void MainForm_OnReleaseIsAvailable(FavoriteConfigurationElement ReleaseFavorite) {
+            this.Invoke(releaseMIV);            
         }
 
         private void updateToolStripItem_Click(object sender, EventArgs e)
         {
-            string output = ReleaseDescription.Description;
-            output = output.Replace("<br />", @"\r\n");
-
-            if(System.Windows.Forms.MessageBox.Show("Would you like to download this release?\r\n\r\n" + output, "New Terminals Release", MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                Process.Start(ReleaseDescription.Link.ToString());
-            }
         }
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
