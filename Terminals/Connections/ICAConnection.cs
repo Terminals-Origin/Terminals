@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using Terminals.Properties;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using TabControl;
+
 
 namespace Terminals.Connections {
     public class ICAConnection : Connection {
@@ -24,6 +29,7 @@ namespace Terminals.Connections {
                 iIcaClient = new AxWFICALib.AxICAClient();
                 ((Control)iIcaClient).DragEnter += new DragEventHandler(ICAConnection_DragEnter);
                 ((Control)iIcaClient).DragDrop += new DragEventHandler(ICAConnection_DragDrop);
+                iIcaClient.OnDisconnect += new EventHandler(iIcaClient_OnDisconnect);
                 iIcaClient.Dock = DockStyle.Fill;
 
 
@@ -109,6 +115,20 @@ namespace Terminals.Connections {
                 Terminals.Logging.Log.Fatal("Connecting to ICA", exc);
                 return false;
             }
+        }
+
+
+        void iIcaClient_OnDisconnect(object sender, EventArgs e) {
+            Terminals.Logging.Log.Fatal("ICA Connection Lost" + this.Favorite.Name);
+            this.connected = false;
+
+            TabControlItem selectedTabPage = (TabControlItem)(this.Parent);
+            bool wasSelected = selectedTabPage.Selected;
+            ParentForm.tcTerminals.RemoveTab(selectedTabPage);
+            ParentForm.tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
+            if(wasSelected)
+                NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+            ParentForm.UpdateControls();
         }
 
         void ICAConnection_DragDrop(object sender, DragEventArgs e)

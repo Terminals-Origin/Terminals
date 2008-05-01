@@ -116,8 +116,17 @@ namespace Terminals.Connections
 
         void term_OnDisconnected(object Sender, string Message)
         {
-            System.Windows.Forms.MessageBox.Show("There was an error with the Telnet/SSH connection.  It will now close.\r\nDetails:\r\n" + Message);
-            this.ParentForm.tcTerminals.ForceCloseTab(this.TerminalTabPage);
+            Terminals.Logging.Log.Fatal("Telnet/SSH Connection Lost" + this.Favorite.Name);
+            this.connected = false;
+
+            TabControlItem selectedTabPage = (TabControlItem)(this.Parent);
+            bool wasSelected = selectedTabPage.Selected;
+            ParentForm.tcTerminals.RemoveTab(selectedTabPage);
+            ParentForm.tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
+            if(wasSelected)
+                NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+            ParentForm.UpdateControls();
+
         }
 
         public override void Disconnect()
