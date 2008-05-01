@@ -298,7 +298,6 @@ namespace Terminals
         this.NotesTextbox.Location = new System.Drawing.Point(106, 192);
         this.NotesTextbox.Multiline = true;
         this.NotesTextbox.Name = "NotesTextbox";
-        this.NotesTextbox.PasswordChar = '*';
         this.NotesTextbox.Size = new System.Drawing.Size(265, 73);
         this.NotesTextbox.TabIndex = 18;
         // 

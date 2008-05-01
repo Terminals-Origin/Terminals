@@ -68,7 +68,7 @@ namespace Terminals
             this.lvConnections.Location = new System.Drawing.Point(12, 25);
             this.lvConnections.Name = "lvConnections";
             this.lvConnections.ShowItemToolTips = true;
-            this.lvConnections.Size = new System.Drawing.Size(562, 278);
+            this.lvConnections.Size = new System.Drawing.Size(595, 278);
             this.lvConnections.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.lvConnections.TabIndex = 1;
             this.lvConnections.UseCompatibleStateImageBehavior = false;
@@ -114,9 +114,9 @@ namespace Terminals
             // 
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(585, 278);
+            this.btnClose.Location = new System.Drawing.Point(613, 278);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(134, 25);
+            this.btnClose.Size = new System.Drawing.Size(106, 25);
             this.btnClose.TabIndex = 7;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -124,9 +124,9 @@ namespace Terminals
             // btnEdit
             // 
             this.btnEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEdit.Location = new System.Drawing.Point(585, 55);
+            this.btnEdit.Location = new System.Drawing.Point(613, 55);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(134, 24);
+            this.btnEdit.Size = new System.Drawing.Size(106, 24);
             this.btnEdit.TabIndex = 3;
             this.btnEdit.Text = "&Edit...";
             this.btnEdit.UseVisualStyleBackColor = true;
@@ -135,9 +135,9 @@ namespace Terminals
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.Location = new System.Drawing.Point(585, 85);
+            this.btnDelete.Location = new System.Drawing.Point(613, 85);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(134, 24);
+            this.btnDelete.Size = new System.Drawing.Size(106, 24);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "&Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
@@ -146,9 +146,9 @@ namespace Terminals
             // btnCopy
             // 
             this.btnCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopy.Location = new System.Drawing.Point(585, 115);
+            this.btnCopy.Location = new System.Drawing.Point(613, 115);
             this.btnCopy.Name = "btnCopy";
-            this.btnCopy.Size = new System.Drawing.Size(134, 24);
+            this.btnCopy.Size = new System.Drawing.Size(106, 24);
             this.btnCopy.TabIndex = 5;
             this.btnCopy.Text = "&Copy";
             this.btnCopy.UseVisualStyleBackColor = true;
@@ -157,9 +157,9 @@ namespace Terminals
             // btnRename
             // 
             this.btnRename.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRename.Location = new System.Drawing.Point(585, 145);
+            this.btnRename.Location = new System.Drawing.Point(613, 145);
             this.btnRename.Name = "btnRename";
-            this.btnRename.Size = new System.Drawing.Size(134, 24);
+            this.btnRename.Size = new System.Drawing.Size(106, 24);
             this.btnRename.TabIndex = 6;
             this.btnRename.Text = "&Rename";
             this.btnRename.UseVisualStyleBackColor = true;
@@ -177,9 +177,9 @@ namespace Terminals
             // btnNew
             // 
             this.btnNew.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNew.Location = new System.Drawing.Point(585, 25);
+            this.btnNew.Location = new System.Drawing.Point(613, 25);
             this.btnNew.Name = "btnNew";
-            this.btnNew.Size = new System.Drawing.Size(134, 24);
+            this.btnNew.Size = new System.Drawing.Size(106, 24);
             this.btnNew.TabIndex = 2;
             this.btnNew.Text = "&New...";
             this.btnNew.UseVisualStyleBackColor = true;
@@ -188,9 +188,9 @@ namespace Terminals
             // ImportButton
             // 
             this.ImportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ImportButton.Location = new System.Drawing.Point(585, 175);
+            this.ImportButton.Location = new System.Drawing.Point(613, 175);
             this.ImportButton.Name = "ImportButton";
-            this.ImportButton.Size = new System.Drawing.Size(134, 23);
+            this.ImportButton.Size = new System.Drawing.Size(106, 23);
             this.ImportButton.TabIndex = 8;
             this.ImportButton.Text = "&Import...";
             this.ImportButton.UseVisualStyleBackColor = true;
@@ -199,9 +199,9 @@ namespace Terminals
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(585, 204);
+            this.button1.Location = new System.Drawing.Point(613, 204);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(134, 23);
+            this.button1.Size = new System.Drawing.Size(106, 23);
             this.button1.TabIndex = 9;
             this.button1.Text = "&Active Directory...";
             this.button1.UseVisualStyleBackColor = true;

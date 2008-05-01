@@ -211,8 +211,15 @@
     <Compile Include="DPAPI.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Network\ActiveDirectoryClient.cs" />
+    <Compile Include="Network\ActiveDirectoryComputer.cs" />
     <Compile Include="Network\DNS\Adapter.cs" />
     <Compile Include="Network\DNS\AdapterInfo.cs" />
+    <Compile Include="Network\ImportFromAD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Network\ImportFromAD.Designer.cs">
+      <DependentUpon>ImportFromAD.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\MagicPaket.cs" />
     <Compile Include="Network\PortScanner.cs">
       <SubType>UserControl</SubType>
@@ -686,6 +693,10 @@
     <EmbeddedResource Include="Connections\HTTPConnection.resx">
       <SubType>Designer</SubType>
       <DependentUpon>HTTPConnection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Network\ImportFromAD.resx">
+      <DependentUpon>ImportFromAD.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner.resx">
       <SubType>Designer</SubType>

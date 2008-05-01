@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using System.Text;
 using System.DirectoryServices;
 
-namespace Terminals.Network {
-    public class ActiveDirectoryClient {
-        public static Dictionary<string, string>  ListComputers(string Domain)
+namespace Terminals.Network
+{
+    public class ActiveDirectoryClient
+    {
+
+        public delegate void ListComputersDoneDelegate(List<ActiveDirectoryComputer> Computers, bool Success);
+        public event ListComputersDoneDelegate OnListComputersDoneDelegate;
+
+        private void ListComputersThread(object state)
         {
-            Dictionary<string, string> Computers = new Dictionary<string, string>();
-            try {
+            List<ActiveDirectoryComputer> Computers = new List<ActiveDirectoryComputer>();
+            bool Success = true;
+            string Domain = (string)state;
+            try
+            {
                 using(DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://{0}", Domain)))
                 {
                     using(DirectorySearcher mySearcher = new DirectorySearcher(entry))
@@ -16,46 +25,51 @@ namespace Terminals.Network {
                         mySearcher.Filter = ("(objectClass=computer)");
                         foreach(SearchResult resEnt in mySearcher.FindAll())
                         {
+                            ActiveDirectoryComputer comp = new ActiveDirectoryComputer();
+
                             DirectoryEntry computer = resEnt.GetDirectoryEntry();
                             string name = computer.Name.Replace("CN=", "");
-                            string tags = "";
+
+                            comp.Tags = Domain;
+
                             if(computer.Properties != null && computer.Properties["name"] != null && computer.Properties["name"].Count > 0)
                             {
                                 name = computer.Properties["name"][0].ToString();
                             }
+                            comp.ComputerName = name;
+
                             if(computer.Properties != null && computer.Properties["operatingSystem"] != null && computer.Properties["operatingSystem"].Count > 0)
                             {
-                                tags = computer.Properties["operatingSystem"][0].ToString();
+                                comp.Tags += "," + computer.Properties["operatingSystem"][0].ToString();
+                                comp.OperatingSystem = computer.Properties["operatingSystem"][0].ToString();
+
                             }
                             if(computer.Properties != null && computer.Properties["distinguishedName"] != null && computer.Properties["distinguishedName"].Count > 0)
                             {
                                 string distinguishedName = computer.Properties["distinguishedName"][0].ToString();
                                 if(distinguishedName.Contains("OU=Domain Controllers"))
                                 {
-                                    tags += ",Domain Controllers";
+                                    comp.Tags += ",Domain Controllers";
                                 }
                             }
-                            //Terminals.Logging.Log.Info("---------------");
-                            //Terminals.Logging.Log.Info(name);
-                            //Terminals.Logging.Log.Info("---------------");
-                            //foreach(string n in computer.Properties.PropertyNames)
-                            //{
-                            //    Terminals.Logging.Log.Info("-->" + n);
-                            //    for(int x = 0; x < computer.Properties[n].Count; x++)
-                            //    {
-                            //        Terminals.Logging.Log.Info(computer.Properties[n][x]);
-                            //    }
-                            //}
 
-                            
-                            Computers.Add(name, tags);
+                            Computers.Add(comp);
+
                         }
                     }
                 }
-            } catch(Exception exc) {
+            }
+            catch(Exception exc)
+            {
+                Success = false;
                 Terminals.Logging.Log.Error("Could not list the computers on the domain:" + Domain, exc);
             }
-            return Computers;
+            if(OnListComputersDoneDelegate != null) OnListComputersDoneDelegate(Computers, Success);
+        }
+
+        public void ListComputers(string Domain)
+        {
+            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ListComputersThread), (object)Domain);
         }
     }
 }

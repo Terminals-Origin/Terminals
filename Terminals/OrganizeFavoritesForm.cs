@@ -195,33 +195,8 @@ namespace Terminals
 
         private void button1_Click(object sender, EventArgs e) {
 
-            InputBoxResult result = InputBox.Show("Domain Name", "Which Active Directory Domain would you like to scan?", System.Environment.UserDomainName);
-            if(result.ReturnCode == DialogResult.OK) {
-
-                Dictionary<string, string> Computers = Network.ActiveDirectoryClient.ListComputers(result.Text);
-                if(Computers == null || Computers.Count <= 0) {
-                    System.Windows.Forms.MessageBox.Show("Terminals could not find any computers on the domain:" + result.Text);
-                } else {
-                    foreach(string Computer in Computers.Keys) {
-                        string tags = Computers[Computer];
-                        FavoriteConfigurationElement elm = new FavoriteConfigurationElement(Computer);
-                        elm.Name = Computer;
-                        elm.ServerName = Computer;
-                        elm.UserName = System.Environment.UserName;
-                        elm.DomainName = result.Text;
-                        if(tags.Trim() != "")
-                            elm.Tags = string.Format("{0},{1}", result.Text, tags);
-                        else
-                            elm.Tags = result.Text;
-
-                        elm.Port = 3389;
-                        Settings.AddFavorite(elm, false);
-                    }
-                    System.Windows.Forms.MessageBox.Show("Terminals was able to import " + Computers.Keys.Count + " connections from Active Directory.");
-                }
-            }
+            Network.ImportFromAD ad = new Terminals.Network.ImportFromAD();
+            ad.ShowDialog();
         }
-
-
     }
 }
