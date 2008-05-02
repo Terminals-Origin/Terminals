@@ -139,11 +139,10 @@ namespace Terminals.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;tree Text=&quot;WMI Classes&quot;&gt;
-        /// &lt;node Text=&quot;WMI System Classes&quot; Type=&quot;&quot; Alt=&quot;Predefined classes based on the Common Information Model (CIM) and included in every namespace in the Windows Management Instrumentation (WMI) core.&quot;&gt;
-        ///  &lt;node Text=&quot;Abstract Base Classes&quot;&gt;
-        ///   &lt;node Text=&quot;__NotifyStatus&quot; Type=&quot;ClassNode&quot; Alt=&quot;The __NotifyStatus system class is an abstract base class that can be the superclass for provider-defined error classes.&quot;&gt;&lt;/node&gt;
-        ///   &lt;node Text=&quot;__PARAMETERS&quot; Type=&quot;ClassN [rest of string was truncated]&quot;;.
+        ///&lt;tree Text=&quot;Computer System Information&quot; Alt=&quot;Double click a node to query the computer&quot;&gt;
+        ///   &lt;node Text=&quot;Computer system hardware&quot; Type=&quot;&quot; Alt=&quot;Classes that represent hardware related objects.&quot;&gt;
+        ///    &lt;node Text=&quot;Cooling device classes&quot; Type=&quot;&quot; Alt=&quot;The Cooling Devices subcategory groups classes that represent instrumentable fans, temperature probes, and refrigeration devices.&quot;&gt;
+        ///     &lt;node Text=&quot;Win32_Fan&quot; Type=&quot;ClassNode&quot; Alt=&quot;Represents the properties of a fan device in the compute [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string BasicTree {
             get {
@@ -210,6 +209,13 @@ namespace Terminals.Properties {
         internal static System.Drawing.Bitmap lightning_go {
             get {
                 object obj = ResourceManager.GetObject("lightning_go", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap options {
+            get {
+                object obj = ResourceManager.GetObject("options", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

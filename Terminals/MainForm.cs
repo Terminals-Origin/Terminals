@@ -136,16 +136,16 @@ namespace Terminals {
                 QuickContextMenu.Items.Clear();
 
                 if(this.FullScreen)
-                    QuickContextMenu.Items.Add("&Restore Screen");
+                    QuickContextMenu.Items.Add("&Restore Screen", Resources.arrow_in);
                 else
-                    QuickContextMenu.Items.Add("&Full Screen");
+                    QuickContextMenu.Items.Add("&Full Screen", Resources.arrow_out);
 
                 QuickContextMenu.Items.Add("-");
-                QuickContextMenu.Items.Add("&Screen Capture Manager");
-                QuickContextMenu.Items.Add("&Networking Tools");
+                QuickContextMenu.Items.Add("&Screen Capture Manager", Resources.screen_capture_box);
+                QuickContextMenu.Items.Add("&Networking Tools", Resources.computer_link);
                 QuickContextMenu.Items.Add("-");
-                QuickContextMenu.Items.Add("&Organize Favorites");
-                QuickContextMenu.Items.Add("Options");
+                QuickContextMenu.Items.Add("&Organize Favorites",Resources.star);
+                QuickContextMenu.Items.Add("Options", Resources.options);
                 QuickContextMenu.Items.Add("-");
 
                 FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();

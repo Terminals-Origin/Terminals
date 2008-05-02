@@ -791,6 +791,7 @@
     <Content Include="Resources\ico101.ico" />
     <None Include="Resources\ico_scapture.png" />
     <Content Include="Resources\lightning_go.png" />
+    <Content Include="Resources\options.png" />
     <Content Include="Resources\polarized-glasses.jpg" />
     <Content Include="Resources\rdp.png" />
     <None Include="Resources\RotatedHeaderForWizard.bmp" />

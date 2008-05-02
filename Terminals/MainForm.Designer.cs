@@ -199,6 +199,7 @@ namespace Terminals {
             // 
             // newTerminalToolStripMenuItem
             // 
+            this.newTerminalToolStripMenuItem.Image = global::Terminals.Properties.Resources.add;
             this.newTerminalToolStripMenuItem.Name = "newTerminalToolStripMenuItem";
             this.newTerminalToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newTerminalToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
@@ -231,6 +232,7 @@ namespace Terminals {
             // 
             // fullScreenToolStripMenuItem
             // 
+            this.fullScreenToolStripMenuItem.Image = global::Terminals.Properties.Resources.arrow_out;
             this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
             this.fullScreenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
             this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
@@ -285,6 +287,7 @@ namespace Terminals {
             // 
             // manageFavoritesToolStripMenuItem
             // 
+            this.manageFavoritesToolStripMenuItem.Image = global::Terminals.Properties.Resources.star;
             this.manageFavoritesToolStripMenuItem.Name = "manageFavoritesToolStripMenuItem";
             this.manageFavoritesToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
             this.manageFavoritesToolStripMenuItem.Text = "&Organize Favorites...";
@@ -389,6 +392,7 @@ namespace Terminals {
             // 
             // captureTerminalScreenToolStripMenuItem
             // 
+            this.captureTerminalScreenToolStripMenuItem.Image = global::Terminals.Properties.Resources.camera;
             this.captureTerminalScreenToolStripMenuItem.Name = "captureTerminalScreenToolStripMenuItem";
             this.captureTerminalScreenToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.captureTerminalScreenToolStripMenuItem.Text = "&Capture Terminal Screen";
@@ -396,6 +400,7 @@ namespace Terminals {
             // 
             // toolStripMenuItem5
             // 
+            this.toolStripMenuItem5.Image = global::Terminals.Properties.Resources.screen_capture_box;
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
             this.toolStripMenuItem5.Size = new System.Drawing.Size(205, 22);
             this.toolStripMenuItem5.Text = "Screen Capture Manager";
@@ -403,6 +408,7 @@ namespace Terminals {
             // 
             // networkingToolsToolStripMenuItem
             // 
+            this.networkingToolsToolStripMenuItem.Image = global::Terminals.Properties.Resources.computer_link;
             this.networkingToolsToolStripMenuItem.Name = "networkingToolsToolStripMenuItem";
             this.networkingToolsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.networkingToolsToolStripMenuItem.Text = "Networking Tools";
@@ -410,6 +416,7 @@ namespace Terminals {
             // 
             // optionsToolStripMenuItem
             // 
+            this.optionsToolStripMenuItem.Image = global::Terminals.Properties.Resources.options;
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.optionsToolStripMenuItem.Text = "&Options";
@@ -1114,7 +1121,7 @@ namespace Terminals {
             this.toolStripButton1});
             this.tsRemoteToolbar.Location = new System.Drawing.Point(3, 49);
             this.tsRemoteToolbar.Name = "tsRemoteToolbar";
-            this.tsRemoteToolbar.Size = new System.Drawing.Size(58, 25);
+            this.tsRemoteToolbar.Size = new System.Drawing.Size(56, 25);
             this.tsRemoteToolbar.TabIndex = 3;
             this.tsRemoteToolbar.Visible = false;
             // 
