@@ -139,7 +139,6 @@ namespace Terminals
         this.label16 = new System.Windows.Forms.Label();
         this.SSHRadioButton = new System.Windows.Forms.RadioButton();
         this.TelnetRadioButton = new System.Windows.Forms.RadioButton();
-        this.tabPage6 = new System.Windows.Forms.TabPage();
         this.ICAtabPage = new System.Windows.Forms.TabPage();
         this.ICAEncryptionLevelCombobox = new System.Windows.Forms.ComboBox();
         this.ICAEnableEncryptionCheckbox = new System.Windows.Forms.CheckBox();
@@ -225,7 +224,7 @@ namespace Terminals
         // 
         this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
         this.btnOk.Enabled = false;
-        this.btnOk.Location = new System.Drawing.Point(323, 380);
+        this.btnOk.Location = new System.Drawing.Point(355, 380);
         this.btnOk.Name = "btnOk";
         this.btnOk.Size = new System.Drawing.Size(72, 24);
         this.btnOk.TabIndex = 1;
@@ -237,7 +236,7 @@ namespace Terminals
         // 
         this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
         this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-        this.btnCancel.Location = new System.Drawing.Point(401, 380);
+        this.btnCancel.Location = new System.Drawing.Point(433, 380);
         this.btnCancel.Name = "btnCancel";
         this.btnCancel.Size = new System.Drawing.Size(72, 24);
         this.btnCancel.TabIndex = 2;
@@ -250,7 +249,6 @@ namespace Terminals
         this.tabControl1.Controls.Add(this.tabPage2);
         this.tabControl1.Controls.Add(this.tabPage7);
         this.tabControl1.Controls.Add(this.tabPage3);
-        this.tabControl1.Controls.Add(this.tabPage6);
         this.tabControl1.Controls.Add(this.ICAtabPage);
         this.tabControl1.Controls.Add(this.tabPage5);
         this.tabControl1.Controls.Add(this.HTTPTabPage);
@@ -293,16 +291,16 @@ namespace Terminals
         // 
         // NotesTextbox
         // 
-        this.NotesTextbox.Location = new System.Drawing.Point(106, 192);
+        this.NotesTextbox.Location = new System.Drawing.Point(117, 192);
         this.NotesTextbox.Multiline = true;
         this.NotesTextbox.Name = "NotesTextbox";
-        this.NotesTextbox.Size = new System.Drawing.Size(334, 73);
+        this.NotesTextbox.Size = new System.Drawing.Size(356, 73);
         this.NotesTextbox.TabIndex = 18;
         // 
         // label36
         // 
         this.label36.AutoSize = true;
-        this.label36.Location = new System.Drawing.Point(7, 195);
+        this.label36.Location = new System.Drawing.Point(18, 195);
         this.label36.Name = "label36";
         this.label36.Size = new System.Drawing.Size(39, 13);
         this.label36.TabIndex = 17;
@@ -312,7 +310,7 @@ namespace Terminals
         // 
         this.pictureBox2.Image = global::Terminals.Properties.Resources.smallterm;
         this.pictureBox2.InitialImage = global::Terminals.Properties.Resources.smallterm;
-        this.pictureBox2.Location = new System.Drawing.Point(446, 62);
+        this.pictureBox2.Location = new System.Drawing.Point(457, 62);
         this.pictureBox2.Name = "pictureBox2";
         this.pictureBox2.Size = new System.Drawing.Size(16, 16);
         this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -322,7 +320,7 @@ namespace Terminals
         // 
         // txtPort
         // 
-        this.txtPort.Location = new System.Drawing.Point(416, 35);
+        this.txtPort.Location = new System.Drawing.Point(427, 35);
         this.txtPort.Name = "txtPort";
         this.txtPort.Size = new System.Drawing.Size(50, 21);
         this.txtPort.TabIndex = 14;
@@ -330,7 +328,7 @@ namespace Terminals
         // lblPort
         // 
         this.lblPort.AutoSize = true;
-        this.lblPort.Location = new System.Drawing.Point(379, 38);
+        this.lblPort.Location = new System.Drawing.Point(390, 38);
         this.lblPort.Name = "lblPort";
         this.lblPort.Size = new System.Drawing.Size(31, 13);
         this.lblPort.TabIndex = 13;
@@ -349,16 +347,16 @@ namespace Terminals
             "ICA Citrix",
             "HTTP",
             "HTTPS"});
-        this.ProtocolComboBox.Location = new System.Drawing.Point(106, 6);
+        this.ProtocolComboBox.Location = new System.Drawing.Point(117, 6);
         this.ProtocolComboBox.Name = "ProtocolComboBox";
-        this.ProtocolComboBox.Size = new System.Drawing.Size(334, 21);
+        this.ProtocolComboBox.Size = new System.Drawing.Size(360, 21);
         this.ProtocolComboBox.TabIndex = 12;
         this.ProtocolComboBox.SelectedIndexChanged += new System.EventHandler(this.ProtocolComboBox_SelectedIndexChanged);
         // 
         // ProtocolLabel
         // 
         this.ProtocolLabel.AutoSize = true;
-        this.ProtocolLabel.Location = new System.Drawing.Point(7, 9);
+        this.ProtocolLabel.Location = new System.Drawing.Point(18, 9);
         this.ProtocolLabel.Name = "ProtocolLabel";
         this.ProtocolLabel.Size = new System.Drawing.Size(50, 13);
         this.ProtocolLabel.TabIndex = 11;
@@ -367,7 +365,7 @@ namespace Terminals
         // chkSavePassword
         // 
         this.chkSavePassword.AutoSize = true;
-        this.chkSavePassword.Location = new System.Drawing.Point(106, 169);
+        this.chkSavePassword.Location = new System.Drawing.Point(117, 169);
         this.chkSavePassword.Name = "chkSavePassword";
         this.chkSavePassword.Size = new System.Drawing.Size(99, 17);
         this.chkSavePassword.TabIndex = 10;
@@ -377,7 +375,7 @@ namespace Terminals
         // 
         // txtName
         // 
-        this.txtName.Location = new System.Drawing.Point(106, 62);
+        this.txtName.Location = new System.Drawing.Point(117, 62);
         this.txtName.Name = "txtName";
         this.txtName.Size = new System.Drawing.Size(334, 21);
         this.txtName.TabIndex = 3;
@@ -385,7 +383,7 @@ namespace Terminals
         // label5
         // 
         this.label5.AutoSize = true;
-        this.label5.Location = new System.Drawing.Point(7, 65);
+        this.label5.Location = new System.Drawing.Point(18, 65);
         this.label5.Name = "label5";
         this.label5.Size = new System.Drawing.Size(94, 13);
         this.label5.TabIndex = 2;
@@ -393,17 +391,17 @@ namespace Terminals
         // 
         // txtPassword
         // 
-        this.txtPassword.Location = new System.Drawing.Point(106, 142);
+        this.txtPassword.Location = new System.Drawing.Point(117, 142);
         this.txtPassword.Name = "txtPassword";
         this.txtPassword.PasswordChar = '*';
-        this.txtPassword.Size = new System.Drawing.Size(334, 21);
+        this.txtPassword.Size = new System.Drawing.Size(356, 21);
         this.txtPassword.TabIndex = 9;
         this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
         // 
         // label4
         // 
         this.label4.AutoSize = true;
-        this.label4.Location = new System.Drawing.Point(7, 145);
+        this.label4.Location = new System.Drawing.Point(18, 145);
         this.label4.Name = "label4";
         this.label4.Size = new System.Drawing.Size(57, 13);
         this.label4.TabIndex = 8;
@@ -413,16 +411,16 @@ namespace Terminals
         // 
         this.cmbUsers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
         this.cmbUsers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-        this.cmbUsers.Location = new System.Drawing.Point(106, 115);
+        this.cmbUsers.Location = new System.Drawing.Point(117, 115);
         this.cmbUsers.Name = "cmbUsers";
-        this.cmbUsers.Size = new System.Drawing.Size(334, 21);
+        this.cmbUsers.Size = new System.Drawing.Size(356, 21);
         this.cmbUsers.TabIndex = 7;
         this.cmbUsers.TextChanged += new System.EventHandler(this.control_TextChanged);
         // 
         // label3
         // 
         this.label3.AutoSize = true;
-        this.label3.Location = new System.Drawing.Point(7, 118);
+        this.label3.Location = new System.Drawing.Point(18, 118);
         this.label3.Name = "label3";
         this.label3.Size = new System.Drawing.Size(62, 13);
         this.label3.TabIndex = 6;
@@ -432,7 +430,7 @@ namespace Terminals
         // 
         this.cmbServers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
         this.cmbServers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-        this.cmbServers.Location = new System.Drawing.Point(106, 35);
+        this.cmbServers.Location = new System.Drawing.Point(117, 35);
         this.cmbServers.Name = "cmbServers";
         this.cmbServers.Size = new System.Drawing.Size(265, 21);
         this.cmbServers.TabIndex = 1;
@@ -443,7 +441,7 @@ namespace Terminals
         // label2
         // 
         this.label2.AutoSize = true;
-        this.label2.Location = new System.Drawing.Point(7, 38);
+        this.label2.Location = new System.Drawing.Point(18, 38);
         this.label2.Name = "label2";
         this.label2.Size = new System.Drawing.Size(58, 13);
         this.label2.TabIndex = 0;
@@ -453,16 +451,16 @@ namespace Terminals
         // 
         this.cmbDomains.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
         this.cmbDomains.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-        this.cmbDomains.Location = new System.Drawing.Point(106, 88);
+        this.cmbDomains.Location = new System.Drawing.Point(117, 88);
         this.cmbDomains.Name = "cmbDomains";
-        this.cmbDomains.Size = new System.Drawing.Size(334, 21);
+        this.cmbDomains.Size = new System.Drawing.Size(356, 21);
         this.cmbDomains.TabIndex = 5;
         this.cmbDomains.TextChanged += new System.EventHandler(this.control_TextChanged);
         // 
         // label1
         // 
         this.label1.AutoSize = true;
-        this.label1.Location = new System.Drawing.Point(7, 91);
+        this.label1.Location = new System.Drawing.Point(18, 91);
         this.label1.Name = "label1";
         this.label1.Size = new System.Drawing.Size(46, 13);
         this.label1.TabIndex = 4;
@@ -1408,15 +1406,6 @@ namespace Terminals
         this.TelnetRadioButton.UseVisualStyleBackColor = true;
         this.TelnetRadioButton.CheckedChanged += new System.EventHandler(this.TelnetRadioButton_CheckedChanged);
         // 
-        // tabPage6
-        // 
-        this.tabPage6.Location = new System.Drawing.Point(4, 22);
-        this.tabPage6.Name = "tabPage6";
-        this.tabPage6.Size = new System.Drawing.Size(500, 271);
-        this.tabPage6.TabIndex = 6;
-        this.tabPage6.Text = "VNC";
-        this.tabPage6.UseVisualStyleBackColor = true;
-        // 
         // ICAtabPage
         // 
         this.ICAtabPage.Controls.Add(this.ICAEncryptionLevelCombobox);
@@ -1595,6 +1584,7 @@ namespace Terminals
         this.httpUrlTextBox.Size = new System.Drawing.Size(401, 21);
         this.httpUrlTextBox.TabIndex = 4;
         this.httpUrlTextBox.Text = "http://www.codeplex.com/terminals";
+        this.httpUrlTextBox.TextChanged += new System.EventHandler(this.httpUrlTextBox_TextChanged);
         // 
         // label33
         // 
@@ -1856,7 +1846,7 @@ namespace Terminals
         this.pictureBox1.Image = global::Terminals.Properties.Resources.rdp;
         this.pictureBox1.Location = new System.Drawing.Point(0, 0);
         this.pictureBox1.Name = "pictureBox1";
-        this.pictureBox1.Size = new System.Drawing.Size(481, 67);
+        this.pictureBox1.Size = new System.Drawing.Size(513, 67);
         this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
         this.pictureBox1.TabIndex = 9;
         this.pictureBox1.TabStop = false;
@@ -1877,7 +1867,7 @@ namespace Terminals
         this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.CancelButton = this.btnCancel;
-        this.ClientSize = new System.Drawing.Size(481, 416);
+        this.ClientSize = new System.Drawing.Size(513, 416);
         this.Controls.Add(this.chkAddtoToolbar);
         this.Controls.Add(this.tabControl1);
         this.Controls.Add(this.pictureBox1);
@@ -2009,7 +1999,6 @@ namespace Terminals
       private System.Windows.Forms.GroupBox LocalResourceGroupBox;
       private System.Windows.Forms.TextBox txtPort;
       private System.Windows.Forms.Label lblPort;
-      private System.Windows.Forms.TabPage tabPage6;
       private System.Windows.Forms.TabPage tabPage7;
       private System.Windows.Forms.CheckBox VMRCAdminModeCheckbox;
       private System.Windows.Forms.CheckBox VMRCReducedColorsCheckbox;

@@ -735,5 +735,14 @@ namespace Terminals
             ICAEncryptionLevelCombobox.Enabled = ICAEnableEncryptionCheckbox.Checked;
         }
 
+        private void httpUrlTextBox_TextChanged(object sender, EventArgs e) {
+            //cmbServers.Text = httpUrlTextBox.Text.Replace(":", "").Replace("//", "").Replace(".","").Replace("/","");
+            string url = httpUrlTextBox.Text;
+            try {
+                System.Uri u = new Uri(url);
+                cmbServers.Text = u.Host;
+            } catch(Exception ex) { }
+        }
+
     }
 }
