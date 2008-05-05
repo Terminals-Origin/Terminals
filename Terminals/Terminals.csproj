@@ -821,6 +821,7 @@
     <EmbeddedResource Include="Resources\atoz.png" />
     <Content Include="Resources\amber.jpg" />
     <None Include="Resources\Filtering.html" />
+    <Content Include="Resources\CompMgmt.png" />
     <Content Include="Resources\green.jpg" />
     <Content Include="Resources\ico101.ico" />
     <None Include="Resources\ico_scapture.png" />

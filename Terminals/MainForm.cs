@@ -2612,6 +2612,11 @@ namespace Terminals {
 
             }
         }
+
+        private void toolStripButton5_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("mmc.exe", "compmgmt.msc");
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem {
