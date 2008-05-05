@@ -30,6 +30,7 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.DumpToFileCheckbox = new System.Windows.Forms.CheckBox();
             this.FilterTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.AmberPicture = new System.Windows.Forms.PictureBox();
@@ -42,7 +43,8 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.FilteringTabPage = new System.Windows.Forms.TabPage();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.DumpToFileCheckbox = new System.Windows.Forms.CheckBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AmberPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RedPicture)).BeginInit();
@@ -54,6 +56,7 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.FilteringTabPage.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // StopCaptureButton
@@ -68,12 +71,12 @@
             // 
             // comboBox1
             // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(0, 0);
+            this.comboBox1.Location = new System.Drawing.Point(44, 0);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(224, 21);
+            this.comboBox1.Size = new System.Drawing.Size(180, 21);
             this.comboBox1.TabIndex = 0;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
@@ -117,9 +120,9 @@
             // propertyGrid1
             // 
             this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(0, 21);
+            this.propertyGrid1.Location = new System.Drawing.Point(0, 23);
             this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(224, 513);
+            this.propertyGrid1.Size = new System.Drawing.Size(224, 511);
             this.propertyGrid1.TabIndex = 1;
             // 
             // panel1
@@ -137,6 +140,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(562, 30);
             this.panel1.TabIndex = 0;
+            // 
+            // DumpToFileCheckbox
+            // 
+            this.DumpToFileCheckbox.AutoSize = true;
+            this.DumpToFileCheckbox.Location = new System.Drawing.Point(195, 6);
+            this.DumpToFileCheckbox.Name = "DumpToFileCheckbox";
+            this.DumpToFileCheckbox.Size = new System.Drawing.Size(85, 17);
+            this.DumpToFileCheckbox.TabIndex = 8;
+            this.DumpToFileCheckbox.Text = "Dump to File";
+            this.DumpToFileCheckbox.UseVisualStyleBackColor = true;
             // 
             // FilterTextBox
             // 
@@ -203,7 +216,7 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.propertyGrid1);
-            this.splitContainer1.Panel1.Controls.Add(this.comboBox1);
+            this.splitContainer1.Panel1.Controls.Add(this.panel2);
             // 
             // splitContainer1.Panel2
             // 
@@ -273,15 +286,25 @@
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.WebBrowserShortcutsEnabled = false;
             // 
-            // DumpToFileCheckbox
+            // panel2
             // 
-            this.DumpToFileCheckbox.AutoSize = true;
-            this.DumpToFileCheckbox.Location = new System.Drawing.Point(195, 6);
-            this.DumpToFileCheckbox.Name = "DumpToFileCheckbox";
-            this.DumpToFileCheckbox.Size = new System.Drawing.Size(85, 17);
-            this.DumpToFileCheckbox.TabIndex = 8;
-            this.DumpToFileCheckbox.Text = "Dump to File";
-            this.DumpToFileCheckbox.UseVisualStyleBackColor = true;
+            this.panel2.Controls.Add(this.comboBox1);
+            this.panel2.Controls.Add(this.label2);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(224, 23);
+            this.panel2.TabIndex = 2;
+            // 
+            // label2
+            // 
+            this.label2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 23);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Device:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // PacketCapture
             // 
@@ -305,6 +328,7 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.FilteringTabPage.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -331,5 +355,7 @@
         private System.Windows.Forms.TabPage FilteringTabPage;
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.CheckBox DumpToFileCheckbox;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label2;
     }
 }
