@@ -20,6 +20,7 @@ namespace WindowsFormsApplication2 {
 
         private void PacketCapture_Load(object sender, EventArgs e) {
             try {
+                DumpToFileCheckbox.Enabled = true;
                 StopCaptureButton.Enabled = false;
                 AmberPicture.Visible = true;
                 GreenPicture.Visible = false;
@@ -46,6 +47,9 @@ namespace WindowsFormsApplication2 {
         private void StartCapture(object state) {
             PcapDevice dev = (PcapDevice)state;
             dev.PcapOpen();
+            if(DumpToFileCheckbox.Checked) {
+                dev.PcapDumpOpen(DumpFile);
+            }
             try {
                 dev.PcapSetFilter(this.FilterTextBox.Text);
             } catch(Exception exc) {
@@ -55,7 +59,10 @@ namespace WindowsFormsApplication2 {
             dev.PcapStartCapture();
 
         }
+        private string DumpFile = @"c:\Terminals.dump";
+
         private void CaptureButton_Click(object sender, EventArgs e) {
+            DumpToFileCheckbox.Enabled = false;
             CaptureButton.Enabled = false;
             StopCaptureButton.Enabled = true;
             AmberPicture.Visible = false;
@@ -80,6 +87,7 @@ namespace WindowsFormsApplication2 {
             RedPicture.Visible = false;
             GreenPicture.Visible = false;
             AmberPicture.Visible = true;
+            DumpToFileCheckbox.Enabled = true;
         }
         void UpdateUI() {
             lock(packets) {
@@ -102,12 +110,17 @@ namespace WindowsFormsApplication2 {
                 packets.Add(packet);
                 newpackets.Add(packet);
             }
+            if(dev.PcapDumpOpened) {
+                dev.PcapDump(packet);
+            }
             this.Invoke(updater);
         }
         private void StopCapture(object state) {
             PcapDevice dev = (PcapDevice)state;
             dev.PcapStopCapture();
             dev.PcapClose();
+            dev.PcapDumpFlush();
+            dev.PcapDumpClose();
         }
         private void StopCaptureButton_Click(object sender, EventArgs e) {
             CaptureButton.Enabled = false;
@@ -115,7 +128,13 @@ namespace WindowsFormsApplication2 {
             RedPicture.Visible = true;
             GreenPicture.Visible = false;
             AmberPicture.Visible = false;
+            DumpToFileCheckbox.Enabled = true;
             System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(StopCapture), dev);
+            if(DumpToFileCheckbox.Checked) {
+                if(System.Windows.Forms.MessageBox.Show("Open dump file in notepad?") == DialogResult.OK) {
+                    System.Diagnostics.Process.Start("notepad.exe", this.DumpFile);
+                }
+            }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e) {

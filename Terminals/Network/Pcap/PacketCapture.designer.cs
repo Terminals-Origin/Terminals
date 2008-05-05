@@ -42,6 +42,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.FilteringTabPage = new System.Windows.Forms.TabPage();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.DumpToFileCheckbox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AmberPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RedPicture)).BeginInit();
@@ -123,6 +124,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.DumpToFileCheckbox);
             this.panel1.Controls.Add(this.FilterTextBox);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.AmberPicture);
@@ -140,7 +142,7 @@
             // 
             this.FilterTextBox.Location = new System.Drawing.Point(43, 4);
             this.FilterTextBox.Name = "FilterTextBox";
-            this.FilterTextBox.Size = new System.Drawing.Size(232, 20);
+            this.FilterTextBox.Size = new System.Drawing.Size(146, 20);
             this.FilterTextBox.TabIndex = 7;
             // 
             // label1
@@ -271,6 +273,16 @@
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.WebBrowserShortcutsEnabled = false;
             // 
+            // DumpToFileCheckbox
+            // 
+            this.DumpToFileCheckbox.AutoSize = true;
+            this.DumpToFileCheckbox.Location = new System.Drawing.Point(195, 6);
+            this.DumpToFileCheckbox.Name = "DumpToFileCheckbox";
+            this.DumpToFileCheckbox.Size = new System.Drawing.Size(85, 17);
+            this.DumpToFileCheckbox.TabIndex = 8;
+            this.DumpToFileCheckbox.Text = "Dump to File";
+            this.DumpToFileCheckbox.UseVisualStyleBackColor = true;
+            // 
             // PacketCapture
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -318,5 +330,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TabPage FilteringTabPage;
         private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.CheckBox DumpToFileCheckbox;
     }
 }
