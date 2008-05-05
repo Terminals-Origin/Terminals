@@ -13,9 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminalsUpdater", "Termina
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VncSharp", "VncSharp\VncSharp.csproj", "{E0DED53A-C3E1-441D-9AD2-766E49EAD417}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexEditor", "HexEditor\HexEditor.csproj", "{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpPcap", "SharpPcap\SharpPcap.csproj", "{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 7
+		SccNumberOfProjects = 9
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs01.codeplex.com/
 		SccLocalPath0 = .
@@ -37,6 +41,12 @@ Global
 		SccProjectUniqueName6 = VncSharp\\VncSharp.csproj
 		SccProjectName6 = VncSharp
 		SccLocalPath6 = VncSharp
+		SccProjectUniqueName7 = HexEditor\\HexEditor.csproj
+		SccProjectName7 = HexEditor
+		SccLocalPath7 = HexEditor
+		SccProjectUniqueName8 = SharpPcap\\SharpPcap.csproj
+		SccProjectName8 = SharpPcap
+		SccLocalPath8 = SharpPcap
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +90,18 @@ Global
 		{E0DED53A-C3E1-441D-9AD2-766E49EAD417}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E0DED53A-C3E1-441D-9AD2-766E49EAD417}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
 		{E0DED53A-C3E1-441D-9AD2-766E49EAD417}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
+		{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
+		{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
+		{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

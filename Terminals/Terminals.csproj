@@ -221,6 +221,12 @@
       <DependentUpon>ImportFromAD.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\MagicPaket.cs" />
+    <Compile Include="Network\Pcap\PacketCapture.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\Pcap\PacketCapture.designer.cs">
+      <DependentUpon>PacketCapture.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\PortScanner.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -698,6 +704,9 @@
       <DependentUpon>ImportFromAD.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Network\Pcap\PacketCapture.resx">
+      <DependentUpon>PacketCapture.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PortScanner.cs</DependentUpon>
@@ -788,6 +797,9 @@
       <DependentUpon>IntroForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\atoz.png" />
+    <Content Include="Resources\amber.jpg" />
+    <None Include="Resources\Filtering.html" />
+    <Content Include="Resources\green.jpg" />
     <Content Include="Resources\ico101.ico" />
     <None Include="Resources\ico_scapture.png" />
     <Content Include="Resources\lightning_go.png" />
@@ -797,6 +809,7 @@
     <None Include="Resources\RotatedHeaderForWizard.bmp" />
     <EmbeddedResource Include="Resources\screen-capture-box.gif" />
     <EmbeddedResource Include="Resources\Refresh.gif" />
+    <Content Include="Resources\red.jpg" />
     <Content Include="Resources\server-administrator-icon.png" />
     <Content Include="Resources\server_network.gif" />
     <Content Include="Thumbs\certmgr.msc.jpg">
@@ -892,9 +905,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HexEditor\HexEditor.csproj">
+      <Project>{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}</Project>
+      <Name>HexEditor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Metro\Metro.csproj">
       <Project>{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}</Project>
       <Name>Metro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpPcap\SharpPcap.csproj">
+      <Project>{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}</Project>
+      <Name>SharpPcap</Name>
     </ProjectReference>
     <ProjectReference Include="..\TabControl\TabControl.csproj">
       <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>

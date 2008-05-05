@@ -55,6 +55,8 @@ namespace Terminals.Connections
             this.wakeOnLan1 = new Terminals.Network.WakeOnLan();
             this.tabPage13 = new System.Windows.Forms.TabPage();
             this.portScanner1 = new Terminals.Network.PortScanner();
+            this.PcapTabPage = new System.Windows.Forms.TabPage();
+            this.packetCapture1 = new WindowsFormsApplication2.PacketCapture();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -69,6 +71,7 @@ namespace Terminals.Connections
             this.tabPage8.SuspendLayout();
             this.tabPage12.SuspendLayout();
             this.tabPage13.SuspendLayout();
+            this.PcapTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -86,6 +89,7 @@ namespace Terminals.Connections
             this.tabControl1.Controls.Add(this.tabPage8);
             this.tabControl1.Controls.Add(this.tabPage12);
             this.tabControl1.Controls.Add(this.tabPage13);
+            this.tabControl1.Controls.Add(this.PcapTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -338,6 +342,25 @@ namespace Terminals.Connections
             this.portScanner1.Size = new System.Drawing.Size(880, 303);
             this.portScanner1.TabIndex = 0;
             // 
+            // PcapTabPage
+            // 
+            this.PcapTabPage.Controls.Add(this.packetCapture1);
+            this.PcapTabPage.Location = new System.Drawing.Point(4, 22);
+            this.PcapTabPage.Name = "PcapTabPage";
+            this.PcapTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.PcapTabPage.Size = new System.Drawing.Size(886, 309);
+            this.PcapTabPage.TabIndex = 15;
+            this.PcapTabPage.Text = "Packets";
+            this.PcapTabPage.UseVisualStyleBackColor = true;
+            // 
+            // packetCapture1
+            // 
+            this.packetCapture1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.packetCapture1.Location = new System.Drawing.Point(3, 3);
+            this.packetCapture1.Name = "packetCapture1";
+            this.packetCapture1.Size = new System.Drawing.Size(880, 303);
+            this.packetCapture1.TabIndex = 0;
+            // 
             // TabbedTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -359,6 +382,7 @@ namespace Terminals.Connections
             this.tabPage8.ResumeLayout(false);
             this.tabPage12.ResumeLayout(false);
             this.tabPage13.ResumeLayout(false);
+            this.PcapTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -392,5 +416,7 @@ namespace Terminals.Connections
         private Terminals.Network.WakeOnLan wakeOnLan1;
         private System.Windows.Forms.TabPage tabPage13;
         private Terminals.Network.PortScanner portScanner1;
+        private System.Windows.Forms.TabPage PcapTabPage;
+        private WindowsFormsApplication2.PacketCapture packetCapture1;
     }
 }
