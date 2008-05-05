@@ -81,13 +81,24 @@ namespace Terminals {
 
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
                 this.lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
+
                 
+
                 if(Settings.ToolbarsLocked)
                     MainMenuStrip.GripStyle = ToolStripGripStyle.Hidden;
                 else
                     MainMenuStrip.GripStyle = ToolStripGripStyle.Visible;
 
                 defaultText = this.Text;
+
+                //be sure to turn off the visual studio hosting process for this to work
+                //right click the Terminals project, debug, bottom checkbox
+                //try {
+                //    gma.System.Windows.UserActivityHook hook = new gma.System.Windows.UserActivityHook(false, true);
+                //    hook.KeyUp += new KeyEventHandler(hook_KeyUp);
+                //} catch(Exception exc) {
+                //    Terminals.Logging.Log.Info("Failed to set keyboard hook for global event handling.", exc);
+                //}
             }
             catch(Exception exc)
             {
@@ -95,9 +106,16 @@ namespace Terminals {
                 System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
         }
-
-
-
+        //Keys lastKey = Keys.Escape;
+        //void hook_KeyUp(object sender, KeyEventArgs e) {
+        //    if((int)e.KeyData != 255) {
+        //        lastKey = e.KeyCode;
+        //        if(e.Alt && lastKey == Keys.F1) {
+        //            string f = "";
+        //        }
+        //    }
+        //}
+        
 
         void LoadSpecialCommands()
         {
@@ -957,7 +975,7 @@ namespace Terminals {
         {
             try
             {
-                if(msg.Msg == 0x21)
+                if(msg.Msg == 0x21)  // mouse click
                 {
                     TerminalTabControlItem selectedTab = (TerminalTabControlItem)tcTerminals.SelectedItem;
                     if(selectedTab != null)
@@ -978,9 +996,7 @@ namespace Terminals {
                     }
                     else
                         SetGrabInput(false);
-                }
-                else if(msg.Msg == WM_LEAVING_FULLSCREEN)
-                {
+                } else if(msg.Msg == WM_LEAVING_FULLSCREEN) {
                     if(CurrentTerminal != null)
                     {
                         if(CurrentTerminal.ContainsFocus)
