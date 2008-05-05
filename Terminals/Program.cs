@@ -9,9 +9,9 @@ namespace Terminals
 {
     static class Program
     {
-        public static string TerminalsVersion = "1.6j";
+        public static string TerminalsVersion = "1.6k";
         //  reminder to update the buildate for each release
-        public static DateTime BuildDate = new DateTime(2008, 4, 30);  //used for checking project releases.  yeah yeah, this could be smarter about things...
+        public static DateTime BuildDate = new DateTime(2008, 5, 5);  //used for checking project releases.  yeah yeah, this could be smarter about things...
         public static Mutex mtx;
         /// <summary>
         /// The main entry point for the application.
