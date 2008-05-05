@@ -753,18 +753,18 @@ namespace WMITestClient
             if (n != null)
             {
 
-                string nText;
-                string nAlt;
-                string nType;
+                string nText = null;
+                string nAlt=null;
+                string nType = null;
                 try
                 {
                     nText = n.Attributes["Text"].Value;
                     this.IncrementBar();
                     Application.DoEvents();
 
-                    try { nAlt = n.Attributes["Alt"].Value; }
+                    try { if(n.Attributes["Alt"]!=null) nAlt = n.Attributes["Alt"].Value; }
                     catch (Exception exc) { Terminals.Logging.Log.Info("", exc); nAlt = nText; }
-                    try { nType = n.Attributes["Type"].Value; }
+                    try { if(n.Attributes["Type"] != null) nType = n.Attributes["Type"].Value; }
                     catch (Exception exc) { Terminals.Logging.Log.Info("", exc); nType = nAlt; }
 
                     if (nAlt == "" || nAlt == null)

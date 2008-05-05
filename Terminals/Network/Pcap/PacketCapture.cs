@@ -34,7 +34,25 @@ namespace WindowsFormsApplication2 {
                 if(devices.Count > 0) comboBox1.SelectedIndex = 1;
                 this.webBrowser1.DocumentStream = new System.IO.MemoryStream(System.Text.ASCIIEncoding.Default.GetBytes(Terminals.Properties.Resources.Filtering));
             } catch(Exception exc) {
+                
                 this.Enabled = false;
+                if(exc is System.BadImageFormatException)
+                {
+                    Terminals.Logging.Log.Debug("Terminals Packet Capture is not configured to work with this system (Bad Image Format Exception)", exc);
+                    System.Windows.Forms.MessageBox.Show("Terminals Packet Capture is not configured to work with this system (Bad Image Format Exception)");
+                }
+                else if(exc is System.DllNotFoundException)
+                {
+                    Terminals.Logging.Log.Debug("WinpPcap was not installed", exc);
+                    if(System.Windows.Forms.MessageBox.Show("It appears that WinPcap is not installed.  In order to use this feature within Terminals you must first install that product.  Do you wish to visit the download location right now?", "Download WinPcap?", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    {
+                        System.Diagnostics.Process.Start("http://www.winpcap.org/install/default.htm");
+                    }
+                }
+                else
+                {
+                    Terminals.Logging.Log.Debug("WinpPcap was not installed correctly", exc);
+                }
             }
         }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
