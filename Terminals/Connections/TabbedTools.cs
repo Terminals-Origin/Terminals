@@ -39,7 +39,7 @@ namespace Terminals.Connections
                     traceRoute1.ForceTrace(Host);
                     break;
                 case "TSAdmin":
-                    this.tabControl1.SelectedTab = this.tabControl1.TabPages[9];
+                    this.tabControl1.SelectedTab = this.tabControl1.TabPages[10];
                     this.terminalServerManager1.ForceTSAdmin(Host);
                     break;
                 default:

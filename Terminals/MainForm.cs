@@ -2286,7 +2286,7 @@ namespace Terminals {
                 FavoriteConfigurationElement fav = (lvTagConnections.SelectedItems[0].Tag as FavoriteConfigurationElement);
                 if(fav != null)
                 {
-                    string host = lvTagConnections.SelectedItems[0].Text;
+                    string host = fav.ServerName;
                     if(host.ToLower().StartsWith("www."))
                     {
                         host = host.Substring(4);
@@ -2304,7 +2304,7 @@ namespace Terminals {
                 FavoriteConfigurationElement fav = (lvTagConnections.SelectedItems[0].Tag as FavoriteConfigurationElement);
                 if(fav != null)
                 {
-                    string host = lvTagConnections.SelectedItems[0].Text;
+                    string host = fav.ServerName;
                     string action = "Trace";
                     this.OpenNetworkingTools(action, host);
                 }
@@ -2318,7 +2318,7 @@ namespace Terminals {
                 FavoriteConfigurationElement fav = (lvTagConnections.SelectedItems[0].Tag as FavoriteConfigurationElement);
                 if(fav != null)
                 {
-                    string host = lvTagConnections.SelectedItems[0].Text;
+                    string host = fav.ServerName;
                     string action = "TSAdmin";
                     this.OpenNetworkingTools(action, host);
                 }
