@@ -230,6 +230,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DPAPI.cs" />
+    <Compile Include="FavsList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FavsList.Designer.cs">
+      <DependentUpon>FavsList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Network\ActiveDirectoryClient.cs" />
     <Compile Include="Network\ActiveDirectoryComputer.cs" />
@@ -721,6 +727,10 @@
     <EmbeddedResource Include="Connections\HTTPConnection.resx">
       <SubType>Designer</SubType>
       <DependentUpon>HTTPConnection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FavsList.resx">
+      <DependentUpon>FavsList.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\ImportFromAD.resx">
       <DependentUpon>ImportFromAD.cs</DependentUpon>

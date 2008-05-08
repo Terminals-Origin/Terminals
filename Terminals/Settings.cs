@@ -10,6 +10,24 @@ namespace Terminals
 {
     public static class Settings
     {
+        public static void RebuildTagIndex()
+        {
+            foreach(string Tag in Settings.Tags)
+            {
+                Settings.DeleteTag(Tag);
+            }
+
+            FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
+
+            foreach(FavoriteConfigurationElement fav in favs)
+            {
+                foreach(string tag in fav.TagList)
+                {
+                    Settings.AddTag(tag);
+                }
+            }
+        }
+
         private static Configuration GetConfiguration()
         {
             string configFile = Terminals.MainForm.ConfigurationFileLocation;
@@ -744,11 +762,13 @@ namespace Terminals
         }
         public static SortProperties DefaultSortProperty {
             get {
-                return GetSection().DefaultSortProperty;
+                string dsp = GetSection().DefaultSortProperty;
+                SortProperties prop = (SortProperties)System.Enum.Parse(typeof(SortProperties), dsp);
+                return prop;
             }
             set {
                 Configuration configuration = GetConfiguration();
-                GetSection(configuration).DefaultSortProperty = value;
+                GetSection(configuration).DefaultSortProperty = value.ToString();
                 configuration.Save();
             }
         }

@@ -62,6 +62,8 @@ namespace Terminals {
                 else
                     ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
 
+                Settings.RebuildTagIndex();
+
 
                 LoadFavorites();
                 LoadFavorites("");
@@ -1076,7 +1078,7 @@ namespace Terminals {
             }
         }
 
-        internal void Connect(string connectionName, bool ForceConsole)
+        public void Connect(string connectionName, bool ForceConsole)
         {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             FavoriteConfigurationElement favorite = favorites[connectionName];
@@ -2628,20 +2630,7 @@ namespace Terminals {
 
         private void rebuildTagsIndexToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach(string Tag in Settings.Tags)
-            {
-                Settings.DeleteTag(Tag);
-            }
-
-            FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
-            
-            foreach(FavoriteConfigurationElement fav in favs)
-            {
-                foreach(string tag in fav.TagList)
-                {
-                    Settings.AddTag(tag);
-                }
-            }
+            Settings.RebuildTagIndex();
             LoadFavorites();
             LoadFavorites("");
             LoadGroups();

@@ -57,6 +57,7 @@ namespace Terminals {
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripOrganizeShortucts = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.rebuildTagsIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -117,6 +118,7 @@ namespace Terminals {
             this.lvFavorites = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.txtSearchFavorites = new System.Windows.Forms.TextBox();
+            this.tabControlItem3 = new TabControl.TabControlItem();
             this.pnlHideTagsFavorites = new System.Windows.Forms.Panel();
             this.pbHideTagsFavorites = new System.Windows.Forms.PictureBox();
             this.pnlShowTagsFavorites = new System.Windows.Forms.Panel();
@@ -140,7 +142,9 @@ namespace Terminals {
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
-            this.rebuildTagsIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControlItem1 = new TabControl.TabControlItem();
+            this.tabControlItem2 = new TabControl.TabControlItem();
+            this.favsList1 = new Terminals.FavsList();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -157,6 +161,7 @@ namespace Terminals {
             this.cmsTagConnections.SuspendLayout();
             this.cmsTags.SuspendLayout();
             this.tciFavorites.SuspendLayout();
+            this.tabControlItem3.SuspendLayout();
             this.pnlHideTagsFavorites.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbHideTagsFavorites)).BeginInit();
             this.pnlShowTagsFavorites.SuspendLayout();
@@ -441,6 +446,13 @@ namespace Terminals {
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(202, 6);
+            // 
+            // rebuildTagsIndexToolStripMenuItem
+            // 
+            this.rebuildTagsIndexToolStripMenuItem.Name = "rebuildTagsIndexToolStripMenuItem";
+            this.rebuildTagsIndexToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
+            this.rebuildTagsIndexToolStripMenuItem.Text = "Rebuild Tags Index";
+            this.rebuildTagsIndexToolStripMenuItem.Click += new System.EventHandler(this.rebuildTagsIndexToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -793,11 +805,11 @@ namespace Terminals {
             // 
             // toolStripContainer.TopToolStripPanel
             // 
-            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.menuStrip);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.favoriteToolBar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.toolbarStd);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.tsRemoteToolbar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.SpecialCommandsToolStrip);
+            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.menuStrip);
             // 
             // splitContainer1
             // 
@@ -814,7 +826,7 @@ namespace Terminals {
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tcTerminals);
             this.splitContainer1.Size = new System.Drawing.Size(792, 474);
-            this.splitContainer1.SplitterDistance = 215;
+            this.splitContainer1.SplitterDistance = 272;
             this.splitContainer1.TabIndex = 7;
             // 
             // pnlTagsFavorites
@@ -826,7 +838,7 @@ namespace Terminals {
             this.pnlTagsFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTagsFavorites.Location = new System.Drawing.Point(0, 0);
             this.pnlTagsFavorites.Name = "pnlTagsFavorites";
-            this.pnlTagsFavorites.Size = new System.Drawing.Size(215, 474);
+            this.pnlTagsFavorites.Size = new System.Drawing.Size(272, 474);
             this.pnlTagsFavorites.TabIndex = 6;
             // 
             // tcTagsFavorites
@@ -837,12 +849,13 @@ namespace Terminals {
             this.tcTagsFavorites.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.tcTagsFavorites.Items.AddRange(new TabControl.TabControlItem[] {
             this.tciTags,
-            this.tciFavorites});
+            this.tciFavorites,
+            this.tabControlItem3});
             this.tcTagsFavorites.Location = new System.Drawing.Point(5, 0);
             this.tcTagsFavorites.Name = "tcTagsFavorites";
-            this.tcTagsFavorites.SelectedItem = this.tciTags;
+            this.tcTagsFavorites.SelectedItem = this.tabControlItem3;
             this.tcTagsFavorites.ShowToolTipOnTitle = false;
-            this.tcTagsFavorites.Size = new System.Drawing.Size(203, 472);
+            this.tcTagsFavorites.Size = new System.Drawing.Size(260, 472);
             this.tcTagsFavorites.TabIndex = 9;
             // 
             // tciTags
@@ -853,7 +866,6 @@ namespace Terminals {
             this.tciTags.Controls.Add(this.txtSearchTags);
             this.tciTags.IsDrawn = true;
             this.tciTags.Name = "tciTags";
-            this.tciTags.Selected = true;
             this.tciTags.TabIndex = 0;
             this.tciTags.Title = "Tags";
             this.tciTags.ToolTipText = "";
@@ -868,7 +880,7 @@ namespace Terminals {
             this.lvTagConnections.HideSelection = false;
             this.lvTagConnections.Location = new System.Drawing.Point(0, 213);
             this.lvTagConnections.Name = "lvTagConnections";
-            this.lvTagConnections.Size = new System.Drawing.Size(201, 238);
+            this.lvTagConnections.Size = new System.Drawing.Size(200, 0);
             this.lvTagConnections.SmallImageList = this.ilTagConnections;
             this.lvTagConnections.TabIndex = 7;
             this.lvTagConnections.UseCompatibleStateImageBehavior = false;
@@ -957,7 +969,7 @@ namespace Terminals {
             this.lvTags.Location = new System.Drawing.Point(0, 21);
             this.lvTags.MultiSelect = false;
             this.lvTags.Name = "lvTags";
-            this.lvTags.Size = new System.Drawing.Size(201, 192);
+            this.lvTags.Size = new System.Drawing.Size(200, 192);
             this.lvTags.SmallImageList = this.ilTags;
             this.lvTags.TabIndex = 6;
             this.lvTags.UseCompatibleStateImageBehavior = false;
@@ -1000,7 +1012,7 @@ namespace Terminals {
             this.txtSearchTags.Dock = System.Windows.Forms.DockStyle.Top;
             this.txtSearchTags.Location = new System.Drawing.Point(0, 0);
             this.txtSearchTags.Name = "txtSearchTags";
-            this.txtSearchTags.Size = new System.Drawing.Size(201, 21);
+            this.txtSearchTags.Size = new System.Drawing.Size(200, 21);
             this.txtSearchTags.TabIndex = 8;
             this.txtSearchTags.TextChanged += new System.EventHandler(this.txtSearchTags_TextChanged);
             // 
@@ -1047,12 +1059,22 @@ namespace Terminals {
             this.txtSearchFavorites.TabIndex = 9;
             this.txtSearchFavorites.TextChanged += new System.EventHandler(this.txtSearchFavorites_TextChanged);
             // 
+            // tabControlItem3
+            // 
+            this.tabControlItem3.Controls.Add(this.favsList1);
+            this.tabControlItem3.IsDrawn = true;
+            this.tabControlItem3.Name = "tabControlItem3";
+            this.tabControlItem3.Selected = true;
+            this.tabControlItem3.TabIndex = 2;
+            this.tabControlItem3.Title = "Favs";
+            this.tabControlItem3.ToolTipText = "";
+            // 
             // pnlHideTagsFavorites
             // 
             this.pnlHideTagsFavorites.BackColor = System.Drawing.Color.Gray;
             this.pnlHideTagsFavorites.Controls.Add(this.pbHideTagsFavorites);
             this.pnlHideTagsFavorites.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(208, 0);
+            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(265, 0);
             this.pnlHideTagsFavorites.Name = "pnlHideTagsFavorites";
             this.pnlHideTagsFavorites.Size = new System.Drawing.Size(5, 472);
             this.pnlHideTagsFavorites.TabIndex = 1;
@@ -1104,7 +1126,7 @@ namespace Terminals {
             this.tcTerminals.Location = new System.Drawing.Point(0, 0);
             this.tcTerminals.Name = "tcTerminals";
             this.tcTerminals.ShowToolTipOnTitle = false;
-            this.tcTerminals.Size = new System.Drawing.Size(573, 474);
+            this.tcTerminals.Size = new System.Drawing.Size(516, 474);
             this.tcTerminals.TabIndex = 3;
             this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.tcTerminals_TabControlMouseLeftTitle);
             this.tcTerminals.TabControlItemSelectionChanged += new TabControl.TabControlItemChangedHandler(this.tcTerminals_TabControlItemSelectionChanged);
@@ -1272,12 +1294,29 @@ namespace Terminals {
             this.remoteDesktop1.TabIndex = 0;
             this.remoteDesktop1.Text = "remoteDesktop1";
             // 
-            // rebuildTagsIndexToolStripMenuItem
+            // tabControlItem1
             // 
-            this.rebuildTagsIndexToolStripMenuItem.Name = "rebuildTagsIndexToolStripMenuItem";
-            this.rebuildTagsIndexToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
-            this.rebuildTagsIndexToolStripMenuItem.Text = "Rebuild Tags Index";
-            this.rebuildTagsIndexToolStripMenuItem.Click += new System.EventHandler(this.rebuildTagsIndexToolStripMenuItem_Click);
+            this.tabControlItem1.IsDrawn = true;
+            this.tabControlItem1.Name = "tabControlItem1";
+            this.tabControlItem1.TabIndex = 2;
+            this.tabControlItem1.Title = "TabControl Page 3";
+            this.tabControlItem1.ToolTipText = "";
+            // 
+            // tabControlItem2
+            // 
+            this.tabControlItem2.IsDrawn = true;
+            this.tabControlItem2.Name = "tabControlItem2";
+            this.tabControlItem2.TabIndex = 3;
+            this.tabControlItem2.Title = "TabControl Page 4";
+            this.tabControlItem2.ToolTipText = "";
+            // 
+            // favsList1
+            // 
+            this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.favsList1.Location = new System.Drawing.Point(0, 0);
+            this.favsList1.Name = "favsList1";
+            this.favsList1.Size = new System.Drawing.Size(258, 451);
+            this.favsList1.TabIndex = 0;
             // 
             // MainForm
             // 
@@ -1321,6 +1360,7 @@ namespace Terminals {
             this.cmsTags.ResumeLayout(false);
             this.tciFavorites.ResumeLayout(false);
             this.tciFavorites.PerformLayout();
+            this.tabControlItem3.ResumeLayout(false);
             this.pnlHideTagsFavorites.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbHideTagsFavorites)).EndInit();
             this.pnlShowTagsFavorites.ResumeLayout(false);
@@ -1454,5 +1494,9 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripMenuItem updateToolStripItem;
         private System.Windows.Forms.ToolStripButton toolStripButton5;
         private System.Windows.Forms.ToolStripMenuItem rebuildTagsIndexToolStripMenuItem;
+        private TabControl.TabControlItem tabControlItem2;
+        private TabControl.TabControlItem tabControlItem1;
+        private TabControl.TabControlItem tabControlItem3;
+        private FavsList favsList1;
     }
 }
