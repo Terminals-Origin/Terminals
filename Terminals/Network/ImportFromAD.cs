@@ -89,6 +89,7 @@ namespace Terminals.Network
         }
 
         private void button1_Click(object sender, EventArgs e) {
+            this.dataGridView1.DataSource = null;
             foreach(ActiveDirectoryComputer computer in Computers) {
                 computer.Import = true;                
             }
@@ -96,6 +97,7 @@ namespace Terminals.Network
         }
 
         private void button2_Click(object sender, EventArgs e) {
+            this.dataGridView1.DataSource = null;
             foreach(ActiveDirectoryComputer computer in Computers) {
                 computer.Import = false;
             }
