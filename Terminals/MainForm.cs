@@ -2625,6 +2625,29 @@ namespace Terminals {
         {
             System.Diagnostics.Process.Start("mmc.exe", "compmgmt.msc");
         }
+
+        private void rebuildTagsIndexToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach(string Tag in Settings.Tags)
+            {
+                Settings.DeleteTag(Tag);
+            }
+
+            FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
+            
+            foreach(FavoriteConfigurationElement fav in favs)
+            {
+                foreach(string tag in fav.TagList)
+                {
+                    Settings.AddTag(tag);
+                }
+            }
+            LoadFavorites();
+            LoadFavorites("");
+            LoadGroups();
+            UpdateControls();
+            LoadTags("");
+        }
     }
 
     public class TerminalTabControlItem : TabControlItem {

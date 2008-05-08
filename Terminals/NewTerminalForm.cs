@@ -52,6 +52,15 @@ namespace Terminals
             this.terminalServerManager1.Size = new System.Drawing.Size(748, 309);
             this.terminalServerManager1.TabIndex = 0;
             this.tabPage10.Controls.Add(terminalServerManager1);
+
+
+
+            foreach(string tag in Settings.Tags)
+            {
+                ListViewItem lvi = new ListViewItem(tag);
+                this.AllTagsListView.Items.Add(lvi);
+            }
+
             this.ResumeLayout(true);
 
         }
@@ -198,12 +207,6 @@ namespace Terminals
             }
             this.widthUpDown.Value = (decimal)favorite.DesktopSizeWidth;
             this.heightUpDown.Value = (decimal)favorite.DesktopSizeHeight;
-
-
-            foreach(string tag in Settings.Tags) {
-                ListViewItem lvi = new ListViewItem(tag);
-                this.AllTagsListView.Items.Add(lvi);
-            }
 
             httpUrlTextBox.Text = favorite.Url;
 
