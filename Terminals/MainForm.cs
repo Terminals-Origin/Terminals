@@ -81,7 +81,7 @@ namespace Terminals {
 
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
                 this.lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
-
+                this.groupsToolStripMenuItem.Visible = Settings.EnableGroupsMenu;
                 
 
                 if(Settings.ToolbarsLocked)
