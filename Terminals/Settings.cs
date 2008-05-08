@@ -225,7 +225,6 @@ namespace Terminals
 
         private static void AddMRUItemConfigurationElement(MRUItemConfigurationElementCollection configurationElementCollection, string name)
         {
-            name = ToTitleCase(name);
             MRUItemConfigurationElement configurationElement = configurationElementCollection.ItemByName(name);
             if(configurationElement == null)
             {
@@ -235,7 +234,6 @@ namespace Terminals
 
         private static void DeleteMRUItemConfigurationElement(MRUItemConfigurationElementCollection configurationElementCollection, string name)
         {
-            name = ToTitleCase(name);
             MRUItemConfigurationElement configurationElement = configurationElementCollection.ItemByName(name);
             if(configurationElement != null)
             {
@@ -245,7 +243,6 @@ namespace Terminals
 
         private static void EditMRUItemConfigurationElement(MRUItemConfigurationElementCollection configurationElementCollection, string oldName, string newName)
         {
-            oldName = ToTitleCase(oldName);
             MRUItemConfigurationElement configurationElement = configurationElementCollection.ItemByName(oldName);
             if(configurationElement != null)
             {
@@ -255,7 +252,6 @@ namespace Terminals
 
         public static void AddServerMRUItem(string name)
         {
-            name = ToTitleCase(name);
             Configuration configuration = GetConfiguration();
             AddMRUItemConfigurationElement(GetSection(configuration).ServersMRU, name);
             configuration.Save();

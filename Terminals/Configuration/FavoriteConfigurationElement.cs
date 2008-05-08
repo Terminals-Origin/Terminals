@@ -448,7 +448,7 @@ namespace Terminals
             }
             set
             {
-                this["name"] = Settings.ToTitleCase(value);
+                this["name"] = value;
             }
         }
 
