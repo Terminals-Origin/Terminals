@@ -87,5 +87,19 @@ namespace Terminals.Network
             }
             this.Close();
         }
+
+        private void button1_Click(object sender, EventArgs e) {
+            foreach(ActiveDirectoryComputer computer in Computers) {
+                computer.Import = true;                
+            }
+            this.dataGridView1.DataSource = Computers;
+        }
+
+        private void button2_Click(object sender, EventArgs e) {
+            foreach(ActiveDirectoryComputer computer in Computers) {
+                computer.Import = false;
+            }
+            this.dataGridView1.DataSource = Computers;
+        }
     }
 }
