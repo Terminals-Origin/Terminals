@@ -90,6 +90,11 @@ namespace Terminals
             this.RenderNormalRadio = new System.Windows.Forms.RadioButton();
             this.EnableFavoritesPanel = new System.Windows.Forms.CheckBox();
             this.EnableGroupsMenu = new System.Windows.Forms.CheckBox();
+            this.FavSortGroupBox = new System.Windows.Forms.GroupBox();
+            this.ServerNameRadio = new System.Windows.Forms.RadioButton();
+            this.ConnectionNameRadioButton = new System.Windows.Forms.RadioButton();
+            this.ProtocolRadionButton = new System.Windows.Forms.RadioButton();
+            this.NoneRadioButton = new System.Windows.Forms.RadioButton();
             this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -99,6 +104,7 @@ namespace Terminals
             this.tabControl1.SuspendLayout();
             this.MoreOptionsTabPage.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.FavSortGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOk
@@ -699,6 +705,7 @@ namespace Terminals
             // 
             // MoreOptionsTabPage
             // 
+            this.MoreOptionsTabPage.Controls.Add(this.FavSortGroupBox);
             this.MoreOptionsTabPage.Controls.Add(this.groupBox1);
             this.MoreOptionsTabPage.Controls.Add(this.EnableFavoritesPanel);
             this.MoreOptionsTabPage.Controls.Add(this.EnableGroupsMenu);
@@ -715,7 +722,7 @@ namespace Terminals
             this.groupBox1.Controls.Add(this.RenderBlackRadio);
             this.groupBox1.Controls.Add(this.RenderBlueRadio);
             this.groupBox1.Controls.Add(this.RenderNormalRadio);
-            this.groupBox1.Location = new System.Drawing.Point(15, 71);
+            this.groupBox1.Location = new System.Drawing.Point(237, 80);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(135, 95);
             this.groupBox1.TabIndex = 25;
@@ -779,6 +786,63 @@ namespace Terminals
             this.EnableGroupsMenu.Text = "Enable Groups Menu";
             this.EnableGroupsMenu.UseVisualStyleBackColor = true;
             // 
+            // FavSortGroupBox
+            // 
+            this.FavSortGroupBox.Controls.Add(this.NoneRadioButton);
+            this.FavSortGroupBox.Controls.Add(this.ProtocolRadionButton);
+            this.FavSortGroupBox.Controls.Add(this.ConnectionNameRadioButton);
+            this.FavSortGroupBox.Controls.Add(this.ServerNameRadio);
+            this.FavSortGroupBox.Location = new System.Drawing.Point(15, 69);
+            this.FavSortGroupBox.Name = "FavSortGroupBox";
+            this.FavSortGroupBox.Size = new System.Drawing.Size(200, 118);
+            this.FavSortGroupBox.TabIndex = 26;
+            this.FavSortGroupBox.TabStop = false;
+            this.FavSortGroupBox.Text = "Favorites Sort";
+            // 
+            // ServerNameRadio
+            // 
+            this.ServerNameRadio.AutoSize = true;
+            this.ServerNameRadio.Location = new System.Drawing.Point(7, 20);
+            this.ServerNameRadio.Name = "ServerNameRadio";
+            this.ServerNameRadio.Size = new System.Drawing.Size(87, 17);
+            this.ServerNameRadio.TabIndex = 0;
+            this.ServerNameRadio.TabStop = true;
+            this.ServerNameRadio.Text = "Server Name";
+            this.ServerNameRadio.UseVisualStyleBackColor = true;
+            // 
+            // ConnectionNameRadioButton
+            // 
+            this.ConnectionNameRadioButton.AutoSize = true;
+            this.ConnectionNameRadioButton.Location = new System.Drawing.Point(6, 43);
+            this.ConnectionNameRadioButton.Name = "ConnectionNameRadioButton";
+            this.ConnectionNameRadioButton.Size = new System.Drawing.Size(109, 17);
+            this.ConnectionNameRadioButton.TabIndex = 1;
+            this.ConnectionNameRadioButton.TabStop = true;
+            this.ConnectionNameRadioButton.Text = "Connection Name";
+            this.ConnectionNameRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // ProtocolRadionButton
+            // 
+            this.ProtocolRadionButton.AutoSize = true;
+            this.ProtocolRadionButton.Location = new System.Drawing.Point(6, 66);
+            this.ProtocolRadionButton.Name = "ProtocolRadionButton";
+            this.ProtocolRadionButton.Size = new System.Drawing.Size(64, 17);
+            this.ProtocolRadionButton.TabIndex = 2;
+            this.ProtocolRadionButton.TabStop = true;
+            this.ProtocolRadionButton.Text = "Protocol";
+            this.ProtocolRadionButton.UseVisualStyleBackColor = true;
+            // 
+            // NoneRadioButton
+            // 
+            this.NoneRadioButton.AutoSize = true;
+            this.NoneRadioButton.Location = new System.Drawing.Point(7, 89);
+            this.NoneRadioButton.Name = "NoneRadioButton";
+            this.NoneRadioButton.Size = new System.Drawing.Size(50, 17);
+            this.NoneRadioButton.TabIndex = 3;
+            this.NoneRadioButton.TabStop = true;
+            this.NoneRadioButton.Text = "None";
+            this.NoneRadioButton.UseVisualStyleBackColor = true;
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOk;
@@ -800,6 +864,7 @@ namespace Terminals
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
+            this.Load += new System.EventHandler(this.OptionsForm_Load);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -817,6 +882,8 @@ namespace Terminals
             this.MoreOptionsTabPage.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.FavSortGroupBox.ResumeLayout(false);
+            this.FavSortGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -886,5 +953,10 @@ namespace Terminals
         private System.Windows.Forms.RadioButton RenderBlackRadio;
         private System.Windows.Forms.RadioButton RenderBlueRadio;
         private System.Windows.Forms.RadioButton RenderNormalRadio;
+        private System.Windows.Forms.GroupBox FavSortGroupBox;
+        private System.Windows.Forms.RadioButton NoneRadioButton;
+        private System.Windows.Forms.RadioButton ProtocolRadionButton;
+        private System.Windows.Forms.RadioButton ConnectionNameRadioButton;
+        private System.Windows.Forms.RadioButton ServerNameRadio;
     }
 }

@@ -418,6 +418,33 @@ namespace Terminals
             }
         }
 
+        public enum SortProperties { ServerName, ConnectionName, Protocol, None }
+        public static SortedDictionary<string, FavoriteConfigurationElement> GetSortedFavorites(SortProperties SortProperty) {
+            SortedDictionary<string, FavoriteConfigurationElement> favs = new SortedDictionary<string, FavoriteConfigurationElement>();
+            int counter = 0;
+            foreach(FavoriteConfigurationElement fav in GetFavorites()) {
+                string key = new string('a', counter);
+                switch(SortProperty) {
+                    case SortProperties.ConnectionName:
+                        favs.Add(fav.Name + key, fav);
+                        break;
+                    case SortProperties.Protocol:
+                        favs.Add(fav.Protocol + key, fav);
+                        break;
+                    case SortProperties.ServerName:
+                        favs.Add(fav.ServerName + key, fav);
+                        break;
+                    case SortProperties.None:
+                        favs.Add(key, fav);
+                        break;
+                    default:
+                        break;
+                }
+                counter++;
+            }
+            return favs;
+
+        }
         public static FavoriteConfigurationElementCollection GetFavorites()
         {
             TerminalsConfigurationSection section = GetSection();
@@ -715,6 +742,17 @@ namespace Terminals
                 configuration.Save();
             }
         }
+        public static SortProperties DefaultSortProperty {
+            get {
+                return GetSection().DefaultSortProperty;
+            }
+            set {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).DefaultSortProperty = value;
+                configuration.Save();
+            }
+        }
+        
         public static bool EnableGroupsMenu {
             get {
                 return GetSection().EnableGroupsMenu;

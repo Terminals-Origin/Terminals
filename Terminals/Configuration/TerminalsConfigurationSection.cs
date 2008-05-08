@@ -171,6 +171,24 @@ namespace Terminals
                 this["minimizeToTray"] = value;
             }
         }
+        [ConfigurationProperty("defaultSortProperty", DefaultValue = Settings.SortProperties.ConnectionName)]
+        public Settings.SortProperties DefaultSortProperty {
+            get {
+                if(this["defaultSortProperty"] == null || this["defaultSortProperty"].ToString() == string.Empty) return Settings.SortProperties.ConnectionName;
+                Settings.SortProperties def = Settings.SortProperties.ConnectionName;
+                try {
+                    def = (Settings.SortProperties)System.Enum.Parse(typeof(Settings.SortProperties), this["defaultSortProperty"].ToString());
+                } catch(Exception exc) {
+                    Terminals.Logging.Log.Error("DefaultSortProperty failed to parse from the settings file.", exc);
+                }
+                return def;
+            }
+            set {
+                this["defaultSortProperty"] = value.ToString();
+            }
+        }
+
+        
         [ConfigurationProperty("enableFavoritesPanel", DefaultValue = true)]
         public bool EnableFavoritesPanel {
             get {

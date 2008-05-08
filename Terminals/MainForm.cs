@@ -166,15 +166,16 @@ namespace Terminals {
                 QuickContextMenu.Items.Add("Options", Resources.options);
                 QuickContextMenu.Items.Add("-");
 
-                FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+                SortedDictionary<string, FavoriteConfigurationElement>  favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
 
                 Dictionary<string, ToolStripMenuItem> tagTools = new Dictionary<string, ToolStripMenuItem>();
                 SortedDictionary<string, ToolStripMenuItem> sortedList = new SortedDictionary<string, ToolStripMenuItem>();
                 ToolStripMenuItem sortedMenu = new ToolStripMenuItem("Alphabetical");
                 sortedMenu.DropDownItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
 
-                foreach(FavoriteConfigurationElement favorite in favorites)
+                foreach(string key in favorites.Keys)
                 {
+                    FavoriteConfigurationElement favorite = favorites[key];
 
                     System.Windows.Forms.ToolStripMenuItem sortedItem = new ToolStripMenuItem();
                     sortedItem.Text = favorite.Name;
@@ -571,7 +572,8 @@ namespace Terminals {
 
         private void LoadFavorites()
         {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            //FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
             int seperatorIndex = favoritesToolStripMenuItem.DropDownItems.IndexOf(favoritesSeparator);
             for(int i = favoritesToolStripMenuItem.DropDownItems.Count - 1; i > seperatorIndex; i--)
             {
@@ -581,8 +583,9 @@ namespace Terminals {
 
             string longestFav = "";
 
-            foreach(FavoriteConfigurationElement favorite in favorites)
+            foreach(string key in favorites.Keys)
             {
+                FavoriteConfigurationElement favorite = favorites[key];
                 AddFavorite(favorite);
                 if(favorite.Name.Length > longestFav.Length) longestFav = favorite.Name;
             }
@@ -1663,9 +1666,10 @@ namespace Terminals {
         private void LoadFavorites(string filter)
         {
             lvFavorites.Items.Clear();
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-            foreach(FavoriteConfigurationElement favorite in favorites)
+            SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.SortProperties.ConnectionName);
+            foreach(string key in favorites.Keys)
             {
+                FavoriteConfigurationElement favorite = favorites[key];
                 if((String.IsNullOrEmpty(filter) || (favorite.Name.ToUpper().StartsWith(filter.ToUpper()))))
                 {
                     ListViewItem item = new ListViewItem();
@@ -1695,10 +1699,12 @@ namespace Terminals {
                     ListViewItem item = new ListViewItem();
                     item.ImageIndex = 0;
                     item.StateImageIndex = 0;
-                    FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+                    SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.SortProperties.ConnectionName);
+
                     List<FavoriteConfigurationElement> tagFavorites = new List<FavoriteConfigurationElement>();
-                    foreach(FavoriteConfigurationElement favorite in favorites)
+                    foreach(string key in favorites.Keys)
                     {
+                        FavoriteConfigurationElement favorite = favorites[key];
                         if(favorite.TagList.IndexOf(tag) >= 0)
                         {
                             tagFavorites.Add(favorite);
@@ -1994,9 +2000,11 @@ namespace Terminals {
         {
 
             SystemTrayQuickConnectToolStripMenuItem.DropDownItems.Clear();
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-            foreach(FavoriteConfigurationElement favorite in favorites)
+            SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
+
+            foreach(string key in favorites.Keys)
             {
+                FavoriteConfigurationElement favorite = favorites[key];
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItems.Add(favorite.Name);
             }
         }

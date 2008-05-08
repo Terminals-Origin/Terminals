@@ -69,6 +69,17 @@ namespace Terminals
         private void btnOk_Click(object sender, EventArgs e)
         {
             int timeout = 5;
+
+            if(ServerNameRadio.Checked) {
+                Settings.DefaultSortProperty = Settings.SortProperties.ServerName;
+            } else if(NoneRadioButton.Checked) {
+                Settings.DefaultSortProperty = Settings.SortProperties.None;
+            } else if(ConnectionNameRadioButton.Checked) {
+                Settings.DefaultSortProperty = Settings.SortProperties.ConnectionName;
+            } else {
+                Settings.DefaultSortProperty = Settings.SortProperties.Protocol;
+            }
+
             int.TryParse(this.PortscanTimeoutTextBox.Text, out timeout);
             if (Settings.PortScanTimeoutSeconds <= 0 || Settings.PortScanTimeoutSeconds >= 60) timeout = 5;
             Settings.PortScanTimeoutSeconds = timeout;
@@ -225,6 +236,24 @@ namespace Terminals
 
         private void AutoProxyRadioButton_CheckedChanged(object sender, EventArgs e) {
             this.panel1.Enabled = ProxyRadionButton.Checked;
+        }
+
+        private void OptionsForm_Load(object sender, EventArgs e) {
+            switch(Settings.DefaultSortProperty) {
+                case Settings.SortProperties.ConnectionName:
+                    ConnectionNameRadioButton.Checked = true;
+                    break;
+                case Settings.SortProperties.None:
+                    NoneRadioButton.Checked = true;
+                    break;
+                case Settings.SortProperties.Protocol:
+                    ProtocolRadionButton.Checked = true;
+                    break;
+                case Settings.SortProperties.ServerName:
+                    ServerNameRadio.Checked = true;
+                    break;
+
+            }
         }
     }
 }

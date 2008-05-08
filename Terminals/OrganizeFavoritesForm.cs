@@ -22,9 +22,11 @@ namespace Terminals
             try
             {
                 lvConnections.Items.Clear();
-                FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-                foreach (FavoriteConfigurationElement favorite in favorites)
+                //FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+                SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
+                foreach (string key in favorites.Keys)
                 {
+                    FavoriteConfigurationElement favorite = favorites[key];
                     lvConnections.ShowItemToolTips = true;
                     ListViewItem item = lvConnections.Items.Add(favorite.Name);
                     item.ToolTipText = favorite.Notes;
