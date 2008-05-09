@@ -213,12 +213,11 @@ namespace Terminals
                 {
                     //kick into the import routine
                     configuration = ImportConfiguration(Terminals.MainForm.ConfigurationFileLocation);
-                    if (configuration!=null)
-                    {
-                        System.Windows.Forms.MessageBox.Show("Terminals was able to automatically upgrade your existing connections.");
-                    }
                     configuration = GetConfiguration();
                     c = (TerminalsConfigurationSection)configuration.GetSection("settings");
+                    if(configuration != null) {
+                        System.Windows.Forms.MessageBox.Show("Terminals was able to automatically upgrade your existing connections.");
+                    }
                 }
                 catch(Exception importException)
                 {
@@ -438,30 +437,33 @@ namespace Terminals
 
         public enum SortProperties { ServerName, ConnectionName, Protocol, None }
         public static SortedDictionary<string, FavoriteConfigurationElement> GetSortedFavorites(SortProperties SortProperty) {
-            SortedDictionary<string, FavoriteConfigurationElement> favs = new SortedDictionary<string, FavoriteConfigurationElement>();
-            int counter = 0;
-            foreach(FavoriteConfigurationElement fav in GetFavorites()) {
-                string key = new string('a', counter);
-                switch(SortProperty) {
-                    case SortProperties.ConnectionName:
-                        favs.Add(fav.Name + key, fav);
-                        break;
-                    case SortProperties.Protocol:
-                        favs.Add(fav.Protocol + key, fav);
-                        break;
-                    case SortProperties.ServerName:
-                        favs.Add(fav.ServerName + key, fav);
-                        break;
-                    case SortProperties.None:
-                        favs.Add(key, fav);
-                        break;
-                    default:
-                        break;
+            FavoriteConfigurationElementCollection favlist = GetFavorites();
+            if(favlist != null) {
+                SortedDictionary<string, FavoriteConfigurationElement> favs = new SortedDictionary<string, FavoriteConfigurationElement>();
+                int counter = 0;
+                foreach(FavoriteConfigurationElement fav in favlist) {
+                    string key = new string('a', counter);
+                    switch(SortProperty) {
+                        case SortProperties.ConnectionName:
+                            favs.Add(fav.Name + key, fav);
+                            break;
+                        case SortProperties.Protocol:
+                            favs.Add(fav.Protocol + key, fav);
+                            break;
+                        case SortProperties.ServerName:
+                            favs.Add(fav.ServerName + key, fav);
+                            break;
+                        case SortProperties.None:
+                            favs.Add(key, fav);
+                            break;
+                        default:
+                            break;
+                    }
+                    counter++;
                 }
-                counter++;
+                return favs;
             }
-            return favs;
-
+            return null;
         }
         public static FavoriteConfigurationElementCollection GetFavorites()
         {
@@ -762,9 +764,13 @@ namespace Terminals
         }
         public static SortProperties DefaultSortProperty {
             get {
-                string dsp = GetSection().DefaultSortProperty;
-                SortProperties prop = (SortProperties)System.Enum.Parse(typeof(SortProperties), dsp);
-                return prop;
+                TerminalsConfigurationSection config = GetSection();
+                if(config != null) {
+                    string dsp = config.DefaultSortProperty;
+                    SortProperties prop = (SortProperties)System.Enum.Parse(typeof(SortProperties), dsp);
+                    return prop;
+                }
+                return SortProperties.ConnectionName;
             }
             set {
                 Configuration configuration = GetConfiguration();

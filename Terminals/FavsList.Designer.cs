@@ -32,6 +32,11 @@
             this.FavsTree = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dNSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tSAdminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.traceRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -49,9 +54,14 @@
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.connectToolStripMenuItem});
+            this.connectToolStripMenuItem,
+            this.pingToolStripMenuItem,
+            this.dNSToolStripMenuItem,
+            this.traceRouteToolStripMenuItem,
+            this.tSAdminToolStripMenuItem,
+            this.propertiesToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 158);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // connectToolStripMenuItem
@@ -61,6 +71,41 @@
             this.connectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.connectToolStripMenuItem.Text = "Connect";
             this.connectToolStripMenuItem.MouseUp += new System.Windows.Forms.MouseEventHandler(this.connectToolStripMenuItem_MouseUp);
+            // 
+            // pingToolStripMenuItem
+            // 
+            this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
+            this.pingToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pingToolStripMenuItem.Text = "Ping";
+            this.pingToolStripMenuItem.Click += new System.EventHandler(this.pingToolStripMenuItem_Click);
+            // 
+            // dNSToolStripMenuItem
+            // 
+            this.dNSToolStripMenuItem.Name = "dNSToolStripMenuItem";
+            this.dNSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dNSToolStripMenuItem.Text = "DNS";
+            this.dNSToolStripMenuItem.Click += new System.EventHandler(this.dNSToolStripMenuItem_Click);
+            // 
+            // tSAdminToolStripMenuItem
+            // 
+            this.tSAdminToolStripMenuItem.Name = "tSAdminToolStripMenuItem";
+            this.tSAdminToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tSAdminToolStripMenuItem.Text = "TS Admin";
+            this.tSAdminToolStripMenuItem.Click += new System.EventHandler(this.tSAdminToolStripMenuItem_Click);
+            // 
+            // traceRouteToolStripMenuItem
+            // 
+            this.traceRouteToolStripMenuItem.Name = "traceRouteToolStripMenuItem";
+            this.traceRouteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.traceRouteToolStripMenuItem.Text = "Trace Route";
+            this.traceRouteToolStripMenuItem.Click += new System.EventHandler(this.traceRouteToolStripMenuItem_Click);
+            // 
+            // propertiesToolStripMenuItem
+            // 
+            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.propertiesToolStripMenuItem.Text = "Properties";
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
             // FavsList
             // 
@@ -79,5 +124,10 @@
         private System.Windows.Forms.TreeView FavsTree;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dNSToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tSAdminToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem traceRouteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
     }
 }
