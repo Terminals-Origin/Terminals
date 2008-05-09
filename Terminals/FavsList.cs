@@ -64,11 +64,13 @@ namespace Terminals
             dNSToolStripMenuItem.Visible = true;
             traceRouteToolStripMenuItem.Visible = true;
             tSAdminToolStripMenuItem.Visible = true;
+            propertiesToolStripMenuItem.Visible = true;
             if(fav == null) {
                 pingToolStripMenuItem.Visible = false;
                 dNSToolStripMenuItem.Visible = false;
                 traceRouteToolStripMenuItem.Visible = false;
                 tSAdminToolStripMenuItem.Visible = false;
+                propertiesToolStripMenuItem.Visible = false;
             }
         }
 
