@@ -55,6 +55,7 @@ namespace WindowsFormsApplication2 {
                     Terminals.Logging.Log.Debug("WinpPcap was not installed correctly", exc);
                 }
             }
+            this.PacketCapture_Resize(null, null);
         }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) {
             int index = comboBox1.SelectedIndex;
@@ -115,7 +116,7 @@ namespace WindowsFormsApplication2 {
                 GreenPicture.Visible = false;
                 Application.DoEvents();
                 foreach(Tamir.IPLib.Packets.Packet packet in newpackets) {
-                    this.listBox1.Items.Add(packet);
+                    this.listBox1.Items.Add(packet);                   
                     newpackets = new List<Tamir.IPLib.Packets.Packet>();
                 }
                 Application.DoEvents(); 
@@ -165,6 +166,22 @@ namespace WindowsFormsApplication2 {
                 Be.Windows.Forms.DynamicByteProvider provider = new Be.Windows.Forms.DynamicByteProvider(packet.Data);
                 this.hexBox1.ByteProvider = provider;
                 this.textBox1.Text = System.Text.ASCIIEncoding.Default.GetString(packet.Data);
+                this.treeView1.Nodes.Clear();
+                TreeNode header = this.treeView1.Nodes.Add("Header");
+                header.Nodes.Add(string.Format("Length:{0}", packet.Header.Length));
+                System.Text.StringBuilder sb = new StringBuilder();
+                foreach(byte b in packet.Header) {
+                    sb.Append(b.ToString("00"));
+                    sb.Append(" ");
+                }
+                header.Nodes.Add(string.Format("Data:{0}", sb.ToString()));
+                header.Nodes.Add(string.Format("Capture Length:{0}", packet.PcapHeader.CaptureLength.ToString()));
+                header.Nodes.Add(string.Format("Packet Length:{0}", packet.PcapHeader.PacketLength.ToString()));
+                header.Nodes.Add(string.Format("Date:{0}", packet.PcapHeader.Date.ToString()));
+                header.Nodes.Add(string.Format("Microseconds:{0}", packet.PcapHeader.MicroSeconds.ToString()));
+                header.Nodes.Add(string.Format("Seconds:{0}", packet.PcapHeader.Seconds.ToString()));
+
+                this.treeView1.ExpandAll();
             }
         }
 
