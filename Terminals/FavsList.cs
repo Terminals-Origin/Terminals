@@ -56,21 +56,23 @@ namespace Terminals
         }
 
         void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e) {
-            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(e.Button == MouseButtons.Right) {
-                FavsTree.SelectedNode = e.Node;
-            }
-            pingToolStripMenuItem.Visible = true;
-            dNSToolStripMenuItem.Visible = true;
-            traceRouteToolStripMenuItem.Visible = true;
-            tSAdminToolStripMenuItem.Visible = true;
-            propertiesToolStripMenuItem.Visible = true;
-            if(fav == null) {
-                pingToolStripMenuItem.Visible = false;
-                dNSToolStripMenuItem.Visible = false;
-                traceRouteToolStripMenuItem.Visible = false;
-                tSAdminToolStripMenuItem.Visible = false;
-                propertiesToolStripMenuItem.Visible = false;
+            if(FavsTree.SelectedNode != null) {
+                FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+                if(e.Button == MouseButtons.Right) {
+                    FavsTree.SelectedNode = e.Node;
+                }
+                pingToolStripMenuItem.Visible = true;
+                dNSToolStripMenuItem.Visible = true;
+                traceRouteToolStripMenuItem.Visible = true;
+                tSAdminToolStripMenuItem.Visible = true;
+                propertiesToolStripMenuItem.Visible = true;
+                if(fav == null) {
+                    pingToolStripMenuItem.Visible = false;
+                    dNSToolStripMenuItem.Visible = false;
+                    traceRouteToolStripMenuItem.Visible = false;
+                    tSAdminToolStripMenuItem.Visible = false;
+                    propertiesToolStripMenuItem.Visible = false;
+                }
             }
         }
 
@@ -144,6 +146,17 @@ namespace Terminals
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e) {
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if(fav != null) MainForm.ShowManageTerminalForm(fav);
+        }
+
+
+        private void FavsTree_DoubleClick(object sender, EventArgs e) {
+            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if(fav != null) MainForm.Connect(fav.Name, false);
+        }
+
+        private void connectConsoleToolStripMenuItem_Click(object sender, EventArgs e) {
+            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if(fav != null) MainForm.Connect(fav.Name, true);
         }
     }
 }
