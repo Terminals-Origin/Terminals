@@ -20,6 +20,7 @@ namespace WindowsFormsApplication2 {
 
         private void PacketCapture_Load(object sender, EventArgs e) {
             try {
+                promiscuousCheckbox.Enabled = true;
                 DumpToFileCheckbox.Enabled = true;
                 StopCaptureButton.Enabled = false;
                 AmberPicture.Visible = true;
@@ -64,7 +65,7 @@ namespace WindowsFormsApplication2 {
 
         private void StartCapture(object state) {
             PcapDevice dev = (PcapDevice)state;
-            dev.PcapOpen();
+            dev.PcapOpen(promiscuousCheckbox.Checked);
             if(DumpToFileCheckbox.Checked) {
                 dev.PcapDumpOpen(DumpFile);
             }
@@ -81,6 +82,7 @@ namespace WindowsFormsApplication2 {
 
         private void CaptureButton_Click(object sender, EventArgs e) {
             DumpToFileCheckbox.Enabled = false;
+            promiscuousCheckbox.Enabled = false;
             CaptureButton.Enabled = false;
             StopCaptureButton.Enabled = true;
             AmberPicture.Visible = false;
@@ -106,6 +108,7 @@ namespace WindowsFormsApplication2 {
             GreenPicture.Visible = false;
             AmberPicture.Visible = true;
             DumpToFileCheckbox.Enabled = true;
+            promiscuousCheckbox.Enabled = true;
         }
         void UpdateUI() {
             lock(packets) {
@@ -147,6 +150,7 @@ namespace WindowsFormsApplication2 {
             GreenPicture.Visible = false;
             AmberPicture.Visible = false;
             DumpToFileCheckbox.Enabled = true;
+            promiscuousCheckbox.Enabled = true;
             System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(StopCapture), dev);
             if(DumpToFileCheckbox.Checked) {
                 if(System.Windows.Forms.MessageBox.Show("Open dump file in notepad?") == DialogResult.OK) {

@@ -30,6 +30,7 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.promiscuousCheckbox = new System.Windows.Forms.CheckBox();
             this.DumpToFileCheckbox = new System.Windows.Forms.CheckBox();
             this.FilterTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -38,13 +39,14 @@
             this.GreenPicture = new System.Windows.Forms.PictureBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.FilteringTabPage = new System.Windows.Forms.TabPage();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AmberPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RedPicture)).BeginInit();
@@ -52,16 +54,19 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.FilteringTabPage.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // StopCaptureButton
             // 
-            this.StopCaptureButton.Location = new System.Drawing.Point(376, 3);
+            this.StopCaptureButton.Location = new System.Drawing.Point(272, 29);
             this.StopCaptureButton.Name = "StopCaptureButton";
             this.StopCaptureButton.Size = new System.Drawing.Size(89, 23);
             this.StopCaptureButton.TabIndex = 1;
@@ -91,7 +96,7 @@
             this.hexBox1.Name = "hexBox1";
             this.hexBox1.ReadOnly = true;
             this.hexBox1.ShadowSelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(60)))), ((int)(((byte)(188)))), ((int)(((byte)(255)))));
-            this.hexBox1.Size = new System.Drawing.Size(548, 325);
+            this.hexBox1.Size = new System.Drawing.Size(548, 231);
             this.hexBox1.StringViewVisible = true;
             this.hexBox1.TabIndex = 2;
             this.hexBox1.UseFixedBytesPerLine = true;
@@ -99,7 +104,7 @@
             // 
             // CaptureButton
             // 
-            this.CaptureButton.Location = new System.Drawing.Point(281, 3);
+            this.CaptureButton.Location = new System.Drawing.Point(272, 3);
             this.CaptureButton.Name = "CaptureButton";
             this.CaptureButton.Size = new System.Drawing.Size(89, 23);
             this.CaptureButton.TabIndex = 0;
@@ -109,11 +114,11 @@
             // 
             // listBox1
             // 
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(0, 30);
+            this.listBox1.Location = new System.Drawing.Point(0, 58);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(562, 147);
+            this.listBox1.Size = new System.Drawing.Size(562, 199);
             this.listBox1.TabIndex = 1;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -127,6 +132,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.promiscuousCheckbox);
             this.panel1.Controls.Add(this.DumpToFileCheckbox);
             this.panel1.Controls.Add(this.FilterTextBox);
             this.panel1.Controls.Add(this.label1);
@@ -138,13 +144,23 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(562, 30);
+            this.panel1.Size = new System.Drawing.Size(562, 58);
             this.panel1.TabIndex = 0;
+            // 
+            // promiscuousCheckbox
+            // 
+            this.promiscuousCheckbox.AutoSize = true;
+            this.promiscuousCheckbox.Location = new System.Drawing.Point(164, 29);
+            this.promiscuousCheckbox.Name = "promiscuousCheckbox";
+            this.promiscuousCheckbox.Size = new System.Drawing.Size(86, 17);
+            this.promiscuousCheckbox.TabIndex = 9;
+            this.promiscuousCheckbox.Text = "Promiscuous";
+            this.promiscuousCheckbox.UseVisualStyleBackColor = true;
             // 
             // DumpToFileCheckbox
             // 
             this.DumpToFileCheckbox.AutoSize = true;
-            this.DumpToFileCheckbox.Location = new System.Drawing.Point(195, 6);
+            this.DumpToFileCheckbox.Location = new System.Drawing.Point(164, 6);
             this.DumpToFileCheckbox.Name = "DumpToFileCheckbox";
             this.DumpToFileCheckbox.Size = new System.Drawing.Size(85, 17);
             this.DumpToFileCheckbox.TabIndex = 8;
@@ -153,15 +169,15 @@
             // 
             // FilterTextBox
             // 
-            this.FilterTextBox.Location = new System.Drawing.Point(43, 4);
+            this.FilterTextBox.Location = new System.Drawing.Point(43, 17);
             this.FilterTextBox.Name = "FilterTextBox";
-            this.FilterTextBox.Size = new System.Drawing.Size(146, 20);
+            this.FilterTextBox.Size = new System.Drawing.Size(115, 20);
             this.FilterTextBox.TabIndex = 7;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 8);
+            this.label1.Location = new System.Drawing.Point(4, 21);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 6;
@@ -170,7 +186,7 @@
             // AmberPicture
             // 
             this.AmberPicture.Image = global::Terminals.Properties.Resources.amber;
-            this.AmberPicture.Location = new System.Drawing.Point(471, 3);
+            this.AmberPicture.Location = new System.Drawing.Point(381, 17);
             this.AmberPicture.Name = "AmberPicture";
             this.AmberPicture.Size = new System.Drawing.Size(24, 24);
             this.AmberPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -180,7 +196,7 @@
             // RedPicture
             // 
             this.RedPicture.Image = global::Terminals.Properties.Resources.red;
-            this.RedPicture.Location = new System.Drawing.Point(531, 3);
+            this.RedPicture.Location = new System.Drawing.Point(441, 17);
             this.RedPicture.Name = "RedPicture";
             this.RedPicture.Size = new System.Drawing.Size(24, 24);
             this.RedPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -190,7 +206,7 @@
             // GreenPicture
             // 
             this.GreenPicture.Image = global::Terminals.Properties.Resources.green;
-            this.GreenPicture.Location = new System.Drawing.Point(501, 3);
+            this.GreenPicture.Location = new System.Drawing.Point(411, 17);
             this.GreenPicture.Name = "GreenPicture";
             this.GreenPicture.Size = new System.Drawing.Size(24, 24);
             this.GreenPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -204,7 +220,7 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(548, 325);
+            this.textBox1.Size = new System.Drawing.Size(548, 231);
             this.textBox1.TabIndex = 2;
             // 
             // splitContainer1
@@ -220,71 +236,10 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Panel2.Controls.Add(this.listBox1);
-            this.splitContainer1.Panel2.Controls.Add(this.panel1);
+            this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(790, 534);
             this.splitContainer1.SplitterDistance = 224;
             this.splitContainer1.TabIndex = 3;
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.FilteringTabPage);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 177);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(562, 357);
-            this.tabControl1.TabIndex = 3;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.textBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(554, 331);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Text View";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.hexBox1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(554, 331);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Hex View";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // FilteringTabPage
-            // 
-            this.FilteringTabPage.Controls.Add(this.webBrowser1);
-            this.FilteringTabPage.Location = new System.Drawing.Point(4, 22);
-            this.FilteringTabPage.Name = "FilteringTabPage";
-            this.FilteringTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.FilteringTabPage.Size = new System.Drawing.Size(554, 331);
-            this.FilteringTabPage.TabIndex = 2;
-            this.FilteringTabPage.Text = "Filtering Help";
-            this.FilteringTabPage.UseVisualStyleBackColor = true;
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.AllowNavigation = false;
-            this.webBrowser1.AllowWebBrowserDrop = false;
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
-            this.webBrowser1.Location = new System.Drawing.Point(3, 3);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.ScriptErrorsSuppressed = true;
-            this.webBrowser1.Size = new System.Drawing.Size(548, 325);
-            this.webBrowser1.TabIndex = 0;
-            this.webBrowser1.WebBrowserShortcutsEnabled = false;
             // 
             // panel2
             // 
@@ -306,6 +261,84 @@
             this.label2.Text = "Device:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.listBox1);
+            this.splitContainer2.Panel1.Controls.Add(this.panel1);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer2.Size = new System.Drawing.Size(562, 534);
+            this.splitContainer2.SplitterDistance = 267;
+            this.splitContainer2.TabIndex = 4;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.FilteringTabPage);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(562, 263);
+            this.tabControl1.TabIndex = 3;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.textBox1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(554, 237);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Text View";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.hexBox1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(554, 237);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Hex View";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // FilteringTabPage
+            // 
+            this.FilteringTabPage.Controls.Add(this.webBrowser1);
+            this.FilteringTabPage.Location = new System.Drawing.Point(4, 22);
+            this.FilteringTabPage.Name = "FilteringTabPage";
+            this.FilteringTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.FilteringTabPage.Size = new System.Drawing.Size(554, 237);
+            this.FilteringTabPage.TabIndex = 2;
+            this.FilteringTabPage.Text = "Filtering Help";
+            this.FilteringTabPage.UseVisualStyleBackColor = true;
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.AllowNavigation = false;
+            this.webBrowser1.AllowWebBrowserDrop = false;
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
+            this.webBrowser1.Location = new System.Drawing.Point(3, 3);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.ScriptErrorsSuppressed = true;
+            this.webBrowser1.Size = new System.Drawing.Size(548, 231);
+            this.webBrowser1.TabIndex = 0;
+            this.webBrowser1.WebBrowserShortcutsEnabled = false;
+            // 
             // PacketCapture
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -323,12 +356,15 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.FilteringTabPage.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -357,5 +393,7 @@
         private System.Windows.Forms.CheckBox DumpToFileCheckbox;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox promiscuousCheckbox;
+        private System.Windows.Forms.SplitContainer splitContainer2;
     }
 }
