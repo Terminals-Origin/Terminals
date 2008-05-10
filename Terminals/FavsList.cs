@@ -210,8 +210,13 @@ namespace Terminals
                     psi.RedirectStandardOutput=true;
                     System.Diagnostics.Process p = System.Diagnostics.Process.Start(psi);                   
                     p.WaitForExit();
-                    stdOut = p.StandardError.ReadToEnd().Trim() + "\r\n" + p.StandardOutput.ReadToEnd().Trim();
+                    string s = p.StandardOutput.ReadToEnd().Trim();
+                    if(s != "") {
+                        MessageBox.Show(s);
+                    }
+                    stdOut = p.StandardError.ReadToEnd().Trim() + "\r\n" + s;
                     int exit = p.ExitCode;
+                    
                     if(exit == 0) return;
                 }
             }
@@ -235,8 +240,11 @@ namespace Terminals
                     psi.RedirectStandardInput = true;
                     psi.RedirectStandardOutput = true;
                     System.Diagnostics.Process p = System.Diagnostics.Process.Start(psi);
-                    p.WaitForExit();
-                    stdOut = p.StandardError.ReadToEnd().Trim() + "\r\n" + p.StandardOutput.ReadToEnd().Trim();
+                    string s = p.StandardOutput.ReadToEnd().Trim();
+                    if(s != "") {
+                        MessageBox.Show(s);
+                    }
+                    stdOut = p.StandardError.ReadToEnd().Trim() + "\r\n" + s;
                     int exit = p.ExitCode;
                     if(exit == 0) return;
                 }
