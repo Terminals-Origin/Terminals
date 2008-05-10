@@ -200,24 +200,7 @@ namespace Terminals
                 if(MessageBox.Show("Are you sure you want to reboot this machine: " + fav.ServerName, "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
 
-                    System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo(ShutdownCommand, string.Format("/m {0} /r /f", fav.ServerName));
-                    psi.CreateNoWindow = true;
-                    psi.ErrorDialog = true;
-                    psi.UseShellExecute = false;
-                    psi.ErrorDialogParentHandle = this.Handle;
-                    psi.RedirectStandardError = true;
-                    psi.RedirectStandardInput = true;
-                    psi.RedirectStandardOutput=true;
-                    System.Diagnostics.Process p = System.Diagnostics.Process.Start(psi);                   
-                    p.WaitForExit();
-                    string s = p.StandardOutput.ReadToEnd().Trim();
-                    if(s != "") {
-                        MessageBox.Show(s);
-                    }
-                    stdOut = p.StandardError.ReadToEnd().Trim() + "\r\n" + s;
-                    int exit = p.ExitCode;
-                    
-                    if(exit == 0) return;
+                    NetTools.MagicPacket.ForceReboot(fav.ServerName);
                 }
             }
             System.Windows.Forms.MessageBox.Show("Terminals was not able to reboot the machine remotely ("+stdOut+").");
@@ -231,22 +214,7 @@ namespace Terminals
             {
                 if(MessageBox.Show("Are you sure you want to shutdown this machine: " + fav.ServerName, "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo(ShutdownCommand, string.Format("/s /m {0} /f", fav.ServerName));
-                    psi.CreateNoWindow = true;
-                    psi.ErrorDialog = true;
-                    psi.UseShellExecute = false;
-                    psi.ErrorDialogParentHandle = this.Handle;
-                    psi.RedirectStandardError = true;
-                    psi.RedirectStandardInput = true;
-                    psi.RedirectStandardOutput = true;
-                    System.Diagnostics.Process p = System.Diagnostics.Process.Start(psi);
-                    string s = p.StandardOutput.ReadToEnd().Trim();
-                    if(s != "") {
-                        MessageBox.Show(s);
-                    }
-                    stdOut = p.StandardError.ReadToEnd().Trim() + "\r\n" + s;
-                    int exit = p.ExitCode;
-                    if(exit == 0) return;
+                    NetTools.MagicPacket.ForceReboot(fav.ServerName);
                 }
             }
             System.Windows.Forms.MessageBox.Show("Terminals was not able to shutdown the machine remotely (" + stdOut + ").");

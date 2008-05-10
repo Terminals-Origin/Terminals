@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Sockets;
+using System.Management;
+
 /* (c)2003 M.Kruppa */
 namespace NetTools
 {
@@ -108,5 +110,33 @@ namespace NetTools
 			}
 			return byteSend;
   		}
+        public static void ForceReboot(string MachineName) {
+            const int ForcedReboot = 6;
+
+
+            ObjectGetOptions options  = new ObjectGetOptions();
+            ManagementClass WMI_W32_OS = new ManagementClass(string.Format(@"\\{0}\root\cimv2", MachineName), "Win32_OperatingSystem",  options);
+            ManagementBaseObject inputParams, outputParams;
+            int result;
+
+
+            // Set privileges 
+//            WMI_W32_OS.Scope.Options.EnablePrivileges = true;
+
+
+            foreach(ManagementObject oneInstance in WMI_W32_OS.GetInstances()) {
+                inputParams =
+                oneInstance.GetMethodParameters("Win32Shutdown");
+                inputParams["Flags"] = ForcedReboot;
+                inputParams["Reserved"] = 0;
+
+
+                outputParams = oneInstance.InvokeMethod("Win32Shutdown", inputParams, null);
+
+
+                result = Convert.ToInt32(outputParams["returnValue"]);
+            }
+        } 
+
  	}
 }
