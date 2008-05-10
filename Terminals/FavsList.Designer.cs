@@ -32,12 +32,18 @@
             this.FavsTree = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dNSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.traceRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tSAdminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.connectConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.rebootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.shutdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.enableRDPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,13 +64,19 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.connectToolStripMenuItem,
             this.connectConsoleToolStripMenuItem,
+            this.toolStripMenuItem2,
             this.pingToolStripMenuItem,
             this.dNSToolStripMenuItem,
             this.traceRouteToolStripMenuItem,
             this.tSAdminToolStripMenuItem,
-            this.propertiesToolStripMenuItem});
+            this.propertiesToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.rebootToolStripMenuItem,
+            this.shutdownToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.enableRDPToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(180, 180);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(180, 264);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // connectToolStripMenuItem
@@ -74,6 +86,20 @@
             this.connectToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.connectToolStripMenuItem.Text = "Connect";
             this.connectToolStripMenuItem.MouseUp += new System.Windows.Forms.MouseEventHandler(this.connectToolStripMenuItem_MouseUp);
+            this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+            // 
+            // connectConsoleToolStripMenuItem
+            // 
+            this.connectConsoleToolStripMenuItem.Image = global::Terminals.Properties.Resources.application_lightning;
+            this.connectConsoleToolStripMenuItem.Name = "connectConsoleToolStripMenuItem";
+            this.connectConsoleToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.connectConsoleToolStripMenuItem.Text = "Connect to Console";
+            this.connectConsoleToolStripMenuItem.Click += new System.EventHandler(this.connectConsoleToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(176, 6);
             // 
             // pingToolStripMenuItem
             // 
@@ -110,13 +136,36 @@
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
-            // connectConsoleToolStripMenuItem
+            // toolStripMenuItem1
             // 
-            this.connectConsoleToolStripMenuItem.Image = global::Terminals.Properties.Resources.application_lightning;
-            this.connectConsoleToolStripMenuItem.Name = "connectConsoleToolStripMenuItem";
-            this.connectConsoleToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.connectConsoleToolStripMenuItem.Text = "Connect to Console";
-            this.connectConsoleToolStripMenuItem.Click += new System.EventHandler(this.connectConsoleToolStripMenuItem_Click);
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(176, 6);
+            // 
+            // rebootToolStripMenuItem
+            // 
+            this.rebootToolStripMenuItem.Name = "rebootToolStripMenuItem";
+            this.rebootToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.rebootToolStripMenuItem.Text = "Reboot";
+            this.rebootToolStripMenuItem.Click += new System.EventHandler(this.rebootToolStripMenuItem_Click);
+            // 
+            // shutdownToolStripMenuItem
+            // 
+            this.shutdownToolStripMenuItem.Name = "shutdownToolStripMenuItem";
+            this.shutdownToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.shutdownToolStripMenuItem.Text = "Shutdown";
+            this.shutdownToolStripMenuItem.Click += new System.EventHandler(this.shutdownToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(176, 6);
+            // 
+            // enableRDPToolStripMenuItem
+            // 
+            this.enableRDPToolStripMenuItem.Name = "enableRDPToolStripMenuItem";
+            this.enableRDPToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.enableRDPToolStripMenuItem.Text = "Enable RDP";
+            this.enableRDPToolStripMenuItem.Click += new System.EventHandler(this.enableRDPToolStripMenuItem_Click);
             // 
             // FavsList
             // 
@@ -141,5 +190,11 @@
         private System.Windows.Forms.ToolStripMenuItem traceRouteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectConsoleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem rebootToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem shutdownToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem enableRDPToolStripMenuItem;
     }
 }

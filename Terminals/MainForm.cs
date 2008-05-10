@@ -591,7 +591,7 @@ namespace Terminals {
                 AddFavorite(favorite);
                 if(favorite.Name.Length > longestFav.Length) longestFav = favorite.Name;
             }
-
+            this.favsList1.LoadFavs();
             //using(System.Drawing.Graphics g = System.Drawing.Graphics.FromHwnd(this.Handle))
             //{
             //    int Width = (int)g.MeasureString(longestFav, lvFavorites.Font).Width;
@@ -636,6 +636,7 @@ namespace Terminals {
                     favvisible = true;
                 }
                 favoriteToolBar.Visible = favvisible;
+                this.favsList1.LoadFavs();
             }
             catch(Exception exc)
             {
@@ -2079,6 +2080,7 @@ namespace Terminals {
         {
             ManageToolStrip mgr = new ManageToolStrip();
             mgr.ShowDialog(this);
+            this.favsList1.LoadFavs();
         }
 
         //private void mainMenuToolStripMenuItem_Click(object sender, EventArgs e)
