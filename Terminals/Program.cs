@@ -20,7 +20,7 @@ namespace Terminals
         [ComVisible(true)]
         static void Main()
         {
-
+            Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 
             mtx = new Mutex(false, "TerminalsMutex");
 
@@ -58,6 +58,10 @@ namespace Terminals
             }
             SingleInstanceApplication.Close();
 
+        }
+
+        static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {
+            Terminals.Logging.Log.Fatal("Application Exception", e.Exception);
         }
 
         private static bool ReuseExistingInstance()

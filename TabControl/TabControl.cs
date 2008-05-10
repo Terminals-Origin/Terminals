@@ -316,30 +316,30 @@ namespace TabControl
             }*/
         }
         protected override void OnMouseUp(MouseEventArgs e) {
-            base.OnMouseUp(e);
-            if(downItem != null) {
-                TabControlItem upItem = GetTabItemByPoint(e.Location);
-                if(upItem != downItem) {
-                    //perform swap
-                    int downIndex = this.items.IndexOf(downItem);
-                    int newIndex = downIndex;
-                    if(upItem == null) {
-                        newIndex = this.items.Count;
-                    } else {
-                        if(upItem.Left > downItem.Left) {
-                            newIndex = downIndex - 1;
-                        } else {
-                            newIndex = downIndex + 1;
-                        }
-                    }
-                    if(newIndex>this.Items.Count-1) newIndex = this.Items.Count-1;
-                    if(newIndex < 0) newIndex = 0;
-                    this.items.Remove(downItem);
-                    this.items.Insert(newIndex, downItem);
+            try {
+                base.OnMouseUp(e);
+                if(downItem != null) {
+                    TabControlItem upItem = GetTabItemByPoint(e.Location);
+                    if(upItem != downItem) {
+                        //perform swap
+                        int downIndex = this.items.IndexOf(downItem);
+                        int newIndex = downIndex;
 
+                        if(e.X >= downItem.Left) {
+                            newIndex = downIndex + 1;
+                        } else {
+                            newIndex = downIndex - 1;
+                        }
+
+                        if(newIndex > this.Items.Count - 1) newIndex = this.Items.Count - 1;
+                        if(newIndex <= 0) newIndex = 0;
+                        this.items.Remove(downItem);
+                        this.items.Insert(newIndex, downItem);
+
+                    }
                 }
-            }
-            downItem = null;
+                downItem = null;
+            } catch(Exception exc) { }
         }
         TabControlItem downItem = null;
         protected override void OnMouseDown(MouseEventArgs e)
