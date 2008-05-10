@@ -917,6 +917,9 @@ namespace Terminals
         this.ShutdownTimeoutTextBox.Size = new System.Drawing.Size(36, 21);
         this.ShutdownTimeoutTextBox.TabIndex = 17;
         this.ShutdownTimeoutTextBox.Text = "10";
+        this.toolTip1.SetToolTip(this.ShutdownTimeoutTextBox, "Specifies the length of time, in seconds, to wait for the server to respond to a " +
+                "disconnection request. If the server does not reply within the specified time, t" +
+                "he client control disconnects.");
         // 
         // label28
         // 
@@ -934,6 +937,8 @@ namespace Terminals
         this.OverallTimeoutTextbox.Size = new System.Drawing.Size(36, 21);
         this.OverallTimeoutTextbox.TabIndex = 15;
         this.OverallTimeoutTextbox.Text = "600";
+        this.toolTip1.SetToolTip(this.OverallTimeoutTextbox, "Specifies the total length of time, in seconds, that the client control waits for" +
+                " a connection to complete.");
         // 
         // label27
         // 
@@ -951,6 +956,9 @@ namespace Terminals
         this.SingleTimeOutTextbox.Size = new System.Drawing.Size(36, 21);
         this.SingleTimeOutTextbox.TabIndex = 13;
         this.SingleTimeOutTextbox.Text = "600";
+        this.toolTip1.SetToolTip(this.SingleTimeOutTextbox, "Specifies the maximum length of time, in seconds, that the client control waits f" +
+                "or a connection to an IP address. During connection, the control may attempt to " +
+                "connect to multiple IP addresses.");
         // 
         // label26
         // 
@@ -968,6 +976,8 @@ namespace Terminals
         this.IdleTimeoutMinutesTextBox.Size = new System.Drawing.Size(36, 21);
         this.IdleTimeoutMinutesTextBox.TabIndex = 11;
         this.IdleTimeoutMinutesTextBox.Text = "240";
+        this.toolTip1.SetToolTip(this.IdleTimeoutMinutesTextBox, "Specifies the maximum length of time, in minutes, that the client should remain c" +
+                "onnected without user input.");
         // 
         // GrabFocusOnConnectCheckbox
         // 
@@ -977,6 +987,7 @@ namespace Terminals
         this.GrabFocusOnConnectCheckbox.Size = new System.Drawing.Size(138, 17);
         this.GrabFocusOnConnectCheckbox.TabIndex = 10;
         this.GrabFocusOnConnectCheckbox.Text = "Grab Focus on Connect";
+        this.toolTip1.SetToolTip(this.GrabFocusOnConnectCheckbox, "Specifies whether the client control should have the focus while connecting.");
         this.GrabFocusOnConnectCheckbox.UseVisualStyleBackColor = true;
         // 
         // EnableEncryptionCheckbox
@@ -987,6 +998,7 @@ namespace Terminals
         this.EnableEncryptionCheckbox.Size = new System.Drawing.Size(112, 17);
         this.EnableEncryptionCheckbox.TabIndex = 9;
         this.EnableEncryptionCheckbox.Text = "Enable Encryption";
+        this.toolTip1.SetToolTip(this.EnableEncryptionCheckbox, "Reserved. You cannot disable encryption. (Funny isnt it?)");
         this.EnableEncryptionCheckbox.UseVisualStyleBackColor = true;
         // 
         // DisableWindowsKeyCheckbox
@@ -997,6 +1009,7 @@ namespace Terminals
         this.DisableWindowsKeyCheckbox.Size = new System.Drawing.Size(127, 17);
         this.DisableWindowsKeyCheckbox.TabIndex = 8;
         this.DisableWindowsKeyCheckbox.Text = "Disable Windows Key";
+        this.toolTip1.SetToolTip(this.DisableWindowsKeyCheckbox, "Specifies whether the Windows key can be used in the remote session.");
         this.DisableWindowsKeyCheckbox.UseVisualStyleBackColor = true;
         // 
         // DetectDoubleClicksCheckbox
@@ -1007,6 +1020,7 @@ namespace Terminals
         this.DetectDoubleClicksCheckbox.Size = new System.Drawing.Size(123, 17);
         this.DetectDoubleClicksCheckbox.TabIndex = 6;
         this.DetectDoubleClicksCheckbox.Text = "Detect Double Clicks";
+        this.toolTip1.SetToolTip(this.DetectDoubleClicksCheckbox, "Specifies whether the client identifies double-clicks for the server.");
         this.DetectDoubleClicksCheckbox.UseVisualStyleBackColor = true;
         // 
         // DisplayConnectionBarCheckbox
@@ -1017,6 +1031,7 @@ namespace Terminals
         this.DisplayConnectionBarCheckbox.Size = new System.Drawing.Size(136, 17);
         this.DisplayConnectionBarCheckbox.TabIndex = 5;
         this.DisplayConnectionBarCheckbox.Text = "Display Connection Bar";
+        this.toolTip1.SetToolTip(this.DisplayConnectionBarCheckbox, "Specifies whether to use the connection bar.");
         this.DisplayConnectionBarCheckbox.UseVisualStyleBackColor = true;
         // 
         // DisableControlAltDeleteCheckbox
@@ -1027,6 +1042,8 @@ namespace Terminals
         this.DisableControlAltDeleteCheckbox.Size = new System.Drawing.Size(148, 17);
         this.DisableControlAltDeleteCheckbox.TabIndex = 4;
         this.DisableControlAltDeleteCheckbox.Text = "Disable Control Alt Delete";
+        this.toolTip1.SetToolTip(this.DisableControlAltDeleteCheckbox, "This method sets a value that indicates whether the initial prompt screen in Winl" +
+                "ogon, which prompts you to unlock your computer, should appear.");
         this.DisableControlAltDeleteCheckbox.UseVisualStyleBackColor = true;
         // 
         // AcceleratorPassthroughCheckBox
@@ -1037,6 +1054,7 @@ namespace Terminals
         this.AcceleratorPassthroughCheckBox.Size = new System.Drawing.Size(231, 17);
         this.AcceleratorPassthroughCheckBox.TabIndex = 3;
         this.AcceleratorPassthroughCheckBox.Text = "Enable Keyboard Accelerator Passthrough ";
+        this.toolTip1.SetToolTip(this.AcceleratorPassthroughCheckBox, resources.GetString("AcceleratorPassthroughCheckBox.ToolTip"));
         this.AcceleratorPassthroughCheckBox.UseVisualStyleBackColor = true;
         // 
         // EnableCompressionCheckbox
@@ -1047,6 +1065,8 @@ namespace Terminals
         this.EnableCompressionCheckbox.Size = new System.Drawing.Size(122, 17);
         this.EnableCompressionCheckbox.TabIndex = 2;
         this.EnableCompressionCheckbox.Text = "Enable Compression";
+        this.toolTip1.SetToolTip(this.EnableCompressionCheckbox, "This method sets the value of the Compression property, which enables or disables" +
+                " compression.");
         this.EnableCompressionCheckbox.UseVisualStyleBackColor = true;
         // 
         // EnableBitmapPersistanceCheckbox
@@ -1057,6 +1077,7 @@ namespace Terminals
         this.EnableBitmapPersistanceCheckbox.Size = new System.Drawing.Size(151, 17);
         this.EnableBitmapPersistanceCheckbox.TabIndex = 1;
         this.EnableBitmapPersistanceCheckbox.Text = "Enable Bitmap Persistance";
+        this.toolTip1.SetToolTip(this.EnableBitmapPersistanceCheckbox, resources.GetString("EnableBitmapPersistanceCheckbox.ToolTip"));
         this.EnableBitmapPersistanceCheckbox.UseVisualStyleBackColor = true;
         // 
         // AllowBackgroundInputCheckBox
@@ -1067,6 +1088,8 @@ namespace Terminals
         this.AllowBackgroundInputCheckBox.Size = new System.Drawing.Size(139, 17);
         this.AllowBackgroundInputCheckBox.TabIndex = 0;
         this.AllowBackgroundInputCheckBox.Text = "Allow Background Input";
+        this.toolTip1.SetToolTip(this.AllowBackgroundInputCheckBox, "Specifies whether background input mode is enabled. When background input is enab" +
+                "led the client can accept input when the client does not have focus.");
         this.AllowBackgroundInputCheckBox.UseVisualStyleBackColor = true;
         // 
         // tabPage9
