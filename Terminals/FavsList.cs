@@ -193,31 +193,37 @@ namespace Terminals
         }
         private void rebootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string stdOut = "";
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if(fav != null)
             {
                 if(MessageBox.Show("Are you sure you want to reboot this machine: " + fav.ServerName, "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
 
-                    NetTools.MagicPacket.ForceReboot(fav.ServerName);
+                    if(NetTools.MagicPacket.ForceReboot(fav.ServerName, NetTools.MagicPacket.ShutdownStyles.ForcedReboot) == 0)
+                    {
+                        MessageBox.Show("Terminals successfully sent the shutdown command.");
+                        return;
+                    } 
                 }
             }
-            System.Windows.Forms.MessageBox.Show("Terminals was not able to reboot the machine remotely ("+stdOut+").");
+            System.Windows.Forms.MessageBox.Show("Terminals was not able to reboot the machine remotely.");
         }
 
         private void shutdownToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string stdOut = "";
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if(fav != null)
             {
                 if(MessageBox.Show("Are you sure you want to shutdown this machine: " + fav.ServerName, "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    NetTools.MagicPacket.ForceReboot(fav.ServerName);
+                    if(NetTools.MagicPacket.ForceReboot(fav.ServerName, NetTools.MagicPacket.ShutdownStyles.ForcedShutdown) == 0)
+                    {
+                        MessageBox.Show("Terminals successfully sent the shutdown command.");
+                        return;
+                    }
                 }
             }
-            System.Windows.Forms.MessageBox.Show("Terminals was not able to shutdown the machine remotely (" + stdOut + ").");
+            System.Windows.Forms.MessageBox.Show("Terminals was not able to shutdown the machine remotely.");
         }
 
         private void enableRDPToolStripMenuItem_Click(object sender, EventArgs e)

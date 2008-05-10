@@ -20,7 +20,7 @@ namespace NetTools
 		private IPEndPoint wolEndPoint;				
 		private byte[] wolMacAddr;
 		private byte[] magicPacketPayload;
-		
+
 		public MagicPacket(string macAddress)
 		{		
 			wolMacAddr = Mac2Byte(macAddress);
@@ -110,33 +110,46 @@ namespace NetTools
 			}
 			return byteSend;
   		}
-        public static void ForceReboot(string MachineName) {
-            const int ForcedReboot = 6;
+        public enum ShutdownStyles
+        {
+            LogOff = 0,
+            ForcedLogOff = 4,
+            Shutdown = 1,
+            ForcedShutdown = 5,
+            Reboot = 2,
+            ForcedReboot = 6,
+            PowerOff = 8,
+            ForcedPowerOff = 12
+        }
 
+        public static int ForceReboot(string MachineName, ShutdownStyles ShutdownStyle)
+        {
 
-            ObjectGetOptions options  = new ObjectGetOptions();
-            ManagementClass WMI_W32_OS = new ManagementClass(string.Format(@"\\{0}\root\cimv2", MachineName), "Win32_OperatingSystem",  options);
-            ManagementBaseObject inputParams, outputParams;
-            int result;
+            int result = -1;
+            try
+            {
 
+                ObjectGetOptions options = new ObjectGetOptions();
+                ManagementClass WMI_W32_OS = new ManagementClass(string.Format(@"\\{0}\root\cimv2", MachineName), "Win32_OperatingSystem", options);
+                ManagementBaseObject inputParams, outputParams;
+                foreach(ManagementObject oneInstance in WMI_W32_OS.GetInstances())
+                {
+                    inputParams = oneInstance.GetMethodParameters("Win32Shutdown");
+                    inputParams["Flags"] = (int)ShutdownStyle;
+                    inputParams["Reserved"] = 0;
 
-            // Set privileges 
-//            WMI_W32_OS.Scope.Options.EnablePrivileges = true;
+                    outputParams = oneInstance.InvokeMethod("Win32Shutdown", inputParams, null);
 
-
-            foreach(ManagementObject oneInstance in WMI_W32_OS.GetInstances()) {
-                inputParams =
-                oneInstance.GetMethodParameters("Win32Shutdown");
-                inputParams["Flags"] = ForcedReboot;
-                inputParams["Reserved"] = 0;
-
-
-                outputParams = oneInstance.InvokeMethod("Win32Shutdown", inputParams, null);
-
-
-                result = Convert.ToInt32(outputParams["returnValue"]);
+                    result = Convert.ToInt32(outputParams["returnValue"]);
+                    break;
+                }
             }
-        } 
+            catch(Exception exc)
+            {
+                System.Windows.Forms.MessageBox.Show("Terminals was not able to reboot the remote machine.  Reason:\r\n" + exc.Message);
+            }
+            return result;
+        }
 
  	}
 }
