@@ -25,16 +25,10 @@ namespace Terminals {
             }
         }
 
-        public void AddTerminal(TerminalTabControlItem TabControlItem) {
-
-
-            
+        public void AddTerminal(TerminalTabControlItem TabControlItem) {           
             this.tabControl1.AddTab(TabControlItem);
-            
             Terminals.Connections.Connection b = (TabControlItem.Connection as Terminals.Connections.Connection);
             this.Text = TabControlItem.Connection.Favorite.Name;
-
-
         }
 
         void timerHover_Tick(object sender, EventArgs e) {
@@ -110,9 +104,13 @@ namespace Terminals {
                         }
                     }
                 }
-                foreach(TabControl.TabControlItem tab in removeableTabs) {
-                    tabControl1.CloseTab(tab);
-                    tab.Dispose();
+                try {
+                    foreach(TabControl.TabControlItem tab in removeableTabs) {
+                        tabControl1.CloseTab(tab);
+                        tab.Dispose();
+                    }
+                } catch(Exception exc) {
+                    Terminals.Logging.Log.Error("Error attempting to remove tab from window", exc);
                 }
                 closeTimer.Enabled = true;
             }

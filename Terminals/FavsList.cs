@@ -6,23 +6,18 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Terminals
-{
-    public partial class FavsList : UserControl
-    {
-        public FavsList()
-        {
+namespace Terminals {
+    public partial class FavsList : UserControl {
+        public FavsList() {
             InitializeComponent();
         }
 
-        private void FavsList_Load(object sender, EventArgs e)
-        {
+        private void FavsList_Load(object sender, EventArgs e) {
             FavsTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(FavsTree_NodeMouseClick);
             LoadFavs();
         }
         public string UntaggedKey = "Untagged";
-        public void LoadFavs()
-        {
+        public void LoadFavs() {
 
             FavsTree.Nodes.Clear();
 
@@ -56,15 +51,14 @@ namespace Terminals
         }
 
         void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e) {
-            if(e.Button == MouseButtons.Right)
-            {
+            if(e.Button == MouseButtons.Right) {
                 FavsTree.SelectedNode = e.Node;
             }
             if(FavsTree.SelectedNode != null) {
                 FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
                 if(e.Button == MouseButtons.Right) {
                     FavsTree.SelectedNode = e.Node;
-                }                
+                }
                 pingToolStripMenuItem.Visible = true;
                 dNSToolStripMenuItem.Visible = true;
                 traceRouteToolStripMenuItem.Visible = true;
@@ -73,8 +67,7 @@ namespace Terminals
                 rebootToolStripMenuItem.Visible = true;
                 shutdownToolStripMenuItem.Visible = true;
                 enableRDPToolStripMenuItem.Visible = true;
-                if(fav == null)
-                {
+                if(fav == null) {
                     pingToolStripMenuItem.Visible = false;
                     dNSToolStripMenuItem.Visible = false;
                     traceRouteToolStripMenuItem.Visible = false;
@@ -84,39 +77,26 @@ namespace Terminals
                     shutdownToolStripMenuItem.Visible = false;
                     enableRDPToolStripMenuItem.Visible = false;
                 }
-          
+
             }
         }
 
 
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-            contextMenuStrip1.Items[1].Visible = true;
-            if(FavsTree.SelectedNode != null)
-            {
-                if(FavsTree.SelectedNode.Tag == null)
-                {                    
-                    if(FavsTree.SelectedNode.Nodes.Count <= 0) e.Cancel = true;
-                    contextMenuStrip1.Items[0].Text = "Connect to All";
-                    contextMenuStrip1.Items[1].Visible = false;
-                }
-                else
-                {
-                    contextMenuStrip1.Items[0].Text = "Connect to " + FavsTree.SelectedNode.Text;
-                }
-            }            
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e) {
+            connectToolStripMenuItem.Visible = !(FavsTree.SelectedNode.Tag == null);
+            connectToAllToolStripMenuItem.Visible = (FavsTree.SelectedNode.Tag == null);
+
+
         }
-        private MainForm MainForm
-        {
-            get
-            {
+        private MainForm MainForm {
+            get {
                 return (this.ParentForm as MainForm);
             }
         }
-       
+
         private void pingToolStripMenuItem_Click(object sender, EventArgs e) {
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav!=null) MainForm.OpenNetworkingTools("Ping", fav.ServerName);
+            if(fav != null) MainForm.OpenNetworkingTools("Ping", fav.ServerName);
         }
 
         private void dNSToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -150,47 +130,25 @@ namespace Terminals
             if(fav != null) MainForm.Connect(fav.Name, true, false);
         }
 
-        private string ShutdownCommand
-        {
-            get
-            {
-                return System.IO.Path.Combine(SystemFolder, "shutdown.exe");
-            }
-        }
-        private string SystemFolder
-        {
-            get
-            {
-                return System.Environment.GetFolderPath(Environment.SpecialFolder.System);
-            }
-        }
-        private void rebootToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void rebootToolStripMenuItem_Click(object sender, EventArgs e) {
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null)
-            {
-                if(MessageBox.Show("Are you sure you want to reboot this machine: " + fav.ServerName, "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
+            if(fav != null) {
+                if(MessageBox.Show("Are you sure you want to reboot this machine: " + fav.ServerName, "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes) {
 
-                    if(NetTools.MagicPacket.ForceReboot(fav.ServerName, NetTools.MagicPacket.ShutdownStyles.ForcedReboot) == 0)
-                    {
+                    if(NetTools.MagicPacket.ForceReboot(fav.ServerName, NetTools.MagicPacket.ShutdownStyles.ForcedReboot) == 0) {
                         MessageBox.Show("Terminals successfully sent the shutdown command.");
                         return;
-                    } 
+                    }
                 }
             }
             System.Windows.Forms.MessageBox.Show("Terminals was not able to reboot the machine remotely.");
         }
 
-        private void shutdownToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void shutdownToolStripMenuItem_Click(object sender, EventArgs e) {
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null)
-            {
-                if(MessageBox.Show("Are you sure you want to shutdown this machine: " + fav.ServerName, "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    if(NetTools.MagicPacket.ForceReboot(fav.ServerName, NetTools.MagicPacket.ShutdownStyles.ForcedShutdown) == 0)
-                    {
+            if(fav != null) {
+                if(MessageBox.Show("Are you sure you want to shutdown this machine: " + fav.ServerName, "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes) {
+                    if(NetTools.MagicPacket.ForceReboot(fav.ServerName, NetTools.MagicPacket.ShutdownStyles.ForcedShutdown) == 0) {
                         MessageBox.Show("Terminals successfully sent the shutdown command.");
                         return;
                     }
@@ -199,28 +157,21 @@ namespace Terminals
             System.Windows.Forms.MessageBox.Show("Terminals was not able to shutdown the machine remotely.");
         }
 
-        private void enableRDPToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void enableRDPToolStripMenuItem_Click(object sender, EventArgs e) {
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null)
-            {
+            if(fav != null) {
 
                 Microsoft.Win32.RegistryKey reg = Microsoft.Win32.RegistryKey.OpenRemoteBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, fav.ServerName);
                 Microsoft.Win32.RegistryKey ts = reg.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Terminal Server", true);
                 object deny = ts.GetValue("fDenyTSConnections");
-                if(deny != null)
-                {
+                if(deny != null) {
                     int d = Convert.ToInt32(deny);
-                    if(d == 1)
-                    {
+                    if(d == 1) {
                         ts.SetValue("fDenyTSConnections", 0);
-                        if(System.Windows.Forms.MessageBox.Show("Terminals was able to enable the RDP on the remote machine, would you like to reboot that machine for the change to take effect?", "Reboot Required", MessageBoxButtons.YesNo) == DialogResult.OK)
-                        {
+                        if(System.Windows.Forms.MessageBox.Show("Terminals was able to enable the RDP on the remote machine, would you like to reboot that machine for the change to take effect?", "Reboot Required", MessageBoxButtons.YesNo) == DialogResult.OK) {
                             rebootToolStripMenuItem_Click(null, null);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         System.Windows.Forms.MessageBox.Show("Terminals did not need to enable RDP because it was already set.");
                     }
                     return;
@@ -229,33 +180,59 @@ namespace Terminals
             System.Windows.Forms.MessageBox.Show("Terminals was not able to enable RDP remotely.");
         }
 
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.Connect(fav.Name, false, false);
 
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e) {
+            Connect(FavsTree.SelectedNode, false, false, false);
         }
 
+        private void Connect(TreeNode SelectedNode, bool AllChildren, bool Console, bool NewWindow) {
+            if(AllChildren) {
+                foreach(TreeNode node in SelectedNode.Nodes) {
+                    FavoriteConfigurationElement fav = (node.Tag as FavoriteConfigurationElement);
+                    if(fav != null) {
+                        MainForm.Connect(fav.Name, Console, NewWindow);
+                    }
+                }
+            } else {
+                FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+                if(fav != null) {
+                    MainForm.Connect(fav.Name, Console, NewWindow);
+                }
+            }
+        }
         private void normallyToolStripMenuItem_Click(object sender, EventArgs e) {
             connectToolStripMenuItem_Click(null, null);
         }
 
         private void forcedConsoleToolStripMenuItem_Click(object sender, EventArgs e) {
-            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.Connect(fav.Name, true, false);
-
+            Connect(FavsTree.SelectedNode, false, true, false);
         }
 
         private void newWindowToolStripMenuItem_Click(object sender, EventArgs e) {
-            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.Connect(fav.Name, true, true);
+            Connect(FavsTree.SelectedNode, false, true, true);
 
         }
 
         private void newWindowToolStripMenuItem1_Click(object sender, EventArgs e) {
-            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.Connect(fav.Name, false, true);
+            Connect(FavsTree.SelectedNode, false, false, true);
 
+        }
+
+        private void connectToAllToolStripMenuItem_Click(object sender, EventArgs e) {
+            Connect(FavsTree.SelectedNode, true, false, false);
+        }
+
+        private void consoleToolStripMenuItem_Click(object sender, EventArgs e) {
+            Connect(FavsTree.SelectedNode, true, true, false);
+        }
+
+        private void newWindowToolStripMenuItem3_Click(object sender, EventArgs e) {
+            Connect(FavsTree.SelectedNode, true, false, true);
+        }
+
+        private void newWindowToolStripMenuItem2_Click(object sender, EventArgs e) {
+            Connect(FavsTree.SelectedNode, true, true, true);
         }
     }
 }

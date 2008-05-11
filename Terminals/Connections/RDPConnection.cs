@@ -331,8 +331,7 @@ namespace Terminals.Connections
             string error = Functions.GetErrorMessage(e.discReason);
             if(error != null)
             {
-                MessageBox.Show(this, String.Format("Error connecting to {0} ({1})", client.Server, error), "Terminals " + Program.TerminalsVersion.ToString(),
-                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+//                MessageBox.Show(this, String.Format("Error connecting to {0} ({1})", client.Server, error), "Terminals " + Program.TerminalsVersion.ToString(),MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             TabControlItem selectedTabPage = (TabControlItem)(client.Parent);
             bool wasSelected = selectedTabPage.Selected;

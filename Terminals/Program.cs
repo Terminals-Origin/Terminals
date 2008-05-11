@@ -54,10 +54,14 @@ namespace Terminals
             }
             else
             {
-                Application.Run(new MainForm());
+                try {
+                    Application.Run(new MainForm());
+                } catch(Exception exc) {
+                    Terminals.Logging.Log.Error("Main Form Execption",exc);
+                }
             }
             SingleInstanceApplication.Close();
-
+            Terminals.Logging.Log.Info("Terminals " + Program.TerminalsVersion + " stopped");
         }
 
         static void Application_ThreadException(object sender, ThreadExceptionEventArgs e) {

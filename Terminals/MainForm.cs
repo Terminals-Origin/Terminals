@@ -801,10 +801,6 @@ namespace Terminals {
                     b.OnTerminalServerStateDiscovery += new Terminals.Connections.Connection.TerminalServerStateDiscovery(b_OnTerminalServerStateDiscovery);
                     b.CheckForTerminalServer(favorite);
 
-                    if(favorite.NewWindow) {
-                        OpenConnectionInNewWindow(conn);
-                    }
-
                 }
                 else
                 {
@@ -812,6 +808,12 @@ namespace Terminals {
                     System.Windows.Forms.MessageBox.Show(msg);
                     tcTerminals.Items.Remove(terminalTabPage);
                     tcTerminals.SelectedItem = null;
+                }
+
+                if(conn.Connected) {
+                    if(favorite.NewWindow) {
+                        OpenConnectionInNewWindow(conn);
+                    }
                 }
             }
             catch(Exception exc)
