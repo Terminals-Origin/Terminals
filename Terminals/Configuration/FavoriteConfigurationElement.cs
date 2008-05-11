@@ -608,15 +608,21 @@ namespace Terminals
         }
 
         [ConfigurationProperty("redirectPorts")]
-        public bool RedirectPorts
-        {
-            get
-            {
+        public bool RedirectPorts {
+            get {
                 return (bool)this["redirectPorts"];
             }
-            set
-            {
+            set {
                 this["redirectPorts"] = value;
+            }
+        }
+        [ConfigurationProperty("newWindow")]
+        public bool NewWindow {
+            get {
+                return (bool)this["newWindow"];
+            }
+            set {
+                this["newWindow"] = value;
             }
         }
 

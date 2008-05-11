@@ -133,6 +133,7 @@ namespace Terminals {
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.tabControlItem1 = new TabControl.TabControlItem();
             this.tabControlItem2 = new TabControl.TabControlItem();
+            this.viewInNewWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -215,7 +216,8 @@ namespace Terminals {
             this.standardToolbarToolStripMenuItem,
             this.toolStripMenuItem4,
             this.shortcutsToolStripMenuItem,
-            this.lockToolbarsToolStripMenuItem});
+            this.lockToolbarsToolStripMenuItem,
+            this.viewInNewWindowToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.viewToolStripMenuItem.Text = "&View";
@@ -225,7 +227,7 @@ namespace Terminals {
             this.fullScreenToolStripMenuItem.Image = global::Terminals.Properties.Resources.arrow_out;
             this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
             this.fullScreenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.fullScreenToolStripMenuItem.Text = "&Full Screen";
             this.fullScreenToolStripMenuItem.Click += new System.EventHandler(this.tsbFullScreen_Click);
             // 
@@ -234,7 +236,7 @@ namespace Terminals {
             this.standardToolbarToolStripMenuItem.Checked = true;
             this.standardToolbarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.standardToolbarToolStripMenuItem.Name = "standardToolbarToolStripMenuItem";
-            this.standardToolbarToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.standardToolbarToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.standardToolbarToolStripMenuItem.Text = "&Standard Toolbar";
             this.standardToolbarToolStripMenuItem.Click += new System.EventHandler(this.standardToolbarToolStripMenuItem_Click);
             // 
@@ -243,7 +245,7 @@ namespace Terminals {
             this.toolStripMenuItem4.Checked = true;
             this.toolStripMenuItem4.CheckState = System.Windows.Forms.CheckState.Checked;
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(168, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(182, 22);
             this.toolStripMenuItem4.Text = "&Favorites";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
             // 
@@ -252,7 +254,7 @@ namespace Terminals {
             this.shortcutsToolStripMenuItem.Checked = true;
             this.shortcutsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.shortcutsToolStripMenuItem.Name = "shortcutsToolStripMenuItem";
-            this.shortcutsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.shortcutsToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.shortcutsToolStripMenuItem.Text = "&Shortcuts";
             this.shortcutsToolStripMenuItem.Click += new System.EventHandler(this.shortcutsToolStripMenuItem_Click);
             // 
@@ -261,7 +263,7 @@ namespace Terminals {
             this.lockToolbarsToolStripMenuItem.Checked = true;
             this.lockToolbarsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.lockToolbarsToolStripMenuItem.Name = "lockToolbarsToolStripMenuItem";
-            this.lockToolbarsToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.lockToolbarsToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.lockToolbarsToolStripMenuItem.Text = "&Lock Toolbars";
             this.lockToolbarsToolStripMenuItem.Click += new System.EventHandler(this.lockToolbarsToolStripMenuItem_Click);
             // 
@@ -1158,6 +1160,13 @@ namespace Terminals {
             this.tabControlItem2.Title = "TabControl Page 4";
             this.tabControlItem2.ToolTipText = "";
             // 
+            // viewInNewWindowToolStripMenuItem
+            // 
+            this.viewInNewWindowToolStripMenuItem.Name = "viewInNewWindowToolStripMenuItem";
+            this.viewInNewWindowToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
+            this.viewInNewWindowToolStripMenuItem.Text = "View in new Window";
+            this.viewInNewWindowToolStripMenuItem.Click += new System.EventHandler(this.viewInNewWindowToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1319,5 +1328,6 @@ namespace Terminals {
         private TabControl.TabControlItem tabControlItem2;
         private TabControl.TabControlItem tabControlItem1;
         private FavsList favsList1;
+        private System.Windows.Forms.ToolStripMenuItem viewInNewWindowToolStripMenuItem;
     }
 }

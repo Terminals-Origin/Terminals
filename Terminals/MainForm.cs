@@ -146,7 +146,7 @@ namespace Terminals {
         }
         void SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            Connect(e.ClickedItem.Text, false);
+            Connect(e.ClickedItem.Text, false, false);
         }
 
         void tcTerminals_MouseClick(object sender, MouseEventArgs e)
@@ -286,7 +286,7 @@ namespace Terminals {
                     if(tag != null)
                     {
                         string itemName = e.ClickedItem.Text;
-                        if(tag == "favorite") Connect(itemName, false);
+                        if(tag == "favorite") Connect(itemName, false, false);
                         if(tag == "tag")
                         {
                             System.Windows.Forms.ToolStripMenuItem parent = (e.ClickedItem as System.Windows.Forms.ToolStripMenuItem);
@@ -296,7 +296,7 @@ namespace Terminals {
                                 {
                                     foreach(ToolStripMenuItem button in parent.DropDownItems)
                                     {
-                                        Connect(button.Text, false);
+                                        Connect(button.Text, false, false);
                                     }
                                 }
                             }
@@ -398,7 +398,7 @@ namespace Terminals {
         {
             foreach(string name in Settings.SavedConnections)
             {
-                Connect(name, false);
+                Connect(name, false, false);
             }
             Settings.ClearSavedConnectionsList();
         }
@@ -800,6 +800,11 @@ namespace Terminals {
                     Terminals.Connections.Connection b = (conn as Terminals.Connections.Connection);
                     b.OnTerminalServerStateDiscovery += new Terminals.Connections.Connection.TerminalServerStateDiscovery(b_OnTerminalServerStateDiscovery);
                     b.CheckForTerminalServer(favorite);
+
+                    if(favorite.NewWindow) {
+                        OpenConnectionInNewWindow(conn);
+                    }
+
                 }
                 else
                 {
@@ -1075,16 +1080,17 @@ namespace Terminals {
             string connectionName = tscConnectTo.Text;
             if(connectionName != "")
             {
-                Connect(connectionName, false);
+                Connect(connectionName, false, false);
             }
         }
 
-        public void Connect(string connectionName, bool ForceConsole)
+        public void Connect(string connectionName, bool ForceConsole, bool ForceNewWindow)
         {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             FavoriteConfigurationElement favorite = favorites[connectionName];
 
             if(ForceConsole) favorite.ConnectToConsole = true;
+            if(ForceNewWindow) favorite.NewWindow = true;
 
             if(favorite == null)
                 CreateNewTerminal(connectionName);
@@ -1309,12 +1315,12 @@ namespace Terminals {
                     string[] favlist = favs.Split(',');
                     foreach(string fav in favlist)
                     {
-                        Connect(fav, false);
+                        Connect(fav, false, false);
                     }
                 }
                 else
                 {
-                    Connect(favs, false);
+                    Connect(favs, false, false);
                 }
 
             }
@@ -2590,7 +2596,7 @@ namespace Terminals {
 
         MethodInvoker releaseMIV;
         private void OpenReleasePage() {
-            Connect(TerminalsReleasesFavoriteName, false);
+            Connect(TerminalsReleasesFavoriteName, false, false);
         }
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -2644,6 +2650,27 @@ namespace Terminals {
             LoadGroups();
             UpdateControls();
             LoadTags("");
+        }
+
+        public void OpenConnectionInNewWindow(Terminals.Connections.IConnection Connection) {
+            if(Connection != null) {
+                PopupTerminal pop = new PopupTerminal();
+                Terminals.Connections.IConnection conn = CurrentConnection;
+                tcTerminals.Items.SuspendEvents();
+                tcTerminals.RemoveTab(CurrentConnection.TerminalTabPage);
+                pop.AddTerminal(conn.TerminalTabPage);
+                //pop.Controls.Add(conn.TerminalTabPage);
+                //pop.WindowState = FormWindowState.Maximized;
+                //pop.FormBorderStyle = FormBorderStyle.None;
+                tcTerminals.Items.ResumeEvents();
+                pop.Show();
+                //conn.TerminalTabPage.Focus();
+            }
+        }
+        private void viewInNewWindowToolStripMenuItem_Click(object sender, EventArgs e) {
+            if(this.CurrentConnection != null) {
+                OpenConnectionInNewWindow(this.CurrentConnection);
+            }
         }
 
     }

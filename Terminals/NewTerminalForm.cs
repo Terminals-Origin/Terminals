@@ -120,6 +120,8 @@ namespace Terminals
             TelnetCursorColorTextBox.Text = favorite.TelnetCursorColor;
             TelnetTextColorTextBox.Text = favorite.TelnetTextColor;
 
+            this.NewWindowCheckbox.Checked = favorite.NewWindow;
+
             ProtocolComboBox.SelectedItem = favorite.Protocol;
             VMRCAdminModeCheckbox.Checked = favorite.VMRCAdministratorMode;
             TelnetRadioButton.Checked = favorite.Telnet;
@@ -231,6 +233,8 @@ namespace Terminals
                 favorite.TelnetFont = TelnetFontTextbox.Text;
                 favorite.TelnetCursorColor = TelnetCursorColorTextBox.Text;
                 favorite.TelnetTextColor = TelnetTextColorTextBox.Text;
+
+                favorite.NewWindow = this.NewWindowCheckbox.Checked;
 
                 favorite.TelnetBackColor = BackColorTextBox.Text;
                 favorite.Protocol = ProtocolComboBox.SelectedItem.ToString();

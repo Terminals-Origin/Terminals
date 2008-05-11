@@ -113,34 +113,7 @@ namespace Terminals
                 return (this.ParentForm as MainForm);
             }
         }
-        private void connectToolStripMenuItem_MouseUp(object sender, MouseEventArgs e) {
-            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-
-            ToolStripMenuItem menuItem = (sender as ToolStripMenuItem);
-            ConnectToMenuItem(menuItem, fav);
-        }
-        private bool ConnectToMenuItem(ToolStripMenuItem menuItem, FavoriteConfigurationElement fav) {
-            if(menuItem != null) {
-                if(menuItem.Text.StartsWith("Connect to All")) {
-                    if(System.Windows.Forms.MessageBox.Show("Are you sure you want to connect to all of these Terminals?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes) {
-                        foreach(TreeNode child in FavsTree.SelectedNode.Nodes) {
-                            fav = (child.Tag as FavoriteConfigurationElement);
-                            if(fav != null) {
-                                MainForm.Connect(fav.Name, false);
-                            }
-                        }
-                    }
-                    return true;
-                } else if(menuItem.Text.StartsWith("Connect to ")) {
-                    if(fav != null) {
-                        MainForm.Connect(fav.Name, false);
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
+       
         private void pingToolStripMenuItem_Click(object sender, EventArgs e) {
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if(fav!=null) MainForm.OpenNetworkingTools("Ping", fav.ServerName);
@@ -169,12 +142,12 @@ namespace Terminals
 
         private void FavsTree_DoubleClick(object sender, EventArgs e) {
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.Connect(fav.Name, false);
+            if(fav != null) MainForm.Connect(fav.Name, false, false);
         }
 
         private void connectConsoleToolStripMenuItem_Click(object sender, EventArgs e) {
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.Connect(fav.Name, true);
+            if(fav != null) MainForm.Connect(fav.Name, true, false);
         }
 
         private string ShutdownCommand
@@ -258,6 +231,30 @@ namespace Terminals
 
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if(fav != null) MainForm.Connect(fav.Name, false, false);
+
+        }
+
+        private void normallyToolStripMenuItem_Click(object sender, EventArgs e) {
+            connectToolStripMenuItem_Click(null, null);
+        }
+
+        private void forcedConsoleToolStripMenuItem_Click(object sender, EventArgs e) {
+            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if(fav != null) MainForm.Connect(fav.Name, true, false);
+
+        }
+
+        private void newWindowToolStripMenuItem_Click(object sender, EventArgs e) {
+            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if(fav != null) MainForm.Connect(fav.Name, true, true);
+
+        }
+
+        private void newWindowToolStripMenuItem1_Click(object sender, EventArgs e) {
+            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if(fav != null) MainForm.Connect(fav.Name, false, true);
 
         }
     }

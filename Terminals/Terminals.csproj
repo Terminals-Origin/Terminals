@@ -284,6 +284,12 @@
     <Compile Include="OfficeRender\Office2007BlueColorTable.cs" />
     <Compile Include="OfficeRender\Office2007Helpers.cs" />
     <Compile Include="OfficeRender\Office2007Renderer.cs" />
+    <Compile Include="PopupTerminal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PopupTerminal.Designer.cs">
+      <DependentUpon>PopupTerminal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Updates\HTTP.cs" />
     <Compile Include="Updates\RSS\Collections\ExceptionCollection.cs" />
     <Compile Include="Updates\RSS\Collections\RssCategoryCollection.cs" />
@@ -755,6 +761,9 @@
     <EmbeddedResource Include="Network\WMI\WMIServerCredentials.resx">
       <SubType>Designer</SubType>
       <DependentUpon>WMIServerCredentials.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PopupTerminal.resx">
+      <DependentUpon>PopupTerminal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\CommonOptions.resx">
       <DependentUpon>CommonOptions.cs</DependentUpon>

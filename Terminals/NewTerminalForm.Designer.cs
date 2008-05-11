@@ -187,6 +187,7 @@ namespace Terminals
         this.fontDialog1 = new System.Windows.Forms.FontDialog();
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
+        this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -1884,6 +1885,17 @@ namespace Terminals
         this.ras1.UserName = null;
         this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
         // 
+        // NewWindowCheckbox
+        // 
+        this.NewWindowCheckbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+        this.NewWindowCheckbox.AutoSize = true;
+        this.NewWindowCheckbox.Location = new System.Drawing.Point(109, 385);
+        this.NewWindowCheckbox.Name = "NewWindowCheckbox";
+        this.NewWindowCheckbox.Size = new System.Drawing.Size(128, 17);
+        this.NewWindowCheckbox.TabIndex = 11;
+        this.NewWindowCheckbox.Text = "&Open in New Window";
+        this.NewWindowCheckbox.UseVisualStyleBackColor = true;
+        // 
         // NewTerminalForm
         // 
         this.AcceptButton = this.btnOk;
@@ -1891,6 +1903,7 @@ namespace Terminals
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.CancelButton = this.btnCancel;
         this.ClientSize = new System.Drawing.Size(513, 416);
+        this.Controls.Add(this.NewWindowCheckbox);
         this.Controls.Add(this.chkAddtoToolbar);
         this.Controls.Add(this.tabControl1);
         this.Controls.Add(this.pictureBox1);
@@ -2118,5 +2131,6 @@ namespace Terminals
       private System.Windows.Forms.CheckBox ICAEnableEncryptionCheckbox;
       private System.Windows.Forms.TextBox NotesTextbox;
       private System.Windows.Forms.Label label36;
+      private System.Windows.Forms.CheckBox NewWindowCheckbox;
   }
 }
