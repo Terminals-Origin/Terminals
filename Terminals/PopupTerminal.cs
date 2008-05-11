@@ -15,9 +15,26 @@ namespace Terminals {
         private System.Windows.Forms.Timer timerHover;
         private System.Windows.Forms.Timer closeTimer;
 
+        private MainForm mainForm;
+        public MainForm MainForm {
+            get {
+                return mainForm;
+            }
+            set {
+                mainForm = value;
+            }
+        }
+
         public void AddTerminal(TerminalTabControlItem TabControlItem) {
+
+
+            
             this.tabControl1.AddTab(TabControlItem);
-            Terminals.Connections.Connection b = (TabControlItem.Connection as Terminals.Connections.Connection);            
+            
+            Terminals.Connections.Connection b = (TabControlItem.Connection as Terminals.Connections.Connection);
+            this.Text = TabControlItem.Connection.Favorite.Name;
+
+
         }
 
         void timerHover_Tick(object sender, EventArgs e) {
@@ -29,7 +46,9 @@ namespace Terminals {
 
 
         private void tabControl1_TabControlItemClosing(TabControl.TabControlItemClosingEventArgs e) {
-            if(this.tabControl1.Items.Count <= 1) this.Close();
+            if(this.tabControl1.Items.Count <= 1) {
+                this.Close();
+            }
         }
 
 
@@ -82,16 +101,32 @@ namespace Terminals {
         object synLock = new object();
         void closeTimer_Tick(object sender, EventArgs e) {
             lock(synLock) {
+                closeTimer.Enabled = false;
                 System.Collections.Generic.List<TabControl.TabControlItem> removeableTabs = new List<TabControl.TabControlItem>();
                 foreach(TabControl.TabControlItem tab in this.tabControl1.Items) {
-                    if(!(tab.Controls[0] as Terminals.Connections.IConnection).Connected) {
-                        removeableTabs.Add(tab);
+                    if(tab.Controls.Count > 0) {
+                        if(!(tab.Controls[0] as Terminals.Connections.IConnection).Connected) {
+                            removeableTabs.Add(tab);
+                        }
                     }
                 }
                 foreach(TabControl.TabControlItem tab in removeableTabs) {
                     tabControl1.CloseTab(tab);
                     tab.Dispose();
                 }
+                closeTimer.Enabled = true;
+            }
+        }
+
+        private void tabControl1_MouseDown(object sender, MouseEventArgs e) {            
+            
+        }
+
+        private void attachToTerminalsToolStripMenuItem_Click(object sender, EventArgs e) {
+            if(mainForm != null && this.tabControl1.SelectedItem!=null) {
+                mainForm.AddTerminal((TerminalTabControlItem) this.tabControl1.SelectedItem);
+                //this.tabControl1.RemoveTab(this.tabControl1.SelectedItem);
+                this.tabControl1.CloseTab(this.tabControl1.SelectedItem);
             }
         }
     }

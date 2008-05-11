@@ -2659,6 +2659,7 @@ namespace Terminals {
                 tcTerminals.Items.SuspendEvents();
                 tcTerminals.RemoveTab(CurrentConnection.TerminalTabPage);
                 pop.AddTerminal(conn.TerminalTabPage);
+                pop.MainForm = this;
                 //pop.Controls.Add(conn.TerminalTabPage);
                 //pop.WindowState = FormWindowState.Maximized;
                 //pop.FormBorderStyle = FormBorderStyle.None;
@@ -2671,6 +2672,9 @@ namespace Terminals {
             if(this.CurrentConnection != null) {
                 OpenConnectionInNewWindow(this.CurrentConnection);
             }
+        }
+        public void AddTerminal(TerminalTabControlItem TabControlItem) {
+            this.tcTerminals.AddTab(TabControlItem);
         }
 
     }
