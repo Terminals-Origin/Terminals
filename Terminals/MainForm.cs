@@ -1570,8 +1570,9 @@ namespace Terminals {
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutForm frmAbout = new AboutForm();
-            frmAbout.ShowDialog();
+            using(AboutForm frmAbout = new AboutForm()) {
+                frmAbout.ShowDialog();
+            }
         }
 
         private TabControlItem currentToolTipItem = null;
