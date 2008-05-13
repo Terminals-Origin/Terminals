@@ -85,12 +85,6 @@
     <Compile Include="TabControlItemDesigner.cs" />
     <Compile Include="TabControlMenuGlyph.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="TabControlItem.resx">
-      <DependentUpon>TabControlItem.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

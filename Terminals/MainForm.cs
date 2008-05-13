@@ -2642,7 +2642,7 @@ namespace Terminals {
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("mmc.exe", "compmgmt.msc");
+            System.Diagnostics.Process.Start("mmc.exe", "compmgmt.msc /a /computer=Local");
         }
 
         private void rebuildTagsIndexToolStripMenuItem_Click(object sender, EventArgs e)

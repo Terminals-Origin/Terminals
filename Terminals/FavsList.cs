@@ -234,5 +234,15 @@ namespace Terminals {
         private void newWindowToolStripMenuItem2_Click(object sender, EventArgs e) {
             Connect(FavsTree.SelectedNode, true, true, true);
         }
+
+        private void computerManagementMMCToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if(fav != null)
+            {
+                System.Diagnostics.Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + fav.ServerName);
+            }
+            
+        }
     }
 }
