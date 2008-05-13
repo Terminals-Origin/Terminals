@@ -45,12 +45,13 @@
             this.traceRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tSAdminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.computerManagementMMCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.rebootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shutdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.enableRDPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.computerManagementMMCToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,15 +77,16 @@
             this.dNSToolStripMenuItem,
             this.traceRouteToolStripMenuItem,
             this.tSAdminToolStripMenuItem,
-            this.propertiesToolStripMenuItem,
-            this.computerManagementMMCToolStripMenuItem,
             this.toolStripMenuItem1,
             this.rebootToolStripMenuItem,
             this.shutdownToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.computerManagementMMCToolStripMenuItem,
+            this.enableRDPToolStripMenuItem,
             this.toolStripMenuItem3,
-            this.enableRDPToolStripMenuItem});
+            this.propertiesToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(232, 286);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(232, 292);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // connectToolStripMenuItem
@@ -195,6 +197,13 @@
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
+            // computerManagementMMCToolStripMenuItem
+            // 
+            this.computerManagementMMCToolStripMenuItem.Name = "computerManagementMMCToolStripMenuItem";
+            this.computerManagementMMCToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
+            this.computerManagementMMCToolStripMenuItem.Text = "Computer Management (MMC)";
+            this.computerManagementMMCToolStripMenuItem.Click += new System.EventHandler(this.computerManagementMMCToolStripMenuItem_Click);
+            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -226,12 +235,10 @@
             this.enableRDPToolStripMenuItem.Text = "Enable RDP";
             this.enableRDPToolStripMenuItem.Click += new System.EventHandler(this.enableRDPToolStripMenuItem_Click);
             // 
-            // computerManagementMMCToolStripMenuItem
+            // toolStripMenuItem4
             // 
-            this.computerManagementMMCToolStripMenuItem.Name = "computerManagementMMCToolStripMenuItem";
-            this.computerManagementMMCToolStripMenuItem.Size = new System.Drawing.Size(231, 22);
-            this.computerManagementMMCToolStripMenuItem.Text = "Computer Management (MMC)";
-            this.computerManagementMMCToolStripMenuItem.Click += new System.EventHandler(this.computerManagementMMCToolStripMenuItem_Click);
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(228, 6);
             // 
             // FavsList
             // 
@@ -269,5 +276,6 @@
         private System.Windows.Forms.ToolStripMenuItem newWindowToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem newWindowToolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem computerManagementMMCToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
     }
 }
