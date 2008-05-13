@@ -173,46 +173,39 @@ namespace Terminals
         {
             LoadConnections();
         }
-
-        private void ImportButton_Click(object sender, EventArgs e)
-        {
+        private void ImportFromFile() {
             bool needsReload = false;
-            if(ImportOpenFileDialog.ShowDialog() == DialogResult.OK)
-            {
+            if(ImportOpenFileDialog.ShowDialog() == DialogResult.OK) {
                 string filename = ImportOpenFileDialog.FileName;
                 Integration.Integration i = new Terminals.Integration.Integration();
-                
+
                 FavoriteConfigurationElementCollection coll = i.ImportFavorites(filename);
-                if(coll != null)
-                {
+                if(coll != null) {
                     needsReload = true;
-                    foreach(FavoriteConfigurationElement fav in coll)
-                    {
+                    foreach(FavoriteConfigurationElement fav in coll) {
                         Settings.AddFavorite(fav, false);
                     }
                 }
             }
             if(needsReload) LoadConnections();
         }
-
-        private void button1_Click(object sender, EventArgs e) {
-
-            Network.ImportFromAD ad = new Terminals.Network.ImportFromAD();
-            ad.ShowDialog();
-        }
-
+ 
         private void lvConnections_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
         NetworkScanner ns = new NetworkScanner();
 
-        private void DetectButton_Click(object sender, EventArgs e)
-        {
+
+        private void activeDirectoryToolStripMenuItem_Click(object sender, EventArgs e) {
+            Network.ImportFromAD ad = new Terminals.Network.ImportFromAD();
+            ad.ShowDialog();
+        }
+
+        private void networkDetectionToolStripMenuItem_Click(object sender, EventArgs e) {
 
             DialogResult result = ns.ShowDialog();
-            if(result == DialogResult.OK)
-            {
+            if(result == DialogResult.OK) {
                 //LoadMRUs();
                 //if(ns.SelectedScanItem != null)
                 //{
@@ -231,5 +224,25 @@ namespace Terminals
                 //}
             }
         }
+
+        private void muRDToolStripMenuItem_Click(object sender, EventArgs e) {
+            ImportFromFile();
+        }
+
+        private void rDPToolStripMenuItem_Click(object sender, EventArgs e) {
+            ImportFromFile();
+        }
+
+        private void vRDBackupFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            ImportFromFile();
+        }
+
+        private void ImportButton_Click(object sender, EventArgs e) {
+            MouseEventArgs mouse = (e as MouseEventArgs);
+            if(mouse != null) {
+                contextMenuStrip1.Show(ImportButton, new Point(mouse.X, mouse.Y));
+            }
+        }
+
     }
 }

@@ -237,6 +237,8 @@
     <Compile Include="FavsList.Designer.cs">
       <DependentUpon>FavsList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Integration\Import\ImportvRD.cs" />
+    <Compile Include="Integration\Import\vrd.cs" />
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Network\ActiveDirectoryClient.cs" />
     <Compile Include="Network\ActiveDirectoryComputer.cs" />

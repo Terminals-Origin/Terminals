@@ -28,6 +28,7 @@ namespace Terminals
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrganizeFavoritesForm));
             this.lvConnections = new System.Windows.Forms.ListView();
             this.colName = new System.Windows.Forms.ColumnHeader();
@@ -45,9 +46,14 @@ namespace Terminals
             this.label1 = new System.Windows.Forms.Label();
             this.btnNew = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.activeDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.networkDetectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.muRDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rDPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.vRDBackupFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.button1 = new System.Windows.Forms.Button();
-            this.DetectButton = new System.Windows.Forms.Button();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // lvConnections
@@ -190,6 +196,7 @@ namespace Terminals
             // ImportButton
             // 
             this.ImportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ImportButton.ContextMenuStrip = this.contextMenuStrip1;
             this.ImportButton.Location = new System.Drawing.Point(613, 175);
             this.ImportButton.Name = "ImportButton";
             this.ImportButton.Size = new System.Drawing.Size(106, 23);
@@ -198,27 +205,51 @@ namespace Terminals
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
-            // button1
+            // contextMenuStrip1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(613, 204);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(106, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "&Active Directory...";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.activeDirectoryToolStripMenuItem,
+            this.networkDetectionToolStripMenuItem,
+            this.muRDToolStripMenuItem,
+            this.rDPToolStripMenuItem,
+            this.vRDBackupFileToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(175, 114);
             // 
-            // DetectButton
+            // activeDirectoryToolStripMenuItem
             // 
-            this.DetectButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DetectButton.Location = new System.Drawing.Point(613, 233);
-            this.DetectButton.Name = "DetectButton";
-            this.DetectButton.Size = new System.Drawing.Size(106, 23);
-            this.DetectButton.TabIndex = 16;
-            this.DetectButton.Text = "Network Detect...";
-            this.DetectButton.UseVisualStyleBackColor = true;
-            this.DetectButton.Click += new System.EventHandler(this.DetectButton_Click);
+            this.activeDirectoryToolStripMenuItem.Name = "activeDirectoryToolStripMenuItem";
+            this.activeDirectoryToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.activeDirectoryToolStripMenuItem.Text = "Active Directory";
+            this.activeDirectoryToolStripMenuItem.Click += new System.EventHandler(this.activeDirectoryToolStripMenuItem_Click);
+            // 
+            // networkDetectionToolStripMenuItem
+            // 
+            this.networkDetectionToolStripMenuItem.Name = "networkDetectionToolStripMenuItem";
+            this.networkDetectionToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.networkDetectionToolStripMenuItem.Text = "Network Detection";
+            this.networkDetectionToolStripMenuItem.Click += new System.EventHandler(this.networkDetectionToolStripMenuItem_Click);
+            // 
+            // muRDToolStripMenuItem
+            // 
+            this.muRDToolStripMenuItem.Name = "muRDToolStripMenuItem";
+            this.muRDToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.muRDToolStripMenuItem.Text = "MuRD File";
+            this.muRDToolStripMenuItem.Click += new System.EventHandler(this.muRDToolStripMenuItem_Click);
+            // 
+            // rDPToolStripMenuItem
+            // 
+            this.rDPToolStripMenuItem.Name = "rDPToolStripMenuItem";
+            this.rDPToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.rDPToolStripMenuItem.Text = "RDP File";
+            this.rDPToolStripMenuItem.Click += new System.EventHandler(this.rDPToolStripMenuItem_Click);
+            // 
+            // vRDBackupFileToolStripMenuItem
+            // 
+            this.vRDBackupFileToolStripMenuItem.Name = "vRDBackupFileToolStripMenuItem";
+            this.vRDBackupFileToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.vRDBackupFileToolStripMenuItem.Text = "vRD Backup File";
+            this.vRDBackupFileToolStripMenuItem.Click += new System.EventHandler(this.vRDBackupFileToolStripMenuItem_Click);
             // 
             // OrganizeFavoritesForm
             // 
@@ -227,8 +258,6 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(726, 315);
-            this.Controls.Add(this.DetectButton);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.ImportButton);
             this.Controls.Add(this.btnNew);
             this.Controls.Add(this.label1);
@@ -251,6 +280,7 @@ namespace Terminals
             this.Shown += new System.EventHandler(this.OrganizeFavoritesForm_Shown);
             this.Activated += new System.EventHandler(this.OrganizeFavoritesForm_Activated);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionManager_KeyDown);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -275,7 +305,11 @@ namespace Terminals
         private System.Windows.Forms.OpenFileDialog ImportOpenFileDialog;
         private System.Windows.Forms.ColumnHeader colTags;
         private System.Windows.Forms.ColumnHeader colNotes;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button DetectButton;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem activeDirectoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem networkDetectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem muRDToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rDPToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem vRDBackupFileToolStripMenuItem;
     }
 }
