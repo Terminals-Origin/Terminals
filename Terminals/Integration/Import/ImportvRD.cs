@@ -26,14 +26,62 @@ namespace Terminals.Integration.Import {
                     if(sw.Position > 0 & sw.CanSeek) sw.Seek(0, SeekOrigin.Begin);
                     System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(typeof(vRdImport.vRDConfigurationFile));
                     object results = x.Deserialize(sw);
+
+                    List<vRdImport.Connection> connections = new List<vRdImport.Connection>();
+                    List<vRdImport.vRDConfigurationFileConnectionsFolder> folders = new List<vRdImport.vRDConfigurationFileConnectionsFolder>();
+                    Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials = new Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials>();
+
                     if(results != null) {
                         vRdImport.vRDConfigurationFile config = (results as vRdImport.vRDConfigurationFile);
+                        if(config != null) {
+                            //scan in all credentials into a dictionary
+                            foreach(object item in config.Items) {
+                                if(item is vRdImport.vRDConfigurationFileCredentialsFolder) {
+                                    vRdImport.vRDConfigurationFileCredentialsFolder credentialFolder = (item as vRdImport.vRDConfigurationFileCredentialsFolder);
+                                    if(credentialFolder != null) {
+                                        foreach(vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred in credentialFolder.Credentials) {
+                                            credentials.Add(cred.Guid, cred);
+                                        }
+                                    }
+                                }
+                                if(item is vRdImport.vRDConfigurationFileCredentialsFolderCredentials) {
+                                    vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred = (item as vRdImport.vRDConfigurationFileCredentialsFolderCredentials);
+                                    credentials.Add(cred.Guid, cred);
+                                }
 
+                            }
+
+                            //scan in the connections, and recurse folders
+                            foreach(object item in config.Items) {
+                                if(item is vRdImport.Connection) {
+                                    vRdImport.Connection connection = (item as vRdImport.Connection);
+                                    if(connection != null) {
+                                        connections.Add(connection);
+                                    }
+                                } else if(item is vRdImport.vRDConfigurationFileConnectionsFolder) {
+                                    vRdImport.vRDConfigurationFileConnectionsFolder folder = (item as vRdImport.vRDConfigurationFileConnectionsFolder);
+                                    if(folder != null) {
+                                        folders.Add(folder);
+                                    }
+                                }
+                            }
+                        }
                     }
+                    string f = "";
                 }
             }
 
             return fav;
+        }
+        private void ImportConnection(vRdImport.Connection Connection, List<string> FolderNames, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> Credentials) {
+        }
+        private void ImportFolder(vRdImport.vRDConfigurationFileConnectionsFolder Folder, List<string> FolderNames, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> Credentials) {            
+            foreach(vRdImport.Connection conn in Folder.Connection) {
+                ImportConnection(conn, FolderNames, Credentials);
+            }
+            foreach(vRdImport.vRDConfigurationFileConnectionsFolderFolder folder in Folder.Folder) {
+                FolderNames.Add(folder.Name);
+            }
         }
 
         public string KnownExtension {
