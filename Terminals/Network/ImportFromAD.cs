@@ -21,11 +21,11 @@ namespace Terminals.Network
             this.progressBar1.Visible = false;
             if(Settings.DefaultDomain != null && Settings.DefaultDomain != "")
             {
-                this.domainTextbox.Text = Settings.ToTitleCase(Settings.DefaultDomain);
+                this.domainTextbox.Text = Settings.DefaultDomain;
             }
             else
             {
-                this.domainTextbox.Text = Settings.ToTitleCase(System.Environment.UserDomainName);
+                this.domainTextbox.Text = System.Environment.UserDomainName;
             }
         }
         MethodInvoker listComplete;
@@ -35,7 +35,7 @@ namespace Terminals.Network
             this.progressBar1.Visible = true;
             Network.ActiveDirectoryClient adClient = new ActiveDirectoryClient();
             adClient.OnListComputersDoneDelegate += new ActiveDirectoryClient.ListComputersDoneDelegate(adClient_OnListComputersDoneDelegate);
-            adClient.ListComputers(Settings.ToTitleCase(this.domainTextbox.Text));
+            adClient.ListComputers(this.domainTextbox.Text);
         }
         private void UpdateComputerList()
         {

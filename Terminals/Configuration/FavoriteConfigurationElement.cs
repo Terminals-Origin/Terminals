@@ -474,7 +474,7 @@ namespace Terminals
             }
             set
             {
-                this["domainName"] = Settings.ToTitleCase(value);
+                this["domainName"] = value;
             }
         }
 
