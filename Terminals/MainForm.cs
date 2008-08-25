@@ -1424,11 +1424,6 @@ namespace Terminals {
             }
         }
 
-        private void Minimize(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
-        }
-
         private void MainForm_Activated(object sender, EventArgs e)
         {
             //put in a check to see if terminals is off the viewing area
@@ -1922,28 +1917,46 @@ namespace Terminals {
             //connectToolStripMenuItem1.Enabled = lvFavorites.SelectedItems.Count > 0;
         }
         private void MainForm_Resize(object sender, EventArgs e)
-        {
-            if(this.WindowState == FormWindowState.Minimized) //{
-                if(Settings.MinimizeToTray) this.Visible = false;
+        {            
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                if (Settings.MinimizeToTray) this.Visible = false;
+            }
+            else
+            {
+                originalFormWindowState = this.WindowState;
+            }
+        }
 
+        FormWindowState originalFormWindowState;
+        private void Minimize(object sender, EventArgs e)
+        {
+            originalFormWindowState = this.WindowState;
+            this.WindowState = FormWindowState.Minimized;
         }
 
         private void MainWindowNotifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             if(e.Button == MouseButtons.Left)
-            {
+            {                
                 if(Settings.MinimizeToTray)
                 {
                     this.Visible = !this.Visible;
-                    if(this.Visible && this.WindowState == FormWindowState.Minimized) this.WindowState = FormWindowState.Normal;
+                    if(this.Visible && this.WindowState == FormWindowState.Minimized)
+                        this.WindowState = originalFormWindowState;
 
                 }
                 else
                 {
-                    if(this.WindowState == FormWindowState.Normal)
+                    if (this.WindowState == FormWindowState.Normal)
+                    {
+                        originalFormWindowState = this.WindowState;
                         this.WindowState = FormWindowState.Minimized;
+                    }
                     else
-                        this.WindowState = FormWindowState.Normal;
+                    {
+                        this.WindowState = originalFormWindowState;
+                    }
                 }
             }
         }
