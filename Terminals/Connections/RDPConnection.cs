@@ -233,7 +233,13 @@ namespace Terminals.Connections
                 axMsRdpClient2.AdvancedSettings3.RDPPort = Favorite.Port;
                 axMsRdpClient2.AdvancedSettings3.ContainerHandledFullScreen = -1;
                 axMsRdpClient2.AdvancedSettings3.DisplayConnectionBar = Favorite.DisplayConnectionBar;
-                axMsRdpClient2.AdvancedSettings3.ConnectToServerConsole = Favorite.ConnectToConsole;
+
+                // Use ConnectToServerConsole or ConnectToAdministerServer based on implementation
+                if (axMsRdpClient2.AdvancedSettings3 is MSTSCLib6.IMsRdpClientAdvancedSettings6)
+                    ((MSTSCLib6.IMsRdpClientAdvancedSettings6)axMsRdpClient2.AdvancedSettings3).ConnectToAdministerServer = Favorite.ConnectToConsole;
+                else
+                    axMsRdpClient2.AdvancedSettings3.ConnectToServerConsole = Favorite.ConnectToConsole;
+
                 axMsRdpClient2.OnRequestGoFullScreen += new EventHandler(axMsTscAx_OnRequestGoFullScreen);
                 axMsRdpClient2.OnRequestLeaveFullScreen += new EventHandler(axMsTscAx_OnRequestLeaveFullScreen);
                 axMsRdpClient2.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(axMsTscAx_OnDisconnected);

@@ -109,9 +109,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Interops\Interop.MSTSCLib.dll</HintPath>
     </Reference>
-    <Reference Include="Interop.MSTSCLib6, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Interop.MSTSCLib61, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Interops\Interop.MSTSCLib6.dll</HintPath>
+      <HintPath>Interops\Interop.MSTSCLib61.dll</HintPath>
     </Reference>
     <Reference Include="Interop.VMRCClientControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
