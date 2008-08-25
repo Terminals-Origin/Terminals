@@ -30,8 +30,8 @@ using log4net;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.6.0.0")]
-[assembly: AssemblyFileVersion("1.6.0.0")]
+[assembly: AssemblyVersion("1.7.0.0")]
+[assembly: AssemblyFileVersion("1.7.0.0")]
 
 [assembly: log4net.Config.DOMConfigurator (
 ConfigFile = "Terminals.log4net.config", Watch = true)]

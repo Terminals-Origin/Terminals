@@ -126,6 +126,7 @@ Special Thanks To:
 The CodePlex Team
 Sardaan Frostreaver for Telnet/SSH Connection
 Dustin Coates (DemonBob) for the ICA Citrix bits
+nitzmahone for the Vista/2K8 Console/Admin Patch
 </value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />

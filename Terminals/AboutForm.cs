@@ -13,7 +13,7 @@ namespace Terminals
     {
         public AboutForm()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         private void lblTerminals_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -52,7 +52,7 @@ namespace Terminals
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
-            this.lblVersion.Text = string.Format("Terminals {0} (RDP, VNC, VMRC, RAS, ICA Citrix, Telnet and SSH Supported)", Program.TerminalsVersion); ;
+            lblVersion.Text = Program.AboutText;
             this.textBox1.Text = this.textBox1.Text + "\r\nConfig File:\r\n" + MainForm.ConfigurationFileLocation;
         }
     }

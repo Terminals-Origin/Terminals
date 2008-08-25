@@ -1179,7 +1179,7 @@ namespace Terminals {
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.Text = "Terminals 1.6 (RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix)";
+            this.Text = "Terminals (RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix)";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.Activated += new System.EventHandler(this.MainForm_Activated);

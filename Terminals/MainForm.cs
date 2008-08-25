@@ -33,8 +33,7 @@ namespace Terminals {
         private ImageFormatHandler imageFormatHandler;
         /*private ScreenCapture screenCapture;
         private PictureBox previewPictureBox;*/
-
-        string defaultText = "";
+        
         public MainForm()
         {
             try
@@ -91,8 +90,6 @@ namespace Terminals {
                 else
                     MainMenuStrip.GripStyle = ToolStripGripStyle.Visible;
 
-                defaultText = this.Text;
-
                 //be sure to turn off the visual studio hosting process for this to work
                 //right click the Terminals project, debug, bottom checkbox
                 //try {
@@ -101,6 +98,7 @@ namespace Terminals {
                 //} catch(Exception exc) {
                 //    Terminals.Logging.Log.Info("Failed to set keyboard hook for global event handling.", exc);
                 //}
+                
             }
             catch(Exception exc)
             {
@@ -462,6 +460,8 @@ namespace Terminals {
         }
         public void LoadWindowState()
         {
+            this.Text = Program.AboutText;
+
             HideShowFavoritesPanel(Settings.EnableFavoritesPanel);
 
             //ToolStripManager.LoadSettings(this);
@@ -1248,7 +1248,7 @@ namespace Terminals {
                 {
                     if(CurrentTerminal != null) CurrentTerminal.Disconnect();
                     if(CurrentConnection != null) CurrentConnection.Disconnect();
-                    this.Text = defaultText;
+                    this.Text = Program.AboutText;
                     e.Cancel = false;
                 }
                 else
@@ -1389,7 +1389,7 @@ namespace Terminals {
 
         public void tcTerminals_TabControlItemClosed(object sender, EventArgs e)
         {
-            this.Text = defaultText;
+            this.Text = Program.AboutText;
             if(tcTerminals.Items.Count == 0)
                 FullScreen = false;
         }

@@ -66,7 +66,7 @@ namespace Terminals
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.BackColor = System.Drawing.SystemColors.Control;
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(174, 382);
+            this.btnClose.Location = new System.Drawing.Point(174, 399);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(80, 26);
             this.btnClose.TabIndex = 0;
@@ -100,7 +100,7 @@ namespace Terminals
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(380, 13);
             this.lblVersion.TabIndex = 9;
-            this.lblVersion.Text = "Terminals 1.6  (RDP, VNC, VMRC, RAS, ICA Citrix, Telnet and SSH Supported)";
+            this.lblVersion.Text = "Terminals (RDP, VNC, VMRC, RAS, ICA Citrix, Telnet and SSH Supported)";
             // 
             // linkLabel4
             // 
@@ -123,7 +123,7 @@ namespace Terminals
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(405, 126);
+            this.textBox1.Size = new System.Drawing.Size(405, 143);
             this.textBox1.TabIndex = 11;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
@@ -144,7 +144,7 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(433, 419);
+            this.ClientSize = new System.Drawing.Size(433, 436);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.linkLabel4);
