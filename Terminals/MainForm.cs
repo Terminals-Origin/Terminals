@@ -76,7 +76,7 @@ namespace Terminals {
                 tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
                 SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
-                System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
+                //System.Net.NetworkInformation.NetworkChange.NetworkAvailabilityChanged += new System.Net.NetworkInformation.NetworkAvailabilityChangedEventHandler(NetworkChange_NetworkAvailabilityChanged);
 
                 LoadWindowState();
 
@@ -305,14 +305,14 @@ namespace Terminals {
 
         }
 
-        void NetworkChange_NetworkAvailabilityChanged(object sender, System.Net.NetworkInformation.NetworkAvailabilityEventArgs e)
-        {
-            MainWindowNotifyIcon.BalloonTipText = (e.IsAvailable ? "Connected" : "Not Connected");
-            MainWindowNotifyIcon.BalloonTipTitle = "Network Availability Changed";
-            MainWindowNotifyIcon.BalloonTipIcon = ToolTipIcon.Warning;
-            MainWindowNotifyIcon.ShowBalloonTip(5000);
+        //void NetworkChange_NetworkAvailabilityChanged(object sender, System.Net.NetworkInformation.NetworkAvailabilityEventArgs e)
+        //{
+        //    MainWindowNotifyIcon.BalloonTipText = (e.IsAvailable ? "Connected" : "Not Connected");
+        //    MainWindowNotifyIcon.BalloonTipTitle = "Network Availability Changed";
+        //    MainWindowNotifyIcon.BalloonTipIcon = ToolTipIcon.Warning;
+        //    MainWindowNotifyIcon.ShowBalloonTip(5000);
 
-        }
+        //}
 
         void SingleInstanceApplication_NewInstanceMessage(object sender, object message)
         {
