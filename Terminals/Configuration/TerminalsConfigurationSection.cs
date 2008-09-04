@@ -352,6 +352,80 @@ namespace Terminals
 
 
 
+
+
+        [ConfigurationProperty("encryptedAmazonAccessKey", IsRequired = false)]
+        public string EncryptedAmazonAccessKey
+        {
+            get
+            {
+                return (string)this["encryptedAmazonAccessKey"];
+            }
+            set
+            {
+                this["encryptedAmazonAccessKey"] = value;
+            }
+        }
+
+        public string AmazonAccessKey
+        {
+            get
+            {
+                return Functions.DecryptPassword(EncryptedAmazonAccessKey);
+            }
+            set
+            {
+                EncryptedAmazonAccessKey = Functions.EncryptPassword(value);
+            }
+        }
+
+
+        [ConfigurationProperty("encryptedAmazonSecretKey", IsRequired = false)]
+        public string EncryptedAmazonSecretKey
+        {
+            get
+            {
+                return (string)this["encryptedAmazonSecretKey"];
+            }
+            set
+            {
+                this["encryptedAmazonSecretKey"] = value;
+            }
+        }
+
+        public string AmazonSecretKey
+        {
+            get
+            {
+                return Functions.DecryptPassword(EncryptedAmazonSecretKey);
+            }
+            set
+            {
+                EncryptedAmazonSecretKey = Functions.EncryptPassword(value);
+            }
+        }
+
+
+
+
+
+
+
+        [ConfigurationProperty("useAmazon")]
+        public bool UseAmazon
+        {
+            get
+            {
+                return (bool)this["useAmazon"];
+            }
+            set
+            {
+                this["useAmazon"] = value;
+            }
+        }
+
+
+
         [ConfigurationProperty("useProxy")]
         public bool UseProxy {
             get {

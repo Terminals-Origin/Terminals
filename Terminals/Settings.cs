@@ -706,6 +706,54 @@ namespace Terminals
                 configuration.Save();
             }
         }
+
+
+
+
+        public static bool UseAmazon
+        {
+            get
+            {
+                return GetSection().UseAmazon;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).UseAmazon = value;
+                configuration.Save();
+            }
+        }
+
+        public static string AmazonAccessKey
+        {
+            get
+            {
+                return GetSection().AmazonAccessKey;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).AmazonAccessKey = value;
+                configuration.Save();
+            }
+        }
+        public static string AmazonSecretKey
+        {
+            get
+            {
+                return GetSection().AmazonSecretKey;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).AmazonSecretKey = value;
+                configuration.Save();
+            }
+        }
+
+
+
+
         public static string FlickrToken {
             get {
                 return GetSection().FlickrToken;

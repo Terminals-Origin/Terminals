@@ -47,13 +47,17 @@ namespace Terminals
             this.AuthorizeFlickrButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.passwordTabPage = new System.Windows.Forms.TabPage();
+            this.PasswordProtectTerminalsCheckbox = new System.Windows.Forms.CheckBox();
             this.ClearMasterButton = new System.Windows.Forms.Button();
+            this.PasswordTextbox = new System.Windows.Forms.TextBox();
             this.PasswordsMatchLabel = new System.Windows.Forms.Label();
+            this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
-            this.PasswordTextbox = new System.Windows.Forms.TextBox();
-            this.PasswordProtectTerminalsCheckbox = new System.Windows.Forms.CheckBox();
+            this.AmazonTabPage = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tpExecuteBeforeConnect = new System.Windows.Forms.TabPage();
             this.txtInitialDirectory = new System.Windows.Forms.TextBox();
             this.txtArguments = new System.Windows.Forms.TextBox();
@@ -84,27 +88,41 @@ namespace Terminals
             this.chkShowInformationToolTips = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.MoreOptionsTabPage = new System.Windows.Forms.TabPage();
+            this.FavSortGroupBox = new System.Windows.Forms.GroupBox();
+            this.NoneRadioButton = new System.Windows.Forms.RadioButton();
+            this.ProtocolRadionButton = new System.Windows.Forms.RadioButton();
+            this.ConnectionNameRadioButton = new System.Windows.Forms.RadioButton();
+            this.ServerNameRadio = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.RenderBlackRadio = new System.Windows.Forms.RadioButton();
             this.RenderBlueRadio = new System.Windows.Forms.RadioButton();
             this.RenderNormalRadio = new System.Windows.Forms.RadioButton();
             this.EnableFavoritesPanel = new System.Windows.Forms.CheckBox();
             this.EnableGroupsMenu = new System.Windows.Forms.CheckBox();
-            this.FavSortGroupBox = new System.Windows.Forms.GroupBox();
-            this.ServerNameRadio = new System.Windows.Forms.RadioButton();
-            this.ConnectionNameRadioButton = new System.Windows.Forms.RadioButton();
-            this.ProtocolRadionButton = new System.Windows.Forms.RadioButton();
-            this.NoneRadioButton = new System.Windows.Forms.RadioButton();
+            this.serviceController1 = new System.ServiceProcess.ServiceController();
+            this.AmazonBackupCheckbox = new System.Windows.Forms.CheckBox();
+            this.AccessKeyTextbox = new System.Windows.Forms.TextBox();
+            this.SecretKeyTextbox = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.TestButton = new System.Windows.Forms.Button();
+            this.ErrorLabel = new System.Windows.Forms.Label();
+            this.BackupButton = new System.Windows.Forms.Button();
+            this.RestoreButton = new System.Windows.Forms.Button();
             this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabControl2.SuspendLayout();
+            this.passwordTabPage.SuspendLayout();
+            this.AmazonTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tpExecuteBeforeConnect.SuspendLayout();
             this.tpGeneral.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.MoreOptionsTabPage.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.FavSortGroupBox.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOk
@@ -302,13 +320,7 @@ namespace Terminals
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.ClearMasterButton);
-            this.tabPage1.Controls.Add(this.PasswordsMatchLabel);
-            this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.ConfirmPasswordTextBox);
-            this.tabPage1.Controls.Add(this.PasswordTextbox);
-            this.tabPage1.Controls.Add(this.PasswordProtectTerminalsCheckbox);
+            this.tabPage1.Controls.Add(this.tabControl2);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Size = new System.Drawing.Size(392, 264);
@@ -316,9 +328,48 @@ namespace Terminals
             this.tabPage1.Text = "Security";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tabControl2
+            // 
+            this.tabControl2.Controls.Add(this.passwordTabPage);
+            this.tabControl2.Controls.Add(this.AmazonTabPage);
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(392, 264);
+            this.tabControl2.TabIndex = 7;
+            // 
+            // passwordTabPage
+            // 
+            this.passwordTabPage.Controls.Add(this.PasswordProtectTerminalsCheckbox);
+            this.passwordTabPage.Controls.Add(this.ClearMasterButton);
+            this.passwordTabPage.Controls.Add(this.PasswordTextbox);
+            this.passwordTabPage.Controls.Add(this.PasswordsMatchLabel);
+            this.passwordTabPage.Controls.Add(this.ConfirmPasswordTextBox);
+            this.passwordTabPage.Controls.Add(this.label7);
+            this.passwordTabPage.Controls.Add(this.label6);
+            this.passwordTabPage.Location = new System.Drawing.Point(4, 22);
+            this.passwordTabPage.Name = "passwordTabPage";
+            this.passwordTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.passwordTabPage.Size = new System.Drawing.Size(384, 238);
+            this.passwordTabPage.TabIndex = 0;
+            this.passwordTabPage.Text = "Password";
+            this.passwordTabPage.UseVisualStyleBackColor = true;
+            // 
+            // PasswordProtectTerminalsCheckbox
+            // 
+            this.PasswordProtectTerminalsCheckbox.AutoSize = true;
+            this.PasswordProtectTerminalsCheckbox.Location = new System.Drawing.Point(15, 16);
+            this.PasswordProtectTerminalsCheckbox.Name = "PasswordProtectTerminalsCheckbox";
+            this.PasswordProtectTerminalsCheckbox.Size = new System.Drawing.Size(110, 17);
+            this.PasswordProtectTerminalsCheckbox.TabIndex = 0;
+            this.PasswordProtectTerminalsCheckbox.Text = "Password Protect";
+            this.PasswordProtectTerminalsCheckbox.UseVisualStyleBackColor = true;
+            this.PasswordProtectTerminalsCheckbox.CheckedChanged += new System.EventHandler(this.PasswordProtectTerminalsCheckbox_CheckedChanged);
+            // 
             // ClearMasterButton
             // 
-            this.ClearMasterButton.Location = new System.Drawing.Point(81, 93);
+            this.ClearMasterButton.Location = new System.Drawing.Point(82, 94);
             this.ClearMasterButton.Name = "ClearMasterButton";
             this.ClearMasterButton.Size = new System.Drawing.Size(138, 23);
             this.ClearMasterButton.TabIndex = 6;
@@ -326,18 +377,38 @@ namespace Terminals
             this.ClearMasterButton.UseVisualStyleBackColor = true;
             this.ClearMasterButton.Click += new System.EventHandler(this.ClearMasterButton_Click);
             // 
+            // PasswordTextbox
+            // 
+            this.PasswordTextbox.Enabled = false;
+            this.PasswordTextbox.Location = new System.Drawing.Point(73, 39);
+            this.PasswordTextbox.Name = "PasswordTextbox";
+            this.PasswordTextbox.PasswordChar = '*';
+            this.PasswordTextbox.Size = new System.Drawing.Size(147, 21);
+            this.PasswordTextbox.TabIndex = 1;
+            this.PasswordTextbox.TextChanged += new System.EventHandler(this.PasswordTextbox_TextChanged);
+            // 
             // PasswordsMatchLabel
             // 
             this.PasswordsMatchLabel.AutoSize = true;
-            this.PasswordsMatchLabel.Location = new System.Drawing.Point(239, 73);
+            this.PasswordsMatchLabel.Location = new System.Drawing.Point(240, 74);
             this.PasswordsMatchLabel.Name = "PasswordsMatchLabel";
             this.PasswordsMatchLabel.Size = new System.Drawing.Size(0, 13);
             this.PasswordsMatchLabel.TabIndex = 5;
             // 
+            // ConfirmPasswordTextBox
+            // 
+            this.ConfirmPasswordTextBox.Enabled = false;
+            this.ConfirmPasswordTextBox.Location = new System.Drawing.Point(73, 67);
+            this.ConfirmPasswordTextBox.Name = "ConfirmPasswordTextBox";
+            this.ConfirmPasswordTextBox.PasswordChar = '*';
+            this.ConfirmPasswordTextBox.Size = new System.Drawing.Size(147, 21);
+            this.ConfirmPasswordTextBox.TabIndex = 2;
+            this.ConfirmPasswordTextBox.TextChanged += new System.EventHandler(this.ConfirmPasswordTextBox_TextChanged);
+            // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 69);
+            this.label7.Location = new System.Drawing.Point(9, 70);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(48, 13);
             this.label7.TabIndex = 4;
@@ -346,42 +417,41 @@ namespace Terminals
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 41);
+            this.label6.Location = new System.Drawing.Point(9, 42);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(57, 13);
             this.label6.TabIndex = 3;
             this.label6.Text = "Password:";
             // 
-            // ConfirmPasswordTextBox
+            // AmazonTabPage
             // 
-            this.ConfirmPasswordTextBox.Enabled = false;
-            this.ConfirmPasswordTextBox.Location = new System.Drawing.Point(72, 66);
-            this.ConfirmPasswordTextBox.Name = "ConfirmPasswordTextBox";
-            this.ConfirmPasswordTextBox.PasswordChar = '*';
-            this.ConfirmPasswordTextBox.Size = new System.Drawing.Size(147, 21);
-            this.ConfirmPasswordTextBox.TabIndex = 2;
-            this.ConfirmPasswordTextBox.TextChanged += new System.EventHandler(this.ConfirmPasswordTextBox_TextChanged);
+            this.AmazonTabPage.Controls.Add(this.RestoreButton);
+            this.AmazonTabPage.Controls.Add(this.BackupButton);
+            this.AmazonTabPage.Controls.Add(this.ErrorLabel);
+            this.AmazonTabPage.Controls.Add(this.TestButton);
+            this.AmazonTabPage.Controls.Add(this.label17);
+            this.AmazonTabPage.Controls.Add(this.label16);
+            this.AmazonTabPage.Controls.Add(this.SecretKeyTextbox);
+            this.AmazonTabPage.Controls.Add(this.AccessKeyTextbox);
+            this.AmazonTabPage.Controls.Add(this.AmazonBackupCheckbox);
+            this.AmazonTabPage.Controls.Add(this.pictureBox1);
+            this.AmazonTabPage.Location = new System.Drawing.Point(4, 22);
+            this.AmazonTabPage.Name = "AmazonTabPage";
+            this.AmazonTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.AmazonTabPage.Size = new System.Drawing.Size(384, 238);
+            this.AmazonTabPage.TabIndex = 1;
+            this.AmazonTabPage.Text = "Amazon";
+            this.AmazonTabPage.UseVisualStyleBackColor = true;
             // 
-            // PasswordTextbox
+            // pictureBox1
             // 
-            this.PasswordTextbox.Enabled = false;
-            this.PasswordTextbox.Location = new System.Drawing.Point(72, 38);
-            this.PasswordTextbox.Name = "PasswordTextbox";
-            this.PasswordTextbox.PasswordChar = '*';
-            this.PasswordTextbox.Size = new System.Drawing.Size(147, 21);
-            this.PasswordTextbox.TabIndex = 1;
-            this.PasswordTextbox.TextChanged += new System.EventHandler(this.PasswordTextbox_TextChanged);
-            // 
-            // PasswordProtectTerminalsCheckbox
-            // 
-            this.PasswordProtectTerminalsCheckbox.AutoSize = true;
-            this.PasswordProtectTerminalsCheckbox.Location = new System.Drawing.Point(14, 15);
-            this.PasswordProtectTerminalsCheckbox.Name = "PasswordProtectTerminalsCheckbox";
-            this.PasswordProtectTerminalsCheckbox.Size = new System.Drawing.Size(110, 17);
-            this.PasswordProtectTerminalsCheckbox.TabIndex = 0;
-            this.PasswordProtectTerminalsCheckbox.Text = "Password Protect";
-            this.PasswordProtectTerminalsCheckbox.UseVisualStyleBackColor = true;
-            this.PasswordProtectTerminalsCheckbox.CheckedChanged += new System.EventHandler(this.PasswordProtectTerminalsCheckbox_CheckedChanged);
+            this.pictureBox1.Image = global::Terminals.Properties.Resources.amazon;
+            this.pictureBox1.Location = new System.Drawing.Point(246, 180);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(135, 55);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // tpExecuteBeforeConnect
             // 
@@ -717,6 +787,63 @@ namespace Terminals
             this.MoreOptionsTabPage.Text = "More";
             this.MoreOptionsTabPage.UseVisualStyleBackColor = true;
             // 
+            // FavSortGroupBox
+            // 
+            this.FavSortGroupBox.Controls.Add(this.NoneRadioButton);
+            this.FavSortGroupBox.Controls.Add(this.ProtocolRadionButton);
+            this.FavSortGroupBox.Controls.Add(this.ConnectionNameRadioButton);
+            this.FavSortGroupBox.Controls.Add(this.ServerNameRadio);
+            this.FavSortGroupBox.Location = new System.Drawing.Point(15, 69);
+            this.FavSortGroupBox.Name = "FavSortGroupBox";
+            this.FavSortGroupBox.Size = new System.Drawing.Size(200, 118);
+            this.FavSortGroupBox.TabIndex = 26;
+            this.FavSortGroupBox.TabStop = false;
+            this.FavSortGroupBox.Text = "Favorites Sort";
+            // 
+            // NoneRadioButton
+            // 
+            this.NoneRadioButton.AutoSize = true;
+            this.NoneRadioButton.Location = new System.Drawing.Point(7, 89);
+            this.NoneRadioButton.Name = "NoneRadioButton";
+            this.NoneRadioButton.Size = new System.Drawing.Size(50, 17);
+            this.NoneRadioButton.TabIndex = 3;
+            this.NoneRadioButton.TabStop = true;
+            this.NoneRadioButton.Text = "None";
+            this.NoneRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // ProtocolRadionButton
+            // 
+            this.ProtocolRadionButton.AutoSize = true;
+            this.ProtocolRadionButton.Location = new System.Drawing.Point(6, 66);
+            this.ProtocolRadionButton.Name = "ProtocolRadionButton";
+            this.ProtocolRadionButton.Size = new System.Drawing.Size(64, 17);
+            this.ProtocolRadionButton.TabIndex = 2;
+            this.ProtocolRadionButton.TabStop = true;
+            this.ProtocolRadionButton.Text = "Protocol";
+            this.ProtocolRadionButton.UseVisualStyleBackColor = true;
+            // 
+            // ConnectionNameRadioButton
+            // 
+            this.ConnectionNameRadioButton.AutoSize = true;
+            this.ConnectionNameRadioButton.Location = new System.Drawing.Point(6, 43);
+            this.ConnectionNameRadioButton.Name = "ConnectionNameRadioButton";
+            this.ConnectionNameRadioButton.Size = new System.Drawing.Size(109, 17);
+            this.ConnectionNameRadioButton.TabIndex = 1;
+            this.ConnectionNameRadioButton.TabStop = true;
+            this.ConnectionNameRadioButton.Text = "Connection Name";
+            this.ConnectionNameRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // ServerNameRadio
+            // 
+            this.ServerNameRadio.AutoSize = true;
+            this.ServerNameRadio.Location = new System.Drawing.Point(7, 20);
+            this.ServerNameRadio.Name = "ServerNameRadio";
+            this.ServerNameRadio.Size = new System.Drawing.Size(87, 17);
+            this.ServerNameRadio.TabIndex = 0;
+            this.ServerNameRadio.TabStop = true;
+            this.ServerNameRadio.Text = "Server Name";
+            this.ServerNameRadio.UseVisualStyleBackColor = true;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.RenderBlackRadio);
@@ -786,62 +913,86 @@ namespace Terminals
             this.EnableGroupsMenu.Text = "Enable Groups Menu";
             this.EnableGroupsMenu.UseVisualStyleBackColor = true;
             // 
-            // FavSortGroupBox
+            // AmazonBackupCheckbox
             // 
-            this.FavSortGroupBox.Controls.Add(this.NoneRadioButton);
-            this.FavSortGroupBox.Controls.Add(this.ProtocolRadionButton);
-            this.FavSortGroupBox.Controls.Add(this.ConnectionNameRadioButton);
-            this.FavSortGroupBox.Controls.Add(this.ServerNameRadio);
-            this.FavSortGroupBox.Location = new System.Drawing.Point(15, 69);
-            this.FavSortGroupBox.Name = "FavSortGroupBox";
-            this.FavSortGroupBox.Size = new System.Drawing.Size(200, 118);
-            this.FavSortGroupBox.TabIndex = 26;
-            this.FavSortGroupBox.TabStop = false;
-            this.FavSortGroupBox.Text = "Favorites Sort";
+            this.AmazonBackupCheckbox.AutoSize = true;
+            this.AmazonBackupCheckbox.Location = new System.Drawing.Point(16, 16);
+            this.AmazonBackupCheckbox.Name = "AmazonBackupCheckbox";
+            this.AmazonBackupCheckbox.Size = new System.Drawing.Size(220, 17);
+            this.AmazonBackupCheckbox.TabIndex = 1;
+            this.AmazonBackupCheckbox.Text = "Backup Favorites to Amazons S3 Service";
+            this.AmazonBackupCheckbox.UseVisualStyleBackColor = true;
+            this.AmazonBackupCheckbox.CheckedChanged += new System.EventHandler(this.AmazonBackupCheckbox_CheckedChanged);
             // 
-            // ServerNameRadio
+            // AccessKeyTextbox
             // 
-            this.ServerNameRadio.AutoSize = true;
-            this.ServerNameRadio.Location = new System.Drawing.Point(7, 20);
-            this.ServerNameRadio.Name = "ServerNameRadio";
-            this.ServerNameRadio.Size = new System.Drawing.Size(87, 17);
-            this.ServerNameRadio.TabIndex = 0;
-            this.ServerNameRadio.TabStop = true;
-            this.ServerNameRadio.Text = "Server Name";
-            this.ServerNameRadio.UseVisualStyleBackColor = true;
+            this.AccessKeyTextbox.Location = new System.Drawing.Point(153, 52);
+            this.AccessKeyTextbox.Name = "AccessKeyTextbox";
+            this.AccessKeyTextbox.Size = new System.Drawing.Size(212, 21);
+            this.AccessKeyTextbox.TabIndex = 2;
             // 
-            // ConnectionNameRadioButton
+            // SecretKeyTextbox
             // 
-            this.ConnectionNameRadioButton.AutoSize = true;
-            this.ConnectionNameRadioButton.Location = new System.Drawing.Point(6, 43);
-            this.ConnectionNameRadioButton.Name = "ConnectionNameRadioButton";
-            this.ConnectionNameRadioButton.Size = new System.Drawing.Size(109, 17);
-            this.ConnectionNameRadioButton.TabIndex = 1;
-            this.ConnectionNameRadioButton.TabStop = true;
-            this.ConnectionNameRadioButton.Text = "Connection Name";
-            this.ConnectionNameRadioButton.UseVisualStyleBackColor = true;
+            this.SecretKeyTextbox.Location = new System.Drawing.Point(153, 81);
+            this.SecretKeyTextbox.Name = "SecretKeyTextbox";
+            this.SecretKeyTextbox.Size = new System.Drawing.Size(212, 21);
+            this.SecretKeyTextbox.TabIndex = 3;
             // 
-            // ProtocolRadionButton
+            // label16
             // 
-            this.ProtocolRadionButton.AutoSize = true;
-            this.ProtocolRadionButton.Location = new System.Drawing.Point(6, 66);
-            this.ProtocolRadionButton.Name = "ProtocolRadionButton";
-            this.ProtocolRadionButton.Size = new System.Drawing.Size(64, 17);
-            this.ProtocolRadionButton.TabIndex = 2;
-            this.ProtocolRadionButton.TabStop = true;
-            this.ProtocolRadionButton.Text = "Protocol";
-            this.ProtocolRadionButton.UseVisualStyleBackColor = true;
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(13, 55);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(104, 13);
+            this.label16.TabIndex = 4;
+            this.label16.Text = "Your Access Key ID:";
             // 
-            // NoneRadioButton
+            // label17
             // 
-            this.NoneRadioButton.AutoSize = true;
-            this.NoneRadioButton.Location = new System.Drawing.Point(7, 89);
-            this.NoneRadioButton.Name = "NoneRadioButton";
-            this.NoneRadioButton.Size = new System.Drawing.Size(50, 17);
-            this.NoneRadioButton.TabIndex = 3;
-            this.NoneRadioButton.TabStop = true;
-            this.NoneRadioButton.Text = "None";
-            this.NoneRadioButton.UseVisualStyleBackColor = true;
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(13, 84);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(124, 13);
+            this.label17.TabIndex = 5;
+            this.label17.Text = "Your Secret Access Key:";
+            // 
+            // TestButton
+            // 
+            this.TestButton.Location = new System.Drawing.Point(289, 109);
+            this.TestButton.Name = "TestButton";
+            this.TestButton.Size = new System.Drawing.Size(75, 23);
+            this.TestButton.TabIndex = 6;
+            this.TestButton.Text = "Test";
+            this.TestButton.UseVisualStyleBackColor = true;
+            this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
+            // 
+            // ErrorLabel
+            // 
+            this.ErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.ErrorLabel.Location = new System.Drawing.Point(13, 109);
+            this.ErrorLabel.Name = "ErrorLabel";
+            this.ErrorLabel.Size = new System.Drawing.Size(233, 68);
+            this.ErrorLabel.TabIndex = 7;
+            // 
+            // BackupButton
+            // 
+            this.BackupButton.Location = new System.Drawing.Point(32, 206);
+            this.BackupButton.Name = "BackupButton";
+            this.BackupButton.Size = new System.Drawing.Size(75, 23);
+            this.BackupButton.TabIndex = 8;
+            this.BackupButton.Text = "Backup";
+            this.BackupButton.UseVisualStyleBackColor = true;
+            this.BackupButton.Click += new System.EventHandler(this.BackupButton_Click);
+            // 
+            // RestoreButton
+            // 
+            this.RestoreButton.Location = new System.Drawing.Point(130, 206);
+            this.RestoreButton.Name = "RestoreButton";
+            this.RestoreButton.Size = new System.Drawing.Size(75, 23);
+            this.RestoreButton.TabIndex = 9;
+            this.RestoreButton.Text = "Restore";
+            this.RestoreButton.UseVisualStyleBackColor = true;
+            this.RestoreButton.Click += new System.EventHandler(this.RestoreButton_Click);
             // 
             // OptionsForm
             // 
@@ -872,7 +1023,12 @@ namespace Terminals
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabControl2.ResumeLayout(false);
+            this.passwordTabPage.ResumeLayout(false);
+            this.passwordTabPage.PerformLayout();
+            this.AmazonTabPage.ResumeLayout(false);
+            this.AmazonTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tpExecuteBeforeConnect.ResumeLayout(false);
             this.tpExecuteBeforeConnect.PerformLayout();
             this.tpGeneral.ResumeLayout(false);
@@ -880,10 +1036,10 @@ namespace Terminals
             this.tabControl1.ResumeLayout(false);
             this.MoreOptionsTabPage.ResumeLayout(false);
             this.MoreOptionsTabPage.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.FavSortGroupBox.ResumeLayout(false);
             this.FavSortGroupBox.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -958,5 +1114,19 @@ namespace Terminals
         private System.Windows.Forms.RadioButton ProtocolRadionButton;
         private System.Windows.Forms.RadioButton ConnectionNameRadioButton;
         private System.Windows.Forms.RadioButton ServerNameRadio;
+        private System.ServiceProcess.ServiceController serviceController1;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage passwordTabPage;
+        private System.Windows.Forms.TabPage AmazonTabPage;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox AmazonBackupCheckbox;
+        private System.Windows.Forms.Button TestButton;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox SecretKeyTextbox;
+        private System.Windows.Forms.TextBox AccessKeyTextbox;
+        private System.Windows.Forms.Label ErrorLabel;
+        private System.Windows.Forms.Button RestoreButton;
+        private System.Windows.Forms.Button BackupButton;
     }
 }
