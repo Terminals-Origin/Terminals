@@ -9,8 +9,8 @@ namespace Terminals
 {
     static class Program
     {
-        public static string TerminalsVersion = "1.7";
-        public static string SupportedProtocols = "RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix";
+        public static string TerminalsVersion = "1.7a";
+        public static string SupportedProtocols = "RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix, Amazon S3";
         //  reminder to update the buildate for each release
         public static DateTime BuildDate = new DateTime(2008, 8, 25);  //used for checking project releases.  yeah yeah, this could be smarter about things...
         public static string AboutText = string.Format("Terminals v{0} ({1}) - {2}", TerminalsVersion, SupportedProtocols, BuildDate.ToShortDateString());

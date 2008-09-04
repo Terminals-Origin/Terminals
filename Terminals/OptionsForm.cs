@@ -69,6 +69,9 @@ namespace Terminals
             this.AccessKeyTextbox.Enabled = AmazonBackupCheckbox.Checked;
             this.SecretKeyTextbox.Enabled = AmazonBackupCheckbox.Checked;
             this.TestButton.Enabled = AmazonBackupCheckbox.Checked;
+            this.BackupButton.Enabled = AmazonBackupCheckbox.Checked;
+            this.RestoreButton.Enabled = AmazonBackupCheckbox.Checked;
+
 
         }
 
@@ -310,6 +313,8 @@ namespace Terminals
             this.AccessKeyTextbox.Enabled = AmazonBackupCheckbox.Checked;
             this.SecretKeyTextbox.Enabled = AmazonBackupCheckbox.Checked;
             this.TestButton.Enabled = AmazonBackupCheckbox.Checked;
+            this.BackupButton.Enabled = AmazonBackupCheckbox.Checked;
+            this.RestoreButton.Enabled = AmazonBackupCheckbox.Checked;
         }
 
         private void BackupButton_Click(object sender, EventArgs e)
