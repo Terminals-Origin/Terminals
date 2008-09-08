@@ -366,7 +366,7 @@ namespace Terminals
                 return 3389;
         }
 
-        private FavoriteConfigurationElement favorite;
+        public FavoriteConfigurationElement favorite;
 
         internal FavoriteConfigurationElement Favorite
         {
