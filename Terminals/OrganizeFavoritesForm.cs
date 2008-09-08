@@ -45,6 +45,7 @@ namespace Terminals
             {
                 lvConnections.EndUpdate();
             }
+            lvConnections.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void btnRename_Click(object sender, EventArgs e)
