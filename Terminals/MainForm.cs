@@ -61,7 +61,7 @@ namespace Terminals {
                 else
                     ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
 
-                Settings.RebuildTagIndex();
+                //Settings.RebuildTagIndex();
 
 
                 LoadFavorites();
