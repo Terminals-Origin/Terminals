@@ -932,7 +932,14 @@ namespace Terminals
             }
             set
             {
-                this["tags"] = Settings.ToTitleCase(value);
+                if (Settings.AutoCaseTags)
+                {
+                    this["tags"] = Settings.ToTitleCase(value);
+                }
+                else
+                {
+                    this["tags"] = value;
+                }
             }
         }
 

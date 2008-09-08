@@ -72,6 +72,7 @@ namespace Terminals
             this.BackupButton.Enabled = AmazonBackupCheckbox.Checked;
             this.RestoreButton.Enabled = AmazonBackupCheckbox.Checked;
 
+            this.autoCaseTagsCheckbox.Checked = Settings.AutoCaseTags;
 
         }
 
@@ -138,6 +139,9 @@ namespace Terminals
 
             Settings.AmazonAccessKey = this.AccessKeyTextbox.Text;
             Settings.AmazonSecretKey = this.SecretKeyTextbox.Text;
+
+            Settings.AutoCaseTags = this.autoCaseTagsCheckbox.Checked;
+
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)

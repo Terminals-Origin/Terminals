@@ -751,5 +751,10 @@ namespace Terminals
             } catch(Exception ex) { }
         }
 
+        private void AllTagsListView_DoubleClick(object sender, EventArgs e)
+        {
+            AllTagsAddButton_Click(null, null);
+        }
+
     }
 }

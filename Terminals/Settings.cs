@@ -311,7 +311,8 @@ namespace Terminals
 
         public static void AddTag(string tag)
         {
-            tag = ToTitleCase(tag);
+            if(Settings.AutoCaseTags) tag = ToTitleCase(tag);
+
             Configuration configuration = GetConfiguration();
             AddMRUItemConfigurationElement(GetSection(configuration).Tags, tag);
             configuration.Save();
@@ -319,7 +320,7 @@ namespace Terminals
 
         public static void DeleteTag(string tag)
         {
-            tag = ToTitleCase(tag);
+            if(Settings.AutoCaseTags) tag = ToTitleCase(tag);
             Configuration configuration = GetConfiguration();
             DeleteMRUItemConfigurationElement(GetSection(configuration).Tags, tag);
             configuration.Save();
@@ -707,6 +708,20 @@ namespace Terminals
             }
         }
 
+
+        public static bool AutoCaseTags
+        {
+            get
+            {
+                return GetSection().AutoCaseTags;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).AutoCaseTags = value;
+                configuration.Save();
+            }
+        }
 
 
 

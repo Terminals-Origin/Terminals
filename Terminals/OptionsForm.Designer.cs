@@ -57,6 +57,15 @@ namespace Terminals
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.AmazonTabPage = new System.Windows.Forms.TabPage();
+            this.RestoreButton = new System.Windows.Forms.Button();
+            this.BackupButton = new System.Windows.Forms.Button();
+            this.ErrorLabel = new System.Windows.Forms.Label();
+            this.TestButton = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.SecretKeyTextbox = new System.Windows.Forms.TextBox();
+            this.AccessKeyTextbox = new System.Windows.Forms.TextBox();
+            this.AmazonBackupCheckbox = new System.Windows.Forms.CheckBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tpExecuteBeforeConnect = new System.Windows.Forms.TabPage();
             this.txtInitialDirectory = new System.Windows.Forms.TextBox();
@@ -100,15 +109,7 @@ namespace Terminals
             this.EnableFavoritesPanel = new System.Windows.Forms.CheckBox();
             this.EnableGroupsMenu = new System.Windows.Forms.CheckBox();
             this.serviceController1 = new System.ServiceProcess.ServiceController();
-            this.AmazonBackupCheckbox = new System.Windows.Forms.CheckBox();
-            this.AccessKeyTextbox = new System.Windows.Forms.TextBox();
-            this.SecretKeyTextbox = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.TestButton = new System.Windows.Forms.Button();
-            this.ErrorLabel = new System.Windows.Forms.Label();
-            this.BackupButton = new System.Windows.Forms.Button();
-            this.RestoreButton = new System.Windows.Forms.Button();
+            this.autoCaseTagsCheckbox = new System.Windows.Forms.CheckBox();
             this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -443,6 +444,87 @@ namespace Terminals
             this.AmazonTabPage.Text = "Amazon";
             this.AmazonTabPage.UseVisualStyleBackColor = true;
             // 
+            // RestoreButton
+            // 
+            this.RestoreButton.Location = new System.Drawing.Point(130, 206);
+            this.RestoreButton.Name = "RestoreButton";
+            this.RestoreButton.Size = new System.Drawing.Size(75, 23);
+            this.RestoreButton.TabIndex = 9;
+            this.RestoreButton.Text = "Restore";
+            this.RestoreButton.UseVisualStyleBackColor = true;
+            this.RestoreButton.Click += new System.EventHandler(this.RestoreButton_Click);
+            // 
+            // BackupButton
+            // 
+            this.BackupButton.Location = new System.Drawing.Point(32, 206);
+            this.BackupButton.Name = "BackupButton";
+            this.BackupButton.Size = new System.Drawing.Size(75, 23);
+            this.BackupButton.TabIndex = 8;
+            this.BackupButton.Text = "Backup";
+            this.BackupButton.UseVisualStyleBackColor = true;
+            this.BackupButton.Click += new System.EventHandler(this.BackupButton_Click);
+            // 
+            // ErrorLabel
+            // 
+            this.ErrorLabel.ForeColor = System.Drawing.Color.Red;
+            this.ErrorLabel.Location = new System.Drawing.Point(13, 109);
+            this.ErrorLabel.Name = "ErrorLabel";
+            this.ErrorLabel.Size = new System.Drawing.Size(233, 68);
+            this.ErrorLabel.TabIndex = 7;
+            // 
+            // TestButton
+            // 
+            this.TestButton.Location = new System.Drawing.Point(289, 109);
+            this.TestButton.Name = "TestButton";
+            this.TestButton.Size = new System.Drawing.Size(75, 23);
+            this.TestButton.TabIndex = 6;
+            this.TestButton.Text = "Test";
+            this.TestButton.UseVisualStyleBackColor = true;
+            this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(13, 84);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(124, 13);
+            this.label17.TabIndex = 5;
+            this.label17.Text = "Your Secret Access Key:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(13, 55);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(104, 13);
+            this.label16.TabIndex = 4;
+            this.label16.Text = "Your Access Key ID:";
+            // 
+            // SecretKeyTextbox
+            // 
+            this.SecretKeyTextbox.Location = new System.Drawing.Point(153, 81);
+            this.SecretKeyTextbox.Name = "SecretKeyTextbox";
+            this.SecretKeyTextbox.Size = new System.Drawing.Size(212, 21);
+            this.SecretKeyTextbox.TabIndex = 3;
+            // 
+            // AccessKeyTextbox
+            // 
+            this.AccessKeyTextbox.Location = new System.Drawing.Point(153, 52);
+            this.AccessKeyTextbox.Name = "AccessKeyTextbox";
+            this.AccessKeyTextbox.Size = new System.Drawing.Size(212, 21);
+            this.AccessKeyTextbox.TabIndex = 2;
+            // 
+            // AmazonBackupCheckbox
+            // 
+            this.AmazonBackupCheckbox.AutoSize = true;
+            this.AmazonBackupCheckbox.Location = new System.Drawing.Point(16, 16);
+            this.AmazonBackupCheckbox.Name = "AmazonBackupCheckbox";
+            this.AmazonBackupCheckbox.Size = new System.Drawing.Size(220, 17);
+            this.AmazonBackupCheckbox.TabIndex = 1;
+            this.AmazonBackupCheckbox.Text = "Backup Favorites to Amazons S3 Service";
+            this.AmazonBackupCheckbox.UseVisualStyleBackColor = true;
+            this.AmazonBackupCheckbox.CheckedChanged += new System.EventHandler(this.AmazonBackupCheckbox_CheckedChanged);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Terminals.Properties.Resources.amazon;
@@ -541,6 +623,7 @@ namespace Terminals
             // 
             // tpGeneral
             // 
+            this.tpGeneral.Controls.Add(this.autoCaseTagsCheckbox);
             this.tpGeneral.Controls.Add(this.AutoExapandTagsPanelCheckBox);
             this.tpGeneral.Controls.Add(this.autoSwitchToCaptureCheckbox);
             this.tpGeneral.Controls.Add(this.warnDisconnectCheckBox);
@@ -913,86 +996,15 @@ namespace Terminals
             this.EnableGroupsMenu.Text = "Enable Groups Menu";
             this.EnableGroupsMenu.UseVisualStyleBackColor = true;
             // 
-            // AmazonBackupCheckbox
+            // autoCaseTagsCheckbox
             // 
-            this.AmazonBackupCheckbox.AutoSize = true;
-            this.AmazonBackupCheckbox.Location = new System.Drawing.Point(16, 16);
-            this.AmazonBackupCheckbox.Name = "AmazonBackupCheckbox";
-            this.AmazonBackupCheckbox.Size = new System.Drawing.Size(220, 17);
-            this.AmazonBackupCheckbox.TabIndex = 1;
-            this.AmazonBackupCheckbox.Text = "Backup Favorites to Amazons S3 Service";
-            this.AmazonBackupCheckbox.UseVisualStyleBackColor = true;
-            this.AmazonBackupCheckbox.CheckedChanged += new System.EventHandler(this.AmazonBackupCheckbox_CheckedChanged);
-            // 
-            // AccessKeyTextbox
-            // 
-            this.AccessKeyTextbox.Location = new System.Drawing.Point(153, 52);
-            this.AccessKeyTextbox.Name = "AccessKeyTextbox";
-            this.AccessKeyTextbox.Size = new System.Drawing.Size(212, 21);
-            this.AccessKeyTextbox.TabIndex = 2;
-            // 
-            // SecretKeyTextbox
-            // 
-            this.SecretKeyTextbox.Location = new System.Drawing.Point(153, 81);
-            this.SecretKeyTextbox.Name = "SecretKeyTextbox";
-            this.SecretKeyTextbox.Size = new System.Drawing.Size(212, 21);
-            this.SecretKeyTextbox.TabIndex = 3;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(13, 55);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(104, 13);
-            this.label16.TabIndex = 4;
-            this.label16.Text = "Your Access Key ID:";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(13, 84);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(124, 13);
-            this.label17.TabIndex = 5;
-            this.label17.Text = "Your Secret Access Key:";
-            // 
-            // TestButton
-            // 
-            this.TestButton.Location = new System.Drawing.Point(289, 109);
-            this.TestButton.Name = "TestButton";
-            this.TestButton.Size = new System.Drawing.Size(75, 23);
-            this.TestButton.TabIndex = 6;
-            this.TestButton.Text = "Test";
-            this.TestButton.UseVisualStyleBackColor = true;
-            this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
-            // 
-            // ErrorLabel
-            // 
-            this.ErrorLabel.ForeColor = System.Drawing.Color.Red;
-            this.ErrorLabel.Location = new System.Drawing.Point(13, 109);
-            this.ErrorLabel.Name = "ErrorLabel";
-            this.ErrorLabel.Size = new System.Drawing.Size(233, 68);
-            this.ErrorLabel.TabIndex = 7;
-            // 
-            // BackupButton
-            // 
-            this.BackupButton.Location = new System.Drawing.Point(32, 206);
-            this.BackupButton.Name = "BackupButton";
-            this.BackupButton.Size = new System.Drawing.Size(75, 23);
-            this.BackupButton.TabIndex = 8;
-            this.BackupButton.Text = "Backup";
-            this.BackupButton.UseVisualStyleBackColor = true;
-            this.BackupButton.Click += new System.EventHandler(this.BackupButton_Click);
-            // 
-            // RestoreButton
-            // 
-            this.RestoreButton.Location = new System.Drawing.Point(130, 206);
-            this.RestoreButton.Name = "RestoreButton";
-            this.RestoreButton.Size = new System.Drawing.Size(75, 23);
-            this.RestoreButton.TabIndex = 9;
-            this.RestoreButton.Text = "Restore";
-            this.RestoreButton.UseVisualStyleBackColor = true;
-            this.RestoreButton.Click += new System.EventHandler(this.RestoreButton_Click);
+            this.autoCaseTagsCheckbox.AutoSize = true;
+            this.autoCaseTagsCheckbox.Location = new System.Drawing.Point(253, 128);
+            this.autoCaseTagsCheckbox.Name = "autoCaseTagsCheckbox";
+            this.autoCaseTagsCheckbox.Size = new System.Drawing.Size(102, 17);
+            this.autoCaseTagsCheckbox.TabIndex = 23;
+            this.autoCaseTagsCheckbox.Text = "Auto Case Tags";
+            this.autoCaseTagsCheckbox.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -1128,5 +1140,6 @@ namespace Terminals
         private System.Windows.Forms.Label ErrorLabel;
         private System.Windows.Forms.Button RestoreButton;
         private System.Windows.Forms.Button BackupButton;
+        private System.Windows.Forms.CheckBox autoCaseTagsCheckbox;
     }
 }

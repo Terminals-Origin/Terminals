@@ -1676,6 +1676,7 @@ namespace Terminals
         this.AllTagsListView.TabIndex = 2;
         this.AllTagsListView.UseCompatibleStateImageBehavior = false;
         this.AllTagsListView.View = System.Windows.Forms.View.List;
+        this.AllTagsListView.DoubleClick += new System.EventHandler(this.AllTagsListView_DoubleClick);
         // 
         // panel1
         // 

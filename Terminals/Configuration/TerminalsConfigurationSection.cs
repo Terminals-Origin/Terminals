@@ -406,10 +406,18 @@ namespace Terminals
         }
 
 
-
-
-
-
+        [ConfigurationProperty("autoCaseTags")]
+        public bool AutoCaseTags
+        {
+            get
+            {
+                return (bool)this["autoCaseTags"];
+            }
+            set
+            {
+                this["autoCaseTags"] = value;
+            }
+        }
 
         [ConfigurationProperty("useAmazon")]
         public bool UseAmazon
