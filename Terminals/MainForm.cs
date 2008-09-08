@@ -2649,8 +2649,12 @@ namespace Terminals {
             if(e.Control && e.KeyCode == Keys.F12) {
                 Terminals.CaptureManager.Capture cap = Terminals.CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
                 toolStripMenuItem5_Click(null, null);
-
             }
+            else if (e.KeyCode == Keys.F4)
+            {
+                tscConnectTo.Focus();
+            }
+
         }
 
         private void toolStripButton5_Click(object sender, EventArgs e)
