@@ -748,7 +748,9 @@ namespace Terminals
             try {
                 System.Uri u = new Uri(url);
                 cmbServers.Text = u.Host;
-            } catch(Exception ex) { }
+            } catch(Exception ex) {
+                Logging.Log.Error("Http URL Parse Failed", ex);
+            }
         }
 
         private void AllTagsListView_DoubleClick(object sender, EventArgs e)
