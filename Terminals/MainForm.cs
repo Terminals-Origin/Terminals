@@ -20,7 +20,7 @@ namespace Terminals {
 
 
         public static string FlickrAPIKey = "9362619635c6f6c20e7c14fe4b67c2a0";
-        public static string FlickrSharedSecretKey = "";
+        public static string FlickrSharedSecretKey = "ac8f3c60be0812b6";
         public static string ConfigurationFileLocation = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), @"Terminals.config");
         public static Terminals.CommandLine.TerminalsCA CommandLineArgs = new Terminals.CommandLine.TerminalsCA();
 
