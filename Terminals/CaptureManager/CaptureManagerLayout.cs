@@ -65,7 +65,9 @@ namespace Terminals.CaptureManager
         }
         private void LoadRoot()
         {
+            
             root.Tag = new System.IO.DirectoryInfo(CaptureManager.CaptureRoot);
+            
             this.treeView1.Nodes.Add(root);
             
             LoadFolder(CaptureManager.CaptureRoot, root);

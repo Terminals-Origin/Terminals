@@ -1046,13 +1046,32 @@ namespace Terminals
                 string root = GetSection().CaptureRoot;
                 if(root == null || root == "")
                 {
-                    string asmFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-                    root = System.IO.Path.Combine(asmFolder, "CaptureRoot");
+                    root = @".\CaptureRoot";
                     CaptureRoot = root;
                 }
-                if(!System.IO.Directory.Exists(root))
+                if (!System.IO.Directory.Exists(root))
                 {
-                    System.IO.Directory.CreateDirectory(root);
+
+                    Logging.Log.Info("Capture root folder does not exist:" + root + ". Lets try to create it now.");
+                    try
+                    {
+                        System.IO.Directory.CreateDirectory(root);
+                    }
+                    catch (Exception exc)
+                    {
+                        Logging.Log.Info(@"Capture root could not be created, set it to the default value : .\CaptureRoot", exc);
+                        root = @".\CaptureRoot";
+                        try
+                        {
+                            System.IO.Directory.CreateDirectory(root);
+                        }
+                        catch (Exception exc1)
+                        {
+                            Logging.Log.Info(@"Capture root could not be created again.  Abort!", exc1);
+                        }
+                    }
+                    CaptureRoot = root;
+
                 }
                 return root;
             }

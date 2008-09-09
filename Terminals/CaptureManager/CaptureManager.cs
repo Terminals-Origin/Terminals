@@ -14,6 +14,10 @@ namespace Terminals.CaptureManager
             {
                 return Settings.CaptureRoot;
             }
+            set
+            {
+                Settings.CaptureRoot = value;
+            }
         }
         public static Captures LoadCaptures(string Path)
         {
