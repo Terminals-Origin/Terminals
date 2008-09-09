@@ -24,7 +24,7 @@ namespace Terminals.CaptureManager
         }
         public void PostToFlickr() {
             if(Settings.FlickrToken != "") {
-                FlickrNet.Flickr flckr = new FlickrNet.Flickr(MainForm.FlickrAPIKey, MainForm.FlickrSharedSecretKey);
+                FlickrNet.Flickr flckr = new FlickrNet.Flickr(Program.FlickrAPIKey, Program.FlickrSharedSecretKey);
                 flckr.AuthToken = Settings.FlickrToken;
                 string c = this.Comments;
                 if(c == null) c = "";

@@ -194,7 +194,7 @@ namespace Terminals
         string tempFrob;
         private void AuthorizeFlickrButton_Click(object sender, EventArgs e) {
             // Create Flickr instance    
-            Flickr flickr = new Flickr(MainForm.FlickrAPIKey, MainForm.FlickrSharedSecretKey);    
+            Flickr flickr = new Flickr(Program.FlickrAPIKey, Program.FlickrSharedSecretKey);    
             // Get Frob        
             tempFrob = flickr.AuthGetFrob();
             // Calculate the URL at Flickr to redirect the user to    
@@ -206,7 +206,7 @@ namespace Terminals
 
         private void CompleteAuthButton_Click(object sender, EventArgs e) {
             // Create Flickr instance
-            Flickr flickr = new Flickr(MainForm.FlickrAPIKey, MainForm.FlickrSharedSecretKey);    
+            Flickr flickr = new Flickr(Program.FlickrAPIKey, Program.FlickrSharedSecretKey);    
             try {
                 // use the temporary Frob to get the authentication
                 Auth auth = flickr.AuthGetToken(tempFrob);
@@ -337,7 +337,7 @@ namespace Terminals
                 }
                 try
                 {
-                    wrapper.AddFileObject(AmazonBucket, AmazonConfigKeyName, Terminals.MainForm.ConfigurationFileLocation);
+                    wrapper.AddFileObject(AmazonBucket, AmazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
                     url = wrapper.GetUrl(AmazonBucket, AmazonConfigKeyName);
                 }
                 catch (Exception exc)
@@ -368,7 +368,7 @@ namespace Terminals
                 }
                 try
                 {
-                    wrapper.GetFileObject(AmazonBucket, AmazonConfigKeyName, Terminals.MainForm.ConfigurationFileLocation);
+                    wrapper.GetFileObject(AmazonBucket, AmazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
                 }
                 catch (Exception exc)
                 {

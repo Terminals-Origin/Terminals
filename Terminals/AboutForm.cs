@@ -53,7 +53,7 @@ namespace Terminals
         private void AboutForm_Load(object sender, EventArgs e)
         {
             lblVersion.Text = Program.AboutText;
-            this.textBox1.Text = this.textBox1.Text + "\r\nConfig File:\r\n" + MainForm.ConfigurationFileLocation;
+            this.textBox1.Text = this.textBox1.Text + "\r\nConfig File:\r\n" + Program.ConfigurationFileLocation;
         }
     }
 }

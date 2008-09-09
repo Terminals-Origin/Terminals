@@ -30,7 +30,7 @@ namespace Terminals
 
         private static Configuration GetConfiguration()
         {
-            string configFile = Terminals.MainForm.ConfigurationFileLocation;
+            string configFile = Terminals.Program.ConfigurationFileLocation;
 
             if(!System.IO.File.Exists(configFile))
             {
@@ -212,7 +212,7 @@ namespace Terminals
                 try
                 {
                     //kick into the import routine
-                    configuration = ImportConfiguration(Terminals.MainForm.ConfigurationFileLocation);
+                    configuration = ImportConfiguration(Terminals.Program.ConfigurationFileLocation);
                     configuration = GetConfiguration();
                     c = (TerminalsConfigurationSection)configuration.GetSection("settings");
                     if(configuration != null) {
