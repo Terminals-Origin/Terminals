@@ -86,9 +86,16 @@ namespace Terminals
         public System.Drawing.Image LoadThumbnail()
         {
             System.Drawing.Image img = Terminals.Properties.Resources.application_xp_terminal;
-            if (this.Thumbnail != null && this.Thumbnail != "")
+            try
             {
-                if (System.IO.File.Exists(this.Thumbnail)) img = System.Drawing.Image.FromFile(this.Thumbnail);
+                if (this.Thumbnail != null && this.Thumbnail != "")
+                {
+                    if (System.IO.File.Exists(this.Thumbnail)) img = System.Drawing.Image.FromFile(this.Thumbnail);
+                }
+            }
+            catch (Exception exc)
+            {
+                Logging.Log.Error("Could not LoadThumbnail for file:" + this.Thumbnail, exc); 
             }
             return img;
         }
