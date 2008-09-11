@@ -131,6 +131,62 @@ namespace Terminals.Network {
             }
             this.Invoke(miv);
         }
+
+        private void a_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode==Keys.OemPeriod)
+            {
+                b.Focus();
+            }
+        }
+
+        private void b_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.OemPeriod)
+            {
+                c.Focus();
+            }
+        }
+
+        private void c_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.OemPeriod)
+            {
+                d.Focus();
+            }
+        }
+
+        private void d_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.OemPeriod)
+            {
+                this.e.Focus();
+            }
+        }
+
+        private void e_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.OemPeriod)
+            {
+                pa.Focus();
+            }
+        }
+
+        private void pa_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.OemPeriod)
+            {
+                pb.Focus();
+            }
+        }
+
+        private void pb_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                StartButton_Click(null, null);
+            }
+        }
     }
     public class ScanResult {
         System.Net.IPEndPoint remoteEndPoint;

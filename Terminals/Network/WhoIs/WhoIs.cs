@@ -37,5 +37,13 @@ namespace Terminals.Network.WhoIs
 
             }
         }
+
+        private void hostTextbox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                whoisButton_Click(null, null);
+            }
+        }
     }
 }

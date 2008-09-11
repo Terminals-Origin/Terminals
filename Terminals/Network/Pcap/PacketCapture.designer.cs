@@ -45,10 +45,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.FilteringTabPage = new System.Windows.Forms.TabPage();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.treeView1 = new System.Windows.Forms.TreeView();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AmberPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RedPicture)).BeginInit();
@@ -63,8 +63,8 @@
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.FilteringTabPage.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.FilteringTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // StopCaptureButton
@@ -320,6 +320,25 @@
             this.tabPage2.Text = "Hex View";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.treeView1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(553, 307);
+            this.tabPage3.TabIndex = 3;
+            this.tabPage3.Text = "Header";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // treeView1
+            // 
+            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView1.Location = new System.Drawing.Point(3, 3);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(547, 301);
+            this.treeView1.TabIndex = 3;
+            // 
             // FilteringTabPage
             // 
             this.FilteringTabPage.Controls.Add(this.webBrowser1);
@@ -344,25 +363,6 @@
             this.webBrowser1.Size = new System.Drawing.Size(547, 301);
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.WebBrowserShortcutsEnabled = false;
-            // 
-            // treeView1
-            // 
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.Location = new System.Drawing.Point(3, 3);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(547, 301);
-            this.treeView1.TabIndex = 3;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.treeView1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(553, 307);
-            this.tabPage3.TabIndex = 3;
-            this.tabPage3.Text = "Header";
-            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // PacketCapture
             // 
@@ -389,8 +389,8 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            this.FilteringTabPage.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.FilteringTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }

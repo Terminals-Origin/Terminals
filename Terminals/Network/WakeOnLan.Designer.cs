@@ -35,6 +35,7 @@ namespace Terminals.Network {
             this.MACTextbox.Name = "MACTextbox";
             this.MACTextbox.Size = new System.Drawing.Size(133, 20);
             this.MACTextbox.TabIndex = 0;
+            this.MACTextbox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MACTextbox_KeyUp);
             // 
             // label1
             // 
@@ -50,7 +51,7 @@ namespace Terminals.Network {
             this.SendButton.Location = new System.Drawing.Point(223, 11);
             this.SendButton.Name = "SendButton";
             this.SendButton.Size = new System.Drawing.Size(75, 23);
-            this.SendButton.TabIndex = 2;
+            this.SendButton.TabIndex = 1;
             this.SendButton.Text = "Send";
             this.SendButton.UseVisualStyleBackColor = true;
             this.SendButton.Click += new System.EventHandler(this.SendButton_Click);

@@ -275,6 +275,14 @@ namespace Metro
             }
             if(ResolveCheckBox.Checked) this.Invoke(miv);
         }
+
+        private void textBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                button1_Click(null, null);
+            }
+        }
     }
 
     public class RouteUpdate

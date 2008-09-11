@@ -113,7 +113,7 @@ namespace Metro
             this.button2.Location = new System.Drawing.Point(273, 2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 9;
+            this.button2.TabIndex = 2;
             this.button2.Text = "Sto&p";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -123,7 +123,7 @@ namespace Metro
             this.button1.Location = new System.Drawing.Point(192, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 8;
+            this.button1.TabIndex = 1;
             this.button1.Text = "&Start";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
@@ -142,7 +142,8 @@ namespace Metro
             this.textBox1.Location = new System.Drawing.Point(41, 4);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(145, 20);
-            this.textBox1.TabIndex = 6;
+            this.textBox1.TabIndex = 0;
+            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp);
             // 
             // ResolveCheckBox
             // 
@@ -150,7 +151,7 @@ namespace Metro
             this.ResolveCheckBox.Location = new System.Drawing.Point(376, 7);
             this.ResolveCheckBox.Name = "ResolveCheckBox";
             this.ResolveCheckBox.Size = new System.Drawing.Size(126, 17);
-            this.ResolveCheckBox.TabIndex = 11;
+            this.ResolveCheckBox.TabIndex = 3;
             this.ResolveCheckBox.Text = "Resolve Host Names";
             this.ResolveCheckBox.UseVisualStyleBackColor = true;
             this.ResolveCheckBox.CheckedChanged += new System.EventHandler(this.ResolveCheckBox_CheckedChanged);

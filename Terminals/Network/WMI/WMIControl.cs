@@ -253,6 +253,7 @@ namespace WMITestClient
             this.QueryTextBox.Size = new System.Drawing.Size(753, 21);
             this.QueryTextBox.TabIndex = 0;
             this.QueryTextBox.Text = "select * from CIM_System";
+            this.QueryTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.QueryTextBox_KeyUp);
             // 
             // mainMenu1
             // 
@@ -342,7 +343,7 @@ namespace WMITestClient
             this.ConnectButton.Location = new System.Drawing.Point(4, 7);
             this.ConnectButton.Name = "ConnectButton";
             this.ConnectButton.Size = new System.Drawing.Size(67, 24);
-            this.ConnectButton.TabIndex = 6;
+            this.ConnectButton.TabIndex = 3;
             this.ConnectButton.Text = "Connect...";
             this.ConnectButton.UseVisualStyleBackColor = true;
             this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
@@ -987,6 +988,14 @@ namespace WMITestClient
         {
             this.LoginMenuItem_Click(null, null);
             ConnectionLabel.Text = this.Computer;
+        }
+
+        private void QueryTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                QueryButton_Click(null, null);
+            }
         }
 
     }

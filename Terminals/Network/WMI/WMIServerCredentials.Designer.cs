@@ -64,7 +64,7 @@ namespace Terminals.Network.WMI {
             this.comboBox1.Location = new System.Drawing.Point(67, 3);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 3;
+            this.comboBox1.TabIndex = 0;
             // 
             // PasswordTextbox
             // 
@@ -72,14 +72,14 @@ namespace Terminals.Network.WMI {
             this.PasswordTextbox.Name = "PasswordTextbox";
             this.PasswordTextbox.PasswordChar = '*';
             this.PasswordTextbox.Size = new System.Drawing.Size(121, 20);
-            this.PasswordTextbox.TabIndex = 4;
+            this.PasswordTextbox.TabIndex = 2;
             // 
             // UsernameTextbox
             // 
             this.UsernameTextbox.Location = new System.Drawing.Point(67, 30);
             this.UsernameTextbox.Name = "UsernameTextbox";
             this.UsernameTextbox.Size = new System.Drawing.Size(121, 20);
-            this.UsernameTextbox.TabIndex = 5;
+            this.UsernameTextbox.TabIndex = 1;
             // 
             // WMIServerCredentials
             // 

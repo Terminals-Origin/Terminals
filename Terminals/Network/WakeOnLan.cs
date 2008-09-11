@@ -23,5 +23,13 @@ namespace Terminals.Network {
                 System.Windows.Forms.MessageBox.Show("There was an error sending the Magic Packet" + exc.Message);
             }
         }
+
+        private void MACTextbox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SendButton_Click(null, null);
+            }
+        }
     }
 }

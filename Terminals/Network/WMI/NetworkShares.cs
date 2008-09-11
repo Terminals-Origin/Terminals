@@ -86,6 +86,14 @@ namespace Terminals.Network
         private void button1_Click(object sender, EventArgs e) {
             this.LoadShares(this.wmiServerCredentials1.Username, this.wmiServerCredentials1.Password, this.wmiServerCredentials1.SelectedServer);
         }
+
+        private void wmiServerCredentials1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                button1_Click(null, null);
+            }
+        }
     }
     public class Share
     {

@@ -79,6 +79,14 @@ namespace Terminals.Network
             this.serverComboBox.DataSource = Terminals.Network.DNS.AdapterInfo.DNSServers;
             
         }
+
+        private void hostnameTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                lookupButton_Click(null, null);
+            }
+        }
     }
     public class IPRender
     {

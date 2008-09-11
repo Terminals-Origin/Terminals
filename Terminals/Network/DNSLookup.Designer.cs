@@ -47,7 +47,7 @@ namespace Terminals.Network
             this.lookupButton.Location = new System.Drawing.Point(268, 30);
             this.lookupButton.Name = "lookupButton";
             this.lookupButton.Size = new System.Drawing.Size(75, 23);
-            this.lookupButton.TabIndex = 0;
+            this.lookupButton.TabIndex = 2;
             this.lookupButton.Text = "Lookup";
             this.lookupButton.UseVisualStyleBackColor = true;
             this.lookupButton.Click += new System.EventHandler(this.lookupButton_Click);
@@ -57,8 +57,9 @@ namespace Terminals.Network
             this.hostnameTextBox.Location = new System.Drawing.Point(76, 3);
             this.hostnameTextBox.Name = "hostnameTextBox";
             this.hostnameTextBox.Size = new System.Drawing.Size(186, 20);
-            this.hostnameTextBox.TabIndex = 1;
+            this.hostnameTextBox.TabIndex = 0;
             this.hostnameTextBox.Text = "codeplex.com";
+            this.hostnameTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.hostnameTextBox_KeyUp);
             // 
             // label1
             // 
@@ -109,7 +110,7 @@ namespace Terminals.Network
             this.serverComboBox.Location = new System.Drawing.Point(76, 32);
             this.serverComboBox.Name = "serverComboBox";
             this.serverComboBox.Size = new System.Drawing.Size(186, 21);
-            this.serverComboBox.TabIndex = 3;
+            this.serverComboBox.TabIndex = 1;
             this.serverComboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // splitter1

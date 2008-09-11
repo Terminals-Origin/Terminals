@@ -24,6 +24,7 @@ namespace Terminals.Network {
         /// </summary>
         private void InitializeComponent() {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ScanResultsLabel = new System.Windows.Forms.Label();
             this.pb = new System.Windows.Forms.TextBox();
             this.pa = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -36,7 +37,6 @@ namespace Terminals.Network {
             this.b = new System.Windows.Forms.TextBox();
             this.a = new System.Windows.Forms.TextBox();
             this.resultsGridView = new System.Windows.Forms.DataGridView();
-            this.ScanResultsLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridView)).BeginInit();
             this.SuspendLayout();
@@ -61,21 +61,31 @@ namespace Terminals.Network {
             this.panel1.Size = new System.Drawing.Size(485, 69);
             this.panel1.TabIndex = 0;
             // 
+            // ScanResultsLabel
+            // 
+            this.ScanResultsLabel.AutoSize = true;
+            this.ScanResultsLabel.Location = new System.Drawing.Point(345, 40);
+            this.ScanResultsLabel.Name = "ScanResultsLabel";
+            this.ScanResultsLabel.Size = new System.Drawing.Size(0, 13);
+            this.ScanResultsLabel.TabIndex = 11;
+            // 
             // pb
             // 
             this.pb.Location = new System.Drawing.Point(209, 35);
             this.pb.Name = "pb";
             this.pb.Size = new System.Drawing.Size(27, 20);
-            this.pb.TabIndex = 10;
+            this.pb.TabIndex = 6;
             this.pb.Text = "10";
+            this.pb.KeyUp += new System.Windows.Forms.KeyEventHandler(this.pb_KeyUp);
             // 
             // pa
             // 
             this.pa.Location = new System.Drawing.Point(209, 9);
             this.pa.Name = "pa";
             this.pa.Size = new System.Drawing.Size(27, 20);
-            this.pa.TabIndex = 9;
+            this.pa.TabIndex = 5;
             this.pa.Text = "1";
+            this.pa.KeyUp += new System.Windows.Forms.KeyEventHandler(this.pa_KeyUp);
             // 
             // label2
             // 
@@ -100,7 +110,7 @@ namespace Terminals.Network {
             this.StopButton.Location = new System.Drawing.Point(255, 35);
             this.StopButton.Name = "StopButton";
             this.StopButton.Size = new System.Drawing.Size(75, 23);
-            this.StopButton.TabIndex = 6;
+            this.StopButton.TabIndex = 8;
             this.StopButton.Text = "Stop";
             this.StopButton.UseVisualStyleBackColor = true;
             this.StopButton.Click += new System.EventHandler(this.StopButton_Click);
@@ -110,7 +120,7 @@ namespace Terminals.Network {
             this.StartButton.Location = new System.Drawing.Point(255, 9);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(75, 23);
-            this.StartButton.TabIndex = 5;
+            this.StartButton.TabIndex = 7;
             this.StartButton.Text = "Start";
             this.StartButton.UseVisualStyleBackColor = true;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
@@ -122,6 +132,7 @@ namespace Terminals.Network {
             this.e.Size = new System.Drawing.Size(27, 20);
             this.e.TabIndex = 4;
             this.e.Text = "10";
+            this.e.KeyUp += new System.Windows.Forms.KeyEventHandler(this.e_KeyUp);
             // 
             // d
             // 
@@ -130,6 +141,7 @@ namespace Terminals.Network {
             this.d.Size = new System.Drawing.Size(27, 20);
             this.d.TabIndex = 3;
             this.d.Text = "1";
+            this.d.KeyUp += new System.Windows.Forms.KeyEventHandler(this.d_KeyUp);
             // 
             // c
             // 
@@ -138,6 +150,7 @@ namespace Terminals.Network {
             this.c.Size = new System.Drawing.Size(27, 20);
             this.c.TabIndex = 2;
             this.c.Text = "0";
+            this.c.KeyUp += new System.Windows.Forms.KeyEventHandler(this.c_KeyUp);
             // 
             // b
             // 
@@ -146,6 +159,7 @@ namespace Terminals.Network {
             this.b.Size = new System.Drawing.Size(27, 20);
             this.b.TabIndex = 1;
             this.b.Text = "0";
+            this.b.KeyUp += new System.Windows.Forms.KeyEventHandler(this.b_KeyUp);
             // 
             // a
             // 
@@ -154,6 +168,7 @@ namespace Terminals.Network {
             this.a.Size = new System.Drawing.Size(27, 20);
             this.a.TabIndex = 0;
             this.a.Text = "10";
+            this.a.KeyUp += new System.Windows.Forms.KeyEventHandler(this.a_KeyUp);
             // 
             // resultsGridView
             // 
@@ -163,14 +178,6 @@ namespace Terminals.Network {
             this.resultsGridView.Name = "resultsGridView";
             this.resultsGridView.Size = new System.Drawing.Size(485, 225);
             this.resultsGridView.TabIndex = 1;
-            // 
-            // ScanResultsLabel
-            // 
-            this.ScanResultsLabel.AutoSize = true;
-            this.ScanResultsLabel.Location = new System.Drawing.Point(345, 40);
-            this.ScanResultsLabel.Name = "ScanResultsLabel";
-            this.ScanResultsLabel.Size = new System.Drawing.Size(0, 13);
-            this.ScanResultsLabel.TabIndex = 11;
             // 
             // PortScanner
             // 

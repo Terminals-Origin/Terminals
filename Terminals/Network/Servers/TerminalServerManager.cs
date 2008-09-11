@@ -129,5 +129,13 @@ namespace Terminals.Network.Servers
                 }
             }
         }
+
+        private void ServerNameComboBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                button1_Click(null, null);
+            }
+        }
     }
 }

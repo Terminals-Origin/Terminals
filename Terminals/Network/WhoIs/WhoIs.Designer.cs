@@ -41,7 +41,7 @@ namespace Terminals.Network.WhoIs
             this.whoisButton.Location = new System.Drawing.Point(235, 4);
             this.whoisButton.Name = "whoisButton";
             this.whoisButton.Size = new System.Drawing.Size(75, 23);
-            this.whoisButton.TabIndex = 0;
+            this.whoisButton.TabIndex = 1;
             this.whoisButton.Text = "&Whois";
             this.whoisButton.UseVisualStyleBackColor = true;
             this.whoisButton.Click += new System.EventHandler(this.whoisButton_Click);
@@ -71,8 +71,9 @@ namespace Terminals.Network.WhoIs
             this.hostTextbox.Location = new System.Drawing.Point(41, 6);
             this.hostTextbox.Name = "hostTextbox";
             this.hostTextbox.Size = new System.Drawing.Size(188, 20);
-            this.hostTextbox.TabIndex = 1;
+            this.hostTextbox.TabIndex = 0;
             this.hostTextbox.Text = "codeplex.com";
+            this.hostTextbox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.hostTextbox_KeyUp);
             // 
             // textBox2
             // 
