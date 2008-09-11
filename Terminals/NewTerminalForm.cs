@@ -570,15 +570,19 @@ namespace Terminals
             {
                 cmbServers.Enabled = false;
                 txtPort.Enabled = false;
+                txtPort.Text = "80";
                 httpUrlTextBox.Enabled = true;
                 defaultPort = Connections.ConnectionManager.HTTPPort.ToString();
+                this.tabControl1.SelectTab(HTTPTabPage);                
             }
             else if(ProtocolComboBox.Text == "HTTPS")
             {
                 cmbServers.Enabled = false;
+                txtPort.Text = "443";
                 txtPort.Enabled = false;
                 httpUrlTextBox.Enabled = true;
                 defaultPort = Connections.ConnectionManager.HTTPSPort.ToString();
+                this.tabControl1.SelectTab(HTTPTabPage);
             }
 
             txtPort.Text = defaultPort;
@@ -748,6 +752,7 @@ namespace Terminals
             try {
                 System.Uri u = new Uri(url);
                 cmbServers.Text = u.Host;
+                txtPort.Text = u.Port.ToString();
             } catch(Exception ex) {
                 Logging.Log.Error("Http URL Parse Failed", ex);
             }
