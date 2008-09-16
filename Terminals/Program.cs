@@ -9,7 +9,7 @@ namespace Terminals
 {
     static class Program
     {
-        public static string TerminalsVersion = "1.7b";
+        public static string TerminalsVersion = "1.7c";
         public static string SupportedProtocols = "RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix, Amazon S3";
         //  reminder to update the buildate for each release
         public static DateTime BuildDate = new DateTime(2008, 9, 9);  //used for checking project releases.  yeah yeah, this could be smarter about things...
