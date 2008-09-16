@@ -2696,6 +2696,7 @@ namespace Terminals {
 
         private void rebuildShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Settings.SpecialCommands.Clear();
             Settings.SpecialCommands = Terminals.Wizard.SpecialCommandsWizard.LoadSpecialCommands();
             LoadSpecialCommands();
         }

@@ -59,6 +59,7 @@ namespace Terminals {
             this.toolStripOrganizeShortucts = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.rebuildTagsIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rebuildShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -134,7 +135,6 @@ namespace Terminals {
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.tabControlItem1 = new TabControl.TabControlItem();
             this.tabControlItem2 = new TabControl.TabControlItem();
-            this.rebuildShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -447,6 +447,13 @@ namespace Terminals {
             this.rebuildTagsIndexToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.rebuildTagsIndexToolStripMenuItem.Text = "Rebuild Tags Index";
             this.rebuildTagsIndexToolStripMenuItem.Click += new System.EventHandler(this.rebuildTagsIndexToolStripMenuItem_Click);
+            // 
+            // rebuildShortcutsToolStripMenuItem
+            // 
+            this.rebuildShortcutsToolStripMenuItem.Name = "rebuildShortcutsToolStripMenuItem";
+            this.rebuildShortcutsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.rebuildShortcutsToolStripMenuItem.Text = "Rebuild Shortcuts";
+            this.rebuildShortcutsToolStripMenuItem.Click += new System.EventHandler(this.rebuildShortcutsToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -916,7 +923,6 @@ namespace Terminals {
             // 
             // favoriteToolBar
             // 
-            this.favoriteToolBar.AutoSize = false;
             this.favoriteToolBar.Dock = System.Windows.Forms.DockStyle.None;
             this.favoriteToolBar.Location = new System.Drawing.Point(3, 0);
             this.favoriteToolBar.MinimumSize = new System.Drawing.Size(150, 0);
@@ -958,7 +964,6 @@ namespace Terminals {
             // 
             // SpecialCommandsToolStrip
             // 
-            this.SpecialCommandsToolStrip.AutoSize = false;
             this.SpecialCommandsToolStrip.ContextMenuStrip = this.ShortcutsContextMenu;
             this.SpecialCommandsToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.SpecialCommandsToolStrip.Location = new System.Drawing.Point(3, 50);
@@ -1168,13 +1173,6 @@ namespace Terminals {
             this.tabControlItem2.TabIndex = 3;
             this.tabControlItem2.Title = "TabControl Page 4";
             this.tabControlItem2.ToolTipText = "";
-            // 
-            // rebuildShortcutsToolStripMenuItem
-            // 
-            this.rebuildShortcutsToolStripMenuItem.Name = "rebuildShortcutsToolStripMenuItem";
-            this.rebuildShortcutsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.rebuildShortcutsToolStripMenuItem.Text = "Rebuild Shortcuts";
-            this.rebuildShortcutsToolStripMenuItem.Click += new System.EventHandler(this.rebuildShortcutsToolStripMenuItem_Click);
             // 
             // MainForm
             // 

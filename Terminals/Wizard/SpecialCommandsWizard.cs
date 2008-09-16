@@ -13,7 +13,7 @@ namespace Terminals.Wizard
     {
         public static SpecialCommandConfigurationElementCollection LoadSpecialCommands()
         {
-            SpecialCommandConfigurationElementCollection cmdList = Settings.SpecialCommands;
+            SpecialCommandConfigurationElementCollection cmdList = new SpecialCommandConfigurationElementCollection();
             //add the command prompt
             SpecialCommandConfigurationElement elm = new SpecialCommandConfigurationElement("Command Shell");
             elm.Executable = @"%systemroot%\system32\cmd.exe";
@@ -23,7 +23,7 @@ namespace Terminals.Wizard
 
             string regEditFile = System.IO.Path.Combine(systemroot.FullName, "regedt32.exe");
             Icon[] regeditIcons = IconHandler.IconHandler.IconsFromFile(regEditFile, IconHandler.IconSize.Small);
-            SpecialCommandConfigurationElement regEditElm = new SpecialCommandConfigurationElement(regEditFile);
+            SpecialCommandConfigurationElement regEditElm = new SpecialCommandConfigurationElement("Registry Editor");
             if (regeditIcons != null && regeditIcons.Length > 0)
             {
                 if (!System.IO.Directory.Exists("Thumbs")) System.IO.Directory.CreateDirectory("Thumbs");
@@ -51,6 +51,7 @@ namespace Terminals.Wizard
                     string thumbName = string.Format(@"Thumbs\{0}.jpg", file.Name);
                     if (!System.IO.File.Exists(thumbName)) IconsList[rnd.Next(IconsList.Length - 1)].ToBitmap().Save(thumbName);
                     elm1.Thumbnail = thumbName;
+                    elm1.Name = file.Name.Replace(file.Extension, "");
                 }
 
                 //elm1.Thumbnail = "";
@@ -65,7 +66,17 @@ namespace Terminals.Wizard
             foreach (System.IO.FileInfo file in systemroot.GetFiles("*.cpl"))
             {
                 SpecialCommandConfigurationElement elm1 = new SpecialCommandConfigurationElement(file.Name);
+
                 elm1.Thumbnail = cpThumb;
+
+                Icon[] fileIcons = IconHandler.IconHandler.IconsFromFile(file.FullName, IconHandler.IconSize.Small);
+                if (fileIcons != null && fileIcons.Length > 0)
+                {
+                    string t = string.Format(@"Thumbs\{0}.jpg", file.Name);
+                    if (!System.IO.File.Exists(t)) fileIcons[0].ToBitmap().Save(t);
+                    elm1.Thumbnail = t;
+                }
+                
                 string thumbName = string.Format(@"Thumbs\{0}.jpg", file.Name);
                 if (System.IO.File.Exists(thumbName)) elm1.Thumbnail = thumbName;
                 elm1.Name = file.Name.Replace(file.Extension, "");
