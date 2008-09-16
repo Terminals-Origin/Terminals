@@ -2694,6 +2694,12 @@ namespace Terminals {
             this.tcTerminals.AddTab(TabControlItem);
         }
 
+        private void rebuildShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.SpecialCommands = Terminals.Wizard.SpecialCommandsWizard.LoadSpecialCommands();
+            LoadSpecialCommands();
+        }
+
     }
 
     public class TerminalTabControlItem : TabControlItem {

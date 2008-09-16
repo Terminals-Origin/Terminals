@@ -185,6 +185,13 @@ namespace Terminals.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap ControlPanel {
+            get {
+                object obj = ResourceManager.GetObject("ControlPanel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap delete {
             get {
                 object obj = ResourceManager.GetObject("delete", resourceCulture);
