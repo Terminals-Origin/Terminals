@@ -293,6 +293,7 @@
     <Compile Include="PopupTerminal.Designer.cs">
       <DependentUpon>PopupTerminal.cs</DependentUpon>
     </Compile>
+    <Compile Include="SerializableSortedDictionary.cs" />
     <Compile Include="Updates\HTTP.cs" />
     <Compile Include="Updates\RSS\Collections\ExceptionCollection.cs" />
     <Compile Include="Updates\RSS\Collections\RssCategoryCollection.cs" />

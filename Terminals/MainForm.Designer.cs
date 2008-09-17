@@ -135,6 +135,7 @@ namespace Terminals {
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.tabControlItem1 = new TabControl.TabControlItem();
             this.tabControlItem2 = new TabControl.TabControlItem();
+            this.rebuildToolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -386,7 +387,8 @@ namespace Terminals {
             this.toolStripOrganizeShortucts,
             this.toolStripSeparator7,
             this.rebuildTagsIndexToolStripMenuItem,
-            this.rebuildShortcutsToolStripMenuItem});
+            this.rebuildShortcutsToolStripMenuItem,
+            this.rebuildToolbarsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -1174,6 +1176,13 @@ namespace Terminals {
             this.tabControlItem2.Title = "TabControl Page 4";
             this.tabControlItem2.ToolTipText = "";
             // 
+            // rebuildToolbarsToolStripMenuItem
+            // 
+            this.rebuildToolbarsToolStripMenuItem.Name = "rebuildToolbarsToolStripMenuItem";
+            this.rebuildToolbarsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.rebuildToolbarsToolStripMenuItem.Text = "Rebuild Toolbars";
+            this.rebuildToolbarsToolStripMenuItem.Click += new System.EventHandler(this.rebuildToolbarsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1337,5 +1346,6 @@ namespace Terminals {
         private FavsList favsList1;
         private System.Windows.Forms.ToolStripMenuItem viewInNewWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rebuildShortcutsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem rebuildToolbarsToolStripMenuItem;
     }
 }

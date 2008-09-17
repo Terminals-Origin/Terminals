@@ -1198,7 +1198,7 @@ namespace Terminals
             }
         }
     }
-    public class ToolStripSettings : List<ToolStripSetting> {
+    public class ToolStripSettings : SerializableSortedDictionary<int, ToolStripSetting> {
         public ToolStripSettings() { }
         public static ToolStripSettings LoadFromString(string Settings) {
             return (ToolStripSettings)Unified.Serialize.DeSerializeXML(Settings, typeof(ToolStripSettings), false);

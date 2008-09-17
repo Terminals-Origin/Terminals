@@ -35,6 +35,7 @@ namespace Terminals {
         {
             try
             {
+                resetMethodInvoker = new MethodInvoker(LoadWindowState);
 
                 //check for wizard
                 if(Settings.ShowWizard)
@@ -408,6 +409,7 @@ namespace Terminals {
             }
         }
 
+        int currentToolBarCount = 0;
         private void SaveToolStripRow(ToolStripPanelRow Row, ToolStripSettings newSettings, string Position, int rowIndex)
         {
             foreach(ToolStrip strip in Row.Controls)
@@ -420,13 +422,15 @@ namespace Terminals {
                 setting.Top = strip.Top;
                 setting.Name = strip.Name;
                 setting.Visible = strip.Visible;
-                newSettings.Add(setting);
+                newSettings.Add(currentToolBarCount, setting);
+                currentToolBarCount++;
                 //}
             }
         }
 
         private void SaveWindowState()
         {
+            currentToolBarCount = 0;
             if(!Settings.ToolbarsLocked)
             {
                 //ToolStripManager.SaveSettings(this);
@@ -455,6 +459,20 @@ namespace Terminals {
                 //pnlHideTagsFavorites.Visible = false;
             }
         }
+
+        System.Windows.Forms.MethodInvoker resetMethodInvoker;
+        private void ResetToolbars()
+        {
+            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ToolbarResetThread));
+        }
+        private void ToolbarResetThread(object state)
+        {
+            //System.Threading.Thread.Sleep(500);
+            this.Invoke(resetMethodInvoker);
+            //System.Threading.Thread.Sleep(500);
+            this.Invoke(resetMethodInvoker);
+        }
+
         public void LoadWindowState()
         {
             this.Text = Program.AboutText;
@@ -466,8 +484,9 @@ namespace Terminals {
             ToolStripMenuItem menuItem = null;
             if(newSettings != null && newSettings.Count > 0)
             {
-                foreach(ToolStripSetting setting in newSettings)
+                foreach(int rowIndex in newSettings.Keys)
                 {
+                    ToolStripSetting setting = newSettings[rowIndex];
                     menuItem = null;
                     ToolStrip strip = null;
                     if(setting.Name == toolbarStd.Name)
@@ -504,6 +523,7 @@ namespace Terminals {
                         int row = setting.Row + 1;
                         //p = new Point(setting.Left, (setting.Row * row) + 1);
                         p = new Point(setting.Left, setting.Top);
+                        strip.Location = p;
                         if(setting.Dock == "Top")
                         {
                             this.toolStripContainer.TopToolStripPanel.Join(strip, p);
@@ -1380,9 +1400,13 @@ namespace Terminals {
             set
             {
                 if(FullScreen != value) SetFullScreen(value);
-                if(!FullScreen) LoadWindowState();  //try to restore the toolbars
+                if (!FullScreen)
+                {
+                    ResetToolbars();  //try to restore the toolbars
+                }
             }
         }
+
 
         public void tcTerminals_TabControlItemClosed(object sender, EventArgs e)
         {
@@ -2699,6 +2723,11 @@ namespace Terminals {
             Settings.SpecialCommands.Clear();
             Settings.SpecialCommands = Terminals.Wizard.SpecialCommandsWizard.LoadSpecialCommands();
             LoadSpecialCommands();
+        }
+
+        private void rebuildToolbarsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadWindowState();
         }
 
     }
