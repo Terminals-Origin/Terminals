@@ -190,23 +190,25 @@ namespace Terminals.TerminalServices
             Int32 active_session = 0;
             bool success1 = ProcessIdToSessionId(active_process, ref active_session);
             if(active_session <= 0) success1 = false;
-            foreach(Session s in Data.Sessions)
+            if (Data != null && Data.Sessions != null)
             {
-                if(s.Client == null) s.Client = new Client();
-                
-                WTS_CLIENT_INFO ClientInfo = LoadClientInfoForSession(Data.ServerPointer, s.SessionID);
-                s.Client.Address = ClientInfo.Address;
-                s.Client.AddressFamily = ClientInfo.AddressFamily;
-                s.Client.ClientName = ClientInfo.WTSClientName;
-                s.Client.DomianName = ClientInfo.WTSDomainName;
-                s.Client.StationName = ClientInfo.WTSStationName;
-                s.Client.Status = ClientInfo.WTSStatus;
-                s.Client.UserName = ClientInfo.WTSUserName;
-                s.IsTheActiveSession=false;
-                if(success1 && s.SessionID == active_session) s.IsTheActiveSession = true;
+                foreach (Session s in Data.Sessions)
+                {
+                    if (s.Client == null) s.Client = new Client();
+
+                    WTS_CLIENT_INFO ClientInfo = LoadClientInfoForSession(Data.ServerPointer, s.SessionID);
+                    s.Client.Address = ClientInfo.Address;
+                    s.Client.AddressFamily = ClientInfo.AddressFamily;
+                    s.Client.ClientName = ClientInfo.WTSClientName;
+                    s.Client.DomianName = ClientInfo.WTSDomainName;
+                    s.Client.StationName = ClientInfo.WTSStationName;
+                    s.Client.Status = ClientInfo.WTSStatus;
+                    s.Client.UserName = ClientInfo.WTSUserName;
+                    s.IsTheActiveSession = false;
+                    if (success1 && s.SessionID == active_session) s.IsTheActiveSession = true;
+                }
+
             }
-
-
 
             WTSCloseServer(ptrOpenedServer);
             return Data;
