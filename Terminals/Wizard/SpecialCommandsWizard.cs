@@ -11,6 +11,11 @@ namespace Terminals.Wizard
 {
     class SpecialCommandsWizard
     {
+        private static SortedDictionary<string, string> KnownSpecialCommands = new SortedDictionary<string, string>();
+        static SpecialCommandsWizard()
+        {
+
+        }
         public static SpecialCommandConfigurationElementCollection LoadSpecialCommands()
         {
             SpecialCommandConfigurationElementCollection cmdList = new SpecialCommandConfigurationElementCollection();
@@ -43,6 +48,8 @@ namespace Terminals.Wizard
 
             foreach (System.IO.FileInfo file in systemroot.GetFiles("*.msc"))
             {
+                MMC.MMCFile fileMMC = new Terminals.Wizard.MMC.MMCFile(file);
+                
                 SpecialCommandConfigurationElement elm1 = new SpecialCommandConfigurationElement(file.Name);
 
                 if (IconsList != null && IconsList.Length > 0)
@@ -51,7 +58,11 @@ namespace Terminals.Wizard
                     string thumbName = string.Format(@"Thumbs\{0}.jpg", file.Name);
                     if (!System.IO.File.Exists(thumbName)) IconsList[rnd.Next(IconsList.Length - 1)].ToBitmap().Save(thumbName);
                     elm1.Thumbnail = thumbName;
-                    elm1.Name = file.Name.Replace(file.Extension, "");
+                    
+                    if (fileMMC.Parsed)
+                        elm1.Name = fileMMC.Name;
+                    else
+                        elm1.Name = file.Name.Replace(file.Extension, "");
                 }
 
                 //elm1.Thumbnail = "";
@@ -76,7 +87,7 @@ namespace Terminals.Wizard
                     if (!System.IO.File.Exists(t)) fileIcons[0].ToBitmap().Save(t);
                     elm1.Thumbnail = t;
                 }
-                
+
                 string thumbName = string.Format(@"Thumbs\{0}.jpg", file.Name);
                 if (System.IO.File.Exists(thumbName)) elm1.Thumbnail = thumbName;
                 elm1.Name = file.Name.Replace(file.Extension, "");
@@ -84,7 +95,7 @@ namespace Terminals.Wizard
                 cmdList.Add(elm1);
             }
 
-            return cmdList;            
+            return cmdList;
 
         }
     }
