@@ -188,6 +188,8 @@ namespace Terminals
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
         this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
+        this.AllowDesktopCompositionCheckbox = new System.Windows.Forms.CheckBox();
+        this.AllowFontSmoothingCheckbox = new System.Windows.Forms.CheckBox();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -507,6 +509,8 @@ namespace Terminals
         // 
         // groupBox1
         // 
+        this.groupBox1.Controls.Add(this.AllowDesktopCompositionCheckbox);
+        this.groupBox1.Controls.Add(this.AllowFontSmoothingCheckbox);
         this.groupBox1.Controls.Add(this.customSizePanel);
         this.groupBox1.Controls.Add(this.chkDisableWallpaper);
         this.groupBox1.Controls.Add(this.chkDisableThemes);
@@ -1897,6 +1901,26 @@ namespace Terminals
         this.NewWindowCheckbox.Text = "&Open in New Window";
         this.NewWindowCheckbox.UseVisualStyleBackColor = true;
         // 
+        // AllowDesktopCompositionCheckbox
+        // 
+        this.AllowDesktopCompositionCheckbox.AutoSize = true;
+        this.AllowDesktopCompositionCheckbox.Location = new System.Drawing.Point(297, 177);
+        this.AllowDesktopCompositionCheckbox.Name = "AllowDesktopCompositionCheckbox";
+        this.AllowDesktopCompositionCheckbox.Size = new System.Drawing.Size(154, 17);
+        this.AllowDesktopCompositionCheckbox.TabIndex = 16;
+        this.AllowDesktopCompositionCheckbox.Text = "Allow Desktop Composition";
+        this.AllowDesktopCompositionCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // AllowFontSmoothingCheckbox
+        // 
+        this.AllowFontSmoothingCheckbox.AutoSize = true;
+        this.AllowFontSmoothingCheckbox.Location = new System.Drawing.Point(297, 157);
+        this.AllowFontSmoothingCheckbox.Name = "AllowFontSmoothingCheckbox";
+        this.AllowFontSmoothingCheckbox.Size = new System.Drawing.Size(129, 17);
+        this.AllowFontSmoothingCheckbox.TabIndex = 15;
+        this.AllowFontSmoothingCheckbox.Text = "Allow Font Smoothing";
+        this.AllowFontSmoothingCheckbox.UseVisualStyleBackColor = true;
+        // 
         // NewTerminalForm
         // 
         this.AcceptButton = this.btnOk;
@@ -2133,5 +2157,7 @@ namespace Terminals
       private System.Windows.Forms.TextBox NotesTextbox;
       private System.Windows.Forms.Label label36;
       private System.Windows.Forms.CheckBox NewWindowCheckbox;
+      private System.Windows.Forms.CheckBox AllowDesktopCompositionCheckbox;
+      private System.Windows.Forms.CheckBox AllowFontSmoothingCheckbox;
   }
 }

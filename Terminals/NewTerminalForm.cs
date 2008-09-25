@@ -206,6 +206,8 @@ namespace Terminals
                 chkDisableMenuAnimations.Checked = favorite.DisableMenuAnimations;
                 chkDisableThemes.Checked = favorite.DisableTheming;
                 chkDisableWallpaper.Checked = favorite.DisableWallPaper;
+                AllowFontSmoothingCheckbox.Checked = favorite.EnableFontSmoothing;
+                AllowDesktopCompositionCheckbox.Checked = favorite.EnableDesktopComposition;
             }
             this.widthUpDown.Value = (decimal)favorite.DesktopSizeWidth;
             this.heightUpDown.Value = (decimal)favorite.DesktopSizeHeight;
@@ -312,6 +314,10 @@ namespace Terminals
                 favorite.EnableCompression = EnableCompressionCheckbox.Checked;
                 favorite.BitmapPeristence = EnableBitmapPersistanceCheckbox.Checked;
                 favorite.AllowBackgroundInput = AllowBackgroundInputCheckBox.Checked;
+
+                favorite.EnableFontSmoothing = AllowFontSmoothingCheckbox.Checked;
+                favorite.EnableDesktopComposition = AllowDesktopCompositionCheckbox.Checked;
+
 
                 favorite.DesktopSizeWidth = (int)this.widthUpDown.Value;
                 favorite.DesktopSizeHeight = (int)this.heightUpDown.Value;

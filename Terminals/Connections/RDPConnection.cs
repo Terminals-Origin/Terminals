@@ -189,10 +189,12 @@ namespace Terminals.Connections
     0x00000001
      Wallpaper on the desktop is not displayed.
  
+                 * TS_PERF_ENABLE_FONT_SMOOTHING 0x00000080
+TS_PERF_ENABLE_DESKTOP_COMPOSITION 0x00000100
                  */
 
 
-                if(Settings.SupportsRDP6)
+                if (Settings.SupportsRDP6)
                 {
                     MSTSCLib6.IMsRdpClientAdvancedSettings5 advancedSettings5 = (axMsRdpClient2.AdvancedSettings3 as MSTSCLib6.IMsRdpClientAdvancedSettings5);
                     if(advancedSettings5 != null)

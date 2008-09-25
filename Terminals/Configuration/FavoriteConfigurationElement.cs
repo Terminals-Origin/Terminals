@@ -896,6 +896,32 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("enableDesktopComposition")]
+        public bool EnableDesktopComposition
+        {
+            get
+            {
+                return (bool)this["enableDesktopComposition"];
+            }
+            set
+            {
+                this["enableDesktopComposition"] = value;
+            }
+        }
+
+        [ConfigurationProperty("enableFontSmoothing")]
+        public bool EnableFontSmoothing
+        {
+            get
+            {
+                return (bool)this["enableFontSmoothing"];
+            }
+            set
+            {
+                this["enableFontSmoothing"] = value;
+            }
+        }
+
 
         [ConfigurationProperty("disableCursorShadow")]
         public bool DisableCursorShadow
@@ -971,7 +997,9 @@ namespace Terminals
                 if(DisableFullWindowDrag) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_FULLWINDOWDRAG;
                 if(DisableMenuAnimations) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_MENUANIMATIONS;
                 if(DisableTheming) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_THEMING;
-                if(DisableWallPaper) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_WALLPAPER;
+                if (DisableWallPaper) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_WALLPAPER;
+                if (EnableDesktopComposition) result += (int)Terminals.PerfomanceOptions.TS_PERF_ENABLE_DESKTOP_COMPOSITION;
+                if (EnableFontSmoothing) result += (int)Terminals.PerfomanceOptions.TS_PERF_ENABLE_FONT_SMOOTHING;
 
 
                 return result;
