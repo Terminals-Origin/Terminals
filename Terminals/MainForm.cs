@@ -19,6 +19,7 @@ namespace Terminals {
     {
 
 
+        MethodInvoker specialCommandsMIV;
         public static Terminals.CommandLine.TerminalsCA CommandLineArgs = new Terminals.CommandLine.TerminalsCA();
 
         public const int WM_LEAVING_FULLSCREEN = 0x4ff;
@@ -35,6 +36,7 @@ namespace Terminals {
         {
             try
             {
+                specialCommandsMIV = new MethodInvoker(LoadSpecialCommands);
                 resetMethodInvoker = new MethodInvoker(LoadWindowState);
 
                 //check for wizard
@@ -64,7 +66,8 @@ namespace Terminals {
 
                 LoadFavorites();
                 LoadFavorites("");
-                LoadSpecialCommands();
+                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ReloadSpecialCommands), null);
+                //LoadSpecialCommands();
                 LoadGroups();
                 UpdateControls();
                 pnlTagsFavorites.Width = 7;
@@ -97,6 +100,9 @@ namespace Terminals {
                 //    Terminals.Logging.Log.Info("Failed to set keyboard hook for global event handling.", exc);
                 //}
                 
+
+                
+
             }
             catch(Exception exc)
             {
@@ -114,7 +120,7 @@ namespace Terminals {
         //    }
         //}
         
-
+        
         void LoadSpecialCommands()
         {
             SpecialCommandsToolStrip.Items.Clear();
@@ -162,6 +168,40 @@ namespace Terminals {
                 QuickContextMenu.Items.Add("-");
                 QuickContextMenu.Items.Add("&Organize Favorites",Resources.star);
                 QuickContextMenu.Items.Add("Options", Resources.options);
+                QuickContextMenu.Items.Add("-");
+
+                ToolStripMenuItem special = new ToolStripMenuItem("Special Commands", Resources.computer_link);
+                ToolStripMenuItem mgmt = new ToolStripMenuItem("Management", Resources.CompMgmt);
+                ToolStripMenuItem cpl = new ToolStripMenuItem("Control Panel", Resources.ControlPanel);
+
+                QuickContextMenu.Items.Add(special);
+                special.DropDown.Items.Add(mgmt);
+                special.DropDown.Items.Add(cpl);
+
+                foreach (SpecialCommandConfigurationElement elm in Settings.SpecialCommands)
+                {
+                    Image img = null;
+                    if (elm.Thumbnail != null && elm.Thumbnail != "" && System.IO.File.Exists(elm.Thumbnail))
+                    {
+                        img = Image.FromFile(elm.Thumbnail);
+                    }
+                    else
+                    {
+                        img = Resources.server_administrator_icon;
+                    }
+                    ToolStripItem specialItem;
+                    if (elm.Executable.ToLower().EndsWith("cpl"))
+                    {
+                        specialItem = cpl.DropDown.Items.Add(elm.Name, img);
+                    }
+                    else
+                    {
+                        specialItem = mgmt.DropDown.Items.Add(elm.Name, img);
+                    }
+                    specialItem.Click += new EventHandler(specialItem_Click);
+                    specialItem.Tag = elm;
+                }
+
                 QuickContextMenu.Items.Add("-");
 
                 SortedDictionary<string, FavoriteConfigurationElement>  favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
@@ -239,6 +279,13 @@ namespace Terminals {
                 QuickContextMenu.Items.Add("&Exit");
                 if(tcTerminals != null && sender != null) QuickContextMenu.Show(tcTerminals, e.Location);
             }
+        }
+
+        void specialItem_Click(object sender, EventArgs e)
+        {
+            ToolStripItem specialItem = (ToolStripItem)sender;
+            SpecialCommandConfigurationElement elm = (SpecialCommandConfigurationElement)specialItem.Tag;
+            elm.Launch();
         }
 
         private void QuickContextMenu_Opening(object sender, CancelEventArgs e)
@@ -2187,7 +2234,7 @@ namespace Terminals {
             OrganizeShortcuts org = new OrganizeShortcuts();
             org.ShowDialog(this);
             if(Settings.EnableFavoritesPanel) LoadTags(null);
-            LoadSpecialCommands();
+            this.Invoke(specialCommandsMIV);
         }
 
 
@@ -2718,11 +2765,16 @@ namespace Terminals {
             this.tcTerminals.AddTab(TabControlItem);
         }
 
+        private void ReloadSpecialCommands(object state)
+        {
+            while(!this.Created) System.Threading.Thread.Sleep(500);
+            rebuildShortcutsToolStripMenuItem_Click(null, null);
+        }
         private void rebuildShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings.SpecialCommands.Clear();
-            Settings.SpecialCommands = Terminals.Wizard.SpecialCommandsWizard.LoadSpecialCommands();
-            LoadSpecialCommands();
+            Settings.SpecialCommands = Terminals.Wizard.SpecialCommandsWizard.LoadSpecialCommands();            
+            this.Invoke(specialCommandsMIV);
         }
 
         private void rebuildToolbarsToolStripMenuItem_Click(object sender, EventArgs e)
