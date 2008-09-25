@@ -173,10 +173,12 @@ namespace Terminals {
                 ToolStripMenuItem special = new ToolStripMenuItem("Special Commands", Resources.computer_link);
                 ToolStripMenuItem mgmt = new ToolStripMenuItem("Management", Resources.CompMgmt);
                 ToolStripMenuItem cpl = new ToolStripMenuItem("Control Panel", Resources.ControlPanel);
+                ToolStripMenuItem other = new ToolStripMenuItem("Other", Resources.star);
 
                 QuickContextMenu.Items.Add(special);
                 special.DropDown.Items.Add(mgmt);
                 special.DropDown.Items.Add(cpl);
+                special.DropDown.Items.Add(other);
 
                 foreach (SpecialCommandConfigurationElement elm in Settings.SpecialCommands)
                 {
@@ -194,9 +196,13 @@ namespace Terminals {
                     {
                         specialItem = cpl.DropDown.Items.Add(elm.Name, img);
                     }
-                    else
+                    else if (elm.Executable.ToLower().EndsWith("msc"))
                     {
                         specialItem = mgmt.DropDown.Items.Add(elm.Name, img);
+                    }
+                    else
+                    {
+                        specialItem = other.DropDown.Items.Add(elm.Name, img);
                     }
                     specialItem.Click += new EventHandler(specialItem_Click);
                     specialItem.Tag = elm;
