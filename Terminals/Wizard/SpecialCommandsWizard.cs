@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-
 namespace Terminals.Wizard
 {
     class SpecialCommandsWizard
     {
+
         private static SortedDictionary<string, string> KnownSpecialCommands = new SortedDictionary<string, string>();
         static SpecialCommandsWizard()
         {
@@ -56,13 +56,27 @@ namespace Terminals.Wizard
                 {
 
                     string thumbName = string.Format(@"Thumbs\{0}.jpg", file.Name);
-                    if (!System.IO.File.Exists(thumbName)) IconsList[rnd.Next(IconsList.Length - 1)].ToBitmap().Save(thumbName);
                     elm1.Thumbnail = thumbName;
-                    
+
+                    if (!System.IO.File.Exists(thumbName))
+                    {
+                        if (fileMMC.SmallIcon != null)
+                        {
+                            fileMMC.SmallIcon.ToBitmap().Save(thumbName);
+                        }
+                        else
+                        {
+                            IconsList[rnd.Next(IconsList.Length - 1)].ToBitmap().Save(thumbName);
+                        }
+                    }
                     if (fileMMC.Parsed)
+                    {
                         elm1.Name = fileMMC.Name;
+                    }
                     else
+                    {
                         elm1.Name = file.Name.Replace(file.Extension, "");
+                    }
                 }
 
                 //elm1.Thumbnail = "";

@@ -35,6 +35,43 @@ namespace Terminals.Wizard.MMC
                 System.Xml.XmlNode node = xDoc.SelectSingleNode("/MMC_ConsoleFile/StringTables/StringTable/Strings");
                 Name = node.ChildNodes[0].InnerText;
                 Parsed = true;
+
+                System.Xml.XmlNode visual = xDoc.SelectSingleNode("/MMC_ConsoleFile/VisualAttributes/Icon");
+                if (visual != null)
+                {
+                    string iconFile = visual.Attributes["File"].Value;
+                    int index = Convert.ToInt32(visual.Attributes["Index"].Value);
+                    System.Drawing.Icon[] icons = IconHandler.IconHandler.IconsFromFile(iconFile, IconHandler.IconSize.Small);
+                    if (icons.Length > 0)
+                    {
+                        if (icons.Length > index)
+                        {
+                            SmallIcon = icons[index];
+                        }
+                        else
+                        {
+                            SmallIcon = icons[0];
+                        }
+                    }
+                }                
+                
+
+                //System.Xml.XmlNode binarynode = xDoc.SelectSingleNode("/MMC_ConsoleFile/BinaryStorage");
+                //foreach (System.Xml.XmlNode child in binarynode.ChildNodes)
+                //{
+                //    string childname = child.Attributes["Name"].Value;
+                //    if (childname.ToLower().Contains("small"))
+                //    {
+                //        string image = child.InnerText;
+                //        byte[] buff = System.Text.ASCIIEncoding.Default.GetBytes(image);
+                //        System.IO.MemoryStream stm = new System.IO.MemoryStream(buff);
+                //        if(stm.Position>0 && stm.CanSeek) stm.Seek(0, System.IO.SeekOrigin.Begin);
+                //        System.Drawing.Image.FromStream(stm);
+                //        System.Drawing.Icon ico = new System.Drawing.Icon(stm);
+                        
+                //    }
+                //}
+
             }
         }
     }
