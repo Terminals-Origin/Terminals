@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 namespace Terminals
 {
@@ -20,6 +21,8 @@ namespace Terminals
         public static string FlickrSharedSecretKey = "ac8f3c60be0812b6";
         public static string ConfigurationFileLocation = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), @"Terminals.config");
 
+        public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", typeof(MainForm).Assembly);
+
 
         /// <summary>
         /// The main entry point for the application.
@@ -33,6 +36,9 @@ namespace Terminals
             mtx = new Mutex(false, "TerminalsMutex");
 
             Terminals.Logging.Log.Info("Terminals " + Program.TerminalsVersion + " started");
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("fr-FR");
+            
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

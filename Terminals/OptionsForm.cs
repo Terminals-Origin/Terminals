@@ -226,7 +226,7 @@ namespace Terminals
 
         private void ClearMasterButton_Click(object sender, EventArgs e)
         {
-            if(System.Windows.Forms.MessageBox.Show("Are you sure you want to remove the master password?\r\n\r\n**Please be advised that this will render ALL saved passwords inactive!**", "Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if(System.Windows.Forms.MessageBox.Show("Are you sure you want to remove the master password?\r\n\r\n**Please be advised that this will render ALL saved passwords inactive!**", Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
 
                 Settings.TerminalsPassword = "";

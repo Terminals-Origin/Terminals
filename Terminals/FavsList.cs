@@ -162,7 +162,7 @@ namespace Terminals
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if(fav != null)
             {
-                if(MessageBox.Show("Are you sure you want to reboot this machine: " + fav.ServerName, "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if(MessageBox.Show("Are you sure you want to reboot this machine: " + fav.ServerName, Program.Resources.GetString("Confirmation"), MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
 
                     if(NetTools.MagicPacket.ForceReboot(fav.ServerName, NetTools.MagicPacket.ShutdownStyles.ForcedReboot) == 0)
@@ -180,7 +180,7 @@ namespace Terminals
             FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if(fav != null)
             {
-                if(MessageBox.Show("Are you sure you want to shutdown this machine: " + fav.ServerName, "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if(MessageBox.Show("Are you sure you want to shutdown this machine: " + fav.ServerName, Program.Resources.GetString("Confirmation"), MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     if(NetTools.MagicPacket.ForceReboot(fav.ServerName, NetTools.MagicPacket.ShutdownStyles.ForcedShutdown) == 0)
                     {

@@ -157,7 +157,7 @@ namespace Terminals.CaptureManager
                         sb.Append(dirs.Length);
                         sb.Append(" directories.\r\n");
                     }
-                    DialogResult result = System.Windows.Forms.MessageBox.Show(sb.ToString(), "Confirmation", MessageBoxButtons.OKCancel);
+                    DialogResult result = System.Windows.Forms.MessageBox.Show(sb.ToString(), Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel);
                     if(result == DialogResult.OK)
                     {
                         string rootFolder = dir.FullName;

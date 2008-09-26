@@ -240,6 +240,11 @@
     </Compile>
     <Compile Include="Integration\Import\ImportvRD.cs" />
     <Compile Include="Integration\Import\vrd.cs" />
+    <Compile Include="Localization\LocalizedValues.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizedValues.resx</DependentUpon>
+    </Compile>
     <Compile Include="Logging\Log.cs" />
     <Compile Include="Network\ActiveDirectoryClient.cs" />
     <Compile Include="Network\ActiveDirectoryComputer.cs" />
@@ -745,12 +750,18 @@
       <DependentUpon>FavsList.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Localization\LocalizedValues.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>LocalizedValues.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\ImportFromAD.resx">
       <DependentUpon>ImportFromAD.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\Pcap\PacketCapture.resx">
       <DependentUpon>PacketCapture.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner.resx">
       <SubType>Designer</SubType>
@@ -770,6 +781,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PopupTerminal.resx">
       <DependentUpon>PopupTerminal.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\CommonOptions.resx">
       <DependentUpon>CommonOptions.cs</DependentUpon>
