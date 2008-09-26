@@ -214,7 +214,7 @@ namespace Terminals {
 
                 Dictionary<string, ToolStripMenuItem> tagTools = new Dictionary<string, ToolStripMenuItem>();
                 SortedDictionary<string, ToolStripMenuItem> sortedList = new SortedDictionary<string, ToolStripMenuItem>();
-                ToolStripMenuItem sortedMenu = new ToolStripMenuItem(Program.Resources.GetString(Program.Resources.GetString("Alphabetical")));
+                ToolStripMenuItem sortedMenu = new ToolStripMenuItem(Program.Resources.GetString("Alphabetical"));
                 sortedMenu.DropDownItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
 
                 foreach(string key in favorites.Keys)

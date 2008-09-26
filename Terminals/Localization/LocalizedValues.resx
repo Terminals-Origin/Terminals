@@ -243,4 +243,148 @@
   <data name="TerminalsNews" xml:space="preserve">
     <value>Terminals News</value>
   </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="AddCurrentConnectionTo" xml:space="preserve">
+    <value>Add Current Connection To</value>
+  </data>
+  <data name="CaptureTerminalScreen" xml:space="preserve">
+    <value>Capture Terminal Screen</value>
+  </data>
+  <data name="ClicktoShoworHideTerminalsMainWindow" xml:space="preserve">
+    <value>Click to Show or Hide Terminals Main Window</value>
+  </data>
+  <data name="ComputerManagementMMC" xml:space="preserve">
+    <value>Computer Management (MMC)</value>
+  </data>
+  <data name="Connect" xml:space="preserve">
+    <value>Connect</value>
+  </data>
+  <data name="ConnectTo" xml:space="preserve">
+    <value>Connect To</value>
+  </data>
+  <data name="ConnectToAll" xml:space="preserve">
+    <value>Connect To All</value>
+  </data>
+  <data name="Connecttoserver" xml:space="preserve">
+    <value>Connect To Server</value>
+  </data>
+  <data name="CreateGroupFromActiveConnections" xml:space="preserve">
+    <value>Create Group From Active Connections</value>
+  </data>
+  <data name="Disconnect" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="DisconnectFromServer" xml:space="preserve">
+    <value>Disconnect From Server</value>
+  </data>
+  <data name="DNS" xml:space="preserve">
+    <value>DNS</value>
+  </data>
+  <data name="Favorites" xml:space="preserve">
+    <value>Favorites</value>
+  </data>
+  <data name="GrabInput" xml:space="preserve">
+    <value>Grab Input</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>Groups</value>
+  </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="LockToolbars" xml:space="preserve">
+    <value>Lock Toolbars</value>
+  </data>
+  <data name="ManageConnections" xml:space="preserve">
+    <value>Manage Connections</value>
+  </data>
+  <data name="ManageToolbar" xml:space="preserve">
+    <value>Manage Toolbar</value>
+  </data>
+  <data name="NewReleaseAvailable" xml:space="preserve">
+    <value>New Release Available</value>
+  </data>
+  <data name="OrganizeFavoritesToolbar" xml:space="preserve">
+    <value>Organize Favorites Toolbar</value>
+  </data>
+  <data name="OrganizeGroups" xml:space="preserve">
+    <value>Organize Groups</value>
+  </data>
+  <data name="OrganizeShortcuts" xml:space="preserve">
+    <value>Organize Shortcuts</value>
+  </data>
+  <data name="OrganizeShortucts" xml:space="preserve">
+    <value>Organize Shortucts</value>
+  </data>
+  <data name="Ping" xml:space="preserve">
+    <value>Ping</value>
+  </data>
+  <data name="Properties" xml:space="preserve">
+    <value>Properties</value>
+  </data>
+  <data name="QuickConnect" xml:space="preserve">
+    <value>Quick Connect</value>
+  </data>
+  <data name="RebuildShortcuts" xml:space="preserve">
+    <value>Rebuild Shortcuts</value>
+  </data>
+  <data name="RebuildTagsIndex" xml:space="preserve">
+    <value>Rebuild Tags Index</value>
+  </data>
+  <data name="RebuildToolbars" xml:space="preserve">
+    <value>Rebuild Toolbars</value>
+  </data>
+  <data name="SendALTF4Keys" xml:space="preserve">
+    <value>Send ALT-F4 Keys</value>
+  </data>
+  <data name="SendALTKey" xml:space="preserve">
+    <value>Send ALT Key</value>
+  </data>
+  <data name="SendCTRLESCKeys" xml:space="preserve">
+    <value>Send CTRL ESC Keys</value>
+  </data>
+  <data name="SendCTRLKey" xml:space="preserve">
+    <value>Send CTRL Key</value>
+  </data>
+  <data name="SentCTRLALTDELKeys" xml:space="preserve">
+    <value>Sent CTRL ALT DEL Keys</value>
+  </data>
+  <data name="Shortcuts" xml:space="preserve">
+    <value>Shortcuts</value>
+  </data>
+  <data name="StandardToolbar" xml:space="preserve">
+    <value>Standard Toolbar</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="Terminal" xml:space="preserve">
+    <value>Terminal</value>
+  </data>
+  <data name="TerminalServer" xml:space="preserve">
+    <value>Terminal Server</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="TraceRoute" xml:space="preserve">
+    <value>Trace Route</value>
+  </data>
+  <data name="TSAdmin" xml:space="preserve">
+    <value>TS Admin</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="ViewinnewWindow" xml:space="preserve">
+    <value>View in new Window</value>
+  </data>
+  <data name="VMRCSwitchtoAdministratorView" xml:space="preserve">
+    <value>VMRC: Switch to Administrator View</value>
+  </data>
+  <data name="VMRCViewOnlyMode" xml:space="preserve">
+    <value>VMRC: View Only Mode</value>
+  </data>
 </root>

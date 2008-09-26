@@ -61,6 +61,24 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        internal static string About {
+            get {
+                return ResourceManager.GetString("About", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Current Connection To.
+        /// </summary>
+        internal static string AddCurrentConnectionTo {
+            get {
+                return ResourceManager.GetString("AddCurrentConnectionTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Alphabetical.
         /// </summary>
         internal static string Alphabetical {
@@ -115,11 +133,38 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Capture Terminal Screen.
+        /// </summary>
+        internal static string CaptureTerminalScreen {
+            get {
+                return ResourceManager.GetString("CaptureTerminalScreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Click to Show or Hide Terminals Main Window.
+        /// </summary>
+        internal static string ClicktoShoworHideTerminalsMainWindow {
+            get {
+                return ResourceManager.GetString("ClicktoShoworHideTerminalsMainWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Computer.
         /// </summary>
         internal static string Computer {
             get {
                 return ResourceManager.GetString("Computer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Computer Management (MMC).
+        /// </summary>
+        internal static string ComputerManagementMMC {
+            get {
+                return ResourceManager.GetString("ComputerManagementMMC", resourceCulture);
             }
         }
         
@@ -133,11 +178,38 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect.
+        /// </summary>
+        internal static string Connect {
+            get {
+                return ResourceManager.GetString("Connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ConnectionInformation.
         /// </summary>
         internal static string ConnectionInformation {
             get {
                 return ResourceManager.GetString("ConnectionInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect To.
+        /// </summary>
+        internal static string ConnectTo {
+            get {
+                return ResourceManager.GetString("ConnectTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect To All.
+        /// </summary>
+        internal static string ConnectToAll {
+            get {
+                return ResourceManager.GetString("ConnectToAll", resourceCulture);
             }
         }
         
@@ -151,6 +223,15 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect To Server.
+        /// </summary>
+        internal static string Connecttoserver {
+            get {
+                return ResourceManager.GetString("Connecttoserver", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Control Panel.
         /// </summary>
         internal static string ControlPanel {
@@ -160,11 +241,56 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Create Group From Active Connections.
+        /// </summary>
+        internal static string CreateGroupFromActiveConnections {
+            get {
+                return ResourceManager.GetString("CreateGroupFromActiveConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnect.
+        /// </summary>
+        internal static string Disconnect {
+            get {
+                return ResourceManager.GetString("Disconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnect From Server.
+        /// </summary>
+        internal static string DisconnectFromServer {
+            get {
+                return ResourceManager.GetString("DisconnectFromServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DNS.
+        /// </summary>
+        internal static string DNS {
+            get {
+                return ResourceManager.GetString("DNS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         internal static string Exit {
             get {
                 return ResourceManager.GetString("Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Favorites.
+        /// </summary>
+        internal static string Favorites {
+            get {
+                return ResourceManager.GetString("Favorites", resourceCulture);
             }
         }
         
@@ -187,6 +313,33 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Grab Input.
+        /// </summary>
+        internal static string GrabInput {
+            get {
+                return ResourceManager.GetString("GrabInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Groups.
+        /// </summary>
+        internal static string Groups {
+            get {
+                return ResourceManager.GetString("Groups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        internal static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &amp;Hide / Show.
         /// </summary>
         internal static string HideShow {
@@ -205,6 +358,15 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Lock Toolbars.
+        /// </summary>
+        internal static string LockToolbars {
+            get {
+                return ResourceManager.GetString("LockToolbars", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Logoff.
         /// </summary>
         internal static string Logoff {
@@ -214,11 +376,29 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manage Connections.
+        /// </summary>
+        internal static string ManageConnections {
+            get {
+                return ResourceManager.GetString("ManageConnections", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Management.
         /// </summary>
         internal static string Management {
             get {
                 return ResourceManager.GetString("Management", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Toolbar.
+        /// </summary>
+        internal static string ManageToolbar {
+            get {
+                return ResourceManager.GetString("ManageToolbar", resourceCulture);
             }
         }
         
@@ -259,6 +439,15 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Release Available.
+        /// </summary>
+        internal static string NewReleaseAvailable {
+            get {
+                return ResourceManager.GetString("NewReleaseAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         internal static string Notes {
@@ -286,11 +475,56 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Organize Favorites Toolbar.
+        /// </summary>
+        internal static string OrganizeFavoritesToolbar {
+            get {
+                return ResourceManager.GetString("OrganizeFavoritesToolbar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organize Groups.
+        /// </summary>
+        internal static string OrganizeGroups {
+            get {
+                return ResourceManager.GetString("OrganizeGroups", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organize Shortcuts.
+        /// </summary>
+        internal static string OrganizeShortcuts {
+            get {
+                return ResourceManager.GetString("OrganizeShortcuts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Organize Shortucts.
+        /// </summary>
+        internal static string OrganizeShortucts {
+            get {
+                return ResourceManager.GetString("OrganizeShortucts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Other.
         /// </summary>
         internal static string Other {
             get {
                 return ResourceManager.GetString("Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ping.
+        /// </summary>
+        internal static string Ping {
+            get {
+                return ResourceManager.GetString("Ping", resourceCulture);
             }
         }
         
@@ -313,11 +547,56 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Properties.
+        /// </summary>
+        internal static string Properties {
+            get {
+                return ResourceManager.GetString("Properties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quick Connect.
+        /// </summary>
+        internal static string QuickConnect {
+            get {
+                return ResourceManager.GetString("QuickConnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reboot.
         /// </summary>
         internal static string Reboot {
             get {
                 return ResourceManager.GetString("Reboot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rebuild Shortcuts.
+        /// </summary>
+        internal static string RebuildShortcuts {
+            get {
+                return ResourceManager.GetString("RebuildShortcuts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rebuild Tags Index.
+        /// </summary>
+        internal static string RebuildTagsIndex {
+            get {
+                return ResourceManager.GetString("RebuildTagsIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rebuild Toolbars.
+        /// </summary>
+        internal static string RebuildToolbars {
+            get {
+                return ResourceManager.GetString("RebuildToolbars", resourceCulture);
             }
         }
         
@@ -349,11 +628,56 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Send ALT-F4 Keys.
+        /// </summary>
+        internal static string SendALTF4Keys {
+            get {
+                return ResourceManager.GetString("SendALTF4Keys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send ALT Key.
+        /// </summary>
+        internal static string SendALTKey {
+            get {
+                return ResourceManager.GetString("SendALTKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send CTRL ESC Keys.
+        /// </summary>
+        internal static string SendCTRLESCKeys {
+            get {
+                return ResourceManager.GetString("SendCTRLESCKeys", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send CTRL Key.
+        /// </summary>
+        internal static string SendCTRLKey {
+            get {
+                return ResourceManager.GetString("SendCTRLKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Send Message.
         /// </summary>
         internal static string SendMessage {
             get {
                 return ResourceManager.GetString("SendMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sent CTRL ALT DEL Keys.
+        /// </summary>
+        internal static string SentCTRLALTDELKeys {
+            get {
+                return ResourceManager.GetString("SentCTRLALTDELKeys", resourceCulture);
             }
         }
         
@@ -372,6 +696,15 @@ namespace Terminals.Localization {
         internal static string Sessions {
             get {
                 return ResourceManager.GetString("Sessions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shortcuts.
+        /// </summary>
+        internal static string Shortcuts {
+            get {
+                return ResourceManager.GetString("Shortcuts", resourceCulture);
             }
         }
         
@@ -404,6 +737,33 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Standard Toolbar.
+        /// </summary>
+        internal static string StandardToolbar {
+            get {
+                return ResourceManager.GetString("StandardToolbar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags.
+        /// </summary>
+        internal static string Tags {
+            get {
+                return ResourceManager.GetString("Tags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Terminal.
+        /// </summary>
+        internal static string Terminal {
+            get {
+                return ResourceManager.GetString("Terminal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Terminals.
         /// </summary>
         internal static string Terminals {
@@ -413,11 +773,47 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Terminal Server.
+        /// </summary>
+        internal static string TerminalServer {
+            get {
+                return ResourceManager.GetString("TerminalServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Terminals News.
         /// </summary>
         internal static string TerminalsNews {
             get {
                 return ResourceManager.GetString("TerminalsNews", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tools.
+        /// </summary>
+        internal static string Tools {
+            get {
+                return ResourceManager.GetString("Tools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trace Route.
+        /// </summary>
+        internal static string TraceRoute {
+            get {
+                return ResourceManager.GetString("TraceRoute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TS Admin.
+        /// </summary>
+        internal static string TSAdmin {
+            get {
+                return ResourceManager.GetString("TSAdmin", resourceCulture);
             }
         }
         
@@ -436,6 +832,42 @@ namespace Terminals.Localization {
         internal static string User {
             get {
                 return ResourceManager.GetString("User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        internal static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View in new Window.
+        /// </summary>
+        internal static string ViewinnewWindow {
+            get {
+                return ResourceManager.GetString("ViewinnewWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VMRC: Switch to Administrator View.
+        /// </summary>
+        internal static string VMRCSwitchtoAdministratorView {
+            get {
+                return ResourceManager.GetString("VMRCSwitchtoAdministratorView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to VMRC: View Only Mode.
+        /// </summary>
+        internal static string VMRCViewOnlyMode {
+            get {
+                return ResourceManager.GetString("VMRCViewOnlyMode", resourceCulture);
             }
         }
     }
