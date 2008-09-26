@@ -37,7 +37,7 @@ namespace Terminals
 
             Terminals.Logging.Log.Info("Terminals " + Program.TerminalsVersion + " started");
 
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("fr-FR");
+            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("fr-FR");
             
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
