@@ -326,10 +326,10 @@ namespace Terminals
 
         private void manageAllFavoritesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.Show("Set Password by Tag\r\n\r\nThis will replace the password for all Favorites within this tag.\r\n\r\nUse at your own risk!", "New Password", '*');
+            string tagName = FavsTree.SelectedNode.Text;
+            InputBoxResult result = InputBox.Show("Set Password by Tag\r\n\r\nThis will replace the password for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Password" + " - " + tagName, '*');
             if (result.ReturnCode == DialogResult.OK)
             {
-                string tagName = FavsTree.SelectedNode.Text;
 
                 FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
                 foreach (FavoriteConfigurationElement elm in favs)
@@ -345,10 +345,10 @@ namespace Terminals
 
         private void setDomainByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.Show("Set Domain by Tag\r\n\r\nThis will replace the Domain for all Favorites within this tag.\r\n\r\nUse at your own risk!", "New Domain", '*');
+            string tagName = FavsTree.SelectedNode.Text;
+            InputBoxResult result = InputBox.Show("Set Domain by Tag\r\n\r\nThis will replace the Domain for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Domain" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-                string tagName = FavsTree.SelectedNode.Text;
 
                 FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
                 foreach (FavoriteConfigurationElement elm in favs)
@@ -364,10 +364,10 @@ namespace Terminals
 
         private void setUsernameByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            InputBoxResult result = InputBox.Show("Set Username by Tag\r\n\r\nThis will replace the Username for all Favorites within this tag.\r\n\r\nUse at your own risk!", "New Username", '*');
+                string tagName = FavsTree.SelectedNode.Text;
+            InputBoxResult result = InputBox.Show("Set Username by Tag\r\n\r\nThis will replace the Username for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Username" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-                string tagName = FavsTree.SelectedNode.Text;
 
                 FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
                 foreach (FavoriteConfigurationElement elm in favs)
