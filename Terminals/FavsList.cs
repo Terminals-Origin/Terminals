@@ -83,6 +83,9 @@ namespace Terminals
                 rebootToolStripMenuItem.Visible = true;
                 shutdownToolStripMenuItem.Visible = true;
                 enableRDPToolStripMenuItem.Visible = true;
+                manageAllFavoritesToolStripMenuItem.Visible = false;
+                setDomainByTagToolStripMenuItem.Visible = false;
+                setUsernameByTagToolStripMenuItem.Visible = false;
                 if(fav == null)
                 {
                     pingToolStripMenuItem.Visible = false;
@@ -93,6 +96,9 @@ namespace Terminals
                     rebootToolStripMenuItem.Visible = false;
                     shutdownToolStripMenuItem.Visible = false;
                     enableRDPToolStripMenuItem.Visible = false;
+                    manageAllFavoritesToolStripMenuItem.Visible = true;
+                    setDomainByTagToolStripMenuItem.Visible = true;
+                    setUsernameByTagToolStripMenuItem.Visible = true;
                 }
 
             }
@@ -315,6 +321,63 @@ namespace Terminals
                 {
                     System.Diagnostics.Process.Start(string.Format("\"{0}\"", path), string.Format("/computer={0}", fav.ServerName));
                 }
+            }
+        }
+
+        private void manageAllFavoritesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputBoxResult result = InputBox.Show("Set Password by Tag\r\n\r\nThis will replace the password for all Favorites within this tag.\r\n\r\nUse at your own risk!", "New Password", '*');
+            if (result.ReturnCode == DialogResult.OK)
+            {
+                string tagName = FavsTree.SelectedNode.Text;
+
+                FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
+                foreach (FavoriteConfigurationElement elm in favs)
+                {
+                    if (elm.TagList.Contains(tagName))
+                    {
+                        elm.Password = result.Text;
+                    }
+                }
+
+            }
+        }
+
+        private void setDomainByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputBoxResult result = InputBox.Show("Set Domain by Tag\r\n\r\nThis will replace the Domain for all Favorites within this tag.\r\n\r\nUse at your own risk!", "New Domain", '*');
+            if (result.ReturnCode == DialogResult.OK)
+            {
+                string tagName = FavsTree.SelectedNode.Text;
+
+                FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
+                foreach (FavoriteConfigurationElement elm in favs)
+                {
+                    if (elm.TagList.Contains(tagName))
+                    {
+                        elm.DomainName = result.Text;
+                    }
+                }
+
+            }
+        }
+
+        private void setUsernameByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InputBoxResult result = InputBox.Show("Set Username by Tag\r\n\r\nThis will replace the Username for all Favorites within this tag.\r\n\r\nUse at your own risk!", "New Username", '*');
+            if (result.ReturnCode == DialogResult.OK)
+            {
+                string tagName = FavsTree.SelectedNode.Text;
+
+                FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
+                foreach (FavoriteConfigurationElement elm in favs)
+                {
+                    if (elm.TagList.Contains(tagName))
+                    {
+                        elm.UserName = result.Text;
+                    }
+                }
+
             }
         }
 
