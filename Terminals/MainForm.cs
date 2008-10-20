@@ -107,7 +107,7 @@ namespace Terminals {
             catch(Exception exc)
             {
                 Terminals.Logging.Log.Info("", exc);
-                System.Windows.Forms.MessageBox.Show(exc.ToString());
+                //System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
         }
         //Keys lastKey = Keys.Escape;
@@ -688,29 +688,31 @@ namespace Terminals {
             {
                 bool favvisible = false;
                 favoriteToolBar.Items.Clear();
-
-                foreach(string favoriteButton in Settings.FavoritesToolbarButtons)
+                if (Settings.FavoritesToolbarButtons != null)
                 {
-                    FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-                    FavoriteConfigurationElement favorite = favorites[favoriteButton];
-                    Bitmap button = Terminals.Properties.Resources.smallterm;
-                    if(favorite.ToolBarIcon != null && favorite.ToolBarIcon != "" && System.IO.File.Exists(favorite.ToolBarIcon))
+                    foreach (string favoriteButton in Settings.FavoritesToolbarButtons)
                     {
-                        try
+                        FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+                        FavoriteConfigurationElement favorite = favorites[favoriteButton];
+                        Bitmap button = Terminals.Properties.Resources.smallterm;
+                        if (favorite.ToolBarIcon != null && favorite.ToolBarIcon != "" && System.IO.File.Exists(favorite.ToolBarIcon))
                         {
-                            button = (Bitmap)Bitmap.FromFile(favorite.ToolBarIcon);
+                            try
+                            {
+                                button = (Bitmap)Bitmap.FromFile(favorite.ToolBarIcon);
+                            }
+                            catch (Exception ex)
+                            {
+                                Terminals.Logging.Log.Info("", ex);
+                                if (button != Terminals.Properties.Resources.smallterm) button = Terminals.Properties.Resources.smallterm;
+                            }
                         }
-                        catch(Exception ex)
-                        {
-                            Terminals.Logging.Log.Info("", ex);
-                            if(button != Terminals.Properties.Resources.smallterm) button = Terminals.Properties.Resources.smallterm;
-                        }
+                        ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, button, serverToolStripMenuItem_Click);
+                        favoriteBtn.Tag = favorite;
+                        favoriteBtn.Overflow = ToolStripItemOverflow.AsNeeded;
+                        favoriteToolBar.Items.Add(favoriteBtn);
+                        favvisible = true;
                     }
-                    ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, button, serverToolStripMenuItem_Click);
-                    favoriteBtn.Tag = favorite;
-                    favoriteBtn.Overflow = ToolStripItemOverflow.AsNeeded;
-                    favoriteToolBar.Items.Add(favoriteBtn);
-                    favvisible = true;
                 }
                 favoriteToolBar.Visible = favvisible;
                 this.favsList1.LoadFavs();
@@ -718,7 +720,7 @@ namespace Terminals {
             catch(Exception exc)
             {
                 Terminals.Logging.Log.Info("", exc);
-                System.Windows.Forms.MessageBox.Show("LoadFavoritesToolbar:" + exc.ToString());
+                //System.Windows.Forms.MessageBox.Show("LoadFavoritesToolbar:" + exc.ToString());
             }
 
         }
@@ -898,7 +900,7 @@ namespace Terminals {
                 Terminals.Logging.Log.Info("", exc);
                 tcTerminals.SelectedItem = null;
                 //tcTerminals = null;
-                System.Windows.Forms.MessageBox.Show(exc.Message);
+                //System.Windows.Forms.MessageBox.Show(exc.Message);
             }
         }
 
@@ -1112,7 +1114,7 @@ namespace Terminals {
             catch(Exception e)
             {
                 Terminals.Logging.Log.Info("", e);
-                MessageBox.Show(this, e.Message);
+                //MessageBox.Show(this, e.Message);
             }
         }
 
@@ -2296,7 +2298,7 @@ namespace Terminals {
                 tcTerminals.Items.Remove(terminalTabPage);
                 tcTerminals.SelectedItem = null;
                 terminalTabPage.Dispose();
-                System.Windows.Forms.MessageBox.Show(exc.Message);
+                //System.Windows.Forms.MessageBox.Show(exc.Message);
             }
         }
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -2355,7 +2357,7 @@ namespace Terminals {
                     tcTerminals.Items.Remove(terminalTabPage);
                     tcTerminals.SelectedItem = null;
                     terminalTabPage.Dispose();
-                    System.Windows.Forms.MessageBox.Show(exc.Message);
+                    //System.Windows.Forms.MessageBox.Show(exc.Message);
                 }
             }
         }
