@@ -2912,6 +2912,25 @@ namespace WalburySoftware
 		}
 
 		#endregion
+
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (keyData == Keys.Tab)
+            {
+                Message m = new Message();
+                m.Msg = WMCodes.WM_CHAR;
+                m.WParam = new IntPtr((int)keyData);
+
+                Keyboard.KeyDown(m);
+                return true;
+            }
+            else
+            {
+                return base.ProcessDialogKey(keyData);
+            }
+        }
+
+
 		#region Private Classes
 		private class uc_CommsStateObject
 		{
