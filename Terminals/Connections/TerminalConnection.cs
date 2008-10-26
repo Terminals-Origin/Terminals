@@ -98,8 +98,10 @@ namespace Terminals.Connections
 
                     if(Favorite.Telnet)
                         term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.Telnet;
-                    else
+                    else if(Favorite.SSH1)
                         term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.SSH2;
+                    else
+                        term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.SSH1;
 
                     Text = "Connecting to Telnet/SSH Server...";                    
                     term.Connect();

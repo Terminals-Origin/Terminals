@@ -327,6 +327,18 @@ namespace Terminals
                 this["telnet"] = value;
             }
         }
+        [ConfigurationProperty("ssh1", IsRequired = true, DefaultValue = false)]
+        public bool SSH1
+        {
+            get
+            {
+                return (bool)this["ssh1"];
+            }
+            set
+            {
+                this["ssh1"] = value;
+            }
+        }
         [ConfigurationProperty("telnetrows", IsRequired = true, DefaultValue = 33)]
         public int TelnetRows
         {

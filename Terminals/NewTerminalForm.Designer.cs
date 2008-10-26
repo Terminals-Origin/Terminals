@@ -56,6 +56,8 @@ namespace Terminals
         this.RDPSubTabPage = new System.Windows.Forms.TabControl();
         this.RDPDisplayTabPage = new System.Windows.Forms.TabPage();
         this.groupBox1 = new System.Windows.Forms.GroupBox();
+        this.AllowDesktopCompositionCheckbox = new System.Windows.Forms.CheckBox();
+        this.AllowFontSmoothingCheckbox = new System.Windows.Forms.CheckBox();
         this.customSizePanel = new System.Windows.Forms.Panel();
         this.widthUpDown = new System.Windows.Forms.NumericUpDown();
         this.heightUpDown = new System.Windows.Forms.NumericUpDown();
@@ -120,6 +122,7 @@ namespace Terminals
         this.VMRCAdminModeCheckbox = new System.Windows.Forms.CheckBox();
         this.tabPage3 = new System.Windows.Forms.TabPage();
         this.TelnetGroupBox = new System.Windows.Forms.GroupBox();
+        this.SSH2RadioButton = new System.Windows.Forms.RadioButton();
         this.groupBox2 = new System.Windows.Forms.GroupBox();
         this.label20 = new System.Windows.Forms.Label();
         this.TelnetCursorColorTextBox = new System.Windows.Forms.TextBox();
@@ -188,8 +191,6 @@ namespace Terminals
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
         this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
-        this.AllowDesktopCompositionCheckbox = new System.Windows.Forms.CheckBox();
-        this.AllowFontSmoothingCheckbox = new System.Windows.Forms.CheckBox();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -528,6 +529,26 @@ namespace Terminals
         this.groupBox1.TabIndex = 0;
         this.groupBox1.TabStop = false;
         this.groupBox1.Text = "Display settings";
+        // 
+        // AllowDesktopCompositionCheckbox
+        // 
+        this.AllowDesktopCompositionCheckbox.AutoSize = true;
+        this.AllowDesktopCompositionCheckbox.Location = new System.Drawing.Point(297, 177);
+        this.AllowDesktopCompositionCheckbox.Name = "AllowDesktopCompositionCheckbox";
+        this.AllowDesktopCompositionCheckbox.Size = new System.Drawing.Size(154, 17);
+        this.AllowDesktopCompositionCheckbox.TabIndex = 16;
+        this.AllowDesktopCompositionCheckbox.Text = "Allow Desktop Composition";
+        this.AllowDesktopCompositionCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // AllowFontSmoothingCheckbox
+        // 
+        this.AllowFontSmoothingCheckbox.AutoSize = true;
+        this.AllowFontSmoothingCheckbox.Location = new System.Drawing.Point(297, 157);
+        this.AllowFontSmoothingCheckbox.Name = "AllowFontSmoothingCheckbox";
+        this.AllowFontSmoothingCheckbox.Size = new System.Drawing.Size(129, 17);
+        this.AllowFontSmoothingCheckbox.TabIndex = 15;
+        this.AllowFontSmoothingCheckbox.Text = "Allow Font Smoothing";
+        this.AllowFontSmoothingCheckbox.UseVisualStyleBackColor = true;
         // 
         // customSizePanel
         // 
@@ -1228,6 +1249,7 @@ namespace Terminals
         // 
         // TelnetGroupBox
         // 
+        this.TelnetGroupBox.Controls.Add(this.SSH2RadioButton);
         this.TelnetGroupBox.Controls.Add(this.groupBox2);
         this.TelnetGroupBox.Controls.Add(this.SSHRadioButton);
         this.TelnetGroupBox.Controls.Add(this.TelnetRadioButton);
@@ -1237,6 +1259,18 @@ namespace Terminals
         this.TelnetGroupBox.Size = new System.Drawing.Size(500, 271);
         this.TelnetGroupBox.TabIndex = 0;
         this.TelnetGroupBox.TabStop = false;
+        // 
+        // SSH2RadioButton
+        // 
+        this.SSH2RadioButton.AutoSize = true;
+        this.SSH2RadioButton.Checked = true;
+        this.SSH2RadioButton.Location = new System.Drawing.Point(25, 67);
+        this.SSH2RadioButton.Name = "SSH2RadioButton";
+        this.SSH2RadioButton.Size = new System.Drawing.Size(53, 17);
+        this.SSH2RadioButton.TabIndex = 8;
+        this.SSH2RadioButton.TabStop = true;
+        this.SSH2RadioButton.Text = "SSH 2";
+        this.SSH2RadioButton.UseVisualStyleBackColor = true;
         // 
         // groupBox2
         // 
@@ -1413,13 +1447,11 @@ namespace Terminals
         // SSHRadioButton
         // 
         this.SSHRadioButton.AutoSize = true;
-        this.SSHRadioButton.Checked = true;
-        this.SSHRadioButton.Location = new System.Drawing.Point(25, 45);
+        this.SSHRadioButton.Location = new System.Drawing.Point(25, 44);
         this.SSHRadioButton.Name = "SSHRadioButton";
-        this.SSHRadioButton.Size = new System.Drawing.Size(44, 17);
+        this.SSHRadioButton.Size = new System.Drawing.Size(53, 17);
         this.SSHRadioButton.TabIndex = 1;
-        this.SSHRadioButton.TabStop = true;
-        this.SSHRadioButton.Text = "SSH";
+        this.SSHRadioButton.Text = "SSH 1";
         this.SSHRadioButton.UseVisualStyleBackColor = true;
         this.SSHRadioButton.CheckedChanged += new System.EventHandler(this.SSHRadioButton_CheckedChanged);
         // 
@@ -1901,26 +1933,6 @@ namespace Terminals
         this.NewWindowCheckbox.Text = "&Open in New Window";
         this.NewWindowCheckbox.UseVisualStyleBackColor = true;
         // 
-        // AllowDesktopCompositionCheckbox
-        // 
-        this.AllowDesktopCompositionCheckbox.AutoSize = true;
-        this.AllowDesktopCompositionCheckbox.Location = new System.Drawing.Point(297, 177);
-        this.AllowDesktopCompositionCheckbox.Name = "AllowDesktopCompositionCheckbox";
-        this.AllowDesktopCompositionCheckbox.Size = new System.Drawing.Size(154, 17);
-        this.AllowDesktopCompositionCheckbox.TabIndex = 16;
-        this.AllowDesktopCompositionCheckbox.Text = "Allow Desktop Composition";
-        this.AllowDesktopCompositionCheckbox.UseVisualStyleBackColor = true;
-        // 
-        // AllowFontSmoothingCheckbox
-        // 
-        this.AllowFontSmoothingCheckbox.AutoSize = true;
-        this.AllowFontSmoothingCheckbox.Location = new System.Drawing.Point(297, 157);
-        this.AllowFontSmoothingCheckbox.Name = "AllowFontSmoothingCheckbox";
-        this.AllowFontSmoothingCheckbox.Size = new System.Drawing.Size(129, 17);
-        this.AllowFontSmoothingCheckbox.TabIndex = 15;
-        this.AllowFontSmoothingCheckbox.Text = "Allow Font Smoothing";
-        this.AllowFontSmoothingCheckbox.UseVisualStyleBackColor = true;
-        // 
         // NewTerminalForm
         // 
         this.AcceptButton = this.btnOk;
@@ -2159,5 +2171,6 @@ namespace Terminals
       private System.Windows.Forms.CheckBox NewWindowCheckbox;
       private System.Windows.Forms.CheckBox AllowDesktopCompositionCheckbox;
       private System.Windows.Forms.CheckBox AllowFontSmoothingCheckbox;
+      private System.Windows.Forms.RadioButton SSH2RadioButton;
   }
 }

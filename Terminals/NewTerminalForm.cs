@@ -124,8 +124,11 @@ namespace Terminals
 
             ProtocolComboBox.SelectedItem = favorite.Protocol;
             VMRCAdminModeCheckbox.Checked = favorite.VMRCAdministratorMode;
+            
             TelnetRadioButton.Checked = favorite.Telnet;
-            SSHRadioButton.Checked = !favorite.Telnet;
+            SSHRadioButton.Checked = favorite.SSH1;
+            SSH2RadioButton.Checked = !favorite.SSH1;
+
             ColumnsTextBox.Text = favorite.TelnetCols.ToString();
             RowsTextBox.Text = favorite.TelnetRows.ToString();
             VMRCReducedColorsCheckbox.Checked = favorite.VMRCReducedColorsMode;
@@ -229,7 +232,11 @@ namespace Terminals
             try {
                 favorite.VMRCAdministratorMode = VMRCAdminModeCheckbox.Checked;
                 favorite.VMRCReducedColorsMode = VMRCReducedColorsCheckbox.Checked;
+                
                 favorite.Telnet = TelnetRadioButton.Checked;
+                favorite.SSH1 = SSHRadioButton.Checked;
+               
+                
                 favorite.TelnetCols = Convert.ToInt32(ColumnsTextBox.Text);
                 favorite.TelnetRows = Convert.ToInt32(RowsTextBox.Text);
                 favorite.TelnetFont = TelnetFontTextbox.Text;
