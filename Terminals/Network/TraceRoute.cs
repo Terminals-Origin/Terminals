@@ -19,17 +19,31 @@ namespace Metro
         public TraceRoute()
         {
             InitializeComponent();
+            try
+            {
 
-            miv = new MethodInvoker(UpdateRoute);
-            NetworkInterface validNic = nil.Interfaces[0];
-            foreach(NetworkInterface nic in nil.Interfaces) {
-                if(nic.IsEnabled && !nic.isLoopback) {
-                    validNic = nic;
+                miv = new MethodInvoker(UpdateRoute);
+                NetworkInterface validNic = nil.Interfaces[0];
+                foreach (NetworkInterface nic in nil.Interfaces)
+                {
+                    if (nic.IsEnabled && !nic.isLoopback)
+                    {
+                        validNic = nic;
+                    }
                 }
+                trace = new Metro.TransportLayer.Icmp.IcmpTraceRoute(validNic.Address);
+                trace.RouteUpdate += new Metro.TransportLayer.Icmp.RouteUpdateHandler(trace_RouteUpdate);
+                trace.TraceFinished += new Metro.TransportLayer.Icmp.TraceFinishedHandler(trace_TraceFinished);
             }
-            trace = new Metro.TransportLayer.Icmp.IcmpTraceRoute(validNic.Address);
-            trace.RouteUpdate += new Metro.TransportLayer.Icmp.RouteUpdateHandler(trace_RouteUpdate);
-            trace.TraceFinished += new Metro.TransportLayer.Icmp.TraceFinishedHandler(trace_TraceFinished);
+            catch (Exception exc)
+            {
+                Terminals.Logging.Log.Error(exc);
+                //Terminals.Connections.TabbedTools tabbed = (this.Parent as Terminals.Connections.TabbedTools);
+                //if (tabbed != null)
+                //{
+                //    tabbed.HideTab(1);
+                //}
+            }
         }
         System.Threading.Timer t;
         Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();

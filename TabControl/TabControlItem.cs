@@ -172,7 +172,7 @@ namespace TabControl
                 ICaptionSupport capControl = displayControl as ICaptionSupport;
                 this.Title = capControl.Caption;
             }
-            else if (caption.Length <= 0 && displayControl != null)
+            else if (caption!=null && caption.Length <= 0 && displayControl != null)
             {
                 this.Title = displayControl.Text;
             }

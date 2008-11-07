@@ -21,7 +21,10 @@ namespace Terminals.Connections
         {
             if (OnTabChanged != null) OnTabChanged(sender, e);
         }
-
+        public void HideTab(int Index)
+        {
+            if (this.tabControl1.TabCount > Index) this.tabControl1.TabPages[Index].Hide();
+        }
         public void Execute(string Action, string Host)
         {
             switch(Action)
