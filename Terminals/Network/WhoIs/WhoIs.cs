@@ -20,7 +20,7 @@ namespace Terminals.Network.WhoIs
             string server = this.hostTextbox.Text.Trim();
             if (server != "")
             {
-                if (!server.StartsWith("=")) server = "=" + server;
+                if (!server.StartsWith("=") && !server.ToLower().EndsWith(".ca")) server = "=" + server;
                 string result = Org.Mentalis.Utilities.WhoisResolver.Whois(server);
                 result = result.Replace("\n", "\r\n");
                 int pos = result.IndexOf("Whois Server:");
