@@ -137,20 +137,26 @@ namespace VncSharp
 			byte[] b = reader.ReadBytes(12);
 
 			// As of the time of writing, the only supported versions are 3.3, 3.7, and 3.8.
-			if (	b[0]  == 0x52 &&					// R
+			if (   (b[0]  == 0x52 &&					// R
 					b[1]  == 0x46 &&					// F
 					b[2]  == 0x42 &&					// B
 					b[3]  == 0x20 &&					// (space)
 					b[4]  == 0x30 &&					// 0
 					b[5]  == 0x30 &&					// 0
 					b[6]  == 0x33 &&					// 3
-					b[7]  == 0x2e &&					// .
-					b[8]  == 0x30 &&					// 0
+					b[7]  == 0x2e)                      // .
+                  &&
+				  ((b[8]  == 0x30 &&					// 0
 					b[9]  == 0x30 &&					// 0
 				   (b[10] == 0x33 ||					// 3, 7, OR 8 are all valid and possible
 				    b[10] == 0x36 ||					// BUG FIX: UltraVNC reports protocol version 3.6!
 				    b[10] == 0x37 ||
-				    b[10] == 0x38) &&					
+				    b[10] == 0x38)))
+                    ||                                  // Support Apple Remote Desktop
+                   (b[8]  == 0x38 &&					// 8
+					b[9]  == 0x38 &&					// 8
+			        b[10] == 0x39)                      // 9
+                  &&					
 				    b[11] == 0x0a)						// \n
 			{
 				// Since we only currently support the 3.x protocols, this can be assumed here.
@@ -162,7 +168,8 @@ namespace VncSharp
 				switch (b[10]) {
 					case 0x33: 
 					case 0x36:	// BUG FIX: pass 3.3 for 3.6 to allow UltraVNC to work, thanks to Steve Bostedor.
-						verMinor = 3;
+                    case 0x39:	// FIX: pass 3.889 to allow Apple Remote Desktop to work, thanks to Julian Cable.
+                        verMinor = 3;
 						break;
 					case 0x37:
 						verMinor = 7;
