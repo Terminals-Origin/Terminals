@@ -5,8 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using AxMSTSCLib;
-using MSTSC = MSTSCLib;
 using Terminals.Properties;
 using System.Diagnostics;
 using System.Runtime.InteropServices;

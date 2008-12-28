@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+# Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals", "Terminals\Terminals.csproj", "{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabControl", "TabControl\TabControl.csproj", "{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}"
@@ -21,43 +21,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Affirma.ThreeSharp", "Affir
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Affirma.ThreeSharp.Wrapper", "Affirma.ThreeSharp.Wrapper\Affirma.ThreeSharp.Wrapper.csproj", "{FD252676-D01F-453A-8DC1-4AC39DF7D22A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Granados", "Granados\Granados.csproj", "{9780D85D-2E12-4747-9E08-DEDB95A71FC3}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs01.codeplex.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Terminals\\Terminals.csproj
-		SccProjectName1 = Terminals
-		SccLocalPath1 = Terminals
-		SccProjectUniqueName2 = TabControl\\TabControl.csproj
-		SccProjectName2 = TabControl
-		SccLocalPath2 = TabControl
-		SccProjectUniqueName3 = TerminalControl\\TerminalControl.csproj
-		SccProjectName3 = TerminalControl
-		SccLocalPath3 = TerminalControl
-		SccProjectUniqueName4 = Metro\\Metro.csproj
-		SccProjectName4 = Metro
-		SccLocalPath4 = Metro
-		SccProjectUniqueName5 = TerminalsUpdater\\TerminalsUpdater.csproj
-		SccProjectName5 = TerminalsUpdater
-		SccLocalPath5 = TerminalsUpdater
-		SccProjectUniqueName6 = VncSharp\\VncSharp.csproj
-		SccProjectName6 = VncSharp
-		SccLocalPath6 = VncSharp
-		SccProjectUniqueName7 = HexEditor\\HexEditor.csproj
-		SccProjectName7 = HexEditor
-		SccLocalPath7 = HexEditor
-		SccProjectUniqueName8 = SharpPcap\\SharpPcap.csproj
-		SccProjectName8 = SharpPcap
-		SccLocalPath8 = SharpPcap
-		SccProjectUniqueName9 = Affirma.ThreeSharp\\Affirma.ThreeSharp.csproj
-		SccProjectName9 = Affirma.ThreeSharp
-		SccLocalPath9 = Affirma.ThreeSharp
-		SccProjectUniqueName10 = Affirma.ThreeSharp.Wrapper\\Affirma.ThreeSharp.Wrapper.csproj
-		SccProjectName10 = Affirma.ThreeSharp.Wrapper
-		SccLocalPath10 = Affirma.ThreeSharp.Wrapper
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -166,23 +132,74 @@ Global
 		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Debug|x86.Build.0 = Debug|x86
 		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Release|x86.ActiveCfg = Release|Any CPU
+		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Release|x86.Build.0 = Release|x86
 		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
 		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
 		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.StrongMagic|x86.ActiveCfg = Release|Any CPU
+		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.StrongMagic|x86.Build.0 = StrongMagic|x86
 		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Debug|x86.Build.0 = Debug|x86
 		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Release|x86.ActiveCfg = Release|Any CPU
+		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Release|x86.Build.0 = Release|x86
 		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
 		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
 		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.StrongMagic|x86.ActiveCfg = Release|Any CPU
+		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.StrongMagic|x86.Build.0 = StrongMagic|x86
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Release|x86.ActiveCfg = Release|Any CPU
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.StrongMagic|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 11
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs01.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Terminals\\Terminals.csproj
+		SccProjectName1 = Terminals
+		SccLocalPath1 = Terminals
+		SccProjectUniqueName2 = TabControl\\TabControl.csproj
+		SccProjectName2 = TabControl
+		SccLocalPath2 = TabControl
+		SccProjectUniqueName3 = TerminalControl\\TerminalControl.csproj
+		SccProjectName3 = TerminalControl
+		SccLocalPath3 = TerminalControl
+		SccProjectUniqueName4 = Metro\\Metro.csproj
+		SccProjectName4 = Metro
+		SccLocalPath4 = Metro
+		SccProjectUniqueName5 = TerminalsUpdater\\TerminalsUpdater.csproj
+		SccProjectName5 = TerminalsUpdater
+		SccLocalPath5 = TerminalsUpdater
+		SccProjectUniqueName6 = VncSharp\\VncSharp.csproj
+		SccProjectName6 = VncSharp
+		SccLocalPath6 = VncSharp
+		SccProjectUniqueName7 = HexEditor\\HexEditor.csproj
+		SccProjectName7 = HexEditor
+		SccLocalPath7 = HexEditor
+		SccProjectUniqueName8 = SharpPcap\\SharpPcap.csproj
+		SccProjectName8 = SharpPcap
+		SccLocalPath8 = SharpPcap
+		SccProjectUniqueName9 = Affirma.ThreeSharp\\Affirma.ThreeSharp.csproj
+		SccProjectName9 = Affirma.ThreeSharp
+		SccLocalPath9 = Affirma.ThreeSharp
+		SccProjectUniqueName10 = Affirma.ThreeSharp.Wrapper\\Affirma.ThreeSharp.Wrapper.csproj
+		SccProjectName10 = Affirma.ThreeSharp.Wrapper
+		SccLocalPath10 = Affirma.ThreeSharp.Wrapper
 	EndGlobalSection
 EndGlobal
