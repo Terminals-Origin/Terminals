@@ -168,7 +168,6 @@ namespace Terminals.Network {
             {
                 b.Focus();
             }
-            if (a.Text.Length > 3) a.Text = a.Text.Substring(0, 3);
         }
 
         private void b_KeyUp(object sender, KeyEventArgs e)
@@ -177,7 +176,6 @@ namespace Terminals.Network {
             {
                 c.Focus();
             }
-            
         }
 
         private void c_KeyUp(object sender, KeyEventArgs e)
@@ -196,9 +194,9 @@ namespace Terminals.Network {
             }
         }
 
-        private void e_KeyUp(object sender, KeyEventArgs e)
+        private void e_KeyUp(object sender, KeyEventArgs earg)
         {
-            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.OemPeriod)
+            if (earg.KeyCode == Keys.Enter || earg.KeyCode == Keys.OemPeriod)
             {
                 pa.Focus();
             }

@@ -128,6 +128,7 @@ namespace Terminals.Network {
             // e
             // 
             this.e.Location = new System.Drawing.Point(136, 35);
+            this.e.MaxLength = 3;
             this.e.Name = "e";
             this.e.Size = new System.Drawing.Size(27, 20);
             this.e.TabIndex = 4;
@@ -137,6 +138,7 @@ namespace Terminals.Network {
             // d
             // 
             this.d.Location = new System.Drawing.Point(136, 9);
+            this.d.MaxLength = 3;
             this.d.Name = "d";
             this.d.Size = new System.Drawing.Size(27, 20);
             this.d.TabIndex = 3;
@@ -146,6 +148,7 @@ namespace Terminals.Network {
             // c
             // 
             this.c.Location = new System.Drawing.Point(103, 22);
+            this.c.MaxLength = 3;
             this.c.Name = "c";
             this.c.Size = new System.Drawing.Size(27, 20);
             this.c.TabIndex = 2;
@@ -155,6 +158,7 @@ namespace Terminals.Network {
             // b
             // 
             this.b.Location = new System.Drawing.Point(70, 22);
+            this.b.MaxLength = 3;
             this.b.Name = "b";
             this.b.Size = new System.Drawing.Size(27, 20);
             this.b.TabIndex = 1;
@@ -164,6 +168,7 @@ namespace Terminals.Network {
             // a
             // 
             this.a.Location = new System.Drawing.Point(37, 22);
+            this.a.MaxLength = 3;
             this.a.Name = "a";
             this.a.Size = new System.Drawing.Size(27, 20);
             this.a.TabIndex = 0;
