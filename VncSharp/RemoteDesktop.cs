@@ -1,5 +1,5 @@
 // VncSharp - .NET VNC Client Library
-// Copyright (C) 2004  David Humphrey, Chuck Borgh, Matt Cyr
+// Copyright (C) 2008 David Humphrey
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -50,12 +50,11 @@ namespace VncSharp
 		Alt
 	}
 
-
 	[ToolboxBitmap(typeof(RemoteDesktop), "Resources.vncviewer.ico")]
 	/// <summary>
 	/// The RemoteDesktop control takes care of all the necessary RFB Protocol and GUI handling, including mouse and keyboard support, as well as requesting and processing screen updates from the remote VNC host.  Most users will choose to use the RemoteDesktop control alone and not use any of the other protocol classes directly.
 	/// </summary>
-	public class RemoteDesktop : ScrollableControl // TODO: numerous places say that you should use Panel instead of ScrollableControl
+	public class RemoteDesktop : Panel
 	{
 		[Description("Raised after a successful call to the Connect() method.")]
 		/// <summary>
@@ -74,12 +73,13 @@ namespace VncSharp
 		/// </summary>
 		public AuthenticateDelegate GetPassword;
 		
-		Bitmap desktop;						// Internal representation of remote image.
-		Image  designModeDesktop;			// Used when painting control in VS.NET designer
-		VncClient vnc;						// The Client object handling all protocol-level interaction
-		int port = 5900;					// The port to connect to on remote host (5900 is default)
-		bool passwordPending = false;		// After Connect() is called, a password might be required.
-		bool fullScreenRefresh = false;		// Whether or not to request the entire remote screen be sent.
+		Bitmap desktop;						     // Internal representation of remote image.
+		Image  designModeDesktop;			     // Used when painting control in VS.NET designer
+		VncClient vnc;						     // The Client object handling all protocol-level interaction
+		int port = 5900;					     // The port to connect to on remote host (5900 is default)
+		bool passwordPending = false;		     // After Connect() is called, a password might be required.
+		bool fullScreenRefresh = false;		     // Whether or not to request the entire remote screen be sent.
+        VncDesktopTransformPolicy desktopPolicy;
 		RuntimeState state = RuntimeState.Disconnected;
 
 		private enum RuntimeState {
@@ -100,14 +100,15 @@ namespace VncSharp
 					 ControlStyles.ResizeRedraw			|
 					 ControlStyles.Opaque,				
 					 true);
-			
-			// Allow for partial viewing of the remote desktop
-			AutoScroll = true;
-			AutoScrollMinSize = new Size(608, 427); // just a default for Design graphic. Will get changed once connected.
-			
+
 			// Show a screenshot of a Windows desktop from the manifest and cache to be used when painting in design mode
 			designModeDesktop = Image.FromStream(Assembly.GetAssembly(GetType()).GetManifestResourceStream("VncSharp.Resources.screenshot.png"));
 			
+            // Use a simple desktop policy for design mode.  This will be replaced in Connect()
+            desktopPolicy = new VncDesignModeDesktopPolicy(this);
+            AutoScroll = desktopPolicy.AutoScroll;
+            AutoScrollMinSize = desktopPolicy.AutoScrollMinSize;
+
 			// Users of the control can choose to use their own Authentication GetPassword() method via the delegate above.  This is a default only.
 			GetPassword = new AuthenticateDelegate(PasswordDialog.GetPassword);
 		}
@@ -165,7 +166,7 @@ namespace VncSharp
 		/// </summary>
 		protected override Size DefaultSize {
 			get { 
-				return new Size(400, 200); 
+				return new Size(400, 200);
 			}
 		}
 
@@ -179,6 +180,14 @@ namespace VncSharp
             }
         }
 
+        /// <summary>
+        /// The image of the remote desktop.
+        /// </summary>
+        public Image Desktop {
+            get {
+                return desktop;
+            }
+        }
 
 		/// <summary>
 		/// Get a complete update of the entire screen from the remote host.
@@ -209,13 +218,13 @@ namespace VncSharp
 				System.Diagnostics.Debug.Assert(state == RuntimeState.Connected || 
 												state == RuntimeState.Disconnecting, // special case for Disconnect()
 												string.Format("RemoteDesktop must be in RuntimeState.Connected before calling {0}.", methodName));
-				if (state != RuntimeState.Connected && state!=RuntimeState.Disconnecting) {
+				if (state != RuntimeState.Connected && state != RuntimeState.Disconnecting) {
 					throw new InvalidOperationException("RemoteDesktop must be in Connected state before calling methods that require an established connection.");
 				}
 			} else { // disconnected
 				System.Diagnostics.Debug.Assert(state == RuntimeState.Disconnected,
 												string.Format("RemoteDesktop must be in RuntimeState.Disconnected before calling {0}.", methodName));
-				if (state != RuntimeState.Disconnected) {
+                if (state != RuntimeState.Disconnected && state != RuntimeState.Disconnecting) {
 					throw new InvalidOperationException("RemoteDesktop cannot be in Connected state when calling methods that establish a connection.");
 				}
 			}
@@ -228,34 +237,8 @@ namespace VncSharp
 		protected void VncUpdate(object sender, VncEventArgs e)
 		{
 			e.DesktopUpdater.Draw(desktop);
-		
-			// Before Invalidating the control, specify the rectangle that needs to be
-			// re-painted.  This speeds OnPaint dramatically, since the rest of the 
-			// screen doesn't need to change.  Also, adjust the invalidated rectangle
-			// to accomodate scrolling or centering, since the desktop will either be 
-			// clipped or centered on the screen.
-			int x, y;
-			
-			if (ClientSize.Width > desktop.Size.Width) {
-				int dx = (ClientRectangle.Width - desktop.Width) / 2;
-				x = e.DesktopUpdater.UpdateRectangle.X + dx;
-			} else {
-				x = e.DesktopUpdater.UpdateRectangle.X + AutoScrollPosition.X;
-			}
+            Invalidate(desktopPolicy.AdjustUpdateRectangle(e.DesktopUpdater.UpdateRectangle));
 
-			if (ClientSize.Height > desktop.Size.Height ) {
-				int dy = (ClientRectangle.Height - desktop.Height) / 2;
-				y = e.DesktopUpdater.UpdateRectangle.Y + dy;
-			} else {
-				y = e.DesktopUpdater.UpdateRectangle.Y + AutoScrollPosition.Y;
-			}
-
-			Rectangle adjusted = new Rectangle(x,
-											   y,
-											   e.DesktopUpdater.UpdateRectangle.Width,
-											   e.DesktopUpdater.UpdateRectangle.Height);			
-			Invalidate(adjusted);
-			
 			if (state == RuntimeState.Connected) {
 				vnc.RequestScreenUpdate(fullScreenRefresh);
 				
@@ -295,6 +278,21 @@ namespace VncSharp
         /// Connect to a VNC Host and determine whether or not the server requires a password.
         /// </summary>
         /// <param name="host">The IP Address or Host Name of the VNC Host.</param>
+        /// <param name="viewOnly">Determines whether mouse and keyboard events will be sent to the host.</param>
+        /// <param name="scaled">Determines whether to use desktop scaling or leave it normal and clip.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if host is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown if display is negative.</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown if the RemoteDesktop control is already Connected.  See <see cref="VncSharp.RemoteDesktop.IsConnected" />.</exception>
+        public void Connect(string host, bool viewOnly, bool scaled)
+        {
+            // Use Display 0 by default.
+            Connect(host, 0, viewOnly, scaled);
+        }
+
+        /// <summary>
+        /// Connect to a VNC Host and determine whether or not the server requires a password.
+        /// </summary>
+        /// <param name="host">The IP Address or Host Name of the VNC Host.</param>
         /// <param name="display">The Display number (used on Unix hosts).</param>
         /// <exception cref="System.ArgumentNullException">Thrown if host is null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown if display is negative.</exception>
@@ -315,6 +313,21 @@ namespace VncSharp
         /// <exception cref="System.InvalidOperationException">Thrown if the RemoteDesktop control is already Connected.  See <see cref="VncSharp.RemoteDesktop.IsConnected" />.</exception>
         public void Connect(string host, int display, bool viewOnly)
         {
+            Connect(host, display, viewOnly, false);
+        }
+
+        /// <summary>
+        /// Connect to a VNC Host and determine whether or not the server requires a password.
+        /// </summary>
+        /// <param name="host">The IP Address or Host Name of the VNC Host.</param>
+        /// <param name="display">The Display number (used on Unix hosts).</param>
+        /// <param name="viewOnly">Determines whether mouse and keyboard events will be sent to the host.</param>
+        /// <param name="scaled">Determines whether to use desktop scaling or leave it normal and clip.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown if host is null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown if display is negative.</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown if the RemoteDesktop control is already Connected.  See <see cref="VncSharp.RemoteDesktop.IsConnected" />.</exception>
+        public void Connect(string host, int display, bool viewOnly, bool scaled)
+        {
             // TODO: Should this be done asynchronously so as not to block the UI?  Since an event 
             // indicates the end of the connection, maybe that would be a better design.
             InsureConnection(false);
@@ -328,6 +341,8 @@ namespace VncSharp
 
             passwordPending = vnc.Connect(host, display, VncPort, viewOnly);
 
+            SetScalingMode(scaled);
+
             if (passwordPending) {
                 // Server needs a password, so call which ever method is refered to by the GetPassword delegate.
                 string password = GetPassword();
@@ -335,8 +350,6 @@ namespace VncSharp
                 if (password == null) {
                     // No password could be obtained (e.g., user clicked Cancel), so stop connecting
                     return;
-                    //state = RuntimeState.Connected; // fake it so we don't crash in Disconnect()
-                    //Disconnect();
                 } else {
                     Authenticate(password);
                 }
@@ -375,6 +388,24 @@ namespace VncSharp
             vnc.SetInputMode(viewOnly);
         }
 
+        /// <summary>
+        /// Set the remote desktop's scaling mode.
+        /// </summary>
+        /// <param name="scaled">Determines whether to use desktop scaling or leave it normal and clip.</param>
+        public void SetScalingMode(bool scaled)
+        {
+            if (scaled) {
+                desktopPolicy = new VncScaledDesktopPolicy(vnc, this);
+            } else {
+                desktopPolicy = new VncClippedDesktopPolicy(vnc, this);
+            }
+
+            AutoScroll = desktopPolicy.AutoScroll;
+            AutoScrollMinSize = desktopPolicy.AutoScrollMinSize;
+
+            Invalidate();
+        }
+
 		/// <summary>
 		/// After protocol-level initialization and connecting is complete, the local GUI objects have to be set-up, and requests for updates to the remote host begun.
 		/// </summary>
@@ -389,14 +420,14 @@ namespace VncSharp
 			// Create a buffer on which updated rectangles will be drawn and draw a "please wait..." 
 			// message on the buffer for initial display until we start getting rectangles
 			SetupDesktop();
-			
-			// Update the scrollable region to reflect the size of the framebuffer
-			AutoScrollMinSize = new Size(vnc.Framebuffer.Width, vnc.Framebuffer.Height);
 	
 			// Tell the user of this control the necessary info about the desktop in order to setup the display
 			OnConnectComplete(new ConnectEventArgs(vnc.Framebuffer.Width,
 												   vnc.Framebuffer.Height, 
 												   vnc.Framebuffer.DesktopName));
+
+            // Refresh scroll properties
+            AutoScrollMinSize = desktopPolicy.AutoScrollMinSize;
 
 			// Start getting updates from the remote host (vnc.StartUpdates will begin a worker thread).
 			vnc.VncUpdate += new VncUpdateHandler(VncUpdate);
@@ -476,6 +507,23 @@ namespace VncSharp
 			Invalidate();
 		}
 
+        /// <summary>
+        /// Fills the remote server's clipboard with the text in the client's clipboard, if any.
+        /// </summary>
+        public void FillServerClipboard()
+        {
+            FillServerClipboard(Clipboard.GetText());
+        }
+
+        /// <summary>
+        /// Fills the remote server's clipboard with text.
+        /// </summary>
+        /// <param name="text">The text to put in the server's clipboard.</param>
+        public void FillServerClipboard(string text)
+        {
+            vnc.WriteClientCutText(text);
+        }
+
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing) {
@@ -515,6 +563,24 @@ namespace VncSharp
 			base.OnPaint(pe);
 		}
 
+        protected override void OnResize(EventArgs eventargs)
+        {
+            // Fix a bug with a ghost scrollbar in clipped mode on maximize
+            Control parent = Parent;
+            while (parent != null) {
+                if (parent is Form) {
+                    Form form = parent as Form;
+                    if (form.WindowState == FormWindowState.Maximized)
+                        form.Invalidate();
+                    parent = null;
+                } else {
+                    parent = parent.Parent;
+                }
+            }
+
+            base.OnResize(eventargs);
+        }
+
 		/// <summary>
 		/// Draws an image onto the control in a size-aware way.
 		/// </summary>
@@ -523,23 +589,7 @@ namespace VncSharp
 		/// <exception cref="System.InvalidOperationException">Thrown if the RemoteDesktop control is not already in the Connected state.</exception>
 		protected void DrawDesktopImage(Image desktopImage, Graphics g)
 		{
-			// See if the image needs to be clipped (i.e., it is too big for the 
-			// available space) or centered (i.e., it is too small)
-			int x, y;
-			
-			if (ClientSize.Width > desktopImage.Size.Width) {
-				x = (ClientRectangle.Width - desktopImage.Width) / 2;
-			} else {
-				x = DisplayRectangle.X;
-			}
-
-			if (ClientSize.Height > desktopImage.Size.Height ) {
-				y = (ClientRectangle.Height - desktopImage.Height) / 2;
-			} else {
-				y = DisplayRectangle.Y;
-			}
-
-			g.DrawImage(desktopImage, x, y);
+			g.DrawImage(desktopImage, desktopPolicy.RepositionImage(desktopImage));
 		}
 
 		/// <summary>
@@ -591,23 +641,10 @@ namespace VncSharp
 		{
 			// Only bother if the control is connected.
 			if (IsConnected) {
-
-				// Since there might be dead space surrounding the desktop, only bother sending
-				// the update if the mouse is really over the image
-				Rectangle desktopRect = vnc.Framebuffer.Rectangle;
-
-				if (ClientSize.Width > desktop.Size.Width) {
-					desktopRect.X = (ClientRectangle.Width - desktop.Width) / 2;
-				}
-
-				if (ClientSize.Height > desktop.Size.Height ) {
-					desktopRect.Y = (ClientRectangle.Height - desktop.Height) / 2;
-				}
-
 				// See if the mouse pointer is inside the area occupied by the desktop on screen.
-				if (desktopRect.Contains(PointToClient(MousePosition))) {
+                Rectangle adjusted = desktopPolicy.GetMouseMoveRectangle();
+				if (adjusted.Contains(PointToClient(MousePosition)))
 					UpdateRemotePointer();
-				}
 			}
 			base.OnMouseMove(mea);
 		}
@@ -647,7 +684,7 @@ namespace VncSharp
 					mask += 16;
 				}
 
-				vnc.WritePointerEvent(mask, new Point(current.X, current.Y));
+				vnc.WritePointerEvent(mask, desktopPolicy.GetMouseMovePoint(current));
 			}			
 			base.OnMouseWheel(mea);
 		}
@@ -664,25 +701,11 @@ namespace VncSharp
 				if (Control.MouseButtons == MouseButtons.Middle) mask += 2;
 				if (Control.MouseButtons == MouseButtons.Right)  mask += 4;
 
-				// Adjust the mouse location relative to the position of the desktop,
-				// which could be clipped and scrolled, or centered in a larger window.
-				Point adjusted = new Point();
-				
-				if (ClientSize.Width > desktop.Size.Width) {
-					int dx = (ClientRectangle.Width - desktop.Width) / 2;
-					adjusted.X = current.X - dx;
-				} else {
-					adjusted.X = current.X - AutoScrollPosition.X;
-				}
+                Point adjusted = desktopPolicy.UpdateRemotePointer(current);
+                if (adjusted.X < 0 || adjusted.Y < 0)
+                    throw new Exception();
 
-				if (ClientSize.Height > desktop.Size.Height ) {
-					int dy = (ClientRectangle.Height - desktop.Height) / 2;
-					adjusted.Y = current.Y - dy;
-				} else {
-					adjusted.Y = current.Y - AutoScrollPosition.Y;
-				}
-
-				vnc.WritePointerEvent(mask, adjusted);
+				vnc.WritePointerEvent(mask, desktopPolicy.UpdateRemotePointer(current));
 			}
 		}
 
@@ -827,25 +850,36 @@ namespace VncSharp
 		/// <exception cref="System.InvalidOperationException">Thrown if the RemoteDesktop control is not in the Connected state.</exception>
 		public void SendSpecialKeys(SpecialKeys keys)
 		{
+			this.SendSpecialKeys(keys, true);
+		}
+
+		/// <summary>
+		/// Sends a keyboard combination that would otherwise be reserved for the client PC.
+		/// </summary>
+		/// <param name="keys">SpecialKeys is an enumerated list of supported keyboard combinations.</param>
+		/// <remarks>Keyboard combinations are Pressed and then Released, while single keys (e.g., SpecialKeys.Ctrl) are only pressed so that subsequent keys will be modified.</remarks>
+		/// <exception cref="System.InvalidOperationException">Thrown if the RemoteDesktop control is not in the Connected state.</exception>
+		public void SendSpecialKeys(SpecialKeys keys, bool release)
+		{
 			InsureConnection(true);
 			// For all of these I am sending the key presses manually instead of calling
 			// the keyboard event handlers, as I don't want to propegate the calls up to the 
 			// base control class and form.
 			switch(keys) {
 				case SpecialKeys.Ctrl:
-					PressKeys(new uint[] {0xffe3}, false);	// CTRL, but don't release
+					PressKeys(new uint[] { 0xffe3 }, release);	// CTRL, but don't release
 					break;
 				case SpecialKeys.Alt:
-					PressKeys(new uint[] {0xffe9}, false);	// ALT, but don't release
+					PressKeys(new uint[] { 0xffe9 }, release);	// ALT, but don't release
 					break;
 				case SpecialKeys.CtrlAltDel:
-					PressKeys(new uint[] {0xffe3, 0xffe9, 0xffff}, true); // CTRL, ALT, DEL
+					PressKeys(new uint[] { 0xffe3, 0xffe9, 0xffff }, release); // CTRL, ALT, DEL
 					break;
 				case SpecialKeys.AltF4:
-					PressKeys(new uint[] {0xffe9, 0xffc1}, true); // ALT, F4
+					PressKeys(new uint[] { 0xffe9, 0xffc1 }, release); // ALT, F4
 					break;					
 				case SpecialKeys.CtrlEsc:
-					PressKeys(new uint[] {0xffe3, 0xff1b}, true); // CTRL, ESC
+					PressKeys(new uint[] { 0xffe3, 0xff1b }, release); // CTRL, ESC
 					break;
 				// TODO: are there more I should support???
 				default:

@@ -1,5 +1,5 @@
 // VncSharp - .NET VNC Client Library
-// Copyright (C) 2004  David Humphrey, Chuck Borgh, Matt Cyr
+// Copyright (C) 2008 David Humphrey
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,8 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-// TODO: need to add support for Zrle Encodings below in Build().
 
 using System;
 using System.Drawing;
@@ -72,10 +70,8 @@ namespace VncSharp
 					e = new HextileRectangle(rfb, framebuffer, rectangle);
 					break;
 				case RfbProtocol.ZRLE_ENCODING:
-// TODO: ZRLE is not written yet, but when it is, this needs to be changed.
-//					e = new ZrleRectangle(rfb, framebuffer, rectangle);				
-//					break;
-					throw new NotImplementedException("Need to implement Zrle Encoding!!!");
+					e = new ZrleRectangle(rfb, framebuffer, rectangle);				
+					break;
 				default:
 					// Sanity check
 					throw new VncProtocolException("Unsupported Encoding Format received: " + encoding.ToString() + ".");

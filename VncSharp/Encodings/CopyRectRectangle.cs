@@ -1,5 +1,5 @@
 // VncSharp - .NET VNC Client Library
-// Copyright (C) 2004  David Humphrey, Chuck Borgh, Matt Cyr
+// Copyright (C) 2008 David Humphrey
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,7 +26,8 @@ namespace VncSharp.Encodings
 	/// </summary>
 	public sealed class CopyRectRectangle : EncodedRectangle 
 	{
-		public CopyRectRectangle(RfbProtocol rfb, Framebuffer framebuffer, Rectangle rectangle) : base(rfb, framebuffer, rectangle) 
+		public CopyRectRectangle(RfbProtocol rfb, Framebuffer framebuffer, Rectangle rectangle)
+			: base(rfb, framebuffer, rectangle, RfbProtocol.COPYRECT_ENCODING) 
 		{
 		}
 
@@ -50,6 +51,13 @@ namespace VncSharp.Encodings
 			BitmapData bmpd = desktop.LockBits(new Rectangle(new Point(0,0), desktop.Size),
 											   ImageLockMode.ReadWrite, 
 											   desktop.PixelFormat);
+
+			
+			// Avoid exception if window is dragged bottom of screen
+			if (rectangle.Top + rectangle.Height >= framebuffer.Height)
+			{
+				rectangle.Height = framebuffer.Height - rectangle.Top - 1;
+			}
 
 			try {
 				int* pSrc  = (int*)(void*)bmpd.Scan0;

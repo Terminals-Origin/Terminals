@@ -1,5 +1,5 @@
 // VncSharp - .NET VNC Client Library
-// Copyright (C) 2004  David Humphrey, Chuck Borgh, Matt Cyr
+// Copyright (C) 2008 David Humphrey
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -35,7 +35,8 @@ namespace VncSharp.Encodings
 			// shift below for each colour to get from 565 to 888 in order to 
 			// return a full 32-bit pixel value.
 			byte[] b = rfb.ReadBytes(2);
-			ushort pixel = (ushort)(b[0] & 0xFF | b[1] << 8);
+
+            ushort pixel = (ushort)(((uint)b[0]) & 0xFF | ((uint)b[1]) << 8);
 
 			byte red   = (byte) (((pixel >> framebuffer.RedShift)   & framebuffer.RedMax)   << 3);  // 5 bits to 8
 			byte green = (byte) (((pixel >> framebuffer.GreenShift) & framebuffer.GreenMax) << 2);  // 6 bits to 8

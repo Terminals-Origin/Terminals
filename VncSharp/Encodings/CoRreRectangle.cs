@@ -1,5 +1,5 @@
 // VncSharp - .NET VNC Client Library
-// Copyright (C) 2004  David Humphrey, Chuck Borgh, Matt Cyr
+// Copyright (C) 2008 David Humphrey
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace VncSharp.Encodings
 	/// </summary>
 	public sealed class CoRreRectangle : EncodedRectangle 
 	{
-		public CoRreRectangle(RfbProtocol rfb, Framebuffer framebuffer, Rectangle rectangle) : base(rfb, framebuffer, rectangle)
+		public CoRreRectangle(RfbProtocol rfb, Framebuffer framebuffer, Rectangle rectangle) : base(rfb, framebuffer, rectangle, RfbProtocol.CORRE_ENCODING)
 		{
 		}
 

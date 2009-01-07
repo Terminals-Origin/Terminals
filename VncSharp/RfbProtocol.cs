@@ -1,5 +1,5 @@
 // VncSharp - .NET VNC Client Library
-// Copyright (C) 2004  David Humphrey, Chuck Borgh, Matt Cyr
+// Copyright (C) 2008 David Humphrey
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -60,15 +60,13 @@ namespace VncSharp
 		protected NetworkStream stream;	// Stream object used to send/receive data
 		protected BinaryReader reader;	// Integral rather than Byte values are typically
 		protected BinaryWriter writer;	// sent and received, so these handle this.
-
-//		NOTE: I've re-written things so the mutex is no longer necessary.  However, I've
-//		left all the synch code in place below (see various write calls) just in case
-//		(how's that for confidence!)
-//		protected Mutex writeLock;		// Writing to the underlying stream must be done 
-										// in a thread-safe way.  This mutex "tries" to 
-										// deal with this.  I'm still not sure that this is
-										// the best way--it is the best way I've been able
-										// to come-up with so far.
+		protected ZRLECompressedReader zrleReader;
+		public ZRLECompressedReader ZrleReader
+		{
+			get {
+                return zrleReader; 
+            }
+		}
 
 		public RfbProtocol()
 		{
@@ -105,9 +103,7 @@ namespace VncSharp
 			// two.  See BigEndianReader and BigEndianWriter below for more details.
 			reader = new BigEndianBinaryReader(stream);
 			writer = new BigEndianBinaryWriter(stream);
-			
-//			NOTE: not needed any more, but still testing
-//			writeLock = new Mutex();
+			zrleReader = new ZRLECompressedReader(stream);
 		}
 
 		/// <summary>
@@ -120,9 +116,6 @@ namespace VncSharp
 				reader.Close();
 				stream.Close();
 				tcp.Close();
-
-//				NOTE: not needed any more, but still testing
-//				writeLock.Close(); // like Dispose() -- can't use this anymore!!!
 			} catch (Exception ex) {
 				Debug.Fail(ex.Message);
 			}
@@ -137,28 +130,28 @@ namespace VncSharp
 			byte[] b = reader.ReadBytes(12);
 
 			// As of the time of writing, the only supported versions are 3.3, 3.7, and 3.8.
-			if (   (b[0]  == 0x52 &&					// R
-					b[1]  == 0x46 &&					// F
-					b[2]  == 0x42 &&					// B
-					b[3]  == 0x20 &&					// (space)
-					b[4]  == 0x30 &&					// 0
-					b[5]  == 0x30 &&					// 0
-					b[6]  == 0x33 &&					// 3
-					b[7]  == 0x2e)                      // .
-                  &&
-				  ((b[8]  == 0x30 &&					// 0
-					b[9]  == 0x30 &&					// 0
-				   (b[10] == 0x33 ||					// 3, 7, OR 8 are all valid and possible
-				    b[10] == 0x36 ||					// BUG FIX: UltraVNC reports protocol version 3.6!
-				    b[10] == 0x37 ||
-				    b[10] == 0x38)))
-                    ||                                  // Support Apple Remote Desktop
-                   (b[8]  == 0x38 &&					// 8
-					b[9]  == 0x38 &&					// 8
-			        b[10] == 0x39)                      // 9
-                  &&					
-				    b[11] == 0x0a)						// \n
-			{
+            if ((b[0] == 0x52 &&					// R
+                                b[1] == 0x46 &&					// F
+                                b[2] == 0x42 &&					// B
+                                b[3] == 0x20 &&					// (space)
+                                b[4] == 0x30 &&					// 0
+                                b[5] == 0x30 &&					// 0
+                                b[6] == 0x33 &&					// 3
+                                b[7] == 0x2e)                      // .
+                              &&
+                              ((b[8] == 0x30 &&					// 0
+                                b[9] == 0x30 &&					// 0
+                               (b[10] == 0x33 ||					// 3, 7, OR 8 are all valid and possible
+                                b[10] == 0x36 ||					// BUG FIX: UltraVNC reports protocol version 3.6!
+                                b[10] == 0x37 ||
+                                b[10] == 0x38)))
+                                ||                                  // Support Apple Remote Desktop
+                               (b[8] == 0x38 &&					// 8
+                                b[9] == 0x38 &&					// 8
+                                b[10] == 0x39)                      // 9
+                              &&
+                                b[11] == 0x0a)						// \n
+            {
 				// Since we only currently support the 3.x protocols, this can be assumed here.
 				// If and when 4.x comes out, this will need to be fixed--however, the entire 
 				// protocol will need to be updated then anyway :)
@@ -168,13 +161,13 @@ namespace VncSharp
 				switch (b[10]) {
 					case 0x33: 
 					case 0x36:	// BUG FIX: pass 3.3 for 3.6 to allow UltraVNC to work, thanks to Steve Bostedor.
-                    case 0x39:	// FIX: pass 3.889 to allow Apple Remote Desktop to work, thanks to Julian Cable.
-                        verMinor = 3;
+						verMinor = 3;
 						break;
 					case 0x37:
 						verMinor = 7;
 						break;
 					case 0x38:
+                    case 0x39:  // BUG FIX: use 3.8 even though Apple reports a bogus 3.9
 						verMinor = 8;
 						break;
 				}
@@ -340,9 +333,6 @@ namespace VncSharp
 		/// <param name="incremental">Indicates whether only changes to the client's data should be sent or the entire desktop.</param>
 		public void WriteFramebufferUpdateRequest(ushort x, ushort y, ushort width, ushort height, bool incremental)
 		{
-//			NOTE: not needed any more, but still testing
-//			writeLock.WaitOne();
-		
 			writer.Write(FRAMEBUFFER_UPDATE_REQUEST);
 			writer.Write((byte)(incremental ? 1 : 0));
 			writer.Write(x);
@@ -350,9 +340,6 @@ namespace VncSharp
 			writer.Write(width);
 			writer.Write(height);
 			writer.Flush();
-
-//			NOTE: not needed any more, but still testing
-//			writeLock.ReleaseMutex();
 		}
 
 		/// <summary>
@@ -362,17 +349,11 @@ namespace VncSharp
 		/// <param name="pressed"></param>
 		public void WriteKeyEvent(uint keysym, bool pressed)
 		{
-//			NOTE: not needed any more, but still testing
-//			writeLock.WaitOne();
-
 			writer.Write(KEY_EVENT);
 			writer.Write( (byte) (pressed ? 1 : 0));
 			WritePadding(2);
 			writer.Write(keysym);
 			writer.Flush();
-
-//			NOTE: not needed any more, but still testing
-//			writeLock.ReleaseMutex();
 		}
 
 		/// <summary>
@@ -382,17 +363,11 @@ namespace VncSharp
 		/// <param name="point">The location of the mouse cursor.</param>
 		public void WritePointerEvent(byte buttonMask, Point point)
 		{
-//			NOTE: not needed any more, but still testing
-//			writeLock.WaitOne();
-			
 			writer.Write(POINTER_EVENT);
 			writer.Write(buttonMask);
 			writer.Write( (ushort) point.X);
 			writer.Write( (ushort) point.Y);
 			writer.Flush();
-
-//			NOTE: not needed any more, but still testing
-//			writeLock.ReleaseMutex();
 		}
 
 		/// <summary>
@@ -401,17 +376,11 @@ namespace VncSharp
 		/// <param name="text">The text to be sent to the server.</param></param>
 		public void WriteClientCutText(string text)
 		{
-//			NOTE: not needed any more, but still testing
-//			writeLock.WaitOne();
-
 			writer.Write(CLIENT_CUT_TEXT);
 			WritePadding(3);
 			writer.Write( (uint) text.Length);
 			writer.Write(GetBytes(text));
 			writer.Flush();
-			
-//			NOTE: not needed any more, but still testing
-//			writeLock.ReleaseMutex();
 		}
 
 		/// <summary>
@@ -447,7 +416,6 @@ namespace VncSharp
 			rectangle.Height = (int) reader.ReadUInt16();
 			encoding = (int) reader.ReadUInt32();
 		}
-
 		
 //		// TODO: This is not yet used anywhere, and needs to be fixed so the 
 //		// colour map array is returned, cached, etc.
@@ -541,7 +509,6 @@ namespace VncSharp
 			writer.Write(value);
 		}
 
-
 		/// <summary>
 		/// Reads the specified number of bytes of padding (i.e., garbage bytes) from the server.
 		/// </summary>
@@ -602,7 +569,7 @@ namespace VncSharp
 			public override ushort ReadUInt16()
 			{
 				FillBuff(2);
-				return (ushort)(buff[1] | buff[0] << 8);
+				return (ushort)(((uint)buff[1]) | ((uint)buff[0]) << 8);
 				
 			}
 			
@@ -615,7 +582,7 @@ namespace VncSharp
 			public override uint ReadUInt32()
 			{
 				FillBuff(4);
-				return (uint)(buff[3] & 0xFF | buff[2] << 8 | buff[1] << 16 | buff[0] << 24);
+				return (uint)(((uint)buff[3]) & 0xFF | ((uint)buff[2]) << 8 | ((uint)buff[1]) << 16 | ((uint)buff[0]) << 24);
 			}
 			
 			public override int ReadInt32()
@@ -690,6 +657,54 @@ namespace VncSharp
 				// Given an array of bytes, flip and write to underlying stream
 				Array.Reverse(b);
 				base.Write(b);
+			}
+		}
+
+
+		public sealed class ZRLECompressedReader : BinaryReader
+		{
+			MemoryStream zlibMemoryStream;
+			ComponentAce.Compression.Libs.zlib.ZOutputStream zlibDecompressedStream;
+			BinaryReader uncompressedReader;
+
+			public ZRLECompressedReader(Stream uncompressedStream) : base(uncompressedStream)
+			{
+				zlibMemoryStream = new MemoryStream();
+				zlibDecompressedStream = new ComponentAce.Compression.Libs.zlib.ZOutputStream(zlibMemoryStream);
+				uncompressedReader = new BinaryReader(zlibMemoryStream);
+			}
+
+			public override byte ReadByte()
+			{
+				return uncompressedReader.ReadByte();
+			}
+
+			public override byte[] ReadBytes(int count)
+			{
+				return uncompressedReader.ReadBytes(count);
+			}
+
+			public void DecodeStream()
+			{
+				//Reset position to use same buffer
+				zlibMemoryStream.Position = 0;
+
+				//Get compressed stream length to read
+				byte[] buff = new byte[4];
+				if (this.BaseStream.Read(buff, 0, 4) != 4)
+					throw new Exception("ZRLE decoder: Invalid compressed stream size");
+
+				//BigEndian to LittleEndian conversion
+				int compressedBufferSize = (int)(buff[3] | buff[2] << 8 | buff[1] << 16 | buff[0] << 24);
+				if (compressedBufferSize > 64 * 1024 * 1024)
+					throw new Exception("ZRLE decoder: Invalid compressed data size");
+
+				//Decode stream
+				int pos = 0;
+				while (pos++ < compressedBufferSize)
+					zlibDecompressedStream.WriteByte(this.BaseStream.ReadByte());
+
+				zlibMemoryStream.Position = 0;
 			}
 		}
 	}

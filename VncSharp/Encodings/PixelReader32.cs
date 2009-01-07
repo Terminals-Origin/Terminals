@@ -1,5 +1,5 @@
 // VncSharp - .NET VNC Client Library
-// Copyright (C) 2004  David Humphrey, Chuck Borgh, Matt Cyr
+// Copyright (C) 2008 David Humphrey
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,7 +32,11 @@ namespace VncSharp.Encodings
 		{
 			// Read the pixel value
 			byte[] b = rfb.ReadBytes(4);
-			uint pixel = (uint)(b[0] & 0xFF | b[1] << 8 | b[2] << 16 | b[3] << 24);
+
+            uint pixel = (uint)(((uint)b[0]) & 0xFF | 
+                                ((uint)b[1]) << 8   | 
+                                ((uint)b[2]) << 16  | 
+                                ((uint)b[3]) << 24);
 
 			// Extract RGB intensities from pixel
 			byte red   = (byte) ((pixel >> framebuffer.RedShift)   & framebuffer.RedMax);

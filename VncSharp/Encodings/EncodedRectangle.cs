@@ -1,5 +1,5 @@
 // VncSharp - .NET VNC Client Library
-// Copyright (C) 2004  David Humphrey, Chuck Borgh, Matt Cyr
+// Copyright (C) 2008 David Humphrey
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,25 +32,30 @@ namespace VncSharp.Encodings
 		protected Framebuffer	framebuffer;
 		protected PixelReader	preader;
 
-		public EncodedRectangle(RfbProtocol rfb, Framebuffer framebuffer, Rectangle rectangle)
+		public EncodedRectangle(RfbProtocol rfb, Framebuffer framebuffer, Rectangle rectangle, int encoding)
 		{
 			this.rfb = rfb;
 			this.framebuffer = framebuffer;
 			this.rectangle = rectangle;
 
-			// Create the appropriate PixelReader depending on screen size
-			switch (framebuffer.BitsPerPixel) {
-				case 32:
-					preader = new PixelReader32(rfb, framebuffer);
-					break;
-				case 16:
-					preader = new PixelReader16(rfb, framebuffer);
-					break;
-				case 8:
-					preader = new PixelReader8(rfb, framebuffer);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException("BitsPerPixel", framebuffer.BitsPerPixel, "Valid VNC Pixel Widths are 8, 16, or 32 bits.");
+			if (encoding == RfbProtocol.ZRLE_ENCODING) {
+				preader = new CPixelReader(rfb, framebuffer);
+			} else {
+				// Create the appropriate PixelReader depending on screen size
+				switch (framebuffer.BitsPerPixel)
+				{
+					case 32:
+						preader = new PixelReader32(rfb, framebuffer);
+						break;
+					case 16:
+						preader = new PixelReader16(rfb, framebuffer);
+						break;
+					case 8:
+						preader = new PixelReader8(rfb, framebuffer);
+						break;
+					default:
+						throw new ArgumentOutOfRangeException("BitsPerPixel", framebuffer.BitsPerPixel, "Valid VNC Pixel Widths are 8, 16, or 32 bits.");
+				}
 			}
 		}
 
@@ -131,6 +136,27 @@ namespace VncSharp.Encodings
 				ptr += offset;								// advance to next row within pixels
 			}
 		}
+
+		protected void FillRectangle(Rectangle rect, int[] tile)
+		{
+			int ptr = 0;
+			int offset = 0;
+
+			// If the two rectangles don't match, then rect is contained within rectangle, and
+			// ptr and offset need to be adjusted to position things at the proper starting point.
+			if (rect != rectangle) {
+				ptr = rect.Y * rectangle.Width + rect.X;	// move to the start of the rectangle in pixels
+				offset = rectangle.Width - rect.Width;		// calculate the offset to get to the start of the next row
+			}
+
+			int idx = 0;
+			for (int y = 0; y < rect.Height; ++y) {
+				for (int x = 0; x < rect.Width; ++x) {
+					framebuffer[ptr++] = tile[idx++];
+				}
+				ptr += offset;								// advance to next row within pixels
+			}
+		}
 		
 		/// <summary>
 		/// Fills the given Rectangle with pixel values read from the server (i.e., each pixel may have its own value).
@@ -152,39 +178,8 @@ namespace VncSharp.Encodings
 				for (int x = 0; x < rect.Width; ++x) {
 					framebuffer[ptr++] = preader.ReadPixel();	// every pixel needs to be read from server
 				}
-				ptr += offset;								// advance to next row within pixels
+				ptr += offset;								    // advance to next row within pixels
 			}
 		}
 	}
 }
-
-
-// ------------------------------------------------------------------------------------
-// NOTE: This code is unused, and is only here to remind me what to do if I
-// If ever I want to convert this code to VB.NET, which doesn't support pointers.
-// ------------------------------------------------------------------------------------
-//		private static Color GetPixel(Point pos, System.Drawing.Imaging.BitmapData bmd)
-//		{
-////			if (CheckPixel(pos, bmd)) {
-//			//always assumes 32 bit per pixels
-//			int offset=pos.Y*bmd.Stride+(4*pos.X);
-//			return Color.FromArgb(
-//				Marshal.ReadByte(bmd.Scan0,offset+2),
-//				Marshal.ReadByte(bmd.Scan0,offset+1),
-//				Marshal.ReadByte(bmd.Scan0,offset));
-////			} else {
-////				return Color.FromArgb(0,0,0,0);
-////			}
-//		}
-//		
-//		private static void SetPixel(Point pos, System.Drawing.Imaging.BitmapData bmd, Color c)
-//		{
-////			if (CheckPixel(pos,bmd)) {
-//				//always assumes 32 bit per pixels
-//				int offset=pos.Y*bmd.Stride+(4*pos.X);
-//				Marshal.WriteByte(bmd.Scan0,offset+2,c.R);
-//				Marshal.WriteByte(bmd.Scan0,offset+1,c.G);
-//				Marshal.WriteByte(bmd.Scan0,offset,c.B);
-//				Marshal.WriteByte(bmd.Scan0,offset+3,255);
-////			}
-//		}

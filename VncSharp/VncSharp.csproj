@@ -1,75 +1,63 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E0DED53A-C3E1-441D-9AD2-766E49EAD417}</ProjectGuid>
+    <ProjectGuid>{E0695F0F-0FAF-44BC-AE55-A1FCBFE70271}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VncSharp</RootNamespace>
     <AssemblyName>VncSharp</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>VncSharpKey.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <SccProjectName>%24/Terminals/VncSharp</SccProjectName>
+    <SccLocalPath>.</SccLocalPath>
+    <SccAuxPath>https://tfs01.codeplex.com</SccAuxPath>
+    <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;Win32</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
+    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>Win32</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="VncDesignModeDesktopPolicy.cs" />
+    <Compile Include="VncDesktopTransformPolicy.cs" />
+    <Compile Include="VncScaledDesktopPolicy.cs" />
+    <Compile Include="VncClippedDesktopPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ConnectEventArgs.cs" />
     <Compile Include="EncodedRectangleFactory.cs" />
     <Compile Include="Encodings\CopyRectRectangle.cs" />
     <Compile Include="Encodings\CoRreRectangle.cs" />
+    <Compile Include="Encodings\CPixelReader.cs" />
     <Compile Include="Encodings\EncodedRectangle.cs" />
     <Compile Include="Encodings\HextileRectangle.cs" />
     <Compile Include="Encodings\PixelReader.cs" />
@@ -78,6 +66,7 @@
     <Compile Include="Encodings\PixelReader8.cs" />
     <Compile Include="Encodings\RawRectangle.cs" />
     <Compile Include="Encodings\RreRectangle.cs" />
+    <Compile Include="Encodings\ZrleRectangle.cs" />
     <Compile Include="Framebuffer.cs" />
     <Compile Include="IDesktopUpdater.cs" />
     <Compile Include="IVncInputPolicy.cs" />
@@ -93,6 +82,21 @@
     <Compile Include="VncEventArgs.cs" />
     <Compile Include="VncProtocolException.cs" />
     <Compile Include="VncViewInputPolicy.cs" />
+    <Compile Include="zlib.NET\Adler32.cs" />
+    <Compile Include="zlib.NET\Deflate.cs" />
+    <Compile Include="zlib.NET\InfBlocks.cs" />
+    <Compile Include="zlib.NET\InfCodes.cs" />
+    <Compile Include="zlib.NET\Inflate.cs" />
+    <Compile Include="zlib.NET\InfTree.cs" />
+    <Compile Include="zlib.NET\StaticTree.cs" />
+    <Compile Include="zlib.NET\SupportClass.cs" />
+    <Compile Include="zlib.NET\Tree.cs" />
+    <Compile Include="zlib.NET\ZInputStream.cs" />
+    <Compile Include="zlib.NET\Zlib.cs" />
+    <Compile Include="zlib.NET\ZOutputStream.cs" />
+    <Compile Include="zlib.NET\ZStream.cs" />
+    <Compile Include="zlib.NET\ZStreamException.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="PasswordDialog.resx">
@@ -108,9 +112,17 @@
     <EmbeddedResource Include="Resources\vncviewer.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TODO.txt" />
+    <Content Include="CHANGELOG.txt" />
+    <Content Include="COPYING.txt" />
+    <Content Include="README.txt" />
+    <Content Include="zlib.NET\history.txt" />
+    <Content Include="zlib.NET\license.txt" />
+    <Content Include="zlib.NET\readme.txt" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="VncSharpKey.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

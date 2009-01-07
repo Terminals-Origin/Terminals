@@ -1,5 +1,5 @@
 // VncSharp - .NET VNC Client Library
-// Copyright (C) 2004  David Humphrey, Chuck Borgh, Matt Cyr
+// Copyright (C) 2008 David Humphrey
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -31,7 +31,8 @@ namespace VncSharp.Encodings
 		private const int ANY_SUBRECTS			= 0x08;
 		private const int SUBRECTS_COLOURED		= 0x10;
 
-		public HextileRectangle(RfbProtocol rfb, Framebuffer framebuffer, Rectangle rectangle) : base(rfb, framebuffer, rectangle) 
+		public HextileRectangle(RfbProtocol rfb, Framebuffer framebuffer, Rectangle rectangle)
+			: base(rfb, framebuffer, rectangle, RfbProtocol.HEXTILE_ENCODING) 
 		{
 		}
 

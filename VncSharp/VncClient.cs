@@ -1,5 +1,5 @@
 // VncSharp - .NET VNC Client Library
-// Copyright (C) 2004  David Humphrey, Chuck Borgh, Matt Cyr
+// Copyright (C) 2008 David Humphrey
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -253,9 +253,17 @@ namespace VncSharp
 				System.Text.Encoding.ASCII.GetBytes(password, 0, password.Length, key, 0);
 			}			
 
-			// HACK: VNC reverses key order!?
-			key = FixBug(key); 
-
+			// VNC uses reverse byte order in key
+            for (int i = 0; i < 8; i++)
+                key[i] = (byte)( ((key[i] & 0x01) << 7) |
+                                 ((key[i] & 0x02) << 5) |
+                                 ((key[i] & 0x04) << 3) |
+                                 ((key[i] & 0x08) << 1) |
+                                 ((key[i] & 0x10) >> 1) |
+                                 ((key[i] & 0x20) >> 3) |
+                                 ((key[i] & 0x40) >> 5) |
+                                 ((key[i] & 0x80) >> 7)  );
+ 
 			// VNC uses DES, not 3DES as written in some documentation
 			DES des = new DESCryptoServiceProvider();
 			des.Padding = PaddingMode.None;
@@ -269,31 +277,6 @@ namespace VncSharp
 			return response;
 		}
 
-		/// <summary>VNC DES authentication has a bug, such that keys are reversed.  This code 
-		/// was written by Dominic Ullmann (dominic_ullmann@swissonline.ch) and is 
-		/// is being used under the GPL.</summary>
-		/// <param name="desKey">The key to be altered.</param>
-		/// <returns>Returns the fixed key as an array of bytes.</returns>
-		protected byte[] FixBug(byte[] desKey)
-		{
-			byte[] newkey = new byte[8];
-
-			for (int i = 0; i < 8; i++) {
-				// revert desKey[i]:
-				newkey[i] = (byte) (	
-					((desKey[i] & 0x01) << 7) |  
-					((desKey[i] & 0x02) << 5) |
-					((desKey[i] & 0x04) << 3) |
-					((desKey[i] & 0x08) << 1) |
-					((desKey[i] & 0x10) >> 1) |
-					((desKey[i] & 0x20) >> 3) |
-					((desKey[i] & 0x40) >> 5) |
-					((desKey[i] & 0x80) >> 7)
-					);
-			}
-			return newkey;
-		}
-		
 		/// <summary>
 		/// Finish setting-up protocol with VNC Host.  Should be called after Connect and Authenticate (if password required).
 		/// </summary>
@@ -304,8 +287,7 @@ namespace VncSharp
 			buffer = rfb.ReadServerInit();
 			rfb.WriteSetPixelFormat(buffer);	// just use the server's framebuffer format
 
-			// TODO: currently Zrle is NOT supported
-			rfb.WriteSetEncodings(new uint[] {	// RfbProtocol.ZRLE_ENCODING,
+			rfb.WriteSetEncodings(new uint[] {	RfbProtocol.ZRLE_ENCODING,
 			                                    RfbProtocol.HEXTILE_ENCODING, 
 											//	RfbProtocol.CORRE_ENCODING, // CoRRE is buggy in some hosts, so don't bother using
 												RfbProtocol.RRE_ENCODING,
@@ -323,7 +305,9 @@ namespace VncSharp
 		{
 			// Start getting updates on background thread.
 			worker = new Thread(new ThreadStart(this.GetRfbUpdates));
-			worker.IsBackground = true;
+            // Bug Fix (Grégoire Pailler) for clipboard and threading
+            worker.SetApartmentState(ApartmentState.STA);
+            worker.IsBackground = true;
 			done = new ManualResetEvent(false);
 			worker.Start();
 		}
@@ -376,62 +360,72 @@ namespace VncSharp
 			while (true) {
 				if (CheckIfThreadDone())
 					break;
-				
-				try {
-					switch (rfb.ReadServerMessageType()) {
-						case RfbProtocol.FRAMEBUFFER_UPDATE:
-							rectangles = rfb.ReadFramebufferUpdate();
 
-							if (CheckIfThreadDone()) {
-								break;
-							}
+                try
+                {
+                    switch (rfb.ReadServerMessageType())
+                    {
+                        case RfbProtocol.FRAMEBUFFER_UPDATE:
+                            rectangles = rfb.ReadFramebufferUpdate();
 
-							for (int i = 0; i < rectangles; ++i) {
-								// Get the update rectangle's info
-								Rectangle rectangle;
-								rfb.ReadFramebufferUpdateRectHeader(out rectangle, out enc);
+                            if (CheckIfThreadDone())
+                            {
+                                break;
+                            }
 
-								// Build a derived EncodedRectangle type and pull-down all the pixel info
-								EncodedRectangle er = factory.Build(rectangle, enc);
-								er.Decode();
+                            for (int i = 0; i < rectangles; ++i)
+                            {
+                                // Get the update rectangle's info
+                                Rectangle rectangle;
+                                rfb.ReadFramebufferUpdateRectHeader(out rectangle, out enc);
 
-								// Let the UI know that an updated rectangle is available, but check
-								// to see if the user closed things down first.
-								if (!CheckIfThreadDone() && VncUpdate != null) {
-									VncEventArgs e = new VncEventArgs(er);
+                                // Build a derived EncodedRectangle type and pull-down all the pixel info
+                                EncodedRectangle er = factory.Build(rectangle, enc);
+                                er.Decode();
 
-									// In order to play nicely with WinForms controls, we do a check here to 
-									// see if it is necessary to synchronize this event with the UI thread.
-                                    if (VncUpdate.Target is System.Windows.Forms.Control) {
+                                // Let the UI know that an updated rectangle is available, but check
+                                // to see if the user closed things down first.
+                                if (!CheckIfThreadDone() && VncUpdate != null)
+                                {
+                                    VncEventArgs e = new VncEventArgs(er);
+
+                                    // In order to play nicely with WinForms controls, we do a check here to 
+                                    // see if it is necessary to synchronize this event with the UI thread.
+                                    if (VncUpdate.Target is System.Windows.Forms.Control)
+                                    {
                                         Control target = VncUpdate.Target as Control;
-										
-                                        if (target != null) {
-                                            target.Invoke(VncUpdate, new object[] {this, e});
+
+                                        if (target != null)
+                                        {
+                                            target.Invoke(VncUpdate, new object[] { this, e });
                                         }
-                                    } else {
-										// Target is not a WinForms control, so do it on this thread...
-										VncUpdate(this, new VncEventArgs(er));
                                     }
-								}
-							}
-							break;
-						case RfbProtocol.BELL:
-							Beep(500, 300);  // TODO: are there better values than these?
-							break;
-						case RfbProtocol.SERVER_CUT_TEXT:
-							if (CheckIfThreadDone()) {
-								break;
-							}
-							Clipboard.SetDataObject(rfb.ReadServerCutText().Replace("\n", Environment.NewLine), true);
-							break;
-						case RfbProtocol.SET_COLOUR_MAP_ENTRIES:
-	// TODO: Needs to be implemented fully
-	//						rfb.ReadColourMapEntry();
-							break;
-					}
-				} catch {
-					OnConnectionLost();
-				}
+                                    else
+                                    {
+                                        // Target is not a WinForms control, so do it on this thread...
+                                        VncUpdate(this, new VncEventArgs(er));
+                                    }
+                                }
+                            }
+                            break;
+                        case RfbProtocol.BELL:
+                            Beep(500, 300);  // TODO: are there better values than these?
+                            break;
+                        case RfbProtocol.SERVER_CUT_TEXT:
+                            if (CheckIfThreadDone())
+                            {
+                                break;
+                            }
+                            Clipboard.SetDataObject(rfb.ReadServerCutText().Replace("\n", Environment.NewLine), true);
+                            break;
+                        case RfbProtocol.SET_COLOUR_MAP_ENTRIES:
+                            // TODO: Needs to be implemented fully
+                            //						rfb.ReadColourMapEntry();
+                            break;
+                    }
+                } catch {
+                    OnConnectionLost();
+                }
 			}
 		}
 
@@ -478,6 +472,15 @@ namespace VncSharp
 				inputPolicy = new VncDefaultInputPolicy(rfb);
 		}
 
+        public virtual void WriteClientCutText(string text)
+        {
+            try {
+                rfb.WriteClientCutText(text);
+            } catch {
+                OnConnectionLost();
+            }
+        }
+
 		// TODO: This needs to be pushed into the protocol rather than expecting keysym from the caller.
 		public virtual void WriteKeyboardEvent(uint keysym, bool pressed)
 		{
@@ -494,7 +497,7 @@ namespace VncSharp
 			try {
 				inputPolicy.WritePointerEvent(buttonMask, point);
 			} catch {
-				OnConnectionLost();
+    			OnConnectionLost();
 			}
 		}
 		
