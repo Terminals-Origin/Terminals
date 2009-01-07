@@ -197,13 +197,16 @@ TS_PERF_ENABLE_DESKTOP_COMPOSITION 0x00000100
                 if (Settings.SupportsRDP6)
                 {
                     MSTSCLib6.IMsRdpClientAdvancedSettings5 advancedSettings5 = (axMsRdpClient2.AdvancedSettings3 as MSTSCLib6.IMsRdpClientAdvancedSettings5);
-                    if(advancedSettings5 != null)
+                    if (advancedSettings5 != null)
                     {
                         advancedSettings5.RedirectClipboard = Favorite.RedirectClipboard;
                         advancedSettings5.RedirectDevices = Favorite.RedirectDevices;
                         advancedSettings5.ConnectionBarShowMinimizeButton = false;
                         advancedSettings5.ConnectionBarShowPinButton = false;
                         advancedSettings5.ConnectionBarShowRestoreButton = false;
+
+                        if (Favorite.EnableTLSAuthentication)
+                            advancedSettings5.AuthenticationLevel = 2;
                     }
                 }
                 axMsRdpClient2.SecuredSettings2.AudioRedirectionMode = (int)Favorite.Sounds;

@@ -252,6 +252,18 @@ namespace Terminals
                 this["bitmapPeristence"] = value;
             }
         }
+        [ConfigurationProperty("enableTLSAuthentication", IsRequired = false, DefaultValue = false)]
+        public bool EnableTLSAuthentication
+        {
+            get
+            {
+                return (bool)this["enableTLSAuthentication"];
+            }
+            set
+            {
+                this["enableTLSAuthentication"] = value;
+            }
+        }
         [ConfigurationProperty("allowBackgroundInput", IsRequired = false, DefaultValue = false)]
         public bool AllowBackgroundInput
         {

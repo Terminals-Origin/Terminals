@@ -191,6 +191,7 @@ namespace Terminals
             this.AcceleratorPassthroughCheckBox.Checked = favorite.AcceleratorPassthrough;
             this.EnableCompressionCheckbox.Checked = favorite.EnableCompression;
             this.EnableBitmapPersistanceCheckbox.Checked = favorite.BitmapPeristence;
+            this.EnableTLSAuthenticationCheckbox.Checked = favorite.EnableTLSAuthentication;
             this.AllowBackgroundInputCheckBox.Checked = favorite.AllowBackgroundInput;
 
             chkDisableCursorShadow.Checked = false;
@@ -320,6 +321,7 @@ namespace Terminals
                 favorite.AcceleratorPassthrough = AcceleratorPassthroughCheckBox.Checked;
                 favorite.EnableCompression = EnableCompressionCheckbox.Checked;
                 favorite.BitmapPeristence = EnableBitmapPersistanceCheckbox.Checked;
+                favorite.EnableTLSAuthentication = EnableTLSAuthenticationCheckbox.Checked;
                 favorite.AllowBackgroundInput = AllowBackgroundInputCheckBox.Checked;
 
                 favorite.EnableFontSmoothing = AllowFontSmoothingCheckbox.Checked;

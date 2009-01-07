@@ -191,6 +191,7 @@ namespace Terminals
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
         this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
+        this.EnableTLSAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -891,6 +892,7 @@ namespace Terminals
         // 
         // tabPage8
         // 
+        this.tabPage8.Controls.Add(this.EnableTLSAuthenticationCheckbox);
         this.tabPage8.Controls.Add(this.label30);
         this.tabPage8.Controls.Add(this.label29);
         this.tabPage8.Controls.Add(this.ShutdownTimeoutTextBox);
@@ -1933,6 +1935,18 @@ namespace Terminals
         this.NewWindowCheckbox.Text = "&Open in New Window";
         this.NewWindowCheckbox.UseVisualStyleBackColor = true;
         // 
+        // EnableTLSAuthenticationCheckbox
+        // 
+        this.EnableTLSAuthenticationCheckbox.AutoSize = true;
+        this.EnableTLSAuthenticationCheckbox.Location = new System.Drawing.Point(241, 76);
+        this.EnableTLSAuthenticationCheckbox.Name = "EnableTLSAuthenticationCheckbox";
+        this.EnableTLSAuthenticationCheckbox.Size = new System.Drawing.Size(151, 17);
+        this.EnableTLSAuthenticationCheckbox.TabIndex = 20;
+        this.EnableTLSAuthenticationCheckbox.Text = "Enable TLS Authentication";
+        this.toolTip1.SetToolTip(this.EnableTLSAuthenticationCheckbox, "By default RDP encryption is used. This setting enables TLS Authentication.");
+        this.EnableTLSAuthenticationCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // 
         // NewTerminalForm
         // 
         this.AcceptButton = this.btnOk;
@@ -2172,5 +2186,6 @@ namespace Terminals
       private System.Windows.Forms.CheckBox AllowDesktopCompositionCheckbox;
       private System.Windows.Forms.CheckBox AllowFontSmoothingCheckbox;
       private System.Windows.Forms.RadioButton SSH2RadioButton;
+      private System.Windows.Forms.CheckBox EnableTLSAuthenticationCheckbox;
   }
 }
