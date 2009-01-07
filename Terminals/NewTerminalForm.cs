@@ -499,6 +499,17 @@ namespace Terminals
         private void AddTag()
         {
             if(!String.IsNullOrEmpty(txtTag.Text)) {
+
+                string newTag = txtTag.Text.ToLower();
+                foreach (string tag in Settings.Tags)
+                {
+                    if (tag.ToLower() == newTag)
+                    {
+                        txtTag.Text = tag;
+                        break;
+                    }
+                }
+
                 ListViewItem[] items = lvConnectionTags.Items.Find(txtTag.Text, false);
                 if(items.Length == 0) {
                     Settings.AddTag(txtTag.Text);
