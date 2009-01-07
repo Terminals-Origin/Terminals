@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Globalization;
 
 namespace Terminals {
     class FontParser {
@@ -19,7 +20,7 @@ namespace Terminals {
                         Name = fontItems[1];
                         break;
                     case "size":
-                        float.TryParse(fontItems[1], out Size);
+                        float.TryParse(fontItems[1], NumberStyles.Any, CultureInfo.InvariantCulture.NumberFormat, out Size);
                         break;
                 }
             }
