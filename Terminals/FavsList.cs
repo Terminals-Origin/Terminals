@@ -60,6 +60,7 @@ namespace Terminals
                     }
                 }
             }
+            FavsTree.Sort();
         }
 
         void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
