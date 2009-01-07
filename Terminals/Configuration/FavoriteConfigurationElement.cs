@@ -17,7 +17,7 @@ namespace Terminals
         {
             Name = name;
         }
-        [ConfigurationProperty("shutdownTimeout", IsRequired = true, DefaultValue = 10)]
+        [ConfigurationProperty("shutdownTimeout", IsRequired = false, DefaultValue = 10)]
         public int ShutdownTimeout
         {
             get
@@ -34,7 +34,7 @@ namespace Terminals
                 this["shutdownTimeout"] = value;
             }
         }
-        [ConfigurationProperty("overallTimeout", IsRequired = true, DefaultValue = 600)]
+        [ConfigurationProperty("overallTimeout", IsRequired = false, DefaultValue = 600)]
         public int OverallTimeout
         {
             get
@@ -51,7 +51,7 @@ namespace Terminals
                 this["overallTimeout"] = value;
             }
         }
-        [ConfigurationProperty("connectionTimeout", IsRequired = true, DefaultValue = 600)]
+        [ConfigurationProperty("connectionTimeout", IsRequired = false, DefaultValue = 600)]
         public int ConnectionTimeout
         {
             get
@@ -70,7 +70,7 @@ namespace Terminals
         }
 
 
-        [ConfigurationProperty("idleTimeout", IsRequired = true, DefaultValue = 240)]
+        [ConfigurationProperty("idleTimeout", IsRequired = false, DefaultValue = 240)]
         public int IdleTimeout
         {
             get
@@ -315,7 +315,7 @@ namespace Terminals
                 this["ICAApplicationPath"] = value;
             }
         }
-        [ConfigurationProperty("vmrcreducedcolorsmode", IsRequired = true, DefaultValue = false)]
+        [ConfigurationProperty("vmrcreducedcolorsmode", IsRequired = false, DefaultValue = false)]
         public bool VMRCReducedColorsMode
         {
             get
@@ -327,7 +327,7 @@ namespace Terminals
                 this["vmrcreducedcolorsmode"] = value;
             }
         }
-        [ConfigurationProperty("telnet", IsRequired = true, DefaultValue = true)]
+        [ConfigurationProperty("telnet", IsRequired = false, DefaultValue = true)]
         public bool Telnet
         {
             get
@@ -339,7 +339,7 @@ namespace Terminals
                 this["telnet"] = value;
             }
         }
-        [ConfigurationProperty("ssh1", IsRequired = true, DefaultValue = false)]
+        [ConfigurationProperty("ssh1", IsRequired = false, DefaultValue = false)]
         public bool SSH1
         {
             get
@@ -351,7 +351,7 @@ namespace Terminals
                 this["ssh1"] = value;
             }
         }
-        [ConfigurationProperty("telnetrows", IsRequired = true, DefaultValue = 33)]
+        [ConfigurationProperty("telnetrows", IsRequired = false, DefaultValue = 33)]
         public int TelnetRows
         {
             get
@@ -363,7 +363,7 @@ namespace Terminals
                 this["telnetrows"] = value;
             }
         }
-        [ConfigurationProperty("telnetcols", IsRequired = true, DefaultValue = 110)]
+        [ConfigurationProperty("telnetcols", IsRequired = false, DefaultValue = 110)]
         public int TelnetCols
         {
             get
@@ -375,7 +375,7 @@ namespace Terminals
                 this["telnetcols"] = value;
             }
         }
-        [ConfigurationProperty("vmrcadministratormode", IsRequired = true, DefaultValue = false)]
+        [ConfigurationProperty("vmrcadministratormode", IsRequired = false, DefaultValue = false)]
         public bool VMRCAdministratorMode
         {
             get
@@ -411,7 +411,7 @@ namespace Terminals
                 this["toolBarIcon"] = value;
             }
         }
-        [ConfigurationProperty("telnetfont", IsRequired = true)]
+        [ConfigurationProperty("telnetfont", IsRequired = false)]
         public string TelnetFont
         {
             get
@@ -425,7 +425,7 @@ namespace Terminals
                 this["telnetfont"] = value;
             }
         }
-        [ConfigurationProperty("telnetbackcolor", IsRequired = true, DefaultValue = "Black")]
+        [ConfigurationProperty("telnetbackcolor", IsRequired = false, DefaultValue = "Black")]
         public string TelnetBackColor
         {
             get
@@ -438,7 +438,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("telnettextcolor", IsRequired = true, DefaultValue = "White")]
+        [ConfigurationProperty("telnettextcolor", IsRequired = false, DefaultValue = "White")]
         public string TelnetTextColor
         {
             get
@@ -450,7 +450,7 @@ namespace Terminals
                 this["telnettextcolor"] = value;
             }
         }
-        [ConfigurationProperty("telnetcursorcolor", IsRequired = true, DefaultValue = "Green")]
+        [ConfigurationProperty("telnetcursorcolor", IsRequired = false, DefaultValue = "Green")]
         public string TelnetCursorColor
         {
             get
@@ -489,7 +489,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("domainName", IsRequired = true)]
+        [ConfigurationProperty("domainName", IsRequired = false)]
         public string DomainName
         {
             get
@@ -502,7 +502,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("userName", IsRequired = true)]
+        [ConfigurationProperty("userName", IsRequired = false)]
         public string UserName
         {
             get
@@ -515,7 +515,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("encryptedPassword", IsRequired = true)]
+        [ConfigurationProperty("encryptedPassword", IsRequired = false)]
         public string EncryptedPassword
         {
             get
@@ -540,7 +540,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("connectToConsole", IsRequired = true)]
+        [ConfigurationProperty("connectToConsole", IsRequired = false)]
         public bool ConnectToConsole
         {
             get
@@ -566,7 +566,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("desktopSizeWidth", IsRequired=false)]
+        [ConfigurationProperty("desktopSizeWidth", IsRequired = false)]
         public int DesktopSizeWidth
         {
             get
@@ -579,7 +579,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("desktopSize", IsRequired = true, DefaultValue = DesktopSize.FitToWindow)]
+        [ConfigurationProperty("desktopSize", IsRequired = false, DefaultValue = DesktopSize.FitToWindow)]
         public DesktopSize DesktopSize
         {
             get
@@ -592,7 +592,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("colors", IsRequired = true, DefaultValue = Colors.Bits32)]
+        [ConfigurationProperty("colors", IsRequired = false, DefaultValue = Colors.Bits32)]
         public Colors Colors
         {
             get
