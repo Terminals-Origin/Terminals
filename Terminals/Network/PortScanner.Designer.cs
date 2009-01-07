@@ -23,6 +23,7 @@ namespace Terminals.Network {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
             this.ScanResultsLabel = new System.Windows.Forms.Label();
             this.pb = new System.Windows.Forms.TextBox();
@@ -37,8 +38,11 @@ namespace Terminals.Network {
             this.b = new System.Windows.Forms.TextBox();
             this.a = new System.Windows.Forms.TextBox();
             this.resultsGridView = new System.Windows.Forms.DataGridView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyRemoteAddressToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridView)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -177,12 +181,28 @@ namespace Terminals.Network {
             // 
             // resultsGridView
             // 
+            this.resultsGridView.AllowUserToAddRows = false;
             this.resultsGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.resultsGridView.ContextMenuStrip = this.contextMenuStrip1;
             this.resultsGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.resultsGridView.Location = new System.Drawing.Point(0, 69);
             this.resultsGridView.Name = "resultsGridView";
             this.resultsGridView.Size = new System.Drawing.Size(485, 225);
             this.resultsGridView.TabIndex = 1;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyRemoteAddressToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(192, 26);
+            // 
+            // copyRemoteAddressToolStripMenuItem
+            // 
+            this.copyRemoteAddressToolStripMenuItem.Name = "copyRemoteAddressToolStripMenuItem";
+            this.copyRemoteAddressToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.copyRemoteAddressToolStripMenuItem.Text = "Copy Remote Address";
+            this.copyRemoteAddressToolStripMenuItem.Click += new System.EventHandler(this.copyRemoteAddressToolStripMenuItem_Click);
             // 
             // PortScanner
             // 
@@ -196,6 +216,7 @@ namespace Terminals.Network {
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridView)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -216,5 +237,7 @@ namespace Terminals.Network {
         private System.Windows.Forms.Button StopButton;
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.Label ScanResultsLabel;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem copyRemoteAddressToolStripMenuItem;
     }
 }

@@ -217,6 +217,19 @@ namespace Terminals.Network {
                 StartButton_Click(null, null);
             }
         }
+
+        private void copyRemoteAddressToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (this.resultsGridView.SelectedCells.Count > 0 && this.resultsGridView.SelectedCells[0].RowIndex <= this.resultsGridView.Rows.Count)
+            {
+                string ip = this.resultsGridView.Rows[this.resultsGridView.SelectedCells[0].RowIndex].Cells[0].Value.ToString();
+                if (ip != null && ip.IndexOf(":") > 0)
+                {
+                    ip = ip.Substring(0, ip.IndexOf(":"));
+                    Clipboard.SetText(ip, TextDataFormat.Text);
+                }
+            }
+        }
     }
     public class ScanResult {
         System.Net.IPEndPoint remoteEndPoint;
