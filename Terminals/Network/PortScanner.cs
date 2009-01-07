@@ -91,12 +91,18 @@ namespace Terminals.Network {
         }
 
         System.Net.IPAddress endPointAddress = null;
-        private void PortScanner_Load(object sender, EventArgs e) {
+        private void PortScanner_Load(object sender, EventArgs eargs) {
             Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();
             try {
                 foreach(Metro.NetworkInterface face in nil.Interfaces) {
                     if(face.IsEnabled && !face.isLoopback) {
                         endPointAddress = face.Address;
+                        string[] parts = endPointAddress.ToString().Split('.');
+                        a.Text = parts[0];
+                        b.Text = parts[1];
+                        c.Text = parts[2];
+                        d.Text = parts[3];
+                        e.Text = parts[3];
                         break;
                     }
                 }
@@ -113,15 +119,39 @@ namespace Terminals.Network {
         void scanner_PortReply(System.Net.IPEndPoint remoteEndPoint, Metro.Scanning.TcpPortState state) {
             Counter--;
             ScanResult r = new ScanResult();
-            r.RemoteEndPoint = remoteEndPoint;
+            r.RemoteEndPoint = new System.Net.IPEndPoint(remoteEndPoint.Address, remoteEndPoint.Port);
             r.State = state;
-            Results.Add(r);
+            lock (resultsLock)
+            {
+                Results.Add(r);
+            }
             this.Invoke(miv);
         }
 
+        object resultsLock = new object();
         private void UpdateConnections() {
-            this.resultsGridView.DataSource = null;
-            this.resultsGridView.DataSource = Results;
+            this.resultsGridView.Rows.Clear();
+            if (this.resultsGridView.Columns == null || this.resultsGridView.Columns.Count == 0)
+            {
+                this.resultsGridView.Columns.Add("EndPoint", "End Point");
+                this.resultsGridView.Columns.Add("State", "State");
+            }
+            lock (resultsLock)
+            {
+                foreach (ScanResult result in Results)
+                {
+                    if (result.State == Metro.Scanning.TcpPortState.Opened)
+                    {
+                        this.resultsGridView.Rows.Add(new object[] { result.RemoteEndPoint, result.State });
+                    }
+                }
+            }   
+            if (Counter <= 0)
+            {
+                this.StopButton.Enabled = false;
+                this.StartButton.Enabled = true;
+                Counter = 0;
+            }
             this.ScanResultsLabel.Text = string.Format("Outsanding Requests:{0}", Counter);
         }
 
@@ -138,6 +168,7 @@ namespace Terminals.Network {
             {
                 b.Focus();
             }
+            if (a.Text.Length > 3) a.Text = a.Text.Substring(0, 3);
         }
 
         private void b_KeyUp(object sender, KeyEventArgs e)
@@ -146,6 +177,7 @@ namespace Terminals.Network {
             {
                 c.Focus();
             }
+            
         }
 
         private void c_KeyUp(object sender, KeyEventArgs e)
