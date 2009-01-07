@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Drawing;
 using System.Data;
 using System.Text;
@@ -331,16 +332,20 @@ namespace Terminals
             InputBoxResult result = InputBox.Show("Set Password by Tag\r\n\r\nThis will replace the password for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Password" + " - " + tagName, '*');
             if (result.ReturnCode == DialogResult.OK)
             {
-
+                this.MainForm.Cursor = Cursors.WaitCursor;
+                Application.DoEvents();
                 FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
                 foreach (FavoriteConfigurationElement elm in favs)
                 {
                     if (elm.TagList.Contains(tagName))
                     {
                         elm.Password = result.Text;
+                        Settings.EditFavorite(elm.Name, elm);
                     }
                 }
-
+                this.MainForm.Cursor = Cursors.Default;
+                Application.DoEvents();
+                MessageBox.Show("Set Password by Tag Complete.");
             }
         }
 
@@ -350,16 +355,20 @@ namespace Terminals
             InputBoxResult result = InputBox.Show("Set Domain by Tag\r\n\r\nThis will replace the Domain for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Domain" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-
+                this.MainForm.Cursor = Cursors.WaitCursor;
+                Application.DoEvents();
                 FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
                 foreach (FavoriteConfigurationElement elm in favs)
                 {
                     if (elm.TagList.Contains(tagName))
                     {
-                        elm.DomainName = result.Text;
+                        elm.DomainName = result.Text;                        
+                        Settings.EditFavorite(elm.Name, elm);
                     }
                 }
-
+                this.MainForm.Cursor = Cursors.Default;
+                Application.DoEvents();
+                MessageBox.Show("Set Domain by Tag Complete.");
             }
         }
 
@@ -369,16 +378,20 @@ namespace Terminals
             InputBoxResult result = InputBox.Show("Set Username by Tag\r\n\r\nThis will replace the Username for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Username" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-
+                this.MainForm.Cursor = Cursors.WaitCursor;
+                Application.DoEvents();
                 FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
                 foreach (FavoriteConfigurationElement elm in favs)
                 {
                     if (elm.TagList.Contains(tagName))
                     {
                         elm.UserName = result.Text;
+                        Settings.EditFavorite(elm.Name, elm);
                     }
                 }
-
+                this.MainForm.Cursor = Cursors.Default;
+                Application.DoEvents();
+                MessageBox.Show("Set Username by Tag Complete.");
             }
         }
 

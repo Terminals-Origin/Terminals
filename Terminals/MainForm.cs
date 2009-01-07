@@ -695,23 +695,26 @@ namespace Terminals {
                         FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
                         FavoriteConfigurationElement favorite = favorites[favoriteButton];
                         Bitmap button = Terminals.Properties.Resources.smallterm;
-                        if (favorite.ToolBarIcon != null && favorite.ToolBarIcon != "" && System.IO.File.Exists(favorite.ToolBarIcon))
+                        if (favorite != null)
                         {
-                            try
+                            if (favorite.ToolBarIcon != null && favorite.ToolBarIcon != "" && System.IO.File.Exists(favorite.ToolBarIcon))
                             {
-                                button = (Bitmap)Bitmap.FromFile(favorite.ToolBarIcon);
+                                try
+                                {
+                                    button = (Bitmap)Bitmap.FromFile(favorite.ToolBarIcon);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Terminals.Logging.Log.Info("", ex);
+                                    if (button != Terminals.Properties.Resources.smallterm) button = Terminals.Properties.Resources.smallterm;
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                Terminals.Logging.Log.Info("", ex);
-                                if (button != Terminals.Properties.Resources.smallterm) button = Terminals.Properties.Resources.smallterm;
-                            }
+                            ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, button, serverToolStripMenuItem_Click);
+                            favoriteBtn.Tag = favorite;
+                            favoriteBtn.Overflow = ToolStripItemOverflow.AsNeeded;
+                            favoriteToolBar.Items.Add(favoriteBtn);
+                            favvisible = true;
                         }
-                        ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, button, serverToolStripMenuItem_Click);
-                        favoriteBtn.Tag = favorite;
-                        favoriteBtn.Overflow = ToolStripItemOverflow.AsNeeded;
-                        favoriteToolBar.Items.Add(favoriteBtn);
-                        favvisible = true;
                     }
                 }
                 favoriteToolBar.Visible = favvisible;
