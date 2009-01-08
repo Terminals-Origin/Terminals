@@ -155,8 +155,11 @@ namespace Terminals
 
         private void FavsTree_DoubleClick(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.Connect(fav.Name, false, false);
+            if (FavsTree.SelectedNode != null)
+            {
+                FavoriteConfigurationElement fav = (FavsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+                if (fav != null) MainForm.Connect(fav.Name, false, false);
+            }
         }
 
         private void connectConsoleToolStripMenuItem_Click(object sender, EventArgs e)
@@ -374,7 +377,7 @@ namespace Terminals
 
         private void setUsernameByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                string tagName = FavsTree.SelectedNode.Text;
+            string tagName = FavsTree.SelectedNode.Text;
             InputBoxResult result = InputBox.Show("Set Username by Tag\r\n\r\nThis will replace the Username for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Username" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
@@ -392,6 +395,29 @@ namespace Terminals
                 this.MainForm.Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Username by Tag Complete.");
+            }
+        }
+
+        private void deleteAllFavoritesByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string tagName = FavsTree.SelectedNode.Text;
+            DialogResult result = MessageBox.Show("Delete all Favorites by Tag\r\n\r\nThis will DELETE all Favorites within this tag.\r\n\r\nUse at your own risk!", "Delete all Favorites by Tag" + " - " + tagName, MessageBoxButtons.OKCancel);
+            if (result == DialogResult.OK)
+            {
+                this.MainForm.Cursor = Cursors.WaitCursor;
+                Application.DoEvents();
+                FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
+                foreach (FavoriteConfigurationElement elm in favs)
+                {
+                    if (elm.TagList.Contains(tagName))
+                    {
+                        Settings.DeleteFavorite(elm.Name);
+                    }
+                }
+                this.MainForm.Cursor = Cursors.Default;
+                Application.DoEvents();
+                MessageBox.Show("Delete all Favorites by Tag Complete.");
+                LoadFavs();
             }
         }
 
