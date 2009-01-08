@@ -57,5 +57,24 @@ namespace Terminals.TerminalServices
             get { return address; }
             set { address = value; }
         }
+        public System.Net.IPAddress IPAddress
+        {
+            get
+            {
+                try
+                {
+                    return new System.Net.IPAddress(this.Address);
+                }
+                catch (Exception exc)
+                {
+                }
+                return new System.Net.IPAddress(0);
+            }
+        }
+        public override string ToString()
+        {
+            
+            return string.Format("Domain:{0}, Client:{1}, Station:{2}, Address:{3}, Username:{4}, Status:{5}", DomianName, ClientName, StationName, this.IPAddress.ToString(), UserName, Status);
+        }
     }
 }
