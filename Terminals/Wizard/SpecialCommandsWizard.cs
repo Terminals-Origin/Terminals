@@ -41,7 +41,15 @@ namespace Terminals.Wizard
             regEditElm.Executable = regEditFile;
             cmdList.Add(regEditElm);
 
-            Icon[] IconsList = IconHandler.IconHandler.IconsFromFile(System.IO.Path.Combine(systemroot.FullName, "mmc.exe"), IconHandler.IconSize.Small);
+            Icon[] IconsList = null;
+            try
+            {
+                IconsList = IconHandler.IconHandler.IconsFromFile(System.IO.Path.Combine(systemroot.FullName, "mmc.exe"), IconHandler.IconSize.Small);
+            }
+            catch (Exception exc)
+            {
+                Logging.Log.Error("Could not load icons from the file:" + System.IO.Path.Combine(systemroot.FullName, "mmc.exe"));
+            }
             System.Random rnd = new Random();
 
             if (!System.IO.Directory.Exists("Thumbs")) System.IO.Directory.CreateDirectory("Thumbs");
