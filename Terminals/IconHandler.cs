@@ -82,26 +82,34 @@ namespace IconHandler
 		//will return an array of icons 
 		public static Icon[] IconsFromFile(string Filename,IconSize Size)
 		{
-			int IconCount = ExtractIconEx(Filename,-1,null,null,0); //checks how many icons.
-			IntPtr[] IconPtr = new IntPtr[IconCount];
-            Icon TempIcon;
-
-			//extracts the icons by the size that was selected.
-			if (Size == IconSize.Small)
-				ExtractIconEx(Filename,0,null,IconPtr,IconCount);
-			else
-				ExtractIconEx(Filename,0,IconPtr,null,IconCount);
-
-			Icon[] IconList = new Icon[IconCount];
-			
-			//gets the icons in a list.
-			for (int i = 0; i < IconCount; i++)
+            try
             {
-                TempIcon = (Icon) Icon.FromHandle(IconPtr[i]);
-				IconList[i] = GetManagedIcon(ref TempIcon);
-            }
+                int IconCount = ExtractIconEx(Filename, -1, null, null, 0); //checks how many icons.
+                IntPtr[] IconPtr = new IntPtr[IconCount];
+                Icon TempIcon;
 
-			return IconList;
+                //extracts the icons by the size that was selected.
+                if (Size == IconSize.Small)
+                    ExtractIconEx(Filename, 0, null, IconPtr, IconCount);
+                else
+                    ExtractIconEx(Filename, 0, IconPtr, null, IconCount);
+
+                Icon[] IconList = new Icon[IconCount];
+
+                //gets the icons in a list.
+                for (int i = 0; i < IconCount; i++)
+                {
+                    TempIcon = (Icon)Icon.FromHandle(IconPtr[i]);
+                    IconList[i] = GetManagedIcon(ref TempIcon);
+                }
+
+                return IconList;
+            }
+            catch (Exception exc)
+            {
+                Terminals.Logging.Log.Error("Could not load icons from file:" + Filename);
+                return null;
+            }
 		}
 
 		//extract one selected by index icon from a file.
