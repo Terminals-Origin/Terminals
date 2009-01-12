@@ -16,31 +16,30 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 using System;
+using System.IO;
 
 namespace VncSharp.Encodings
 {
 	/// <summary>
-	/// An 8-bit PixelReader--currently unsupported.
+	/// An 8-bit PixelReader
 	/// </summary>
 	public sealed class PixelReader8 : PixelReader
 	{
-		public PixelReader8(RfbProtocol rfb, Framebuffer framebuffer) : base(rfb, framebuffer)
+		private RfbProtocol rfb = null;
+
+		public PixelReader8(BinaryReader reader, Framebuffer framebuffer, RfbProtocol rfb) : base(reader, framebuffer)
 		{
+			this.rfb = rfb;
 		}
 	
 		/// <summary>
-		/// Reads a pixel. Not currently implemented for 8 bits.
+		/// Reads an 8-bit pixel.
 		/// </summary>
 		/// <returns>Returns an Integer value representing the pixel in GDI+ format.</returns>
-		/// <exception cref="NotImplementedException">Always thrown.</exception>
 		public override int ReadPixel()
 		{
-			// TODO: 8-Bit colour maps are not implemented yet.  If you want to do it,
-			// you'll need to read the colour map from the server, which will be 32-bit
-			// colour values that need to be keyed by position in an array.  Then when
-			// you read a byte, it will be the position of the colour to use in the map.
-			byte pixel = rfb.ReadByte();
-			throw new NotImplementedException("8 bpp colour maps are not currently supported.");
+			byte idx = reader.ReadByte();
+			return ToGdiPlusOrder((byte)rfb.MapEntries[idx, 0], (byte)rfb.MapEntries[idx, 1], (byte)rfb.MapEntries[idx, 2]);
 		}
 	}
 }

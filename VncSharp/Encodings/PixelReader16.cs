@@ -16,6 +16,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 using System;
+using System.IO;
 
 namespace VncSharp.Encodings
 {
@@ -24,7 +25,7 @@ namespace VncSharp.Encodings
 	/// </summary>
 	public sealed class PixelReader16 : PixelReader
 	{
-		public PixelReader16(RfbProtocol rfb, Framebuffer framebuffer) : base(rfb, framebuffer)
+		public PixelReader16(BinaryReader reader, Framebuffer framebuffer) : base(reader, framebuffer)
 		{
 		}
 	
@@ -34,7 +35,7 @@ namespace VncSharp.Encodings
 			// for Red, 6 for Green, 5 for Blue).  As such, I'm doing an extra
 			// shift below for each colour to get from 565 to 888 in order to 
 			// return a full 32-bit pixel value.
-			byte[] b = rfb.ReadBytes(2);
+			byte[] b = reader.ReadBytes(2);
 
             ushort pixel = (ushort)(((uint)b[0]) & 0xFF | ((uint)b[1]) << 8);
 

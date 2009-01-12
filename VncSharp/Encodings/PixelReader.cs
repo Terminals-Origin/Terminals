@@ -16,6 +16,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 using System;
+using System.IO;
 
 namespace VncSharp.Encodings
 {
@@ -25,12 +26,12 @@ namespace VncSharp.Encodings
 	/// </summary>
 	public abstract class PixelReader
 	{
-		protected RfbProtocol rfb;
+		protected BinaryReader reader;
 		protected Framebuffer framebuffer;
-		
-		protected PixelReader(RfbProtocol rfb, Framebuffer framebuffer)
+
+		protected PixelReader(BinaryReader reader, Framebuffer framebuffer)
 		{
-			this.rfb = rfb;
+			this.reader = reader;
 			this.framebuffer = framebuffer;
 		}
 

@@ -67,7 +67,13 @@ namespace VncSharp
 		/// Raised when the VNC Host drops the connection.
 		/// </summary>
 		public event EventHandler	ConnectionLost;
-		
+
+        [Description("Raised when the VNC Host sends text to the client's clipboard.")]
+        /// <summary>
+        /// Raised when the VNC Host sends text to the client's clipboard. 
+        /// </summary>
+        public event EventHandler   ClipboardChanged;
+
 		/// <summary>
 		/// Points to a Function capable of obtaining a user's password.  By default this means using the PasswordDialog.GetPassword() function; however, users of RemoteDesktop can replace this with any function they like, so long as it matches the delegate type.
 		/// </summary>
@@ -338,6 +344,7 @@ namespace VncSharp
             // Start protocol-level handling and determine whether a password is needed
             vnc = new VncClient();
             vnc.ConnectionLost += new EventHandler(VncClientConnectionLost);
+            vnc.ServerCutText += new EventHandler(VncServerCutText);
 
             passwordPending = vnc.Connect(host, display, VncPort, viewOnly);
 
@@ -467,7 +474,7 @@ namespace VncSharp
 			
 			// Draw a "please wait..." message on the local desktop until the first
 			// rectangle(s) arrive and overwrite with the desktop image.
-			DrawDesktopMessage("Please Wait, Connecting to VNC Host...");
+			DrawDesktopMessage("Connecting to VNC host, please wait...");
 		}
 	
 		/// <summary>
@@ -501,6 +508,7 @@ namespace VncSharp
 		{
 			InsureConnection(true);
 			vnc.ConnectionLost -= new EventHandler(VncClientConnectionLost);
+            vnc.ServerCutText -= new EventHandler(VncServerCutText);
 			vnc.Disconnect();
 			SetState(RuntimeState.Disconnected);
 			OnConnectionLost();
@@ -608,6 +616,18 @@ namespace VncSharp
 				Disconnect();
 			}
 		}
+
+        // Handle the VncClient ServerCutText event and bubble it up as ClipboardChanged.
+        protected void VncServerCutText(object sender, EventArgs e)
+        {
+            OnClipboardChanged();
+        }
+
+        protected void OnClipboardChanged()
+        {
+            if (ClipboardChanged != null)
+                ClipboardChanged(this, EventArgs.Empty);
+        }
 
 		/// <summary>
 		/// Dispatches the ConnectionLost event if any targets have registered.
@@ -720,7 +740,6 @@ namespace VncSharp
 				case Keys.Left:
 				case Keys.Right:
 				case Keys.Shift:
-				// FIXME: still working on supporting the rest of the keyboard...
 				case Keys.RWin:
 				case Keys.LWin:
 					return true;

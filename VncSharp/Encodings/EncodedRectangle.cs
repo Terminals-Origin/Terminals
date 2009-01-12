@@ -19,6 +19,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace VncSharp.Encodings
 {
@@ -38,24 +39,30 @@ namespace VncSharp.Encodings
 			this.framebuffer = framebuffer;
 			this.rectangle = rectangle;
 
-			if (encoding == RfbProtocol.ZRLE_ENCODING) {
-				preader = new CPixelReader(rfb, framebuffer);
-			} else {
-				// Create the appropriate PixelReader depending on screen size
-				switch (framebuffer.BitsPerPixel)
-				{
-					case 32:
-						preader = new PixelReader32(rfb, framebuffer);
-						break;
-					case 16:
-						preader = new PixelReader16(rfb, framebuffer);
-						break;
-					case 8:
-						preader = new PixelReader8(rfb, framebuffer);
-						break;
-					default:
-						throw new ArgumentOutOfRangeException("BitsPerPixel", framebuffer.BitsPerPixel, "Valid VNC Pixel Widths are 8, 16, or 32 bits.");
-				}
+			//Select appropriate reader
+			BinaryReader reader = (encoding == RfbProtocol.ZRLE_ENCODING) ? rfb.ZrleReader : rfb.Reader;
+
+			// Create the appropriate PixelReader depending on screen size and encoding
+			switch (framebuffer.BitsPerPixel)
+			{
+				case 32:
+					if (encoding == RfbProtocol.ZRLE_ENCODING)
+					{
+						preader = new CPixelReader(reader, framebuffer);
+					}
+					else
+					{
+						preader = new PixelReader32(reader, framebuffer);
+					}
+					break;
+				case 16:
+					preader = new PixelReader16(reader, framebuffer);
+					break;
+				case 8:
+					preader = new PixelReader8(reader, framebuffer, rfb);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("BitsPerPixel", framebuffer.BitsPerPixel, "Valid VNC Pixel Widths are 8, 16 or 32 bits.");
 			}
 		}
 

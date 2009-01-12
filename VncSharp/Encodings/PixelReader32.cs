@@ -16,6 +16,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 using System;
+using System.IO;
 
 namespace VncSharp.Encodings
 {
@@ -24,14 +25,14 @@ namespace VncSharp.Encodings
 	/// </summary>
 	public sealed class PixelReader32 : PixelReader
 	{
-		public PixelReader32(RfbProtocol rfb, Framebuffer framebuffer) : base(rfb, framebuffer)
+		public PixelReader32(BinaryReader reader, Framebuffer framebuffer) : base(reader, framebuffer)
 		{
 		}
 	
 		public override int ReadPixel()
 		{
 			// Read the pixel value
-			byte[] b = rfb.ReadBytes(4);
+			byte[] b = reader.ReadBytes(4);
 
             uint pixel = (uint)(((uint)b[0]) & 0xFF | 
                                 ((uint)b[1]) << 8   | 

@@ -4,6 +4,7 @@ Change Log
 * Version 1.0
 
 - Added ZRLE (Grégoire Pailler) using the BSD licensed zlib.NET version 1.04 (http://www.componentace.com/zlib_NET.htm)
+- Added support for 8-bit colour depth (Grégoire Pailler)
 - Added scaling (Grégoire Pailler)
 - Added SetScalingMode() to switch at runtime from clipped to scaled and vice versa
 - Added override to SendSpecialKeys() to allow explicit release (Grégoire Pailler)
@@ -11,12 +12,15 @@ Change Log
 - Added Desktop image property
 - Added more overloads to Connect()
 - Added FillRemoteClipboard() so local clipboard text can be sent to server for pasting
+- Added ClipboardChanged event so clients can determine when remote clipboard data is available
 - Fixed overflow bug when dealing with unsigned bytes
 - Fixed bug when dragging windows to the bottom of the screen (Grégoire Pailler)
-- Fixed bugs when connecting to Apple's OS X implementation of the VNC server
+- Fixed bugs when connecting to Apple's OS X implementation of the VNC server ("RFB" 3.889)
 - Fixed bug with clipboard and threading (Grégoire Pailler)
 - General code clean-up to remove dead code
-- Switched from NAnt to Visual Studio Solution
+- Switched from NAnt to Visual Studio Solution file
+- Updated C# example
+- Created VB.NET example
 
 * Version 0.9
 

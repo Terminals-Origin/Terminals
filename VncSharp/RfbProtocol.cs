@@ -61,12 +61,6 @@ namespace VncSharp
 		protected BinaryReader reader;	// Integral rather than Byte values are typically
 		protected BinaryWriter writer;	// sent and received, so these handle this.
 		protected ZRLECompressedReader zrleReader;
-		public ZRLECompressedReader ZrleReader
-		{
-			get {
-                return zrleReader; 
-            }
-		}
 
 		public RfbProtocol()
 		{
@@ -80,6 +74,22 @@ namespace VncSharp
 				return (float) verMajor + (verMinor * 0.1f);
 			}
 		}
+
+        public BinaryReader Reader
+        {
+            get
+            {
+                return reader;
+            }
+        }
+
+        public ZRLECompressedReader ZrleReader
+        {
+            get
+            {
+                return zrleReader;
+            }
+        }
 
 		/// <summary>
 		/// Attempt to connect to a remote VNC Host.
@@ -130,28 +140,25 @@ namespace VncSharp
 			byte[] b = reader.ReadBytes(12);
 
 			// As of the time of writing, the only supported versions are 3.3, 3.7, and 3.8.
-            if ((b[0] == 0x52 &&					// R
-                                b[1] == 0x46 &&					// F
-                                b[2] == 0x42 &&					// B
-                                b[3] == 0x20 &&					// (space)
-                                b[4] == 0x30 &&					// 0
-                                b[5] == 0x30 &&					// 0
-                                b[6] == 0x33 &&					// 3
-                                b[7] == 0x2e)                      // .
-                              &&
-                              ((b[8] == 0x30 &&					// 0
-                                b[9] == 0x30 &&					// 0
-                               (b[10] == 0x33 ||					// 3, 7, OR 8 are all valid and possible
-                                b[10] == 0x36 ||					// BUG FIX: UltraVNC reports protocol version 3.6!
-                                b[10] == 0x37 ||
-                                b[10] == 0x38)))
-                                ||                                  // Support Apple Remote Desktop
-                               (b[8] == 0x38 &&					// 8
-                                b[9] == 0x38 &&					// 8
-                                b[10] == 0x39)                      // 9
-                              &&
-                                b[11] == 0x0a)						// \n
-            {
+			if (	b[0]  == 0x52 &&					// R
+					b[1]  == 0x46 &&					// F
+					b[2]  == 0x42 &&					// B
+					b[3]  == 0x20 &&					// (space)
+					b[4]  == 0x30 &&					// 0
+					b[5]  == 0x30 &&					// 0
+					b[6]  == 0x33 &&					// 3
+					b[7]  == 0x2e &&					// .
+                   (b[8]  == 0x30 ||                    // 0
+                    b[8]  == 0x38) &&					// BUG FIX: Apple reports 8 
+                   (b[9] == 0x30 ||                     // 0
+                    b[9] == 0x38) &&					// BUG FIX: Apple reports 8 
+				   (b[10] == 0x33 ||					// 3, 7, OR 8 are all valid and possible
+				    b[10] == 0x36 ||					// BUG FIX: UltraVNC reports protocol version 3.6!
+				    b[10] == 0x37 ||
+                    b[10] == 0x38 ||
+                    b[10] == 0x39) &&                   // BUG FIX: Apple reports 9					
+				    b[11] == 0x0a)						// \n
+			{
 				// Since we only currently support the 3.x protocols, this can be assumed here.
 				// If and when 4.x comes out, this will need to be fixed--however, the entire 
 				// protocol will need to be updated then anyway :)
@@ -167,8 +174,14 @@ namespace VncSharp
 						verMinor = 7;
 						break;
 					case 0x38:
-                    case 0x39:  // BUG FIX: use 3.8 even though Apple reports a bogus 3.9
-						verMinor = 8;
+                        verMinor = 8;
+                        break;
+                    case 0x39:  // BUG FIX: Apple reports 3.889
+                        // According to the RealVNC mailing list, Apple is really using 3.3 
+                        // (see http://www.mail-archive.com/vnc-list@realvnc.com/msg23615.html).  I've tested with
+                        // both 3.3 and 3.8, and they both seem to work (I obviously haven't hit the issues others have).
+                        // Because 3.8 seems to work, I'm leaving that, but it might be necessary to use 3.3 in future.
+                        verMinor = 8;
 						break;
 				}
 			} else {
@@ -417,19 +430,31 @@ namespace VncSharp
 			encoding = (int) reader.ReadUInt32();
 		}
 		
-//		// TODO: This is not yet used anywhere, and needs to be fixed so the 
-//		// colour map array is returned, cached, etc.
-//		public void ReadColourMapEntries(out int firstColour, out int[] rgbColours)
-//		{
-//			ReadPadding(1);
-//			firstColour = (int) reader.ReadUInt16();
-//			int n = (int) reader.ReadUInt16();
-//			rgbColours = new int[n];
-//			
-//			for (int i = 0; i < n * 3; i++) {  // * 3 since R, G, and B come for each colour
-//				rgbColours[i] = (int) reader.ReadUInt16();
-//			}
-//		}
+        // TODO: this colour map code should probably go in Framebuffer.cs
+        private ushort[,] mapEntries = new ushort[256, 3];
+        public ushort[,] MapEntries
+        {
+            get {
+                return mapEntries;
+            }
+        }
+
+        /// <summary>
+        /// Reads 8-bit RGB colour values (or updated values) into the colour map.  See RFB Doc v. 3.8 section 6.5.2.
+        /// </summary>
+        public void ReadColourMapEntry()
+        {
+            ReadPadding(1);
+            ushort firstColor = ReadUInt16();
+            ushort nbColors = ReadUInt16();
+
+            for (int i = 0; i < nbColors; i++, firstColor++)
+            {
+                mapEntries[firstColor, 0] = (byte)(ReadUInt16() * byte.MaxValue / ushort.MaxValue);    // R
+                mapEntries[firstColor, 1] = (byte)(ReadUInt16() * byte.MaxValue / ushort.MaxValue);    // G
+                mapEntries[firstColor, 2] = (byte)(ReadUInt16() * byte.MaxValue / ushort.MaxValue);    // B
+            }
+        } 
 
 		/// <summary>
 		/// Reads the text from the Cut Buffer on the server. See RFB Doc v. 3.8 section 6.4.4.
@@ -547,8 +572,7 @@ namespace VncSharp
 		{
 			return System.Text.ASCIIEncoding.UTF8.GetString(bytes, 0, bytes.Length);
 		}
-		
-		
+
 		/// <summary>
 		/// BigEndianBinaryReader is a wrapper class used to read .NET integral types from a Big-Endian stream.  It inherits from BinaryReader and adds Big- to Little-Endian conversion.
 		/// </summary>
@@ -660,7 +684,9 @@ namespace VncSharp
 			}
 		}
 
-
+        /// <summary>
+        /// ZRLE compressed binary reader, used by ZrleRectangle.
+        /// </summary>
 		public sealed class ZRLECompressedReader : BinaryReader
 		{
 			MemoryStream zlibMemoryStream;
@@ -686,20 +712,20 @@ namespace VncSharp
 
 			public void DecodeStream()
 			{
-				//Reset position to use same buffer
+				// Reset position to use same buffer
 				zlibMemoryStream.Position = 0;
 
-				//Get compressed stream length to read
+				// Get compressed stream length to read
 				byte[] buff = new byte[4];
 				if (this.BaseStream.Read(buff, 0, 4) != 4)
 					throw new Exception("ZRLE decoder: Invalid compressed stream size");
 
-				//BigEndian to LittleEndian conversion
+				// BigEndian to LittleEndian conversion
 				int compressedBufferSize = (int)(buff[3] | buff[2] << 8 | buff[1] << 16 | buff[0] << 24);
 				if (compressedBufferSize > 64 * 1024 * 1024)
 					throw new Exception("ZRLE decoder: Invalid compressed data size");
 
-				//Decode stream
+				// Decode stream
 				int pos = 0;
 				while (pos++ < compressedBufferSize)
 					zlibDecompressedStream.WriteByte(this.BaseStream.ReadByte());

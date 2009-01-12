@@ -45,7 +45,12 @@ namespace VncSharp
 		/// Raised when the connection to the remote host is lost.
 		/// </summary>
 		public event EventHandler ConnectionLost;
-	
+
+        /// <summary>
+        /// Raised when the server caused the local clipboard to be filled.
+        /// </summary>
+        public event EventHandler ServerCutText;
+        	
 		public VncClient()
 		{
 		}
@@ -340,7 +345,6 @@ namespace VncSharp
 		/// </summary>
 		public event VncUpdateHandler VncUpdate;
 		
-		
 		private bool CheckIfThreadDone()
 		{
 			return done.WaitOne(0, false);
@@ -361,20 +365,16 @@ namespace VncSharp
 				if (CheckIfThreadDone())
 					break;
 
-                try
-                {
-                    switch (rfb.ReadServerMessageType())
-                    {
+                try {
+                    switch (rfb.ReadServerMessageType()) {
                         case RfbProtocol.FRAMEBUFFER_UPDATE:
                             rectangles = rfb.ReadFramebufferUpdate();
 
                             if (CheckIfThreadDone())
-                            {
                                 break;
-                            }
 
-                            for (int i = 0; i < rectangles; ++i)
-                            {
+                            // TODO: consider gathering all update rectangles in a batch and *then* posting the event back to the main thread.
+                            for (int i = 0; i < rectangles; ++i) {
                                 // Get the update rectangle's info
                                 Rectangle rectangle;
                                 rfb.ReadFramebufferUpdateRectHeader(out rectangle, out enc);
@@ -385,23 +385,16 @@ namespace VncSharp
 
                                 // Let the UI know that an updated rectangle is available, but check
                                 // to see if the user closed things down first.
-                                if (!CheckIfThreadDone() && VncUpdate != null)
-                                {
+                                if (!CheckIfThreadDone() && VncUpdate != null) {
                                     VncEventArgs e = new VncEventArgs(er);
 
                                     // In order to play nicely with WinForms controls, we do a check here to 
                                     // see if it is necessary to synchronize this event with the UI thread.
-                                    if (VncUpdate.Target is System.Windows.Forms.Control)
-                                    {
+                                    if (VncUpdate.Target is System.Windows.Forms.Control) {
                                         Control target = VncUpdate.Target as Control;
-
                                         if (target != null)
-                                        {
                                             target.Invoke(VncUpdate, new object[] { this, e });
-                                        }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         // Target is not a WinForms control, so do it on this thread...
                                         VncUpdate(this, new VncEventArgs(er));
                                     }
@@ -413,14 +406,13 @@ namespace VncSharp
                             break;
                         case RfbProtocol.SERVER_CUT_TEXT:
                             if (CheckIfThreadDone())
-                            {
                                 break;
-                            }
+                            // TODO: This is invasive, should there be a bool property allowing this message to be ignored?
                             Clipboard.SetDataObject(rfb.ReadServerCutText().Replace("\n", Environment.NewLine), true);
+                            OnServerCutText();
                             break;
                         case RfbProtocol.SET_COLOUR_MAP_ENTRIES:
-                            // TODO: Needs to be implemented fully
-                            //						rfb.ReadColourMapEntry();
+							rfb.ReadColourMapEntry();
                             break;
                     }
                 } catch {
@@ -435,18 +427,30 @@ namespace VncSharp
 			// see if it is necessary to synchronize this event with the UI thread.
 			if (ConnectionLost != null && 
 				ConnectionLost.Target is System.Windows.Forms.Control) {
-
 				Control target = ConnectionLost.Target as Control;
 
-				if (target != null) {
+				if (target != null)
 					target.Invoke(ConnectionLost, new object[] {this, EventArgs.Empty});
-				} else {
-					// Target is not a WinForms control, so do it on this thread...
+				else
 					ConnectionLost(this, EventArgs.Empty);
-				}
 			}
 		}
-	
+
+	    protected void OnServerCutText()
+        {
+            // In order to play nicely with WinForms controls, we do a check here to 
+            // see if it is necessary to synchronize this event with the UI thread.
+            if (ServerCutText != null &&
+                ServerCutText.Target is System.Windows.Forms.Control) {
+                Control target = ServerCutText.Target as Control;
+
+                if (target != null)
+                    target.Invoke(ServerCutText, new object[] { this, EventArgs.Empty });
+                else
+                    ServerCutText(this, EventArgs.Empty);
+            }
+        }
+
 // There is no managed way to get a system beep (until Framework v.2.0). So depending on the platform, something external has to be called.
 #if Win32
 		[System.Runtime.InteropServices.DllImport("kernel32.dll")]

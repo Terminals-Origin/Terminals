@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("David Humphrey")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("GPL")]
+[assembly: AssemblyCopyright("GPL 2")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 
