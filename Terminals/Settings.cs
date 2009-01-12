@@ -51,7 +51,16 @@ namespace Terminals
             catch(Exception exc)
             {
                 Terminals.Logging.Log.Info("", exc);
-                if(System.IO.File.Exists(configFile)) System.IO.File.Delete(configFile);
+                if (System.IO.File.Exists(configFile))
+                {
+                    string newGUID = System.Guid.NewGuid().ToString();
+                    string folder = System.IO.Path.GetDirectoryName(configFile);
+                    //back it up before we do anything
+                    System.IO.File.Copy(configFile, System.IO.Path.Combine(folder, string.Format("Terminals-{1}-{0}.config", newGUID, System.DateTime.Now.ToFileTime())));
+
+                    //now delete it
+                    System.IO.File.Delete(configFile);
+                }
                 string templateConfigFile = global::Terminals.Properties.Resources.Terminals;
                 using(System.IO.StreamWriter sr = new StreamWriter(configFile))
                 {
