@@ -89,6 +89,7 @@ namespace Terminals
         this.chkSerialPorts = new System.Windows.Forms.CheckBox();
         this.label10 = new System.Windows.Forms.Label();
         this.tabPage8 = new System.Windows.Forms.TabPage();
+        this.EnableTLSAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
         this.label30 = new System.Windows.Forms.Label();
         this.label29 = new System.Windows.Forms.Label();
         this.ShutdownTimeoutTextBox = new System.Windows.Forms.TextBox();
@@ -191,7 +192,8 @@ namespace Terminals
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
         this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
-        this.EnableTLSAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
+        this.VNCTabPage = new System.Windows.Forms.TabPage();
+        this.vncAutoScaleCheckbox = new System.Windows.Forms.CheckBox();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -223,6 +225,7 @@ namespace Terminals
         this.panel3.SuspendLayout();
         this.tabPage4.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+        this.VNCTabPage.SuspendLayout();
         this.SuspendLayout();
         // 
         // btnOk
@@ -252,6 +255,7 @@ namespace Terminals
         // 
         this.tabControl1.Controls.Add(this.tabPage1);
         this.tabControl1.Controls.Add(this.tabPage2);
+        this.tabControl1.Controls.Add(this.VNCTabPage);
         this.tabControl1.Controls.Add(this.tabPage7);
         this.tabControl1.Controls.Add(this.tabPage3);
         this.tabControl1.Controls.Add(this.ICAtabPage);
@@ -919,6 +923,17 @@ namespace Terminals
         this.tabPage8.TabIndex = 2;
         this.tabPage8.Text = "Extended Settings";
         this.tabPage8.UseVisualStyleBackColor = true;
+        // 
+        // EnableTLSAuthenticationCheckbox
+        // 
+        this.EnableTLSAuthenticationCheckbox.AutoSize = true;
+        this.EnableTLSAuthenticationCheckbox.Location = new System.Drawing.Point(241, 76);
+        this.EnableTLSAuthenticationCheckbox.Name = "EnableTLSAuthenticationCheckbox";
+        this.EnableTLSAuthenticationCheckbox.Size = new System.Drawing.Size(151, 17);
+        this.EnableTLSAuthenticationCheckbox.TabIndex = 20;
+        this.EnableTLSAuthenticationCheckbox.Text = "Enable TLS Authentication";
+        this.toolTip1.SetToolTip(this.EnableTLSAuthenticationCheckbox, "By default RDP encryption is used. This setting enables TLS Authentication.");
+        this.EnableTLSAuthenticationCheckbox.UseVisualStyleBackColor = true;
         // 
         // label30
         // 
@@ -1935,17 +1950,26 @@ namespace Terminals
         this.NewWindowCheckbox.Text = "&Open in New Window";
         this.NewWindowCheckbox.UseVisualStyleBackColor = true;
         // 
-        // EnableTLSAuthenticationCheckbox
+        // VNCTabPage
         // 
-        this.EnableTLSAuthenticationCheckbox.AutoSize = true;
-        this.EnableTLSAuthenticationCheckbox.Location = new System.Drawing.Point(241, 76);
-        this.EnableTLSAuthenticationCheckbox.Name = "EnableTLSAuthenticationCheckbox";
-        this.EnableTLSAuthenticationCheckbox.Size = new System.Drawing.Size(151, 17);
-        this.EnableTLSAuthenticationCheckbox.TabIndex = 20;
-        this.EnableTLSAuthenticationCheckbox.Text = "Enable TLS Authentication";
-        this.toolTip1.SetToolTip(this.EnableTLSAuthenticationCheckbox, "By default RDP encryption is used. This setting enables TLS Authentication.");
-        this.EnableTLSAuthenticationCheckbox.UseVisualStyleBackColor = true;
+        this.VNCTabPage.Controls.Add(this.vncAutoScaleCheckbox);
+        this.VNCTabPage.Location = new System.Drawing.Point(4, 22);
+        this.VNCTabPage.Name = "VNCTabPage";
+        this.VNCTabPage.Size = new System.Drawing.Size(500, 271);
+        this.VNCTabPage.TabIndex = 12;
+        this.VNCTabPage.Text = "VNC";
+        this.VNCTabPage.UseVisualStyleBackColor = true;
         // 
+        // vncAutoScaleCheckbox
+        // 
+        this.vncAutoScaleCheckbox.AutoSize = true;
+        this.vncAutoScaleCheckbox.Location = new System.Drawing.Point(14, 12);
+        this.vncAutoScaleCheckbox.Name = "vncAutoScaleCheckbox";
+        this.vncAutoScaleCheckbox.Size = new System.Drawing.Size(119, 17);
+        this.vncAutoScaleCheckbox.TabIndex = 2;
+        this.vncAutoScaleCheckbox.Text = "Auto Scale Desktop";
+        this.toolTip1.SetToolTip(this.vncAutoScaleCheckbox, "Switch between clipped and scaled desktop.");
+        this.vncAutoScaleCheckbox.UseVisualStyleBackColor = true;
         // 
         // NewTerminalForm
         // 
@@ -2018,6 +2042,8 @@ namespace Terminals
         this.tabPage4.ResumeLayout(false);
         this.tabPage4.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+        this.VNCTabPage.ResumeLayout(false);
+        this.VNCTabPage.PerformLayout();
         this.ResumeLayout(false);
         this.PerformLayout();
 
@@ -2187,5 +2213,7 @@ namespace Terminals
       private System.Windows.Forms.CheckBox AllowFontSmoothingCheckbox;
       private System.Windows.Forms.RadioButton SSH2RadioButton;
       private System.Windows.Forms.CheckBox EnableTLSAuthenticationCheckbox;
+      private System.Windows.Forms.TabPage VNCTabPage;
+      private System.Windows.Forms.CheckBox vncAutoScaleCheckbox;
   }
 }

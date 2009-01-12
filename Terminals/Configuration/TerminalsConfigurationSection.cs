@@ -310,7 +310,18 @@ namespace Terminals
                 this["updateSource"] = value;
             }
         }
-
+        [ConfigurationProperty("vncAutoScale", IsRequired = false)]
+        public bool VncAutoScale
+        {
+            get
+            {
+                return (bool)this["vncAutoScale"];
+            }
+            set
+            {
+                this["vncAutoScale"] = value;
+            }
+        }
 
         [ConfigurationProperty("defaultUsername", IsRequired = false)]
         public string DefaultUsername
@@ -366,7 +377,6 @@ namespace Terminals
                 this["encryptedAmazonAccessKey"] = value;
             }
         }
-
         public string AmazonAccessKey
         {
             get
@@ -378,6 +388,7 @@ namespace Terminals
                 EncryptedAmazonAccessKey = Functions.EncryptPassword(value);
             }
         }
+
 
 
         [ConfigurationProperty("encryptedAmazonSecretKey", IsRequired = false)]

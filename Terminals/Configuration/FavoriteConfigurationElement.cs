@@ -540,6 +540,18 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("vncAutoScale", IsRequired = false)]
+        public bool VncAutoScale
+        {
+            get
+            {
+                return (bool)this["vncAutoScale"];
+            }
+            set
+            {
+                this["vncAutoScale"] = value;
+            }
+        }
         [ConfigurationProperty("connectToConsole", IsRequired = false)]
         public bool ConnectToConsole
         {

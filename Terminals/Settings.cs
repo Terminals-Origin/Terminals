@@ -752,6 +752,21 @@ namespace Terminals
                 configuration.Save();
             }
         }
+        public static bool VncAutoScale
+        {
+            get
+            {
+                return GetSection().VncAutoScale;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).VncAutoScale = value;
+                configuration.Save();
+            }
+        }
+
+        
         public static string AmazonSecretKey
         {
             get

@@ -49,6 +49,8 @@ namespace Terminals.Connections {
                 rd.Dock = DockStyle.Fill;
                 rd.VncPort = Favorite.Port;
 
+                if (Settings.VncAutoScale) rd.SetScalingMode(Settings.VncAutoScale);
+                
 
                 rd.ConnectComplete += new VncSharp.ConnectCompleteHandler(rd_ConnectComplete);
                 rd.ConnectionLost += new EventHandler(rd_ConnectionLost);

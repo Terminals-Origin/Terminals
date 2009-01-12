@@ -124,7 +124,9 @@ namespace Terminals
 
             ProtocolComboBox.SelectedItem = favorite.Protocol;
             VMRCAdminModeCheckbox.Checked = favorite.VMRCAdministratorMode;
-            
+
+            vncAutoScaleCheckbox.Checked = favorite.VncAutoScale;
+
             TelnetRadioButton.Checked = favorite.Telnet;
             SSHRadioButton.Checked = favorite.SSH1;
             SSH2RadioButton.Checked = !favorite.SSH1;
@@ -236,8 +238,9 @@ namespace Terminals
                 
                 favorite.Telnet = TelnetRadioButton.Checked;
                 favorite.SSH1 = SSHRadioButton.Checked;
-               
-                
+
+                favorite.VncAutoScale = vncAutoScaleCheckbox.Checked;
+
                 favorite.TelnetCols = Convert.ToInt32(ColumnsTextBox.Text);
                 favorite.TelnetRows = Convert.ToInt32(RowsTextBox.Text);
                 favorite.TelnetFont = TelnetFontTextbox.Text;
@@ -544,6 +547,8 @@ namespace Terminals
             txtPort.Enabled = true;
 
 
+            vncAutoScaleCheckbox.Enabled = false;
+
             groupBox1.Enabled = false;
             chkConnectToConsole.Enabled = false;
             LocalResourceGroupBox.Enabled = false;
@@ -580,6 +585,7 @@ namespace Terminals
             else if(ProtocolComboBox.Text == "VNC")
             {
                 //vnc settings
+                vncAutoScaleCheckbox.Enabled = true;
             }
             else if(ProtocolComboBox.Text == "Telnet")
             {
