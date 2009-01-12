@@ -118,6 +118,10 @@ namespace Terminals
         this.SecuriytStartProgramTextbox = new System.Windows.Forms.TextBox();
         this.SecuritySettingsEnabledCheckbox = new System.Windows.Forms.CheckBox();
         this.tabPage10 = new System.Windows.Forms.TabPage();
+        this.VNCTabPage = new System.Windows.Forms.TabPage();
+        this.vncDisplayNumberInput = new System.Windows.Forms.NumericUpDown();
+        this.label37 = new System.Windows.Forms.Label();
+        this.vncAutoScaleCheckbox = new System.Windows.Forms.CheckBox();
         this.tabPage7 = new System.Windows.Forms.TabPage();
         this.VMRCReducedColorsCheckbox = new System.Windows.Forms.CheckBox();
         this.VMRCAdminModeCheckbox = new System.Windows.Forms.CheckBox();
@@ -192,8 +196,7 @@ namespace Terminals
         this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
         this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
-        this.VNCTabPage = new System.Windows.Forms.TabPage();
-        this.vncAutoScaleCheckbox = new System.Windows.Forms.CheckBox();
+        this.VncViewOnlyCheckbox = new System.Windows.Forms.CheckBox();
         this.tabControl1.SuspendLayout();
         this.tabPage1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -209,6 +212,8 @@ namespace Terminals
         this.tabPage8.SuspendLayout();
         this.tabPage9.SuspendLayout();
         this.panel2.SuspendLayout();
+        this.VNCTabPage.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)(this.vncDisplayNumberInput)).BeginInit();
         this.tabPage7.SuspendLayout();
         this.tabPage3.SuspendLayout();
         this.TelnetGroupBox.SuspendLayout();
@@ -225,7 +230,6 @@ namespace Terminals
         this.panel3.SuspendLayout();
         this.tabPage4.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-        this.VNCTabPage.SuspendLayout();
         this.SuspendLayout();
         // 
         // btnOk
@@ -1223,6 +1227,47 @@ namespace Terminals
         this.tabPage10.Text = "Sessions";
         this.tabPage10.UseVisualStyleBackColor = true;
         // 
+        // VNCTabPage
+        // 
+        this.VNCTabPage.Controls.Add(this.VncViewOnlyCheckbox);
+        this.VNCTabPage.Controls.Add(this.vncDisplayNumberInput);
+        this.VNCTabPage.Controls.Add(this.label37);
+        this.VNCTabPage.Controls.Add(this.vncAutoScaleCheckbox);
+        this.VNCTabPage.Location = new System.Drawing.Point(4, 22);
+        this.VNCTabPage.Name = "VNCTabPage";
+        this.VNCTabPage.Size = new System.Drawing.Size(500, 271);
+        this.VNCTabPage.TabIndex = 12;
+        this.VNCTabPage.Text = "VNC";
+        this.VNCTabPage.UseVisualStyleBackColor = true;
+        // 
+        // vncDisplayNumberInput
+        // 
+        this.vncDisplayNumberInput.Location = new System.Drawing.Point(102, 247);
+        this.vncDisplayNumberInput.Name = "vncDisplayNumberInput";
+        this.vncDisplayNumberInput.Size = new System.Drawing.Size(47, 21);
+        this.vncDisplayNumberInput.TabIndex = 4;
+        // 
+        // label37
+        // 
+        this.label37.AutoSize = true;
+        this.label37.Location = new System.Drawing.Point(11, 249);
+        this.label37.Name = "label37";
+        this.label37.Size = new System.Drawing.Size(85, 13);
+        this.label37.TabIndex = 3;
+        this.label37.Text = "Display Number:";
+        this.toolTip1.SetToolTip(this.label37, "The Display number (used on Unix hosts).");
+        // 
+        // vncAutoScaleCheckbox
+        // 
+        this.vncAutoScaleCheckbox.AutoSize = true;
+        this.vncAutoScaleCheckbox.Location = new System.Drawing.Point(14, 12);
+        this.vncAutoScaleCheckbox.Name = "vncAutoScaleCheckbox";
+        this.vncAutoScaleCheckbox.Size = new System.Drawing.Size(119, 17);
+        this.vncAutoScaleCheckbox.TabIndex = 2;
+        this.vncAutoScaleCheckbox.Text = "Auto Scale Desktop";
+        this.toolTip1.SetToolTip(this.vncAutoScaleCheckbox, "Switch between clipped and scaled desktop.");
+        this.vncAutoScaleCheckbox.UseVisualStyleBackColor = true;
+        // 
         // tabPage7
         // 
         this.tabPage7.Controls.Add(this.VMRCReducedColorsCheckbox);
@@ -1950,26 +1995,15 @@ namespace Terminals
         this.NewWindowCheckbox.Text = "&Open in New Window";
         this.NewWindowCheckbox.UseVisualStyleBackColor = true;
         // 
-        // VNCTabPage
+        // VncViewOnlyCheckbox
         // 
-        this.VNCTabPage.Controls.Add(this.vncAutoScaleCheckbox);
-        this.VNCTabPage.Location = new System.Drawing.Point(4, 22);
-        this.VNCTabPage.Name = "VNCTabPage";
-        this.VNCTabPage.Size = new System.Drawing.Size(500, 271);
-        this.VNCTabPage.TabIndex = 12;
-        this.VNCTabPage.Text = "VNC";
-        this.VNCTabPage.UseVisualStyleBackColor = true;
-        // 
-        // vncAutoScaleCheckbox
-        // 
-        this.vncAutoScaleCheckbox.AutoSize = true;
-        this.vncAutoScaleCheckbox.Location = new System.Drawing.Point(14, 12);
-        this.vncAutoScaleCheckbox.Name = "vncAutoScaleCheckbox";
-        this.vncAutoScaleCheckbox.Size = new System.Drawing.Size(119, 17);
-        this.vncAutoScaleCheckbox.TabIndex = 2;
-        this.vncAutoScaleCheckbox.Text = "Auto Scale Desktop";
-        this.toolTip1.SetToolTip(this.vncAutoScaleCheckbox, "Switch between clipped and scaled desktop.");
-        this.vncAutoScaleCheckbox.UseVisualStyleBackColor = true;
+        this.VncViewOnlyCheckbox.AutoSize = true;
+        this.VncViewOnlyCheckbox.Location = new System.Drawing.Point(14, 35);
+        this.VncViewOnlyCheckbox.Name = "VncViewOnlyCheckbox";
+        this.VncViewOnlyCheckbox.Size = new System.Drawing.Size(73, 17);
+        this.VncViewOnlyCheckbox.TabIndex = 5;
+        this.VncViewOnlyCheckbox.Text = "View Only";
+        this.VncViewOnlyCheckbox.UseVisualStyleBackColor = true;
         // 
         // NewTerminalForm
         // 
@@ -2019,6 +2053,9 @@ namespace Terminals
         this.tabPage9.PerformLayout();
         this.panel2.ResumeLayout(false);
         this.panel2.PerformLayout();
+        this.VNCTabPage.ResumeLayout(false);
+        this.VNCTabPage.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)(this.vncDisplayNumberInput)).EndInit();
         this.tabPage7.ResumeLayout(false);
         this.tabPage7.PerformLayout();
         this.tabPage3.ResumeLayout(false);
@@ -2042,8 +2079,6 @@ namespace Terminals
         this.tabPage4.ResumeLayout(false);
         this.tabPage4.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-        this.VNCTabPage.ResumeLayout(false);
-        this.VNCTabPage.PerformLayout();
         this.ResumeLayout(false);
         this.PerformLayout();
 
@@ -2215,5 +2250,8 @@ namespace Terminals
       private System.Windows.Forms.CheckBox EnableTLSAuthenticationCheckbox;
       private System.Windows.Forms.TabPage VNCTabPage;
       private System.Windows.Forms.CheckBox vncAutoScaleCheckbox;
+      private System.Windows.Forms.Label label37;
+      private System.Windows.Forms.NumericUpDown vncDisplayNumberInput;
+      private System.Windows.Forms.CheckBox VncViewOnlyCheckbox;
   }
 }

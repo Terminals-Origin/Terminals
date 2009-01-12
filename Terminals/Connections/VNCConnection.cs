@@ -46,17 +46,16 @@ namespace Terminals.Connections {
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
                 rd.Parent = base.TerminalTabPage;
                 this.Parent = TerminalTabPage;
-                rd.Dock = DockStyle.Fill;
-                rd.VncPort = Favorite.Port;
-
-                if (Settings.VncAutoScale) rd.SetScalingMode(Settings.VncAutoScale);
-                
+                rd.Dock = DockStyle.Fill;              
 
                 rd.ConnectComplete += new VncSharp.ConnectCompleteHandler(rd_ConnectComplete);
                 rd.ConnectionLost += new EventHandler(rd_ConnectionLost);
                 rd.GetPassword = VNCPassword;
                 Text = "Connecting to VNC Server...";
-                rd.Connect(Favorite.ServerName);
+                rd.Connect(Favorite.ServerName,Favorite.VncDisplayNumber, Favorite.VncViewOnly, Favorite.VncAutoScale);
+
+                if (Settings.VncAutoScale) rd.SetScalingMode(Settings.VncAutoScale);
+
                 rd.BringToFront();
                 return true;
 

@@ -552,6 +552,34 @@ namespace Terminals
                 this["vncAutoScale"] = value;
             }
         }
+
+        [ConfigurationProperty("vncViewOnly", IsRequired = false)]
+        public bool VncViewOnly
+        {
+            get
+            {
+                return (bool)this["vncViewOnly"];
+            }
+            set
+            {
+                this["vncViewOnly"] = value;
+            }
+        }
+
+        [ConfigurationProperty("vncDisplayNumber", IsRequired = false)]
+        public int VncDisplayNumber
+        {
+            get
+            {
+                return (int)this["vncDisplayNumber"];
+            }
+            set
+            {
+                this["vncDisplayNumber"] = value;
+            }
+        }
+
+
         [ConfigurationProperty("connectToConsole", IsRequired = false)]
         public bool ConnectToConsole
         {

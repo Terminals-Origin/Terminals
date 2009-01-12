@@ -766,6 +766,32 @@ namespace Terminals
             }
         }
 
+        public static bool VncViewOnly
+        {
+            get
+            {
+                return GetSection().VncViewOnly;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).VncViewOnly = value;
+                configuration.Save();
+            }
+        }
+        public static int VncDisplayNumber
+        {
+            get
+            {
+                return GetSection().VncDisplayNumber;
+            }
+            set
+            {
+                Configuration configuration = GetConfiguration();
+                GetSection(configuration).VncDisplayNumber = value;
+                configuration.Save();
+            }
+        }
         
         public static string AmazonSecretKey
         {
