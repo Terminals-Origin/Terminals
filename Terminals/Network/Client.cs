@@ -16,7 +16,8 @@ namespace Terminals.Network {
         public static void Stop() {
             try {
                 ClientOnline = false;
-                client.Close();
+                if(client!=null && client.Connected)
+                    client.Close();
             } catch(Exception ex) {
                 Terminals.Logging.Log.Fatal("Client - Stop", ex);
             }

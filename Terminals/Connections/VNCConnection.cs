@@ -54,8 +54,6 @@ namespace Terminals.Connections {
                 Text = "Connecting to VNC Server...";
                 rd.Connect(Favorite.ServerName,Favorite.VncDisplayNumber, Favorite.VncViewOnly, Favorite.VncAutoScale);
 
-                if (Settings.VncAutoScale) rd.SetScalingMode(Settings.VncAutoScale);
-
                 rd.BringToFront();
                 return true;
 

@@ -97,9 +97,9 @@ namespace Terminals.Connections
                     if(Favorite.Telnet)
                         term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.Telnet;
                     else if(Favorite.SSH1)
-                        term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.SSH2;
-                    else
                         term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.SSH1;
+                    else
+                        term.ConnectionType = WalburySoftware.TerminalEmulator.ConnectionTypes.SSH2;
 
                     Text = "Connecting to Telnet/SSH Server...";                    
                     term.Connect();
@@ -116,7 +116,7 @@ namespace Terminals.Connections
 
         void term_OnDisconnected(object Sender, string Message)
         {
-            Terminals.Logging.Log.Fatal("Telnet/SSH Connection Lost" + this.Favorite.Name);
+            Terminals.Logging.Log.Info("Telnet/SSH Connection Lost" + this.Favorite.Name + ", Message:" + Message);
             this.connected = false;
 
             TabControlItem selectedTabPage = (TabControlItem)(this.Parent);
