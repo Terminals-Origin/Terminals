@@ -584,11 +584,15 @@ namespace WalburySoftware
 		}
 		#endregion
 		#region Private Methods
+
+        public int? Port { get; set; }
+
 		private void ConnectTelnet(string HostName)
 		{
 			this.Focus();
 
 			System.Int32           port    = 23;
+            if (Port != null && Port.HasValue && Port > 0) port = Port.Value;
 			//System.Net.IPHostEntry IPHost  = System.Net.Dns.GetHostEntry(HostName); 
 			System.Net.IPHostEntry IPHost = System.Net.Dns.GetHostByName(HostName);
 			System.Net.IPAddress[] addr    = IPHost.AddressList; 
