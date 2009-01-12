@@ -2800,6 +2800,12 @@ namespace Terminals {
             LoadWindowState();
         }
 
+        private void openLogFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath),"Logs"));
+            
+        }
+
     }
 
     public class TerminalTabControlItem : TabControlItem {
