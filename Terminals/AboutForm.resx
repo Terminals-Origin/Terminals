@@ -127,6 +127,25 @@ The CodePlex Team
 Sardaan Frostreaver for Telnet/SSH Connection
 Dustin Coates (DemonBob) for the ICA Citrix bits
 nitzmahone for the Vista/2K8 Console/Admin Patch
+David Humphrey for vncsharp
+Julian Cable for his work on SSH/Telnet
+
+Sponsors:
+Dec. 12, 2008  Gokhan Kurtulus
+Dec. 7, 2008  Ronald Woan
+Nov. 11, 2008  Russell Allen
+Sep. 16, 2008  Dan Foxley
+Sep. 5, 2008  Pete McNair
+Aug. 5, 2008  Brandon Higa
+Aug. 3, 2008  Taylor Craig
+Jul. 25, 2008  KSF International, Inc.
+Jul. 15, 2008  Luke Foust
+Jun. 30, 2008  Chris Divine
+Jun. 23, 2008  Horner and Associates, LLC.
+Jun. 17, 2008  Eric Kofoid
+May 23, 2008  William Olson
+May 15, 2008  Adrian Puente
+May 12, 2008  Simone Busoli
 </value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />

@@ -53,7 +53,7 @@ namespace Terminals
             // 
             this.lblTerminals.AutoSize = true;
             this.lblTerminals.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.lblTerminals.Location = new System.Drawing.Point(129, 187);
+            this.lblTerminals.Location = new System.Drawing.Point(12, 175);
             this.lblTerminals.Name = "lblTerminals";
             this.lblTerminals.Size = new System.Drawing.Size(170, 13);
             this.lblTerminals.TabIndex = 1;
@@ -66,7 +66,7 @@ namespace Terminals
             this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.BackColor = System.Drawing.SystemColors.Control;
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(174, 399);
+            this.btnClose.Location = new System.Drawing.Point(176, 458);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(80, 26);
             this.btnClose.TabIndex = 0;
@@ -76,7 +76,7 @@ namespace Terminals
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 219);
+            this.label3.Location = new System.Drawing.Point(209, 175);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(134, 13);
             this.label3.TabIndex = 4;
@@ -98,7 +98,7 @@ namespace Terminals
             this.lblVersion.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.lblVersion.Location = new System.Drawing.Point(12, 91);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(380, 13);
+            this.lblVersion.Size = new System.Drawing.Size(358, 13);
             this.lblVersion.TabIndex = 9;
             this.lblVersion.Text = "Terminals (RDP, VNC, VMRC, RAS, ICA Citrix, Telnet and SSH Supported)";
             // 
@@ -107,7 +107,7 @@ namespace Terminals
             this.linkLabel4.AutoSize = true;
             this.linkLabel4.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel4.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel4.Location = new System.Drawing.Point(180, 219);
+            this.linkLabel4.Location = new System.Drawing.Point(349, 175);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(68, 13);
             this.linkLabel4.TabIndex = 10;
@@ -118,18 +118,18 @@ namespace Terminals
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 250);
+            this.textBox1.Location = new System.Drawing.Point(12, 191);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(405, 143);
+            this.textBox1.Size = new System.Drawing.Size(405, 263);
             this.textBox1.TabIndex = 11;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(12, 132);
+            this.label2.Location = new System.Drawing.Point(9, 130);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(408, 39);
             this.label2.TabIndex = 12;
@@ -144,7 +144,7 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(433, 436);
+            this.ClientSize = new System.Drawing.Size(433, 496);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.linkLabel4);
