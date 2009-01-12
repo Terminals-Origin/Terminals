@@ -646,7 +646,10 @@ namespace WalburySoftware
 			}
 
 			//s.Connect(new IPEndPoint(IPAddress.Parse("0.0.0.0"), 22));
-			s.Connect(new IPEndPoint(ip, 22));
+            int port=22;
+            if (Port != null && Port.HasValue && Port > 0) port = Port.Value;
+
+            s.Connect(new IPEndPoint(ip, port));
 			_conn = Routrek.SSHC.SSHConnection.Connect(f, reader, s);
 			reader._conn = _conn;
 			Routrek.SSHC.SSHChannel ch = _conn.OpenShell(reader);
