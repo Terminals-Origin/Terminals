@@ -238,6 +238,9 @@
     <Compile Include="FavsList.Designer.cs">
       <DependentUpon>FavsList.cs</DependentUpon>
     </Compile>
+    <Compile Include="History\History.cs" />
+    <Compile Include="History\HistoryByTime.cs" />
+    <Compile Include="History\HistoryItem.cs" />
     <Compile Include="Integration\Import\ImportvRD.cs" />
     <Compile Include="Integration\Import\vrd.cs" />
     <Compile Include="Localization\LocalizedValues.Designer.cs">
