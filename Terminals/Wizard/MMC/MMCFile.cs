@@ -27,60 +27,66 @@ namespace Terminals.Wizard.MMC
         }
         protected void Parse()
         {
-            rawContents = System.IO.File.ReadAllText(mmcFileInfo.FullName, Encoding.Default);
-            if (rawContents != null && rawContents.Trim() != "" && rawContents.StartsWith("<?xml"))
+            try
             {
-                System.Xml.XmlDocument xDoc = new System.Xml.XmlDocument();
-                xDoc.LoadXml(rawContents);
-                System.Xml.XmlNode node = xDoc.SelectSingleNode("/MMC_ConsoleFile/StringTables/StringTable/Strings");
-                foreach (System.Xml.XmlNode cNode in node.ChildNodes)
+                rawContents = System.IO.File.ReadAllText(mmcFileInfo.FullName, Encoding.Default);
+                if (rawContents != null && rawContents.Trim() != "" && rawContents.StartsWith("<?xml"))
                 {
-                    string name = cNode.InnerText;
-                    if (name != "Favorites" && name != "Console Root")
+                    System.Xml.XmlDocument xDoc = new System.Xml.XmlDocument();
+                    xDoc.LoadXml(rawContents);
+                    System.Xml.XmlNode node = xDoc.SelectSingleNode("/MMC_ConsoleFile/StringTables/StringTable/Strings");
+                    foreach (System.Xml.XmlNode cNode in node.ChildNodes)
                     {
-                        Name = name;
-                        Parsed = true;
-                        break;
+                        string name = cNode.InnerText;
+                        if (name != "Favorites" && name != "Console Root")
+                        {
+                            Name = name;
+                            Parsed = true;
+                            break;
+                        }
+                    }
+
+
+                    //System.Xml.XmlNode binarynode = xDoc.SelectSingleNode("/MMC_ConsoleFile/BinaryStorage");
+                    //foreach (System.Xml.XmlNode child in binarynode.ChildNodes)
+                    //{
+                    //    string childname = child.Attributes["Name"].Value;
+                    //    if (childname.ToLower().Contains("small"))
+                    //    {
+                    //        string image = child.InnerText;
+                    //        byte[] buff = System.Convert.FromBase64String(child.InnerText.Trim());
+                    //        System.IO.MemoryStream stm = new System.IO.MemoryStream(buff);
+                    //        if (stm.Position > 0 && stm.CanSeek) stm.Seek(0, System.IO.SeekOrigin.Begin);
+                    //        System.IO.File.WriteAllBytes(@"C:\Users\Administrator\Desktop\foo.ico", buff);
+                    //        System.Drawing.Icon ico = new System.Drawing.Icon(stm);
+
+                    //    }
+                    //}
+
+
+                    System.Xml.XmlNode visual = xDoc.SelectSingleNode("/MMC_ConsoleFile/VisualAttributes/Icon");
+                    if (visual != null)
+                    {
+                        string iconFile = visual.Attributes["File"].Value;
+                        int index = Convert.ToInt32(visual.Attributes["Index"].Value);
+                        System.Drawing.Icon[] icons = IconHandler.IconHandler.IconsFromFile(iconFile, IconHandler.IconSize.Small);
+                        if (icons != null && icons.Length > 0)
+                        {
+                            if (icons.Length > index)
+                            {
+                                SmallIcon = icons[index];
+                            }
+                            else
+                            {
+                                SmallIcon = icons[0];
+                            }
+                        }
                     }
                 }
-
-
-                //System.Xml.XmlNode binarynode = xDoc.SelectSingleNode("/MMC_ConsoleFile/BinaryStorage");
-                //foreach (System.Xml.XmlNode child in binarynode.ChildNodes)
-                //{
-                //    string childname = child.Attributes["Name"].Value;
-                //    if (childname.ToLower().Contains("small"))
-                //    {
-                //        string image = child.InnerText;
-                //        byte[] buff = System.Convert.FromBase64String(child.InnerText.Trim());
-                //        System.IO.MemoryStream stm = new System.IO.MemoryStream(buff);
-                //        if (stm.Position > 0 && stm.CanSeek) stm.Seek(0, System.IO.SeekOrigin.Begin);
-                //        System.IO.File.WriteAllBytes(@"C:\Users\Administrator\Desktop\foo.ico", buff);
-                //        System.Drawing.Icon ico = new System.Drawing.Icon(stm);
-
-                //    }
-                //}
-
-
-                System.Xml.XmlNode visual = xDoc.SelectSingleNode("/MMC_ConsoleFile/VisualAttributes/Icon");
-                if (visual != null)
-                {
-                    string iconFile = visual.Attributes["File"].Value;
-                    int index = Convert.ToInt32(visual.Attributes["Index"].Value);
-                    System.Drawing.Icon[] icons = IconHandler.IconHandler.IconsFromFile(iconFile, IconHandler.IconSize.Small);
-                    if (icons!=null && icons.Length > 0)
-                    {
-                        if (icons.Length > index)
-                        {
-                            SmallIcon = icons[index];
-                        }
-                        else
-                        {
-                            SmallIcon = icons[0];
-                        }
-                    } 
-                }
-
+            }
+            catch (Exception exc)
+            {
+                Terminals.Logging.Log.Error("Error parsing MMC File", exc);
             }
         }
     }
