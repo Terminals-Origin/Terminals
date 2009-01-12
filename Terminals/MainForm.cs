@@ -506,7 +506,7 @@ namespace Terminals {
 
             if(Show) {
                 //splitContainer1.Panel1.Show();
-                splitContainer1.SplitterDistance = 0;
+                splitContainer1.SplitterDistance = splitContainer1.Panel1MinSize;
                 splitContainer1.Panel1Collapsed = false;
                 splitContainer1.Panel1MinSize = 7;
                 //pnlHideTagsFavorites.Visible = true;
@@ -1632,6 +1632,7 @@ namespace Terminals {
 
 
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
+                if (!Settings.MinimizeToTray && !this.Visible) this.Visible = true;
 
                 if(Settings.Office2007BlueFeel)
                     ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Blue);
