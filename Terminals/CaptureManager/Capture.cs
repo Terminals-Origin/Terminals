@@ -62,8 +62,7 @@ namespace Terminals.CaptureManager
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Info("", exc);
-                string f = exc.ToString();
+                Terminals.Logging.Log.Info("Error trying to call Move (file)", exc);                
             }
             finally
             {

@@ -67,7 +67,6 @@ namespace Terminals.Integration.Import {
                             }
                         }
                     }
-                    string f = "";
                 }
             }
 

@@ -28,7 +28,6 @@ namespace Terminals {
                     return password;
                 }
             } catch (Exception e) {
-                //string f = e.ToString();
                 Terminals.Logging.Log.Info("", e);
                 return "";
             }
@@ -51,7 +50,6 @@ namespace Terminals {
                         //password = System.Text.Encoding.Default.GetString(data);
                     }
                 } catch (Exception ec) {
-                    //string f = ec.ToString();
                     Terminals.Logging.Log.Info("", ec);
                 }
                 return password;

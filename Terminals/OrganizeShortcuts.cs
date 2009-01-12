@@ -149,8 +149,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Info("", exc);
-                string f = exc.ToString();
+                Terminals.Logging.Log.Info("LoadIconsFromExe", exc);
             }
         }
         

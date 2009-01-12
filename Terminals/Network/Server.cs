@@ -37,8 +37,7 @@ namespace Terminals.Network {
                 }
                 server.Stop();
             } catch (Exception exc) {
-                Terminals.Logging.Log.Info("", exc);
-                string f = exc.ToString();
+                Terminals.Logging.Log.Info("StartServer", exc);
             }
         }
     }

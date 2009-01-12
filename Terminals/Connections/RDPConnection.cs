@@ -49,21 +49,35 @@ namespace Terminals.Connections
             }
             catch(Exception exc)
             {
-                string f = "";
+                Terminals.Logging.Log.Error("Error trying to set the desktop dimensions",exc);
             }
-
-
-
-
         }
+
+        //public void SendKeys(string Keys)
+        //{
+        //    int num = Keys.Length;
+        //    bool[] arryKeyUp = new bool[num];
+        //    for (int x = 0; x <= arryKeyUp.Length; x++)
+        //    {
+        //        arryKeyUp[x] = true;
+        //    }
+        //    int[] keyData = new int[num];
+
+        //    if (nonScriptable != null)
+        //    {
+        //        nonScriptable.SendKeys(num, ref arryKeyUp, ref keyData);
+        //    }
+        //}
 
         public override bool Connected { get { return Convert.ToBoolean(axMsRdpClient2.Connected); } }
         public AxMsRdpClient2 axMsRdpClient2 = null; //new AxMsRdpClient2();
+        MSTSCLib.IMsRdpClientNonScriptable nonScriptable;
         public override bool Connect()
         {
             try
             {
                 axMsRdpClient2 = new AxMsRdpClient2();
+                
                 Controls.Add(axMsRdpClient2);
                 axMsRdpClient2.BringToFront();
                 this.BringToFront();
@@ -165,7 +179,8 @@ namespace Terminals.Connections
                 axMsRdpClient2.AdvancedSettings3.RedirectPrinters = Favorite.RedirectPrinters;
                 axMsRdpClient2.AdvancedSettings3.RedirectSmartCards = Favorite.RedirectSmartCards;
                 axMsRdpClient2.AdvancedSettings3.PerformanceFlags = Favorite.PerformanceFlags;
-
+                nonScriptable = (axMsRdpClient2.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable);
+                    
                 /*
     TS_PERF_DISABLE_CURSOR_SHADOW
     0x00000020
@@ -210,6 +225,8 @@ TS_PERF_ENABLE_DESKTOP_COMPOSITION 0x00000100
                     }
                 }
                 axMsRdpClient2.SecuredSettings2.AudioRedirectionMode = (int)Favorite.Sounds;
+                
+                    
 
                 string domainName = Favorite.DomainName;
                 if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
@@ -226,7 +243,6 @@ TS_PERF_ENABLE_DESKTOP_COMPOSITION 0x00000100
                 axMsRdpClient2.Domain = domainName;
                 try {
                     if(!String.IsNullOrEmpty(pass)) {
-                        MSTSC.IMsTscNonScriptable nonScriptable = (MSTSC.IMsTscNonScriptable)axMsRdpClient2.GetOcx();
                         if(nonScriptable!=null) nonScriptable.ClearTextPassword = pass;
                     }
                 } catch(Exception exc) {

@@ -46,8 +46,7 @@ namespace Terminals.Wizard
                     }
                 }
             }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
-            string f = "";
+            catch (Exception e) { Terminals.Logging.Log.Info("StartImport", e); }
             //then kick up the port scan for the entire subnet
 
 
