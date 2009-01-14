@@ -35,6 +35,7 @@ namespace Terminals.History
             if (loadingHistory) return;
             lock (threadLock)
             {
+                Logging.Log.Info("Loading History:" + ((HistoryLocation==null)?"":HistoryLocation));
                 loadingHistory = true;
                 //so, how to store history..that is the question.
                 //should it be per computer or per terminals install (portable)?
@@ -53,13 +54,16 @@ namespace Terminals.History
                     currentHistory = (Unified.Serialize.DeserializeXMLFromDisk(HistoryLocation, typeof(HistoryByFavorite)) as HistoryByFavorite);
                 }
                 loadingHistory = false;
+                Logging.Log.Info("Done Loading History");
             }
             if (currentHistory != null) if (OnHistoryLoaded != null) OnHistoryLoaded(currentHistory);
         }
         
         private void SaveHistory()
         {
-            Unified.Serialize.SerializeXMLToDisk(CurrentHistory, HistoryLocation);            
+            Logging.Log.Info("Saving History");
+            Unified.Serialize.SerializeXMLToDisk(CurrentHistory, HistoryLocation);
+            Logging.Log.Info("Done Saving History");
         }
         public void RecordHistoryItem(string Name, bool Save)
         {

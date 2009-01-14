@@ -27,7 +27,7 @@ namespace Terminals
                 {
                     //update history now!
                     HistoryTreeView.Nodes.Clear();
-                    SerializableSortedDictionary<string, List<string>> GroupedByDate = HistoryByFavorite.GroupedByDate;
+                    SerializableDictionary<string, List<string>> GroupedByDate = HistoryByFavorite.GroupedByDate;
                     foreach (string name in GroupedByDate.Keys)
                     {
                         TreeNode NameNode = HistoryTreeView.Nodes.Add(name);
