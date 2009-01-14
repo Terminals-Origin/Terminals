@@ -6,12 +6,15 @@ namespace Terminals.History
 {
     public class HistoryItem
     {
+        public HistoryItem(string Name) : this()
+        {
+            this.Name = Name;
+        }
         public HistoryItem()
         {
             Date = DateTime.Now;
         }
         public string Name { get; set; }
         public DateTime Date { get; set; }
-        public long Count { get; set; }
     }
 }

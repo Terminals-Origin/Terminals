@@ -58,7 +58,14 @@
             this.setDomainByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setUsernameByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.FavoritesTabPage = new System.Windows.Forms.TabPage();
+            this.HistoryTabPage = new System.Windows.Forms.TabPage();
+            this.HistoryTreeView = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.FavoritesTabPage.SuspendLayout();
+            this.HistoryTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // FavsTree
@@ -67,9 +74,9 @@
             this.FavsTree.ContextMenuStrip = this.contextMenuStrip1;
             this.FavsTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FavsTree.HideSelection = false;
-            this.FavsTree.Location = new System.Drawing.Point(0, 0);
+            this.FavsTree.Location = new System.Drawing.Point(3, 3);
             this.FavsTree.Name = "FavsTree";
-            this.FavsTree.Size = new System.Drawing.Size(150, 150);
+            this.FavsTree.Size = new System.Drawing.Size(136, 118);
             this.FavsTree.TabIndex = 0;
             this.FavsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
             // 
@@ -98,7 +105,7 @@
             this.setUsernameByTagToolStripMenuItem,
             this.deleteAllFavoritesByTagToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(244, 408);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(244, 386);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // connectToolStripMenuItem
@@ -292,14 +299,59 @@
             this.deleteAllFavoritesByTagToolStripMenuItem.Text = "Delete all Favorites by Tag";
             this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.deleteAllFavoritesByTagToolStripMenuItem_Click);
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.FavoritesTabPage);
+            this.tabControl1.Controls.Add(this.HistoryTabPage);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(150, 150);
+            this.tabControl1.TabIndex = 1;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            // 
+            // FavoritesTabPage
+            // 
+            this.FavoritesTabPage.Controls.Add(this.FavsTree);
+            this.FavoritesTabPage.Location = new System.Drawing.Point(4, 22);
+            this.FavoritesTabPage.Name = "FavoritesTabPage";
+            this.FavoritesTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.FavoritesTabPage.Size = new System.Drawing.Size(142, 124);
+            this.FavoritesTabPage.TabIndex = 0;
+            this.FavoritesTabPage.Text = "Favorites";
+            this.FavoritesTabPage.UseVisualStyleBackColor = true;
+            // 
+            // HistoryTabPage
+            // 
+            this.HistoryTabPage.Controls.Add(this.HistoryTreeView);
+            this.HistoryTabPage.Location = new System.Drawing.Point(4, 22);
+            this.HistoryTabPage.Name = "HistoryTabPage";
+            this.HistoryTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.HistoryTabPage.Size = new System.Drawing.Size(142, 124);
+            this.HistoryTabPage.TabIndex = 1;
+            this.HistoryTabPage.Text = "History";
+            this.HistoryTabPage.UseVisualStyleBackColor = true;
+            // 
+            // HistoryTreeView
+            // 
+            this.HistoryTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HistoryTreeView.Location = new System.Drawing.Point(3, 3);
+            this.HistoryTreeView.Name = "HistoryTreeView";
+            this.HistoryTreeView.Size = new System.Drawing.Size(136, 118);
+            this.HistoryTreeView.TabIndex = 0;
+            // 
             // FavsList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.FavsTree);
+            this.Controls.Add(this.tabControl1);
             this.Name = "FavsList";
             this.Load += new System.EventHandler(this.FavsList_Load);
             this.contextMenuStrip1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.FavoritesTabPage.ResumeLayout(false);
+            this.HistoryTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -335,5 +387,9 @@
         private System.Windows.Forms.ToolStripMenuItem setDomainByTagToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setUsernameByTagToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteAllFavoritesByTagToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage FavoritesTabPage;
+        private System.Windows.Forms.TabPage HistoryTabPage;
+        private System.Windows.Forms.TreeView HistoryTreeView;
     }
 }

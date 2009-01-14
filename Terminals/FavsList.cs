@@ -14,12 +14,53 @@ namespace Terminals
         public FavsList()
         {
             InitializeComponent();
+            historyInvoker = new MethodInvoker(UpdateHistory);
         }
+        MethodInvoker historyInvoker;
 
+        private void UpdateHistory()
+        {
+            lock (historyLock)
+            {
+                dirtyHistory = true;
+                if (tabControl1.SelectedTab == HistoryTabPage)
+                {
+                    //update history now!
+                    HistoryTreeView.Nodes.Clear();
+                    SerializableSortedDictionary<string, List<string>> GroupedByDate = HistoryByFavorite.GroupedByDate;
+                    foreach (string name in GroupedByDate.Keys)
+                    {
+                        TreeNode NameNode = HistoryTreeView.Nodes.Add(name);
+                        foreach (string FavName in GroupedByDate[name])
+                        {
+                            TreeNode FavNode = NameNode.Nodes.Add(FavName);
+                            FavNode.Tag = FavName;                            
+                        }
+                    }
+                    dirtyHistory = false;
+                }
+            }
+        }
+        public void RecordHistoryItem(string Name)
+        {
+            HistoryController.RecordHistoryItem(Name, true);
+            dirtyHistory = true;
+        }
+        public Terminals.History.HistoryController HistoryController = new Terminals.History.HistoryController();
+        Terminals.History.HistoryByFavorite HistoryByFavorite = null;
+        object historyLock = new object();
+        bool dirtyHistory = false;
+        void History_OnHistoryLoaded(Terminals.History.HistoryByFavorite History)
+        {
+            HistoryByFavorite = History;
+            this.Invoke(historyInvoker);
+        }
         private void FavsList_Load(object sender, EventArgs e)
         {
             FavsTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(FavsTree_NodeMouseClick);
             LoadFavs();
+            HistoryController.OnHistoryLoaded += new Terminals.History.HistoryController.HistoryLoaded(History_OnHistoryLoaded);
+            HistoryController.LazyLoadHistory();
         }
         public string UntaggedKey = "Untagged";
         public void LoadFavs()
@@ -418,6 +459,14 @@ namespace Terminals
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");
                 LoadFavs();
+            }
+        }
+        
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab == HistoryTabPage && dirtyHistory)
+            {
+                this.Invoke(historyInvoker);
             }
         }
 

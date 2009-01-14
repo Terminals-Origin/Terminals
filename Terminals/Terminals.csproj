@@ -238,8 +238,8 @@
     <Compile Include="FavsList.Designer.cs">
       <DependentUpon>FavsList.cs</DependentUpon>
     </Compile>
-    <Compile Include="History\History.cs" />
-    <Compile Include="History\HistoryByTime.cs" />
+    <Compile Include="History\HistoryController.cs" />
+    <Compile Include="History\HistoryByFavorite.cs" />
     <Compile Include="History\HistoryItem.cs" />
     <Compile Include="Integration\Import\ImportvRD.cs" />
     <Compile Include="Integration\Import\vrd.cs" />
@@ -301,6 +301,7 @@
     <Compile Include="PopupTerminal.Designer.cs">
       <DependentUpon>PopupTerminal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Scanner\StreamHelper.cs" />
     <Compile Include="SerializableSortedDictionary.cs" />
     <Compile Include="Updates\HTTP.cs" />
     <Compile Include="Updates\RSS\Collections\ExceptionCollection.cs" />

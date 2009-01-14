@@ -99,9 +99,6 @@ namespace Terminals {
                 //} catch(Exception exc) {
                 //    Terminals.Logging.Log.Info("Failed to set keyboard hook for global event handling.", exc);
                 //}
-                
-
-                
 
             }
             catch(Exception exc)
@@ -110,6 +107,9 @@ namespace Terminals {
                 //System.Windows.Forms.MessageBox.Show(exc.ToString());
             }
         }
+
+
+
         //Keys lastKey = Keys.Escape;
         //void hook_KeyUp(object sender, KeyEventArgs e) {
         //    if((int)e.KeyData != 255) {
@@ -1172,7 +1172,7 @@ namespace Terminals {
         {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             FavoriteConfigurationElement favorite = favorites[connectionName];
-
+            favsList1.RecordHistoryItem(connectionName);
             if(ForceConsole) favorite.ConnectToConsole = true;
             if(ForceNewWindow) favorite.NewWindow = true;
 
