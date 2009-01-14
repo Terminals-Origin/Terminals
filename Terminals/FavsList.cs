@@ -17,7 +17,7 @@ namespace Terminals
             historyInvoker = new MethodInvoker(UpdateHistory);
         }
         MethodInvoker historyInvoker;
-
+        bool eventDone = false;
         private void UpdateHistory()
         {
             lock (historyLock)
@@ -26,6 +26,11 @@ namespace Terminals
                 if (tabControl1.SelectedTab == HistoryTabPage)
                 {
                     //update history now!
+                    if (!eventDone)
+                    {
+                        HistoryTreeView.DoubleClick += new EventHandler(HistoryTreeView_DoubleClick);                        
+                        eventDone = true;
+                    }
                     HistoryTreeView.Nodes.Clear();
                     SerializableDictionary<string, List<string>> GroupedByDate = HistoryByFavorite.GroupedByDate;
                     foreach (string name in GroupedByDate.Keys)
@@ -34,17 +39,27 @@ namespace Terminals
                         foreach (string FavName in GroupedByDate[name])
                         {
                             TreeNode FavNode = NameNode.Nodes.Add(FavName);
-                            FavNode.Tag = FavName;                            
+                            FavNode.Tag = FavName;
                         }
                     }
                     dirtyHistory = false;
                 }
             }
         }
+
+        void HistoryTreeView_DoubleClick(object sender, EventArgs e)
+        {
+            if (HistoryTreeView.SelectedNode.Parent != null)
+            {
+                string favName = HistoryTreeView.SelectedNode.Text;
+                this.MainForm.Connect(favName, false, false);
+            }
+        }
+
         public void RecordHistoryItem(string Name)
         {
             HistoryController.RecordHistoryItem(Name, true);
-            dirtyHistory = true;
+            dirtyHistory = true;            
         }
         public Terminals.History.HistoryController HistoryController = new Terminals.History.HistoryController();
         Terminals.History.HistoryByFavorite HistoryByFavorite = null;

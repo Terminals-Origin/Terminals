@@ -79,6 +79,7 @@ namespace Terminals.History
             }
             lst.Add(new HistoryItem(Name));
             if (Save) this.SaveHistory();
+            this.LazyLoadHistory();
         }
 
         HistoryByFavorite currentHistory = null;
