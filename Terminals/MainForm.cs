@@ -508,8 +508,8 @@ namespace Terminals {
             {
                 if (Show)
                 {
-                    splitContainer1.Panel1MinSize = Settings.FavoritePanelWidth;
-                    splitContainer1.SplitterDistance = splitContainer1.Panel1MinSize;
+                    splitContainer1.Panel1MinSize = 15;
+                    splitContainer1.SplitterDistance = Settings.FavoritePanelWidth;
                     splitContainer1.Panel1Collapsed = false;
                     pnlHideTagsFavorites.Show();
                     pnlShowTagsFavorites.Hide();
@@ -1840,44 +1840,6 @@ namespace Terminals {
             //lvTags.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
-        //private void ShowTagsFavorites(/*TabControlItem activeTab*/)
-        //{
-        //    splitContainer1.SplitterDistance = Settings.FavoritePanelWidth;
-        //    //pnlTagsFavorites.Width = 300;
-        //    //tcTagsFavorites.SelectedItem = activeTab;
-        //    pnlHideTagsFavorites.Show();
-        //    pnlShowTagsFavorites.Hide();
-        //    //txtSearchTags.Focus();
-        //}
-
-        //private void ShowTags()
-        //{
-        //    ShowTagsFavorites(/*tciTags*/);
-        //    tsbFavorites.Checked = false;
-        //}
-
-        //private void HideTagsFavorites()
-        //{
-        //    if(Settings.EnableFavoritesPanel) {
-        //        if(Settings.FavoritePanelWidth != splitContainer1.SplitterDistance) Settings.FavoritePanelWidth = splitContainer1.SplitterDistance;
-        //        splitContainer1.SplitterDistance = 7;
-        //        pnlHideTagsFavorites.Hide();
-        //        pnlShowTagsFavorites.Show();
-        //        tsbTags.Checked = false;
-        //        tsbFavorites.Checked = false;
-        //    } else {
-        //        splitContainer1.SplitterDistance = 0;
-        //        pnlHideTagsFavorites.Visible = false;
-        //    }
-        //    if(Settings.FavoritePanelWidth <= 150) Settings.FavoritePanelWidth = 150;
-        //}
-
-        //private void ShowFavorites()
-        //{
-        //    //ShowTagsFavorites(tciFavorites);
-        //    tsbTags.Checked = false;
-        //}
-
         private void lvTags_SelectedIndexChanged(object sender, EventArgs e)
         {
             //connectToolStripMenuItem.Enabled = lvTags.SelectedItems.Count > 0;
@@ -2802,6 +2764,11 @@ namespace Terminals {
         {
             System.Diagnostics.Process.Start(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath),"Logs"));
             
+        }
+
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
+            Settings.FavoritePanelWidth = splitContainer1.Panel1.Width;            
         }
 
     }

@@ -55,6 +55,7 @@ namespace Terminals {
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.networkingToolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripOrganizeShortucts = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
@@ -136,7 +137,6 @@ namespace Terminals {
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.tabControlItem1 = new TabControl.TabControlItem();
             this.tabControlItem2 = new TabControl.TabControlItem();
-            this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -427,6 +427,13 @@ namespace Terminals {
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.optionsToolStripMenuItem.Text = "Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
+            // 
+            // openLogFolderToolStripMenuItem
+            // 
+            this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
+            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.openLogFolderToolStripMenuItem.Text = "Open Log Folder";
+            this.openLogFolderToolStripMenuItem.Click += new System.EventHandler(this.openLogFolderToolStripMenuItem_Click);
             // 
             // toolStripSeparator8
             // 
@@ -839,8 +846,9 @@ namespace Terminals {
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tcTerminals);
             this.splitContainer1.Size = new System.Drawing.Size(792, 474);
-            this.splitContainer1.SplitterDistance = 272;
+            this.splitContainer1.SplitterDistance = 562;
             this.splitContainer1.TabIndex = 7;
+            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
             // pnlTagsFavorites
             // 
@@ -851,7 +859,7 @@ namespace Terminals {
             this.pnlTagsFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTagsFavorites.Location = new System.Drawing.Point(0, 0);
             this.pnlTagsFavorites.Name = "pnlTagsFavorites";
-            this.pnlTagsFavorites.Size = new System.Drawing.Size(272, 474);
+            this.pnlTagsFavorites.Size = new System.Drawing.Size(562, 474);
             this.pnlTagsFavorites.TabIndex = 6;
             // 
             // favsList1
@@ -859,7 +867,7 @@ namespace Terminals {
             this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favsList1.Location = new System.Drawing.Point(5, 0);
             this.favsList1.Name = "favsList1";
-            this.favsList1.Size = new System.Drawing.Size(260, 472);
+            this.favsList1.Size = new System.Drawing.Size(550, 472);
             this.favsList1.TabIndex = 2;
             // 
             // pnlHideTagsFavorites
@@ -867,7 +875,7 @@ namespace Terminals {
             this.pnlHideTagsFavorites.BackColor = System.Drawing.Color.Gray;
             this.pnlHideTagsFavorites.Controls.Add(this.pbHideTagsFavorites);
             this.pnlHideTagsFavorites.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(265, 0);
+            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(555, 0);
             this.pnlHideTagsFavorites.Name = "pnlHideTagsFavorites";
             this.pnlHideTagsFavorites.Size = new System.Drawing.Size(5, 472);
             this.pnlHideTagsFavorites.TabIndex = 1;
@@ -919,7 +927,7 @@ namespace Terminals {
             this.tcTerminals.Location = new System.Drawing.Point(0, 0);
             this.tcTerminals.Name = "tcTerminals";
             this.tcTerminals.ShowToolTipOnTitle = false;
-            this.tcTerminals.Size = new System.Drawing.Size(516, 474);
+            this.tcTerminals.Size = new System.Drawing.Size(226, 474);
             this.tcTerminals.TabIndex = 3;
             this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.tcTerminals_TabControlMouseLeftTitle);
             this.tcTerminals.TabControlItemSelectionChanged += new TabControl.TabControlItemChangedHandler(this.tcTerminals_TabControlItemSelectionChanged);
@@ -1184,13 +1192,6 @@ namespace Terminals {
             this.tabControlItem2.TabIndex = 3;
             this.tabControlItem2.Title = "TabControl Page 4";
             this.tabControlItem2.ToolTipText = "";
-            // 
-            // openLogFolderToolStripMenuItem
-            // 
-            this.openLogFolderToolStripMenuItem.Name = "openLogFolderToolStripMenuItem";
-            this.openLogFolderToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.openLogFolderToolStripMenuItem.Text = "Open Log Folder";
-            this.openLogFolderToolStripMenuItem.Click += new System.EventHandler(this.openLogFolderToolStripMenuItem_Click);
             // 
             // MainForm
             // 
