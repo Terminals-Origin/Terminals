@@ -35,35 +35,49 @@ namespace Terminals.History
             if (loadingHistory) return;
             lock (threadLock)
             {
-                Logging.Log.Info("Loading History:" + ((HistoryLocation==null)?"":HistoryLocation));
-                loadingHistory = true;
-                //so, how to store history..that is the question.
-                //should it be per computer or per terminals install (portable)?
-                //maybe both?
-                //i think for now lets stick with the portable option.  history should follow the user around
-                //KeepItSimpleStupid
-
-                if (HistoryLocation != null && HistoryLocation.Trim() != "")
+                try
                 {
-                    HistoryLocation = HistoryLocation.Trim();
-                    if (!System.IO.File.Exists(HistoryLocation))
+                    Logging.Log.Info("Loading History:" + ((HistoryLocation == null) ? "" : HistoryLocation));
+                    loadingHistory = true;
+                    //so, how to store history..that is the question.
+                    //should it be per computer or per terminals install (portable)?
+                    //maybe both?
+                    //i think for now lets stick with the portable option.  history should follow the user around
+                    //KeepItSimpleStupid
+
+                    if (HistoryLocation != null && HistoryLocation.Trim() != "")
                     {
-                        //the file doesnt exist.  lets save it out for the first time
-                        SaveHistory();
+                        HistoryLocation = HistoryLocation.Trim();
+                        if (!System.IO.File.Exists(HistoryLocation))
+                        {
+                            //the file doesnt exist.  lets save it out for the first time
+                            SaveHistory();
+                        }
+                        currentHistory = (Unified.Serialize.DeserializeXMLFromDisk(HistoryLocation, typeof(HistoryByFavorite)) as HistoryByFavorite);
                     }
-                    currentHistory = (Unified.Serialize.DeserializeXMLFromDisk(HistoryLocation, typeof(HistoryByFavorite)) as HistoryByFavorite);
+                    loadingHistory = false;
+                    Logging.Log.Info("Done Loading History");
                 }
-                loadingHistory = false;
-                Logging.Log.Info("Done Loading History");
+                catch (Exception exc)
+                {
+                    Logging.Log.Error("Error Loading History", exc);
+                }
             }
             if (currentHistory != null) if (OnHistoryLoaded != null) OnHistoryLoaded(currentHistory);
         }
         
         private void SaveHistory()
         {
-            Logging.Log.Info("Saving History");
-            Unified.Serialize.SerializeXMLToDisk(CurrentHistory, HistoryLocation);
-            Logging.Log.Info("Done Saving History");
+            try
+            {
+                Logging.Log.Info("Saving History");
+                Unified.Serialize.SerializeXMLToDisk(CurrentHistory, HistoryLocation);
+                Logging.Log.Info("Done Saving History");
+            }
+            catch (Exception exc)
+            {
+                Logging.Log.Error("Error Saving History", exc);
+            }
         }
         public void RecordHistoryItem(string Name, bool Save)
         {
