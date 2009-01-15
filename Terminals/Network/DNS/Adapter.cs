@@ -42,7 +42,22 @@ namespace Terminals.Network.DNS
         public DateTime DHCPLeaseObtained { get { return (share.Properties["DHCPLeaseObtained"].Value == null) ? DateTime.MinValue : ToDateTime(share.Properties["DHCPLeaseObtained"].Value.ToString()); } }
         public String DHCPServer { get { return (share.Properties["DHCPServer"].Value == null) ? "" : (string)share.Properties["DHCPServer"].Value; } }
         public String DNSDomain { get { return (share.Properties["DNSDomain"].Value == null) ? "" : (string)share.Properties["DNSDomain"].Value; } }
-        public String DNSDomainSuffixSearchOrder { get { return (share.Properties["DNSDomainSuffixSearchOrder"].Value == null) ? "" : (string)share.Properties["DNSDomainSuffixSearchOrder"].Value; } }
+        public String DNSDomainSuffixSearchOrder { 
+            get {
+                if (share.Properties["DNSDomainSuffixSearchOrder"] == null) return "";
+                object dns = share.Properties["DNSDomainSuffixSearchOrder"].Value;
+                if(dns==null) return "";
+                System.Array dnsList = (dns as System.Array);
+                if(dnsList==null) return dns.ToString();
+                System.Text.StringBuilder sb = new StringBuilder();
+                foreach (object o in dnsList)
+                {
+                    sb.Append(o.ToString());
+                    sb.Append(",");
+                }
+                return sb.ToString();
+            } 
+        }
         public Boolean DNSEnabledForWINSResolution { get { return (share.Properties["DNSEnabledForWINSResolution"].Value == null) ? false : (Boolean)share.Properties["DNSEnabledForWINSResolution"].Value; } }
         public String DNSHostName { get { return (share.Properties["DNSHostName"].Value == null) ? "" : (string)share.Properties["DNSHostName"].Value; } }
         public String[] DNSServerSearchOrder { get { return (share.Properties["DNSServerSearchOrder"].Value == null) ? new string[] { } : (string[])share.Properties["DNSServerSearchOrder"].Value; } }
