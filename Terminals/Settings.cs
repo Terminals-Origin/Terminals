@@ -280,42 +280,42 @@ namespace Terminals
         {
             Configuration configuration = GetConfiguration();
             AddMRUItemConfigurationElement(GetSection(configuration).ServersMRU, name);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static void AddDomainMRUItem(string name)
         {
             Configuration configuration = GetConfiguration();
             AddMRUItemConfigurationElement(GetSection(configuration).DomainsMRU, name);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static void AddUserMRUItem(string name)
         {
             Configuration configuration = GetConfiguration();
             AddMRUItemConfigurationElement(GetSection(configuration).UsersMRU, name);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static void AddFavoriteButton(string name)
         {
             Configuration configuration = GetConfiguration();
             AddMRUItemConfigurationElement(GetSection(configuration).FavoritesButtons, name);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static void DeleteFavoriteButton(string name)
         {
             Configuration configuration = GetConfiguration();
             DeleteMRUItemConfigurationElement(GetSection(configuration).FavoritesButtons, name);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static void EditFavoriteButton(string oldName, string newName)
         {
             Configuration configuration = GetConfiguration();
             EditMRUItemConfigurationElement(GetSection(configuration).FavoritesButtons, oldName, newName);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static void AddTag(string tag)
@@ -324,7 +324,7 @@ namespace Terminals
 
             Configuration configuration = GetConfiguration();
             AddMRUItemConfigurationElement(GetSection(configuration).Tags, tag);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static void DeleteTag(string tag)
@@ -332,14 +332,14 @@ namespace Terminals
             if(Settings.AutoCaseTags) tag = ToTitleCase(tag);
             Configuration configuration = GetConfiguration();
             DeleteMRUItemConfigurationElement(GetSection(configuration).Tags, tag);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static void CreateFavoritesToolbarButtonsList(string[] names)
         {
             Configuration configuration = GetConfiguration();
             GetSection(configuration).FavoritesButtons.Clear();
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
             foreach(string name in names)
             {
                 AddFavoriteButton(name);
@@ -350,7 +350,7 @@ namespace Terminals
         {
             Configuration configuration = GetConfiguration();
             AddMRUItemConfigurationElement(GetSection(configuration).SavedConnections, name);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static SpecialCommandConfigurationElementCollection SpecialCommands
@@ -364,7 +364,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).SpecialCommands = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -373,7 +373,7 @@ namespace Terminals
         {
             Configuration configuration = GetConfiguration();
             GetSection(configuration).SavedConnections.Clear();
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
             foreach(string name in names)
             {
                 AddConnection(name);
@@ -384,7 +384,7 @@ namespace Terminals
         {
             Configuration configuration = GetConfiguration();
             GetSection(configuration).SavedConnections.Clear();
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         private static List<string> ReadList(MRUItemConfigurationElementCollection configurationElementCollection)
@@ -529,7 +529,7 @@ namespace Terminals
 
 
             editedFavorite.Tags = favorite.Tags;
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static bool HasToolbarButton(string name)
@@ -561,7 +561,7 @@ namespace Terminals
         {
             Configuration configuration = GetConfiguration();
             GetSection(configuration).Favorites.Remove(name);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
             DeleteFavoriteButton(name);
         }
 
@@ -569,7 +569,7 @@ namespace Terminals
         {
             Configuration configuration = GetConfiguration();
             GetSection(configuration).Favorites.Add(favorite);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
             if(showOnToolbar)
             {
                 AddFavoriteButton(favorite.Name);
@@ -598,14 +598,14 @@ namespace Terminals
         {
             Configuration configuration = GetConfiguration();
             GetSection(configuration).Groups.Remove(name);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static void AddGroup(GroupConfigurationElement group)
         {
             Configuration configuration = GetConfiguration();
             GetSection(configuration).Groups.Add(group);
-            configuration.Save();
+            if(!DelayConfigurationSave) configuration.Save();
         }
 
         public static bool ShowUserNameInTitle
@@ -618,7 +618,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ShowUserNameInTitle = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static int PortScanTimeoutSeconds
@@ -631,7 +631,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).PortScanTimeoutSeconds = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static string DefaultDomain
@@ -644,7 +644,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).DefaultDomain = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static string UpdateSource {
@@ -654,7 +654,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).UpdateSource = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static string DefaultUsername
@@ -667,7 +667,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).DefaultUsername = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool UseProxy {
@@ -677,7 +677,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).UseProxy = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static string ProxyAddress {
@@ -687,7 +687,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ProxyAddress = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static int ProxyPort {
@@ -697,7 +697,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ProxyPort = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -713,7 +713,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).DefaultPassword = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -728,7 +728,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).AutoCaseTags = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -744,7 +744,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).UseAmazon = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -758,7 +758,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).AmazonAccessKey = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool VncAutoScale
@@ -771,7 +771,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).VncAutoScale = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -785,7 +785,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).VncViewOnly = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static int VncDisplayNumber
@@ -798,7 +798,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).VncDisplayNumber = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         
@@ -812,7 +812,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).AmazonSecretKey = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -826,7 +826,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).FlickrToken = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static int FavoritePanelWidth {
@@ -836,7 +836,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).FavoritePanelWidth = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static string TerminalsPassword
@@ -849,7 +849,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).TerminalsPassword = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool ForceComputerNamesAsURI
@@ -862,7 +862,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ForceComputerNamesAsURI = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool MinimizeToTray {
@@ -872,7 +872,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).MinimizeToTray = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static SortProperties DefaultSortProperty {
@@ -888,7 +888,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).DefaultSortProperty = value.ToString();
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         
@@ -899,7 +899,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).EnableGroupsMenu = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool EnableFavoritesPanel {
@@ -909,7 +909,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).EnableFavoritesPanel = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool WarnOnConnectionClose
@@ -922,7 +922,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).WarnOnConnectionClose = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool ShowInformationToolTips
@@ -935,7 +935,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ShowInformationToolTips = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -949,7 +949,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ShowFullInformationToolTips = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -963,7 +963,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).DefaultDesktopShare = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -977,7 +977,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ExecuteBeforeConnect = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -991,7 +991,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ExecuteBeforeConnectCommand = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -1005,7 +1005,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ExecuteBeforeConnectArgs = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -1019,7 +1019,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ExecuteBeforeConnectInitialDirectory = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -1033,7 +1033,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ExecuteBeforeConnectWaitForExit = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -1047,7 +1047,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ShowConfirmDialog = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -1061,7 +1061,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).SaveConnectionsOnClose = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -1129,9 +1129,11 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).CaptureRoot = value;
-                configuration.Save();
+                if (!DelayConfigurationSave) configuration.Save();
             }
         }
+
+        public static bool DelayConfigurationSave = false;
 
         public static string ToolStripSettingsFile = "ToolStrip.settings";
         public static ToolStripSettings ToolbarSettings {
@@ -1157,7 +1159,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).Office2007BlueFeel = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool Office2007BlackFeel
@@ -1170,7 +1172,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).Office2007BlackFeel = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool AutoExapandTagsPanel
@@ -1181,7 +1183,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).AutoExapandTagsPanel = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool ToolbarsLocked {
@@ -1191,7 +1193,7 @@ namespace Terminals
             set {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ToolbarsLocked = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool ShowWizard
@@ -1204,7 +1206,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).ShowWizard = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool AutoSwitchOnCapture
@@ -1217,7 +1219,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).AutoSwitchOnCapture = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
         public static bool SingleInstance
@@ -1230,7 +1232,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).SingleInstance = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
 
@@ -1244,7 +1246,7 @@ namespace Terminals
             {
                 Configuration configuration = GetConfiguration();
                 GetSection(configuration).PsexecLocation = value;
-                configuration.Save();
+                if(!DelayConfigurationSave) configuration.Save();
             }
         }
     }

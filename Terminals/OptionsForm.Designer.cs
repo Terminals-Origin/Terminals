@@ -77,7 +77,7 @@ namespace Terminals
             this.chkWaitForExit = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.tpGeneral = new System.Windows.Forms.TabPage();
-            this.AutoExapandTagsPanelCheckBox = new System.Windows.Forms.CheckBox();
+            this.autoCaseTagsCheckbox = new System.Windows.Forms.CheckBox();
             this.autoSwitchToCaptureCheckbox = new System.Windows.Forms.CheckBox();
             this.warnDisconnectCheckBox = new System.Windows.Forms.CheckBox();
             this.validateServerNamesCheckbox = new System.Windows.Forms.CheckBox();
@@ -109,7 +109,7 @@ namespace Terminals
             this.EnableFavoritesPanel = new System.Windows.Forms.CheckBox();
             this.EnableGroupsMenu = new System.Windows.Forms.CheckBox();
             this.serviceController1 = new System.ServiceProcess.ServiceController();
-            this.autoCaseTagsCheckbox = new System.Windows.Forms.CheckBox();
+            this.AutoExapandTagsPanelCheckBox = new System.Windows.Forms.CheckBox();
             this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -624,7 +624,6 @@ namespace Terminals
             // tpGeneral
             // 
             this.tpGeneral.Controls.Add(this.autoCaseTagsCheckbox);
-            this.tpGeneral.Controls.Add(this.AutoExapandTagsPanelCheckBox);
             this.tpGeneral.Controls.Add(this.autoSwitchToCaptureCheckbox);
             this.tpGeneral.Controls.Add(this.warnDisconnectCheckBox);
             this.tpGeneral.Controls.Add(this.validateServerNamesCheckbox);
@@ -650,15 +649,15 @@ namespace Terminals
             this.tpGeneral.Text = "General";
             this.tpGeneral.UseVisualStyleBackColor = true;
             // 
-            // AutoExapandTagsPanelCheckBox
+            // autoCaseTagsCheckbox
             // 
-            this.AutoExapandTagsPanelCheckBox.AutoSize = true;
-            this.AutoExapandTagsPanelCheckBox.Location = new System.Drawing.Point(253, 104);
-            this.AutoExapandTagsPanelCheckBox.Name = "AutoExapandTagsPanelCheckBox";
-            this.AutoExapandTagsPanelCheckBox.Size = new System.Drawing.Size(136, 17);
-            this.AutoExapandTagsPanelCheckBox.TabIndex = 22;
-            this.AutoExapandTagsPanelCheckBox.Text = "Auto Expand Favorites";
-            this.AutoExapandTagsPanelCheckBox.UseVisualStyleBackColor = true;
+            this.autoCaseTagsCheckbox.AutoSize = true;
+            this.autoCaseTagsCheckbox.Location = new System.Drawing.Point(253, 104);
+            this.autoCaseTagsCheckbox.Name = "autoCaseTagsCheckbox";
+            this.autoCaseTagsCheckbox.Size = new System.Drawing.Size(102, 17);
+            this.autoCaseTagsCheckbox.TabIndex = 23;
+            this.autoCaseTagsCheckbox.Text = "Auto Case Tags";
+            this.autoCaseTagsCheckbox.UseVisualStyleBackColor = true;
             // 
             // autoSwitchToCaptureCheckbox
             // 
@@ -858,6 +857,7 @@ namespace Terminals
             // 
             // MoreOptionsTabPage
             // 
+            this.MoreOptionsTabPage.Controls.Add(this.AutoExapandTagsPanelCheckBox);
             this.MoreOptionsTabPage.Controls.Add(this.FavSortGroupBox);
             this.MoreOptionsTabPage.Controls.Add(this.groupBox1);
             this.MoreOptionsTabPage.Controls.Add(this.EnableFavoritesPanel);
@@ -878,7 +878,7 @@ namespace Terminals
             this.FavSortGroupBox.Controls.Add(this.ServerNameRadio);
             this.FavSortGroupBox.Location = new System.Drawing.Point(15, 69);
             this.FavSortGroupBox.Name = "FavSortGroupBox";
-            this.FavSortGroupBox.Size = new System.Drawing.Size(200, 118);
+            this.FavSortGroupBox.Size = new System.Drawing.Size(162, 118);
             this.FavSortGroupBox.TabIndex = 26;
             this.FavSortGroupBox.TabStop = false;
             this.FavSortGroupBox.Text = "Favorites Sort";
@@ -932,9 +932,9 @@ namespace Terminals
             this.groupBox1.Controls.Add(this.RenderBlackRadio);
             this.groupBox1.Controls.Add(this.RenderBlueRadio);
             this.groupBox1.Controls.Add(this.RenderNormalRadio);
-            this.groupBox1.Location = new System.Drawing.Point(237, 80);
+            this.groupBox1.Location = new System.Drawing.Point(210, 69);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(135, 95);
+            this.groupBox1.Size = new System.Drawing.Size(162, 118);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Rendering";
@@ -996,15 +996,15 @@ namespace Terminals
             this.EnableGroupsMenu.Text = "Enable Groups Menu";
             this.EnableGroupsMenu.UseVisualStyleBackColor = true;
             // 
-            // autoCaseTagsCheckbox
+            // AutoExapandTagsPanelCheckBox
             // 
-            this.autoCaseTagsCheckbox.AutoSize = true;
-            this.autoCaseTagsCheckbox.Location = new System.Drawing.Point(253, 128);
-            this.autoCaseTagsCheckbox.Name = "autoCaseTagsCheckbox";
-            this.autoCaseTagsCheckbox.Size = new System.Drawing.Size(102, 17);
-            this.autoCaseTagsCheckbox.TabIndex = 23;
-            this.autoCaseTagsCheckbox.Text = "Auto Case Tags";
-            this.autoCaseTagsCheckbox.UseVisualStyleBackColor = true;
+            this.AutoExapandTagsPanelCheckBox.AutoSize = true;
+            this.AutoExapandTagsPanelCheckBox.Location = new System.Drawing.Point(210, 38);
+            this.AutoExapandTagsPanelCheckBox.Name = "AutoExapandTagsPanelCheckBox";
+            this.AutoExapandTagsPanelCheckBox.Size = new System.Drawing.Size(136, 17);
+            this.AutoExapandTagsPanelCheckBox.TabIndex = 27;
+            this.AutoExapandTagsPanelCheckBox.Text = "Auto Expand Favorites";
+            this.AutoExapandTagsPanelCheckBox.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -1095,7 +1095,6 @@ namespace Terminals
         private System.Windows.Forms.CheckBox chkWaitForExit;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TabPage tpGeneral;
-        private System.Windows.Forms.CheckBox AutoExapandTagsPanelCheckBox;
         private System.Windows.Forms.CheckBox autoSwitchToCaptureCheckbox;
         private System.Windows.Forms.CheckBox warnDisconnectCheckBox;
         private System.Windows.Forms.CheckBox validateServerNamesCheckbox;
@@ -1141,5 +1140,6 @@ namespace Terminals
         private System.Windows.Forms.Button RestoreButton;
         private System.Windows.Forms.Button BackupButton;
         private System.Windows.Forms.CheckBox autoCaseTagsCheckbox;
+        private System.Windows.Forms.CheckBox AutoExapandTagsPanelCheckBox;
     }
 }

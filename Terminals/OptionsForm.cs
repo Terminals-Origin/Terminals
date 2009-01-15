@@ -82,6 +82,8 @@ namespace Terminals
         {
             int timeout = 5;
 
+            Settings.DelayConfigurationSave = true;
+
             if(ServerNameRadio.Checked) {
                 Settings.DefaultSortProperty = Settings.SortProperties.ServerName;
             } else if(NoneRadioButton.Checked) {
@@ -140,8 +142,11 @@ namespace Terminals
             Settings.AmazonAccessKey = this.AccessKeyTextbox.Text;
             Settings.AmazonSecretKey = this.SecretKeyTextbox.Text;
 
+            Settings.DelayConfigurationSave = false;
+
             Settings.AutoCaseTags = this.autoCaseTagsCheckbox.Checked;
 
+            
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)
