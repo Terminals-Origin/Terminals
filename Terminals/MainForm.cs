@@ -2768,7 +2768,7 @@ namespace Terminals {
 
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
         {
-            Settings.FavoritePanelWidth = splitContainer1.Panel1.Width;            
+            if(splitContainer1.Panel1.Width>15) Settings.FavoritePanelWidth = splitContainer1.Panel1.Width;            
         }
 
     }
