@@ -87,25 +87,24 @@ namespace Terminals
             SortedDictionary<string, TreeNode> SortedTags = new SortedDictionary<string, TreeNode>();
             SortedTags.Add(UntaggedKey, new TreeNode(UntaggedKey));
             FavsTree.Nodes.Add(SortedTags[UntaggedKey]);
-            if(favorites != null)
+            if (favorites != null)
             {
-                foreach(string key in favorites.Keys)
+                foreach (string key in favorites.Keys)
                 {
-
                     FavoriteConfigurationElement fav = favorites[key];
-                    if(fav.TagList.Count > 0)
+                    if (fav.TagList.Count > 0)
                     {
-                        foreach(string tag in fav.TagList)
+                        foreach (string tag in fav.TagList)
                         {
                             TreeNode FavNode = new TreeNode(fav.Name);
                             FavNode.Tag = fav;
-                            if(!SortedTags.ContainsKey(tag))
+                            if (!SortedTags.ContainsKey(tag))
                             {
                                 TreeNode tagNode = new TreeNode(tag);
                                 FavsTree.Nodes.Add(tagNode);
                                 SortedTags.Add(tag, tagNode);
                             }
-                            if(!SortedTags[tag].Nodes.Contains(FavNode)) SortedTags[tag].Nodes.Add(FavNode);
+                            if (!SortedTags[tag].Nodes.Contains(FavNode)) SortedTags[tag].Nodes.Add(FavNode);
                         }
                     }
                     else
@@ -113,11 +112,12 @@ namespace Terminals
                         TreeNode FavNode = new TreeNode(fav.Name);
                         FavNode.Tag = fav;
 
-                        if(!SortedTags[UntaggedKey].Nodes.Contains(FavNode)) SortedTags[UntaggedKey].Nodes.Add(FavNode);
+                        if (!SortedTags[UntaggedKey].Nodes.Contains(FavNode)) SortedTags[UntaggedKey].Nodes.Add(FavNode);
                     }
                 }
             }
             FavsTree.Sort();
+
         }
 
         void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)

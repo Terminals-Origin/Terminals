@@ -502,21 +502,33 @@ namespace Terminals {
                 Settings.ToolbarSettings = newSettings;
             }
         }
-        private void HideShowFavoritesPanel(bool Show) {
+        private void HideShowFavoritesPanel(bool Show)
+        {
+            if (Settings.EnableFavoritesPanel)
+            {
+                if (Show)
+                {
+                    splitContainer1.Panel1MinSize = Settings.FavoritePanelWidth;
+                    splitContainer1.SplitterDistance = splitContainer1.Panel1MinSize;
+                    splitContainer1.Panel1Collapsed = false;
+                    pnlHideTagsFavorites.Show();
+                    pnlShowTagsFavorites.Hide();
+                }
+                else
+                {
+                    splitContainer1.Panel1MinSize = 9;
+                    splitContainer1.SplitterDistance = 9;
+                    pnlHideTagsFavorites.Hide();
+                    pnlShowTagsFavorites.Show();
 
-            if(Show) {
-                //splitContainer1.Panel1.Show();
-                splitContainer1.SplitterDistance = splitContainer1.Panel1MinSize;
-                splitContainer1.Panel1Collapsed = false;
-                splitContainer1.Panel1MinSize = 7;
-                //pnlHideTagsFavorites.Visible = true;
-            } else {
-                //splitContainer1.Panel1.Hide();
-                //splitContainer1.SplitterDistance = 0;
+                }
+            }
+            else
+            {
+                //just hide it completely
                 splitContainer1.Panel1Collapsed = true;
                 splitContainer1.Panel1MinSize = 0;
                 splitContainer1.SplitterDistance = 0;
-                //pnlHideTagsFavorites.Visible = false;
             }
         }
 
@@ -1737,24 +1749,17 @@ namespace Terminals {
 
         private void tsbTags_Click(object sender, EventArgs e)
         {
-            if(tsbTags.Checked)
-            {
-                ShowTags();
-            }
-            else
-            {
-                HideTagsFavorites();
-            }
+            HideShowFavoritesPanel(tsbTags.Checked);
         }
 
         private void pbShowTags_Click(object sender, EventArgs e)
         {
-            ShowTags();
+            HideShowFavoritesPanel(true);
         }
 
         private void pbHideTags_Click(object sender, EventArgs e)
         {
-            HideTagsFavorites();
+            HideShowFavoritesPanel(false);
         }
 
         private void LoadFavorites(string filter)
@@ -1835,43 +1840,43 @@ namespace Terminals {
             //lvTags.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
-        private void ShowTagsFavorites(/*TabControlItem activeTab*/)
-        {
-            splitContainer1.SplitterDistance = Settings.FavoritePanelWidth;
-            //pnlTagsFavorites.Width = 300;
-            //tcTagsFavorites.SelectedItem = activeTab;
-            pnlHideTagsFavorites.Show();
-            pnlShowTagsFavorites.Hide();
-            //txtSearchTags.Focus();
-        }
+        //private void ShowTagsFavorites(/*TabControlItem activeTab*/)
+        //{
+        //    splitContainer1.SplitterDistance = Settings.FavoritePanelWidth;
+        //    //pnlTagsFavorites.Width = 300;
+        //    //tcTagsFavorites.SelectedItem = activeTab;
+        //    pnlHideTagsFavorites.Show();
+        //    pnlShowTagsFavorites.Hide();
+        //    //txtSearchTags.Focus();
+        //}
 
-        private void ShowTags()
-        {
-            ShowTagsFavorites(/*tciTags*/);
-            tsbFavorites.Checked = false;
-        }
+        //private void ShowTags()
+        //{
+        //    ShowTagsFavorites(/*tciTags*/);
+        //    tsbFavorites.Checked = false;
+        //}
 
-        private void HideTagsFavorites()
-        {
-            if(Settings.EnableFavoritesPanel) {
-                if(Settings.FavoritePanelWidth != splitContainer1.SplitterDistance) Settings.FavoritePanelWidth = splitContainer1.SplitterDistance;
-                splitContainer1.SplitterDistance = 7;
-                pnlHideTagsFavorites.Hide();
-                pnlShowTagsFavorites.Show();
-                tsbTags.Checked = false;
-                tsbFavorites.Checked = false;
-            } else {
-                splitContainer1.SplitterDistance = 0;
-                pnlHideTagsFavorites.Visible = false;
-            }
-            if(Settings.FavoritePanelWidth <= 150) Settings.FavoritePanelWidth = 150;
-        }
+        //private void HideTagsFavorites()
+        //{
+        //    if(Settings.EnableFavoritesPanel) {
+        //        if(Settings.FavoritePanelWidth != splitContainer1.SplitterDistance) Settings.FavoritePanelWidth = splitContainer1.SplitterDistance;
+        //        splitContainer1.SplitterDistance = 7;
+        //        pnlHideTagsFavorites.Hide();
+        //        pnlShowTagsFavorites.Show();
+        //        tsbTags.Checked = false;
+        //        tsbFavorites.Checked = false;
+        //    } else {
+        //        splitContainer1.SplitterDistance = 0;
+        //        pnlHideTagsFavorites.Visible = false;
+        //    }
+        //    if(Settings.FavoritePanelWidth <= 150) Settings.FavoritePanelWidth = 150;
+        //}
 
-        private void ShowFavorites()
-        {
-            //ShowTagsFavorites(tciFavorites);
-            tsbTags.Checked = false;
-        }
+        //private void ShowFavorites()
+        //{
+        //    //ShowTagsFavorites(tciFavorites);
+        //    tsbTags.Checked = false;
+        //}
 
         private void lvTags_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1957,14 +1962,7 @@ namespace Terminals {
 
         private void tsbFavorites_Click(object sender, EventArgs e)
         {
-            if(tsbFavorites.Checked)
-            {
-                ShowFavorites();
-            }
-            else
-            {
-                HideTagsFavorites();
-            }
+            HideShowFavoritesPanel(tsbFavorites.Checked);
         }
 
         private void txtSearchFavorites_TextChanged(object sender, EventArgs e)
@@ -2523,7 +2521,7 @@ namespace Terminals {
 
         private void pbShowTagsFavorites_MouseMove(object sender, MouseEventArgs e)
         {
-            if(Settings.AutoExapandTagsPanel) ShowTags();
+            if(Settings.AutoExapandTagsPanel) HideShowFavoritesPanel(true);
         }
 
         private void TerminalServerMenuButton_DropDownOpening(object sender, EventArgs e)
