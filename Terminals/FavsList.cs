@@ -32,14 +32,27 @@ namespace Terminals
                         eventDone = true;
                     }
                     HistoryTreeView.Nodes.Clear();
-                    SerializableDictionary<string, List<string>> GroupedByDate = HistoryByFavorite.GroupedByDate;
+                    Dictionary<string, List<string>> uniqueFavsPerGroup = new Dictionary<string, List<string>>();
+                    SerializableDictionary<string, List<History.HistoryItem>> GroupedByDate = HistoryByFavorite.GroupedByDate;
                     foreach (string name in GroupedByDate.Keys)
                     {
-                        TreeNode NameNode = HistoryTreeView.Nodes.Add(name);
-                        foreach (string FavName in GroupedByDate[name])
+                        List<string> uniqueList = null;
+                        if (uniqueFavsPerGroup.ContainsKey(name)) uniqueList = uniqueFavsPerGroup[name];
+                        if (uniqueList == null)
                         {
-                            TreeNode FavNode = NameNode.Nodes.Add(FavName);
-                            FavNode.Tag = FavName;
+                            uniqueList = new List<string>();
+                            uniqueFavsPerGroup.Add(name, uniqueList);
+                        }                        
+
+                        TreeNode NameNode = HistoryTreeView.Nodes.Add(name);
+                        foreach (History.HistoryItem fav in GroupedByDate[name])
+                        {
+                            if (!uniqueList.Contains(fav.Name))
+                            {
+                                TreeNode FavNode = NameNode.Nodes.Add(fav.Name);
+                                FavNode.Tag = fav.ID;
+                                uniqueList.Add(fav.Name);
+                            }
                         }
                     }
                     dirtyHistory = false;
@@ -84,7 +97,7 @@ namespace Terminals
             FavsTree.Nodes.Clear();
 
             SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
-            SortedDictionary<string, TreeNode> SortedTags = new SortedDictionary<string, TreeNode>();
+            SortedDictionary<string, TreeNode> SortedTags = new SortedDictionary<string, TreeNode>();            
             SortedTags.Add(UntaggedKey, new TreeNode(UntaggedKey));
             FavsTree.Nodes.Add(SortedTags[UntaggedKey]);
             if (favorites != null)
@@ -101,7 +114,7 @@ namespace Terminals
                             if (!SortedTags.ContainsKey(tag))
                             {
                                 TreeNode tagNode = new TreeNode(tag);
-                                FavsTree.Nodes.Add(tagNode);
+                                FavsTree.Nodes.Add(tagNode);                                
                                 SortedTags.Add(tag, tagNode);
                             }
                             if (!SortedTags[tag].Nodes.Contains(FavNode)) SortedTags[tag].Nodes.Add(FavNode);

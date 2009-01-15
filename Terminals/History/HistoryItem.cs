@@ -13,7 +13,9 @@ namespace Terminals.History
         public HistoryItem()
         {
             Date = DateTime.Now;
+            ID = Guid.NewGuid().ToString();
         }
+        public string ID { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }
     }
