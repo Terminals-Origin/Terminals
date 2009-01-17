@@ -81,6 +81,9 @@ namespace Terminals.Connections {
                 case "Telnet":
                     conn = new TerminalConnection();
                     break;
+                case "SSH":
+                    conn = new TerminalConnection();
+                    break;
                 case "ICA Citrix":
                     conn = new ICAConnection();
                     break;
