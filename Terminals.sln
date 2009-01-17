@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+# Visual C# Express 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals", "Terminals\Terminals.csproj", "{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabControl", "TabControl\TabControl.csproj", "{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminalControl", "TerminalControl\TerminalControl.csproj", "{3545E021-A75E-4558-8EA3-234DF99FB49A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metro", "Metro\Metro.csproj", "{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}"
 EndProject
@@ -23,46 +21,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Affirma.ThreeSharp.Wrapper"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Granados", "Granados\Granados.csproj", "{9780D85D-2E12-4747-9E08-DEDB95A71FC3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminalEmulator", "TerminalEmulator\TerminalEmulator.csproj", "{933C6FDB-9617-4F19-89AF-C5D373F88479}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socks", "Socks\Socks.csproj", "{59D3ACA4-4360-4798-B4CA-DDDAF350A010}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zlib.net", "zlib.net\zlib.net.csproj", "{0C89B7A2-A218-49E4-B545-5B044A45F977}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 12
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs01.codeplex.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Terminals\\Terminals.csproj
-		SccProjectName1 = Terminals
-		SccLocalPath1 = Terminals
-		SccProjectUniqueName2 = TabControl\\TabControl.csproj
-		SccProjectName2 = TabControl
-		SccLocalPath2 = TabControl
-		SccProjectUniqueName3 = TerminalControl\\TerminalControl.csproj
-		SccProjectName3 = TerminalControl
-		SccLocalPath3 = TerminalControl
-		SccProjectUniqueName4 = Metro\\Metro.csproj
-		SccProjectName4 = Metro
-		SccLocalPath4 = Metro
-		SccProjectUniqueName5 = TerminalsUpdater\\TerminalsUpdater.csproj
-		SccProjectName5 = TerminalsUpdater
-		SccLocalPath5 = TerminalsUpdater
-		SccProjectUniqueName6 = VncSharp\\VncSharp.csproj
-		SccProjectName6 = VncSharp
-		SccLocalPath6 = VncSharp
-		SccProjectUniqueName7 = HexEditor\\HexEditor.csproj
-		SccProjectName7 = HexEditor
-		SccLocalPath7 = HexEditor
-		SccProjectUniqueName8 = SharpPcap\\SharpPcap.csproj
-		SccProjectName8 = SharpPcap
-		SccLocalPath8 = SharpPcap
-		SccProjectUniqueName9 = Affirma.ThreeSharp\\Affirma.ThreeSharp.csproj
-		SccProjectName9 = Affirma.ThreeSharp
-		SccLocalPath9 = Affirma.ThreeSharp
-		SccProjectUniqueName10 = Affirma.ThreeSharp.Wrapper\\Affirma.ThreeSharp.Wrapper.csproj
-		SccProjectName10 = Affirma.ThreeSharp.Wrapper
-		SccLocalPath10 = Affirma.ThreeSharp.Wrapper
-		SccProjectUniqueName11 = Granados\\Granados.csproj
-		SccProjectName11 = Granados
-		SccLocalPath11 = Granados
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -96,18 +61,6 @@ Global
 		{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
 		{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}.StrongMagic|x86.ActiveCfg = Release|x86
 		{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}.StrongMagic|x86.Build.0 = Release|x86
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Debug|x86.ActiveCfg = Debug|x86
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Debug|x86.Build.0 = Debug|x86
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Release|x86.ActiveCfg = Release|x86
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.Release|x86.Build.0 = Release|x86
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.StrongMagic|x86.ActiveCfg = Release|x86
-		{3545E021-A75E-4558-8EA3-234DF99FB49A}.StrongMagic|x86.Build.0 = Release|x86
 		{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F3A4024-5A19-4F08-823A-B75D6AFE5CD8}.Debug|x86.ActiveCfg = Debug|x86
@@ -198,8 +151,74 @@ Global
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.StrongMagic|x86.ActiveCfg = Release|Any CPU
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.Release|Any CPU.Build.0 = Release|Any CPU
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.Release|x86.ActiveCfg = Release|Any CPU
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.StrongMagic|x86.ActiveCfg = Release|Any CPU
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Release|x86.ActiveCfg = Release|Any CPU
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.StrongMagic|x86.ActiveCfg = Release|Any CPU
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Release|x86.ActiveCfg = Release|Any CPU
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.StrongMagic|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 12
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs01.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Terminals\\Terminals.csproj
+		SccProjectName1 = Terminals
+		SccLocalPath1 = Terminals
+		SccProjectUniqueName2 = TabControl\\TabControl.csproj
+		SccProjectName2 = TabControl
+		SccLocalPath2 = TabControl
+		SccProjectUniqueName3 = TerminalControl\\TerminalControl.csproj
+		SccProjectName3 = TerminalControl
+		SccLocalPath3 = TerminalControl
+		SccProjectUniqueName4 = Metro\\Metro.csproj
+		SccProjectName4 = Metro
+		SccLocalPath4 = Metro
+		SccProjectUniqueName5 = TerminalsUpdater\\TerminalsUpdater.csproj
+		SccProjectName5 = TerminalsUpdater
+		SccLocalPath5 = TerminalsUpdater
+		SccProjectUniqueName6 = VncSharp\\VncSharp.csproj
+		SccProjectName6 = VncSharp
+		SccLocalPath6 = VncSharp
+		SccProjectUniqueName7 = HexEditor\\HexEditor.csproj
+		SccProjectName7 = HexEditor
+		SccLocalPath7 = HexEditor
+		SccProjectUniqueName8 = SharpPcap\\SharpPcap.csproj
+		SccProjectName8 = SharpPcap
+		SccLocalPath8 = SharpPcap
+		SccProjectUniqueName9 = Affirma.ThreeSharp\\Affirma.ThreeSharp.csproj
+		SccProjectName9 = Affirma.ThreeSharp
+		SccLocalPath9 = Affirma.ThreeSharp
+		SccProjectUniqueName10 = Affirma.ThreeSharp.Wrapper\\Affirma.ThreeSharp.Wrapper.csproj
+		SccProjectName10 = Affirma.ThreeSharp.Wrapper
+		SccLocalPath10 = Affirma.ThreeSharp.Wrapper
+		SccProjectUniqueName11 = Granados\\Granados.csproj
+		SccProjectName11 = Granados
+		SccLocalPath11 = Granados
 	EndGlobalSection
 EndGlobal
