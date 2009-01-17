@@ -327,16 +327,16 @@ namespace Terminals
                 this["vmrcreducedcolorsmode"] = value;
             }
         }
-        [ConfigurationProperty("telnet", IsRequired = false, DefaultValue = true)]
-        public bool Telnet
+        [ConfigurationProperty("vmrcadministratormode", IsRequired = false, DefaultValue = false)]
+        public bool VMRCAdministratorMode
         {
             get
             {
-                return (bool)this["telnet"];
+                return (bool)this["vmrcadministratormode"];
             }
             set
             {
-                this["telnet"] = value;
+                this["vmrcadministratormode"] = value;
             }
         }
         [ConfigurationProperty("ssh1", IsRequired = false, DefaultValue = false)]
@@ -351,40 +351,79 @@ namespace Terminals
                 this["ssh1"] = value;
             }
         }
-        [ConfigurationProperty("telnetrows", IsRequired = false, DefaultValue = 33)]
-        public int TelnetRows
+        [ConfigurationProperty("consolerows", IsRequired = false, DefaultValue = 33)]
+        public int ConsoleRows
         {
             get
             {
-                return (int)this["telnetrows"];
+                return (int)this["consolerows"];
             }
             set
             {
-                this["telnetrows"] = value;
+                this["consolerows"] = value;
             }
         }
-        [ConfigurationProperty("telnetcols", IsRequired = false, DefaultValue = 110)]
-        public int TelnetCols
+        [ConfigurationProperty("consolecols", IsRequired = false, DefaultValue = 110)]
+        public int ConsoleCols
         {
             get
             {
-                return (int)this["telnetcols"];
+                return (int)this["consolecols"];
             }
             set
             {
-                this["telnetcols"] = value;
+                this["consolecols"] = value;
             }
         }
-        [ConfigurationProperty("vmrcadministratormode", IsRequired = false, DefaultValue = false)]
-        public bool VMRCAdministratorMode
+        [ConfigurationProperty("consolefont", IsRequired = false)]
+        public string ConsoleFont
         {
             get
             {
-                return (bool)this["vmrcadministratormode"];
+                string font = (string)this["consolefont"]; ;
+                if (String.IsNullOrEmpty(font)) font = "[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False]";
+                return font;
             }
             set
             {
-                this["vmrcadministratormode"] = value;
+                this["consolefont"] = value;
+            }
+        }
+        [ConfigurationProperty("consolebackcolor", IsRequired = false, DefaultValue = "Black")]
+        public string ConsoleBackColor
+        {
+            get
+            {
+                return (string)this["consolebackcolor"];
+            }
+            set
+            {
+                this["consolebackcolor"] = value;
+            }
+        }
+
+        [ConfigurationProperty("consoletextcolor", IsRequired = false, DefaultValue = "White")]
+        public string ConsoleTextColor
+        {
+            get
+            {
+                return (string)this["consoletextcolor"];
+            }
+            set
+            {
+                this["consoletextcolor"] = value;
+            }
+        }
+        [ConfigurationProperty("consolecursorcolor", IsRequired = false, DefaultValue = "Green")]
+        public string ConsoleCursorColor
+        {
+            get
+            {
+                return (string)this["consolecursorcolor"];
+            }
+            set
+            {
+                this["consolecursorcolor"] = value;
             }
         }
         [ConfigurationProperty("protocol", IsRequired = true, DefaultValue = "RDP")]
@@ -409,57 +448,6 @@ namespace Terminals
             set
             {
                 this["toolBarIcon"] = value;
-            }
-        }
-        [ConfigurationProperty("telnetfont", IsRequired = false)]
-        public string TelnetFont
-        {
-            get
-            {
-                string font =(string)this["telnetfont"];;
-                if(String.IsNullOrEmpty(font)) font = "[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False]";
-                return font;
-            }
-            set
-            {
-                this["telnetfont"] = value;
-            }
-        }
-        [ConfigurationProperty("telnetbackcolor", IsRequired = false, DefaultValue = "Black")]
-        public string TelnetBackColor
-        {
-            get
-            {
-                return (string)this["telnetbackcolor"];
-            }
-            set
-            {
-                this["telnetbackcolor"] = value;
-            }
-        }
-
-        [ConfigurationProperty("telnettextcolor", IsRequired = false, DefaultValue = "White")]
-        public string TelnetTextColor
-        {
-            get
-            {
-                return (string)this["telnettextcolor"];
-            }
-            set
-            {
-                this["telnettextcolor"] = value;
-            }
-        }
-        [ConfigurationProperty("telnetcursorcolor", IsRequired = false, DefaultValue = "Green")]
-        public string TelnetCursorColor
-        {
-            get
-            {
-                return (string)this["telnetcursorcolor"];
-            }
-            set
-            {
-                this["telnetcursorcolor"] = value;
             }
         }
 
@@ -499,6 +487,31 @@ namespace Terminals
             set
             {
                 this["domainName"] = value;
+            }
+        }
+        [ConfigurationProperty("authMethod", DefaultValue = AuthMethod.Password)]
+        public AuthMethod AuthMethod
+        {
+            get
+            {
+                return (AuthMethod)this["authMethod"];
+            }
+            set
+            {
+                this["authMethod"] = value;
+            }
+        }
+
+        [ConfigurationProperty("keyTag", DefaultValue = "")]
+        public string KeyTag
+        {
+            get
+            {
+                return (string)this["keyTag"];
+            }
+            set
+            {
+                this["keyTag"] = value;
             }
         }
 

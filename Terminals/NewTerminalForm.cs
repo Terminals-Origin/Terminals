@@ -115,10 +115,10 @@ namespace Terminals
 
         private void FillControls(FavoriteConfigurationElement favorite)
         {
-            BackColorTextBox.Text = favorite.TelnetBackColor;
-            TelnetFontTextbox.Text = favorite.TelnetFont;
-            TelnetCursorColorTextBox.Text = favorite.TelnetCursorColor;
-            TelnetTextColorTextBox.Text = favorite.TelnetTextColor;
+            BackColorTextBox.Text = favorite.ConsoleBackColor;
+            ConsoleFontTextbox.Text = favorite.ConsoleFont;
+            ConsoleCursorColorTextBox.Text = favorite.ConsoleCursorColor;
+            ConsoleTextColorTextBox.Text = favorite.ConsoleTextColor;
 
             this.NewWindowCheckbox.Checked = favorite.NewWindow;
 
@@ -129,12 +129,10 @@ namespace Terminals
             vncDisplayNumberInput.Value = favorite.VncDisplayNumber;
             VncViewOnlyCheckbox.Checked = favorite.VncViewOnly;
 
-            TelnetRadioButton.Checked = favorite.Telnet;
-            SSHRadioButton.Checked = favorite.SSH1;
             SSH2RadioButton.Checked = !favorite.SSH1;
 
-            ColumnsTextBox.Text = favorite.TelnetCols.ToString();
-            RowsTextBox.Text = favorite.TelnetRows.ToString();
+            ColumnsTextBox.Text = favorite.ConsoleCols.ToString();
+            RowsTextBox.Text = favorite.ConsoleRows.ToString();
             VMRCReducedColorsCheckbox.Checked = favorite.VMRCReducedColorsMode;
             txtName.Text = favorite.Name;
             cmbServers.Text = favorite.ServerName;
@@ -237,23 +235,22 @@ namespace Terminals
             try {
                 favorite.VMRCAdministratorMode = VMRCAdminModeCheckbox.Checked;
                 favorite.VMRCReducedColorsMode = VMRCReducedColorsCheckbox.Checked;
-                
-                favorite.Telnet = TelnetRadioButton.Checked;
-                favorite.SSH1 = SSHRadioButton.Checked;
+
+                //favorite.SSH1 = SSHRadioButton.Checked;
 
                 favorite.VncAutoScale = vncAutoScaleCheckbox.Checked;
                 favorite.VncDisplayNumber = (int)vncDisplayNumberInput.Value;
                 favorite.VncViewOnly = VncViewOnlyCheckbox.Checked;
 
-                favorite.TelnetCols = Convert.ToInt32(ColumnsTextBox.Text);
-                favorite.TelnetRows = Convert.ToInt32(RowsTextBox.Text);
-                favorite.TelnetFont = TelnetFontTextbox.Text;
-                favorite.TelnetCursorColor = TelnetCursorColorTextBox.Text;
-                favorite.TelnetTextColor = TelnetTextColorTextBox.Text;
+                favorite.ConsoleCols = Convert.ToInt32(ColumnsTextBox.Text);
+                favorite.ConsoleRows = Convert.ToInt32(RowsTextBox.Text);
+                favorite.ConsoleFont = ConsoleFontTextbox.Text;
+                favorite.ConsoleCursorColor = ConsoleCursorColorTextBox.Text;
+                favorite.ConsoleTextColor = ConsoleTextColorTextBox.Text;
 
                 favorite.NewWindow = this.NewWindowCheckbox.Checked;
 
-                favorite.TelnetBackColor = BackColorTextBox.Text;
+                favorite.ConsoleBackColor = BackColorTextBox.Text;
                 favorite.Protocol = ProtocolComboBox.SelectedItem.ToString();
                 favorite.ServerName = ValidateServer(cmbServers.Text);
                 favorite.DomainName = cmbDomains.Text;
@@ -568,7 +565,6 @@ namespace Terminals
             httpUrlTextBox.Enabled = false;
             txtPort.Enabled = true;
 
-            TelnetGroupBox.Enabled = false;
             if(ProtocolComboBox.Text == "RDP")
             {
                 defaultPort = Connections.ConnectionManager.RDPPort.ToString();
@@ -599,10 +595,13 @@ namespace Terminals
             }
             else if(ProtocolComboBox.Text == "Telnet")
             {
-                TelnetGroupBox.Enabled = true;
+                defaultPort = Connections.ConnectionManager.TelnetPort.ToString();
+            }
+            else if (ProtocolComboBox.Text == "SSH")
+            {
                 defaultPort = Connections.ConnectionManager.SSHPort.ToString();
             }
-            else if(ProtocolComboBox.Text == "ICA Citrix")
+            else if (ProtocolComboBox.Text == "ICA Citrix")
             {
                 ICAApplicationNameTextBox.Enabled = true;
                 ICAApplicationPath.Enabled = true;
@@ -630,53 +629,33 @@ namespace Terminals
             txtPort.Text = defaultPort;
         }
 
-        private void TelnetRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            txtPort.Text = Connections.ConnectionManager.TelnetPort.ToString();
-        }
-
-        private void SSHRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            txtPort.Text = Connections.ConnectionManager.SSHPort.ToString();
-        }
-
-        private void TelnetFontButton_Click(object sender, EventArgs e)
+        private void ConsoleFontButton_Click(object sender, EventArgs e)
         {            
-            this.fontDialog1.Font = FontParser.ParseFontName(TelnetFontTextbox.Text);
+            this.fontDialog1.Font = FontParser.ParseFontName(ConsoleFontTextbox.Text);
             DialogResult result = this.fontDialog1.ShowDialog();
             if(result == DialogResult.OK)
             {
-                this.TelnetFontTextbox.Text = this.fontDialog1.Font.ToString();
+                this.ConsoleFontTextbox.Text = this.fontDialog1.Font.ToString();
             }
         }
 
-        private void BackcolorButton_Click(object sender, EventArgs e)
+        private void ConsoleTextColorButton_Click(object sender, EventArgs e)
         {
-            this.colorDialog1.Color = Color.FromName(this.BackColorTextBox.Text);
+            this.colorDialog1.Color = Color.FromName(this.ConsoleTextColorTextBox.Text);
             DialogResult result = this.colorDialog1.ShowDialog();
             if(result == DialogResult.OK)
             {
-                this.BackColorTextBox.Text = this.colorDialog1.Color.Name;
+                this.ConsoleTextColorTextBox.Text = this.colorDialog1.Color.Name;
             }
         }
 
-        private void TelnetTextColorButton_Click(object sender, EventArgs e)
+        private void ConsoleCursorColorButton_Click(object sender, EventArgs e)
         {
-            this.colorDialog1.Color = Color.FromName(this.TelnetTextColorTextBox.Text);
+            this.colorDialog1.Color = Color.FromName(this.ConsoleCursorColorTextBox.Text);
             DialogResult result = this.colorDialog1.ShowDialog();
             if(result == DialogResult.OK)
             {
-                this.TelnetTextColorTextBox.Text = this.colorDialog1.Color.Name;
-            }
-        }
-
-        private void TelnetCursorColorButton_Click(object sender, EventArgs e)
-        {
-            this.colorDialog1.Color = Color.FromName(this.TelnetCursorColorTextBox.Text);
-            DialogResult result = this.colorDialog1.ShowDialog();
-            if(result == DialogResult.OK)
-            {
-                this.TelnetCursorColorTextBox.Text = this.colorDialog1.Color.Name;
+                this.ConsoleCursorColorTextBox.Text = this.colorDialog1.Color.Name;
             }
         }
 
@@ -752,7 +731,7 @@ namespace Terminals
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(tabControl1.SelectedTab == tabPage2)
+            if(tabControl1.SelectedTab == RDPTabPage)
             {
                 RDPSubTabPage_SelectedIndexChanged(null, null);
             }

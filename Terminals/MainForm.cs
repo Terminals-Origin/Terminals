@@ -1510,6 +1510,7 @@ namespace Terminals {
             {
                 item.Image = Terminals.Properties.Resources.smallterm;
             }
+            string f = "";
             if(FullScreen)
             {
                 ToolStripSeparator sep = new ToolStripSeparator();

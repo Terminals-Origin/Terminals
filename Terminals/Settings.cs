@@ -444,7 +444,22 @@ namespace Terminals
                 return ReadList(GetSection().Tags).ToArray();
             }
         }
+        
+        public static SSHKeyCollection SSHKeys
+        {
+            get
+            {
+                return GetSection().SSHKeys;
+            }
+        }
 
+        public static void AddSSHKey(string tag, SSH2UserAuthKey key)
+        {
+            Configuration configuration = GetConfiguration();
+            GetSection(configuration).SSHKeys.Add(new SSHKeyElement(tag,key));
+            configuration.Save();        	
+        }
+        
         public enum SortProperties { ServerName, ConnectionName, Protocol, None }
         public static SortedDictionary<string, FavoriteConfigurationElement> GetSortedFavorites(SortProperties SortProperty) {
             FavoriteConfigurationElementCollection favlist = GetFavorites();
@@ -489,13 +504,12 @@ namespace Terminals
             FavoriteConfigurationElement editedFavorite = section.Favorites[oldName];
             editedFavorite.VMRCAdministratorMode = favorite.VMRCAdministratorMode;
             editedFavorite.VMRCReducedColorsMode = favorite.VMRCReducedColorsMode;
-            editedFavorite.Telnet = favorite.Telnet;
-            editedFavorite.TelnetRows = favorite.TelnetRows;
-            editedFavorite.TelnetCols = favorite.TelnetCols;
-            editedFavorite.TelnetFont = favorite.TelnetFont;
-            editedFavorite.TelnetCursorColor = favorite.TelnetCursorColor;
-            editedFavorite.TelnetTextColor = favorite.TelnetTextColor;
-            editedFavorite.TelnetBackColor = favorite.TelnetBackColor;
+            editedFavorite.ConsoleRows = favorite.ConsoleRows;
+            editedFavorite.ConsoleCols = favorite.ConsoleCols;
+            editedFavorite.ConsoleFont = favorite.ConsoleFont;
+            editedFavorite.ConsoleCursorColor = favorite.ConsoleCursorColor;
+            editedFavorite.ConsoleTextColor = favorite.ConsoleTextColor;
+            editedFavorite.ConsoleBackColor = favorite.ConsoleBackColor;
             editedFavorite.Protocol = favorite.Protocol;
             editedFavorite.Colors = favorite.Colors;
             editedFavorite.ConnectToConsole = favorite.ConnectToConsole;

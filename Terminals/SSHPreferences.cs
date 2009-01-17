@@ -33,10 +33,12 @@ namespace Terminals
 			buttonPublicKey.Checked = true;
 			buttonSSH2.Checked = true;
 			// TODO: move this to NewTerminalForm
+            /*
 			foreach(SSHKeyElement k in Settings.SSHKeys)
 				comboBoxKey.Items.Add(k.tag);
 			if(comboBoxKey.Items.Count>0)
 				comboBoxKey.SelectedIndex = 0;
+             */
 		}
 		
 		public AuthMethod AuthMethod

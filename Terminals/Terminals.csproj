@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -243,6 +243,19 @@
     <Compile Include="History\HistoryItem.cs" />
     <Compile Include="Integration\Import\ImportvRD.cs" />
     <Compile Include="Integration\Import\vrd.cs" />
+    <Compile Include="KeyChooser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="KeyChooser.Designer.cs">
+      <DependentUpon>KeyChooser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeyGenForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="KeyGenForm.Designer.cs">
+      <DependentUpon>KeyGenForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeySettings.cs" />
     <Compile Include="Localization\LocalizedValues.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -304,6 +317,15 @@
     <Compile Include="Scanner\StreamHelper.cs" />
     <Compile Include="SerializableDictionary.cs" />
     <Compile Include="SerializableSortedDictionary.cs" />
+    <Compile Include="SSHPreferences.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SSHPreferences.Designer.cs">
+      <DependentUpon>SSHPreferences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TcpProtocol.cs" />
+    <Compile Include="TelnetProtocol.cs" />
+    <Compile Include="TelnetStream.cs" />
     <Compile Include="Updates\HTTP.cs" />
     <Compile Include="Updates\RSS\Collections\ExceptionCollection.cs" />
     <Compile Include="Updates\RSS\Collections\RssCategoryCollection.cs" />
@@ -755,6 +777,12 @@
       <DependentUpon>FavsList.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="KeyChooser.resx">
+      <DependentUpon>KeyChooser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="KeyGenForm.resx">
+      <DependentUpon>KeyGenForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization\LocalizedValues.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -787,6 +815,9 @@
     <EmbeddedResource Include="PopupTerminal.resx">
       <DependentUpon>PopupTerminal.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SSHPreferences.resx">
+      <DependentUpon>SSHPreferences.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\CommonOptions.resx">
       <DependentUpon>CommonOptions.cs</DependentUpon>
@@ -987,6 +1018,10 @@
       <Project>{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}</Project>
       <Name>Affirma.ThreeSharp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Granados\Granados.csproj">
+      <Project>{9780D85D-2E12-4747-9E08-DEDB95A71FC3}</Project>
+      <Name>Granados</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HexEditor\HexEditor.csproj">
       <Project>{405E4F74-CE98-4BDC-8B78-F3293F4F7BBF}</Project>
       <Name>HexEditor</Name>
@@ -999,13 +1034,17 @@
       <Project>{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}</Project>
       <Name>SharpPcap</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Socks\Socks.csproj">
+      <Project>{59D3ACA4-4360-4798-B4CA-DDDAF350A010}</Project>
+      <Name>Socks</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TabControl\TabControl.csproj">
       <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
       <Name>TabControl</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TerminalControl\TerminalControl.csproj">
-      <Project>{3545E021-A75E-4558-8EA3-234DF99FB49A}</Project>
-      <Name>TerminalControl</Name>
+    <ProjectReference Include="..\TerminalEmulator\TerminalEmulator.csproj">
+      <Project>{933C6FDB-9617-4F19-89AF-C5D373F88479}</Project>
+      <Name>TerminalEmulator</Name>
     </ProjectReference>
     <ProjectReference Include="..\VncSharp\VncSharp.csproj">
       <Project>{E0DED53A-C3E1-441D-9AD2-766E49EAD417}</Project>
