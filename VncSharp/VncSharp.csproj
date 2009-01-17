@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E0695F0F-0FAF-44BC-AE55-A1FCBFE70271}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -10,7 +10,8 @@
     <RootNamespace>VncSharp</RootNamespace>
     <AssemblyName>VncSharp</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>VncSharpKey.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -82,20 +83,6 @@
     <Compile Include="VncEventArgs.cs" />
     <Compile Include="VncProtocolException.cs" />
     <Compile Include="VncViewInputPolicy.cs" />
-    <Compile Include="zlib.NET\Adler32.cs" />
-    <Compile Include="zlib.NET\Deflate.cs" />
-    <Compile Include="zlib.NET\InfBlocks.cs" />
-    <Compile Include="zlib.NET\InfCodes.cs" />
-    <Compile Include="zlib.NET\Inflate.cs" />
-    <Compile Include="zlib.NET\InfTree.cs" />
-    <Compile Include="zlib.NET\StaticTree.cs" />
-    <Compile Include="zlib.NET\SupportClass.cs" />
-    <Compile Include="zlib.NET\Tree.cs" />
-    <Compile Include="zlib.NET\ZInputStream.cs" />
-    <Compile Include="zlib.NET\Zlib.cs" />
-    <Compile Include="zlib.NET\ZOutputStream.cs" />
-    <Compile Include="zlib.NET\ZStream.cs" />
-    <Compile Include="zlib.NET\ZStreamException.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
@@ -115,12 +102,12 @@
     <Content Include="CHANGELOG.txt" />
     <Content Include="COPYING.txt" />
     <Content Include="README.txt" />
-    <Content Include="zlib.NET\history.txt" />
-    <Content Include="zlib.NET\license.txt" />
-    <Content Include="zlib.NET\readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="VncSharpKey.snk" />
+    <ProjectReference Include="..\zlib.net\zlib.net.csproj">
+      <Project>{0C89B7A2-A218-49E4-B545-5B044A45F977}</Project>
+      <Name>zlib.net</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
