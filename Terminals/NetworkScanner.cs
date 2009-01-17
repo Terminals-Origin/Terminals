@@ -177,13 +177,7 @@ namespace Terminals {
                 string tags = TagsTextbox.Text;
                 tags = tags.Replace("Tags...","").Trim();
                 if (tags != string.Empty)  fav.Tags = tags;
-                if (fav.Protocol == "SSH") {
-                    fav.Protocol = "Telnet";
-                    fav.Telnet = false;
-                    fav.Name = string.Format("{0}_{1}", item.HostName, "SSH");
-                } else {
-                    fav.Name = string.Format("{0}_{1}", item.HostName, fav.Protocol);
-                }
+                fav.Name = string.Format("{0}_{1}", item.HostName, fav.Protocol);
                 fav.DomainName = System.Environment.UserDomainName;
                 fav.UserName = System.Environment.UserName;
                 Settings.AddFavorite(fav, false);
