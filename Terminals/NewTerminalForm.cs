@@ -115,10 +115,7 @@ namespace Terminals
 
         private void FillControls(FavoriteConfigurationElement favorite)
         {
-            BackColorTextBox.Text = favorite.ConsoleBackColor;
-            ConsoleFontTextbox.Text = favorite.ConsoleFont;
-            ConsoleCursorColorTextBox.Text = favorite.ConsoleCursorColor;
-            ConsoleTextColorTextBox.Text = favorite.ConsoleTextColor;
+            consolePreferences.FillControls(favorite);
 
             this.NewWindowCheckbox.Checked = favorite.NewWindow;
 
@@ -129,10 +126,6 @@ namespace Terminals
             vncDisplayNumberInput.Value = favorite.VncDisplayNumber;
             VncViewOnlyCheckbox.Checked = favorite.VncViewOnly;
 
-            SSH2RadioButton.Checked = !favorite.SSH1;
-
-            ColumnsTextBox.Text = favorite.ConsoleCols.ToString();
-            RowsTextBox.Text = favorite.ConsoleRows.ToString();
             VMRCReducedColorsCheckbox.Checked = favorite.VMRCReducedColorsMode;
             txtName.Text = favorite.Name;
             cmbServers.Text = favorite.ServerName;
@@ -228,29 +221,28 @@ namespace Terminals
 
             NotesTextbox.Text = favorite.Notes;
 
+            SSHPreferences.AuthMethod = favorite.AuthMethod;
+            SSHPreferences.KeyTag = favorite.KeyTag;
+            SSHPreferences.SSH1 = favorite.SSH1;
+
         }
 
         private bool FillFavorite()
         {
             try {
+
+                consolePreferences.FillFavorite(favorite);
+
                 favorite.VMRCAdministratorMode = VMRCAdminModeCheckbox.Checked;
                 favorite.VMRCReducedColorsMode = VMRCReducedColorsCheckbox.Checked;
-
-                //favorite.SSH1 = SSHRadioButton.Checked;
 
                 favorite.VncAutoScale = vncAutoScaleCheckbox.Checked;
                 favorite.VncDisplayNumber = (int)vncDisplayNumberInput.Value;
                 favorite.VncViewOnly = VncViewOnlyCheckbox.Checked;
 
-                favorite.ConsoleCols = Convert.ToInt32(ColumnsTextBox.Text);
-                favorite.ConsoleRows = Convert.ToInt32(RowsTextBox.Text);
-                favorite.ConsoleFont = ConsoleFontTextbox.Text;
-                favorite.ConsoleCursorColor = ConsoleCursorColorTextBox.Text;
-                favorite.ConsoleTextColor = ConsoleTextColorTextBox.Text;
 
                 favorite.NewWindow = this.NewWindowCheckbox.Checked;
 
-                favorite.ConsoleBackColor = BackColorTextBox.Text;
                 favorite.Protocol = ProtocolComboBox.SelectedItem.ToString();
                 favorite.ServerName = ValidateServer(cmbServers.Text);
                 favorite.DomainName = cmbDomains.Text;
@@ -265,7 +257,6 @@ namespace Terminals
                 favorite.DisableFullWindowDrag = chkDisableFullWindowDrag.Checked;
                 favorite.DisableMenuAnimations = chkDisableMenuAnimations.Checked;
                 favorite.DisableTheming = chkDisableThemes.Checked;
-
 
                 favorite.RedirectDrives = chkDrives.Checked;
                 favorite.RedirectPorts = chkSerialPorts.Checked;
@@ -344,6 +335,10 @@ namespace Terminals
                 ICAEnableEncryptionCheckbox.Checked = ICAEncryptionLevelCombobox.Enabled;
 
                 favorite.Notes = NotesTextbox.Text;
+
+                favorite.KeyTag = SSHPreferences.KeyTag;
+                favorite.SSH1 = SSHPreferences.SSH1;
+                favorite.AuthMethod = SSHPreferences.AuthMethod;
 
                 Settings.AddFavorite(favorite, showOnToolbar);
 
@@ -628,37 +623,6 @@ namespace Terminals
 
             txtPort.Text = defaultPort;
         }
-
-        private void ConsoleFontButton_Click(object sender, EventArgs e)
-        {            
-            this.fontDialog1.Font = FontParser.ParseFontName(ConsoleFontTextbox.Text);
-            DialogResult result = this.fontDialog1.ShowDialog();
-            if(result == DialogResult.OK)
-            {
-                this.ConsoleFontTextbox.Text = this.fontDialog1.Font.ToString();
-            }
-        }
-
-        private void ConsoleTextColorButton_Click(object sender, EventArgs e)
-        {
-            this.colorDialog1.Color = Color.FromName(this.ConsoleTextColorTextBox.Text);
-            DialogResult result = this.colorDialog1.ShowDialog();
-            if(result == DialogResult.OK)
-            {
-                this.ConsoleTextColorTextBox.Text = this.colorDialog1.Color.Name;
-            }
-        }
-
-        private void ConsoleCursorColorButton_Click(object sender, EventArgs e)
-        {
-            this.colorDialog1.Color = Color.FromName(this.ConsoleCursorColorTextBox.Text);
-            DialogResult result = this.colorDialog1.ShowDialog();
-            if(result == DialogResult.OK)
-            {
-                this.ConsoleCursorColorTextBox.Text = this.colorDialog1.Color.Name;
-            }
-        }
-
 
         private void ras1_ConnectionChanged(object sender, ConnectionChangedEventArgs e)
         {

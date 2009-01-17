@@ -107,8 +107,6 @@ namespace Terminals {
                 List<int> ports = new List<int>();
                 if (this.RDPCheckbox.Checked) ports.Add(Connections.ConnectionManager.RDPPort);
                 if (this.VNCCheckbox.Checked || this.VMRCCheckbox.Checked) ports.Add(Connections.ConnectionManager.VNCVMRCPort);
-                if (this.TelnetCheckbox.Checked) ports.Add(Connections.ConnectionManager.TelnetPort);
-                if (this.SSHCheckbox.Checked) ports.Add(Connections.ConnectionManager.SSHPort);
                 manager = new Terminals.Scanner.NetworkScanManager(ATextbox.Text, BTextbox.Text, CTextbox.Text, DTextbox.Text, ETextbox.Text, ports);
                 manager.OnScanHit += new Terminals.Scanner.NetworkScanManager.ScanHitHandler(manager_OnScanHit);
                 manager.OnScanStart += new Terminals.Scanner.NetworkScanManager.ScanStartHandler(manager_OnScanStart);

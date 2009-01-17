@@ -231,6 +231,12 @@
     <Compile Include="Connections\VNCConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ConsolePreferences.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ConsolePreferences.Designer.cs">
+      <DependentUpon>ConsolePreferences.cs</DependentUpon>
+    </Compile>
     <Compile Include="DPAPI.cs" />
     <Compile Include="FavsList.cs">
       <SubType>UserControl</SubType>
@@ -772,6 +778,9 @@
     <EmbeddedResource Include="Connections\HTTPConnection.resx">
       <SubType>Designer</SubType>
       <DependentUpon>HTTPConnection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConsolePreferences.resx">
+      <DependentUpon>ConsolePreferences.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FavsList.resx">
       <DependentUpon>FavsList.cs</DependentUpon>

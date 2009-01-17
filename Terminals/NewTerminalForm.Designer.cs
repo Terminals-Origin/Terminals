@@ -32,24 +32,6 @@ namespace Terminals
         System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewTerminalForm));
         this.btnOk = new System.Windows.Forms.Button();
         this.btnCancel = new System.Windows.Forms.Button();
-        this.SSH2RadioButton = new System.Windows.Forms.RadioButton();
-        this.groupBox2 = new System.Windows.Forms.GroupBox();
-        this.label20 = new System.Windows.Forms.Label();
-        this.ConsoleCursorColorTextBox = new System.Windows.Forms.TextBox();
-        this.ConsoleCursorColorButton = new System.Windows.Forms.Button();
-        this.label19 = new System.Windows.Forms.Label();
-        this.ConsoleTextColorTextBox = new System.Windows.Forms.TextBox();
-        this.ConsoleTextColorButton = new System.Windows.Forms.Button();
-        this.label18 = new System.Windows.Forms.Label();
-        this.BackColorTextBox = new System.Windows.Forms.TextBox();
-        this.BackcolorButton = new System.Windows.Forms.Button();
-        this.label17 = new System.Windows.Forms.Label();
-        this.ConsoleFontTextbox = new System.Windows.Forms.TextBox();
-        this.RowsTextBox = new System.Windows.Forms.TextBox();
-        this.ConsoleFontButton = new System.Windows.Forms.Button();
-        this.label15 = new System.Windows.Forms.Label();
-        this.ColumnsTextBox = new System.Windows.Forms.TextBox();
-        this.label16 = new System.Windows.Forms.Label();
         this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
         this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
         this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -76,24 +58,8 @@ namespace Terminals
         this.label10 = new System.Windows.Forms.Label();
         this.txtDesktopShare = new System.Windows.Forms.TextBox();
         this.pictureBox1 = new System.Windows.Forms.PictureBox();
-        this.fontDialog1 = new System.Windows.Forms.FontDialog();
-        this.colorDialog1 = new System.Windows.Forms.ColorDialog();
         this.ras1 = new FalafelSoftware.TransPort.Ras();
         this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
-        this.TelnetGroupBox = new System.Windows.Forms.GroupBox();
-        this.label38 = new System.Windows.Forms.Label();
-        this.TelnetCursorColorTextBox = new System.Windows.Forms.TextBox();
-        this.label39 = new System.Windows.Forms.Label();
-        this.TelnetCursorColorButton = new System.Windows.Forms.Button();
-        this.label40 = new System.Windows.Forms.Label();
-        this.label41 = new System.Windows.Forms.Label();
-        this.textBox1 = new System.Windows.Forms.TextBox();
-        this.TelnetTextColorTextBox = new System.Windows.Forms.TextBox();
-        this.TelnetFontButton = new System.Windows.Forms.Button();
-        this.TelnetTextColorButton = new System.Windows.Forms.Button();
-        this.textBox2 = new System.Windows.Forms.TextBox();
-        this.label42 = new System.Windows.Forms.Label();
-        this.TelnetFontTextbox = new System.Windows.Forms.TextBox();
         this.textBox3 = new System.Windows.Forms.TextBox();
         this.label43 = new System.Windows.Forms.Label();
         this.button1 = new System.Windows.Forms.Button();
@@ -139,25 +105,8 @@ namespace Terminals
         this.VMRCReducedColorsCheckbox = new System.Windows.Forms.CheckBox();
         this.VMRCAdminModeCheckbox = new System.Windows.Forms.CheckBox();
         this.SSHTabPage = new System.Windows.Forms.TabPage();
-        this.SSHPreferences = new Terminals.SSHPreferences();
         this.ConsoleTabPage = new System.Windows.Forms.TabPage();
         this.groupBox6 = new System.Windows.Forms.GroupBox();
-        this.label50 = new System.Windows.Forms.Label();
-        this.textBox10 = new System.Windows.Forms.TextBox();
-        this.label51 = new System.Windows.Forms.Label();
-        this.button6 = new System.Windows.Forms.Button();
-        this.label52 = new System.Windows.Forms.Label();
-        this.label53 = new System.Windows.Forms.Label();
-        this.textBox11 = new System.Windows.Forms.TextBox();
-        this.textBox12 = new System.Windows.Forms.TextBox();
-        this.button7 = new System.Windows.Forms.Button();
-        this.button8 = new System.Windows.Forms.Button();
-        this.textBox13 = new System.Windows.Forms.TextBox();
-        this.label54 = new System.Windows.Forms.Label();
-        this.textBox14 = new System.Windows.Forms.TextBox();
-        this.textBox15 = new System.Windows.Forms.TextBox();
-        this.label55 = new System.Windows.Forms.Label();
-        this.button9 = new System.Windows.Forms.Button();
         this.VNCTabPage = new System.Windows.Forms.TabPage();
         this.VncViewOnlyCheckbox = new System.Windows.Forms.CheckBox();
         this.vncDisplayNumberInput = new System.Windows.Forms.NumericUpDown();
@@ -230,8 +179,9 @@ namespace Terminals
         this.cmbDomains = new System.Windows.Forms.ComboBox();
         this.label1 = new System.Windows.Forms.Label();
         this.tabControl1 = new System.Windows.Forms.TabControl();
+        this.consolePreferences = new Terminals.ConsolePreferences();
+        this.SSHPreferences = new Terminals.SSHPreferences();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-        this.TelnetGroupBox.SuspendLayout();
         this.tabPage4.SuspendLayout();
         this.TagsTabPage.SuspendLayout();
         this.panel4.SuspendLayout();
@@ -288,138 +238,6 @@ namespace Terminals
         this.btnCancel.TabIndex = 2;
         this.btnCancel.Text = "Cancel";
         this.btnCancel.UseVisualStyleBackColor = true;
-        // 
-        // SSH2RadioButton
-        // 
-        this.SSH2RadioButton.AutoSize = true;
-        this.SSH2RadioButton.Checked = true;
-        this.SSH2RadioButton.Location = new System.Drawing.Point(25, 67);
-        this.SSH2RadioButton.Name = "SSH2RadioButton";
-        this.SSH2RadioButton.Size = new System.Drawing.Size(53, 17);
-        this.SSH2RadioButton.TabIndex = 8;
-        this.SSH2RadioButton.TabStop = true;
-        this.SSH2RadioButton.Text = "SSH 2";
-        this.SSH2RadioButton.UseVisualStyleBackColor = true;
-        // 
-        // groupBox2
-        // 
-        this.groupBox2.Location = new System.Drawing.Point(0, 0);
-        this.groupBox2.Name = "groupBox2";
-        this.groupBox2.Size = new System.Drawing.Size(200, 100);
-        this.groupBox2.TabIndex = 0;
-        this.groupBox2.TabStop = false;
-        // 
-        // label20
-        // 
-        this.label20.Location = new System.Drawing.Point(0, 0);
-        this.label20.Name = "label20";
-        this.label20.Size = new System.Drawing.Size(100, 23);
-        this.label20.TabIndex = 0;
-        // 
-        // ConsoleCursorColorTextBox
-        // 
-        this.ConsoleCursorColorTextBox.Location = new System.Drawing.Point(0, 0);
-        this.ConsoleCursorColorTextBox.Name = "ConsoleCursorColorTextBox";
-        this.ConsoleCursorColorTextBox.Size = new System.Drawing.Size(100, 20);
-        this.ConsoleCursorColorTextBox.TabIndex = 0;
-        // 
-        // ConsoleCursorColorButton
-        // 
-        this.ConsoleCursorColorButton.Location = new System.Drawing.Point(0, 0);
-        this.ConsoleCursorColorButton.Name = "ConsoleCursorColorButton";
-        this.ConsoleCursorColorButton.Size = new System.Drawing.Size(75, 23);
-        this.ConsoleCursorColorButton.TabIndex = 0;
-        // 
-        // label19
-        // 
-        this.label19.Location = new System.Drawing.Point(0, 0);
-        this.label19.Name = "label19";
-        this.label19.Size = new System.Drawing.Size(100, 23);
-        this.label19.TabIndex = 0;
-        // 
-        // ConsoleTextColorTextBox
-        // 
-        this.ConsoleTextColorTextBox.Location = new System.Drawing.Point(0, 0);
-        this.ConsoleTextColorTextBox.Name = "ConsoleTextColorTextBox";
-        this.ConsoleTextColorTextBox.Size = new System.Drawing.Size(100, 20);
-        this.ConsoleTextColorTextBox.TabIndex = 0;
-        // 
-        // ConsoleTextColorButton
-        // 
-        this.ConsoleTextColorButton.Location = new System.Drawing.Point(0, 0);
-        this.ConsoleTextColorButton.Name = "ConsoleTextColorButton";
-        this.ConsoleTextColorButton.Size = new System.Drawing.Size(75, 23);
-        this.ConsoleTextColorButton.TabIndex = 0;
-        // 
-        // label18
-        // 
-        this.label18.Location = new System.Drawing.Point(0, 0);
-        this.label18.Name = "label18";
-        this.label18.Size = new System.Drawing.Size(100, 23);
-        this.label18.TabIndex = 0;
-        // 
-        // BackColorTextBox
-        // 
-        this.BackColorTextBox.Location = new System.Drawing.Point(0, 0);
-        this.BackColorTextBox.Name = "BackColorTextBox";
-        this.BackColorTextBox.Size = new System.Drawing.Size(100, 20);
-        this.BackColorTextBox.TabIndex = 0;
-        // 
-        // BackcolorButton
-        // 
-        this.BackcolorButton.Location = new System.Drawing.Point(0, 0);
-        this.BackcolorButton.Name = "BackcolorButton";
-        this.BackcolorButton.Size = new System.Drawing.Size(75, 23);
-        this.BackcolorButton.TabIndex = 0;
-        // 
-        // label17
-        // 
-        this.label17.Location = new System.Drawing.Point(0, 0);
-        this.label17.Name = "label17";
-        this.label17.Size = new System.Drawing.Size(100, 23);
-        this.label17.TabIndex = 0;
-        // 
-        // ConsoleFontTextbox
-        // 
-        this.ConsoleFontTextbox.Location = new System.Drawing.Point(0, 0);
-        this.ConsoleFontTextbox.Name = "ConsoleFontTextbox";
-        this.ConsoleFontTextbox.Size = new System.Drawing.Size(100, 20);
-        this.ConsoleFontTextbox.TabIndex = 0;
-        // 
-        // RowsTextBox
-        // 
-        this.RowsTextBox.Location = new System.Drawing.Point(0, 0);
-        this.RowsTextBox.Name = "RowsTextBox";
-        this.RowsTextBox.Size = new System.Drawing.Size(100, 20);
-        this.RowsTextBox.TabIndex = 0;
-        // 
-        // ConsoleFontButton
-        // 
-        this.ConsoleFontButton.Location = new System.Drawing.Point(0, 0);
-        this.ConsoleFontButton.Name = "ConsoleFontButton";
-        this.ConsoleFontButton.Size = new System.Drawing.Size(75, 23);
-        this.ConsoleFontButton.TabIndex = 0;
-        // 
-        // label15
-        // 
-        this.label15.Location = new System.Drawing.Point(0, 0);
-        this.label15.Name = "label15";
-        this.label15.Size = new System.Drawing.Size(100, 23);
-        this.label15.TabIndex = 0;
-        // 
-        // ColumnsTextBox
-        // 
-        this.ColumnsTextBox.Location = new System.Drawing.Point(0, 0);
-        this.ColumnsTextBox.Name = "ColumnsTextBox";
-        this.ColumnsTextBox.Size = new System.Drawing.Size(100, 20);
-        this.ColumnsTextBox.TabIndex = 0;
-        // 
-        // label16
-        // 
-        this.label16.Location = new System.Drawing.Point(0, 0);
-        this.label16.Name = "label16";
-        this.label16.Size = new System.Drawing.Size(100, 23);
-        this.label16.TabIndex = 0;
         // 
         // chkAddtoToolbar
         // 
@@ -708,147 +526,6 @@ namespace Terminals
         this.NewWindowCheckbox.TabIndex = 11;
         this.NewWindowCheckbox.Text = "&Open in New Window";
         this.NewWindowCheckbox.UseVisualStyleBackColor = true;
-        // 
-        // TelnetGroupBox
-        // 
-        this.TelnetGroupBox.Controls.Add(this.label38);
-        this.TelnetGroupBox.Controls.Add(this.TelnetCursorColorTextBox);
-        this.TelnetGroupBox.Controls.Add(this.label39);
-        this.TelnetGroupBox.Controls.Add(this.TelnetCursorColorButton);
-        this.TelnetGroupBox.Controls.Add(this.label40);
-        this.TelnetGroupBox.Controls.Add(this.label41);
-        this.TelnetGroupBox.Controls.Add(this.textBox1);
-        this.TelnetGroupBox.Controls.Add(this.TelnetTextColorTextBox);
-        this.TelnetGroupBox.Controls.Add(this.TelnetFontButton);
-        this.TelnetGroupBox.Controls.Add(this.TelnetTextColorButton);
-        this.TelnetGroupBox.Controls.Add(this.textBox2);
-        this.TelnetGroupBox.Controls.Add(this.label42);
-        this.TelnetGroupBox.Controls.Add(this.TelnetFontTextbox);
-        this.TelnetGroupBox.Controls.Add(this.textBox3);
-        this.TelnetGroupBox.Controls.Add(this.label43);
-        this.TelnetGroupBox.Controls.Add(this.button1);
-        this.TelnetGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-        this.TelnetGroupBox.Location = new System.Drawing.Point(0, 0);
-        this.TelnetGroupBox.Name = "TelnetGroupBox";
-        this.TelnetGroupBox.Size = new System.Drawing.Size(500, 271);
-        this.TelnetGroupBox.TabIndex = 0;
-        this.TelnetGroupBox.TabStop = false;
-        // 
-        // label38
-        // 
-        this.label38.AutoSize = true;
-        this.label38.Location = new System.Drawing.Point(101, 189);
-        this.label38.Name = "label38";
-        this.label38.Size = new System.Drawing.Size(40, 13);
-        this.label38.TabIndex = 17;
-        this.label38.Text = "Cursor:";
-        // 
-        // TelnetCursorColorTextBox
-        // 
-        this.TelnetCursorColorTextBox.Location = new System.Drawing.Point(154, 186);
-        this.TelnetCursorColorTextBox.Name = "TelnetCursorColorTextBox";
-        this.TelnetCursorColorTextBox.ReadOnly = true;
-        this.TelnetCursorColorTextBox.Size = new System.Drawing.Size(160, 20);
-        this.TelnetCursorColorTextBox.TabIndex = 16;
-        this.TelnetCursorColorTextBox.Text = "Red";
-        // 
-        // label39
-        // 
-        this.label39.AutoSize = true;
-        this.label39.Location = new System.Drawing.Point(99, 44);
-        this.label39.Name = "label39";
-        this.label39.Size = new System.Drawing.Size(37, 13);
-        this.label39.TabIndex = 2;
-        this.label39.Text = "Rows:";
-        // 
-        // TelnetCursorColorButton
-        // 
-        this.TelnetCursorColorButton.Location = new System.Drawing.Point(320, 184);
-        this.TelnetCursorColorButton.Name = "TelnetCursorColorButton";
-        this.TelnetCursorColorButton.Size = new System.Drawing.Size(31, 23);
-        this.TelnetCursorColorButton.TabIndex = 15;
-        this.TelnetCursorColorButton.Text = "...";
-        this.TelnetCursorColorButton.UseVisualStyleBackColor = true;
-        // 
-        // label40
-        // 
-        this.label40.AutoSize = true;
-        this.label40.Location = new System.Drawing.Point(99, 73);
-        this.label40.Name = "label40";
-        this.label40.Size = new System.Drawing.Size(50, 13);
-        this.label40.TabIndex = 3;
-        this.label40.Text = "Columns:";
-        // 
-        // label41
-        // 
-        this.label41.AutoSize = true;
-        this.label41.Location = new System.Drawing.Point(101, 162);
-        this.label41.Name = "label41";
-        this.label41.Size = new System.Drawing.Size(31, 13);
-        this.label41.TabIndex = 14;
-        this.label41.Text = "Text:";
-        // 
-        // textBox1
-        // 
-        this.textBox1.Location = new System.Drawing.Point(154, 70);
-        this.textBox1.Name = "textBox1";
-        this.textBox1.Size = new System.Drawing.Size(38, 20);
-        this.textBox1.TabIndex = 5;
-        this.textBox1.Text = "110";
-        // 
-        // TelnetTextColorTextBox
-        // 
-        this.TelnetTextColorTextBox.Location = new System.Drawing.Point(154, 159);
-        this.TelnetTextColorTextBox.Name = "TelnetTextColorTextBox";
-        this.TelnetTextColorTextBox.ReadOnly = true;
-        this.TelnetTextColorTextBox.Size = new System.Drawing.Size(160, 20);
-        this.TelnetTextColorTextBox.TabIndex = 13;
-        this.TelnetTextColorTextBox.Text = "White";
-        // 
-        // TelnetFontButton
-        // 
-        this.TelnetFontButton.Location = new System.Drawing.Point(320, 103);
-        this.TelnetFontButton.Name = "TelnetFontButton";
-        this.TelnetFontButton.Size = new System.Drawing.Size(31, 23);
-        this.TelnetFontButton.TabIndex = 6;
-        this.TelnetFontButton.Text = "...";
-        this.TelnetFontButton.UseVisualStyleBackColor = true;
-        // 
-        // TelnetTextColorButton
-        // 
-        this.TelnetTextColorButton.Location = new System.Drawing.Point(320, 157);
-        this.TelnetTextColorButton.Name = "TelnetTextColorButton";
-        this.TelnetTextColorButton.Size = new System.Drawing.Size(31, 23);
-        this.TelnetTextColorButton.TabIndex = 12;
-        this.TelnetTextColorButton.Text = "...";
-        this.TelnetTextColorButton.UseVisualStyleBackColor = true;
-        // 
-        // textBox2
-        // 
-        this.textBox2.Location = new System.Drawing.Point(154, 41);
-        this.textBox2.Name = "textBox2";
-        this.textBox2.Size = new System.Drawing.Size(38, 20);
-        this.textBox2.TabIndex = 4;
-        this.textBox2.Text = "38";
-        // 
-        // label42
-        // 
-        this.label42.AutoSize = true;
-        this.label42.Location = new System.Drawing.Point(101, 135);
-        this.label42.Name = "label42";
-        this.label42.Size = new System.Drawing.Size(35, 13);
-        this.label42.TabIndex = 11;
-        this.label42.Text = "Back:";
-        // 
-        // TelnetFontTextbox
-        // 
-        this.TelnetFontTextbox.Location = new System.Drawing.Point(154, 105);
-        this.TelnetFontTextbox.Name = "TelnetFontTextbox";
-        this.TelnetFontTextbox.ReadOnly = true;
-        this.TelnetFontTextbox.Size = new System.Drawing.Size(160, 20);
-        this.TelnetFontTextbox.TabIndex = 7;
-        this.TelnetFontTextbox.Text = "[Font: Name=Courier New, Size=9.75, Units=3, GdiCharSet=0, GdiVerticalFont=False]" +
-            "";
         // 
         // textBox3
         // 
@@ -1305,16 +982,6 @@ namespace Terminals
         this.SSHTabPage.Text = "SSH";
         this.SSHTabPage.UseVisualStyleBackColor = true;
         // 
-        // SSHPreferences
-        // 
-        this.SSHPreferences.AuthMethod = Terminals.AuthMethod.PublicKey;
-        this.SSHPreferences.KeyTag = "";
-        this.SSHPreferences.Location = new System.Drawing.Point(11, 6);
-        this.SSHPreferences.Name = "SSHPreferences";
-        this.SSHPreferences.Size = new System.Drawing.Size(466, 267);
-        this.SSHPreferences.SSH1 = false;
-        this.SSHPreferences.TabIndex = 0;
-        // 
         // ConsoleTabPage
         // 
         this.ConsoleTabPage.Controls.Add(this.groupBox6);
@@ -1328,171 +995,13 @@ namespace Terminals
         // 
         // groupBox6
         // 
-        this.groupBox6.Controls.Add(this.label50);
-        this.groupBox6.Controls.Add(this.textBox10);
-        this.groupBox6.Controls.Add(this.label51);
-        this.groupBox6.Controls.Add(this.button6);
-        this.groupBox6.Controls.Add(this.label52);
-        this.groupBox6.Controls.Add(this.label53);
-        this.groupBox6.Controls.Add(this.textBox11);
-        this.groupBox6.Controls.Add(this.textBox12);
-        this.groupBox6.Controls.Add(this.button7);
-        this.groupBox6.Controls.Add(this.button8);
-        this.groupBox6.Controls.Add(this.textBox13);
-        this.groupBox6.Controls.Add(this.label54);
-        this.groupBox6.Controls.Add(this.textBox14);
-        this.groupBox6.Controls.Add(this.textBox15);
-        this.groupBox6.Controls.Add(this.label55);
-        this.groupBox6.Controls.Add(this.button9);
+        this.groupBox6.Controls.Add(this.consolePreferences);
         this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
         this.groupBox6.Location = new System.Drawing.Point(3, 3);
         this.groupBox6.Name = "groupBox6";
         this.groupBox6.Size = new System.Drawing.Size(494, 265);
         this.groupBox6.TabIndex = 1;
         this.groupBox6.TabStop = false;
-        // 
-        // label50
-        // 
-        this.label50.AutoSize = true;
-        this.label50.Location = new System.Drawing.Point(101, 189);
-        this.label50.Name = "label50";
-        this.label50.Size = new System.Drawing.Size(43, 13);
-        this.label50.TabIndex = 17;
-        this.label50.Text = "Cursor:";
-        // 
-        // textBox10
-        // 
-        this.textBox10.Location = new System.Drawing.Point(154, 186);
-        this.textBox10.Name = "textBox10";
-        this.textBox10.ReadOnly = true;
-        this.textBox10.Size = new System.Drawing.Size(160, 21);
-        this.textBox10.TabIndex = 16;
-        this.textBox10.Text = "Red";
-        // 
-        // label51
-        // 
-        this.label51.AutoSize = true;
-        this.label51.Location = new System.Drawing.Point(99, 44);
-        this.label51.Name = "label51";
-        this.label51.Size = new System.Drawing.Size(37, 13);
-        this.label51.TabIndex = 2;
-        this.label51.Text = "Rows:";
-        // 
-        // button6
-        // 
-        this.button6.Location = new System.Drawing.Point(320, 184);
-        this.button6.Name = "button6";
-        this.button6.Size = new System.Drawing.Size(31, 23);
-        this.button6.TabIndex = 15;
-        this.button6.Text = "...";
-        this.button6.UseVisualStyleBackColor = true;
-        // 
-        // label52
-        // 
-        this.label52.AutoSize = true;
-        this.label52.Location = new System.Drawing.Point(99, 73);
-        this.label52.Name = "label52";
-        this.label52.Size = new System.Drawing.Size(51, 13);
-        this.label52.TabIndex = 3;
-        this.label52.Text = "Columns:";
-        // 
-        // label53
-        // 
-        this.label53.AutoSize = true;
-        this.label53.Location = new System.Drawing.Point(101, 162);
-        this.label53.Name = "label53";
-        this.label53.Size = new System.Drawing.Size(33, 13);
-        this.label53.TabIndex = 14;
-        this.label53.Text = "Text:";
-        // 
-        // textBox11
-        // 
-        this.textBox11.Location = new System.Drawing.Point(154, 70);
-        this.textBox11.Name = "textBox11";
-        this.textBox11.Size = new System.Drawing.Size(38, 21);
-        this.textBox11.TabIndex = 5;
-        this.textBox11.Text = "110";
-        // 
-        // textBox12
-        // 
-        this.textBox12.Location = new System.Drawing.Point(154, 159);
-        this.textBox12.Name = "textBox12";
-        this.textBox12.ReadOnly = true;
-        this.textBox12.Size = new System.Drawing.Size(160, 21);
-        this.textBox12.TabIndex = 13;
-        this.textBox12.Text = "White";
-        // 
-        // button7
-        // 
-        this.button7.Location = new System.Drawing.Point(320, 103);
-        this.button7.Name = "button7";
-        this.button7.Size = new System.Drawing.Size(31, 23);
-        this.button7.TabIndex = 6;
-        this.button7.Text = "...";
-        this.button7.UseVisualStyleBackColor = true;
-        // 
-        // button8
-        // 
-        this.button8.Location = new System.Drawing.Point(320, 157);
-        this.button8.Name = "button8";
-        this.button8.Size = new System.Drawing.Size(31, 23);
-        this.button8.TabIndex = 12;
-        this.button8.Text = "...";
-        this.button8.UseVisualStyleBackColor = true;
-        // 
-        // textBox13
-        // 
-        this.textBox13.Location = new System.Drawing.Point(154, 41);
-        this.textBox13.Name = "textBox13";
-        this.textBox13.Size = new System.Drawing.Size(38, 21);
-        this.textBox13.TabIndex = 4;
-        this.textBox13.Text = "38";
-        // 
-        // label54
-        // 
-        this.label54.AutoSize = true;
-        this.label54.Location = new System.Drawing.Point(101, 135);
-        this.label54.Name = "label54";
-        this.label54.Size = new System.Drawing.Size(33, 13);
-        this.label54.TabIndex = 11;
-        this.label54.Text = "Back:";
-        // 
-        // textBox14
-        // 
-        this.textBox14.Location = new System.Drawing.Point(154, 105);
-        this.textBox14.Name = "textBox14";
-        this.textBox14.ReadOnly = true;
-        this.textBox14.Size = new System.Drawing.Size(160, 21);
-        this.textBox14.TabIndex = 7;
-        this.textBox14.Text = "[Font: Name=Courier New, Size=9.75, Units=3, GdiCharSet=0, GdiVerticalFont=False]" +
-            "";
-        // 
-        // textBox15
-        // 
-        this.textBox15.Location = new System.Drawing.Point(154, 132);
-        this.textBox15.Name = "textBox15";
-        this.textBox15.ReadOnly = true;
-        this.textBox15.Size = new System.Drawing.Size(160, 21);
-        this.textBox15.TabIndex = 10;
-        this.textBox15.Text = "Black";
-        // 
-        // label55
-        // 
-        this.label55.AutoSize = true;
-        this.label55.Location = new System.Drawing.Point(101, 108);
-        this.label55.Name = "label55";
-        this.label55.Size = new System.Drawing.Size(33, 13);
-        this.label55.TabIndex = 8;
-        this.label55.Text = "Font:";
-        // 
-        // button9
-        // 
-        this.button9.Location = new System.Drawing.Point(320, 130);
-        this.button9.Name = "button9";
-        this.button9.Size = new System.Drawing.Size(31, 23);
-        this.button9.TabIndex = 9;
-        this.button9.Text = "...";
-        this.button9.UseVisualStyleBackColor = true;
         // 
         // VNCTabPage
         // 
@@ -2312,6 +1821,23 @@ namespace Terminals
         this.tabControl1.TabIndex = 0;
         this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
         // 
+        // consolePreferences
+        // 
+        this.consolePreferences.Location = new System.Drawing.Point(86, 20);
+        this.consolePreferences.Name = "consolePreferences";
+        this.consolePreferences.Size = new System.Drawing.Size(285, 223);
+        this.consolePreferences.TabIndex = 0;
+        // 
+        // SSHPreferences
+        // 
+        this.SSHPreferences.AuthMethod = Terminals.AuthMethod.PublicKey;
+        this.SSHPreferences.KeyTag = "";
+        this.SSHPreferences.Location = new System.Drawing.Point(11, 6);
+        this.SSHPreferences.Name = "SSHPreferences";
+        this.SSHPreferences.Size = new System.Drawing.Size(466, 267);
+        this.SSHPreferences.SSH1 = false;
+        this.SSHPreferences.TabIndex = 0;
+        // 
         // NewTerminalForm
         // 
         this.AcceptButton = this.btnOk;
@@ -2338,8 +1864,6 @@ namespace Terminals
         this.Load += new System.EventHandler(this.NewTerminalForm_Load);
         this.Shown += new System.EventHandler(this.NewTerminalForm_Shown);
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-        this.TelnetGroupBox.ResumeLayout(false);
-        this.TelnetGroupBox.PerformLayout();
         this.tabPage4.ResumeLayout(false);
         this.tabPage4.PerformLayout();
         this.TagsTabPage.ResumeLayout(false);
@@ -2360,7 +1884,6 @@ namespace Terminals
         this.SSHTabPage.ResumeLayout(false);
         this.ConsoleTabPage.ResumeLayout(false);
         this.groupBox6.ResumeLayout(false);
-        this.groupBox6.PerformLayout();
         this.VNCTabPage.ResumeLayout(false);
         this.VNCTabPage.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)(this.vncDisplayNumberInput)).EndInit();
@@ -2400,42 +1923,11 @@ namespace Terminals
       private System.Windows.Forms.CheckBox chkAddtoToolbar;
       private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
       private System.Windows.Forms.ToolTip toolTip1;
-      private System.Windows.Forms.TextBox ColumnsTextBox;
-      private System.Windows.Forms.TextBox RowsTextBox;
-      private System.Windows.Forms.Label label16;
-      private System.Windows.Forms.Label label15;
-      private System.Windows.Forms.Button ConsoleFontButton;
-      private System.Windows.Forms.FontDialog fontDialog1;
-      private System.Windows.Forms.GroupBox groupBox2;
-      private System.Windows.Forms.Label label17;
-      private System.Windows.Forms.TextBox ConsoleFontTextbox;
-      private System.Windows.Forms.Label label18;
-      private System.Windows.Forms.TextBox BackColorTextBox;
-      private System.Windows.Forms.Button BackcolorButton;
-      private System.Windows.Forms.ColorDialog colorDialog1;
-      private System.Windows.Forms.Label label20;
-      private System.Windows.Forms.TextBox ConsoleCursorColorTextBox;
-      private System.Windows.Forms.Button ConsoleCursorColorButton;
-      private System.Windows.Forms.Label label19;
-      private System.Windows.Forms.TextBox ConsoleTextColorTextBox;
-      private System.Windows.Forms.Button ConsoleTextColorButton;
+
+      //private System.Windows.Forms.GroupBox groupBox2;
+
       private FalafelSoftware.TransPort.Ras ras1;
       private System.Windows.Forms.CheckBox NewWindowCheckbox;
-      private System.Windows.Forms.RadioButton SSH2RadioButton;
-      private System.Windows.Forms.GroupBox TelnetGroupBox;
-      private System.Windows.Forms.Label label38;
-      private System.Windows.Forms.TextBox TelnetCursorColorTextBox;
-      private System.Windows.Forms.Label label39;
-      private System.Windows.Forms.Button TelnetCursorColorButton;
-      private System.Windows.Forms.Label label40;
-      private System.Windows.Forms.Label label41;
-      private System.Windows.Forms.TextBox textBox1;
-      private System.Windows.Forms.TextBox TelnetTextColorTextBox;
-      private System.Windows.Forms.Button TelnetFontButton;
-      private System.Windows.Forms.Button TelnetTextColorButton;
-      private System.Windows.Forms.TextBox textBox2;
-      private System.Windows.Forms.Label label42;
-      private System.Windows.Forms.TextBox TelnetFontTextbox;
       private System.Windows.Forms.TextBox textBox3;
       private System.Windows.Forms.Label label43;
       private System.Windows.Forms.Button button1;
@@ -2577,22 +2069,7 @@ namespace Terminals
       private System.Windows.Forms.Label label1;
       private System.Windows.Forms.TabControl tabControl1;
       private System.Windows.Forms.GroupBox groupBox6;
-      private System.Windows.Forms.Label label50;
-      private System.Windows.Forms.TextBox textBox10;
-      private System.Windows.Forms.Label label51;
-      private System.Windows.Forms.Button button6;
-      private System.Windows.Forms.Label label52;
-      private System.Windows.Forms.Label label53;
-      private System.Windows.Forms.TextBox textBox11;
-      private System.Windows.Forms.TextBox textBox12;
-      private System.Windows.Forms.Button button7;
-      private System.Windows.Forms.Button button8;
-      private System.Windows.Forms.TextBox textBox13;
-      private System.Windows.Forms.Label label54;
-      private System.Windows.Forms.TextBox textBox14;
-      private System.Windows.Forms.TextBox textBox15;
-      private System.Windows.Forms.Label label55;
-      private System.Windows.Forms.Button button9;
       private SSHPreferences SSHPreferences;
+      private ConsolePreferences consolePreferences;
   }
 }
