@@ -38,6 +38,10 @@ namespace SSHClient
             {
                 return (KeysCollection)base["keys"];
             }
+            set
+            {
+            	this["keys"] = value;
+            }
         }
 
         public void AddKey(string name, string key)

@@ -31,6 +31,7 @@ namespace Terminals
             SetOkTitle(connect);
             this.ProtocolComboBox.SelectedIndex = 0;
 
+            SSHPreferences.Keys = Settings.SSHKeys;
 
             string Server = server;
             int port = 3389;
@@ -94,6 +95,7 @@ namespace Terminals
             LoadMRUs();
             SetOkTitle(false);
             this.Text = "Edit Connection";
+            SSHPreferences.Keys = Settings.SSHKeys;
             FillControls(favorite);
             SetOkButtonState();
         }
@@ -224,7 +226,6 @@ namespace Terminals
             SSHPreferences.AuthMethod = favorite.AuthMethod;
             SSHPreferences.KeyTag = favorite.KeyTag;
             SSHPreferences.SSH1 = favorite.SSH1;
-            SSHPreferences.Keys = Settings.SSHKeys;
         }
 
         private bool FillFavorite()

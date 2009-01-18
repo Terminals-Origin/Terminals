@@ -111,7 +111,19 @@ namespace Routrek.SSHCV2
 			}
 			else {
 				//public key authentication
-				SSH2UserAuthKey kp = SSH2UserAuthKey.FromSECSHStyleFile(_param.IdentityFile, _param.Password);
+				SSH2UserAuthKey kp;
+				if(_param.IdentityFile == null)
+				{
+		            MemoryStream ks = new MemoryStream();
+		            StreamWriter sw = new StreamWriter(ks);
+		            sw.Write(_param.Password);
+		            ks.Seek(0, SeekOrigin.Begin);
+					kp = SSH2UserAuthKey.FromSECSHStyleStream(ks, "");
+				}
+				else
+				{
+					kp = SSH2UserAuthKey.FromSECSHStyleFile(_param.IdentityFile, _param.Password);				
+				}
 				SSH2DataWriter signsource = new SSH2DataWriter();
 				signsource.WriteAsString(_sessionID);
 				signsource.WritePacketType(PacketType.SSH_MSG_USERAUTH_REQUEST);

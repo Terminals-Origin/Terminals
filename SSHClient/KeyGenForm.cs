@@ -192,28 +192,20 @@ namespace SSHClient
 
         private void EntryPoint()
         {
-            try
-            {
-                _mouseMoveCount = 0;
-                KeyPair kp;
-                if (_algorithm == PublicKeyAlgorithm.DSA)
-                    kp = DSAKeyPair.GenerateNew(_bits, _rnd);
-                else
-                    kp = RSAKeyPair.GenerateNew(_bits, _rnd);
-                _parent.SetResultKey(new SSH2UserAuthKey(kp));
-            }
-            catch (Exception ex)
-            {
-            	// TODO - make a delegate for linking logging
-                //Terminals.Logging.Log.Debug(ex.StackTrace);
-            }
+            _mouseMoveCount = 0;
+            KeyPair kp;
+            if (_algorithm == PublicKeyAlgorithm.DSA)
+                kp = DSAKeyPair.GenerateNew(_bits, _rnd);
+            else
+                kp = RSAKeyPair.GenerateNew(_bits, _rnd);
+            _parent.SetResultKey(new SSH2UserAuthKey(kp));
         }
 
         public void OnMouseMove(object sender, MouseEventArgs args)
         {
             if (_parent.needMoreEntropy)
             {
-                int n = (int)System.DateTime.Now.Ticks;
+            	int n = (int)(System.DateTime.Now.Ticks & 0x8fffffff);
                 n ^= (args.X << 16);
                 n ^= args.Y;
                 n ^= (int)0x31031293;

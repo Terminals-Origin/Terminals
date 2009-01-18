@@ -10,42 +10,13 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Globalization;
-//using System.Text;
-using System.IO;
 
 namespace SSHClient
 {
-    public class SSH2UserAuthKey : Routrek.SSHCV2.SSH2UserAuthKey
-    {
-        public SSH2UserAuthKey(Routrek.PKI.KeyPair kp) : base(kp)
-        {
-        }
-        public string PublicPartInOpenSSHStyle()
-        {
-            Byte[] mk = new Byte[2048];
-            MemoryStream ks = new MemoryStream(mk);
-            base.WritePublicPartInOpenSSHStyle(ks);
-            ks = new MemoryStream(mk);
-            StreamReader sr = new StreamReader(ks);
-            return sr.ReadLine();
-        }
-        
-        public static SSH2UserAuthKey FromSECSHStyle(string value)
-        {
-            Byte[] mk = new Byte[2000];
-            MemoryStream ks = new MemoryStream(mk);
-            StreamWriter sw = new StreamWriter(ks);
-            sw.WriteLine(value);
-            ks = new MemoryStream(mk);
-            Routrek.SSHCV2.SSH2UserAuthKey k = SSH2UserAuthKey.FromSECSHStyleStream(ks, "");
-            return k as SSH2UserAuthKey;
-        }
-    }
-    
     public enum AuthMethod {Host,Password,PublicKey,KeyboardInteractive};
+
 	/// <summary>
-	/// Description of SSHPreferences.
+	/// Description of Preferences.
 	/// </summary>
 	public partial class Preferences : UserControl
 	{
@@ -142,7 +113,8 @@ namespace SSHClient
 				}
 				else
 				{
-					keysSection.AddKey(tag, dlg.Key.ToString());
+					string s = dlg.Key.toSECSHStyle(tag);
+					keysSection.AddKey(tag, s);
 					comboBoxKey.Items.Add(tag);
 					comboBoxKey.SelectedIndex = comboBoxKey.FindString(tag);
 				}
@@ -152,14 +124,16 @@ namespace SSHClient
         private void buttonCopy_Click(object sender, EventArgs e)
         {
             // copy the public key to the clipboard
+            openSSHTextBox.SelectAll();
             openSSHTextBox.Copy();
         }
 
         private void comboBoxKey_SelectedIndexChanged(object sender, EventArgs e)
         {
             string tag = (string)comboBoxKey.SelectedItem;
-            SSH2UserAuthKey key = SSH2UserAuthKey.FromSECSHStyle(keysSection.Keys[tag].Key);
-            openSSHTextBox.Text = key.PublicPartInOpenSSHStyle();
+            string keytext = keysSection.Keys[tag].Key;
+            SSH2UserAuthKey key = SSH2UserAuthKey.FromSECSHStyle(keytext);
+            openSSHTextBox.Text = key.PublicPartInOpenSSHStyle()+" "+tag;
         }
 	}
 }

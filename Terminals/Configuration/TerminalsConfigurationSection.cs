@@ -27,8 +27,6 @@ namespace Terminals
             }
         }
 
-
-
         [ConfigurationProperty("serversMRUList")]
         [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]
         public MRUItemConfigurationElementCollection ServersMRU

@@ -449,8 +449,23 @@ namespace Terminals
         {
             get
             {
-                return config.Sections["SSH"] as SSHClient.KeysSection;
+        		SSHClient.KeysSection keys = Config.Sections["SSH"] as SSHClient.KeysSection;
+				if (keys == null)
+				{
+					// The section wasn't found, so add it.
+					keys = new SSHClient.KeysSection();
+					config.Sections.Add("SSH", keys);
+				}
+		        return keys;
             }
+/*
+            set
+            {
+                Configuration configuration = Config;
+                configuration.Sections["SSH"] = value;
+                if(!DelayConfigurationSave) configuration.Save();
+            }
+*/
         }
         
         public enum SortProperties { ServerName, ConnectionName, Protocol, None }
