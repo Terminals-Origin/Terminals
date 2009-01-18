@@ -445,19 +445,12 @@ namespace Terminals
             }
         }
         
-        public static SSHKeyCollection SSHKeys
+        public static SSHClient.KeysSection SSHKeys
         {
             get
             {
-                return GetSection().SSHKeys;
+                return config.Sections["SSH"] as SSHClient.KeysSection;
             }
-        }
-
-        public static void AddSSHKey(string tag, SSH2UserAuthKey key)
-        {
-            Configuration configuration = GetConfiguration();
-            GetSection(configuration).SSHKeys.Add(new SSHKeyElement(tag,key));
-            configuration.Save();        	
         }
         
         public enum SortProperties { ServerName, ConnectionName, Protocol, None }

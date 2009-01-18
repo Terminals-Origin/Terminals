@@ -1,4 +1,4 @@
-﻿namespace Terminals
+﻿namespace SSHClient
 {
     partial class KeyGenForm
     {

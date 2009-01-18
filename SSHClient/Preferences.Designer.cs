@@ -6,9 +6,9 @@
  * 
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
-namespace Terminals
+namespace SSHClient
 {
-	partial class SSHPreferences
+	partial class Preferences
 	{
 		/// <summary>
 		/// Designer variable used to keep track of non-visual components.

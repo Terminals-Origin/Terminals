@@ -14,6 +14,7 @@ using System.Net.Sockets;
 using TabControl;
 using WalburySoftware;
 using Routrek.SSHC;
+using SSHClient;
 using Org.Mentalis.Network.ProxySocket;
 
 namespace Terminals.Connections
@@ -80,66 +81,24 @@ namespace Terminals.Connections
                 else
                 {
 	                SSHProtocol p = new SSHProtocol();
-                    p.TerminalName = term.TerminalType;
-                    p.TerminalHeight = term.Rows;
-                    p.TerminalWidth = term.Width;
+	                p.setTerminalParams(term.TerminalType,
+	                                   term.Rows, term.Columns);
 	            	p.OnDataIndicated += term.IndicateData;
 	            	term.OnDataRequested += p.RequestData;
+	            	p.setProtocolParams(
+	            		Favorite.AuthMethod,
+	            		Favorite.UserName,
+	            		Favorite.Password,
+	            		Favorite.KeyTag,
+	            		Favorite.SSH1);
 
-	                AuthMethod authMethod = Favorite.AuthMethod;
-
-	                string userName = Favorite.UserName;
-	                if(userName==null)
-		            	userName="";
-                    if (userName == "") // can't do auto login without username
-                        authMethod = AuthMethod.KeyboardInteractive;
-	            	p.Username=userName;
-                    
-                    if(authMethod==AuthMethod.PublicKey)
-                    {
-                	    string tag = Favorite.KeyTag;
-                        if (tag == null || tag == "")
-                        {
-                            authMethod = AuthMethod.Password;
-                        }
-                        else
-                        {
-                            SSHKeyElement e = Settings.SSHKeys[tag];
-                            if (e != null && e.key != null)
-                            {
-                                p.AuthenticationType = AuthenticationType.PublicKey;
-                                p.Key = e.key.ToString();
-                            }
-                            else
-                            {
-                                authMethod = AuthMethod.Password;
-                            }
-                        }
-                    }
-                    if(authMethod==AuthMethod.Password)
-                    {
-	                    string pass = Favorite.Password;
-	                    if(pass==null)
-	                	    pass="";
-	                    if(pass=="")
-	                    {
-	                	    p.AuthenticationType=AuthenticationType.KeyboardInteractive;
-	                    }
-	                    else
-	                    {
-	                	    p.AuthenticationType=AuthenticationType.Password;
-		            	    p.Password=pass;
-	                    }
-                    }
                     if (Favorite.SSH1)
                     {
                         protocol = "SSH1";
-                        p.Protocol = Routrek.SSHC.SSHProtocol.SSH1;
                     }
                     else
                     {
                         protocol = "SSH2";
-                        p.Protocol = Routrek.SSHC.SSHProtocol.SSH2;
                     }
                     p.Connect(client);
                     connected = true; // SSH will throw if fails
@@ -270,6 +229,70 @@ namespace Terminals.Connections
 		}
 		#endregion
 		#region Public Methods
+		public void setTerminalParams(string type, int rows, int cols)
+		{
+			_params = new SSHConnectionParameter();
+			TerminalName = type;
+            TerminalHeight = rows;
+            TerminalWidth = cols;
+		}
+
+		public void setProtocolParams(
+			AuthMethod authMethod,
+			string userName,
+			string pass,
+			string tag,
+			bool SSH1)
+		{
+            if(userName==null)
+            	userName="";
+            if (userName == "") // can't do auto login without username
+                authMethod = AuthMethod.KeyboardInteractive;
+        	Username=userName;
+            
+            if(authMethod==AuthMethod.PublicKey)
+            {
+                if (tag == null || tag == "")
+                {
+                    authMethod = AuthMethod.Password;
+                }
+                else
+                {
+                	KeyConfigElement e = Settings.SSHKeys.Keys[tag];
+                    if (e != null && e.Key != null)
+                    {
+                        AuthenticationType = AuthenticationType.PublicKey;
+                        Key = e.Key;
+                    }
+                    else
+                    {
+                        authMethod = AuthMethod.Password;
+                    }
+                }
+            }
+            if(authMethod==AuthMethod.Password)
+            {
+                if(pass==null)
+            	    pass="";
+                if(pass=="")
+                {
+            	    AuthenticationType=AuthenticationType.KeyboardInteractive;
+                }
+                else
+                {
+            	    AuthenticationType=AuthenticationType.Password;
+            	    Password=pass;
+                }
+            }
+            if (SSH1)
+            {
+                Protocol = Routrek.SSHC.SSHProtocol.SSH1;
+            }
+            else
+            {
+                Protocol = Routrek.SSHC.SSHProtocol.SSH2;
+            }
+		}
 		public void RequestData (byte[] data)
 		{
 			_pf.Transmit(data, 0, data.Length);

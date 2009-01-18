@@ -1,6 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C# Express 2008
+# Visual Studio 2008
+# SharpDevelop 3.0.0.3437
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals", "Terminals\Terminals.csproj", "{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabControl", "TabControl\TabControl.csproj", "{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}"
@@ -26,6 +27,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socks", "Socks\Socks.csproj", "{59D3ACA4-4360-4798-B4CA-DDDAF350A010}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zlib.net", "zlib.net\zlib.net.csproj", "{0C89B7A2-A218-49E4-B545-5B044A45F977}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSHClient", "SSHClient\SSHClient.csproj", "{6F218F20-AE4B-4966-A821-4BDE214B8BFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -178,6 +181,33 @@ Global
 		{0C89B7A2-A218-49E4-B545-5B044A45F977}.StrongMagic|Any CPU.ActiveCfg = Release|Any CPU
 		{0C89B7A2-A218-49E4-B545-5B044A45F977}.StrongMagic|Any CPU.Build.0 = Release|Any CPU
 		{0C89B7A2-A218-49E4-B545-5B044A45F977}.StrongMagic|x86.ActiveCfg = Release|Any CPU
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Debug|x86.Build.0 = Debug|x86
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Release|x86.Build.0 = Release|x86
+		{0C89B7A2-A218-49E4-B545-5B044A45F977}.StrongMagic|x86.Build.0 = StrongMagic|x86
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Debug|x86.Build.0 = Debug|x86
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Release|x86.Build.0 = Release|x86
+		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.StrongMagic|x86.Build.0 = StrongMagic|x86
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.Debug|x86.Build.0 = Debug|x86
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.Release|x86.Build.0 = Release|x86
+		{933C6FDB-9617-4F19-89AF-C5D373F88479}.StrongMagic|x86.Build.0 = StrongMagic|x86
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Debug|x86.Build.0 = Debug|x86
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Release|x86.Build.0 = Release|x86
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.StrongMagic|x86.Build.0 = StrongMagic|x86
+		{E0695F0F-0FAF-44BC-AE55-A1FCBFE70271}.Debug|x86.Build.0 = Debug|x86
+		{E0695F0F-0FAF-44BC-AE55-A1FCBFE70271}.Release|x86.Build.0 = Release|x86
+		{E0695F0F-0FAF-44BC-AE55-A1FCBFE70271}.StrongMagic|x86.Build.0 = StrongMagic|x86
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Debug|x86.Build.0 = Debug|x86
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Debug|x86.ActiveCfg = Debug|x86
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Release|x86.Build.0 = Release|x86
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Release|x86.ActiveCfg = Release|x86
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.StrongMagic|Any CPU.Build.0 = StrongMagic|Any CPU
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.StrongMagic|Any CPU.ActiveCfg = StrongMagic|Any CPU
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.StrongMagic|x86.Build.0 = StrongMagic|x86
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.StrongMagic|x86.ActiveCfg = StrongMagic|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

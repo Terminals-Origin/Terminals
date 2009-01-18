@@ -224,7 +224,7 @@ namespace Terminals
             SSHPreferences.AuthMethod = favorite.AuthMethod;
             SSHPreferences.KeyTag = favorite.KeyTag;
             SSHPreferences.SSH1 = favorite.SSH1;
-
+            SSHPreferences.Keys = Settings.SSHKeys;
         }
 
         private bool FillFavorite()

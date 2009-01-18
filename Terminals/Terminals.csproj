@@ -1019,6 +1019,10 @@
       <Project>{59D3ACA4-4360-4798-B4CA-DDDAF350A010}</Project>
       <Name>Socks</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SSHClient\SSHClient.csproj">
+      <Project>{6F218F20-AE4B-4966-A821-4BDE214B8BFF}</Project>
+      <Name>SSHClient</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TabControl\TabControl.csproj">
       <Project>{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}</Project>
       <Name>TabControl</Name>

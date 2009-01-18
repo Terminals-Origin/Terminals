@@ -70,20 +70,6 @@ namespace Terminals
                 this["usersMRUList"] = value;
             }
         }
-/*
-        [
-         ConfigurationProperty("sshkeys", IsDefaultCollection=false),
-         ConfigurationCollection(typeof(SSHKeyCollection),
-         AddItemName="addKey", ClearItemsName="clearKeys", RemoveItemName="removeKey")
-        ]
-        */
-        [ConfigurationProperty("sshkeys")]
-        [ConfigurationCollection(typeof(SSHKeyCollection))]
-        public SSHKeyCollection SSHKeys
-        {
-        	get{ return (SSHKeyCollection)this["sshkeys"]; }
-        	set{ this["sshkeys"] = value; }
-        }
 
         [ConfigurationProperty("favorites")]
         [ConfigurationCollection(typeof(FavoriteConfigurationElementCollection))]

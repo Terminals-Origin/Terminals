@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-namespace Terminals
+namespace SSHClient
 {
     public partial class KeyChooser : UserControl
     {

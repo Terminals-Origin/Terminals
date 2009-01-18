@@ -180,7 +180,7 @@ namespace Terminals
         this.label1 = new System.Windows.Forms.Label();
         this.tabControl1 = new System.Windows.Forms.TabControl();
         this.consolePreferences = new Terminals.ConsolePreferences();
-        this.SSHPreferences = new Terminals.SSHPreferences();
+        this.SSHPreferences = new SSHClient.Preferences();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
         this.tabPage4.SuspendLayout();
         this.TagsTabPage.SuspendLayout();
@@ -1830,7 +1830,7 @@ namespace Terminals
         // 
         // SSHPreferences
         // 
-        this.SSHPreferences.AuthMethod = Terminals.AuthMethod.PublicKey;
+        this.SSHPreferences.AuthMethod = SSHClient.AuthMethod.PublicKey;
         this.SSHPreferences.KeyTag = "";
         this.SSHPreferences.Location = new System.Drawing.Point(11, 6);
         this.SSHPreferences.Name = "SSHPreferences";
@@ -2069,7 +2069,7 @@ namespace Terminals
       private System.Windows.Forms.Label label1;
       private System.Windows.Forms.TabControl tabControl1;
       private System.Windows.Forms.GroupBox groupBox6;
-      private SSHPreferences SSHPreferences;
+      private SSHClient.Preferences SSHPreferences;
       private ConsolePreferences consolePreferences;
   }
 }

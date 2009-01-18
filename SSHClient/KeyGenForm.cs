@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Threading;
 using Routrek.PKI;
 
-namespace Terminals
+namespace SSHClient
 {
 
     public partial class KeyGenForm : Form
@@ -204,7 +204,8 @@ namespace Terminals
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Debug(ex.StackTrace);
+            	// TODO - make a delegate for linking logging
+                //Terminals.Logging.Log.Debug(ex.StackTrace);
             }
         }
 

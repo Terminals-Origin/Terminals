@@ -489,12 +489,12 @@ namespace Terminals
                 this["domainName"] = value;
             }
         }
-        [ConfigurationProperty("authMethod", DefaultValue = AuthMethod.Password)]
-        public AuthMethod AuthMethod
+        [ConfigurationProperty("authMethod", DefaultValue = SSHClient.AuthMethod.Password)]
+        public SSHClient.AuthMethod AuthMethod
         {
             get
             {
-                return (AuthMethod)this["authMethod"];
+                return (SSHClient.AuthMethod)this["authMethod"];
             }
             set
             {

@@ -10,34 +10,70 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Globalization;
+//using System.Text;
+using System.IO;
 
-namespace Terminals
+namespace SSHClient
 {
-	public enum AuthMethod {Host,Password,PublicKey,KeyboardInteractive};
+    public class SSH2UserAuthKey : Routrek.SSHCV2.SSH2UserAuthKey
+    {
+        public SSH2UserAuthKey(Routrek.PKI.KeyPair kp) : base(kp)
+        {
+        }
+        public string PublicPartInOpenSSHStyle()
+        {
+            Byte[] mk = new Byte[2048];
+            MemoryStream ks = new MemoryStream(mk);
+            base.WritePublicPartInOpenSSHStyle(ks);
+            ks = new MemoryStream(mk);
+            StreamReader sr = new StreamReader(ks);
+            return sr.ReadLine();
+        }
+        
+        public static SSH2UserAuthKey FromSECSHStyle(string value)
+        {
+            Byte[] mk = new Byte[2000];
+            MemoryStream ks = new MemoryStream(mk);
+            StreamWriter sw = new StreamWriter(ks);
+            sw.WriteLine(value);
+            ks = new MemoryStream(mk);
+            Routrek.SSHCV2.SSH2UserAuthKey k = SSH2UserAuthKey.FromSECSHStyleStream(ks, "");
+            return k as SSH2UserAuthKey;
+        }
+    }
+    
+    public enum AuthMethod {Host,Password,PublicKey,KeyboardInteractive};
 	/// <summary>
 	/// Description of SSHPreferences.
 	/// </summary>
-	public partial class SSHPreferences : UserControl
+	public partial class Preferences : UserControl
 	{
 		
-		public SSHPreferences()
+		public Preferences()
 		{
 			//
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
 			
-			//
-			// TODO: Add constructor code after the InitializeComponent() call.
-			//
 			buttonPublicKey.Checked = true;
 			buttonSSH2.Checked = true;
-			// TODO: move this to NewTerminalForm
-			foreach(SSHKeyElement k in Settings.SSHKeys)
-				comboBoxKey.Items.Add(k.tag);
-			if(comboBoxKey.Items.Count>0)
-				comboBoxKey.SelectedIndex = 0;
 		}
+		
+		public KeysSection Keys
+		{
+			set
+			{
+				keysSection = value;
+				foreach(KeyConfigElement k in keysSection.Keys)
+					comboBoxKey.Items.Add(k.Name);
+				if(comboBoxKey.Items.Count>0)
+					comboBoxKey.SelectedIndex = 0;
+			}
+		}
+
+		public KeysSection keysSection;
 		
 		public AuthMethod AuthMethod
 		{
@@ -83,7 +119,7 @@ namespace Terminals
         		comboBoxKey.Text = value;
         	}
         }
-       	public ComboBox.ObjectCollection Keys
+       	public ComboBox.ObjectCollection KeyTags
         {
         	get
         	{
@@ -106,7 +142,7 @@ namespace Terminals
 				}
 				else
 				{
-					Settings.AddSSHKey(tag, dlg.Key);
+					keysSection.AddKey(tag, dlg.Key.ToString());
 					comboBoxKey.Items.Add(tag);
 					comboBoxKey.SelectedIndex = comboBoxKey.FindString(tag);
 				}
@@ -122,7 +158,7 @@ namespace Terminals
         private void comboBoxKey_SelectedIndexChanged(object sender, EventArgs e)
         {
             string tag = (string)comboBoxKey.SelectedItem;
-            SSH2UserAuthKey key = Settings.SSHKeys[tag].key;
+            SSH2UserAuthKey key = SSH2UserAuthKey.FromSECSHStyle(keysSection.Keys[tag].Key);
             openSSHTextBox.Text = key.PublicPartInOpenSSHStyle();
         }
 	}
