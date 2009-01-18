@@ -108,7 +108,7 @@ namespace Terminals.Connections
                             if (e != null && e.key != null)
                             {
                                 p.AuthenticationType = AuthenticationType.PublicKey;
-                                // TODO p.Key = e.key;
+                                p.Key = e.key.ToString();
                             }
                             else
                             {

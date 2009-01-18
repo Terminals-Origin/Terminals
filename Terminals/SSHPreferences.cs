@@ -33,12 +33,10 @@ namespace Terminals
 			buttonPublicKey.Checked = true;
 			buttonSSH2.Checked = true;
 			// TODO: move this to NewTerminalForm
-            /*
 			foreach(SSHKeyElement k in Settings.SSHKeys)
 				comboBoxKey.Items.Add(k.tag);
 			if(comboBoxKey.Items.Count>0)
 				comboBoxKey.SelectedIndex = 0;
-             */
 		}
 		
 		public AuthMethod AuthMethod
@@ -108,16 +106,9 @@ namespace Terminals
 				}
 				else
 				{
+					Settings.AddSSHKey(tag, dlg.Key);
 					comboBoxKey.Items.Add(tag);
 					comboBoxKey.SelectedIndex = comboBoxKey.FindString(tag);
-				}
-				try
-				{
-					Settings.AddSSHKey(tag, dlg.Key);
-				}
-				catch (Exception ex)
-				{
-					MessageBox.Show("Duplicate Tag, please try again");
 				}
 			}
 		}
@@ -133,7 +124,6 @@ namespace Terminals
             string tag = (string)comboBoxKey.SelectedItem;
             SSH2UserAuthKey key = Settings.SSHKeys[tag].key;
             openSSHTextBox.Text = key.PublicPartInOpenSSHStyle();
-            //TypeDescriptor.GetConverter(key.GetType()).ConvertToString(key);
         }
 	}
 }

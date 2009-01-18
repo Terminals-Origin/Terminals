@@ -249,19 +249,6 @@
     <Compile Include="History\HistoryItem.cs" />
     <Compile Include="Integration\Import\ImportvRD.cs" />
     <Compile Include="Integration\Import\vrd.cs" />
-    <Compile Include="KeyChooser.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="KeyChooser.Designer.cs">
-      <DependentUpon>KeyChooser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="KeyGenForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="KeyGenForm.Designer.cs">
-      <DependentUpon>KeyGenForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="KeySettings.cs" />
     <Compile Include="Localization\LocalizedValues.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -323,12 +310,6 @@
     <Compile Include="Scanner\StreamHelper.cs" />
     <Compile Include="SerializableDictionary.cs" />
     <Compile Include="SerializableSortedDictionary.cs" />
-    <Compile Include="SSHPreferences.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SSHPreferences.Designer.cs">
-      <DependentUpon>SSHPreferences.cs</DependentUpon>
-    </Compile>
     <Compile Include="TcpProtocol.cs" />
     <Compile Include="TelnetProtocol.cs" />
     <Compile Include="TelnetStream.cs" />
@@ -786,12 +767,6 @@
       <DependentUpon>FavsList.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="KeyChooser.resx">
-      <DependentUpon>KeyChooser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="KeyGenForm.resx">
-      <DependentUpon>KeyGenForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Localization\LocalizedValues.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -824,9 +799,6 @@
     <EmbeddedResource Include="PopupTerminal.resx">
       <DependentUpon>PopupTerminal.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SSHPreferences.resx">
-      <DependentUpon>SSHPreferences.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\CommonOptions.resx">
       <DependentUpon>CommonOptions.cs</DependentUpon>
