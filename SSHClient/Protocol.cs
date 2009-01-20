@@ -131,7 +131,7 @@ namespace SSHClient
                 }
                 else
                 {
-                	Key = key;
+            		Key = SSH2UserAuthKey.FromBase64String(key).toSECSHStyle("");
             	    AuthenticationType=AuthenticationType.PublicKey;
                 }
             }

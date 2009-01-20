@@ -55,7 +55,6 @@ namespace Routrek.SSHCV2
 			return w.ToByteArray();
 		}
 		
-
 		public static byte[] PassphraseToKey(string passphrase, int length) {
 			MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
 			byte[] pp = Encoding.UTF8.GetBytes(passphrase);
@@ -113,7 +112,10 @@ namespace Routrek.SSHCV2
 			fs.Write(keydata, 0, keydata.Length);
 			fs.Close();
 			*/
+			return FromByteArray(keydata, passphrase);
+		}
 
+		public static SSH2UserAuthKey FromByteArray(byte[] keydata, string passphrase) {
 			SSH2DataReader re = new SSH2DataReader(keydata);
 			int    magic         = re.ReadInt32();
 			if(magic!=MAGIC_VAL) throw new SSHException("key file is broken");
@@ -162,8 +164,7 @@ namespace Routrek.SSHCV2
 			return FromSECSHStyleStream(new FileStream(filename, FileMode.Open, FileAccess.Read), passphrase);
 		}
 
-		public void WritePrivatePartInSECSHStyleFile(Stream dest, string comment, string passphrase) {
-			
+		public byte[] ToByteArray(string passphrase) {
 			//step1 key body
 			SSH2DataWriter wr = new SSH2DataWriter();
 			wr.Write(0); //this field is filled later
@@ -219,6 +220,13 @@ namespace Routrek.SSHCV2
 			byte[] rawdata = wr.ToByteArray();
 			SSHUtil.WriteIntToByteArray(rawdata, 4, rawdata.Length); //fix total length
 
+			return rawdata;
+		}
+
+		public void WritePrivatePartInSECSHStyleFile(Stream dest, string comment, string passphrase) {
+			
+			byte[] rawdata = this.ToByteArray(passphrase);
+
 			//step3 write final data
 			StreamWriter sw = new StreamWriter(dest, Encoding.ASCII);
 			sw.WriteLine("---- BEGIN SSH2 ENCRYPTED PRIVATE KEY ----");
@@ -227,7 +235,6 @@ namespace Routrek.SSHCV2
 			WriteKeyFileBlock(sw, Encoding.ASCII.GetString(Base64.Encode(rawdata)), false);
 			sw.WriteLine("---- END SSH2 ENCRYPTED PRIVATE KEY ----");
 			sw.Close();
-
 		}
 
 		public void WritePublicPartInSECSHStyle(Stream dest, string comment) {
@@ -240,6 +247,7 @@ namespace Routrek.SSHCV2
 			sw.Close();
 
 		}
+		
 		public void WritePublicPartInOpenSSHStyle(Stream dest) {
 			StreamWriter sw = new StreamWriter(dest, Encoding.ASCII);
 			sw.Write(SSH2Util.PublicKeyAlgorithmName(_keypair.Algorithm));
@@ -247,6 +255,7 @@ namespace Routrek.SSHCV2
 			sw.WriteLine(FormatBase64EncodedPublicKeyBody());
 			sw.Close();
 		}
+		
 		private string FormatBase64EncodedPublicKeyBody() {
 			SSH2DataWriter wr = new SSH2DataWriter();
 			wr.Write(SSH2Util.PublicKeyAlgorithmName(_keypair.Algorithm));

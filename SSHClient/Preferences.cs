@@ -100,6 +100,24 @@ namespace SSHClient
 		
 		void ButtonGenerateKeyClick(object sender, EventArgs e)
 		{
+			if(SSH1)
+			{
+				LoadSSH1Key();
+			}
+			else
+			{
+				GenerateSSH2Key();
+			}
+		}
+		
+		void LoadSSH1Key()
+		{
+			//MessageBox.Show("not done yet");
+			SSH2UserAuthKey.FromPuttyFile("D:\\bin\\cablej01.ppk", null);
+		}
+		
+		void GenerateSSH2Key()
+		{
 			KeyGenForm dlg = new KeyGenForm();
 			dlg.KeyTag = comboBoxKey.Text;
 			dlg.ShowDialog();
@@ -113,8 +131,7 @@ namespace SSHClient
 				}
 				else
 				{
-					string s = dlg.Key.toSECSHStyle(tag);
-					keysSection.AddKey(tag, s);
+					keysSection.AddKey(tag, dlg.Key.toBase64String());
 					comboBoxKey.Items.Add(tag);
 					comboBoxKey.SelectedIndex = comboBoxKey.FindString(tag);
 				}
@@ -130,10 +147,24 @@ namespace SSHClient
 
         private void comboBoxKey_SelectedIndexChanged(object sender, EventArgs e)
         {
+        	// TODO SSH1 ?
             string tag = (string)comboBoxKey.SelectedItem;
             string keytext = keysSection.Keys[tag].Key;
-            SSH2UserAuthKey key = SSH2UserAuthKey.FromSECSHStyle(keytext);
+            SSH2UserAuthKey key = SSH2UserAuthKey.FromBase64String(keytext);
             openSSHTextBox.Text = key.PublicPartInOpenSSHStyle()+" "+tag;
         }
+
+		void ButtonSSH1CheckedChanged(object sender, EventArgs e)
+		{
+			if(buttonSSH1.Checked)
+			{
+				buttonGenerateKey.Text = "Load";
+			}
+			else
+			{
+				// TODO import putty keys
+				buttonGenerateKey.Text = "New";				
+			}
+		}
 	}
 }
