@@ -12,7 +12,10 @@ namespace Terminals {
                 return encryptedPassword;
             try {
                 if(Settings.TerminalsPassword==string.Empty) {
-                    return DPAPI.Decrypt(encryptedPassword);
+            		byte[] cyphertext = Convert.FromBase64String(encryptedPassword);
+            		byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
+		            byte[] plaintext = ProtectedData.Unprotect(cyphertext, b_entropy, DataProtectionScope.CurrentUser);
+		            return Encoding.UTF8.GetString(plaintext);
                 } else {
                     string hashedPass = Settings.TerminalsPassword.Substring(0, keyLength);
                     byte[] IV = System.Text.Encoding.Default.GetBytes(Settings.TerminalsPassword.Substring(Settings.TerminalsPassword.Length - ivLength));
@@ -36,7 +39,10 @@ namespace Terminals {
         internal static int ivLength = 16;
         internal static string EncryptPassword(string decryptedPassword) {
             if (Settings.TerminalsPassword == string.Empty) {
-                return DPAPI.Encrypt(DPAPI.KeyType.UserKey, decryptedPassword);
+        		byte[] plaintext = Encoding.UTF8.GetBytes(decryptedPassword);
+           		byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
+           		byte[] cyphertext = ProtectedData.Protect(plaintext, b_entropy, DataProtectionScope.CurrentUser);
+        		return Convert.ToBase64String(cyphertext);
             } else {
                 string password = "";
                 try {
