@@ -112,8 +112,7 @@ namespace SSHClient
 		
 		void LoadSSH1Key()
 		{
-			//MessageBox.Show("not done yet");
-			SSH2UserAuthKey.FromPuttyFile("D:\\bin\\cablej01.ppk", null);
+			MessageBox.Show("not done yet");
 		}
 		
 		void GenerateSSH2Key()
