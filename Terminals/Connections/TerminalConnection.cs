@@ -61,6 +61,21 @@ namespace Terminals.Connections
                 string domainName = Favorite.DomainName;
                 if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
 
+                string userName = Favorite.UserName;
+                string pass = Favorite.Password;
+
+
+                if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pass))
+                {
+                    Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
+                    mgr.ShowDialog();
+                    Credentials.CredentialSet set = mgr.SelectedCredentials;
+                    domainName = set.Domain;
+                    userName = set.Username;
+                    pass = set.Password;
+                }
+
+
 
                 if (Favorite.Protocol == "Telnet")
                 {
@@ -70,8 +85,8 @@ namespace Terminals.Connections
                     t.OnDataIndicated += p.IndicateData;
 	            	t.OnDisconnect += this.OnDisconnected;
                     p.TerminalType = term.TerminalType;
-	            	p.Username=Favorite.UserName;
-	            	p.Password = Favorite.Password;
+	            	p.Username=userName;
+	            	p.Password = pass;
 	            	p.OnDataIndicated += term.IndicateData;
 	            	p.OnDataRequested += t.RequestData;
 	            	term.OnDataRequested += p.RequestData;
@@ -90,8 +105,8 @@ namespace Terminals.Connections
                 		key = e.Key;
 	            	p.setProtocolParams(
 	            		Favorite.AuthMethod,
-	            		Favorite.UserName,
-	            		Favorite.Password,
+	            		userName,
+	            		pass,
 	            		key,
 	            		Favorite.SSH1);
 
