@@ -722,6 +722,19 @@ namespace Terminals
                 this["toolbarsLocked"] = value;
             }
         }
+        [ConfigurationProperty("savedCredentials", DefaultValue = "")]
+        public string SavedCredentials
+        {
+            get
+            {
+                return (string)this["savedCredentials"];
+            }
+            set
+            {
+                this["savedCredentials"] = value;
+            }
+        }
+        
         [ConfigurationProperty("showWizard", DefaultValue = true)]
         public bool ShowWizard
         {

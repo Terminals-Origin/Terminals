@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -238,6 +238,13 @@
     <Compile Include="ConsolePreferences.Designer.cs">
       <DependentUpon>ConsolePreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Credentials\CredentialManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Credentials\CredentialManager.Designer.cs">
+      <DependentUpon>CredentialManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Credentials\CredentialSet.cs" />
     <Compile Include="FavsList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -762,6 +769,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConsolePreferences.resx">
       <DependentUpon>ConsolePreferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Credentials\CredentialManager.resx">
+      <DependentUpon>CredentialManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FavsList.resx">
       <DependentUpon>FavsList.cs</DependentUpon>

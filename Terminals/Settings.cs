@@ -1240,6 +1240,29 @@ namespace Terminals
                 if(!DelayConfigurationSave) configuration.Save();
             }
         }
+
+        public static List<Credentials.CredentialSet> SavedCredentials
+        {
+            get
+            {
+                List<Credentials.CredentialSet> list = new List<Terminals.Credentials.CredentialSet>();
+                string xml = GetSection().SavedCredentials;
+
+                if (string.IsNullOrEmpty(xml)) return list;
+
+                list = (Unified.Serialize.DeSerializeXML(xml, typeof(List<Credentials.CredentialSet>)) as List<Credentials.CredentialSet>);
+                return list;
+
+            }
+            set
+            {
+                Configuration configuration = Config;
+                string xml = Unified.Serialize.SerializeXMLAsString(value);
+                GetSection(configuration).SavedCredentials = xml;
+                if (!DelayConfigurationSave) configuration.Save();
+            }
+        }
+        
         public static bool AutoSwitchOnCapture
         {
             get

@@ -2772,6 +2772,12 @@ namespace Terminals {
             if(splitContainer1.Panel1.Width>15) Settings.FavoritePanelWidth = splitContainer1.Panel1.Width;            
         }
 
+        private void credentialManagementToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
+            mgr.ShowDialog();
+        }
+
     }
 
     public class TerminalTabControlItem : TabControlItem {

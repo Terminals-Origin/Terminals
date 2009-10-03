@@ -137,6 +137,7 @@ namespace Terminals {
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.tabControlItem1 = new TabControl.TabControlItem();
             this.tabControlItem2 = new TabControl.TabControlItem();
+            this.credentialManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -386,6 +387,7 @@ namespace Terminals {
             this.optionsToolStripMenuItem,
             this.openLogFolderToolStripMenuItem,
             this.toolStripSeparator8,
+            this.credentialManagementToolStripMenuItem,
             this.toolStripOrganizeShortucts,
             this.toolStripSeparator7,
             this.rebuildTagsIndexToolStripMenuItem,
@@ -1194,6 +1196,13 @@ namespace Terminals {
             this.tabControlItem2.Title = "TabControl Page 4";
             this.tabControlItem2.ToolTipText = "";
             // 
+            // credentialManagementToolStripMenuItem
+            // 
+            this.credentialManagementToolStripMenuItem.Name = "credentialManagementToolStripMenuItem";
+            this.credentialManagementToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.credentialManagementToolStripMenuItem.Text = "Credential Management";
+            this.credentialManagementToolStripMenuItem.Click += new System.EventHandler(this.credentialManagementToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1359,5 +1368,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripMenuItem rebuildShortcutsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rebuildToolbarsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openLogFolderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem credentialManagementToolStripMenuItem;
     }
 }
