@@ -12,6 +12,42 @@ namespace Terminals
         {
 
         }
+        [ConfigurationProperty("telnet", IsRequired = false, DefaultValue = true)]
+        public bool Telnet
+        {
+            get
+            {
+                return (bool)this["telnet"];
+            }
+            set
+            {
+                this["telnet"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetrows", IsRequired = false, DefaultValue = 33)]
+        public int TelnetRows
+        {
+            get
+            {
+                return (int)this["telnetrows"];
+            }
+            set
+            {
+                this["telnetrows"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetcols", IsRequired = false, DefaultValue = 110)]
+        public int TelnetCols
+        {
+            get
+            {
+                return (int)this["telnetcols"];
+            }
+            set
+            {
+                this["telnetcols"] = value;
+            }
+        }
 
         public FavoriteConfigurationElement(string name)
         {
@@ -448,6 +484,57 @@ namespace Terminals
             set
             {
                 this["toolBarIcon"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetfont", IsRequired = false)]
+        public string TelnetFont
+        {
+            get
+            {
+                string font = (string)this["telnetfont"]; ;
+                if (String.IsNullOrEmpty(font)) font = "[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False]";
+                return font;
+            }
+            set
+            {
+                this["telnetfont"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetbackcolor", IsRequired = false, DefaultValue = "Black")]
+        public string TelnetBackColor
+        {
+            get
+            {
+                return (string)this["telnetbackcolor"];
+            }
+            set
+            {
+                this["telnetbackcolor"] = value;
+            }
+        }
+
+        [ConfigurationProperty("telnettextcolor", IsRequired = false, DefaultValue = "White")]
+        public string TelnetTextColor
+        {
+            get
+            {
+                return (string)this["telnettextcolor"];
+            }
+            set
+            {
+                this["telnettextcolor"] = value;
+            }
+        }
+        [ConfigurationProperty("telnetcursorcolor", IsRequired = false, DefaultValue = "Green")]
+        public string TelnetCursorColor
+        {
+            get
+            {
+                return (string)this["telnetcursorcolor"];
+            }
+            set
+            {
+                this["telnetcursorcolor"] = value;
             }
         }
 
