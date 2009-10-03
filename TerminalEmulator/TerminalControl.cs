@@ -42,8 +42,28 @@ namespace WalburySoftware
 		}
 		public StringCollection ScreenScrape(int StartRow, int StartColumn, int EndRow, int EndColumn)
 		{
-			// TODO what happened to this ?
-			StringCollection ScrapedText = new StringCollection();
+            //this.CharGrid[7][13] TODO what happened to this ?
+            //this.CharGrid[ROW][COL]
+            //
+            StringCollection ScrapedText = new StringCollection();
+
+            string row = "";
+
+            for (int r = StartRow; r <= EndRow; r++)
+            {
+
+                for (int c = StartColumn; c <= EndColumn; c++)
+                {
+                    char val = this.CharGrid[r][c];;
+                    if (val == '\0') break;
+                    row = row + val;                        
+                }
+                ScrapedText.Add(row);
+                row = "";
+            }
+
+
+
 
 
 			return ScrapedText;
@@ -569,14 +589,13 @@ namespace WalburySoftware
 				             " stop.X "  + Convert.ToString(stop.X));
 
 			StringCollection sc = this.ScreenScrape (start.Y, start.X, stop.Y, stop.X);
-			/*
-			foreach (string s in sc)
-			{
-				Console.WriteLine(s);
-			}*/
-			string[] lines = new string[sc.Count];
-			sc.CopyTo(lines, 0);
-			Clipboard.SetText(string.Join("\n", lines));
+
+            if (sc != null && sc.Count > 0)
+            {
+                string[] lines = new string[sc.Count];
+                sc.CopyTo(lines, 0);
+                Clipboard.SetText(string.Join("\n", lines));
+            }
 		}
 		private void mnuPaste_Click (object sender, System.EventArgs e)
 		{
