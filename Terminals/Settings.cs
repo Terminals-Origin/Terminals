@@ -1251,13 +1251,35 @@ namespace Terminals
                 if (string.IsNullOrEmpty(xml)) return list;
 
                 list = (Unified.Serialize.DeSerializeXML(xml, typeof(List<Credentials.CredentialSet>)) as List<Credentials.CredentialSet>);
+
+                if (list != null)
+                {
+                    foreach (Credentials.CredentialSet set in list)
+                    {
+                        if (!string.IsNullOrEmpty(set.Password))
+                            set.Password = Functions.DecryptPassword(set.Password);
+                    }
+                }
+
+
                 return list;
 
             }
             set
             {
                 Configuration configuration = Config;
-                string xml = Unified.Serialize.SerializeXMLAsString(value);
+
+                List<Credentials.CredentialSet> newSet = new List<Terminals.Credentials.CredentialSet>();
+                if (value != null && value.Count > 0)
+                {
+                    foreach (Credentials.CredentialSet set in value)
+                    {
+                        if (!string.IsNullOrEmpty(set.Password)) set.Password = Functions.EncryptPassword(set.Password);
+                        newSet.Add((Credentials.CredentialSet)set.Clone());
+                    }
+                }
+
+                string xml = Unified.Serialize.SerializeXMLAsString(newSet);
                 GetSection(configuration).SavedCredentials = xml;
                 if (!DelayConfigurationSave) configuration.Save();
             }
