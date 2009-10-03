@@ -738,6 +738,7 @@ namespace WalburySoftware
 
 		private void DispatchMessage (System.Object sender, string strText)
 		{
+            
 			//Console.WriteLine(strText);
 			if (this.XOFF == true || OnDataRequested == null)
 			{
@@ -751,9 +752,22 @@ namespace WalburySoftware
 					strText = OutBuff + strText;
 					OutBuff = "";
 				}
+
+                if (strText == '\r'.ToString())
+                {
+                    history.Add(keyboardBuffer);
+                    keyboardBuffer = "";
+                }
+                else
+                {
+                    keyboardBuffer += strText;
+                }
+
 				OnDataRequested(Encoding.Default.GetBytes(strText));
 			}
 		}
+        string keyboardBuffer = "";
+        System.Collections.Generic.List<string> history = new System.Collections.Generic.List<string>();
 
 		private void PrintChar (System.Char CurChar)
 		{
@@ -3018,6 +3032,10 @@ namespace WalburySoftware
 			private bool AltIsDown    = false;
 			private bool ShiftIsDown  = false;
 			private bool CtrlIsDown   = false;
+            private bool UpArrow = false;
+            private bool DownArrow = false;
+            private bool LeftArrow = false;
+            private bool RightArrow = false;
 
 			private TerminalEmulator Parent;
     
@@ -3074,7 +3092,21 @@ namespace WalburySoftware
 						case 165: // R Ctrl Key
 							this.AltIsDown = true; 
 							return;
+
+                        case 38://up arrow
+                            this.UpArrow = true;
+                            return;
+                        case 40: //down arrow
+                            this.DownArrow = true;
+                            return;
+                        case 37: //left arrow
+                            this.LeftArrow = true;
+                            return;
+                        case 39: //right arrow
+                            this.RightArrow = true;
+                            return;
     
+
 						default:
 							break;
 					}
@@ -3132,7 +3164,23 @@ namespace WalburySoftware
 						case 165: // R Ctrl Key
 							this.AltIsDown = false; 
 							break;
+
+                        case 38://up arrow
+                            this.UpArrow = false;
+                            return;
+                        case 40: //down arrow
+                            this.DownArrow = false;
+                            return;
+                        case 37: //left arrow
+                            this.LeftArrow = false;
+                            return;
+                        case 39: //right arrow
+                            this.RightArrow = false;
+                            return;
     
+
+
+
 						default:
 							break;
 					}
