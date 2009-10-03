@@ -24,7 +24,7 @@ namespace Terminals.Credentials
             s.Username = this.Username;
             s.Domain = this.Domain;
             s.Password = this.Password;
-            return s;
+                return s;
         }
 
         #endregion

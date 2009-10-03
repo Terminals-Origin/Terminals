@@ -14,8 +14,9 @@ namespace Terminals.Credentials
         {
             InitializeComponent();
             ReloadList();
+            AccountPicker = true;
         }
-
+        public bool AccountPicker { get; set; }
         private void DoneButton_Click(object sender, EventArgs e)
         {
             if (this.SaveCredentialsComboBox.SelectedItem != null)
@@ -90,6 +91,12 @@ namespace Terminals.Credentials
                 Settings.SavedCredentials = list;
                 ReloadList();
             }
+        }
+
+        private void CredentialManager_Load(object sender, EventArgs e)
+        {
+            this.Height = 144;
+            if (AccountPicker) this.Height = 65;
         }
     }
 }

@@ -81,7 +81,7 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(102, 117);
+            this.SaveButton.Location = new System.Drawing.Point(284, 89);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(75, 23);
             this.SaveButton.TabIndex = 4;
@@ -99,7 +99,7 @@
             // 
             // DeleteButton
             // 
-            this.DeleteButton.Location = new System.Drawing.Point(21, 117);
+            this.DeleteButton.Location = new System.Drawing.Point(284, 63);
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(75, 23);
             this.DeleteButton.TabIndex = 1;
@@ -111,7 +111,7 @@
             // DoneButton
             // 
             this.DoneButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.DoneButton.Location = new System.Drawing.Point(203, 117);
+            this.DoneButton.Location = new System.Drawing.Point(284, 10);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(75, 23);
             this.DoneButton.TabIndex = 1;
@@ -148,7 +148,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.DoneButton;
-            this.ClientSize = new System.Drawing.Size(286, 145);
+            this.ClientSize = new System.Drawing.Size(365, 113);
             this.Controls.Add(this.DomainTextbox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.UsernameTextbox);
@@ -166,6 +166,7 @@
             this.MinimizeBox = false;
             this.Name = "CredentialManager";
             this.Text = "Credential Manager";
+            this.Load += new System.EventHandler(this.CredentialManager_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
