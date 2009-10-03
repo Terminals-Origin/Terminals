@@ -1246,22 +1246,35 @@ namespace Terminals
             get
             {
                 List<Credentials.CredentialSet> list = new List<Terminals.Credentials.CredentialSet>();
-                string xml = GetSection().SavedCredentials;
 
-                if (string.IsNullOrEmpty(xml)) return list;
+                string source = GetSection().SavedCredentials;
 
-                list = (Unified.Serialize.DeSerializeXML(xml, typeof(List<Credentials.CredentialSet>)) as List<Credentials.CredentialSet>);
-
-                if (list != null)
+                if (string.IsNullOrEmpty(source))
                 {
-                    foreach (Credentials.CredentialSet set in list)
-                    {
-                        if (!string.IsNullOrEmpty(set.Password))
-                            set.Password = Functions.DecryptPassword(set.Password);
-                    }
+                    source = "Credentials.xml";
+                    GetSection().SavedCredentials = source;
+                    Configuration configuration = Config;
+                    configuration.Save();
                 }
 
 
+                if (System.IO.File.Exists(source))
+                {
+                    list = (Unified.Serialize.DeserializeXMLFromDisk(source, typeof(List<Credentials.CredentialSet>)) as List<Credentials.CredentialSet>);
+
+                    if (list != null)
+                    {
+                        foreach (Credentials.CredentialSet set in list)
+                        {
+                            if (!string.IsNullOrEmpty(set.Password))
+                                set.Password = Functions.DecryptPassword(set.Password);
+                        }
+                    }
+                }
+                else
+                {
+                    SavedCredentials = new List<Terminals.Credentials.CredentialSet>();
+                }
                 return list;
 
             }
@@ -1279,9 +1292,7 @@ namespace Terminals
                     }
                 }
 
-                string xml = Unified.Serialize.SerializeXMLAsString(newSet);
-                GetSection(configuration).SavedCredentials = xml;
-                if (!DelayConfigurationSave) configuration.Save();
+                Unified.Serialize.SerializeXMLToDisk(newSet, GetSection(configuration).SavedCredentials);
             }
         }
         
