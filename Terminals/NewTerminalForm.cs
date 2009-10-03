@@ -249,6 +249,31 @@ namespace Terminals
                 favorite.DomainName = cmbDomains.Text;
                 favorite.UserName = cmbUsers.Text;
                 favorite.Password = (chkSavePassword.Checked ? txtPassword.Text : "");
+
+                if (chkSavePassword.Checked)
+                {
+                    Credentials.CredentialSet set = new Terminals.Credentials.CredentialSet();
+                    set.Domain = favorite.DomainName;
+                    set.Username = favorite.UserName;
+                    set.Password = favorite.Password;
+                    List<Credentials.CredentialSet> list = Settings.SavedCredentials;
+                    bool saveNew = true;
+                    foreach (Credentials.CredentialSet item in list)
+                    {
+                        if (item.Username == set.Username && item.Domain == set.Domain)
+                        {
+                            saveNew = false;
+                            break;
+                        }
+                    }
+                    if (saveNew)
+                    {
+                        list.Add(set);
+                        Settings.SavedCredentials = list;
+                    }
+                }
+
+
                 favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
                 favorite.Colors = (Colors)cmbColors.SelectedIndex;
                 favorite.ConnectToConsole = chkConnectToConsole.Checked;
