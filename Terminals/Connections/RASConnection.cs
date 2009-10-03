@@ -50,6 +50,15 @@ namespace Terminals.Connections
                 string userName = Favorite.UserName;
                 if(userName == null || userName == "") userName = Settings.DefaultUsername;
 
+                if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pass))
+                {
+                    Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
+                    mgr.ShowDialog();
+                    Credentials.CredentialSet set = mgr.SelectedCredentials;
+                    domainName = set.Domain;
+                    userName = set.Username;
+                    pass = set.Password;
+                }
 
 
                 FalafelSoftware.TransPort.RasError error;

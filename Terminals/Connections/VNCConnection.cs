@@ -31,18 +31,16 @@ namespace Terminals.Connections {
 
                 this.vncPassword = pass;
 
-                if(pass == null || pass == "") {
-                    Terminals.InputBoxResult result = Terminals.InputBox.Show("VNC Password", "Please specify your password now", '*');
-                    if(result.ReturnCode == DialogResult.OK) {
-                        if(result.Text != null && result.Text != "") {
-                            this.vncPassword = result.Text;
-                        } else {
-                            return false;
-                        }
-                    } else {
-                        return false;
-                    }
+                if (string.IsNullOrEmpty(vncPassword))
+                {
+                    Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
+                    mgr.ShowDialog();
+                    Credentials.CredentialSet set = mgr.SelectedCredentials;
+                    this.vncPassword = set.Password;
+
                 }
+                if (string.IsNullOrEmpty(vncPassword)) return false;
+
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
                 rd.Parent = base.TerminalTabPage;
                 this.Parent = TerminalTabPage;
