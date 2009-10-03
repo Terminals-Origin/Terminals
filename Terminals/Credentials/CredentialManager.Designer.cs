@@ -92,6 +92,7 @@
             // 
             this.PasswordTextbox.Location = new System.Drawing.Point(102, 91);
             this.PasswordTextbox.Name = "PasswordTextbox";
+            this.PasswordTextbox.PasswordChar = '*';
             this.PasswordTextbox.Size = new System.Drawing.Size(176, 20);
             this.PasswordTextbox.TabIndex = 3;
             // 
@@ -108,6 +109,7 @@
             // 
             // DoneButton
             // 
+            this.DoneButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.DoneButton.Location = new System.Drawing.Point(203, 117);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(75, 23);
