@@ -1281,6 +1281,8 @@ namespace Terminals {
 
         private void SetFullScreen(bool fullScreen)
         {
+            this.Visible = false;
+
             tcTerminals.ShowTabs = !fullScreen;
             tcTerminals.ShowBorder = !fullScreen;
 
@@ -1325,6 +1327,8 @@ namespace Terminals {
             }
             this.fullScreen = fullScreen;
             //if(CurrentConnection != null) this.CurrentConnection.ChangeDesktopSize(DesktopSize.FullScreen);
+
+            this.Visible = true;
             this.PerformLayout();
         }
 
