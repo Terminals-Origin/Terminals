@@ -13,7 +13,7 @@ namespace Terminals.Credentials
 
         public override string ToString()
         {
-            return string.Format(@"\\{0}\{1}", Domain, Username);
+            return string.Format(@"Domain: {0}, User: {1}", Domain, Username);
         }
 
         #region ICloneable Members
