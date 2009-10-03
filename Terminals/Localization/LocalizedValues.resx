@@ -387,4 +387,7 @@
   <data name="VMRCViewOnlyMode" xml:space="preserve">
     <value>VMRC: View Only Mode</value>
   </data>
+  <data name="CredentialsManager" xml:space="preserve">
+    <value>Credentials Manager</value>
+  </data>
 </root>

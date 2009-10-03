@@ -57,6 +57,7 @@ namespace Terminals {
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.credentialManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripOrganizeShortucts = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.rebuildTagsIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,7 +101,6 @@ namespace Terminals {
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pnlTagsFavorites = new System.Windows.Forms.Panel();
-            this.favsList1 = new Terminals.FavsList();
             this.pnlHideTagsFavorites = new System.Windows.Forms.Panel();
             this.pbHideTagsFavorites = new System.Windows.Forms.PictureBox();
             this.pnlShowTagsFavorites = new System.Windows.Forms.Panel();
@@ -132,12 +132,13 @@ namespace Terminals {
             this.SystemTrayContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.SystemTrayQuickConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.credentialsManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.tabControlItem1 = new TabControl.TabControlItem();
             this.tabControlItem2 = new TabControl.TabControlItem();
-            this.credentialManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.favsList1 = new Terminals.FavsList();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -441,6 +442,13 @@ namespace Terminals {
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
             this.toolStripSeparator8.Size = new System.Drawing.Size(201, 6);
+            // 
+            // credentialManagementToolStripMenuItem
+            // 
+            this.credentialManagementToolStripMenuItem.Name = "credentialManagementToolStripMenuItem";
+            this.credentialManagementToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.credentialManagementToolStripMenuItem.Text = "Credential Management";
+            this.credentialManagementToolStripMenuItem.Click += new System.EventHandler(this.credentialManagementToolStripMenuItem_Click);
             // 
             // toolStripOrganizeShortucts
             // 
@@ -865,14 +873,6 @@ namespace Terminals {
             this.pnlTagsFavorites.Size = new System.Drawing.Size(562, 474);
             this.pnlTagsFavorites.TabIndex = 6;
             // 
-            // favsList1
-            // 
-            this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.favsList1.Location = new System.Drawing.Point(5, 0);
-            this.favsList1.Name = "favsList1";
-            this.favsList1.Size = new System.Drawing.Size(550, 472);
-            this.favsList1.TabIndex = 2;
-            // 
             // pnlHideTagsFavorites
             // 
             this.pnlHideTagsFavorites.BackColor = System.Drawing.Color.Gray;
@@ -1128,7 +1128,7 @@ namespace Terminals {
             // QuickContextMenu
             // 
             this.QuickContextMenu.Name = "QuickContextMenu";
-            this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
+            this.QuickContextMenu.Size = new System.Drawing.Size(153, 26);
             this.QuickContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.QuickContextMenu_Opening);
             // 
             // SystemTrayContextMenuStrip
@@ -1136,37 +1136,46 @@ namespace Terminals {
             this.SystemTrayContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SystemTrayQuickConnectToolStripMenuItem,
             this.newConnectionToolStripMenuItem,
+            this.credentialsManagerToolStripMenuItem,
             this.showToolStripMenuItem,
             this.toolStripMenuItem2});
             this.SystemTrayContextMenuStrip.Name = "SystemTrayContextMenuStrip";
-            this.SystemTrayContextMenuStrip.Size = new System.Drawing.Size(172, 92);
+            this.SystemTrayContextMenuStrip.Size = new System.Drawing.Size(184, 114);
             this.SystemTrayContextMenuStrip.Text = "Terminals";
             this.SystemTrayContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.SystemTrayContextMenuStrip_Opening);
             // 
             // SystemTrayQuickConnectToolStripMenuItem
             // 
             this.SystemTrayQuickConnectToolStripMenuItem.Name = "SystemTrayQuickConnectToolStripMenuItem";
-            this.SystemTrayQuickConnectToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.SystemTrayQuickConnectToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.SystemTrayQuickConnectToolStripMenuItem.Text = "Quick Connect";
             // 
             // newConnectionToolStripMenuItem
             // 
             this.newConnectionToolStripMenuItem.Name = "newConnectionToolStripMenuItem";
-            this.newConnectionToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.newConnectionToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.newConnectionToolStripMenuItem.Text = "Organize Favorites";
             this.newConnectionToolStripMenuItem.Click += new System.EventHandler(this.newConnectionToolStripMenuItem_Click);
+            // 
+            // credentialsManagerToolStripMenuItem
+            // 
+            this.credentialsManagerToolStripMenuItem.Image = global::Terminals.Properties.Resources.computer_security;
+            this.credentialsManagerToolStripMenuItem.Name = "credentialsManagerToolStripMenuItem";
+            this.credentialsManagerToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.credentialsManagerToolStripMenuItem.Text = "Credentials Manager";
+            this.credentialsManagerToolStripMenuItem.Click += new System.EventHandler(this.credentialsManagerToolStripMenuItem_Click);
             // 
             // showToolStripMenuItem
             // 
             this.showToolStripMenuItem.Name = "showToolStripMenuItem";
-            this.showToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.showToolStripMenuItem.Text = "&Hide / Show";
             this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(171, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(183, 22);
             this.toolStripMenuItem2.Text = "Exit";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
@@ -1196,12 +1205,13 @@ namespace Terminals {
             this.tabControlItem2.Title = "TabControl Page 4";
             this.tabControlItem2.ToolTipText = "";
             // 
-            // credentialManagementToolStripMenuItem
+            // favsList1
             // 
-            this.credentialManagementToolStripMenuItem.Name = "credentialManagementToolStripMenuItem";
-            this.credentialManagementToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
-            this.credentialManagementToolStripMenuItem.Text = "Credential Management";
-            this.credentialManagementToolStripMenuItem.Click += new System.EventHandler(this.credentialManagementToolStripMenuItem_Click);
+            this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.favsList1.Location = new System.Drawing.Point(5, 0);
+            this.favsList1.Name = "favsList1";
+            this.favsList1.Size = new System.Drawing.Size(550, 472);
+            this.favsList1.TabIndex = 2;
             // 
             // MainForm
             // 
@@ -1369,5 +1379,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripMenuItem rebuildToolbarsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openLogFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem credentialManagementToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem credentialsManagerToolStripMenuItem;
     }
 }

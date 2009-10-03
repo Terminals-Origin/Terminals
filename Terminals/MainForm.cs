@@ -166,6 +166,7 @@ namespace Terminals {
                 QuickContextMenu.Items.Add(Program.Resources.GetString("ScreenCaptureManager"), Resources.screen_capture_box);
                 QuickContextMenu.Items.Add(Program.Resources.GetString("NetworkingTools"), Resources.computer_link);
                 QuickContextMenu.Items.Add("-");
+                QuickContextMenu.Items.Add(Program.Resources.GetString("CredentialsManager"), Resources.computer_security);
                 QuickContextMenu.Items.Add(Program.Resources.GetString("OrganizeFavorites"), Resources.star);
                 QuickContextMenu.Items.Add(Program.Resources.GetString("Options"), Resources.options);
                 QuickContextMenu.Items.Add("-");
@@ -314,6 +315,10 @@ namespace Terminals {
                 e.ClickedItem.Text == Program.Resources.GetString("FullScreen"))
             {
                 this.FullScreen = !this.FullScreen;
+            }
+            else if (e.ClickedItem.Text == Program.Resources.GetString("CredentialsManager"))
+            {
+                ShowCredentialsManager();
             }
             else if (e.ClickedItem.Text == Program.Resources.GetString("OrganizeFavorites"))
             {
@@ -2774,8 +2779,19 @@ namespace Terminals {
 
         private void credentialManagementToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ShowCredentialsManager();
+        }
+
+        private void credentialsManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowCredentialsManager();
+        }
+
+        private Credentials.CredentialSet ShowCredentialsManager()
+        {
             Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
             mgr.ShowDialog();
+            return mgr.SelectedCredentials;
         }
 
     }
