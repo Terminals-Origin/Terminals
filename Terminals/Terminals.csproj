@@ -888,6 +888,8 @@
     <Content Include="Resources\amber.jpg" />
     <None Include="Resources\Filtering.html" />
     <Content Include="Resources\CompMgmt.png" />
+    <EmbeddedResource Include="Resources\computer_security.png" />
+    <None Include="Resources\computer_security1.png" />
     <Content Include="Resources\ControlPanel.jpg" />
     <Content Include="Resources\green.jpg" />
     <Content Include="Resources\ico101.ico" />

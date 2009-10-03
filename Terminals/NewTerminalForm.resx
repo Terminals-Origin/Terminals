@@ -131,12 +131,6 @@
   <data name="AcceleratorPassthroughCheckBox.ToolTip" xml:space="preserve">
     <value>Specifies whether keyboard accelerators should be passed to the server.  A keyboard accelerator (or, simply, accelerator) is a keystroke or combination of keystrokes that generates a WM_COMMAND or WM_SYSCOMMAND message for an application. </value>
   </data>
-  <metadata name="fontDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>332, 17</value>
-  </metadata>
-  <metadata name="colorDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>440, 17</value>
-  </metadata>
   <metadata name="ras1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

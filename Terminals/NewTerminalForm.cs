@@ -139,6 +139,12 @@ namespace Terminals
             cmbColors.SelectedIndex = (int)favorite.Colors;
             chkConnectToConsole.Checked = favorite.ConnectToConsole;
 
+            if (string.IsNullOrEmpty(favorite.DomainName) && string.IsNullOrEmpty(favorite.UserName))
+            {
+                UseCredentialManagerCheckbox.Checked = true;
+            }
+
+
             chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Name);
             chkDrives.Checked = favorite.RedirectDrives;
             chkSerialPorts.Checked = favorite.RedirectPorts;
@@ -154,6 +160,8 @@ namespace Terminals
             txtArguments.Text = favorite.ExecuteBeforeConnectArgs;
             txtInitialDirectory.Text = favorite.ExecuteBeforeConnectInitialDirectory;
             chkWaitForExit.Checked = favorite.ExecuteBeforeConnectWaitForExit;
+
+
 
             string[] tagsArray = favorite.Tags.Split(',');
             if(!((tagsArray.Length == 1) && (String.IsNullOrEmpty(tagsArray[0]))))
@@ -246,33 +254,38 @@ namespace Terminals
 
                 favorite.Protocol = ProtocolComboBox.SelectedItem.ToString();
                 favorite.ServerName = ValidateServer(cmbServers.Text);
-                favorite.DomainName = cmbDomains.Text;
-                favorite.UserName = cmbUsers.Text;
-                favorite.Password = (chkSavePassword.Checked ? txtPassword.Text : "");
 
-                if (chkSavePassword.Checked)
+                if (!UseCredentialManagerCheckbox.Checked)
                 {
-                    Credentials.CredentialSet set = new Terminals.Credentials.CredentialSet();
-                    set.Domain = favorite.DomainName;
-                    set.Username = favorite.UserName;
-                    set.Password = favorite.Password;
-                    List<Credentials.CredentialSet> list = Settings.SavedCredentials;
-                    bool saveNew = true;
-                    foreach (Credentials.CredentialSet item in list)
+
+
+                    favorite.DomainName = cmbDomains.Text;
+                    favorite.UserName = cmbUsers.Text;
+                    favorite.Password = (chkSavePassword.Checked ? txtPassword.Text : "");
+
+                    if (chkSavePassword.Checked)
                     {
-                        if (item.Username == set.Username && item.Domain == set.Domain)
+                        Credentials.CredentialSet set = new Terminals.Credentials.CredentialSet();
+                        set.Domain = favorite.DomainName;
+                        set.Username = favorite.UserName;
+                        set.Password = favorite.Password;
+                        List<Credentials.CredentialSet> list = Settings.SavedCredentials;
+                        bool saveNew = true;
+                        foreach (Credentials.CredentialSet item in list)
                         {
-                            saveNew = false;
-                            break;
+                            if (item.Username == set.Username && item.Domain == set.Domain)
+                            {
+                                saveNew = false;
+                                break;
+                            }
+                        }
+                        if (saveNew)
+                        {
+                            list.Add(set);
+                            Settings.SavedCredentials = list;
                         }
                     }
-                    if (saveNew)
-                    {
-                        list.Add(set);
-                        Settings.SavedCredentials = list;
-                    }
                 }
-
 
                 favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
                 favorite.Colors = (Colors)cmbColors.SelectedIndex;
@@ -772,6 +785,18 @@ namespace Terminals
         private void AllTagsListView_DoubleClick(object sender, EventArgs e)
         {
             AllTagsAddButton_Click(null, null);
+        }
+
+        private void UseCredentialManagerCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            this.CredentialsPanel.Enabled = !this.UseCredentialManagerCheckbox.Checked;
+            this.CredentialManagerPicturebox.Visible = this.UseCredentialManagerCheckbox.Checked;
+        }
+
+        private void CredentialManagerPicturebox_Click(object sender, EventArgs e)
+        {
+            Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
+            mgr.ShowDialog();
         }
 
     }
