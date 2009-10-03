@@ -760,7 +760,15 @@ namespace WalburySoftware
                 }
                 else
                 {
-                    keyboardBuffer += strText;
+                    if (this.Keyboard.UpArrow)
+                    {
+                        //wipe the current input
+                        //replace it with the history index -1
+                    }
+                    else
+                    {
+                        keyboardBuffer += strText;
+                    }
                 }
 
 				OnDataRequested(Encoding.Default.GetBytes(strText));
@@ -3032,10 +3040,11 @@ namespace WalburySoftware
 			private bool AltIsDown    = false;
 			private bool ShiftIsDown  = false;
 			private bool CtrlIsDown   = false;
-            private bool UpArrow = false;
-            private bool DownArrow = false;
-            private bool LeftArrow = false;
-            private bool RightArrow = false;
+
+            public bool UpArrow { get; set; }
+            public bool DownArrow { get; set; }
+            public bool LeftArrow { get; set; }
+            public bool RightArrow { get; set; }
 
 			private TerminalEmulator Parent;
     
@@ -3095,16 +3104,16 @@ namespace WalburySoftware
 
                         case 38://up arrow
                             this.UpArrow = true;
-                            return;
+                            break;
                         case 40: //down arrow
                             this.DownArrow = true;
-                            return;
+                            break;
                         case 37: //left arrow
                             this.LeftArrow = true;
-                            return;
+                            break;
                         case 39: //right arrow
                             this.RightArrow = true;
-                            return;
+                            break;
     
 
 						default:
@@ -3167,20 +3176,17 @@ namespace WalburySoftware
 
                         case 38://up arrow
                             this.UpArrow = false;
-                            return;
+                            break;
                         case 40: //down arrow
                             this.DownArrow = false;
-                            return;
+                            break;
                         case 37: //left arrow
                             this.LeftArrow = false;
-                            return;
+                            break;
                         case 39: //right arrow
                             this.RightArrow = false;
-                            return;
+                            break;
     
-
-
-
 						default:
 							break;
 					}
