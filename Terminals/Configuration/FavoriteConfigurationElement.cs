@@ -147,6 +147,18 @@ namespace Terminals
                 this["securityStartProgram"] = value;
             }
         }
+        [ConfigurationProperty("credential", IsRequired = false, DefaultValue = "")]
+        public string Credential
+        {
+            get
+            {
+                return (string)this["credential"];
+            }
+            set
+            {
+                this["credential"] = value;
+            }
+        }
 
         [ConfigurationProperty("securityFullScreen", IsRequired = false, DefaultValue = false)]
         public bool SecurityFullScreen

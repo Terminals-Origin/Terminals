@@ -18,11 +18,28 @@ namespace Terminals
     {
         Terminals.Network.Servers.TerminalServerManager terminalServerManager1 = new Terminals.Network.Servers.TerminalServerManager();
 
+        private void FillCredentails(FavoriteConfigurationElement SelectedFavorite)
+        {
+            this.CredentialDropdown.Items.Clear();
+            List<Credentials.CredentialSet> creds = Settings.SavedCredentials;
+            this.CredentialDropdown.Items.Add("(custom)");
+
+            int selIndex = 0;
+            foreach (Credentials.CredentialSet item in creds)
+            {                
+                int index = this.CredentialDropdown.Items.Add(item);
+                if (SelectedFavorite != null && SelectedFavorite.Credential == item.Name) selIndex = index;
+            }
+            this.CredentialDropdown.SelectedIndex = selIndex;
+
+        }
+
         public NewTerminalForm(string server, bool connect)
         {
             InitializeComponent();
 
             LoadMRUs();
+            FillCredentails(null);
 
             cmbResolution.SelectedIndex = 6;
             cmbColors.SelectedIndex = 1;
@@ -62,6 +79,9 @@ namespace Terminals
                 this.AllTagsListView.Items.Add(lvi);
             }
 
+            //FillCredentails(this.Favorite);
+
+
             this.ResumeLayout(true);
 
         }
@@ -93,11 +113,14 @@ namespace Terminals
         {
             InitializeComponent();
             LoadMRUs();
+            
             SetOkTitle(false);
             this.Text = "Edit Connection";
             SSHPreferences.Keys = Settings.SSHKeys;
+
             FillControls(favorite);
             SetOkButtonState();
+
         }
 
         private void LoadMRUs()
@@ -138,12 +161,6 @@ namespace Terminals
             cmbResolution.SelectedIndex = (int)favorite.DesktopSize;
             cmbColors.SelectedIndex = (int)favorite.Colors;
             chkConnectToConsole.Checked = favorite.ConnectToConsole;
-
-            if (string.IsNullOrEmpty(favorite.DomainName) && string.IsNullOrEmpty(favorite.UserName))
-            {
-                UseCredentialManagerCheckbox.Checked = true;
-            }
-
 
             chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Name);
             chkDrives.Checked = favorite.RedirectDrives;
@@ -234,6 +251,26 @@ namespace Terminals
             SSHPreferences.AuthMethod = favorite.AuthMethod;
             SSHPreferences.KeyTag = favorite.KeyTag;
             SSHPreferences.SSH1 = favorite.SSH1;
+
+            FillCredentails(favorite);
+
+            //if (!string.IsNullOrEmpty(favorite.Credential))
+            //{
+            //    Credentials.CredentialSet selectedItem = null;
+            //    foreach (object o in CredentialDropdown.Items)
+            //    {
+            //        Credentials.CredentialSet set = (o as Credentials.CredentialSet);
+            //        if (set != null && set.Name == favorite.Credential)
+            //        {
+            //            selectedItem = set;
+            //            break;
+            //        }
+            //    }
+            //    if (selectedItem != null) 
+            //        CredentialDropdown.SelectedItem = selectedItem;
+
+            //}
+
         }
 
         private bool FillFavorite()
@@ -255,36 +292,10 @@ namespace Terminals
                 favorite.Protocol = ProtocolComboBox.SelectedItem.ToString();
                 favorite.ServerName = ValidateServer(cmbServers.Text);
 
-                if (!UseCredentialManagerCheckbox.Checked)
+                Credentials.CredentialSet set = (CredentialDropdown.SelectedItem as Credentials.CredentialSet);
+                if (set != null)
                 {
-
-
-                    favorite.DomainName = cmbDomains.Text;
-                    favorite.UserName = cmbUsers.Text;
-                    favorite.Password = (chkSavePassword.Checked ? txtPassword.Text : "");
-
-                    if (chkSavePassword.Checked)
-                    {
-                        Credentials.CredentialSet set = new Terminals.Credentials.CredentialSet();
-                        set.Domain = favorite.DomainName;
-                        set.Username = favorite.UserName;
-                        set.Password = favorite.Password;
-                        List<Credentials.CredentialSet> list = Settings.SavedCredentials;
-                        bool saveNew = true;
-                        foreach (Credentials.CredentialSet item in list)
-                        {
-                            if (item.Username == set.Username && item.Domain == set.Domain)
-                            {
-                                saveNew = false;
-                                break;
-                            }
-                        }
-                        if (saveNew)
-                        {
-                            list.Add(set);
-                            Settings.SavedCredentials = list;
-                        }
-                    }
+                    favorite.Credential = set.Name;
                 }
 
                 favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
@@ -787,16 +798,25 @@ namespace Terminals
             AllTagsAddButton_Click(null, null);
         }
 
-        private void UseCredentialManagerCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            this.CredentialsPanel.Enabled = !this.UseCredentialManagerCheckbox.Checked;
-            this.CredentialManagerPicturebox.Visible = this.UseCredentialManagerCheckbox.Checked;
-        }
 
         private void CredentialManagerPicturebox_Click(object sender, EventArgs e)
         {
             Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
             mgr.ShowDialog();
+        }
+
+        private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CredentialsPanel.Enabled = true;
+            Credentials.CredentialSet set = (CredentialDropdown.SelectedItem as Credentials.CredentialSet);
+
+            if (set != null)
+            {
+                CredentialsPanel.Enabled = false;
+                cmbDomains.Text = set.Domain;
+                cmbUsers.Text = set.Username;
+                txtPassword.Text = set.Password;
+            }
         }
 
     }
