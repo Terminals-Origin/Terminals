@@ -48,7 +48,7 @@
             this.CredentialsListView.Location = new System.Drawing.Point(0, 0);
             this.CredentialsListView.MultiSelect = false;
             this.CredentialsListView.Name = "CredentialsListView";
-            this.CredentialsListView.Size = new System.Drawing.Size(337, 212);
+            this.CredentialsListView.Size = new System.Drawing.Size(350, 212);
             this.CredentialsListView.TabIndex = 0;
             this.CredentialsListView.UseCompatibleStateImageBehavior = false;
             this.CredentialsListView.View = System.Windows.Forms.View.Details;
@@ -90,7 +90,7 @@
             this.panel1.Controls.Add(this.DeleteButton);
             this.panel1.Controls.Add(this.EditButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(237, 0);
+            this.panel1.Location = new System.Drawing.Point(350, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(100, 212);
             this.panel1.TabIndex = 4;
@@ -113,9 +113,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.DoneButton;
-            this.ClientSize = new System.Drawing.Size(337, 212);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(450, 212);
             this.Controls.Add(this.CredentialsListView);
+            this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

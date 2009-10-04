@@ -19,10 +19,14 @@ namespace Terminals.Credentials
         public CredentialSet EditedSet { get { return editedSet; } 
             set { 
                 editedSet = value;
-                DomainTextbox.Text = editedSet.Domain;
-                NameTextbox.Text = editedSet.Name;
-                PasswordTextbox.Text = editedSet.Password;
-                UsernameTextbox.Text = editedSet.Username;
+                if (EditedSet != null)
+                {
+                    NameTextbox.Enabled = false;
+                    DomainTextbox.Text = editedSet.Domain;
+                    NameTextbox.Text = editedSet.Name;
+                    PasswordTextbox.Text = editedSet.Password;
+                    UsernameTextbox.Text = editedSet.Username;
+                }
             } 
         }
 
