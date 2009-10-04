@@ -26,9 +26,18 @@ namespace Terminals.Connections {
                 rd = new VncSharp.RemoteDesktop();
                 Controls.Add(rd);
 
-                string pass = Favorite.Password;
-                if(pass == null || pass == "") pass = Settings.DefaultPassword;
+                string pass = null;
+                if (!string.IsNullOrEmpty(Favorite.Credential))
+                {
+                    Credentials.CredentialSet set = Credentials.CredentialSet.CredentialByName(Favorite.Credential);
+                    if (set != null) pass = set.Password;
+                }
+                else
+                {
+                    pass = Favorite.Password;
+                }
 
+                if(pass == null || pass == "") pass = Settings.DefaultPassword;
                 this.vncPassword = pass;
 
                 if (string.IsNullOrEmpty(vncPassword)) return false;

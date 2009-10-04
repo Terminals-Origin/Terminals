@@ -57,12 +57,31 @@ namespace Terminals.Connections
                 client.ProxyUser="";
                 client.ProxyPass="";
                 client.Connect(Favorite.ServerName,Favorite.Port);
-                
-                string domainName = Favorite.DomainName;
-                if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
 
-                string userName = Favorite.UserName;
-                string pass = Favorite.Password;
+                string domainName = null;
+                string pass = null;
+                string userName = null;
+
+                if (!string.IsNullOrEmpty(Favorite.Credential))
+                {
+                    Credentials.CredentialSet set = Credentials.CredentialSet.CredentialByName(Favorite.Credential);
+                    if (set != null)
+                    {
+                        domainName = set.Domain;
+                        pass = set.Password;
+                        userName = set.Username;
+                    }
+                }
+                else
+                {
+                    domainName = Favorite.DomainName;
+                    pass = Favorite.Password;
+                    userName = Favorite.UserName;
+                }
+
+                if (string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
+                if (string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
+                if (string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
 
 
                 if (Favorite.Protocol == "Telnet")

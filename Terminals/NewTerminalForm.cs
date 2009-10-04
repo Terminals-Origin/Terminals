@@ -20,6 +20,8 @@ namespace Terminals
 
         private void FillCredentails(FavoriteConfigurationElement SelectedFavorite)
         {
+            if (SelectedFavorite == null) SelectedFavorite = Favorite;
+
             this.CredentialDropdown.Items.Clear();
             List<Credentials.CredentialSet> creds = Settings.SavedCredentials;
             this.CredentialDropdown.Items.Add("(custom)");
@@ -803,6 +805,7 @@ namespace Terminals
         {
             Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
             mgr.ShowDialog();
+            FillCredentails(Favorite);
         }
 
         private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)

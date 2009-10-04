@@ -34,10 +34,37 @@ namespace Terminals.Connections
                 this.webBrowser1.TabIndex = 0;
                 
                 this.Dock = System.Windows.Forms.DockStyle.Fill;
-                
+
+
+                string domainName = null;
+                string pass = null;
+                string userName = null;
+
+                if (!string.IsNullOrEmpty(Favorite.Credential))
+                {
+                    Credentials.CredentialSet set = Credentials.CredentialSet.CredentialByName(Favorite.Credential);
+                    if (set != null)
+                    {
+                        domainName = set.Domain;
+                        pass = set.Password;
+                        userName = set.Username;
+                    }
+                }
+                else
+                {
+                    domainName = Favorite.DomainName;
+                    pass = Favorite.Password;
+                    userName = Favorite.UserName;
+                }
+
+                if (string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
+                if (string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
+                if (string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
+
+
 
                 if(!String.IsNullOrEmpty(Favorite.UserName) && !String.IsNullOrEmpty(Favorite.Password)) {
-                    string hdr = "Authorization: Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(Favorite.UserName + ":" + Favorite.Password)) + System.Environment.NewLine;
+                    string hdr = "Authorization: Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(userName + ":" + pass)) + System.Environment.NewLine;
                     this.webBrowser1.Navigate(Favorite.Url,null,null, hdr);
                 } else {
                     this.webBrowser1.Navigate(Favorite.Url);

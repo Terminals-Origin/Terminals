@@ -225,18 +225,32 @@ TS_PERF_ENABLE_DESKTOP_COMPOSITION 0x00000100
                     }
                 }
                 axMsRdpClient2.SecuredSettings2.AudioRedirectionMode = (int)Favorite.Sounds;
-                
-                    
-
-                string domainName = Favorite.DomainName;
-                if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
-
-                string pass = Favorite.Password;
-                if(pass == null || pass == "") pass = Settings.DefaultPassword;
 
 
-                string userName = Favorite.UserName;
-                if(userName == null || userName == "") userName = Settings.DefaultUsername;
+                string domainName = null;
+                string pass = null;
+                string userName = null;
+
+                if (!string.IsNullOrEmpty(Favorite.Credential))
+                {
+                    Credentials.CredentialSet set = Credentials.CredentialSet.CredentialByName(Favorite.Credential);
+                    if (set != null)
+                    {
+                        domainName = set.Domain;
+                        pass = set.Password;
+                        userName = set.Username;
+                    }
+                }
+                else
+                {
+                    domainName = Favorite.DomainName;
+                    pass = Favorite.Password;
+                    userName = Favorite.UserName;
+                }
+
+                if (string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
+                if (string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
+                if (string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
 
                 axMsRdpClient2.UserName = userName;
                 axMsRdpClient2.Domain = domainName;

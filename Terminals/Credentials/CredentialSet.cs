@@ -17,6 +17,18 @@ namespace Terminals.Credentials
             return Name;
         }
 
+        public static CredentialSet CredentialByName(string Name)
+        {
+            List<CredentialSet> list = Settings.SavedCredentials;
+            if (list == null) return null;
+            foreach (CredentialSet set in list)
+            {
+                if (set.Name == Name) return set;
+            }
+            return null;
+        }
+
+
         #region ICloneable Members
 
         public object Clone()
