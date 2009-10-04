@@ -47,13 +47,10 @@ namespace Terminals.Credentials
                     }
                 }
             }
-            CredentialsListView.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
-            CredentialsListView.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.ColumnContent);
-            CredentialsListView.AutoResizeColumn(2, ColumnHeaderAutoResizeStyle.ColumnContent);
-
-            if (CredentialsListView.Columns[0].Width < 50) CredentialsListView.Columns[0].Width = 100;
-            if (CredentialsListView.Columns[1].Width < 50) CredentialsListView.Columns[1].Width = 100;
-            if (CredentialsListView.Columns[2].Width < 50) CredentialsListView.Columns[2].Width = 100;
+            CredentialsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            if (CredentialsListView.Columns[0].Width < 100) CredentialsListView.Columns[0].Width = 100;
+            if (CredentialsListView.Columns[1].Width < 100) CredentialsListView.Columns[1].Width = 100;
+            if (CredentialsListView.Columns[2].Width < 100) CredentialsListView.Columns[2].Width = 100;
 
         }
 

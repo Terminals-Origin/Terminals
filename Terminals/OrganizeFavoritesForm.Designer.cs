@@ -53,6 +53,7 @@ namespace Terminals
             this.rDPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vRDBackupFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.colCredential = new System.Windows.Forms.ColumnHeader();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,6 +66,7 @@ namespace Terminals
             this.colName,
             this.colProtocol,
             this.colComputer,
+            this.colCredential,
             this.colDomain,
             this.colUser,
             this.colTags,
@@ -252,6 +254,10 @@ namespace Terminals
             this.vRDBackupFileToolStripMenuItem.Text = "vRD Backup File";
             this.vRDBackupFileToolStripMenuItem.Click += new System.EventHandler(this.vRDBackupFileToolStripMenuItem_Click);
             // 
+            // colCredential
+            // 
+            this.colCredential.Text = "Credential";
+            // 
             // OrganizeFavoritesForm
             // 
             this.AcceptButton = this.btnClose;
@@ -312,5 +318,6 @@ namespace Terminals
         private System.Windows.Forms.ToolStripMenuItem muRDToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rDPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem vRDBackupFileToolStripMenuItem;
+        private System.Windows.Forms.ColumnHeader colCredential;
     }
 }

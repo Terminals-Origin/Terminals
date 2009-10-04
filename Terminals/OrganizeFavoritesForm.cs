@@ -34,6 +34,7 @@ namespace Terminals
                     item.Name = favorite.Name;
                     item.SubItems.Add(favorite.Protocol);
                     item.SubItems.Add(favorite.ServerName);
+                    item.SubItems.Add(favorite.Credential);
                     item.SubItems.Add(favorite.DomainName);
                     item.SubItems.Add(favorite.UserName);
                     item.SubItems.Add(favorite.Tags);
@@ -46,6 +47,14 @@ namespace Terminals
                 lvConnections.EndUpdate();
             }
             lvConnections.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            if (lvConnections.Columns[0].Width < 50) lvConnections.Columns[0].Width = 50;
+            if (lvConnections.Columns[1].Width < 50) lvConnections.Columns[1].Width = 50;
+            if (lvConnections.Columns[2].Width < 50) lvConnections.Columns[2].Width = 50;
+            if (lvConnections.Columns[3].Width < 50) lvConnections.Columns[3].Width = 50;
+            if (lvConnections.Columns[4].Width < 50) lvConnections.Columns[4].Width = 50;
+            if (lvConnections.Columns[5].Width < 50) lvConnections.Columns[5].Width = 50;
+            if (lvConnections.Columns[6].Width < 50) lvConnections.Columns[6].Width = 50;
+            if (lvConnections.Columns[7].Width < 50) lvConnections.Columns[7].Width = 50;
         }
 
         private void btnRename_Click(object sender, EventArgs e)
