@@ -318,7 +318,7 @@ namespace Terminals {
             }
             else if (e.ClickedItem.Text == Program.Resources.GetString("CredentialsManager"))
             {
-                ShowCredentialsManager(false);
+                ShowCredentialsManager();
             }
             else if (e.ClickedItem.Text == Program.Resources.GetString("OrganizeFavorites"))
             {
@@ -364,6 +364,12 @@ namespace Terminals {
                     }
                 }
             }
+        }
+
+        private void ShowCredentialsManager()
+        {
+            Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
+            mgr.ShowDialog();
         }
 
     
@@ -2783,20 +2789,17 @@ namespace Terminals {
 
         private void credentialManagementToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowCredentialsManager(false);
+            ShowCredentialsManager();
         }
 
         private void credentialsManagerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowCredentialsManager(false);
+            ShowCredentialsManager();
         }
 
-        private Credentials.CredentialSet ShowCredentialsManager(bool AccountPicker)
+        private void CredentialManagementToolStripButton_Click(object sender, EventArgs e)
         {
-            Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
-            mgr.AccountPicker = AccountPicker;
-            mgr.ShowDialog();
-            return mgr.SelectedCredentials;
+            ShowCredentialsManager();
         }
 
     }

@@ -65,18 +65,6 @@ namespace Terminals.Connections
                 string pass = Favorite.Password;
 
 
-                if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(pass))
-                {
-                    Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
-                    mgr.ShowDialog();
-                    Credentials.CredentialSet set = mgr.SelectedCredentials;
-                    domainName = set.Domain;
-                    userName = set.Username;
-                    pass = set.Password;
-                }
-
-
-
                 if (Favorite.Protocol == "Telnet")
                 {
                     protocol = "Telnet";

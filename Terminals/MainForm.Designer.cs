@@ -45,11 +45,6 @@ namespace Terminals {
             this.grabInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.organizeGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveTerminalsAsGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addTerminalToGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupsSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.captureTerminalScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,6 +58,11 @@ namespace Terminals {
             this.rebuildTagsIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildToolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.organizeGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveTerminalsAsGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addTerminalToGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupsSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -96,11 +96,13 @@ namespace Terminals {
             this.sentCTRLALTDELETEKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TerminalServerMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+            this.CredentialManagementToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.manageToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pnlTagsFavorites = new System.Windows.Forms.Panel();
+            this.favsList1 = new Terminals.FavsList();
             this.pnlHideTagsFavorites = new System.Windows.Forms.Panel();
             this.pbHideTagsFavorites = new System.Windows.Forms.PictureBox();
             this.pnlShowTagsFavorites = new System.Windows.Forms.Panel();
@@ -138,7 +140,6 @@ namespace Terminals {
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.tabControlItem1 = new TabControl.TabControlItem();
             this.tabControlItem2 = new TabControl.TabControlItem();
-            this.favsList1 = new Terminals.FavsList();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
@@ -172,8 +173,8 @@ namespace Terminals {
             this.viewToolStripMenuItem,
             this.favoritesToolStripMenuItem,
             this.terminalToolStripMenuItem,
-            this.groupsToolStripMenuItem,
             this.toolsToolStripMenuItem,
+            this.groupsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 75);
             this.menuStrip.MinimumSize = new System.Drawing.Size(380, 0);
@@ -342,43 +343,6 @@ namespace Terminals {
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.tsbDisconnect_Click);
             // 
-            // groupsToolStripMenuItem
-            // 
-            this.groupsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.organizeGroupsToolStripMenuItem,
-            this.saveTerminalsAsGroupToolStripMenuItem,
-            this.addTerminalToGroupToolStripMenuItem,
-            this.groupsSeparator});
-            this.groupsToolStripMenuItem.Name = "groupsToolStripMenuItem";
-            this.groupsToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
-            this.groupsToolStripMenuItem.Text = "Groups";
-            this.groupsToolStripMenuItem.Visible = false;
-            // 
-            // organizeGroupsToolStripMenuItem
-            // 
-            this.organizeGroupsToolStripMenuItem.Name = "organizeGroupsToolStripMenuItem";
-            this.organizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.organizeGroupsToolStripMenuItem.Text = "Organize Groups";
-            this.organizeGroupsToolStripMenuItem.Click += new System.EventHandler(this.organizeGroupsToolStripMenuItem_Click);
-            // 
-            // saveTerminalsAsGroupToolStripMenuItem
-            // 
-            this.saveTerminalsAsGroupToolStripMenuItem.Name = "saveTerminalsAsGroupToolStripMenuItem";
-            this.saveTerminalsAsGroupToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.saveTerminalsAsGroupToolStripMenuItem.Text = "Create Group From Active Connections";
-            this.saveTerminalsAsGroupToolStripMenuItem.Click += new System.EventHandler(this.saveTerminalsAsGroupToolStripMenuItem_Click);
-            // 
-            // addTerminalToGroupToolStripMenuItem
-            // 
-            this.addTerminalToGroupToolStripMenuItem.Name = "addTerminalToGroupToolStripMenuItem";
-            this.addTerminalToGroupToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
-            this.addTerminalToGroupToolStripMenuItem.Text = "Add Current Connection To";
-            // 
-            // groupsSeparator
-            // 
-            this.groupsSeparator.Name = "groupsSeparator";
-            this.groupsSeparator.Size = new System.Drawing.Size(278, 6);
-            // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -445,6 +409,7 @@ namespace Terminals {
             // 
             // credentialManagementToolStripMenuItem
             // 
+            this.credentialManagementToolStripMenuItem.Image = global::Terminals.Properties.Resources.computer_security;
             this.credentialManagementToolStripMenuItem.Name = "credentialManagementToolStripMenuItem";
             this.credentialManagementToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.credentialManagementToolStripMenuItem.Text = "Credential Management";
@@ -482,6 +447,43 @@ namespace Terminals {
             this.rebuildToolbarsToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.rebuildToolbarsToolStripMenuItem.Text = "Rebuild Toolbars";
             this.rebuildToolbarsToolStripMenuItem.Click += new System.EventHandler(this.rebuildToolbarsToolStripMenuItem_Click);
+            // 
+            // groupsToolStripMenuItem
+            // 
+            this.groupsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.organizeGroupsToolStripMenuItem,
+            this.saveTerminalsAsGroupToolStripMenuItem,
+            this.addTerminalToGroupToolStripMenuItem,
+            this.groupsSeparator});
+            this.groupsToolStripMenuItem.Name = "groupsToolStripMenuItem";
+            this.groupsToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.groupsToolStripMenuItem.Text = "Groups";
+            this.groupsToolStripMenuItem.Visible = false;
+            // 
+            // organizeGroupsToolStripMenuItem
+            // 
+            this.organizeGroupsToolStripMenuItem.Name = "organizeGroupsToolStripMenuItem";
+            this.organizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.organizeGroupsToolStripMenuItem.Text = "Organize Groups";
+            this.organizeGroupsToolStripMenuItem.Click += new System.EventHandler(this.organizeGroupsToolStripMenuItem_Click);
+            // 
+            // saveTerminalsAsGroupToolStripMenuItem
+            // 
+            this.saveTerminalsAsGroupToolStripMenuItem.Name = "saveTerminalsAsGroupToolStripMenuItem";
+            this.saveTerminalsAsGroupToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.saveTerminalsAsGroupToolStripMenuItem.Text = "Create Group From Active Connections";
+            this.saveTerminalsAsGroupToolStripMenuItem.Click += new System.EventHandler(this.saveTerminalsAsGroupToolStripMenuItem_Click);
+            // 
+            // addTerminalToGroupToolStripMenuItem
+            // 
+            this.addTerminalToGroupToolStripMenuItem.Name = "addTerminalToGroupToolStripMenuItem";
+            this.addTerminalToGroupToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
+            this.addTerminalToGroupToolStripMenuItem.Text = "Add Current Connection To";
+            // 
+            // groupsSeparator
+            // 
+            this.groupsSeparator.Name = "groupsSeparator";
+            this.groupsSeparator.Size = new System.Drawing.Size(278, 6);
             // 
             // helpToolStripMenuItem
             // 
@@ -522,6 +524,7 @@ namespace Terminals {
             this.tsbDisconnect,
             this.toolStripSeparator3,
             this.tsbManageConnections,
+            this.CredentialManagementToolStripButton,
             this.toolStripSeparator2,
             this.tsbGrabInput,
             this.tsbFullScreen,
@@ -745,7 +748,7 @@ namespace Terminals {
             this.vncActionButton.Image = ((System.Drawing.Image)(resources.GetObject("vncActionButton.Image")));
             this.vncActionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.vncActionButton.Name = "vncActionButton";
-            this.vncActionButton.Size = new System.Drawing.Size(29, 22);
+            this.vncActionButton.Size = new System.Drawing.Size(29, 20);
             this.vncActionButton.Text = "toolStripButton4";
             this.vncActionButton.Visible = false;
             // 
@@ -790,7 +793,7 @@ namespace Terminals {
             this.TerminalServerMenuButton.Image = global::Terminals.Properties.Resources.server_network;
             this.TerminalServerMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TerminalServerMenuButton.Name = "TerminalServerMenuButton";
-            this.TerminalServerMenuButton.Size = new System.Drawing.Size(29, 22);
+            this.TerminalServerMenuButton.Size = new System.Drawing.Size(29, 20);
             this.TerminalServerMenuButton.Text = "Terminal Server";
             this.TerminalServerMenuButton.DropDownOpening += new System.EventHandler(this.TerminalServerMenuButton_DropDownOpening);
             // 
@@ -800,9 +803,20 @@ namespace Terminals {
             this.toolStripButton5.Image = global::Terminals.Properties.Resources.CompMgmt;
             this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton5.Name = "toolStripButton5";
-            this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton5.Size = new System.Drawing.Size(23, 20);
             this.toolStripButton5.Text = "Computer Management (MMC)";
             this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
+            // 
+            // CredentialManagementToolStripButton
+            // 
+            this.CredentialManagementToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.CredentialManagementToolStripButton.Image = global::Terminals.Properties.Resources.computer_security;
+            this.CredentialManagementToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.CredentialManagementToolStripButton.Name = "CredentialManagementToolStripButton";
+            this.CredentialManagementToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.CredentialManagementToolStripButton.Text = "Credential Management";
+            this.CredentialManagementToolStripButton.ToolTipText = "Credential Management";
+            this.CredentialManagementToolStripButton.Click += new System.EventHandler(this.CredentialManagementToolStripButton_Click);
             // 
             // contextMenuStrip1
             // 
@@ -872,6 +886,14 @@ namespace Terminals {
             this.pnlTagsFavorites.Name = "pnlTagsFavorites";
             this.pnlTagsFavorites.Size = new System.Drawing.Size(562, 474);
             this.pnlTagsFavorites.TabIndex = 6;
+            // 
+            // favsList1
+            // 
+            this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.favsList1.Location = new System.Drawing.Point(5, 0);
+            this.favsList1.Name = "favsList1";
+            this.favsList1.Size = new System.Drawing.Size(550, 472);
+            this.favsList1.TabIndex = 2;
             // 
             // pnlHideTagsFavorites
             // 
@@ -1128,7 +1150,7 @@ namespace Terminals {
             // QuickContextMenu
             // 
             this.QuickContextMenu.Name = "QuickContextMenu";
-            this.QuickContextMenu.Size = new System.Drawing.Size(153, 26);
+            this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
             this.QuickContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.QuickContextMenu_Opening);
             // 
             // SystemTrayContextMenuStrip
@@ -1204,14 +1226,6 @@ namespace Terminals {
             this.tabControlItem2.TabIndex = 3;
             this.tabControlItem2.Title = "TabControl Page 4";
             this.tabControlItem2.ToolTipText = "";
-            // 
-            // favsList1
-            // 
-            this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.favsList1.Location = new System.Drawing.Point(5, 0);
-            this.favsList1.Name = "favsList1";
-            this.favsList1.Size = new System.Drawing.Size(550, 472);
-            this.favsList1.TabIndex = 2;
             // 
             // MainForm
             // 
@@ -1380,5 +1394,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripMenuItem openLogFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem credentialManagementToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem credentialsManagerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton CredentialManagementToolStripButton;
     }
 }

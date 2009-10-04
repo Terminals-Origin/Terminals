@@ -7,13 +7,14 @@ namespace Terminals.Credentials
     [Serializable()]
     public class CredentialSet : ICloneable
     {
+        public string Name { get; set; }
         public string Domain { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
 
         public override string ToString()
         {
-            return string.Format(@"Domain: {0}, User: {1}", Domain, Username);
+            return Name;
         }
 
         #region ICloneable Members
@@ -21,6 +22,7 @@ namespace Terminals.Credentials
         public object Clone()
         {
             CredentialSet s = new CredentialSet();
+            s.Name = this.Name;
             s.Username = this.Username;
             s.Domain = this.Domain;
             s.Password = this.Password;

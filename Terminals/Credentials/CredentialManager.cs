@@ -13,90 +13,112 @@ namespace Terminals.Credentials
         public CredentialManager()
         {
             InitializeComponent();
-            ReloadList();
-            AccountPicker = true;
+
         }
-        public bool AccountPicker { get; set; }
+
+        public void BindList()
+        {
+            string selectedItem = "";
+            if (CredentialsListView.SelectedItems != null && CredentialsListView.SelectedItems.Count > 0)
+            {
+                selectedItem = CredentialsListView.SelectedItems[0].Text;
+            }
+            
+            CredentialsListView.Clear();
+            CredentialsListView.Columns.Add("Name");
+            CredentialsListView.Columns.Add("Domain");
+            CredentialsListView.Columns.Add("Username"); 
+            
+            List<CredentialSet> list = Settings.SavedCredentials;
+
+
+            foreach (CredentialSet s in list)
+            {
+                ListViewItem item = new ListViewItem(s.Name);
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, s.Domain));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, s.Username));
+                CredentialsListView.Items.Add(item);
+                item.Selected = false;
+                if (!string.IsNullOrEmpty(selectedItem))
+                {
+                    if (item.Text == selectedItem)
+                    {
+                        item.Selected = true;
+                        item.Focused = true;
+                    }
+                }
+            }
+
+        }
+
+
         private void DoneButton_Click(object sender, EventArgs e)
         {
-            if (this.SaveCredentialsComboBox.SelectedItem != null)
-                this.SelectedCredentials = (this.SaveCredentialsComboBox.SelectedItem as CredentialSet);
             this.Close();
         }
 
-        public CredentialSet SelectedCredentials { get; set; }
-
-        private void SaveCredentialsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void AddButton_Click(object sender, EventArgs e)
         {
-            if (this.SaveCredentialsComboBox.SelectedItem != null)
-            {
-                CredentialSet set = (this.SaveCredentialsComboBox.SelectedItem as CredentialSet);
-                if (set != null)
-                {
-                    this.DomainTextbox.Text = set.Domain;
-                    this.UsernameTextbox.Text = set.Username;
-                    this.PasswordTextbox.Text = set.Password;
-                }
-            }
-        }
-        private void ReloadList()
-        {
-            this.SaveCredentialsComboBox.DataSource = Settings.SavedCredentials;
-
-        }
-        private void SaveButton_Click(object sender, EventArgs e)
-        {
-            CredentialSet set = new CredentialSet();
-            set.Domain = this.DomainTextbox.Text;
-            set.Username = this.UsernameTextbox.Text;
-            set.Password = this.PasswordTextbox.Text;
-            List<CredentialSet> list = Settings.SavedCredentials;
-
-            CredentialSet dup = null;
-            foreach(CredentialSet s in list) {
-                if (s.Domain == set.Domain && s.Username == set.Username)
-                {
-                    dup = s;
-                    break;
-                }
-            }
-
-            if (dup != null) list.Remove(dup);
-
-            list.Add(set);
-            Settings.SavedCredentials = list;
-            ReloadList();
-        }
-
-        private void DeleteButton_Click(object sender, EventArgs e)
-        {
-            CredentialSet set = (this.SaveCredentialsComboBox.SelectedItem as CredentialSet);
-            if (set != null)
-            {
-                List<CredentialSet> list = Settings.SavedCredentials;
-
-
-                CredentialSet dup = null;
-                foreach (CredentialSet s in list)
-                {
-                    if (s.Domain == set.Domain && s.Username == set.Username)
-                    {
-                        dup = s;
-                        break;
-                    }
-                }
-
-                if (dup != null) list.Remove(dup);
-
-                Settings.SavedCredentials = list;
-                ReloadList();
-            }
+            ManageCredentialForm frm = new ManageCredentialForm();
+            frm.ShowDialog();
+            BindList();
         }
 
         private void CredentialManager_Load(object sender, EventArgs e)
         {
-            this.Height = 144;
-            if (AccountPicker) this.Height = 65;
+            BindList();
         }
+
+        private void EditButton_Click(object sender, EventArgs e)
+        {
+            if (CredentialsListView.SelectedItems != null && CredentialsListView.SelectedItems.Count > 0)
+            {
+                string name = CredentialsListView.SelectedItems[0].Text;
+                List<CredentialSet> list = Settings.SavedCredentials;
+                foreach (CredentialSet set in list)
+                {
+                    if (set.Name == name)
+                    {
+                        ManageCredentialForm mgr = new ManageCredentialForm();
+                        mgr.EditedSet = set;
+                        mgr.ShowDialog();
+                        BindList();
+                    }
+                }
+            }
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            if (CredentialsListView.SelectedItems != null && CredentialsListView.SelectedItems.Count > 0)
+            {
+                string name = CredentialsListView.SelectedItems[0].Text;
+                List<CredentialSet> list = Settings.SavedCredentials;
+
+                CredentialSet foundSet = null;
+
+                foreach (CredentialSet set in list)
+                {
+                    if (set.Name == name)
+                    {
+                        foundSet = set;
+                        break;
+                    }
+                }
+                if (foundSet != null)
+                {
+                    if (System.Windows.Forms.MessageBox.Show("Are you sure you want to delete this Credential?", "Confirmation Required", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        list.Remove(foundSet);
+                        Settings.SavedCredentials = list;
+                        BindList();
+                    }
+                }
+            }
+
+        }
+
+        
+
     }
 }

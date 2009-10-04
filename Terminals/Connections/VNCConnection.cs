@@ -31,14 +31,6 @@ namespace Terminals.Connections {
 
                 this.vncPassword = pass;
 
-                if (string.IsNullOrEmpty(vncPassword))
-                {
-                    Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
-                    mgr.ShowDialog();
-                    Credentials.CredentialSet set = mgr.SelectedCredentials;
-                    this.vncPassword = set.Password;
-
-                }
                 if (string.IsNullOrEmpty(vncPassword)) return false;
 
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            

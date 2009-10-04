@@ -238,6 +238,12 @@
     <Compile Include="ConsolePreferences.Designer.cs">
       <DependentUpon>ConsolePreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Credentials\ManageCredentialForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Credentials\ManageCredentialForm.Designer.cs">
+      <DependentUpon>ManageCredentialForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Credentials\CredentialManager.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -772,6 +778,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Credentials\CredentialManager.resx">
       <DependentUpon>CredentialManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Credentials\ManageCredentialForm.resx">
+      <DependentUpon>ManageCredentialForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FavsList.resx">
       <DependentUpon>FavsList.cs</DependentUpon>
