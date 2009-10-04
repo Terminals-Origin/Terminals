@@ -75,6 +75,7 @@ namespace Terminals {
             this.tsbDisconnect = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbManageConnections = new System.Windows.Forms.ToolStripButton();
+            this.CredentialManagementToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbGrabInput = new System.Windows.Forms.ToolStripButton();
             this.tsbFullScreen = new System.Windows.Forms.ToolStripButton();
@@ -96,7 +97,6 @@ namespace Terminals {
             this.sentCTRLALTDELETEKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TerminalServerMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.CredentialManagementToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.manageToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
@@ -615,6 +615,17 @@ namespace Terminals {
             this.tsbManageConnections.ToolTipText = "Manage Connections";
             this.tsbManageConnections.Click += new System.EventHandler(this.manageConnectionsToolStripMenuItem_Click);
             // 
+            // CredentialManagementToolStripButton
+            // 
+            this.CredentialManagementToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.CredentialManagementToolStripButton.Image = global::Terminals.Properties.Resources.computer_security;
+            this.CredentialManagementToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.CredentialManagementToolStripButton.Name = "CredentialManagementToolStripButton";
+            this.CredentialManagementToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.CredentialManagementToolStripButton.Text = "Credential Management";
+            this.CredentialManagementToolStripButton.ToolTipText = "Credential Management";
+            this.CredentialManagementToolStripButton.Click += new System.EventHandler(this.CredentialManagementToolStripButton_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
@@ -748,7 +759,7 @@ namespace Terminals {
             this.vncActionButton.Image = ((System.Drawing.Image)(resources.GetObject("vncActionButton.Image")));
             this.vncActionButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.vncActionButton.Name = "vncActionButton";
-            this.vncActionButton.Size = new System.Drawing.Size(29, 20);
+            this.vncActionButton.Size = new System.Drawing.Size(29, 22);
             this.vncActionButton.Text = "toolStripButton4";
             this.vncActionButton.Visible = false;
             // 
@@ -793,7 +804,7 @@ namespace Terminals {
             this.TerminalServerMenuButton.Image = global::Terminals.Properties.Resources.server_network;
             this.TerminalServerMenuButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.TerminalServerMenuButton.Name = "TerminalServerMenuButton";
-            this.TerminalServerMenuButton.Size = new System.Drawing.Size(29, 20);
+            this.TerminalServerMenuButton.Size = new System.Drawing.Size(29, 22);
             this.TerminalServerMenuButton.Text = "Terminal Server";
             this.TerminalServerMenuButton.DropDownOpening += new System.EventHandler(this.TerminalServerMenuButton_DropDownOpening);
             // 
@@ -803,20 +814,9 @@ namespace Terminals {
             this.toolStripButton5.Image = global::Terminals.Properties.Resources.CompMgmt;
             this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton5.Name = "toolStripButton5";
-            this.toolStripButton5.Size = new System.Drawing.Size(23, 20);
+            this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton5.Text = "Computer Management (MMC)";
             this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
-            // 
-            // CredentialManagementToolStripButton
-            // 
-            this.CredentialManagementToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.CredentialManagementToolStripButton.Image = global::Terminals.Properties.Resources.computer_security;
-            this.CredentialManagementToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.CredentialManagementToolStripButton.Name = "CredentialManagementToolStripButton";
-            this.CredentialManagementToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.CredentialManagementToolStripButton.Text = "Credential Management";
-            this.CredentialManagementToolStripButton.ToolTipText = "Credential Management";
-            this.CredentialManagementToolStripButton.Click += new System.EventHandler(this.CredentialManagementToolStripButton_Click);
             // 
             // contextMenuStrip1
             // 
@@ -871,7 +871,7 @@ namespace Terminals {
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tcTerminals);
             this.splitContainer1.Size = new System.Drawing.Size(792, 474);
-            this.splitContainer1.SplitterDistance = 562;
+            this.splitContainer1.SplitterDistance = 224;
             this.splitContainer1.TabIndex = 7;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
@@ -884,7 +884,7 @@ namespace Terminals {
             this.pnlTagsFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTagsFavorites.Location = new System.Drawing.Point(0, 0);
             this.pnlTagsFavorites.Name = "pnlTagsFavorites";
-            this.pnlTagsFavorites.Size = new System.Drawing.Size(562, 474);
+            this.pnlTagsFavorites.Size = new System.Drawing.Size(224, 474);
             this.pnlTagsFavorites.TabIndex = 6;
             // 
             // favsList1
@@ -892,7 +892,7 @@ namespace Terminals {
             this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favsList1.Location = new System.Drawing.Point(5, 0);
             this.favsList1.Name = "favsList1";
-            this.favsList1.Size = new System.Drawing.Size(550, 472);
+            this.favsList1.Size = new System.Drawing.Size(212, 472);
             this.favsList1.TabIndex = 2;
             // 
             // pnlHideTagsFavorites
@@ -900,7 +900,7 @@ namespace Terminals {
             this.pnlHideTagsFavorites.BackColor = System.Drawing.Color.Gray;
             this.pnlHideTagsFavorites.Controls.Add(this.pbHideTagsFavorites);
             this.pnlHideTagsFavorites.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(555, 0);
+            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(217, 0);
             this.pnlHideTagsFavorites.Name = "pnlHideTagsFavorites";
             this.pnlHideTagsFavorites.Size = new System.Drawing.Size(5, 472);
             this.pnlHideTagsFavorites.TabIndex = 1;
@@ -952,7 +952,7 @@ namespace Terminals {
             this.tcTerminals.Location = new System.Drawing.Point(0, 0);
             this.tcTerminals.Name = "tcTerminals";
             this.tcTerminals.ShowToolTipOnTitle = false;
-            this.tcTerminals.Size = new System.Drawing.Size(226, 474);
+            this.tcTerminals.Size = new System.Drawing.Size(564, 474);
             this.tcTerminals.TabIndex = 3;
             this.tcTerminals.TabControlMouseLeftTitle += new TabControl.TabControlMouseLeftTitleHandler(this.tcTerminals_TabControlMouseLeftTitle);
             this.tcTerminals.TabControlItemSelectionChanged += new TabControl.TabControlItemChangedHandler(this.tcTerminals_TabControlItemSelectionChanged);

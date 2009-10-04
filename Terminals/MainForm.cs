@@ -513,11 +513,12 @@ namespace Terminals {
                 Settings.ToolbarSettings = newSettings;
             }
         }
+        private bool FavoritesShowing = Settings.EnableFavoritesPanel;
         private void HideShowFavoritesPanel(bool Show)
         {
             if (Settings.EnableFavoritesPanel)
             {
-                if (Show)
+                if (Show && FavoritesShowing)
                 {
                     splitContainer1.Panel1MinSize = 15;
                     splitContainer1.SplitterDistance = Settings.FavoritePanelWidth;
@@ -1490,7 +1491,7 @@ namespace Terminals {
                 return fullScreen;
             }
             set
-            {
+            {                
                 if(FullScreen != value) SetFullScreen(value);
                 if (!FullScreen)
                 {
@@ -1770,11 +1771,13 @@ namespace Terminals {
 
         private void pbShowTags_Click(object sender, EventArgs e)
         {
+            FavoritesShowing = !FavoritesShowing;
             HideShowFavoritesPanel(true);
         }
 
         private void pbHideTags_Click(object sender, EventArgs e)
         {
+            FavoritesShowing = !FavoritesShowing;
             HideShowFavoritesPanel(false);
         }
 
