@@ -6,12 +6,12 @@ using log4net;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Terminals")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Terminals by Robert Chartier")]
+[assembly: AssemblyDescription("Terminals (RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix, Amazon S3)")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Terminals")]
-[assembly: AssemblyCopyright("Copyright ©  2006")]
+[assembly: AssemblyCompany("Robert Chartier")]
+[assembly: AssemblyProduct("Terminals by Robert Chartier")]
+[assembly: AssemblyCopyright("Copyright © ny Robert Chartier 2006")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,8 +30,8 @@ using log4net;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.7.0.0")]
-[assembly: AssemblyFileVersion("1.7.0.0")]
+[assembly: AssemblyVersion("1.8.0.0")]
+[assembly: AssemblyFileVersion("1.8.0.0")]
 
 [assembly: log4net.Config.DOMConfigurator (
 ConfigFile = "Terminals.log4net.config", Watch = true)]

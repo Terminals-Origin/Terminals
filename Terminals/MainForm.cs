@@ -167,7 +167,7 @@ namespace Terminals {
                 QuickContextMenu.Items.Add(Program.Resources.GetString("NetworkingTools"), Resources.computer_link);
                 QuickContextMenu.Items.Add("-");
                 QuickContextMenu.Items.Add(Program.Resources.GetString("CredentialsManager"), Resources.computer_security);
-                QuickContextMenu.Items.Add(Program.Resources.GetString("OrganizeFavorites"), Resources.star);
+                QuickContextMenu.Items.Add(Program.Resources.GetString("OrganizeFavorites"), Resources.application_edit);
                 QuickContextMenu.Items.Add(Program.Resources.GetString("Options"), Resources.options);
                 QuickContextMenu.Items.Add("-");
 
