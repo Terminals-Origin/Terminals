@@ -649,6 +649,7 @@ namespace Terminals {
             tsbGrabInput.Checked = tsbGrabInput.Enabled && (CurrentTerminal != null) && CurrentTerminal.FullScreen;
             grabInputToolStripMenuItem.Checked = tsbGrabInput.Checked;
             tsbConnect.Enabled = (tscConnectTo.Text != String.Empty);
+            tsbConnectToConsole.Enabled = (tscConnectTo.Text != String.Empty);
             saveTerminalsAsGroupToolStripMenuItem.Enabled = (tcTerminals.Items.Count > 0);
 
             this.TerminalServerMenuButton.Visible = false;
@@ -1192,6 +1193,15 @@ namespace Terminals {
             if(connectionName != "")
             {
                 Connect(connectionName, false, false);
+            }
+        }
+
+        private void tsbConnectToConsole_Click(object sender, EventArgs e)
+        {
+            string connectionName = tscConnectTo.Text;
+            if (connectionName != "")
+            {
+                Connect(connectionName, true, false);
             }
         }
 
