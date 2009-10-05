@@ -34,6 +34,7 @@ namespace Terminals
             this.colName = new System.Windows.Forms.ColumnHeader();
             this.colProtocol = new System.Windows.Forms.ColumnHeader();
             this.colComputer = new System.Windows.Forms.ColumnHeader();
+            this.colCredential = new System.Windows.Forms.ColumnHeader();
             this.colDomain = new System.Windows.Forms.ColumnHeader();
             this.colUser = new System.Windows.Forms.ColumnHeader();
             this.colTags = new System.Windows.Forms.ColumnHeader();
@@ -53,7 +54,6 @@ namespace Terminals
             this.rDPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vRDBackupFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ImportOpenFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.colCredential = new System.Windows.Forms.ColumnHeader();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -74,8 +74,10 @@ namespace Terminals
             this.lvConnections.FullRowSelect = true;
             this.lvConnections.GridLines = true;
             this.lvConnections.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.lvConnections.HideSelection = false;
             this.lvConnections.LabelEdit = true;
             this.lvConnections.Location = new System.Drawing.Point(12, 25);
+            this.lvConnections.MultiSelect = false;
             this.lvConnections.Name = "lvConnections";
             this.lvConnections.ShowItemToolTips = true;
             this.lvConnections.Size = new System.Drawing.Size(595, 278);
@@ -100,6 +102,10 @@ namespace Terminals
             // 
             this.colComputer.Text = "Computer";
             this.colComputer.Width = 89;
+            // 
+            // colCredential
+            // 
+            this.colCredential.Text = "Credential";
             // 
             // colDomain
             // 
@@ -217,46 +223,42 @@ namespace Terminals
             this.rDPToolStripMenuItem,
             this.vRDBackupFileToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(174, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(175, 114);
             // 
             // activeDirectoryToolStripMenuItem
             // 
             this.activeDirectoryToolStripMenuItem.Name = "activeDirectoryToolStripMenuItem";
-            this.activeDirectoryToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.activeDirectoryToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.activeDirectoryToolStripMenuItem.Text = "Active Directory";
             this.activeDirectoryToolStripMenuItem.Click += new System.EventHandler(this.activeDirectoryToolStripMenuItem_Click);
             // 
             // networkDetectionToolStripMenuItem
             // 
             this.networkDetectionToolStripMenuItem.Name = "networkDetectionToolStripMenuItem";
-            this.networkDetectionToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.networkDetectionToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.networkDetectionToolStripMenuItem.Text = "Network Detection";
             this.networkDetectionToolStripMenuItem.Click += new System.EventHandler(this.networkDetectionToolStripMenuItem_Click);
             // 
             // muRDToolStripMenuItem
             // 
             this.muRDToolStripMenuItem.Name = "muRDToolStripMenuItem";
-            this.muRDToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.muRDToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.muRDToolStripMenuItem.Text = "MuRD File";
             this.muRDToolStripMenuItem.Click += new System.EventHandler(this.muRDToolStripMenuItem_Click);
             // 
             // rDPToolStripMenuItem
             // 
             this.rDPToolStripMenuItem.Name = "rDPToolStripMenuItem";
-            this.rDPToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.rDPToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.rDPToolStripMenuItem.Text = "RDP File";
             this.rDPToolStripMenuItem.Click += new System.EventHandler(this.rDPToolStripMenuItem_Click);
             // 
             // vRDBackupFileToolStripMenuItem
             // 
             this.vRDBackupFileToolStripMenuItem.Name = "vRDBackupFileToolStripMenuItem";
-            this.vRDBackupFileToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.vRDBackupFileToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
             this.vRDBackupFileToolStripMenuItem.Text = "vRD Backup File";
             this.vRDBackupFileToolStripMenuItem.Click += new System.EventHandler(this.vRDBackupFileToolStripMenuItem_Click);
-            // 
-            // colCredential
-            // 
-            this.colCredential.Text = "Credential";
             // 
             // OrganizeFavoritesForm
             // 

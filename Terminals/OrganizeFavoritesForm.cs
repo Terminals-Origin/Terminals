@@ -139,11 +139,17 @@ namespace Terminals
             FavoriteConfigurationElement favorite = GetSelectedFavorite();
             if (favorite != null)
             {
-                string oldName = favorite.Name;
-                favorite.Name = GetUniqeName(favorite.Name);
-                Settings.DeleteFavorite(favorite.Name);
-                Settings.AddFavorite(favorite, Settings.HasToolbarButton(oldName));
-                LoadConnections();
+                InputBoxResult result = InputBox.Show("New Connection Name");
+                if (result.ReturnCode == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(result.Text))
+                {
+                    FavoriteConfigurationElement newFav = (favorite.Clone() as FavoriteConfigurationElement);
+                    if (newFav != null)
+                    {
+                        newFav.Name = result.Text;
+                        Settings.AddFavorite(newFav, Settings.HasToolbarButton(newFav.Name));
+                        LoadConnections();
+                    }
+                }
             }
         }
 

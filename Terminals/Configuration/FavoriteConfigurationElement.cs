@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Configuration;
 
 namespace Terminals
 {
-
-    public class FavoriteConfigurationElement : ConfigurationElement
+    [Serializable]
+    public class FavoriteConfigurationElement : ConfigurationElement, ICloneable
     {
         public FavoriteConfigurationElement()
         {
@@ -210,7 +211,7 @@ namespace Terminals
             }
         }
 
-        
+
         [ConfigurationProperty("disableWindowsKey", IsRequired = false, DefaultValue = false)]
         public bool DisableWindowsKey
         {
@@ -784,20 +785,26 @@ namespace Terminals
         }
 
         [ConfigurationProperty("redirectPorts")]
-        public bool RedirectPorts {
-            get {
+        public bool RedirectPorts
+        {
+            get
+            {
                 return (bool)this["redirectPorts"];
             }
-            set {
+            set
+            {
                 this["redirectPorts"] = value;
             }
         }
         [ConfigurationProperty("newWindow")]
-        public bool NewWindow {
-            get {
+        public bool NewWindow
+        {
+            get
+            {
                 return (bool)this["newWindow"];
             }
-            set {
+            set
+            {
                 this["newWindow"] = value;
             }
         }
@@ -865,12 +872,14 @@ namespace Terminals
                 this["url"] = value;
             }
         }
-        static public string EncodeTo64(string toEncode) {
+        static public string EncodeTo64(string toEncode)
+        {
             byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(toEncode);
             string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
             return returnValue;
         }
-        static public string DecodeFrom64(string encodedData) {
+        static public string DecodeFrom64(string encodedData)
+        {
             byte[] encodedDataAsBytes = System.Convert.FromBase64String(encodedData);
             string returnValue = System.Text.ASCIIEncoding.ASCII.GetString(encodedDataAsBytes);
             return returnValue;
@@ -879,49 +888,64 @@ namespace Terminals
 
 
         [ConfigurationProperty("notes")]
-        public string Notes {
-            get {
-                
+        public string Notes
+        {
+            get
+            {
+
                 return DecodeFrom64((string)this["notes"]);
             }
-            set {
+            set
+            {
                 this["notes"] = EncodeTo64(value);
             }
         }
 
         [ConfigurationProperty("icaServerINI")]
-        public string IcaServerINI {
-            get {
+        public string IcaServerINI
+        {
+            get
+            {
                 return (string)this["icaServerINI"];
             }
-            set {
+            set
+            {
                 this["icaServerINI"] = value;
             }
         }
         [ConfigurationProperty("icaClientINI")]
-        public string IcaClientINI {
-            get {
+        public string IcaClientINI
+        {
+            get
+            {
                 return (string)this["icaClientINI"];
             }
-            set {
+            set
+            {
                 this["icaClientINI"] = value;
             }
         }
         [ConfigurationProperty("icaEnableEncryption")]
-        public bool IcaEnableEncryption {
-            get {
+        public bool IcaEnableEncryption
+        {
+            get
+            {
                 return (bool)this["icaEnableEncryption"];
             }
-            set {
+            set
+            {
                 this["icaEnableEncryption"] = value;
             }
         }
         [ConfigurationProperty("icaEncryptionLevel")]
-        public string IcaEncryptionLevel {
-            get {
+        public string IcaEncryptionLevel
+        {
+            get
+            {
                 return (string)this["icaEncryptionLevel"];
             }
-            set {
+            set
+            {
                 this["icaEncryptionLevel"] = value;
             }
         }
@@ -1168,11 +1192,11 @@ namespace Terminals
             {
                 int result = 0;
 
-                if(DisableCursorShadow) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSOR_SHADOW;
-                if(DisableCursorBlinking) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSORSETTINGS;
-                if(DisableFullWindowDrag) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_FULLWINDOWDRAG;
-                if(DisableMenuAnimations) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_MENUANIMATIONS;
-                if(DisableTheming) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_THEMING;
+                if (DisableCursorShadow) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSOR_SHADOW;
+                if (DisableCursorBlinking) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSORSETTINGS;
+                if (DisableFullWindowDrag) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_FULLWINDOWDRAG;
+                if (DisableMenuAnimations) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_MENUANIMATIONS;
+                if (DisableTheming) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_THEMING;
                 if (DisableWallPaper) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_WALLPAPER;
                 if (EnableDesktopComposition) result += (int)Terminals.PerfomanceOptions.TS_PERF_ENABLE_DESKTOP_COMPOSITION;
                 if (EnableFontSmoothing) result += (int)Terminals.PerfomanceOptions.TS_PERF_ENABLE_FONT_SMOOTHING;
@@ -1182,6 +1206,109 @@ namespace Terminals
             }
         }
 
-    }
 
+        #region ICloneable Members
+        public object Clone()
+        {
+            FavoriteConfigurationElement fav = new FavoriteConfigurationElement
+                                                   {
+                                                       AcceleratorPassthrough = this.AcceleratorPassthrough,
+                                                       AllowBackgroundInput = this.AllowBackgroundInput,
+                                                       AuthMethod = this.AuthMethod,
+                                                       BitmapPeristence = this.BitmapPeristence,
+                                                       Colors = this.Colors,
+                                                       ConnectionTimeout = this.ConnectionTimeout,
+                                                       ConnectToConsole = this.ConnectToConsole,
+                                                       ConsoleBackColor = this.ConsoleBackColor,
+                                                       ConsoleCols = this.ConsoleCols,
+                                                       ConsoleCursorColor = this.ConsoleCursorColor,
+                                                       ConsoleFont = this.ConsoleFont,
+                                                       ConsoleRows = this.ConsoleRows,
+                                                       ConsoleTextColor = this.ConsoleTextColor,
+                                                       Credential = this.Credential,
+                                                       DesktopShare = this.DesktopShare,
+                                                       DesktopSize = this.DesktopSize,
+                                                       DesktopSizeHeight = this.DesktopSizeHeight,
+                                                       DesktopSizeWidth = this.DesktopSizeWidth,
+                                                       DisableControlAltDelete = this.DisableControlAltDelete,
+                                                       DisableCursorBlinking = this.DisableCursorBlinking,
+                                                       DisableCursorShadow = this.DisableCursorShadow,
+                                                       DisableFullWindowDrag = this.DisableFullWindowDrag,
+                                                       DisableMenuAnimations = this.DisableMenuAnimations,
+                                                       DisableTheming = this.DisableTheming,
+                                                       DisableWallPaper = this.DisableWallPaper,
+                                                       DisableWindowsKey = this.DisableWindowsKey,
+                                                       DisplayConnectionBar = this.DisplayConnectionBar,
+                                                       DomainName = this.DomainName,
+                                                       DoubleClickDetect = this.DoubleClickDetect,
+                                                       EnableCompression = this.EnableCompression,
+                                                       EnableDesktopComposition = this.EnableDesktopComposition,
+                                                       EnableEncryption = this.EnableCompression,
+                                                       EnableFontSmoothing = this.EnableFontSmoothing,
+                                                       EnableSecuritySettings = this.EnableSecuritySettings,
+                                                       EnableTLSAuthentication = this.EnableTLSAuthentication,
+                                                       EncryptedPassword = EncryptedPassword,
+                                                       ExecuteBeforeConnect = this.ExecuteBeforeConnect,
+                                                       ExecuteBeforeConnectArgs = this.ExecuteBeforeConnectArgs,
+                                                       ExecuteBeforeConnectCommand = this.ExecuteBeforeConnectCommand,
+                                                       ExecuteBeforeConnectInitialDirectory =
+                                                           this.ExecuteBeforeConnectInitialDirectory,
+                                                       ExecuteBeforeConnectWaitForExit =
+                                                           this.ExecuteBeforeConnectWaitForExit,
+                                                       GrabFocusOnConnect = this.GrabFocusOnConnect,
+                                                       ICAApplicationName = this.ICAApplicationName,
+                                                       ICAApplicationWorkingFolder = this.ICAApplicationWorkingFolder,
+                                                       ICAApplicationPath = this.ICAApplicationPath,
+                                                       IcaClientINI = this.IcaClientINI,
+                                                       IcaEnableEncryption = this.IcaEnableEncryption,
+                                                       IcaEncryptionLevel = this.IcaEncryptionLevel,
+                                                       IcaServerINI = this.IcaServerINI,
+                                                       IdleTimeout = this.IdleTimeout,
+                                                       KeyTag = this.KeyTag,
+                                                       Name = this.Name,
+                                                       NewWindow = this.NewWindow,
+                                                       Notes = this.Notes,
+                                                       OverallTimeout = this.OverallTimeout,
+                                                       Password = this.Password,
+                                                       Port = this.Port,
+                                                       Protocol = this.Protocol,
+                                                       RedirectClipboard = this.RedirectClipboard,
+                                                       RedirectDevices = this.RedirectDevices,
+                                                       RedirectDrives = this.RedirectDrives,
+                                                       RedirectPorts = this.RedirectPorts,
+                                                       RedirectPrinters = this.RedirectPrinters,
+                                                       RedirectSmartCards = this.RedirectSmartCards,
+                                                       SecurityFullScreen = this.SecurityFullScreen,
+                                                       SecurityStartProgram = this.SecurityStartProgram,
+                                                       SecurityWorkingFolder = this.SecurityWorkingFolder,
+                                                       ServerName = this.ServerName,
+                                                       ShutdownTimeout = this.ShutdownTimeout,
+                                                       Sounds = this.Sounds,
+                                                       SSH1 = this.SSH1,
+                                                       Tags = this.Tags,
+                                                       Telnet = this.Telnet,
+                                                       TelnetBackColor = this.TelnetBackColor,
+                                                       TelnetCols = this.TelnetCols,
+                                                       TelnetCursorColor = this.TelnetCursorColor,
+                                                       TelnetFont = this.TelnetFont,
+                                                       TelnetRows = this.TelnetRows,
+                                                       TelnetTextColor = this.TelnetTextColor,
+                                                       ToolBarIcon = this.ToolBarIcon,
+                                                       Url = this.Url,
+                                                       UserName = this.UserName,
+                                                       VMRCAdministratorMode = this.VMRCAdministratorMode,
+                                                       VMRCReducedColorsMode = this.VMRCReducedColorsMode,
+                                                       VncAutoScale = this.VncAutoScale,
+                                                       VncDisplayNumber = this.VncDisplayNumber,
+                                                       VncViewOnly = this.VncViewOnly
+                                                   };
+
+
+            return fav;
+
+        }
+
+        #endregion
+    }
 }
+
