@@ -62,8 +62,8 @@ namespace Terminals {
                     ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
 
                 //Settings.RebuildTagIndex();
-
-
+                tsbTags.Checked = Settings.ShowFavoritePanel;
+                
                 LoadFavorites();
                 LoadFavorites("");
                 System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ReloadSpecialCommands), null);
@@ -513,16 +513,17 @@ namespace Terminals {
                 Settings.ToolbarSettings = newSettings;
             }
         }
-        private bool FavoritesShowing = Settings.EnableFavoritesPanel;
+        
         private void HideShowFavoritesPanel(bool Show)
         {
             if (Settings.EnableFavoritesPanel)
             {
-                if (Show && FavoritesShowing)
+                if (Show)
                 {
                     splitContainer1.Panel1MinSize = 15;
                     splitContainer1.SplitterDistance = Settings.FavoritePanelWidth;
                     splitContainer1.Panel1Collapsed = false;
+                    splitContainer1.IsSplitterFixed = false;
                     pnlHideTagsFavorites.Show();
                     pnlShowTagsFavorites.Hide();
                 }
@@ -530,10 +531,12 @@ namespace Terminals {
                 {
                     splitContainer1.Panel1MinSize = 9;
                     splitContainer1.SplitterDistance = 9;
+                    splitContainer1.IsSplitterFixed = true;
                     pnlHideTagsFavorites.Hide();
                     pnlShowTagsFavorites.Show();
-
                 }
+                Settings.ShowFavoritePanel = Show;
+                tsbTags.Checked = Show;
             }
             else
             {
@@ -561,7 +564,7 @@ namespace Terminals {
         {
             this.Text = Program.AboutText;
 
-            HideShowFavoritesPanel(Settings.EnableFavoritesPanel);
+            HideShowFavoritesPanel(Settings.ShowFavoritePanel);
 
             //ToolStripManager.LoadSettings(this);
             ToolStripSettings newSettings = Settings.ToolbarSettings;
@@ -1657,7 +1660,7 @@ namespace Terminals {
             if(frmOptions.ShowDialog() == DialogResult.OK)
             {
                 this.groupsToolStripMenuItem.Visible = Settings.EnableGroupsMenu;
-                HideShowFavoritesPanel(Settings.EnableFavoritesPanel);
+                HideShowFavoritesPanel(Settings.ShowFavoritePanel);
 
 
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
@@ -1771,13 +1774,11 @@ namespace Terminals {
 
         private void pbShowTags_Click(object sender, EventArgs e)
         {
-            FavoritesShowing = !FavoritesShowing;
             HideShowFavoritesPanel(true);
         }
 
         private void pbHideTags_Click(object sender, EventArgs e)
         {
-            FavoritesShowing = !FavoritesShowing;
             HideShowFavoritesPanel(false);
         }
 

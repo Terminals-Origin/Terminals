@@ -183,7 +183,6 @@ namespace Terminals
             }
         }
 
-        
         [ConfigurationProperty("enableFavoritesPanel", DefaultValue = true)]
         public bool EnableFavoritesPanel {
             get {
@@ -196,6 +195,23 @@ namespace Terminals
                 this["enableFavoritesPanel"] = value;
             }
         }
+
+        [ConfigurationProperty("showFavoritePanel", DefaultValue = true)]
+        public bool ShowFavoritePanel
+        {
+            get
+            {
+                if (this["showFavoritePanel"] != null)
+                    return (bool)this["showFavoritePanel"];
+                else
+                    return true;
+            }
+            set
+            {
+                this["showFavoritePanel"] = value;
+            }
+        }
+
         [ConfigurationProperty("enableGroupsMenu", DefaultValue = true)]
         public bool EnableGroupsMenu {
             get {

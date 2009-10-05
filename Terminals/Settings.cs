@@ -934,6 +934,19 @@ namespace Terminals
                 if(!DelayConfigurationSave) configuration.Save();
             }
         }
+        public static bool ShowFavoritePanel
+        {
+            get
+            {
+                return GetSection().ShowFavoritePanel;
+            }
+            set
+            {
+                Configuration configuration = Config;
+                GetSection(configuration).ShowFavoritePanel = value;
+                if (!DelayConfigurationSave) configuration.Save();
+            }
+        }
         public static bool WarnOnConnectionClose
         {
             get
