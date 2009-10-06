@@ -35,12 +35,19 @@
             this.DeleteButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.DoneButton = new System.Windows.Forms.Button();
+            this.columnName = new System.Windows.Forms.ColumnHeader();
+            this.columnDomain = new System.Windows.Forms.ColumnHeader();
+            this.columnUserName = new System.Windows.Forms.ColumnHeader();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // CredentialsListView
             // 
             this.CredentialsListView.Activation = System.Windows.Forms.ItemActivation.OneClick;
+            this.CredentialsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnName,
+            this.columnUserName,
+            this.columnDomain});
             this.CredentialsListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CredentialsListView.FullRowSelect = true;
             this.CredentialsListView.GridLines = true;
@@ -107,6 +114,21 @@
             this.DoneButton.UseVisualStyleBackColor = true;
             this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
             // 
+            // columnName
+            // 
+            this.columnName.Text = "Name";
+            this.columnName.Width = 110;
+            // 
+            // columnDomain
+            // 
+            this.columnDomain.Text = "Domain";
+            this.columnDomain.Width = 115;
+            // 
+            // columnUserName
+            // 
+            this.columnUserName.Text = "User Name";
+            this.columnUserName.Width = 120;
+            // 
             // CredentialManager
             // 
             this.AcceptButton = this.DoneButton;
@@ -136,6 +158,9 @@
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button DoneButton;
+        private System.Windows.Forms.ColumnHeader columnName;
+        private System.Windows.Forms.ColumnHeader columnDomain;
+        private System.Windows.Forms.ColumnHeader columnUserName;
 
     }
 }

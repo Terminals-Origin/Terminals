@@ -18,18 +18,9 @@ namespace Terminals.Credentials
 
         public void BindList()
         {
-            string selectedItem = "";
-            if (CredentialsListView.SelectedItems != null && CredentialsListView.SelectedItems.Count > 0)
-            {
-                selectedItem = CredentialsListView.SelectedItems[0].Text;
-            }
-            CredentialsListView.Clear();
-            CredentialsListView.Columns.Add("Name");
-            CredentialsListView.Columns.Add("Domain");
-            CredentialsListView.Columns.Add("Username");
-
+            CredentialsListView.Items.Clear();
+            
             List<CredentialSet> list = Settings.SavedCredentials;
-
 
             foreach (CredentialSet s in list)
             {
@@ -37,21 +28,7 @@ namespace Terminals.Credentials
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, s.Domain));
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, s.Username));
                 CredentialsListView.Items.Add(item);
-                item.Selected = false;
-                if (!string.IsNullOrEmpty(selectedItem))
-                {
-                    if (item.Text == selectedItem)
-                    {
-                        item.Selected = true;
-                        item.Focused = true;
-                    }
-                }
             }
-            CredentialsListView.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            if (CredentialsListView.Columns[0].Width < 100) CredentialsListView.Columns[0].Width = 100;
-            if (CredentialsListView.Columns[1].Width < 100) CredentialsListView.Columns[1].Width = 100;
-            if (CredentialsListView.Columns[2].Width < 100) CredentialsListView.Columns[2].Width = 100;
-
         }
 
 
@@ -60,15 +37,15 @@ namespace Terminals.Credentials
             this.Close();
         }
 
-        private void AddButton_Click(object sender, EventArgs e)
+        private void CredentialManager_Load(object sender, EventArgs e)
         {
-            ManageCredentialForm frm = new ManageCredentialForm();
-            frm.ShowDialog();
             BindList();
         }
 
-        private void CredentialManager_Load(object sender, EventArgs e)
+        private void AddButton_Click(object sender, EventArgs e)
         {
+            ManageCredentialForm frm = new ManageCredentialForm(null);
+            frm.ShowDialog();
             BindList();
         }
 
@@ -82,10 +59,10 @@ namespace Terminals.Credentials
                 {
                     if (set.Name == name)
                     {
-                        ManageCredentialForm mgr = new ManageCredentialForm();
-                        mgr.EditedSet = set;
+                        ManageCredentialForm mgr = new ManageCredentialForm(set);
                         mgr.ShowDialog();
                         BindList();
+                        break;
                     }
                 }
             }
@@ -110,7 +87,7 @@ namespace Terminals.Credentials
                 }
                 if (foundSet != null)
                 {
-                    if (System.Windows.Forms.MessageBox.Show("Are you sure you want to delete this Credential?", "Confirmation Required", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("Are you sure you want to delete credential "+name+"?", "Confirmation Required", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         list.Remove(foundSet);
                         Settings.SavedCredentials = list;

@@ -582,7 +582,11 @@ namespace Terminals
         {
             get
             {
-                return (string)this["domainName"];
+                Credentials.CredentialSet cred = Credentials.CredentialSet.CredentialByName(Credential);
+                if (cred != null)
+                    return cred.Domain;
+                else
+                    return (string)this["domainName"];
             }
             set
             {
@@ -620,7 +624,11 @@ namespace Terminals
         {
             get
             {
-                return (string)this["userName"];
+                Credentials.CredentialSet cred = Credentials.CredentialSet.CredentialByName(Credential);
+                if (cred != null)
+                    return cred.Username;
+                else
+                    return (string)this["userName"];
             }
             set
             {
@@ -645,7 +653,11 @@ namespace Terminals
         {
             get
             {
-                return Functions.DecryptPassword(EncryptedPassword);
+                Credentials.CredentialSet cred = Credentials.CredentialSet.CredentialByName(Credential);
+                if (cred != null)
+                    return cred.Password;
+                else
+                    return Functions.DecryptPassword(EncryptedPassword);
             }
             set
             {
@@ -653,7 +665,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("vncAutoScale", IsRequired = false)]
+        [ConfigurationProperty("vncAutoScale", IsRequired = false, DefaultValue = false)]
         public bool VncAutoScale
         {
             get
@@ -666,7 +678,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("vncViewOnly", IsRequired = false)]
+        [ConfigurationProperty("vncViewOnly", IsRequired = false, DefaultValue = false)]
         public bool VncViewOnly
         {
             get
@@ -679,7 +691,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("vncDisplayNumber", IsRequired = false)]
+        [ConfigurationProperty("vncDisplayNumber", IsRequired = false, DefaultValue = 0)]
         public int VncDisplayNumber
         {
             get
@@ -1247,7 +1259,7 @@ namespace Terminals
                                                        EnableFontSmoothing = this.EnableFontSmoothing,
                                                        EnableSecuritySettings = this.EnableSecuritySettings,
                                                        EnableTLSAuthentication = this.EnableTLSAuthentication,
-                                                       EncryptedPassword = EncryptedPassword,
+                                                       EncryptedPassword = this.EncryptedPassword,
                                                        ExecuteBeforeConnect = this.ExecuteBeforeConnect,
                                                        ExecuteBeforeConnectArgs = this.ExecuteBeforeConnectArgs,
                                                        ExecuteBeforeConnectCommand = this.ExecuteBeforeConnectCommand,

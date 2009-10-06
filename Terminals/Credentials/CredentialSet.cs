@@ -20,7 +20,8 @@ namespace Terminals.Credentials
         public static CredentialSet CredentialByName(string Name)
         {
             List<CredentialSet> list = Settings.SavedCredentials;
-            if (list == null) return null;
+            if (string.IsNullOrEmpty(Name) || list == null || list.Count < 1)
+                return null;
             foreach (CredentialSet set in list)
             {
                 if (set.Name == Name) return set;

@@ -35,13 +35,13 @@ namespace Terminals.Connections {
 
                 Controls.Add(iIcaClient);
 
-
                 string domainName = Favorite.DomainName;
-                if(domainName == null || domainName == "") domainName = Settings.DefaultDomain;
                 string pass = Favorite.Password;
-                if(pass == null || pass == "") pass = Settings.DefaultPassword;
                 string userName = Favorite.UserName;
-                if(userName == null || userName == "") userName = Settings.DefaultUsername;
+
+                if (string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
+                if (string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
+                if (string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
 
                 icaPassword = pass;
 

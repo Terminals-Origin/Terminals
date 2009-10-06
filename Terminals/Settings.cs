@@ -1254,11 +1254,15 @@ namespace Terminals
             }
         }
 
+        private static List<Credentials.CredentialSet> savedCredentials;
         public static List<Credentials.CredentialSet> SavedCredentials
         {
             get
             {
-                List<Credentials.CredentialSet> list = new List<Terminals.Credentials.CredentialSet>();
+                if (savedCredentials != null)
+                    return savedCredentials;
+
+                savedCredentials = new List<Terminals.Credentials.CredentialSet>();
 
                 string source = GetSection().SavedCredentials;
 
@@ -1270,14 +1274,13 @@ namespace Terminals
                     configuration.Save();
                 }
 
-
                 if (System.IO.File.Exists(source))
                 {
-                    list = (Unified.Serialize.DeserializeXMLFromDisk(source, typeof(List<Credentials.CredentialSet>)) as List<Credentials.CredentialSet>);
+                    savedCredentials = (Unified.Serialize.DeserializeXMLFromDisk(source, typeof(List<Credentials.CredentialSet>)) as List<Credentials.CredentialSet>);
 
-                    if (list != null)
+                    if (savedCredentials != null)
                     {
-                        foreach (Credentials.CredentialSet set in list)
+                        foreach (Credentials.CredentialSet set in savedCredentials)
                         {
                             if (!string.IsNullOrEmpty(set.Password))
                                 set.Password = Functions.DecryptPassword(set.Password);
@@ -1286,13 +1289,15 @@ namespace Terminals
                 }
                 else
                 {
-                    SavedCredentials = new List<Terminals.Credentials.CredentialSet>();
+                    SavedCredentials = savedCredentials;
                 }
-                return list;
+
+                return savedCredentials;
 
             }
             set
             {
+                savedCredentials = value;
                 Configuration configuration = Config;
 
                 List<Credentials.CredentialSet> newSet = new List<Terminals.Credentials.CredentialSet>();
@@ -1300,8 +1305,9 @@ namespace Terminals
                 {
                     foreach (Credentials.CredentialSet set in value)
                     {
-                        if (!string.IsNullOrEmpty(set.Password)) set.Password = Functions.EncryptPassword(set.Password);
-                        newSet.Add((Credentials.CredentialSet)set.Clone());
+                        Credentials.CredentialSet ns = (Credentials.CredentialSet)set.Clone();
+                        if (!string.IsNullOrEmpty(ns.Password)) ns.Password = Functions.EncryptPassword(ns.Password);
+                        newSet.Add(ns);
                     }
                 }
 

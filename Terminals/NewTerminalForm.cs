@@ -18,10 +18,8 @@ namespace Terminals
     {
         Terminals.Network.Servers.TerminalServerManager terminalServerManager1 = new Terminals.Network.Servers.TerminalServerManager();
 
-        private void FillCredentails(FavoriteConfigurationElement SelectedFavorite)
+        private void FillCredentials(string CredentialName)
         {
-            if (SelectedFavorite == null) SelectedFavorite = Favorite;
-
             this.CredentialDropdown.Items.Clear();
             List<Credentials.CredentialSet> creds = Settings.SavedCredentials;
             this.CredentialDropdown.Items.Add("(custom)");
@@ -30,10 +28,10 @@ namespace Terminals
             foreach (Credentials.CredentialSet item in creds)
             {                
                 int index = this.CredentialDropdown.Items.Add(item);
-                if (SelectedFavorite != null && SelectedFavorite.Credential == item.Name) selIndex = index;
+                if (!string.IsNullOrEmpty(CredentialName) && CredentialName == item.Name)
+                    selIndex = index;
             }
             this.CredentialDropdown.SelectedIndex = selIndex;
-
         }
 
         public NewTerminalForm(string server, bool connect)
@@ -41,7 +39,7 @@ namespace Terminals
             InitializeComponent();
 
             LoadMRUs();
-            FillCredentails(null);
+            FillCredentials(null);
 
             cmbResolution.SelectedIndex = 6;
             cmbColors.SelectedIndex = 1;
@@ -254,24 +252,7 @@ namespace Terminals
             SSHPreferences.KeyTag = favorite.KeyTag;
             SSHPreferences.SSH1 = favorite.SSH1;
 
-            FillCredentails(favorite);
-
-            //if (!string.IsNullOrEmpty(favorite.Credential))
-            //{
-            //    Credentials.CredentialSet selectedItem = null;
-            //    foreach (object o in CredentialDropdown.Items)
-            //    {
-            //        Credentials.CredentialSet set = (o as Credentials.CredentialSet);
-            //        if (set != null && set.Name == favorite.Credential)
-            //        {
-            //            selectedItem = set;
-            //            break;
-            //        }
-            //    }
-            //    if (selectedItem != null) 
-            //        CredentialDropdown.SelectedItem = selectedItem;
-
-            //}
+            FillCredentials(favorite.Credential);
 
         }
 
@@ -295,11 +276,12 @@ namespace Terminals
                 favorite.ServerName = ValidateServer(cmbServers.Text);
 
                 Credentials.CredentialSet set = (CredentialDropdown.SelectedItem as Credentials.CredentialSet);
-                if (set != null)
-                {
-                    favorite.Credential = set.Name;
-                }
+                favorite.Credential = (set == null ? "" : set.Name);
 
+                favorite.DomainName = cmbDomains.Text;
+                favorite.UserName = cmbUsers.Text;
+                favorite.Password = (chkSavePassword.Checked ? txtPassword.Text : "");
+                
                 favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
                 favorite.Colors = (Colors)cmbColors.SelectedIndex;
                 favorite.ConnectToConsole = chkConnectToConsole.Checked;
@@ -803,9 +785,10 @@ namespace Terminals
 
         private void CredentialManagerPicturebox_Click(object sender, EventArgs e)
         {
+            string cred = ((Credentials.CredentialSet)CredentialDropdown.SelectedItem).Name;
             Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
             mgr.ShowDialog();
-            FillCredentails(Favorite);
+            FillCredentials(cred);
         }
 
         private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)
@@ -819,6 +802,7 @@ namespace Terminals
                 cmbDomains.Text = set.Domain;
                 cmbUsers.Text = set.Username;
                 txtPassword.Text = set.Password;
+                chkSavePassword.Checked = true;
             }
         }
 

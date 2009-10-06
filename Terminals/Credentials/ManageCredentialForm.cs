@@ -10,51 +10,61 @@ namespace Terminals.Credentials
 {
     public partial class ManageCredentialForm : Form
     {
-        public ManageCredentialForm()
+        private string editedCred = "";
+
+        public ManageCredentialForm(CredentialSet editedSet)
         {
             InitializeComponent();
-        }
-
-        CredentialSet editedSet = null;
-        public CredentialSet EditedSet { get { return editedSet; } 
-            set { 
-                editedSet = value;
-                if (EditedSet != null)
-                {
-                    NameTextbox.Enabled = false;
-                    DomainTextbox.Text = editedSet.Domain;
-                    NameTextbox.Text = editedSet.Name;
-                    PasswordTextbox.Text = editedSet.Password;
-                    UsernameTextbox.Text = editedSet.Username;
-                }
-            } 
+            if (editedSet != null)
+            {
+                NameTextbox.Enabled = false;
+                DomainTextbox.Text = editedSet.Domain;
+                NameTextbox.Text = editedSet.Name;
+                PasswordTextbox.Text = editedSet.Password;
+                UsernameTextbox.Text = editedSet.Username;
+                editedCred = editedSet.Name;
+            }
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(NameTextbox.Text) || string.IsNullOrEmpty(UsernameTextbox.Text))
+            {
+                MessageBox.Show("You must enter both a Name and User Name for the credential", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
+            List<CredentialSet> list = Settings.SavedCredentials;
+
+            CredentialSet foundSet = null;
+            foreach (CredentialSet item in list)
+            {
+                if (item.Name.ToLower() == NameTextbox.Text.ToLower())
+                {
+                    foundSet = item;
+                    break;
+                }
+            }
+            if (foundSet != null)
+            {
+                if (foundSet.Name == editedCred)
+                    list.Remove(foundSet);
+                else
+                {
+                    MessageBox.Show("The Credential Name you entered already exists", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             CredentialSet set = new CredentialSet();
             set.Domain = DomainTextbox.Text;
             set.Name = NameTextbox.Text;
             set.Password = PasswordTextbox.Text;
             set.Username = UsernameTextbox.Text;
 
-            List<CredentialSet> list = Settings.SavedCredentials;
-
-            CredentialSet foundSet = null;
-            foreach (CredentialSet item in list)
-            {
-                if (item.Name == set.Name)
-                {
-                    foundSet = item;
-                    break;
-                }
-            }
-            if (foundSet != null) list.Remove(foundSet);
             list.Add(set);
-
             Settings.SavedCredentials = list;
 
-            this.EditedSet = set;
             this.Close();
         }
 

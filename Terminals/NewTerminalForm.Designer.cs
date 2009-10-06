@@ -1700,7 +1700,6 @@ namespace Terminals
         this.CredentialDropdown.Location = new System.Drawing.Point(117, 86);
         this.CredentialDropdown.Name = "CredentialDropdown";
         this.CredentialDropdown.Size = new System.Drawing.Size(334, 21);
-        this.CredentialDropdown.Sorted = true;
         this.CredentialDropdown.TabIndex = 3;
         this.CredentialDropdown.SelectedIndexChanged += new System.EventHandler(this.CredentialDropdown_SelectedIndexChanged);
         // 
