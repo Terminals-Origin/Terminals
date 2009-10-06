@@ -48,11 +48,16 @@ namespace WalburySoftware
             StringCollection ScrapedText = new StringCollection();
 
             string row = "";
+            int cStart = 0;
+            int cEnd = this._cols;
 
             for (int r = StartRow; r <= EndRow; r++)
             {
-
-                for (int c = StartColumn; c <= EndColumn; c++)
+                if (r == StartRow)
+                    cStart = StartColumn;
+                if (r == EndRow)
+                    cEnd = EndColumn;
+                for (int c = cStart; c <= cEnd; c++)
                 {
                     char val = this.CharGrid[r][c];;
                     if (val == '\0') break;
@@ -60,11 +65,9 @@ namespace WalburySoftware
                 }
                 ScrapedText.Add(row);
                 row = "";
+                cStart = 0;
+                cEnd = this._cols;
             }
-
-
-
-
 
 			return ScrapedText;
 		}
@@ -515,6 +518,7 @@ namespace WalburySoftware
 		}
 		#endregion
 		#region Private Methods
+
 		private void mnuCopy_Click (object sender, System.EventArgs e)
 		{
 			Point start = new Point();
@@ -594,17 +598,31 @@ namespace WalburySoftware
             {
                 string[] lines = new string[sc.Count];
                 sc.CopyTo(lines, 0);
-                Clipboard.SetText(string.Join("\n", lines));
+                try
+                {
+                    Clipboard.SetDataObject(string.Join("\n", lines),false,5,10);
+                }
+                catch (Exception err)
+                {
+                    //MessageBox.Show("Copy Error occured: " + err.ToString());
+                }
             }
 		}
 		private void mnuPaste_Click (object sender, System.EventArgs e)
 		{
-			DispatchMessage(this, Clipboard.GetText());
+            try
+            {
+                DispatchMessage(this, Clipboard.GetText());
+            }
+            catch (Exception err)
+            {
+                //MessageBox.Show("Paste Error occured: " + err.ToString());
+            }
 		}
 		private void mnuCopyPaste_Click (object sender, System.EventArgs e)
 		{
 			mnuCopy_Click(sender, e);
-			DispatchMessage(this, Clipboard.GetText());			
+            mnuPaste_Click(sender, e);
 		}
 		private void HandleScroll(Object sender, ScrollEventArgs se)
 		{
