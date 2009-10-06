@@ -143,6 +143,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CredentialManager";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Credential Manager";
             this.Load += new System.EventHandler(this.CredentialManager_Load);
             this.panel1.ResumeLayout(false);

@@ -25,8 +25,8 @@ namespace Terminals.Credentials
             foreach (CredentialSet s in list)
             {
                 ListViewItem item = new ListViewItem(s.Name);
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, s.Domain));
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, s.Username));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, s.Domain));
                 CredentialsListView.Items.Add(item);
             }
         }
