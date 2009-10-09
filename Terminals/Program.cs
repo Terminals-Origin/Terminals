@@ -1,20 +1,29 @@
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Threading;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Resources;
+using System.Reflection;
+using System.Threading;
+using System.Text;
+using System.Windows.Forms;
 
 namespace Terminals
 {
     static class Program
     {
-        public static string TerminalsVersion = "1.8 Beta";
-        public static string SupportedProtocols = "RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix, Amazon S3";
+//        public static string TerminalsVersion = "1.8 Beta";
+//        public static string SupportedProtocols = "RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix, Amazon S3";
         //  reminder to update the buildate for each release
-        public static DateTime BuildDate = new DateTime(2009, 10, 5);  //used for checking project releases.  yeah yeah, this could be smarter about things...
-        public static string AboutText = string.Format("Terminals v{0} ({1}) - {2}", TerminalsVersion, SupportedProtocols, BuildDate.ToShortDateString());
+//        public static DateTime BuildDate = new DateTime(2009, 10, 5);  //used for checking project releases.  yeah yeah, this could be smarter about things...
+    public static DateTime BuildDate = DateTime.Now;
+//        public static string SupportedProtocols = Assembly.GetExecutingAssembly().
+
+    public static Assembly aAssembly = Assembly.GetExecutingAssembly();
+    public static string TerminalsVersion = aAssembly.GetName().Version.ToString();
+    public static AssemblyDescriptionAttribute desc = (AssemblyDescriptionAttribute)AssemblyDescriptionAttribute.GetCustomAttribute(aAssembly, typeof(AssemblyDescriptionAttribute));
+    public static AssemblyTitleAttribute title = (AssemblyTitleAttribute)AssemblyTitleAttribute.GetCustomAttribute(aAssembly, typeof(AssemblyTitleAttribute));
+
+    public static string AboutText = string.Format("{0} v{1} ({2}) - {3}", title.Title, TerminalsVersion, desc.Description, BuildDate.ToShortDateString());
         public static Mutex mtx;
 
         public static string FlickrAPIKey = "9362619635c6f6c20e7c14fe4b67c2a0";
@@ -36,8 +45,6 @@ namespace Terminals
             mtx = new Mutex(false, "TerminalsMutex");
 
             Terminals.Logging.Log.Info("Terminals " + Program.TerminalsVersion + " started");
-
-            //System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("fr-FR");
             
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
@@ -58,13 +65,9 @@ namespace Terminals
                 Security.RequestPassword rp = new Terminals.Security.RequestPassword();
                 DialogResult result = rp.ShowDialog();
                 if(result == DialogResult.Cancel)
-                {
                     Application.Exit();
-                }
                 else
-                {
                     Application.Run(new MainForm());
-                }
             }
             else
             {

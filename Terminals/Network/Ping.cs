@@ -144,7 +144,6 @@ namespace Metro
             PointPairList avgList = new PointPairList();
             int x = 1;
             int yMax = 0;
-            string destination = "";
             int sum = 0;
             foreach (PingUpdate p in PingList)
             {

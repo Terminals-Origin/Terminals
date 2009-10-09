@@ -413,25 +413,17 @@ namespace Terminals {
             {
                 if(tcTerminals.SelectedItem != null)
                 {
-
                     if(((TerminalTabControlItem)(tcTerminals.SelectedItem)).TerminalControl == null)
                     {
                         if(CurrentConnection != null)
                         {
                             if((CurrentConnection as Connections.RDPConnection) != null)
-                            {
-                                return (CurrentConnection as Connections.RDPConnection).axMsRdpClient2;
-                            }
+                                return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient2;
                             else
-                            {
                                 return null;
-                            }
                         }
                         else
-                        {
                             return null;
-                        }
-
                     }
                     return null;
                 }
@@ -440,18 +432,12 @@ namespace Terminals {
                     if(CurrentConnection != null)
                     {
                         if((CurrentConnection as Connections.RDPConnection) != null)
-                        {
-                            return (CurrentConnection as Connections.RDPConnection).axMsRdpClient2;
-                        }
+                            return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient2;
                         else
-                        {
                             return null;
-                        }
                     }
                     else
-                    {
                         return null;
-                    }
                 }
             }
         }

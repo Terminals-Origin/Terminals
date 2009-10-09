@@ -420,7 +420,6 @@ namespace TabControl
             //_toolTip.ShowWithoutFocus(new Point(Control.MousePosition.X, Control.MousePosition.Y + 24));
         }
 
-        private bool mouseWasOnTitle;
         private bool mouseEnteredTitle;
 
         protected internal virtual void OnTabControlMouseOnTitle(TabControlMouseOnTitleEventArgs e)

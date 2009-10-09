@@ -101,8 +101,7 @@ namespace Tamir.IPLib.Packets.Util
 			{
 				c = System.Drawing.Color.White;
 				System.Console.Error.WriteLine("WARN: invalid color spec '" + string_Renamed + "' in property file");
-			}
-			
+			}			
 			return c;
 		}
 		

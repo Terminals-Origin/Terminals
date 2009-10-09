@@ -25,8 +25,6 @@ namespace Terminals.Connections {
         public const int HTTPSPort = 443;
 
         public static void GetSize(ref int Height, ref int Width, Connections.Connection Connection, DesktopSize Size) {
-
-
             switch(Size) {
                 case DesktopSize.x640:
                     Width = 640;
@@ -39,6 +37,10 @@ namespace Terminals.Connections {
                 case DesktopSize.x1024:
                     Width = 1024;
                     Height = 768;
+                    break;
+                case DesktopSize.x1152:
+                    Width = 1152;
+                    Height = 864;
                     break;
                 case DesktopSize.x1280:
                     Width = 1280;
@@ -164,6 +166,5 @@ namespace Terminals.Connections {
             }
             return port;
         }
-
     }
 }

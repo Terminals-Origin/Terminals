@@ -6,7 +6,6 @@ using Microsoft.CSharp;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 
-
 namespace Terminals.Network.WMI
 {
     class PivotDataTable
@@ -49,8 +48,8 @@ namespace Terminals.Network.WMI
         public static System.Reflection.Assembly CreateAssemblyFromDataTable(DataTable DataValues)
         {
             System.Random rnd = new Random();
-            if(DataValues.TableName == null || DataValues.TableName == "") DataValues.TableName = rnd.Next().ToString();
-            object result = null;
+            if(DataValues.TableName == null || DataValues.TableName == "") 
+                DataValues.TableName = rnd.Next().ToString();
 
             CodeTypeDeclaration classDec = new CodeTypeDeclaration(DataValues.TableName);
             classDec.IsClass = true;
@@ -88,18 +87,13 @@ namespace Terminals.Network.WMI
 
                     return icc.CompileAssemblyFromSource(compileParams, System.IO.File.ReadAllText(filename)).CompiledAssembly;
                 }
-
             }
-            return null;
         }
         public static object CreateTypeFromDataTable(DataTable DataValues)
         {
             System.Reflection.Assembly asm = CreateAssemblyFromDataTable(DataValues);
             object instance = asm.CreateInstance(DataValues.TableName);
-            //compilerResults.CompiledAssembly
-
             return null;
         }
-
     }
 }

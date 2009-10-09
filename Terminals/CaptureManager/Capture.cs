@@ -91,13 +91,11 @@ namespace Terminals.CaptureManager
         {
             this.FilePath = FilePath;
         }
-        private string name;
 
         public string Name
         {
             get { return System.IO.Path.GetFileName(this.FilePath);  }
-        }
-	
+        }	
 	
         private System.Drawing.Image image;
 

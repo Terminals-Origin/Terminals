@@ -36,7 +36,6 @@ namespace Terminals
 
         private void nextButton_Click(object sender, EventArgs e)
         {
-
             if(SelectedForm == WizardForms.Intro)
             {
                 nextButton.Enabled = true;
@@ -61,7 +60,6 @@ namespace Terminals
                     this.panel1.Controls.Clear();
                     this.panel1.Controls.Add(co);
                     this.SelectedForm = WizardForms.Options;
-
                 }
             }
             else if(SelectedForm == WizardForms.DefaultCredentials)
@@ -73,8 +71,7 @@ namespace Terminals
                 nextButton.Enabled = true;
                 this.panel1.Controls.Clear();
                 this.panel1.Controls.Add(co);
-                this.SelectedForm = WizardForms.Options;
-                
+                this.SelectedForm = WizardForms.Options;                
             }
             else if(SelectedForm == WizardForms.Options)
             {
@@ -84,12 +81,11 @@ namespace Terminals
                 Settings.AutoSwitchOnCapture = co.AutoSwitchOnCapture;
 
                 try {
-                    if(co.LoadDefaultShortcuts) {
-
-                        Settings.SpecialCommands = Terminals.Wizard.SpecialCommandsWizard.LoadSpecialCommands();
-
-                    }
-                } catch(Exception exc) {
+                    if(co.LoadDefaultShortcuts)
+                        Settings.SpecialCommands = Terminals.Wizard.SpecialCommandsWizard.LoadSpecialCommands();                   
+                } 
+                catch(Exception exc)
+                {
                     Terminals.Logging.Log.Error("Loading default shortcuts in the wizard.", exc);
                 }
 
@@ -100,14 +96,12 @@ namespace Terminals
                 this.panel1.Controls.Add(rdp);
                 rdp.StartImport();
                 this.SelectedForm = WizardForms.Scanner;
-
             }
             else if(SelectedForm == WizardForms.Scanner)
             {
                 this.Hide();
             }
         }
-
 
         private void cancelButton_Click(object sender, EventArgs e)
         {

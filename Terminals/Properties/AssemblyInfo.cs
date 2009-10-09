@@ -6,8 +6,8 @@ using log4net;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Terminals by Robert Chartier")]
-[assembly: AssemblyDescription("Terminals (RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix, Amazon S3)")]
+[assembly: AssemblyTitle("Terminals")]
+[assembly: AssemblyDescription("RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix, Amazon S3")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Robert Chartier")]
 [assembly: AssemblyProduct("Terminals by Robert Chartier")]

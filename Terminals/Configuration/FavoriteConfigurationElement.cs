@@ -106,7 +106,6 @@ namespace Terminals
             }
         }
 
-
         [ConfigurationProperty("idleTimeout", IsRequired = false, DefaultValue = 240)]
         public int IdleTimeout
         {
@@ -211,7 +210,6 @@ namespace Terminals
             }
         }
 
-
         [ConfigurationProperty("disableWindowsKey", IsRequired = false, DefaultValue = false)]
         public bool DisableWindowsKey
         {
@@ -224,8 +222,6 @@ namespace Terminals
                 this["disableWindowsKey"] = value;
             }
         }
-
-
 
         [ConfigurationProperty("doubleClickDetect", IsRequired = false, DefaultValue = false)]
         public bool DoubleClickDetect

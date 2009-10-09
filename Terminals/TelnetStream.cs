@@ -52,13 +52,6 @@ namespace Terminals
 		private Options local;
 		private Options remote;
 		private bool first_tx;
-		private State	receiveState;
-		
-		private struct State
-		{
-			public Stream stream;
-			public byte[] buffer;
-		}
 
 		public override void Write(byte[] data, int offset, int length)
 		{

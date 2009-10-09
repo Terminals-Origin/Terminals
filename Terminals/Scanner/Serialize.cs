@@ -22,7 +22,6 @@ namespace Unified
             {
                 return StreamHelper.StreamToBytes(stm);
             }
-            return null;
         }
         public static object DeSerializeBinary(MemoryStream memStream)
         {
@@ -79,7 +78,6 @@ namespace Unified
             {
                 return StreamHelper.StreamToBytes(stm);
             }
-            return null;
         }
         public static void SerializeXMLToDisk(object request, string Filename)
         {
@@ -92,7 +90,6 @@ namespace Unified
             {
                 return StreamHelper.StreamToString(stm);
             }
-            return null;
         }
 
         public static MemoryStream SerializeXML(object request)
@@ -179,5 +176,4 @@ namespace Unified
             return local2;
         }
     }
-
 }

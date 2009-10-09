@@ -28,6 +28,7 @@ namespace Terminals
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionsForm));
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -56,6 +57,14 @@ namespace Terminals
             this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.defaultPasswordTabPage = new System.Windows.Forms.TabPage();
+            this.label21 = new System.Windows.Forms.Label();
+            this.passwordTxtBox = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.usernameTextbox = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.domainTextbox = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
             this.AmazonTabPage = new System.Windows.Forms.TabPage();
             this.RestoreButton = new System.Windows.Forms.Button();
             this.BackupButton = new System.Windows.Forms.Button();
@@ -97,6 +106,7 @@ namespace Terminals
             this.chkShowInformationToolTips = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.MoreOptionsTabPage = new System.Windows.Forms.TabPage();
+            this.AutoExapandTagsPanelCheckBox = new System.Windows.Forms.CheckBox();
             this.FavSortGroupBox = new System.Windows.Forms.GroupBox();
             this.NoneRadioButton = new System.Windows.Forms.RadioButton();
             this.ProtocolRadionButton = new System.Windows.Forms.RadioButton();
@@ -109,13 +119,13 @@ namespace Terminals
             this.EnableFavoritesPanel = new System.Windows.Forms.CheckBox();
             this.EnableGroupsMenu = new System.Windows.Forms.CheckBox();
             this.serviceController1 = new System.ServiceProcess.ServiceController();
-            this.AutoExapandTagsPanelCheckBox = new System.Windows.Forms.CheckBox();
             this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.passwordTabPage.SuspendLayout();
+            this.defaultPasswordTabPage.SuspendLayout();
             this.AmazonTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tpExecuteBeforeConnect.SuspendLayout();
@@ -332,6 +342,7 @@ namespace Terminals
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.passwordTabPage);
+            this.tabControl2.Controls.Add(this.defaultPasswordTabPage);
             this.tabControl2.Controls.Add(this.AmazonTabPage);
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
@@ -354,7 +365,7 @@ namespace Terminals
             this.passwordTabPage.Padding = new System.Windows.Forms.Padding(3);
             this.passwordTabPage.Size = new System.Drawing.Size(384, 238);
             this.passwordTabPage.TabIndex = 0;
-            this.passwordTabPage.Text = "Password";
+            this.passwordTabPage.Text = "Master Password";
             this.passwordTabPage.UseVisualStyleBackColor = true;
             // 
             // PasswordProtectTerminalsCheckbox
@@ -423,6 +434,80 @@ namespace Terminals
             this.label6.Size = new System.Drawing.Size(57, 13);
             this.label6.TabIndex = 3;
             this.label6.Text = "Password:";
+            // 
+            // defaultPasswordTabPage
+            // 
+            this.defaultPasswordTabPage.Controls.Add(this.label21);
+            this.defaultPasswordTabPage.Controls.Add(this.passwordTxtBox);
+            this.defaultPasswordTabPage.Controls.Add(this.label18);
+            this.defaultPasswordTabPage.Controls.Add(this.usernameTextbox);
+            this.defaultPasswordTabPage.Controls.Add(this.label19);
+            this.defaultPasswordTabPage.Controls.Add(this.domainTextbox);
+            this.defaultPasswordTabPage.Controls.Add(this.label20);
+            this.defaultPasswordTabPage.Location = new System.Drawing.Point(4, 22);
+            this.defaultPasswordTabPage.Name = "defaultPasswordTabPage";
+            this.defaultPasswordTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.defaultPasswordTabPage.Size = new System.Drawing.Size(384, 238);
+            this.defaultPasswordTabPage.TabIndex = 2;
+            this.defaultPasswordTabPage.Text = "Default Password";
+            this.defaultPasswordTabPage.UseVisualStyleBackColor = true;
+            // 
+            // label21
+            // 
+            this.label21.Location = new System.Drawing.Point(6, 12);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(360, 84);
+            this.label21.TabIndex = 19;
+            this.label21.Text = resources.GetString("label21.Text");
+            // 
+            // passwordTxtBox
+            // 
+            this.passwordTxtBox.Location = new System.Drawing.Point(117, 168);
+            this.passwordTxtBox.Name = "passwordTxtBox";
+            this.passwordTxtBox.PasswordChar = '*';
+            this.passwordTxtBox.Size = new System.Drawing.Size(149, 21);
+            this.passwordTxtBox.TabIndex = 18;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(55, 168);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(57, 13);
+            this.label18.TabIndex = 17;
+            this.label18.Text = "Password:";
+            // 
+            // usernameTextbox
+            // 
+            this.usernameTextbox.Location = new System.Drawing.Point(117, 142);
+            this.usernameTextbox.Name = "usernameTextbox";
+            this.usernameTextbox.Size = new System.Drawing.Size(149, 21);
+            this.usernameTextbox.TabIndex = 16;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(53, 142);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(59, 13);
+            this.label19.TabIndex = 15;
+            this.label19.Text = "Username:";
+            // 
+            // domainTextbox
+            // 
+            this.domainTextbox.Location = new System.Drawing.Point(117, 116);
+            this.domainTextbox.Name = "domainTextbox";
+            this.domainTextbox.Size = new System.Drawing.Size(149, 21);
+            this.domainTextbox.TabIndex = 14;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(65, 116);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(46, 13);
+            this.label20.TabIndex = 13;
+            this.label20.Text = "Domain:";
             // 
             // AmazonTabPage
             // 
@@ -870,6 +955,16 @@ namespace Terminals
             this.MoreOptionsTabPage.Text = "More";
             this.MoreOptionsTabPage.UseVisualStyleBackColor = true;
             // 
+            // AutoExapandTagsPanelCheckBox
+            // 
+            this.AutoExapandTagsPanelCheckBox.AutoSize = true;
+            this.AutoExapandTagsPanelCheckBox.Location = new System.Drawing.Point(210, 38);
+            this.AutoExapandTagsPanelCheckBox.Name = "AutoExapandTagsPanelCheckBox";
+            this.AutoExapandTagsPanelCheckBox.Size = new System.Drawing.Size(136, 17);
+            this.AutoExapandTagsPanelCheckBox.TabIndex = 27;
+            this.AutoExapandTagsPanelCheckBox.Text = "Auto Expand Favorites";
+            this.AutoExapandTagsPanelCheckBox.UseVisualStyleBackColor = true;
+            // 
             // FavSortGroupBox
             // 
             this.FavSortGroupBox.Controls.Add(this.NoneRadioButton);
@@ -996,16 +1091,6 @@ namespace Terminals
             this.EnableGroupsMenu.Text = "Enable Groups Menu";
             this.EnableGroupsMenu.UseVisualStyleBackColor = true;
             // 
-            // AutoExapandTagsPanelCheckBox
-            // 
-            this.AutoExapandTagsPanelCheckBox.AutoSize = true;
-            this.AutoExapandTagsPanelCheckBox.Location = new System.Drawing.Point(210, 38);
-            this.AutoExapandTagsPanelCheckBox.Name = "AutoExapandTagsPanelCheckBox";
-            this.AutoExapandTagsPanelCheckBox.Size = new System.Drawing.Size(136, 17);
-            this.AutoExapandTagsPanelCheckBox.TabIndex = 27;
-            this.AutoExapandTagsPanelCheckBox.Text = "Auto Expand Favorites";
-            this.AutoExapandTagsPanelCheckBox.UseVisualStyleBackColor = true;
-            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOk;
@@ -1038,6 +1123,8 @@ namespace Terminals
             this.tabControl2.ResumeLayout(false);
             this.passwordTabPage.ResumeLayout(false);
             this.passwordTabPage.PerformLayout();
+            this.defaultPasswordTabPage.ResumeLayout(false);
+            this.defaultPasswordTabPage.PerformLayout();
             this.AmazonTabPage.ResumeLayout(false);
             this.AmazonTabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -1141,5 +1228,13 @@ namespace Terminals
         private System.Windows.Forms.Button BackupButton;
         private System.Windows.Forms.CheckBox autoCaseTagsCheckbox;
         private System.Windows.Forms.CheckBox AutoExapandTagsPanelCheckBox;
+        private System.Windows.Forms.TabPage defaultPasswordTabPage;
+        private System.Windows.Forms.TextBox passwordTxtBox;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox usernameTextbox;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox domainTextbox;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
     }
 }

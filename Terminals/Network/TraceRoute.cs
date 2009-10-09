@@ -45,7 +45,6 @@ namespace Metro
                 //}
             }
         }
-        System.Threading.Timer t;
         Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();
         Metro.TransportLayer.Icmp.IcmpTraceRoute trace = null;
         System.Collections.Generic.List<RouteUpdate> RUList = new List<RouteUpdate>();
@@ -76,7 +75,6 @@ namespace Metro
             PointPairList avgList = new PointPairList();
             int x = 1;
             int yMax = 0;
-            string destination = "";
             int sum = 0;
             foreach (RouteUpdate p in RUList)
             {

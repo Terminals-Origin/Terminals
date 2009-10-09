@@ -31,21 +31,19 @@ namespace Terminals.CaptureManager
             return c;
         }
         public static Capture PerformScreenCapture(TabControl.TabControl tab)
-        {
-            ScreenCapture sc = new ScreenCapture();
+        {            
             string filename = DateTime.Now.ToString("yyyy-MM-dd_hh-mm-ss");
             string tempFile = System.IO.Path.Combine(CaptureManager.CaptureRoot, string.Format("{0}.png", filename));
-
-            using(sc.CaptureControl(tab, tempFile, ImageFormatHandler.ImageFormatTypes.imgPNG));
-            
-            //System.Diagnostics.Process.Start(tempFile);
+            ScreenCapture sc = new ScreenCapture();
+            sc.CaptureControl(tab, tempFile, ImageFormatHandler.ImageFormatTypes.imgPNG);
             return null;
         }
 
         public static List<System.IO.DirectoryInfo> LoadCaptureFolder(string Path)
         {
             
-            if(!System.IO.Directory.Exists(Path)) return null;
+            if(!System.IO.Directory.Exists(Path)) 
+                return null;
 
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(Path);
             return new List<System.IO.DirectoryInfo>(dir.GetDirectories());

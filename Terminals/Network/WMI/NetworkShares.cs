@@ -177,11 +177,8 @@ namespace Terminals.Network
                         return "IPC Admin";
                     default:
                         return _Type;
-                        break;
-                }
-                
+                }                
             }
-        }
-        
+        }        
     }
 }
