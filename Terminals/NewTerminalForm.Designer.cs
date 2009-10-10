@@ -1333,6 +1333,7 @@ namespace Terminals
             "800x600",
             "1024x768",
             "1280x1024",
+            "1152x864",
             "Fit to Window",
             "Full Screen",
             "Auto Scale",
