@@ -87,7 +87,7 @@ namespace Terminals.Connections {
                 TabControlItem selectedTabPage = (TabControlItem)(this.Parent);
                 bool wasSelected = selectedTabPage.Selected;
                 ParentForm.tcTerminals.RemoveTab(selectedTabPage);
-                ParentForm.tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
+                ParentForm.CloseTabControlItem();
                 if(wasSelected)
                     NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
                 ParentForm.UpdateControls();
