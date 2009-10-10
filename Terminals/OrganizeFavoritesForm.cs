@@ -29,7 +29,7 @@ namespace Terminals
                     lvConnections.ShowItemToolTips = true;
                     ListViewItem item = lvConnections.Items.Add(favorite.Name);
                     item.ToolTipText = favorite.Notes;
-                    
+
                     item.Name = favorite.Name;
                     item.SubItems.Add(favorite.Protocol);
                     item.SubItems.Add(favorite.ServerName);
@@ -80,7 +80,7 @@ namespace Terminals
             ListViewItem item = lvConnections.Items[e.Item];
             if (!String.IsNullOrEmpty(e.Label) && e.Label != item.Text)
             {
-                if (lvConnections.Items.ContainsKey(e.Label))
+                if (lvConnections.Items.ContainsKey(e.Label) && e.Label.ToLower() != item.Text.ToLower())
                 {
                     e.CancelEdit = true;
                     MessageBox.Show(this, "A connection named " + e.Label + " already exists", "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
