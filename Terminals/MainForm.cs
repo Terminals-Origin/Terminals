@@ -777,15 +777,56 @@ namespace Terminals {
             {
                 favoritesToolStripMenuItem.DropDownItems.RemoveAt(i);
             }
-            tscConnectTo.Items.Clear();
 
-            string longestFav = "";
+            tscConnectTo.Items.Clear();
+            foreach (string key in favorites.Keys)
+            {
+                FavoriteConfigurationElement favorite = favorites[key];
+                SystemTrayQuickConnectToolStripMenuItem.DropDownItems.Add(favorite.Name);
+            }
+
+            Dictionary<string, ToolStripMenuItem> tagTools = new Dictionary<string, ToolStripMenuItem>();
 
             foreach (string key in favorites.Keys)
             {
                 FavoriteConfigurationElement favorite = favorites[key];
-                AddFavorite(favorite);
-                if (favorite.Name.Length > longestFav.Length) longestFav = favorite.Name;
+                ToolStripMenuItem sortedItem = new ToolStripMenuItem();
+                sortedItem.Text = favorite.Name;
+                sortedItem.Tag = "favorite";
+
+                if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
+                    sortedItem.Image = Image.FromFile(favorite.ToolBarIcon);
+
+                if (favorite.TagList != null && favorite.TagList.Count > 0)
+                {
+                    foreach (string tag in favorite.TagList)
+                    {
+                        ToolStripMenuItem parent = null;
+                        if (tagTools.ContainsKey(tag))
+                            parent = tagTools[tag];
+                        else if (!tag.Contains("Terminals"))
+                        {
+                            parent = new ToolStripMenuItem(tag);
+                            parent.Name = tag;
+                            tagTools.Add(tag, parent);
+                            tscConnectTo.Items.Add(parent);
+                        }
+
+                        if (parent != null)
+                        {
+                            ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
+                            item.Click += serverToolStripMenuItem_Click;
+                            item.Name = favorite.Name;
+                            item.Tag = "favorite";
+
+                            if (favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                                item.Image = Image.FromFile(favorite.ToolBarIcon);
+
+                            parent.DropDown.Items.Add(item);
+                            favoritesToolStripMenuItem.DropDown.Items.Add(parent);
+                        }
+                    }
+                }
             }
             this.favsList1.LoadFavs();
             LoadFavoritesToolbar();
@@ -871,7 +912,6 @@ namespace Terminals {
             groupAddToolStripMenuItem.Click += new EventHandler(groupAddToolStripMenuItem_Click);
             addTerminalToGroupToolStripMenuItem.DropDownItems.Add(groupAddToolStripMenuItem);
         }
-
 
         private void SetGrabInput(bool grab)
         {
