@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -270,6 +270,12 @@
       <DependentUpon>LocalizedValues.resx</DependentUpon>
     </Compile>
     <Compile Include="Logging\Log.cs" />
+    <Compile Include="ManageToolStrip.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManageToolStrip.Designer.cs">
+      <DependentUpon>ManageToolStrip.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\ActiveDirectoryClient.cs" />
     <Compile Include="Network\ActiveDirectoryComputer.cs" />
     <Compile Include="Network\DNS\Adapter.cs" />
@@ -408,12 +414,6 @@
     <Compile Include="Integration\Import\IImport.cs" />
     <Compile Include="Integration\Import\ImportMuRD.cs" />
     <Compile Include="Integration\Integration.cs" />
-    <Compile Include="ManageToolStrip.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ManageToolStrip.Designer.cs">
-      <DependentUpon>ManageToolStrip.cs</DependentUpon>
-    </Compile>
     <Compile Include="NativeApi.cs" />
     <Compile Include="NetworkScanner.cs">
       <SubType>Form</SubType>
@@ -594,10 +594,6 @@
     <EmbeddedResource Include="Connections\TabbedTools.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TabbedTools.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ManageToolStrip.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>ManageToolStrip.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NetworkScanner.resx">
       <SubType>Designer</SubType>
@@ -794,6 +790,10 @@
       <SubType>Designer</SubType>
       <LastGenOutput>LocalizedValues.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="ManageToolStrip.resx">
+      <DependentUpon>ManageToolStrip.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\ImportFromAD.resx">
       <DependentUpon>ImportFromAD.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -897,7 +897,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\atoz.png" />
     <None Include="Resources\amazon.jpg" />
-    <Content Include="ChangeLog.txt" />
     <Content Include="Resources\amber.jpg" />
     <None Include="Resources\Filtering.html" />
     <Content Include="Resources\CompMgmt.png" />

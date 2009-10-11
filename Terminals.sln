@@ -29,9 +29,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zlib.net", "zlib.net\zlib.n
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSHClient", "SSHClient\SSHClient.csproj", "{6F218F20-AE4B-4966-A821-4BDE214B8BFF}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupTerminals", "SetupTerminals\SetupTerminals.vdproj", "{5085BDC8-1793-4FCC-A038-8AE15816238A}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 15
+		SccNumberOfProjects = 16
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs01.codeplex.com/
 		SccLocalPath0 = .
@@ -77,6 +79,9 @@ Global
 		SccProjectUniqueName14 = zlib.net\\zlib.net.csproj
 		SccProjectName14 = zlib.net
 		SccLocalPath14 = zlib.net
+		SccProjectUniqueName15 = SetupTerminals\\SetupTerminals.vdproj
+		SccProjectName15 = SetupTerminals
+		SccLocalPath15 = SetupTerminals
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -255,6 +260,13 @@ Global
 		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.StrongMagic|Any CPU.Build.0 = StrongMagic|Any CPU
 		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.StrongMagic|x86.ActiveCfg = StrongMagic|x86
 		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.StrongMagic|x86.Build.0 = StrongMagic|x86
+		{5085BDC8-1793-4FCC-A038-8AE15816238A}.Debug|Any CPU.ActiveCfg = Debug
+		{5085BDC8-1793-4FCC-A038-8AE15816238A}.Debug|x86.ActiveCfg = Debug
+		{5085BDC8-1793-4FCC-A038-8AE15816238A}.Release|Any CPU.ActiveCfg = Release
+		{5085BDC8-1793-4FCC-A038-8AE15816238A}.Release|Any CPU.Build.0 = Release
+		{5085BDC8-1793-4FCC-A038-8AE15816238A}.Release|x86.ActiveCfg = Release
+		{5085BDC8-1793-4FCC-A038-8AE15816238A}.StrongMagic|Any CPU.ActiveCfg = Release
+		{5085BDC8-1793-4FCC-A038-8AE15816238A}.StrongMagic|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.IO;
 
 namespace Terminals.History
 {
@@ -9,53 +11,54 @@ namespace Terminals.History
         /// <summary>
         /// lets make it a static string, just in case later we want to override its location
         /// </summary>
-        public static string HistoryLocation = "History.xml";
+        private static string _historyLocation = "History.xml";
+        private object _threadLock = new object();
+        private bool _loadingHistory = false;
+        private HistoryByFavorite _currentHistory = null;
+        
+        public delegate void HistoryLoaded(HistoryByFavorite History);
+        public event HistoryLoaded OnHistoryLoaded;
+        
         public HistoryController()
         {
             CurrentHistory = new HistoryByFavorite();
         }
-
-        public delegate void HistoryLoaded(HistoryByFavorite History);
-        public event HistoryLoaded OnHistoryLoaded;
 
         /// <summary>
         /// Capture the OnHistoryLoaded Event
         /// </summary>
         public void LazyLoadHistory()
         {
-            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(LoadHistory), null);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(LoadHistory), null);
         }
-        private object threadLock = new object();
-        private bool loadingHistory = false;
+
         /// <summary>
         /// Load or re-load history from HistoryLocation
         /// </summary>
-        private void LoadHistory(object ThreadState)
+        private void LoadHistory(object threadState)
         {
-            if (loadingHistory) return;
-            lock (threadLock)
+            if (_loadingHistory)
+                return;
+            
+            lock (_threadLock)
             {
                 try
                 {
-                    Logging.Log.Info("Loading History:" + ((HistoryLocation == null) ? "" : HistoryLocation));
-                    loadingHistory = true;
-                    //so, how to store history..that is the question.
-                    //should it be per computer or per terminals install (portable)?
-                    //maybe both?
-                    //i think for now lets stick with the portable option.  history should follow the user around
-                    //KeepItSimpleStupid
+                    Logging.Log.Info("Loading History:" + ((_historyLocation == null) ? "" : _historyLocation));
+                    _loadingHistory = true;
+                    //So, how to store history..that is the question. Should it be per computer or per terminals install (portable)? Maybe both?
+                    //I think for now lets stick with the portable option.  history should follow the user around. KISS (KeepItSimpleStupid)
 
-                    if (HistoryLocation != null && HistoryLocation.Trim() != "")
+                    if (string.IsNullOrEmpty(_historyLocation))
                     {
-                        HistoryLocation = HistoryLocation.Trim();
-                        if (!System.IO.File.Exists(HistoryLocation))
-                        {
-                            //the file doesnt exist.  lets save it out for the first time
-                            SaveHistory();
-                        }
-                        currentHistory = (Unified.Serialize.DeserializeXMLFromDisk(HistoryLocation, typeof(HistoryByFavorite)) as HistoryByFavorite);
+                        _historyLocation = _historyLocation.Trim();
+
+                        if (!File.Exists(_historyLocation))
+                            SaveHistory();//the file doesnt exist.  lets save it out for the first time
+
+                        _currentHistory = (Unified.Serialize.DeserializeXMLFromDisk(_historyLocation, typeof(HistoryByFavorite)) as HistoryByFavorite);
                     }
-                    loadingHistory = false;
+                    _loadingHistory = false;
                     Logging.Log.Info("Done Loading History");
                 }
                 catch (Exception exc)
@@ -63,15 +66,16 @@ namespace Terminals.History
                     Logging.Log.Error("Error Loading History", exc);
                 }
             }
-            if (currentHistory != null) if (OnHistoryLoaded != null) OnHistoryLoaded(currentHistory);
-        }
-        
+
+            if (_currentHistory != null && OnHistoryLoaded != null) 
+                OnHistoryLoaded(_currentHistory);
+        }        
         private void SaveHistory()
         {
             try
             {
                 Logging.Log.Info("Saving History");
-                Unified.Serialize.SerializeXMLToDisk(CurrentHistory, HistoryLocation);
+                Unified.Serialize.SerializeXMLToDisk(CurrentHistory, _historyLocation);
                 Logging.Log.Info("Done Saving History");
             }
             catch (Exception exc)
@@ -79,33 +83,39 @@ namespace Terminals.History
                 Logging.Log.Error("Error Saving History", exc);
             }
         }
-        public void RecordHistoryItem(string Name, bool Save)
+        public void RecordHistoryItem(string name, bool save)
         {
             List<HistoryItem> lst = null;
-            if (currentHistory.ContainsKey(Name))
-            {
-                lst = currentHistory[Name];
-            }
             if (lst == null)
+                lst = new List<HistoryItem>();
+
+            if (_currentHistory.ContainsKey(name))
+                lst = _currentHistory[name];
+            else
+                _currentHistory.Add(name, lst);
+            /*if (lst == null)
             {
                 lst = new List<HistoryItem>();
-                currentHistory.Add(Name, lst);
-            }
-            lst.Add(new HistoryItem(Name));
-            if (Save) this.SaveHistory();
+                _currentHistory.Add(Name, lst);
+            }*/
+
+            lst.Add(new HistoryItem(name));
+            
+            if (save)
+                this.SaveHistory();
+            
             this.LazyLoadHistory();
         }
-
-        HistoryByFavorite currentHistory = null;
         public HistoryByFavorite CurrentHistory {
             get
             {
-                if (currentHistory == null) LoadHistory(null);
-                return currentHistory;
+                if (_currentHistory == null) 
+                    LoadHistory(null);
+                return _currentHistory;
             }
             set
             {
-                currentHistory = value;
+                _currentHistory = value;
             }
         }
     }

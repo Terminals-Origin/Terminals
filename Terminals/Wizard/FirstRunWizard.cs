@@ -42,7 +42,6 @@ namespace Terminals
                 this.panel1.Controls.Clear();
                 this.panel1.Controls.Add(mp);
                 this.SelectedForm = WizardForms.MasterPassword;
-
             }
             else if(SelectedForm == WizardForms.MasterPassword)
             {

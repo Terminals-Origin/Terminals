@@ -13,13 +13,13 @@ namespace Terminals
 {
     public partial class FavsList : UserControl
     {
+        private static string _untaggedKey = "Untagged";
         private MethodInvoker _historyInvoker;
         private bool _eventDone = false;
         private object _historyLock = new object();
         private bool _dirtyHistory = false;        
         private HistoryByFavorite _historyByFavorite = null;
-        private HistoryController _historyController = new HistoryController();
-        private string _untaggedKey = "Untagged";
+        private HistoryController _historyController = new HistoryController();        
         private List<string> _nodeTextList;
 
         public FavsList()
@@ -226,8 +226,6 @@ namespace Terminals
         {
             connectToolStripMenuItem.Visible = !(favsTree.SelectedNode.Tag == null);
             connectToAllToolStripMenuItem.Visible = (favsTree.SelectedNode.Tag == null);
-
-
         }
         private void pingToolStripMenuItem_Click(object sender, EventArgs e)
         {

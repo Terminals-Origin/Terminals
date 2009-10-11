@@ -4,30 +4,46 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Text;
+using System.Threading;
+using System.Net;
 using System.Windows.Forms;
+
+using Metro;
+using Metro.Scanning;
+using Terminals.Connections;
 
 namespace Terminals.Wizard
 {
     public partial class AddExistingRDPConnections : UserControl
     {
+        private MethodInvoker _miv;
+        private FavoriteConfigurationElementCollection _discoFavs = new FavoriteConfigurationElementCollection();
+
+        private NetworkInterfaceList _nil;
+        private IPAddress _endPointAddress;
+        private List<TcpSynScanner> _scannerList = new List<TcpSynScanner>(1275);
+        private int _scannerCount = 0;
+        private int _pendingRequests = 0;
+        private object _uiElementsLock = new object();
+
+        public delegate void DiscoveryCompleted();
+        public event DiscoveryCompleted OnDiscoveryCompleted;
+
+        public FavoriteConfigurationElementCollection DiscoFavs
+        {
+            get { return _discoFavs; }
+            set { _discoFavs = value; }
+        }
         public AddExistingRDPConnections()
         {
             InitializeComponent();
             this.dataGridView1.Visible = false;
-            miv = new MethodInvoker(this.UpdateConnections);
+            _miv = new MethodInvoker(this.UpdateConnections);
             try {
-                nil = new Metro.NetworkInterfaceList();
+                _nil = new Metro.NetworkInterfaceList();
             } catch(Exception exc) {
                 Terminals.Logging.Log.Error("Could not new up Metro.NetworkInterfaceList in AddExistingRDPConnections", exc);
             }
-        }
-
-        MethodInvoker miv;
-
-        public FavoriteConfigurationElementCollection DiscoFavs = new FavoriteConfigurationElementCollection();
-        private void AddExistingRDPConnections_Load(object sender, EventArgs e)
-        {
-
         }
         public void StartImport()
         {
@@ -46,145 +62,64 @@ namespace Terminals.Wizard
                     }
                 }
             }
-            catch (Exception e) { Terminals.Logging.Log.Info("StartImport", e); }
+            catch (Exception e) 
+            { 
+                Terminals.Logging.Log.Info("StartImport", e);
+            }
+            
             //then kick up the port scan for the entire subnet
-
-
-            if(nil != null) {
+            if(_nil != null) {
                 try {
-                    foreach(Metro.NetworkInterface face in nil.Interfaces) {
+                    foreach(Metro.NetworkInterface face in _nil.Interfaces) {
                         if(face.IsEnabled && !face.isLoopback) {
-                            endPointAddress = face.Address;
+                            _endPointAddress = face.Address;
                             break;
                         }
                     }
 
                     System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanSubnet), null);
-                } catch(Exception e) { Terminals.Logging.Log.Info("", e); }
-            }
-        }
-        Metro.NetworkInterfaceList nil;
-        System.Net.IPAddress endPointAddress;
-        private void ScanSubnet(object nullstate)
-        {
-            try
-            {
-                pendingRequests = 254 * 5;
-                string ipAddress = endPointAddress.ToString();
-                string start = ipAddress.Substring(0, ipAddress.LastIndexOf('.')) + ".";
-                for(int x = 1; x < 255; x++)
-                {
-                    System.Net.IPAddress address = System.Net.IPAddress.Parse(start + x.ToString());
-                    System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanMachine), address);
-                    
+                } catch(Exception e) 
+                { 
+                    Terminals.Logging.Log.Info("", e); 
                 }
             }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
-            this.Invoke(miv);
         }
-
-        List<Metro.Scanning.TcpSynScanner> scannerList = new List<Metro.Scanning.TcpSynScanner>(1275);
-        int scannerCount = 0;
-        int pendingRequests = 0;
-        private void ScanMachine(object machine)
-        {
-            try
-            {
-                Metro.Scanning.TcpSynScanner scanner;
-                scanner = new Metro.Scanning.TcpSynScanner(new System.Net.IPEndPoint(endPointAddress, 0));
-                scanner.PortReply += new Metro.Scanning.TcpPortReplyHandler(scanner_PortReply);
-                scanner.ScanComplete += new Metro.Scanning.TcpPortScanComplete(scanner_ScanComplete);
-
-                System.Net.IPAddress address = (System.Net.IPAddress)machine;
-                scannerList.Add(scanner);
-                scanner.StartScan(address, new ushort[] { 
-                    Terminals.Connections.ConnectionManager.ICAPort, 
-                    Terminals.Connections.ConnectionManager.RDPPort, 
-                    Terminals.Connections.ConnectionManager.SSHPort, 
-                    Terminals.Connections.ConnectionManager.TelnetPort, 
-                    Terminals.Connections.ConnectionManager.VNCVMRCPort 
-                } , 1000, 100, true);
-                scannerCount++;
-            }
-            catch (Exception e) { 
-                //its safe to ignore exceptions here as well  
-                //Terminals.Logging.Log.Info("", e); 
-                lock(uiElementsLock) {
-                    pendingRequests = pendingRequests - 5;
-                }
-            }
-            if(!this.IsDisposed) this.Invoke(miv);
-            Application.DoEvents();
-
-        }
-        object uiElementsLock = new object();
-
-        public delegate void DiscoveryCompleted();
-        public event DiscoveryCompleted OnDiscoveryCompleted;
-
         public void CancelDiscovery()
         {
             try
             {
-                if(scannerCount > 0)
+                if(_scannerCount > 0)
                 {
-                    foreach(Metro.Scanning.TcpSynScanner scanner in scannerList)
+                    foreach(Metro.Scanning.TcpSynScanner scanner in _scannerList)
                     {
-                        if(scanner.Running) scanner.CancelScan();
+                        if(scanner.Running) 
+                            scanner.CancelScan();
                     }
                 }
             }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
-        }
-        void scanner_ScanComplete()
-        {
-            try
-            {
-                //pendingRequests = pendingRequests - 5;
-                lock(uiElementsLock)
-                {
-                    scannerCount--;
-                }
-                this.Invoke(miv);
+            catch (Exception e) 
+            { 
+                Terminals.Logging.Log.Info("", e); 
             }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
-
-        void scanner_PortReply(System.Net.IPEndPoint remoteEndPoint, Metro.Scanning.TcpPortState state)
+        public void AddFavorite(object server) 
         {
-            try
-            {
-                lock(uiElementsLock) pendingRequests--;
-                if(state == Metro.Scanning.TcpPortState.Opened)
-                {
-                    string protocol = Terminals.Connections.ConnectionManager.GetPortName(remoteEndPoint.Port, true);
-                    AddFavorite(remoteEndPoint.Address.ToString(), remoteEndPoint.Address.ToString() + "_" + protocol, remoteEndPoint.Port);
-                }
-
-                this.Invoke(miv);
-            }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
+            AddFavorite((string)server);
         }
-        public void AddFavorite(object server) {
-            string s = (string)server;
-            AddFavorite(s, s, Terminals.Connections.ConnectionManager.RDPPort);
-        }
-
         public void AddFavorite(string server)
         {
-            AddFavorite(server, server, Terminals.Connections.ConnectionManager.RDPPort);
+            AddFavorite(server, server, ConnectionManager.RDPPort);
         }
-        public void AddFavorite(string server, string name, int Port) {
-           
+        public void AddFavorite(string server, string name, int Port) 
+        {           
             try {
                 FavoriteConfigurationElement elm = new FavoriteConfigurationElement();
-
                 try {
-                    System.Net.IPAddress address;
-                    if(System.Net.IPAddress.TryParse(server, out address)) {
-                        name = System.Net.Dns.GetHostByAddress(address).HostName;
-                    }
-                    name = string.Format("{0}_{1}", name, Terminals.Connections.ConnectionManager.GetPortName(Port, true));
+                    IPAddress address;
+                    if(IPAddress.TryParse(server, out address)) 
+                        name = Dns.GetHostEntry(address).HostName;
+
+                    name = string.Format("{0}_{1}", name, ConnectionManager.GetPortName(Port, true));
                 } catch(Exception exc) {
                     //lets not log dns lookups!
                     //Terminals.Logging.Log.Info("", exc); 
@@ -192,36 +127,120 @@ namespace Terminals.Wizard
 
                 elm.Name = name;
                 elm.ServerName = server;
-                elm.UserName = System.Environment.UserName;
-                if(System.Environment.UserDomainName != System.Environment.MachineName) {
-                    elm.DomainName = System.Environment.UserDomainName;
-                } else {
+                elm.UserName = Environment.UserName;
+                
+                if(Environment.UserDomainName != Environment.MachineName)
+                    elm.DomainName = Environment.UserDomainName;
+                else
                     elm.DomainName = server;
-                }
+                
                 elm.Tags = "Discovered Connections";
                 elm.Port = Port;
-                elm.Protocol = Terminals.Connections.ConnectionManager.GetPortName(Port, true);
-                lock(DiscoFavs) {
-                    DiscoFavs.Add(elm);
+                elm.Protocol = ConnectionManager.GetPortName(Port, true);
+                lock(_discoFavs) {
+                    _discoFavs.Add(elm);
                 }
-                //if(this.IsHandleCreated) this.Invoke(miv);
-            } catch(Exception e) { Terminals.Logging.Log.Info("", e); }
+            } 
+            catch(Exception e) 
+            { 
+                Terminals.Logging.Log.Info("", e); 
+            }
+        }
 
+        private void Scanner_ScanComplete()
+        {
+            try
+            {
+                lock (_uiElementsLock)
+                {
+                    _scannerCount--;
+                }
+                this.Invoke(_miv);
+            }
+            catch (Exception e) 
+            { 
+                Terminals.Logging.Log.Info("", e); 
+            }
+        }
+        private void AddExistingRDPConnections_Load(object sender, EventArgs e)
+        {
+        }
+        private void ScanSubnet(object nullstate)
+        {
+            try
+            {
+                _pendingRequests = 254 * 5;
+                string ipAddress = _endPointAddress.ToString();
+                string start = ipAddress.Substring(0, ipAddress.LastIndexOf('.')) + ".";
+                for (int x = 1; x < 255; x++)
+                {
+                    IPAddress address = System.Net.IPAddress.Parse(start + x.ToString());
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(ScanMachine), address);
+                }
+            }
+            catch (Exception e) 
+            { 
+                Terminals.Logging.Log.Info("", e); 
+            }
+            this.Invoke(_miv);
+        }
+        private void ScanMachine(object machine)
+        {
+            try
+            {
+                TcpSynScanner scanner;
+                scanner = new TcpSynScanner(new IPEndPoint(_endPointAddress, 0));
+                scanner.PortReply += new TcpPortReplyHandler(Scanner_PortReply);
+                scanner.ScanComplete += new TcpPortScanComplete(Scanner_ScanComplete);
+
+                IPAddress address = (IPAddress)machine;
+                _scannerList.Add(scanner);
+                scanner.StartScan(address, new ushort[] { ConnectionManager.ICAPort, ConnectionManager.RDPPort, ConnectionManager.SSHPort, 
+                    ConnectionManager.TelnetPort, ConnectionManager.VNCVMRCPort }, 1000, 100, true);
+                _scannerCount++;
+            }
+            catch (Exception e)
+            {
+                //its safe to ignore exceptions here as well  
+                //Terminals.Logging.Log.Info("", e); 
+                lock (_uiElementsLock)
+                {
+                    _pendingRequests = _pendingRequests - 5;
+                }
+            }
+            if (!this.IsDisposed) 
+                this.Invoke(_miv);
+            Application.DoEvents();
+        }
+        private void Scanner_PortReply(IPEndPoint remoteEndPoint, TcpPortState state)
+        {
+            try
+            {
+                lock (_uiElementsLock) _pendingRequests--;
+                if (state == TcpPortState.Opened)
+                {
+                    string protocol = ConnectionManager.GetPortName(remoteEndPoint.Port, true);
+                    AddFavorite(remoteEndPoint.Address.ToString(), remoteEndPoint.Address.ToString() + "_" + protocol, remoteEndPoint.Port);
+                }
+
+                this.Invoke(_miv);
+            }
+            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
         }
         private void UpdateConnections() {
             try {
-                ConnectionsCountLabel.Text = DiscoFavs.Count.ToString();
-                PendingRequestsLabel.Text = pendingRequests.ToString();
+                ConnectionsCountLabel.Text = _discoFavs.Count.ToString();
+                PendingRequestsLabel.Text = _pendingRequests.ToString();
 
-                if(pendingRequests <= 0) {
-                    //this.progressBar1.Value = this.progressBar1.Maximum;
-                    if(OnDiscoveryCompleted != null) {
+                if (_pendingRequests <= 0 && OnDiscoveryCompleted != null) 
                         OnDiscoveryCompleted();
-                    }
-                }
 
                 Application.DoEvents();
-            } catch(Exception e) { Terminals.Logging.Log.Info("", e); }
+            } 
+            catch(Exception e) 
+            { 
+                Terminals.Logging.Log.Info("", e); 
+            }
         }
         private void ConnectionsCountLabel_Click(object sender, EventArgs e)
         {
@@ -230,7 +249,7 @@ namespace Terminals.Wizard
 
                 //hidden egg to show the connections.  Just click on the connections count label to show and update the list
                 List<BindingElement> list = new List<BindingElement>();
-                foreach(FavoriteConfigurationElement elm in this.DiscoFavs)
+                foreach(FavoriteConfigurationElement elm in this._discoFavs)
                 {
                     BindingElement be = new BindingElement();
                     be.Element = string.Format("{0}:{1}", elm.ServerName, elm.Protocol);
@@ -240,20 +259,19 @@ namespace Terminals.Wizard
                 this.dataGridView1.Visible = true;
                 Application.DoEvents();
             }
-            catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
+            catch (Exception exc) 
+            { 
+                Terminals.Logging.Log.Info("", exc); 
+            }
         }
-
-
     }
     public class BindingElement
     {
-        private string Elm;
-
+        private string _elm;
         public string Element
         {
-            get { return Elm; }
-            set { Elm = value; }
+            get { return _elm; }
+            set { _elm = value; }
         }
-
     }
 }
