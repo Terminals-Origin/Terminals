@@ -33,6 +33,7 @@ namespace Terminals
                     item.Name = favorite.Name;
                     item.SubItems.Add(favorite.Protocol);
                     item.SubItems.Add(favorite.ServerName);
+                    item.SubItems.Add(favorite.Credential);
                     item.SubItems.Add(favorite.DomainName);
                     item.SubItems.Add(favorite.UserName);
                     item.SubItems.Add(favorite.Tags);
@@ -45,6 +46,14 @@ namespace Terminals
                 lvConnections.EndUpdate();
             }
             lvConnections.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            if (lvConnections.Columns[0].Width < 50) lvConnections.Columns[0].Width = 50;
+            if (lvConnections.Columns[1].Width < 50) lvConnections.Columns[1].Width = 50;
+            if (lvConnections.Columns[2].Width < 50) lvConnections.Columns[2].Width = 50;
+            if (lvConnections.Columns[3].Width < 50) lvConnections.Columns[3].Width = 50;
+            if (lvConnections.Columns[4].Width < 50) lvConnections.Columns[4].Width = 50;
+            if (lvConnections.Columns[5].Width < 50) lvConnections.Columns[5].Width = 50;
+            if (lvConnections.Columns[6].Width < 50) lvConnections.Columns[6].Width = 50;
+            if (lvConnections.Columns[7].Width < 50) lvConnections.Columns[7].Width = 50;
         }
 
         private void btnRename_Click(object sender, EventArgs e)
@@ -90,6 +99,7 @@ namespace Terminals
                 string oldName = favorite.Name;
                 favorite.Name = e.Label;
                 item.Name = e.Label;
+                Settings.EditFavorite(oldName, favorite);
             }
         }
 
@@ -122,27 +132,21 @@ namespace Terminals
 
         private void btnCopy_Click(object sender, EventArgs e)
         {
-/*            InputBoxResult result = InputBox.Show("New Connection Name");
-            FavoriteConfigurationElement newFavorite = new FavoriteConfigurationElement(GetSelectedFavorite());
-            if (newFavorite != null && result.ReturnCode == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(result.Text))
+            FavoriteConfigurationElement favorite = GetSelectedFavorite();
+            if (favorite != null)
             {
-                string oldName = newFavorite.Name;
-                newFavorite.Name = GetUniqeName(newFavorite.Name);
-                Settings.AddFavorite(newFavorite, Settings.HasToolbarButton(oldName));
-                LoadConnections();
-            }*/
-            InputBoxResult result = InputBox.Show("New Connection Name");
-            if (result.ReturnCode == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(result.Text))
-            {
-                FavoriteConfigurationElement newFav = (GetSelectedFavorite().Clone() as FavoriteConfigurationElement);
-                if (newFav != null)
+                InputBoxResult result = InputBox.Show("New Connection Name");
+                if (result.ReturnCode == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(result.Text))
                 {
-                    newFav.Name = result.Text;
-                    Settings.AddFavorite(newFav, Settings.HasToolbarButton(newFav.Name));
-                    LoadConnections();
+                    FavoriteConfigurationElement newFav = (favorite.Clone() as FavoriteConfigurationElement);
+                    if (newFav != null)
+                    {
+                        newFav.Name = result.Text;
+                        Settings.AddFavorite(newFav, Settings.HasToolbarButton(newFav.Name));
+                        LoadConnections();
+                    }
                 }
             }
-
         }
 
         private string GetUniqeName(string favoriteName)

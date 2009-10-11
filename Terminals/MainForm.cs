@@ -1995,7 +1995,8 @@ namespace Terminals {
 
         private void tsbFavorites_Click(object sender, EventArgs e)
         {
-            HideShowFavoritesPanel(tsbFavorites.Checked);
+            Settings.EnableFavoritesPanel = tsbFavorites.Checked;
+            HideShowFavoritesPanel(Settings.ShowFavoritePanel);
         }
 
         private void txtSearchFavorites_TextChanged(object sender, EventArgs e)
