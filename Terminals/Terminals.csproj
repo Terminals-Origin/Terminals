@@ -253,6 +253,13 @@
       <DependentUpon>CredentialManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Credentials\CredentialSet.cs" />
+    <Compile Include="Export.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Export.Designer.cs">
+      <DependentUpon>Export.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExportImport\ExportImport.cs" />
     <Compile Include="FavsList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -780,6 +787,9 @@
     <EmbeddedResource Include="Credentials\ManageCredentialForm.resx">
       <DependentUpon>ManageCredentialForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Export.resx">
+      <DependentUpon>Export.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FavsList.resx">
       <DependentUpon>FavsList.cs</DependentUpon>

@@ -22,7 +22,7 @@ namespace Terminals {
         public delegate void ReleaseIsAvailable(FavoriteConfigurationElement ReleaseFavorite);
         public static event ReleaseIsAvailable OnReleaseIsAvailable;
 
-        public const int WM_LEAVING_FULLSCREEN = 0x4ff;
+        public const int WM_LEAVING_FULLSCREEN = 0x4ff;        
 
         private static TerminalsCA _commandLineArgs = new TerminalsCA();
 
@@ -43,9 +43,11 @@ namespace Terminals {
         private TabControlItem _currentToolTipItem = null;
         private ToolTip _currentToolTip = new ToolTip();
         private bool _fullScreen;
+        private bool _allScreens = false;
         private bool _stdToolbarState = true;
         private bool _specialToolbarState = true;
         private bool _favToolbarState = true;
+        private static MainForm _mainForm = null;
 
         #region protected
         protected override void SetVisibleCore(bool value)
@@ -103,6 +105,10 @@ namespace Terminals {
             get { return MainForm._commandLineArgs; }
             set { MainForm._commandLineArgs = value; }
         }
+        public static MainForm GetMainForm()
+        {
+            return _mainForm;
+        }
 
         public void CloseTabControlItem()
         {
@@ -153,11 +159,11 @@ namespace Terminals {
             }
             set
             {
-                if (FullScreen != value) SetFullScreen(value);
-                if (!FullScreen)
-                {
-                    ResetToolbars();  //try to restore the toolbars
-                }
+                if (_fullScreen != value) 
+                    SetFullScreen(value);
+                
+                if (!_fullScreen)
+                    ResetToolbars();
             }
         }
 
@@ -299,6 +305,15 @@ namespace Terminals {
                 else
                     MainMenuStrip.GripStyle = ToolStripGripStyle.Visible;
 
+                _mainForm = this;
+                
+                //Lazy check to see if we are using dual screens
+                int w = this.Width / Screen.PrimaryScreen.Bounds.Width;
+                if (w > 2)
+                {
+                    _allScreens = true;
+                    showInDualScreensToolStripMenuItem.Text = "Show in Singel Screens";
+                }
             }
             catch (Exception exc)
             {
@@ -382,7 +397,6 @@ namespace Terminals {
         }
         public void UpdateControls()
         {
-
             tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
             addTerminalToGroupToolStripMenuItem.Enabled = (tcTerminals.SelectedItem != null);
             tsbGrabInput.Enabled = (tcTerminals.SelectedItem != null);
@@ -504,7 +518,7 @@ namespace Terminals {
             return toolTip;
         }
 
-        private void CreateTerminalTab(FavoriteConfigurationElement favorite)
+        public void CreateTerminalTab(FavoriteConfigurationElement favorite)
         {
             if (Settings.ExecuteBeforeConnect)
             {
@@ -769,7 +783,7 @@ namespace Terminals {
             this.Invoke(_resetMethodInvoker);
         }
 
-        private void LoadFavorites()
+        public void LoadFavorites()
         {
             SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
             int seperatorIndex = favoritesToolStripMenuItem.DropDownItems.IndexOf(favoritesSeparator);
@@ -843,10 +857,10 @@ namespace Terminals {
                     {
                         FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
                         FavoriteConfigurationElement favorite = favorites[favoriteButton];
-                        Bitmap button = Terminals.Properties.Resources.smallterm;
+                        Bitmap button = Resources.smallterm;
                         if (favorite != null)
                         {
-                            if (favorite.ToolBarIcon != null && favorite.ToolBarIcon != "" && System.IO.File.Exists(favorite.ToolBarIcon))
+                            if (favorite.ToolBarIcon != null && favorite.ToolBarIcon != "" && File.Exists(favorite.ToolBarIcon))
                             {
                                 try
                                 {
@@ -855,7 +869,8 @@ namespace Terminals {
                                 catch (Exception ex)
                                 {
                                     Terminals.Logging.Log.Info("", ex);
-                                    if (button != Terminals.Properties.Resources.smallterm) button = Terminals.Properties.Resources.smallterm;
+                                    if (button != Resources.smallterm) 
+                                        button = Resources.smallterm;
                                 }
                             }
                             ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, button, serverToolStripMenuItem_Click);
@@ -872,7 +887,6 @@ namespace Terminals {
             {
                 Terminals.Logging.Log.Info("", exc);
             }
-
         }
 
         private void AddFavorite(FavoriteConfigurationElement favorite)
@@ -986,9 +1000,27 @@ namespace Terminals {
                     this._lastState = this.WindowState;
                 this.FormBorderStyle = FormBorderStyle.None;
                 this.WindowState = FormWindowState.Normal;
-                this.Width = Screen.FromControl(tcTerminals).Bounds.Width;
-                this.Height = Screen.FromControl(tcTerminals).Bounds.Height;
-                this.Location = Screen.FromControl(tcTerminals).Bounds.Location;
+                if (_allScreens)
+                {
+                    Screen[] screenArr = Screen.AllScreens;
+                    int with = 0;
+                    if (_allScreens)
+                    {
+                        foreach (Screen screen in screenArr)
+                        {
+                            with += screen.Bounds.Width;
+                        }
+                    }
+                    this.Width = with;
+                    this.Location = new Point(0,0);
+                }
+                else
+                {
+                    this.Width = Screen.FromControl(tcTerminals).Bounds.Width;
+                    this.Location = Screen.FromControl(tcTerminals).Bounds.Location;
+                }
+
+                this.Height = Screen.FromControl(tcTerminals).Bounds.Height;                
                 SetGrabInput(true);
                 this.BringToFront();
             }
@@ -1567,42 +1599,38 @@ namespace Terminals {
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyValue == 3)
-            {
                 ToggleGrabInput();
-            }
         }
 
         private void tcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e)
         {
-
+            bool cancel = false; 
             if (CurrentConnection != null && CurrentConnection.Connected)
             {
                 bool close = false;
                 if (Settings.WarnOnConnectionClose)
                 {
                     close = (MessageBox.Show(this, Program.Resources.GetString("Areyousurethatyouwanttodisconnectfromtheactiveterminal"),
-                   Program.Resources.GetString("Terminals"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
+                    Program.Resources.GetString("Terminals"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
                 }
                 else
-                {
                     close = true;
-                }
+
                 if (close)
                 {
-                    if (CurrentTerminal != null) CurrentTerminal.Disconnect();
-                    if (CurrentConnection != null) CurrentConnection.Disconnect();
+                    if (CurrentTerminal != null)
+                        CurrentTerminal.Disconnect();
+                    
+                    if (CurrentConnection != null)
+                        CurrentConnection.Disconnect();
+                    
                     this.Text = Program.AboutText;
-                    e.Cancel = false;
                 }
                 else
-                {
-                    e.Cancel = true;
-                }
+                    cancel = true;
             }
-            else
-            {
-                e.Cancel = false;
-            }
+            
+            e.Cancel = cancel;
         }
         private void MainForm_Shown(object sender, EventArgs e)
         {
@@ -1628,30 +1656,18 @@ namespace Terminals {
 
         private void tcTerminals_MouseHover(object sender, EventArgs e)
         {
-            if (tcTerminals != null)
-            {
-                if (!tcTerminals.ShowTabs)
-                {
-                    timerHover.Enabled = true;
-                }
-            }
+            if (tcTerminals != null && !tcTerminals.ShowTabs)
+                timerHover.Enabled = true;
         }
 
         private void tcTerminals_MouseLeave(object sender, EventArgs e)
         {
             timerHover.Enabled = false;
             if (FullScreen && tcTerminals.ShowTabs && !tcTerminals.MenuOpen)
-            {
                 tcTerminals.ShowTabs = false;
-            }
+
             if (_currentToolTipItem != null)
-            {
                 _currentToolTip.Hide(_currentToolTipItem);
-            }
-            /*if (previewPictureBox != null)
-            {
-                previewPictureBox.Hide();
-            }*/
         }
 
         private void tcTerminals_TabControlItemClosed(object sender, EventArgs e)
@@ -1678,7 +1694,7 @@ namespace Terminals {
             {
                 item.Image = Terminals.Properties.Resources.smallterm;
             }
-            string f = "";
+
             if (FullScreen)
             {
                 ToolStripSeparator sep = new ToolStripSeparator();
@@ -2090,7 +2106,6 @@ namespace Terminals {
 
         private void showToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //SystemTracyQuickConnectToolStripMenuItem
             this.Visible = !this.Visible;
             showToolStripMenuItem.Text = Program.Resources.GetString("HideShow");
         }
@@ -2703,6 +2718,42 @@ namespace Terminals {
         private void CredentialManagementToolStripButton_Click(object sender, EventArgs e)
         {
             ShowCredentialsManager();
+        }        
+
+        private void closeSelectedConnectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void exportImportConnectionsListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Export ei = new Export();
+            ei.Show();
+        }
+
+        private void showInDualScreensToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Screen[] screenArr = Screen.AllScreens;
+            int with = 0;           
+            if (!_allScreens)
+            {
+                foreach (Screen screen in screenArr)
+                {
+                    with += screen.Bounds.Width;
+                }
+                showInDualScreensToolStripMenuItem.Text = "Show in Singel Screen";                
+            }
+            else
+            {
+                with = Screen.PrimaryScreen.Bounds.Width;
+                showInDualScreensToolStripMenuItem.Text = "Show In Multi Screens";
+            }
+
+            this.Top = 0;
+            this.Left = 0;
+            this.Height = Screen.PrimaryScreen.Bounds.Height;
+            this.Width = with;
+            _allScreens = !_allScreens;
         }
         #endregion
     }

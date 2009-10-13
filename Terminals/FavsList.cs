@@ -6,6 +6,8 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
+using System.IO;
 
 using Terminals.History;
 
@@ -21,13 +23,22 @@ namespace Terminals
         private HistoryByFavorite _historyByFavorite = null;
         private HistoryController _historyController = new HistoryController();        
         private List<string> _nodeTextList;
+        private MainForm _mainForm;
 
         public FavsList()
         {
             InitializeComponent();
             _nodeTextList = new List<string>();
-            _historyInvoker = new MethodInvoker(UpdateHistory);
+            _historyInvoker = new MethodInvoker(UpdateHistory);            
         }
+
+        private MainForm GetMainForm() 
+        { 
+            if(_mainForm == null)
+                _mainForm = MainForm.GetMainForm();
+            return _mainForm;
+        }
+
         public void LoadFavs()
         {
             favsTree.Nodes.Clear();
@@ -512,5 +523,28 @@ namespace Terminals
             //if (fav != null) MainForm.ShowManageTerminalForm(fav);
         }
         #endregion
+
+        private void favsTree_DragEnter(object sender, DragEventArgs e)
+        {
+            // make sure they're actually dropping files (not text or anything else)
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+                e.Effect = DragDropEffects.All;
+        }
+
+        private void favsTree_DragDrop(object sender, DragEventArgs e)
+        {
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            foreach (string file in files)
+            {
+                string str = Path.GetExtension(file).ToLower();
+                if (str.Equals(".xml"))
+                {
+                    ExportImport.ExportImport.ImportXML(file, true);
+                    GetMainForm().LoadFavorites();
+                } 
+                else
+                    MessageBox.Show("This are not a XML file, Quiting");
+            }
+        }
     }
 }

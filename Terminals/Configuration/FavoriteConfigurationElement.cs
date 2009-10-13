@@ -6,6 +6,7 @@ using System.Configuration;
 
 namespace Terminals
 {
+    ///If adding a value here, update Clone() and ExportImport.ExportImport.cs.
     [Serializable]
     public class FavoriteConfigurationElement : ConfigurationElement, ICloneable
     {
@@ -321,8 +322,6 @@ namespace Terminals
                 this["allowBackgroundInput"] = value;
             }
         }
-
-
 
         [ConfigurationProperty("ICAApplicationName", IsRequired = false, DefaultValue = "")]
         public string ICAApplicationName
@@ -894,7 +893,6 @@ namespace Terminals
 
         }
 
-
         [ConfigurationProperty("notes")]
         public string Notes
         {
@@ -957,8 +955,6 @@ namespace Terminals
                 this["icaEncryptionLevel"] = value;
             }
         }
-
-
 
         [ConfigurationProperty("port", DefaultValue = 3389)]
         public int Port
@@ -1090,7 +1086,6 @@ namespace Terminals
             }
         }
 
-
         [ConfigurationProperty("disableCursorBlinking")]
         public bool DisableCursorBlinking
         {
@@ -1129,7 +1124,6 @@ namespace Terminals
                 this["enableFontSmoothing"] = value;
             }
         }
-
 
         [ConfigurationProperty("disableCursorShadow")]
         public bool DisableCursorShadow
@@ -1213,7 +1207,6 @@ namespace Terminals
                 return result;
             }
         }
-
 
         #region ICloneable Members
         public object Clone()
@@ -1310,13 +1303,10 @@ namespace Terminals
                                                        VncDisplayNumber = this.VncDisplayNumber,
                                                        VncViewOnly = this.VncViewOnly
                                                    };
-
-
             return fav;
 
         }
-
-        #endregion
+        #endregion        
     }
 }
 

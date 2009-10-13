@@ -71,6 +71,7 @@
             // 
             // favsTree
             // 
+            this.favsTree.AllowDrop = true;
             this.favsTree.CausesValidation = false;
             this.favsTree.ContextMenuStrip = this.contextMenuStrip1;
             this.favsTree.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -80,6 +81,8 @@
             this.favsTree.Size = new System.Drawing.Size(136, 118);
             this.favsTree.TabIndex = 0;
             this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
+            this.favsTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.favsTree_DragDrop);
+            this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.favsTree_DragEnter);
             // 
             // contextMenuStrip1
             // 
@@ -107,7 +110,7 @@
             this.setUsernameByTagToolStripMenuItem,
             this.deleteAllFavoritesByTagToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(232, 408);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(232, 430);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // connectToolStripMenuItem
