@@ -126,7 +126,7 @@ namespace Terminals {
         public void Connect(string connectionName, bool ForceConsole, bool ForceNewWindow)
         {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-            FavoriteConfigurationElement favorite = favorites[connectionName];
+            FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)favorites[connectionName].Clone();
             favsList1.RecordHistoryItem(connectionName);
             if (ForceConsole) favorite.ConnectToConsole = true;
             if (ForceNewWindow) favorite.NewWindow = true;
