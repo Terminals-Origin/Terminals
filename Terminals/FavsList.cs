@@ -28,7 +28,6 @@ namespace Terminals
         public FavsList()
         {
             InitializeComponent();
-            _nodeTextList = new List<string>();
             _historyInvoker = new MethodInvoker(UpdateHistory);            
         }
 
@@ -41,6 +40,13 @@ namespace Terminals
 
         public void LoadFavs()
         {
+            _nodeTextList = new List<string>();
+            foreach (TreeNode node in favsTree.Nodes)
+            {
+                if (node.IsExpanded)
+                    _nodeTextList.Add(node.Text);
+            }
+
             favsTree.Nodes.Clear();
             SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
             SortedDictionary<string, TreeNode> SortedTags = new SortedDictionary<string, TreeNode>();
@@ -80,9 +86,10 @@ namespace Terminals
             }
             favsTree.Sort();
 
-            foreach (string nodeText in _nodeTextList)
+            foreach (TreeNode node in favsTree.Nodes)
             {
-                SetNode(nodeText);
+                if (_nodeTextList.Contains(node.Text))
+                    node.Expand();
             }
         }
         public void RecordHistoryItem(string Name)
@@ -92,31 +99,6 @@ namespace Terminals
         }             
 
         #region private
-        private void SetNode(string nodeText) 
-        { 
-            TreeNode selectedNode = GetTreeNode(nodeText); 
-            if (selectedNode != null) 
-            {
-                favsTree.SelectedNode = selectedNode; 
-                selectedNode.EnsureVisible();
-                selectedNode.Expand();
-            } 
-        } 
-
-        private TreeNode GetTreeNode(string nodeText)
-        {
-            TreeNode selectedNode = null;
-            TreeNodeCollection tNodes = favsTree.Nodes;
-            foreach (TreeNode tNode in tNodes)
-            {
-                if (tNode.Text == nodeText)
-                {
-                    selectedNode = tNode;
-                    break;
-                }
-            }
-            return selectedNode;
-        }
         private MainForm MainForm
         {
             get
@@ -188,55 +170,17 @@ namespace Terminals
         }
         private void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if(e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Right)
             {
                 favsTree.SelectedNode = e.Node;
-            }
-
-            if(favsTree.SelectedNode != null)
-            {
+                
                 FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-                if(e.Button == MouseButtons.Right)
-                {
-                    favsTree.SelectedNode = e.Node;
-                }
-                pingToolStripMenuItem.Visible = true;
-                dNSToolStripMenuItem.Visible = true;
-                traceRouteToolStripMenuItem.Visible = true;
-                tSAdminToolStripMenuItem.Visible = true;
-                propertiesToolStripMenuItem.Visible = true;
-                rebootToolStripMenuItem.Visible = true;
-                shutdownToolStripMenuItem.Visible = true;
-                enableRDPToolStripMenuItem.Visible = true;
-                manageAllFavoritesToolStripMenuItem.Visible = false;
-                setDomainByTagToolStripMenuItem.Visible = false;
-                setUsernameByTagToolStripMenuItem.Visible = false;
-                if(fav == null)
-                {
-                    pingToolStripMenuItem.Visible = false;
-                    dNSToolStripMenuItem.Visible = false;
-                    traceRouteToolStripMenuItem.Visible = false;
-                    tSAdminToolStripMenuItem.Visible = false;
-                    propertiesToolStripMenuItem.Visible = false;
-                    rebootToolStripMenuItem.Visible = false;
-                    shutdownToolStripMenuItem.Visible = false;
-                    enableRDPToolStripMenuItem.Visible = false;
-                    manageAllFavoritesToolStripMenuItem.Visible = true;
-                    setDomainByTagToolStripMenuItem.Visible = true;
-                    setUsernameByTagToolStripMenuItem.Visible = true;
-                }
-            }
 
-            //Away to remember the tree layout
-            if (e.Node.IsExpanded)
-                _nodeTextList.Add(e.Node.Text);
-            else
-                _nodeTextList.Remove(e.Node.Text);            
-        }
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-            connectToolStripMenuItem.Visible = !(favsTree.SelectedNode.Tag == null);
-            connectToAllToolStripMenuItem.Visible = (favsTree.SelectedNode.Tag == null);
+                if (fav != null)
+                    this.favsTree.ContextMenuStrip = this.contextMenuStrip1;
+                else
+                    this.favsTree.ContextMenuStrip = this.contextMenuStrip2;
+            }
         }
         private void pingToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -274,8 +218,7 @@ namespace Terminals
         }
         private void connectConsoleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.Connect(fav.Name, true, false);
+
         }
         private void rebootToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -422,7 +365,37 @@ namespace Terminals
                 }
             }
         }
-        private void manageAllFavoritesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void setCredentialByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string tagName = favsTree.SelectedNode.Text;
+            InputBoxResult result = InputBox.Show("Set Credential by Tag\r\n\r\nThis will replace the credential used for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Credential" + " - " + tagName);
+            if (result.ReturnCode == DialogResult.OK)
+            {
+                if (Credentials.CredentialSet.CredentialByName(result.Text) == null)
+                {
+                    MessageBox.Show("The credential you specified does not exist.");
+                    return;
+                }
+
+                this.MainForm.Cursor = Cursors.WaitCursor;
+                Application.DoEvents();
+                Settings.DelayConfigurationSave = true;
+                foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
+                {
+                    FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
+                    if (fav != null)
+                    {
+                        fav.Credential = result.Text;
+                        Settings.EditFavorite(fav.Name, fav);
+                    }
+                }
+                Settings.Config.Save();
+                this.MainForm.Cursor = Cursors.Default;
+                Application.DoEvents();
+                MessageBox.Show("Set Credential by Tag Complete.");
+            }
+        }
+        private void setPasswordByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string tagName = favsTree.SelectedNode.Text;
             InputBoxResult result = InputBox.Show("Set Password by Tag\r\n\r\nThis will replace the password for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Password" + " - " + tagName, '*');
@@ -430,15 +403,17 @@ namespace Terminals
             {
                 this.MainForm.Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
-                foreach (FavoriteConfigurationElement elm in favs)
+                Settings.DelayConfigurationSave = true;
+                foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
                 {
-                    if (elm.TagList.Contains(tagName))
+                    FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
+                    if (fav != null)
                     {
-                        elm.Password = result.Text;
-                        Settings.EditFavorite(elm.Name, elm);
+                        fav.Password = result.Text;
+                        Settings.EditFavorite(fav.Name, fav);
                     }
                 }
+                Settings.Config.Save();
                 this.MainForm.Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Password by Tag Complete.");
@@ -452,15 +427,17 @@ namespace Terminals
             {
                 this.MainForm.Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
-                foreach (FavoriteConfigurationElement elm in favs)
+                Settings.DelayConfigurationSave = true;
+                foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
                 {
-                    if (elm.TagList.Contains(tagName))
+                    FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
+                    if (fav != null)
                     {
-                        elm.DomainName = result.Text;                        
-                        Settings.EditFavorite(elm.Name, elm);
+                        fav.DomainName = result.Text;
+                        Settings.EditFavorite(fav.Name, fav);
                     }
                 }
+                Settings.Config.Save();
                 this.MainForm.Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Domain by Tag Complete.");
@@ -474,15 +451,17 @@ namespace Terminals
             {
                 this.MainForm.Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
-                foreach (FavoriteConfigurationElement elm in favs)
+                Settings.DelayConfigurationSave = true;
+                foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
                 {
-                    if (elm.TagList.Contains(tagName))
+                    FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
+                    if (fav != null)
                     {
-                        elm.UserName = result.Text;
-                        Settings.EditFavorite(elm.Name, elm);
+                        fav.UserName = result.Text;
+                        Settings.EditFavorite(fav.Name, fav);
                     }
                 }
+                Settings.Config.Save();
                 this.MainForm.Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Username by Tag Complete.");
@@ -496,14 +475,16 @@ namespace Terminals
             {
                 this.MainForm.Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                FavoriteConfigurationElementCollection favs = Settings.GetFavorites();
-                foreach (FavoriteConfigurationElement elm in favs)
+                Settings.DelayConfigurationSave = true;
+                foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
                 {
-                    if (elm.TagList.Contains(tagName))
+                    FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
+                    if (fav != null)
                     {
-                        Settings.DeleteFavorite(elm.Name);
+                        Settings.DeleteFavorite(fav.Name);
                     }
                 }
+                Settings.Config.Save();
                 this.MainForm.Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");

@@ -305,54 +305,14 @@ namespace Terminals
 
         public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite)
         {
-            /*Configuration configuration = Config;
+            Configuration configuration = Config;
             TerminalsConfigurationSection section = GetSection(configuration);
             FavoriteConfigurationElement editedFavorite = section.Favorites[oldName];
             if (editedFavorite != null && favorite != null)
-            {
-                editedFavorite.VMRCAdministratorMode = favorite.VMRCAdministratorMode;
-                editedFavorite.VMRCReducedColorsMode = favorite.VMRCReducedColorsMode;
-                editedFavorite.ConsoleRows = favorite.ConsoleRows;
-                editedFavorite.ConsoleCols = favorite.ConsoleCols;
-                editedFavorite.ConsoleFont = favorite.ConsoleFont;
-                editedFavorite.ConsoleCursorColor = favorite.ConsoleCursorColor;
-                editedFavorite.ConsoleTextColor = favorite.ConsoleTextColor;
-                editedFavorite.ConsoleBackColor = favorite.ConsoleBackColor;
-                editedFavorite.Protocol = favorite.Protocol;
-                editedFavorite.Colors = favorite.Colors;
-                editedFavorite.ConnectToConsole = favorite.ConnectToConsole;
-                editedFavorite.DesktopSize = favorite.DesktopSize;
-                editedFavorite.DomainName = favorite.DomainName;
-                editedFavorite.EncryptedPassword = favorite.EncryptedPassword;
-                editedFavorite.Name = favorite.Name;
-                editedFavorite.ServerName = favorite.ServerName;
-                editedFavorite.UserName = favorite.UserName;
-                editedFavorite.RedirectDrives = favorite.RedirectDrives;
-                editedFavorite.RedirectPorts = favorite.RedirectPorts;
-                editedFavorite.RedirectPrinters = favorite.RedirectPrinters;
-                editedFavorite.RedirectDevices = favorite.RedirectDevices;
-                editedFavorite.RedirectClipboard = favorite.RedirectClipboard;
-                editedFavorite.RedirectSmartCards = favorite.RedirectSmartCards;
-                editedFavorite.Sounds = favorite.Sounds;
-                editedFavorite.Port = favorite.Port;
-                editedFavorite.DesktopShare = favorite.DesktopShare;
-                editedFavorite.ExecuteBeforeConnect = favorite.ExecuteBeforeConnect;
-                editedFavorite.ExecuteBeforeConnectCommand = favorite.ExecuteBeforeConnectCommand;
-                editedFavorite.ExecuteBeforeConnectArgs = favorite.ExecuteBeforeConnectArgs;
-                editedFavorite.ExecuteBeforeConnectInitialDirectory = favorite.ExecuteBeforeConnectInitialDirectory;
-                editedFavorite.ExecuteBeforeConnectWaitForExit = favorite.ExecuteBeforeConnectWaitForExit;
-                editedFavorite.DisableWallPaper = favorite.DisableWallPaper;
-
-                editedFavorite.DisableCursorBlinking = favorite.DisableCursorBlinking;
-                editedFavorite.DisableCursorShadow = favorite.DisableCursorShadow;
-                editedFavorite.DisableFullWindowDrag = favorite.DisableFullWindowDrag;
-                editedFavorite.DisableMenuAnimations = favorite.DisableMenuAnimations;
-                editedFavorite.DisableTheming = favorite.DisableTheming;
-
-                editedFavorite.Tags = favorite.Tags;
-            }
+                editedFavorite = (FavoriteConfigurationElement)favorite.Clone();
+            
             if (!_delayConfigurationSave)
-                configuration.Save();*/
+                configuration.Save();
         }
 
         public static bool HasToolbarButton(string name)

@@ -201,8 +201,8 @@ namespace Terminals {
         {
             using (NewTerminalForm frmNewTerminal = new NewTerminalForm(Favorite))
             {
-                frmNewTerminal.ShowDialog();
-                LoadFavorites();
+                if (frmNewTerminal.ShowDialog() == DialogResult.OK)
+                    LoadFavorites();
             }
         }        
 
