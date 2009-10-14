@@ -10,10 +10,14 @@ namespace Terminals
 {
     public partial class OrganizeFavoritesForm : Form
     {
+        private ListViewColumnSorter lvwColumnSorter;
+
         public OrganizeFavoritesForm()
         {
             InitializeComponent();
             LoadConnections();
+            lvwColumnSorter = new ListViewColumnSorter();
+            lvConnections.ListViewItemSorter = lvwColumnSorter;
         }
 
         private void LoadConnections()
@@ -254,6 +258,32 @@ namespace Terminals
             if(mouse != null) {
                 contextMenuStrip1.Show(ImportButton, new Point(mouse.X, mouse.Y));
             }
+        }
+
+        private void lvConnections_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            // Determine if clicked column is already the column that is being sorted.
+            if (e.Column == lvwColumnSorter.SortColumn)
+            {
+                // Reverse the current sort direction for this column.
+                if (lvwColumnSorter.Order == SortOrder.Ascending)
+                {
+                    lvwColumnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    lvwColumnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                // Set the column number that is to be sorted; default to ascending.
+                lvwColumnSorter.SortColumn = e.Column;
+                lvwColumnSorter.Order = SortOrder.Ascending;
+            }
+
+            // Perform the sort with these new sort options.
+            lvConnections.Sort();
         }
 
     }
