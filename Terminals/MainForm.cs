@@ -807,6 +807,7 @@ namespace Terminals {
                 ToolStripMenuItem sortedItem = new ToolStripMenuItem();
                 sortedItem.Text = favorite.Name;
                 sortedItem.Tag = "favorite";
+                tscConnectTo.Items.Add(favorite.Name);
 
                 if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
                     sortedItem.Image = Image.FromFile(favorite.ToolBarIcon);
@@ -823,7 +824,6 @@ namespace Terminals {
                             parent = new ToolStripMenuItem(tag);
                             parent.Name = tag;
                             tagTools.Add(tag, parent);
-                            tscConnectTo.Items.Add(parent);
                         }
 
                         if (parent != null)
