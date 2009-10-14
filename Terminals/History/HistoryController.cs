@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.IO;
@@ -42,8 +43,11 @@ namespace Terminals.History
             
             lock (_threadLock)
             {
+                System.Diagnostics.Stopwatch sw = new Stopwatch();
+
                 try
                 {
+                    sw.Start();
                     Logging.Log.Info("Loading History:" + ((_historyLocation == null) ? "" : _historyLocation));
                     _loadingHistory = true;
                     //So, how to store history..that is the question. Should it be per computer or per terminals install (portable)? Maybe both?
@@ -59,11 +63,16 @@ namespace Terminals.History
                         _currentHistory = (Unified.Serialize.DeserializeXMLFromDisk(_historyLocation, typeof(HistoryByFavorite)) as HistoryByFavorite);
                     }
                     _loadingHistory = false;
+                    
                     Logging.Log.Info("Done Loading History");
                 }
                 catch (Exception exc)
                 {
                     Logging.Log.Error("Error Loading History", exc);
+                } finally
+                {
+                    sw.Stop();
+                    Logging.Log.Info(string.Format("Load History Duration:{0}ms", sw.ElapsedMilliseconds));
                 }
             }
 
@@ -72,8 +81,11 @@ namespace Terminals.History
         }        
         private void SaveHistory()
         {
+            System.Diagnostics.Stopwatch sw = new Stopwatch();
+
             try
             {
+                sw.Start();
                 Logging.Log.Info("Saving History");
                 Unified.Serialize.SerializeXMLToDisk(CurrentHistory, _historyLocation);
                 Logging.Log.Info("Done Saving History");
@@ -81,6 +93,11 @@ namespace Terminals.History
             catch (Exception exc)
             {
                 Logging.Log.Error("Error Saving History", exc);
+            }
+            finally
+            {
+                sw.Stop();
+                Logging.Log.Info(string.Format("Save History Duration:{0}ms", sw.ElapsedMilliseconds));
             }
         }
         public void RecordHistoryItem(string name, bool save)
