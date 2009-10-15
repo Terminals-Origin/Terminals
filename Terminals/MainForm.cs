@@ -306,13 +306,23 @@ namespace Terminals {
                     MainMenuStrip.GripStyle = ToolStripGripStyle.Visible;
 
                 _mainForm = this;
-                
-                //Lazy check to see if we are using dual screens
-                int w = this.Width / Screen.PrimaryScreen.Bounds.Width;
-                if (w > 2)
+
+                if (Screen.AllScreens.Length > 1)
                 {
-                    _allScreens = true;
-                    showInDualScreensToolStripMenuItem.Text = "Show in Singel Screens";
+                    showInDualScreensToolStripMenuItem.Enabled = true;
+
+                    //Lazy check to see if we are using dual screens
+                    int w = this.Width / Screen.PrimaryScreen.Bounds.Width;
+                    if (w > 2)
+                    {
+                        _allScreens = true;
+                        showInDualScreensToolStripMenuItem.Text = "Show in Singel Screens";
+                    }
+                }
+                else
+                {
+                    showInDualScreensToolStripMenuItem.ToolTipText = "You only have one Screen";
+                    showInDualScreensToolStripMenuItem.Enabled = false;
                 }
             }
             catch (Exception exc)
@@ -327,10 +337,10 @@ namespace Terminals {
 
             HideShowFavoritesPanel(Settings.ShowFavoritePanel);
 
-            ToolStripSettings newSettings = Settings.ToolbarSettings;
-            ToolStripMenuItem menuItem = null;
+            ToolStripSettings newSettings = Settings.ToolbarSettings;            
             if (newSettings != null && newSettings.Count > 0)
             {
+                ToolStripMenuItem menuItem = null;
                 foreach (int rowIndex in newSettings.Keys)
                 {
                     ToolStripSetting setting = newSettings[rowIndex];
@@ -364,28 +374,27 @@ namespace Terminals {
                     {
                         menuItem.Checked = setting.Visible;
                     }
+
                     if (strip != null)
-                    {
-                        Point p;
+                    {                        
                         int row = setting.Row + 1;
-                        p = new Point(setting.Left, setting.Top);
+                        Point p = new Point(setting.Left, setting.Top);                        
+                        switch (setting.Dock)
+                        {
+                            case "Top":
+                                this.toolStripContainer.TopToolStripPanel.Join(strip, p);                                
+                                break;
+                            case "Left":
+                                this.toolStripContainer.LeftToolStripPanel.Join(strip, p);
+                                break;
+                            case "Right":
+                                this.toolStripContainer.RightToolStripPanel.Join(strip, p);
+                                break;
+                            case "Bottom":
+                                this.toolStripContainer.BottomToolStripPanel.Join(strip, p);
+                                break;
+                        }
                         strip.Location = p;
-                        if (setting.Dock == "Top")
-                        {
-                            this.toolStripContainer.TopToolStripPanel.Join(strip, p);
-                        }
-                        else if (setting.Dock == "Left")
-                        {
-                            this.toolStripContainer.LeftToolStripPanel.Join(strip, p);
-                        }
-                        else if (setting.Dock == "Right")
-                        {
-                            this.toolStripContainer.RightToolStripPanel.Join(strip, p);
-                        }
-                        else if (setting.Dock == "Bottom")
-                        {
-                            this.toolStripContainer.BottomToolStripPanel.Join(strip, p);
-                        }
                         strip.Visible = setting.Visible;
                         if (Settings.ToolbarsLocked)
                             strip.GripStyle = ToolStripGripStyle.Hidden;
@@ -809,7 +818,7 @@ namespace Terminals {
                 sortedItem.Tag = "favorite";
                 tscConnectTo.Items.Add(favorite.Name);
 
-                if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
+                if (!string.IsNullOrEmpty(favorite.ToolBarIcon) && File.Exists(favorite.ToolBarIcon))
                     sortedItem.Image = Image.FromFile(favorite.ToolBarIcon);
 
                 if (favorite.TagList != null && favorite.TagList.Count > 0)
@@ -860,7 +869,7 @@ namespace Terminals {
                         Bitmap button = Resources.smallterm;
                         if (favorite != null)
                         {
-                            if (favorite.ToolBarIcon != null && favorite.ToolBarIcon != "" && File.Exists(favorite.ToolBarIcon))
+                            if (!string.IsNullOrEmpty(favorite.ToolBarIcon) && File.Exists(favorite.ToolBarIcon))
                             {
                                 try
                                 {
@@ -994,10 +1003,12 @@ namespace Terminals {
                 menuStrip.Visible = false;
                 this._lastLocation = this.Location;
                 this._lastSize = this.RestoreBounds.Size;
+                
                 if (this.WindowState == FormWindowState.Minimized)
                     this._lastState = FormWindowState.Normal;
                 else
                     this._lastState = this.WindowState;
+                
                 this.FormBorderStyle = FormBorderStyle.None;
                 this.WindowState = FormWindowState.Normal;
                 if (_allScreens)
@@ -1833,7 +1844,8 @@ namespace Terminals {
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (FullScreen) FullScreen = false;
+            if (FullScreen) 
+                FullScreen = false;
             this.MainWindowNotifyIcon.Visible = false;
 
             if (tcTerminals.Items.Count > 0)
@@ -1845,20 +1857,14 @@ namespace Terminals {
                     {
                         Settings.ShowConfirmDialog = !frmSaveActiveConnections.chkDontShowDialog.Checked;
                         if (frmSaveActiveConnections.chkOpenOnNextTime.Checked)
-                        {
                             SaveActiveConnections();
-                        }
                         e.Cancel = false;
                     }
                     else
-                    {
                         e.Cancel = true;
-                    }
                 }
                 else if (Settings.SaveConnectionsOnClose)
-                {
                     SaveActiveConnections();
-                }
             }
             SaveWindowState();
         }
@@ -2265,13 +2271,20 @@ namespace Terminals {
         {
             if (!Settings.ToolbarsLocked)
             {
-                SpecialCommandsToolStrip.Visible = !SpecialCommandsToolStrip.Visible;
+                AddShowStrip(SpecialCommandsToolStrip, !SpecialCommandsToolStrip.Visible);
+                //SpecialCommandsToolStrip.Visible = !SpecialCommandsToolStrip.Visible;
                 shortcutsToolStripMenuItem.Checked = SpecialCommandsToolStrip.Visible;
             }
             else
             {
                 System.Windows.Forms.MessageBox.Show(Program.Resources.GetString("Inordertochangethetoolbarsyoumustfirstunlockthem"));
             }
+        }
+
+        private void AddShowStrip(ToolStrip strip, bool visible)
+        {
+            strip.Visible = visible;
+            //Add here where it should be.. when we calculate all other visible toolstrips.
         }
 
         private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
@@ -2732,16 +2745,19 @@ namespace Terminals {
         }
 
         private void showInDualScreensToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        {                        
             Screen[] screenArr = Screen.AllScreens;
-            int with = 0;           
+            int with = 0;
             if (!_allScreens)
             {
+                if (this.WindowState == FormWindowState.Maximized)
+                    this.WindowState = FormWindowState.Normal;
                 foreach (Screen screen in screenArr)
                 {
                     with += screen.Bounds.Width;
                 }
-                showInDualScreensToolStripMenuItem.Text = "Show in Singel Screen";                
+                showInDualScreensToolStripMenuItem.Text = "Show in Singel Screen";
+                this.BringToFront();
             }
             else
             {
