@@ -718,6 +718,15 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show/Hide Menu.
+        /// </summary>
+        internal static string ShowMenu {
+            get {
+                return ResourceManager.GetString("ShowMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutdown.
         /// </summary>
         internal static string Shutdown {

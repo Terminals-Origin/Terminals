@@ -173,7 +173,7 @@
   </data>
   <data name="Minimize" xml:space="preserve">
     <value>Minimize</value>
-  </data>
+  </data>  
   <data name="NetworkingTools" xml:space="preserve">
     <value>Networking Tools</value>
   </data>
@@ -219,6 +219,9 @@
   <data name="Sessions" xml:space="preserve">
     <value>Sessions</value>
   </data>
+  <data name="ShowMenu" xml:space="preserve">
+    <value>Show/Hide Menu</value>
+  </data>    
   <data name="Shutdown" xml:space="preserve">
     <value>Shutdown</value>
   </data>

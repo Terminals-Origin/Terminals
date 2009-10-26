@@ -32,6 +32,7 @@ namespace Terminals {
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menubarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.standardToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.shortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -224,6 +225,7 @@ namespace Terminals {
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fullScreenToolStripMenuItem,
+            this.menubarToolStripMenuItem,
             this.standardToolbarToolStripMenuItem,
             this.toolStripMenuItem4,
             this.shortcutsToolStripMenuItem,
@@ -243,6 +245,16 @@ namespace Terminals {
             this.fullScreenToolStripMenuItem.Text = "Full Screen";
             this.fullScreenToolStripMenuItem.ToolTipText = "Set Terminals full screen";
             this.fullScreenToolStripMenuItem.Click += new System.EventHandler(this.tsbFullScreen_Click);
+            // 
+            // menubarToolStripMenuItem
+            // 
+            this.menubarToolStripMenuItem.Checked = true;
+            this.menubarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.menubarToolStripMenuItem.Name = "menubarToolStripMenuItem";
+            this.menubarToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.menubarToolStripMenuItem.Text = "Menubar";
+            this.menubarToolStripMenuItem.Visible = false;
+            this.menubarToolStripMenuItem.Click += new System.EventHandler(this.menubarToolStripMenuItem_Click);
             // 
             // standardToolbarToolStripMenuItem
             // 
@@ -1230,7 +1242,7 @@ namespace Terminals {
             this.showToolStripMenuItem,
             this.toolStripMenuItem2});
             this.SystemTrayContextMenuStrip.Name = "SystemTrayContextMenuStrip";
-            this.SystemTrayContextMenuStrip.Size = new System.Drawing.Size(185, 136);
+            this.SystemTrayContextMenuStrip.Size = new System.Drawing.Size(185, 114);
             this.SystemTrayContextMenuStrip.Text = "Terminals";
             this.SystemTrayContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.SystemTrayContextMenuStrip_Opening);
             // 
@@ -1467,5 +1479,6 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
         private System.Windows.Forms.ToolStripMenuItem exportImportConnectionsListToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showInDualScreensToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menubarToolStripMenuItem;
     }
 }

@@ -1244,6 +1244,9 @@ namespace Terminals {
                     QuickContextMenu.Items.Add(Program.Resources.GetString("RestoreScreen"), Resources.arrow_in);
                 else
                     QuickContextMenu.Items.Add(Program.Resources.GetString("FullScreen"), Resources.arrow_out);
+                
+                QuickContextMenu.Items.Add("-");
+                QuickContextMenu.Items.Add(Program.Resources.GetString("ShowMenu"));
 
                 QuickContextMenu.Items.Add("-");
                 QuickContextMenu.Items.Add(Program.Resources.GetString("ScreenCaptureManager"), Resources.screen_capture_box);
@@ -1421,6 +1424,10 @@ namespace Terminals {
             else if (e.ClickedItem.Text == Program.Resources.GetString("Exit"))
             {
                 Close();
+            }
+            else if (e.ClickedItem.Text == Program.Resources.GetString("ShowMenu"))
+            {
+                AddShowStrip(menuStrip, menubarToolStripMenuItem, !menuStrip.Visible);
             }
             else
             {
@@ -2255,55 +2262,38 @@ namespace Terminals {
 
         private void standardToolbarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Settings.ToolbarsLocked)
-            {
-                toolbarStd.Visible = !toolbarStd.Visible;
-                standardToolbarToolStripMenuItem.Checked = toolbarStd.Visible;
-            }
-            else
-            {
-                System.Windows.Forms.MessageBox.Show(Program.Resources.GetString("Inordertochangethetoolbarsyoumustfirstunlockthem"));
-            }
+            AddShowStrip(toolbarStd, standardToolbarToolStripMenuItem, !toolbarStd.Visible);
         }
 
         private void toolStripMenuItem4_Click(object sender, EventArgs e)
         {
-            if (!Settings.ToolbarsLocked)
-            {
-
-                favoriteToolBar.Visible = !favoriteToolBar.Visible;
-                toolStripMenuItem4.Checked = favoriteToolBar.Visible;
-            }
-            else
-            {
-                System.Windows.Forms.MessageBox.Show(Program.Resources.GetString("Inordertochangethetoolbarsyoumustfirstunlockthem"));
-            }
+            AddShowStrip(favoriteToolBar, toolStripMenuItem4, !favoriteToolBar.Visible);
         }
 
         private void shortcutsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!Settings.ToolbarsLocked)
-            {
-                AddShowStrip(SpecialCommandsToolStrip, !SpecialCommandsToolStrip.Visible);
-                //SpecialCommandsToolStrip.Visible = !SpecialCommandsToolStrip.Visible;
-                shortcutsToolStripMenuItem.Checked = SpecialCommandsToolStrip.Visible;
-            }
-            else
-            {
-                System.Windows.Forms.MessageBox.Show(Program.Resources.GetString("Inordertochangethetoolbarsyoumustfirstunlockthem"));
-            }
+            AddShowStrip(SpecialCommandsToolStrip, shortcutsToolStripMenuItem,  !SpecialCommandsToolStrip.Visible);
         }
 
-        private void AddShowStrip(ToolStrip strip, bool visible)
+        private void menubarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            strip.Visible = visible;
-            //Add here where it should be.. when we calculate all other visible toolstrips.
+            AddShowStrip(menuStrip, menubarToolStripMenuItem, !menuStrip.Visible);
+        }
+
+        private void AddShowStrip(ToolStrip strip, ToolStripMenuItem menu, bool visible)
+        {
+            if (!Settings.ToolbarsLocked)
+            {
+                strip.Visible = visible;
+                menu.Checked = visible;
+            }
+            else
+                System.Windows.Forms.MessageBox.Show(Program.Resources.GetString("Inordertochangethetoolbarsyoumustfirstunlockthem"));                        
         }
 
         private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             this.shortcutsToolStripMenuItem.Checked = this.SpecialCommandsToolStrip.Visible;
-            //this.mainMenuToolStripMenuItem.Checked = this.MainMenuHolder.Visible;
             this.toolStripMenuItem4.Checked = this.favoriteToolBar.Visible;
             this.standardToolbarToolStripMenuItem.Checked = this.toolbarStd.Visible;
 
