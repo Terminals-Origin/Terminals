@@ -255,7 +255,7 @@ namespace Terminals {
         public MainForm()
         {
             try
-            {
+            {                
                 _specialCommandsMIV = new MethodInvoker(LoadSpecialCommands);
                 _resetMethodInvoker = new MethodInvoker(LoadWindowState);
 
@@ -850,7 +850,20 @@ namespace Terminals {
                         }
                     }
                 }
+                else
+                {
+                    ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
+                    item.Click += serverToolStripMenuItem_Click;
+                    item.Name = favorite.Name;
+                    item.Tag = "favorite";
+
+                    if (favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                        item.Image = Image.FromFile(favorite.ToolBarIcon);
+
+                    favoritesToolStripMenuItem.DropDown.Items.Add(item);
+                }
             }
+
             this.favsList1.LoadFavs();
             LoadFavoritesToolbar();
         }
@@ -2756,7 +2769,7 @@ namespace Terminals {
                 {
                     with += screen.Bounds.Width;
                 }
-                showInDualScreensToolStripMenuItem.Text = "Show in Singel Screen";
+                showInDualScreensToolStripMenuItem.Text = "Show in Single Screen";
                 this.BringToFront();
             }
             else
