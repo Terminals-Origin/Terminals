@@ -301,20 +301,6 @@ namespace TabControl
         protected override void OnMouseHover(EventArgs e)
         {
             base.OnMouseHover(e);
-            /*if (showToolTipOnTitle)
-            {
-                TabControlItem item = GetTabItemByPoint(PointToClient(Cursor.Position));
-                if ((item != null) && (item != selectedItem))
-                {
-                    ToolTip toolTip = new ToolTip();
-                    toolTip.ToolTipTitle = item.Title;
-                    toolTip.ToolTipIcon = ToolTipIcon.Info;
-                    toolTip.UseFading = true;
-                    toolTip.UseAnimation = true;
-                    toolTip.IsBalloon = false;
-                    toolTip.Show(item.ToolTipText, item, PointToClient(Cursor.Position), 5000);
-                }
-            }*/
         }
         protected override void OnMouseUp(MouseEventArgs e) {
             try {
@@ -399,27 +385,6 @@ namespace TabControl
             return item;
         }
 
-        private void ShowTooltip(string text)
-        {
-            //// Remember starting mouse position
-            //tooltipRect = new Rectangle(Control.MousePosition, Size.Empty);
-
-            //// Make twice as big as the double click region
-            //tooltipRect.Inflate(SystemInformation.DoubleClickSize.Width * 2, SystemInformation.DoubleClickSize.Height * 2);
-
-            //// Move left and up to center at mouse point
-            //tooltipRect.Offset(-SystemInformation.DoubleClickSize.Width, -SystemInformation.DoubleClickSize.Height);
-
-            //// Create a tooltip control
-            //toolTip = new PopupTooltipSingle();
-
-            //// Define string for display
-            //toolTip.ToolText = text;
-
-            //// Setup its position
-            //_toolTip.ShowWithoutFocus(new Point(Control.MousePosition.X, Control.MousePosition.Y + 24));
-        }
-
         private bool mouseEnteredTitle;
 
         protected internal virtual void OnTabControlMouseOnTitle(TabControlMouseOnTitleEventArgs e)
@@ -496,7 +461,6 @@ namespace TabControl
 
         internal void UnSelectItem(TabControlItem tabItem)
         {
-            //tabItem.Visible = false;
             tabItem.Selected = false;
         }
 
@@ -620,15 +584,6 @@ namespace TabControl
                     OnTabControlMouseLeftTitle(args);
                 }
             }
-            /*else
-            {
-                if (mouseWasOnTitle)
-                {
-                    mouseWasOnTitle = false;
-                    mouseEnteredTitle = false;
-                    OnTabControlMouseLeftTitle(new EventArgs());
-                }
-            }*/
         }
 
         protected override void OnMouseLeave(EventArgs e)

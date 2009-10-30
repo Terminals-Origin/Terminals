@@ -522,6 +522,7 @@ namespace Terminals {
                 if (Settings.ShowFullInformationToolTips)
                 {
                     toolTip +=
+                    "Tag: " + favorite.Tags + Environment.NewLine +
                     "Port: " + favorite.Port + Environment.NewLine +
                     "Connect to Console: " + favorite.ConnectToConsole.ToString() + Environment.NewLine +
                     "Notes: " + favorite.Notes + Environment.NewLine;
@@ -1821,49 +1822,6 @@ namespace Terminals {
                 previewPictureBox.Dispose();
                 previewPictureBox = null;
             }*/
-        }
-
-        private void tcTerminals_TabControlMouseEnteredTitle(TabControlMouseOnTitleEventArgs e)
-        {
-            //Picture
-            /*previewPictureBox = new PictureBox();
-            previewPictureBox.BorderStyle = BorderStyle.FixedSingle;
-            previewPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            previewPictureBox.Size = new Size(320, 240);
-            Image capturedImage = screenCapture.CaptureControl(((TerminalTabControlItem)e.Item).TerminalControl);
-            previewPictureBox.Image = capturedImage;
-            previewPictureBox.Parent = tcTerminals.SelectedItem;
-            previewPictureBox.Location = new Point((int)e.Item.StripRect.X, 2);
-            previewPictureBox.BringToFront();
-            previewPictureBox.Show();*/
-            if (Settings.ShowInformationToolTips)
-            {
-                /*TerminalTabControlItem item = (TerminalTabControlItem)e.Item;
-                previewPictureBox = new PictureBox();
-                previewPictureBox.BorderStyle = BorderStyle.FixedSingle;
-                previewPictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-                previewPictureBox.Size = new Size(320, 240);
-                string fileName = Path.GetTempPath() + e.Item.Title;
-                screenCapture.CaptureControl(((TerminalTabControlItem)e.Item).TerminalControl, fileName, ImageFormatHandler.ImageFormatTypes.imgPNG);
-                FileStream fileStream = new FileStream(fileName + ".PNG", FileMode.Open, FileAccess.Read);
-                previewPictureBox.Image = Image.FromStream(fileStream);
-                fileStream.Close();
-                previewPictureBox.Parent = item;
-                previewPictureBox.Location = new Point((int)e.Item.StripRect.X, 2);
-                previewPictureBox.BringToFront();
-                previewPictureBox.Show();*/
-                /*if ((currentToolTipItem != null) && (currentToolTipItem != e.Item))
-                {
-                    currentToolTip.Hide(currentToolTipItem);
-                }
-                currentToolTip.ToolTipTitle = "Connection information";
-                currentToolTip.ToolTipIcon = ToolTipIcon.Info;
-                currentToolTip.UseFading = true;
-                currentToolTip.UseAnimation = true;
-                currentToolTip.IsBalloon = false;
-                currentToolTip.Show(e.Item.ToolTipText, e.Item, (int)e.Item.StripRect.X, 2);
-                currentToolTipItem = e.Item;*/
-            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

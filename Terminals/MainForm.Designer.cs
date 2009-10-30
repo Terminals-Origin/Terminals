@@ -1043,7 +1043,6 @@ namespace Terminals {
             this.tcTerminals.TabControlItemClosed += new System.EventHandler(this.tcTerminals_TabControlItemClosed);
             this.tcTerminals.MouseHover += new System.EventHandler(this.tcTerminals_MouseHover);
             this.tcTerminals.MouseLeave += new System.EventHandler(this.tcTerminals_MouseLeave);
-            this.tcTerminals.TabControlMouseEnteredTitle += new TabControl.TabControlMouseEnteredTitleHandler(this.tcTerminals_TabControlMouseEnteredTitle);
             // 
             // favoriteToolBar
             // 

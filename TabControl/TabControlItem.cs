@@ -130,8 +130,6 @@ namespace TabControl
 
         public TabControlItem(string caption, Control displayControl) 
         {
-            //base.Dock = DockStyle.Fill;
-            //this.Size = new Size(100, 100);
             this.selected = false;
             this.Visible = true;
             this.BorderStyle = BorderStyle.None;
