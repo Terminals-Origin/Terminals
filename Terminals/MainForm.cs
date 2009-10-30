@@ -1000,9 +1000,6 @@ namespace Terminals {
         {
             this.Visible = false;
 
-            tcTerminals.ShowTabs = !fullScreen;
-            tcTerminals.ShowBorder = !fullScreen;
-
             if (fullScreen)
             {
                 _stdToolbarState = toolbarStd.Visible;
@@ -1061,7 +1058,11 @@ namespace Terminals {
                 }
                 menuStrip.Visible = true;
             }
+            
             this._fullScreen = fullScreen;
+
+            tcTerminals.ShowTabs = !fullScreen;
+            tcTerminals.ShowBorder = !fullScreen;
 
             this.Visible = true;
             this.PerformLayout();
