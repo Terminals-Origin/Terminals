@@ -41,7 +41,7 @@ namespace Terminals
             LoadMRUs();
             FillCredentials(null);
 
-            cmbResolution.SelectedIndex = 6;
+            cmbResolution.SelectedIndex = 7;
             cmbColors.SelectedIndex = 1;
             cmbSounds.SelectedIndex = 2;
             SetOkButtonState();
