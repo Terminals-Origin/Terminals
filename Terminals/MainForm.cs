@@ -159,6 +159,9 @@ namespace Terminals {
             }
             set
             {
+                if (value)
+                    SaveWindowState(); //Save windows state before we do a fullscreen so we can restore it
+
                 if (_fullScreen != value) 
                     SetFullScreen(value);
                 
@@ -789,7 +792,7 @@ namespace Terminals {
         private void ToolbarResetThread(object state)
         {
             this.Invoke(_resetMethodInvoker);
-            this.Invoke(_resetMethodInvoker);
+            //this.Invoke(_resetMethodInvoker);
         }
 
         public void LoadFavorites()
@@ -1867,6 +1870,7 @@ namespace Terminals {
         {
             if (FullScreen) 
                 FullScreen = false;
+
             this.MainWindowNotifyIcon.Visible = false;
 
             if (tcTerminals.Items.Count > 0)
@@ -2286,7 +2290,7 @@ namespace Terminals {
             if (!Settings.ToolbarsLocked)
             {
                 strip.Visible = visible;
-                menu.Checked = visible;
+                menu.Checked = visible;                
             }
             else
                 System.Windows.Forms.MessageBox.Show(Program.Resources.GetString("Inordertochangethetoolbarsyoumustfirstunlockthem"));                        
