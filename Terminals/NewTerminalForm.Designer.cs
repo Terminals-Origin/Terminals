@@ -561,7 +561,6 @@ namespace Terminals
         this.ras1.Password = null;
         this.ras1.PhoneNumber = null;
         this.ras1.UserName = null;
-        this.ras1.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(this.ras1_ConnectionChanged);
         // 
         // NewWindowCheckbox
         // 

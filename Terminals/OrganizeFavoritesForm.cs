@@ -10,16 +10,18 @@ namespace Terminals
 {
     public partial class OrganizeFavoritesForm : Form
     {
-        private ListViewColumnSorter lvwColumnSorter;
-
+        private ListViewColumnSorter _lvwColumnSorter;
+        private NetworkScanner _networkScanner = new NetworkScanner();
+        
         public OrganizeFavoritesForm()
         {
             InitializeComponent();
             LoadConnections();
-            lvwColumnSorter = new ListViewColumnSorter();
-            lvConnections.ListViewItemSorter = lvwColumnSorter;
+            _lvwColumnSorter = new ListViewColumnSorter();
+            lvConnections.ListViewItemSorter = _lvwColumnSorter;
         }
 
+        #region Private
         private void LoadConnections()
         {            
             lvConnections.BeginUpdate();
@@ -60,32 +62,40 @@ namespace Terminals
             if (lvConnections.Columns[7].Width < 50) lvConnections.Columns[7].Width = 50;
         }
 
-        private void btnRename_Click(object sender, EventArgs e)
-        {
-            if (lvConnections.SelectedItems.Count > 0)
-            {
-                lvConnections.SelectedItems[0].BeginEdit();
-            }
-        }
-
-        private void btnEdit_Click(object sender, EventArgs e)
-        {
-            FavoriteConfigurationElement favorite = GetSelectedFavorite();
-            if (favorite != null)
-            {
-                EditFavorite(favorite);
-            }
-        }
-
         private void EditFavorite(FavoriteConfigurationElement favorite)
         {
             NewTerminalForm frmNewTerminal = new NewTerminalForm(favorite);
             string oldName = favorite.Name;
             if (frmNewTerminal.ShowDialog() == DialogResult.OK)
             {
-                if (oldName != frmNewTerminal.favorite.Name) Settings.DeleteFavorite(oldName);
+                if (oldName != frmNewTerminal.Favorite.Name) 
+                    Settings.DeleteFavorite(oldName);
                 LoadConnections();
             }
+        }
+
+        private FavoriteConfigurationElement GetSelectedFavorite()
+        {
+            if (lvConnections.SelectedItems.Count > 0)
+                return (FavoriteConfigurationElement)lvConnections.SelectedItems[0].Tag;
+            return null;
+        }
+
+        private void ImportFromFile() {
+            bool needsReload = false;
+            if(ImportOpenFileDialog.ShowDialog() == DialogResult.OK) {
+                string filename = ImportOpenFileDialog.FileName;
+                Integration.Integration i = new Terminals.Integration.Integration();
+
+                FavoriteConfigurationElementCollection coll = i.ImportFavorites(filename);
+                if(coll != null) {
+                    needsReload = true;
+                    foreach(FavoriteConfigurationElement fav in coll) {
+                        Settings.AddFavorite(fav, false);
+                    }
+                }
+            }
+            if(needsReload) LoadConnections();
         }
 
         private void lvConnections_AfterLabelEdit(object sender, LabelEditEventArgs e)
@@ -110,28 +120,34 @@ namespace Terminals
         private void ConnectionManager_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2)
-            {
                 btnRename.PerformClick();
-            }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            foreach(ListViewItem item in lvConnections.SelectedItems) {
+            foreach (ListViewItem item in lvConnections.SelectedItems)
+            {
                 FavoriteConfigurationElement favorite = (item.Tag as FavoriteConfigurationElement);
-                if(favorite != null) {
+                if (favorite != null)
+                {
                     Settings.DeleteFavorite(favorite.Name);
                     Settings.DeleteFavoriteButton(favorite.Name);
                 }
             }
             LoadConnections();
-        }
+        }        
 
-        private FavoriteConfigurationElement GetSelectedFavorite()
+        private void btnRename_Click(object sender, EventArgs e)
         {
             if (lvConnections.SelectedItems.Count > 0)
-                return (FavoriteConfigurationElement)lvConnections.SelectedItems[0].Tag;
-            return null;
+                lvConnections.SelectedItems[0].BeginEdit();
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            FavoriteConfigurationElement favorite = GetSelectedFavorite();
+            if (favorite != null)
+                EditFavorite(favorite);
         }
 
         private void btnCopy_Click(object sender, EventArgs e)
@@ -180,111 +196,68 @@ namespace Terminals
         private void OrganizeFavoritesForm_Shown(object sender, EventArgs e)
         {
             if (lvConnections.Items.Count > 0)
-            {
                 lvConnections.Items[0].Selected = true;
-            }
         }
 
         private void OrganizeFavoritesForm_Activated(object sender, EventArgs e)
         {
             LoadConnections();
         }
-        private void ImportFromFile() {
-            bool needsReload = false;
-            if(ImportOpenFileDialog.ShowDialog() == DialogResult.OK) {
-                string filename = ImportOpenFileDialog.FileName;
-                Integration.Integration i = new Terminals.Integration.Integration();
-
-                FavoriteConfigurationElementCollection coll = i.ImportFavorites(filename);
-                if(coll != null) {
-                    needsReload = true;
-                    foreach(FavoriteConfigurationElement fav in coll) {
-                        Settings.AddFavorite(fav, false);
-                    }
-                }
-            }
-            if(needsReload) LoadConnections();
-        }
- 
-        private void lvConnections_SelectedIndexChanged(object sender, EventArgs e)
+       
+        private void activeDirectoryToolStripMenuItem_Click(object sender, EventArgs e) 
         {
-
-        }
-        NetworkScanner ns = new NetworkScanner();
-
-
-        private void activeDirectoryToolStripMenuItem_Click(object sender, EventArgs e) {
             Network.ImportFromAD ad = new Terminals.Network.ImportFromAD();
             ad.ShowDialog();
         }
 
-        private void networkDetectionToolStripMenuItem_Click(object sender, EventArgs e) {
-
-            DialogResult result = ns.ShowDialog();
-            if(result == DialogResult.OK) {
-                //LoadMRUs();
-                //if(ns.SelectedScanItem != null)
-                //{
-                //    Terminals.Scanner.NetworkScanItem item = ns.SelectedScanItem;
-                //    this.txtPort.Text = item.Port.ToString();
-                //    cmbServers.Text = item.IPAddress;
-                //    this.ProtocolComboBox.Text = Terminals.Connections.ConnectionManager.GetPortName(item.Port, item.IsVMRC);
-                //    if(item.Port == Terminals.Connections.ConnectionManager.SSHPort) this.SSHRadioButton.Checked = true;
-                //    if(item.Port == Terminals.Connections.ConnectionManager.TelnetPort) this.TelnetRadioButton.Checked = true;
-                //    this.txtName.Text = string.Format("{0}_{1}", item.HostName, this.ProtocolComboBox.Text);
-                //    if(this.ProtocolComboBox.Text == "RDP")
-                //    {
-                //        this.chkConnectToConsole.Checked = true;
-                //        this.cmbResolution.SelectedIndex = this.cmbResolution.Items.Count - 1;
-                //    }
-                //}
-            }
+        private void networkDetectionToolStripMenuItem_Click(object sender, EventArgs e) 
+        {
+            DialogResult result = _networkScanner.ShowDialog();
         }
 
-        private void muRDToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void muRDToolStripMenuItem_Click(object sender, EventArgs e) 
+        {
             ImportFromFile();
         }
 
-        private void rDPToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void rDPToolStripMenuItem_Click(object sender, EventArgs e) 
+        {
             ImportFromFile();
         }
 
-        private void vRDBackupFileToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void vRDBackupFileToolStripMenuItem_Click(object sender, EventArgs e) 
+        {
             ImportFromFile();
         }
 
-        private void ImportButton_Click(object sender, EventArgs e) {
+        private void ImportButton_Click(object sender, EventArgs e)
+        {
             MouseEventArgs mouse = (e as MouseEventArgs);
-            if(mouse != null) {
+            if(mouse != null)
                 contextMenuStrip1.Show(ImportButton, new Point(mouse.X, mouse.Y));
-            }
         }
 
         private void lvConnections_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             // Determine if clicked column is already the column that is being sorted.
-            if (e.Column == lvwColumnSorter.SortColumn)
+            if (e.Column == _lvwColumnSorter.SortColumn)
             {
                 // Reverse the current sort direction for this column.
-                if (lvwColumnSorter.Order == SortOrder.Ascending)
-                {
-                    lvwColumnSorter.Order = SortOrder.Descending;
-                }
+                if (_lvwColumnSorter.Order == SortOrder.Ascending)
+                    _lvwColumnSorter.Order = SortOrder.Descending;
                 else
-                {
-                    lvwColumnSorter.Order = SortOrder.Ascending;
-                }
+                    _lvwColumnSorter.Order = SortOrder.Ascending;
             }
             else
             {
                 // Set the column number that is to be sorted; default to ascending.
-                lvwColumnSorter.SortColumn = e.Column;
-                lvwColumnSorter.Order = SortOrder.Ascending;
+                _lvwColumnSorter.SortColumn = e.Column;
+                _lvwColumnSorter.Order = SortOrder.Ascending;
             }
 
             // Perform the sort with these new sort options.
             lvConnections.Sort();
         }
-
+        #endregion
     }
 }
