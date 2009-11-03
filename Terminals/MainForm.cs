@@ -980,7 +980,6 @@ namespace Terminals {
                     CreateTerminalTab(frmNewTerminal.Favorite);
                 }
             }
-            LoadFavorites();
         }
 
         private void HideToolBar(bool fullScreen)
