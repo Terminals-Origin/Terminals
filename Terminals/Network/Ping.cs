@@ -69,12 +69,18 @@ namespace Metro
             }
             
         }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            nil = new Metro.NetworkInterfaceList();
+            base.OnLoad(e);
+        }
         System.Threading.Timer t;
         bool pingRunning = false;
         bool pingReady = false;
         byte[] payload;
         MethodInvoker mivPing;
-        Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();
+        Metro.NetworkInterfaceList nil = null;
         Metro.TransportLayer.Icmp.IcmpPingManager ping;
         System.Collections.Generic.List<PingUpdate> PingList = new List<PingUpdate>();
 

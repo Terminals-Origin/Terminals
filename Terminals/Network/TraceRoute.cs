@@ -19,10 +19,25 @@ namespace Metro
         public TraceRoute()
         {
             InitializeComponent();
+            miv = new MethodInvoker(UpdateRoute);
+
+
+        }
+        protected override void OnLoad(EventArgs e)
+        {
+            try
+            {
+                nil = new Metro.NetworkInterfaceList();
+            }
+            catch (Exception exc)
+            {
+                Terminals.Logging.Log.Error(exc);
+            }
+
             try
             {
 
-                miv = new MethodInvoker(UpdateRoute);
+
                 NetworkInterface validNic = nil.Interfaces[0];
                 foreach (NetworkInterface nic in nil.Interfaces)
                 {
@@ -44,8 +59,9 @@ namespace Metro
                 //    tabbed.HideTab(1);
                 //}
             }
+            base.OnLoad(e);
         }
-        Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();
+        Metro.NetworkInterfaceList nil = null;
         Metro.TransportLayer.Icmp.IcmpTraceRoute trace = null;
         System.Collections.Generic.List<RouteUpdate> RUList = new List<RouteUpdate>();
 

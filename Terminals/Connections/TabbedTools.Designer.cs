@@ -55,8 +55,7 @@ namespace Terminals.Connections
             this.wakeOnLan1 = new Terminals.Network.WakeOnLan();
             this.tabPage13 = new System.Windows.Forms.TabPage();
             this.portScanner1 = new Terminals.Network.PortScanner();
-            this.PcapTabPage = new System.Windows.Forms.TabPage();
-            this.packetCapture1 = new WindowsFormsApplication2.PacketCapture();
+            this.PcapTabPage = new System.Windows.Forms.TabPage();            
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -342,25 +341,6 @@ namespace Terminals.Connections
             this.portScanner1.Size = new System.Drawing.Size(880, 303);
             this.portScanner1.TabIndex = 0;
             // 
-            // PcapTabPage
-            // 
-            this.PcapTabPage.Controls.Add(this.packetCapture1);
-            this.PcapTabPage.Location = new System.Drawing.Point(4, 22);
-            this.PcapTabPage.Name = "PcapTabPage";
-            this.PcapTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.PcapTabPage.Size = new System.Drawing.Size(886, 309);
-            this.PcapTabPage.TabIndex = 15;
-            this.PcapTabPage.Text = "Packets";
-            this.PcapTabPage.UseVisualStyleBackColor = true;
-            // 
-            // packetCapture1
-            // 
-            this.packetCapture1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.packetCapture1.Location = new System.Drawing.Point(3, 3);
-            this.packetCapture1.Name = "packetCapture1";
-            this.packetCapture1.Size = new System.Drawing.Size(880, 303);
-            this.packetCapture1.TabIndex = 0;
-            // 
             // TabbedTools
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -417,6 +397,6 @@ namespace Terminals.Connections
         private System.Windows.Forms.TabPage tabPage13;
         private Terminals.Network.PortScanner portScanner1;
         private System.Windows.Forms.TabPage PcapTabPage;
-        private WindowsFormsApplication2.PacketCapture packetCapture1;
+        
     }
 }
