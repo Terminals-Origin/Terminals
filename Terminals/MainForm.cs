@@ -126,15 +126,20 @@ namespace Terminals {
         public void Connect(string connectionName, bool ForceConsole, bool ForceNewWindow)
         {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-            FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)favorites[connectionName].Clone();
+            FavoriteConfigurationElement favorite = favorites[connectionName];
+
+            if (favorite == null)
+            {
+                CreateNewTerminal(connectionName);
+                return;
+            }
+
+            favorite = (FavoriteConfigurationElement)favorite.Clone();
             favsList1.RecordHistoryItem(connectionName);
             if (ForceConsole) favorite.ConnectToConsole = true;
             if (ForceNewWindow) favorite.NewWindow = true;
 
-            if (favorite == null)
-                CreateNewTerminal(connectionName);
-            else
-                CreateTerminalTab(favorite);
+            CreateTerminalTab(favorite);
         }
         public void ToggleGrabInput()
         {
