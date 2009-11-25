@@ -11,7 +11,7 @@ using log4net;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Robert Chartier")]
 [assembly: AssemblyProduct("Terminals by Robert Chartier")]
-[assembly: AssemblyCopyright("Copyright © ny Robert Chartier 2006")]
+[assembly: AssemblyCopyright("Copyright © by Robert Chartier 2006 - 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

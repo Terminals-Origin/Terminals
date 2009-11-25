@@ -54,8 +54,11 @@ namespace Terminals.Network.WMI {
                 if(values == null) values = new object[length];
                 int x = 0;
                 foreach(System.Management.PropertyData p in share.Properties) {
-                    values[x] = p.Value;
-                    x++;
+                    if (p != null)
+                    {
+                        values[x] = p.Value;
+                        x++;
+                    }
                 }
                 dt.Rows.Add(values);
                 values = null;
