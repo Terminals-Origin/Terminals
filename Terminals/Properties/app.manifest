@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Resources\ico101.ico" xmlns="urn:schemas-microsoft-com:asm.v1"  />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Terminals" version="1.8.0.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Terminals" version="*" language="neutral" processorArchitecture="msil" />
     <commandLine file="Terminals.exe" parameters="" />
   </entryPoint>
   <trustInfo>
