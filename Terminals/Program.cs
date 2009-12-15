@@ -12,14 +12,8 @@ namespace Terminals
     static class Program
     {
         public static string TerminalsVersion = "1.8b";
-//        public static string SupportedProtocols = "RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix, Amazon S3";
-        //  reminder to update the buildate for each release
-//        public static DateTime BuildDate = new DateTime(2009, 10, 5);  //used for checking project releases.  yeah yeah, this could be smarter about things...
         public static DateTime BuildDate = DateTime.Now;
-//        public static string SupportedProtocols = Assembly.GetExecutingAssembly().
-
         public static Assembly aAssembly = Assembly.GetExecutingAssembly();
-        //public static string TerminalsVersion = aAssembly.GetName().Version.ToString();
         public static AssemblyDescriptionAttribute desc = (AssemblyDescriptionAttribute)AssemblyDescriptionAttribute.GetCustomAttribute(aAssembly, typeof(AssemblyDescriptionAttribute));
         public static AssemblyTitleAttribute title = (AssemblyTitleAttribute)AssemblyTitleAttribute.GetCustomAttribute(aAssembly, typeof(AssemblyTitleAttribute));
 

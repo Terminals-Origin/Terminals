@@ -44,6 +44,10 @@ namespace TabControl
         private TabControlItemCollection items;
         private StringFormat sf = null;
 
+        private TabControlItem downItem = null;
+        private bool showToolTipOnTitle;
+        private bool mouseEnteredTitle;
+
         private bool alwaysShowClose = true;
         private bool isIniting = false;
         private bool alwaysShowMenuGlyph = true;
@@ -290,8 +294,6 @@ namespace TabControl
             }
         }
 
-        private bool showToolTipOnTitle;
-
         public bool ShowToolTipOnTitle
         {
             get { return showToolTipOnTitle; }
@@ -328,7 +330,6 @@ namespace TabControl
                 downItem = null;
             } catch(Exception exc) { }
         }
-        TabControlItem downItem = null;
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
@@ -384,9 +385,7 @@ namespace TabControl
 
             return item;
         }
-
-        private bool mouseEnteredTitle;
-
+        
         protected internal virtual void OnTabControlMouseOnTitle(TabControlMouseOnTitleEventArgs e)
         {
             if (TabControlMouseOnTitle != null)
@@ -497,8 +496,9 @@ namespace TabControl
         {
             menu.RightToLeft = this.RightToLeft;
             menu.Items.Clear();
-
-            for (int i = 0; i < Items.Count; i++)
+            List<ToolStripMenuItem> list = new List<ToolStripMenuItem>();
+            int nr = Items.Count;
+            for (int i = 0; i < nr; i++)
             {
                 TabControlItem item = this.Items[i];
                 if (!item.Visible)
@@ -506,9 +506,12 @@ namespace TabControl
 
                 ToolStripMenuItem tItem = new ToolStripMenuItem(item.Title);
                 tItem.Tag = item;
-                menu.Items.Add(tItem);
+                if (item.Selected)
+                    tItem.Select();
+                list.Add(tItem);
             }
-
+            list.Sort(CompareSortText);
+            menu.Items.AddRange(list.ToArray());
             OnMenuItemsLoaded(EventArgs.Empty);
         }
 
@@ -1072,6 +1075,11 @@ namespace TabControl
         }
 
         #endregion
+
+        private static int CompareSortText(ToolStripMenuItem x, ToolStripMenuItem y)
+        {
+            return x.Text.CompareTo(y.Text);
+        }
 
     }
 }
