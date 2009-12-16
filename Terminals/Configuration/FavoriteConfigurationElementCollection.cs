@@ -53,11 +53,19 @@ namespace Terminals
             }
         }
 
-        new public FavoriteConfigurationElement this[string Name]
+        new public FavoriteConfigurationElement this[string name]
         {
             get
             {
-                return (FavoriteConfigurationElement)BaseGet(Name);
+                return (FavoriteConfigurationElement)BaseGet(name);
+            }
+            set
+            {
+                if (BaseGet(name) != null)
+                {
+                    BaseRemove(name);
+                }
+                BaseAdd(value);
             }
         }
 

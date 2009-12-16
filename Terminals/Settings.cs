@@ -305,12 +305,13 @@ namespace Terminals
 
         public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite)
         {
+            if (favorite == null)
+                return;
+
             Configuration configuration = Config;
             TerminalsConfigurationSection section = GetSection(configuration);
-            FavoriteConfigurationElement editedFavorite = section.Favorites[oldName];
-            if (editedFavorite != null && favorite != null)
-                editedFavorite = (FavoriteConfigurationElement)favorite.Clone();
-            
+            section.Favorites[oldName] = (FavoriteConfigurationElement)favorite.Clone();
+
             if (!_delayConfigurationSave)
                 configuration.Save();
         }
@@ -327,17 +328,11 @@ namespace Terminals
             EditFavorite(oldName, favorite);
             bool shownOnToolbar = HasToolbarButton(oldName);
             if (shownOnToolbar && !showOnToolbar)
-            {
                 DeleteFavoriteButton(oldName);
-            }
             else if (shownOnToolbar && (oldName != favorite.Name))
-            {
                 EditFavoriteButton(oldName, favorite.Name);
-            }
             else if (!shownOnToolbar && showOnToolbar)
-            {
                 AddFavoriteButton(favorite.Name);
-            }
         }
 
         public static void DeleteFavorite(string name)
@@ -353,24 +348,21 @@ namespace Terminals
         {
             Configuration configuration = Config;
             GetSection(configuration).Favorites.Add(favorite);
-            if (!_delayConfigurationSave) configuration.Save();
+            if (!_delayConfigurationSave)
+                configuration.Save();
+            
             if (showOnToolbar)
-            {
                 AddFavoriteButton(favorite.Name);
-            }
             else
-            {
                 DeleteFavoriteButton(favorite.Name);
-            }
 
-            if (favorite.Tags != null && favorite.Tags.Trim() != "")
+            if (!string.IsNullOrEmpty(favorite.Tags))
             {
                 foreach (string tag in favorite.TagList)
                 {
                     AddTag(tag);
                 }
             }
-
         }
 
         public static GroupConfigurationElementCollection GetGroups()
@@ -1527,7 +1519,9 @@ namespace Terminals
             string val = "";
             using(MemoryStream stm = Unified.Serialize.SerializeXML(this, typeof(ToolStripSettings), false)) {
                 if(stm != null) {
-                    if(stm.CanSeek && stm.Position > 0) stm.Position = 0;
+                    if(stm.CanSeek && stm.Position > 0) 
+                        stm.Position = 0;
+                    
                     using(StreamReader sr = new StreamReader(stm)) {
                         val = sr.ReadToEnd();                        
                     }
@@ -1537,41 +1531,41 @@ namespace Terminals
         }
     }
     public class ToolStripSetting {
-        private string name;
-        private string dock;
-        private int left;
-        private int top;
-        private bool visible;
-        private int row;
+        private string _name;
+        private string _dock;
+        private int _left;
+        private int _top;
+        private bool _visible;
+        private int _row;
 
         public string Name {
-            get { return name; }
-            set { name = value; }
+            get { return _name; }
+            set { _name = value; }
         }
 
         public bool Visible {
-            get { return visible; }
-            set { visible = value; }
+            get { return _visible; }
+            set { _visible = value; }
         }
 
         public int Row {
-            get { return row; }
-            set { row = value; }
+            get { return _row; }
+            set { _row = value; }
         }
 
         public string Dock {
-            get { return dock; }
-            set { dock = value; }
+            get { return _dock; }
+            set { _dock = value; }
         }
 
         public int Left {
-            get { return left; }
-            set { left = value; }
+            get { return _left; }
+            set { _left = value; }
         }
 
         public int Top {
-            get { return top; }
-            set { top = value; }
+            get { return _top; }
+            set { _top = value; }
         }	
     }
 }

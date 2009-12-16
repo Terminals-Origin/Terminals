@@ -205,7 +205,8 @@ namespace Terminals
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.ShowManageTerminalForm(fav);
+            if(fav != null) 
+                MainForm.ShowManageTerminalForm(fav);
         }
         private void FavsTree_DoubleClick(object sender, EventArgs e)
         {
@@ -503,15 +504,12 @@ namespace Terminals
             FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             //if (fav != null) MainForm.ShowManageTerminalForm(fav);
         }
-        #endregion
-
         private void favsTree_DragEnter(object sender, DragEventArgs e)
         {
             // make sure they're actually dropping files (not text or anything else)
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
                 e.Effect = DragDropEffects.All;
         }
-
         private void favsTree_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
@@ -522,10 +520,11 @@ namespace Terminals
                 {
                     ExportImport.ExportImport.ImportXML(file, true);
                     GetMainForm().LoadFavorites();
-                } 
+                }
                 else
                     MessageBox.Show("This are not a XML file, Quiting");
             }
         }
+        #endregion
     }
 }

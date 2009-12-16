@@ -18,6 +18,8 @@ namespace Terminals
         private FavoriteConfigurationElement _favorite;
         private bool _showOnToolbar;
         private string _currentToolBarFileName;
+        private string _oldName;
+        private bool _isNewFavorite = false;
 
         #region Public
         public NewTerminalForm(string server, bool connect)
@@ -53,8 +55,10 @@ namespace Terminals
             SetOkButtonState();
             SetOkTitle(connect);
             SSHPreferences.Keys = Settings.SSHKeys;
+            _oldName = favorite.Name;
             if(favorite == null)
             {
+                _isNewFavorite = true;
                 FillCredentials(null);
                 cmbResolution.SelectedIndex = 7;
                 cmbColors.SelectedIndex = 1;
@@ -68,6 +72,7 @@ namespace Terminals
             }
             else
             {
+                _isNewFavorite = false;
                 this.Text = "Edit Connection";
                 FillControls(favorite);                
             }
@@ -255,8 +260,12 @@ namespace Terminals
         private bool FillFavorite()
         {
             try {
+                if (_favorite == null)
+                    _favorite = new FavoriteConfigurationElement();
+                
                 consolePreferences.FillFavorite(_favorite);
 
+                _favorite.Name = (string.IsNullOrEmpty(txtName.Text) ? cmbServers.Text : txtName.Text);
                 _favorite.VMRCAdministratorMode = VMRCAdminModeCheckbox.Checked;
                 _favorite.VMRCReducedColorsMode = VMRCReducedColorsCheckbox.Checked;
 
@@ -370,7 +379,10 @@ namespace Terminals
                 _favorite.SSH1 = SSHPreferences.SSH1;
                 _favorite.AuthMethod = SSHPreferences.AuthMethod;
 
-                Settings.AddFavorite(_favorite, _showOnToolbar);
+                if (_isNewFavorite)
+                    Settings.AddFavorite(_favorite, _showOnToolbar);
+                else
+                    Settings.EditFavorite(_oldName, _favorite, _showOnToolbar);
 
                 return true;
             } catch(Exception e) {
@@ -466,17 +478,9 @@ namespace Terminals
         private void btnOk_Click(object sender, EventArgs e)
         {
             SaveMRUs();
-            string name = txtName.Text;
-            if (name == String.Empty)
-            {
-                name = cmbServers.Text;
-            }
-            _favorite = new FavoriteConfigurationElement();
-            _favorite.Name = name;
+            
             if (FillFavorite())
-            {
                 DialogResult = DialogResult.OK;
-            }
         }
 
         private void control_TextChanged(object sender, EventArgs e)
