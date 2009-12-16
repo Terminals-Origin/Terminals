@@ -53,7 +53,7 @@ namespace Terminals.History
                     //So, how to store history..that is the question. Should it be per computer or per terminals install (portable)? Maybe both?
                     //I think for now lets stick with the portable option.  history should follow the user around. KISS (KeepItSimpleStupid)
 
-                    if (string.IsNullOrEmpty(_historyLocation))
+                    if (!string.IsNullOrEmpty(_historyLocation))
                     {
                         _historyLocation = _historyLocation.Trim();
 

@@ -23,6 +23,7 @@ namespace Terminals
         private HistoryByFavorite _historyByFavorite = null;
         private HistoryController _historyController = new HistoryController();        
         private List<string> _nodeTextList;
+        private List<string> _nodeTextListHistory;
         private MainForm _mainForm;
 
         public FavsList()
@@ -110,6 +111,13 @@ namespace Terminals
         {
             lock (_historyLock)
             {
+                _nodeTextListHistory = new List<string>();
+                foreach (TreeNode node in historyTreeView.Nodes)
+                {
+                    if (node.IsExpanded)
+                        _nodeTextListHistory.Add(node.Text);
+                }
+
                 _dirtyHistory = true;
                 if (tabControl1.SelectedTab == HistoryTabPage)
                 {
@@ -145,16 +153,17 @@ namespace Terminals
                     }
                     _dirtyHistory = false;
                 }
+
+                foreach (TreeNode node in historyTreeView.Nodes)
+                {
+                    if (_nodeTextListHistory.Contains(node.Text))
+                        node.Expand();
+                }
             }
         }
-
         private void HistoryTreeView_DoubleClick(object sender, EventArgs e)
         {
-            if (historyTreeView.SelectedNode.Parent != null)
-            {
-                string favName = historyTreeView.SelectedNode.Text;
-                this.MainForm.Connect(favName, false, false);
-            }
+            StartConnection(historyTreeView);
         }
         private void History_OnHistoryLoaded(HistoryByFavorite History)
         {
@@ -210,12 +219,7 @@ namespace Terminals
         }
         private void FavsTree_DoubleClick(object sender, EventArgs e)
         {
-            if (favsTree.SelectedNode != null)
-            {
-                FavoriteConfigurationElement fav = favsTree.SelectedNode.Tag as FavoriteConfigurationElement;
-                if (fav != null) 
-                    MainForm.Connect(fav.Name, false, false);
-            }
+            StartConnection(favsTree);
         }
         private void connectConsoleToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -506,7 +510,6 @@ namespace Terminals
         }
         private void favsTree_DragEnter(object sender, DragEventArgs e)
         {
-            // make sure they're actually dropping files (not text or anything else)
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
                 e.Effect = DragDropEffects.All;
         }
@@ -522,9 +525,23 @@ namespace Terminals
                     GetMainForm().LoadFavorites();
                 }
                 else
+                {
                     MessageBox.Show("This are not a XML file, Quiting");
+                }
             }
         }
+
+        private void StartConnection(TreeView tv)
+        {
+            if (tv.SelectedNode != null)
+                this.MainForm.Connect(tv.SelectedNode.Text, false, false);
+        }
         #endregion
+
+        private void historyTreeView_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+                StartConnection(historyTreeView);
+        }
     }
 }

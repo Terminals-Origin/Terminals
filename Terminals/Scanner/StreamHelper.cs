@@ -9,8 +9,10 @@ namespace Unified
     {
         public static string StreamToString(System.IO.Stream Stream)
         {
-            if (Stream == null) return null;
-            return System.Text.Encoding.Default.GetString(StreamToBytes(Stream));
+            if (Stream == null) 
+                return null;
+            Encoding eng = Encoding.Unicode;
+            return eng.GetString(StreamToBytes(Stream));
         }
 
         public static byte[] StreamToBytes(System.IO.Stream Stream)

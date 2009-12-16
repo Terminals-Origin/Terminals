@@ -19,7 +19,6 @@ namespace Terminals
         private bool _showOnToolbar;
         private string _currentToolBarFileName;
         private string _oldName;
-        private bool _isNewFavorite = false;
 
         #region Public
         public NewTerminalForm(string server, bool connect)
@@ -54,11 +53,9 @@ namespace Terminals
             LoadMRUs();
             SetOkButtonState();
             SetOkTitle(connect);
-            SSHPreferences.Keys = Settings.SSHKeys;
-            _oldName = favorite.Name;
+            SSHPreferences.Keys = Settings.SSHKeys;            
             if(favorite == null)
             {
-                _isNewFavorite = true;
                 FillCredentials(null);
                 cmbResolution.SelectedIndex = 7;
                 cmbColors.SelectedIndex = 1;
@@ -72,7 +69,7 @@ namespace Terminals
             }
             else
             {
-                _isNewFavorite = false;
+                _oldName = favorite.Name;
                 this.Text = "Edit Connection";
                 FillControls(favorite);                
             }
@@ -379,7 +376,7 @@ namespace Terminals
                 _favorite.SSH1 = SSHPreferences.SSH1;
                 _favorite.AuthMethod = SSHPreferences.AuthMethod;
 
-                if (_isNewFavorite)
+                if (string.IsNullOrEmpty(_oldName))
                     Settings.AddFavorite(_favorite, _showOnToolbar);
                 else
                     Settings.EditFavorite(_oldName, _favorite, _showOnToolbar);
