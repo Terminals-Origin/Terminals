@@ -102,6 +102,9 @@ namespace Terminals.History
         }
         public void RecordHistoryItem(string name, bool save)
         {
+            if (_currentHistory == null)
+                return;
+
             List<HistoryItem> lst = null;
             if (lst == null)
                 lst = new List<HistoryItem>();
