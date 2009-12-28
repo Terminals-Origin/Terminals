@@ -36,5 +36,9 @@ namespace Terminals.Wizard
         public bool LoadDefaultShortcuts {
             get { return LoadDefaultShortcutsCheckbox.Checked; }
         }
+        public bool ImportRDPConnections
+        {
+            get { return chkBoxImportRDP.Checked; }
+        }
     }
 }

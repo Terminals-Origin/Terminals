@@ -274,7 +274,8 @@ namespace Terminals {
                     FirstRunWizard wzrd = new FirstRunWizard();
                     wzrd.ShowDialog(this);
                     Settings.ShowWizard = false;
-                }
+                } else
+                    System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ReloadSpecialCommands), null);
 
                 _imageFormatHandler = new ImageFormatHandler();
                 _formSettings = new FormSettings(this);
@@ -290,7 +291,6 @@ namespace Terminals {
                 tsbTags.Checked = Settings.ShowFavoritePanel;
 
                 LoadFavorites();
-                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ReloadSpecialCommands), null);
                 LoadGroups();
                 UpdateControls();
                 pnlTagsFavorites.Width = 7;

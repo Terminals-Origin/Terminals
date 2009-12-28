@@ -15,9 +15,7 @@ namespace Terminals
         public FirstRunWizard()
         {
             InitializeComponent();
-
             rdp.OnDiscoveryCompleted += new Terminals.Wizard.AddExistingRDPConnections.DiscoveryCompleted(rdp_OnDiscoveryCompleted);
-
             miv = new MethodInvoker(DiscoComplete);
             
         }
@@ -87,14 +85,21 @@ namespace Terminals
                 {
                     Terminals.Logging.Log.Error("Loading default shortcuts in the wizard.", exc);
                 }
-
-                nextButton.Enabled = false;
-                nextButton.Text = "Finished!";
-                this.panel1.Controls.Clear();
-                rdp.Dock = DockStyle.Fill;
-                this.panel1.Controls.Add(rdp);
-                rdp.StartImport();
-                this.SelectedForm = WizardForms.Scanner;
+                if (co.ImportRDPConnections)
+                {
+                    nextButton.Enabled = false;
+                    nextButton.Text = "Finished!";
+                    this.panel1.Controls.Clear();
+                    rdp.Dock = DockStyle.Fill;
+                    this.panel1.Controls.Add(rdp);
+                    rdp.StartImport();
+                    this.SelectedForm = WizardForms.Scanner;
+                }
+                else
+                {
+                    rdp.CancelDiscovery();
+                    this.Hide();
+                }
             }
             else if(SelectedForm == WizardForms.Scanner)
             {
@@ -106,7 +111,6 @@ namespace Terminals
         {
             rdp.CancelDiscovery();
             this.Hide();
-
         }
         void DiscoComplete()
         {

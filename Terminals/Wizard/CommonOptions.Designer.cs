@@ -35,6 +35,7 @@ namespace Terminals.Wizard
             this.WarnCheckbox = new System.Windows.Forms.CheckBox();
             this.autoSwitchOnCapture = new System.Windows.Forms.CheckBox();
             this.LoadDefaultShortcutsCheckbox = new System.Windows.Forms.CheckBox();
+            this.chkBoxImportRDP = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label2
@@ -116,12 +117,25 @@ namespace Terminals.Wizard
             this.LoadDefaultShortcutsCheckbox.Text = "Load default shortcuts";
             this.LoadDefaultShortcutsCheckbox.UseVisualStyleBackColor = true;
             // 
+            // chkBoxImportRDP
+            // 
+            this.chkBoxImportRDP.AutoSize = true;
+            this.chkBoxImportRDP.Checked = true;
+            this.chkBoxImportRDP.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkBoxImportRDP.Location = new System.Drawing.Point(28, 237);
+            this.chkBoxImportRDP.Name = "chkBoxImportRDP";
+            this.chkBoxImportRDP.Size = new System.Drawing.Size(202, 17);
+            this.chkBoxImportRDP.TabIndex = 10;
+            this.chkBoxImportRDP.Text = "Import RDP Connections from registry";
+            this.chkBoxImportRDP.UseVisualStyleBackColor = true;
+            // 
             // CommonOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.chkBoxImportRDP);
             this.Controls.Add(this.LoadDefaultShortcutsCheckbox);
             this.Controls.Add(this.autoSwitchOnCapture);
             this.Controls.Add(this.WarnCheckbox);
@@ -145,5 +159,6 @@ namespace Terminals.Wizard
         private System.Windows.Forms.CheckBox WarnCheckbox;
         private System.Windows.Forms.CheckBox autoSwitchOnCapture;
         private System.Windows.Forms.CheckBox LoadDefaultShortcutsCheckbox;
+        private System.Windows.Forms.CheckBox chkBoxImportRDP;
     }
 }
