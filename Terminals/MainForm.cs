@@ -299,8 +299,7 @@ namespace Terminals {
                 SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
                 tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
                 QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
-                SystemTrayQuickConnectToolStripMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked);
-
+                
                 LoadWindowState();
 
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
@@ -798,7 +797,6 @@ namespace Terminals {
         private void ToolbarResetThread(object state)
         {
             this.Invoke(_resetMethodInvoker);
-            //this.Invoke(_resetMethodInvoker);
         }
 
         public void LoadFavorites()
@@ -814,7 +812,6 @@ namespace Terminals {
             foreach (string key in favorites.Keys)
             {
                 FavoriteConfigurationElement favorite = favorites[key];
-                SystemTrayQuickConnectToolStripMenuItem.DropDownItems.Add(favorite.Name);
             }
 
             Dictionary<string, ToolStripMenuItem> tagTools = new Dictionary<string, ToolStripMenuItem>();
@@ -1239,10 +1236,6 @@ namespace Terminals {
         #endregion
 
         #region private event
-        private void SystemTrayQuickConnectToolStripMenuItem_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-            Connect(e.ClickedItem.Text, false, false);
-        }
         private void tcTerminals_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -1920,87 +1913,6 @@ namespace Terminals {
         {
             HideShowFavoritesPanel(false);
         }
-        private void lvTags_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //connectToolStripMenuItem.Enabled = lvTags.SelectedItems.Count > 0;
-            //lvTagConnections.Items.Clear();
-            //lvTagConnections.ShowItemToolTips = true;
-            //if(lvTags.SelectedItems.Count > 0)
-            //{
-            //    List<FavoriteConfigurationElement> tagFavorites = (List<FavoriteConfigurationElement>)lvTags.SelectedItems[0].Tag;
-            //    foreach(FavoriteConfigurationElement favorite in tagFavorites)
-            //    {
-            //        ListViewItem item = lvTagConnections.Items.Add(favorite.Name);
-            //        item.ImageIndex = 0;
-            //        item.StateImageIndex = 0;
-            //        item.Tag = favorite;                    
-            //        item.ToolTipText = favorite.Notes;
-            //    }
-            //}
-            //lvTagConnections.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-        }
-
-        private void lvTagConnections_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //connectToolStripMenuItem.Enabled = lvTagConnections.SelectedItems.Count > 0;
-        }
-
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //foreach(ListViewItem item in lvTagConnections.SelectedItems)
-            //{
-            //    FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
-            //    HideTagsFavorites();
-            //    Connect(favorite.Name, false);
-            //}
-        }
-
-        private void connectToAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //foreach(ListViewItem item in lvTagConnections.Items)
-            //{
-            //    FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
-            //    HideTagsFavorites();
-            //    Connect(favorite.Name, false);
-            //}
-        }
-
-        private void txtSearchTags_TextChanged(object sender, EventArgs e)
-        {
-            //LoadTags(txtSearchTags.Text);
-        }
-
-        private void lvTags_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if((e.KeyCode == Keys.Enter) && (lvTags.SelectedItems.Count == 1))
-            //{
-            //    connectToAllToolStripMenuItem.PerformClick();
-            //}
-        }
-
-        private void lvTagConnections_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if((e.KeyCode == Keys.Enter) && (lvTagConnections.SelectedItems.Count == 1))
-            //{
-            //    connectToolStripMenuItem.PerformClick();
-            //}
-        }
-
-        private void lvTags_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            //if(lvTags.SelectedItems.Count == 1)
-            //{
-            //    connectToAllToolStripMenuItem.PerformClick();
-            //}
-        }
-
-        private void lvTagConnections_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            //if(lvTagConnections.SelectedItems.Count == 1)
-            //{
-            //    connectToolStripMenuItem.PerformClick();
-            //}
-        }
 
         private void tsbFavorites_Click(object sender, EventArgs e)
         {
@@ -2008,41 +1920,6 @@ namespace Terminals {
             HideShowFavoritesPanel(Settings.ShowFavoritePanel);
         }
 
-        private void txtSearchFavorites_TextChanged(object sender, EventArgs e)
-        {
-            //LoadFavorites(txtSearchFavorites.Text);
-        }
-
-        private void lvFavorites_KeyDown(object sender, KeyEventArgs e)
-        {
-            //if((e.KeyCode == Keys.Enter) && (lvFavorites.SelectedItems.Count == 1))
-            //{
-            //    connectToolStripMenuItem1.PerformClick();
-            //}
-        }
-
-        private void lvFavorites_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            //if(lvFavorites.SelectedItems.Count == 1)
-            //{
-            //    connectToolStripMenuItem1.PerformClick();
-            //}
-        }
-
-        private void connectToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            //foreach(ListViewItem item in lvFavorites.SelectedItems)
-            //{
-            //    FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
-            //    HideTagsFavorites();
-            //    Connect(favorite.Name, false);
-            //}
-        }
-
-        private void lvFavorites_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //connectToolStripMenuItem1.Enabled = lvFavorites.SelectedItems.Count > 0;
-        }
         private void MainForm_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -2054,6 +1931,7 @@ namespace Terminals {
                 _originalFormWindowState = this.WindowState;
             }
         }
+
         private void Minimize(object sender, EventArgs e)
         {
             _originalFormWindowState = this.WindowState;
@@ -2084,23 +1962,6 @@ namespace Terminals {
                     }
                 }
             }
-        }
-
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            this.Visible = true;
-            Close();
-        }
-
-        private void newConnectionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            manageConnectionsToolStripMenuItem_Click(null, null);
-        }
-
-        private void showToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Visible = !this.Visible;
-            showToolStripMenuItem.Text = Program.Resources.GetString("HideShow");
         }
 
         private void CaptureScreenToolStripButton_Click(object sender, EventArgs e)
@@ -2141,19 +2002,6 @@ namespace Terminals {
                 }
             }
             UpdateControls();
-        }
-
-        private void SystemTrayContextMenuStrip_Opening(object sender, CancelEventArgs e)
-        {
-
-            SystemTrayQuickConnectToolStripMenuItem.DropDownItems.Clear();
-            SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
-
-            foreach (string key in favorites.Keys)
-            {
-                FavoriteConfigurationElement favorite = favorites[key];
-                SystemTrayQuickConnectToolStripMenuItem.DropDownItems.Add(favorite.Name);
-            }
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
@@ -2210,21 +2058,6 @@ namespace Terminals {
             {
                 Cursor = Cursors.Default;
             }
-        }
-
-        private void toolStripContainer_TopToolStripPanel_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                //contextMenuStrip1.Show(toolStripContainer, e.X, e.Y);
-            }
-        }
-
-        private void manageToolbarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ManageToolStrip mgr = new ManageToolStrip();
-            mgr.ShowDialog(this);
-            this.favsList1.LoadFavs();
         }
 
         private void standardToolbarToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2359,75 +2192,6 @@ namespace Terminals {
             Settings.AutoSwitchOnCapture = origval;
         }
 
-        private void pingToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            //if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0)
-            //{
-            //    FavoriteConfigurationElement fav = (lvTagConnections.SelectedItems[0].Tag as FavoriteConfigurationElement);
-            //    if(fav != null)
-            //    {
-            //        string host = fav.ServerName;
-            //        string action = "Ping";
-            //        this.OpenNetworkingTools(action, host);
-            //    }
-            //}
-        }
-
-        private void cmsTagConnections_Opening(object sender, CancelEventArgs e)
-        {
-            //bool itemSelected = (lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0);
-            //pingToolStripMenuItem.Visible = itemSelected;
-            //dNSToolStripMenuItem.Visible = itemSelected;
-            //traceRouteToolStripMenuItem.Visible = itemSelected;
-            //tSAdminToolStripMenuItem.Visible = itemSelected;
-        }
-
-        private void dNSToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0)
-            //{
-            //    FavoriteConfigurationElement fav = (lvTagConnections.SelectedItems[0].Tag as FavoriteConfigurationElement);
-            //    if(fav != null)
-            //    {
-            //        string host = fav.ServerName;
-            //        if(host.ToLower().StartsWith("www."))
-            //        {
-            //            host = host.Substring(4);
-            //        }
-            //        string action = "DNS";
-            //        this.OpenNetworkingTools(action, host);
-            //    }
-            //}
-        }
-
-        private void traceRouteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0)
-            //{
-            //    FavoriteConfigurationElement fav = (lvTagConnections.SelectedItems[0].Tag as FavoriteConfigurationElement);
-            //    if(fav != null)
-            //    {
-            //        string host = fav.ServerName;
-            //        string action = "Trace";
-            //        this.OpenNetworkingTools(action, host);
-            //    }
-            //}
-        }
-
-        private void tSAdminToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0)
-            //{
-            //    FavoriteConfigurationElement fav = (lvTagConnections.SelectedItems[0].Tag as FavoriteConfigurationElement);
-            //    if(fav != null)
-            //    {
-            //        string host = fav.ServerName;
-            //        string action = "TSAdmin";
-            //        this.OpenNetworkingTools(action, host);
-            //    }
-            //}
-        }
-
         private void sendALTKeyToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -2470,22 +2234,6 @@ namespace Terminals {
             }
         }
 
-        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //if(lvTagConnections.SelectedItems != null && lvTagConnections.SelectedItems.Count > 0)
-            //{
-            //    FavoriteConfigurationElement fav = (lvTagConnections.SelectedItems[0].Tag as FavoriteConfigurationElement);
-            //    if(fav != null)
-            //    {
-            //        using(NewTerminalForm frmNewTerminal = new NewTerminalForm(fav))
-            //        {
-            //            frmNewTerminal.ShowDialog();
-            //            LoadFavorites();
-            //        }
-            //    }
-            //}
-        }
-
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
             if (tcTerminals.SelectedItem != null)
@@ -2506,75 +2254,6 @@ namespace Terminals {
         private void TerminalServerMenuButton_DropDownOpening(object sender, EventArgs e)
         {
             BuildTerminalServerButtonMenu();
-        }
-
-        private void lvTags_ItemDrag(object sender, ItemDragEventArgs e)
-        {
-
-        }
-
-        private void lvTagConnections_ItemDrag(object sender, ItemDragEventArgs e)
-        {
-            //lvTagConnections.DoDragDrop(lvTagConnections.SelectedItems, DragDropEffects.Move);
-        }
-
-        private void lvTags_DragEnter(object sender, DragEventArgs e)
-        {
-
-            foreach (string format in e.Data.GetFormats())
-            {
-                if (format.Equals("System.Windows.Forms.ListView+SelectedListViewItemCollection"))
-                {
-                    e.Effect = DragDropEffects.Move;
-                }
-            }
-        }
-
-        private void lvTags_DragDrop(object sender, DragEventArgs e)
-        {
-
-            //bool needsUpdate = false;
-            ////Returns the location of the mouse pointer in the ListView control.
-            //Point p = lvTags.PointToClient(new Point(e.X, e.Y));
-            ////Obtain the item that is located at the specified location of the mouse pointer.
-            ////dragItem is the lvi upon which the drop is made
-            //ListViewItem dragToItem = lvTags.GetItemAt(p.X, p.Y);
-            //if(dragToItem != null && !String.IsNullOrEmpty(dragToItem.ToolTipText))
-            //{
-
-            //    foreach(ListViewItem item in lvTagConnections.SelectedItems)
-            //    {
-            //        FavoriteConfigurationElement fav = (item.Tag as FavoriteConfigurationElement);
-            //        if(fav != null)
-            //        {
-            //            if(lvTags.SelectedItems != null && lvTags.SelectedItems.Count > 0)
-            //            {
-            //                string tag = lvTags.SelectedItems[0].ToolTipText;
-            //                RemoveTagFromFavorite(fav, tag);
-            //            }
-            //            if(dragToItem.ToolTipText != "UnTagged") AddTagToFavorite(fav, dragToItem.ToolTipText);
-            //            Settings.DeleteFavorite(fav.Name);
-            //            Settings.AddFavorite(fav, false);
-            //            needsUpdate = true;
-            //        }
-            //    }
-            //}
-            //if(needsUpdate)
-            //{
-            //    ListViewItem sel = null;
-            //    if(lvTags.SelectedItems != null && lvTags.SelectedItems.Count > 0)
-            //    {
-            //        sel = lvTags.SelectedItems[0];
-            //    }
-            //    LoadTags(null);
-            //    foreach(ListViewItem item in lvTags.Items)
-            //    {
-            //        if(item.ToolTipText == sel.ToolTipText)
-            //        {
-            //            item.Selected = true;
-            //        }
-            //    }
-            //}
         }
 
         private void lockToolbarsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2693,20 +2372,10 @@ namespace Terminals {
             ShowCredentialsManager();
         }
 
-        private void credentialsManagerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ShowCredentialsManager();
-        }
-
         private void CredentialManagementToolStripButton_Click(object sender, EventArgs e)
         {
             ShowCredentialsManager();
         }        
-
-        private void closeSelectedConnectionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void exportImportConnectionsListToolStripMenuItem_Click(object sender, EventArgs e)
         {

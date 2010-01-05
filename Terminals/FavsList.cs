@@ -505,8 +505,13 @@ namespace Terminals
         }
         private void removeSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            //if (fav != null) MainForm.ShowManageTerminalForm(fav);
+            FavoriteConfigurationElement favorite = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if (favorite != null)
+            {
+                Settings.DeleteFavorite(favorite.Name);
+                Settings.DeleteFavoriteButton(favorite.Name);
+            }
+            LoadFavs();
         }
         private void favsTree_DragEnter(object sender, DragEventArgs e)
         {
