@@ -430,8 +430,8 @@ namespace Terminals {
             this.toolStripOrganizeShortucts.Image = global::Terminals.Properties.Resources.application_edit;
             this.toolStripOrganizeShortucts.Name = "toolStripOrganizeShortucts";
             this.toolStripOrganizeShortucts.Size = new System.Drawing.Size(204, 22);
-            this.toolStripOrganizeShortucts.Text = "Organize Favorites";
-            this.toolStripOrganizeShortucts.ToolTipText = "Organize Favorites";
+            this.toolStripOrganizeShortucts.Text = "Organize Shortcuts";
+            this.toolStripOrganizeShortucts.ToolTipText = "Organize Shortcuts";
             this.toolStripOrganizeShortucts.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // credentialManagementToolStripMenuItem
@@ -668,7 +668,7 @@ namespace Terminals {
             this.tsbManageConnections.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbManageConnections.Name = "tsbManageConnections";
             this.tsbManageConnections.Size = new System.Drawing.Size(23, 22);
-            this.tsbManageConnections.ToolTipText = "Organize Shortcuts";
+            this.tsbManageConnections.ToolTipText = "Organize Favorites";
             this.tsbManageConnections.Click += new System.EventHandler(this.manageConnectionsToolStripMenuItem_Click);
             // 
             // CredentialManagementToolStripButton
@@ -1023,7 +1023,7 @@ namespace Terminals {
             this.toolStripButton1});
             this.tsRemoteToolbar.Location = new System.Drawing.Point(6, 25);
             this.tsRemoteToolbar.Name = "tsRemoteToolbar";
-            this.tsRemoteToolbar.Size = new System.Drawing.Size(89, 25);
+            this.tsRemoteToolbar.Size = new System.Drawing.Size(58, 25);
             this.tsRemoteToolbar.TabIndex = 3;
             this.tsRemoteToolbar.Visible = false;
             // 
