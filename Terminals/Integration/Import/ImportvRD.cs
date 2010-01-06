@@ -9,21 +9,28 @@ using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.IO;
+using Terminals.Credentials;
+using vRdImport;
 
-namespace Terminals.Integration.Import {
-    public class ImportvRD : IImport {
+namespace Terminals.Integration.Import
+{
+    public class ImportvRD : IImport
+    {
         #region IImport Members
 
-        public FavoriteConfigurationElementCollection ImportFavorites(string Filename) {
+        public FavoriteConfigurationElementCollection ImportFavorites(string Filename)
+        {
             FavoriteConfigurationElementCollection fav = null;
             InputBoxResult result = InputBox.Show("Password", "vRD Password", '*');
 
-            if(result.ReturnCode == System.Windows.Forms.DialogResult.OK) {
+            if (result.ReturnCode == System.Windows.Forms.DialogResult.OK)
+            {
                 byte[] file = System.IO.File.ReadAllBytes(Filename);
-                string xml = ImportvRD.a(file, result.Text).Replace(" encoding=\"utf-16\"","");
+                string xml = ImportvRD.a(file, result.Text).Replace(" encoding=\"utf-16\"", "");
                 byte[] data = System.Text.ASCIIEncoding.Default.GetBytes(xml);
-                using(System.IO.MemoryStream sw = new MemoryStream(data)) {
-                    if(sw.Position > 0 & sw.CanSeek) sw.Seek(0, SeekOrigin.Begin);
+                using (System.IO.MemoryStream sw = new MemoryStream(data))
+                {
+                    if (sw.Position > 0 & sw.CanSeek) sw.Seek(0, SeekOrigin.Begin);
                     System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(typeof(vRdImport.vRDConfigurationFile));
                     object results = x.Deserialize(sw);
 
@@ -31,20 +38,27 @@ namespace Terminals.Integration.Import {
                     List<vRdImport.vRDConfigurationFileConnectionsFolder> folders = new List<vRdImport.vRDConfigurationFileConnectionsFolder>();
                     Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials = new Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials>();
 
-                    if(results != null) {
+                    if (results != null)
+                    {
                         vRdImport.vRDConfigurationFile config = (results as vRdImport.vRDConfigurationFile);
-                        if(config != null) {
+                        if (config != null)
+                        {
                             //scan in all credentials into a dictionary
-                            foreach(object item in config.Items) {
-                                if(item is vRdImport.vRDConfigurationFileCredentialsFolder) {
+                            foreach (object item in config.Items)
+                            {
+                                if (item is vRdImport.vRDConfigurationFileCredentialsFolder)
+                                {
                                     vRdImport.vRDConfigurationFileCredentialsFolder credentialFolder = (item as vRdImport.vRDConfigurationFileCredentialsFolder);
-                                    if(credentialFolder != null) {
-                                        foreach(vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred in credentialFolder.Credentials) {
+                                    if (credentialFolder != null)
+                                    {
+                                        foreach (vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred in credentialFolder.Credentials)
+                                        {
                                             credentials.Add(cred.Guid, cred);
                                         }
                                     }
                                 }
-                                if(item is vRdImport.vRDConfigurationFileCredentialsFolderCredentials) {
+                                if (item is vRdImport.vRDConfigurationFileCredentialsFolderCredentials)
+                                {
                                     vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred = (item as vRdImport.vRDConfigurationFileCredentialsFolderCredentials);
                                     credentials.Add(cred.Guid, cred);
                                 }
@@ -52,38 +66,195 @@ namespace Terminals.Integration.Import {
                             }
 
                             //scan in the connections, and recurse folders
-                            foreach(object item in config.Items) {
-                                if(item is vRdImport.Connection) {
+                            foreach (object item in config.Items)
+                            {
+                                if (item is vRdImport.Connection)
+                                {
                                     vRdImport.Connection connection = (item as vRdImport.Connection);
-                                    if(connection != null) {
+                                    if (connection != null)
+                                    {
                                         connections.Add(connection);
                                     }
-                                } else if(item is vRdImport.vRDConfigurationFileConnectionsFolder) {
+                                }
+                                else if (item is vRdImport.vRDConfigurationFileConnectionsFolder)
+                                {
                                     vRdImport.vRDConfigurationFileConnectionsFolder folder = (item as vRdImport.vRDConfigurationFileConnectionsFolder);
-                                    if(folder != null) {
+                                    if (folder != null)
+                                    {
                                         folders.Add(folder);
                                     }
                                 }
                             }
                         }
                     }
+                    //save credential item to local
+                    SaveCredentials(credentials);
+                    //save VRD connection to local
+                    fav = ConvertVRDConnectionCollectionToLocal(connections.ToArray(), folders.ToArray(), null, String.Empty, credentials, fav);
                 }
             }
+            return fav;
+        }
+        #region Convert vrd confirguration to local configuration
+
+        private void SaveCredentials(Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials)
+        {
+            List<CredentialSet> list = Settings.SavedCredentials;
+            if (list == null)
+            {
+                list = new List<CredentialSet>();
+            }
+            foreach (string guid in credentials.Keys)
+            {
+                CredentialSet set = new CredentialSet();
+                set.Domain = credentials[guid].Domain;
+                set.Name = credentials[guid].Name;
+                set.Password = credentials[guid].Password;
+                set.Username = credentials[guid].UserName;
+                //will store the last one if the same credential name
+                CredentialSet foundSet = null;
+                foreach (CredentialSet item in list)
+                {
+                    if (item.Name.ToLower() == set.Name.ToLower())
+                    {
+                        foundSet = item;
+                        break;
+                    }
+                }
+                if (foundSet != null)
+                {
+                    list.Remove(foundSet);
+                }
+                list.Add(set);
+            }
+            Settings.SavedCredentials = list;
+        }
+
+        private FavoriteConfigurationElementCollection ConvertVRDConnectionCollectionToLocal(vRdImport.Connection[] connections, vRDConfigurationFileConnectionsFolder[] folders, vRDConfigurationFileConnectionsFolderFolder[] subFolders, String connectionTag, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials, FavoriteConfigurationElementCollection coll)
+        {
+            if (coll == null)
+            {
+                coll = new FavoriteConfigurationElementCollection();
+            }
+            //covert vrd connection
+            if (connections != null && connections.Length > 0)
+            {
+                foreach (vRdImport.Connection con in connections)
+                {
+                    FavoriteConfigurationElement fav = ConvertVRDConnectionToLocal(credentials, con);
+                    if (connectionTag != null && connectionTag != String.Empty && !fav.TagList.Contains(connectionTag))
+                    {
+                        fav.TagList.Add(connectionTag);
+                        fav.Tags = connectionTag;
+                    }
+                    coll.Add(fav);
+                }
+            }
+            //get connection object from root folder
+            if (folders != null && folders.Length > 0)
+            {
+                foreach (vRdImport.vRDConfigurationFileConnectionsFolder folder in folders)
+                {
+                    ConvertVRDConnectionCollectionToLocal(folder.Connection, null, folder.Folder, folder.Name, credentials, coll);
+                }
+            }
+            //get connection object from sub folder
+            if (subFolders != null && subFolders.Length > 0)
+            {
+                foreach (vRDConfigurationFileConnectionsFolderFolder folder in subFolders)
+                {
+                    ConvertVRDConnectionCollectionToLocal(folder.Connection, null, null, connectionTag + folder.Name, credentials, coll);
+                }
+            }
+            return coll;
+        }
+
+        private static FavoriteConfigurationElement ConvertVRDConnectionToLocal(Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials, vRdImport.Connection con)
+        {
+            FavoriteConfigurationElement fav = new FavoriteConfigurationElement();
+
+            fav.ServerName = con.ServerName;
+
+            int p = 3389;
+            int.TryParse(con.Port, out p);
+            fav.Port = p;
+
+            if (credentials.ContainsKey(con.Credentials))
+            {
+                fav.Credential = credentials[con.Credentials].Name;
+                fav.UserName = credentials[con.Credentials].UserName;
+                fav.DomainName = credentials[con.Credentials].Domain;
+                fav.Password = credentials[con.Credentials].Password;
+            }
+
+            switch (con.ColorDepth)
+            {
+                case "8":
+                    fav.Colors = Colors.Bits8;
+                    break;
+                case "16":
+                    fav.Colors = Colors.Bit16;
+                    break;
+                case "24":
+                    fav.Colors = Colors.Bits24;
+                    break;
+                case "32":
+                    fav.Colors = Colors.Bits32;
+                    break;
+                default:
+                    fav.Colors = Colors.Bit16;
+                    break;
+            };
+
+            fav.DesktopSize = DesktopSize.AutoScale;
+            if (con.SeparateWindow == "true") fav.DesktopSize = DesktopSize.FullScreen;
+
+            fav.ConnectToConsole = false;
+            if (con.Console == "true") fav.ConnectToConsole = true;
+
+            fav.DisableWallPaper = false;
+            if (con.BitmapCaching == "false") fav.DisableWallPaper = true;
+
+            fav.RedirectSmartCards = false;
+            if (con.SmartCard == "true") fav.RedirectSmartCards = true;
+
+            fav.RedirectDrives = false;
+            if (con.LocalDrives == "true") fav.RedirectDrives = true;
+
+            fav.RedirectPorts = false;
+            //if (pValue == "1") fav.RedirectPorts = true;
+
+            fav.RedirectPrinters = false;
+            if (con.Printer == "true") fav.RedirectPrinters = true;
+
+            if (con.Audio == "0") fav.Sounds = RemoteSounds.Redirect;
+            if (con.Audio == "1") fav.Sounds = RemoteSounds.PlayOnServer;
+            if (con.Audio == "2") fav.Sounds = RemoteSounds.DontPlay;
+
+            fav.Name = con.Name;
 
             return fav;
         }
-        private void ImportConnection(vRdImport.Connection Connection, List<string> FolderNames, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> Credentials) {
+
+        #endregion
+
+        private void ImportConnection(vRdImport.Connection Connection, List<string> FolderNames, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> Credentials)
+        {
         }
-        private void ImportFolder(vRdImport.vRDConfigurationFileConnectionsFolder Folder, List<string> FolderNames, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> Credentials) {            
-            foreach(vRdImport.Connection conn in Folder.Connection) {
+        private void ImportFolder(vRdImport.vRDConfigurationFileConnectionsFolder Folder, List<string> FolderNames, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> Credentials)
+        {
+            foreach (vRdImport.Connection conn in Folder.Connection)
+            {
                 ImportConnection(conn, FolderNames, Credentials);
             }
-            foreach(vRdImport.vRDConfigurationFileConnectionsFolderFolder folder in Folder.Folder) {
+            foreach (vRdImport.vRDConfigurationFileConnectionsFolderFolder folder in Folder.Folder)
+            {
                 FolderNames.Add(folder.Name);
             }
         }
 
-        public string KnownExtension {
+        public string KnownExtension
+        {
             get { return ".vrb"; }
         }
 
@@ -91,17 +262,21 @@ namespace Terminals.Integration.Import {
 
 
         #region ignore this stuff
-        private static SymmetricAlgorithm a() {
+        private static SymmetricAlgorithm a()
+        {
             WindowsIdentity current = WindowsIdentity.GetCurrent();
             uint num = 0;
-            if(!ah.GetTokenInformation(current.Token, ab.a, null, 0, ref num)) {
+            if (!ah.GetTokenInformation(current.Token, ab.a, null, 0, ref num))
+            {
                 int error = Marshal.GetLastWin32Error();
-                if(error != 0x7a) {
+                if (error != 0x7a)
+                {
                     throw new Win32Exception(error);
                 }
             }
             byte[] buffer = new byte[num];
-            if(!ah.GetTokenInformation(current.Token, ab.a, buffer, num, ref num)) {
+            if (!ah.GetTokenInformation(current.Token, ab.a, buffer, num, ref num))
+            {
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             }
             byte[] destinationArray = new byte[num - 8];
@@ -118,7 +293,8 @@ namespace Terminals.Integration.Import {
             return managed;
         }
 
-        private static SymmetricAlgorithm a(bool A_0, string Password) {
+        private static SymmetricAlgorithm a(bool A_0, string Password)
+        {
 
             byte[] bytes = new UnicodeEncoding().GetBytes(Password.PadRight(0x100, ' '));
             byte[] sourceArray = new SHA1Managed().ComputeHash(bytes);
@@ -135,9 +311,11 @@ namespace Terminals.Integration.Import {
         }
 
 
-        public static byte[] a(string A_0, string Password) {
+        public static byte[] a(string A_0, string Password)
+        {
             SymmetricAlgorithm algorithm = a(true, Password);
-            if(algorithm == null) {
+            if (algorithm == null)
+            {
                 return null;
             }
             MemoryStream stream = new MemoryStream();
@@ -152,9 +330,11 @@ namespace Terminals.Integration.Import {
             return buffer2;
         }
 
-        public static string a(byte[] A_0, string Password) {
+        public static string a(byte[] A_0, string Password)
+        {
             SymmetricAlgorithm algorithm = a(false, Password);
-            if(algorithm == null) {
+            if (algorithm == null)
+            {
                 return "";
             }
             MemoryStream stream = new MemoryStream();
@@ -169,7 +349,8 @@ namespace Terminals.Integration.Import {
             return encoding.GetString(buffer, 0, count);
         }
 
-        public static byte[] b(string A_0) {
+        public static byte[] b(string A_0)
+        {
             SymmetricAlgorithm algorithm = a();
             MemoryStream stream = new MemoryStream();
             CryptoStream stream2 = new CryptoStream(stream, algorithm.CreateEncryptor(), CryptoStreamMode.Write);
@@ -183,7 +364,8 @@ namespace Terminals.Integration.Import {
             return buffer2;
         }
 
-        public static string b(byte[] A_0) {
+        public static string b(byte[] A_0)
+        {
             SymmetricAlgorithm algorithm = a();
             MemoryStream stream = new MemoryStream();
             stream.Write(A_0, 0, A_0.Length);
@@ -199,13 +381,15 @@ namespace Terminals.Integration.Import {
 
 
     }
-    public class ah {
+    public class ah
+    {
         // Methods
         public ah() { }
         [DllImport("advapi32.dll", SetLastError = true, ExactSpelling = true)]
         public static extern bool GetTokenInformation(IntPtr A_0, ab A_1, [Out] byte[] A_2, uint A_3, ref uint A_4);
     }
-    public enum ab {
+    public enum ab
+    {
         a = 1,
         b = 2,
         c = 3,
