@@ -312,19 +312,22 @@ namespace TabControl
                     if(upItem != downItem) {
                         //perform swap
                         int downIndex = this.items.IndexOf(downItem);
-                        int newIndex = downIndex;
+                        int newIndex = this.items.IndexOf(upItem);
 
-                        if(e.X >= downItem.Left) {
-                            newIndex = downIndex + 1;
-                        } else {
-                            newIndex = downIndex - 1;
+                        int upCentre = 48 + newIndex * 87;
+                        if (downIndex < newIndex)
+                        {
+                            newIndex--;
+                            upCentre += 10;
                         }
 
+                        if(e.X >= upCentre)
+                            newIndex++;
+                        
                         if(newIndex > this.Items.Count - 1) newIndex = this.Items.Count - 1;
                         if(newIndex <= 0) newIndex = 0;
                         this.items.Remove(downItem);
                         this.items.Insert(newIndex, downItem);
-
                     }
                 }
                 downItem = null;
