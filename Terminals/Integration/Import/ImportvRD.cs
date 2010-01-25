@@ -38,52 +38,55 @@ namespace Terminals.Integration.Import
                     List<vRdImport.vRDConfigurationFileConnectionsFolder> folders = new List<vRdImport.vRDConfigurationFileConnectionsFolder>();
                     Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials = new Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials>();
 
-                    if (results != null)
+                    if (results == null)
                     {
-                        vRdImport.vRDConfigurationFile config = (results as vRdImport.vRDConfigurationFile);
-                        if (config != null)
+                        return fav;
+                    }
+                    vRdImport.vRDConfigurationFile config = (results as vRdImport.vRDConfigurationFile);
+                    if (config == null)
+                    {
+                        return fav;
+                    }
+                    //scan in config item
+                    foreach (object item in config.Items)
+                    {
+                        if (item == null)
+                        {
+                            continue;
+                        }
+                        if (item is vRdImport.vRDConfigurationFileCredentialsFolder)
                         {
                             //scan in all credentials into a dictionary
-                            foreach (object item in config.Items)
+                            vRdImport.vRDConfigurationFileCredentialsFolder credentialFolder = (item as vRdImport.vRDConfigurationFileCredentialsFolder);
+                            if (credentialFolder != null && credentialFolder.Credentials != null)
                             {
-                                if (item is vRdImport.vRDConfigurationFileCredentialsFolder)
+                                foreach (vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred in credentialFolder.Credentials)
                                 {
-                                    vRdImport.vRDConfigurationFileCredentialsFolder credentialFolder = (item as vRdImport.vRDConfigurationFileCredentialsFolder);
-                                    if (credentialFolder != null)
-                                    {
-                                        foreach (vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred in credentialFolder.Credentials)
-                                        {
-                                            credentials.Add(cred.Guid, cred);
-                                        }
-                                    }
-                                }
-                                if (item is vRdImport.vRDConfigurationFileCredentialsFolderCredentials)
-                                {
-                                    vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred = (item as vRdImport.vRDConfigurationFileCredentialsFolderCredentials);
                                     credentials.Add(cred.Guid, cred);
                                 }
-
                             }
-
-                            //scan in the connections, and recurse folders
-                            foreach (object item in config.Items)
+                        }
+                        else if (item is vRdImport.vRDConfigurationFileCredentialsFolderCredentials)
+                        {
+                            vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred = (item as vRdImport.vRDConfigurationFileCredentialsFolderCredentials);
+                            credentials.Add(cred.Guid, cred);
+                        }
+                        else if (item is vRdImport.Connection)
+                        {
+                            //scan in the connections
+                            vRdImport.Connection connection = (item as vRdImport.Connection);
+                            if (connection != null)
                             {
-                                if (item is vRdImport.Connection)
-                                {
-                                    vRdImport.Connection connection = (item as vRdImport.Connection);
-                                    if (connection != null)
-                                    {
-                                        connections.Add(connection);
-                                    }
-                                }
-                                else if (item is vRdImport.vRDConfigurationFileConnectionsFolder)
-                                {
-                                    vRdImport.vRDConfigurationFileConnectionsFolder folder = (item as vRdImport.vRDConfigurationFileConnectionsFolder);
-                                    if (folder != null)
-                                    {
-                                        folders.Add(folder);
-                                    }
-                                }
+                                connections.Add(connection);
+                            }
+                        }
+                        else if (item is vRdImport.vRDConfigurationFileConnectionsFolder)
+                        {
+                            //scan in recurse folders
+                            vRdImport.vRDConfigurationFileConnectionsFolder folder = (item as vRdImport.vRDConfigurationFileConnectionsFolder);
+                            if (folder != null)
+                            {
+                                folders.Add(folder);
                             }
                         }
                     }
