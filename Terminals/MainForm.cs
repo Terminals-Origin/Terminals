@@ -1429,7 +1429,9 @@ namespace Terminals {
             }
             else if (e.ClickedItem.Text == Program.Resources.GetString("ShowMenu"))
             {
-                AddShowStrip(menuStrip, menubarToolStripMenuItem, !menuStrip.Visible);
+                bool visible = !menuStrip.Visible;
+                menuStrip.Visible = visible;
+                menubarToolStripMenuItem.Checked = visible;
             }
             else
             {
