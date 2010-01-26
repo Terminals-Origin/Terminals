@@ -365,6 +365,33 @@ namespace Terminals
             }
         }
 
+        public static FavoriteConfigurationElement GetDefaultFavorite()
+        {
+            TerminalsConfigurationSection section = GetSection();
+            if (section != null && section.DefaultFavorite.Count > 0)
+                return section.DefaultFavorite[0];
+            return null;
+        }
+
+        public static void SaveDefaultFavorite(FavoriteConfigurationElement favorite)
+        {
+            Configuration configuration = Config;
+            FavoriteConfigurationElementCollection defaultFav = GetSection(configuration).DefaultFavorite;
+            defaultFav.Clear();
+            defaultFav.Add(favorite);
+            if (!_delayConfigurationSave)
+                configuration.Save();
+        }
+
+        public static void RemoveDefaultFavorite()
+        {
+            Configuration configuration = Config;
+            FavoriteConfigurationElementCollection defaultFav = GetSection(configuration).DefaultFavorite;
+            defaultFav.Clear();
+            if (!_delayConfigurationSave)
+                configuration.Save();
+        }
+
         public static GroupConfigurationElementCollection GetGroups()
         {
             _terminalsConfigurationSection = GetSection();

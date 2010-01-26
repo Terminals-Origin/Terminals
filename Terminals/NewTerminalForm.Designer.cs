@@ -185,6 +185,7 @@ namespace Terminals
         this.cmbServers = new System.Windows.Forms.ComboBox();
         this.label2 = new System.Windows.Forms.Label();
         this.tabControl1 = new System.Windows.Forms.TabControl();
+        this.btnSaveDefault = new System.Windows.Forms.Button();
         ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
         this.tabPage4.SuspendLayout();
@@ -1886,6 +1887,16 @@ namespace Terminals
         this.tabControl1.TabIndex = 0;
         this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
         // 
+        // btnSaveDefault
+        // 
+        this.btnSaveDefault.Location = new System.Drawing.Point(243, 431);
+        this.btnSaveDefault.Name = "btnSaveDefault";
+        this.btnSaveDefault.Size = new System.Drawing.Size(72, 24);
+        this.btnSaveDefault.TabIndex = 12;
+        this.btnSaveDefault.Text = "Defaults...";
+        this.btnSaveDefault.UseVisualStyleBackColor = true;
+        this.btnSaveDefault.Click += new System.EventHandler(this.btnSaveDefault_Click);
+        // 
         // NewTerminalForm
         // 
         this.AcceptButton = this.btnOk;
@@ -1893,6 +1904,7 @@ namespace Terminals
         this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         this.CancelButton = this.btnCancel;
         this.ClientSize = new System.Drawing.Size(513, 467);
+        this.Controls.Add(this.btnSaveDefault);
         this.Controls.Add(this.NewWindowCheckbox);
         this.Controls.Add(this.chkAddtoToolbar);
         this.Controls.Add(this.tabControl1);
@@ -2126,5 +2138,6 @@ namespace Terminals
       private System.Windows.Forms.ComboBox CredentialDropdown;
       private System.Windows.Forms.Label label15;
       private System.Windows.Forms.Panel CredentialsPanel;
+      private System.Windows.Forms.Button btnSaveDefault;
   }
 }

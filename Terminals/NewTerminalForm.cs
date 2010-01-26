@@ -57,10 +57,19 @@ namespace Terminals
             if(favorite == null)
             {
                 FillCredentials(null);
-                cmbResolution.SelectedIndex = 7;
-                cmbColors.SelectedIndex = 1;
-                cmbSounds.SelectedIndex = 2;                
-                this.ProtocolComboBox.SelectedIndex = 0;                
+
+                FavoriteConfigurationElement defaultFav = Settings.GetDefaultFavorite();
+                if (defaultFav != null)
+                {
+                    FillControls(defaultFav);
+                }
+                else
+                {
+                    cmbResolution.SelectedIndex = 7;
+                    cmbColors.SelectedIndex = 1;
+                    cmbSounds.SelectedIndex = 2;
+                    this.ProtocolComboBox.SelectedIndex = 0;
+                }
                 string Server = server;
                 int port = 3389;
                 GetServerAndPort(server, out Server, out port);
@@ -81,11 +90,14 @@ namespace Terminals
             this.CredentialDropdown.Items.Add("(custom)");
 
             int selIndex = 0;
-            foreach (Credentials.CredentialSet item in creds)
+            if (creds != null)
             {
-                int index = this.CredentialDropdown.Items.Add(item);
-                if (!string.IsNullOrEmpty(CredentialName) && CredentialName == item.Name)
-                    selIndex = index;
+                foreach (Credentials.CredentialSet item in creds)
+                {
+                    int index = this.CredentialDropdown.Items.Add(item);
+                    if (!string.IsNullOrEmpty(CredentialName) && CredentialName == item.Name)
+                        selIndex = index;
+                }
             }
             this.CredentialDropdown.SelectedIndex = selIndex;
         }
@@ -254,7 +266,7 @@ namespace Terminals
 
             FillCredentials(favorite.Credential);
         }
-        private bool FillFavorite()
+        private bool FillFavorite(bool defaultFav)
         {
             try {
                 if (_favorite == null)
@@ -262,7 +274,11 @@ namespace Terminals
                 
                 consolePreferences.FillFavorite(_favorite);
 
-                _favorite.Name = (string.IsNullOrEmpty(txtName.Text) ? cmbServers.Text : txtName.Text);
+                //if (defaultFav)
+                //    _favorite.Name = "default";
+                //else
+                    _favorite.Name = (string.IsNullOrEmpty(txtName.Text) ? cmbServers.Text : txtName.Text);
+
                 _favorite.VMRCAdministratorMode = VMRCAdminModeCheckbox.Checked;
                 _favorite.VMRCReducedColorsMode = VMRCReducedColorsCheckbox.Checked;
 
@@ -273,7 +289,8 @@ namespace Terminals
                 _favorite.NewWindow = this.NewWindowCheckbox.Checked;
 
                 _favorite.Protocol = ProtocolComboBox.SelectedItem.ToString();
-                _favorite.ServerName = ValidateServer(cmbServers.Text);
+                if (!defaultFav)
+                    _favorite.ServerName = ValidateServer(cmbServers.Text);
 
                 Credentials.CredentialSet set = (CredentialDropdown.SelectedItem as Credentials.CredentialSet);
                 _favorite.Credential = (set == null ? "" : set.Name);
@@ -376,10 +393,28 @@ namespace Terminals
                 _favorite.SSH1 = SSHPreferences.SSH1;
                 _favorite.AuthMethod = SSHPreferences.AuthMethod;
 
-                if (string.IsNullOrEmpty(_oldName))
-                    Settings.AddFavorite(_favorite, _showOnToolbar);
+                if (defaultFav)
+                {
+                    _favorite.Name = "";
+                    _favorite.ServerName = "";
+                    _favorite.DomainName = "";
+                    _favorite.UserName = "";
+                    _favorite.Password = "";
+                    _favorite.Notes = "";
+                    _favorite.EnableSecuritySettings = false;
+                    _favorite.SecurityWorkingFolder = "";
+                    _favorite.SecurityStartProgram = "";
+                    _favorite.SecurityFullScreen = false;
+                    _favorite.Url = "";
+                    Settings.SaveDefaultFavorite(_favorite);
+                }
                 else
-                    Settings.EditFavorite(_oldName, _favorite, _showOnToolbar);
+                {
+                    if (string.IsNullOrEmpty(_oldName))
+                        Settings.AddFavorite(_favorite, _showOnToolbar);
+                    else
+                        Settings.EditFavorite(_oldName, _favorite, _showOnToolbar);
+                }
 
                 return true;
             } catch(Exception e) {
@@ -476,7 +511,7 @@ namespace Terminals
         {
             SaveMRUs();
             
-            if (FillFavorite())
+            if (FillFavorite(false))
                 DialogResult = DialogResult.OK;
         }
 
@@ -537,6 +572,16 @@ namespace Terminals
         private void btnRemoveTag_Click(object sender, EventArgs e)
         {
             DeleteTag();
+        }
+
+        private void btnSaveDefault_Click(object sender, EventArgs e)
+        {
+            DefaultDialog frm = new DefaultDialog();
+            DialogResult dr = frm.ShowDialog(this);
+            if (dr == DialogResult.Yes)
+                FillFavorite(true);
+            else if (dr == DialogResult.No)
+                Settings.RemoveDefaultFavorite();
         }
 
         private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -766,5 +811,6 @@ namespace Terminals
             }
         }
         #endregion
+
     }
 }
