@@ -120,8 +120,6 @@ namespace Terminals.Wizard
             // chkBoxImportRDP
             // 
             this.chkBoxImportRDP.AutoSize = true;
-            this.chkBoxImportRDP.Checked = true;
-            this.chkBoxImportRDP.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkBoxImportRDP.Location = new System.Drawing.Point(28, 237);
             this.chkBoxImportRDP.Name = "chkBoxImportRDP";
             this.chkBoxImportRDP.Size = new System.Drawing.Size(202, 17);
