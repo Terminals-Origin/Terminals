@@ -752,7 +752,8 @@ namespace Terminals
         private void cmbResolution_SelectedIndexChanged(object sender, EventArgs e)
         {
             customSizePanel.Visible = false;
-            if(cmbResolution.Text == "Custom") customSizePanel.Visible = true;            
+            if(cmbResolution.Text == "Custom" || cmbResolution.Text == "Auto Scale")
+                customSizePanel.Visible = true;            
         }
 
         private void AllTagsAddButton_Click(object sender, EventArgs e) 

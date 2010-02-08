@@ -51,12 +51,12 @@ namespace Terminals.Connections {
                     Height = Connection.TerminalTabPage.Height;
                     break;
                 case DesktopSize.FullScreen:
-                    Width = Screen.FromControl(Connection).Bounds.Width;
+                    Width = Screen.FromControl(Connection).Bounds.Width - 13;
                     Height = Screen.FromControl(Connection).Bounds.Height - 1;
                     break;
                 case DesktopSize.AutoScale:
-                    Width = Screen.FromControl(Connection).Bounds.Width;
-                    Height = Screen.FromControl(Connection).Bounds.Height - 1;
+                    Width = Math.Max(Connection.TerminalTabPage.Width, Width);
+                    Height = Math.Max(Connection.TerminalTabPage.Height, Height);
                     break;
                 case DesktopSize.Custom:
                     break;
