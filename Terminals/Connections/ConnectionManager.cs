@@ -61,8 +61,8 @@ namespace Terminals.Connections {
                 case DesktopSize.Custom:
                     break;
             }
-            int maxWidth = Settings.SupportsRDP6 ? 4096 : 1600;
-            int maxHeight = Settings.SupportsRDP6 ? 2048 : 1200;
+            int maxWidth = 4096;
+            int maxHeight = 2048;
 
             Width = Math.Min(maxWidth, Width);
             Height = Math.Min(maxHeight, Height); ;

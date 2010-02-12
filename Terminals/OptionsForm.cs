@@ -12,12 +12,12 @@ namespace Terminals
 {
     public partial class OptionsForm : Form
     {
-        private AxMsRdpClient2 _currentTerminal;
+        private AxMsRdpClient6 _currentTerminal;
         private string _tempFrob;
         private static string _amazonBucket = "Terminals";
         private static string _amazonConfigKeyName = "Terminals.config";
 
-        public OptionsForm(AxMsRdpClient2 terminal) {
+        public OptionsForm(AxMsRdpClient6 terminal) {
             InitializeComponent();
             chkShowInformationToolTips.Checked = Settings.ShowInformationToolTips;
             chkShowUserNameInTitle.Checked = Settings.ShowUserNameInTitle;

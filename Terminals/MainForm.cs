@@ -225,7 +225,7 @@ namespace Terminals {
             }
         }
 
-        public AxMsRdpClient2 CurrentTerminal
+        public AxMsRdpClient6 CurrentTerminal
         {
             get
             {
@@ -236,7 +236,7 @@ namespace Terminals {
                         if (CurrentConnection != null)
                         {
                             if ((CurrentConnection as Connections.RDPConnection) != null)
-                                return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient2;
+                                return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient;
                             else
                                 return null;
                         }
@@ -250,7 +250,7 @@ namespace Terminals {
                     if (CurrentConnection != null)
                     {
                         if ((CurrentConnection as Connections.RDPConnection) != null)
-                            return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient2;
+                            return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient;
                         else
                             return null;
                     }
@@ -2420,7 +2420,7 @@ namespace Terminals {
             : base(caption, null) {
         }
         private Connections.IConnection _connection;
-        private AxMsRdpClient2 _terminalControl;
+        private AxMsRdpClient6 _terminalControl;
         private FavoriteConfigurationElement _favorite;
 
         public Connections.IConnection Connection {
@@ -2432,7 +2432,7 @@ namespace Terminals {
             }
         }
         
-        public AxMsRdpClient2 TerminalControl {
+        public AxMsRdpClient6 TerminalControl {
             get {
                 return _terminalControl;
             }

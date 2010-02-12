@@ -12,7 +12,6 @@ namespace Terminals
 {
     public static class Settings
     {
-        private static bool? _supportsRDP6;
         private static Configuration _config = null;
         private static bool _delayConfigurationSave = false;
         private static string _toolStripSettingsFile = "ToolStrip.settings";
@@ -1008,27 +1007,6 @@ namespace Terminals
                 Configuration configuration = Config;
                 GetSection(configuration).SaveConnectionsOnClose = value;
                 if (!_delayConfigurationSave) configuration.Save();
-            }
-        }
-        public static bool SupportsRDP6
-        {
-            get
-            {
-                if (!_supportsRDP6.HasValue)
-                {
-                    try
-                    {
-                        MSTSCLib.IMsRdpClient2 rdpClient = new MSTSCLib.MsRdpClient2Class();
-                        _supportsRDP6 = ((rdpClient as MSTSCLib6.IMsRdpClient5) != null);
-                    }
-                    catch (Exception exc)
-                    {
-                        Terminals.Logging.Log.Info("", exc);
-                        _supportsRDP6 = false;
-                    }
-
-                }
-                return _supportsRDP6.Value;
             }
         }
         public static string CaptureRoot

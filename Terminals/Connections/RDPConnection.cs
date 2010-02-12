@@ -20,16 +20,16 @@ namespace Terminals.Connections
     public class RDPConnection : Connection
     {
         private MSTSCLib.IMsRdpClientNonScriptable _nonScriptable;
-        private AxMsRdpClient2 _axMsRdpClient2 = null;
+        private AxMsRdpClient6 _axMsRdpClient = null;
 
         public delegate void Disconnected(RDPConnection Connection);
         public event Disconnected OnDisconnected;
         public delegate void ConnectionEstablish(RDPConnection Connection);
         public event ConnectionEstablish OnConnected;
         
-        public AxMsRdpClient2 AxMsRdpClient2
+        public AxMsRdpClient6 AxMsRdpClient
         {
-            get { return _axMsRdpClient2; }
+            get { return _axMsRdpClient; }
         }
 
         private void SHCopyFiles(string[] sourceFiles, string destinationFolder)
@@ -62,20 +62,20 @@ namespace Terminals.Connections
 
                 if(Size == DesktopSize.AutoScale)
                 {
-                    _axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
-                    _axMsRdpClient2.DesktopWidth = width;
-                    _axMsRdpClient2.DesktopHeight = height;
+                    _axMsRdpClient.AdvancedSettings3.SmartSizing = true;
+                    _axMsRdpClient.DesktopWidth = width;
+                    _axMsRdpClient.DesktopHeight = height;
                     return;
                 }
                 if(Size == DesktopSize.FullScreen)
                 {
-                    _axMsRdpClient2.FullScreen = true;
-                    _axMsRdpClient2.DesktopWidth = width;
-                    _axMsRdpClient2.DesktopHeight = height;
+                    _axMsRdpClient.FullScreen = true;
+                    _axMsRdpClient.DesktopWidth = width;
+                    _axMsRdpClient.DesktopHeight = height;
                     return;
                 }
-                _axMsRdpClient2.DesktopWidth = width;
-                _axMsRdpClient2.DesktopHeight = height;
+                _axMsRdpClient.DesktopWidth = width;
+                _axMsRdpClient.DesktopHeight = height;
 
             }
             catch(Exception exc)
@@ -87,18 +87,28 @@ namespace Terminals.Connections
         {
             try
             {
-                _axMsRdpClient2 = new AxMsRdpClient2();                
-                Controls.Add(_axMsRdpClient2);
-                _axMsRdpClient2.BringToFront();
-                this.BringToFront();
-                _axMsRdpClient2.Parent = base.TerminalTabPage;
-                this.Parent = TerminalTabPage;
-                _axMsRdpClient2.AllowDrop = true;
+                _axMsRdpClient = new AxMsRdpClient6();
+            }
+            catch (Exception exc)
+            {
+                Terminals.Logging.Log.Info("", exc);
+                MessageBox.Show("Please Update your RDP client to at least version 6.");
+                return false;
+            }
 
-                ((Control)_axMsRdpClient2).DragEnter += new DragEventHandler(axMsRdpClient2_DragEnter);
-                ((Control)_axMsRdpClient2).DragDrop += new DragEventHandler(axMsRdpClient2_DragDrop);
-                _axMsRdpClient2.OnConnected += new EventHandler(axMsRdpClient2_OnConnected);
-                _axMsRdpClient2.Dock = DockStyle.Fill;
+            try
+            {
+                Controls.Add(_axMsRdpClient);
+                _axMsRdpClient.BringToFront();
+                this.BringToFront();
+                _axMsRdpClient.Parent = base.TerminalTabPage;
+                this.Parent = TerminalTabPage;
+                _axMsRdpClient.AllowDrop = true;
+
+                ((Control)_axMsRdpClient).DragEnter += new DragEventHandler(axMsRdpClient2_DragEnter);
+                ((Control)_axMsRdpClient).DragDrop += new DragEventHandler(axMsRdpClient2_DragDrop);
+                _axMsRdpClient.OnConnected += new EventHandler(axMsRdpClient2_OnConnected);
+                _axMsRdpClient.Dock = DockStyle.Fill;
 
                 ChangeDesktopSize(Favorite.DesktopSize);
                 try
@@ -110,85 +120,82 @@ namespace Terminals.Connections
                     switch(Favorite.Colors)
                     {
                         case Colors.Bits8:
-                            _axMsRdpClient2.ColorDepth = 8;
+                            _axMsRdpClient.ColorDepth = 8;
                             break;
                         case Colors.Bit16:
-                            _axMsRdpClient2.ColorDepth = 16;
+                            _axMsRdpClient.ColorDepth = 16;
                             break;
                         case Colors.Bits24:
-                            _axMsRdpClient2.ColorDepth = 24;
+                            _axMsRdpClient.ColorDepth = 24;
                             break;
                         case Colors.Bits32:
-                            if(Settings.SupportsRDP6)
-                                _axMsRdpClient2.ColorDepth = 32;
-                            else
-                                _axMsRdpClient2.ColorDepth = 24;
+                            _axMsRdpClient.ColorDepth = 32;
                             break;
                     }
 
-                    _axMsRdpClient2.ConnectingText = "Connecting. Please wait...";
-                    _axMsRdpClient2.DisconnectedText = "Disconnecting...";
-                    _axMsRdpClient2.AdvancedSettings3.RedirectDrives = Favorite.RedirectDrives;
+                    _axMsRdpClient.ConnectingText = "Connecting. Please wait...";
+                    _axMsRdpClient.DisconnectedText = "Disconnecting...";
+                    _axMsRdpClient.AdvancedSettings3.RedirectDrives = Favorite.RedirectDrives;
 
                     //advanced settings
                     //bool, 0 is false, other is true
                     if(Favorite.AllowBackgroundInput) 
-                        _axMsRdpClient2.AdvancedSettings.allowBackgroundInput = -1;
+                        _axMsRdpClient.AdvancedSettings.allowBackgroundInput = -1;
                     
                     if(Favorite.BitmapPeristence) 
-                        _axMsRdpClient2.AdvancedSettings.BitmapPeristence = -1;
+                        _axMsRdpClient.AdvancedSettings.BitmapPeristence = -1;
                     
                     if(Favorite.EnableCompression)
-                        _axMsRdpClient2.AdvancedSettings.Compress = -1;
+                        _axMsRdpClient.AdvancedSettings.Compress = -1;
 
                     if(Favorite.AcceleratorPassthrough) 
-                        _axMsRdpClient2.AdvancedSettings2.AcceleratorPassthrough = -1;
+                        _axMsRdpClient.AdvancedSettings2.AcceleratorPassthrough = -1;
 
                     if(Favorite.DisableControlAltDelete) 
-                        _axMsRdpClient2.AdvancedSettings2.DisableCtrlAltDel = -1;
+                        _axMsRdpClient.AdvancedSettings2.DisableCtrlAltDel = -1;
 
                     if(Favorite.DisplayConnectionBar) 
-                        _axMsRdpClient2.AdvancedSettings2.DisplayConnectionBar = true;
+                        _axMsRdpClient.AdvancedSettings2.DisplayConnectionBar = true;
 
                     if(Favorite.DoubleClickDetect) 
-                        _axMsRdpClient2.AdvancedSettings2.DoubleClickDetect = -1;
+                        _axMsRdpClient.AdvancedSettings2.DoubleClickDetect = -1;
 
                     if(Favorite.DisableWindowsKey) 
-                        _axMsRdpClient2.AdvancedSettings2.EnableWindowsKey = -1;
+                        _axMsRdpClient.AdvancedSettings2.EnableWindowsKey = -1;
                     
                     if(Favorite.EnableEncryption) 
-                        _axMsRdpClient2.AdvancedSettings2.EncryptionEnabled = -1;
+                        _axMsRdpClient.AdvancedSettings2.EncryptionEnabled = -1;
 
 
                     if(Favorite.GrabFocusOnConnect) 
-                        _axMsRdpClient2.AdvancedSettings2.GrabFocusOnConnect = true;
+                        _axMsRdpClient.AdvancedSettings2.GrabFocusOnConnect = true;
 
                         if(Favorite.EnableSecuritySettings)
                         {
                             if(Favorite.SecurityFullScreen) 
-                                _axMsRdpClient2.SecuredSettings2.FullScreen = -1;
+                                _axMsRdpClient.SecuredSettings2.FullScreen = -1;
                             
-                            _axMsRdpClient2.SecuredSettings2.StartProgram = Favorite.SecurityStartProgram;
-                            _axMsRdpClient2.SecuredSettings2.WorkDir = Favorite.SecurityWorkingFolder;
+                            _axMsRdpClient.SecuredSettings2.StartProgram = Favorite.SecurityStartProgram;
+                            _axMsRdpClient.SecuredSettings2.WorkDir = Favorite.SecurityWorkingFolder;
                         }
 
-                    _axMsRdpClient2.AdvancedSettings2.MinutesToIdleTimeout = Favorite.IdleTimeout;
+                    _axMsRdpClient.AdvancedSettings2.MinutesToIdleTimeout = Favorite.IdleTimeout;
 
                     try {
                         int timeout = Favorite.OverallTimeout;
                         if(timeout > 600) timeout = 10;
                         if(timeout <= 0) timeout = 10;
-                        _axMsRdpClient2.AdvancedSettings2.overallConnectionTimeout = timeout;
+                        _axMsRdpClient.AdvancedSettings2.overallConnectionTimeout = timeout;
                         timeout = Favorite.ConnectionTimeout;
                         if(timeout > 600) timeout = 10;
                         if(timeout <= 0) timeout = 10;
                         
-                        _axMsRdpClient2.AdvancedSettings2.singleConnectionTimeout = timeout;
+                        _axMsRdpClient.AdvancedSettings2.singleConnectionTimeout = timeout;
 
                         timeout = Favorite.ShutdownTimeout;
                         if(timeout > 600) timeout = 10;
                         if(timeout <= 0) timeout = 10;
-                        _axMsRdpClient2.AdvancedSettings2.shutdownTimeout = timeout;
+                        _axMsRdpClient.AdvancedSettings2.shutdownTimeout = timeout;
                         
 
                         //axMsRdpClient2.AdvancedSettings2.PinConnectionBar;
@@ -199,11 +206,11 @@ namespace Terminals.Connections
                         Terminals.Logging.Log.Error("Error when trying to set timeout values.", exc);
                     }
 
-                    _axMsRdpClient2.AdvancedSettings3.RedirectPorts = Favorite.RedirectPorts;
-                    _axMsRdpClient2.AdvancedSettings3.RedirectPrinters = Favorite.RedirectPrinters;
-                    _axMsRdpClient2.AdvancedSettings3.RedirectSmartCards = Favorite.RedirectSmartCards;
-                    _axMsRdpClient2.AdvancedSettings3.PerformanceFlags = Favorite.PerformanceFlags;
-                    _nonScriptable = (_axMsRdpClient2.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable);
+                    _axMsRdpClient.AdvancedSettings3.RedirectPorts = Favorite.RedirectPorts;
+                    _axMsRdpClient.AdvancedSettings3.RedirectPrinters = Favorite.RedirectPrinters;
+                    _axMsRdpClient.AdvancedSettings3.RedirectSmartCards = Favorite.RedirectSmartCards;
+                    _axMsRdpClient.AdvancedSettings3.PerformanceFlags = Favorite.PerformanceFlags;
+                    _nonScriptable = (_axMsRdpClient.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable);
                         
                     /*
                     TS_PERF_DISABLE_CURSOR_SHADOW
@@ -231,22 +238,16 @@ namespace Terminals.Connections
                     TS_PERF_ENABLE_FONT_SMOOTHING 0x00000080
                     TS_PERF_ENABLE_DESKTOP_COMPOSITION 0x00000100
                     */
-                    if (Settings.SupportsRDP6)
-                    {
-                        MSTSCLib6.IMsRdpClientAdvancedSettings5 advancedSettings5 = (_axMsRdpClient2.AdvancedSettings3 as MSTSCLib6.IMsRdpClientAdvancedSettings5);
-                        if (advancedSettings5 != null)
-                        {
-                            advancedSettings5.RedirectClipboard = Favorite.RedirectClipboard;
-                            advancedSettings5.RedirectDevices = Favorite.RedirectDevices;
-                            advancedSettings5.ConnectionBarShowMinimizeButton = false;
-                            advancedSettings5.ConnectionBarShowPinButton = false;
-                            advancedSettings5.ConnectionBarShowRestoreButton = false;
+                    _axMsRdpClient.AdvancedSettings6.RedirectClipboard = Favorite.RedirectClipboard;
+                    _axMsRdpClient.AdvancedSettings6.RedirectDevices = Favorite.RedirectDevices;
+                    _axMsRdpClient.AdvancedSettings6.ConnectionBarShowMinimizeButton = false;
+                    _axMsRdpClient.AdvancedSettings6.ConnectionBarShowPinButton = false;
+                    _axMsRdpClient.AdvancedSettings6.ConnectionBarShowRestoreButton = false;
 
-                            if (Favorite.EnableTLSAuthentication)
-                                advancedSettings5.AuthenticationLevel = 2;
-                        }
-                    }
-                    _axMsRdpClient2.SecuredSettings2.AudioRedirectionMode = (int)Favorite.Sounds;
+                    if (Favorite.EnableTLSAuthentication)
+                        _axMsRdpClient.AdvancedSettings5.AuthenticationLevel = 2;
+
+                    _axMsRdpClient.SecuredSettings2.AudioRedirectionMode = (int)Favorite.Sounds;
                                         
                     string domainName = Favorite.DomainName;
                     if(string.IsNullOrEmpty(domainName)) 
@@ -260,8 +261,8 @@ namespace Terminals.Connections
                     if (string.IsNullOrEmpty(userName))
                         userName = Settings.DefaultUsername;
 
-                    _axMsRdpClient2.UserName = userName;
-                    _axMsRdpClient2.Domain = domainName;
+                    _axMsRdpClient.UserName = userName;
+                    _axMsRdpClient.Domain = domainName;
                     try {
                         if(!String.IsNullOrEmpty(pass)) {
                             if(_nonScriptable != null)
@@ -271,31 +272,29 @@ namespace Terminals.Connections
                         Terminals.Logging.Log.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
                     }
 
-                    _axMsRdpClient2.Server = Favorite.ServerName;
-                    _axMsRdpClient2.AdvancedSettings3.RDPPort = Favorite.Port;
-                    _axMsRdpClient2.AdvancedSettings3.ContainerHandledFullScreen = -1;
-                    _axMsRdpClient2.AdvancedSettings3.DisplayConnectionBar = Favorite.DisplayConnectionBar;
+                    _axMsRdpClient.Server = Favorite.ServerName;
+                    _axMsRdpClient.AdvancedSettings3.RDPPort = Favorite.Port;
+                    _axMsRdpClient.AdvancedSettings3.ContainerHandledFullScreen = -1;
+                    _axMsRdpClient.AdvancedSettings3.DisplayConnectionBar = Favorite.DisplayConnectionBar;
 
                     // Use ConnectToServerConsole or ConnectToAdministerServer based on implementation
-                    if (_axMsRdpClient2.AdvancedSettings3 is MSTSCLib6.IMsRdpClientAdvancedSettings6)
-                        ((MSTSCLib6.IMsRdpClientAdvancedSettings6)_axMsRdpClient2.AdvancedSettings3).ConnectToAdministerServer = Favorite.ConnectToConsole;
-                    else
-                        _axMsRdpClient2.AdvancedSettings3.ConnectToServerConsole = Favorite.ConnectToConsole;
+                    _axMsRdpClient.AdvancedSettings7.ConnectToAdministerServer = Favorite.ConnectToConsole;
+                    _axMsRdpClient.AdvancedSettings3.ConnectToServerConsole = Favorite.ConnectToConsole;
 
-                    _axMsRdpClient2.OnRequestGoFullScreen += new EventHandler(axMsTscAx_OnRequestGoFullScreen);
-                    _axMsRdpClient2.OnRequestLeaveFullScreen += new EventHandler(axMsTscAx_OnRequestLeaveFullScreen);
-                    _axMsRdpClient2.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(axMsTscAx_OnDisconnected);
-                    _axMsRdpClient2.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(axMsRdpClient2_OnWarning);
-                    _axMsRdpClient2.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(axMsRdpClient2_OnFatalError);
+                    _axMsRdpClient.OnRequestGoFullScreen += new EventHandler(axMsTscAx_OnRequestGoFullScreen);
+                    _axMsRdpClient.OnRequestLeaveFullScreen += new EventHandler(axMsTscAx_OnRequestLeaveFullScreen);
+                    _axMsRdpClient.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(axMsTscAx_OnDisconnected);
+                    _axMsRdpClient.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(axMsRdpClient2_OnWarning);
+                    _axMsRdpClient.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(axMsRdpClient2_OnFatalError);
 
                     Text = "Connecting to RDP Server...";
-                    _axMsRdpClient2.FullScreen = true;
+                    _axMsRdpClient.FullScreen = true;
                 }
                 catch(Exception exc)
                 {
                     Terminals.Logging.Log.Warn("There was an exception setting an RDP Value.", exc);
                 }
-                _axMsRdpClient2.Connect();
+                _axMsRdpClient.Connect();
                 return true;
             }
             catch(Exception exc)
@@ -309,14 +308,14 @@ namespace Terminals.Connections
             try
             {
                 
-                _axMsRdpClient2.Disconnect();
+                _axMsRdpClient.Disconnect();
             }
             catch(Exception e)
             {
                 Terminals.Logging.Log.Info("", e);
             }
         }
-        public override bool Connected { get { return Convert.ToBoolean(_axMsRdpClient2.Connected); } }
+        public override bool Connected { get { return Convert.ToBoolean(_axMsRdpClient.Connected); } }
         private void axMsRdpClient2_OnConnected(object sender, EventArgs e)
         {
             if (OnConnected != null) OnConnected(this);
@@ -359,7 +358,7 @@ namespace Terminals.Connections
 
         private void axMsTscAx_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            AxMsRdpClient2 client = (AxMsRdpClient2)sender;
+            AxMsRdpClient6 client = (AxMsRdpClient6)sender;
 
             string error = Functions.GetErrorMessage(e.discReason);
             if(error != null)
