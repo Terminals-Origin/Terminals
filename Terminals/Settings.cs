@@ -1169,12 +1169,12 @@ namespace Terminals
 
                 savedCredentials = new List<Terminals.Credentials.CredentialSet>();
 
-                string source = GetSection().SavedCredentials;
+                string source = GetSection().SavedCredentialsLocation;
 
                 if (string.IsNullOrEmpty(source))
                 {
                     source = "Credentials.xml";
-                    GetSection().SavedCredentials = source;
+                    GetSection().SavedCredentialsLocation = source;
                     Configuration configuration = Config;
                     configuration.Save();
                 }
@@ -1216,7 +1216,7 @@ namespace Terminals
                     }
                 }
 
-                Unified.Serialize.SerializeXMLToDisk(newSet, GetSection(configuration).SavedCredentials);
+                Unified.Serialize.SerializeXMLToDisk(newSet, GetSection(configuration).SavedCredentialsLocation);
             }
         }
         

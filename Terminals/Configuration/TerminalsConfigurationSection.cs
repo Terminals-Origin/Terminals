@@ -753,7 +753,7 @@ namespace Terminals
             }
         }
         [ConfigurationProperty("savedCredentials", DefaultValue = "")]
-        public string SavedCredentials
+        public string SavedCredentialsLocation
         {
             get
             {

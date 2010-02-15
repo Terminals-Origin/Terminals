@@ -11,7 +11,7 @@ namespace Unified
         {
             if (Stream == null) 
                 return null;
-            Encoding eng = Encoding.Unicode;
+            Encoding eng = Encoding.Default;
             return eng.GetString(StreamToBytes(Stream));
         }
 
