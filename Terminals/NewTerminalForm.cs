@@ -53,7 +53,11 @@ namespace Terminals
             LoadMRUs();
             SetOkButtonState();
             SetOkTitle(connect);
-            SSHPreferences.Keys = Settings.SSHKeys;            
+            SSHPreferences.Keys = Settings.SSHKeys;
+
+            // move following line down to default value only once smart card access worked out.
+            cmbTSGWLogonMethod.SelectedIndex = 0;
+
             if(favorite == null)
             {
                 FillCredentials(null);
@@ -68,7 +72,7 @@ namespace Terminals
                     cmbResolution.SelectedIndex = 7;
                     cmbColors.SelectedIndex = 1;
                     cmbSounds.SelectedIndex = 2;
-                    this.ProtocolComboBox.SelectedIndex = 0;
+                    ProtocolComboBox.SelectedIndex = 0;
                 }
                 string Server = server;
                 int port = 3389;
@@ -185,6 +189,33 @@ namespace Terminals
             chkRedirectDevices.Checked = favorite.RedirectDevices;
             chkRedirectSmartcards.Checked = favorite.RedirectSmartCards;
             cmbSounds.SelectedIndex = (int)favorite.Sounds;
+
+            switch (favorite.TsgwUsageMethod)
+            {
+                case 0:
+                    radTSGWdisable.Checked = true;
+                    chkTSGWlocalBypass.Checked = false;
+                    break;
+                case 1:
+                    radTSGWenable.Checked = true;
+                    chkTSGWlocalBypass.Checked = false;
+                    break;
+                case 2:
+                    radTSGWenable.Checked = true;
+                    chkTSGWlocalBypass.Checked = true;
+                    break;
+                case 4:
+                    radTSGWdisable.Checked = true;
+                    chkTSGWlocalBypass.Checked = true;
+                    break;
+            }
+            txtTSGWServer.Text = favorite.TsgwHostname;
+            txtTSGWDomain.Text = favorite.TsgwDomain;
+            txtTSGWUserName.Text = favorite.TsgwUsername;
+            txtTSGWPassword.Text = favorite.TsgwPassword;
+            chkTSGWlogin.Checked = favorite.TsgwSeparateLogin;
+            cmbTSGWLogonMethod.SelectedIndex = favorite.TsgwCredsSource;
+
             txtPort.Text = favorite.Port.ToString();
             txtDesktopShare.Text = favorite.DesktopShare;
             chkExecuteBeforeConnect.Checked = favorite.ExecuteBeforeConnect;
@@ -317,6 +348,27 @@ namespace Terminals
                 _favorite.RedirectSmartCards = chkRedirectSmartcards.Checked;
                 _favorite.Sounds = (RemoteSounds)cmbSounds.SelectedIndex;
                 _showOnToolbar = chkAddtoToolbar.Checked;
+
+                if (radTSGWenable.Checked)
+                {
+                    if (chkTSGWlocalBypass.Checked)
+                        _favorite.TsgwUsageMethod = 2;
+                    else
+                        _favorite.TsgwUsageMethod = 1;
+                }
+                else
+                {
+                    if (chkTSGWlocalBypass.Checked)
+                        _favorite.TsgwUsageMethod = 4;
+                    else
+                        _favorite.TsgwUsageMethod = 0;
+                }
+                _favorite.TsgwHostname = txtTSGWServer.Text;
+                _favorite.TsgwDomain = txtTSGWDomain.Text;
+                _favorite.TsgwUsername = txtTSGWUserName.Text;
+                _favorite.TsgwPassword = txtTSGWPassword.Text;
+                _favorite.TsgwSeparateLogin = chkTSGWlogin.Checked;
+                _favorite.TsgwCredsSource = cmbTSGWLogonMethod.SelectedIndex;
 
                 _favorite.Port = ValidatePort(txtPort.Text);
                 _favorite.DesktopShare = txtDesktopShare.Text;
@@ -813,5 +865,14 @@ namespace Terminals
         }
         #endregion
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            pnlTSGWlogon.Enabled = chkTSGWlogin.Checked;
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            pnlTSGWsettings.Enabled = radTSGWenable.Checked;
+        }
     }
 }

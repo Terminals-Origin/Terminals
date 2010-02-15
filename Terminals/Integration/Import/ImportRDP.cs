@@ -28,7 +28,6 @@ namespace Terminals.Integration.Import
                     {
                         case "full address":
                             fav.ServerName = pValue;
-                            
                             break;
                         case "server port":
                             int p = 3389;
@@ -89,6 +88,14 @@ namespace Terminals.Integration.Import
                         case "redirectprinters":
                             fav.RedirectPrinters = false;
                             if(pValue == "1") fav.RedirectPrinters = true;
+                            break;
+                        case "gatewayhostname":
+                            fav.TsgwHostname = pValue;
+                            break;
+                        case "gatewayusagemethod":
+                            int u = 0;
+                            int.TryParse(pValue, out u);
+                            fav.TsgwUsageMethod = u;
                             break;
                         case "audiomode":
                             if(pValue == "0") fav.Sounds = RemoteSounds.Redirect;

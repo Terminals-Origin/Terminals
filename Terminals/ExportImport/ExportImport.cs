@@ -20,7 +20,7 @@ namespace Terminals.ExportImport
                     if (includePassword)
                     {
                         w.WriteElementString("userName", element.UserName);
-                        w.WriteElementString("encryptedPassword", element.EncryptedPassword);
+                        //w.WriteElementString("encryptedPassword", element.EncryptedPassword);
                         w.WriteElementString("password", element.Password);
                     }
 
@@ -115,6 +115,14 @@ namespace Terminals.ExportImport
                     w.WriteElementString("telnetFont", element.TelnetFont);
                     w.WriteElementString("telnetRows", element.TelnetRows.ToString());
                     w.WriteElementString("telnetTextColor", element.TelnetTextColor);
+                    
+                    w.WriteElementString("tsgwCredsSource", element.TsgwCredsSource.ToString());
+                    w.WriteElementString("tsgwDomain", element.TsgwDomain);
+                    w.WriteElementString("tsgwHostname", element.TsgwHostname);
+                    w.WriteElementString("tsgwPassword", element.TsgwPassword);
+                    w.WriteElementString("tsgwSeparateLogin", element.TsgwSeparateLogin.ToString());
+                    w.WriteElementString("tsgwUsageMethod", element.TsgwUsageMethod.ToString());
+                    w.WriteElementString("tsgwUsername", element.TsgwUsername);
 
                     w.WriteElementString("url", element.Url);
 
@@ -156,9 +164,9 @@ namespace Terminals.ExportImport
                                 case "userName":
                                     fav.UserName = reader.ReadString();
                                     break;
-                                case "encryptedPassword":
-                                    fav.EncryptedPassword = reader.ReadString();
-                                    break;
+                                //case "encryptedPassword":
+                                //    fav.EncryptedPassword = reader.ReadString();
+                                //    break;
                                 case "password":
                                     fav.Password = reader.ReadString();
                                     break;
@@ -393,6 +401,27 @@ namespace Terminals.ExportImport
                                     break;
                                 case "toolBarIcon":
                                     fav.ToolBarIcon = reader.ReadString();
+                                    break;
+                                case "tsgwCredsSource":
+                                    fav.TsgwCredsSource = ReadInt(reader.ReadString());
+                                    break;
+                                case "tsgwDomain":
+                                    fav.TsgwDomain = reader.ReadString();
+                                    break;
+                                case "tsgwHostname":
+                                    fav.TsgwHostname = reader.ReadString();
+                                    break;
+                                case "tsgwPassword":
+                                    fav.TsgwPassword = reader.ReadString();
+                                    break;
+                                case "tsgwSeparateLogin":
+                                    fav.TsgwSeparateLogin = ReadBool(reader.ReadString());
+                                    break;
+                                case "tsgwUsageMethod":
+                                    fav.TsgwUsageMethod = ReadInt(reader.ReadString());
+                                    break;
+                                case "tsgwUsername":
+                                    fav.TsgwUsername = reader.ReadString();
                                     break;
                                 case "url":
                                     fav.Url = reader.ReadString();

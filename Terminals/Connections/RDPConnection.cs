@@ -244,11 +244,28 @@ namespace Terminals.Connections
                     _axMsRdpClient.AdvancedSettings6.ConnectionBarShowPinButton = false;
                     _axMsRdpClient.AdvancedSettings6.ConnectionBarShowRestoreButton = false;
 
+                    // Terminal Server Gateway Settings
+                    _axMsRdpClient.TransportSettings.GatewayUsageMethod = (uint)Favorite.TsgwUsageMethod;
+                    _axMsRdpClient.TransportSettings.GatewayCredsSource = (uint)Favorite.TsgwCredsSource;
+                    _axMsRdpClient.TransportSettings.GatewayHostname = Favorite.TsgwHostname;
+                    _axMsRdpClient.TransportSettings2.GatewayDomain = Favorite.TsgwDomain;
+                    _axMsRdpClient.TransportSettings2.GatewayProfileUsageMethod = 1;
+                    if (Favorite.TsgwSeparateLogin)
+                    {
+                        _axMsRdpClient.TransportSettings2.GatewayUsername = Favorite.TsgwUsername;
+                        _axMsRdpClient.TransportSettings2.GatewayPassword = Favorite.TsgwPassword;
+                    }
+                    else
+                    {
+                        _axMsRdpClient.TransportSettings2.GatewayUsername = Favorite.UserName;
+                        _axMsRdpClient.TransportSettings2.GatewayPassword = Favorite.Password;
+                    }
+
                     if (Favorite.EnableTLSAuthentication)
                         _axMsRdpClient.AdvancedSettings5.AuthenticationLevel = 2;
 
                     _axMsRdpClient.SecuredSettings2.AudioRedirectionMode = (int)Favorite.Sounds;
-                                        
+
                     string domainName = Favorite.DomainName;
                     if(string.IsNullOrEmpty(domainName)) 
                         domainName = Settings.DefaultDomain;

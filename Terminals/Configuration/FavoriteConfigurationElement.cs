@@ -867,6 +867,126 @@ namespace Terminals
                 this["redirectDevices"] = value;
             }
         }
+
+        /// <summary>
+        /// TSC_PROXY_MODE_NONE_DIRECT 0 (0x0)
+        /// Do not use an RD Gateway server. In the Remote Desktop Connection (RDC) client UI, the Bypass RD Gateway server for local addresses check box is cleared.
+        /// 
+        /// TSC_PROXY_MODE_DIRECT 1 (0x1)
+        /// Always use an RD Gateway server. In the RDC client UI, the Bypass RD Gateway server for local addresses check box is cleared.
+        /// 
+        /// TSC_PROXY_MODE_DETECT 2 (0x2)
+        /// Use an RD Gateway server if a direct connection cannot be made to the RD Session Host server. In the RDC client UI, the Bypass RD Gateway server for local addresses check box is selected.
+        /// 
+        /// TSC_PROXY_MODE_DEFAULT 3 (0x3)
+        /// Use the default RD Gateway server settings.
+        /// 
+        /// TSC_PROXY_MODE_NONE_DETECT 4 (0x4)
+        /// Do not use an RD Gateway server. In the RDC client UI, the Bypass RD Gateway server for local addresses check box is selected.
+        /// </summary>
+        [ConfigurationProperty("tsgwUsageMethod", DefaultValue = 0)]
+        public int TsgwUsageMethod
+        {
+            get
+            {
+                return (int)this["tsgwUsageMethod"];
+            }
+            set
+            {
+                this["tsgwUsageMethod"] = value;
+            }
+        }
+
+        [ConfigurationProperty("tsgwHostname", DefaultValue = "")]
+        public string TsgwHostname
+        {
+            get
+            {
+                return (string)this["tsgwHostname"];
+            }
+            set
+            {
+                this["tsgwHostname"] = value;
+            }
+        }
+
+        [ConfigurationProperty("tsgwCredsSource", DefaultValue = 0)]
+        public int TsgwCredsSource
+        {
+            get
+            {
+                return (int)this["tsgwCredsSource"];
+            }
+            set
+            {
+                this["tsgwCredsSource"] = value;
+            }
+        }
+
+        [ConfigurationProperty("tsgwSeparateLogin", DefaultValue = false)]
+        public bool TsgwSeparateLogin
+        {
+            get
+            {
+                return (bool)this["tsgwSeparateLogin"];
+            }
+            set
+            {
+                this["tsgwSeparateLogin"] = value;
+            }
+        }
+
+        [ConfigurationProperty("tsgwUsername", DefaultValue = "")]
+        public string TsgwUsername
+        {
+            get
+            {
+                return (string)this["tsgwUsername"];
+            }
+            set
+            {
+                this["tsgwUsername"] = value;
+            }
+        }
+
+        [ConfigurationProperty("tsgwDomain", DefaultValue = "")]
+        public string TsgwDomain
+        {
+            get
+            {
+                return (string)this["tsgwDomain"];
+            }
+            set
+            {
+                this["tsgwDomain"] = value;
+            }
+        }
+
+        [ConfigurationProperty("tsgwPassword", DefaultValue = "")]
+        public string TsgwEncryptedPassword
+        {
+            get
+            {
+                return (string)this["tsgwPassword"];
+            }
+            set
+            {
+                this["tsgwPassword"] = value;
+            }
+        }
+
+        public string TsgwPassword
+        {
+            get
+            {
+                return Functions.DecryptPassword(TsgwEncryptedPassword);
+            }
+            set
+            {
+                TsgwEncryptedPassword = Functions.EncryptPassword(value);
+            }
+        }
+
         [ConfigurationProperty("url", DefaultValue = "http://www.codeplex.com/terminals")]
         public string Url
         {
@@ -1270,7 +1390,6 @@ namespace Terminals
                                                        NewWindow = this.NewWindow,
                                                        Notes = this.Notes,
                                                        OverallTimeout = this.OverallTimeout,
-                                                       Password = this.Password,
                                                        Port = this.Port,
                                                        Protocol = this.Protocol,
                                                        RedirectClipboard = this.RedirectClipboard,
@@ -1295,6 +1414,13 @@ namespace Terminals
                                                        TelnetRows = this.TelnetRows,
                                                        TelnetTextColor = this.TelnetTextColor,
                                                        ToolBarIcon = this.ToolBarIcon,
+                                                       TsgwCredsSource = this.TsgwCredsSource,
+                                                       TsgwDomain = this.TsgwDomain,
+                                                       TsgwEncryptedPassword = this.TsgwEncryptedPassword,
+                                                       TsgwHostname = this.TsgwHostname,
+                                                       TsgwSeparateLogin = this.TsgwSeparateLogin,
+                                                       TsgwUsageMethod = this.TsgwUsageMethod,
+                                                       TsgwUsername = this.TsgwUsername,
                                                        Url = this.Url,
                                                        UserName = this.UserName,
                                                        VMRCAdministratorMode = this.VMRCAdministratorMode,
