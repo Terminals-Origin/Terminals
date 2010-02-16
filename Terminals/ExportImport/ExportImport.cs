@@ -91,7 +91,7 @@ namespace Terminals.ExportImport
                     w.WriteElementString("protocol", element.Protocol);
                     w.WriteElementString("port", element.Port.ToString());
 
-                    w.WriteElementString("redirectDrives", element.RedirectDrives.ToString());
+                    w.WriteElementString("redirectedDrives", element.redirectedDrives);
                     w.WriteElementString("redirectPorts", element.RedirectPorts.ToString());
                     w.WriteElementString("redirectPrinters", element.RedirectPrinters.ToString());
                     w.WriteElementString("redirectSmartCards", element.RedirectSmartCards.ToString());
@@ -339,8 +339,8 @@ namespace Terminals.ExportImport
                                 case "port":
                                     fav.Port = ReadInt(reader.ReadString());
                                     break;
-                                case "redirectDrives":
-                                    fav.RedirectDrives = ReadBool(reader.ReadString());
+                                case "redirectedDrives":
+                                    fav.redirectedDrives = reader.ReadString();
                                     break;
                                 case "redirectPorts":
                                     fav.RedirectPorts = ReadBool(reader.ReadString());

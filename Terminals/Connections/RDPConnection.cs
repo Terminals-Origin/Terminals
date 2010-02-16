@@ -19,7 +19,7 @@ namespace Terminals.Connections
 {
     public class RDPConnection : Connection
     {
-        private MSTSCLib.IMsRdpClientNonScriptable _nonScriptable;
+        private MSTSCLib.IMsRdpClientNonScriptable4 _nonScriptable;
         private AxMsRdpClient6 _axMsRdpClient = null;
 
         public delegate void Disconnected(RDPConnection Connection);
@@ -109,7 +109,8 @@ namespace Terminals.Connections
                 ((Control)_axMsRdpClient).DragDrop += new DragEventHandler(axMsRdpClient2_DragDrop);
                 _axMsRdpClient.OnConnected += new EventHandler(axMsRdpClient2_OnConnected);
                 _axMsRdpClient.Dock = DockStyle.Fill;
-
+                _nonScriptable = (_axMsRdpClient.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable4);
+                    
                 ChangeDesktopSize(Favorite.DesktopSize);
                 try
                 {
@@ -135,7 +136,14 @@ namespace Terminals.Connections
 
                     _axMsRdpClient.ConnectingText = "Connecting. Please wait...";
                     _axMsRdpClient.DisconnectedText = "Disconnecting...";
-                    _axMsRdpClient.AdvancedSettings3.RedirectDrives = Favorite.RedirectDrives;
+                    
+                    for (int i = 0; i < _nonScriptable.DriveCollection.DriveCount; i++)
+                    {
+                        MSTSCLib.IMsRdpDrive drive = _nonScriptable.DriveCollection.get_DriveByIndex((uint)i);
+                        foreach (string str in Favorite.RedirectedDrives)
+                            if (drive.Name.IndexOf(str) > -1)
+                                drive.RedirectionState = true;
+                    }
 
                     //advanced settings
                     //bool, 0 is false, other is true
@@ -210,7 +218,6 @@ namespace Terminals.Connections
                     _axMsRdpClient.AdvancedSettings3.RedirectPrinters = Favorite.RedirectPrinters;
                     _axMsRdpClient.AdvancedSettings3.RedirectSmartCards = Favorite.RedirectSmartCards;
                     _axMsRdpClient.AdvancedSettings3.PerformanceFlags = Favorite.PerformanceFlags;
-                    _nonScriptable = (_axMsRdpClient.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable);
                         
                     /*
                     TS_PERF_DISABLE_CURSOR_SHADOW

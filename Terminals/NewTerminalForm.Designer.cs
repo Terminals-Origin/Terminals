@@ -140,13 +140,12 @@ namespace Terminals
         this.chkConnectToConsole = new System.Windows.Forms.CheckBox();
         this.RDPLocalResourcesTabPage = new System.Windows.Forms.TabPage();
         this.LocalResourceGroupBox = new System.Windows.Forms.GroupBox();
+        this.btnDrives = new System.Windows.Forms.Button();
         this.cmbSounds = new System.Windows.Forms.ComboBox();
         this.chkRedirectSmartcards = new System.Windows.Forms.CheckBox();
         this.label8 = new System.Windows.Forms.Label();
         this.chkRedirectClipboard = new System.Windows.Forms.CheckBox();
         this.label9 = new System.Windows.Forms.Label();
-        this.chkRedirectDevices = new System.Windows.Forms.CheckBox();
-        this.chkDrives = new System.Windows.Forms.CheckBox();
         this.btnBrowseShare = new System.Windows.Forms.Button();
         this.chkPrinters = new System.Windows.Forms.CheckBox();
         this.chkSerialPorts = new System.Windows.Forms.CheckBox();
@@ -1401,13 +1400,12 @@ namespace Terminals
         // 
         // LocalResourceGroupBox
         // 
+        this.LocalResourceGroupBox.Controls.Add(this.btnDrives);
         this.LocalResourceGroupBox.Controls.Add(this.cmbSounds);
         this.LocalResourceGroupBox.Controls.Add(this.chkRedirectSmartcards);
         this.LocalResourceGroupBox.Controls.Add(this.label8);
         this.LocalResourceGroupBox.Controls.Add(this.chkRedirectClipboard);
         this.LocalResourceGroupBox.Controls.Add(this.label9);
-        this.LocalResourceGroupBox.Controls.Add(this.chkRedirectDevices);
-        this.LocalResourceGroupBox.Controls.Add(this.chkDrives);
         this.LocalResourceGroupBox.Controls.Add(this.btnBrowseShare);
         this.LocalResourceGroupBox.Controls.Add(this.chkPrinters);
         this.LocalResourceGroupBox.Controls.Add(this.txtDesktopShare);
@@ -1418,6 +1416,16 @@ namespace Terminals
         this.LocalResourceGroupBox.Size = new System.Drawing.Size(474, 192);
         this.LocalResourceGroupBox.TabIndex = 12;
         this.LocalResourceGroupBox.TabStop = false;
+        // 
+        // btnDrives
+        // 
+        this.btnDrives.Location = new System.Drawing.Point(122, 73);
+        this.btnDrives.Name = "btnDrives";
+        this.btnDrives.Size = new System.Drawing.Size(258, 23);
+        this.btnDrives.TabIndex = 12;
+        this.btnDrives.Text = "&Disk Drives && Plug and Play Devices...";
+        this.btnDrives.UseVisualStyleBackColor = true;
+        this.btnDrives.Click += new System.EventHandler(this.btnDrives_Click);
         // 
         // cmbSounds
         // 
@@ -1471,26 +1479,6 @@ namespace Terminals
         this.label9.Size = new System.Drawing.Size(225, 13);
         this.label9.TabIndex = 2;
         this.label9.Text = "Automatically connect to these local devices :";
-        // 
-        // chkRedirectDevices
-        // 
-        this.chkRedirectDevices.AutoSize = true;
-        this.chkRedirectDevices.Location = new System.Drawing.Point(254, 77);
-        this.chkRedirectDevices.Name = "chkRedirectDevices";
-        this.chkRedirectDevices.Size = new System.Drawing.Size(129, 17);
-        this.chkRedirectDevices.TabIndex = 6;
-        this.chkRedirectDevices.Text = "Plu&g and Play devices";
-        this.chkRedirectDevices.UseVisualStyleBackColor = true;
-        // 
-        // chkDrives
-        // 
-        this.chkDrives.AutoSize = true;
-        this.chkDrives.Location = new System.Drawing.Point(124, 77);
-        this.chkDrives.Name = "chkDrives";
-        this.chkDrives.Size = new System.Drawing.Size(77, 17);
-        this.chkDrives.TabIndex = 3;
-        this.chkDrives.Text = "&Disk drives";
-        this.chkDrives.UseVisualStyleBackColor = true;
         // 
         // btnBrowseShare
         // 
@@ -2300,8 +2288,6 @@ namespace Terminals
       private System.Windows.Forms.Label label8;
       private System.Windows.Forms.CheckBox chkRedirectClipboard;
       private System.Windows.Forms.Label label9;
-      private System.Windows.Forms.CheckBox chkRedirectDevices;
-      private System.Windows.Forms.CheckBox chkDrives;
       private System.Windows.Forms.Button btnBrowseShare;
       private System.Windows.Forms.CheckBox chkPrinters;
       private System.Windows.Forms.TextBox txtDesktopShare;
@@ -2384,5 +2370,6 @@ namespace Terminals
       private System.Windows.Forms.Label label20;
       private System.Windows.Forms.CheckBox chkTSGWlocalBypass;
       private System.Windows.Forms.Panel pnlTSGWsettings;
+      private System.Windows.Forms.Button btnDrives;
   }
 }

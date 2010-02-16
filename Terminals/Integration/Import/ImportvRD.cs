@@ -221,9 +221,6 @@ namespace Terminals.Integration.Import
             fav.RedirectSmartCards = false;
             if (con.SmartCard == "true") fav.RedirectSmartCards = true;
 
-            fav.RedirectDrives = false;
-            if (con.LocalDrives == "true") fav.RedirectDrives = true;
-
             fav.RedirectPorts = false;
             //if (pValue == "1") fav.RedirectPorts = true;
 

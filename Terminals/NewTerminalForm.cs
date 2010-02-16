@@ -19,6 +19,8 @@ namespace Terminals
         private bool _showOnToolbar;
         private string _currentToolBarFileName;
         private string _oldName;
+        internal List<string> _redirectedDrives = new List<string>();
+        internal bool _redirectDevices = false;
 
         #region Public
         public NewTerminalForm(string server, bool connect)
@@ -182,11 +184,11 @@ namespace Terminals
             chkConnectToConsole.Checked = favorite.ConnectToConsole;
 
             chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Name);
-            chkDrives.Checked = favorite.RedirectDrives;
+            _redirectedDrives = favorite.RedirectedDrives;
             chkSerialPorts.Checked = favorite.RedirectPorts;
             chkPrinters.Checked = favorite.RedirectPrinters;
             chkRedirectClipboard.Checked = favorite.RedirectClipboard;
-            chkRedirectDevices.Checked = favorite.RedirectDevices;
+            _redirectDevices = favorite.RedirectDevices;
             chkRedirectSmartcards.Checked = favorite.RedirectSmartCards;
             cmbSounds.SelectedIndex = (int)favorite.Sounds;
 
@@ -340,11 +342,11 @@ namespace Terminals
                 _favorite.DisableMenuAnimations = chkDisableMenuAnimations.Checked;
                 _favorite.DisableTheming = chkDisableThemes.Checked;
 
-                _favorite.RedirectDrives = chkDrives.Checked;
+                _favorite.RedirectedDrives = _redirectedDrives;
                 _favorite.RedirectPorts = chkSerialPorts.Checked;
                 _favorite.RedirectPrinters = chkPrinters.Checked;
                 _favorite.RedirectClipboard = chkRedirectClipboard.Checked;
-                _favorite.RedirectDevices = chkRedirectDevices.Checked;
+                _favorite.RedirectDevices = _redirectDevices;
                 _favorite.RedirectSmartCards = chkRedirectSmartcards.Checked;
                 _favorite.Sounds = (RemoteSounds)cmbSounds.SelectedIndex;
                 _showOnToolbar = chkAddtoToolbar.Checked;
@@ -873,6 +875,12 @@ namespace Terminals
         private void radioButton3_CheckedChanged(object sender, EventArgs e)
         {
             pnlTSGWsettings.Enabled = radTSGWenable.Checked;
+        }
+
+        private void btnDrives_Click(object sender, EventArgs e)
+        {
+            DiskDrivesForm drivesForm = new DiskDrivesForm(this);
+            drivesForm.ShowDialog(this);
         }
     }
 }

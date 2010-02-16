@@ -17,7 +17,7 @@ namespace Terminals.Network {
             fav.Protocol = Favorite.Protocol;
             fav.RedirectClipboard = Favorite.RedirectClipboard;
             fav.RedirectDevices = Favorite.RedirectDevices;
-            fav.RedirectDrives = Favorite.RedirectDrives;
+            fav.RedirectedDrives = Favorite.RedirectedDrives;
             fav.RedirectPorts = Favorite.RedirectPorts;
             fav.RedirectPrinters = Favorite.RedirectPrinters;
             fav.RedirectSmartCards = Favorite.RedirectSmartCards;
@@ -48,7 +48,7 @@ namespace Terminals.Network {
             fav.Protocol = Favorite.Protocol;
             fav.RedirectClipboard = Favorite.RedirectClipboard;
             fav.RedirectDevices = Favorite.RedirectDevices;
-            fav.RedirectDrives = Favorite.RedirectDrives;
+            fav.RedirectedDrives = Favorite.RedirectedDrives;
             fav.RedirectPorts = Favorite.RedirectPorts;
             fav.RedirectPrinters = Favorite.RedirectPrinters;
             fav.RedirectSmartCards = Favorite.RedirectSmartCards;
@@ -84,6 +84,7 @@ namespace Terminals.Network {
         public Colors Colors;
         public RemoteSounds Sounds;
         public bool RedirectDrives;
+        public List<string> RedirectedDrives;
         public bool RedirectPorts;
         public bool RedirectPrinters;
         public bool RedirectSmartCards;

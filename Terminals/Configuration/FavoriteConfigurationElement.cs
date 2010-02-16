@@ -779,15 +779,56 @@ namespace Terminals
         }
 
         [ConfigurationProperty("redirectDrives")]
-        public bool RedirectDrives
+        public string redirectedDrives
         {
             get
             {
-                return (bool)this["redirectDrives"];
+                return (string)this["redirectDrives"];
             }
             set
             {
                 this["redirectDrives"] = value;
+            }
+        }
+
+        public List<string> RedirectedDrives
+        {
+            get
+            {
+                List<string> outputList = new List<string>();
+                if (!string.IsNullOrEmpty(redirectedDrives))
+                {
+                    // Following added for backwards compatibility
+                    if (redirectedDrives.Equals("true"))
+                    {
+                        DriveInfo[] drives = DriveInfo.GetDrives();
+                        foreach (DriveInfo drive in drives)
+                        {
+                            try
+                            {
+                                outputList.Add(drive.Name.TrimEnd("\\".ToCharArray()));
+                            }
+                            catch (Exception)
+                            { }
+                        }
+                    }
+
+                    string[] driveArray = redirectedDrives.Split(";".ToCharArray());
+                    foreach (string drive in driveArray)
+                        outputList.Add(drive);
+                }
+                return outputList;
+            }
+            set
+            {
+                string drives = "";
+                for (int i = 0; i < value.Count; i++)
+                {
+                    drives += value[i];
+                    if (i < value.Count - 1)
+                        drives += ";";
+                }
+                redirectedDrives = drives;
             }
         }
 
@@ -1280,7 +1321,7 @@ namespace Terminals
             }
             set
             {
-                if (Settings.AutoCaseTags)
+                if (((TerminalsConfigurationSection)Settings.Config.GetSection("settings")).AutoCaseTags)
                 {
                     this["tags"] = Settings.ToTitleCase(value);
                 }
@@ -1394,7 +1435,7 @@ namespace Terminals
                                                        Protocol = this.Protocol,
                                                        RedirectClipboard = this.RedirectClipboard,
                                                        RedirectDevices = this.RedirectDevices,
-                                                       RedirectDrives = this.RedirectDrives,
+                                                       RedirectedDrives = this.RedirectedDrives,
                                                        RedirectPorts = this.RedirectPorts,
                                                        RedirectPrinters = this.RedirectPrinters,
                                                        RedirectSmartCards = this.RedirectSmartCards,

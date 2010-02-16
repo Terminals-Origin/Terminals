@@ -120,10 +120,6 @@ namespace Terminals.Integration.Import
                                     fav.RedirectSmartCards = false;
                                     if(pValue == "1") fav.RedirectSmartCards = true;
                                     break;
-                                case "RedirectDrives":
-                                    fav.RedirectDrives = false;
-                                    if(pValue == "1") fav.RedirectDrives = true;
-                                    break;
                                 case "RedirectPorts":
                                     fav.RedirectPorts = false;
                                     if(pValue == "1") fav.RedirectPorts = true;
