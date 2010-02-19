@@ -26,7 +26,8 @@ namespace Terminals.Connections
         }
 
         private TerminalEmulator term;
-        private ProxySocket client;        	
+        private ProxySocket client;
+        private SSHClient.Protocol sshProtocol;
 
         public override bool Connect()
         {
@@ -82,16 +83,17 @@ namespace Terminals.Connections
                 }
                 else
                 {
-	                SSHClient.Protocol p = new SSHClient.Protocol();
-	                p.setTerminalParams(term.TerminalType,
+                    sshProtocol = new SSHClient.Protocol();
+                    sshProtocol.setTerminalParams(term.TerminalType,
 	                                   term.Rows, term.Columns);
-	            	p.OnDataIndicated += term.IndicateData;
-	            	term.OnDataRequested += p.RequestData;
+                    sshProtocol.OnDataIndicated += term.IndicateData;
+                    sshProtocol.OnDisconnect += this.OnDisconnected;
+                    term.OnDataRequested += sshProtocol.RequestData;
                 	string key = "";
                 	SSHClient.KeyConfigElement e = Settings.SSHKeys.Keys[Favorite.KeyTag];
             		if(e!=null)
                 		key = e.Key;
-	            	p.setProtocolParams(
+                    sshProtocol.setProtocolParams(
 	            		Favorite.AuthMethod,
 	            		userName,
 	            		pass,
@@ -106,7 +108,7 @@ namespace Terminals.Connections
                     {
                         protocol = "SSH2";
                     }
-                    p.Connect(client);
+                    sshProtocol.Connect(client);
                     connected = true; // SSH will throw if fails
                 }
                 term.Focus();
@@ -137,6 +139,8 @@ namespace Terminals.Connections
             try
             {
                 client.Close();
+                if (sshProtocol != null)
+                    sshProtocol.OnConnectionClosed();
             }
             catch(Exception e)
             {

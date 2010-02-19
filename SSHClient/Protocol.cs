@@ -86,9 +86,11 @@ namespace SSHClient
 		#endregion
 		#region Public Delegates
 		public delegate void DataIndicate(byte[] data);
-		#endregion
+        public delegate void Disconnect();
+        #endregion
 		#region Public Events
 	    public event DataIndicate OnDataIndicated;
+        public event Disconnect OnDisconnect;
 		#endregion
 		#region Public Constructors
 		public Protocol()
@@ -221,7 +223,8 @@ namespace SSHClient
 		}
 		public void OnConnectionClosed() 
 		{
-			//Debug.WriteLine("Connection closed");
+			//Debug.WriteLine("Connection closed");.
+            if (OnDisconnect != null) OnDisconnect();
 		}
 		public void OnUnknownMessage(byte type, byte[] data) 
 		{
