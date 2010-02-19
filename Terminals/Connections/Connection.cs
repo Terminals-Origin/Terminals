@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TabControl;
+using System.Runtime.InteropServices;
 
 namespace Terminals.Connections {
     public abstract class Connection : System.Windows.Forms.Control, IConnection {
@@ -67,6 +69,20 @@ namespace Terminals.Connections {
 
         public abstract void Disconnect();
 
+        internal delegate void InvokeCloseTabPage(TabControlItem tabPage);
+        internal void CloseTabPage(Object tabObject)
+        {
+            if (!(tabObject is TabControlItem))
+                return;
+            TabControlItem tabPage = (TabControlItem)tabObject;
+            bool wasSelected = tabPage.Selected;
+            ParentForm.tcTerminals.RemoveTab(tabPage);
+            ParentForm.CloseTabControlItem();
+            if (wasSelected)
+                NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+            ParentForm.UpdateControls();
+        }
+        
         #endregion
 
         private void InitializeComponent() {

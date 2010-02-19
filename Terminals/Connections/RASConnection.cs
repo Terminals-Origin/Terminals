@@ -99,6 +99,17 @@ namespace Terminals.Connections
         void ras_ConnectionChanged(object sender, FalafelSoftware.TransPort.ConnectionChangedEventArgs e)
         {
             Log("Connected:" + e.Connected.ToString());
+
+            if (!e.Connected)
+            {
+                if (ParentForm.InvokeRequired)
+                {
+                    InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
+                    this.Invoke(d, new object[] { this.Parent });
+                }
+                else
+                    CloseTabPage(this.Parent);
+            }
         }
         public override void Disconnect()
         {

@@ -4,8 +4,6 @@ using System.Text;
 using System.Windows.Forms;
 using Terminals.Properties;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using TabControl;
 using System.IO;
 
 namespace Terminals.Connections {
@@ -64,17 +62,16 @@ namespace Terminals.Connections {
 
         void rd_ConnectionLost(object sender, EventArgs e)
         {
-            Terminals.Logging.Log.Fatal("VNC Connection Lost" + this.Favorite.Name);
+            //Terminals.Logging.Log.Fatal("VNC Connection Lost" + this.Favorite.Name);
             this.connected = false;
 
-            TabControlItem selectedTabPage = (TabControlItem)(this.Parent);
-            bool wasSelected = selectedTabPage.Selected;
-            ParentForm.tcTerminals.RemoveTab(selectedTabPage);
-            ParentForm.CloseTabControlItem();
-            if(wasSelected)
-                NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
-            ParentForm.UpdateControls();
-
+            if (ParentForm.InvokeRequired)
+            {
+                InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
+                this.Invoke(d, new object[] { rd.Parent });
+            }
+            else
+                CloseTabPage(rd.Parent);
         }
         private string vncPassword = "";
         string VNCPassword() {

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using AxVMRCClientControlLib;
-using System.Runtime.InteropServices;
-using TabControl;
 using System.IO;
 
 namespace Terminals.Connections {
@@ -79,20 +77,18 @@ namespace Terminals.Connections {
         {
             if(e.state == VMRCClientControlLib.VMRCState.vmrcState_Connected) 
                 this.connected = true;
-            else if(e.state == VMRCClientControlLib.VMRCState.vmrcState_ConnectionFailed) {
+            else {
                 connected = false;
                 Terminals.Logging.Log.Fatal("VMRC Connection Lost" + this.Favorite.Name);
                 this.connected = false;
 
-                TabControlItem selectedTabPage = (TabControlItem)(this.Parent);
-                bool wasSelected = selectedTabPage.Selected;
-                ParentForm.tcTerminals.RemoveTab(selectedTabPage);
-                ParentForm.CloseTabControlItem();
-                if(wasSelected)
-                    NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
-                ParentForm.UpdateControls();
-            } else if(e.state == VMRCClientControlLib.VMRCState.vmrcState_NotConnected) {
-                connected = false;
+                if (ParentForm.InvokeRequired)
+                {
+                    InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
+                    this.Invoke(d, new object[] { this.Parent });
+                }
+                else
+                    CloseTabPage(this.Parent);
             }
         }
 

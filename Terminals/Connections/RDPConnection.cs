@@ -7,13 +7,11 @@ using System.Text;
 using System.Windows.Forms;
 using Terminals.Properties;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 
 using MSTSC = MSTSCLib;
 using AxMSTSCLib;
 using System.IO;
-
-using TabControl;
+using System.Runtime.InteropServices;
 
 namespace Terminals.Connections
 {
@@ -389,13 +387,13 @@ namespace Terminals.Connections
             {
 //                MessageBox.Show(this, String.Format("Error connecting to {0} ({1})", client.Server, error), "Terminals " + Program.TerminalsVersion.ToString(),MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-            TabControlItem selectedTabPage = (TabControlItem)(client.Parent);
-            bool wasSelected = selectedTabPage.Selected;
-            ParentForm.tcTerminals.RemoveTab(selectedTabPage);
-            ParentForm.CloseTabControlItem();
-            if(wasSelected)
-                NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
-            ParentForm.UpdateControls();
+            if (ParentForm.InvokeRequired)
+            {
+                InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
+                this.Invoke(d, new object[] { client.Parent });
+            }
+            else
+                CloseTabPage(client.Parent);
 
             if(OnDisconnected != null) OnDisconnected(this);
         }

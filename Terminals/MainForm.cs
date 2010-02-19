@@ -229,34 +229,12 @@ namespace Terminals {
         {
             get
             {
-                if (tcTerminals.SelectedItem != null)
+                if (CurrentConnection != null)
                 {
-                    if (((TerminalTabControlItem)(tcTerminals.SelectedItem)).TerminalControl == null)
-                    {
-                        if (CurrentConnection != null)
-                        {
-                            if ((CurrentConnection as Connections.RDPConnection) != null)
-                                return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient;
-                            else
-                                return null;
-                        }
-                        else
-                            return null;
-                    }
-                    return null;
+                    if (CurrentConnection is Connections.RDPConnection)
+                        return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient;
                 }
-                else
-                {
-                    if (CurrentConnection != null)
-                    {
-                        if ((CurrentConnection as Connections.RDPConnection) != null)
-                            return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient;
-                        else
-                            return null;
-                    }
-                    else
-                        return null;
-                }
+                return null;
             }
         }
 
@@ -1664,9 +1642,11 @@ namespace Terminals {
                 else
                     cancel = true;
             }
-            
-            e.Cancel = cancel;
+            // Close tabitem functions handled under each connection disconnect methods.
+            //e.Cancel = cancel;
+            e.Cancel = true;
         }
+
         private void MainForm_Shown(object sender, EventArgs e)
         {
             HandleCommandLineActions();

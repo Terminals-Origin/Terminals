@@ -7,11 +7,9 @@ using System.Text;
 using System.Windows.Forms;
 using Terminals.Properties;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using TabControl;
 using WalburySoftware;
 using SSHClient;
 using Org.Mentalis.Network.ProxySocket;
@@ -125,15 +123,13 @@ namespace Terminals.Connections
         {
             Terminals.Logging.Log.Fatal(this.Favorite.Protocol + " Connection Lost" + this.Favorite.Name);
             this.connected = false;
- /* TODO - this is getting called from the TcpProtocol read thread - sort it.
-            TabControlItem selectedTabPage = (TabControlItem)(this.Parent);
-            bool wasSelected = selectedTabPage.Selected;
-            ParentForm.tcTerminals.RemoveTab(selectedTabPage);
-            ParentForm.tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
-            if(wasSelected)
-                NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
-            ParentForm.UpdateControls();
-            */
+            if (ParentForm.InvokeRequired)
+            {
+                InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
+                this.Invoke(d, new object[] { this.Parent });
+            }
+            else
+                CloseTabPage(this.Parent);
         }
 
         public override void Disconnect()

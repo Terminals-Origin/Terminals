@@ -5,9 +5,6 @@ using System.Windows.Forms;
 using System.IO;
 using Terminals.Properties;
 using System.Diagnostics;
-using System.Runtime.InteropServices;
-using TabControl;
-
 
 namespace Terminals.Connections {
     public class ICAConnection : Connection {
@@ -117,18 +114,17 @@ namespace Terminals.Connections {
             }
         }
 
-
         void iIcaClient_OnDisconnect(object sender, EventArgs e) {
             Terminals.Logging.Log.Fatal("ICA Connection Lost" + this.Favorite.Name);
             this.connected = false;
 
-            TabControlItem selectedTabPage = (TabControlItem)(this.Parent);
-            bool wasSelected = selectedTabPage.Selected;
-            ParentForm.tcTerminals.RemoveTab(selectedTabPage);
-            ParentForm.CloseTabControlItem();
-            if(wasSelected)
-                NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
-            ParentForm.UpdateControls();
+            if (ParentForm.InvokeRequired)
+            {
+                InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
+                this.Invoke(d, new object[] { this.Parent });
+            }
+            else
+                CloseTabPage(this.Parent);
         }
 
         void ICAConnection_DragDrop(object sender, DragEventArgs e)

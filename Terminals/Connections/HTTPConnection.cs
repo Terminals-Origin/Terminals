@@ -70,7 +70,13 @@ namespace Terminals.Connections
 
         public override void Disconnect()
         {
-            
+            if (ParentForm.InvokeRequired)
+            {
+                InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
+                this.Invoke(d, new object[] { this.Parent });
+            }
+            else
+                CloseTabPage(this.Parent);
         }
 
         private void InitializeComponent()
