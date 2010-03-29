@@ -798,7 +798,7 @@ namespace Terminals
                 List<string> outputList = new List<string>();
                 if (!string.IsNullOrEmpty(redirectedDrives))
                 {
-                    // Following added for backwards compatibility
+                    /* Following added for backwards compatibility
                     if (redirectedDrives.Equals("true"))
                     {
                         DriveInfo[] drives = DriveInfo.GetDrives();
@@ -812,6 +812,7 @@ namespace Terminals
                             { }
                         }
                     }
+                    */
 
                     string[] driveArray = redirectedDrives.Split(";".ToCharArray());
                     foreach (string drive in driveArray)

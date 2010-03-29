@@ -134,13 +134,20 @@ namespace Terminals.Connections
 
                     _axMsRdpClient.ConnectingText = "Connecting. Please wait...";
                     _axMsRdpClient.DisconnectedText = "Disconnecting...";
-                    
-                    for (int i = 0; i < _nonScriptable.DriveCollection.DriveCount; i++)
+
+                    if (Favorite.RedirectedDrives.Count > 0 && Favorite.RedirectedDrives[0].Equals("true"))
                     {
-                        MSTSCLib.IMsRdpDrive drive = _nonScriptable.DriveCollection.get_DriveByIndex((uint)i);
-                        foreach (string str in Favorite.RedirectedDrives)
-                            if (drive.Name.IndexOf(str) > -1)
-                                drive.RedirectionState = true;
+                        _axMsRdpClient.AdvancedSettings2.RedirectDrives = true;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < _nonScriptable.DriveCollection.DriveCount; i++)
+                        {
+                            MSTSCLib.IMsRdpDrive drive = _nonScriptable.DriveCollection.get_DriveByIndex((uint)i);
+                            foreach (string str in Favorite.RedirectedDrives)
+                                if (drive.Name.IndexOf(str) > -1)
+                                    drive.RedirectionState = true;
+                        }
                     }
 
                     //advanced settings

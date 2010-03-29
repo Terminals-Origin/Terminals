@@ -14,7 +14,8 @@ namespace Terminals
 {
     internal partial class DiskDrivesForm : Form
     {
-        NewTerminalForm _parentForm;
+        private NewTerminalForm _parentForm;
+        private bool updatingState = false;
 
         public DiskDrivesForm(NewTerminalForm parentForm)
         {
@@ -46,23 +47,47 @@ namespace Terminals
                 catch (Exception)
                 { }
             }
+
+            if (_redirectedDrives[0].Equals("true"))
+                treeView1.Nodes["NodeDrives"].Checked = true;
+
             treeView1.ExpandAll();
         }
 
         private void DiskDrivesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             List<string> _redirectedDrives = new List<string>();
-            foreach (TreeNode tn in treeView1.Nodes["NodeDrives"].Nodes)
-                if (tn.Checked)
-                    _redirectedDrives.Add(tn.Name);
+            if (treeView1.Nodes["NodeDrives"].Checked)
+            {
+                _redirectedDrives.Add("true");
+            }
+            else
+            {
+                foreach (TreeNode tn in treeView1.Nodes["NodeDrives"].Nodes)
+                    if (tn.Checked)
+                        _redirectedDrives.Add(tn.Name);
+            }
             _parentForm._redirectedDrives = _redirectedDrives;
             _parentForm._redirectDevices = treeView1.Nodes["NodeDevices"].Checked;
         }
 
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
         {
-            foreach (TreeNode childNode in e.Node.Nodes)
-                childNode.Checked = e.Node.Checked;
+            if (updatingState)
+                return;
+
+            updatingState = true;
+            if (e.Node.Nodes.Count > 0)
+            {
+                foreach (TreeNode childNode in e.Node.Nodes)
+                    childNode.Checked = e.Node.Checked;
+            }
+
+            if (e.Node.Parent != null && !e.Node.Checked)
+            {
+                e.Node.Parent.Checked = e.Node.Checked;
+            }
+            updatingState = false;
         }
     }
 }
