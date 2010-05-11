@@ -11,7 +11,7 @@ namespace Terminals
 {
     static class Program
     {
-        public static string TerminalsVersion = "1.9 Beta";
+        public static string TerminalsVersion = "1.9a";
         public static DateTime BuildDate = DateTime.Now;
         public static Assembly aAssembly = Assembly.GetExecutingAssembly();
         public static AssemblyDescriptionAttribute desc = (AssemblyDescriptionAttribute)AssemblyDescriptionAttribute.GetCustomAttribute(aAssembly, typeof(AssemblyDescriptionAttribute));
