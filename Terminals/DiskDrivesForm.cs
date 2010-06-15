@@ -26,8 +26,6 @@ namespace Terminals
 
         private void LoadDevices()
         {
-            //treeView1.Nodes[NodeDrives].Nodes.Clear();
-            //treeView1.Nodes[NodeDevices].Nodes.Clear();
             treeView1.Nodes["NodeDevices"].Checked = _parentForm._redirectDevices;
 
             DriveInfo[] drives = DriveInfo.GetDrives();
@@ -48,7 +46,7 @@ namespace Terminals
                 { }
             }
 
-            if (_redirectedDrives[0].Equals("true"))
+            if (_redirectedDrives.Count < 0 && _redirectedDrives[0].Equals("true"))
                 treeView1.Nodes["NodeDrives"].Checked = true;
 
             treeView1.ExpandAll();
