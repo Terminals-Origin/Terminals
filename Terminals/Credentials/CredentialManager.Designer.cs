@@ -30,14 +30,14 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CredentialManager));
             this.CredentialsListView = new System.Windows.Forms.ListView();
+            this.columnName = new System.Windows.Forms.ColumnHeader();
+            this.columnUserName = new System.Windows.Forms.ColumnHeader();
+            this.columnDomain = new System.Windows.Forms.ColumnHeader();
             this.AddButton = new System.Windows.Forms.Button();
             this.EditButton = new System.Windows.Forms.Button();
             this.DeleteButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.DoneButton = new System.Windows.Forms.Button();
-            this.columnName = new System.Windows.Forms.ColumnHeader();
-            this.columnDomain = new System.Windows.Forms.ColumnHeader();
-            this.columnUserName = new System.Windows.Forms.ColumnHeader();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,6 +59,22 @@
             this.CredentialsListView.TabIndex = 0;
             this.CredentialsListView.UseCompatibleStateImageBehavior = false;
             this.CredentialsListView.View = System.Windows.Forms.View.Details;
+            this.CredentialsListView.DoubleClick += new System.EventHandler(this.EditButton_Click);
+            // 
+            // columnName
+            // 
+            this.columnName.Text = "Name";
+            this.columnName.Width = 110;
+            // 
+            // columnUserName
+            // 
+            this.columnUserName.Text = "User Name";
+            this.columnUserName.Width = 120;
+            // 
+            // columnDomain
+            // 
+            this.columnDomain.Text = "Domain";
+            this.columnDomain.Width = 115;
             // 
             // AddButton
             // 
@@ -113,21 +129,6 @@
             this.DoneButton.Text = "Done";
             this.DoneButton.UseVisualStyleBackColor = true;
             this.DoneButton.Click += new System.EventHandler(this.DoneButton_Click);
-            // 
-            // columnName
-            // 
-            this.columnName.Text = "Name";
-            this.columnName.Width = 110;
-            // 
-            // columnDomain
-            // 
-            this.columnDomain.Text = "Domain";
-            this.columnDomain.Width = 115;
-            // 
-            // columnUserName
-            // 
-            this.columnUserName.Text = "User Name";
-            this.columnUserName.Width = 120;
             // 
             // CredentialManager
             // 

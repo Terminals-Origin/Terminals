@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManageCredentialForm));
-            this.CancelButton = new System.Windows.Forms.Button();
-            this.SaveButton = new System.Windows.Forms.Button();
+            this.CancelButton_cred = new System.Windows.Forms.Button();
+            this.SaveButton_cred = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.NameTextbox = new System.Windows.Forms.TextBox();
             this.PasswordTextbox = new System.Windows.Forms.TextBox();
@@ -41,26 +41,26 @@
             this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // CancelButton
+            // CancelButton_cred
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(199, 116);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 5;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.CancelButton_cred.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelButton_cred.Location = new System.Drawing.Point(199, 116);
+            this.CancelButton_cred.Name = "CancelButton_cred";
+            this.CancelButton_cred.Size = new System.Drawing.Size(75, 23);
+            this.CancelButton_cred.TabIndex = 5;
+            this.CancelButton_cred.Text = "Cancel";
+            this.CancelButton_cred.UseVisualStyleBackColor = true;
+            this.CancelButton_cred.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // SaveButton
+            // SaveButton_cred
             // 
-            this.SaveButton.Location = new System.Drawing.Point(118, 116);
-            this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(75, 23);
-            this.SaveButton.TabIndex = 4;
-            this.SaveButton.Text = "Save";
-            this.SaveButton.UseVisualStyleBackColor = true;
-            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            this.SaveButton_cred.Location = new System.Drawing.Point(118, 116);
+            this.SaveButton_cred.Name = "SaveButton_cred";
+            this.SaveButton_cred.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton_cred.TabIndex = 4;
+            this.SaveButton_cred.Text = "Save";
+            this.SaveButton_cred.UseVisualStyleBackColor = true;
+            this.SaveButton_cred.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // label1
             // 
@@ -129,9 +129,10 @@
             // 
             // ManageCredentialForm
             // 
-            this.AcceptButton = this.SaveButton;
+            this.AcceptButton = this.SaveButton_cred;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.CancelButton_cred;
             this.ClientSize = new System.Drawing.Size(284, 145);
             this.ControlBox = false;
             this.Controls.Add(this.DomainTextbox);
@@ -142,8 +143,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.NameTextbox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.SaveButton);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.SaveButton_cred);
+            this.Controls.Add(this.CancelButton_cred);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ManageCredentialForm";
@@ -156,8 +157,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button CancelButton;
-        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button CancelButton_cred;
+        private System.Windows.Forms.Button SaveButton_cred;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox NameTextbox;
         private System.Windows.Forms.TextBox PasswordTextbox;
