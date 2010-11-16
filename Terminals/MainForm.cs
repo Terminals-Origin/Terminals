@@ -2254,8 +2254,8 @@ namespace Terminals {
         private void lockToolbarsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveWindowState();
-            Settings.ToolbarsLocked = !lockToolbarsToolStripMenuItem.Checked;
-            lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
+            lockToolbarsToolStripMenuItem.Checked = !lockToolbarsToolStripMenuItem.Checked;
+            Settings.ToolbarsLocked = lockToolbarsToolStripMenuItem.Checked;
 
             bool GripVisible = !Settings.ToolbarsLocked;
             foreach (ToolStripPanelRow row in toolStripContainer.TopToolStripPanel.Rows)
