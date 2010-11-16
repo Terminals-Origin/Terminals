@@ -276,6 +276,8 @@ namespace Terminals.Connections
                     if (Favorite.EnableTLSAuthentication)
                         _axMsRdpClient.AdvancedSettings5.AuthenticationLevel = 2;
 
+                    _nonScriptable.EnableCredSspSupport = Favorite.EnableNLAAuthentication;
+
                     _axMsRdpClient.SecuredSettings2.AudioRedirectionMode = (int)Favorite.Sounds;
 
                     string domainName = Favorite.DomainName;

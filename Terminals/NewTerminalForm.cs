@@ -260,6 +260,7 @@ namespace Terminals
             this.EnableCompressionCheckbox.Checked = favorite.EnableCompression;
             this.EnableBitmapPersistanceCheckbox.Checked = favorite.BitmapPeristence;
             this.EnableTLSAuthenticationCheckbox.Checked = favorite.EnableTLSAuthentication;
+            this.EnableNLAAuthenticationCheckbox.Checked = favorite.EnableNLAAuthentication;
             this.AllowBackgroundInputCheckBox.Checked = favorite.AllowBackgroundInput;
 
             chkDisableCursorShadow.Checked = false;
@@ -426,6 +427,8 @@ namespace Terminals
                 _favorite.EnableCompression = EnableCompressionCheckbox.Checked;
                 _favorite.BitmapPeristence = EnableBitmapPersistanceCheckbox.Checked;
                 _favorite.EnableTLSAuthentication = EnableTLSAuthenticationCheckbox.Checked;
+                _favorite.EnableNLAAuthentication = EnableNLAAuthenticationCheckbox.Checked;
+
                 _favorite.AllowBackgroundInput = AllowBackgroundInputCheckBox.Checked;
 
                 _favorite.EnableFontSmoothing = AllowFontSmoothingCheckbox.Checked;

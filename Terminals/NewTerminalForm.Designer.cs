@@ -112,6 +112,7 @@ namespace Terminals
         this.SSHPreferences = new SSHClient.Preferences();
         this.ConsoleTabPage = new System.Windows.Forms.TabPage();
         this.groupBox6 = new System.Windows.Forms.GroupBox();
+        this.consolePreferences = new Terminals.ConsolePreferences();
         this.VNCTabPage = new System.Windows.Forms.TabPage();
         this.VncViewOnlyCheckbox = new System.Windows.Forms.CheckBox();
         this.vncDisplayNumberInput = new System.Windows.Forms.NumericUpDown();
@@ -203,7 +204,7 @@ namespace Terminals
         this.label2 = new System.Windows.Forms.Label();
         this.tabControl1 = new System.Windows.Forms.TabControl();
         this.btnSaveDefault = new System.Windows.Forms.Button();
-        this.consolePreferences = new Terminals.ConsolePreferences();
+        this.EnableNLAAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
         ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
         this.tabPage4.SuspendLayout();
@@ -454,7 +455,7 @@ namespace Terminals
         // 
         // IdleTimeoutMinutesTextBox
         // 
-        this.IdleTimeoutMinutesTextBox.Location = new System.Drawing.Point(344, 97);
+        this.IdleTimeoutMinutesTextBox.Location = new System.Drawing.Point(344, 123);
         this.IdleTimeoutMinutesTextBox.Name = "IdleTimeoutMinutesTextBox";
         this.IdleTimeoutMinutesTextBox.Size = new System.Drawing.Size(36, 21);
         this.IdleTimeoutMinutesTextBox.TabIndex = 11;
@@ -464,7 +465,7 @@ namespace Terminals
         // 
         // SingleTimeOutTextbox
         // 
-        this.SingleTimeOutTextbox.Location = new System.Drawing.Point(344, 147);
+        this.SingleTimeOutTextbox.Location = new System.Drawing.Point(344, 173);
         this.SingleTimeOutTextbox.Name = "SingleTimeOutTextbox";
         this.SingleTimeOutTextbox.Size = new System.Drawing.Size(36, 21);
         this.SingleTimeOutTextbox.TabIndex = 13;
@@ -475,7 +476,7 @@ namespace Terminals
         // 
         // OverallTimeoutTextbox
         // 
-        this.OverallTimeoutTextbox.Location = new System.Drawing.Point(344, 120);
+        this.OverallTimeoutTextbox.Location = new System.Drawing.Point(344, 146);
         this.OverallTimeoutTextbox.Name = "OverallTimeoutTextbox";
         this.OverallTimeoutTextbox.Size = new System.Drawing.Size(36, 21);
         this.OverallTimeoutTextbox.TabIndex = 15;
@@ -485,7 +486,7 @@ namespace Terminals
         // 
         // ShutdownTimeoutTextBox
         // 
-        this.ShutdownTimeoutTextBox.Location = new System.Drawing.Point(344, 174);
+        this.ShutdownTimeoutTextBox.Location = new System.Drawing.Point(344, 200);
         this.ShutdownTimeoutTextBox.Name = "ShutdownTimeoutTextBox";
         this.ShutdownTimeoutTextBox.Size = new System.Drawing.Size(36, 21);
         this.ShutdownTimeoutTextBox.TabIndex = 17;
@@ -1083,6 +1084,13 @@ namespace Terminals
         this.groupBox6.TabIndex = 1;
         this.groupBox6.TabStop = false;
         // 
+        // consolePreferences
+        // 
+        this.consolePreferences.Location = new System.Drawing.Point(86, 20);
+        this.consolePreferences.Name = "consolePreferences";
+        this.consolePreferences.Size = new System.Drawing.Size(285, 223);
+        this.consolePreferences.TabIndex = 0;
+        // 
         // VNCTabPage
         // 
         this.VNCTabPage.Controls.Add(this.VncViewOnlyCheckbox);
@@ -1505,6 +1513,7 @@ namespace Terminals
         // 
         // tabPage8
         // 
+        this.tabPage8.Controls.Add(this.EnableNLAAuthenticationCheckbox);
         this.tabPage8.Controls.Add(this.EnableTLSAuthenticationCheckbox);
         this.tabPage8.Controls.Add(this.label30);
         this.tabPage8.Controls.Add(this.label29);
@@ -1545,7 +1554,7 @@ namespace Terminals
         // label29
         // 
         this.label29.AutoSize = true;
-        this.label29.Location = new System.Drawing.Point(239, 177);
+        this.label29.Location = new System.Drawing.Point(239, 203);
         this.label29.Name = "label29";
         this.label29.Size = new System.Drawing.Size(100, 13);
         this.label29.TabIndex = 18;
@@ -1554,7 +1563,7 @@ namespace Terminals
         // label28
         // 
         this.label28.AutoSize = true;
-        this.label28.Location = new System.Drawing.Point(239, 123);
+        this.label28.Location = new System.Drawing.Point(239, 149);
         this.label28.Name = "label28";
         this.label28.Size = new System.Drawing.Size(86, 13);
         this.label28.TabIndex = 16;
@@ -1563,7 +1572,7 @@ namespace Terminals
         // label27
         // 
         this.label27.AutoSize = true;
-        this.label27.Location = new System.Drawing.Point(239, 150);
+        this.label27.Location = new System.Drawing.Point(239, 176);
         this.label27.Name = "label27";
         this.label27.Size = new System.Drawing.Size(80, 13);
         this.label27.TabIndex = 14;
@@ -1572,7 +1581,7 @@ namespace Terminals
         // label26
         // 
         this.label26.AutoSize = true;
-        this.label26.Location = new System.Drawing.Point(239, 100);
+        this.label26.Location = new System.Drawing.Point(239, 126);
         this.label26.Name = "label26";
         this.label26.Size = new System.Drawing.Size(70, 13);
         this.label26.TabIndex = 12;
@@ -2095,12 +2104,16 @@ namespace Terminals
         this.btnSaveDefault.UseVisualStyleBackColor = true;
         this.btnSaveDefault.Click += new System.EventHandler(this.btnSaveDefault_Click);
         // 
-        // consolePreferences
+        // EnableNLAAuthenticationCheckbox
         // 
-        this.consolePreferences.Location = new System.Drawing.Point(86, 20);
-        this.consolePreferences.Name = "consolePreferences";
-        this.consolePreferences.Size = new System.Drawing.Size(285, 223);
-        this.consolePreferences.TabIndex = 0;
+        this.EnableNLAAuthenticationCheckbox.AutoSize = true;
+        this.EnableNLAAuthenticationCheckbox.Location = new System.Drawing.Point(241, 99);
+        this.EnableNLAAuthenticationCheckbox.Name = "EnableNLAAuthenticationCheckbox";
+        this.EnableNLAAuthenticationCheckbox.Size = new System.Drawing.Size(153, 17);
+        this.EnableNLAAuthenticationCheckbox.TabIndex = 21;
+        this.EnableNLAAuthenticationCheckbox.Text = "Enable NLA Authentication";
+        this.toolTip1.SetToolTip(this.EnableNLAAuthenticationCheckbox, "This setting enables Network Level Authentication");
+        this.EnableNLAAuthenticationCheckbox.UseVisualStyleBackColor = true;
         // 
         // NewTerminalForm
         // 
@@ -2371,5 +2384,6 @@ namespace Terminals
       private System.Windows.Forms.CheckBox chkTSGWlocalBypass;
       private System.Windows.Forms.Panel pnlTSGWsettings;
       private System.Windows.Forms.Button btnDrives;
+      private System.Windows.Forms.CheckBox EnableNLAAuthenticationCheckbox;
   }
 }

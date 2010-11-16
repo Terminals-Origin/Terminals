@@ -68,6 +68,7 @@ namespace Terminals.ExportImport
                     w.WriteElementString("enableEncryption", element.EnableEncryption.ToString());
                     w.WriteElementString("enableCompression", element.EnableCompression.ToString());
                     w.WriteElementString("enableTLSAuthentication", element.EnableTLSAuthentication.ToString());
+                    w.WriteElementString("enableNLAAuthentication", element.EnableNLAAuthentication.ToString());
 
                     w.WriteElementString("grabFocusOnConnect", element.GrabFocusOnConnect.ToString());
 
@@ -290,6 +291,9 @@ namespace Terminals.ExportImport
                                     break;
                                 case "enableTLSAuthentication":
                                     fav.EnableTLSAuthentication = ReadBool(reader.ReadString());
+                                    break;
+                                case "enableNLAAuthentication":
+                                    fav.EnableNLAAuthentication = ReadBool(reader.ReadString());
                                     break;
                                 case "grabFocusOnConnect":
                                     fav.GrabFocusOnConnect = ReadBool(reader.ReadString());

@@ -310,6 +310,18 @@ namespace Terminals
                 this["enableTLSAuthentication"] = value;
             }
         }
+        [ConfigurationProperty("enableNLAAuthentication", IsRequired = false, DefaultValue = false)]
+        public bool EnableNLAAuthentication
+        {
+            get
+            {
+                return (bool)this["enableNLAAuthentication"];
+            }
+            set
+            {
+                this["enableNLAAuthentication"] = value;
+            }
+        }
         [ConfigurationProperty("allowBackgroundInput", IsRequired = false, DefaultValue = false)]
         public bool AllowBackgroundInput
         {
@@ -1410,6 +1422,7 @@ namespace Terminals
                                                        EnableFontSmoothing = this.EnableFontSmoothing,
                                                        EnableSecuritySettings = this.EnableSecuritySettings,
                                                        EnableTLSAuthentication = this.EnableTLSAuthentication,
+                                                       EnableNLAAuthentication = this.EnableNLAAuthentication,
                                                        EncryptedPassword = this.EncryptedPassword,
                                                        ExecuteBeforeConnect = this.ExecuteBeforeConnect,
                                                        ExecuteBeforeConnectArgs = this.ExecuteBeforeConnectArgs,
