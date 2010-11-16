@@ -43,8 +43,9 @@ namespace Terminals.Connections {
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
                 rd.Parent = base.TerminalTabPage;
                 this.Parent = TerminalTabPage;
-                rd.Dock = DockStyle.Fill;              
+                rd.Dock = DockStyle.Fill;
 
+                rd.VncPort = Favorite.Port;
                 rd.ConnectComplete += new VncSharp.ConnectCompleteHandler(rd_ConnectComplete);
                 rd.ConnectionLost += new EventHandler(rd_ConnectionLost);
                 rd.GetPassword = VNCPassword;
