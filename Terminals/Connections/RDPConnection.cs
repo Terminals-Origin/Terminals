@@ -391,11 +391,21 @@ namespace Terminals.Connections
         {
             AxMsRdpClient6 client = (AxMsRdpClient6)sender;
 
-            string error = Functions.GetErrorMessage(e.discReason);
-            if(error != null)
+            switch (e.discReason)
             {
-//                MessageBox.Show(this, String.Format("Error connecting to {0} ({1})", client.Server, error), "Terminals " + Program.TerminalsVersion.ToString(),MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                case 1:
+                case 2:
+                case 3:
+                    // These are normal disconnects and not considered errors.
+                    break;
+
+                default:
+                    string error = client.GetErrorDescription((uint)e.discReason, (uint)client.ExtendedDisconnectReason);
+                    if ((error != null) && (error.Length > 0))
+                        MessageBox.Show(this, String.Format("Error connecting to {0}\n\n{1}", client.Server, error), "Terminals " + Program.TerminalsVersion.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    break;
             }
+
             if (ParentForm.InvokeRequired)
             {
                 InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);

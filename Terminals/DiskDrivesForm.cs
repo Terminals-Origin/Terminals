@@ -46,7 +46,7 @@ namespace Terminals
                 { }
             }
 
-            if (_redirectedDrives.Count < 0 && _redirectedDrives[0].Equals("true"))
+            if (_redirectedDrives != null && _redirectedDrives.Count > 0 && _redirectedDrives[0].Equals("true"))
                 treeView1.Nodes["NodeDrives"].Checked = true;
 
             treeView1.ExpandAll();
