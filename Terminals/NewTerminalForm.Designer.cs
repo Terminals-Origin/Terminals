@@ -112,7 +112,6 @@ namespace Terminals
         this.SSHPreferences = new SSHClient.Preferences();
         this.ConsoleTabPage = new System.Windows.Forms.TabPage();
         this.groupBox6 = new System.Windows.Forms.GroupBox();
-        this.consolePreferences = new Terminals.ConsolePreferences();
         this.VNCTabPage = new System.Windows.Forms.TabPage();
         this.VncViewOnlyCheckbox = new System.Windows.Forms.CheckBox();
         this.vncDisplayNumberInput = new System.Windows.Forms.NumericUpDown();
@@ -204,6 +203,7 @@ namespace Terminals
         this.label2 = new System.Windows.Forms.Label();
         this.tabControl1 = new System.Windows.Forms.TabControl();
         this.btnSaveDefault = new System.Windows.Forms.Button();
+        this.consolePreferences = new Terminals.ConsolePreferences();
         ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
         ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
         this.tabPage4.SuspendLayout();
@@ -1082,13 +1082,6 @@ namespace Terminals
         this.groupBox6.Size = new System.Drawing.Size(494, 312);
         this.groupBox6.TabIndex = 1;
         this.groupBox6.TabStop = false;
-        // 
-        // consolePreferences
-        // 
-        this.consolePreferences.Location = new System.Drawing.Point(86, 20);
-        this.consolePreferences.Name = "consolePreferences";
-        this.consolePreferences.Size = new System.Drawing.Size(285, 223);
-        this.consolePreferences.TabIndex = 0;
         // 
         // VNCTabPage
         // 
@@ -2101,6 +2094,13 @@ namespace Terminals
         this.btnSaveDefault.Text = "Defaults...";
         this.btnSaveDefault.UseVisualStyleBackColor = true;
         this.btnSaveDefault.Click += new System.EventHandler(this.btnSaveDefault_Click);
+        // 
+        // consolePreferences
+        // 
+        this.consolePreferences.Location = new System.Drawing.Point(86, 20);
+        this.consolePreferences.Name = "consolePreferences";
+        this.consolePreferences.Size = new System.Drawing.Size(285, 223);
+        this.consolePreferences.TabIndex = 0;
         // 
         // NewTerminalForm
         // 

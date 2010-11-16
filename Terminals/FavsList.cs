@@ -10,6 +10,7 @@ using System.Xml;
 using System.IO;
 
 using Terminals.History;
+using Terminals.Credentials;
 
 namespace Terminals
 {
@@ -25,6 +26,7 @@ namespace Terminals
         private List<string> _nodeTextList;
         private List<string> _nodeTextListHistory;
         private MainForm _mainForm;
+        public static CredentialSet credSet = new CredentialSet();
 
         public FavsList()
         {
@@ -100,13 +102,6 @@ namespace Terminals
         }             
 
         #region private
-        private MainForm MainForm
-        {
-            get
-            {
-                return (this.ParentForm as MainForm);
-            }
-        }
         private void UpdateHistory()
         {
             lock (_historyLock)
@@ -181,6 +176,11 @@ namespace Terminals
         {
             if (e.Button == MouseButtons.Right)
             {
+                consoleToolStripMenuItem.Checked = false;
+                newWindowToolStripMenuItem.Checked = false;
+                consoleAllToolStripMenuItem.Checked = false;
+                newWindowAllToolStripMenuItem.Checked = false;
+            
                 favsTree.SelectedNode = e.Node;
                 
                 FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
@@ -194,36 +194,32 @@ namespace Terminals
         private void pingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.OpenNetworkingTools("Ping", fav.ServerName);
+            if(fav != null) GetMainForm().OpenNetworkingTools("Ping", fav.ServerName);
         }
         private void dNSToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.OpenNetworkingTools("DNS", fav.ServerName);
+            if (fav != null) GetMainForm().OpenNetworkingTools("DNS", fav.ServerName);
         }
         private void traceRouteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.OpenNetworkingTools("Trace", fav.ServerName);
+            if (fav != null) GetMainForm().OpenNetworkingTools("Trace", fav.ServerName);
         }
         private void tSAdminToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) MainForm.OpenNetworkingTools("TSAdmin", fav.ServerName);
+            if (fav != null) GetMainForm().OpenNetworkingTools("TSAdmin", fav.ServerName);
         }
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) 
-                MainForm.ShowManageTerminalForm(fav);
+            if(fav != null)
+                GetMainForm().ShowManageTerminalForm(fav);
         }
         private void FavsTree_DoubleClick(object sender, EventArgs e)
         {
             StartConnection(favsTree);
-        }
-        private void connectConsoleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
         private void rebootToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -289,7 +285,7 @@ namespace Terminals
         }
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Connect(favsTree.SelectedNode, false, false, false);
+            Connect(favsTree.SelectedNode, false, consoleToolStripMenuItem.Checked, newWindowToolStripMenuItem.Checked);
         }
         private void Connect(TreeNode SelectedNode, bool AllChildren, bool Console, bool NewWindow)
         {
@@ -300,7 +296,7 @@ namespace Terminals
                     FavoriteConfigurationElement fav = (node.Tag as FavoriteConfigurationElement);
                     if(fav != null)
                     {
-                        MainForm.Connect(fav.Name, Console, NewWindow);
+                        GetMainForm().Connect(fav.Name, Console, NewWindow);
                     }
                 }
             }
@@ -309,43 +305,19 @@ namespace Terminals
                 FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
                 if(fav != null)
                 {
-                    MainForm.Connect(fav.Name, Console, NewWindow);
+                    GetMainForm().Connect(fav.Name, Console, NewWindow);
                 }
             }
+            contextMenuStrip1.Close();
+            contextMenuStrip2.Close();
         }
         private void normallyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             connectToolStripMenuItem_Click(null, null);
         }
-        private void forcedConsoleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Connect(favsTree.SelectedNode, false, true, false);
-        }
-        private void newWindowToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Connect(favsTree.SelectedNode, false, true, true);
-
-        }
-        private void newWindowToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            Connect(favsTree.SelectedNode, false, false, true);
-
-        }
         private void connectToAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Connect(favsTree.SelectedNode, true, false, false);
-        }
-        private void consoleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Connect(favsTree.SelectedNode, true, true, false);
-        }
-        private void newWindowToolStripMenuItem3_Click(object sender, EventArgs e)
-        {
-            Connect(favsTree.SelectedNode, true, false, true);
-        }
-        private void newWindowToolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            Connect(favsTree.SelectedNode, true, true, true);
+            Connect(favsTree.SelectedNode, true, consoleAllToolStripMenuItem.Checked, newWindowAllToolStripMenuItem.Checked);
         }
         private void computerManagementMMCToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -382,7 +354,7 @@ namespace Terminals
                     return;
                 }
 
-                this.MainForm.Cursor = Cursors.WaitCursor;
+                GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 Settings.DelayConfigurationSave = true;
                 foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
@@ -395,7 +367,7 @@ namespace Terminals
                     }
                 }
                 Settings.Config.Save();
-                this.MainForm.Cursor = Cursors.Default;
+                GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Credential by Tag Complete.");
             }
@@ -406,7 +378,7 @@ namespace Terminals
             InputBoxResult result = InputBox.Show("Set Password by Tag\r\n\r\nThis will replace the password for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Password" + " - " + tagName, '*');
             if (result.ReturnCode == DialogResult.OK)
             {
-                this.MainForm.Cursor = Cursors.WaitCursor;
+                GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 Settings.DelayConfigurationSave = true;
                 foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
@@ -419,7 +391,7 @@ namespace Terminals
                     }
                 }
                 Settings.Config.Save();
-                this.MainForm.Cursor = Cursors.Default;
+                GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Password by Tag Complete.");
             }
@@ -430,7 +402,7 @@ namespace Terminals
             InputBoxResult result = InputBox.Show("Set Domain by Tag\r\n\r\nThis will replace the Domain for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Domain" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-                this.MainForm.Cursor = Cursors.WaitCursor;
+                GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 Settings.DelayConfigurationSave = true;
                 foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
@@ -443,7 +415,7 @@ namespace Terminals
                     }
                 }
                 Settings.Config.Save();
-                this.MainForm.Cursor = Cursors.Default;
+                GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Domain by Tag Complete.");
             }
@@ -454,7 +426,7 @@ namespace Terminals
             InputBoxResult result = InputBox.Show("Set Username by Tag\r\n\r\nThis will replace the Username for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Username" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-                this.MainForm.Cursor = Cursors.WaitCursor;
+                GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 Settings.DelayConfigurationSave = true;
                 foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
@@ -467,7 +439,7 @@ namespace Terminals
                     }
                 }
                 Settings.Config.Save();
-                this.MainForm.Cursor = Cursors.Default;
+                GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Username by Tag Complete.");
             }
@@ -478,7 +450,7 @@ namespace Terminals
             DialogResult result = MessageBox.Show("Delete all Favorites by Tag\r\n\r\nThis will DELETE all Favorites within this tag.\r\n\r\nUse at your own risk!", "Delete all Favorites by Tag" + " - " + tagName, MessageBoxButtons.OKCancel);
             if (result == DialogResult.OK)
             {
-                this.MainForm.Cursor = Cursors.WaitCursor;
+                GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 Settings.DelayConfigurationSave = true;
                 foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
@@ -490,7 +462,7 @@ namespace Terminals
                     }
                 }
                 Settings.Config.Save();
-                this.MainForm.Cursor = Cursors.Default;
+                GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");
                 LoadFavs();
@@ -539,7 +511,7 @@ namespace Terminals
         private void StartConnection(TreeView tv)
         {
             if (tv.SelectedNode != null)
-                this.MainForm.Connect(tv.SelectedNode.Text, false, false);
+                GetMainForm().Connect(tv.SelectedNode.Text, false, false);
         }
         #endregion
 
@@ -547,6 +519,52 @@ namespace Terminals
         {
             if(e.KeyCode == Keys.Enter)
                 StartConnection(historyTreeView);
+        }
+
+        private void connectAsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            connectAsToolStripMenuItem.DropDownItems.Clear();
+            connectAsToolStripMenuItem.DropDownItems.Add(userConnectToolStripMenuItem);
+
+            List<CredentialSet> list = Settings.SavedCredentials;
+            
+            foreach (CredentialSet s in list)
+            {
+                connectAsToolStripMenuItem.DropDownItems.Add(s.Name,null,new EventHandler(connectAsCred_Click));
+            }
+        }
+
+        private void connectAsCred_Click(object sender, EventArgs e)
+        {
+            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if (fav != null)
+            {
+                GetMainForm().Connect(fav.Name, consoleToolStripMenuItem.Checked, newWindowToolStripMenuItem.Checked, CredentialSet.CredentialByName(sender.ToString()));
+            }
+        }
+
+        private void userConnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form usrForm = new UserSelectForm();
+            usrForm.ShowDialog(GetMainForm());
+            if (credSet != null)
+            {
+                FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+                if (fav != null)
+                {
+                    GetMainForm().Connect(fav.Name, consoleToolStripMenuItem.Checked, newWindowToolStripMenuItem.Checked, credSet);
+                }
+            }
+        }
+
+        private void displayWindow_Click(object sender, EventArgs e)
+        {
+            contextMenuStrip1.Show();
+        }
+
+        private void displayAllWindow_Click(object sender, EventArgs e)
+        {
+            contextMenuStrip2.Show();
         }
     }
 }

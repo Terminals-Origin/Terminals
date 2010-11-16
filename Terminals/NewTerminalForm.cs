@@ -845,10 +845,8 @@ namespace Terminals
 
         private void CredentialManagerPicturebox_Click(object sender, EventArgs e)
         {
-            string cred = ((Credentials.CredentialSet)CredentialDropdown.SelectedItem).Name;
             Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
             mgr.ShowDialog();
-            FillCredentials(cred);
         }
 
         private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)

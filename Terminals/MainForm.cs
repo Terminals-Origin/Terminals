@@ -15,6 +15,7 @@ using Terminals.Properties;
 using Terminals.CommandLine;
 using TabControl;
 using Unified.Rss;
+using Terminals.Credentials;
 
 namespace Terminals {
     public partial class MainForm : Form
@@ -125,6 +126,11 @@ namespace Terminals {
         }
         public void Connect(string connectionName, bool ForceConsole, bool ForceNewWindow)
         {
+            Connect(connectionName, ForceConsole, ForceNewWindow, null);
+        }
+
+        public void Connect(string connectionName, bool ForceConsole, bool ForceNewWindow, CredentialSet Credential)
+        {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             FavoriteConfigurationElement favorite = favorites[connectionName];
 
@@ -138,6 +144,13 @@ namespace Terminals {
             favsList1.RecordHistoryItem(connectionName);
             if (ForceConsole) favorite.ConnectToConsole = true;
             if (ForceNewWindow) favorite.NewWindow = true;
+            if (Credential != null)
+            {
+                favorite.Credential = Credential.Name;
+                favorite.UserName = Credential.Username;
+                favorite.DomainName = Credential.Domain;
+                favorite.Password = Credential.Password;
+            }
 
             CreateTerminalTab(favorite);
         }
