@@ -313,6 +313,7 @@ namespace Terminals {
             this.organizeFavoritesToolbarToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.organizeFavoritesToolbarToolStripMenuItem.Text = "Organize Favorites Toolbar";
             this.organizeFavoritesToolbarToolStripMenuItem.ToolTipText = "Organize your favorite connections in toolbar";
+            this.organizeFavoritesToolbarToolStripMenuItem.Visible = false;
             this.organizeFavoritesToolbarToolStripMenuItem.Click += new System.EventHandler(this.organizeFavoritesToolbarToolStripMenuItem_Click);
             // 
             // favoritesSeparator
