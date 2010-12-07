@@ -65,6 +65,7 @@
             this.setDomainByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setPasswordByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.FavoritesTabPage.SuspendLayout();
@@ -114,6 +115,7 @@
             this.connectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.consoleToolStripMenuItem,
             this.newWindowToolStripMenuItem,
+            this.toolStripSeparator2,
             this.connectAsToolStripMenuItem});
             this.connectToolStripMenuItem.Image = global::Terminals.Properties.Resources.application_lightning;
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
@@ -149,7 +151,7 @@
             // userConnectToolStripMenuItem
             // 
             this.userConnectToolStripMenuItem.Name = "userConnectToolStripMenuItem";
-            this.userConnectToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
+            this.userConnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.userConnectToolStripMenuItem.Text = "User...";
             this.userConnectToolStripMenuItem.Click += new System.EventHandler(this.userConnectToolStripMenuItem_Click);
             // 
@@ -321,7 +323,7 @@
             // 
             this.consoleAllToolStripMenuItem.CheckOnClick = true;
             this.consoleAllToolStripMenuItem.Name = "consoleAllToolStripMenuItem";
-            this.consoleAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.consoleAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.consoleAllToolStripMenuItem.Text = "Console";
             this.consoleAllToolStripMenuItem.Click += new System.EventHandler(this.displayAllWindow_Click);
             // 
@@ -329,7 +331,7 @@
             // 
             this.newWindowAllToolStripMenuItem.CheckOnClick = true;
             this.newWindowAllToolStripMenuItem.Name = "newWindowAllToolStripMenuItem";
-            this.newWindowAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newWindowAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.newWindowAllToolStripMenuItem.Text = "New Window";
             this.newWindowAllToolStripMenuItem.Click += new System.EventHandler(this.displayAllWindow_Click);
             // 
@@ -372,6 +374,11 @@
             this.deleteAllFavoritesByTagToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.deleteAllFavoritesByTagToolStripMenuItem.Text = "Delete all Favorites by Tag";
             this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.deleteAllFavoritesByTagToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // FavsList
             // 
@@ -427,5 +434,6 @@
         private System.Windows.Forms.ToolStripMenuItem deleteAllFavoritesByTagToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userConnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
