@@ -1646,18 +1646,20 @@ namespace Terminals {
                 {
                     if (CurrentTerminal != null)
                         CurrentTerminal.Disconnect();
-                    
+
                     if (CurrentConnection != null)
+                    {
                         CurrentConnection.Disconnect();
+                        // Close tabitem functions handled under each connection disconnect methods.
+                        cancel = true;
+                    }
                     
                     this.Text = Program.AboutText;
                 }
                 else
                     cancel = true;
             }
-            // Close tabitem functions handled under each connection disconnect methods.
-            //e.Cancel = cancel;
-            e.Cancel = true;
+            e.Cancel = cancel;
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
