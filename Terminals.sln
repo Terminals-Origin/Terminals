@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminals", "Terminals\Terminals.csproj", "{9ECB9FEF-89D1-4144-BAD4-5F3218545B2B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabControl", "TabControl\TabControl.csproj", "{3D54DB4B-DC8A-44AA-8EE0-4EDF58CE1331}"
@@ -35,13 +35,15 @@ Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 16
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/TFS01
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = Terminals\\Terminals.csproj
 		SccProjectName1 = Terminals
+		SccAuxPath1 = https://tfs.codeplex.com/tfs/TFS01
 		SccLocalPath1 = Terminals
 		SccProjectUniqueName2 = TabControl\\TabControl.csproj
 		SccProjectName2 = TabControl
+		SccAuxPath2 = https://tfs.codeplex.com/tfs/TFS01
 		SccLocalPath2 = TabControl
 		SccProjectUniqueName3 = Metro\\Metro.csproj
 		SccProjectName3 = Metro
@@ -51,6 +53,7 @@ Global
 		SccLocalPath4 = TerminalsUpdater
 		SccProjectUniqueName5 = VncSharp\\VncSharp.csproj
 		SccProjectName5 = VncSharp
+		SccAuxPath5 = https://tfs.codeplex.com/tfs/TFS01
 		SccLocalPath5 = VncSharp
 		SccProjectUniqueName6 = HexEditor\\HexEditor.csproj
 		SccProjectName6 = HexEditor

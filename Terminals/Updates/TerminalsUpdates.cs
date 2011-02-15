@@ -9,6 +9,14 @@
 //------------------------------------------------------------------------------
 
 using System.Xml.Serialization;
+namespace Terminals.Updates
+{
+}
+
+namespace Terminals.Updates
+{
+}
+
 namespace Terminals.Updates {
 }
 
