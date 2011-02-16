@@ -12,7 +12,7 @@ namespace Terminals
     static class Program
     {
         
-        public static string TerminalsVersion = "1.9a";
+        public static string TerminalsVersion = "2.0 RC 1";
         public static DateTime BuildDate = RetrieveLinkerTimestamp();
         public static Assembly aAssembly = Assembly.GetExecutingAssembly();
         public static AssemblyDescriptionAttribute desc = (AssemblyDescriptionAttribute)AssemblyDescriptionAttribute.GetCustomAttribute(aAssembly, typeof(AssemblyDescriptionAttribute));

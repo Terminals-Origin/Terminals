@@ -11,7 +11,7 @@ using log4net;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Robert Chartier")]
 [assembly: AssemblyProduct("Terminals by Robert Chartier")]
-[assembly: AssemblyCopyright("Copyright © by Robert Chartier 2006 - 2010")]
+[assembly: AssemblyCopyright("Copyright © by Robert Chartier 2006 - 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -30,8 +30,8 @@ using log4net;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.9.0.0")]
-[assembly: AssemblyFileVersion("1.9.0.0")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
 
 [assembly: log4net.Config.DOMConfigurator (
 ConfigFile = "Terminals.log4net.config", Watch = true)]

@@ -118,7 +118,7 @@ namespace Terminals.Updates {
                                                 }
 
                                                 System.IO.File.Copy("Terminals.config", System.IO.Path.Combine(finalFolder, "Terminals.config"), true);
-                                                System.IO.File.Copy("ToolStrip.settings", System.IO.Path.Combine(finalFolder, "ToolStrip.settings"), true);
+                                                System.IO.File.Copy(Settings.ToolStripSettingsFile, System.IO.Path.Combine(finalFolder, Settings.ToolStripSettingsFile), true);
                                                 System.IO.File.Copy("Terminals.log4net.config", System.IO.Path.Combine(finalFolder, "Terminals.log4net.config"), true);
 
                                                 string temp = System.Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

@@ -759,6 +759,9 @@
     <Compile Include="Wizard\PasswordStrength.cs" />
     <Compile Include="Wizard\SpecialCommandsWizard.cs" />
     <None Include="Migrated rules for Terminals.ruleset" />
+    <Content Include="ToolStrip.settings.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="WTSApi32.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1043,9 +1046,9 @@
     <None Include="Terminals.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Terminals.log4net.config">
+    <Content Include="Terminals.log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="Updates\RSS\AUTHORS" />
     <None Include="Updates\RSS\ChangeLog" />
     <None Include="Updates\RSS\Makefile" />

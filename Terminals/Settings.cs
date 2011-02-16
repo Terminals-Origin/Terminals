@@ -14,7 +14,7 @@ namespace Terminals
     {
         private static Configuration _config = null;
         private static bool _delayConfigurationSave = false;
-        private static string _toolStripSettingsFile = "ToolStrip.settings";
+        public static string ToolStripSettingsFile = "ToolStrip.settings.config";
         private static TerminalsConfigurationSection _terminalsConfigurationSection;
         public enum SortProperties { ServerName, ConnectionName, Protocol, None }
 
@@ -1066,16 +1066,16 @@ namespace Terminals
             get
             {
                 ToolStripSettings settings = null;
-                if (File.Exists(_toolStripSettingsFile))
+                if (File.Exists(ToolStripSettingsFile))
                 {
-                    string s = File.ReadAllText(_toolStripSettingsFile);
+                    string s = File.ReadAllText(ToolStripSettingsFile);
                     settings = ToolStripSettings.LoadFromString(s);
                 }
                 return settings;
             }
             set
             {
-                File.WriteAllText(_toolStripSettingsFile, value.ToString());
+                File.WriteAllText(ToolStripSettingsFile, value.ToString());
             }
         }
         public static bool Office2007BlueFeel
