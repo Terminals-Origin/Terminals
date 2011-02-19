@@ -181,7 +181,7 @@ namespace Terminals.Connections
             }
             catch (Exception e)
             {
-                Terminals.Logging.Log.Info("", e);
+                Terminals.Logging.Log.Error("Error on Disconnect", e);
             }
         }
         private void SHCopyFiles(string[] sourceFiles, string destinationFolder)

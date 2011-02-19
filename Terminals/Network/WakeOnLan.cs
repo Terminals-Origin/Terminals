@@ -19,7 +19,7 @@ namespace Terminals.Network {
                 int byteSend = wakeUpPacket.WakeUp();
                 this.ResultsLabel.Text = string.Format("{0} bytes sent to {1}", byteSend, wakeUpPacket.macAddress);
             } catch(Exception exc) {
-                Terminals.Logging.Log.Debug("Error sending Magic Packet", exc);
+                Terminals.Logging.Log.Info("Error sending Magic Packet", exc);
                 System.Windows.Forms.MessageBox.Show("There was an error sending the Magic Packet" + exc.Message);
             }
         }

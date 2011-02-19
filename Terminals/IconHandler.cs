@@ -107,7 +107,7 @@ namespace IconHandler
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Error("Could not load icons from file:" + Filename);
+                Terminals.Logging.Log.Error("Could not load icons from file:" + Filename, exc);
                 return null;
             }
 		}
@@ -155,8 +155,7 @@ namespace IconHandler
 			}
 			catch (Exception e)
 			{
-                Terminals.Logging.Log.Info("", e);
-				System.Diagnostics.Debug.WriteLine("error while trying to get icon for " + Extension + " :" + e.Message);
+                Terminals.Logging.Log.Error("error while trying to get icon for " + Extension, e);
 				return null;
 			}
 		}

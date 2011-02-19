@@ -117,7 +117,7 @@ namespace Terminals.Connections {
             try {
                 vmrc.Disconnect();
             } catch (Exception e) {
-                Terminals.Logging.Log.Info("", e);
+                Terminals.Logging.Log.Error("Disconnect", e);
             }
         }
 

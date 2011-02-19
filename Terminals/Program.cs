@@ -69,7 +69,7 @@ namespace Terminals
                 try {
                     Application.Run(new MainForm());
                 } catch(Exception exc) {
-                    Terminals.Logging.Log.Error("Main Form Execption",exc);
+                    Terminals.Logging.Log.Fatal("Main Form Execption",exc);
                 }
             }
             SingleInstanceApplication.Close();

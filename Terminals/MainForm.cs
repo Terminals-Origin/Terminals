@@ -95,7 +95,7 @@ namespace Terminals {
             }
             catch(Exception e)
             {
-                Terminals.Logging.Log.Info("", e);
+                Terminals.Logging.Log.Info("WnProc Failure", e);
             }
         }
         #endregion
@@ -211,7 +211,7 @@ namespace Terminals {
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Error("Open Networking Tools Failure", exc);
                 tcTerminals.Items.Remove(terminalTabPage);
                 tcTerminals.SelectedItem = null;
                 terminalTabPage.Dispose();
@@ -325,7 +325,7 @@ namespace Terminals {
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Error("Error loading the Main Form", exc);
             }
         }
 
@@ -602,7 +602,7 @@ namespace Terminals {
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Error("Error Creating A Terminal Tab", exc);
                 tcTerminals.SelectedItem = null;
             }
         }
@@ -887,7 +887,7 @@ namespace Terminals {
                                 }
                                 catch (Exception ex)
                                 {
-                                    Terminals.Logging.Log.Info("", ex);
+                                    Terminals.Logging.Log.Error("Error Loading Favorites Toolbar (Button Bar)", ex);
                                     if (button != Resources.smallterm) 
                                         button = Resources.smallterm;
                                 }
@@ -904,7 +904,7 @@ namespace Terminals {
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Error("Error Loading Favorites Toolbar", exc);
             }
         }
 
@@ -2170,7 +2170,7 @@ namespace Terminals {
                 }
                 catch (Exception exc)
                 {
-                    Terminals.Logging.Log.Info("", exc);
+                    Terminals.Logging.Log.Error("Error loading the Capture Manager Tab Page", exc);
                     tcTerminals.Items.Remove(terminalTabPage);
                     tcTerminals.SelectedItem = null;
                     terminalTabPage.Dispose();

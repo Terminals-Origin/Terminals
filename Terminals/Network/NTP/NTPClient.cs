@@ -286,7 +286,7 @@ namespace Unified.Network.SNTP {
 							}
 							catch(Exception e) {
 								val = "N/A";
-                                Terminals.Logging.Log.Info("", e);
+                                Terminals.Logging.Log.Error("Error parsing and DNS Lookup of an IP" + Address, e);
 							}
 							break;
 						case 4: // Version 4, Reference ID is the timestamp of last update
@@ -448,7 +448,7 @@ namespace Unified.Network.SNTP {
 				ReceptionTimestamp = DateTime.Now;
 			} catch(SocketException e) {
 				//throw new Exception(e.Message);
-                Terminals.Logging.Log.Info("Socket Exception", e);
+                Terminals.Logging.Log.Error("Socket Exception", e);
 			}
 		}
 

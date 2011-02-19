@@ -12,10 +12,10 @@ namespace Terminals {
                 return encryptedPassword;
             try {
                 if(Settings.KeyMaterial==string.Empty) {
-            		byte[] cyphertext = Convert.FromBase64String(encryptedPassword);
-            		byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
-		            byte[] plaintext = ProtectedData.Unprotect(cyphertext, b_entropy, DataProtectionScope.CurrentUser);
-		            return Encoding.UTF8.GetString(plaintext);
+                    byte[] cyphertext = Convert.FromBase64String(encryptedPassword);
+                    byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
+                    byte[] plaintext = ProtectedData.Unprotect(cyphertext, b_entropy, DataProtectionScope.CurrentUser);
+                    return Encoding.UTF8.GetString(plaintext);
                 } else {
                     string hashedPass = Settings.KeyMaterial.Substring(0, keyLength);
                     byte[] IV = System.Text.Encoding.Default.GetBytes(Settings.KeyMaterial.Substring(Settings.KeyMaterial.Length - ivLength));
@@ -31,7 +31,7 @@ namespace Terminals {
                     return password;
                 }
             } catch (Exception e) {
-                Terminals.Logging.Log.Info("", e);
+                Terminals.Logging.Log.Error("Error Decrypting Password", e);
                 return "";
             }
         }
@@ -39,10 +39,10 @@ namespace Terminals {
         internal static int ivLength = 16;
         internal static string EncryptPassword(string decryptedPassword) {
             if (Settings.KeyMaterial == string.Empty) {
-        		byte[] plaintext = Encoding.UTF8.GetBytes(decryptedPassword);
-           		byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
-           		byte[] cyphertext = ProtectedData.Protect(plaintext, b_entropy, DataProtectionScope.CurrentUser);
-        		return Convert.ToBase64String(cyphertext);
+                byte[] plaintext = Encoding.UTF8.GetBytes(decryptedPassword);
+                byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
+                byte[] cyphertext = ProtectedData.Protect(plaintext, b_entropy, DataProtectionScope.CurrentUser);
+                return Convert.ToBase64String(cyphertext);
             } else {
                 string password = "";
                 try {
@@ -56,7 +56,7 @@ namespace Terminals {
                         //password = System.Text.Encoding.Default.GetString(data);
                     }
                 } catch (Exception ec) {
-                    Terminals.Logging.Log.Info("", ec);
+                    Terminals.Logging.Log.Error("Error Encrypting Password", ec);
                 }
                 return password;
                 

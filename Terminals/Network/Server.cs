@@ -55,7 +55,7 @@ namespace Terminals.Network {
                 }
                 _server.Stop();
             } catch (Exception exc) {
-                Terminals.Logging.Log.Info("StartServer", exc);
+                Terminals.Logging.Log.Error("StartServer", exc);
             }
         }
     }

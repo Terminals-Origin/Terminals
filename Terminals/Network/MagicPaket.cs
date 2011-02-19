@@ -146,6 +146,7 @@ namespace NetTools
             }
             catch(Exception exc)
             {
+                Terminals.Logging.Log.Info("Terminals was not able to reboot the remote machine.", exc);
                 System.Windows.Forms.MessageBox.Show("Terminals was not able to reboot the remote machine.  Reason:\r\n" + exc.Message);
             }
             return result;

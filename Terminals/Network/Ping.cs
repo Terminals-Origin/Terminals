@@ -47,8 +47,8 @@ namespace Metro
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Info("", exc);
                 MessageBox.Show("Could not resolve address:" + this.textBox1.Text);
+                Terminals.Logging.Log.Info("Could not resolve address:" + this.textBox1.Text, exc);
                 this.button1.Enabled = true;
                 this.textBox1.Enabled = true;
 

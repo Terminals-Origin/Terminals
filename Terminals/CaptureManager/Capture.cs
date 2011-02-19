@@ -19,7 +19,7 @@ namespace Terminals.CaptureManager
             }
             catch(Exception ec)
             {
-                Terminals.Logging.Log.Info("", ec);
+                Terminals.Logging.Log.Error("Error trying to Delete", ec);
             }
         }
         public void PostToFlickr() {
@@ -62,7 +62,7 @@ namespace Terminals.CaptureManager
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Info("Error trying to call Move (file)", exc);                
+                Terminals.Logging.Log.Error("Error trying to call Move (file)", exc);                
             }
             finally
             {

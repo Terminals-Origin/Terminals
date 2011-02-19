@@ -35,7 +35,7 @@ namespace Terminals.Connections {
                 server = TerminalServices.TerminalServer.LoadServer(host.ServerName);
                 isTerminalServer = server.IsATerminalServer;
             } catch(Exception Exc) {
-                Terminals.Logging.Log.Info(string.Format("checked to see if {0} is a terminal server.  {0} is not a terminal server", host.ServerName));
+                Terminals.Logging.Log.Error(string.Format("Checked to see if {0} is a terminal server.  {0} is not a terminal server", host.ServerName));
             }
             if(OnTerminalServerStateDiscovery != null) OnTerminalServerStateDiscovery(host, isTerminalServer, server);
         }

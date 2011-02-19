@@ -35,7 +35,7 @@ namespace Terminals
             catch(Exception ex)
             {
                 //ignore any security errors and such
-                Terminals.Logging.Log.Info("", ex);
+                Terminals.Logging.Log.Error("Error accessing registry", ex);
             }
         }
 

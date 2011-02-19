@@ -42,13 +42,13 @@ namespace Terminals.Integration
                                             Importers.Add(t);
                                         }
                                     }
-                                    catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
+                                    catch (Exception exc) { Terminals.Logging.Log.Error("Error iterating Assemblies for Importer Classes", exc); }
                                 }
                             }
                         }
                         catch(Exception exc)
                         {
-                            Terminals.Logging.Log.Info("", exc);
+                            Terminals.Logging.Log.Error("Error loading Assembly from Bin Folder" + fi.FullName, exc);
                             //do nothing
                         }
 

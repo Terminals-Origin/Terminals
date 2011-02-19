@@ -42,8 +42,10 @@ namespace Terminals
                         tn.Checked = true;
                     treeView1.Nodes["NodeDrives"].Nodes.Add(tn);
                 }
-                catch (Exception)
-                { }
+                catch (Exception e)
+                {
+                    Terminals.Logging.Log.Error("Error loading a drive into the tree", e);
+                }
             }
 
             if (_redirectedDrives != null && _redirectedDrives.Count > 0 && _redirectedDrives[0].Equals("true"))

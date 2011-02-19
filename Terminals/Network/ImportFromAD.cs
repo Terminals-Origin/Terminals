@@ -58,7 +58,7 @@ namespace Terminals.Network
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Info("Could not call invoke on AD Client List, this probably means they closed the form before waiting for a response", exc);
+                Terminals.Logging.Log.Error("Could not call invoke on AD Client List, this probably means they closed the form before waiting for a response", exc);
             }
         }
 

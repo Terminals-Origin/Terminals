@@ -56,7 +56,7 @@ namespace Terminals.Connections {
                 return true;
 
             } catch(Exception exc) {
-                Terminals.Logging.Log.Fatal("Connecting to VNC", exc);
+                Terminals.Logging.Log.Error("Connecting to VNC", exc);
                 return false;
             }
         }
@@ -90,7 +90,7 @@ namespace Terminals.Connections {
                 rd.FullScreenUpdate();
                 rd.Enabled = true;
             } catch(Exception Exc) {
-                Terminals.Logging.Log.Fatal("ConnectComplete to VNC", Exc);
+                Terminals.Logging.Log.Error("ConnectComplete to VNC", Exc);
             }
             // Change the Form's title to match desktop name
         }
@@ -100,7 +100,7 @@ namespace Terminals.Connections {
                 connected = false;
                 rd.Disconnect();
             } catch(Exception e) {
-                Terminals.Logging.Log.Info("Disconnect", e);
+                Terminals.Logging.Log.Error("Disconnect", e);
             }
         }
 

@@ -141,7 +141,7 @@ namespace Terminals.ExportImport
             }
             catch (Exception ex)
             {
-
+                Terminals.Logging.Log.Error("Export XML Failed", ex);
             }
         }
         public static void ImportXML(string file, bool showOnToolbar)
@@ -452,6 +452,7 @@ namespace Terminals.ExportImport
             }
             catch (Exception ex)
             {
+                Terminals.Logging.Log.Error("Import XML Failed", ex);
             }
         }
 

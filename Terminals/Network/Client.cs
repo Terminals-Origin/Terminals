@@ -49,7 +49,7 @@ namespace Terminals.Network {
                 }
 
             } catch (Exception exc) {
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Info("Could not connect to the remote server.  Make sure the server is online.", exc);
                 System.Windows.Forms.MessageBox.Show("Could not connect to the remote server.  Make sure the server is online.");
             }
 

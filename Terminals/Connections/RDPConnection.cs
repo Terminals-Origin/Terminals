@@ -89,7 +89,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Info("Please Update your RDP client to at least version 6.", exc);
                 MessageBox.Show("Please Update your RDP client to at least version 6.");
                 return false;
             }
@@ -323,7 +323,7 @@ namespace Terminals.Connections
                 }
                 catch(Exception exc)
                 {
-                    Terminals.Logging.Log.Warn("There was an exception setting an RDP Value.", exc);
+                    Terminals.Logging.Log.Info("There was an exception setting an RDP Value.", exc);
                 }
                 _axMsRdpClient.Connect();
                 return true;
@@ -343,7 +343,7 @@ namespace Terminals.Connections
             }
             catch(Exception e)
             {
-                Terminals.Logging.Log.Info("", e);
+                Terminals.Logging.Log.Info("Error on Disconnect RDP", e);
             }
         }
         public override bool Connected { get { return Convert.ToBoolean(_axMsRdpClient.Connected); } }

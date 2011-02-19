@@ -491,7 +491,7 @@ namespace Terminals
 
                 return true;
             } catch(Exception e) {
-                Terminals.Logging.Log.Info("", e);
+                Terminals.Logging.Log.Info("Fill Favorite Failed", e);
                 MessageBox.Show(this, e.Message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
@@ -793,7 +793,7 @@ namespace Terminals
                 }
                 catch(Exception ex)
                 {
-                    Terminals.Logging.Log.Info("", ex);
+                    Terminals.Logging.Log.Info("Set Terminal Image Failed", ex);
                     _currentToolBarFileName = "";
                     System.Windows.Forms.MessageBox.Show("You have chosen an invalid image. Try again.");
                 }

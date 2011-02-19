@@ -916,8 +916,9 @@ namespace Terminals.CommandLine
             }
             catch (Exception e)
             {
-                Terminals.Logging.Log.Info("", e);
-                this.reporter(string.Format("Error: Can't open command line argument file '{0}' : '{1}'", fileName, e.Message));
+                string msg = string.Format("Error: Can't open command line argument file '{0}' : '{1}'", fileName, e.Message);
+                Terminals.Logging.Log.Info(msg, e);
+                this.reporter(msg);
                 arguments = null;
                 return false;
             }
@@ -996,11 +997,12 @@ namespace Terminals.CommandLine
             }
             catch (System.IndexOutOfRangeException exc)
             {
-                Terminals.Logging.Log.Info("", exc);
                 // got EOF 
                 if (inQuotes)
                 {
-                    this.reporter(string.Format("Error: Unbalanced '\"' in command line argument file '{0}'", fileName));
+                    string msg = string.Format("Error: Unbalanced '\"' in command line argument file '{0}'", fileName);
+                    Terminals.Logging.Log.Info(msg, exc);
+                    this.reporter(msg);
                     hadError = true;
                 }
                 else if (currentArg.Length > 0)
@@ -1237,7 +1239,7 @@ namespace Terminals.CommandLine
                     }
                     catch(Exception exc)
                     {
-                        Terminals.Logging.Log.Info("", exc);
+                        Terminals.Logging.Log.Error("Parsing Values", exc);
                         // catch parse errors
                     }
                 }

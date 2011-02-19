@@ -1058,14 +1058,14 @@ namespace Terminals
                     }
                     catch (Exception exc)
                     {
-                        Logging.Log.Info(@"Capture root could not be created, set it to the default value : .\CaptureRoot", exc);
+                        Logging.Log.Error(@"Capture root could not be created, set it to the default value : .\CaptureRoot", exc);
                         try
                         {
                             Directory.CreateDirectory(root);
                         }
                         catch (Exception exc1)
                         {
-                            Logging.Log.Info(@"Capture root could not be created again.  Abort!", exc1);
+                            Logging.Log.Error(@"Capture root could not be created again.  Abort!", exc1);
                         }
                     }
                     CaptureRoot = root;
@@ -1329,7 +1329,7 @@ namespace Terminals
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Error("Get Configuration", exc);
                 if (File.Exists(configFile))
                 {
                     string newGUID = System.Guid.NewGuid().ToString();
@@ -1411,19 +1411,19 @@ namespace Terminals
                             }
                             catch (Exception exc)
                             { //ignore the error
-                                Terminals.Logging.Log.Info("", exc);
+                                Terminals.Logging.Log.Error("Remapping Settings Inner", exc);
                             }
                         }
                     }
                     catch (Exception exc)
                     { //ignore the error
-                        Terminals.Logging.Log.Info("", exc);
+                        Terminals.Logging.Log.Error("Remapping Settings Outer", exc);
                     }
                 }
             }
             catch (Exception exc)
             { //ignore the error
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Error("Remapping Settings Outer Try", exc);
             }
 
             XmlNodeList favs = doc.SelectNodes("/configuration/settings/favorites/add");
@@ -1459,27 +1459,28 @@ namespace Terminals
                                     }
                                     catch (Exception exc)
                                     { //ignore the error
-                                        Terminals.Logging.Log.Info("", exc);
+                                        Terminals.Logging.Log.Error("Remapping Favorites 1", exc);
                                     }
 
                                 }
                             }
                             catch (Exception exc)
                             { //ignore the error
-                                Terminals.Logging.Log.Info("", exc);
+                                Terminals.Logging.Log.Error("Remapping Favorites 2", exc);
                             }
                         }
                         Settings.AddFavorite(newFav, false);
                     }
                     catch (Exception exc)
                     { //ignore the error
-                        Terminals.Logging.Log.Info("", exc);
+                        Terminals.Logging.Log.Error("Remapping Favorites 3", exc);
                     }
                 }
             }
             catch (Exception exc)
             { //ignore the error
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Error("Remapping Favorites 4", exc);
+
             }            
             return c;
         }
@@ -1501,7 +1502,7 @@ namespace Terminals
                     return null;
                 }
 
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Info("Telnet Section Failed", exc);
                 
                 try
                 {
@@ -1514,7 +1515,7 @@ namespace Terminals
                 }
                 catch (Exception importException)
                 {
-                    Terminals.Logging.Log.Info("", importException);
+                    Terminals.Logging.Log.Info("Tryhing to import connections failed", importException);
                     MessageBox.Show(string.Format("Terminals was NOT able to automatically upgrade your existing connections.\r\nError:{0}", importException.Message));
                 }
             }

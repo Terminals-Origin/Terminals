@@ -25,7 +25,7 @@ namespace Terminals {
                     }
                 }
             }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
+            catch (Exception e) { Terminals.Logging.Log.Error("Network Scanner Failed to Initialize", e); }
             string[] ipList = localIP.Split('.');
             ATextbox.Text = ipList[0];
             BTextbox.Text = ipList[1];
@@ -251,7 +251,7 @@ namespace Terminals {
                 Network.Server.Stop();
                 Network.Client.Stop();
             }
-            catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
+            catch (Exception exc) { Terminals.Logging.Log.Info("Network Scanner failed to stop server and client at close", exc); }
         }
         private void CancelButton_Click(object sender, EventArgs e)
         {

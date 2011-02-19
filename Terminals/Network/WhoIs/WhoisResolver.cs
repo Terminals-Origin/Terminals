@@ -64,8 +64,8 @@ namespace Org.Mentalis.Utilities {
             }
             catch(Exception e)
             {
-                Terminals.Logging.Log.Info("", e);
                 ret = "Could not connect to WhoIs Server.  Please try again later.\r\n\r\nDetails:\r\n" + e.ToString();
+                Terminals.Logging.Log.Error(ret, e);
             }
             finally
             {

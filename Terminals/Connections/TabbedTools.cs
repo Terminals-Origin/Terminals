@@ -46,7 +46,7 @@ namespace Terminals.Connections
                 this.PcapTabPage.Controls.Add(l);
                 l.Text = "Packet Capture is either not install or not supported on this version of windows.";
                 l.Dock = DockStyle.Top;
-                Terminals.Logging.Log.Error(e);
+                Terminals.Logging.Log.Info(l.Text, e);
             }
 
 

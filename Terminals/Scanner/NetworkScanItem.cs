@@ -29,7 +29,7 @@ namespace Terminals.Scanner {
                 }
                 client.Close();
             } catch (Exception e) {
-                Terminals.Logging.Log.Info("", e);
+                Terminals.Logging.Log.Error("Scan Failed", e);
             }
 
 
@@ -53,7 +53,7 @@ namespace Terminals.Scanner {
                 Terminals.Logging.Log.Info("", ce);
                 return true;
             } catch (Exception exc) {
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Error("VNC Port Scan Failed", exc);
                 exc.ToString();
             }
             return false;
@@ -89,7 +89,7 @@ namespace Terminals.Scanner {
                         }
 
                     } catch (Exception exc) {
-                        Terminals.Logging.Log.Info("", exc);
+                        Terminals.Logging.Log.Error("Attempting to Resolve host named failed", exc);
                         args.NetworkScanItem.HostName = args.NetworkScanItem.IPAddress;
                         if(!KnownHostNames.ContainsKey(args.NetworkScanItem.IPAddress)) KnownHostNames.Add(args.NetworkScanItem.IPAddress, args.NetworkScanItem.IPAddress);
                     }

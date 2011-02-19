@@ -64,7 +64,7 @@ namespace Terminals.Wizard
             }
             catch (Exception e) 
             { 
-                Terminals.Logging.Log.Info("StartImport", e);
+                Terminals.Logging.Log.Error("StartImport", e);
             }
             
             //then kick up the port scan for the entire subnet
@@ -80,7 +80,7 @@ namespace Terminals.Wizard
                     System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanSubnet), null);
                 } catch(Exception e) 
                 { 
-                    Terminals.Logging.Log.Info("", e); 
+                    Terminals.Logging.Log.Error("Port Scan error", e); 
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace Terminals.Wizard
             }
             catch (Exception e) 
             { 
-                Terminals.Logging.Log.Info("", e); 
+                Terminals.Logging.Log.Info("Cancel Discovery", e); 
             }
         }
         public void AddFavorite(object server) 
@@ -143,7 +143,7 @@ namespace Terminals.Wizard
             } 
             catch(Exception e) 
             { 
-                Terminals.Logging.Log.Info("", e); 
+                Terminals.Logging.Log.Error("Add Favorite Error", e); 
             }
         }
 
@@ -159,7 +159,7 @@ namespace Terminals.Wizard
             }
             catch (Exception e) 
             { 
-                Terminals.Logging.Log.Info("", e); 
+                Terminals.Logging.Log.Error("Scanner Complete Error", e); 
             }
         }
         private void AddExistingRDPConnections_Load(object sender, EventArgs e)
@@ -180,7 +180,7 @@ namespace Terminals.Wizard
             }
             catch (Exception e) 
             { 
-                Terminals.Logging.Log.Info("", e); 
+                Terminals.Logging.Log.Error("Scan Subnet Error", e); 
             }
             this.Invoke(_miv);
         }
@@ -225,7 +225,7 @@ namespace Terminals.Wizard
 
                 this.Invoke(_miv);
             }
-            catch (Exception e) { Terminals.Logging.Log.Info("", e); }
+            catch (Exception e) { Terminals.Logging.Log.Error("Scanner Port Reply", e); }
         }
         private void UpdateConnections() {
             try {
@@ -239,7 +239,7 @@ namespace Terminals.Wizard
             } 
             catch(Exception e) 
             { 
-                Terminals.Logging.Log.Info("", e); 
+                Terminals.Logging.Log.Error("Update Connections", e); 
             }
         }
         private void ConnectionsCountLabel_Click(object sender, EventArgs e)
@@ -261,7 +261,7 @@ namespace Terminals.Wizard
             }
             catch (Exception exc) 
             { 
-                Terminals.Logging.Log.Info("", exc); 
+                Terminals.Logging.Log.Info("Connections Count Label", exc); 
             }
         }
     }

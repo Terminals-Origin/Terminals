@@ -37,8 +37,8 @@ namespace Terminals.CaptureManager
                 }
                 System.Windows.Forms.MessageBox.Show("All images have been uploaded to Flickr.");
             } catch(Exception exc) {
+                Terminals.Logging.Log.Info("There was an error uploading your screen shots to Flickr.", exc);
                 System.Windows.Forms.MessageBox.Show("There was an error uploading your screen shots to Flickr:\r\n" + exc.Message);
-                Terminals.Logging.Log.Error("There was an error uploading your screen shots to Flickr.", exc);
             }
         }
         void flickrMenuItem_Click(object sender, EventArgs e) {

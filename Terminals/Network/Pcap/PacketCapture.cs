@@ -39,12 +39,12 @@ namespace WindowsFormsApplication2 {
                 this.Enabled = false;
                 if(exc is System.BadImageFormatException)
                 {
-                    Terminals.Logging.Log.Debug("Terminals Packet Capture is not configured to work with this system (Bad Image Format Exception)", exc);
+                    Terminals.Logging.Log.Info("Terminals Packet Capture is not configured to work with this system (Bad Image Format Exception)", exc);
                     System.Windows.Forms.MessageBox.Show("Terminals Packet Capture is not configured to work with this system (Bad Image Format Exception)");
                 }
                 else if(exc is System.DllNotFoundException)
                 {
-                    Terminals.Logging.Log.Debug("WinpPcap was not installed", exc);
+                    Terminals.Logging.Log.Info("WinpPcap was not installed", exc);
                     if(System.Windows.Forms.MessageBox.Show("It appears that WinPcap is not installed.  In order to use this feature within Terminals you must first install that product.  Do you wish to visit the download location right now?", "Download WinPcap?", MessageBoxButtons.OKCancel) == DialogResult.OK)
                     {
                         System.Diagnostics.Process.Start("http://www.winpcap.org/install/default.htm");
@@ -52,7 +52,7 @@ namespace WindowsFormsApplication2 {
                 }
                 else
                 {
-                    Terminals.Logging.Log.Debug("WinpPcap was not installed correctly", exc);
+                    Terminals.Logging.Log.Info("WinpPcap was not installed correctly", exc);
                 }
             }
             this.PacketCapture_Resize(null, null);

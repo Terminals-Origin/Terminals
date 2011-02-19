@@ -154,7 +154,7 @@ namespace Bdev.Net.Dns
 				}
 				catch (SocketException ex)
 				{
-                    Terminals.Logging.Log.Info("", ex);
+                    Terminals.Logging.Log.Error("Socket Exception on Receive", ex);
 					// failure - we better try again, but remember how many attempts
 					attempts++;
 				}

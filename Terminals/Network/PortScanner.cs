@@ -60,7 +60,7 @@ namespace Terminals.Network {
                             try {
                                 System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanMachine), new object[] { finalAddress, ports});
                             } catch(Exception exc) {
-                                exc.ToString();
+                                Terminals.Logging.Log.Error("Threaded Scan Machine Call", exc);
                             }
                         }
                     }
@@ -107,7 +107,7 @@ namespace Terminals.Network {
                     }
                 }
 
-            } catch(Exception exc) { Terminals.Logging.Log.Info("", exc); }
+            } catch(Exception exc) { Terminals.Logging.Log.Error("Connecting to the network interfaces", exc); }
         }
 
         void scanner_ScanComplete() {

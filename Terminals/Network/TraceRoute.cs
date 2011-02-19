@@ -31,7 +31,7 @@ namespace Metro
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Error(exc);
+                Terminals.Logging.Log.Error("On Load", exc);
             }
 
             try
@@ -174,7 +174,7 @@ namespace Metro
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Info("", exc);
+                Terminals.Logging.Log.Info("Could not resolve address:" + this.textBox1.Text, exc);
                 MessageBox.Show("Could not resolve address:" + this.textBox1.Text);
                 button1.Enabled = true;
                 this.textBox1.Enabled = true;
@@ -184,7 +184,7 @@ namespace Metro
             {
                 if (list != null) trace.TraceRoute(list[0], true, 2000, 30);
             }
-            catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
+            catch (Exception exc) { Terminals.Logging.Log.Error(exc); }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -273,7 +273,7 @@ namespace Metro
 
                 return pt.Tag.ToString() + " is " + pt.Y.ToString("f2") + " milliseconds at " + pt.X.ToString("f1");
             }
-            catch (Exception ex) { Terminals.Logging.Log.Info("", ex); }
+            catch (Exception ex) { Terminals.Logging.Log.Error(ex); }
             return "";
         }
 
@@ -335,7 +335,7 @@ namespace Metro
             }
             catch(Exception e)
             {
-                Terminals.Logging.Log.Info("", e);
+                Terminals.Logging.Log.Error(e);
                 entry = null;
             }
             if(entry != null && entry.HostName != null)
