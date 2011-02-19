@@ -675,6 +675,22 @@ namespace Terminals
                 if (!_delayConfigurationSave) configuration.Save();
             }
         }
+        public static string AmazonBucketName
+        {
+            get
+            {
+                _terminalsConfigurationSection = GetSection();
+                if (_terminalsConfigurationSection == null)
+                    return string.Empty;
+                return _terminalsConfigurationSection.AmazonBucketName;
+            }
+            set
+            {
+                Configuration configuration = Config;
+                GetSection(configuration).AmazonBucketName = value;
+                if (!_delayConfigurationSave) configuration.Save();
+            }
+        }
 
         public static string FlickrToken
         {
@@ -1156,6 +1172,13 @@ namespace Terminals
                 Configuration configuration = Config;
                 GetSection(configuration).ShowWizard = value;
                 if (!_delayConfigurationSave) configuration.Save();
+            }
+        }
+        public static string CredentialsFileLocation
+        {
+            get
+            {
+                return GetSection().SavedCredentialsLocation;
             }
         }
 

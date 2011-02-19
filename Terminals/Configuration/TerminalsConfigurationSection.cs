@@ -469,6 +469,18 @@ namespace Terminals
                 EncryptedAmazonSecretKey = Functions.EncryptPassword(value);
             }
         }
+        [ConfigurationProperty("AmazonBucketName", IsRequired = false)]
+        public string AmazonBucketName
+        {
+            get
+            {
+                return (string)this["AmazonBucketName"];
+            }
+            set
+            {
+                this["AmazonBucketName"] = value;
+            }
+        }
 
 
         [ConfigurationProperty("autoCaseTags")]

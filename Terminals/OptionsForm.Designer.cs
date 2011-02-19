@@ -66,6 +66,8 @@ namespace Terminals
             this.domainTextbox = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
             this.AmazonTabPage = new System.Windows.Forms.TabPage();
+            this.label22 = new System.Windows.Forms.Label();
+            this.BucketNameTextBox = new System.Windows.Forms.TextBox();
             this.RestoreButton = new System.Windows.Forms.Button();
             this.BackupButton = new System.Windows.Forms.Button();
             this.ErrorLabel = new System.Windows.Forms.Label();
@@ -511,6 +513,8 @@ namespace Terminals
             // 
             // AmazonTabPage
             // 
+            this.AmazonTabPage.Controls.Add(this.label22);
+            this.AmazonTabPage.Controls.Add(this.BucketNameTextBox);
             this.AmazonTabPage.Controls.Add(this.RestoreButton);
             this.AmazonTabPage.Controls.Add(this.BackupButton);
             this.AmazonTabPage.Controls.Add(this.ErrorLabel);
@@ -528,6 +532,21 @@ namespace Terminals
             this.AmazonTabPage.TabIndex = 1;
             this.AmazonTabPage.Text = "Amazon";
             this.AmazonTabPage.UseVisualStyleBackColor = true;
+                        // label22
+            // 
+this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(16, 112);
+           this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(69, 13);
+            this.label22.TabIndex = 11;
+            this.label22.Text = "Bucket Name";
+                        // 
+                        // BucketNameTextBox
+                        // 
+           this.BucketNameTextBox.Location = new System.Drawing.Point(156, 109);
+            this.BucketNameTextBox.Name = "BucketNameTextBox";
+            this.BucketNameTextBox.Size = new System.Drawing.Size(212, 21);
+            this.BucketNameTextBox.TabIndex = 10;
             // 
             // RestoreButton
             // 
@@ -552,14 +571,14 @@ namespace Terminals
             // ErrorLabel
             // 
             this.ErrorLabel.ForeColor = System.Drawing.Color.Red;
-            this.ErrorLabel.Location = new System.Drawing.Point(13, 109);
+            this.ErrorLabel.Location = new System.Drawing.Point(13, 133);
             this.ErrorLabel.Name = "ErrorLabel";
-            this.ErrorLabel.Size = new System.Drawing.Size(233, 68);
+            this.ErrorLabel.Size = new System.Drawing.Size(233, 70);
             this.ErrorLabel.TabIndex = 7;
             // 
             // TestButton
             // 
-            this.TestButton.Location = new System.Drawing.Point(289, 109);
+            this.TestButton.Location = new System.Drawing.Point(290, 140);
             this.TestButton.Name = "TestButton";
             this.TestButton.Size = new System.Drawing.Size(75, 23);
             this.TestButton.TabIndex = 6;
@@ -1236,5 +1255,7 @@ namespace Terminals
         private System.Windows.Forms.TextBox domainTextbox;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox BucketNameTextBox;
     }
 }
