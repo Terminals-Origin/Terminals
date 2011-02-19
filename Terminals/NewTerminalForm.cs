@@ -442,7 +442,7 @@ namespace Terminals
                 _favorite.IcaClientINI = ICAClientINI.Text;
                 _favorite.IcaServerINI = ICAServerINI.Text;
                 _favorite.IcaEncryptionLevel = ICAEncryptionLevelCombobox.Text;
-                ICAEnableEncryptionCheckbox.Checked = ICAEncryptionLevelCombobox.Enabled;
+                _favorite.IcaEnableEncryption = ICAEnableEncryptionCheckbox.Checked;
 
                 _favorite.Notes = NotesTextbox.Text;
 

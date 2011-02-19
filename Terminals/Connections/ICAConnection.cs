@@ -6,20 +6,24 @@ using System.IO;
 using Terminals.Properties;
 using System.Diagnostics;
 
-namespace Terminals.Connections {
-    public class ICAConnection : Connection {
+namespace Terminals.Connections
+{
+    public class ICAConnection : Connection
+    {
         #region IConnection Members
         private bool connected = false;
 
         AxWFICALib.AxICAClient iIcaClient;
 
-        public override void ChangeDesktopSize(Terminals.DesktopSize Size) {
+        public override void ChangeDesktopSize(Terminals.DesktopSize Size)
+        {
         }
 
         public override bool Connected { get { return connected; } }
-        
 
-        public override bool Connect() {
+
+        public override bool Connect()
+        {
 
             try
             {
@@ -49,7 +53,7 @@ namespace Terminals.Connections {
                 iIcaClient.Dock = DockStyle.Fill;
 
                 iIcaClient.Address = Favorite.ServerName;
-                switch(Favorite.Colors)
+                switch (Favorite.Colors)
                 {
                     case Colors.Bit16:
                         iIcaClient.SetProp("DesiredColor", "16");
@@ -65,26 +69,33 @@ namespace Terminals.Connections {
                         break;
 
                 }
-                iIcaClient.Application = "Terminals " + Program.TerminalsVersion.ToString();
+                //             iIcaClient.Application = "Terminals " + Program.TerminalsVersion.ToString();
+
+                // This line causes the following misleading error.
+                // To log on to this remote computer, you must have Terminal Server User Access permissions on this computer. 
+                // By default, members of the Remote Desktop Users group have these permissions. If you are not a member of the 
+                // Remote Desktop Users group or another group that has these permissions, or if the Remote Desktop User group
+                // does not have these permissions, you must be granted these permissions manually."
 
                 iIcaClient.AppsrvIni = Favorite.IcaServerINI;
                 iIcaClient.WfclientIni = Favorite.IcaClientINI;
                 iIcaClient.Encrypt = Favorite.IcaEnableEncryption;
                 string encryptLevel = "Encrypt";
                 string specifiedLevel = Favorite.IcaEncryptionLevel.Trim();
-                if(specifiedLevel.Contains(" ")) {
+                if (specifiedLevel.Contains(" "))
+                {
                     encryptLevel = specifiedLevel.Substring(0, specifiedLevel.IndexOf(" ")).Trim();
-                    if(encryptLevel != "") iIcaClient.EncryptionLevelSession = encryptLevel;
+                    if (encryptLevel != "") iIcaClient.EncryptionLevelSession = encryptLevel;
                 }
-                
+
 
 
 
                 iIcaClient.Domain = domainName;
                 iIcaClient.Address = Favorite.ServerName;
                 iIcaClient.Username = userName;
-
-                if(Favorite.ICAApplicationName != "")
+                iIcaClient.SetProp("ClearPassword", pass);
+                if (Favorite.ICAApplicationName != "")
                 {
                     iIcaClient.ConnectionEntry = Favorite.ICAApplicationName;
                     //iIcaClient.Application = favorite.applicationName;
@@ -107,14 +118,15 @@ namespace Terminals.Connections {
 
                 return true;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Terminals.Logging.Log.Fatal("Connecting to ICA", exc);
                 return false;
             }
         }
 
-        void iIcaClient_OnDisconnect(object sender, EventArgs e) {
+        void iIcaClient_OnDisconnect(object sender, EventArgs e)
+        {
             Terminals.Logging.Log.Fatal("ICA Connection Lost" + this.Favorite.Name);
             this.connected = false;
 
@@ -131,7 +143,7 @@ namespace Terminals.Connections {
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             string desktopShare = ParentForm.GetDesktopShare();
-            if(String.IsNullOrEmpty(desktopShare))
+            if (String.IsNullOrEmpty(desktopShare))
             {
                 MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n" +
                     "Please define a share in the connection properties window (under the Local Resources tab)."
@@ -143,7 +155,7 @@ namespace Terminals.Connections {
 
         void ICAConnection_DragEnter(object sender, DragEventArgs e)
         {
-            if(e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
             {
                 e.Effect = DragDropEffects.Copy;
             }
@@ -160,11 +172,15 @@ namespace Terminals.Connections {
         }
 
 
-        public override void Disconnect() {
-            try {
+        public override void Disconnect()
+        {
+            try
+            {
                 connected = false;
                 iIcaClient.Disconnect();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Terminals.Logging.Log.Info("", e);
             }
         }
@@ -173,7 +189,7 @@ namespace Terminals.Connections {
             SHFileOperationWrapper fo = new SHFileOperationWrapper();
             List<string> destinationFiles = new List<string>();
 
-            foreach(string sourceFile in sourceFiles)
+            foreach (string sourceFile in sourceFiles)
             {
                 destinationFiles.Add(Path.Combine(destinationFolder, Path.GetFileName(sourceFile)));
             }
