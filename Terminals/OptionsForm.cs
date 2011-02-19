@@ -14,10 +14,8 @@ namespace Terminals
     {
         private AxMsRdpClient6 _currentTerminal;
         private string _tempFrob;
-        //private static string _amazonBucket = "Terminals";
+        private static string _amazonBucket = "Terminals";
         private static string _amazonConfigKeyName = "Terminals.config";
-        private static string _credentialsKeyName = "Credentials.xml";
-
 
         public OptionsForm(AxMsRdpClient6 terminal) {
             InitializeComponent();
@@ -72,14 +70,12 @@ namespace Terminals
             this.AmazonBackupCheckbox.Checked = Settings.UseAmazon;
             this.AccessKeyTextbox.Text = Settings.AmazonAccessKey;
             this.SecretKeyTextbox.Text = Settings.AmazonSecretKey;
-            this.BucketNameTextBox.Text = Settings.AmazonBucketName;
 
             this.AccessKeyTextbox.Enabled = AmazonBackupCheckbox.Checked;
             this.SecretKeyTextbox.Enabled = AmazonBackupCheckbox.Checked;
             this.TestButton.Enabled = AmazonBackupCheckbox.Checked;
             this.BackupButton.Enabled = AmazonBackupCheckbox.Checked;
             this.RestoreButton.Enabled = AmazonBackupCheckbox.Checked;
-            this.BucketNameTextBox.Enabled = AmazonBackupCheckbox.Checked;
 
             this.autoCaseTagsCheckbox.Checked = Settings.AutoCaseTags;
             this.domainTextbox.Text = Settings.DefaultDomain;
@@ -164,6 +160,8 @@ namespace Terminals
                 && PasswordTextbox.Text.Equals(ConfirmPasswordTextBox.Text))
             {
                 Settings.TerminalsPassword = PasswordTextbox.Text;
+                string hashedPassword = Unified.Encryption.Hash.Hash.GetHash(PasswordTextbox.Text, Unified.Encryption.Hash.Hash.HashType.SHA512);
+                Settings.KeyMaterial = Unified.Encryption.Hash.Hash.GetHash(PasswordTextbox.Text + hashedPassword, Unified.Encryption.Hash.Hash.HashType.SHA512);
             }
 
             Settings.MinimizeToTray = this.MinimizeToTrayCheckbox.Checked;
@@ -183,7 +181,6 @@ namespace Terminals
 
             Settings.AmazonAccessKey = this.AccessKeyTextbox.Text;
             Settings.AmazonSecretKey = this.SecretKeyTextbox.Text;
-            Settings.AmazonBucketName = this.BucketNameTextBox.Text;
 
             Settings.DelayConfigurationSave = false;
 
@@ -253,6 +250,7 @@ namespace Terminals
             {
 
                 Settings.TerminalsPassword = "";
+                Settings.KeyMaterial = string.Empty;
                 ClearMasterButton.Enabled = false;
 
                 PasswordProtectTerminalsCheckbox.Checked = false;
@@ -306,14 +304,14 @@ namespace Terminals
 
                 try
                 {
-                    string terminals = wrapper.ListBucket(this.BucketNameTextBox.Text);
+                    string terminals = wrapper.ListBucket(_amazonBucket);
                 }
                 catch (Exception exc)
                 {
                     if (exc.Message == "The specified bucket does not exist")
                     {
-                        wrapper.AddBucket(this.BucketNameTextBox.Text);
-                        string terminals = wrapper.ListBucket(this.BucketNameTextBox.Text);
+                        wrapper.AddBucket(_amazonBucket);
+                        string terminals = wrapper.ListBucket(_amazonBucket);
                     }
                 }
 
@@ -331,7 +329,6 @@ namespace Terminals
         {
             this.AccessKeyTextbox.Enabled = AmazonBackupCheckbox.Checked;
             this.SecretKeyTextbox.Enabled = AmazonBackupCheckbox.Checked;
-            this.BucketNameTextBox.Enabled = AmazonBackupCheckbox.Checked; 
             this.TestButton.Enabled = AmazonBackupCheckbox.Checked;
             this.BackupButton.Enabled = AmazonBackupCheckbox.Checked;
             this.RestoreButton.Enabled = AmazonBackupCheckbox.Checked;
@@ -344,20 +341,16 @@ namespace Terminals
                 string url = null;
                 try
                 {
-                    string terminals = wrapper.ListBucket(this.BucketNameTextBox.Text);
+                    string terminals = wrapper.ListBucket(_amazonBucket);
                 }
                 catch (Exception exc)
                 {
-                    wrapper.AddBucket(this.BucketNameTextBox.Text);
+                    wrapper.AddBucket(_amazonBucket);
                 }
                 try
                 {
-                    wrapper.AddFileObject(this.BucketNameTextBox.Text, _amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
-                    url = wrapper.GetUrl(this.BucketNameTextBox.Text, _amazonConfigKeyName);
-                    
-                    wrapper.AddFileObject(this.BucketNameTextBox.Text, _credentialsKeyName, Settings.CredentialsFileLocation);
-                    url = wrapper.GetUrl(this.BucketNameTextBox.Text, _credentialsKeyName);
-
+                    wrapper.AddFileObject(_amazonBucket, _amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
+                    url = wrapper.GetUrl(_amazonBucket, _amazonConfigKeyName);
                 }
                 catch (Exception exc)
                 {
@@ -376,7 +369,7 @@ namespace Terminals
                 Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
                 try
                 {
-                    string terminals = wrapper.ListBucket(this.BucketNameTextBox.Text);
+                    string terminals = wrapper.ListBucket(_amazonBucket);
                 }
                 catch (Exception exc)
                 {
@@ -386,9 +379,7 @@ namespace Terminals
                 }
                 try
                 {
-                    wrapper.GetFileObject(this.BucketNameTextBox.Text, _amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
-                    wrapper.GetFileObject(this.BucketNameTextBox.Text, _credentialsKeyName, Settings.CredentialsFileLocation);
-
+                    wrapper.GetFileObject(_amazonBucket, _amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
                 }
                 catch (Exception exc)
                 {

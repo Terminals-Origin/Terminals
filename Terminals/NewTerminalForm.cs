@@ -19,6 +19,8 @@ namespace Terminals
         private bool _showOnToolbar;
         private string _currentToolBarFileName;
         private string _oldName;
+        private const string HIDDEN_PASSWORD = "****************";
+        private string favoritePassword = string.Empty;
         internal List<string> _redirectedDrives = new List<string>();
         internal bool _redirectDevices = false;
 
@@ -177,7 +179,10 @@ namespace Terminals
             cmbServers.Text = favorite.ServerName;
             cmbDomains.Text = favorite.DomainName;
             cmbUsers.Text = favorite.UserName;
-            txtPassword.Text = favorite.Password;
+            if (favorite.Password != ""){
+                txtPassword.Text = HIDDEN_PASSWORD;
+                favoritePassword = favorite.Password;
+            }
             chkSavePassword.Checked = favorite.Password != "";
             cmbResolution.SelectedIndex = (int)favorite.DesktopSize;
             cmbColors.SelectedIndex = (int)favorite.Colors;
@@ -260,7 +265,6 @@ namespace Terminals
             this.EnableCompressionCheckbox.Checked = favorite.EnableCompression;
             this.EnableBitmapPersistanceCheckbox.Checked = favorite.BitmapPeristence;
             this.EnableTLSAuthenticationCheckbox.Checked = favorite.EnableTLSAuthentication;
-            this.EnableNLAAuthenticationCheckbox.Checked = favorite.EnableNLAAuthentication;
             this.AllowBackgroundInputCheckBox.Checked = favorite.AllowBackgroundInput;
 
             chkDisableCursorShadow.Checked = false;
@@ -331,7 +335,21 @@ namespace Terminals
 
                 _favorite.DomainName = cmbDomains.Text;
                 _favorite.UserName = cmbUsers.Text;
-                _favorite.Password = (chkSavePassword.Checked ? txtPassword.Text : "");
+                if (chkSavePassword.Checked)
+                {
+                    if (txtPassword.Text != HIDDEN_PASSWORD)
+                    {
+                        _favorite.Password = txtPassword.Text;
+                    }
+                    else
+                    {
+                        _favorite.Password = favoritePassword;
+                    }
+                }
+                else
+                {
+                    _favorite.Password = string.Empty;
+                }
                 
                 _favorite.DesktopSize = (DesktopSize)cmbResolution.SelectedIndex;
                 _favorite.Colors = (Colors)cmbColors.SelectedIndex;
@@ -427,8 +445,6 @@ namespace Terminals
                 _favorite.EnableCompression = EnableCompressionCheckbox.Checked;
                 _favorite.BitmapPeristence = EnableBitmapPersistanceCheckbox.Checked;
                 _favorite.EnableTLSAuthentication = EnableTLSAuthenticationCheckbox.Checked;
-                _favorite.EnableNLAAuthentication = EnableNLAAuthenticationCheckbox.Checked;
-
                 _favorite.AllowBackgroundInput = AllowBackgroundInputCheckBox.Checked;
 
                 _favorite.EnableFontSmoothing = AllowFontSmoothingCheckbox.Checked;
@@ -442,7 +458,7 @@ namespace Terminals
                 _favorite.IcaClientINI = ICAClientINI.Text;
                 _favorite.IcaServerINI = ICAServerINI.Text;
                 _favorite.IcaEncryptionLevel = ICAEncryptionLevelCombobox.Text;
-                _favorite.IcaEnableEncryption = ICAEnableEncryptionCheckbox.Checked;
+                ICAEnableEncryptionCheckbox.Checked = ICAEncryptionLevelCombobox.Enabled;
 
                 _favorite.Notes = NotesTextbox.Text;
 
@@ -848,8 +864,10 @@ namespace Terminals
 
         private void CredentialManagerPicturebox_Click(object sender, EventArgs e)
         {
+            string cred = ((Credentials.CredentialSet)CredentialDropdown.SelectedItem).Name;
             Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
             mgr.ShowDialog();
+            FillCredentials(cred);
         }
 
         private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)

@@ -21,6 +21,7 @@ namespace Terminals.Security {
                 this.label2.Visible = true;
                 //System.Windows.Forms.MessageBox.Show("Invalid Password.");
             } else {
+                Settings.KeyMaterial = Unified.Encryption.Hash.Hash.GetHash(newPass + hashedPassword, Unified.Encryption.Hash.Hash.HashType.SHA512);
                 this.DialogResult = DialogResult.OK;
                 this.Hide();
             }

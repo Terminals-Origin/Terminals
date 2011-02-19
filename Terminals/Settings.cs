@@ -14,8 +14,9 @@ namespace Terminals
     {
         private static Configuration _config = null;
         private static bool _delayConfigurationSave = false;
-        public static string ToolStripSettingsFile = "ToolStrip.settings.config";
+        public static string ToolStripSettingsFile = "ToolStrip.settings.config";         
         private static TerminalsConfigurationSection _terminalsConfigurationSection;
+        private static string keyMaterial = string.Empty;
         public enum SortProperties { ServerName, ConnectionName, Protocol, None }
 
         #region public
@@ -691,7 +692,6 @@ namespace Terminals
                 if (!_delayConfigurationSave) configuration.Save();
             }
         }
-
         public static string FlickrToken
         {
             get
@@ -738,6 +738,17 @@ namespace Terminals
                 Configuration configuration = Config;
                 GetSection(configuration).TerminalsPassword = value;
                 if (!_delayConfigurationSave) configuration.Save();
+            }
+        }
+        public static string KeyMaterial
+        {
+            get
+            {
+                return keyMaterial;
+            }
+            set
+            {
+                keyMaterial = value;
             }
         }
         public static bool ForceComputerNamesAsURI
@@ -1158,6 +1169,7 @@ namespace Terminals
                 if (!_delayConfigurationSave) configuration.Save();
             }
         }
+
         public static bool ShowWizard
         {
             get
