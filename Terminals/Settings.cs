@@ -1043,11 +1043,15 @@ namespace Terminals
                 string root;
                 _terminalsConfigurationSection = GetSection();
                 if (_terminalsConfigurationSection == null)
-                    root = @".\CaptureRoot";
+                    root = System.IO.Path.Combine(System.Environment.CurrentDirectory, "CaptureRoot");
                 else
                     root = _terminalsConfigurationSection.CaptureRoot;
+
                 if (string.IsNullOrEmpty(root))
+                {
+                    root = System.IO.Path.Combine(System.Environment.CurrentDirectory, "CaptureRoot");
                     CaptureRoot = root;
+                }
 
                 if (!Directory.Exists(root))
                 {
