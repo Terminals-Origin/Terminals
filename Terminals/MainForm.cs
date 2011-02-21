@@ -1385,7 +1385,7 @@ namespace Terminals {
 
         private void QuickContextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            QuickContextMenu.Hide();
+            
 
             if (
                 e.ClickedItem.Text == Program.Resources.GetString("Restore") ||
@@ -1424,6 +1424,11 @@ namespace Terminals {
                 menuStrip.Visible = visible;
                 menubarToolStripMenuItem.Checked = visible;
             }
+            else if (e.ClickedItem.Text == Program.Resources.GetString("SpecialCommands"))
+            {
+                return;
+            }
+
             else
             {
                 string tag = (e.ClickedItem.Tag as string);
@@ -1448,6 +1453,8 @@ namespace Terminals {
                     }
                 }
             }
+
+            QuickContextMenu.Hide();
         }
 
         private void SingleInstanceApplication_NewInstanceMessage(object sender, object message)
