@@ -11,5 +11,8 @@ namespace Terminals
         public static extern int PostMessage(HandleRef hwnd, int msg, IntPtr wparam, IntPtr lparam);
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern bool ShowWindow(HandleRef hWnd, int nCmdShow);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        public static extern bool SetForegroundWindow(HandleRef hWnd);
+
     }
 }

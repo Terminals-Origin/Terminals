@@ -1454,6 +1454,7 @@ namespace Terminals {
         {
             if (WindowState == FormWindowState.Minimized)
                 NativeApi.ShowWindow(new HandleRef(this, this.Handle), 9);
+            NativeApi.SetForegroundWindow(new HandleRef(this, this.Handle));
             Activate();
         }
 
