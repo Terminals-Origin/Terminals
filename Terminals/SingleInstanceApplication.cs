@@ -25,7 +25,7 @@ namespace Terminals
 
             public struct COPYDATASTRUCT
             {
-                public int dwData;
+                public IntPtr dwData;
                 public int cbData;
                 public IntPtr lpData;
             }
@@ -51,7 +51,7 @@ namespace Terminals
                     {
                         byte[] buffer = new byte[data.cbData];
                         Marshal.Copy(data.lpData, buffer, 0, buffer.Length);
-                        obj = Deserialize(buffer);
+                        obj = Deserialize(ref buffer);
                     }
                     _theInstance.OnNewInstanceMessage(obj);
                 }
@@ -69,7 +69,7 @@ namespace Terminals
         Semaphore _instanceCounter;
         //Is this the first instance?
         bool _firstInstance;
-        
+
         SIANativeWindow _notifcationWindow;
 
         private void Dispose()
@@ -111,6 +111,7 @@ namespace Terminals
 
         private bool NotifyPreviousInstance(object message)
         {
+            Terminals.Logging.Log.Info("NotifyPreviousInstance", null);
             IntPtr handle = NativeMethods.FindWindow(null, _id);
             if (handle != IntPtr.Zero)
             {
@@ -123,7 +124,7 @@ namespace Terminals
                         byte[] buffer = Serialize(message);
                         bufferHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
 
-                        data.dwData = 0;
+                        data.dwData = IntPtr.Zero;
                         data.cbData = buffer.Length;
                         data.lpData = bufferHandle.AddrOfPinnedObject();
                     }
@@ -149,7 +150,7 @@ namespace Terminals
         }
 
         //utility method for serialization\deserialization
-        private static object Deserialize(byte[] buffer)
+        private static object Deserialize(ref byte[] buffer)
         {
             using (MemoryStream stream = new MemoryStream(buffer))
             {
