@@ -12,74 +12,86 @@ namespace WalburySoftware
 	public class TerminalEmulator : Control
 	{
 		#region Public Properties
+
 		public int Rows
 		{
 			get
 			{
 				return _rows;
 			}
+
 			set
 			{
 			}
 		}
+
 		public int Columns
 		{
 			get
 			{
 				return _cols;
 			}
+
 			set
 			{
 			}
 		}
+
 		#endregion
+
 		#region Public Methods
+
 		public void IndicateData (byte[] data)
 		{
-	            string sReceived = Encoding.Default.GetString(data, 0, data.Length);
-				this.Invoke(this.RxdTextEvent, new System.String[] {System.String.Copy (sReceived)});
-				this.Invoke(this.RefreshEvent);
+			string sReceived = Encoding.Default.GetString(data, 0, data.Length);
+			this.Invoke(this.RxdTextEvent, new System.String[] {System.String.Copy (sReceived)});
+			this.Invoke(this.RefreshEvent);
 		}
+
 		public StringCollection ScreenScrape(int StartRow, int StartColumn, int EndRow, int EndColumn)
 		{
-            //this.CharGrid[7][13] TODO what happened to this ?
-            //this.CharGrid[ROW][COL]
-            //
-            StringCollection ScrapedText = new StringCollection();
+			////this.CharGrid[7][13] TODO what happened to this ?
+			////this.CharGrid[ROW][COL]
+			
+			StringCollection ScrapedText = new StringCollection();
 
-            string row = "";
-            int cStart = 0;
-            int cEnd = this._cols;
+			string row = "";
+			int cStart = 0;
+			int cEnd = this._cols;
 
-            for (int r = StartRow; r <= EndRow; r++)
-            {
-                if (r == StartRow)
-                    cStart = StartColumn;
-                if (r == EndRow)
-                    cEnd = EndColumn;
-                for (int c = cStart; c <= cEnd; c++)
-                {
-                    char val = this.CharGrid[r][c];;
-                    if (val == '\0') break;
-                    row = row + val;                        
-                }
-                ScrapedText.Add(row);
-                row = "";
-                cStart = 0;
-                cEnd = this._cols;
-            }
+			for (int r = StartRow; r <= EndRow; r++)
+			{
+				if (r == StartRow)
+					cStart = StartColumn;
+
+				if (r == EndRow)
+					cEnd = EndColumn;
+
+				for (int c = cStart; c <= cEnd; c++)
+				{
+					char val = this.CharGrid[r][c];;
+					if (val == '\0') break;
+					row = row + val;                        
+				}
+				ScrapedText.Add(row);
+				row = "";
+				cStart = 0;
+				cEnd = this._cols;
+			}
 
 			return ScrapedText;
 		}
 
 		#endregion
+
 		#region public enums
 		#endregion
+
 		#region Fields
 		public  string						TerminalType = "vt220";
-		private State						receiveState;
+		//private State						receiveState;
 
-        private ContextMenu					contextMenu1;    // rightclick menu
+		private ContextMenu					contextMenu1;    // rightclick menu
 		private MenuItem					mnuCopy;
 		private MenuItem					mnuPaste;
 		private MenuItem					mnuCopyPaste;
@@ -121,27 +133,43 @@ namespace WalburySoftware
 		private  uc_Mode                      Modes;
 		private uc_VertScrollBar             VertScrollBar;
 		#endregion
+
 		#region Public Delegates
+
 		public delegate void DataRequest(byte[] data);
+
 		private delegate void KeyboardEventHandler (object Sender, System.String e);
+
 		private delegate void RefreshEventHandler ();
+
 		private delegate void RxdTextEventHandler (System.String sReceived);
+
 		private delegate void CaretOffEventHandler ();
+
 		private delegate void CaretOnEventHandler ();
+
 		private delegate void ParserEventHandler (object Sender, ParserEventArgs e);
+
 		#endregion
+
 		#region Events
-	    public event DataRequest OnDataRequested;
+
+		public event DataRequest OnDataRequested;
+
 		private event RefreshEventHandler RefreshEvent;
+
 		private event RxdTextEventHandler RxdTextEvent;
+
 		private event CaretOffEventHandler CaretOffEvent;
+
 		private event CaretOnEventHandler CaretOnEvent;
+
 		#endregion
+
 		#region Constructors
 
 		public TerminalEmulator ()
 		{ 
-		
 			this.ScrollbackBufferSize = 3000;
 			this.ScrollbackBuffer = new StringCollection();
 
@@ -155,22 +183,22 @@ namespace WalburySoftware
 			this.TabStops       = new uc_TabStops ();
 			this.SavedCarets    = new System.Collections.ArrayList ();
 
-			//this.Name       = "ACK-TERM";
-			//this.Text       = "ACK-TERM";
+			////this.Name = "ACK-TERM";
+			////this.Text = "ACK-TERM";
 
 			this.Caret.Pos  = new System.Drawing.Point (0, 0); 
 			this.CharSize   = new System.Drawing.Size ();
 			this.Font       = new System.Drawing.Font (this.TypeFace, this.TypeSize, this.TypeStyle);
-			//this.Font       = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
+			////this.Font       = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
 
-			//this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
+			////this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
 			this.FGColor      = System.Drawing.Color.GreenYellow;
 			this.BackColor    = System.Drawing.Color.FromArgb (0, 0, 160);
 			this.BoldColor    = System.Drawing.Color.FromArgb (255, 255, 255);
 			this.BlinkColor   = System.Drawing.Color.Red;
 
-            this.G0 = new uc_Chars(uc_Chars.Sets.ASCII);
-            this.G1 = new uc_Chars(uc_Chars.Sets.ASCII);
+			this.G0 = new uc_Chars(uc_Chars.Sets.ASCII);
+			this.G1 = new uc_Chars(uc_Chars.Sets.ASCII);
 			this.G2 = new uc_Chars (uc_Chars.Sets.DECSG);
 			this.G3 = new uc_Chars (uc_Chars.Sets.DECSG);
 
@@ -186,9 +214,10 @@ namespace WalburySoftware
 			this.mnuPaste = new MenuItem("Paste");
 			this.mnuCopyPaste = new MenuItem("Copy and Paste");
 			this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																						 this.mnuCopyPaste,
-																						 this.mnuPaste,
-																						 this.mnuCopy});
+																						this.mnuCopyPaste,
+																						this.mnuPaste,
+																						this.mnuCopy
+																					  });
 			this.mnuCopy.Index = 0;
 			this.mnuPaste.Index = 1;
 			this.mnuCopyPaste.Index = 2;
@@ -197,14 +226,13 @@ namespace WalburySoftware
 			this.mnuPaste.Click += new System.EventHandler(this.mnuPaste_Click);
 			this.mnuCopyPaste.Click += new System.EventHandler(this.mnuCopyPaste_Click);
 
-
 			// Create and initialize a VScrollBar.
 			VertScrollBar = new uc_VertScrollBar();
 			VertScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleScroll);
 
 			// Dock the scroll bar to the right side of the form.
 			VertScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
-    
+	
 			// Add the scroll bar to the form.
 			Controls.Add (VertScrollBar);
 
@@ -221,10 +249,10 @@ namespace WalburySoftware
 
 			this.BeginDrag = new System.Drawing.Point();
 			this.EndDrag   = new System.Drawing.Point();
-			
 		}
 
 		#endregion
+
 		#region Overrides
 		protected override void OnResize (System.EventArgs e)
 		{
@@ -453,6 +481,7 @@ namespace WalburySoftware
 					this.AttribGrid[curRow][curCol].IsInverse = true;
 				}
 			}
+
 			this.Refresh();
 		}
 		
@@ -469,7 +498,6 @@ namespace WalburySoftware
 					this.Refresh();
 				}				
 			}
-		
 		}
 
 		protected override void OnMouseDown (System.Windows.Forms.MouseEventArgs CurArgs)
@@ -506,17 +534,16 @@ namespace WalburySoftware
 				this.BeginDrag.Y = CurArgs.Y;
 			}
 			
-			
 			base.OnMouseDown (CurArgs);
 		}
 
 		protected override void OnFontChanged (EventArgs e)
 		{
 			//MessageBox.Show(this.Font.Name + " " + Convert.ToString(this.Font.Size));
-
-
 		}
+
 		#endregion
+
 		#region Private Methods
 
 		private void mnuCopy_Click (object sender, System.EventArgs e)
@@ -567,6 +594,7 @@ namespace WalburySoftware
 								}
 							}
 						}
+
 						break;
 					}
 
@@ -588,42 +616,45 @@ namespace WalburySoftware
 				}
 			} // row parse
 			Console.WriteLine("start.Y " + Convert.ToString(start.Y) +
-				             " start.X " + Convert.ToString(start.X) +
-				             " stop.Y "  + Convert.ToString(stop.Y)  +
-				             " stop.X "  + Convert.ToString(stop.X));
+							 " start.X " + Convert.ToString(start.X) +
+							 " stop.Y "  + Convert.ToString(stop.Y)  +
+							 " stop.X "  + Convert.ToString(stop.X));
 
 			StringCollection sc = this.ScreenScrape (start.Y, start.X, stop.Y, stop.X);
 
-            if (sc != null && sc.Count > 0)
-            {
-                string[] lines = new string[sc.Count];
-                sc.CopyTo(lines, 0);
-                try
-                {
-                    Clipboard.SetDataObject(string.Join("\n", lines),false,5,10);
-                }
-                catch (Exception err)
-                {
-                    //MessageBox.Show("Copy Error occured: " + err.ToString());
-                }
-            }
+			if (sc != null && sc.Count > 0)
+			{
+				string[] lines = new string[sc.Count];
+				sc.CopyTo(lines, 0);
+				try
+				{
+					Clipboard.SetDataObject(string.Join("\n", lines),false,5,10);
+				}
+				catch (Exception)
+				{
+					//MessageBox.Show("Copy Error occured: " + err.ToString());
+				}
+			}
 		}
+
 		private void mnuPaste_Click (object sender, System.EventArgs e)
 		{
-            try
-            {
-                DispatchMessage(this, Clipboard.GetText());
-            }
-            catch (Exception err)
-            {
-                //MessageBox.Show("Paste Error occured: " + err.ToString());
-            }
+			try
+			{
+				DispatchMessage(this, Clipboard.GetText());
+			}
+			catch (Exception)
+			{
+				//MessageBox.Show("Paste Error occured: " + err.ToString());
+			}
 		}
+
 		private void mnuCopyPaste_Click (object sender, System.EventArgs e)
 		{
 			mnuCopy_Click(sender, e);
-            mnuPaste_Click(sender, e);
+			mnuPaste_Click(sender, e);
 		}
+
 		private void HandleScroll(Object sender, ScrollEventArgs se)
 		{
 			// capture text at cursor
@@ -668,7 +699,6 @@ namespace WalburySoftware
 			{
 				this.LastVisibleLine = (0 - this.ScrollbackBuffer.Count) + (this._rows)-1;
 			}
-
 
 			int columns = this._cols;
 			int rows    = this._rows;
@@ -721,6 +751,7 @@ namespace WalburySoftware
 
 			this.Refresh();
 		}
+
 		private void SetScrollBarValues()
 		{
 			// Set the Maximum, Minimum, LargeChange and SmallChange properties.
@@ -756,8 +787,6 @@ namespace WalburySoftware
 
 		private void DispatchMessage (System.Object sender, string strText)
 		{
-            
-			//Console.WriteLine(strText);
 			if (this.XOFF == true || OnDataRequested == null)
 			{
 				// store the characters in the outputbuffer
@@ -771,29 +800,35 @@ namespace WalburySoftware
 					OutBuff = "";
 				}
 
-                if (strText == '\r'.ToString())
-                {
-                    history.Add(keyboardBuffer);
-                    keyboardBuffer = "";
-                }
-                else
-                {
-                    if (this.Keyboard.UpArrow)
-                    {
-                        //wipe the current input
-                        //replace it with the history index -1
-                    }
-                    else
-                    {
-                        keyboardBuffer += strText;
-                    }
-                }
+				if (strText == '\r'.ToString())
+				{
+					history.Add(keyboardBuffer);
+					keyboardBuffer = "";
+				}
+				else if (strText == "Paste")
+				{
+					strText = string.Empty;
+					DispatchMessage(this, Clipboard.GetText());
+				}
+				else
+				{
+					if (this.Keyboard.UpArrow)
+					{
+						// wipe the current input
+						// replace it with the history index -1
+					}
+					else
+					{
+						keyboardBuffer += strText;
+					}
+				}
 
 				OnDataRequested(Encoding.Default.GetBytes(strText));
 			}
 		}
-        string keyboardBuffer = "";
-        System.Collections.Generic.List<string> history = new System.Collections.Generic.List<string>();
+
+		string keyboardBuffer = "";
+		System.Collections.Generic.List<string> history = new System.Collections.Generic.List<string>();
 
 		private void PrintChar (System.Char CurChar)
 		{
@@ -816,7 +851,8 @@ namespace WalburySoftware
 			{
 				CurChar = uc_Chars.Get (CurChar, this.AttribGrid[Y][X].GS.Set, this.AttribGrid[Y][X].GR.Set);
 
-				if (this.CharAttribs.GS.Set == uc_Chars.Sets.DECSG) this.AttribGrid[Y][X].IsDECSG = true;
+				if (this.CharAttribs.GS.Set == uc_Chars.Sets.DECSG)
+					this.AttribGrid[Y][X].IsDECSG = true;
 
 				this.CharAttribs.GS = null;
 			}
@@ -828,7 +864,6 @@ namespace WalburySoftware
 			}   
 
 			this.CharGrid[Y][X] = CurChar;
-
 			this.CaretRight ();
 		}
 
@@ -838,17 +873,10 @@ namespace WalburySoftware
 			// with an offset. This is annoying when the other draw commands do not print with an offset
 			// this method returns a point defining the offset so we can take it off the printstring command.
 
-			System.Drawing.CharacterRange[] characterRanges =
-		   {
-			   new System.Drawing.CharacterRange(0, 1)
-		   };
- 
+			System.Drawing.CharacterRange[] characterRanges = { new System.Drawing.CharacterRange(0, 1) };
 			System.Drawing.RectangleF layoutRect = new System.Drawing.RectangleF (X, Y, 100, 100);
-
 			System.Drawing.StringFormat stringFormat = new System.Drawing.StringFormat();
-
 			stringFormat.SetMeasurableCharacterRanges(characterRanges);
-
 			System.Drawing.Region[] stringRegions = new System.Drawing.Region[1];
 
 			stringRegions = CurGraphics.MeasureCharacterRanges(
@@ -858,27 +886,19 @@ namespace WalburySoftware
 				stringFormat);
 
 			System.Drawing.RectangleF measureRect1 = stringRegions[0].GetBounds (CurGraphics);
-
 			return new System.Drawing.Point ((int) (measureRect1.X + 0.5), (int) (measureRect1.Y + 0.5));
 		}
-        
+		
 		private System.Drawing.Point GetCharSize (System.Drawing.Graphics CurGraphics)
 		{
 			// DrawString doesn't actually print where you tell it to but instead consistently prints
 			// with an offset. This is annoying when the other draw commands do not print with an offset
 			// this method returns a point defining the offset so we can take it off the printstring command.
 
-			System.Drawing.CharacterRange[] characterRanges =
-		   {
-			   new System.Drawing.CharacterRange(0, 1)
-		   };
- 
+			System.Drawing.CharacterRange[] characterRanges = { new System.Drawing.CharacterRange(0, 1) };
 			System.Drawing.RectangleF layoutRect = new System.Drawing.RectangleF (0, 0, 100, 100);
-
 			System.Drawing.StringFormat stringFormat = new System.Drawing.StringFormat();
-
 			stringFormat.SetMeasurableCharacterRanges(characterRanges);
-
 			System.Drawing.Region[] stringRegions = new System.Drawing.Region[1];
 
 			stringRegions = CurGraphics.MeasureCharacterRanges(
@@ -888,13 +908,11 @@ namespace WalburySoftware
 				stringFormat);
 
 			System.Drawing.RectangleF measureRect1 = stringRegions[0].GetBounds (CurGraphics);
-
 			return new System.Drawing.Point ((int) (measureRect1.Width + 0.5), (int) (measureRect1.Height + 0.5));
 		}
 
 		private void AssignColors (CharAttribStruct CurAttribs, ref System.Drawing.Color CurFGColor, ref System.Drawing.Color CurBGColor)
 		{
-
 			CurFGColor = this.FGColor; 
 			CurBGColor = this.BackColor;
 
@@ -933,9 +951,7 @@ namespace WalburySoftware
 			if ((this.Modes.Flags & uc_Mode.LightBackground) > 0 &&
 				CurAttribs.UseAltColor == false && CurAttribs.UseAltBGColor == false)
 			{
-
 				System.Drawing.Color TmpColor = CurBGColor;
-
 				CurBGColor = CurFGColor;
 				CurFGColor = TmpColor;
 			}
@@ -956,22 +972,16 @@ namespace WalburySoftware
 			if ((CurBGColor != this.BackColor && (this.Modes.Flags & uc_Mode.LightBackground) == 0) ||
 				(CurBGColor != this.FGColor   && (this.Modes.Flags & uc_Mode.LightBackground) > 0))
 			{
-
 				// Erase the current Character underneath the cursor postion
 				this.EraseBuffer.Clear (CurBGColor);
 
 				// paint a rectangle over the cursor position in the character's BGColor
-				CurGraphics.DrawImageUnscaled (
-					this.EraseBitmap, 
-					X, 
-					Y);
+				CurGraphics.DrawImageUnscaled (this.EraseBitmap, X, Y);
 			}
 
 			if (CurAttribs.IsUnderscored)
 			{
-				CurGraphics.DrawLine (new System.Drawing.Pen (CurFGColor, 1),
-					X,                       Y + this.UnderlinePos,   
-					X + this.CharSize.Width, Y + this.UnderlinePos);
+				CurGraphics.DrawLine (new System.Drawing.Pen (CurFGColor, 1), X, Y + this.UnderlinePos, X + this.CharSize.Width, Y + this.UnderlinePos);
 			}   
 
 			if ((CurAttribs.IsDECSG == true) &&
@@ -988,24 +998,12 @@ namespace WalburySoftware
 				CurChar == 'j' ||
 				CurChar == '`'))
 			{
-				this.ShowSpecialChar (
-					CurGraphics,
-					CurChar, 
-					Y,
-					X,
-					CurFGColor,
-					CurBGColor);
-
+				this.ShowSpecialChar (CurGraphics, CurChar, Y, X, CurFGColor, CurBGColor);
 				return;               
 			}
 
-			CurGraphics.DrawString (
-				CurChar.ToString (), 
-				this.Font, 
-				new System.Drawing.SolidBrush (CurFGColor),
-				X - this.DrawStringOffset.X,
-				Y - this.DrawStringOffset.Y);
-
+			CurGraphics.DrawString (CurChar.ToString (), this.Font, new System.Drawing.SolidBrush (CurFGColor),
+				X - this.DrawStringOffset.X, Y - this.DrawStringOffset.Y);
 		}
 
 		private void ShowSpecialChar (System.Drawing.Graphics CurGraphics, System.Char CurChar, System.Int32 Y, System.Int32 X, System.Drawing.Color CurFGColor, System.Drawing.Color CurBGColor)
@@ -1126,7 +1124,6 @@ namespace WalburySoftware
 				default:
 					break;
 			}
-
 		}
 
 		private void WipeScreen (System.Drawing.Graphics CurGraphics)
@@ -1159,6 +1156,7 @@ namespace WalburySoftware
 						System.Array.Clear (this.CharGrid[i],   0, this.CharGrid[i].Length);
 						System.Array.Clear (this.AttribGrid[i], 0, this.AttribGrid[i].Length);
 					}
+
 					break;
 
 				case 1: // from top to cursor inclusive
@@ -1171,6 +1169,7 @@ namespace WalburySoftware
 						System.Array.Clear (this.CharGrid[i],   0, this.CharGrid[i].Length);
 						System.Array.Clear (this.AttribGrid[i], 0, this.AttribGrid[i].Length);
 					}
+
 					break;
 
 				case 2: // entire screen
@@ -1180,6 +1179,7 @@ namespace WalburySoftware
 						System.Array.Clear (this.CharGrid[i],   0, this.CharGrid[i].Length);
 						System.Array.Clear (this.AttribGrid[i], 0, this.AttribGrid[i].Length);
 					}
+
 					break;
 
 				default:
@@ -1223,9 +1223,7 @@ namespace WalburySoftware
 		private void Redraw (System.Drawing.Graphics CurGraphics)
 		{
 			System.Drawing.Point CurPoint;
-
 			System.Char CurChar;
-
 
 			// refresh the screen
 			for (System.Int32 Y = 0; Y < this._rows; Y++)
@@ -1233,24 +1231,14 @@ namespace WalburySoftware
 				for (System.Int32 X = 0; X < this._cols; X++)
 				{
 					CurChar = this.CharGrid[Y][X];
-
 					if (CurChar == '\0')
 					{
 						continue;
 					}
 
-					CurPoint = new System.Drawing.Point (
-						X * this.CharSize.Width,
-						Y * this.CharSize.Height);
-
-					this.ShowChar (
-						CurGraphics,
-						CurChar, 
-						CurPoint.Y,
-						CurPoint.X,
-						this.AttribGrid[Y][X]);		
+					CurPoint = new System.Drawing.Point (X * this.CharSize.Width, Y * this.CharSize.Height);
+					this.ShowChar (CurGraphics, CurChar, CurPoint.Y, CurPoint.X, this.AttribGrid[Y][X]);		
 				}
-				
 			} 
 		}		
 
@@ -1299,6 +1287,7 @@ namespace WalburySoftware
 					{
 						this.TabStops.Columns[i] = false;
 					}
+
 					break;
 
 				default:
@@ -1308,25 +1297,19 @@ namespace WalburySoftware
 
 		private void ReverseLineFeed ()
 		{
-
 			// if we're at the top of the scroll region (top margin)
 			if (this.Caret.Pos.Y == this.TopMargin)
 			{
 				// we need to add a new line at the top of the screen margin
 				// so shift all the rows in the scroll region down in the array and
 				// insert a new row at the top
-                
-				int i;
-
-   
-				for (i = this.BottomMargin; i > this.TopMargin; i--)
+				for (int i = this.BottomMargin; i > this.TopMargin; i--)
 				{
 					this.CharGrid[i]   = this.CharGrid[i - 1];
 					this.AttribGrid[i] = this.AttribGrid[i - 1];
 				}
 
 				this.CharGrid[this.TopMargin] = new System.Char[this._cols];
-
 				this.AttribGrid[this.TopMargin] = new CharAttribStruct[this._cols];
 			}
 
@@ -1335,16 +1318,13 @@ namespace WalburySoftware
 
 		private void InsertLine (uc_Params CurParams)
 		{
-
 			// if we're not in the scroll region then bail
-			if (this.Caret.Pos.Y < this.TopMargin ||
-				this.Caret.Pos.Y > this.BottomMargin)
+			if (this.Caret.Pos.Y < this.TopMargin || this.Caret.Pos.Y > this.BottomMargin)
 			{
 				return;
 			}
 
 			System.Int32 NbrOff = 1;
-
 			if (CurParams.Count () > 0)
 			{
 				NbrOff = System.Convert.ToInt32 (CurParams.Elements[0]);
@@ -1352,34 +1332,29 @@ namespace WalburySoftware
 
 			while (NbrOff > 0)
 			{ 
-
 				// Shift all the rows from the current row to the bottom margin down one place
 				for (int i = this.BottomMargin; i > this.Caret.Pos.Y; i--)
 				{
 					this.CharGrid[i]   = this.CharGrid[i - 1];
 					this.AttribGrid[i] = this.AttribGrid[i - 1];
 				}
-                 
 
 				this.CharGrid[this.Caret.Pos.Y]   = new System.Char[this._cols];
 				this.AttribGrid[this.Caret.Pos.Y] = new CharAttribStruct[this._cols];
 
 				NbrOff--;
 			}
-
 		}
 
 		private void DeleteLine (uc_Params CurParams)
 		{
 			// if we're not in the scroll region then bail
-			if (this.Caret.Pos.Y < this.TopMargin ||
-				this.Caret.Pos.Y > this.BottomMargin)
+			if (this.Caret.Pos.Y < this.TopMargin || this.Caret.Pos.Y > this.BottomMargin)
 			{
 				return;
 			}
 
 			System.Int32 NbrOff = 1;
-
 			if (CurParams.Count () > 0)
 			{
 				NbrOff = System.Convert.ToInt32 (CurParams.Elements[0]);
@@ -1387,7 +1362,6 @@ namespace WalburySoftware
 
 			while (NbrOff > 0)
 			{ 
-
 				// Shift all the rows from below the current row to the bottom margin up one place
 				for (int i = this.Caret.Pos.Y; i < this.BottomMargin; i++)
 				{
@@ -1408,14 +1382,12 @@ namespace WalburySoftware
 
 			// capture the new line into the scrollback buffer
 			if (this.ScrollbackBuffer.Count < this.ScrollbackBufferSize)
-			{
-				
+			{				
 			}
 			else 
 			{
 				this.ScrollbackBuffer.RemoveAt(0);
 			}
-
 
 			string s = "";
 			for (int x = 0; x < this._cols; x++)
@@ -1426,21 +1398,19 @@ namespace WalburySoftware
 				{
 					continue;
 				}
+
 				s = s + Convert.ToString(CurChar);
 			}
+
 			this.ScrollbackBuffer.Add(s);
-			//System.Console.WriteLine("there are " + Convert.ToString(this.ScrollbackBuffer.Count) + " lines in the scrollback buffer");
-			//System.Console.WriteLine(s);
-
-
+			////System.Console.WriteLine("there are " + Convert.ToString(this.ScrollbackBuffer.Count) + " lines in the scrollback buffer");
+			////System.Console.WriteLine(s);
 
 			if (this.Caret.Pos.Y == this.BottomMargin || this.Caret.Pos.Y == this._rows - 1)
 			{
 				// we need to add a new line so shift all the rows up in the array and
 				// insert a new row at the bottom
-                
 				int i;
-
 				for (i = this.TopMargin; i < this.BottomMargin; i++)
 				{
 					this.CharGrid[i]   = this.CharGrid[i + 1];
@@ -1449,16 +1419,15 @@ namespace WalburySoftware
 
 				this.CharGrid[i]   = new System.Char[this._cols];
 				this.AttribGrid[i] = new CharAttribStruct[this._cols];
-
 			}
 
 			this.CaretDown ();
-
 		}
 
 		private void Index (System.Int32 Param)
 		{
-			if (Param == 0) Param = 1;
+			if (Param == 0) 
+				Param = 1;
 
 			for (int i = 0; i < Param; i++)
 			{
@@ -1468,7 +1437,8 @@ namespace WalburySoftware
 
 		private void ReverseIndex (System.Int32 Param)
 		{
-			if (Param == 0) Param = 1;
+			if (Param == 0) 
+				Param = 1;
 
 			for (int i = 0; i < Param; i++)
 			{
@@ -1494,7 +1464,6 @@ namespace WalburySoftware
 			}
 
 			this.Caret.IsOff = false;
-
 		}
 
 		private void ShowCaret (System.Drawing.Graphics CurGraphics)
@@ -1508,10 +1477,7 @@ namespace WalburySoftware
 			}
 
 			// paint a rectangle over the cursor position
-			CurGraphics.DrawImageUnscaled (
-				this.Caret.Bitmap, 
-				X * (int) this.CharSize.Width, 
-				Y * (int) this.CharSize.Height);
+			CurGraphics.DrawImageUnscaled (this.Caret.Bitmap, X * (int) this.CharSize.Width, Y * (int) this.CharSize.Height);
 
 			// if we don't have a char to redraw then leave
 			if (this.CharGrid[Y][X] == '\0')
@@ -1520,7 +1486,6 @@ namespace WalburySoftware
 			}
 
 			CharAttribStruct CurAttribs = new CharAttribStruct ();
-
 			CurAttribs.UseAltColor = true;
 
 			CurAttribs.GL = this.AttribGrid[Y][X].GL;
@@ -1540,12 +1505,8 @@ namespace WalburySoftware
 			CurAttribs.IsDECSG       = this.AttribGrid[Y][X].IsDECSG;
  
 			// redispay the current char in the background colour
-			this.ShowChar (
-				CurGraphics,
-				this.CharGrid[Y][X], 
-				Caret.Pos.Y * this.CharSize.Height,
-				Caret.Pos.X * this.CharSize.Width,
-				CurAttribs);
+			this.ShowChar (CurGraphics, this.CharGrid[Y][X], Caret.Pos.Y * this.CharSize.Height, 
+				Caret.Pos.X * this.CharSize.Width, CurAttribs);
 		}
 
 		private void CaretUp ()
@@ -1602,7 +1563,6 @@ namespace WalburySoftware
 				   sort that out for us. The ToAbs code is used internally by this prog 
 				   but is smart enough to stay within the margins if the originrelative 
 				   flagis set. */
-
 			if ((this.Modes.Flags & uc_Mode.OriginRelative) == 0)
 			{
 				this.CaretToAbs (Y, X);
@@ -1677,13 +1637,11 @@ namespace WalburySoftware
 
 		private void CommandRouter (object Sender, ParserEventArgs e)
 		{
-
-
 			switch (e.Action)
 			{
 				case Actions.Print:
 					this.PrintChar (e.CurChar);
-					//System.Console.Write ("{0}", e.CurChar);
+					////System.Console.Write ("{0}", e.CurChar);
 					break;
 
 				case Actions.Execute:
@@ -1698,7 +1656,6 @@ namespace WalburySoftware
 			}
 
 			System.Int32 Param = 0;
-
 			System.Int32 Inc = 1; // increment
 
 			switch (e.CurSequence)
@@ -1706,7 +1663,7 @@ namespace WalburySoftware
 				case "":
 					break;
 
-				case "\x1b" + "7": //DECSC Save Cursor position and attributes
+				case "\x1b" + "7": // DECSC Save Cursor position and attributes
 					this.SavedCarets.Add (new uc_CaretAttribs (
 						this.Caret.Pos,
 						this.G0.Set, 
@@ -1714,10 +1671,10 @@ namespace WalburySoftware
 						this.G2.Set, 
 						this.G3.Set, 
 						this.CharAttribs));
-                                              
+											  
 					break;
 
-				case "\x1b" + "8": //DECRC Restore Cursor position and attributes
+				case "\x1b" + "8": // DECRC Restore Cursor position and attributes
 					this.Caret.Pos   = ((uc_CaretAttribs) this.SavedCarets[this.SavedCarets.Count - 1]).Pos;
 					this.CharAttribs = ((uc_CaretAttribs) this.SavedCarets[this.SavedCarets.Count - 1]).Attribs;
 
@@ -1759,12 +1716,12 @@ namespace WalburySoftware
 					for (int y = 0; y < this._rows; y++)
 					{
 						this.CaretToAbs (y, 0);
-
 						for (int x = 0; x < this._cols; x++)
 						{
 							this.PrintChar ('E');
 						}
 					}
+
 					break; 
 
 				case "\x1b=": // Keypad to Application mode
@@ -1782,7 +1739,8 @@ namespace WalburySoftware
 						Inc = System.Convert.ToInt32 (e.CurParams.Elements[0]); 
 					}
 
-					if (Inc == 0) Inc = 1;
+					if (Inc == 0)
+						Inc = 1;
 
 					this.CaretToAbs (this.Caret.Pos.Y + Inc, this.Caret.Pos.X);
 					break;
@@ -1794,7 +1752,8 @@ namespace WalburySoftware
 						Inc = System.Convert.ToInt32 (e.CurParams.Elements[0]); 
 					}
 
-					if (Inc == 0) Inc = 1;
+					if (Inc == 0) 
+						Inc = 1;
 
 					this.CaretToAbs (this.Caret.Pos.Y - Inc, this.Caret.Pos.X);
 					break;
@@ -1806,7 +1765,8 @@ namespace WalburySoftware
 						Inc = System.Convert.ToInt32 (e.CurParams.Elements[0]); 
 					}
 
-					if (Inc == 0) Inc = 1;
+					if (Inc == 0) 
+						Inc = 1;
 
 					this.CaretToAbs (this.Caret.Pos.Y, this.Caret.Pos.X + Inc);
 					break;
@@ -1818,7 +1778,8 @@ namespace WalburySoftware
 						Inc = System.Convert.ToInt32 (e.CurParams.Elements[0]); 
 					}
 
-					if (Inc == 0) Inc = 1;
+					if (Inc == 0) 
+						Inc = 1;
 
 					this.CaretToAbs (this.Caret.Pos.Y, this.Caret.Pos.X - Inc);
 					break;
@@ -1913,14 +1874,13 @@ namespace WalburySoftware
 					break;
 
 				case "\x1b[t": // DECSLPP Set Lines Per Page
-
 					if (e.CurParams.Count () > 0) 
 					{
 						Param = System.Convert.ToInt32 (e.CurParams.Elements[0]); 
 					}
 
-					if (Param > 0) this.SetSize (Param, this._cols);
-
+					if (Param > 0) 
+						this.SetSize (Param, this._cols);
 					break;
 
 				case "\x1b" + "D": // IND
@@ -1954,7 +1914,6 @@ namespace WalburySoftware
 				default:
 					//System.Console.Write ("unsupported VT sequence {0} happened\n", e.CurSequence);
 					break;
-                
 			}
 
 			if (e.CurSequence.StartsWith ("\x1b("))
@@ -2140,7 +2099,7 @@ namespace WalburySoftware
 				}
 				catch (System.Exception CurException)
 				{
-                    //System.Console.WriteLine (CurException.Message);
+					//System.Console.WriteLine (CurException.Message);
 					MessageBox.Show(CurException.Message);
 				}
 
@@ -2202,7 +2161,7 @@ namespace WalburySoftware
 				}
 				catch (System.Exception CurException)
 				{
-                    //System.Console.WriteLine (CurException.Message);
+					//System.Console.WriteLine (CurException.Message);
 					MessageBox.Show(CurException.Message);
 				}
 
@@ -2230,7 +2189,7 @@ namespace WalburySoftware
 				}
 				catch (System.Exception CurException)
 				{
-                    //System.Console.WriteLine (CurException.Message);
+					//System.Console.WriteLine (CurException.Message);
 					MessageBox.Show(CurException.Message);
 				}
 
@@ -2500,9 +2459,9 @@ namespace WalburySoftware
 			this.TopMargin    = 0;
 			this.BottomMargin = Rows - 1;
 
-			//this.ClientSize = new System.Drawing.Size (
-			//	System.Convert.ToInt32 (this.CharSize.Width  * this.Columns + 2) + this.VertScrollBar.Width,
-			//	System.Convert.ToInt32 (this.CharSize.Height * this.Rows    + 2));
+			////this.ClientSize = new System.Drawing.Size (
+			////	System.Convert.ToInt32 (this.CharSize.Width  * this.Columns + 2) + this.VertScrollBar.Width,
+			////	System.Convert.ToInt32 (this.CharSize.Height * this.Rows    + 2));
 
 			// create the character grid (rows by columns) this is a shadow of what's displayed
 			this.CharGrid = new System.Char[Rows][];
@@ -2536,13 +2495,12 @@ namespace WalburySoftware
 			this.CharSize.Width  = tmpPoint.X; // make a little breathing room
 			this.CharSize.Height = tmpPoint.Y;
 			
-			//Graphics g = this.CreateGraphics();
-			//SizeF size = g.MeasureString("_", this.Font);
-			//this.CharSize.Width = (int) size.Width;
-			//this.CharSize.Height = (int) size.Height;
+			////Graphics g = this.CreateGraphics();
+			////SizeF size = g.MeasureString("_", this.Font);
+			////this.CharSize.Width = (int) size.Width;
+			////this.CharSize.Height = (int) size.Height;
 
 			tmpGraphics.Dispose ();
-
 			this.UnderlinePos = this.CharSize.Height - 2;
 
 			this.Caret.Bitmap    =  new System.Drawing.Bitmap (this.CharSize.Width, this.CharSize.Height);
@@ -2550,8 +2508,6 @@ namespace WalburySoftware
 			this.Caret.Buffer.Clear (System.Drawing.Color.FromArgb (255, 181, 106));
 			this.EraseBitmap     =  new System.Drawing.Bitmap (this.CharSize.Width, this.CharSize.Height);
 			this.EraseBuffer     =  System.Drawing.Graphics.FromImage (this.EraseBitmap);
-
-			
 		}
 
 		private void OnClickFont (System.Object Sender, System.EventArgs e)
@@ -2576,34 +2532,35 @@ namespace WalburySoftware
 		}
 
 
-        // Handle Keyboard Events:		 -------------------------------------------
-        // These keys don't normally throw an OnKeyDown event. Returning true here fixes this.
-        protected override bool IsInputKey(Keys keyData)
-        {
-            switch (keyData)
-            {
-                case Keys.Tab:
-                case Keys.Up:
-                case Keys.Down:
-                case Keys.Left:
-                case Keys.Right:
-                case Keys.Shift:
-                // FIXME: still working on supporting the rest of the keyboard...
-                case Keys.RWin:
-                case Keys.LWin:
-                    return true;
-                default:
-                    return base.IsInputKey(keyData);
-            }
-        }
+		// Handle Keyboard Events:		 -------------------------------------------
+		// These keys don't normally throw an OnKeyDown event. Returning true here fixes this.
+		protected override bool IsInputKey(Keys keyData)
+		{
+			switch (keyData)
+			{
+				case Keys.Tab:
+				case Keys.Up:
+				case Keys.Down:
+				case Keys.Left:
+				case Keys.Right:
+				case Keys.Shift:
+				// FIXME: still working on supporting the rest of the keyboard...
+				case Keys.RWin:
+				case Keys.LWin:
+					return true;
+				default:
+					return base.IsInputKey(keyData);
+			}
+		}
 		#endregion
 
 		#region Private Classes
-		private struct State
-		{
-			public Stream stream;
-			public byte[] buffer;
-		}
+
+		//private struct State
+		//{
+		//    public Stream stream;
+		//    public byte[] buffer;
+		//}
 
 		private class uc_TabStops
 		{
@@ -2631,6 +2588,7 @@ namespace WalburySoftware
 				Columns[128] = true;
 			}
 		}
+
 		private class uc_CaretAttribs
 		{
 			public System.Drawing.Point Pos;
@@ -3059,20 +3017,20 @@ namespace WalburySoftware
 			private bool ShiftIsDown  = false;
 			private bool CtrlIsDown   = false;
 
-            public bool UpArrow { get; set; }
-            public bool DownArrow { get; set; }
-            public bool LeftArrow { get; set; }
-            public bool RightArrow { get; set; }
+			public bool UpArrow { get; set; }
+			public bool DownArrow { get; set; }
+			public bool LeftArrow { get; set; }
+			public bool RightArrow { get; set; }
 
 			private TerminalEmulator Parent;
-    
+	
 			private uc_KeyMap KeyMap = new uc_KeyMap ();
-    
+	
 			public uc_Keyboard (TerminalEmulator p1)
 			{
 				this.Parent = p1;
 			}
-    
+	
 			public void KeyDown (System.Windows.Forms.Message KeyMess)
 			{
 				System.Byte[] lBytes;
@@ -3083,21 +3041,20 @@ namespace WalburySoftware
 				System.Byte   AnsiChar    = 0;
 				System.UInt16 UniChar     = 0;
 				System.Byte   Flags       = 0;
-    
-    
+
 				lBytes = System.BitConverter.GetBytes (KeyMess.LParam.ToInt64 ());
-                wBytes = System.BitConverter.GetBytes(KeyMess.WParam.ToInt64());
+				wBytes = System.BitConverter.GetBytes(KeyMess.WParam.ToInt64());
 				RepeatCount = System.BitConverter.ToUInt16 (lBytes, 0);
 				ScanCode    = lBytes[2];
 				Flags       = lBytes[3];
-    
+
 				// key down messages send the scan code in wParam whereas
 				// key press messages send the char and unicode values in this word
 				if (KeyMess.Msg == WMCodes.WM_SYSKEYDOWN ||
 					KeyMess.Msg == WMCodes.WM_KEYDOWN)
 				{
 					KeyValue = System.BitConverter.ToUInt16 (wBytes, 0);
-    
+	
 					// set the key down flags. I know you can get alt from lparam flags
 					// but this feels more consistent
 					switch (KeyValue)
@@ -3107,39 +3064,55 @@ namespace WalburySoftware
 						case 161: // R Shift Keys
 							this.ShiftIsDown = true;
 							return;
-    
+	
 						case 17:  // Ctrl Keys
 						case 162: // L Ctrl Key
 						case 163: // R Ctrl Key
 							this.CtrlIsDown = true; 
 							return;
-    
+	
 						case 18:  // Alt Keys (Menu)
 						case 164: // L Alt Key
 						case 165: // R Ctrl Key
 							this.AltIsDown = true; 
 							return;
 
-                        case 38://up arrow
-                            this.UpArrow = true;
-                            break;
-                        case 40: //down arrow
-                            this.DownArrow = true;
-                            break;
-                        case 37: //left arrow
-                            this.LeftArrow = true;
-                            break;
-                        case 39: //right arrow
-                            this.RightArrow = true;
-                            break;
-    
+						case 38://up arrow
+							this.UpArrow = true;
+							break;
+						case 40: //down arrow
+							this.DownArrow = true;
+							break;
+						case 37: //left arrow
+							this.LeftArrow = true;
+							break;
+						case 39: //right arrow
+							this.RightArrow = true;
+							break;
+
+						case 45: // Shift-Insert for pasting
+							if (this.ShiftIsDown)
+							{
+								KeyboardEvent(this, "Paste");
+								this.LastKeyDownSent = true;
+								return;
+							}
+							break;
+						case 86: // Ctrl-V for pasting
+							if (this.CtrlIsDown)
+							{
+								KeyboardEvent(this, "Paste");
+								this.LastKeyDownSent = true;
+								return;
+							}
+							break;
 
 						default:
 							break;
 					}
-    
+	
 					System.String Modifier = "Key";
-    
+	
 					if (this.ShiftIsDown)
 					{
 						Modifier = "Shift"; 
@@ -3152,7 +3125,7 @@ namespace WalburySoftware
 					{
 						Modifier = "Alt"; 
 					}
-    
+	
 					// the key pressed was not a modifier so check for an override string
 					System.String OutString = KeyMap.Find (ScanCode, System.Convert.ToBoolean (Flags & 0x01), Modifier, Parent.Modes.Flags);
 
@@ -3165,13 +3138,13 @@ namespace WalburySoftware
 
 						KeyboardEvent (this, OutString); 
 					} 
-    
+	
 				}
 				else if (KeyMess.Msg == WMCodes.WM_SYSKEYUP ||
 					KeyMess.Msg == WMCodes.WM_KEYUP)
 				{
 					KeyValue = System.BitConverter.ToUInt16 (wBytes, 0);
-    
+	
 					switch (KeyValue)
 					{
 						case 16:  // Shift Keys
@@ -3179,47 +3152,47 @@ namespace WalburySoftware
 						case 161: // R Shift Keys
 							this.ShiftIsDown = false; 
 							break;
-    
+	
 						case 17:  // Ctrl Keys
 						case 162: // L Ctrl Key
 						case 163: // R Ctrl Key
 							this.CtrlIsDown = false; 
 							break;
-    
+	
 						case 18:  // Alt Keys (Menu)
 						case 164: // L Alt Key
 						case 165: // R Ctrl Key
 							this.AltIsDown = false; 
 							break;
 
-                        case 38://up arrow
-                            this.UpArrow = false;
-                            break;
-                        case 40: //down arrow
-                            this.DownArrow = false;
-                            break;
-                        case 37: //left arrow
-                            this.LeftArrow = false;
-                            break;
-                        case 39: //right arrow
-                            this.RightArrow = false;
-                            break;
-    
+						case 38://up arrow
+							this.UpArrow = false;
+							break;
+						case 40: //down arrow
+							this.DownArrow = false;
+							break;
+						case 37: //left arrow
+							this.LeftArrow = false;
+							break;
+						case 39: //right arrow
+							this.RightArrow = false;
+							break;
+	
 						default:
 							break;
 					}
 				}
-    
+	
 				else if (KeyMess.Msg == WMCodes.WM_SYSCHAR ||
 					KeyMess.Msg == WMCodes.WM_CHAR)
 				{
 					AnsiChar    = wBytes[0];
 					UniChar     = System.BitConverter.ToUInt16 (wBytes, 0);
-    
-    
+	
+	
 					// if there's a string mapped to this key combo we want to ignore the character
 					// as it has been overriden in the keydown event
-    
+	
 					// only send the windows generated char if there was no custom
 					// string sent by the keydown event
 					if (this.LastKeyDownSent == false)
@@ -3228,11 +3201,11 @@ namespace WalburySoftware
 						KeyboardEvent (this, System.Convert.ToChar (AnsiChar).ToString ()); 
 					}
 				}
-    
+	
 				//System.Console.Write ("AnsiChar = {0} Result = {1} ScanCode = {2} KeyValue = {3} Flags = {4} Repeat = {5}\n ", 
 				//AnsiChar, KeyMess.Result, ScanCode, KeyValue, Flags, RepeatCount);
 			}
-    
+	
 			private class uc_KeyInfo
 			{
 				public System.UInt16  ScanCode;
@@ -3241,7 +3214,7 @@ namespace WalburySoftware
 				public System.String  OutString;
 				public System.UInt32  Flag;
 				public System.UInt32  FlagValue;
-        
+		
 				public uc_KeyInfo (
 					System.UInt16  p1,
 					System.Boolean p2,
@@ -3262,18 +3235,18 @@ namespace WalburySoftware
 			private class uc_KeyMap
 			{
 				public System.Collections.ArrayList Elements = new System.Collections.ArrayList ();
-        
+		
 				public uc_KeyMap () 
 				{
 					this.SetToDefault ();
 				}
-        
+		
 				// set the key mapping up to emulate most keys on a vt420
 				public void SetToDefault ()
 				{
 					// add the default key mappings here
 					Elements.Clear ();
-        
+		
 					// TOPNZ Customisations these should be commented out
 					//Elements.Add (new uc_KeyInfo (15,  false, "Shift", "\x1B[OI~", uc_Mode.Any,       0)); //ShTab
 					//Elements.Add (new uc_KeyInfo (63,  false, "Key",   "\x1BOT",   uc_Mode.Any,       0)); //F5
@@ -3358,7 +3331,7 @@ namespace WalburySoftware
 					Elements.Add (new uc_KeyInfo (08,  false, "Ctrl",  "\x1F",     uc_Mode.Any,         0)); //Ctrl7->US
 					Elements.Add (new uc_KeyInfo (09,  false, "Ctrl",  "\x7F",     uc_Mode.Any,         0)); //Ctrl8->DEL
 				}
-        
+		
 				public System.String Find (
 					System.UInt16  ScanCode, 
 					System.Boolean ExtendFlag, 
@@ -3366,11 +3339,11 @@ namespace WalburySoftware
 					System.UInt32  ModeFlags)
 				{
 					System.String OutString = "";
-        
+		
 					for (int i=0; i < Elements.Count; i++)
 					{
 						uc_KeyInfo Element = (uc_KeyInfo) Elements[i];
-        
+		
 						if (Element.ScanCode      == ScanCode   && 
 							Element.ExtendFlag    == ExtendFlag &&
 							Element.Modifier      == Modifier   &&
@@ -3382,7 +3355,7 @@ namespace WalburySoftware
 							return OutString;
 						}
 					}
-        
+		
 					return OutString;
 				}
 			}
@@ -3394,7 +3367,6 @@ namespace WalburySoftware
 			{
 				this.SetStyle (System.Windows.Forms.ControlStyles.Selectable, false);
 				this.Maximum = 0;
-				
 			}
 		}
 
@@ -3405,17 +3377,17 @@ namespace WalburySoftware
 			public uc_Params ()
 			{
 			}
-    
+	
 			public System.Int32 Count () 
 			{
 				return this.Elements.Count;
 			}
-    
+	
 			public void Clear ()
 			{
 				this.Elements.Clear ();
 			}
-    
+	
 			public void Add (System.Char CurChar)
 			{
 				if (this.Count () < 1)
@@ -3434,6 +3406,7 @@ namespace WalburySoftware
 				}
 			}
 		}
+
 		/// <summary>
 		/// This class provides functionality to parse the VT control characters fed
 		/// to the terminal from the host machine and fire off the appropriate actions
@@ -3447,7 +3420,7 @@ namespace WalburySoftware
 			States State = States.Ground;
 			System.Char   CurChar     = '\0';
 			System.String CurSequence = "";
-        
+		
 			System.Collections.ArrayList ParamList = new System.Collections.ArrayList ();
 			uc_CharEvents        CharEvents        = new uc_CharEvents ();
 			uc_StateChangeEvents StateChangeEvents = new uc_StateChangeEvents ();
@@ -3456,7 +3429,7 @@ namespace WalburySoftware
 			public uc_Parser ()
 			{
 			}
-        
+		
 			// Every character received is treated as an event which could change the state of
 			// the parser. The following section finds out which event or state change this character
 			// should trigger and also finds out where we should store the incoming character.
@@ -3469,7 +3442,7 @@ namespace WalburySoftware
 				Actions       NextAction       = Actions.None;
 				Actions       StateExitAction  = Actions.None;
 				Actions       StateEntryAction = Actions.None;
-    
+	
 				foreach (System.Char C in InString)
 				{
 					this.CurChar = C;
@@ -3477,36 +3450,35 @@ namespace WalburySoftware
 					// Get the next state and associated action based 
 					// on the current state and char event
 					CharEvents.GetStateEventAction (State, CurChar, ref NextState, ref NextAction);
-    
+	
 					// execute any actions arising from leaving the current state
 					if  (NextState != States.None && NextState != this.State)
 					{
 						// check for state exit actions
 						StateChangeEvents.GetStateChangeAction (this.State, Transitions.Exit, ref StateExitAction);
-    
+	
 						// Process the exit action
 						if (StateExitAction != Actions.None) DoAction (StateExitAction);
-    
 					}
-    
+	
 					// process the action specified
 					if (NextAction != Actions.None) DoAction (NextAction);
-    
+	
 					// set the new parser state and execute any actions arising entering the new state
 					if  (NextState != States.None && NextState != this.State)
 					{
 						// change the parsers state attribute
 						this.State = NextState;
-    
+	
 						// check for state entry actions
 						StateChangeEvents.GetStateChangeAction (this.State, Transitions.Entry, ref StateExitAction);
-    
+	
 						// Process the entry action
 						if (StateEntryAction != Actions.None) DoAction (StateEntryAction);
 					}
 				}
 			}
-        
+		
 			private void DoAction (Actions NextAction)
 			{
 				// Manage the contents of the Sequence and Param Variables
@@ -3516,20 +3488,20 @@ namespace WalburySoftware
 					case Actions.Collect:
 						this.CurSequence += CurChar.ToString ();
 						break;
-    
+	
 					case Actions.NewCollect:
 						this.CurSequence = CurChar.ToString ();
 						this.CurParams.Clear ();
 						break;
-    
+	
 					case Actions.Param:
 						this.CurParams.Add (CurChar);
 						break;
-    
+	
 					default:
 						break;
 				}
-    
+	
 				// send the external event requests
 				switch (NextAction)
 				{
@@ -3549,12 +3521,12 @@ namespace WalburySoftware
 
 						ParserEvent (this, new ParserEventArgs (NextAction, CurChar, CurSequence, CurParams));
 						break;
-    
+	
 					default:
 						break; 
 				}
-    
-    
+	
+	
 				switch (NextAction)
 				{
 					case Actions.Dispatch:
@@ -3565,7 +3537,7 @@ namespace WalburySoftware
 						break;
 				}
 			}
-    
+	
 			private enum States 
 			{
 				None               = 0,
@@ -3585,20 +3557,20 @@ namespace WalburySoftware
 				DcsPassthrough     = 14,
 				Anywhere           = 16
 			}
-        
+		
 			private enum Transitions 
 			{
 				None  = 0,
 				Entry = 1,
 				Exit  = 2
 			}
-        
+		
 			private struct uc_StateChangeInfo
 			{
 				public States        State;
 				public Transitions   Transition;    // the next state we are going to 
 				public Actions       NextAction;
-        
+		
 				public uc_StateChangeInfo (
 					States      p1,
 					Transitions p2,
@@ -3609,7 +3581,7 @@ namespace WalburySoftware
 					this.NextAction = p3;
 				}
 			}
-    
+	
 			private class uc_StateChangeEvents 
 			{
 				private uc_StateChangeInfo[] Elements = 
@@ -3619,22 +3591,22 @@ namespace WalburySoftware
 				new uc_StateChangeInfo (States.DcsPassthrough, Transitions.Entry, Actions.Hook),
 				new uc_StateChangeInfo (States.DcsPassthrough, Transitions.Exit,  Actions.Unhook)
 			};
-        
+		
 				public uc_StateChangeEvents ()
 				{
 				}
-        
+		
 				public System.Boolean GetStateChangeAction (
 					States      State, 
 					Transitions Transition,
 					ref Actions     NextAction)
 				{
 					uc_StateChangeInfo Element;
-        
+		
 					for (System.Int32 i = 0; i < Elements.Length; i++)
 					{
 						Element = Elements[i];
-        
+		
 						if (State      == Element.State &&
 							Transition == Element.Transition)
 						{
@@ -3642,11 +3614,11 @@ namespace WalburySoftware
 							return true;
 						}
 					}
-                    
+					
 					return false;
 				} 
 			}
-    
+	
 			private struct uc_CharEventInfo
 			{
 				public States        CurState;
@@ -3654,7 +3626,7 @@ namespace WalburySoftware
 				public System.Char   CharTo;
 				public Actions       NextAction;
 				public States        NextState;  // the next state we are going to 
-        
+		
 				public uc_CharEventInfo (
 					States  p1,
 					System.Char   p2,
@@ -3669,7 +3641,7 @@ namespace WalburySoftware
 					this.NextState  = p5;
 				}
 			}
-        
+		
 			private class uc_CharEvents 
 			{
 				public System.Boolean GetStateEventAction (
@@ -3679,21 +3651,21 @@ namespace WalburySoftware
 					ref Actions   NextAction)
 				{
 					uc_CharEventInfo Element;
-    
+	
 					// Codes A0-FF are treated exactly the same way as 20-7F
 					// so we can keep are state table smaller by converting before we look
 					// up the event associated with the character
-    
+	
 					if (CurChar >= '\xA0' &&
 						CurChar <= '\xFF')
 					{
 						CurChar -= '\x80';
 					}
-        
+		
 					for (System.Int32 i = 0; i < uc_CharEvents.Elements.Length; i++)
 					{
 						Element = uc_CharEvents.Elements[i];
-        
+		
 						if (CurChar  >= Element.CharFrom &&
 							CurChar  <= Element.CharTo   &&
 							(CurState == Element.CurState || Element.CurState == States.Anywhere))
@@ -3703,7 +3675,7 @@ namespace WalburySoftware
 							return true;
 						}
 					}
-                    
+					
 					return false;
 				}
 
@@ -3712,104 +3684,106 @@ namespace WalburySoftware
 				}
 
 				public static uc_CharEventInfo[] Elements = 
-			{
-				new uc_CharEventInfo (States.Anywhere,      '\x1B', '\x1B', Actions.NewCollect, States.Escape),
-				new uc_CharEventInfo (States.Anywhere,      '\x18', '\x18', Actions.Execute,    States.Ground),
-				new uc_CharEventInfo (States.Anywhere,      '\x1A', '\x1A', Actions.Execute,    States.Ground),
-				new uc_CharEventInfo (States.Anywhere,      '\x1A', '\x1A', Actions.Execute,    States.Ground),
-				new uc_CharEventInfo (States.Anywhere,      '\x80', '\x8F', Actions.Execute,    States.Ground),
-				new uc_CharEventInfo (States.Anywhere,      '\x91', '\x97', Actions.Execute,    States.Ground),
-				new uc_CharEventInfo (States.Anywhere,      '\x99', '\x99', Actions.Execute,    States.Ground),
-				new uc_CharEventInfo (States.Anywhere,      '\x9A', '\x9A', Actions.Execute,    States.Ground),
-				new uc_CharEventInfo (States.Anywhere,      '\x9C', '\x9C', Actions.Execute,    States.Ground),
-				new uc_CharEventInfo (States.Anywhere,      '\x98', '\x98', Actions.None,       States.SosPmApcString),
-				new uc_CharEventInfo (States.Anywhere,      '\x9E', '\x9F', Actions.None,       States.SosPmApcString),
-				new uc_CharEventInfo (States.Anywhere,      '\x90', '\x90', Actions.NewCollect, States.DcsEntry),
-				new uc_CharEventInfo (States.Anywhere,      '\x9D', '\x9D', Actions.None,       States.OscString),
-				new uc_CharEventInfo (States.Anywhere,      '\x9B', '\x9B', Actions.NewCollect, States.CsiEntry),
-				new uc_CharEventInfo (States.Ground,        '\x00', '\x17', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.Ground,        '\x00', '\x17', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.Ground,        '\x19', '\x19', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.Ground,        '\x1C', '\x1F', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.Ground,        '\x20', '\x7F', Actions.Print,      States.None),
-				new uc_CharEventInfo (States.Ground,        '\x80', '\x8F', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.Ground,        '\x91', '\x9A', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.Ground,        '\x9C', '\x9C', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.EscapeIntrmdt, '\x00', '\x17', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.EscapeIntrmdt, '\x19', '\x19', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.EscapeIntrmdt, '\x1C', '\x1F', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.EscapeIntrmdt, '\x20', '\x2F', Actions.Collect,    States.None),
-				new uc_CharEventInfo (States.EscapeIntrmdt, '\x30', '\x7E', Actions.Dispatch,   States.Ground),
-				new uc_CharEventInfo (States.Escape,        '\x00', '\x17', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.Escape,        '\x19', '\x19', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.Escape,        '\x1C', '\x1F', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.Escape,        '\x58', '\x58', Actions.None,       States.SosPmApcString),
-				new uc_CharEventInfo (States.Escape,        '\x5E', '\x5F', Actions.None,       States.SosPmApcString),
-				new uc_CharEventInfo (States.Escape,        '\x50', '\x50', Actions.Collect,    States.DcsEntry),
-				new uc_CharEventInfo (States.Escape,        '\x5D', '\x5D', Actions.None,       States.OscString),
-				new uc_CharEventInfo (States.Escape,        '\x5B', '\x5B', Actions.Collect,    States.CsiEntry),
-				new uc_CharEventInfo (States.Escape,        '\x30', '\x4F', Actions.Dispatch,   States.Ground),
-				new uc_CharEventInfo (States.Escape,        '\x51', '\x57', Actions.Dispatch,   States.Ground),
-				new uc_CharEventInfo (States.Escape,        '\x59', '\x5A', Actions.Dispatch,   States.Ground),
-				new uc_CharEventInfo (States.Escape,        '\x5C', '\x5C', Actions.Dispatch,   States.Ground),
-				new uc_CharEventInfo (States.Escape,        '\x60', '\x7E', Actions.Dispatch,   States.Ground),
-				new uc_CharEventInfo (States.Escape,        '\x20', '\x2F', Actions.Collect,    States.EscapeIntrmdt),
-				new uc_CharEventInfo (States.CsiEntry,      '\x00', '\x17', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiEntry,      '\x19', '\x19', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiEntry,      '\x1C', '\x1F', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiEntry,      '\x20', '\x2F', Actions.Collect,    States.CsiIntrmdt),
-				new uc_CharEventInfo (States.CsiEntry,      '\x3A', '\x3A', Actions.None,       States.CsiIgnore),
-				new uc_CharEventInfo (States.CsiEntry,      '\x3C', '\x3F', Actions.Collect,    States.CsiParam),
-				new uc_CharEventInfo (States.CsiEntry,      '\x3C', '\x3F', Actions.Collect,    States.CsiParam),
-				new uc_CharEventInfo (States.CsiEntry,      '\x30', '\x39', Actions.Param,      States.CsiParam),
-				new uc_CharEventInfo (States.CsiEntry,      '\x3B', '\x3B', Actions.Param,      States.CsiParam),
-				new uc_CharEventInfo (States.CsiEntry,      '\x3C', '\x3F', Actions.Collect,    States.CsiParam),
-				new uc_CharEventInfo (States.CsiEntry,      '\x40', '\x7E', Actions.Dispatch,   States.Ground),
-				new uc_CharEventInfo (States.CsiParam,      '\x00', '\x17', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiParam,      '\x19', '\x19', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiParam,      '\x1C', '\x1F', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiParam,      '\x30', '\x39', Actions.Param,      States.None),
-				new uc_CharEventInfo (States.CsiParam,      '\x3B', '\x3B', Actions.Param,      States.None),
-				new uc_CharEventInfo (States.CsiParam,      '\x3A', '\x3A', Actions.None,       States.CsiIgnore),
-				new uc_CharEventInfo (States.CsiParam,      '\x3C', '\x3F', Actions.None,       States.CsiIgnore),
-				new uc_CharEventInfo (States.CsiParam,      '\x20', '\x2F', Actions.Collect,    States.CsiIntrmdt),
-				new uc_CharEventInfo (States.CsiParam,      '\x40', '\x7E', Actions.Dispatch,   States.Ground),
-				new uc_CharEventInfo (States.CsiIgnore,     '\x00', '\x17', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiIgnore,     '\x19', '\x19', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiIgnore,     '\x1C', '\x1F', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiIgnore,     '\x40', '\x7E', Actions.None,       States.Ground),
-				new uc_CharEventInfo (States.CsiIntrmdt,    '\x00', '\x17', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiIntrmdt,    '\x19', '\x19', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiIntrmdt,    '\x1C', '\x1F', Actions.Execute,    States.None),
-				new uc_CharEventInfo (States.CsiIntrmdt,    '\x20', '\x2F', Actions.Collect,    States.None),
-				new uc_CharEventInfo (States.CsiIntrmdt,    '\x30', '\x3F', Actions.None,       States.CsiIgnore),
-				new uc_CharEventInfo (States.CsiIntrmdt,    '\x40', '\x7E', Actions.Dispatch,   States.Ground),
-				new uc_CharEventInfo (States.SosPmApcString,'\x9C', '\x9C', Actions.None,       States.Ground),
-				new uc_CharEventInfo (States.DcsEntry,      '\x20', '\x2F', Actions.Collect,    States.DcsIntrmdt),
-				new uc_CharEventInfo (States.DcsEntry,      '\x3A', '\x3A', Actions.None,       States.DcsIgnore),
-				new uc_CharEventInfo (States.DcsEntry,      '\x30', '\x39', Actions.Param,      States.DcsParam),
-				new uc_CharEventInfo (States.DcsEntry,      '\x3B', '\x3B', Actions.Param,      States.DcsParam),
-				new uc_CharEventInfo (States.DcsEntry,      '\x3C', '\x3F', Actions.Collect,    States.DcsParam),
-				new uc_CharEventInfo (States.DcsEntry,      '\x40', '\x7E', Actions.None,       States.DcsPassthrough),
-				new uc_CharEventInfo (States.DcsIntrmdt,    '\x30', '\x3F', Actions.None,       States.DcsIgnore),
-				new uc_CharEventInfo (States.DcsIntrmdt,    '\x40', '\x7E', Actions.None,       States.DcsPassthrough),
-				new uc_CharEventInfo (States.DcsIgnore,     '\x9C', '\x9C', Actions.None,       States.Ground),
-				new uc_CharEventInfo (States.DcsParam,      '\x30', '\x39', Actions.Param,      States.None),
-				new uc_CharEventInfo (States.DcsParam,      '\x3B', '\x3B', Actions.Param,      States.None),
-				new uc_CharEventInfo (States.DcsParam,      '\x20', '\x2F', Actions.Collect,    States.DcsIntrmdt),
-				new uc_CharEventInfo (States.DcsParam,      '\x3A', '\x3A', Actions.None,       States.DcsIgnore),
-				new uc_CharEventInfo (States.DcsParam,      '\x3C', '\x3F', Actions.None,       States.DcsIgnore),
-				new uc_CharEventInfo (States.DcsPassthrough,'\x00', '\x17', Actions.Put,        States.None),
-				new uc_CharEventInfo (States.DcsPassthrough,'\x19', '\x19', Actions.Put,        States.None),
-				new uc_CharEventInfo (States.DcsPassthrough,'\x1C', '\x1F', Actions.Put,        States.None),
-				new uc_CharEventInfo (States.DcsPassthrough,'\x20', '\x7E', Actions.Put,        States.None),
-				new uc_CharEventInfo (States.DcsPassthrough,'\x9C', '\x9C', Actions.None,       States.Ground),
-				new uc_CharEventInfo (States.OscString,     '\x20', '\x7F', Actions.OscPut,     States.None),
-				new uc_CharEventInfo (States.OscString,     '\x9C', '\x9C', Actions.None,       States.Ground)
-			};
+				{
+					new uc_CharEventInfo (States.Anywhere,      '\x1B', '\x1B', Actions.NewCollect, States.Escape),
+					new uc_CharEventInfo (States.Anywhere,      '\x18', '\x18', Actions.Execute,    States.Ground),
+					new uc_CharEventInfo (States.Anywhere,      '\x1A', '\x1A', Actions.Execute,    States.Ground),
+					new uc_CharEventInfo (States.Anywhere,      '\x1A', '\x1A', Actions.Execute,    States.Ground),
+					new uc_CharEventInfo (States.Anywhere,      '\x80', '\x8F', Actions.Execute,    States.Ground),
+					new uc_CharEventInfo (States.Anywhere,      '\x91', '\x97', Actions.Execute,    States.Ground),
+					new uc_CharEventInfo (States.Anywhere,      '\x99', '\x99', Actions.Execute,    States.Ground),
+					new uc_CharEventInfo (States.Anywhere,      '\x9A', '\x9A', Actions.Execute,    States.Ground),
+					new uc_CharEventInfo (States.Anywhere,      '\x9C', '\x9C', Actions.Execute,    States.Ground),
+					new uc_CharEventInfo (States.Anywhere,      '\x98', '\x98', Actions.None,       States.SosPmApcString),
+					new uc_CharEventInfo (States.Anywhere,      '\x9E', '\x9F', Actions.None,       States.SosPmApcString),
+					new uc_CharEventInfo (States.Anywhere,      '\x90', '\x90', Actions.NewCollect, States.DcsEntry),
+					new uc_CharEventInfo (States.Anywhere,      '\x9D', '\x9D', Actions.None,       States.OscString),
+					new uc_CharEventInfo (States.Anywhere,      '\x9B', '\x9B', Actions.NewCollect, States.CsiEntry),
+					new uc_CharEventInfo (States.Ground,        '\x00', '\x17', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.Ground,        '\x00', '\x17', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.Ground,        '\x19', '\x19', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.Ground,        '\x1C', '\x1F', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.Ground,        '\x20', '\x7F', Actions.Print,      States.None),
+					new uc_CharEventInfo (States.Ground,        '\x80', '\x8F', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.Ground,        '\x91', '\x9A', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.Ground,        '\x9C', '\x9C', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.EscapeIntrmdt, '\x00', '\x17', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.EscapeIntrmdt, '\x19', '\x19', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.EscapeIntrmdt, '\x1C', '\x1F', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.EscapeIntrmdt, '\x20', '\x2F', Actions.Collect,    States.None),
+					new uc_CharEventInfo (States.EscapeIntrmdt, '\x30', '\x7E', Actions.Dispatch,   States.Ground),
+					new uc_CharEventInfo (States.Escape,        '\x00', '\x17', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.Escape,        '\x19', '\x19', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.Escape,        '\x1C', '\x1F', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.Escape,        '\x58', '\x58', Actions.None,       States.SosPmApcString),
+					new uc_CharEventInfo (States.Escape,        '\x5E', '\x5F', Actions.None,       States.SosPmApcString),
+					new uc_CharEventInfo (States.Escape,        '\x50', '\x50', Actions.Collect,    States.DcsEntry),
+					new uc_CharEventInfo (States.Escape,        '\x5D', '\x5D', Actions.None,       States.OscString),
+					new uc_CharEventInfo (States.Escape,        '\x5B', '\x5B', Actions.Collect,    States.CsiEntry),
+					new uc_CharEventInfo (States.Escape,        '\x30', '\x4F', Actions.Dispatch,   States.Ground),
+					new uc_CharEventInfo (States.Escape,        '\x51', '\x57', Actions.Dispatch,   States.Ground),
+					new uc_CharEventInfo (States.Escape,        '\x59', '\x5A', Actions.Dispatch,   States.Ground),
+					new uc_CharEventInfo (States.Escape,        '\x5C', '\x5C', Actions.Dispatch,   States.Ground),
+					new uc_CharEventInfo (States.Escape,        '\x60', '\x7E', Actions.Dispatch,   States.Ground),
+					new uc_CharEventInfo (States.Escape,        '\x20', '\x2F', Actions.Collect,    States.EscapeIntrmdt),
+					new uc_CharEventInfo (States.CsiEntry,      '\x00', '\x17', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiEntry,      '\x19', '\x19', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiEntry,      '\x1C', '\x1F', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiEntry,      '\x20', '\x2F', Actions.Collect,    States.CsiIntrmdt),
+					new uc_CharEventInfo (States.CsiEntry,      '\x3A', '\x3A', Actions.None,       States.CsiIgnore),
+					new uc_CharEventInfo (States.CsiEntry,      '\x3C', '\x3F', Actions.Collect,    States.CsiParam),
+					new uc_CharEventInfo (States.CsiEntry,      '\x3C', '\x3F', Actions.Collect,    States.CsiParam),
+					new uc_CharEventInfo (States.CsiEntry,      '\x30', '\x39', Actions.Param,      States.CsiParam),
+					new uc_CharEventInfo (States.CsiEntry,      '\x3B', '\x3B', Actions.Param,      States.CsiParam),
+					new uc_CharEventInfo (States.CsiEntry,      '\x3C', '\x3F', Actions.Collect,    States.CsiParam),
+					new uc_CharEventInfo (States.CsiEntry,      '\x40', '\x7E', Actions.Dispatch,   States.Ground),
+					new uc_CharEventInfo (States.CsiParam,      '\x00', '\x17', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiParam,      '\x19', '\x19', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiParam,      '\x1C', '\x1F', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiParam,      '\x30', '\x39', Actions.Param,      States.None),
+					new uc_CharEventInfo (States.CsiParam,      '\x3B', '\x3B', Actions.Param,      States.None),
+					new uc_CharEventInfo (States.CsiParam,      '\x3A', '\x3A', Actions.None,       States.CsiIgnore),
+					new uc_CharEventInfo (States.CsiParam,      '\x3C', '\x3F', Actions.None,       States.CsiIgnore),
+					new uc_CharEventInfo (States.CsiParam,      '\x20', '\x2F', Actions.Collect,    States.CsiIntrmdt),
+					new uc_CharEventInfo (States.CsiParam,      '\x40', '\x7E', Actions.Dispatch,   States.Ground),
+					new uc_CharEventInfo (States.CsiIgnore,     '\x00', '\x17', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiIgnore,     '\x19', '\x19', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiIgnore,     '\x1C', '\x1F', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiIgnore,     '\x40', '\x7E', Actions.None,       States.Ground),
+					new uc_CharEventInfo (States.CsiIntrmdt,    '\x00', '\x17', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiIntrmdt,    '\x19', '\x19', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiIntrmdt,    '\x1C', '\x1F', Actions.Execute,    States.None),
+					new uc_CharEventInfo (States.CsiIntrmdt,    '\x20', '\x2F', Actions.Collect,    States.None),
+					new uc_CharEventInfo (States.CsiIntrmdt,    '\x30', '\x3F', Actions.None,       States.CsiIgnore),
+					new uc_CharEventInfo (States.CsiIntrmdt,    '\x40', '\x7E', Actions.Dispatch,   States.Ground),
+					new uc_CharEventInfo (States.SosPmApcString,'\x9C', '\x9C', Actions.None,       States.Ground),
+					new uc_CharEventInfo (States.DcsEntry,      '\x20', '\x2F', Actions.Collect,    States.DcsIntrmdt),
+					new uc_CharEventInfo (States.DcsEntry,      '\x3A', '\x3A', Actions.None,       States.DcsIgnore),
+					new uc_CharEventInfo (States.DcsEntry,      '\x30', '\x39', Actions.Param,      States.DcsParam),
+					new uc_CharEventInfo (States.DcsEntry,      '\x3B', '\x3B', Actions.Param,      States.DcsParam),
+					new uc_CharEventInfo (States.DcsEntry,      '\x3C', '\x3F', Actions.Collect,    States.DcsParam),
+					new uc_CharEventInfo (States.DcsEntry,      '\x40', '\x7E', Actions.None,       States.DcsPassthrough),
+					new uc_CharEventInfo (States.DcsIntrmdt,    '\x30', '\x3F', Actions.None,       States.DcsIgnore),
+					new uc_CharEventInfo (States.DcsIntrmdt,    '\x40', '\x7E', Actions.None,       States.DcsPassthrough),
+					new uc_CharEventInfo (States.DcsIgnore,     '\x9C', '\x9C', Actions.None,       States.Ground),
+					new uc_CharEventInfo (States.DcsParam,      '\x30', '\x39', Actions.Param,      States.None),
+					new uc_CharEventInfo (States.DcsParam,      '\x3B', '\x3B', Actions.Param,      States.None),
+					new uc_CharEventInfo (States.DcsParam,      '\x20', '\x2F', Actions.Collect,    States.DcsIntrmdt),
+					new uc_CharEventInfo (States.DcsParam,      '\x3A', '\x3A', Actions.None,       States.DcsIgnore),
+					new uc_CharEventInfo (States.DcsParam,      '\x3C', '\x3F', Actions.None,       States.DcsIgnore),
+					new uc_CharEventInfo (States.DcsPassthrough,'\x00', '\x17', Actions.Put,        States.None),
+					new uc_CharEventInfo (States.DcsPassthrough,'\x19', '\x19', Actions.Put,        States.None),
+					new uc_CharEventInfo (States.DcsPassthrough,'\x1C', '\x1F', Actions.Put,        States.None),
+					new uc_CharEventInfo (States.DcsPassthrough,'\x20', '\x7E', Actions.Put,        States.None),
+					new uc_CharEventInfo (States.DcsPassthrough,'\x9C', '\x9C', Actions.None,       States.Ground),
+					new uc_CharEventInfo (States.OscString,     '\x20', '\x7F', Actions.OscPut,     States.None),
+					new uc_CharEventInfo (States.OscString,     '\x9C', '\x9C', Actions.None,       States.Ground)
+				};
 			}
-		}    
+		}
+
 		#endregion
+
 		#region Private Structs
 		private struct ParserEventArgs 
 		{
@@ -3882,10 +3856,10 @@ namespace WalburySoftware
 				GS              = p18;
 				IsDECSG         = p19;
 			}
-
 		}    
 
 		#endregion
+
 		#region Private Enums
 	
 		private enum Actions 
