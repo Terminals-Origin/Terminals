@@ -10,11 +10,15 @@ using System.Runtime.InteropServices;
 
 namespace Terminals
 {
+    public delegate Bitmap CaptureHandleDelegateHandler(IntPtr handle);
+
     [System.Security.SuppressUnmanagedCodeSecurity()]
     [System.Runtime.InteropServices.ComVisible(false)]
     internal sealed class NativeMethods
     {
-        private NativeMethods() { }
+        private NativeMethods()
+        {
+        }
 
         [StructLayout(LayoutKind.Sequential)]
         internal struct RECT
@@ -76,7 +80,7 @@ namespace Terminals
             imgPNG,
             imgTIFF,
             imgWMF
-        };
+        }
 
         private long encodingQuality = 50;
 
@@ -96,14 +100,21 @@ namespace Terminals
 
         public ImageFormatTypes DefaultFormat
         {
-            get { return defaultFormat; }
-            set { defaultFormat = value; }
+            get
+            {
+                return this.defaultFormat;
+            }
+
+            set
+            {
+                this.defaultFormat = value;
+            }
         }
 
         public ImageFormatHandler()
         {
-            availableEncoders = ImageCodecInfo.GetImageEncoders();
-            availableDecoders = ImageCodecInfo.GetImageDecoders();
+            this.availableEncoders = ImageCodecInfo.GetImageEncoders();
+            this.availableDecoders = ImageCodecInfo.GetImageDecoders();
         }
 
         public static ImageFormat GetImageFormat(ImageFormatTypes type)
@@ -133,9 +144,9 @@ namespace Terminals
             }
         }
 
-        public static String GetMimeType(ImageFormatTypes type)
+        public static string GetMimeType(ImageFormatTypes type)
         {
-            String s = null;
+            string s = null;
             switch (type)
             {
                 case ImageFormatTypes.imgBMP:
@@ -163,8 +174,9 @@ namespace Terminals
                     s = "x-wmf";
                     break;
             }
+
             if (!String.IsNullOrEmpty(s))
-                s = String.Format("image/{0}", s);
+                s = string.Format("image/{0}", s);
 
             return s;
         }
@@ -205,16 +217,16 @@ namespace Terminals
         {
             ImageCodecInfo[] encoders;
 
-            String mimeType = GetMimeType(type);
+            string mimeType = GetMimeType(type);
 
-            if (!String.IsNullOrEmpty(mimeType))
+            if (!string.IsNullOrEmpty(mimeType))
             {
                 for (int i = 0; i < 2; i++)
                 {
                     if (i == 0)
-                        encoders = availableEncoders;
+                        encoders = this.availableEncoders;
                     else
-                        encoders = availableDecoders;
+                        encoders = this.availableDecoders;
 
                     foreach (ImageCodecInfo info in encoders)
                     {
@@ -223,13 +235,14 @@ namespace Terminals
                     }
                 }
             }
+
             return null;
         }
 
         public virtual EncoderParameters GetEncoderParameters(ImageFormatTypes type, out ImageCodecInfo info)
         {
             EncoderParameters parameters = null;
-            info = GetCodecInfo(type);
+            info = this.GetCodecInfo(type);
             if (info != null)
             {
                 System.Drawing.Imaging.Encoder encode;
@@ -243,59 +256,61 @@ namespace Terminals
                         parameters.Param[0] = param;
 
                         encode = System.Drawing.Imaging.Encoder.ScanMethod;
-                        param = new EncoderParameter(encode, (long)encodingScanMethod);
+                        param = new EncoderParameter(encode, (long)this.encodingScanMethod);
                         parameters.Param[1] = param;
                         break;
 
                     case ImageFormatTypes.imgJPEG:
                         parameters = new EncoderParameters(2);
                         encode = System.Drawing.Imaging.Encoder.RenderMethod;
-                        param = new EncoderParameter(encode, (long)encodingRenderMethod);
+                        param = new EncoderParameter(encode, (long)this.encodingRenderMethod);
                         parameters.Param[0] = param;
 
                         encode = System.Drawing.Imaging.Encoder.Quality;
-                        param = new EncoderParameter(encode, encodingQuality);
+                        param = new EncoderParameter(encode, this.encodingQuality);
                         parameters.Param[1] = param;
                         break;
 
                     case ImageFormatTypes.imgPNG:
                         parameters = new EncoderParameters(2);
                         encode = System.Drawing.Imaging.Encoder.RenderMethod;
-                        param = new EncoderParameter(encode, (long)encodingRenderMethod);
+                        param = new EncoderParameter(encode, (long)this.encodingRenderMethod);
                         parameters.Param[0] = param;
 
                         encode = System.Drawing.Imaging.Encoder.ScanMethod;
-                        param = new EncoderParameter(encode, (long)encodingScanMethod);
+                        param = new EncoderParameter(encode, (long)this.encodingScanMethod);
                         parameters.Param[1] = param;
                         break;
 
                     case ImageFormatTypes.imgTIFF:
                         parameters = new EncoderParameters(2);
                         encode = System.Drawing.Imaging.Encoder.ColorDepth;
-                        param = new EncoderParameter(encode, encodingColorDepth);
+                        param = new EncoderParameter(encode, this.encodingColorDepth);
                         parameters.Param[0] = param;
 
                         encode = System.Drawing.Imaging.Encoder.Compression;
-                        param = new EncoderParameter(encode, (long)encodingCompression);
+                        param = new EncoderParameter(encode, (long)this.encodingCompression);
                         parameters.Param[1] = param;
                         break;
                 }
             }
+
             return parameters;
         }
 
-        public virtual String GetDefaultFilenameExtension(ImageFormatTypes type)
+        public virtual string GetDefaultFilenameExtension(ImageFormatTypes type)
         {
-            String ext = "";
-            ImageCodecInfo info = GetCodecInfo(type);
+            string ext = string.Empty;
+            ImageCodecInfo info = this.GetCodecInfo(type);
 
             if (info != null)
             {
-                String[] extensions = info.FilenameExtension.Split(new char[] { ';' });
+                string[] extensions = info.FilenameExtension.Split(new char[] { ';' });
                 ext = extensions[0];
                 if (ext.StartsWith("*."))
                     ext = ext.Substring(2);
             }
+
             return ext;
         }
     }
@@ -308,7 +323,7 @@ namespace Terminals
             PrimaryScreen,
             WorkingArea,
             AllScreens
-        };
+        }
 
         private Bitmap image;
         private Bitmap[] images = null;
@@ -318,141 +333,148 @@ namespace Terminals
         
         public ImageFormatHandler FormatHandler
         {
-            set { formatHandler = value; }
+            set
+            {
+                this.formatHandler = value;
+            }
         }
 
         public ScreenCapture()
         {
-            doc.PrintPage += new PrintPageEventHandler( printPage );
-            formatHandler = new ImageFormatHandler();
+            this.doc.PrintPage += new PrintPageEventHandler(this.printPage);
+            this.formatHandler = new ImageFormatHandler();
         }
 
-        public ScreenCapture( ImageFormatHandler formatHandler )
+        public ScreenCapture(ImageFormatHandler formatHandler)
         {
-            doc.PrintPage += new PrintPageEventHandler( printPage );
-
+            this.doc.PrintPage += new PrintPageEventHandler(this.printPage);
             this.formatHandler = formatHandler;
         }
 
-        public virtual Bitmap Capture( Form window, String filename, ImageFormatHandler.ImageFormatTypes format )
+        public virtual Bitmap Capture(Form window, string filename, ImageFormatHandler.ImageFormatTypes format)
         {
-            return Capture( window, filename, format, false );
+            return this.Capture(window, filename, format, false);
         }
 
-        public virtual Bitmap Capture( Form window, String filename, ImageFormatHandler.ImageFormatTypes format, bool onlyClient )
+        public virtual Bitmap Capture(Form window, string filename, ImageFormatHandler.ImageFormatTypes format, bool onlyClient)
         {
-            Capture( window, onlyClient );
-            Save( filename, format );
-            return images[0];
+            this.Capture(window, onlyClient);
+            this.Save(filename, format);
+            return this.images[0];
         }
 
-        public virtual Bitmap Capture( IntPtr handle, String filename, ImageFormatHandler.ImageFormatTypes format )
+        public virtual Bitmap Capture(IntPtr handle, string filename, ImageFormatHandler.ImageFormatTypes format)
         {
-            Capture( handle );
-            Save( filename, format );
-            return images[0];
+            this.Capture(handle);
+            this.Save(filename, format);
+            return this.images[0];
         }
 
-        public virtual Bitmap CaptureControl( Control window, String filename, ImageFormatHandler.ImageFormatTypes format )
+        public virtual Bitmap CaptureControl(Control window, string filename, ImageFormatHandler.ImageFormatTypes format)
         {
-            CaptureControl( window );
-            Save( filename, format );
-            return images[0];
+            this.CaptureControl(window);
+
+            if (Settings.EnableCaptureToFolder)
+                this.Save(filename, format);
+
+            return this.images[0];
         }
 
-        public virtual Bitmap CaptureControl( Control window )
+        public virtual Bitmap CaptureControl(Control window)
         {
-            Rectangle rc = window.RectangleToScreen( window.DisplayRectangle );
-            return capture( window, rc );
+            Rectangle rc = window.RectangleToScreen(window.DisplayRectangle);
+            return this.capture(window, rc);
         }
 
-        public virtual Bitmap Capture( Form window, bool onlyClient )
+        public virtual Bitmap Capture(Form window, bool onlyClient)
         {
-            if ( !onlyClient )
-                return Capture( window );
+            if (!onlyClient)
+                return this.Capture(window);
 
-            Rectangle rc = window.RectangleToScreen( window.ClientRectangle );
-            return capture( window, rc );
+            Rectangle rc = window.RectangleToScreen(window.ClientRectangle);
+            return this.capture(window, rc);
         }
 
-        public virtual Bitmap Capture( Form window )
+        public virtual Bitmap Capture(Form window)
         {
-            Rectangle rc = new Rectangle( window.Location, window.Size );
-            return capture( window, rc );
+            Rectangle rc = new Rectangle(window.Location, window.Size);
+            return this.capture(window, rc);
         }
 
-        private Bitmap capture( Control window, Rectangle rc )
+        private Bitmap capture(Control window, Rectangle rc)
         {
             Bitmap memoryImage = null;
-            images = new Bitmap[1];
+            this.images = new Bitmap[1];
 
             try
             {
-                using ( Graphics graphics = window.CreateGraphics() )
+                using (Graphics graphics = window.CreateGraphics())
                 {
-                    memoryImage = new Bitmap( rc.Width, rc.Height, graphics );
+                    memoryImage = new Bitmap(rc.Width, rc.Height, graphics);
 
-                    using ( Graphics memoryGrahics = Graphics.FromImage( memoryImage ) )
+                    using (Graphics memoryGrahics = Graphics.FromImage(memoryImage))
                     {
-                        memoryGrahics.CopyFromScreen( rc.X, rc.Y, 0, 0, rc.Size, CopyPixelOperation.SourceCopy );
+                        memoryGrahics.CopyFromScreen(rc.X, rc.Y, 0, 0, rc.Size, CopyPixelOperation.SourceCopy);
                     }
                 }
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 Terminals.Logging.Log.Error("Screen Capture Failed", ex);
-                MessageBox.Show( ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                MessageBox.Show(ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            images[0] = memoryImage;
+
+            this.images[0] = memoryImage;
             return memoryImage;
         }
 
-        public virtual Bitmap Capture( IntPtr handle )
+        public virtual Bitmap Capture(IntPtr handle)
         {
-            NativeMethods.BringWindowToTop( handle );
-            CaptureHandleDelegateHandler dlg = new CaptureHandleDelegateHandler( CaptureHandle );
-            IAsyncResult result = dlg.BeginInvoke( handle, null, null );
-            return dlg.EndInvoke( result );
+            NativeMethods.BringWindowToTop(handle);
+            CaptureHandleDelegateHandler dlg = new CaptureHandleDelegateHandler(this.CaptureHandle);
+            IAsyncResult result = dlg.BeginInvoke(handle, null, null);
+            return dlg.EndInvoke(result);
         }
 
-        protected virtual Bitmap CaptureHandle( IntPtr handle )
+        protected virtual Bitmap CaptureHandle(IntPtr handle)
         {
             Bitmap memoryImage = null;
-            images = new Bitmap[1];
+            this.images = new Bitmap[1];
             try
             {
-                using ( Graphics graphics = Graphics.FromHwnd( handle ) )
+                using (Graphics graphics = Graphics.FromHwnd(handle))
                 {
-                    Rectangle rc = NativeMethods.GetWindowRect( handle );
+                    Rectangle rc = NativeMethods.GetWindowRect(handle);
 
-                    if ( (int)graphics.VisibleClipBounds.Width > 0 && (int)graphics.VisibleClipBounds.Height > 0 )
+                    if ((int)graphics.VisibleClipBounds.Width > 0 && (int)graphics.VisibleClipBounds.Height > 0)
                     {
-                        memoryImage = new Bitmap( rc.Width, rc.Height, graphics );
+                        memoryImage = new Bitmap(rc.Width, rc.Height, graphics);
 
-                        using ( Graphics memoryGrahics = Graphics.FromImage( memoryImage ) )
+                        using (Graphics memoryGrahics = Graphics.FromImage(memoryImage))
                         {
-                            memoryGrahics.CopyFromScreen( rc.X, rc.Y, 0, 0, rc.Size, CopyPixelOperation.SourceCopy );
+                            memoryGrahics.CopyFromScreen(rc.X, rc.Y, 0, 0, rc.Size, CopyPixelOperation.SourceCopy);
                         }
                     }
                 }
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 Terminals.Logging.Log.Error("Capture Handle Failed", ex);
-                MessageBox.Show( ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                MessageBox.Show(ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            images[0] = memoryImage;
+
+            this.images[0] = memoryImage;
             return memoryImage; 
         }
 
-        public virtual Bitmap[] Capture( CaptureType typeOfCapture, String filename, ImageFormatHandler.ImageFormatTypes format )
+        public virtual Bitmap[] Capture(CaptureType typeOfCapture, string filename, ImageFormatHandler.ImageFormatTypes format)
         {
-            Capture( typeOfCapture );
-            Save( filename, format );
-            return images;
+            this.Capture(typeOfCapture);
+            this.Save(filename, format);
+            return this.images;
         }
 
-        public virtual Bitmap[] Capture( CaptureType typeOfCapture )
+        public virtual Bitmap[] Capture(CaptureType typeOfCapture)
         {
             Bitmap memoryImage;
             int count = 1;
@@ -461,7 +483,7 @@ namespace Terminals
             {
                 Screen[] screens = Screen.AllScreens;
                 Rectangle rc;
-                switch ( typeOfCapture )
+                switch (typeOfCapture)
                 {
                     case CaptureType.PrimaryScreen:
                         rc = Screen.PrimaryScreen.Bounds;
@@ -481,79 +503,82 @@ namespace Terminals
                         rc = SystemInformation.VirtualScreen;
                         break;
                 }
-                images = new Bitmap[count];
 
-                for ( int index = 0; index < count; index++ )
+                this.images = new Bitmap[count];
+
+                for (int index = 0; index < count; index++)
                 {
-                    if ( index > 0 )
+                    if (index > 0)
                         rc = screens[index].WorkingArea;
 
-                    memoryImage = new Bitmap( rc.Width, rc.Height, PixelFormat.Format32bppArgb );
+                    memoryImage = new Bitmap(rc.Width, rc.Height, PixelFormat.Format32bppArgb);
 
-                    using ( Graphics memoryGrahics = Graphics.FromImage( memoryImage ) )
+                    using (Graphics memoryGrahics = Graphics.FromImage(memoryImage))
                     {
-                        memoryGrahics.CopyFromScreen( rc.X, rc.Y, 0, 0, rc.Size, CopyPixelOperation.SourceCopy );
+                        memoryGrahics.CopyFromScreen(rc.X, rc.Y, 0, 0, rc.Size, CopyPixelOperation.SourceCopy);
                     }
-                    images[index] = memoryImage;
+
+                    this.images[index] = memoryImage;
                 }
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 Terminals.Logging.Log.Error("Capture Failed", ex);
-                MessageBox.Show( ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                MessageBox.Show(ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            return images;
+
+            return this.images;
         }
 
         public virtual void Print()
         {
-            if ( images != null )
+            if (this.images != null)
             {
                 try
                 {
-                    for ( int i = 0; i < images.Length; i++ )
+                    for (int i = 0; i < this.images.Length; i++)
                     {
-                        image = images[i];
-                        doc.DefaultPageSettings.Landscape = ( image.Width > image.Height );
-                        doc.Print();
+                        this.image = this.images[i];
+                        this.doc.DefaultPageSettings.Landscape = (this.image.Width > this.image.Height);
+                        this.doc.Print();
                     }
                 }
-                catch ( Exception ex )
+                catch (Exception ex)
                 {
                     Terminals.Logging.Log.Error("Print Failed", ex);
-                    MessageBox.Show( ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    MessageBox.Show(ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
-        private void printPage( object sender, PrintPageEventArgs e )
+        private void printPage(object sender, PrintPageEventArgs e)
         {
-            RectangleF rc = doc.DefaultPageSettings.Bounds;
-            float ratio = (float)image.Height / (float)( image.Width != 0 ? image.Width : 1 );
+            RectangleF rc = this.doc.DefaultPageSettings.Bounds;
+            float ratio = (float)this.image.Height / (float)(this.image.Width != 0 ? this.image.Width : 1);
 
-            rc.Height = rc.Height - doc.DefaultPageSettings.Margins.Top - doc.DefaultPageSettings.Margins.Bottom;
-            rc.Y = rc.Y + doc.DefaultPageSettings.Margins.Top;
+            rc.Height = rc.Height - this.doc.DefaultPageSettings.Margins.Top - this.doc.DefaultPageSettings.Margins.Bottom;
+            rc.Y = rc.Y + this.doc.DefaultPageSettings.Margins.Top;
 
-            rc.Width = rc.Width - doc.DefaultPageSettings.Margins.Left - doc.DefaultPageSettings.Margins.Right;
-            rc.X = rc.X + doc.DefaultPageSettings.Margins.Left;
+            rc.Width = rc.Width - this.doc.DefaultPageSettings.Margins.Left - this.doc.DefaultPageSettings.Margins.Right;
+            rc.X = rc.X + this.doc.DefaultPageSettings.Margins.Left;
 
-            if ( rc.Height / rc.Width > ratio )
+            if (rc.Height / rc.Width > ratio)
                 rc.Height = rc.Width * ratio;
             else
-                rc.Width = rc.Height / ( ratio != 0 ? ratio : 1 );
+                rc.Width = rc.Height / (ratio != 0 ? ratio : 1);
 
-            e.Graphics.DrawImage( image, rc );
+            e.Graphics.DrawImage(this.image, rc);
         }
 
-        public virtual void Save( String filename, ImageFormatHandler.ImageFormatTypes format )
+        public virtual void Save(string filename, ImageFormatHandler.ImageFormatTypes format)
         {
-            String directory = Path.GetDirectoryName( filename );
-            String name = Path.GetFileNameWithoutExtension( filename );
-            String ext = Path.GetExtension( filename );
+            string directory = Path.GetDirectoryName(filename);
+            string name = Path.GetFileNameWithoutExtension(filename);
+            string ext = Path.GetExtension(filename);
 
-            ext = formatHandler.GetDefaultFilenameExtension( format );
+            ext = this.formatHandler.GetDefaultFilenameExtension(format);
 
-            if ( ext.Length == 0 )
+            if (ext.Length == 0)
             {
                 format = ImageFormatHandler.ImageFormatTypes.imgPNG;
                 ext = "png";
@@ -562,39 +587,37 @@ namespace Terminals
             try
             {
                 ImageCodecInfo info;
-                EncoderParameters parameters = formatHandler.GetEncoderParameters( format, out info );
+                EncoderParameters parameters = this.formatHandler.GetEncoderParameters(format, out info);
 
-                for ( int i = 0; i < images.Length; i++ )
+                for (int i = 0; i < this.images.Length; i++)
                 {
-                    if ( images.Length > 1 )
+                    if (this.images.Length > 1)
                     {
-                        filename = String.Format( "{0}\\{1}.{2:D2}.{3}", directory, name, i + 1, ext );
+                        filename = string.Format("{0}\\{1}.{2:D2}.{3}", directory, name, i + 1, ext);
                     }
                     else
                     {
-                        filename = String.Format( "{0}\\{1}.{2}", directory, name, ext );
+                        filename = string.Format("{0}\\{1}.{2}", directory, name, ext);
                     }
-                    image = images[i];
 
-                    if ( parameters != null )
+                    this.image = this.images[i];
+
+                    if (parameters != null)
                     {
-                        image.Save( filename, info, parameters );
+                        this.image.Save(filename, info, parameters);
                     }
                     else
                     {
-                        image.Save( filename, ImageFormatHandler.GetImageFormat( format ) );
+                        this.image.Save(filename, ImageFormatHandler.GetImageFormat(format));
                     }
                 }
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
-                string s = string.Format("Saving image to [{0}] in format [{1}].\n{2}", filename, format.ToString(), ex.ToString() );
+                string s = string.Format("Saving image to [{0}] in format [{1}].\n{2}", filename, format.ToString(), ex.ToString());
                 Terminals.Logging.Log.Error(s, ex);
                 MessageBox.Show(s, "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
-
-    public delegate Bitmap CaptureHandleDelegateHandler(IntPtr handle);
-
 }

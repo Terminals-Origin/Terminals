@@ -362,9 +362,14 @@
     <Compile Include="Scanner\StreamHelper.cs" />
     <Compile Include="SerializableDictionary.cs" />
     <Compile Include="SerializableSortedDictionary.cs" />
+    <Compile Include="Settings\ToolStripSetting.cs" />
+    <Compile Include="Settings\ToolStripSettings.cs" />
     <Compile Include="TcpProtocol.cs" />
     <Compile Include="TelnetProtocol.cs" />
     <Compile Include="TelnetStream.cs" />
+    <Compile Include="TerminalTabControlItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Updates\HTTP.cs" />
     <Compile Include="Updates\RSS\Collections\ExceptionCollection.cs" />
     <Compile Include="Updates\RSS\Collections\RssCategoryCollection.cs" />
@@ -731,7 +736,7 @@
     <Compile Include="Security\RequestPassword.Designer.cs">
       <DependentUpon>RequestPassword.cs</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
+    <Compile Include="Settings\Settings.cs" />
     <Compile Include="SHApi.cs" />
     <Compile Include="SHFileOperationWrapper.cs" />
     <Compile Include="SingleInstanceApplication.cs" />

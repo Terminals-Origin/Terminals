@@ -17,7 +17,8 @@ using TabControl;
 using Unified.Rss;
 using Terminals.Credentials;
 
-namespace Terminals {
+namespace Terminals
+{
     public partial class MainForm : Form
     {
         public delegate void ReleaseIsAvailable(FavoriteConfigurationElement ReleaseFavorite);
@@ -51,6 +52,7 @@ namespace Terminals {
         private static MainForm _mainForm = null;
 
         #region protected
+
         protected override void SetVisibleCore(bool value)
         {
             _formSettings.LoadFormSize();
@@ -82,7 +84,9 @@ namespace Terminals {
                     }
                     else
                         SetGrabInput(false);
-                } else if(msg.Msg == WM_LEAVING_FULLSCREEN) {
+                } 
+                else if (msg.Msg == WM_LEAVING_FULLSCREEN) 
+                {
                     if(CurrentTerminal != null)
                     {
                         if(CurrentTerminal.ContainsFocus)
@@ -91,6 +95,7 @@ namespace Terminals {
                     else
                         this.BringToFront();
                 }
+
                 base.WndProc(ref msg);
             }
             catch(Exception e)
@@ -98,14 +103,215 @@ namespace Terminals {
                 Terminals.Logging.Log.Info("WnProc Failure", e);
             }
         }
+
         #endregion
 
         #region public
+
+        public MainForm()
+        {
+            try
+            {
+                _specialCommandsMIV = new MethodInvoker(LoadSpecialCommands);
+                _resetMethodInvoker = new MethodInvoker(LoadWindowState);
+
+                //check for wizard
+                if (Settings.ShowWizard)
+                {
+                    //settings file doesnt exist, wizard!
+                    FirstRunWizard wzrd = new FirstRunWizard();
+                    wzrd.ShowDialog(this);
+                    Settings.ShowWizard = false;
+                }
+                else
+                {
+                    System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ReloadSpecialCommands), null);
+                }
+
+                _imageFormatHandler = new ImageFormatHandler();
+                _formSettings = new FormSettings(this);
+                InitializeComponent();
+
+                if (Settings.Office2007BlueFeel)
+                    ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Blue);
+                else if (Settings.Office2007BlackFeel)
+                    ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Black);
+                else
+                    ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
+
+                tsbTags.Checked = Settings.ShowFavoritePanel;
+
+                LoadFavorites();
+                LoadGroups();
+                UpdateControls();
+                pnlTagsFavorites.Width = 7;
+                LoadTags("");
+                ProtocolHandler.Register();
+                SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
+                tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
+                QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
+
+                LoadWindowState();
+
+                this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
+                this.lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
+                this.groupsToolStripMenuItem.Visible = Settings.EnableGroupsMenu;
+
+                if (Settings.ToolbarsLocked)
+                    MainMenuStrip.GripStyle = ToolStripGripStyle.Hidden;
+                else
+                    MainMenuStrip.GripStyle = ToolStripGripStyle.Visible;
+
+                // Disable capture button when function is disabled in options
+                bool enableCapture = (Settings.EnableCaptureToClipboard && Settings.EnableCaptureToFolder);
+                this.CaptureScreenToolStripButton.Enabled = enableCapture;
+                this.captureTerminalScreenToolStripMenuItem.Enabled = enableCapture;
+
+                _mainForm = this;
+
+                if (Screen.AllScreens.Length > 1)
+                {
+                    showInDualScreensToolStripMenuItem.Enabled = true;
+
+                    //Lazy check to see if we are using dual screens
+                    int w = this.Width / Screen.PrimaryScreen.Bounds.Width;
+                    if (w > 2)
+                    {
+                        _allScreens = true;
+                        showInDualScreensToolStripMenuItem.Text = "Show in Single Screens";
+                    }
+                }
+                else
+                {
+                    showInDualScreensToolStripMenuItem.ToolTipText = "You only have one Screen";
+                    showInDualScreensToolStripMenuItem.Enabled = false;
+                }
+            }
+            catch (Exception exc)
+            {
+                Terminals.Logging.Log.Error("Error loading the Main Form", exc);
+            }
+        }
+
+        public void LoadWindowState()
+        {
+            this.Text = Program.AboutText;
+
+            HideShowFavoritesPanel(Settings.ShowFavoritePanel);
+
+            ToolStripSettings newSettings = Settings.ToolbarSettings;
+            if (newSettings != null && newSettings.Count > 0)
+            {
+                ToolStripMenuItem menuItem = null;
+                foreach (int rowIndex in newSettings.Keys)
+                {
+                    ToolStripSetting setting = newSettings[rowIndex];
+                    menuItem = null;
+                    ToolStrip strip = null;
+                    if (setting.Name == toolbarStd.Name)
+                    {
+                        strip = toolbarStd;
+                        menuItem = standardToolbarToolStripMenuItem;
+                    }
+                    else if (setting.Name == favoriteToolBar.Name)
+                    {
+                        strip = favoriteToolBar;
+                        menuItem = toolStripMenuItem4;
+                    }
+                    else if (setting.Name == SpecialCommandsToolStrip.Name)
+                    {
+                        strip = SpecialCommandsToolStrip;
+                        menuItem = shortcutsToolStripMenuItem;
+                    }
+                    else if (setting.Name == menuStrip.Name)
+                    {
+                        strip = menuStrip;
+                    }
+                    else if (setting.Name == tsRemoteToolbar.Name)
+                    {
+                        strip = tsRemoteToolbar;
+                    }
+
+                    if (menuItem != null)
+                    {
+                        menuItem.Checked = setting.Visible;
+                    }
+
+                    if (strip != null)
+                    {
+                        int row = setting.Row + 1;
+                        Point p = new Point(setting.Left, setting.Top);
+                        switch (setting.Dock)
+                        {
+                            case "Top":
+                                this.toolStripContainer.TopToolStripPanel.Join(strip, p);
+                                break;
+                            case "Left":
+                                this.toolStripContainer.LeftToolStripPanel.Join(strip, p);
+                                break;
+                            case "Right":
+                                this.toolStripContainer.RightToolStripPanel.Join(strip, p);
+                                break;
+                            case "Bottom":
+                                this.toolStripContainer.BottomToolStripPanel.Join(strip, p);
+                                break;
+                        }
+
+                        strip.Location = p;
+                        strip.Visible = setting.Visible;
+                        if (Settings.ToolbarsLocked)
+                            strip.GripStyle = ToolStripGripStyle.Hidden;
+                        else
+                            strip.GripStyle = ToolStripGripStyle.Visible;
+                    }
+                }
+            }
+        }
+
+        public void UpdateControls()
+        {
+            tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
+            addTerminalToGroupToolStripMenuItem.Enabled = (tcTerminals.SelectedItem != null);
+            tsbGrabInput.Enabled = (tcTerminals.SelectedItem != null);
+            grabInputToolStripMenuItem.Enabled = tcTerminals.SelectedItem != null;
+            tsbGrabInput.Checked = tsbGrabInput.Enabled && (CurrentTerminal != null) && CurrentTerminal.FullScreen;
+            grabInputToolStripMenuItem.Checked = tsbGrabInput.Checked;
+            tsbConnect.Enabled = (tscConnectTo.Text != String.Empty);
+            tsbConnectToConsole.Enabled = (tscConnectTo.Text != String.Empty);
+            saveTerminalsAsGroupToolStripMenuItem.Enabled = (tcTerminals.Items.Count > 0);
+
+            this.TerminalServerMenuButton.Visible = false;
+            vncActionButton.Visible = false;
+            VMRCAdminSwitchButton.Visible = false;
+            VMRCViewOnlyButton.Visible = false;
+
+            if (CurrentConnection != null)
+            {
+                Connections.VMRCConnection vmrc;
+                vmrc = (this.CurrentConnection as Connections.VMRCConnection);
+                if (vmrc != null)
+                {
+                    VMRCAdminSwitchButton.Visible = true;
+                    VMRCViewOnlyButton.Visible = true;
+                }
+
+                Connections.VNCConnection vnc;
+                vnc = (this.CurrentConnection as Connections.VNCConnection);
+                if (vnc != null)
+                {
+                    vncActionButton.Visible = true;
+                }
+
+                this.TerminalServerMenuButton.Visible = this.CurrentConnection.IsTerminalServer;
+            }
+        }
+
         public static TerminalsCA CommandLineArgs
         {
             get { return MainForm._commandLineArgs; }
             set { MainForm._commandLineArgs = value; }
         }
+
         public static MainForm GetMainForm()
         {
             return _mainForm;
@@ -115,6 +321,7 @@ namespace Terminals {
         {
             tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
         }
+
         public string GetDesktopShare()
         {
             string desktopShare = ((TerminalTabControlItem)(tcTerminals.SelectedItem)).Favorite.DesktopShare;
@@ -122,8 +329,10 @@ namespace Terminals {
             {
                 desktopShare = Settings.DefaultDesktopShare.Replace("%SERVER%", CurrentTerminal.Server).Replace("%USER%", CurrentTerminal.UserName);
             }
+
             return desktopShare;
         }
+
         public void Connect(string connectionName, bool ForceConsole, bool ForceNewWindow)
         {
             Connect(connectionName, ForceConsole, ForceNewWindow, null);
@@ -154,6 +363,7 @@ namespace Terminals {
 
             CreateTerminalTab(favorite);
         }
+
         public void ToggleGrabInput()
         {
             if (CurrentTerminal != null)
@@ -161,14 +371,17 @@ namespace Terminals {
                 CurrentTerminal.FullScreen = !CurrentTerminal.FullScreen;
             }
         }
+
         public void ShowManagedConnections()
         {
             using (OrganizeFavoritesForm conMgr = new OrganizeFavoritesForm())
             {
                 conMgr.ShowDialog();
             }
+
             LoadFavorites();
         }
+
         public bool FullScreen
         {
             get
@@ -247,202 +460,18 @@ namespace Terminals {
                     if (CurrentConnection is Connections.RDPConnection)
                         return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient;
                 }
+
                 return null;
             }
         }
 
-        public MainForm()
-        {
-            try
-            {                
-                _specialCommandsMIV = new MethodInvoker(LoadSpecialCommands);
-                _resetMethodInvoker = new MethodInvoker(LoadWindowState);
-
-                //check for wizard
-                if (Settings.ShowWizard)
-                {
-                    //settings file doesnt exist, wizard!
-                    FirstRunWizard wzrd = new FirstRunWizard();
-                    wzrd.ShowDialog(this);
-                    Settings.ShowWizard = false;
-                } else
-                    System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ReloadSpecialCommands), null);
-
-                _imageFormatHandler = new ImageFormatHandler();
-                _formSettings = new FormSettings(this);
-                InitializeComponent();
-
-                if (Settings.Office2007BlueFeel)
-                    ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Blue);
-                else if (Settings.Office2007BlackFeel)
-                    ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Black);
-                else
-                    ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
-
-                tsbTags.Checked = Settings.ShowFavoritePanel;
-
-                LoadFavorites();
-                LoadGroups();
-                UpdateControls();
-                pnlTagsFavorites.Width = 7;
-                LoadTags("");
-                ProtocolHandler.Register();
-                SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
-                tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
-                QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
-                
-                LoadWindowState();
-
-                this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
-                this.lockToolbarsToolStripMenuItem.Checked = Settings.ToolbarsLocked;
-                this.groupsToolStripMenuItem.Visible = Settings.EnableGroupsMenu;
-
-
-                if (Settings.ToolbarsLocked)
-                    MainMenuStrip.GripStyle = ToolStripGripStyle.Hidden;
-                else
-                    MainMenuStrip.GripStyle = ToolStripGripStyle.Visible;
-
-                _mainForm = this;
-
-                if (Screen.AllScreens.Length > 1)
-                {
-                    showInDualScreensToolStripMenuItem.Enabled = true;
-
-                    //Lazy check to see if we are using dual screens
-                    int w = this.Width / Screen.PrimaryScreen.Bounds.Width;
-                    if (w > 2)
-                    {
-                        _allScreens = true;
-                        showInDualScreensToolStripMenuItem.Text = "Show in Singel Screens";
-                    }
-                }
-                else
-                {
-                    showInDualScreensToolStripMenuItem.ToolTipText = "You only have one Screen";
-                    showInDualScreensToolStripMenuItem.Enabled = false;
-                }
-            }
-            catch (Exception exc)
-            {
-                Terminals.Logging.Log.Error("Error loading the Main Form", exc);
-            }
-        }
-
-        public void LoadWindowState()
-        {
-            this.Text = Program.AboutText;
-
-            HideShowFavoritesPanel(Settings.ShowFavoritePanel);
-
-            ToolStripSettings newSettings = Settings.ToolbarSettings;            
-            if (newSettings != null && newSettings.Count > 0)
-            {
-                ToolStripMenuItem menuItem = null;
-                foreach (int rowIndex in newSettings.Keys)
-                {
-                    ToolStripSetting setting = newSettings[rowIndex];
-                    menuItem = null;
-                    ToolStrip strip = null;
-                    if (setting.Name == toolbarStd.Name)
-                    {
-                        strip = toolbarStd;
-                        menuItem = standardToolbarToolStripMenuItem;
-                    }
-                    else if (setting.Name == favoriteToolBar.Name)
-                    {
-                        strip = favoriteToolBar;
-                        menuItem = toolStripMenuItem4;
-                    }
-                    else if (setting.Name == SpecialCommandsToolStrip.Name)
-                    {
-                        strip = SpecialCommandsToolStrip;
-                        menuItem = shortcutsToolStripMenuItem;
-                    }
-                    else if (setting.Name == menuStrip.Name)
-                    {
-                        strip = menuStrip;
-                    }
-                    else if (setting.Name == tsRemoteToolbar.Name)
-                    {
-                        strip = tsRemoteToolbar;
-                    }
-
-                    if (menuItem != null)
-                    {
-                        menuItem.Checked = setting.Visible;
-                    }
-
-                    if (strip != null)
-                    {                        
-                        int row = setting.Row + 1;
-                        Point p = new Point(setting.Left, setting.Top);                        
-                        switch (setting.Dock)
-                        {
-                            case "Top":
-                                this.toolStripContainer.TopToolStripPanel.Join(strip, p);                                
-                                break;
-                            case "Left":
-                                this.toolStripContainer.LeftToolStripPanel.Join(strip, p);
-                                break;
-                            case "Right":
-                                this.toolStripContainer.RightToolStripPanel.Join(strip, p);
-                                break;
-                            case "Bottom":
-                                this.toolStripContainer.BottomToolStripPanel.Join(strip, p);
-                                break;
-                        }
-                        strip.Location = p;
-                        strip.Visible = setting.Visible;
-                        if (Settings.ToolbarsLocked)
-                            strip.GripStyle = ToolStripGripStyle.Hidden;
-                        else
-                            strip.GripStyle = ToolStripGripStyle.Visible;
-                    }
-                }
-            }
-        }
-        public void UpdateControls()
-        {
-            tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
-            addTerminalToGroupToolStripMenuItem.Enabled = (tcTerminals.SelectedItem != null);
-            tsbGrabInput.Enabled = (tcTerminals.SelectedItem != null);
-            grabInputToolStripMenuItem.Enabled = tcTerminals.SelectedItem != null;
-            tsbGrabInput.Checked = tsbGrabInput.Enabled && (CurrentTerminal != null) && CurrentTerminal.FullScreen;
-            grabInputToolStripMenuItem.Checked = tsbGrabInput.Checked;
-            tsbConnect.Enabled = (tscConnectTo.Text != String.Empty);
-            tsbConnectToConsole.Enabled = (tscConnectTo.Text != String.Empty);
-            saveTerminalsAsGroupToolStripMenuItem.Enabled = (tcTerminals.Items.Count > 0);
-
-            this.TerminalServerMenuButton.Visible = false;
-            vncActionButton.Visible = false;
-            VMRCAdminSwitchButton.Visible = false;
-            VMRCViewOnlyButton.Visible = false;
-
-            if (CurrentConnection != null)
-            {
-                Connections.VMRCConnection vmrc;
-                vmrc = (this.CurrentConnection as Connections.VMRCConnection);
-                if (vmrc != null)
-                {
-                    VMRCAdminSwitchButton.Visible = true;
-                    VMRCViewOnlyButton.Visible = true;
-                }
-                Connections.VNCConnection vnc;
-                vnc = (this.CurrentConnection as Connections.VNCConnection);
-                if (vnc != null)
-                {
-                    vncActionButton.Visible = true;
-                }
-                this.TerminalServerMenuButton.Visible = this.CurrentConnection.IsTerminalServer;
-            }
-        }
         public static bool ReleaseAvailable
         {
             get
             {
                 return _releaseAvailable;
             }
+
             set
             {
                 _releaseAvailable = value;
@@ -458,6 +487,7 @@ namespace Terminals {
                             break;
                         }
                     }
+
                     if (release == null)
                     {
                         release = new FavoriteConfigurationElement(_terminalsReleasesFavoriteName);
@@ -466,11 +496,13 @@ namespace Terminals {
                         release.Protocol = "HTTP";
                         Settings.AddFavorite(release, false);
                     }
+
                     System.Threading.Thread.Sleep(5000);
                     if (OnReleaseIsAvailable != null) OnReleaseIsAvailable(release);
                 }
             }
         }
+
         public static Unified.Rss.RssItem ReleaseDescription
         {
             get
@@ -480,7 +512,6 @@ namespace Terminals {
             set
             {
                 _releaseDescription = value;
-
             }
         }
 
@@ -499,12 +530,15 @@ namespace Terminals {
             }
         }
 
-        public void AddTerminal(TerminalTabControlItem TabControlItem) {
+        public void AddTerminal(TerminalTabControlItem TabControlItem)
+        {
             this.tcTerminals.AddTab(TabControlItem);
         }
+
         #endregion
 
         #region private made by developer
+
         private string GetToolTipText(FavoriteConfigurationElement favorite)
         {
             string toolTip = "";
@@ -892,6 +926,7 @@ namespace Terminals {
                                         button = Resources.smallterm;
                                 }
                             }
+
                             ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, button, serverToolStripMenuItem_Click);
                             favoriteBtn.Tag = favorite;
                             favoriteBtn.Overflow = ToolStripItemOverflow.AsNeeded;
@@ -899,6 +934,7 @@ namespace Terminals {
                         }
                     }
                 }
+
                 favoriteToolBar.Visible = toolStripMenuItem4.Checked;
                 this.favsList1.LoadFavs();
             }
@@ -952,6 +988,7 @@ namespace Terminals {
             {
                 if (grab && !CurrentTerminal.ContainsFocus)
                     CurrentTerminal.Focus();
+
                 CurrentTerminal.FullScreen = grab;
             }
         }
@@ -1028,6 +1065,7 @@ namespace Terminals {
                             with += screen.Bounds.Width;
                         }
                     }
+
                     this.Width = with;
                     this.Location = new Point(0,0);
                 }
@@ -1052,6 +1090,7 @@ namespace Terminals {
                         this.Location = this._lastLocation;
                     this.Size = this._lastSize;
                 }
+
                 menuStrip.Visible = true;
             }
             
@@ -1080,6 +1119,7 @@ namespace Terminals {
                 favorite.ConnectToConsole = ConnectToConsole;
                 favorite.ServerName = server;
                 favorite.Name = server;
+
                 if (port != 0)
                     favorite.Port = port;
                 CreateTerminalTab(favorite);
@@ -1097,6 +1137,7 @@ namespace Terminals {
                 ProtocolHandler.Parse(Terminals.MainForm._commandLineArgs.url, out server, out port);
                 QuickConnect(server, port, ConnectToConsole);
             }
+
             if (Terminals.MainForm._commandLineArgs.machine != null && Terminals.MainForm._commandLineArgs.machine != "")
             {
                 string server = ""; int port = 3389;
@@ -1111,8 +1152,11 @@ namespace Terminals {
                         port = 3389;
                     }
                 }
+
                 QuickConnect(server, port, ConnectToConsole);
-            } if (Terminals.MainForm._commandLineArgs.favs != null && Terminals.MainForm._commandLineArgs.favs != "")
+            } 
+            
+            if (Terminals.MainForm._commandLineArgs.favs != null && Terminals.MainForm._commandLineArgs.favs != "")
             {
                 string favs = Terminals.MainForm._commandLineArgs.favs;
                 if (favs.Contains(","))
@@ -1127,7 +1171,6 @@ namespace Terminals {
                 {
                     Connect(favs, false, false);
                 }
-
             }
         }
 
@@ -1138,6 +1181,7 @@ namespace Terminals {
             {
                 activeConnections.Add(item.Title);
             }
+
             Settings.CreateSavedConnectionsList(activeConnections.ToArray());
         }
 
@@ -1173,11 +1217,13 @@ namespace Terminals {
                             }
                         }
                     }
+
                     item.Tag = tagFavorites;
                     item.Text = tag + " (" + tagFavorites.Count.ToString() + ")";
                     item.ToolTipText = tag;
                 }
             }
+
             if (Settings.Tags.Length == 0)
             {
                 FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
@@ -1190,6 +1236,7 @@ namespace Terminals {
                     }
                 }
             }
+
             unTaggedListViewItem.Tag = unTaggedFavorites;
             unTaggedListViewItem.Text = Program.Resources.GetString("UnTagged") + " (" + unTaggedFavorites.Count.ToString() + ")";
         }
@@ -1201,9 +1248,11 @@ namespace Terminals {
             {
                 tagList.Add(tag);
             }
+
             tagList.Add(Tag);
             Favorite.Tags = String.Join(",", tagList.ToArray());
         }
+
         private void RemoveTagFromFavorite(FavoriteConfigurationElement Favorite, string Tag)
         {
             List<string> tagList = new List<string>();
@@ -1212,6 +1261,7 @@ namespace Terminals {
             {
                 if (tag.Trim().ToUpper() != t) tagList.Add(tag);
             }
+
             Favorite.Tags = String.Join(",", tagList.ToArray());
         }
 
@@ -1219,14 +1269,38 @@ namespace Terminals {
         {
             Connect(_terminalsReleasesFavoriteName, false, false);
         }
+
         private void ReloadSpecialCommands(object state)
         {
             while(!this.Created) System.Threading.Thread.Sleep(500);
             rebuildShortcutsToolStripMenuItem_Click(null, null);
         }
+
+        private bool RefreshCaptureManager(bool setFocus)
+        {
+            foreach (TerminalTabControlItem tab in tcTerminals.Items)
+            {
+                if (tab.Title == Program.Resources.GetString("CaptureManager"))
+                {
+                    Terminals.Connections.CaptureManagerConnection conn = (tab.Connection as Terminals.Connections.CaptureManagerConnection);
+                    conn.RefreshView();
+                    if (setFocus && Settings.EnableCaptureToFolder && Settings.AutoSwitchOnCapture)
+                    {
+                        conn.BringToFront();
+                        conn.Update();
+                        tcTerminals.SelectedItem = tab;
+                    }
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         #endregion
 
         #region private event
+
         private void tcTerminals_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -1412,7 +1486,7 @@ namespace Terminals {
             }
             else if (e.ClickedItem.Text == Program.Resources.GetString("ScreenCaptureManager"))
             {
-                toolStripMenuItem5_Click(new Object(), null);
+                toolStripMenuItemCaptureManager_Click(new Object(), null);
             }
             else if (e.ClickedItem.Text == Program.Resources.GetString("Exit"))
             {
@@ -1667,6 +1741,7 @@ namespace Terminals {
                 else
                     cancel = true;
             }
+
             e.Cancel = cancel;
         }
 
@@ -1683,6 +1758,7 @@ namespace Terminals {
                 tsbDisconnect.Enabled = e.Item != null;
                 disconnectToolStripMenuItem.Enabled = e.Item != null;
                 SetGrabInput(true);
+
                 if (e.Item.Selected && Settings.ShowInformationToolTips) this.Text = e.Item.ToolTipText.Replace("\r\n", "; ");
             }
         }
@@ -1761,6 +1837,7 @@ namespace Terminals {
             if (FullScreen)
                 tcTerminals.ShowTabs = false;
         }
+
         private void manageConnectionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowManagedConnections();
@@ -1778,6 +1855,7 @@ namespace Terminals {
                     {
                         serversGroup.FavoriteAliases.Add(new FavoriteAliasConfigurationElement(tabControlItem.Title));
                     }
+
                     Settings.AddGroup(serversGroup);
                     LoadGroups();
                 }
@@ -1802,6 +1880,7 @@ namespace Terminals {
                 {
                     _currentToolTip.Hide(_currentToolTipItem);
                 }
+
                 _currentToolTip.ToolTipTitle = Program.Resources.GetString("Connectioninformation");
                 _currentToolTip.ToolTipIcon = ToolTipIcon.Info;
                 _currentToolTip.UseFading = true;
@@ -1851,6 +1930,7 @@ namespace Terminals {
                 else if (Settings.SaveConnectionsOnClose)
                     SaveActiveConnections();
             }
+
             SaveWindowState();
         }
 
@@ -1877,7 +1957,6 @@ namespace Terminals {
                 this.groupsToolStripMenuItem.Visible = Settings.EnableGroupsMenu;
                 HideShowFavoritesPanel(Settings.ShowFavoritePanel);
 
-
                 this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
                 if (!Settings.MinimizeToTray && !this.Visible) this.Visible = true;
 
@@ -1893,6 +1972,11 @@ namespace Terminals {
                 {
                     tcTerminals.SelectedItem.ToolTipText = GetToolTipText(((TerminalTabControlItem)tcTerminals.SelectedItem).Favorite);
                 }
+
+                // Disable capture button when function is disabled in options
+                bool enableCapture = (Settings.EnableCaptureToClipboard && Settings.EnableCaptureToFolder);
+                this.CaptureScreenToolStripButton.Enabled = enableCapture;
+                this.captureTerminalScreenToolStripMenuItem.Enabled = enableCapture;
             }
         }
 
@@ -1972,14 +2056,15 @@ namespace Terminals {
         private void CaptureScreenToolStripButton_Click(object sender, EventArgs e)
         {
             Terminals.CaptureManager.Capture cap = Terminals.CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
+            this.RefreshCaptureManager(false);
 
-            toolStripMenuItem5_Click(null, null);
-
+            if (Settings.EnableCaptureToFolder && Settings.AutoSwitchOnCapture)
+                this.toolStripMenuItemCaptureManager_Click(null, null);
         }
 
         private void captureTerminalScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CaptureScreenToolStripButton_Click(null, null);
+            this.CaptureScreenToolStripButton_Click(null, null);
         }
 
         private void VMRCAdminSwitchButton_Click(object sender, EventArgs e)
@@ -2138,24 +2223,16 @@ namespace Terminals {
             toolStripButton2_Click(null, null);
         }
 
-        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        private void toolStripMenuItemCaptureManager_Click(object sender, EventArgs e)
         {
-            bool createNew = true;
-            foreach (TerminalTabControlItem tab in tcTerminals.Items)
-            {
-                if (tab.Title == Program.Resources.GetString("CaptureManager"))
-                {
-                    Terminals.Connections.CaptureManagerConnection conn = (tab.Connection as Terminals.Connections.CaptureManagerConnection);
-                    conn.RefreshView();
-                    if (Settings.AutoSwitchOnCapture) tcTerminals.SelectedItem = tab;
-                    createNew = false;
-                    break;
-                }
-            }
+            bool createNew = !this.RefreshCaptureManager(true);
+
             if (createNew)
             {
-                if (sender == null && !Settings.AutoSwitchOnCapture) createNew = false;
+                if (sender == null && (!Settings.EnableCaptureToFolder || !Settings.AutoSwitchOnCapture))
+                    createNew = false;
             }
+
             if (createNew)
             {
                 TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(Program.Resources.GetString("CaptureManager"));
@@ -2168,12 +2245,14 @@ namespace Terminals {
                     tcTerminals.Items.Add(terminalTabPage);
                     tcTerminals.SelectedItem = terminalTabPage;
                     tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
+
                     Connections.IConnection conn = new Terminals.Connections.CaptureManagerConnection();
                     conn.TerminalTabPage = terminalTabPage;
                     conn.ParentForm = this;
                     conn.Connect();
                     (conn as Control).BringToFront();
                     (conn as Control).Update();
+
                     UpdateControls();
                 }
                 catch (Exception exc)
@@ -2186,20 +2265,20 @@ namespace Terminals {
             }
         }
 
-        private void toolStripButton3_Click(object sender, EventArgs e)
+        private void toolStripButtonCaptureManager_Click(object sender, EventArgs e)
         {
             bool origval = Settings.AutoSwitchOnCapture;
-            if (!Settings.AutoSwitchOnCapture)
+            if (!Settings.EnableCaptureToFolder || !Settings.AutoSwitchOnCapture)
             {
                 Settings.AutoSwitchOnCapture = true;
             }
-            toolStripMenuItem5_Click(new object(), null);
+
+            toolStripMenuItemCaptureManager_Click(new object(), null);
             Settings.AutoSwitchOnCapture = origval;
         }
 
         private void sendALTKeyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             if (sender != null && (sender as ToolStripMenuItem) != null)
             {
                 string key = (sender as ToolStripMenuItem).Text;
@@ -2232,10 +2311,8 @@ namespace Terminals {
                         {
                             vnc.SendSpecialKeys(VncSharp.SpecialKeys.CtrlAltDel);
                         }
-
                     }
                 }
-
             }
         }
 
@@ -2283,6 +2360,7 @@ namespace Terminals {
                 }
             }
         }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             _releaseMIV = new MethodInvoker(OpenReleasePage);
@@ -2320,7 +2398,7 @@ namespace Terminals {
             if (e.Control && e.KeyCode == Keys.F12)
             {
                 Terminals.CaptureManager.Capture cap = Terminals.CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
-                toolStripMenuItem5_Click(null, null);
+                toolStripMenuItemCaptureManager_Click(null, null);
             }
             else if (e.KeyCode == Keys.F4)
             {
@@ -2396,10 +2474,12 @@ namespace Terminals {
             {
                 if (this.WindowState == FormWindowState.Maximized)
                     this.WindowState = FormWindowState.Normal;
+
                 foreach (Screen screen in screenArr)
                 {
                     with += screen.Bounds.Width;
                 }
+
                 showInDualScreensToolStripMenuItem.Text = "Show in Single Screen";
                 this.BringToFront();
             }
@@ -2415,42 +2495,8 @@ namespace Terminals {
             this.Width = with;
             _allScreens = !_allScreens;
         }
+
         #endregion
     }
 
-    public class TerminalTabControlItem : TabControlItem {
-        public TerminalTabControlItem(string caption)
-            : base(caption, null) {
-        }
-        private Connections.IConnection _connection;
-        private AxMsRdpClient6 _terminalControl;
-        private FavoriteConfigurationElement _favorite;
-
-        public Connections.IConnection Connection {
-            get {
-                return _connection;
-            }
-            set {
-                _connection = value;
-            }
-        }
-        
-        public AxMsRdpClient6 TerminalControl {
-            get {
-                return _terminalControl;
-            }
-            set {
-                _terminalControl = value;
-            }
-        }        
-
-        public FavoriteConfigurationElement Favorite {
-            get {
-                return _favorite;
-            }
-            set {
-                _favorite = value;
-            }
-        }
-    }
 }

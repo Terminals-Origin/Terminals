@@ -8,16 +8,24 @@ using System.Windows.Forms;
 
 namespace Terminals
 {
-    public enum WizardForms { Intro, MasterPassword, DefaultCredentials, Options, Scanner }
+    public enum WizardForms 
+    { 
+        Intro, 
+        MasterPassword, 
+        DefaultCredentials, 
+        Options, 
+        Scanner
+    }
+
     public partial class FirstRunWizard : Form
     {
         WizardForms SelectedForm = WizardForms.Intro;
+
         public FirstRunWizard()
         {
             InitializeComponent();
             rdp.OnDiscoveryCompleted += new Terminals.Wizard.AddExistingRDPConnections.DiscoveryCompleted(rdp_OnDiscoveryCompleted);
             miv = new MethodInvoker(DiscoComplete);
-            
         }
 
         MethodInvoker miv;
@@ -27,6 +35,7 @@ namespace Terminals
             frm.Dock = DockStyle.Fill;
             this.panel1.Controls.Add(frm);
         }
+
         Wizard.AddExistingRDPConnections rdp = new Terminals.Wizard.AddExistingRDPConnections();
         Wizard.MasterPassword mp = new Terminals.Wizard.MasterPassword();
         Wizard.CommonOptions co = new Terminals.Wizard.CommonOptions();
@@ -34,16 +43,16 @@ namespace Terminals
 
         private void nextButton_Click(object sender, EventArgs e)
         {
-            if(SelectedForm == WizardForms.Intro)
+            if (SelectedForm == WizardForms.Intro)
             {
                 nextButton.Enabled = true;
                 this.panel1.Controls.Clear();
                 this.panel1.Controls.Add(mp);
                 this.SelectedForm = WizardForms.MasterPassword;
             }
-            else if(SelectedForm == WizardForms.MasterPassword)
+            else if (SelectedForm == WizardForms.MasterPassword)
             {
-                if(mp.StorePassword)
+                if (mp.StorePassword)
                 {
                     Settings.TerminalsPassword = mp.Password;
                     nextButton.Enabled = true;
@@ -59,7 +68,7 @@ namespace Terminals
                     this.SelectedForm = WizardForms.Options;
                 }
             }
-            else if(SelectedForm == WizardForms.DefaultCredentials)
+            else if (SelectedForm == WizardForms.DefaultCredentials)
             {
                 Settings.DefaultDomain = dc.DefaultDomain;
                 Settings.DefaultPassword = dc.DefaultPassword;
@@ -70,21 +79,25 @@ namespace Terminals
                 this.panel1.Controls.Add(co);
                 this.SelectedForm = WizardForms.Options;                
             }
-            else if(SelectedForm == WizardForms.Options)
+            else if (SelectedForm == WizardForms.Options)
             {
                 Settings.MinimizeToTray = co.MinimizeToTray;
                 Settings.SingleInstance = co.AllowOnlySingleInstance;
                 Settings.ShowConfirmDialog = co.WarnOnDisconnect;
+                Settings.EnableCaptureToClipboard = co.EnableCaptureToClipboard;
+                Settings.EnableCaptureToFolder = co.EnableCaptureToFolder;
                 Settings.AutoSwitchOnCapture = co.AutoSwitchOnCapture;
 
-                try {
-                    if(co.LoadDefaultShortcuts)
+                try
+                {
+                    if (co.LoadDefaultShortcuts)
                         Settings.SpecialCommands = Terminals.Wizard.SpecialCommandsWizard.LoadSpecialCommands();                   
-                } 
+                }
                 catch(Exception exc)
                 {
                     Terminals.Logging.Log.Error("Loading default shortcuts in the wizard.", exc);
                 }
+
                 if (co.ImportRDPConnections)
                 {
                     nextButton.Enabled = false;
@@ -101,7 +114,7 @@ namespace Terminals
                     this.Hide();
                 }
             }
-            else if(SelectedForm == WizardForms.Scanner)
+            else if (SelectedForm == WizardForms.Scanner)
             {
                 this.Hide();
             }
@@ -112,23 +125,24 @@ namespace Terminals
             rdp.CancelDiscovery();
             this.Hide();
         }
-        void DiscoComplete()
+
+        private void DiscoComplete()
         {
             nextButton.Enabled = true;
             cancelButton.Enabled = false;
             this.Hide();
-            
         }
-        void rdp_OnDiscoveryCompleted()
+
+        private void rdp_OnDiscoveryCompleted()
         {
             this.Invoke(miv);
         }
 
         private void FirstRunWizard_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(rdp.DiscoFavs != null && rdp.DiscoFavs.Count > 0)
+            if (rdp.DiscoFavs != null && rdp.DiscoFavs.Count > 0)
             {
-                if(System.Windows.Forms.MessageBox.Show("Automatic Discovery was able to find " + rdp.DiscoFavs.Count + " connections.  Would you like to add them to your connections list?", "Terminals Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                if (System.Windows.Forms.MessageBox.Show("Automatic Discovery was able to find " + rdp.DiscoFavs.Count + " connections.  Would you like to add them to your connections list?", "Terminals Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
                     foreach(FavoriteConfigurationElement  elm in rdp.DiscoFavs)
                     {
@@ -137,6 +151,5 @@ namespace Terminals
                 }
             }
         }
-
     }
 }

@@ -16,29 +16,55 @@ namespace Terminals.Wizard
             this.MinimizeCheckbox.Checked = Settings.MinimizeToTray;
             this.SingleCheckbox.Checked = Settings.SingleInstance;
             this.WarnCheckbox.Checked = Settings.WarnOnConnectionClose;
+            this.CaptureToClipboard.Checked = Settings.EnableCaptureToClipboard;
+            this.CaptureToFolder.Checked = Settings.EnableCaptureToFolder;
             this.autoSwitchOnCapture.Checked = Settings.AutoSwitchOnCapture;
+            this.autoSwitchOnCapture.Enabled = Settings.EnableCaptureToFolder;
         }
+
         public bool MinimizeToTray
         {
-            get { return MinimizeCheckbox.Checked; }
+            get { return this.MinimizeCheckbox.Checked; }
         }
+
         public bool AllowOnlySingleInstance
         {
-            get { return SingleCheckbox.Checked; }
+            get { return this.SingleCheckbox.Checked; }
         }
+
         public bool WarnOnDisconnect
         {
-            get { return WarnCheckbox.Checked; }
+            get { return this.WarnCheckbox.Checked; }
         }
-        public bool AutoSwitchOnCapture {
-            get { return autoSwitchOnCapture.Checked; }
+
+        public bool LoadDefaultShortcuts
+        {
+            get { return this.LoadDefaultShortcutsCheckbox.Checked; }
         }
-        public bool LoadDefaultShortcuts {
-            get { return LoadDefaultShortcutsCheckbox.Checked; }
-        }
+
         public bool ImportRDPConnections
         {
-            get { return chkBoxImportRDP.Checked; }
+            get { return this.ImportRDP.Checked; }
+        }
+
+        public bool EnableCaptureToClipboard
+        {
+            get { return this.CaptureToClipboard.Checked; }
+        }
+
+        public bool EnableCaptureToFolder
+        {
+            get { return this.CaptureToFolder.Checked; }
+        }
+
+        public bool AutoSwitchOnCapture
+        {
+            get { return this.autoSwitchOnCapture.Checked; }
+        }
+
+        private void CaptureToFolder_CheckedChanged(object sender, EventArgs e)
+        {
+            this.autoSwitchOnCapture.Enabled = this.CaptureToFolder.Checked;
         }
     }
 }

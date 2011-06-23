@@ -35,14 +35,16 @@ namespace Terminals.Wizard
             this.WarnCheckbox = new System.Windows.Forms.CheckBox();
             this.autoSwitchOnCapture = new System.Windows.Forms.CheckBox();
             this.LoadDefaultShortcutsCheckbox = new System.Windows.Forms.CheckBox();
-            this.chkBoxImportRDP = new System.Windows.Forms.CheckBox();
+            this.ImportRDP = new System.Windows.Forms.CheckBox();
+            this.CaptureToClipboard = new System.Windows.Forms.CheckBox();
+            this.CaptureToFolder = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label2
             // 
             this.label2.Location = new System.Drawing.Point(4, 55);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(360, 42);
+            this.label2.Size = new System.Drawing.Size(360, 32);
             this.label2.TabIndex = 4;
             this.label2.Text = "Below are a few of the more common options which you should take time now to twea" +
                 "k according to your needs.";
@@ -62,7 +64,7 @@ namespace Terminals.Wizard
             this.MinimizeCheckbox.AutoSize = true;
             this.MinimizeCheckbox.Checked = true;
             this.MinimizeCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.MinimizeCheckbox.Location = new System.Drawing.Point(28, 122);
+            this.MinimizeCheckbox.Location = new System.Drawing.Point(28, 93);
             this.MinimizeCheckbox.Name = "MinimizeCheckbox";
             this.MinimizeCheckbox.Size = new System.Drawing.Size(98, 17);
             this.MinimizeCheckbox.TabIndex = 5;
@@ -74,7 +76,7 @@ namespace Terminals.Wizard
             this.SingleCheckbox.AutoSize = true;
             this.SingleCheckbox.Checked = true;
             this.SingleCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.SingleCheckbox.Location = new System.Drawing.Point(28, 145);
+            this.SingleCheckbox.Location = new System.Drawing.Point(28, 116);
             this.SingleCheckbox.Name = "SingleCheckbox";
             this.SingleCheckbox.Size = new System.Drawing.Size(217, 17);
             this.SingleCheckbox.TabIndex = 6;
@@ -86,7 +88,7 @@ namespace Terminals.Wizard
             this.WarnCheckbox.AutoSize = true;
             this.WarnCheckbox.Checked = true;
             this.WarnCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.WarnCheckbox.Location = new System.Drawing.Point(28, 168);
+            this.WarnCheckbox.Location = new System.Drawing.Point(28, 139);
             this.WarnCheckbox.Name = "WarnCheckbox";
             this.WarnCheckbox.Size = new System.Drawing.Size(122, 17);
             this.WarnCheckbox.TabIndex = 7;
@@ -98,7 +100,7 @@ namespace Terminals.Wizard
             this.autoSwitchOnCapture.AutoSize = true;
             this.autoSwitchOnCapture.Checked = true;
             this.autoSwitchOnCapture.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.autoSwitchOnCapture.Location = new System.Drawing.Point(28, 191);
+            this.autoSwitchOnCapture.Location = new System.Drawing.Point(48, 254);
             this.autoSwitchOnCapture.Name = "autoSwitchOnCapture";
             this.autoSwitchOnCapture.Size = new System.Drawing.Size(218, 17);
             this.autoSwitchOnCapture.TabIndex = 8;
@@ -110,22 +112,47 @@ namespace Terminals.Wizard
             this.LoadDefaultShortcutsCheckbox.AutoSize = true;
             this.LoadDefaultShortcutsCheckbox.Checked = true;
             this.LoadDefaultShortcutsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.LoadDefaultShortcutsCheckbox.Location = new System.Drawing.Point(28, 214);
+            this.LoadDefaultShortcutsCheckbox.Location = new System.Drawing.Point(28, 162);
             this.LoadDefaultShortcutsCheckbox.Name = "LoadDefaultShortcutsCheckbox";
             this.LoadDefaultShortcutsCheckbox.Size = new System.Drawing.Size(131, 17);
             this.LoadDefaultShortcutsCheckbox.TabIndex = 9;
             this.LoadDefaultShortcutsCheckbox.Text = "Load default shortcuts";
             this.LoadDefaultShortcutsCheckbox.UseVisualStyleBackColor = true;
             // 
-            // chkBoxImportRDP
+            // ImportRDP
             // 
-            this.chkBoxImportRDP.AutoSize = true;
-            this.chkBoxImportRDP.Location = new System.Drawing.Point(28, 237);
-            this.chkBoxImportRDP.Name = "chkBoxImportRDP";
-            this.chkBoxImportRDP.Size = new System.Drawing.Size(202, 17);
-            this.chkBoxImportRDP.TabIndex = 10;
-            this.chkBoxImportRDP.Text = "Import RDP Connections from registry";
-            this.chkBoxImportRDP.UseVisualStyleBackColor = true;
+            this.ImportRDP.AutoSize = true;
+            this.ImportRDP.Location = new System.Drawing.Point(28, 185);
+            this.ImportRDP.Name = "ImportRDP";
+            this.ImportRDP.Size = new System.Drawing.Size(202, 17);
+            this.ImportRDP.TabIndex = 10;
+            this.ImportRDP.Text = "Import RDP Connections from registry";
+            this.ImportRDP.UseVisualStyleBackColor = true;
+            // 
+            // CaptureToClipboard
+            // 
+            this.CaptureToClipboard.AutoSize = true;
+            this.CaptureToClipboard.Checked = true;
+            this.CaptureToClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CaptureToClipboard.Location = new System.Drawing.Point(28, 208);
+            this.CaptureToClipboard.Name = "CaptureToClipboard";
+            this.CaptureToClipboard.Size = new System.Drawing.Size(191, 17);
+            this.CaptureToClipboard.TabIndex = 11;
+            this.CaptureToClipboard.Text = "Enable screen capture to clipboard";
+            this.CaptureToClipboard.UseVisualStyleBackColor = true;
+            // 
+            // CaptureToFolder
+            // 
+            this.CaptureToFolder.AutoSize = true;
+            this.CaptureToFolder.Checked = true;
+            this.CaptureToFolder.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.CaptureToFolder.Location = new System.Drawing.Point(28, 231);
+            this.CaptureToFolder.Name = "CaptureToFolder";
+            this.CaptureToFolder.Size = new System.Drawing.Size(174, 17);
+            this.CaptureToFolder.TabIndex = 12;
+            this.CaptureToFolder.Text = "Enable screen capture to folder";
+            this.CaptureToFolder.UseVisualStyleBackColor = true;
+            this.CaptureToFolder.CheckedChanged += new System.EventHandler(this.CaptureToFolder_CheckedChanged);
             // 
             // CommonOptions
             // 
@@ -133,7 +160,9 @@ namespace Terminals.Wizard
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.chkBoxImportRDP);
+            this.Controls.Add(this.CaptureToFolder);
+            this.Controls.Add(this.CaptureToClipboard);
+            this.Controls.Add(this.ImportRDP);
             this.Controls.Add(this.LoadDefaultShortcutsCheckbox);
             this.Controls.Add(this.autoSwitchOnCapture);
             this.Controls.Add(this.WarnCheckbox);
@@ -157,6 +186,8 @@ namespace Terminals.Wizard
         private System.Windows.Forms.CheckBox WarnCheckbox;
         private System.Windows.Forms.CheckBox autoSwitchOnCapture;
         private System.Windows.Forms.CheckBox LoadDefaultShortcutsCheckbox;
-        private System.Windows.Forms.CheckBox chkBoxImportRDP;
+        private System.Windows.Forms.CheckBox ImportRDP;
+        private System.Windows.Forms.CheckBox CaptureToClipboard;
+        private System.Windows.Forms.CheckBox CaptureToFolder;
     }
 }
