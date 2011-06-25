@@ -142,7 +142,7 @@
     <value>Confirmation</value>
   </data>
   <data name="ConnectionInformation" xml:space="preserve">
-    <value>ConnectionInformation</value>
+    <value>Connection Information</value>
   </data>
   <data name="ConnectToConsole" xml:space="preserve">
     <value>Connect To Console</value>

@@ -43,7 +43,7 @@ namespace Terminals
         private int _currentToolBarCount = 0;
         private FormWindowState _originalFormWindowState;
         private TabControlItem _currentToolTipItem = null;
-        private ToolTip _currentToolTip = new ToolTip();
+        private ToolTip _currentToolTip = null;
         private bool _fullScreen;
         private bool _allScreens = false;
         private bool _stdToolbarState = true;
@@ -1781,7 +1781,10 @@ namespace Terminals
                 tcTerminals.ShowTabs = false;
 
             if (_currentToolTipItem != null)
+            {
                 _currentToolTip.Hide(_currentToolTipItem);
+                _currentToolTip.Active = false;
+            }
         }
 
         private void tcTerminals_TabControlItemClosed(object sender, EventArgs e)
@@ -1875,19 +1878,29 @@ namespace Terminals
         {
             if (Settings.ShowInformationToolTips)
             {
-                //ToolTip
-                if ((_currentToolTipItem != null) && (_currentToolTipItem != e.Item))
+                if (_currentToolTip == null)
+                {
+                    _currentToolTip = new ToolTip();
+                    _currentToolTip.Active = false;
+                }
+                else if ((_currentToolTipItem != null) && (_currentToolTipItem != e.Item))
                 {
                     _currentToolTip.Hide(_currentToolTipItem);
+                    _currentToolTip.Active = false;
                 }
 
-                _currentToolTip.ToolTipTitle = Program.Resources.GetString("Connectioninformation");
-                _currentToolTip.ToolTipIcon = ToolTipIcon.Info;
-                _currentToolTip.UseFading = true;
-                _currentToolTip.UseAnimation = true;
-                _currentToolTip.IsBalloon = false;
-                _currentToolTip.Show(e.Item.ToolTipText, e.Item, (int)e.Item.StripRect.X, 2);
-                _currentToolTipItem = e.Item;
+                if (!_currentToolTip.Active)
+                {
+                    _currentToolTip = new ToolTip();
+                    _currentToolTip.ToolTipTitle = Program.Resources.GetString("ConnectionInformation");
+                    _currentToolTip.ToolTipIcon = ToolTipIcon.Info;
+                    _currentToolTip.UseFading = true;
+                    _currentToolTip.UseAnimation = true;
+                    _currentToolTip.IsBalloon = false;
+                    _currentToolTip.Show(e.Item.ToolTipText, e.Item, (int)e.Item.StripRect.X, 2);
+                    _currentToolTipItem = e.Item;
+                    _currentToolTip.Active = true;
+                }
             }
         }
 
@@ -1896,6 +1909,7 @@ namespace Terminals
             if (_currentToolTipItem != null)
             {
                 _currentToolTip.Hide(_currentToolTipItem);
+                _currentToolTip.Active = false;
             }
             /*if (previewPictureBox != null)
             {

@@ -250,7 +250,7 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ConnectionInformation.
+        ///   Looks up a localized string similar to Connection Information.
         /// </summary>
         internal static string ConnectionInformation {
             get {
