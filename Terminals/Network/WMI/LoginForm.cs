@@ -11,14 +11,17 @@ namespace WMITestClient
     /// </summary>
     public class LoginForm : System.Windows.Forms.Form
     {
-        private System.Windows.Forms.Button CancelButton;
-        public System.Windows.Forms.TextBox MachineNameTextBox;
-        public System.Windows.Forms.TextBox UsernameTextBox;
-        public System.Windows.Forms.TextBox PasswordTextBox;
-        private System.Windows.Forms.Button LoginButton;
+        private System.Windows.Forms.TextBox MachineNameTextBox;
+        private System.Windows.Forms.TextBox UsernameTextBox;
+        private System.Windows.Forms.TextBox PasswordTextBox;
+        private System.Windows.Forms.Button ButtonCancel;
+        private System.Windows.Forms.Button ButtonLogin;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+
+        private bool isCancelled = true;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -26,14 +29,7 @@ namespace WMITestClient
 
         public LoginForm()
         {
-            //
-            // Required for Windows Form Designer support
-            //
             InitializeComponent();
-
-            //
-            // TODO: Add any constructor code after InitializeComponent call
-            //
         }
 
         /// <summary>
@@ -48,6 +44,7 @@ namespace WMITestClient
                     components.Dispose();
                 }
             }
+
             base.Dispose(disposing);
         }
 
@@ -58,11 +55,11 @@ namespace WMITestClient
         /// </summary>
         private void InitializeComponent()
         {
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.ButtonCancel = new System.Windows.Forms.Button();
             this.MachineNameTextBox = new System.Windows.Forms.TextBox();
             this.UsernameTextBox = new System.Windows.Forms.TextBox();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
-            this.LoginButton = new System.Windows.Forms.Button();
+            this.ButtonLogin = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -70,13 +67,13 @@ namespace WMITestClient
             // 
             // CancelButton
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(112, 120);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 0;
-            this.CancelButton.Text = "&Cancel";
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.ButtonCancel.Location = new System.Drawing.Point(112, 120);
+            this.ButtonCancel.Name = "CancelButton";
+            this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
+            this.ButtonCancel.TabIndex = 0;
+            this.ButtonCancel.Text = "&Cancel";
+            this.ButtonCancel.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // MachineNameTextBox
             // 
@@ -103,12 +100,12 @@ namespace WMITestClient
             // 
             // LoginButton
             // 
-            this.LoginButton.Location = new System.Drawing.Point(200, 120);
-            this.LoginButton.Name = "LoginButton";
-            this.LoginButton.Size = new System.Drawing.Size(75, 23);
-            this.LoginButton.TabIndex = 4;
-            this.LoginButton.Text = "&Login";
-            this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
+            this.ButtonLogin.Location = new System.Drawing.Point(200, 120);
+            this.ButtonLogin.Name = "LoginButton";
+            this.ButtonLogin.Size = new System.Drawing.Size(75, 23);
+            this.ButtonLogin.TabIndex = 4;
+            this.ButtonLogin.Text = "&Login";
+            this.ButtonLogin.Click += new System.EventHandler(this.LoginButton_Click);
             // 
             // label1
             // 
@@ -139,17 +136,17 @@ namespace WMITestClient
             // 
             // LoginForm
             // 
-            this.AcceptButton = this.LoginButton;
+            this.AcceptButton = this.ButtonLogin;
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(280, 149);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.LoginButton);
+            this.Controls.Add(this.ButtonLogin);
             this.Controls.Add(this.PasswordTextBox);
             this.Controls.Add(this.UsernameTextBox);
             this.Controls.Add(this.MachineNameTextBox);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.ButtonCancel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "LoginForm";
             this.Text = "Login...";
@@ -159,7 +156,63 @@ namespace WMITestClient
 
         }
         #endregion
-        public bool Cancelled = true;
+
+        #region Properties
+
+        public bool Cancelled
+        {
+            get
+            {
+                return this.isCancelled;
+            }
+
+            set
+            {
+                this.isCancelled = value;
+            }
+        }
+
+        public string MachineName
+        {
+            get
+            {
+                return this.MachineNameTextBox.Text;
+            }
+
+            set
+            {
+                this.MachineNameTextBox.Text = value;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                return this.UsernameTextBox.Text;
+            }
+
+            set
+            {
+                this.UsernameTextBox.Text = value;
+            }
+        }
+
+        public string Password
+        {
+            get
+            {
+                return this.PasswordTextBox.Text;
+            }
+
+            set
+            {
+                this.PasswordTextBox.Text = value;
+            }
+        }
+
+        #endregion
+
         private void CancelButton_Click(object sender, System.EventArgs e)
         {
             this.Visible = false;
@@ -170,18 +223,19 @@ namespace WMITestClient
 
             bool success = false;
 
-            if (this.MachineNameTextBox.Text == "")
+            if (this.MachineNameTextBox.Text == string.Empty)
             {
                 this.MachineNameTextBox.Text = @"\\localhost\root\cimv2";
             }
             else
             {
-                if (!this.MachineNameTextBox.Text.StartsWith(@"\\")) this.MachineNameTextBox.Text = @"\\" + this.MachineNameTextBox.Text;
+                if (!this.MachineNameTextBox.Text.StartsWith(@"\\")) 
+                    this.MachineNameTextBox.Text = @"\\" + this.MachineNameTextBox.Text;
             }
 
             if (!this.MachineNameTextBox.Text.StartsWith(@"\\localhost"))
             {
-                if (this.UsernameTextBox.Text != "" && this.PasswordTextBox.Text != "" && this.MachineNameTextBox.Text != "")
+                if (this.UsernameTextBox.Text != string.Empty && this.PasswordTextBox.Text != string.Empty && this.MachineNameTextBox.Text != string.Empty)
                 {
                     try
                     {
@@ -201,34 +255,32 @@ namespace WMITestClient
                         Terminals.Logging.Log.Info("Login Failed", exc);
                         System.Windows.Forms.MessageBox.Show(exc.Message);
                     }
+
                     if (success)
                     {
-                        Cancelled = false;
+                        this.Cancelled = false;
                         this.Visible = false;
                     }
                 }
-
-
             }
             else
             {
-                Cancelled = false;
+                this.Cancelled = false;
                 this.Visible = false;
             }
-
-
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
         {
 
-            if (this.MachineNameTextBox.Text == "")
+            if (this.MachineNameTextBox.Text == string.Empty)
             {
                 this.MachineNameTextBox.Text = @"\\localhost\root\cimv2";
             }
             else
             {
-                if (!this.MachineNameTextBox.Text.StartsWith(@"\\")) this.MachineNameTextBox.Text = @"\\" + this.MachineNameTextBox.Text;
+                if (!this.MachineNameTextBox.Text.StartsWith(@"\\"))
+                    this.MachineNameTextBox.Text = @"\\" + this.MachineNameTextBox.Text;
             }
         }
     }

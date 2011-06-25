@@ -195,7 +195,7 @@ namespace Terminals
 
         public void LoadWindowState()
         {
-            this.Text = Program.AboutText;
+            this.Text = Program.Info.AboutText.ToString();
 
             HideShowFavoritesPanel(Settings.ShowFavoritePanel);
 
@@ -1736,7 +1736,7 @@ namespace Terminals
                         cancel = true;
                     }
                     
-                    this.Text = Program.AboutText;
+                    this.Text = Program.Info.AboutText;
                 }
                 else
                     cancel = true;
@@ -1786,7 +1786,7 @@ namespace Terminals
 
         private void tcTerminals_TabControlItemClosed(object sender, EventArgs e)
         {
-            this.Text = Program.AboutText;
+            this.Text = Program.Info.AboutText;
             if (tcTerminals.Items.Count == 0)
                 FullScreen = false;
         }
@@ -2364,7 +2364,7 @@ namespace Terminals
         private void MainForm_Load(object sender, EventArgs e)
         {
             _releaseMIV = new MethodInvoker(OpenReleasePage);
-            this.Text = Program.AboutText;
+            this.Text = Program.Info.AboutText;
             MainForm.OnReleaseIsAvailable += new ReleaseIsAvailable(MainForm_OnReleaseIsAvailable);
         }
 

@@ -82,7 +82,7 @@ namespace Terminals
 				}
 				this.stream.BeginRead(s.buffer, 0, s.buffer.Length,
 					                      new AsyncCallback(OnRead), s);
-			} catch(Exception e)
+			} catch(Exception)
 			{
 				if(OnDisconnect!=null) OnDisconnect();
 			}

@@ -39,6 +39,7 @@ namespace Unified
             {
                 memStream.Position = (long)0;
             }
+
             try
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(type);
@@ -49,6 +50,7 @@ namespace Unified
                 local2 = null;
                 if (ThrowException) throw exc;
             }
+
             return local2;
         }
 
@@ -60,6 +62,7 @@ namespace Unified
             {
                 memStream.Position = (long)0;
             }
+
             try
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(type);
@@ -69,6 +72,7 @@ namespace Unified
             {
                 local2 = null;
             }
+
             return local2;
         }
 
@@ -79,11 +83,15 @@ namespace Unified
                 return StreamHelper.StreamToBytes(stm);
             }
         }
+
         public static void SerializeXMLToDisk(object request, string Filename)
         {
-            if (System.IO.File.Exists(Filename)) System.IO.File.Delete(Filename);
+            if (System.IO.File.Exists(Filename))
+                System.IO.File.Delete(Filename);
+
             System.IO.File.WriteAllText(Filename, SerializeXMLAsString(request), Encoding.Default);
         }
+
         public static string SerializeXMLAsString(object request)
         {
             using (MemoryStream stm = SerializeXML(request))
@@ -111,10 +119,13 @@ namespace Unified
             catch (Exception exc)
             {
                 memoryStream2 = null;
-                if (ThrowException) throw exc;
+                if (ThrowException) 
+                    throw exc;
             }
+
             return memoryStream2;
         }
+
         public static MemoryStream SerializeXML(object request, Type type)
         {
             MemoryStream memoryStream2;
@@ -126,10 +137,11 @@ namespace Unified
                 xmlSerializer.Serialize(memoryStream1, request);
                 memoryStream2 = memoryStream1;
             }
-            catch (Exception exc)
+            catch (Exception)
             {
                 memoryStream2 = null;
             }
+
             return memoryStream2;
         }
 
@@ -153,8 +165,10 @@ namespace Unified
             catch (Exception exc)
             {
                 local2 = null;
-                if (ThrowException) throw exc;
+                if (ThrowException) 
+                    throw exc;
             }
+
             return local2;
         }
 
@@ -169,10 +183,11 @@ namespace Unified
                 memoryStream.Close();
                 local2 = local1;
             }
-            catch (Exception esc)
+            catch (Exception)
             {
                 local2 = null;
             }
+
             return local2;
         }
     }

@@ -44,7 +44,7 @@ namespace Terminals {
             this.ScanButton = new System.Windows.Forms.Button();
             this.TagsTextbox = new System.Windows.Forms.TextBox();
             this.AddAllButton = new System.Windows.Forms.Button();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.ButtonCancel = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -292,15 +292,15 @@ namespace Terminals {
             // 
             // CancelButton
             // 
-            this.CancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(326, 6);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 15;
-            this.CancelButton.Text = "&Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.ButtonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.ButtonCancel.Location = new System.Drawing.Point(326, 6);
+            this.ButtonCancel.Name = "CancelButton";
+            this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
+            this.ButtonCancel.TabIndex = 15;
+            this.ButtonCancel.Text = "&Cancel";
+            this.ButtonCancel.UseVisualStyleBackColor = true;
+            this.ButtonCancel.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // button2
             // 
@@ -474,7 +474,7 @@ namespace Terminals {
             // panel2
             // 
             this.panel2.Controls.Add(this.AddAllButton);
-            this.panel2.Controls.Add(this.CancelButton);
+            this.panel2.Controls.Add(this.ButtonCancel);
             this.panel2.Controls.Add(this.label6);
             this.panel2.Controls.Add(this.TagsTextbox);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -542,7 +542,7 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripProgressBar scanProgressBar;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button ButtonCancel;
         private System.Windows.Forms.CheckBox AllCheckbox;
         private System.Windows.Forms.Button AddAllButton;
         private System.Windows.Forms.ColumnHeader columnHeader3;

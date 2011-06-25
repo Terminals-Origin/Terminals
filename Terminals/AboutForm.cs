@@ -52,7 +52,7 @@ namespace Terminals
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
-            lblVersion.Text = Program.AboutText;
+            lblVersion.Text = Program.Info.AboutText;
             this.textBox1.Text = this.textBox1.Text + "\r\nConfig File:\r\n" + Program.ConfigurationFileLocation;
         }
     }

@@ -8,115 +8,174 @@ using System.Windows.Forms;
 using FalafelSoftware;
 using FalafelSoftware.TransPort;
 
-namespace Terminals.Connections {
-    public partial class RASProperties : System.Windows.Forms.UserControl, Connections.IConnection {
+namespace Terminals.Connections
+{
+    public partial class RASProperties : System.Windows.Forms.UserControl, Connections.IConnection
+    {
+        private RASConnection rASConnection;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.MethodInvoker logMiv;
+        System.DateTime connectedTime = DateTime.MinValue;
+        private MainForm parentForm;
+        string Entry = string.Empty;
 
-        RASConnection rASConnection;
-        public RASConnection RASConnection {
-            get {
-                return rASConnection;
+        public RASConnection RASConnection
+        {
+            get
+            {
+                return this.rASConnection;
             }
-            set {
-                rASConnection = value;
-                rASConnection.OnLog += new Connection.LogHandler(rASConnection_OnLog);
+
+            set
+            {
+                this.rASConnection = value;
+                this.rASConnection.OnLog += new Connection.LogHandler(this.rASConnection_OnLog);
             }
-        }
-        public void ChangeDesktopSize(Terminals.DesktopSize Size) {
-        }
-        public TerminalServices.TerminalServer Server {
-            get { return null; }
-            set { }
         }
 
-        public bool IsTerminalServer {
-            get { return false; }
-            set { }
+        public void ChangeDesktopSize(Terminals.DesktopSize Size)
+        {
         }
-	
-        System.Windows.Forms.Timer t;
-        System.Windows.Forms.MethodInvoker logMiv;
-        public RASProperties() {
+
+        public TerminalServices.TerminalServer Server
+        {
+            get
+            {
+                return null;
+            }
+
+            set
+            {
+            }
+        }
+
+        public bool IsTerminalServer
+        {
+            get
+            {
+                return false;
+            }
+
+            set
+            {
+            }
+        }
+    
+        public RASProperties()
+        {
             InitializeComponent();
-            t = new Timer();
-            t.Interval = 500;
-            t.Tick += new EventHandler(t_Tick);
-            t.Start();
-            logMiv = new MethodInvoker(UpdateLog);
+            this.timer = new Timer();
+            this.timer.Interval = 500;
+            this.timer.Tick += new EventHandler(this.timer_Tick);
+            this.timer.Start();
+            this.logMiv = new MethodInvoker(this.UpdateLog);
         }
-        void UpdateLog() {
-            LogListBox.TopIndex = LogListBox.Items.Add(Entry);
+
+        private void UpdateLog()
+        {
+            this.LogListBox.TopIndex = this.LogListBox.Items.Add(Entry);
         }
-        void t_Tick(object sender, EventArgs e) {
-            UpdateStats();
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            this.UpdateStats();
         }
 
         #region IConnection Members
         
-        public TerminalTabControlItem TerminalTabPage {
-            get {
+        public TerminalTabControlItem TerminalTabPage
+        {
+            get
+            {
                 return RASConnection.TerminalTabPage;
             }
-            set {
+
+            set
+            {
                 RASConnection.TerminalTabPage = value;
             }
         }
 
-        public FavoriteConfigurationElement Favorite {
-            get {
+        public FavoriteConfigurationElement Favorite
+        {
+            get
+            {
                 return RASConnection.Favorite;
             }
-            set {
+
+            set
+            {
                 RASConnection.Favorite = value;
             }
         }
 
-        private MainForm parentForm;
-
         public MainForm ParentForm
         {
-            get { return parentForm; }
-            set { parentForm = value; }
+            get
+            {
+                return this.parentForm;
+            }
+
+            set
+            {
+                this.parentForm = value;
+            }
         }
 
-        public bool Connect() {
+        public bool Connect()
+        {
             return RASConnection.Connect();
         }
 
-        public void Disconnect() {
-            t.Stop();
+        public void Disconnect()
+        {
+            this.timer.Stop();
             RASConnection.Disconnect();
         }
 
-        public bool Connected {
-            get { return RASConnection.Connected; }
-        }
-        System.DateTime connectedTime = DateTime.MinValue;
-        private void UpdateStats() {
-            lbDetails1.Items.Clear();
-            this.BringToFront();
-            if (this.Connected) {
-                if (connectedTime == DateTime.MinValue) connectedTime = DateTime.Now;
-                RASENTRY entry = new RASENTRY();
-                rASConnection.ras.GetEntry(rASConnection.ras.EntryName, ref entry);
-                AddDetailsText("Connection Status", "Connected");
-                AddDetailsText("Host", entry.LocalPhoneNumber);
-                AddDetailsText("IP Address", rASConnection.ras.IPAddress());
-                System.TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - connectedTime.Ticks);
-                AddDetailsText("Connection Duration:", string.Format("{0} Days, {1} Hours, {2} Minutes, {3} Seconds", ts.Days, ts.Hours, ts.Minutes, ts.Seconds));
-
-            } else {
-                AddDetailsText("Connection Status", "Not Connected");
+        public bool Connected
+        {
+            get
+            {
+                return RASConnection.Connected;
             }
         }
-        private void AddDetailsText(string caption, object item) {
-            if (item != null)
-                lbDetails1.TopIndex = lbDetails1.Items.Add(caption + ":  " + item.ToString());
+
+        private void UpdateStats()
+        {
+            this.lbDetails1.Items.Clear();
+            this.BringToFront();
+            if (this.Connected)
+            {
+                if (this.connectedTime == DateTime.MinValue)
+                    this.connectedTime = DateTime.Now;
+
+                RASENTRY entry = new RASENTRY();
+                this.rASConnection.ras.GetEntry(rASConnection.ras.EntryName, ref entry);
+                this.AddDetailsText("Connection Status", "Connected");
+                this.AddDetailsText("Host", entry.LocalPhoneNumber);
+                this.AddDetailsText("IP Address", this.rASConnection.ras.IPAddress());
+                System.TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - this.connectedTime.Ticks);
+                this.AddDetailsText("Connection Duration:", string.Format("{0} Days, {1} Hours, {2} Minutes, {3} Seconds", ts.Days, ts.Hours, ts.Minutes, ts.Seconds));
+            }
+            else
+            {
+                this.AddDetailsText("Connection Status", "Not Connected");
+            }
         }
-        string Entry = "";
-        void rASConnection_OnLog(string Entry) {
+
+        private void AddDetailsText(string caption, object item)
+        {
+            if (item != null)
+                this.lbDetails1.TopIndex = this.lbDetails1.Items.Add(caption + ":  " + item.ToString());
+        }
+
+        private void rASConnection_OnLog(string Entry)
+        {
             this.Entry = Entry;
-            lock (logMiv) {
-                this.Invoke(logMiv);
+            lock (this.logMiv)
+            {
+                this.Invoke(this.logMiv);
             }
         }
 

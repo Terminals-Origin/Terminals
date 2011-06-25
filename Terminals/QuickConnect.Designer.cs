@@ -23,20 +23,20 @@ namespace Terminals {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.ConnectButton = new System.Windows.Forms.Button();
+            this.ButtonConnect = new System.Windows.Forms.Button();
             this.cmbServerList = new System.Windows.Forms.ComboBox();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.ButtonCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ConnectButton
             // 
-            this.ConnectButton.Location = new System.Drawing.Point(165, 2);
-            this.ConnectButton.Name = "ConnectButton";
-            this.ConnectButton.Size = new System.Drawing.Size(60, 23);
-            this.ConnectButton.TabIndex = 0;
-            this.ConnectButton.Text = "&Connect";
-            this.ConnectButton.UseVisualStyleBackColor = true;
-            this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
+            this.ButtonConnect.Location = new System.Drawing.Point(165, 2);
+            this.ButtonConnect.Name = "ConnectButton";
+            this.ButtonConnect.Size = new System.Drawing.Size(60, 23);
+            this.ButtonConnect.TabIndex = 0;
+            this.ButtonConnect.Text = "&Connect";
+            this.ButtonConnect.UseVisualStyleBackColor = true;
+            this.ButtonConnect.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
             // cmbServerList
             // 
@@ -48,24 +48,24 @@ namespace Terminals {
             // 
             // CancelButton
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(227, 2);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(60, 23);
-            this.CancelButton.TabIndex = 2;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.ButtonCancel.Location = new System.Drawing.Point(227, 2);
+            this.ButtonCancel.Name = "CancelButton";
+            this.ButtonCancel.Size = new System.Drawing.Size(60, 23);
+            this.ButtonCancel.TabIndex = 2;
+            this.ButtonCancel.Text = "Cancel";
+            this.ButtonCancel.UseVisualStyleBackColor = true;
+            this.ButtonCancel.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // QuickConnect
             // 
-            this.AcceptButton = this.ConnectButton;
+            this.AcceptButton = this.ButtonConnect;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(288, 28);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.cmbServerList);
-            this.Controls.Add(this.ConnectButton);
+            this.Controls.Add(this.ButtonConnect);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -77,8 +77,8 @@ namespace Terminals {
 
         #endregion
 
-        private System.Windows.Forms.Button ConnectButton;
+        private System.Windows.Forms.Button ButtonConnect;
         private System.Windows.Forms.ComboBox cmbServerList;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button ButtonCancel;
     }
 }

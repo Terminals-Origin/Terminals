@@ -33,14 +33,19 @@ using System;
 
 namespace Unified.Rss
 {
-	/// <summary>Class does not exist on the .NET Compact Framework</summary>
-	class Serializable : Attribute {}
-	/// <summary>Class does not exist on the .NET Compact Framework</summary>
-	class SecurityPermissionAttribute : Attribute
-	{
-		public SecurityPermissionAttribute(SecurityAction securityAction) {}
-		public bool Execution;
-	}
-	/// <summary>Enumerator does not exist on the .NET Compact Framework</summary>
-	enum SecurityAction { RequestMinimum }
+    /// <summary>Class does not exist on the .NET Compact Framework</summary>
+    class Serializable : Attribute {}
+
+    /// <summary>Class does not exist on the .NET Compact Framework</summary>
+    class SecurityPermissionAttribute : Attribute
+    {
+        public SecurityPermissionAttribute(SecurityAction securityAction) {}
+        public bool Execution = false;
+    }
+
+    /// <summary>Enumerator does not exist on the .NET Compact Framework</summary>
+    enum SecurityAction
+    {
+        RequestMinimum
+    }
 }

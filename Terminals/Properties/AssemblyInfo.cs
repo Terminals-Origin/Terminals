@@ -7,7 +7,7 @@ using log4net;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Terminals")]
-[assembly: AssemblyDescription("RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix, Amazon S3")]
+[assembly: AssemblyDescription("RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Robert Chartier")]
 [assembly: AssemblyProduct("Terminals by Robert Chartier")]
@@ -33,5 +33,5 @@ using log4net;
 [assembly: AssemblyVersion("2.0.0.0")]
 [assembly: AssemblyFileVersion("2.0.0.0")]
 
-[assembly: log4net.Config.DOMConfigurator (
+[assembly: log4net.Config.XmlConfigurator (
 ConfigFile = "Terminals.log4net.config", Watch = true)]

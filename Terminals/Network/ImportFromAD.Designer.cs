@@ -32,9 +32,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.domainTextbox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.ScanADButton = new System.Windows.Forms.Button();
-            this.CancelButton = new System.Windows.Forms.Button();
-            this.OkButton = new System.Windows.Forms.Button();
+            this.ButtonScanAD = new System.Windows.Forms.Button();
+            this.ButtonCancel = new System.Windows.Forms.Button();
+            this.ButtonOK = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -78,34 +78,34 @@
             // 
             // ScanADButton
             // 
-            this.ScanADButton.Location = new System.Drawing.Point(211, 32);
-            this.ScanADButton.Name = "ScanADButton";
-            this.ScanADButton.Size = new System.Drawing.Size(75, 23);
-            this.ScanADButton.TabIndex = 4;
-            this.ScanADButton.Text = "Scan...";
-            this.ScanADButton.UseVisualStyleBackColor = true;
-            this.ScanADButton.Click += new System.EventHandler(this.ScanADButton_Click);
+            this.ButtonScanAD.Location = new System.Drawing.Point(211, 32);
+            this.ButtonScanAD.Name = "ScanADButton";
+            this.ButtonScanAD.Size = new System.Drawing.Size(75, 23);
+            this.ButtonScanAD.TabIndex = 4;
+            this.ButtonScanAD.Text = "Scan...";
+            this.ButtonScanAD.UseVisualStyleBackColor = true;
+            this.ButtonScanAD.Click += new System.EventHandler(this.ScanADButton_Click);
             // 
             // CancelButton
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(527, 291);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 5;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.ButtonCancel.Location = new System.Drawing.Point(527, 291);
+            this.ButtonCancel.Name = "CancelButton";
+            this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
+            this.ButtonCancel.TabIndex = 5;
+            this.ButtonCancel.Text = "Cancel";
+            this.ButtonCancel.UseVisualStyleBackColor = true;
+            this.ButtonCancel.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // OkButton
             // 
-            this.OkButton.Location = new System.Drawing.Point(446, 290);
-            this.OkButton.Name = "OkButton";
-            this.OkButton.Size = new System.Drawing.Size(75, 23);
-            this.OkButton.TabIndex = 6;
-            this.OkButton.Text = "Ok";
-            this.OkButton.UseVisualStyleBackColor = true;
-            this.OkButton.Click += new System.EventHandler(this.OkButton_Click);
+            this.ButtonOK.Location = new System.Drawing.Point(446, 290);
+            this.ButtonOK.Name = "OkButton";
+            this.ButtonOK.Size = new System.Drawing.Size(75, 23);
+            this.ButtonOK.TabIndex = 6;
+            this.ButtonOK.Text = "Ok";
+            this.ButtonOK.UseVisualStyleBackColor = true;
+            this.ButtonOK.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // progressBar1
             // 
@@ -137,7 +137,7 @@
             // 
             // ImportFromAD
             // 
-            this.AcceptButton = this.OkButton;
+            this.AcceptButton = this.ButtonOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(608, 319);
@@ -145,9 +145,9 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.OkButton);
-            this.Controls.Add(this.CancelButton);
-            this.Controls.Add(this.ScanADButton);
+            this.Controls.Add(this.ButtonOK);
+            this.Controls.Add(this.ButtonCancel);
+            this.Controls.Add(this.ButtonScanAD);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.domainTextbox);
             this.Controls.Add(this.label1);
@@ -170,9 +170,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox domainTextbox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button ScanADButton;
-        private System.Windows.Forms.Button CancelButton;
-        private System.Windows.Forms.Button OkButton;
+        private System.Windows.Forms.Button ButtonScanAD;
+        private System.Windows.Forms.Button ButtonCancel;
+        private System.Windows.Forms.Button ButtonOK;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;

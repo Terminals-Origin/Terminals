@@ -60,7 +60,7 @@ namespace Terminals.Updates {
                     {
                         foreach(Unified.Rss.RssItem item in chan.Items)
                         {
-                            if(item.PubDate > Program.BuildDate)  //check the date the item was published.  is it after the currently executing application BuildDate? if so, then its probably a new build!
+                            if(item.PubDate > Program.Info.BuildDate)  //check the date the item was published.  is it after the currently executing application BuildDate? if so, then its probably a new build!
                             {
                                 MainForm.ReleaseAvailable = true;
                                 MainForm.ReleaseDescription = item;

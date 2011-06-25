@@ -402,7 +402,7 @@ namespace Terminals.Connections
                 default:
                     string error = client.GetErrorDescription((uint)e.discReason, (uint)client.ExtendedDisconnectReason);
                     if ((error != null) && (error.Length > 0))
-                        MessageBox.Show(this, String.Format("Error connecting to {0}\n\n{1}", client.Server, error), "Terminals " + Program.TerminalsVersion.ToString(), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show(this, String.Format("Error connecting to {0}\n\n{1}", client.Server, error), Program.Info.TitleVersion, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     break;
             }
 
