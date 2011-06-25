@@ -26,32 +26,41 @@ namespace Terminals
 
         private void LoadDevices()
         {
-            treeView1.Nodes["NodeDevices"].Checked = _parentForm._redirectDevices;
-
-            DriveInfo[] drives = DriveInfo.GetDrives();
-            List<string> _redirectedDrives = _parentForm._redirectedDrives;
-
-            foreach (DriveInfo drive in drives)
+            try
             {
-                try
+                treeView1.Nodes["NodeDevices"].Checked = _parentForm._redirectDevices;
+
+                DriveInfo[] drives = DriveInfo.GetDrives();
+                List<string> _redirectedDrives = _parentForm._redirectedDrives;
+
+                foreach (DriveInfo drive in drives)
                 {
-                    string name = drive.Name.TrimEnd("\\".ToCharArray());
-                    TreeNode tn = new TreeNode(name + " (" + drive.VolumeLabel + ")");
-                    tn.Name = name;
-                    if (_redirectedDrives != null && _redirectedDrives.Contains(name))
-                        tn.Checked = true;
-                    treeView1.Nodes["NodeDrives"].Nodes.Add(tn);
+                    try
+                    {
+                        string name = drive.Name.TrimEnd("\\".ToCharArray());
+                        TreeNode tn = new TreeNode(name + " (" + drive.VolumeLabel + ")");
+                        tn.Name = name;
+                        if (_redirectedDrives != null && _redirectedDrives.Contains(name))
+                            tn.Checked = true;
+                        treeView1.Nodes["NodeDrives"].Nodes.Add(tn);
+                    }
+                    catch (Exception e)
+                    {
+                        Terminals.Logging.Log.Error("Error loading a drive into the tree", e);
+                    }
                 }
-                catch (Exception e)
-                {
-                    Terminals.Logging.Log.Error("Error loading a drive into the tree", e);
-                }
+
+                if (_redirectedDrives != null && _redirectedDrives.Count > 0 && _redirectedDrives[0].Equals("true"))
+                    treeView1.Nodes["NodeDrives"].Checked = true;
+
+                treeView1.ExpandAll();
+            }
+            catch (Exception exc)
+            {
+                Logging.Log.Error("Failed to load Disk Drive devices.", exc);
+                throw;
             }
 
-            if (_redirectedDrives != null && _redirectedDrives.Count > 0 && _redirectedDrives[0].Equals("true"))
-                treeView1.Nodes["NodeDrives"].Checked = true;
-
-            treeView1.ExpandAll();
         }
 
         private void DiskDrivesForm_FormClosing(object sender, FormClosingEventArgs e)
