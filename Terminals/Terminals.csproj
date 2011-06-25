@@ -199,6 +199,12 @@
     <Compile Include="Connections\HTTPConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Connections\MiniBrowser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Connections\MiniBrowser.Designer.cs">
+      <DependentUpon>MiniBrowser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Connections\NetworkingToolsConnection.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -616,6 +622,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>Connection.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Connections\MiniBrowser.resx">
+      <DependentUpon>MiniBrowser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Connections\NetworkingToolsConnection.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkingToolsConnection.cs</DependentUpon>
@@ -765,6 +774,9 @@
     <Compile Include="Wizard\PasswordStrength.cs" />
     <Compile Include="Wizard\SpecialCommandsWizard.cs" />
     <None Include="Migrated rules for Terminals.ruleset" />
+    <Content Include="Resources\back.png" />
+    <Content Include="Resources\forward.png" />
+    <Content Include="Resources\home.png" />
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
