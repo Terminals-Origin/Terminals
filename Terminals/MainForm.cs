@@ -596,7 +596,7 @@ namespace Terminals
 
         public void CreateTerminalTab(FavoriteConfigurationElement favorite)
         {
-            if (Settings.ExecuteBeforeConnect)
+            if (Settings.ExecuteBeforeConnect && !string.IsNullOrEmpty(Settings.ExecuteBeforeConnectCommand))
             {
                 ProcessStartInfo processStartInfo = new ProcessStartInfo(Settings.ExecuteBeforeConnectCommand,
                     Settings.ExecuteBeforeConnectArgs);
@@ -608,7 +608,7 @@ namespace Terminals
                 }
             }
 
-            if (favorite.ExecuteBeforeConnect)
+            if (favorite.ExecuteBeforeConnect && !string.IsNullOrEmpty(favorite.ExecuteBeforeConnectCommand))
             {
                 ProcessStartInfo processStartInfo = new ProcessStartInfo(favorite.ExecuteBeforeConnectCommand,
                     favorite.ExecuteBeforeConnectArgs);
