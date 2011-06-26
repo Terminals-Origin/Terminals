@@ -13,6 +13,13 @@ using AxMSTSCLib;
 using System.IO;
 using System.Runtime.InteropServices;
 
+//http://msdn.microsoft.com/en-us/library/aa381172(v=vs.85).aspx
+//http://msdn.microsoft.com/en-us/library/aa380838(v=VS.85).aspx
+//http://msdn.microsoft.com/en-us/library/aa380847(v=VS.85).aspx
+//http://msdn.microsoft.com/en-us/library/bb892063(v=VS.85).aspx
+//http://msdn.microsoft.com/en-us/library/ee338625(v=VS.85).aspx
+
+
 namespace Terminals.Connections
 {
     public class RDPConnection : Connection
