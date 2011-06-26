@@ -306,7 +306,6 @@ namespace TabControl
         }
         protected override void OnMouseUp(MouseEventArgs e) {
             try {
-                base.OnMouseUp(e);
                 if(downItem != null) {
                     TabControlItem upItem = GetTabItemByPoint(e.Location);
                     if(upItem != downItem) {
@@ -330,6 +329,7 @@ namespace TabControl
                         this.items.Insert(newIndex, downItem);
                     }
                 }
+                base.OnMouseUp(e);
                 downItem = null;
             } catch(Exception exc) { }
         }

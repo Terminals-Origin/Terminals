@@ -16,6 +16,7 @@ using Terminals.CommandLine;
 using TabControl;
 using Unified.Rss;
 using Terminals.Credentials;
+using ZedGraph;
 
 namespace Terminals
 {
@@ -186,11 +187,45 @@ namespace Terminals
                     showInDualScreensToolStripMenuItem.ToolTipText = "You only have one Screen";
                     showInDualScreensToolStripMenuItem.Enabled = false;
                 }
+
+                this.tcTerminals.MouseDown += new MouseEventHandler(tcTerminals_MouseDown);
+                this.tcTerminals.MouseUp += new MouseEventHandler(tcTerminals_MouseUp);                
+
             }
             catch (Exception exc)
             {
                 Terminals.Logging.Log.Error("Error loading the Main Form", exc);
             }
+        }
+
+        private bool MouseDown { get; set; }
+        private  Point MouseDownLocation { get; set; }
+        private int MouseBreakThreshold = 200;
+
+        void tcTerminals_MouseUp(object sender, MouseEventArgs e)
+        {
+            
+            Cursor = Cursors.Default;
+            MouseDown = false;
+            int mouseLeft = System.Windows.Forms.Control.MousePosition.X;
+            int downLeft = MouseDownLocation.X;
+
+            int mouseTop = System.Windows.Forms.Control.MousePosition.Y;
+            int downTop = MouseDownLocation.Y;
+
+            if ((Math.Abs(mouseLeft - downLeft) >= MouseBreakThreshold) || (Math.Abs(mouseTop - downTop) >= MouseBreakThreshold))
+            {
+                OpenConnectionInNewWindow(this.CurrentConnection);
+                
+            }
+
+        }
+
+        void tcTerminals_MouseDown(object sender, MouseEventArgs e)
+        {
+            MouseDownLocation = System.Windows.Forms.Control.MousePosition;
+            Cursor = Cursors.UpArrow;
+            MouseDown = true;
         }
 
         public void LoadWindowState()
@@ -519,11 +554,10 @@ namespace Terminals
         {
             if (Connection != null)
             {
-                PopupTerminal pop = new PopupTerminal();
-                Terminals.Connections.IConnection conn = CurrentConnection;
+                PopupTerminal pop = new PopupTerminal();                
                 tcTerminals.Items.SuspendEvents();
-                tcTerminals.RemoveTab(CurrentConnection.TerminalTabPage);
-                pop.AddTerminal(conn.TerminalTabPage);
+                tcTerminals.RemoveTab(Connection.TerminalTabPage);
+                pop.AddTerminal(Connection.TerminalTabPage);
                 pop.MainForm = this;
                 tcTerminals.Items.ResumeEvents();
                 pop.Show();
