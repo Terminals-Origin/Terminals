@@ -1301,7 +1301,7 @@ namespace Terminals
 
         private void OpenReleasePage()
         {
-            Connect(_terminalsReleasesFavoriteName, false, false);
+            if(!Settings.NeverShowTerminalsWindow) Connect(_terminalsReleasesFavoriteName, false, false);
         }
 
         private void ReloadSpecialCommands(object state)

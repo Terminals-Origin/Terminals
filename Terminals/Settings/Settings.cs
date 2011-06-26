@@ -28,6 +28,25 @@ namespace Terminals
 
         #region General tab settings
 
+        public static bool NeverShowTerminalsWindow
+        {
+            get
+            {
+                _terminalsConfigurationSection = GetSection();
+                if (_terminalsConfigurationSection == null)
+                    return false;
+                return _terminalsConfigurationSection.NeverShowTerminalsWindow;
+            }
+
+            set
+            {
+                Configuration configuration = Config;
+                GetSection(configuration).NeverShowTerminalsWindow = value;
+                if (!_delayConfigurationSave) configuration.Save();
+            }
+        }
+
+
         public static bool ShowUserNameInTitle
         {
             get

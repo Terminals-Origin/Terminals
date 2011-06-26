@@ -14,7 +14,18 @@ namespace Terminals
         }
 
         #region General section
-
+        [ConfigurationProperty("NeverShowTerminalsWindow")]
+        public bool NeverShowTerminalsWindow
+        {
+            get
+            {
+                return (bool)this["NeverShowTerminalsWindow"];
+            }
+            set
+            {
+                this["NeverShowTerminalsWindow"] = value;
+            }
+        }
         [ConfigurationProperty("showUserNameInTitle")]
         public bool ShowUserNameInTitle
         {

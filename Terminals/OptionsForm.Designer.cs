@@ -127,6 +127,7 @@ namespace Terminals
             this.EnableFavoritesPanel = new System.Windows.Forms.CheckBox();
             this.EnableGroupsMenu = new System.Windows.Forms.CheckBox();
             this.serviceController1 = new System.ServiceProcess.ServiceController();
+            this.NeverShowTerminalsCheckbox = new System.Windows.Forms.CheckBox();
             this.ProxyTabPage.SuspendLayout();
             this.panel1.SuspendLayout();
             this.FlickrTabPage.SuspendLayout();
@@ -733,6 +734,7 @@ namespace Terminals
             // 
             // GeneralTabPage
             // 
+            this.GeneralTabPage.Controls.Add(this.NeverShowTerminalsCheckbox);
             this.GeneralTabPage.Controls.Add(this.autoCaseTagsCheckbox);
             this.GeneralTabPage.Controls.Add(this.warnDisconnectCheckBox);
             this.GeneralTabPage.Controls.Add(this.validateServerNamesCheckbox);
@@ -976,7 +978,7 @@ namespace Terminals
             this.chkAutoSwitchToCaptureCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkAutoSwitchToCaptureCheckbox.Location = new System.Drawing.Point(35, 53);
             this.chkAutoSwitchToCaptureCheckbox.Name = "chkAutoSwitchToCaptureCheckbox";
-            this.chkAutoSwitchToCaptureCheckbox.Size = new System.Drawing.Size(195, 17);
+            this.chkAutoSwitchToCaptureCheckbox.Size = new System.Drawing.Size(191, 17);
             this.chkAutoSwitchToCaptureCheckbox.TabIndex = 21;
             this.chkAutoSwitchToCaptureCheckbox.Text = "Auto switch to manager on capture";
             this.chkAutoSwitchToCaptureCheckbox.UseVisualStyleBackColor = true;
@@ -986,7 +988,7 @@ namespace Terminals
             this.chkEnableCaptureToFolder.AutoSize = true;
             this.chkEnableCaptureToFolder.Location = new System.Drawing.Point(16, 30);
             this.chkEnableCaptureToFolder.Name = "chkEnableCaptureToFolder";
-            this.chkEnableCaptureToFolder.Size = new System.Drawing.Size(177, 17);
+            this.chkEnableCaptureToFolder.Size = new System.Drawing.Size(174, 17);
             this.chkEnableCaptureToFolder.TabIndex = 12;
             this.chkEnableCaptureToFolder.Text = "Enable screen capture to folder";
             this.chkEnableCaptureToFolder.UseVisualStyleBackColor = true;
@@ -999,7 +1001,7 @@ namespace Terminals
             this.chkEnableCaptureToClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkEnableCaptureToClipboard.Location = new System.Drawing.Point(16, 7);
             this.chkEnableCaptureToClipboard.Name = "chkEnableCaptureToClipboard";
-            this.chkEnableCaptureToClipboard.Size = new System.Drawing.Size(192, 17);
+            this.chkEnableCaptureToClipboard.Size = new System.Drawing.Size(191, 17);
             this.chkEnableCaptureToClipboard.TabIndex = 11;
             this.chkEnableCaptureToClipboard.Text = "Enable screen capture to clipboard";
             this.chkEnableCaptureToClipboard.UseVisualStyleBackColor = true;
@@ -1181,6 +1183,16 @@ namespace Terminals
             this.EnableGroupsMenu.Text = "Enable Groups Menu";
             this.EnableGroupsMenu.UseVisualStyleBackColor = true;
             // 
+            // NeverShowTerminalsCheckbox
+            // 
+            this.NeverShowTerminalsCheckbox.AutoSize = true;
+            this.NeverShowTerminalsCheckbox.Location = new System.Drawing.Point(253, 99);
+            this.NeverShowTerminalsCheckbox.Name = "NeverShowTerminalsCheckbox";
+            this.NeverShowTerminalsCheckbox.Size = new System.Drawing.Size(158, 17);
+            this.NeverShowTerminalsCheckbox.TabIndex = 24;
+            this.NeverShowTerminalsCheckbox.Text = "Never show Terminals Page";
+            this.NeverShowTerminalsCheckbox.UseVisualStyleBackColor = true;
+            // 
             // OptionsForm
             // 
             this.AcceptButton = this.btnOk;
@@ -1334,5 +1346,6 @@ namespace Terminals
         private System.Windows.Forms.CheckBox chkEnableCaptureToFolder;
         private System.Windows.Forms.CheckBox chkEnableCaptureToClipboard;
         private System.Windows.Forms.CheckBox chkAutoSwitchToCaptureCheckbox;
+        private System.Windows.Forms.CheckBox NeverShowTerminalsCheckbox;
     }
 }

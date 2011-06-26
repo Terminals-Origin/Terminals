@@ -22,6 +22,7 @@ namespace Terminals
             InitializeComponent();
 
             // General tab
+            this.NeverShowTerminalsCheckbox.Checked = Settings.NeverShowTerminalsWindow;
             this.chkShowUserNameInTitle.Checked = Settings.ShowUserNameInTitle;
             this.chkShowInformationToolTips.Checked = Settings.ShowInformationToolTips;
             this.chkShowFullInfo.Checked = Settings.ShowFullInformationToolTips;
@@ -157,6 +158,7 @@ namespace Terminals
             Settings.DelayConfigurationSave = true;
 
             // General tab
+            Settings.NeverShowTerminalsWindow = this.NeverShowTerminalsCheckbox.Checked;
             Settings.ShowUserNameInTitle = this.chkShowUserNameInTitle.Checked;
             Settings.ShowInformationToolTips = this.chkShowInformationToolTips.Checked;
             Settings.ShowFullInformationToolTips = this.chkShowFullInfo.Checked;
