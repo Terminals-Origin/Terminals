@@ -14,23 +14,27 @@ namespace Terminals.Network.WMI {
 
 
         private List<System.Management.ManagementObject> list = new List<ManagementObject>();
-        private void LoadServices(string Username, string Password, string Computer) {
 
+        private void LoadServices(string Username, string Password, string Computer)
+        {
             System.Text.StringBuilder sb = new StringBuilder();
-            string qry = "select * from win32_service";
+            string qry = "select AcceptPause, AcceptStop, Caption, CheckPoint, CreationClassName, Description, DesktopInteract, DisplayName, ErrorControl, ExitCode, InstallDate, Name, PathName, ProcessId,ServiceSpecificExitCode, ServiceType, Started, StartMode, StartName, State, Status, SystemCreationClassName, SystemName, TagId, WaitHint from win32_service";
             System.Management.ManagementObjectSearcher searcher;
             System.Management.ObjectQuery query = new System.Management.ObjectQuery(qry);
 
-            if(Username != "" && Password != "" && Computer != "" && !Computer.StartsWith(@"\\localhost")) {
+            if (Username != "" && Password != "" && Computer != "" && !Computer.StartsWith(@"\\localhost"))
+            {
                 System.Management.ConnectionOptions oConn = new System.Management.ConnectionOptions();
                 oConn.Username = Username;
                 oConn.Password = Password;
-                if(!Computer.StartsWith(@"\\")) Computer = @"\\" + Computer;
-                if(!Computer.ToLower().EndsWith(@"\root\cimv2")) Computer = Computer + @"\root\cimv2";
+                if (!Computer.StartsWith(@"\\")) Computer = @"\\" + Computer;
+                if (!Computer.ToLower().EndsWith(@"\root\cimv2")) Computer = Computer + @"\root\cimv2";
                 System.Management.ManagementScope oMs = new System.Management.ManagementScope(Computer, oConn);
 
                 searcher = new System.Management.ManagementObjectSearcher(oMs, query);
-            } else {
+            }
+            else
+            {
                 searcher = new System.Management.ManagementObjectSearcher(query);
             }
 
@@ -39,11 +43,14 @@ namespace Terminals.Network.WMI {
             int length = 0;
             object[] values = null;
             list.Clear();
-            foreach(System.Management.ManagementObject share in searcher.Get()) {
+            foreach (System.Management.ManagementObject share in searcher.Get())
+            {
                 Share s = new Share();
                 list.Add(share);
-                if(needsSchema) {
-                    foreach(System.Management.PropertyData p in share.Properties) {
+                if (needsSchema)
+                {
+                    foreach (System.Management.PropertyData p in share.Properties)
+                    {
                         System.Data.DataColumn col = new DataColumn(p.Name, ConvertCimType(p.Type));
                         dt.Columns.Add(col);
                     }
@@ -51,10 +58,11 @@ namespace Terminals.Network.WMI {
                     needsSchema = false;
                 }
 
-                if(values == null) values = new object[length];
+                if (values == null) values = new object[length];
                 int x = 0;
-                foreach(System.Management.PropertyData p in share.Properties) {
-                    if (p != null)
+                foreach (System.Management.PropertyData p in share.Properties)
+                {
+                    if (p != null && x < length)
                     {
                         values[x] = p.Value;
                         x++;
@@ -66,6 +74,7 @@ namespace Terminals.Network.WMI {
 
             this.dataGridView1.DataSource = dt;
         }
+        
 
         private void Services_Load(object sender, EventArgs e) {
             LoadServices("", "", "");
