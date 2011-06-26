@@ -50,7 +50,7 @@ namespace Org.Mentalis.Utilities
 		public static string Whois(string domain, string host)
 		{
 			if (domain == null)
-				throw new ArgumentNullException();
+				return "No Domain Specified";
 
 			string ret = "";
 			Socket s = null;
