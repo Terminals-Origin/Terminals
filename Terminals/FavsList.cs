@@ -338,7 +338,7 @@ namespace Terminals
                 string path = string.Format(@"{0}\common files\Microsoft Shared\MSInfo\msinfo32.exe", programFiles);
                 if(System.IO.File.Exists(path))
                 {
-                    System.Diagnostics.Process.Start(string.Format("\"{0}\"", path), string.Format("/computer={0}", fav.ServerName));
+                    System.Diagnostics.Process.Start(string.Format("\"{0}\"", path), string.Format("/computer {0}", fav.ServerName));
                 }
             }
         }
