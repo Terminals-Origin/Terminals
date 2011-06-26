@@ -89,7 +89,7 @@ namespace Unified
             if (System.IO.File.Exists(Filename))
                 System.IO.File.Delete(Filename);
 
-            System.IO.File.WriteAllText(Filename, SerializeXMLAsString(request), Encoding.Default);
+            System.IO.File.WriteAllText(Filename, SerializeXMLAsString(request), Encoding.UTF8);
         }
 
         public static string SerializeXMLAsString(object request)
@@ -157,7 +157,7 @@ namespace Unified
             try
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(type);
-                MemoryStream memoryStream = new MemoryStream(Encoding.Default.GetBytes(envelope));
+                MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(envelope));
                 object local1 = xmlSerializer.Deserialize(memoryStream);
                 memoryStream.Close();
                 local2 = local1;
@@ -178,7 +178,7 @@ namespace Unified
             try
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(type);
-                MemoryStream memoryStream = new MemoryStream(Encoding.Default.GetBytes(envelope));
+                MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(envelope));
                 object local1 = xmlSerializer.Deserialize(memoryStream);
                 memoryStream.Close();
                 local2 = local1;
