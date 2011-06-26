@@ -40,7 +40,7 @@ namespace Terminals.History
         {
             if (_loadingHistory)
                 return;
-            
+
             lock (_threadLock)
             {
                 System.Diagnostics.Stopwatch sw = new Stopwatch();
@@ -63,13 +63,30 @@ namespace Terminals.History
                         _currentHistory = (Unified.Serialize.DeserializeXMLFromDisk(_historyLocation, typeof(HistoryByFavorite)) as HistoryByFavorite);
                     }
                     _loadingHistory = false;
-                    
+
                     Logging.Log.Info("Done Loading History");
                 }
                 catch (Exception exc)
                 {
                     Logging.Log.Error("Error Loading History", exc);
-                } finally
+                    try
+                    {
+                        Logging.Log.Info("Lets try to move the history file and kill it for now");
+                        string backupFile = _historyLocation + System.DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss") + ".bak";
+                        System.IO.File.Copy(_historyLocation, backupFile);
+                        Logging.Log.Info("History file copied to:" + backupFile);
+                        Logging.Log.Info("Try to delete original history file:" + _historyLocation);
+                        if (System.IO.File.Exists(_historyLocation)) System.IO.File.Delete(_historyLocation);
+                        Logging.Log.Info("Delete finished, moving on.");
+                        _currentHistory = new HistoryByFavorite();
+                    }
+                    catch (Exception ex1)
+                    {
+                        Logging.Log.Info("This failed, again: Lets try to move the history file and kill it for now", ex1);
+                    }
+
+                }
+                finally
                 {
                     sw.Stop();
                     Logging.Log.Info(string.Format("Load History Duration:{0}ms", sw.ElapsedMilliseconds));
