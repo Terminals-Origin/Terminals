@@ -129,6 +129,9 @@ namespace Terminals
                     System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ReloadSpecialCommands), null);
                 }
 
+                // Set default font type by Windows theme to use for all controls on form
+                this.Font = System.Drawing.SystemFonts.IconTitleFont;
+
                 _imageFormatHandler = new ImageFormatHandler();
                 _formSettings = new FormSettings(this);
                 InitializeComponent();
@@ -139,6 +142,9 @@ namespace Terminals
                     ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Black);
                 else
                     ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
+
+                // Update the old treeview theme to the new theme from Win Vista and up
+                NativeApi.SetWindowTheme(this.menuStrip.Handle, "Explorer", null);
 
                 tsbTags.Checked = Settings.ShowFavoritePanel;
 

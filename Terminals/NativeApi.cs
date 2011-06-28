@@ -14,5 +14,7 @@ namespace Terminals
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
         public static extern bool SetForegroundWindow(HandleRef hWnd);
 
+        [DllImport("uxtheme.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern int SetWindowTheme(IntPtr hWnd, String appName, String partList);
     }
 }

@@ -34,6 +34,7 @@
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.connectAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -65,7 +66,6 @@
             this.setDomainByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setPasswordByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.FavoritesTabPage.SuspendLayout();
@@ -80,13 +80,14 @@
             this.favsTree.ContextMenuStrip = this.contextMenuStrip1;
             this.favsTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favsTree.HideSelection = false;
+            this.favsTree.HotTracking = true;
             this.favsTree.Location = new System.Drawing.Point(3, 3);
             this.favsTree.Name = "favsTree";
             this.favsTree.Size = new System.Drawing.Size(136, 118);
             this.favsTree.TabIndex = 0;
-            this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
             this.favsTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.favsTree_DragDrop);
             this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.favsTree_DragEnter);
+            this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
             // 
             // contextMenuStrip1
             // 
@@ -127,7 +128,7 @@
             // 
             this.consoleToolStripMenuItem.CheckOnClick = true;
             this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
-            this.consoleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.consoleToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.consoleToolStripMenuItem.Text = "Console";
             this.consoleToolStripMenuItem.Click += new System.EventHandler(this.displayWindow_Click);
             // 
@@ -135,23 +136,28 @@
             // 
             this.newWindowToolStripMenuItem.CheckOnClick = true;
             this.newWindowToolStripMenuItem.Name = "newWindowToolStripMenuItem";
-            this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.newWindowToolStripMenuItem.Text = "New Window";
             this.newWindowToolStripMenuItem.Click += new System.EventHandler(this.displayWindow_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(133, 6);
             // 
             // connectAsToolStripMenuItem
             // 
             this.connectAsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.userConnectToolStripMenuItem});
             this.connectAsToolStripMenuItem.Name = "connectAsToolStripMenuItem";
-            this.connectAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.connectAsToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.connectAsToolStripMenuItem.Text = "Connect As";
             this.connectAsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.connectAsToolStripMenuItem_DropDownOpening);
             // 
             // userConnectToolStripMenuItem
             // 
             this.userConnectToolStripMenuItem.Name = "userConnectToolStripMenuItem";
-            this.userConnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.userConnectToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
             this.userConnectToolStripMenuItem.Text = "User...";
             this.userConnectToolStripMenuItem.Click += new System.EventHandler(this.userConnectToolStripMenuItem_Click);
             // 
@@ -289,6 +295,7 @@
             // historyTreeView
             // 
             this.historyTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.historyTreeView.HotTracking = true;
             this.historyTreeView.Location = new System.Drawing.Point(3, 3);
             this.historyTreeView.Name = "historyTreeView";
             this.historyTreeView.Size = new System.Drawing.Size(136, 118);
@@ -323,7 +330,7 @@
             // 
             this.consoleAllToolStripMenuItem.CheckOnClick = true;
             this.consoleAllToolStripMenuItem.Name = "consoleAllToolStripMenuItem";
-            this.consoleAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.consoleAllToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.consoleAllToolStripMenuItem.Text = "Console";
             this.consoleAllToolStripMenuItem.Click += new System.EventHandler(this.displayAllWindow_Click);
             // 
@@ -331,7 +338,7 @@
             // 
             this.newWindowAllToolStripMenuItem.CheckOnClick = true;
             this.newWindowAllToolStripMenuItem.Name = "newWindowAllToolStripMenuItem";
-            this.newWindowAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.newWindowAllToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
             this.newWindowAllToolStripMenuItem.Text = "New Window";
             this.newWindowAllToolStripMenuItem.Click += new System.EventHandler(this.displayAllWindow_Click);
             // 
@@ -374,11 +381,6 @@
             this.deleteAllFavoritesByTagToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
             this.deleteAllFavoritesByTagToolStripMenuItem.Text = "Delete all Favorites by Tag";
             this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.deleteAllFavoritesByTagToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // FavsList
             // 

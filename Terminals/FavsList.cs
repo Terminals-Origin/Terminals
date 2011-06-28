@@ -31,7 +31,11 @@ namespace Terminals
         public FavsList()
         {
             InitializeComponent();
-            _historyInvoker = new MethodInvoker(UpdateHistory);            
+            _historyInvoker = new MethodInvoker(UpdateHistory);
+
+            // Update the old treeview theme to the new theme from Win Vista and up
+            NativeApi.SetWindowTheme(this.favsTree.Handle, "Explorer", null);
+            NativeApi.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
         }
 
         private MainForm GetMainForm() 

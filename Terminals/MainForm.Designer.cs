@@ -181,7 +181,7 @@ namespace Terminals {
             this.newTerminalToolStripMenuItem.Image = global::Terminals.Properties.Resources.add;
             this.newTerminalToolStripMenuItem.Name = "newTerminalToolStripMenuItem";
             this.newTerminalToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newTerminalToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.newTerminalToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.newTerminalToolStripMenuItem.Text = "New Connection";
             this.newTerminalToolStripMenuItem.ToolTipText = "Make a new connection";
             this.newTerminalToolStripMenuItem.Click += new System.EventHandler(this.newTerminalToolStripMenuItem_Click_1);
@@ -189,12 +189,12 @@ namespace Terminals {
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(201, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(203, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -210,7 +210,7 @@ namespace Terminals {
             this.viewInNewWindowToolStripMenuItem,
             this.showInDualScreensToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // fullScreenToolStripMenuItem
@@ -218,7 +218,7 @@ namespace Terminals {
             this.fullScreenToolStripMenuItem.Image = global::Terminals.Properties.Resources.arrow_out;
             this.fullScreenToolStripMenuItem.Name = "fullScreenToolStripMenuItem";
             this.fullScreenToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.fullScreenToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.fullScreenToolStripMenuItem.Text = "Full Screen";
             this.fullScreenToolStripMenuItem.ToolTipText = "Set Terminals full screen";
             this.fullScreenToolStripMenuItem.Click += new System.EventHandler(this.tsbFullScreen_Click);
@@ -228,7 +228,7 @@ namespace Terminals {
             this.menubarToolStripMenuItem.Checked = true;
             this.menubarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.menubarToolStripMenuItem.Name = "menubarToolStripMenuItem";
-            this.menubarToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.menubarToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.menubarToolStripMenuItem.Text = "Menubar";
             this.menubarToolStripMenuItem.Visible = false;
             this.menubarToolStripMenuItem.Click += new System.EventHandler(this.menubarToolStripMenuItem_Click);
@@ -238,7 +238,7 @@ namespace Terminals {
             this.standardToolbarToolStripMenuItem.Checked = true;
             this.standardToolbarToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.standardToolbarToolStripMenuItem.Name = "standardToolbarToolStripMenuItem";
-            this.standardToolbarToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.standardToolbarToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.standardToolbarToolStripMenuItem.Text = "Standard Toolbar";
             this.standardToolbarToolStripMenuItem.ToolTipText = "Show/Hide standard toolbar";
             this.standardToolbarToolStripMenuItem.Click += new System.EventHandler(this.standardToolbarToolStripMenuItem_Click);
@@ -248,7 +248,7 @@ namespace Terminals {
             this.toolStripMenuItem4.Checked = true;
             this.toolStripMenuItem4.CheckState = System.Windows.Forms.CheckState.Checked;
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(192, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(190, 22);
             this.toolStripMenuItem4.Text = "Favorites";
             this.toolStripMenuItem4.ToolTipText = "Show/Hide favorite toolbar";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
@@ -258,7 +258,7 @@ namespace Terminals {
             this.shortcutsToolStripMenuItem.Checked = true;
             this.shortcutsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.shortcutsToolStripMenuItem.Name = "shortcutsToolStripMenuItem";
-            this.shortcutsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.shortcutsToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.shortcutsToolStripMenuItem.Text = "Shortcuts";
             this.shortcutsToolStripMenuItem.ToolTipText = "Show/Hide Shourtcutes";
             this.shortcutsToolStripMenuItem.Click += new System.EventHandler(this.shortcutsToolStripMenuItem_Click);
@@ -268,7 +268,7 @@ namespace Terminals {
             this.lockToolbarsToolStripMenuItem.Checked = true;
             this.lockToolbarsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.lockToolbarsToolStripMenuItem.Name = "lockToolbarsToolStripMenuItem";
-            this.lockToolbarsToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.lockToolbarsToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.lockToolbarsToolStripMenuItem.Text = "Lock Toolbars";
             this.lockToolbarsToolStripMenuItem.ToolTipText = "Lock all toolbars";
             this.lockToolbarsToolStripMenuItem.Click += new System.EventHandler(this.lockToolbarsToolStripMenuItem_Click);
@@ -276,7 +276,7 @@ namespace Terminals {
             // viewInNewWindowToolStripMenuItem
             // 
             this.viewInNewWindowToolStripMenuItem.Name = "viewInNewWindowToolStripMenuItem";
-            this.viewInNewWindowToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.viewInNewWindowToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.viewInNewWindowToolStripMenuItem.Text = "View in new Window";
             this.viewInNewWindowToolStripMenuItem.ToolTipText = "Show terminals in a new window";
             this.viewInNewWindowToolStripMenuItem.Click += new System.EventHandler(this.viewInNewWindowToolStripMenuItem_Click);
@@ -284,7 +284,7 @@ namespace Terminals {
             // showInDualScreensToolStripMenuItem
             // 
             this.showInDualScreensToolStripMenuItem.Name = "showInDualScreensToolStripMenuItem";
-            this.showInDualScreensToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.showInDualScreensToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.showInDualScreensToolStripMenuItem.Text = "Show In Multi Screens";
             this.showInDualScreensToolStripMenuItem.ToolTipText = "Show Terminals in all screen you have connected";
             this.showInDualScreensToolStripMenuItem.Click += new System.EventHandler(this.showInDualScreensToolStripMenuItem_Click);
@@ -303,7 +303,7 @@ namespace Terminals {
             // 
             this.manageFavoritesToolStripMenuItem.Image = global::Terminals.Properties.Resources.star;
             this.manageFavoritesToolStripMenuItem.Name = "manageFavoritesToolStripMenuItem";
-            this.manageFavoritesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.manageFavoritesToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.manageFavoritesToolStripMenuItem.Text = "Organize Favorites";
             this.manageFavoritesToolStripMenuItem.ToolTipText = "Organize your favorite connections";
             this.manageFavoritesToolStripMenuItem.Click += new System.EventHandler(this.manageConnectionsToolStripMenuItem_Click);
@@ -311,7 +311,7 @@ namespace Terminals {
             // organizeFavoritesToolbarToolStripMenuItem
             // 
             this.organizeFavoritesToolbarToolStripMenuItem.Name = "organizeFavoritesToolbarToolStripMenuItem";
-            this.organizeFavoritesToolbarToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+            this.organizeFavoritesToolbarToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.organizeFavoritesToolbarToolStripMenuItem.Text = "Organize Favorites Toolbar";
             this.organizeFavoritesToolbarToolStripMenuItem.ToolTipText = "Organize your favorite connections in toolbar";
             this.organizeFavoritesToolbarToolStripMenuItem.Visible = false;
@@ -320,7 +320,7 @@ namespace Terminals {
             // favoritesSeparator
             // 
             this.favoritesSeparator.Name = "favoritesSeparator";
-            this.favoritesSeparator.Size = new System.Drawing.Size(213, 6);
+            this.favoritesSeparator.Size = new System.Drawing.Size(212, 6);
             // 
             // terminalToolStripMenuItem
             // 
@@ -338,7 +338,7 @@ namespace Terminals {
             this.grabInputToolStripMenuItem.Image = global::Terminals.Properties.Resources.arrow_out;
             this.grabInputToolStripMenuItem.Name = "grabInputToolStripMenuItem";
             this.grabInputToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.G)));
-            this.grabInputToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.grabInputToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.grabInputToolStripMenuItem.Text = "Grab Input";
             this.grabInputToolStripMenuItem.ToolTipText = "Grab input";
             this.grabInputToolStripMenuItem.Click += new System.EventHandler(this.tsbGrabInput_Click);
@@ -346,13 +346,13 @@ namespace Terminals {
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(168, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(169, 6);
             // 
             // disconnectToolStripMenuItem
             // 
             this.disconnectToolStripMenuItem.Enabled = false;
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.tsbDisconnect_Click);
             // 
@@ -508,7 +508,7 @@ namespace Terminals {
             // organizeGroupsToolStripMenuItem
             // 
             this.organizeGroupsToolStripMenuItem.Name = "organizeGroupsToolStripMenuItem";
-            this.organizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(279, 22);
+            this.organizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
             this.organizeGroupsToolStripMenuItem.Text = "Organize Groups";
             this.organizeGroupsToolStripMenuItem.ToolTipText = "Organize Groups";
             this.organizeGroupsToolStripMenuItem.Click += new System.EventHandler(this.organizeGroupsToolStripMenuItem_Click);
@@ -516,7 +516,7 @@ namespace Terminals {
             // saveTerminalsAsGroupToolStripMenuItem
             // 
             this.saveTerminalsAsGroupToolStripMenuItem.Name = "saveTerminalsAsGroupToolStripMenuItem";
-            this.saveTerminalsAsGroupToolStripMenuItem.Size = new System.Drawing.Size(279, 22);
+            this.saveTerminalsAsGroupToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
             this.saveTerminalsAsGroupToolStripMenuItem.Text = "Create Group From Active Connections";
             this.saveTerminalsAsGroupToolStripMenuItem.ToolTipText = "Create Group From Active Connections";
             this.saveTerminalsAsGroupToolStripMenuItem.Click += new System.EventHandler(this.saveTerminalsAsGroupToolStripMenuItem_Click);
@@ -524,14 +524,14 @@ namespace Terminals {
             // addTerminalToGroupToolStripMenuItem
             // 
             this.addTerminalToGroupToolStripMenuItem.Name = "addTerminalToGroupToolStripMenuItem";
-            this.addTerminalToGroupToolStripMenuItem.Size = new System.Drawing.Size(279, 22);
+            this.addTerminalToGroupToolStripMenuItem.Size = new System.Drawing.Size(281, 22);
             this.addTerminalToGroupToolStripMenuItem.Text = "Add Current Connection To";
             this.addTerminalToGroupToolStripMenuItem.ToolTipText = "Add Current Connection To";
             // 
             // groupsSeparator
             // 
             this.groupsSeparator.Name = "groupsSeparator";
-            this.groupsSeparator.Size = new System.Drawing.Size(276, 6);
+            this.groupsSeparator.Size = new System.Drawing.Size(278, 6);
             // 
             // helpToolStripMenuItem
             // 
@@ -616,7 +616,7 @@ namespace Terminals {
             // toolStripLabel1
             // 
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(68, 22);
+            this.toolStripLabel1.Size = new System.Drawing.Size(69, 22);
             this.toolStripLabel1.Text = "Connect To";
             this.toolStripLabel1.ToolTipText = "Connect to";
             // 
@@ -830,35 +830,35 @@ namespace Terminals {
             // sendALTKeyToolStripMenuItem
             // 
             this.sendALTKeyToolStripMenuItem.Name = "sendALTKeyToolStripMenuItem";
-            this.sendALTKeyToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.sendALTKeyToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.sendALTKeyToolStripMenuItem.Text = "Send ALT Key";
             this.sendALTKeyToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
             // 
             // sendALTF4KeyToolStripMenuItem
             // 
             this.sendALTF4KeyToolStripMenuItem.Name = "sendALTF4KeyToolStripMenuItem";
-            this.sendALTF4KeyToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.sendALTF4KeyToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.sendALTF4KeyToolStripMenuItem.Text = "Send ALT-F4 Keys";
             this.sendALTF4KeyToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
             // 
             // sendCTRLKeyToolStripMenuItem
             // 
             this.sendCTRLKeyToolStripMenuItem.Name = "sendCTRLKeyToolStripMenuItem";
-            this.sendCTRLKeyToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.sendCTRLKeyToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.sendCTRLKeyToolStripMenuItem.Text = "Send CTRL Key";
             this.sendCTRLKeyToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
             // 
             // sendCTRLESCKeysToolStripMenuItem
             // 
             this.sendCTRLESCKeysToolStripMenuItem.Name = "sendCTRLESCKeysToolStripMenuItem";
-            this.sendCTRLESCKeysToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.sendCTRLESCKeysToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.sendCTRLESCKeysToolStripMenuItem.Text = "Send CTRL ESC Keys";
             this.sendCTRLESCKeysToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
             // 
             // sentCTRLALTDELETEKeysToolStripMenuItem
             // 
             this.sentCTRLALTDELETEKeysToolStripMenuItem.Name = "sentCTRLALTDELETEKeysToolStripMenuItem";
-            this.sentCTRLALTDELETEKeysToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.sentCTRLALTDELETEKeysToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.sentCTRLALTDELETEKeysToolStripMenuItem.Text = "Sent CTRL ALT DEL Keys";
             this.sentCTRLALTDELETEKeysToolStripMenuItem.Click += new System.EventHandler(this.sendALTKeyToolStripMenuItem_Click);
             // 
@@ -1142,8 +1142,8 @@ namespace Terminals {
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(792, 573);
             this.Controls.Add(this.toolStripContainer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
