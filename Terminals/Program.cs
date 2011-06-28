@@ -13,10 +13,6 @@ namespace Terminals
     {
         private static string TerminalsVersion = "2.0 RC2";
         
-        //public static Assembly aAssembly = Assembly.GetExecutingAssembly();
-        //public static AssemblyDescriptionAttribute desc = (AssemblyDescriptionAttribute)AssemblyDescriptionAttribute.GetCustomAttribute(aAssembly, typeof(AssemblyDescriptionAttribute));
-        //public static AssemblyTitleAttribute title = (AssemblyTitleAttribute)AssemblyTitleAttribute.GetCustomAttribute(aAssembly, typeof(AssemblyTitleAttribute));
-        
         public static Mutex mtx;
 
         public static string FlickrAPIKey = "9362619635c6f6c20e7c14fe4b67c2a0";
@@ -36,7 +32,7 @@ namespace Terminals
 
             mtx = new Mutex(false, "TerminalsMutex");
 
-            Terminals.Logging.Log.Info(string.Format("{0} started", Info.TitleVersion));
+            Terminals.Logging.Log.Info(String.Format("{0} started", Info.TitleVersion));
             
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
@@ -44,21 +40,31 @@ namespace Terminals
             
             ParseCommandline();
 
-            if(ReuseExistingInstance() && SingleInstanceApplication.NotifyExistingInstance(Environment.GetCommandLineArgs()))
+            if (ReuseExistingInstance() && SingleInstanceApplication.NotifyExistingInstance(Environment.GetCommandLineArgs()))
                 return;
 
             SingleInstanceApplication.Initialize();
 
+            // Check if update changes have to be made
+            Updates.UpdateConfig.CheckConfigVersionUpdate();
+
+            // Check for available application updates
             Terminals.Updates.UpdateManager.CheckForUpdates();
 
-            if (Settings.TerminalsPassword != string.Empty)
+            // Check for Terminals master password
+            if (Settings.TerminalsPassword != String.Empty)
             {
                 Security.RequestPassword rp = new Terminals.Security.RequestPassword();
                 DialogResult result = rp.ShowDialog();
-                if(result == DialogResult.Cancel)
+                if (result == DialogResult.Cancel)
+                {
                     Application.Exit();
+                }
                 else
+                {
+                    rp.Dispose();
                     Application.Run(new MainForm());
+                }
             }
             else
             {
@@ -73,7 +79,7 @@ namespace Terminals
             }
 
             SingleInstanceApplication.Close();
-            Terminals.Logging.Log.Info(string.Format("{0} stopped", Info.TitleVersion));
+            Terminals.Logging.Log.Info(String.Format("{0} stopped", Info.TitleVersion));
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
@@ -81,25 +87,25 @@ namespace Terminals
             Terminals.Logging.Log.Fatal("Application Exception", e.Exception);
         }
 
-        private static bool ReuseExistingInstance()
+        private static Boolean ReuseExistingInstance()
         {
-            if(Settings.SingleInstance)
+            if (Settings.SingleInstance)
                 return true;
 
-            string[] cmdLineArgs = Environment.GetCommandLineArgs();
+            String[] cmdLineArgs = Environment.GetCommandLineArgs();
             return (cmdLineArgs.Length > 1 && cmdLineArgs[1] == "/reuse");
         }
 
         private static void ParseCommandline()
         {
-            string[] cmdLineArgs = Environment.GetCommandLineArgs();
+            String[] cmdLineArgs = Environment.GetCommandLineArgs();
             ParseCommandline(cmdLineArgs);
         }
 
-        private static void ParseCommandline(string[] cmdLineArgs)
+        private static void ParseCommandline(String[] cmdLineArgs)
         {
             Terminals.CommandLine.Parser.ParseArguments(cmdLineArgs, Terminals.MainForm.CommandLineArgs);
-            if (Terminals.MainForm.CommandLineArgs.config != null && Terminals.MainForm.CommandLineArgs.config != string.Empty)
+            if (Terminals.MainForm.CommandLineArgs.config != null && Terminals.MainForm.CommandLineArgs.config != String.Empty)
             {
                 Terminals.Program.ConfigurationFileLocation = Terminals.MainForm.CommandLineArgs.config;
             }

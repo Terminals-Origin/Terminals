@@ -13,6 +13,24 @@ namespace Terminals
 
         }
 
+        #region Terminals Version
+
+        [ConfigurationProperty("ConfigVersion")]
+        public String ConfigVersion
+        {
+            get
+            {
+                return (String)this["ConfigVersion"];
+            }
+
+            set
+            {
+                this["ConfigVersion"] = value.ToString();
+            }
+        }
+
+        #endregion
+
         #region General section
         [ConfigurationProperty("NeverShowTerminalsWindow")]
         public bool NeverShowTerminalsWindow

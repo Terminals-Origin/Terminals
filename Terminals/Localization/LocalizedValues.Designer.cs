@@ -872,6 +872,15 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to http://terminals.codeplex.com.
+        /// </summary>
+        internal static string TerminalsURL {
+            get {
+                return ResourceManager.GetString("TerminalsURL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tools.
         /// </summary>
         internal static string Tools {

@@ -840,7 +840,7 @@ namespace Terminals
         this.httpUrlTextBox.Name = "httpUrlTextBox";
         this.httpUrlTextBox.Size = new System.Drawing.Size(401, 21);
         this.httpUrlTextBox.TabIndex = 4;
-        this.httpUrlTextBox.Text = "http://www.codeplex.com/terminals";
+        this.httpUrlTextBox.Text = Program.Resources.GetString("TerminalsURL");
         this.httpUrlTextBox.TextChanged += new System.EventHandler(this.httpUrlTextBox_TextChanged);
         // 
         // label33

@@ -26,6 +26,31 @@ namespace Terminals
             None
         }
 
+        #region Terminals Version
+
+        public static Version ConfigVersion
+        {
+            get
+            {
+                _terminalsConfigurationSection = GetSection();
+                if (_terminalsConfigurationSection == null)
+                    return null;
+                if (_terminalsConfigurationSection.ConfigVersion != String.Empty)
+                    return new Version(_terminalsConfigurationSection.ConfigVersion);
+                else
+                    return null;
+            }
+
+            set
+            {
+                Configuration configuration = Config;
+                GetSection(configuration).ConfigVersion = value.ToString();
+                if (!_delayConfigurationSave) configuration.Save();
+            }
+        }
+
+        #endregion
+
         #region General tab settings
 
         public static bool NeverShowTerminalsWindow

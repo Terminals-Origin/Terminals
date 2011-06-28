@@ -52,15 +52,23 @@ namespace Terminals
             {
                 get
                 {
-                    return string.Format("{0} {1}", Title, Version);
+                    return string.Format("{0} {1}", Title, VersionString);
                 }
             }
 
-            public static string Version
+            public static string VersionString
             {
                 get
                 {
                     return Program.TerminalsVersion;
+                }
+            }
+
+            public static Version Version
+            {
+                get
+                {
+                    return Assembly.GetExecutingAssembly().GetName().Version;
                 }
             }
 

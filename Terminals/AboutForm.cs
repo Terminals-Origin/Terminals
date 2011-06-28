@@ -18,7 +18,7 @@ namespace Terminals
 
         private void lblTerminals_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://www.codeplex.com/Terminals");
+            Process.Start(Program.Resources.GetString("TerminalsURL"));
         }
 
         private void lblEyal_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

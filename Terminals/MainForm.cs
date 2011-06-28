@@ -532,7 +532,7 @@ namespace Terminals
                     if (release == null)
                     {
                         release = new FavoriteConfigurationElement(_terminalsReleasesFavoriteName);
-                        release.Url = "http://www.codeplex.com/Terminals/Wiki/View.aspx?title=Welcome%20To%20Terminals";
+                        release.Url = "http://terminals.codeplex.com";
                         release.Tags = Program.Resources.GetString("Terminals");
                         release.Protocol = "HTTP";
                         Settings.AddFavorite(release, false);

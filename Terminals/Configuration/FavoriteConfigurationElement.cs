@@ -1041,7 +1041,7 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("url", DefaultValue = "http://www.codeplex.com/terminals")]
+        [ConfigurationProperty("url", DefaultValue = "http://terminals.codeplex.com")]
         public string Url
         {
             get
