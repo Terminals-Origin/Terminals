@@ -1,0 +1,607 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Kennedy.ManagedHooks</name>
+    </assembly>
+    <members>
+        <member name="T:Kennedy.ManagedHooks.HookTypeNotImplementedException">
+            <summary>
+				An exception indicating that there is already a class hooking a particular event type.
+			</summary><remarks>
+				Each event type can only be hooked by one class at any given time. This is
+				the type of exception you get when you break that rule.
+			</remarks>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.ManagedHooksException">
+            <summary>
+				This class represents exceptions that originate from the ManagedHooks classes.
+			</summary><remarks>
+				Note that other exceptions are possible. For example, where appropriate, these
+				classes throw <see cref="T:System.ArgumentException"/> and 
+				<see cref="T:System.ArgumentNullException"/> among others.
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.ManagedHooksException.#ctor">
+            <overloads>Creates a new instance of the ManagedHooksException class.</overloads><summary>
+				Creates an empty exception.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.ManagedHooksException.#ctor(System.String)">
+            <summary>
+				Creates an exception with a message.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.ManagedHooksException.#ctor(System.String,System.Exception)">
+            <summary>
+				Creates an exception with a message and inner exception.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.HookTypeNotImplementedException.#ctor">
+            <overloads>Creates a new instance of the ManagedHooksException class.</overloads><summary>
+				Creates an empty exception.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.HookTypeNotImplementedException.#ctor(System.String)">
+            <summary>
+				Creates an exception with a message.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.HookTypeNotImplementedException.#ctor(System.String,System.Exception)">
+            <summary>
+				Creates an exception with a message and inner exception.
+			</summary>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.HookTypes">
+            <summary>
+				Represents the types of system hooks available in Windows.
+			</summary><remarks>
+				Currently only <c>KeyboardLL</c> and <c>MouseLL</c> are supported
+				in this library. But it is relatively easy to extend it for any
+				given hook type by following the provided examples.
+			</remarks>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.HookTypes.None">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.HookTypes.Keyboard">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.HookTypes.GetMessage">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.HookTypes.Mouse">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.HookTypes.Hardware">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.HookTypes.Shell">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.HookTypes.KeyboardLL">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.HookTypes.MouseLL">
+            <summary/>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.KeyboardEvents">
+            <summary>
+				Represents the types of keyboard events that will be received when
+				hooking keyboard events.
+			</summary>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.KeyboardEvents.KeyDown">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.KeyboardEvents.KeyUp">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.KeyboardEvents.SystemKeyDown">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.KeyboardEvents.SystemKeyUp">
+            <summary/>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.KeyboardHook">
+            <summary>
+				This class represents a system hook of the type 
+				<see cref="F:Kennedy.ManagedHooks.HookTypes.KeyboardLL"/> (low level keyboard system events).
+			</summary><remarks>
+				This class is designed to be used as a singleton: only create one at a time.
+			</remarks>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.SystemHook">
+            <summary>
+				This class is the abstract base class for all system hook classes.
+			</summary><remarks>
+				<para>
+					To use this class you typically create a derived type which is a
+					particular type of hook. Then simply implement the <c>HookCallback</c>
+					method. This method will be called whenever an event is caught
+					by the base class. For example, we have created the 
+					<see cref="T:Kennedy.ManagedHooks.MouseHook"/> and <see cref="T:Kennedy.ManagedHooks.KeyboardHook"/> classes 
+					following this prescription. 
+				</para>
+				<para>
+					Note that each type of hook class is expected to exist as
+					a singleton.
+				</para>
+			</remarks>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.SystemHook.type">
+            <summary>
+				The type of system hook this instance represents.
+			</summary>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.SystemHook.processHandler">
+            <summary>
+				A delegate which holds a reference to the callback that is 
+				passed to the unmanaged layer for use as a callback method
+				into this class.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.#ctor(Kennedy.ManagedHooks.HookTypes)">
+            <summary>
+				Creates a new instance of the <c>SystemHook</c> class.
+			</summary><param name="type">The type of system hook this class will represent.</param>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.HookCallback(System.Int32,System.UIntPtr,System.IntPtr)">
+            <summary>
+				An abstract method which will be called when a system hook event
+				of the specified type is called.
+			</summary><param name="code">The event code that comes from the system hook event callback.</param><param name="wparam">The WPARAM parameter associated with the system hook event.</param><param name="lparam">The LPARAM parameter associated with the system hook event.</param><remarks>
+				<para>
+					Implement this class in derived classes to provide callback 
+					functionality to the base class.
+				</para>
+				<para>
+					These three parameters vary by system hook event. For example, in the 
+					<c>HookTypes.MouseLL</c> event, wparam is typical <c>WM_LBUTTONDOWN</c>
+					which maps to the enumeration <c>MouseEvents.LeftButtonDown</c>. See
+					the Win32 API documentation for SetWindowsHookEx for details about
+					what these parameters mean in the various hook types.
+				</para>
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.InternalHookCallback(System.Int32,System.UIntPtr,System.IntPtr)">
+            <summary>
+				The method which is actually passed to the unmanaged layer as the callback.
+				This method in turn passes execution off to the HookCallback method which
+				the derived classes use to process hook events.
+			</summary><param name="code">The event code that comes from the system hook event callback.</param><param name="wparam">The WPARAM parameter associated with the system hook event.</param><param name="lparam">The LPARAM parameter associated with the system hook event.</param>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.InstallHook">
+            <summary>
+				Installs the system hook of the specified type as a global system hook.
+			</summary><remarks>
+				Note that once the hook is installed, <see cref="M:Kennedy.ManagedHooks.SystemHook.HookCallback(System.Int32,System.UIntPtr,System.IntPtr)"/> will be called 
+				as the events arrive. 
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.UninstallHook">
+            <summary>
+				Uninstalls the system hook.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.Dispose">
+            <summary>
+				Cleans up resources associated with this class, and in particular,
+				uninstalls the system hook if it is installed.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.GetMousePosition(System.UIntPtr,System.IntPtr,System.Int32@,System.Int32@)">
+            <summary>
+				This utility function helps translate Win32 constants and values 
+				to meaningful .NET enumerations and values.
+			</summary><param name="wparam">The wparam for which to get the mouse data.</param><param name="lparam">The lparam for which to get the mouse data.</param><param name="x">The mouse x position will be stored here on return.</param><param name="y">The mouse y position will be stored here on return.</param>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.GetKeyboardReading(System.UIntPtr,System.IntPtr,System.Int32@)">
+            <summary>
+				This utility function helps translate Win32 constants and values 
+				to meaningful .NET enumerations and values.
+			</summary><param name="wparam">The wparam for which to get the key data.</param><param name="lparam">The lparam for which to get the key data.</param><param name="vkCode">
+				The virtual key code from the Win32 API as specified in winuser.h.
+				Essentially this is all the VK_* constants that are contained in
+				the <see cref="T:Kennedy.ManagedHooks.VirtualKeys"/> enumeration and possibly even some that are not
+				explicitly specified.
+			</param>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.FilterMessage(Kennedy.ManagedHooks.HookTypes,System.Int32)">
+            <summary>
+				Tells the library to ignore the specified event type and not to fire events of that type.
+			</summary><param name="hookType">The hook type that generates the events of type <paramref name="message"/>.</param><param name="message">The type of event to ignore, for example, MouseEvents.Move.</param>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.SetUserHookCallback(Kennedy.ManagedHooks.SystemHook.HookProcessedHandler,Kennedy.ManagedHooks.HookTypes)">
+            <summary>
+				Used by the SystemHook class to register it's callback method
+				for a given hook type.
+			</summary><param name="hookCallback">A delegate to the method which will be used as the callback for this event type.</param><param name="hookType">The type of system hook event to install.</param><returns></returns>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.InitializeHook(Kennedy.ManagedHooks.HookTypes,System.Int32)">
+            <summary>
+				Used by the SystemHook class to instruct the unmanaged layer
+				to install the system hook of the specified type.
+			</summary><param name="hookType">The type of system hook to install.</param><param name="threadID">This should always be zero.</param><returns>A boolean indicating whether the call succeeded.</returns><remarks>
+				This is actually accomplished by calling <c>SetWindowsHookEx()</c>
+				in the unmanaged layer.
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.UninitializeHook(Kennedy.ManagedHooks.HookTypes)">
+            <summary>
+				Used by the SystemHook class to instruct the unmanaged layer
+				to uninstall the system hook of the specified type.
+			</summary><param name="hookType">The type of system hook to uninstall.</param>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.InternalGetMousePosition(System.UIntPtr,System.IntPtr,System.Int32@,System.Int32@)">
+            <summary>
+				This utility function exposed from the unmanaged layer helps translate
+				Win32 constants and values to meaningful .NET enumerations and values.
+			</summary><param name="wparam">The wparam for which to get the mouse data.</param><param name="lparam">The lparam for which to get the mouse data.</param><param name="x">The mouse x position will be stored here on return.</param><param name="y">The mouse y position will be stored here on return.</param><returns>A boolean indicating whether the call succeeded.</returns><remarks>
+				As the access level and name indicate, this method is used only
+				internal to the SystemHook class. The non-static, non-internal 
+				version of this method is identical to this method except that
+				it converts the boolean error handling to exceptions to be more
+				consistent with the rest of the .NET framework.
+			</remarks><seealso cref="M:Kennedy.ManagedHooks.SystemHook.GetMousePosition(System.UIntPtr,System.IntPtr,System.Int32@,System.Int32@)"/>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.IntenralGetKeyboardReading(System.UIntPtr,System.IntPtr,System.Int32@)">
+            <summary>
+				This utility function exposed from the unmanaged layer helps translate
+				Win32 constants and values to meaningful .NET enumerations and values.
+			</summary><param name="wparam">The wparam for which to get the key data.</param><param name="lparam">The lparam for which to get the key data.</param><param name="vkCode">
+				The virtual key code from the Win32 API as specified in winuser.h.
+				Essentially this is all the VK_* constants that are contained in
+				the <c>VirtualKeys</c> enumeration and possibly even some that are not
+				explicitly specified.
+			</param><returns>A boolean indicating whether the call succeeded.</returns><remarks>
+				As the access level and name indicate, this method is used only
+				internal to the SystemHook class. The non-static, non-internal 
+				version of this method is identical to this method except that
+				it converts the boolean error handling to exceptions to be more
+				consistent with the rest of the .NET framework.
+			</remarks><seealso cref="M:Kennedy.ManagedHooks.SystemHook.GetKeyboardReading(System.UIntPtr,System.IntPtr,System.Int32@)"/>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.DisposeCppLayer(Kennedy.ManagedHooks.HookTypes)">
+            <summary>
+				Cleans up system resources in the C++ layer that are associated with this class.
+			</summary><param name="hookType">The hook type represented by this class instance.</param>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.SystemHook.InternalFilterMessage(Kennedy.ManagedHooks.HookTypes,System.Int32)">
+            <summary>
+				Tells the library to ignore the specified event type and not to fire events of that type.
+			</summary><param name="hookType">The hook type represented by this class instance.</param><param name="message">The constant value of the message to filter.</param>
+        </member>
+        <member name="P:Kennedy.ManagedHooks.SystemHook.HookType">
+            <summary>
+				Indicates the hook type for a given class instance.
+			</summary>
+        </member>
+        <member name="P:Kennedy.ManagedHooks.SystemHook.IsHooked">
+            <summary>
+				Indicates whether the system hook is currently installed for this instance.
+			</summary>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.SystemHook.HookProcessedHandler">
+            <summary>
+				A delegate defining the type of method that is expected to be passed
+				to the unmanaged layer for use as a callback method for a given hook 
+				event type.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardHook.#ctor">
+            <summary>
+				Creates a new instance of the KeyboardHook class.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardHook.HookCallback(System.Int32,System.UIntPtr,System.IntPtr)">
+            <summary>
+				This method will be called when a system hook event of the type KeyboardLL occurs.
+			</summary><param name="code">The event code that comes from the system hook event callback.</param><param name="wparam">The WPARAM parameter associated with the system hook event.</param><param name="lparam">The LPARAM parameter associated with the system hook event.</param><remarks>
+				<para>
+					These three parameters vary by system hook event. For example, in the 
+					<c>HookTypes.MouseLL</c> event, wparam is typical <c>WM_LBUTTONDOWN</c>
+					which maps to the enumeration <c>MouseEvents.LeftButtonDown</c>. See
+					the Win32 API documentation for SetWindowsHookEx for details about
+					what these parameters mean in the various hook types.
+				</para>
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardHook.FilterMessage(Kennedy.ManagedHooks.KeyboardEvents)">
+            <summary>
+				Tells the library to ignore the specified event type and not to fire events of that type.
+			</summary><param name="eventType">The type of event to ignore, for example, KeyboardEvents.SysKeyDown.</param>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardHook.ConvertKeyCode(Kennedy.ManagedHooks.VirtualKeys)">
+            <summary>
+				Provides a conversion between Win32 API virtual key codes and the .NET enumeration
+				<see cref="T:System.Windows.Forms.Keys"/>.
+			</summary><param name="vk">The Win32 API virtual key code to convert.</param><returns>The corresponding <see cref="T:System.Windows.Forms.Keys"/> value.</returns>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.KeyboardHook.KeyboardEvent">
+            <summary>
+				This event is fired whenever a system hook event is received by the KeyboardHook class.
+			</summary>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.KeyboardHook.KeyboardEventHandler">
+            <summary>
+				A delegate defining the method signature for the KeyboardEvent event.
+			</summary>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.KeyboardHookExt">
+            <summary>
+				This class represents a system hook of the type 
+				<see cref="F:Kennedy.ManagedHooks.HookTypes.KeyboardLL"/> (low level keyboard system events).
+			</summary><remarks>
+				<para>
+					This class differs from the <see cref="T:Kennedy.ManagedHooks.KeyboardHook"/> class in that it breaks
+					the types of keyboard events into categories. For example, there is a KeyDown
+					event and a KeyUp event.
+				</para>
+				<para>
+					This class is designed to be used as a singleton: only create one at a time.
+				</para>
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardHookExt.#ctor">
+            <summary>
+				Creates a new instance of the KeyboardHook class.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardHookExt.OnKeyDown(System.Windows.Forms.Keys)">
+            <summary>
+				Called when a standard (non-system) key is pushed down. This in turn
+				triggers the <see cref="E:Kennedy.ManagedHooks.KeyboardHookExt.KeyDown"/> event to be fired.
+			</summary><param name="key">The key that was pressed which caused this action.</param><remarks>
+				Override this method when you need to change the conditions that trigger
+				the key pressed events. For an example of how this can be useful, 
+				see the <see cref="T:Kennedy.ManagedHooks.KeyboardTracking"/> class.
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardHookExt.OnKeyUp(System.Windows.Forms.Keys)">
+            <summary>
+				Called when a standard (non-system) key is released. This in turn
+				triggers the <see cref="E:Kennedy.ManagedHooks.KeyboardHookExt.KeyUp"/> event to be fired.
+			</summary><param name="key">The key that was pressed which caused this action.</param><remarks>
+				Override this method when you need to change the conditions that trigger
+				the key pressed events. For an example of how this can be useful, 
+				see the <see cref="T:Kennedy.ManagedHooks.KeyboardTracking"/> class.
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardHookExt.OnSysKeyDown(System.Windows.Forms.Keys)">
+            <summary>
+				Called when a system key is pushed down. This in turn
+				triggers the <see cref="E:Kennedy.ManagedHooks.KeyboardHookExt.SystemKeyDown"/> event to be fired.
+			</summary><param name="key">The key that was pressed which caused this action.</param><remarks>
+				Override this method when you need to change the conditions that trigger
+				the key pressed events. For an example of how this can be useful, 
+				see the <see cref="T:Kennedy.ManagedHooks.KeyboardTracking"/> class.
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardHookExt.OnSysKeyUp(System.Windows.Forms.Keys)">
+            <summary>
+				Called when a system key is released. This in turn
+				triggers the <see cref="E:Kennedy.ManagedHooks.KeyboardHookExt.SystemKeyUp"/> event to be fired.
+			</summary><param name="key">The key that was pressed which caused this action.</param><remarks>
+				Override this method when you need to change the conditions that trigger
+				the key pressed events. For an example of how this can be useful, 
+				see the <see cref="T:Kennedy.ManagedHooks.KeyboardTracking"/> class.
+			</remarks>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.KeyboardHookExt.KeyDown">
+            <summary>
+				Fired when a standard (non-system) key is pushed down.
+			</summary>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.KeyboardHookExt.KeyUp">
+            <summary>
+				Fired when a standard (non-system) key is released.
+			</summary>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.KeyboardHookExt.SystemKeyDown">
+            <summary>
+				Fired when a system key is pushed down.
+			</summary>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.KeyboardHookExt.SystemKeyUp">
+            <summary>
+				Fired when a system key is released.
+			</summary>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.KeyboardHookExt.KeyboardEventHandlerExt">
+            <!-- No matching elements were found for the following include tag --><include file="ManagedHooks.xml" path="Docs/KeyboardHookExt/KeyboardEventHandlerExt/*"/>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.KeyboardTracking">
+            <summary>
+				This class represents a system hook of the type 
+				<see cref="F:Kennedy.ManagedHooks.HookTypes.KeyboardLL"/> (low level keyboard system events).
+				Additionally it tracks the state of modifier keys (control, alt, and shift).
+			</summary><remarks>
+				<para>
+					This class differs from the <see cref="T:Kennedy.ManagedHooks.KeyboardHookExt"/> class in that 
+					it tracks the state of modifier keys (control, alt, and shift).
+				</para>
+				<para>
+					This class is designed to be used as a singleton: only create one at a time.
+				</para>
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardTracking.#ctor">
+            <summary></summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardTracking.OnKeyDown(System.Windows.Forms.Keys)">
+            <summary>
+				Called when a standard (non-system) key is pushed down. This in turn
+				triggers the <see cref="E:Kennedy.ManagedHooks.KeyboardHookExt.KeyDown"/> event to be fired.
+			</summary><param name="key">The key that was pressed which caused this action.</param><remarks>
+				Override this method when you need to change the conditions that trigger
+				the key pressed events. For an example of how this can be useful, 
+				see the <see cref="T:Kennedy.ManagedHooks.KeyboardTracking"/> class.
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.KeyboardTracking.OnKeyUp(System.Windows.Forms.Keys)">
+            <summary>
+				Called when a standard (non-system) key is released. This in turn
+				triggers the <see cref="E:Kennedy.ManagedHooks.KeyboardHookExt.KeyUp"/> event to be fired.
+			</summary><param name="key">The key that was pressed which caused this action.</param><remarks>
+				Override this method when you need to change the conditions that trigger
+				the key pressed events. For an example of how this can be useful, 
+				see the <see cref="T:Kennedy.ManagedHooks.KeyboardTracking"/> class.
+			</remarks>
+        </member>
+        <member name="P:Kennedy.ManagedHooks.KeyboardTracking.ControlPressed">
+            <summary>Indicates whether the control key is currently held down.</summary>
+        </member>
+        <member name="P:Kennedy.ManagedHooks.KeyboardTracking.AltPressed">
+            <summary>Indicates whether the alt key is currently held down.</summary>
+        </member>
+        <member name="P:Kennedy.ManagedHooks.KeyboardTracking.ShiftPressed">
+            <summary>Indicates whether the shift key is currently held down.</summary>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.MouseEvents">
+            <summary>
+				Represents the types of mouse events that will be received when
+				hooking mouse events.
+			</summary><remarks>
+				Note that this list is not exhaustive. For example, third button clicks
+				(typically the pushing the mouse wheel) will not be processed. This
+				can be extended by modifying the source code to receive the desired events.
+			</remarks>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.MouseEvents.LeftButtonDown">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.MouseEvents.LeftButtonUp">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.MouseEvents.Move">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.MouseEvents.MouseWheel">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.MouseEvents.RightButtonDown">
+            <summary/>
+        </member>
+        <member name="F:Kennedy.ManagedHooks.MouseEvents.RightButtonUp">
+            <summary/>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.MouseHook">
+            <summary>
+				This class represents a system hook of the type 
+				<see cref="F:Kennedy.ManagedHooks.HookTypes.MouseLL"/> (low level mouse system events).
+			</summary><remarks>
+				This class is designed to be used as a singleton: only create one at a time.
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.MouseHook.#ctor">
+            <summary>
+				Creates a new instance of the MouseHook class.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.MouseHook.HookCallback(System.Int32,System.UIntPtr,System.IntPtr)">
+            <summary>
+				This method will be called when a system hook event of the type MouseLL occurs.
+			</summary><param name="code">The event code that comes from the system hook event callback.</param><param name="wparam">The WPARAM parameter associated with the system hook event.</param><param name="lparam">The LPARAM parameter associated with the system hook event.</param><remarks>
+				<para>
+					These three parameters vary by system hook event. For example, in the 
+					<c>HookTypes.MouseLL</c> event, wparam is typical <c>WM_LBUTTONDOWN</c>
+					which maps to the enumeration <c>MouseEvents.LeftButtonDown</c>. See
+					the Win32 API documentation for SetWindowsHookEx for details about
+					what these parameters mean in the various hook types.
+				</para>
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.MouseHook.FilterMessage(Kennedy.ManagedHooks.MouseEvents)">
+            <summary>
+				Tells the library to ignore the specified event type and not to fire events of that type.
+			</summary><param name="eventType">The type of event to ignore, for example, MouseEvents.Move.</param>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.MouseHook.MouseEvent">
+            <summary>
+				This event is fired whenever a system hook event is received by the MouseHook class.
+			</summary>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.MouseHook.MouseEventHandler">
+            <summary>
+				A delegate defining the method signature for the MouseEvent event.
+			</summary>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.MouseHookExt">
+            <summary>
+				This class represents a system hook of the type 
+				<see cref="F:Kennedy.ManagedHooks.HookTypes.MouseLL"/> (low level mouse system events).
+			</summary><remarks>
+				<para>
+					This class differs from the <see cref="T:Kennedy.ManagedHooks.MouseHook"/> class in that it breaks
+					the types of mouse events into categories. For example, there is a LeftButtonDown
+					event and a RightButtonDown event.
+				</para>
+				<para>
+					This class is designed to be used as a singleton: only create one at a time.
+				</para>
+			</remarks>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.MouseHookExt.#ctor">
+            <summary>
+				Creates a new instance of the MouseHookExt class.
+			</summary>
+        </member>
+        <member name="M:Kennedy.ManagedHooks.MouseHookExt.HookCallback(System.Int32,System.UIntPtr,System.IntPtr)">
+            <summary>
+				This method will be called when a system hook event of the type MouseLL occurs.
+			</summary><param name="code">The event code that comes from the system hook event callback.</param><param name="wparam">The WPARAM parameter associated with the system hook event.</param><param name="lparam">The LPARAM parameter associated with the system hook event.</param><remarks>
+				<para>
+					These three parameters vary by system hook event. For example, in the 
+					<c>HookTypes.MouseLL</c> event, wparam is typical <c>WM_LBUTTONDOWN</c>
+					which maps to the enumeration <c>MouseEvents.LeftButtonDown</c>. See
+					the Win32 API documentation for SetWindowsHookEx for details about
+					what these parameters mean in the various hook types.
+				</para>
+			</remarks>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.MouseHookExt.LeftButtonDown">
+            <summary>
+				This event is fired when the left mouse button is pushed down.
+			</summary>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.MouseHookExt.RightButtonDown">
+            <summary>
+				This event is fired when the right mouse button is pushed down.
+			</summary>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.MouseHookExt.LeftButtonUp">
+            <summary>
+				This event is fired when the left mouse button is released.
+			</summary>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.MouseHookExt.RightButtonUp">
+            <summary>
+				This event is fired when the right mouse button is released.
+			</summary>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.MouseHookExt.MouseWheel">
+            <summary>
+				This event is fired when the mouse wheel is spun..
+			</summary>
+        </member>
+        <member name="E:Kennedy.ManagedHooks.MouseHookExt.Move">
+            <summary>
+				This event is fired when the mouse is moved.
+			</summary>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.MouseHookExt.MouseEventHandlerExt">
+            <!-- No matching elements were found for the following include tag --><include file="ManagedHooks.xml" path="Docs/MouseHookExt/MouseEventHandlerExt/*"/>
+        </member>
+        <member name="T:Kennedy.ManagedHooks.VirtualKeys">
+            <summary>
+				Represents the keys from keyboard events received from Win32 events.
+			</summary><remarks>
+				It would be ideal if we could simply use the <c>System.Windows.Forms.Keys</c>
+				enumeration. But there is no direct translation from the integers received
+				from the C++ layer (Win32 key codes) and this enumeration. Thus we have
+				included the <c>VirtualKeys</c> enumeration along with the
+				<c>ConvertKeyCode</c> to bridge that gap.
+			</remarks>
+        </member>
+    </members>
+</doc>

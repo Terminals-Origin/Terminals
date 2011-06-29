@@ -123,6 +123,10 @@ namespace Terminals
                 this.RenderNormalRadio.Checked = true;
 
             this._currentTerminal = terminal;
+
+
+            this.inactivityTextbox.Text = Settings.InactivityTimeout.ToString();
+
         }
 
         #region private
@@ -254,6 +258,17 @@ namespace Terminals
             }
 
             Settings.DelayConfigurationSave = false;
+
+
+            string inact = inactivityTextbox.Text;
+            if (!string.IsNullOrEmpty(inact))
+            {
+                int duration = 0;
+                int.TryParse(inact, out duration);
+                Settings.InactivityTimeout = duration;
+            }
+            
+
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)

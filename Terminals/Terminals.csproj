@@ -120,6 +120,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\VMRCResources\Interop.VMRCClientControlLib.dll</HintPath>
     </Reference>
+    <Reference Include="Kennedy.ManagedHooks">
+      <HintPath>..\Resources\SystemHooks\Kennedy.ManagedHooks.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.0.30714, Culture=neutral, PublicKeyToken=b32731d11ce58905">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\log4net\log4net.dll</HintPath>
@@ -419,7 +422,6 @@
     </Compile>
     <Compile Include="Updates\UpdateManager.cs" />
     <Compile Include="Updates\UpdateConfig.cs" />
-    <Compile Include="UserActivityHook.cs" />
     <Compile Include="Wizard\CommonOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -778,6 +780,9 @@
     <Content Include="Resources\back.png" />
     <Content Include="Resources\forward.png" />
     <Content Include="Resources\home.png" />
+    <Content Include="SystemHookCore.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

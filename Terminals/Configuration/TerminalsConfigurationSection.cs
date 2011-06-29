@@ -214,6 +214,23 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("InactivityTimeout", DefaultValue = 0)]
+        public int InactivityTimeout
+        {
+            get
+            {
+                int timeout = 0;
+                if (this["InactivityTimeout"] != null && this["InactivityTimeout"].ToString() != string.Empty)
+                {
+                    int.TryParse(this["InactivityTimeout"].ToString(), out timeout);
+                }
+                return timeout;
+            }
+            set
+            {
+                this["InactivityTimeout"] = value;
+            }
+        }        
         #endregion
 
         #region Execute Before Connect section

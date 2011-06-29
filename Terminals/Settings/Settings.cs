@@ -289,6 +289,27 @@ namespace Terminals
             }
         }
 
+
+
+
+        public static int InactivityTimeout
+        {
+            get
+            {
+                _terminalsConfigurationSection = GetSection();
+                if (_terminalsConfigurationSection == null)
+                    return 0;
+                return _terminalsConfigurationSection.InactivityTimeout;
+            }
+
+            set
+            {
+                Configuration configuration = Config;
+                GetSection(configuration).InactivityTimeout = value;
+                if (!_delayConfigurationSave) configuration.Save();
+            }
+        }
+
         #endregion
 
         #region Execute Before Connect tab settings
