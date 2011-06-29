@@ -95,12 +95,6 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Distribution Release|AnyCPU'">
-    <OutputPath>bin\Distribution Release\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Distribution Release|x86'">
-    <OutputPath>bin\x86\Distribution Release\</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AxInterop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -365,12 +359,6 @@
     <Compile Include="OfficeRender\Office2007BlueColorTable.cs" />
     <Compile Include="OfficeRender\Office2007Helpers.cs" />
     <Compile Include="OfficeRender\Office2007Renderer.cs" />
-    <Compile Include="OptionsForm2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OptionsForm2.Designer.cs">
-      <DependentUpon>OptionsForm2.cs</DependentUpon>
-    </Compile>
     <Compile Include="PopupTerminal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -677,9 +665,6 @@
     <EmbeddedResource Include="OptionsForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OptionsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OptionsForm2.resx">
-      <DependentUpon>OptionsForm2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OrganizeFavoritesForm.resx">
       <SubType>Designer</SubType>

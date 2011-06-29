@@ -31,9 +31,8 @@ namespace Terminals
 
         private static bool _releaseAvailable = false;
         private static string _terminalsReleasesFavoriteName = Program.Resources.GetString("TerminalsNews");
-        private static RssItem _releaseDescription = null;
+        private static RssItem _releaseDescription = null;                
 
-        private MethodInvoker _credentialsMIV;
         private MethodInvoker _specialCommandsMIV;
         private MethodInvoker _resetMethodInvoker;
         private MethodInvoker _releaseMIV;
@@ -54,23 +53,6 @@ namespace Terminals
         private static MainForm _mainForm = null;
 
         #region protected
-
-
-        private bool _inactivityLock = false;
-        private void inactivityTimerCallback(object state)
-        {
-            MainForm frm = (state as MainForm);
-            System.TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - frm.LastActivity.Ticks);
-
-            if (ts.TotalMinutes > Settings.InactivityTimeout)
-            {
-                if (_inactivityLock) return;
-                _inactivityLock = true;
-                Terminals.Logging.Log.Info("We have been inactive.  Lock Terminals down.");                
-                this.Invoke(_credentialsMIV);
-                _inactivityLock = false;
-            }
-        }
 
         protected override void SetVisibleCore(bool value)
         {
@@ -125,25 +107,6 @@ namespace Terminals
 
         #endregion
 
-        private void ForceCredentialCheck()
-        {
-            this.Hide();
-            this.MainWindowNotifyIcon.Visible = false;
-            Security.RequestPassword rp = new Terminals.Security.RequestPassword();
-            DialogResult result = rp.ShowDialog();
-            if (result == DialogResult.Cancel)
-            {
-                Application.Exit();
-            }
-            else
-            {
-                rp.Dispose();
-                this.Show();
-                this.MainWindowNotifyIcon.Visible = true;
-            }
-        }
-
-
         #region public
 
         public MainForm()
@@ -152,7 +115,7 @@ namespace Terminals
             {
                 _specialCommandsMIV = new MethodInvoker(LoadSpecialCommands);
                 _resetMethodInvoker = new MethodInvoker(LoadWindowState);
-                _credentialsMIV = new MethodInvoker(ForceCredentialCheck);
+
                 //check for wizard
                 if (Settings.ShowWizard)
                 {
@@ -232,9 +195,8 @@ namespace Terminals
                 }
 
                 this.tcTerminals.MouseDown += new MouseEventHandler(tcTerminals_MouseDown);
-                this.tcTerminals.MouseUp += new MouseEventHandler(tcTerminals_MouseUp);
-                LastActivity = DateTime.Now;
-                SetupInactivityCallback();
+                this.tcTerminals.MouseUp += new MouseEventHandler(tcTerminals_MouseUp);                
+
             }
             catch (Exception exc)
             {
@@ -242,18 +204,6 @@ namespace Terminals
             }
         }
 
-
-        System.Threading.Timer inactivityTimer = null;
-        private void SetupInactivityCallback()
-        {
-            if (Settings.InactivityTimeout > 0 && inactivityTimer == null && !string.IsNullOrEmpty(Settings.TerminalsPassword))
-            {
-                //int time = 1000 * 60;
-                int time = 1000 * 1;
-                Terminals.Logging.Log.Info("Setting up the inactivity timer for:" + time + "ms. Inactivity Timeout=" + Settings.InactivityTimeout + "seconds");
-                inactivityTimer = new System.Threading.Timer(new System.Threading.TimerCallback(inactivityTimerCallback), this, time, time);
-            }
-        }
         private bool MouseDown { get; set; }
         private  Point MouseDownLocation { get; set; }
         private int MouseBreakThreshold = 200;
@@ -582,7 +532,7 @@ namespace Terminals
                     if (release == null)
                     {
                         release = new FavoriteConfigurationElement(_terminalsReleasesFavoriteName);
-                        release.Url = "http://www.codeplex.com/Terminals/Wiki/View.aspx?title=Welcome%20To%20Terminals";
+                        release.Url = "http://terminals.codeplex.com";
                         release.Tags = Program.Resources.GetString("Terminals");
                         release.Protocol = "HTTP";
                         Settings.AddFavorite(release, false);
@@ -731,7 +681,6 @@ namespace Terminals
             }
         }
 
-        
         private void DeleteFavorite(string name)
         {
             tscConnectTo.Items.Remove(name);
@@ -1836,31 +1785,9 @@ namespace Terminals
             e.Cancel = cancel;
         }
 
-        Kennedy.ManagedHooks.MouseHook mouseHook = new Kennedy.ManagedHooks.MouseHook();
-        Kennedy.ManagedHooks.KeyboardHook keyboardHook = new Kennedy.ManagedHooks.KeyboardHook();
         private void MainForm_Shown(object sender, EventArgs e)
         {
             HandleCommandLineActions();
-
-            mouseHook.MouseEvent += new Kennedy.ManagedHooks.MouseHook.MouseEventHandler(h_MouseEvent);
-            mouseHook.InstallHook();
-
-            keyboardHook.KeyboardEvent += new Kennedy.ManagedHooks.KeyboardHook.KeyboardEventHandler(keyboardHook_KeyboardEvent);
-            keyboardHook.InstallHook();
-        }
-
-        void keyboardHook_KeyboardEvent(Kennedy.ManagedHooks.KeyboardEvents kEvent, Keys key)
-        {
-            LastActivity = DateTime.Now;
-            if (key == Keys.F12)
-            {
-                LastActivity = DateTime.Now.AddDays(-1);
-                inactivityTimerCallback(this);
-            }
-        }
-        void h_MouseEvent(Kennedy.ManagedHooks.MouseEvents mEvent, Point point)
-        {
-            LastActivity = DateTime.Now;
         }
 
         private void tcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e)
@@ -2104,8 +2031,6 @@ namespace Terminals
                 bool enableCapture = (Settings.EnableCaptureToClipboard && Settings.EnableCaptureToFolder);
                 this.CaptureScreenToolStripButton.Enabled = enableCapture;
                 this.captureTerminalScreenToolStripMenuItem.Enabled = enableCapture;
-                SetupInactivityCallback();
-
             }
         }
 
@@ -2495,9 +2420,7 @@ namespace Terminals
             _releaseMIV = new MethodInvoker(OpenReleasePage);
             this.Text = Program.Info.AboutText;
             MainForm.OnReleaseIsAvailable += new ReleaseIsAvailable(MainForm_OnReleaseIsAvailable);
-
         }
-
 
         private void MainForm_OnReleaseIsAvailable(FavoriteConfigurationElement ReleaseFavorite)
         {
@@ -2522,10 +2445,9 @@ namespace Terminals
                 }
             }
         }
-        public DateTime LastActivity { get; set; }
+
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
-            LastActivity = DateTime.Now;
             //handle global keyup events
             if (e.Control && e.KeyCode == Keys.F12)
             {

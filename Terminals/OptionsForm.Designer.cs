@@ -88,7 +88,6 @@ namespace Terminals
             this.chkWaitForExit = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.GeneralTabPage = new System.Windows.Forms.TabPage();
-            this.NeverShowTerminalsCheckbox = new System.Windows.Forms.CheckBox();
             this.autoCaseTagsCheckbox = new System.Windows.Forms.CheckBox();
             this.warnDisconnectCheckBox = new System.Windows.Forms.CheckBox();
             this.validateServerNamesCheckbox = new System.Windows.Forms.CheckBox();
@@ -115,8 +114,6 @@ namespace Terminals
             this.label23 = new System.Windows.Forms.Label();
             this.txtScreenCaptureFolder = new System.Windows.Forms.TextBox();
             this.MoreOptionsTabPage = new System.Windows.Forms.TabPage();
-            this.inactivityTextbox = new System.Windows.Forms.TextBox();
-            this.label24 = new System.Windows.Forms.Label();
             this.AutoExapandTagsPanelCheckBox = new System.Windows.Forms.CheckBox();
             this.FavSortGroupBox = new System.Windows.Forms.GroupBox();
             this.NoneRadioButton = new System.Windows.Forms.RadioButton();
@@ -130,7 +127,7 @@ namespace Terminals
             this.EnableFavoritesPanel = new System.Windows.Forms.CheckBox();
             this.EnableGroupsMenu = new System.Windows.Forms.CheckBox();
             this.serviceController1 = new System.ServiceProcess.ServiceController();
-            this.label25 = new System.Windows.Forms.Label();
+            this.NeverShowTerminalsCheckbox = new System.Windows.Forms.CheckBox();
             this.ProxyTabPage.SuspendLayout();
             this.panel1.SuspendLayout();
             this.FlickrTabPage.SuspendLayout();
@@ -153,7 +150,7 @@ namespace Terminals
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(336, 369);
+            this.btnOk.Location = new System.Drawing.Point(307, 369);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(80, 24);
             this.btnOk.TabIndex = 1;
@@ -165,7 +162,7 @@ namespace Terminals
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(424, 369);
+            this.btnCancel.Location = new System.Drawing.Point(395, 369);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(80, 24);
             this.btnCancel.TabIndex = 2;
@@ -202,7 +199,7 @@ namespace Terminals
             this.ProxyTabPage.Location = new System.Drawing.Point(4, 22);
             this.ProxyTabPage.Name = "ProxyTabPage";
             this.ProxyTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ProxyTabPage.Size = new System.Drawing.Size(495, 264);
+            this.ProxyTabPage.Size = new System.Drawing.Size(466, 264);
             this.ProxyTabPage.TabIndex = 4;
             this.ProxyTabPage.Text = "Proxy";
             this.ProxyTabPage.UseVisualStyleBackColor = true;
@@ -257,7 +254,7 @@ namespace Terminals
             this.ProxyRadionButton.AutoSize = true;
             this.ProxyRadionButton.Location = new System.Drawing.Point(17, 39);
             this.ProxyRadionButton.Name = "ProxyRadionButton";
-            this.ProxyRadionButton.Size = new System.Drawing.Size(177, 17);
+            this.ProxyRadionButton.Size = new System.Drawing.Size(172, 17);
             this.ProxyRadionButton.TabIndex = 1;
             this.ProxyRadionButton.TabStop = true;
             this.ProxyRadionButton.Text = "Use the following Proxy Server:";
@@ -269,7 +266,7 @@ namespace Terminals
             this.AutoProxyRadioButton.AutoSize = true;
             this.AutoProxyRadioButton.Location = new System.Drawing.Point(17, 16);
             this.AutoProxyRadioButton.Name = "AutoProxyRadioButton";
-            this.AutoProxyRadioButton.Size = new System.Drawing.Size(155, 17);
+            this.AutoProxyRadioButton.Size = new System.Drawing.Size(151, 17);
             this.AutoProxyRadioButton.TabIndex = 0;
             this.AutoProxyRadioButton.TabStop = true;
             this.AutoProxyRadioButton.Text = "Automatically Detect Proxy";
@@ -286,7 +283,7 @@ namespace Terminals
             this.FlickrTabPage.Location = new System.Drawing.Point(4, 22);
             this.FlickrTabPage.Name = "FlickrTabPage";
             this.FlickrTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.FlickrTabPage.Size = new System.Drawing.Size(495, 264);
+            this.FlickrTabPage.Size = new System.Drawing.Size(466, 264);
             this.FlickrTabPage.TabIndex = 3;
             this.FlickrTabPage.Text = "Flickr";
             this.FlickrTabPage.UseVisualStyleBackColor = true;
@@ -345,7 +342,7 @@ namespace Terminals
             this.SecurityTabPage.Controls.Add(this.tabControl2);
             this.SecurityTabPage.Location = new System.Drawing.Point(4, 22);
             this.SecurityTabPage.Name = "SecurityTabPage";
-            this.SecurityTabPage.Size = new System.Drawing.Size(495, 264);
+            this.SecurityTabPage.Size = new System.Drawing.Size(466, 264);
             this.SecurityTabPage.TabIndex = 2;
             this.SecurityTabPage.Text = "Security";
             this.SecurityTabPage.UseVisualStyleBackColor = true;
@@ -359,7 +356,7 @@ namespace Terminals
             this.tabControl2.Location = new System.Drawing.Point(0, 0);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(495, 264);
+            this.tabControl2.Size = new System.Drawing.Size(466, 264);
             this.tabControl2.TabIndex = 7;
             // 
             // passwordTabPage
@@ -374,7 +371,7 @@ namespace Terminals
             this.passwordTabPage.Location = new System.Drawing.Point(4, 22);
             this.passwordTabPage.Name = "passwordTabPage";
             this.passwordTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.passwordTabPage.Size = new System.Drawing.Size(487, 238);
+            this.passwordTabPage.Size = new System.Drawing.Size(458, 238);
             this.passwordTabPage.TabIndex = 0;
             this.passwordTabPage.Text = "Master Password";
             this.passwordTabPage.UseVisualStyleBackColor = true;
@@ -384,7 +381,7 @@ namespace Terminals
             this.PasswordProtectTerminalsCheckbox.AutoSize = true;
             this.PasswordProtectTerminalsCheckbox.Location = new System.Drawing.Point(15, 16);
             this.PasswordProtectTerminalsCheckbox.Name = "PasswordProtectTerminalsCheckbox";
-            this.PasswordProtectTerminalsCheckbox.Size = new System.Drawing.Size(110, 17);
+            this.PasswordProtectTerminalsCheckbox.Size = new System.Drawing.Size(109, 17);
             this.PasswordProtectTerminalsCheckbox.TabIndex = 0;
             this.PasswordProtectTerminalsCheckbox.Text = "Password Protect";
             this.PasswordProtectTerminalsCheckbox.UseVisualStyleBackColor = true;
@@ -633,7 +630,7 @@ namespace Terminals
             this.AmazonBackupCheckbox.AutoSize = true;
             this.AmazonBackupCheckbox.Location = new System.Drawing.Point(16, 16);
             this.AmazonBackupCheckbox.Name = "AmazonBackupCheckbox";
-            this.AmazonBackupCheckbox.Size = new System.Drawing.Size(220, 17);
+            this.AmazonBackupCheckbox.Size = new System.Drawing.Size(222, 17);
             this.AmazonBackupCheckbox.TabIndex = 1;
             this.AmazonBackupCheckbox.Text = "Backup Favorites to Amazons S3 Service";
             this.AmazonBackupCheckbox.UseVisualStyleBackColor = true;
@@ -662,7 +659,7 @@ namespace Terminals
             this.ExecuteBeforeConnectTabPage.Location = new System.Drawing.Point(4, 22);
             this.ExecuteBeforeConnectTabPage.Name = "ExecuteBeforeConnectTabPage";
             this.ExecuteBeforeConnectTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ExecuteBeforeConnectTabPage.Size = new System.Drawing.Size(495, 264);
+            this.ExecuteBeforeConnectTabPage.Size = new System.Drawing.Size(466, 264);
             this.ExecuteBeforeConnectTabPage.TabIndex = 1;
             this.ExecuteBeforeConnectTabPage.Text = "Execute Before Connect";
             this.ExecuteBeforeConnectTabPage.UseVisualStyleBackColor = true;
@@ -702,7 +699,7 @@ namespace Terminals
             this.chkExecuteBeforeConnect.AutoSize = true;
             this.chkExecuteBeforeConnect.Location = new System.Drawing.Point(16, 8);
             this.chkExecuteBeforeConnect.Name = "chkExecuteBeforeConnect";
-            this.chkExecuteBeforeConnect.Size = new System.Drawing.Size(141, 17);
+            this.chkExecuteBeforeConnect.Size = new System.Drawing.Size(140, 17);
             this.chkExecuteBeforeConnect.TabIndex = 11;
             this.chkExecuteBeforeConnect.Text = "Execute before connect";
             this.chkExecuteBeforeConnect.UseVisualStyleBackColor = true;
@@ -721,7 +718,7 @@ namespace Terminals
             this.chkWaitForExit.AutoSize = true;
             this.chkWaitForExit.Location = new System.Drawing.Point(16, 120);
             this.chkWaitForExit.Name = "chkWaitForExit";
-            this.chkWaitForExit.Size = new System.Drawing.Size(86, 17);
+            this.chkWaitForExit.Size = new System.Drawing.Size(82, 17);
             this.chkWaitForExit.TabIndex = 16;
             this.chkWaitForExit.Text = "Wait for exit";
             this.chkWaitForExit.UseVisualStyleBackColor = true;
@@ -758,20 +755,10 @@ namespace Terminals
             this.GeneralTabPage.Location = new System.Drawing.Point(4, 22);
             this.GeneralTabPage.Name = "GeneralTabPage";
             this.GeneralTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.GeneralTabPage.Size = new System.Drawing.Size(495, 264);
+            this.GeneralTabPage.Size = new System.Drawing.Size(466, 264);
             this.GeneralTabPage.TabIndex = 0;
             this.GeneralTabPage.Text = "General";
             this.GeneralTabPage.UseVisualStyleBackColor = true;
-            // 
-            // NeverShowTerminalsCheckbox
-            // 
-            this.NeverShowTerminalsCheckbox.AutoSize = true;
-            this.NeverShowTerminalsCheckbox.Location = new System.Drawing.Point(253, 99);
-            this.NeverShowTerminalsCheckbox.Name = "NeverShowTerminalsCheckbox";
-            this.NeverShowTerminalsCheckbox.Size = new System.Drawing.Size(158, 17);
-            this.NeverShowTerminalsCheckbox.TabIndex = 24;
-            this.NeverShowTerminalsCheckbox.Text = "Never show Terminals Page";
-            this.NeverShowTerminalsCheckbox.UseVisualStyleBackColor = true;
             // 
             // autoCaseTagsCheckbox
             // 
@@ -965,7 +952,7 @@ namespace Terminals
             this.tabControl1.Location = new System.Drawing.Point(8, 8);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(503, 290);
+            this.tabControl1.Size = new System.Drawing.Size(474, 290);
             this.tabControl1.TabIndex = 5;
             // 
             // ScreenCaptureTabPage
@@ -979,7 +966,7 @@ namespace Terminals
             this.ScreenCaptureTabPage.Location = new System.Drawing.Point(4, 22);
             this.ScreenCaptureTabPage.Name = "ScreenCaptureTabPage";
             this.ScreenCaptureTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ScreenCaptureTabPage.Size = new System.Drawing.Size(495, 264);
+            this.ScreenCaptureTabPage.Size = new System.Drawing.Size(466, 264);
             this.ScreenCaptureTabPage.TabIndex = 6;
             this.ScreenCaptureTabPage.Text = "Screen Capture";
             this.ScreenCaptureTabPage.UseVisualStyleBackColor = true;
@@ -991,7 +978,7 @@ namespace Terminals
             this.chkAutoSwitchToCaptureCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkAutoSwitchToCaptureCheckbox.Location = new System.Drawing.Point(35, 53);
             this.chkAutoSwitchToCaptureCheckbox.Name = "chkAutoSwitchToCaptureCheckbox";
-            this.chkAutoSwitchToCaptureCheckbox.Size = new System.Drawing.Size(195, 17);
+            this.chkAutoSwitchToCaptureCheckbox.Size = new System.Drawing.Size(191, 17);
             this.chkAutoSwitchToCaptureCheckbox.TabIndex = 21;
             this.chkAutoSwitchToCaptureCheckbox.Text = "Auto switch to manager on capture";
             this.chkAutoSwitchToCaptureCheckbox.UseVisualStyleBackColor = true;
@@ -1001,7 +988,7 @@ namespace Terminals
             this.chkEnableCaptureToFolder.AutoSize = true;
             this.chkEnableCaptureToFolder.Location = new System.Drawing.Point(16, 30);
             this.chkEnableCaptureToFolder.Name = "chkEnableCaptureToFolder";
-            this.chkEnableCaptureToFolder.Size = new System.Drawing.Size(177, 17);
+            this.chkEnableCaptureToFolder.Size = new System.Drawing.Size(174, 17);
             this.chkEnableCaptureToFolder.TabIndex = 12;
             this.chkEnableCaptureToFolder.Text = "Enable screen capture to folder";
             this.chkEnableCaptureToFolder.UseVisualStyleBackColor = true;
@@ -1014,7 +1001,7 @@ namespace Terminals
             this.chkEnableCaptureToClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkEnableCaptureToClipboard.Location = new System.Drawing.Point(16, 7);
             this.chkEnableCaptureToClipboard.Name = "chkEnableCaptureToClipboard";
-            this.chkEnableCaptureToClipboard.Size = new System.Drawing.Size(192, 17);
+            this.chkEnableCaptureToClipboard.Size = new System.Drawing.Size(191, 17);
             this.chkEnableCaptureToClipboard.TabIndex = 11;
             this.chkEnableCaptureToClipboard.Text = "Enable screen capture to clipboard";
             this.chkEnableCaptureToClipboard.UseVisualStyleBackColor = true;
@@ -1047,9 +1034,6 @@ namespace Terminals
             // 
             // MoreOptionsTabPage
             // 
-            this.MoreOptionsTabPage.Controls.Add(this.label25);
-            this.MoreOptionsTabPage.Controls.Add(this.inactivityTextbox);
-            this.MoreOptionsTabPage.Controls.Add(this.label24);
             this.MoreOptionsTabPage.Controls.Add(this.AutoExapandTagsPanelCheckBox);
             this.MoreOptionsTabPage.Controls.Add(this.FavSortGroupBox);
             this.MoreOptionsTabPage.Controls.Add(this.groupBox1);
@@ -1058,34 +1042,17 @@ namespace Terminals
             this.MoreOptionsTabPage.Location = new System.Drawing.Point(4, 22);
             this.MoreOptionsTabPage.Name = "MoreOptionsTabPage";
             this.MoreOptionsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.MoreOptionsTabPage.Size = new System.Drawing.Size(495, 264);
+            this.MoreOptionsTabPage.Size = new System.Drawing.Size(466, 264);
             this.MoreOptionsTabPage.TabIndex = 5;
             this.MoreOptionsTabPage.Text = "More";
             this.MoreOptionsTabPage.UseVisualStyleBackColor = true;
-            // 
-            // inactivityTextbox
-            // 
-            this.inactivityTextbox.Location = new System.Drawing.Point(118, 207);
-            this.inactivityTextbox.Name = "inactivityTextbox";
-            this.inactivityTextbox.Size = new System.Drawing.Size(59, 21);
-            this.inactivityTextbox.TabIndex = 29;
-            this.inactivityTextbox.Text = "0";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(15, 210);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(97, 13);
-            this.label24.TabIndex = 28;
-            this.label24.Text = "Inactivity Timeout:";
             // 
             // AutoExapandTagsPanelCheckBox
             // 
             this.AutoExapandTagsPanelCheckBox.AutoSize = true;
             this.AutoExapandTagsPanelCheckBox.Location = new System.Drawing.Point(210, 38);
             this.AutoExapandTagsPanelCheckBox.Name = "AutoExapandTagsPanelCheckBox";
-            this.AutoExapandTagsPanelCheckBox.Size = new System.Drawing.Size(136, 17);
+            this.AutoExapandTagsPanelCheckBox.Size = new System.Drawing.Size(133, 17);
             this.AutoExapandTagsPanelCheckBox.TabIndex = 27;
             this.AutoExapandTagsPanelCheckBox.Text = "Auto Expand Favorites";
             this.AutoExapandTagsPanelCheckBox.UseVisualStyleBackColor = true;
@@ -1108,7 +1075,7 @@ namespace Terminals
             this.NoneRadioButton.AutoSize = true;
             this.NoneRadioButton.Location = new System.Drawing.Point(7, 89);
             this.NoneRadioButton.Name = "NoneRadioButton";
-            this.NoneRadioButton.Size = new System.Drawing.Size(50, 17);
+            this.NoneRadioButton.Size = new System.Drawing.Size(51, 17);
             this.NoneRadioButton.TabIndex = 3;
             this.NoneRadioButton.TabStop = true;
             this.NoneRadioButton.Text = "None";
@@ -1130,7 +1097,7 @@ namespace Terminals
             this.ConnectionNameRadioButton.AutoSize = true;
             this.ConnectionNameRadioButton.Location = new System.Drawing.Point(6, 43);
             this.ConnectionNameRadioButton.Name = "ConnectionNameRadioButton";
-            this.ConnectionNameRadioButton.Size = new System.Drawing.Size(109, 17);
+            this.ConnectionNameRadioButton.Size = new System.Drawing.Size(110, 17);
             this.ConnectionNameRadioButton.TabIndex = 1;
             this.ConnectionNameRadioButton.TabStop = true;
             this.ConnectionNameRadioButton.Text = "Connection Name";
@@ -1164,7 +1131,7 @@ namespace Terminals
             this.RenderBlackRadio.AutoSize = true;
             this.RenderBlackRadio.Location = new System.Drawing.Point(15, 66);
             this.RenderBlackRadio.Name = "RenderBlackRadio";
-            this.RenderBlackRadio.Size = new System.Drawing.Size(81, 17);
+            this.RenderBlackRadio.Size = new System.Drawing.Size(83, 17);
             this.RenderBlackRadio.TabIndex = 2;
             this.RenderBlackRadio.TabStop = true;
             this.RenderBlackRadio.Text = "Office Black";
@@ -1211,19 +1178,20 @@ namespace Terminals
             this.EnableGroupsMenu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.EnableGroupsMenu.Location = new System.Drawing.Point(15, 15);
             this.EnableGroupsMenu.Name = "EnableGroupsMenu";
-            this.EnableGroupsMenu.Size = new System.Drawing.Size(124, 17);
+            this.EnableGroupsMenu.Size = new System.Drawing.Size(126, 17);
             this.EnableGroupsMenu.TabIndex = 23;
             this.EnableGroupsMenu.Text = "Enable Groups Menu";
             this.EnableGroupsMenu.UseVisualStyleBackColor = true;
             // 
-            // label25
+            // NeverShowTerminalsCheckbox
             // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(183, 210);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(49, 13);
-            this.label25.TabIndex = 30;
-            this.label25.Text = "Secoinds";
+            this.NeverShowTerminalsCheckbox.AutoSize = true;
+            this.NeverShowTerminalsCheckbox.Location = new System.Drawing.Point(253, 99);
+            this.NeverShowTerminalsCheckbox.Name = "NeverShowTerminalsCheckbox";
+            this.NeverShowTerminalsCheckbox.Size = new System.Drawing.Size(158, 17);
+            this.NeverShowTerminalsCheckbox.TabIndex = 24;
+            this.NeverShowTerminalsCheckbox.Text = "Never show Terminals Page";
+            this.NeverShowTerminalsCheckbox.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 
@@ -1231,7 +1199,7 @@ namespace Terminals
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(516, 402);
+            this.ClientSize = new System.Drawing.Size(487, 402);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label1);
@@ -1379,8 +1347,5 @@ namespace Terminals
         private System.Windows.Forms.CheckBox chkEnableCaptureToClipboard;
         private System.Windows.Forms.CheckBox chkAutoSwitchToCaptureCheckbox;
         private System.Windows.Forms.CheckBox NeverShowTerminalsCheckbox;
-        private System.Windows.Forms.TextBox inactivityTextbox;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label label25;
     }
 }
