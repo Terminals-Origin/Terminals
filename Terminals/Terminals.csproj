@@ -95,6 +95,12 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Distribution Release|AnyCPU'">
+    <OutputPath>bin\Distribution Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Distribution Release|x86'">
+    <OutputPath>bin\x86\Distribution Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AxInterop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -119,9 +125,6 @@
     <Reference Include="Interop.VMRCClientControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\VMRCResources\Interop.VMRCClientControlLib.dll</HintPath>
-    </Reference>
-    <Reference Include="Kennedy.ManagedHooks">
-      <HintPath>..\Resources\SystemHooks\Kennedy.ManagedHooks.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.0.30714, Culture=neutral, PublicKeyToken=b32731d11ce58905">
       <SpecificVersion>False</SpecificVersion>
@@ -362,6 +365,12 @@
     <Compile Include="OfficeRender\Office2007BlueColorTable.cs" />
     <Compile Include="OfficeRender\Office2007Helpers.cs" />
     <Compile Include="OfficeRender\Office2007Renderer.cs" />
+    <Compile Include="OptionsForm2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptionsForm2.Designer.cs">
+      <DependentUpon>OptionsForm2.cs</DependentUpon>
+    </Compile>
     <Compile Include="PopupTerminal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -422,6 +431,7 @@
     </Compile>
     <Compile Include="Updates\UpdateManager.cs" />
     <Compile Include="Updates\UpdateConfig.cs" />
+    <Compile Include="UserActivityHook.cs" />
     <Compile Include="Wizard\CommonOptions.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -668,6 +678,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="OptionsForm2.resx">
+      <DependentUpon>OptionsForm2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="OrganizeFavoritesForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OrganizeFavoritesForm.cs</DependentUpon>
@@ -780,9 +793,6 @@
     <Content Include="Resources\back.png" />
     <Content Include="Resources\forward.png" />
     <Content Include="Resources\home.png" />
-    <Content Include="SystemHookCore.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
