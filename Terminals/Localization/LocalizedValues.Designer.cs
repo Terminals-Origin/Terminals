@@ -908,6 +908,15 @@ namespace Terminals.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Terminals was not able to shutdown the machine remotely..
+        /// </summary>
+        internal static string UnableToRemoteShutdown {
+            get {
+                return ResourceManager.GetString("UnableToRemoteShutdown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UnTagged.
         /// </summary>
         internal static string UnTagged {

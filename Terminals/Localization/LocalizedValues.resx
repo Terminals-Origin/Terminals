@@ -417,4 +417,7 @@
   <data name="TerminalsURL" xml:space="preserve">
     <value>http://terminals.codeplex.com</value>
   </data>
+  <data name="UnableToRemoteShutdown" xml:space="preserve">
+    <value>Terminals was not able to shutdown the machine remotely.</value>
+  </data>
 </root>

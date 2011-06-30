@@ -16,22 +16,22 @@ namespace Terminals
 {
     public partial class FavsList : UserControl
     {
-        private static string _untaggedKey = "Untagged";
+        private String _untaggedKey = "Untagged";
         private MethodInvoker _historyInvoker;
-        private bool _eventDone = false;
-        private object _historyLock = new object();
-        private bool _dirtyHistory = false;        
+        private Boolean _eventDone = false;
+        private Object _historyLock = new Object();
+        private Boolean _dirtyHistory = false;        
         private HistoryByFavorite _historyByFavorite = null;
         private HistoryController _historyController = new HistoryController();        
-        private List<string> _nodeTextList;
-        private List<string> _nodeTextListHistory;
+        private List<String> _nodeTextList;
+        private List<String> _nodeTextListHistory;
         private MainForm _mainForm;
         public static CredentialSet credSet = new CredentialSet();
 
         public FavsList()
         {
             InitializeComponent();
-            _historyInvoker = new MethodInvoker(UpdateHistory);
+            this._historyInvoker = new MethodInvoker(UpdateHistory);
 
             // Update the old treeview theme to the new theme from Win Vista and up
             NativeApi.SetWindowTheme(this.favsTree.Handle, "Explorer", null);
@@ -39,34 +39,35 @@ namespace Terminals
         }
 
         private MainForm GetMainForm() 
-        { 
-            if(_mainForm == null)
-                _mainForm = MainForm.GetMainForm();
-            return _mainForm;
+        {
+            if (this._mainForm == null)
+                this._mainForm = MainForm.GetMainForm();
+
+            return this._mainForm;
         }
 
         public void LoadFavs()
         {
-            _nodeTextList = new List<string>();
+            this._nodeTextList = new List<String>();
             foreach (TreeNode node in favsTree.Nodes)
             {
                 if (node.IsExpanded)
-                    _nodeTextList.Add(node.Text);
+                    this._nodeTextList.Add(node.Text);
             }
 
-            favsTree.Nodes.Clear();
-            SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
-            SortedDictionary<string, TreeNode> SortedTags = new SortedDictionary<string, TreeNode>();
-            SortedTags.Add(_untaggedKey, new TreeNode(_untaggedKey));
-            favsTree.Nodes.Add(SortedTags[_untaggedKey]);
+            this.favsTree.Nodes.Clear();
+            SortedDictionary<String, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
+            SortedDictionary<String, TreeNode> SortedTags = new SortedDictionary<String, TreeNode>();
+            SortedTags.Add(_untaggedKey, new TreeNode(this._untaggedKey));
+            this.favsTree.Nodes.Add(SortedTags[this._untaggedKey]);
             if (favorites != null)
             {
-                foreach (string key in favorites.Keys)
+                foreach (String key in favorites.Keys)
                 {
                     FavoriteConfigurationElement fav = favorites[key];
                     if (fav.TagList.Count > 0)
                     {
-                        foreach (string tag in fav.TagList)
+                        foreach (String tag in fav.TagList)
                         {
                             TreeNode favNode = new TreeNode(fav.Name);
                             favNode.Tag = fav;
@@ -86,56 +87,61 @@ namespace Terminals
                         TreeNode favNode = new TreeNode(fav.Name);
                         favNode.Tag = fav;
 
-                        if (!SortedTags[_untaggedKey].Nodes.Contains(favNode)) 
-                            SortedTags[_untaggedKey].Nodes.Add(favNode);
+                        if (!SortedTags[this._untaggedKey].Nodes.Contains(favNode))
+                            SortedTags[this._untaggedKey].Nodes.Add(favNode);
                     }
                 }
             }
+
             favsTree.Sort();
 
             foreach (TreeNode node in favsTree.Nodes)
             {
-                if (_nodeTextList.Contains(node.Text))
+                if (this._nodeTextList.Contains(node.Text))
                     node.Expand();
             }
         }
-        public void RecordHistoryItem(string Name)
+
+        public void RecordHistoryItem(String Name)
         {
-            _historyController.RecordHistoryItem(Name, true);
-            _dirtyHistory = true;
+            this._historyController.RecordHistoryItem(Name, true);
+            this._dirtyHistory = true;
         }             
 
         #region private
         private void UpdateHistory()
         {
-            lock (_historyLock)
+            lock (this._historyLock)
             {
-                _nodeTextListHistory = new List<string>();
+                this._nodeTextListHistory = new List<String>();
                 foreach (TreeNode node in historyTreeView.Nodes)
                 {
                     if (node.IsExpanded)
-                        _nodeTextListHistory.Add(node.Text);
+                        this._nodeTextListHistory.Add(node.Text);
                 }
 
-                _dirtyHistory = true;
-                if (tabControl1.SelectedTab == HistoryTabPage)
+                this._dirtyHistory = true;
+                if (tabControl1.SelectedTab == this.HistoryTabPage)
                 {
                     //update history now!
-                    if (!_eventDone)
+                    if (!this._eventDone)
                     {
-                        historyTreeView.DoubleClick += new EventHandler(HistoryTreeView_DoubleClick);
-                        _eventDone = true;
+                        this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
+                        this._eventDone = true;
                     }
+
                     historyTreeView.Nodes.Clear();
-                    Dictionary<string, List<string>> uniqueFavsPerGroup = new Dictionary<string, List<string>>();
-                    SerializableDictionary<string, List<History.HistoryItem>> GroupedByDate = _historyByFavorite.GroupedByDate;
-                    foreach (string name in GroupedByDate.Keys)
+                    Dictionary<String, List<String>> uniqueFavsPerGroup = new Dictionary<String, List<String>>();
+                    SerializableDictionary<String, List<History.HistoryItem>> GroupedByDate = this._historyByFavorite.GroupedByDate;
+                    foreach (String name in GroupedByDate.Keys)
                     {
-                        List<string> uniqueList = null;
-                        if (uniqueFavsPerGroup.ContainsKey(name)) uniqueList = uniqueFavsPerGroup[name];
+                        List<String> uniqueList = null;
+                        if (uniqueFavsPerGroup.ContainsKey(name))
+                            uniqueList = uniqueFavsPerGroup[name];
+
                         if (uniqueList == null)
                         {
-                            uniqueList = new List<string>();
+                            uniqueList = new List<String>();
                             uniqueFavsPerGroup.Add(name, uniqueList);
                         }
 
@@ -150,44 +156,49 @@ namespace Terminals
                             }
                         }
                     }
-                    _dirtyHistory = false;
+
+                    this._dirtyHistory = false;
                 }
 
-                foreach (TreeNode node in historyTreeView.Nodes)
+                foreach (TreeNode node in this.historyTreeView.Nodes)
                 {
-                    if (_nodeTextListHistory.Contains(node.Text))
+                    if (this._nodeTextListHistory.Contains(node.Text))
                         node.Expand();
                 }
             }
         }
+
         private void HistoryTreeView_DoubleClick(object sender, EventArgs e)
         {
-            StartConnection(historyTreeView);
+            this.StartConnection(this.historyTreeView);
         }
+
         private void History_OnHistoryLoaded(HistoryByFavorite History)
         {
-            _historyByFavorite = History;
-            this.Invoke(_historyInvoker);
+            this._historyByFavorite = History;
+            this.Invoke(this._historyInvoker);
         }
+
         private void FavsList_Load(object sender, EventArgs e)
         {
-            favsTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(FavsTree_NodeMouseClick);
-            LoadFavs();
-            _historyController.OnHistoryLoaded += new HistoryController.HistoryLoaded(History_OnHistoryLoaded);
-            _historyController.LazyLoadHistory();
+            this.favsTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.FavsTree_NodeMouseClick);
+            this.LoadFavs();
+            this._historyController.OnHistoryLoaded += new HistoryController.HistoryLoaded(this.History_OnHistoryLoaded);
+            this._historyController.LazyLoadHistory();
         }
+
         private void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
             {
-                consoleToolStripMenuItem.Checked = false;
-                newWindowToolStripMenuItem.Checked = false;
-                consoleAllToolStripMenuItem.Checked = false;
-                newWindowAllToolStripMenuItem.Checked = false;
-            
-                favsTree.SelectedNode = e.Node;
-                
-                FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+                this.consoleToolStripMenuItem.Checked = false;
+                this.newWindowToolStripMenuItem.Checked = false;
+                this.consoleAllToolStripMenuItem.Checked = false;
+                this.newWindowAllToolStripMenuItem.Checked = false;
+
+                this.favsTree.SelectedNode = e.Node;
+
+                FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
 
                 if (fav != null)
                     this.favsTree.ContextMenuStrip = this.contextMenuStrip1;
@@ -195,160 +206,209 @@ namespace Terminals
                     this.favsTree.ContextMenuStrip = this.contextMenuStrip2;
             }
         }
+
         private void pingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null) GetMainForm().OpenNetworkingTools("Ping", fav.ServerName);
+            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if (fav != null) 
+                this.GetMainForm().OpenNetworkingTools("Ping", fav.ServerName);
         }
+
         private void dNSToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if (fav != null) GetMainForm().OpenNetworkingTools("DNS", fav.ServerName);
+            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if (fav != null) 
+                this.GetMainForm().OpenNetworkingTools("DNS", fav.ServerName);
         }
+
         private void traceRouteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if (fav != null) GetMainForm().OpenNetworkingTools("Trace", fav.ServerName);
+            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if (fav != null) 
+                this.GetMainForm().OpenNetworkingTools("Trace", fav.ServerName);
         }
+
         private void tSAdminToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if (fav != null) GetMainForm().OpenNetworkingTools("TSAdmin", fav.ServerName);
+            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if (fav != null) 
+                this.GetMainForm().OpenNetworkingTools("TSAdmin", fav.ServerName);
         }
+
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if(fav != null)
-                GetMainForm().ShowManageTerminalForm(fav);
+                this.GetMainForm().ShowManageTerminalForm(fav);
         }
+
         private void FavsTree_DoubleClick(object sender, EventArgs e)
         {
-            StartConnection(favsTree);
+            this.StartConnection(favsTree);
         }
-        private void rebootToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null)
-            {
-                if(MessageBox.Show("Are you sure you want to reboot this machine: " + fav.ServerName, Program.Resources.GetString("Confirmation"), MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
 
-                    if(NetTools.MagicPacket.ForceReboot(fav.ServerName, NetTools.MagicPacket.ShutdownStyles.ForcedReboot) == 0)
-                    {
-                        MessageBox.Show("Terminals successfully sent the shutdown command.");
-                        return;
-                    }
-                }
-            }
-            System.Windows.Forms.MessageBox.Show("Terminals was not able to reboot the machine remotely.");
-        }
-        private void shutdownToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ShutdownToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null)
-            {
-                if(MessageBox.Show("Are you sure you want to shutdown this machine: " + fav.ServerName, Program.Resources.GetString("Confirmation"), MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    if(NetTools.MagicPacket.ForceReboot(fav.ServerName, NetTools.MagicPacket.ShutdownStyles.ForcedShutdown) == 0)
-                    {
-                        MessageBox.Show("Terminals successfully sent the shutdown command.");
-                        return;
-                    }
-                }
-            }
-            System.Windows.Forms.MessageBox.Show("Terminals was not able to shutdown the machine remotely.");
-        }
-        private void enableRDPToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null)
-            {
+            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
+            String msg = String.Empty;
+            NetTools.MagicPacket.ShutdownCommands shutdownStyle;
 
-                Microsoft.Win32.RegistryKey reg = Microsoft.Win32.RegistryKey.OpenRemoteBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, fav.ServerName);
-                Microsoft.Win32.RegistryKey ts = reg.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Terminal Server", true);
-                object deny = ts.GetValue("fDenyTSConnections");
-                if(deny != null)
+            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if (fav != null)
+            {
+                if (menuItem.Equals(this.shutdownToolStripMenuItem))
                 {
-                    int d = Convert.ToInt32(deny);
-                    if(d == 1)
-                    {
-                        ts.SetValue("fDenyTSConnections", 0);
-                        if(System.Windows.Forms.MessageBox.Show("Terminals was able to enable the RDP on the remote machine, would you like to reboot that machine for the change to take effect?", "Reboot Required", MessageBoxButtons.YesNo) == DialogResult.OK)
-                        {
-                            rebootToolStripMenuItem_Click(null, null);
-                        }
-                    }
-                    else
-                    {
-                        System.Windows.Forms.MessageBox.Show("Terminals did not need to enable RDP because it was already set.");
-                    }
+                    msg = String.Format("Are you sure you want to shutdown this machine: {0}", fav.ServerName);
+                    shutdownStyle = NetTools.MagicPacket.ShutdownCommands.ForcedShutdown;
+                }
+                else if (menuItem.Equals(this.rebootToolStripMenuItem))
+                {
+                    msg = String.Format("Are you sure you want to reboot this machine: {0}", fav.ServerName);
+                    shutdownStyle = NetTools.MagicPacket.ShutdownCommands.ForcedReboot;
+                }
+                else
+                {
                     return;
                 }
-            }
-            System.Windows.Forms.MessageBox.Show("Terminals was not able to enable RDP remotely.");
-        }
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Connect(favsTree.SelectedNode, false, consoleToolStripMenuItem.Checked, newWindowToolStripMenuItem.Checked);
-        }
-        private void Connect(TreeNode SelectedNode, bool AllChildren, bool Console, bool NewWindow)
-        {
-            if(AllChildren)
-            {
-                foreach(TreeNode node in SelectedNode.Nodes)
+
+                if (MessageBox.Show(msg, Program.Resources.GetString("Confirmation"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    FavoriteConfigurationElement fav = (node.Tag as FavoriteConfigurationElement);
-                    if(fav != null)
+                    System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(fav.UserName, fav.Password, fav.DomainName);
+                    if (String.IsNullOrEmpty(credentials.Domain))
+                        credentials.Domain = Settings.DefaultDomain;
+
+                    if (String.IsNullOrEmpty(credentials.UserName))
+                        credentials.UserName = Settings.DefaultUsername;
+
+                    if (String.IsNullOrEmpty(credentials.Password))
+                        credentials.Password = Settings.DefaultPassword;
+
+                    try
                     {
-                        GetMainForm().Connect(fav.Name, Console, NewWindow);
+                        if (NetTools.MagicPacket.ForceShutdown(fav.ServerName, shutdownStyle, credentials) == 0)
+                        {
+                            MessageBox.Show("Terminals successfully sent the shutdown command.");
+                            return;
+                        }
+                    }
+                    catch (System.Management.ManagementException ex)
+                    {
+                        Terminals.Logging.Log.Info(ex.ToString(), ex);
+                        MessageBox.Show(Program.Resources.GetString("UnableToRemoteShutdown") + "\r\nPlease check the log file.");
+                    }
+                    catch (UnauthorizedAccessException)
+                    {
+                        MessageBox.Show(Program.Resources.GetString("UnableToRemoteShutdown") + "\r\n\r\nAccess is Denied.");
+                        return;
                     }
                 }
             }
             else
             {
-                FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-                if(fav != null)
+                MessageBox.Show(Program.Resources.GetString("UnableToRemoteShutdown"));
+            }
+        }
+
+        private void enableRDPToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if (fav != null)
+            {
+                Microsoft.Win32.RegistryKey reg = Microsoft.Win32.RegistryKey.OpenRemoteBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, fav.ServerName);
+                Microsoft.Win32.RegistryKey ts = reg.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Terminal Server", true);
+                Object deny = ts.GetValue("fDenyTSConnections");
+                if (deny != null)
                 {
-                    GetMainForm().Connect(fav.Name, Console, NewWindow);
+                    Int32 d = Convert.ToInt32(deny);
+                    if (d == 1)
+                    {
+                        ts.SetValue("fDenyTSConnections", 0);
+                        if (MessageBox.Show("Terminals was able to enable the RDP on the remote machine, would you like to reboot that machine for the change to take effect?", "Reboot Required", MessageBoxButtons.YesNo) == DialogResult.OK)
+                        {
+                            this.ShutdownToolStripMenuItem_Click(this.rebootToolStripMenuItem, null);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Terminals did not need to enable RDP because it was already set.");
+                    }
+
+                    return;
                 }
             }
-            contextMenuStrip1.Close();
-            contextMenuStrip2.Close();
+
+            MessageBox.Show("Terminals was not able to enable RDP remotely.");
         }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Connect(this.favsTree.SelectedNode, false, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked);
+        }
+
+        private void Connect(TreeNode SelectedNode, bool AllChildren, bool Console, bool NewWindow)
+        {
+            if (AllChildren)
+            {
+                foreach (TreeNode node in SelectedNode.Nodes)
+                {
+                    FavoriteConfigurationElement fav = (node.Tag as FavoriteConfigurationElement);
+                    if (fav != null)
+                    {
+                        this.GetMainForm().Connect(fav.Name, Console, NewWindow);
+                    }
+                }
+            }
+            else
+            {
+                FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+                if (fav != null)
+                {
+                    this.GetMainForm().Connect(fav.Name, Console, NewWindow);
+                }
+            }
+
+            this.contextMenuStrip1.Close();
+            this.contextMenuStrip2.Close();
+        }
+
         private void normallyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            connectToolStripMenuItem_Click(null, null);
+            this.connectToolStripMenuItem_Click(null, null);
         }
+
         private void connectToAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Connect(favsTree.SelectedNode, true, consoleAllToolStripMenuItem.Checked, newWindowAllToolStripMenuItem.Checked);
+            this.Connect(this.favsTree.SelectedNode, true, this.consoleAllToolStripMenuItem.Checked, this.newWindowAllToolStripMenuItem.Checked);
         }
+
         private void computerManagementMMCToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null)
+            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if (fav != null)
             {
                 System.Diagnostics.Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + fav.ServerName);
             }
 
         }
+
         private void systemInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null)
+            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            if (fav != null)
             {
-                string programFiles = System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                String programFiles = System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 //if(programFiles.Contains("(x86)")) programFiles = programFiles.Replace(" (x86)","");
-                string path = string.Format(@"{0}\common files\Microsoft Shared\MSInfo\msinfo32.exe", programFiles);
-                if(System.IO.File.Exists(path))
+                String path = String.Format(@"{0}\common files\Microsoft Shared\MSInfo\msinfo32.exe", programFiles);
+                if (System.IO.File.Exists(path))
                 {
-                    System.Diagnostics.Process.Start(string.Format("\"{0}\"", path), string.Format("/computer {0}", fav.ServerName));
+                    System.Diagnostics.Process.Start(String.Format("\"{0}\"", path), String.Format("/computer {0}", fav.ServerName));
                 }
             }
         }
+
         private void setCredentialByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string tagName = favsTree.SelectedNode.Text;
+            String tagName = this.favsTree.SelectedNode.Text;
             InputBoxResult result = InputBox.Show("Set Credential by Tag\r\n\r\nThis will replace the credential used for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Credential" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
@@ -358,10 +418,10 @@ namespace Terminals
                     return;
                 }
 
-                GetMainForm().Cursor = Cursors.WaitCursor;
+                this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 Settings.DelayConfigurationSave = true;
-                foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
+                foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
                 {
                     FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
                     if (fav != null)
@@ -370,22 +430,24 @@ namespace Terminals
                         Settings.EditFavorite(fav.Name, fav);
                     }
                 }
+
                 Settings.Config.Save();
-                GetMainForm().Cursor = Cursors.Default;
+                this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Credential by Tag Complete.");
             }
         }
+
         private void setPasswordByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string tagName = favsTree.SelectedNode.Text;
+            String tagName = this.favsTree.SelectedNode.Text;
             InputBoxResult result = InputBox.Show("Set Password by Tag\r\n\r\nThis will replace the password for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Password" + " - " + tagName, '*');
             if (result.ReturnCode == DialogResult.OK)
             {
-                GetMainForm().Cursor = Cursors.WaitCursor;
+                this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 Settings.DelayConfigurationSave = true;
-                foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
+                foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
                 {
                     FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
                     if (fav != null)
@@ -394,22 +456,24 @@ namespace Terminals
                         Settings.EditFavorite(fav.Name, fav);
                     }
                 }
+
                 Settings.Config.Save();
-                GetMainForm().Cursor = Cursors.Default;
+                this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Password by Tag Complete.");
             }
         }
+
         private void setDomainByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string tagName = favsTree.SelectedNode.Text;
+            String tagName = this.favsTree.SelectedNode.Text;
             InputBoxResult result = InputBox.Show("Set Domain by Tag\r\n\r\nThis will replace the Domain for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Domain" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-                GetMainForm().Cursor = Cursors.WaitCursor;
+                this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 Settings.DelayConfigurationSave = true;
-                foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
+                foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
                 {
                     FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
                     if (fav != null)
@@ -418,22 +482,24 @@ namespace Terminals
                         Settings.EditFavorite(fav.Name, fav);
                     }
                 }
+
                 Settings.Config.Save();
-                GetMainForm().Cursor = Cursors.Default;
+                this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Domain by Tag Complete.");
             }
         }
+
         private void setUsernameByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string tagName = favsTree.SelectedNode.Text;
+            String tagName = this.favsTree.SelectedNode.Text;
             InputBoxResult result = InputBox.Show("Set Username by Tag\r\n\r\nThis will replace the Username for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Username" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-                GetMainForm().Cursor = Cursors.WaitCursor;
+                this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 Settings.DelayConfigurationSave = true;
-                foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
+                foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
                 {
                     FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
                     if (fav != null)
@@ -442,22 +508,24 @@ namespace Terminals
                         Settings.EditFavorite(fav.Name, fav);
                     }
                 }
+
                 Settings.Config.Save();
-                GetMainForm().Cursor = Cursors.Default;
+                this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Username by Tag Complete.");
             }
         }
+
         private void deleteAllFavoritesByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string tagName = favsTree.SelectedNode.Text;
+            String tagName = this.favsTree.SelectedNode.Text;
             DialogResult result = MessageBox.Show("Delete all Favorites by Tag\r\n\r\nThis will DELETE all Favorites within this tag.\r\n\r\nUse at your own risk!", "Delete all Favorites by Tag" + " - " + tagName, MessageBoxButtons.OKCancel);
             if (result == DialogResult.OK)
             {
-                GetMainForm().Cursor = Cursors.WaitCursor;
+                this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
                 Settings.DelayConfigurationSave = true;
-                foreach (TreeNode favNode in favsTree.SelectedNode.Nodes)
+                foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
                 {
                     FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
                     if (fav != null)
@@ -465,45 +533,51 @@ namespace Terminals
                         Settings.DeleteFavorite(fav.Name);
                     }
                 }
+
                 Settings.Config.Save();
-                GetMainForm().Cursor = Cursors.Default;
+                this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");
-                LoadFavs();
-            }
-        }        
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabControl1.SelectedTab == HistoryTabPage && _dirtyHistory)
-            {
-                this.Invoke(_historyInvoker);
+                this.LoadFavs();
             }
         }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.tabControl1.SelectedTab == this.HistoryTabPage && this._dirtyHistory)
+            {
+                this.Invoke(this._historyInvoker);
+            }
+        }
+
         private void removeSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement favorite = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement favorite = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if (favorite != null)
             {
                 Settings.DeleteFavorite(favorite.Name);
                 Settings.DeleteFavoriteButton(favorite.Name);
             }
-            LoadFavs();
+
+            this.LoadFavs();
         }
+
         private void favsTree_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
                 e.Effect = DragDropEffects.All;
         }
+
         private void favsTree_DragDrop(object sender, DragEventArgs e)
         {
-            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            foreach (string file in files)
+            String[] files = (String[])e.Data.GetData(DataFormats.FileDrop);
+            foreach (String file in files)
             {
-                string str = Path.GetExtension(file).ToLower();
+                String str = Path.GetExtension(file).ToLower();
                 if (str.Equals(".xml"))
                 {
                     ExportImport.ExportImport.ImportXML(file, true);
-                    GetMainForm().LoadFavorites();
+                    this.GetMainForm().LoadFavorites();
                 }
                 else
                 {
@@ -515,60 +589,60 @@ namespace Terminals
         private void StartConnection(TreeView tv)
         {
             if (tv.SelectedNode != null)
-                GetMainForm().Connect(tv.SelectedNode.Text, false, false);
+                this.GetMainForm().Connect(tv.SelectedNode.Text, false, false);
         }
         #endregion
 
         private void historyTreeView_KeyUp(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.Enter)
-                StartConnection(historyTreeView);
+                this.StartConnection(historyTreeView);
         }
 
         private void connectAsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
-            connectAsToolStripMenuItem.DropDownItems.Clear();
-            connectAsToolStripMenuItem.DropDownItems.Add(userConnectToolStripMenuItem);
+            this.connectAsToolStripMenuItem.DropDownItems.Clear();
+            this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
 
             List<CredentialSet> list = Settings.SavedCredentials;
             
             foreach (CredentialSet s in list)
             {
-                connectAsToolStripMenuItem.DropDownItems.Add(s.Name,null,new EventHandler(connectAsCred_Click));
+                this.connectAsToolStripMenuItem.DropDownItems.Add(s.Name, null, new EventHandler(this.connectAsCred_Click));
             }
         }
 
         private void connectAsCred_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if (fav != null)
             {
-                GetMainForm().Connect(fav.Name, consoleToolStripMenuItem.Checked, newWindowToolStripMenuItem.Checked, CredentialSet.CredentialByName(sender.ToString()));
+                this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked, CredentialSet.CredentialByName(sender.ToString()));
             }
         }
 
         private void userConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form usrForm = new UserSelectForm();
-            usrForm.ShowDialog(GetMainForm());
+            usrForm.ShowDialog(this.GetMainForm());
             if (credSet != null)
             {
-                FavoriteConfigurationElement fav = (favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+                FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
                 if (fav != null)
                 {
-                    GetMainForm().Connect(fav.Name, consoleToolStripMenuItem.Checked, newWindowToolStripMenuItem.Checked, credSet);
+                    this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked, credSet);
                 }
             }
         }
 
         private void displayWindow_Click(object sender, EventArgs e)
         {
-            contextMenuStrip1.Show();
+            this.contextMenuStrip1.Show();
         }
 
         private void displayAllWindow_Click(object sender, EventArgs e)
         {
-            contextMenuStrip2.Show();
+            this.contextMenuStrip2.Show();
         }
     }
 }

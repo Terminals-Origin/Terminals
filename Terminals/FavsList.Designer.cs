@@ -211,14 +211,14 @@
             this.rebootToolStripMenuItem.Name = "rebootToolStripMenuItem";
             this.rebootToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.rebootToolStripMenuItem.Text = "Reboot";
-            this.rebootToolStripMenuItem.Click += new System.EventHandler(this.rebootToolStripMenuItem_Click);
+            this.rebootToolStripMenuItem.Click += new System.EventHandler(this.ShutdownToolStripMenuItem_Click);
             // 
             // shutdownToolStripMenuItem
             // 
             this.shutdownToolStripMenuItem.Name = "shutdownToolStripMenuItem";
             this.shutdownToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.shutdownToolStripMenuItem.Text = "Shutdown";
-            this.shutdownToolStripMenuItem.Click += new System.EventHandler(this.shutdownToolStripMenuItem_Click);
+            this.shutdownToolStripMenuItem.Click += new System.EventHandler(this.ShutdownToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
