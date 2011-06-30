@@ -210,7 +210,6 @@ namespace Terminals
 
         void tcTerminals_MouseUp(object sender, MouseEventArgs e)
         {
-            
             Cursor = Cursors.Default;
             MouseDown = false;
             int mouseLeft = System.Windows.Forms.Control.MousePosition.X;
@@ -222,9 +221,7 @@ namespace Terminals
             if ((Math.Abs(mouseLeft - downLeft) >= MouseBreakThreshold) || (Math.Abs(mouseTop - downTop) >= MouseBreakThreshold))
             {
                 OpenConnectionInNewWindow(this.CurrentConnection);
-                
             }
-
         }
 
         void tcTerminals_MouseDown(object sender, MouseEventArgs e)
