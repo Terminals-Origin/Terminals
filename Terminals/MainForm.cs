@@ -208,7 +208,7 @@ namespace Terminals
         private  Point MouseDownLocation { get; set; }
         private int MouseBreakThreshold = 200;
 
-        void tcTerminals_MouseUp(object sender, MouseEventArgs e)
+        private void tcTerminals_MouseUp(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Default;
             MouseDown = false;
@@ -224,10 +224,12 @@ namespace Terminals
             }
         }
 
-        void tcTerminals_MouseDown(object sender, MouseEventArgs e)
+        private void tcTerminals_MouseDown(object sender, MouseEventArgs e)
         {
             MouseDownLocation = System.Windows.Forms.Control.MousePosition;
-            Cursor = Cursors.UpArrow;
+            // TODO: only show arrow when mousedown over connection tab and mouse is moving
+            // Maybe also use another cursor?
+            // Cursor = Cursors.UpArrow; 
             MouseDown = true;
         }
 
