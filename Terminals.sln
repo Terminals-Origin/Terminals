@@ -23,8 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Granados", "Granados\Granad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminalEmulator", "TerminalEmulator\TerminalEmulator.csproj", "{933C6FDB-9617-4F19-89AF-C5D373F88479}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Socks", "Socks\Socks.csproj", "{59D3ACA4-4360-4798-B4CA-DDDAF350A010}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zlib.net", "zlib.net\zlib.net.csproj", "{0C89B7A2-A218-49E4-B545-5B044A45F977}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSHClient", "SSHClient\SSHClient.csproj", "{6F218F20-AE4B-4966-A821-4BDE214B8BFF}"
@@ -33,7 +31,7 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupTerminals", "SetupTerm
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 16
+		SccNumberOfProjects = 15
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -70,21 +68,18 @@ Global
 		SccProjectUniqueName10 = Granados\\Granados.csproj
 		SccProjectName10 = Granados
 		SccLocalPath10 = Granados
-		SccProjectUniqueName11 = Socks\\Socks.csproj
-		SccProjectName11 = Socks
-		SccLocalPath11 = Socks
-		SccProjectUniqueName12 = SSHClient\\SSHClient.csproj
-		SccProjectName12 = SSHClient
-		SccLocalPath12 = SSHClient
-		SccProjectUniqueName13 = TerminalEmulator\\TerminalEmulator.csproj
-		SccProjectName13 = TerminalEmulator
-		SccLocalPath13 = TerminalEmulator
-		SccProjectUniqueName14 = zlib.net\\zlib.net.csproj
-		SccProjectName14 = zlib.net
-		SccLocalPath14 = zlib.net
-		SccProjectUniqueName15 = SetupTerminals\\SetupTerminals.vdproj
-		SccProjectName15 = SetupTerminals
-		SccLocalPath15 = SetupTerminals
+		SccProjectUniqueName11 = SSHClient\\SSHClient.csproj
+		SccProjectName11 = SSHClient
+		SccLocalPath11 = SSHClient
+		SccProjectUniqueName12 = TerminalEmulator\\TerminalEmulator.csproj
+		SccProjectName12 = TerminalEmulator
+		SccLocalPath12 = TerminalEmulator
+		SccProjectUniqueName13 = zlib.net\\zlib.net.csproj
+		SccProjectName13 = zlib.net
+		SccLocalPath13 = zlib.net
+		SccProjectUniqueName14 = SetupTerminals\\SetupTerminals.vdproj
+		SccProjectName14 = SetupTerminals
+		SccLocalPath14 = SetupTerminals
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -247,18 +242,6 @@ Global
 		{933C6FDB-9617-4F19-89AF-C5D373F88479}.StrongMagic|Any CPU.ActiveCfg = Distribution Release|Any CPU
 		{933C6FDB-9617-4F19-89AF-C5D373F88479}.StrongMagic|Any CPU.Build.0 = Distribution Release|Any CPU
 		{933C6FDB-9617-4F19-89AF-C5D373F88479}.StrongMagic|x86.ActiveCfg = Distribution Release|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Distribution Release|Any CPU.ActiveCfg = Distribution Release|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Distribution Release|Any CPU.Build.0 = Distribution Release|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Distribution Release|x86.ActiveCfg = Distribution Release|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Release|Any CPU.Build.0 = Release|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.Release|x86.ActiveCfg = Release|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.StrongMagic|Any CPU.ActiveCfg = Distribution Release|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.StrongMagic|Any CPU.Build.0 = Distribution Release|Any CPU
-		{59D3ACA4-4360-4798-B4CA-DDDAF350A010}.StrongMagic|x86.ActiveCfg = Distribution Release|Any CPU
 		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Debug|x86.ActiveCfg = Debug|Any CPU

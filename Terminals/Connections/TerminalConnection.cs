@@ -1,40 +1,40 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using Terminals.Properties;
-using System.Diagnostics;
-using System.IO;
-using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using WalburySoftware;
-using SSHClient;
-using Org.Mentalis.Network.ProxySocket;
 
 namespace Terminals.Connections
 {
     public class TerminalConnection : Connection
     {
+        #region Fields
+        private Boolean connected = false;
+        private TerminalEmulator term;
+        private Socket client;
+        private SSHClient.Protocol sshProtocol;
+        #endregion
+
         #region Connection Members
-        private bool connected = false;
-        public override bool Connected { get { return connected; } }
+        
+        public override Boolean Connected
+        {
+            get
+            {
+                return connected;
+            }
+        }
+
         public override void ChangeDesktopSize(Terminals.DesktopSize Size)
         {
         }
-
-        private TerminalEmulator term;
-        private ProxySocket client;
-        private SSHClient.Protocol sshProtocol;
-
+                
         public override bool Connect()
         {
-            string protocol = "unknown";
+            String protocol = "unknown";
             try
             {
-                Terminals.Logging.Log.Info("Connecting to a "+Favorite.Protocol+" Connection");
+                Terminals.Logging.Log.Info(String.Format("Connecting to a {0} Connection", Favorite.Protocol));
                 term = new TerminalEmulator();
 
                 Controls.Add(term);
@@ -43,7 +43,7 @@ namespace Terminals.Connections
 
                 term.Parent = base.TerminalTabPage;
                 this.Parent = TerminalTabPage;
-                term.Dock = DockStyle.Fill;
+                term.Dock = System.Windows.Forms.DockStyle.Fill;
 
                 term.BackColor = Color.FromName(Favorite.ConsoleBackColor);
                 term.Font = FontParser.ParseFontName(Favorite.ConsoleFont);
@@ -52,103 +52,90 @@ namespace Terminals.Connections
                 term.Rows = Favorite.ConsoleRows;
                 term.Columns = Favorite.ConsoleCols;
 
-                client = new ProxySocket(AddressFamily.InterNetwork,SocketType.Stream,ProtocolType.Tcp);
-                client.ProxyUser="";
-                client.ProxyPass="";
-                client.Connect(Favorite.ServerName,Favorite.Port);
+                this.client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                this.client.Connect(Favorite.ServerName, Favorite.Port);
 
-                string domainName = Favorite.DomainName;
-                string pass = Favorite.Password;
-                string userName = Favorite.UserName;
+                String domainName = String.IsNullOrEmpty(Favorite.DomainName) ? Settings.DefaultDomain : Favorite.DomainName;
+                String password = String.IsNullOrEmpty(Favorite.Password) ? Settings.DefaultPassword : Favorite.Password;
+                String userName = String.IsNullOrEmpty(Favorite.UserName) ? Settings.DefaultUsername : Favorite.UserName;
 
-                if (string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
-                if (string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
-                if (string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
-
-
-                if (Favorite.Protocol == "Telnet")
+                switch (Favorite.Protocol)
                 {
-                    protocol = "Telnet";
-                    TcpProtocol t = new TcpProtocol(new NetworkStream(client));
-                    TelnetProtocol p = new TelnetProtocol();
-                    t.OnDataIndicated += p.IndicateData;
-	            	t.OnDisconnect += this.OnDisconnected;
-                    p.TerminalType = term.TerminalType;
-	            	p.Username=userName;
-	            	p.Password = pass;
-	            	p.OnDataIndicated += term.IndicateData;
-	            	p.OnDataRequested += t.RequestData;
-	            	term.OnDataRequested += p.RequestData;
-	                connected = client.Connected;
-                }
-                else
-                {
-                    sshProtocol = new SSHClient.Protocol();
-                    sshProtocol.setTerminalParams(term.TerminalType,
-	                                   term.Rows, term.Columns);
-                    sshProtocol.OnDataIndicated += term.IndicateData;
-                    sshProtocol.OnDisconnect += this.OnDisconnected;
-                    term.OnDataRequested += sshProtocol.RequestData;
-                	string key = "";
-                	SSHClient.KeyConfigElement e = Settings.SSHKeys.Keys[Favorite.KeyTag];
-            		if(e!=null)
-                		key = e.Key;
-                    sshProtocol.setProtocolParams(
-	            		Favorite.AuthMethod,
-	            		userName,
-	            		pass,
-	            		key,
-	            		Favorite.SSH1);
+                    case "Telnet":
+                        protocol = "Telnet";
+                        TcpProtocol t = new TcpProtocol(new NetworkStream(this.client));
+                        TelnetProtocol p = new TelnetProtocol();
+                        t.OnDataIndicated += p.IndicateData;
+                        t.OnDisconnect += this.OnDisconnected;
+                        p.TerminalType = term.TerminalType;
+                        p.Username = userName;
+                        p.Password = password;
+                        p.OnDataIndicated += term.IndicateData;
+                        p.OnDataRequested += t.RequestData;
+                        term.OnDataRequested += p.RequestData;
+                        this.connected = this.client.Connected;
+                        break;
 
-                    if (Favorite.SSH1)
-                    {
-                        protocol = "SSH1";
-                    }
-                    else
-                    {
-                        protocol = "SSH2";
-                    }
-                    sshProtocol.Connect(client);
-                    connected = true; // SSH will throw if fails
+                    case "SSH":
+                        this.sshProtocol = new SSHClient.Protocol();
+                        this.sshProtocol.setTerminalParams(term.TerminalType, term.Rows, term.Columns);
+                        this.sshProtocol.OnDataIndicated += term.IndicateData;
+                        this.sshProtocol.OnDisconnect += this.OnDisconnected;
+                        term.OnDataRequested += this.sshProtocol.RequestData;
+
+                        String key = String.Empty;
+                        SSHClient.KeyConfigElement e = Settings.SSHKeys.Keys[Favorite.KeyTag];
+
+                        if (e != null)
+                            key = e.Key;
+
+                        this.sshProtocol.setProtocolParams(Favorite.AuthMethod, userName, password, key, Favorite.SSH1);
+                        protocol = (Favorite.SSH1) ? "SSH1" : "SSH2";
+
+                        this.sshProtocol.Connect(client);
+                        this.connected = true; // SSH will throw if fails
+                        break;
                 }
-                term.Focus();
+
+                this.term.Focus();
                 return true;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
-                Terminals.Logging.Log.Fatal("Connecting to "+protocol+" Connection", exc);
+                Terminals.Logging.Log.Fatal(String.Format("Connecting to {0} Connection", protocol), exc);
                 return false;
             }
         }
 
-        void OnDisconnected()
+        private void OnDisconnected()
         {
-            Terminals.Logging.Log.Fatal(this.Favorite.Protocol + " Connection Lost" + this.Favorite.Name);
+            Terminals.Logging.Log.Fatal(String.Format("{0} Connection Lost {1}", this.Favorite.Protocol, this.Favorite.Name));
             this.connected = false;
-            if (ParentForm.InvokeRequired)
+            if (this.ParentForm.InvokeRequired)
             {
-                InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
+                InvokeCloseTabPage d = new InvokeCloseTabPage(this.CloseTabPage);
                 this.Invoke(d, new object[] { this.Parent });
             }
             else
-                CloseTabPage(this.Parent);
+            {
+                this.CloseTabPage(this.Parent);
+            }
         }
 
         public override void Disconnect()
         {
             try
             {
-                client.Close();
-                if (sshProtocol != null)
-                    sshProtocol.OnConnectionClosed();
+                this.client.Close();
+                if (this.sshProtocol != null)
+                    this.sshProtocol.OnConnectionClosed();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Terminals.Logging.Log.Error("Disconnect", e);
             }
         }
 
         #endregion
-
     }
 }

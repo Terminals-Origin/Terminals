@@ -1123,10 +1123,6 @@
       <Project>{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}</Project>
       <Name>SharpPcap</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Socks\Socks.csproj">
-      <Project>{59D3ACA4-4360-4798-B4CA-DDDAF350A010}</Project>
-      <Name>Socks</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SSHClient\SSHClient.csproj">
       <Project>{6F218F20-AE4B-4966-A821-4BDE214B8BFF}</Project>
       <Name>SSHClient</Name>
