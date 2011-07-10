@@ -897,16 +897,19 @@ namespace Terminals
 
         private void httpUrlTextBox_TextChanged(object sender, EventArgs e) 
         {
-            String url = this.httpUrlTextBox.Text;
-            try 
+            if (this.ProtocolComboBox.Text == "HTTP" | this.ProtocolComboBox.Text == "HTTPS")
             {
-                System.Uri u = new Uri(url);
-                this.cmbServers.Text = u.Host;
-                this.txtPort.Text = u.Port.ToString();
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.Error("Http URL Parse Failed", ex);
+                String url = this.httpUrlTextBox.Text;
+                try
+                {
+                    System.Uri u = new Uri(url);
+                    this.cmbServers.Text = u.Host;
+                    this.txtPort.Text = u.Port.ToString();
+                }
+                catch (Exception ex)
+                {
+                    Logging.Log.Error("Http URL Parse Failed", ex);
+                }
             }
         }
 

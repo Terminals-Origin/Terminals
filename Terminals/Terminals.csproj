@@ -114,7 +114,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\Citrix\AxWFICALib.dll</HintPath>
     </Reference>
-    <Reference Include="DevComponents.DotNetBar2, Version=9.2.0.0, Culture=neutral, PublicKeyToken=7eb7c3a35b91de04, processorArchitecture=MSIL" />
     <Reference Include="FlickrNet, Version=2.1.5.19851, Culture=neutral, PublicKeyToken=2491df59efa5d132">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\FlickrNet.dll</HintPath>
