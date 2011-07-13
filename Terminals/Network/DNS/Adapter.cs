@@ -1,275 +1,790 @@
 using System;
 using System.Collections.Generic;
+using System.Management;
 using System.Text;
 
 namespace Terminals.Network.DNS
 {
     public class Adapter
     {
+        #region Public Properties
+        
+        public System.Management.ManagementObject PropertyData { get; set; }
 
-        private System.Management.ManagementObject share;
-
-        public System.Management.ManagementObject PropertyData {
-            get { return share; }
-            set { share = value; }
-        }
-
-
-        public Boolean ArpAlwaysSourceRoute { get { return (share.Properties["ArpAlwaysSourceRoute"].Value==null)?false:(Boolean)share.Properties["ArpAlwaysSourceRoute"].Value; } }
-        public Boolean ArpUseEtherSNAP { get { return (share.Properties["ArpUseEtherSNAP"].Value == null) ? false : (Boolean)share.Properties["ArpUseEtherSNAP"].Value; } }
-        public String Caption { get { return (share.Properties["Caption"].Value == null) ? "" : (string)share.Properties["Caption"].Value; } }
-        public String DatabasePath { get { return (share.Properties["DatabasePath"].Value == null) ? "" : (string)share.Properties["DatabasePath"].Value; } }
-        public Boolean DeadGWDetectEnabled { get { return (share.Properties["DeadGWDetectEnabled"].Value == null) ? false : (Boolean)share.Properties["DeadGWDetectEnabled"].Value; } }
-        public String[] DefaultIPGateway { get { return (share.Properties["DefaultIPGateway"].Value == null) ? new string[] { } : (string[])share.Properties["DefaultIPGateway"].Value; } }
-        public String DefaultIPGatewayList {
-            get {
-                int x = 1;
-                System.Text.StringBuilder sb = new StringBuilder();
-                foreach(string s in DefaultIPGateway) {
-                    sb.Append(s);
-                    if(x<DefaultIPGateway.Length) sb.Append(",");
-                    x++;
-                }
-                return sb.ToString();
+        public Boolean ArpAlwaysSourceRoute
+        {
+            get
+            {
+                return this.ToBoolean("ArpAlwaysSourceRoute");
             }
         }
 
-        public uint DefaultTOS { get { return (share.Properties["DefaultTOS"].Value == null) ? 0 : (uint)share.Properties["DefaultTOS"].Value; } }
-        public uint DefaultTTL { get { return (share.Properties["DefaultTTL"].Value == null) ? 0 : (uint)share.Properties["DefaultTTL"].Value; } }
-        public String Description { get { return (share.Properties["Description"].Value == null) ? "" : (string)share.Properties["Description"].Value; } }
-        public Boolean DHCPEnabled { get { return (share.Properties["DHCPEnabled"].Value == null) ? false : (Boolean)share.Properties["DHCPEnabled"].Value; } }
-        public DateTime DHCPLeaseExpires { get { return (share.Properties["DHCPLeaseExpires"].Value == null) ? DateTime.MinValue : ToDateTime( share.Properties["DHCPLeaseExpires"].Value.ToString()); } }
-        public DateTime DHCPLeaseObtained { get { return (share.Properties["DHCPLeaseObtained"].Value == null) ? DateTime.MinValue : ToDateTime(share.Properties["DHCPLeaseObtained"].Value.ToString()); } }
-        public String DHCPServer { get { return (share.Properties["DHCPServer"].Value == null) ? "" : (string)share.Properties["DHCPServer"].Value; } }
-        public String DNSDomain { get { return (share.Properties["DNSDomain"].Value == null) ? "" : (string)share.Properties["DNSDomain"].Value; } }
+        public Boolean ArpUseEtherSNAP
+        {
+            get
+            {
+                return this.ToBoolean("ArpUseEtherSNAP");
+            }
+        }
+
+        public String Caption
+        {
+            get
+            {
+                return this.ToString("Caption");
+            }
+        }
+
+        public String DatabasePath
+        {
+            get
+            {
+                return this.ToString("DatabasePath");
+            }
+        }
+
+        public Boolean DeadGWDetectEnabled
+        {
+            get
+            {
+                return this.ToBoolean("DeadGWDetectEnabled");
+            }
+        }
+
+        public String[] DefaultIPGateway
+        {
+            get
+            {
+                return this.ToStringArray("DefaultIPGateway");
+            }
+        }
+
+        public String DefaultIPGatewayList
+        {
+            get
+            {
+                return ToStringList(this.DefaultIPGateway);
+            }
+        }
+
+        public Byte DefaultTOS
+        {
+            get
+            {
+                return this.ToByte("DefaultTOS");
+            }
+        }
+
+        public Byte DefaultTTL
+        {
+            get
+            {
+                return this.ToByte("DefaultTTL");
+            }
+        }
+
+        public String Description
+        {
+            get
+            {
+                return this.ToString("Description");
+            }
+        }
+
+        public Boolean DHCPEnabled
+        {
+            get
+            {
+                return this.ToBoolean("DHCPEnabled");
+            }
+        }
+
+        public DateTime DHCPLeaseExpires
+        {
+            get
+            {
+                return this.ToDateTime("DHCPLeaseExpires");
+            }
+        }
+
+        public DateTime DHCPLeaseObtained
+        {
+            get
+            {
+                return this.ToDateTime("DHCPLeaseObtained");
+            }
+        }
+
+        public String DHCPServer
+        {
+            get
+            {
+                return this.ToString("DHCPServer");
+            }
+        }
+
+        public String DNSDomain
+        {
+            get
+            {
+                return this.ToString("DNSDomain");
+            }
+        }
+
         public String DNSDomainSuffixSearchOrder
         {
             get
             {
                 try
                 {
-                    if (share.Properties["DNSDomainSuffixSearchOrder"] == null) return "";
-                    object dns = share.Properties["DNSDomainSuffixSearchOrder"].Value;
-                    if (dns == null) return "";
-                    System.Array dnsList = (dns as System.Array);
-                    if (dnsList == null) return dns.ToString();
-                    System.Text.StringBuilder sb = new StringBuilder();
-                    foreach (object o in dnsList)
+                    if (this.PropertyData.Properties["DNSDomainSuffixSearchOrder"] == null)
+                        return String.Empty;
+
+                    Object dns = this.PropertyData.Properties["DNSDomainSuffixSearchOrder"].Value;
+                    if (dns == null)
+                        return String.Empty;
+
+                    Array dnsList = (dns as Array);
+                    if (dnsList == null)
+                        return dns.ToString();
+
+                    StringBuilder sb = new StringBuilder();
+                    foreach (Object o in dnsList)
                     {
                         sb.Append(o.ToString());
                         sb.Append(",");
                     }
-                    return sb.ToString();
+
+                    return sb.ToString().TrimEnd(',');
                 }
                 catch (Exception exc)
                 {
                     Logging.Log.Error("see: http://terminals.codeplex.com/workitem/20748", exc);
-                    return "";
+                    return String.Empty;
                 }
 
             }
         }
-        public Boolean DNSEnabledForWINSResolution { get { return (share.Properties["DNSEnabledForWINSResolution"].Value == null) ? false : (Boolean)share.Properties["DNSEnabledForWINSResolution"].Value; } }
-        public String DNSHostName { get { return (share.Properties["DNSHostName"].Value == null) ? "" : (string)share.Properties["DNSHostName"].Value; } }
-        public String[] DNSServerSearchOrder { get { return (share.Properties["DNSServerSearchOrder"].Value == null) ? new string[] { } : (string[])share.Properties["DNSServerSearchOrder"].Value; } }
-        public String DNSServerSearchOrderList {
-            get {
-                int x = 1;
-                System.Text.StringBuilder sb = new StringBuilder();
-                foreach(string s in DNSServerSearchOrder) {
-                    sb.Append(s);
-                    if(x < DNSServerSearchOrder.Length) sb.Append(",");
-                    x++;
-                }
-                return sb.ToString();
+
+        public Boolean DNSEnabledForWINSResolution
+        {
+            get
+            {
+                return this.ToBoolean("DNSEnabledForWINSResolution");
             }
         }
-        public Boolean DomainDNSRegistrationEnabled { get { return (share.Properties["DomainDNSRegistrationEnabled"].Value == null) ? false : (Boolean)share.Properties["DomainDNSRegistrationEnabled"].Value; } }
-        public UInt32 ForwardBufferMemory { get { return (share.Properties["ForwardBufferMemory"].Value == null) ? 0 : (UInt32)share.Properties["ForwardBufferMemory"].Value; } }
-        public Boolean FullDNSRegistrationEnabled { get { return (share.Properties["FullDNSRegistrationEnabled"].Value == null) ? false : (Boolean)share.Properties["FullDNSRegistrationEnabled"].Value; } }
-        public ushort[] GatewayCostMetric { get { return (share.Properties["GatewayCostMetric"].Value == null) ? new ushort[] { } : (ushort[])share.Properties["GatewayCostMetric"].Value; } }
-        public String GatewayCostMetricList {
-            get {
-                int x = 1;
-                System.Text.StringBuilder sb = new StringBuilder();
-                foreach(ushort s in GatewayCostMetric) {
-                    sb.Append(s);
-                    if(x < GatewayCostMetric.Length) sb.Append(",");
-                    x++;
-                }
-                return sb.ToString();
+
+        public String DNSHostName
+        {
+            get
+            {
+                return this.ToString("DNSHostName");
             }
         }
-        public uint IGMPLevel { get { return (share.Properties["IGMPLevel"].Value == null) ? 0 : (uint)share.Properties["IGMPLevel"].Value; } }
-        public UInt32 Index { get { return (share.Properties["Index"].Value == null) ? 0 : (UInt32)share.Properties["Index"].Value; } }
-        public String[] IPAddress { get { return (share.Properties["IPAddress"].Value == null) ? new string[] { } : (string[])share.Properties["IPAddress"].Value; } }
-        public String IPAddressList {
-            get {
-                int x = 1;
-                System.Text.StringBuilder sb = new StringBuilder();
-                foreach(string s in IPAddress) {
-                    sb.Append(s);
-                    if(x < IPAddress.Length) sb.Append(",");
-                    x++;
-                }
-                return sb.ToString();
-            }
-        }   
-        public UInt32 IPConnectionMetric { get { return (share.Properties["IPConnectionMetric"].Value == null) ? 0 : (UInt32)share.Properties["IPConnectionMetric"].Value; } }
-        public Boolean IPEnabled { get { return (share.Properties["IPEnabled"].Value == null) ? false : (Boolean)share.Properties["IPEnabled"].Value; } }
-        public Boolean IPFilterSecurityEnabled { get { return (share.Properties["IPFilterSecurityEnabled"].Value == null) ? false : (Boolean)share.Properties["IPFilterSecurityEnabled"].Value; } }
-        public Boolean IPPortSecurityEnabled { get { return (share.Properties["IPPortSecurityEnabled"].Value == null) ? false : (Boolean)share.Properties["IPPortSecurityEnabled"].Value; } }
-        public String[] IPSecPermitIPProtocols { get { return (share.Properties["IPSecPermitIPProtocols"].Value == null) ? new string[] { } : (string[])share.Properties["IPSecPermitIPProtocols"].Value; } }
-        public String IPSecPermitIPProtocolsList {
-            get {
-                int x = 1;
-                System.Text.StringBuilder sb = new StringBuilder();
-                foreach(string s in IPSecPermitIPProtocols) {
-                    sb.Append(s);
-                    if(x < IPSecPermitIPProtocols.Length) sb.Append(",");
-                    x++;
-                }
-                return sb.ToString();
+
+        public String[] DNSServerSearchOrder
+        {
+            get
+            {
+                return this.ToStringArray("DNSServerSearchOrder");
             }
         }
-        public String[] IPSecPermitTCPPorts { get { return (share.Properties["IPSecPermitTCPPorts"].Value == null) ? new string[] { } : (string[])share.Properties["IPSecPermitTCPPorts"].Value; } }
-        public String IPSecPermitTCPPortsList {
-            get {
-                int x = 1;
-                System.Text.StringBuilder sb = new StringBuilder();
-                foreach(string s in IPSecPermitTCPPorts) {
-                    sb.Append(s);
-                    if(x < IPSecPermitTCPPorts.Length) sb.Append(",");
-                    x++;
-                }
-                return sb.ToString();
+
+        public String DNSServerSearchOrderList
+        {
+            get
+            {
+                return ToStringList(this.DNSServerSearchOrder);
             }
         }
-        public String[] IPSecPermitUDPPorts { get { return (share.Properties["IPSecPermitUDPPorts"].Value == null) ? new string[] { } : (string[])share.Properties["IPSecPermitUDPPorts"].Value; } }
-        public String IPSecPermitUDPPortsList {
-            get {
-                int x = 1;
-                System.Text.StringBuilder sb = new StringBuilder();
-                foreach(string s in IPSecPermitUDPPorts) {
-                    sb.Append(s);
-                    if(x < IPSecPermitUDPPorts.Length) sb.Append(",");
-                    x++;
-                }
-                return sb.ToString();
+
+        public Boolean DomainDNSRegistrationEnabled
+        {
+            get
+            {
+                return this.ToBoolean("DomainDNSRegistrationEnabled");
             }
         }
-        public String[] IPSubnet { get { return (share.Properties["IPSubnet"].Value == null) ? new string[] { } : (string[])share.Properties["IPSubnet"].Value; } }
-        public String IPSubnetList {
-            get {
-                int x = 1;
-                System.Text.StringBuilder sb = new StringBuilder();
-                foreach(string s in IPSubnet) {
-                    sb.Append(s);
-                    if(x < IPSubnet.Length) sb.Append(",");
-                    x++;
-                }
-                return sb.ToString();
+
+        public UInt32 ForwardBufferMemory
+        {
+            get
+            {
+                return this.ToUInt32("ForwardBufferMemory");
             }
         }
-        public Boolean IPUseZeroBroadcast { get { return (share.Properties["IPUseZeroBroadcast"].Value == null) ? false : (Boolean)share.Properties["IPUseZeroBroadcast"].Value; } }
-        public String IPXAddress { get { return (share.Properties["IPXAddress"].Value == null) ? "" : (string)share.Properties["IPXAddress"].Value; } }
-        public Boolean IPXEnabled { get { return (share.Properties["IPXEnabled"].Value == null) ? false : (Boolean)share.Properties["IPXEnabled"].Value; } }
-        public UInt32 IPXFrameType { get { return (share.Properties["IPXFrameType"].Value == null) ? 0 : (UInt32)share.Properties["IPXFrameType"].Value; } }
-        public UInt32 IPXMediaType { get { return (share.Properties["IPXMediaType"].Value == null) ? 0 : (UInt32)share.Properties["IPXMediaType"].Value; } }
-        public String IPXNetworkNumber { get { return (share.Properties["IPXNetworkNumber"].Value == null) ? "" : (string)share.Properties["IPXNetworkNumber"].Value; } }
-        public String IPXVirtualNetNumber { get { return (share.Properties["IPXVirtualNetNumber"].Value == null) ? "" : (string)share.Properties["IPXVirtualNetNumber"].Value; } }
-        public UInt32 KeepAliveInterval { get { return (share.Properties["KeepAliveInterval"].Value == null) ? 0 : (UInt32)share.Properties["KeepAliveInterval"].Value; } }
-        public UInt32 KeepAliveTime { get { return (share.Properties["KeepAliveTime"].Value == null) ? 0 : (UInt32)share.Properties["KeepAliveTime"].Value; } }
-        public String MACAddress { get { return (share.Properties["MACAddress"].Value == null) ? "" : (string)share.Properties["MACAddress"].Value; } }
-        public UInt32 MTU { get { return (share.Properties["MTU"].Value == null) ? 0 : (UInt32)share.Properties["MTU"].Value; } }
-        public UInt32 NumForwardPackets { get { return (share.Properties["NumForwardPackets"].Value == null) ? 0 : (UInt32)share.Properties["NumForwardPackets"].Value; } }
-        public Boolean PMTUBHDetectEnabled { get { return (share.Properties["PMTUBHDetectEnabled"].Value == null) ? false : (Boolean)share.Properties["PMTUBHDetectEnabled"].Value; } }
-        public Boolean PMTUDiscoveryEnabled { get { return (share.Properties["PMTUDiscoveryEnabled"].Value == null) ? false : (Boolean)share.Properties["PMTUDiscoveryEnabled"].Value; } }
-        public String ServiceName { get { return (share.Properties["ServiceName"].Value == null) ? "" : (string)share.Properties["ServiceName"].Value; } }
-        public String SettingID { get { return (share.Properties["SettingID"].Value == null) ? "" : (string)share.Properties["SettingID"].Value; } }
-        public UInt32 TcpipNetbiosOptions { get { return (share.Properties["TcpipNetbiosOptions"].Value == null) ? 0 : (UInt32)share.Properties["TcpipNetbiosOptions"].Value; } }
-        public UInt32 TcpMaxConnectRetransmissions { get { return (share.Properties["TcpMaxConnectRetransmissions"].Value == null) ? 0 : (UInt32)share.Properties["TcpMaxConnectRetransmissions"].Value; } }
-        public UInt32 TcpMaxDataRetransmissions { get { return (share.Properties["TcpMaxDataRetransmissions"].Value == null) ? 0 : (UInt32)share.Properties["TcpMaxDataRetransmissions"].Value; } }
-        public UInt32 TcpNumConnections { get { return (share.Properties["TcpNumConnections"].Value == null) ? 0 : (UInt32)share.Properties["TcpNumConnections"].Value; } }
-        public Boolean TcpUseRFC1122UrgentPointer { get { return (share.Properties["TcpUseRFC1122UrgentPointer"].Value == null) ? false : (Boolean)share.Properties["TcpUseRFC1122UrgentPointer"].Value; } }
-        public ushort TcpWindowSize
-        { 
-            get {
-                return (share.Properties["TcpWindowSize"].Value == null) ? (ushort)0 : (ushort)share.Properties["TcpWindowSize"].Value; 
-            } 
+
+        public Boolean FullDNSRegistrationEnabled
+        {
+            get
+            {
+                return this.ToBoolean("FullDNSRegistrationEnabled");
+            }
         }
-        public Boolean WINSEnableLMHostsLookup { get { return (share.Properties["WINSEnableLMHostsLookup"].Value == null) ? false : (Boolean)share.Properties["WINSEnableLMHostsLookup"].Value; } }
-        public String WINSHostLookupFile { get { return (share.Properties["WINSHostLookupFile"].Value == null) ? "" : (string)share.Properties["WINSHostLookupFile"].Value; } }
-        public String WINSPrimaryServer { get { return (share.Properties["WINSPrimaryServer"].Value == null) ? "" : (string)share.Properties["WINSPrimaryServer"].Value; } }
-        public String WINSScopeID { get { return (share.Properties["WINSScopeID"].Value == null) ? "" : (string)share.Properties["WINSScopeID"].Value; } }
-        public String WINSSecondaryServer { get { return (share.Properties["WINSSecondaryServer"].Value == null) ? "" : (string)share.Properties["WINSSecondaryServer"].Value; } }
-        //There is a utility called mgmtclassgen that ships with the .NET SDK that
-        //will generate managed code for existing WMI classes. It also generates
+
+        public UInt16[] GatewayCostMetric
+        {
+            get
+            {
+                return this.ToUInt16Array("GatewayCostMetric");
+            }
+        }
+
+        public String GatewayCostMetricList
+        {
+            get
+            {
+                return ToStringList(this.GatewayCostMetric);
+            }
+        }
+
+        public UInt32 IGMPLevel
+        {
+            get
+            {
+                return this.ToUInt32("IGMPLevel");
+            }
+        }
+
+        public UInt32 Index
+        {
+            get
+            {
+                return this.ToUInt32("Index");
+            }
+        }
+
+        public String[] IPAddress
+        {
+            get
+            {
+                return this.ToStringArray("IPAddress");
+            }
+        }
+
+        public String IPAddressList
+        {
+            get
+            {
+                return ToStringList(this.IPAddress);
+            }
+        }
+
+        public UInt32 IPConnectionMetric
+        {
+            get
+            {
+                return this.ToUInt32("IPConnectionMetric");
+            }
+        }
+
+        public Boolean IPEnabled
+        {
+            get
+            {
+                return this.ToBoolean("IPEnabled");
+            }
+        }
+
+        public Boolean IPFilterSecurityEnabled
+        {
+            get
+            {
+                return this.ToBoolean("IPFilterSecurityEnabled");
+            }
+        }
+
+        public Boolean IPPortSecurityEnabled
+        {
+            get
+            {
+                return this.ToBoolean("IPPortSecurityEnabled");
+            }
+        }
+
+        public String[] IPSecPermitIPProtocols
+        {
+            get
+            {
+                return this.ToStringArray("IPSecPermitIPProtocols");
+            }
+        }
+
+        public String IPSecPermitIPProtocolsList
+        {
+            get
+            {
+                return ToStringList(this.IPSecPermitIPProtocols);
+            }
+        }
+
+        public String[] IPSecPermitTCPPorts
+        {
+            get
+            {
+                return this.ToStringArray("IPSecPermitTCPPorts");
+            }
+        }
+
+        public String IPSecPermitTCPPortsList
+        {
+            get
+            {
+                return ToStringList(this.IPSecPermitTCPPorts);
+            }
+        }
+
+        public String[] IPSecPermitUDPPorts
+        {
+            get
+            {
+                return this.ToStringArray("IPSecPermitUDPPorts");
+            }
+        }
+
+        public String IPSecPermitUDPPortsList
+        {
+            get
+            {
+                return ToStringList(this.IPSecPermitUDPPorts);
+            }
+        }
+
+        public String[] IPSubnet
+        {
+            get
+            {
+                return this.ToStringArray("IPSubnet");
+            }
+        }
+
+        public String IPSubnetList
+        {
+            get
+            {
+
+                return ToStringList(this.IPSubnet);
+            }
+        }
+
+        public Boolean IPUseZeroBroadcast
+        {
+            get
+            {
+                return this.ToBoolean("IPUseZeroBroadcast");
+            }
+        }
+
+        public String IPXAddress
+        {
+            get
+            {
+                return this.ToString("IPXAddress");
+            }
+        }
+
+        public Boolean IPXEnabled
+        {
+            get
+            {
+                return this.ToBoolean("IPXEnabled");
+            }
+        }
+
+        public UInt32 IPXFrameType
+        {
+            get
+            {
+                return this.ToUInt32("IPXFrameType");
+            }
+        }
+
+        public UInt32 IPXMediaType
+        {
+            get
+            {
+                return this.ToUInt32("IPXMediaType");
+            }
+        }
+
+        public String IPXNetworkNumber
+        {
+            get
+            {
+                return this.ToString("IPXNetworkNumber");
+            }
+        }
+
+        public String IPXVirtualNetNumber
+        {
+            get
+            {
+                return this.ToString("IPXVirtualNetNumber");
+            }
+        }
+
+        public UInt32 KeepAliveInterval
+        {
+            get
+            {
+                return this.ToUInt32("KeepAliveInterval");
+            }
+        }
+
+        public UInt32 KeepAliveTime
+        {
+            get
+            {
+                return this.ToUInt32("KeepAliveTime");
+            }
+        }
+
+        public String MACAddress
+        {
+            get
+            {
+                return this.ToString("MACAddress");
+            }
+        }
+
+        public UInt32 MTU
+        {
+            get
+            {
+                return this.ToUInt32("MTU");
+            }
+        }
+
+        public UInt32 NumForwardPackets
+        {
+            get
+            {
+                return this.ToUInt32("NumForwardPackets");
+            }
+        }
+
+        public Boolean PMTUBHDetectEnabled
+        {
+            get
+            {
+                return this.ToBoolean("PMTUBHDetectEnabled");
+            }
+        }
+
+        public Boolean PMTUDiscoveryEnabled
+        {
+            get
+            {
+                return this.ToBoolean("PMTUDiscoveryEnabled");
+            }
+        }
+
+        public String ServiceName
+        {
+            get
+            {
+                return this.ToString("ServiceName");
+            }
+        }
+
+        public String SettingID
+        {
+            get
+            {
+                return this.ToString("SettingID");
+            }
+        }
+
+        public UInt32 TcpipNetbiosOptions
+        {
+            get
+            {
+                return this.ToUInt32("TcpipNetbiosOptions");
+            }
+        }
+
+        public UInt32 TcpMaxConnectRetransmissions
+        {
+            get
+            {
+                return this.ToUInt32("TcpMaxConnectRetransmissions");
+            }
+        }
+
+        public UInt32 TcpMaxDataRetransmissions
+        {
+            get
+            {
+                return this.ToUInt32("TcpMaxDataRetransmissions");
+            }
+        }
+
+        public UInt32 TcpNumConnections
+        {
+            get
+            {
+                return this.ToUInt32("TcpNumConnections");
+            }
+        }
+
+        public Boolean TcpUseRFC1122UrgentPointer
+        {
+            get
+            {
+                return this.ToBoolean("TcpUseRFC1122UrgentPointer");
+            }
+        }
+
+        public UInt16 TcpWindowSize
+        {
+            get
+            {
+                return this.ToUInt16("TcpWindowSize");
+            }
+        }
+
+        public Boolean WINSEnableLMHostsLookup
+        {
+            get
+            {
+                return this.ToBoolean("WINSEnableLMHostsLookup");
+            }
+        }
+
+        public String WINSHostLookupFile
+        {
+            get
+            {
+                return this.ToString("WINSHostLookupFile");
+            }
+        }
+
+        public String WINSPrimaryServer
+        {
+            get
+            {
+                return this.ToString("WINSPrimaryServer");
+            }
+        }
+
+        public String WINSScopeID
+        {
+            get
+            {
+                return this.ToString("WINSScopeID");
+            }
+        }
+
+        public String WINSSecondaryServer
+        {
+            get
+            {
+                return this.ToString("WINSSecondaryServer");
+            }
+        }
+
+#endregion
+
+        #region Private methods developer made
+        
+        private String ToString(String property)
+        {
+            try
+            {
+                object value = this.PropertyData.Properties[property].Value;
+                return (value == null) ? String.Empty : value.ToString();
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Error("", ex);
+                return String.Empty;
+            }
+        }
+
+        private Boolean ToBoolean(String property)
+        {
+            try
+            {
+                object value = this.PropertyData.Properties[property].Value;
+                return (value == null) ? false : Convert.ToBoolean(value);
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Error("", ex);
+                return false;
+            }
+        }
+
+        private String[] ToStringArray(String property)
+        {
+            try
+            {
+                object value = this.PropertyData.Properties[property].Value;
+                return (value == null) ? new String[] { } : (String[])value;
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Error("", ex);
+                return new String[] { };
+            }
+        }
+
+        private Byte ToByte(String property)
+        {
+            try
+            {
+                object value = this.PropertyData.Properties[property].Value;
+                return (value == null) ? Convert.ToByte(0) : Convert.ToByte(value);
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Error("", ex);
+                return Convert.ToByte(0);
+            }
+        }
+
+        private DateTime ToDateTime(String property)
+        {
+            try
+            {
+                object value = this.PropertyData.Properties[property].Value;
+                return (value == null) ? DateTime.MinValue : this.GetDateTime(value.ToString());
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Error("", ex);
+                return DateTime.MinValue;
+            }
+        }
+
+        private UInt16 ToUInt16(String property)
+        {
+            try
+            {
+                object value = this.PropertyData.Properties[property].Value;
+                return (value == null) ? Convert.ToUInt16(0) : Convert.ToUInt16(value);
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Error("", ex);
+                return Convert.ToUInt16(0);
+            }
+        }
+
+        private UInt16[] ToUInt16Array(String property)
+        {
+            try
+            {
+                object value = this.PropertyData.Properties[property].Value;
+                return (value == null) ? new UInt16[] { } : (UInt16[])value;
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Error("", ex);
+                return new UInt16[] { };
+            }
+        }
+
+        private UInt32 ToUInt32(String property)
+        {
+            try
+            {
+                object value = this.PropertyData.Properties[property].Value;
+                return (value == null) ? 0 : Convert.ToUInt32(value);
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Error("", ex);
+                return 0;
+            }
+        }
+
+        private static String ToStringList(String[] stringArray)
+        {
+            Int32 x = 1;
+            StringBuilder sb = new StringBuilder();
+            foreach (String s in stringArray)
+            {
+                sb.Append(s);
+                if (x < stringArray.Length)
+                    sb.Append(",");
+
+                x++;
+            }
+
+            return sb.ToString();
+        }
+
+        private static String ToStringList(UInt16[] stringArray)
+        {
+            Int32 x = 1;
+            StringBuilder sb = new StringBuilder();
+            foreach (UInt16 s in stringArray)
+            {
+                sb.Append(s);
+                if (x < stringArray.Length)
+                    sb.Append(",");
+
+                x++;
+            }
+
+            return sb.ToString();
+        }
+
+        // There is a utility called mgmtclassgen that ships with the .NET SDK that
+        // will generate managed code for existing WMI classes. It also generates
         // datetime conversion routines like this one.
-        //Thanks to Chetan Parmar and dotnet247.com for the help.
-        static System.DateTime ToDateTime(string dmtfDate) {
-            int year = System.DateTime.Now.Year;
-            int month = 1;
-            int day = 1;
-            int hour = 0;
-            int minute = 0;
-            int second = 0;
-            int millisec = 0;
-            string dmtf = dmtfDate;
-            string tempString = System.String.Empty;
+        // Thanks to Chetan Parmar and dotnet247.com for the help.
+        private DateTime GetDateTime(String dmtfDate)
+        {
+            Int32 year = DateTime.Now.Year;
+            Int32 month = 1;
+            Int32 day = 1;
+            Int32 hour = 0;
+            Int32 minute = 0;
+            Int32 second = 0;
+            Int32 millisec = 0;
+            String dmtf = dmtfDate;
+            String tempString = String.Empty;
 
-            if(((System.String.Empty == dmtf) || (dmtf == null))) {
-                return System.DateTime.MinValue;
-            }
+            if (String.IsNullOrEmpty(dmtf))
+                return DateTime.MinValue;
 
-            if((dmtf.Length != 25)) {
-                return System.DateTime.MinValue;
-            }
+            if ((dmtf.Length != 25))
+                return DateTime.MinValue;
 
             tempString = dmtf.Substring(0, 4);
-            if(("****" != tempString)) {
-                year = System.Int32.Parse(tempString);
-            }
+            if (("****" != tempString))
+                year = Int32.Parse(tempString);
 
             tempString = dmtf.Substring(4, 2);
-
-            if(("**" != tempString)) {
-                month = System.Int32.Parse(tempString);
-            }
+            if (("**" != tempString))
+                month = Int32.Parse(tempString);
 
             tempString = dmtf.Substring(6, 2);
-
-            if(("**" != tempString)) {
-                day = System.Int32.Parse(tempString);
-            }
+            if (("**" != tempString))
+                day = Int32.Parse(tempString);
 
             tempString = dmtf.Substring(8, 2);
-
-            if(("**" != tempString)) {
-                hour = System.Int32.Parse(tempString);
-            }
+            if (("**" != tempString))
+                hour = Int32.Parse(tempString);
 
             tempString = dmtf.Substring(10, 2);
-
-            if(("**" != tempString)) {
-                minute = System.Int32.Parse(tempString);
-            }
+            if (("**" != tempString))
+                minute = Int32.Parse(tempString);
 
             tempString = dmtf.Substring(12, 2);
-
-            if(("**" != tempString)) {
-                second = System.Int32.Parse(tempString);
-            }
+            if (("**" != tempString))
+                second = Int32.Parse(tempString);
 
             tempString = dmtf.Substring(15, 3);
+            if (("***" != tempString))
+                millisec = Int32.Parse(tempString);
 
-            if(("***" != tempString)) {
-                millisec = System.Int32.Parse(tempString);
-            }
-
-            System.DateTime dateRet = new System.DateTime(year, month, day, hour, minute, second, millisec);
-
+            DateTime dateRet = new DateTime(year, month, day, hour, minute, second, millisec);
             return dateRet;
         }
+
+        #endregion
     }
 }
