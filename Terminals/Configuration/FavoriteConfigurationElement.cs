@@ -436,8 +436,9 @@ namespace Terminals
         {
             get
             {
-                string font = (string)this["consolefont"]; ;
-                if (String.IsNullOrEmpty(font)) font = "[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False]";
+                string font = (string)this["consolefont"];
+                if (String.IsNullOrEmpty(font))
+                  font = FontParser.DEFAULT_FONT;
                 return font;
             }
             set
@@ -511,8 +512,9 @@ namespace Terminals
         {
             get
             {
-                string font = (string)this["telnetfont"]; ;
-                if (String.IsNullOrEmpty(font)) font = "[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False]";
+                string font = (string)this["telnetfont"];
+                if (String.IsNullOrEmpty(font))
+                  font = FontParser.DEFAULT_FONT;
                 return font;
             }
             set

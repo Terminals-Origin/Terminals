@@ -37,11 +37,11 @@ namespace Terminals
 
         private void FontButton_Click(object sender, EventArgs e)
         {
-            this.fontDialog1.Font = FontParser.ParseFontName(FontTextbox.Text);
+            this.fontDialog1.Font = FontParser.FromString(FontTextbox.Text);
             DialogResult result = this.fontDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                FontTextbox.Text = this.fontDialog1.Font.ToString();
+                FontTextbox.Text = FontParser.ToString(this.fontDialog1.Font);
             }
         }
 

@@ -164,8 +164,7 @@
             this.FontTextbox.ReadOnly = true;
             this.FontTextbox.Size = new System.Drawing.Size(160, 20);
             this.FontTextbox.TabIndex = 23;
-            this.FontTextbox.Text = "[Font: Name=Courier New, Size=9.75, Units=3, GdiCharSet=0, GdiVerticalFont=False]" +
-                "";
+            this.FontTextbox.Text = "[Font: Name=Courier New, Size=10, Units=3, GdiCharSet=0, GdiVerticalFont=False, Style=0]";
             // 
             // BackColorTextBox
             // 

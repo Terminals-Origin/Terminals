@@ -46,7 +46,7 @@ namespace Terminals.Connections
                 term.Dock = System.Windows.Forms.DockStyle.Fill;
 
                 term.BackColor = Color.FromName(Favorite.ConsoleBackColor);
-                term.Font = FontParser.ParseFontName(Favorite.ConsoleFont);
+                term.Font = FontParser.FromString(Favorite.ConsoleFont);
                 term.ForeColor = Color.FromName(Favorite.ConsoleTextColor);
 
                 term.Rows = Favorite.ConsoleRows;
