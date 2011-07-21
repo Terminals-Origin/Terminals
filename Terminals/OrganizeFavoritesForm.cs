@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using Terminals.Integration.Import;
 
 namespace Terminals
 {
@@ -19,6 +16,7 @@ namespace Terminals
             LoadConnections();
             _lvwColumnSorter = new ListViewColumnSorter();
             lvConnections.ListViewItemSorter = _lvwColumnSorter;
+            ImportOpenFileDialog.Filter = Importers.GetImportersDialogFilter();
         }
 
         #region Private
@@ -79,23 +77,6 @@ namespace Terminals
             if (lvConnections.SelectedItems.Count > 0)
                 return (FavoriteConfigurationElement)lvConnections.SelectedItems[0].Tag;
             return null;
-        }
-
-        private void ImportFromFile() {
-            bool needsReload = false;
-            if(ImportOpenFileDialog.ShowDialog() == DialogResult.OK) {
-                string filename = ImportOpenFileDialog.FileName;
-                Integration.Integration i = new Terminals.Integration.Integration();
-
-                FavoriteConfigurationElementCollection coll = i.ImportFavorites(filename);
-                if(coll != null) {
-                    needsReload = true;
-                    foreach(FavoriteConfigurationElement fav in coll) {
-                        Settings.AddFavorite(fav, false);
-                    }
-                }
-            }
-            if(needsReload) LoadConnections();
         }
 
         private void lvConnections_AfterLabelEdit(object sender, LabelEditEventArgs e)
@@ -206,35 +187,35 @@ namespace Terminals
        
         private void activeDirectoryToolStripMenuItem_Click(object sender, EventArgs e) 
         {
-            Network.ImportFromAD ad = new Terminals.Network.ImportFromAD();
+            Network.ImportFromAD ad = new Network.ImportFromAD();
             ad.ShowDialog();
         }
 
         private void networkDetectionToolStripMenuItem_Click(object sender, EventArgs e) 
         {
-            DialogResult result = _networkScanner.ShowDialog();
-        }
-
-        private void muRDToolStripMenuItem_Click(object sender, EventArgs e) 
-        {
-            ImportFromFile();
-        }
-
-        private void rDPToolStripMenuItem_Click(object sender, EventArgs e) 
-        {
-            ImportFromFile();
-        }
-
-        private void vRDBackupFileToolStripMenuItem_Click(object sender, EventArgs e) 
-        {
-            ImportFromFile();
+            _networkScanner.ShowDialog();
         }
 
         private void ImportButton_Click(object sender, EventArgs e)
         {
-            MouseEventArgs mouse = (e as MouseEventArgs);
-            if(mouse != null)
-                contextMenuStrip1.Show(ImportButton, new Point(mouse.X, mouse.Y));
+          bool needsReload = false;
+          if (ImportOpenFileDialog.ShowDialog() == DialogResult.OK)
+          {
+            string filename = ImportOpenFileDialog.FileName;
+
+            FavoriteConfigurationElementCollection coll = Importers.ImportFavorites(filename);
+            if (coll != null)
+            {
+              needsReload = true;
+              foreach (FavoriteConfigurationElement fav in coll)
+              {
+                Settings.AddFavorite(fav, false);
+              }
+            }
+          }
+
+          if (needsReload) 
+            LoadConnections();
         }
 
         private void lvConnections_ColumnClick(object sender, ColumnClickEventArgs e)

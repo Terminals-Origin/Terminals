@@ -471,7 +471,7 @@
     <Compile Include="Integration\Import\ImportRDP.cs" />
     <Compile Include="Integration\Import\IImport.cs" />
     <Compile Include="Integration\Import\ImportMuRD.cs" />
-    <Compile Include="Integration\Integration.cs" />
+    <Compile Include="Integration\Importers.cs" />
     <Compile Include="NativeApi.cs" />
     <Compile Include="NetworkScanner.cs">
       <SubType>Form</SubType>
@@ -793,9 +793,13 @@
     <Compile Include="Wizard\SpecialCommandsWizard.cs" />
     <None Include="app.config" />
     <None Include="Migrated rules for Terminals.ruleset" />
+    <None Include="Resources\amber.png" />
     <Content Include="Resources\back.png" />
     <Content Include="Resources\forward.png" />
+    <None Include="Resources\green.png" />
     <Content Include="Resources\home.png" />
+    <None Include="Resources\red.png" />
+    <None Include="Resources\polarized-glasses.png" />
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

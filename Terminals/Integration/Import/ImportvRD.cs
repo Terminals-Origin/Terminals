@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
-using System.Windows.Forms;
 using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
@@ -98,6 +95,7 @@ namespace Terminals.Integration.Import
             }
             return fav;
         }
+
         #region Convert vrd confirguration to local configuration
 
         private void SaveCredentials(Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials)
@@ -241,6 +239,7 @@ namespace Terminals.Integration.Import
         private void ImportConnection(vRdImport.Connection Connection, List<string> FolderNames, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> Credentials)
         {
         }
+
         private void ImportFolder(vRdImport.vRDConfigurationFileConnectionsFolder Folder, List<string> FolderNames, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> Credentials)
         {
             foreach (vRdImport.Connection conn in Folder.Connection)
@@ -251,6 +250,11 @@ namespace Terminals.Integration.Import
             {
                 FolderNames.Add(folder.Name);
             }
+        }
+
+        public string Name
+        {
+          get { return "Visionapp Remote Desktop"; }
         }
 
         public string KnownExtension

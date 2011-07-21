@@ -322,7 +322,7 @@ namespace Terminals.Properties {
         
         public static System.Drawing.Bitmap screen_capture_box {
             get {
-                object obj = ResourceManager.GetObject("screen-capture-box", resourceCulture);
+                object obj = ResourceManager.GetObject("screen_capture_box", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

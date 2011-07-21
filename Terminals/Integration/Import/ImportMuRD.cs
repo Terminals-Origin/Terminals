@@ -153,6 +153,12 @@ namespace Terminals.Integration.Import
 
             return coll;
         }
+
+        public string Name
+        {
+          get { return "Multiple Remote Desktops manager"; }
+        }
+
         public string KnownExtension
         {
             get { return ".mrc"; }

@@ -107,6 +107,11 @@ namespace Terminals.Integration.Import
             return coll;
         }
 
+        public string Name
+        {
+          get { return "Microsoft Remote Desktop"; }
+        }
+
         public string KnownExtension
         {
             get { return ".rdp"; }
