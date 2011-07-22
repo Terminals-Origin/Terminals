@@ -28,25 +28,25 @@ namespace Terminals
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Startup & Shutdown");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Favorites");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Interface", new System.Windows.Forms.TreeNode[] {
-            treeNode14});
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Master Password");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Default Password");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Amazon");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Security", new System.Windows.Forms.TreeNode[] {
-            treeNode16,
-            treeNode17,
-            treeNode18});
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Execute Before Connect");
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Proxy");
-            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Connections", new System.Windows.Forms.TreeNode[] {
-            treeNode20,
-            treeNode21});
-            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Flickr");
-            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Screen Capture", new System.Windows.Forms.TreeNode[] {
-            treeNode23});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Startup & Shutdown");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Favorites");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Interface", new System.Windows.Forms.TreeNode[] {
+            treeNode2});
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Master Password");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Default Password");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Amazon");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Security", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5,
+            treeNode6});
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Execute Before Connect");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Proxy");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Connections", new System.Windows.Forms.TreeNode[] {
+            treeNode8,
+            treeNode9});
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Flickr");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Screen Capture", new System.Windows.Forms.TreeNode[] {
+            treeNode11});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionsForm2));
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -78,7 +78,6 @@ namespace Terminals
             this.RenderNormalRadio = new System.Windows.Forms.RadioButton();
             this.EnableFavoritesPanel = new System.Windows.Forms.CheckBox();
             this.EnableGroupsMenu = new System.Windows.Forms.CheckBox();
-            this.serviceController1 = new System.ServiceProcess.ServiceController();
             this.OptionsTreeView = new System.Windows.Forms.TreeView();
             this.tabControl3 = new System.Windows.Forms.TabControl();
             this.tabPageStartupShutdown = new System.Windows.Forms.TabPage();
@@ -558,48 +557,48 @@ namespace Terminals
             this.OptionsTreeView.HotTracking = true;
             this.OptionsTreeView.Location = new System.Drawing.Point(8, 8);
             this.OptionsTreeView.Name = "OptionsTreeView";
-            treeNode13.Name = "Startup & Shutdown";
-            treeNode13.Tag = "StartupShutdown";
-            treeNode13.Text = "Startup & Shutdown";
-            treeNode14.Name = "Favorites";
-            treeNode14.Tag = "Favorites";
-            treeNode14.Text = "Favorites";
-            treeNode15.Name = "Interface";
-            treeNode15.Tag = "Interface";
-            treeNode15.Text = "Interface";
-            treeNode16.Name = "Master Password";
-            treeNode16.Tag = "MasterPassword";
-            treeNode16.Text = "Master Password";
-            treeNode17.Name = "Default Password";
-            treeNode17.Tag = "DefaultPassword";
-            treeNode17.Text = "Default Password";
-            treeNode18.Name = "Amazon";
-            treeNode18.Tag = "Amazon";
-            treeNode18.Text = "Amazon";
-            treeNode19.Name = "Master Password";
-            treeNode19.Tag = "MasterPassword";
-            treeNode19.Text = "Security";
-            treeNode20.Name = "Execute Before Connect";
-            treeNode20.Tag = "ExecuteBeforeConnect";
-            treeNode20.Text = "Execute Before Connect";
-            treeNode21.Name = "Proxy";
-            treeNode21.Tag = "Proxy";
-            treeNode21.Text = "Proxy";
-            treeNode22.Name = "Connections";
-            treeNode22.Tag = "Connections";
-            treeNode22.Text = "Connections";
-            treeNode23.Name = "Flickr";
-            treeNode23.Tag = "Flickr";
-            treeNode23.Text = "Flickr";
-            treeNode24.Name = "Screen Capture";
-            treeNode24.Tag = "ScreenCapture";
-            treeNode24.Text = "Screen Capture";
+            treeNode1.Name = "Startup & Shutdown";
+            treeNode1.Tag = "StartupShutdown";
+            treeNode1.Text = "Startup & Shutdown";
+            treeNode2.Name = "Favorites";
+            treeNode2.Tag = "Favorites";
+            treeNode2.Text = "Favorites";
+            treeNode3.Name = "Interface";
+            treeNode3.Tag = "Interface";
+            treeNode3.Text = "Interface";
+            treeNode4.Name = "Master Password";
+            treeNode4.Tag = "MasterPassword";
+            treeNode4.Text = "Master Password";
+            treeNode5.Name = "Default Password";
+            treeNode5.Tag = "DefaultPassword";
+            treeNode5.Text = "Default Password";
+            treeNode6.Name = "Amazon";
+            treeNode6.Tag = "Amazon";
+            treeNode6.Text = "Amazon";
+            treeNode7.Name = "Master Password";
+            treeNode7.Tag = "MasterPassword";
+            treeNode7.Text = "Security";
+            treeNode8.Name = "Execute Before Connect";
+            treeNode8.Tag = "ExecuteBeforeConnect";
+            treeNode8.Text = "Execute Before Connect";
+            treeNode9.Name = "Proxy";
+            treeNode9.Tag = "Proxy";
+            treeNode9.Text = "Proxy";
+            treeNode10.Name = "Connections";
+            treeNode10.Tag = "Connections";
+            treeNode10.Text = "Connections";
+            treeNode11.Name = "Flickr";
+            treeNode11.Tag = "Flickr";
+            treeNode11.Text = "Flickr";
+            treeNode12.Name = "Screen Capture";
+            treeNode12.Tag = "ScreenCapture";
+            treeNode12.Text = "Screen Capture";
             this.OptionsTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode13,
-            treeNode15,
-            treeNode19,
-            treeNode22,
-            treeNode24});
+            treeNode1,
+            treeNode3,
+            treeNode7,
+            treeNode10,
+            treeNode12});
             this.OptionsTreeView.ShowLines = false;
             this.OptionsTreeView.Size = new System.Drawing.Size(192, 365);
             this.OptionsTreeView.TabIndex = 6;
@@ -1684,7 +1683,6 @@ namespace Terminals
         private System.Windows.Forms.RadioButton ProtocolRadionButton;
         private System.Windows.Forms.RadioButton ConnectionNameRadioButton;
         private System.Windows.Forms.RadioButton ServerNameRadio;
-        private System.ServiceProcess.ServiceController serviceController1;
         private System.Windows.Forms.CheckBox autoCaseTagsCheckbox;
         private System.Windows.Forms.CheckBox AutoExapandTagsPanelCheckBox;
         private System.Windows.Forms.TreeView OptionsTreeView;

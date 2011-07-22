@@ -2071,7 +2071,7 @@ namespace Terminals
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsForm frmOptions = new OptionsForm(CurrentTerminal);
+            OptionsForm2 frmOptions = new OptionsForm2(CurrentTerminal);
             if (frmOptions.ShowDialog() == DialogResult.OK)
             {
                 this.groupsToolStripMenuItem.Visible = Settings.EnableGroupsMenu;

@@ -13,9 +13,9 @@ namespace Terminals
     public partial class OptionsForm2 : Form
     {
         private AxMsRdpClient6 _currentTerminal;
-        private string _tempFrob;
-        private string _amazonBucket = "Terminals";
-        private string _amazonConfigKeyName = "Terminals.config";
+        private String _tempFrob;
+        private String _amazonBucket = "Terminals";
+        private String _amazonConfigKeyName = "Terminals.config";
         private Panel _currentPanel = null;
 
         #region Constructors
@@ -148,6 +148,7 @@ namespace Terminals
             this._currentPanel = this.panelStartupShutdown;
             this.OptionsTreeView.SelectedNode = this.OptionsTreeView.Nodes[0];
             this.OptionsTreeView.Select();
+            this.OptionTitelLabel.BackColor = Color.FromArgb(17, 0, 252);
 
             this.DrawBottomLine();
         }
