@@ -401,7 +401,6 @@ namespace Terminals
 
             if (favorite == null)
             {
-                CreateNewTerminal(connectionName);
                 return;
             }
 

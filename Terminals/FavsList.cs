@@ -588,9 +588,14 @@ namespace Terminals
 
         private void StartConnection(TreeView tv)
         {
-            if (tv.SelectedNode != null)
-                this.GetMainForm().Connect(tv.SelectedNode.Text, false, false);
+          // connections are always under some parent node in History and in Favorites
+          if (tv.SelectedNode != null && this.favsTree.SelectedNode.Level > 0)
+          {
+            MainForm mainForm = this.GetMainForm();
+            mainForm.Connect(tv.SelectedNode.Text, false, false);
+          }
         }
+
         #endregion
 
         private void historyTreeView_KeyUp(object sender, KeyEventArgs e)
