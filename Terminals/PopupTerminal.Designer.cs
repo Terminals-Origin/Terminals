@@ -44,7 +44,6 @@
             this.tabControl1.TabIndex = 0;
             this.tabControl1.DoubleClick += new System.EventHandler(this.tabControl1_DoubleClick);
             this.tabControl1.TabControlItemClosing += new TabControl.TabControlItemClosingHandler(this.tabControl1_TabControlItemClosing);
-            this.tabControl1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl1_MouseDown);
             this.tabControl1.MouseHover += new System.EventHandler(this.tcTerminals_MouseHover);
             this.tabControl1.MouseLeave += new System.EventHandler(this.tcTerminals_MouseLeave);
             // 

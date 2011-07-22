@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 
 using AxMSTSCLib;
+using Terminals.Connections;
 using Terminals.Properties;
 using Terminals.CommandLine;
 using TabControl;
@@ -23,11 +24,12 @@ namespace Terminals
 
         public const Int32 WM_LEAVING_FULLSCREEN = 0x4ff;
         private const String FULLSCREEN_ERROR_MSG = "Screen properties not available for RDP";
+        
         private static TerminalsCA _commandLineArgs = new TerminalsCA();
-
         private static Boolean _releaseAvailable = false;
         private static String _terminalsReleasesFavoriteName = Program.Resources.GetString("TerminalsNews");
         private static RssItem _releaseDescription = null;                
+        private static MainForm _mainForm = null;
 
         private MethodInvoker _specialCommandsMIV;
         private MethodInvoker _resetMethodInvoker;
@@ -46,7 +48,7 @@ namespace Terminals
         private Boolean _stdToolbarState = true;
         private Boolean _specialToolbarState = true;
         private Boolean _favToolbarState = true;
-        private static MainForm _mainForm = null;
+        private TerminalTabsSelectionControler terminalsControler;
 
         #region protected
 
@@ -62,7 +64,7 @@ namespace Terminals
             {
                 if (msg.Msg == 0x21)  // mouse click
                 {
-                    TerminalTabControlItem selectedTab = (TerminalTabControlItem)tcTerminals.SelectedItem;
+                    TerminalTabControlItem selectedTab = this.terminalsControler.Selected;
                     if (selectedTab != null)
                     {
                         Rectangle r = selectedTab.RectangleToScreen(selectedTab.ClientRectangle);
@@ -134,7 +136,9 @@ namespace Terminals
 
                 _imageFormatHandler = new ImageFormatHandler();
                 _formSettings = new FormSettings(this);
+                
                 InitializeComponent();
+                this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals);
 
                 if (Settings.Office2007BlueFeel)
                     ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Blue);
@@ -176,23 +180,7 @@ namespace Terminals
 
                 _mainForm = this;
 
-                if (Screen.AllScreens.Length > 1)
-                {
-                    showInDualScreensToolStripMenuItem.Enabled = true;
-
-                    //Lazy check to see if we are using dual screens
-                    int w = this.Width / Screen.PrimaryScreen.Bounds.Width;
-                    if (w > 2)
-                    {
-                        _allScreens = true;
-                        showInDualScreensToolStripMenuItem.Text = "Show in Single Screens";
-                    }
-                }
-                else
-                {
-                    showInDualScreensToolStripMenuItem.ToolTipText = "You only have one Screen";
-                    showInDualScreensToolStripMenuItem.Enabled = false;
-                }
+                CheckForMultiMonitorUse();
 
                 this.tcTerminals.MouseDown += new MouseEventHandler(tcTerminals_MouseDown);
                 this.tcTerminals.MouseUp += new MouseEventHandler(tcTerminals_MouseUp);                
@@ -202,6 +190,27 @@ namespace Terminals
             {
                 Terminals.Logging.Log.Error("Error loading the Main Form", exc);
             }
+        }
+
+        private void CheckForMultiMonitorUse()
+        {
+          if (Screen.AllScreens.Length > 1)
+          {
+            this.showInDualScreensToolStripMenuItem.Enabled = true;
+
+            //Lazy check to see if we are using dual screens
+            int w = this.Width / Screen.PrimaryScreen.Bounds.Width;
+            if (w > 2)
+            {
+              this._allScreens = true;
+              this.showInDualScreensToolStripMenuItem.Text = "Show in Single Screens";
+            }
+          }
+          else
+          {
+            this.showInDualScreensToolStripMenuItem.ToolTipText = "You only have one Screen";
+            this.showInDualScreensToolStripMenuItem.Enabled = false;
+          }
         }
 
         private Boolean MouseDown { get; set; }
@@ -220,7 +229,7 @@ namespace Terminals
 
             if ((Math.Abs(mouseLeft - downLeft) >= MouseBreakThreshold) || (Math.Abs(mouseTop - downTop) >= MouseBreakThreshold))
             {
-                OpenConnectionInNewWindow(this.CurrentConnection);
+              this.terminalsControler.ReleaseTabToNewWindow();
             }
         }
 
@@ -311,9 +320,10 @@ namespace Terminals
         public void UpdateControls()
         {
             tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
-            addTerminalToGroupToolStripMenuItem.Enabled = (tcTerminals.SelectedItem != null);
-            tsbGrabInput.Enabled = (tcTerminals.SelectedItem != null);
-            grabInputToolStripMenuItem.Enabled = tcTerminals.SelectedItem != null;
+            bool hasSelectedTerminal = this.terminalsControler.HasSelected;
+            addTerminalToGroupToolStripMenuItem.Enabled = hasSelectedTerminal;
+            tsbGrabInput.Enabled = hasSelectedTerminal;
+            grabInputToolStripMenuItem.Enabled = hasSelectedTerminal;
 
             try
             {
@@ -380,7 +390,7 @@ namespace Terminals
 
         public String GetDesktopShare()
         {
-            String desktopShare = ((TerminalTabControlItem)(tcTerminals.SelectedItem)).Favorite.DesktopShare;
+            String desktopShare = this.terminalsControler.Selected.Favorite.DesktopShare;
             if (String.IsNullOrEmpty(desktopShare))
             {
                 desktopShare = Settings.DefaultDesktopShare.Replace("%SERVER%", CurrentTerminal.Server).Replace("%USER%", CurrentTerminal.UserName);
@@ -478,8 +488,7 @@ namespace Terminals
                 terminalTabPage.ToolTipText = Program.Resources.GetString("NetworkingTools");
                 terminalTabPage.Favorite = null;
                 terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
-                tcTerminals.Items.Add(terminalTabPage);
-                tcTerminals.SelectedItem = terminalTabPage;
+                this.terminalsControler.AddAndSelect(terminalTabPage);
                 tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
                 Terminals.Connections.NetworkingToolsConnection conn = new Terminals.Connections.NetworkingToolsConnection();
                 conn.TerminalTabPage = terminalTabPage;
@@ -492,9 +501,8 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Error("Open Networking Tools Failure", exc);
-                tcTerminals.Items.Remove(terminalTabPage);
-                tcTerminals.SelectedItem = null;
+                Logging.Log.Error("Open Networking Tools Failure", exc);
+                this.terminalsControler.RemoveAndUnSelect(terminalTabPage);
                 terminalTabPage.Dispose();
             }
         }
@@ -508,14 +516,14 @@ namespace Terminals
             }
         }        
 
-        public Connections.IConnection CurrentConnection
+        public IConnection CurrentConnection
         {
             get
             {
-                if (tcTerminals.SelectedItem != null)
-                    return ((TerminalTabControlItem)(tcTerminals.SelectedItem)).Connection;
-                else
-                    return null;
+                if (this.terminalsControler.HasSelected)
+                    return this.terminalsControler.Selected.Connection;
+
+                return null;
             }
         }
 
@@ -583,24 +591,10 @@ namespace Terminals
                 _releaseDescription = value;
             }
         }
-
-        public void OpenConnectionInNewWindow(Terminals.Connections.IConnection Connection)
+        
+        internal void RemoveTabPage(TabControlItem tabControlToRemove)
         {
-            if (Connection != null)
-            {
-                PopupTerminal pop = new PopupTerminal();                
-                tcTerminals.Items.SuspendEvents();
-                tcTerminals.RemoveTab(Connection.TerminalTabPage);
-                pop.AddTerminal(Connection.TerminalTabPage);
-                pop.MainForm = this;
-                tcTerminals.Items.ResumeEvents();
-                pop.Show();
-            }
-        }
-
-        public void AddTerminal(TerminalTabControlItem TabControlItem)
-        {
-            this.tcTerminals.AddTab(TabControlItem);
+            this.tcTerminals.RemoveTab(tabControlToRemove);
         }
 
         #endregion
@@ -631,82 +625,106 @@ namespace Terminals
 
         public void CreateTerminalTab(FavoriteConfigurationElement favorite)
         {
-            if (Settings.ExecuteBeforeConnect && !string.IsNullOrEmpty(Settings.ExecuteBeforeConnectCommand))
+            CallExecuteBeforeConnectedFromSettings();
+            CallExecuteFeforeConnectedFromFavorite(favorite);
+
+            TerminalTabControlItem terminalTabPage = CreateTerminalTabPageByFavoriteName(favorite);
+            TryConnectTabPage(favorite, terminalTabPage);
+        }
+
+        private void TryConnectTabPage(FavoriteConfigurationElement favorite, TerminalTabControlItem terminalTabPage)
+        {
+          try
+          {
+            this.AssignEventsToConnectionTab(favorite, terminalTabPage);
+            IConnection conn = ConnectionManager.CreateConnection(favorite, terminalTabPage, this);
+            this.UpdateConnectionTabPageByConnectionState(favorite, terminalTabPage, conn);
+
+            if (conn.Connected && favorite.NewWindow)
             {
-                ProcessStartInfo processStartInfo = new ProcessStartInfo(Settings.ExecuteBeforeConnectCommand, Settings.ExecuteBeforeConnectArgs);
-                processStartInfo.WorkingDirectory = Settings.ExecuteBeforeConnectInitialDirectory;
-                Process process = Process.Start(processStartInfo);
-                if (Settings.ExecuteBeforeConnectWaitForExit)
-                {
-                    process.WaitForExit();
-                }
+              this.terminalsControler.ReleaseTabToNewWindow(terminalTabPage);
             }
+          }
+          catch (Exception exc)
+          {
+            Logging.Log.Error("Error Creating A Terminal Tab", exc);
+            this.terminalsControler.UnSelect();
+          }
+        }
 
-            if (favorite.ExecuteBeforeConnect && !string.IsNullOrEmpty(favorite.ExecuteBeforeConnectCommand))
+        private void AssignEventsToConnectionTab(FavoriteConfigurationElement favorite, TerminalTabControlItem terminalTabPage)
+        {
+          terminalTabPage.AllowDrop = true;
+          terminalTabPage.DragOver += this.terminalTabPage_DragOver;
+          terminalTabPage.DragEnter += new DragEventHandler(this.terminalTabPage_DragEnter);
+          this.Resize += new EventHandler(this.MainForm_Resize);
+          terminalTabPage.ToolTipText = this.GetToolTipText(favorite);
+          terminalTabPage.Favorite = favorite;
+          terminalTabPage.DoubleClick += new EventHandler(this.terminalTabPage_DoubleClick);
+          this.terminalsControler.AddAndSelect(terminalTabPage);
+          this.UpdateControls();
+        }
+
+        private void UpdateConnectionTabPageByConnectionState(FavoriteConfigurationElement favorite, TerminalTabControlItem terminalTabPage, IConnection conn)
+        {
+          if (conn.Connect())
+          {
+            (conn as Control).BringToFront();
+            (conn as Control).Update();
+            this.UpdateControls();
+            if (favorite.DesktopSize == DesktopSize.FullScreen)
+              this.FullScreen = true;
+
+            Connection b = (conn as Connection);
+            b.OnTerminalServerStateDiscovery += new Connection.TerminalServerStateDiscovery(this.b_OnTerminalServerStateDiscovery);
+            b.CheckForTerminalServer(favorite);
+
+          }
+          else
+          {
+            String msg = Program.Resources.GetString("SorryTerminalswasunabletoconnecttotheremotemachineTryagainorcheckthelogformoreinformation");
+            MessageBox.Show(msg);
+            this.terminalsControler.RemoveAndUnSelect(terminalTabPage);
+          }
+        }
+
+        private TerminalTabControlItem CreateTerminalTabPageByFavoriteName(FavoriteConfigurationElement favorite)
+        {
+          String terminalTabTitle = favorite.Name;
+          if (Settings.ShowUserNameInTitle)
+          {
+            terminalTabTitle += String.Format(" ({0})", Functions.UserDisplayName(favorite.DomainName, favorite.UserName));
+          }
+
+          return new TerminalTabControlItem(terminalTabTitle);
+        }
+
+        private void CallExecuteFeforeConnectedFromFavorite(FavoriteConfigurationElement favorite)
+        {
+          if (favorite.ExecuteBeforeConnect && !string.IsNullOrEmpty(favorite.ExecuteBeforeConnectCommand))
+          {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(favorite.ExecuteBeforeConnectCommand, favorite.ExecuteBeforeConnectArgs);
+            processStartInfo.WorkingDirectory = favorite.ExecuteBeforeConnectInitialDirectory;
+            Process process = Process.Start(processStartInfo);
+            if (favorite.ExecuteBeforeConnectWaitForExit)
             {
-                ProcessStartInfo processStartInfo = new ProcessStartInfo(favorite.ExecuteBeforeConnectCommand, favorite.ExecuteBeforeConnectArgs);
-                processStartInfo.WorkingDirectory = favorite.ExecuteBeforeConnectInitialDirectory;
-                Process process = Process.Start(processStartInfo);
-                if (favorite.ExecuteBeforeConnectWaitForExit)
-                {
-                    process.WaitForExit();
-                }
+              process.WaitForExit();
             }
+          }
+        }
 
-            String terminalTabTitle = favorite.Name;
-            if (Settings.ShowUserNameInTitle)
+        private void CallExecuteBeforeConnectedFromSettings()
+        {
+          if (Settings.ExecuteBeforeConnect && !string.IsNullOrEmpty(Settings.ExecuteBeforeConnectCommand))
+          {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(Settings.ExecuteBeforeConnectCommand, Settings.ExecuteBeforeConnectArgs);
+            processStartInfo.WorkingDirectory = Settings.ExecuteBeforeConnectInitialDirectory;
+            Process process = Process.Start(processStartInfo);
+            if (Settings.ExecuteBeforeConnectWaitForExit)
             {
-                terminalTabTitle += String.Format(" ({0})", Functions.UserDisplayName(favorite.DomainName, favorite.UserName));
+              process.WaitForExit();
             }
-
-            TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(terminalTabTitle);
-            try
-            {
-                terminalTabPage.AllowDrop = true;
-                terminalTabPage.DragOver += terminalTabPage_DragOver;
-                terminalTabPage.DragEnter += new DragEventHandler(terminalTabPage_DragEnter);
-                this.Resize += new EventHandler(MainForm_Resize);
-                terminalTabPage.ToolTipText = GetToolTipText(favorite);
-                terminalTabPage.Favorite = favorite;
-                terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
-                tcTerminals.Items.Add(terminalTabPage);
-                tcTerminals.SelectedItem = terminalTabPage;
-                tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
-                Connections.IConnection conn = Connections.ConnectionManager.CreateConnection(favorite, terminalTabPage, this);
-                if (conn.Connect())
-                {
-                    (conn as Control).BringToFront();
-                    (conn as Control).Update();
-                    this.UpdateControls();
-                    if (favorite.DesktopSize == DesktopSize.FullScreen)
-                        FullScreen = true;
-
-                    Terminals.Connections.Connection b = (conn as Terminals.Connections.Connection);
-                    b.OnTerminalServerStateDiscovery += new Terminals.Connections.Connection.TerminalServerStateDiscovery(b_OnTerminalServerStateDiscovery);
-                    b.CheckForTerminalServer(favorite);
-
-                }
-                else
-                {
-                    String msg = Program.Resources.GetString("SorryTerminalswasunabletoconnecttotheremotemachineTryagainorcheckthelogformoreinformation");
-                    System.Windows.Forms.MessageBox.Show(msg);
-                    tcTerminals.Items.Remove(terminalTabPage);
-                    tcTerminals.SelectedItem = null;
-                }
-
-                if (conn.Connected)
-                {
-                    if (favorite.NewWindow)
-                    {
-                        this.OpenConnectionInNewWindow(conn);
-                    }
-                }
-            }
-            catch (Exception exc)
-            {
-                Terminals.Logging.Log.Error("Error Creating A Terminal Tab", exc);
-                tcTerminals.SelectedItem = null;
-            }
+          }
         }
 
         private void DeleteFavorite(string name)
@@ -1383,7 +1401,7 @@ namespace Terminals
                     {
                         conn.BringToFront();
                         conn.Update();
-                        tcTerminals.SelectedItem = tab;
+                        this.terminalsControler.Select(tab);
                     }
 
                     return true;
@@ -1643,7 +1661,8 @@ namespace Terminals
         private void groupAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GroupConfigurationElement group = Settings.GetGroups()[((ToolStripMenuItem)sender).Text];
-            group.FavoriteAliases.Add(new FavoriteAliasConfigurationElement(tcTerminals.SelectedItem.Title));
+          String selectedTitle = this.terminalsControler.Selected.Title;
+            group.FavoriteAliases.Add(new FavoriteAliasConfigurationElement(selectedTitle));
             Settings.DeleteGroup(group.Name);
             Settings.AddGroup(group);
         }
@@ -1717,17 +1736,12 @@ namespace Terminals
 
         private void terminalTabPage_DragOver(object sender, DragEventArgs e)
         {
-            /*TabControlItem item = tcTerminals.GetTabItemByPoint(new Point(e.X, e.Y));
-            if (item != null)
-            {
-                tcTerminals.SelectedItem = item;
-            }*/
-            this.tcTerminals.SelectedItem = (TerminalTabControlItem)sender;
+            this.terminalsControler.Select(sender as TerminalTabControlItem);
         }
 
         private void terminalTabPage_DoubleClick(object sender, EventArgs e)
         {
-            if (this.tcTerminals.SelectedItem != null)
+            if (this.terminalsControler.HasSelected)
             {
                 this.tsbDisconnect.PerformClick();
             }
@@ -1774,11 +1788,13 @@ namespace Terminals
         {
             try
             {
-                this.tcTerminals.CloseTab(tcTerminals.SelectedItem);
+              TerminalTabControlItem tabToClose = this.terminalsControler.Selected;
+              if(this.tcTerminals.Items.Contains(tabToClose))
+                this.tcTerminals.CloseTab(tabToClose);
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Error("Disconnecting a tab threw an exception", exc);
+                Logging.Log.Error("Disconnecting a tab threw an exception", exc);
             }
         }
 
@@ -2088,9 +2104,9 @@ namespace Terminals
                     ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
 
                 this.tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
-                if (this.tcTerminals.SelectedItem != null)
+                if (this.terminalsControler.HasSelected)
                 {
-                    this.tcTerminals.SelectedItem.ToolTipText = this.GetToolTipText(((TerminalTabControlItem)tcTerminals.SelectedItem).Favorite);
+                    this.terminalsControler.Selected.ToolTipText = this.GetToolTipText(this.terminalsControler.Selected.Favorite);
                 }
 
                 // Disable capture button when function is disabled in options
@@ -2370,11 +2386,10 @@ namespace Terminals
                     terminalTabPage.ToolTipText = Program.Resources.GetString("CaptureManager");
                     terminalTabPage.Favorite = null;
                     terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
-                    tcTerminals.Items.Add(terminalTabPage);
-                    tcTerminals.SelectedItem = terminalTabPage;
+                    this.terminalsControler.AddAndSelect(terminalTabPage);
                     tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
 
-                    Connections.IConnection conn = new Terminals.Connections.CaptureManagerConnection();
+                    IConnection conn = new CaptureManagerConnection();
                     conn.TerminalTabPage = terminalTabPage;
                     conn.ParentForm = this;
                     conn.Connect();
@@ -2385,9 +2400,8 @@ namespace Terminals
                 }
                 catch (Exception exc)
                 {
-                    Terminals.Logging.Log.Error("Error loading the Capture Manager Tab Page", exc);
-                    tcTerminals.Items.Remove(terminalTabPage);
-                    tcTerminals.SelectedItem = null;
+                    Logging.Log.Error("Error loading the Capture Manager Tab Page", exc);
+                    this.terminalsControler.RemoveAndUnSelect(terminalTabPage);
                     terminalTabPage.Dispose();
                 }
             }
@@ -2443,9 +2457,9 @@ namespace Terminals
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
-            if (this.tcTerminals.SelectedItem != null)
+            if (this.terminalsControler.HasSelected)
             {
-                TerminalTabControlItem terminalTabPage = (TerminalTabControlItem)this.tcTerminals.SelectedItem;
+                TerminalTabControlItem terminalTabPage = this.terminalsControler.Selected;
                 if (terminalTabPage.Connection != null)
                 {
                     terminalTabPage.Connection.ChangeDesktopSize(terminalTabPage.Connection.Favorite.DesktopSize);
@@ -2550,7 +2564,7 @@ namespace Terminals
         {
             if (this.CurrentConnection != null)
             {
-                this.OpenConnectionInNewWindow(this.CurrentConnection);
+              this.terminalsControler.ReleaseTabToNewWindow();
             }
         }
 

@@ -391,6 +391,7 @@
     <Compile Include="TerminalTabControlItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TerminalTabsSelectionControler.cs" />
     <Compile Include="Updates\HTTP.cs" />
     <Compile Include="Updates\RSS\Collections\ExceptionCollection.cs" />
     <Compile Include="Updates\RSS\Collections\RssCategoryCollection.cs" />

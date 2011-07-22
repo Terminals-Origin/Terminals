@@ -144,7 +144,7 @@ namespace Terminals.Connections
 
             TabControlItem tabPage = (TabControlItem)tabObject;
             bool wasSelected = tabPage.Selected;
-            this.ParentForm.tcTerminals.RemoveTab(tabPage);
+            this.ParentForm.RemoveTabPage(tabPage);
             this.ParentForm.CloseTabControlItem();
             if (wasSelected)
                 NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);

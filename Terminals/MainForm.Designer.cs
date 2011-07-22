@@ -1204,7 +1204,7 @@ namespace Terminals {
         private System.Windows.Forms.ToolStripButton tsbDisconnect;
         private System.Windows.Forms.ToolStripMenuItem terminalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem grabInputToolStripMenuItem;
-        public TabControl.TabControl tcTerminals;
+        private TabControl.TabControl tcTerminals;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton tsbManageConnections;
