@@ -1,9 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Terminals.Connections
@@ -11,6 +7,9 @@ namespace Terminals.Connections
     public partial class TabbedTools : UserControl
     {
         private WindowsFormsApplication2.PacketCapture packetCapture1;
+        public delegate void TabChanged(object sender, TabControlEventArgs e);
+        public event TabChanged OnTabChanged;
+
         public TabbedTools()
         {
             InitializeComponent();
@@ -48,40 +47,44 @@ namespace Terminals.Connections
                 l.Dock = DockStyle.Top;
                 Terminals.Logging.Log.Info(l.Text, e);
             }
-
-
         }
-        public delegate void TabChanged(object sender, TabControlEventArgs e);
-        public event TabChanged OnTabChanged;
 
         private void tabControl1_Selected(object sender, TabControlEventArgs e)
         {
-            if (OnTabChanged != null) OnTabChanged(sender, e);
+            if (this.OnTabChanged != null) 
+                this.OnTabChanged(sender, e);
         }
-        public void HideTab(int Index)
+
+        public void HideTab(Int32 index)
         {
-            if (this.tabControl1.TabCount > Index) this.tabControl1.TabPages[Index].Hide();
+            if (this.tabControl1.TabCount > index) 
+                this.tabControl1.TabPages[index].Hide();
         }
-        public void Execute(string Action, string Host)
+
+        public void Execute(String action, String host)
         {
-            switch(Action)
+            switch (action)
             {
                 case "Ping":
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[0];
-                    ping1.ForcePing(Host);
+                    ping1.ForcePing(host);
+
                     break;
                 case "DNS":
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[6];
-                    this.dnsLookup1.ForceDNS(Host);
+                    this.dnsLookup1.ForceDNS(host);
                     break;
+
                 case "Trace":
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[1];
-                    traceRoute1.ForceTrace(Host);
+                    traceRoute1.ForceTrace(host);
                     break;
+
                 case "TSAdmin":
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[10];
-                    this.terminalServerManager1.ForceTSAdmin(Host);
+                    this.terminalServerManager1.ForceTSAdmin(host);
                     break;
+
                 default:
                     break;
             }

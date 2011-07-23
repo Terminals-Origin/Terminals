@@ -306,6 +306,7 @@
     <Compile Include="History\HistoryController.cs" />
     <Compile Include="History\HistoryByFavorite.cs" />
     <Compile Include="History\HistoryItem.cs" />
+    <Compile Include="Integration\Importers.cs" />
     <Compile Include="Integration\Import\ImportvRD.cs" />
     <Compile Include="Integration\Import\vrd.cs" />
     <Compile Include="ListViewColumnSorter.cs" />
@@ -338,12 +339,18 @@
     <Compile Include="Network\Pcap\PacketCapture.designer.cs">
       <DependentUpon>PacketCapture.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\PingReplyData.cs" />
     <Compile Include="Network\PortScanner.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Network\PortScanner.Designer.cs">
       <DependentUpon>PortScanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\TraceRoute\RouteHopFoundEventArgs.cs" />
+    <Compile Include="Network\TraceRoute\TraceRoute.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Network\TraceRoute\TraceRouteHopData.cs" />
     <Compile Include="Network\WMI\PivotDataTable.cs" />
     <Compile Include="Network\WakeOnLan.cs">
       <SubType>UserControl</SubType>
@@ -472,7 +479,6 @@
     <Compile Include="Integration\Import\ImportRDP.cs" />
     <Compile Include="Integration\Import\IImport.cs" />
     <Compile Include="Integration\Import\ImportMuRD.cs" />
-    <Compile Include="Integration\Importers.cs" />
     <Compile Include="NativeApi.cs" />
     <Compile Include="NetworkScanner.cs">
       <SubType>Form</SubType>
@@ -542,11 +548,11 @@
     <Compile Include="Network\Servers\TerminalServerManager.Designer.cs">
       <DependentUpon>TerminalServerManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\TraceRoute.cs">
+    <Compile Include="Network\TraceRouteControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Network\TraceRoute.Designer.cs">
-      <DependentUpon>TraceRoute.cs</DependentUpon>
+    <Compile Include="Network\TraceRouteControl.Designer.cs">
+      <DependentUpon>TraceRouteControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\WMI\NetworkShares.cs">
       <SubType>UserControl</SubType>
@@ -794,13 +800,9 @@
     <Compile Include="Wizard\SpecialCommandsWizard.cs" />
     <None Include="app.config" />
     <None Include="Migrated rules for Terminals.ruleset" />
-    <None Include="Resources\amber.png" />
     <Content Include="Resources\back.png" />
     <Content Include="Resources\forward.png" />
-    <None Include="Resources\green.png" />
     <Content Include="Resources\home.png" />
-    <None Include="Resources\red.png" />
-    <None Include="Resources\polarized-glasses.png" />
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -966,8 +968,8 @@
       <SubType>Designer</SubType>
       <DependentUpon>TerminalServerManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\TraceRoute.resx">
-      <DependentUpon>TraceRoute.cs</DependentUpon>
+    <EmbeddedResource Include="Network\TraceRouteControl.resx">
+      <DependentUpon>TraceRouteControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\WMI\NetworkShares.resx">

@@ -30,9 +30,9 @@ namespace Terminals.Connections
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.ping1 = new Metro.Ping();
+            this.ping1 = new Terminals.Network.Ping();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.traceRoute1 = new Metro.TraceRoute();
+            this.traceRoute1 = new Network.TraceRouteControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.wmiControl1 = new WMITestClient.WMIControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -371,7 +371,7 @@ namespace Terminals.Connections
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage2;
-        private Metro.TraceRoute traceRoute1;
+        private Network.TraceRouteControl traceRoute1;
         private System.Windows.Forms.TabPage tabPage3;
         private WMITestClient.WMIControl wmiControl1;
         private System.Windows.Forms.TabPage tabPage4;
@@ -389,7 +389,7 @@ namespace Terminals.Connections
         private System.Windows.Forms.TabPage tabPage8;
         private Terminals.Network.Servers.TerminalServerManager terminalServerManager1;
         private System.Windows.Forms.TabPage tabPage1;
-        private Metro.Ping ping1;
+        private Terminals.Network.Ping ping1;
         private System.Windows.Forms.TabPage tabPage11;
         private Terminals.Network.WMI.Services services1;
         private System.Windows.Forms.TabPage tabPage12;

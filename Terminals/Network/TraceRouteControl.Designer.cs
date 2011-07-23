@@ -1,6 +1,6 @@
-namespace Metro
+namespace Terminals.Network
 {
-    partial class TraceRoute
+    partial class TraceRouteControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,16 +28,15 @@ namespace Metro
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.zg1 = new ZedGraph.ZedGraphControl();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ZGraph = new ZedGraph.ZedGraphControl();
+            this.ButtonStop = new System.Windows.Forms.Button();
+            this.ButtonStart = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.TextHost = new System.Windows.Forms.TextBox();
             this.ResolveCheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -47,9 +46,9 @@ namespace Metro
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(3, 30);
@@ -84,7 +83,7 @@ namespace Metro
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.zg1);
+            this.tabPage2.Controls.Add(this.ZGraph);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -93,40 +92,40 @@ namespace Metro
             this.tabPage2.Text = "Graph";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // zg1
+            // ZGraph
             // 
-            this.zg1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.zg1.Location = new System.Drawing.Point(3, 3);
-            this.zg1.Name = "zg1";
-            this.zg1.ScrollGrace = 0;
-            this.zg1.ScrollMaxX = 0;
-            this.zg1.ScrollMaxY = 0;
-            this.zg1.ScrollMaxY2 = 0;
-            this.zg1.ScrollMinX = 0;
-            this.zg1.ScrollMinY = 0;
-            this.zg1.ScrollMinY2 = 0;
-            this.zg1.Size = new System.Drawing.Size(497, 223);
-            this.zg1.TabIndex = 0;
+            this.ZGraph.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ZGraph.Location = new System.Drawing.Point(3, 3);
+            this.ZGraph.Name = "ZGraph";
+            this.ZGraph.ScrollGrace = 0D;
+            this.ZGraph.ScrollMaxX = 0D;
+            this.ZGraph.ScrollMaxY = 0D;
+            this.ZGraph.ScrollMaxY2 = 0D;
+            this.ZGraph.ScrollMinX = 0D;
+            this.ZGraph.ScrollMinY = 0D;
+            this.ZGraph.ScrollMinY2 = 0D;
+            this.ZGraph.Size = new System.Drawing.Size(497, 223);
+            this.ZGraph.TabIndex = 0;
             // 
-            // button2
+            // ButtonStop
             // 
-            this.button2.Location = new System.Drawing.Point(273, 2);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Sto&p";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.ButtonStop.Location = new System.Drawing.Point(273, 2);
+            this.ButtonStop.Name = "ButtonStop";
+            this.ButtonStop.Size = new System.Drawing.Size(75, 23);
+            this.ButtonStop.TabIndex = 2;
+            this.ButtonStop.Text = "Sto&p";
+            this.ButtonStop.UseVisualStyleBackColor = true;
+            this.ButtonStop.Click += new System.EventHandler(this.ButtonStop_Click);
             // 
-            // button1
+            // ButtonStart
             // 
-            this.button1.Location = new System.Drawing.Point(192, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "&Start";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.ButtonStart.Location = new System.Drawing.Point(192, 2);
+            this.ButtonStart.Name = "ButtonStart";
+            this.ButtonStart.Size = new System.Drawing.Size(75, 23);
+            this.ButtonStart.TabIndex = 1;
+            this.ButtonStart.Text = "&Start";
+            this.ButtonStart.UseVisualStyleBackColor = true;
+            this.ButtonStart.Click += new System.EventHandler(this.ButtonStart_Click);
             // 
             // label1
             // 
@@ -137,36 +136,37 @@ namespace Metro
             this.label1.TabIndex = 7;
             this.label1.Text = "Host:";
             // 
-            // textBox1
+            // TextHost
             // 
-            this.textBox1.Location = new System.Drawing.Point(41, 4);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(145, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp);
+            this.TextHost.Location = new System.Drawing.Point(41, 4);
+            this.TextHost.Name = "TextHost";
+            this.TextHost.Size = new System.Drawing.Size(145, 20);
+            this.TextHost.TabIndex = 0;
+            this.TextHost.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextHost_KeyPress);
             // 
             // ResolveCheckBox
             // 
             this.ResolveCheckBox.AutoSize = true;
+            this.ResolveCheckBox.Checked = true;
+            this.ResolveCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ResolveCheckBox.Location = new System.Drawing.Point(376, 7);
             this.ResolveCheckBox.Name = "ResolveCheckBox";
             this.ResolveCheckBox.Size = new System.Drawing.Size(126, 17);
             this.ResolveCheckBox.TabIndex = 3;
             this.ResolveCheckBox.Text = "Resolve Host Names";
             this.ResolveCheckBox.UseVisualStyleBackColor = true;
-            this.ResolveCheckBox.CheckedChanged += new System.EventHandler(this.ResolveCheckBox_CheckedChanged);
             // 
-            // TraceRoute
+            // TraceRouteControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ResolveCheckBox);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ButtonStop);
+            this.Controls.Add(this.ButtonStart);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
-            this.Name = "TraceRoute";
+            this.Controls.Add(this.TextHost);
+            this.Name = "TraceRouteControl";
             this.Size = new System.Drawing.Size(517, 285);
             this.Load += new System.EventHandler(this.TraceRoute_Load);
             this.Resize += new System.EventHandler(this.TraceRoute_Resize);
@@ -185,11 +185,11 @@ namespace Metro
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TabPage tabPage2;
-        private ZedGraph.ZedGraphControl zg1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private ZedGraph.ZedGraphControl ZGraph;
+        private System.Windows.Forms.Button ButtonStop;
+        private System.Windows.Forms.Button ButtonStart;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox TextHost;
         private System.Windows.Forms.CheckBox ResolveCheckBox;
     }
 }

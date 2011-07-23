@@ -1,215 +1,336 @@
 using System;
-using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
 using System.Collections.Generic;
-using System.ComponentModel;
-using Metro.TransportLayer.Icmp;
+using System.Drawing;
 using System.Net;
-using System.Net.Sockets;
+using System.Net.NetworkInformation;
+using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 using ZedGraph;
 
-
-namespace Metro
+namespace Terminals.Network
 {
     public partial class Ping : UserControl
     {
+        #region Fields
+        
+        private Int32 currentDelay = 0;
+        private Int64 counter;
+        private Boolean pingRunning = false;
+        private Boolean pingReady = false;
+        private System.Threading.Timer timer;
+        private MethodInvoker DoUpdateForm;
+        private AutoResetEvent waiter = new AutoResetEvent(false);
+        private List<PingReplyData> pingList = new List<PingReplyData>();
+        private Object threadLocker = new Object();
+        private GraphPane myPane;
+        private System.Net.NetworkInformation.Ping pingSender;
+        private Byte[] buffer;
+        private PingOptions packetOptions;
+        private String hostName = String.Empty;
+        private String destination = String.Empty;
+
+        #endregion
+
+        #region Constructors
+        
         public Ping()
         {
             InitializeComponent();
-            mivPing = new MethodInvoker(UpdatePing);
-            string data = new string('x', 32);
-            payload = System.Text.ASCIIEncoding.ASCII.GetBytes(data);
-            currentDelay = (int)DelayNumericUpDown.Value;
-            t = new System.Threading.Timer(new System.Threading.TimerCallback(TryPing), null, currentDelay, this.currentDelay);
+            this.DoUpdateForm = new MethodInvoker(this.UpdateForm);
 
-        }
-        public void ForcePing(string Host)
-        {
-            this.textBox1.Text = Host;
-            button1_Click(null, null);
-        }
-        private void TryPing(object state)
-        {
-            if (pingRunning && pingReady)
-            {
-                SendPing();
-            }
-        }
-        int currentDelay = 0;
-        private void SendPing()
-        {
-            IPAddress[] list = null;
-            try
-            {
-                list = System.Net.Dns.GetHostAddresses(this.textBox1.Text);
-            }
-            catch (Exception exc)
-            {
-                MessageBox.Show("Could not resolve address:" + this.textBox1.Text);
-                Terminals.Logging.Log.Info("Could not resolve address:" + this.textBox1.Text, exc);
-                this.button1.Enabled = true;
-                this.textBox1.Enabled = true;
+            // Create a buffer of 32 bytes of data to be transmitted.
+            this.buffer = Encoding.ASCII.GetBytes(new String('.', 32));
+            // Jump though 50 routing nodes tops, and don't fragment the packet
+            this.packetOptions = new PingOptions(50, true);
 
-            }
-            try
-            {
-                if (list != null) ping.SendPing(list[0], payload, true, 2000);
-            }
-            catch (Exception exc) { Terminals.Logging.Log.Info("", exc); }
-
-            lock(t)
-            {
-                if(this.DelayNumericUpDown.Value != this.currentDelay)
-                {
-                    currentDelay = (int)this.DelayNumericUpDown.Value;
-                    t.Change(currentDelay, currentDelay);
-                }
-            }
-            
+            this.InitializeGraph();
         }
 
-        protected override void OnLoad(EventArgs e)
-        {
-            nil = new Metro.NetworkInterfaceList();
-            base.OnLoad(e);
-        }
-        System.Threading.Timer t;
-        bool pingRunning = false;
-        bool pingReady = false;
-        byte[] payload;
-        MethodInvoker mivPing;
-        Metro.NetworkInterfaceList nil = null;
-        Metro.TransportLayer.Icmp.IcmpPingManager ping;
-        System.Collections.Generic.List<PingUpdate> PingList = new List<PingUpdate>();
+        #endregion
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            this.button1.Enabled = false;
-            this.textBox1.Enabled = false;
-            PingList = new List<PingUpdate>();
-            if (ping == null)
-            {
-                ping = new Metro.TransportLayer.Icmp.IcmpPingManager(nil.Interfaces[0].Address);
-                ping.PingReply += new Metro.TransportLayer.Icmp.IcmpPingReplyHandler(ping_PingReply);
-                ping.PingTimeout += new Metro.TransportLayer.Icmp.IcmpPingTimeOutHandler(ping_PingTimeout);
-            }
-            if (!pingRunning)
-            {
-                pingRunning = true;
-                pingReady = false;
-                SendPing();
-            }
+        #region Form Events
 
-        }
-        object threadLocker = new object();
-        void ping_PingTimeout()
-        {
-            lock(threadLocker)
-            {
-                ping.CancelPing();
-                PingUpdate pu = new PingUpdate();
-                pu.ipHeader = null;
-                pu.icmpHeader = null;
-                pu.RoundTripTime = 0;
-                PingList.Add(pu);
-                this.Invoke(mivPing);
-                pingReady = true;
-            }
-
-        }
-
-        void ping_PingReply(Metro.NetworkLayer.IpV4.IpV4Packet ipHeader, Metro.TransportLayer.Icmp.IcmpPacket icmpHeader, int roundTripTime)
-        {
-            lock(threadLocker)
-            {
-                PingUpdate pu = new PingUpdate();
-                pu.ipHeader = ipHeader;
-                pu.icmpHeader = icmpHeader;
-                pu.RoundTripTime = roundTripTime;
-                pu.dateReceived = DateTime.Now;
-                PingList.Add(pu);
-                pingReady = true;
-                this.Invoke(mivPing);
-            }
-        }
-        private void UpdatePing()
-        {
-
-            this.dataGridView1.DataSource = null;
-            this.dataGridView1.DataSource = PingList;
-            UpdateGraph();
-            Application.DoEvents();
-        }
-        private void UpdateGraph()
-        {
-
-            // Make up some data points based on the Sine function
-            PointPairList list = new PointPairList();
-            PointPairList avgList = new PointPairList();
-            int x = 1;
-            int yMax = 0;
-            int sum = 0;
-            foreach (PingUpdate p in PingList)
-            {
-                if (p.RoundTripTime > yMax) yMax = p.RoundTripTime;
-                list.Add(x, p.RoundTripTime);
-
-                sum += p.RoundTripTime;
-
-                avgList.Add(x, (int)(sum/x));
-                x++;
-            }
-
-            // Manually set the axis range
-            myPane.YAxis.Scale.Min = 0;
-            myPane.YAxis.Scale.Max = yMax;
-            myPane.XAxis.Scale.Min = 0;
-            myPane.XAxis.Scale.Max = x;
-
-            myPane.Title.Text = "Ping results for " + this.textBox1.Text;
-
-            myPane.CurveList.Clear();
-            LineItem myCurve = myPane.AddCurve(this.textBox1.Text, list, Color.Blue, SymbolType.Diamond);
-            LineItem avgCurve = myPane.AddCurve("Average", avgList, Color.Red, SymbolType.Diamond);
-
-
-            // Fill the symbols with white
-            myCurve.Symbol.Fill = new Fill(Color.White);
-
-            // Fill the symbols with white
-            myCurve.Symbol.Fill = new Fill(Color.White);
-            // Associate this curve with the Y2 axis
-            myCurve.IsY2Axis = true;
-
-            // Tell ZedGraph to calculate the axis ranges
-            // Note that you MUST call this after enabling IsAutoScrollRange, since AxisChange() sets
-            // up the proper scrolling parameters
-            zg1.AxisChange();
-            // Make sure the Graph gets redrawn
-            zg1.Invalidate();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if(pingRunning) ping.CancelPing();
-            pingReady = false;
-            pingRunning = false;
-            this.button1.Enabled = true;
-            this.textBox1.Enabled = true;
-
-        }
-
-        GraphPane myPane;
         private void Ping_Load(object sender, EventArgs e)
         {
-            myPane = zg1.GraphPane;
+            this.TextHost.Focus();
+        }
+
+        private void Ping_Resize(object sender, EventArgs e)
+        {
+            this.SetSize();
+        }
+
+        private void ButtonStart_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(this.TextHost.Text.Trim()))
+            {
+                this.TextHost.Focus();
+                return;
+            }
+            else
+            {
+                this.TextHost.Text = this.TextHost.Text.Trim();
+            }
+
+            this.ButtonStart.Enabled = false;
+            this.TextHost.Enabled = false;
+            Application.DoEvents();
+
+            if (!this.pingRunning)
+            {
+                IPAddress[] list = null;
+                String msg = String.Empty;
+                try
+                {
+                    list = System.Net.Dns.GetHostAddresses(this.TextHost.Text);
+                    if (list != null)
+                    {
+                        this.destination = list[0].ToString();
+
+                        IPAddress ip;
+                        this.hostName = (IPAddress.TryParse(this.TextHost.Text, out ip)) ? this.destination : Dns.GetHostEntry(this.TextHost.Text).HostName;
+
+                        this.counter = 1;
+                        this.currentDelay = (Int32)this.DelayNumericUpDown.Value;
+                        this.pingList = new List<PingReplyData>();
+
+                        if (this.pingSender == null)
+                        {
+                            this.pingSender = new System.Net.NetworkInformation.Ping();
+                            this.pingSender.PingCompleted += new PingCompletedEventHandler(pingSender_PingCompleted);
+                        }
+
+                        this.pingRunning = true;
+                        this.pingReady = true;
+
+                        // Making sure previous timer is cleared before starting a new one
+                        if (this.timer != null)
+                        {
+                            this.timer.Dispose();
+                            this.timer = null;
+                        }
+
+                        // Start thread timer to start TrySend method for every ms in the specified delay updown box
+                        TimerCallback callback = new TimerCallback(this.TryPing);
+                        timer = new System.Threading.Timer(callback, null, this.currentDelay, this.currentDelay);
+                    }
+                }
+                catch (System.Net.Sockets.SocketException)
+                {
+                    msg = String.Format("Could not resolve address: {0}", this.TextHost.Text);
+                    this.pingRunning = false;
+                }
+                catch (ArgumentException)
+                {
+                    msg = String.Format("Hostname or IP-Address is invalid: {0}", this.TextHost.Text);
+                    this.pingRunning = false;
+                }
+                catch (Exception ex)
+                {
+                    msg = String.Format("An error occured trying to ping {0}", this.TextHost.Text);
+                    Terminals.Logging.Log.Info(msg, ex);
+                    this.pingRunning = false;
+                }
+                finally
+                {
+                    if (!this.pingRunning)
+                    {
+                        MessageBox.Show(msg, "Ping Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.ResetForm();
+                    }
+                }
+            }
+        }
+
+        private void ButtonStop_Click(object sender, EventArgs e)
+        {
+            if (this.pingRunning)
+            {
+                this.pingRunning = false;
+                this.pingReady = false;
+
+                if (this.pingSender != null)
+                {
+                    this.pingSender.PingCompleted -= pingSender_PingCompleted;
+                    this.pingSender.SendAsyncCancel();
+                    this.pingSender.Dispose();
+                    this.pingSender = null;
+                }
+
+                this.timer.Dispose();
+                this.timer = null;
+            }
+
+            this.ResetForm();
+        }
+
+        private void TextHost_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                e.Handled = true;
+                if (!this.pingRunning)
+                    this.ButtonStart.PerformClick();
+            }
+        }
+
+        #endregion
+
+        #region Developer made methods
+
+        private void TryPing(Object state)
+        {
+            if (this.pingRunning && this.pingReady)
+            {
+                this.SendPing();
+            }
+        }
+
+        private void SendPing()
+        {
+            try
+            {
+                this.pingSender.SendAsync(this.destination, 4000, this.buffer, this.packetOptions, this.waiter);
+                this.waiter.WaitOne(0);
+
+                lock (this.timer)
+                {
+                    if (this.DelayNumericUpDown.Value != this.currentDelay)
+                    {
+                        this.currentDelay = (Int32)this.DelayNumericUpDown.Value;
+                        this.timer.Change(this.currentDelay, this.currentDelay);
+                    }
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // Error: An asynchronous call is already in progress
+                // Overflow of SendAsync calls. Just let it go, or does someone know how to handle this better?
+            }
+            catch (Exception ex)
+            {
+                Terminals.Logging.Log.Info(String.Empty, ex);
+            }
+        }
+
+        private void pingSender_PingCompleted(object sender, PingCompletedEventArgs e)
+        {
+            try
+            {
+                if (Thread.CurrentThread.Name == null)
+                    Thread.CurrentThread.Name = "Ping Completed";
+
+                ((AutoResetEvent)e.UserState).Set();
+
+                if (e.Reply.Status == IPStatus.Success)
+                {
+                    lock (this.threadLocker)
+                    {
+                        PingReplyData pd = new PingReplyData(
+                            this.counter++,
+                            "Reply from: ",
+                            this.hostName,
+                            this.destination,
+                            e.Reply.Buffer.Length,
+                            e.Reply.Options.Ttl,
+                            e.Reply.RoundtripTime);
+
+                        lock (this.pingList)
+                        {
+                            this.pingList.Add(pd);
+                        }
+
+                        this.Invoke(this.DoUpdateForm);
+                        this.pingReady = true;
+                    }
+                }
+                else if (!e.Cancelled)
+                {
+                    String status = String.Empty;
+                    switch (e.Reply.Status)
+                    {
+                        case IPStatus.TimedOut:
+                            status = "Request timed out.";
+                            break;
+
+                        case IPStatus.DestinationHostUnreachable:
+                            status = "Destination host unreachable.";
+                            break;
+                    }
+
+                    lock (this.threadLocker)
+                    {
+                        this.pingSender.SendAsyncCancel();
+                        PingReplyData pd = new PingReplyData(
+                            this.counter++, status, String.Empty, String.Empty, 0, 0, 0);
+
+                        lock (this.pingList)
+                        {
+                            this.pingList.Add(pd);
+                        }
+
+                        this.Invoke(this.DoUpdateForm);
+                        this.pingReady = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Terminals.Logging.Log.Info("Error on Ping.PingCompleted", ex);
+            }
+            finally
+            {
+                ((AutoResetEvent)e.UserState).Set();
+            }
+        }
+
+        public void ForcePing(String hostName)
+        {
+            this.TextHost.Text = hostName;
+            this.ButtonStart.PerformClick();
+        }
+
+        /// <summary>
+        /// Update form control with new data.
+        /// </summary>
+        private void UpdateForm()
+        {
+            this.dataGridView1.SuspendLayout();
+
+            this.dataGridView1.DataSource = null;
+            this.dataGridView1.DataSource = this.pingList;
+
+            if (this.dataGridView1.Rows.Count > 1)
+                this.dataGridView1.FirstDisplayedScrollingRowIndex = this.dataGridView1.Rows.Count - 1;
+
+            this.dataGridView1.ResumeLayout(true);
+            this.UpdateGraph();
+            Application.DoEvents();
+        }
+
+        /// <summary>
+        /// Reset the form control to start properties.
+        /// </summary>
+        private void ResetForm()
+        {
+            this.ButtonStart.Enabled = true;
+            this.TextHost.Enabled = true;
+            this.TextHost.Focus();
+            this.TextHost.SelectAll();
+        }
+
+        #endregion
+
+        #region Graph Control
+
+        private void InitializeGraph()
+        {
+            myPane = this.ZGraph.GraphPane;
             // Set the titles and axis labels
             myPane.Title.Text = "Ping results";
             myPane.XAxis.Title.Text = "Counter";
             myPane.YAxis.Title.Text = "Time, Milliseconds";
-
 
             // Show the x axis grid
             myPane.XAxis.MajorGrid.IsVisible = true;
@@ -225,176 +346,105 @@ namespace Metro
             // Align the Y axis labels so they are flush to the axis
             myPane.YAxis.Scale.Align = AlignP.Inside;
 
-
             // Fill the axis background with a gradient
             myPane.Chart.Fill = new Fill(Color.White, Color.LightGray, 45.0f);
 
             // Add a text box with instructions
             TextObj text = new TextObj(
                 "Zoom: left mouse & drag\nPan: middle mouse & drag\nContext Menu: right mouse",
-                0.05f, 0.95f, CoordType.ChartFraction, AlignH.Left, AlignV.Bottom);
+                0.02f, 0.15f, CoordType.ChartFraction, AlignH.Left, AlignV.Bottom);
+            text.FontSpec.Size = 8;
             text.FontSpec.StringAlignment = StringAlignment.Near;
             myPane.GraphObjList.Add(text);
 
             // Enable scrollbars if needed
-            zg1.IsShowHScrollBar = true;
-            zg1.IsShowVScrollBar = true;
+            this.ZGraph.IsShowHScrollBar = true;
+            this.ZGraph.IsShowVScrollBar = true;
 
             // OPTIONAL: Show tooltips when the mouse hovers over a point
-            zg1.IsShowPointValues = true;
-            zg1.PointValueEvent += new ZedGraphControl.PointValueHandler(MyPointValueHandler);
+            this.ZGraph.IsShowPointValues = true;
+            this.ZGraph.PointValueEvent += new ZedGraphControl.PointValueHandler(this.MyPointValueHandler);
 
             // OPTIONAL: Add a custom context menu item
-            zg1.ContextMenuBuilder += new ZedGraphControl.ContextMenuBuilderEventHandler(
-                            MyContextMenuBuilder);
+            //this.ZGraph.ContextMenuBuilder += new ZedGraphControl.ContextMenuBuilderEventHandler(this.MyContextMenuBuilder);
 
-            // OPTIONAL: Handle the Zoom Event
-            
             // Size the control to fit the window
-            SetSize();
-
-
-
+            this.SetSize();
         }
 
-        private void Ping_Resize(object sender, EventArgs e)
+        private void UpdateGraph()
         {
-            SetSize();
-        }
+            // Make up some data points based on the Sine function
+            PointPairList list = new PointPairList();
+            PointPairList avgList = new PointPairList();
+            Int32 x = 1;
+            Int64 yMax = 0;
+            Int64 sum = 0;
 
+            foreach (PingReplyData p in pingList)
+            {
+                if (p.RoundTripTime > yMax)
+                    yMax = p.RoundTripTime;
+
+                list.Add(x, p.RoundTripTime);
+
+                sum += p.RoundTripTime;
+                avgList.Add(x, (Int32)(sum / x));
+                x++;
+            }
+
+            myPane.Title.Text = String.Format("Ping results for {0}", this.TextHost.Text);
+
+            // Manually set the axis range
+            myPane.YAxis.Scale.Min = 0;
+            myPane.YAxis.Scale.Max = yMax;
+            myPane.XAxis.Scale.Min = 0;
+            myPane.XAxis.Scale.Max = x;
+
+            myPane.CurveList.Clear();
+            LineItem myCurve = myPane.AddCurve(this.TextHost.Text, list, Color.Blue, SymbolType.Diamond);
+            LineItem avgCurve = myPane.AddCurve("Average", avgList, Color.Red, SymbolType.Diamond);
+
+            // Fill the symbols with white
+            myCurve.Symbol.Fill = new Fill(Color.White);
+            // Associate this curve with the Y2 axis
+            myCurve.IsY2Axis = true;
+
+            // Tell ZedGraph to calculate the axis ranges
+            // Note that you MUST call this after enabling IsAutoScrollRange, since AxisChange() sets
+            // up the proper scrolling parameters
+            ZGraph.AxisChange();
+            // Make sure the Graph gets redrawn
+            ZGraph.Invalidate();
+        }
+       
         private void SetSize()
         {
-            zg1.Location = new Point(10, 10);
+            ZGraph.Location = new Point(10, 10);
             // Leave a small margin around the outside of the control
-            zg1.Size = new Size(this.ClientRectangle.Width - 20,
-                    this.ClientRectangle.Height - 20);
+            ZGraph.Size = new Size(this.ClientRectangle.Width - 20, this.ClientRectangle.Height - 20);
         }
 
         /// <summary>
         /// Display customized tooltips when the mouse hovers over a point
         /// </summary>
-        private string MyPointValueHandler(ZedGraphControl control, GraphPane pane,
-                        CurveItem curve, int iPt)
+        private string MyPointValueHandler(ZedGraphControl control, GraphPane pane, CurveItem curve, int iPt)
         {
             try
             {
                 // Get the PointPair that is under the mouse
                 PointPair pt = curve[iPt];
 
-                return curve.Label.Text + " is " + pt.Y.ToString("f2") + " milliseconds at " + pt.X.ToString("f1");
+                return String.Format("{0} is {1:f2} milliseconds at {2:f1}", curve.Label.Text, pt.Y, pt.X);
             }
-            catch (Exception ex) { Terminals.Logging.Log.Info("", ex); }
-            return "";
-        }
-
-        /// <summary>
-        /// Customize the context menu by adding a new item to the end of the menu
-        /// </summary>
-        private void MyContextMenuBuilder(ZedGraphControl control, ContextMenuStrip menuStrip,
-                        Point mousePt, ZedGraphControl.ContextMenuObjectState objState)
-        {
-            //ToolStripMenuItem item = new ToolStripMenuItem();
-            //item.Name = "add-beta";
-            //item.Tag = "add-beta";
-            //item.Text = "Add a new Beta Point";
-            //item.Click += new System.EventHandler(AddBetaPoint);
-
-            //menuStrip.Items.Add(item);
-        }
-
-        private void textBox1_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
+            catch (Exception ex)
             {
-                button1_Click(null, null);
+                Terminals.Logging.Log.Info(String.Empty, ex);
             }
+            
+            return String.Empty;
         }
 
-        /// 
+        #endregion
     }
-
-
-
-    public class PingUpdate
-    {
-        public Metro.NetworkLayer.IpV4.IpV4Packet ipHeader;
-        public Metro.TransportLayer.Icmp.IcmpPacket icmpHeader;
-        private int roundTripTime;
-
-        public DateTime dateReceived = DateTime.Now;
-
-        public string DateReceived
-        {
-            get { return dateReceived.ToLongTimeString(); }
-        }
-	
-        
-        public string Counter
-        {
-            get
-            {
-                if (ipHeader != null)
-                {
-                    return ipHeader.Identification.ToString();
-                }
-                else
-                {
-                    return "*";
-                }
-            }
-        }
-
-        public string Destination
-        {
-            get {
-                if (ipHeader != null)
-                {
-                    return ipHeader.SourceAddress.ToString();
-                }
-                else
-                {
-                    return "*";
-                }
-            }
-        }
-        public string Source
-        {
-            get {
-                if (ipHeader != null)
-                {
-
-                    return ipHeader.DestinationAddress.ToString();
-                }
-                else
-                {
-                    return "*";
-                }
-            }
-        }
-    
-        
-        public string TimeToLive 
-        {
-            get {
-                if (ipHeader != null)
-                {
-                    return ipHeader.TimeToLive.ToString();
-                }
-                else
-                {
-                    return "*";
-                }
-            }
-        }
-        public int RoundTripTime
-        {
-            get { return roundTripTime; }
-            set { roundTripTime = value; }
-        }
-
-
-
-
-
-    }
-}
+ }

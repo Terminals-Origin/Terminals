@@ -1,4 +1,4 @@
-namespace Metro
+namespace Terminals.Network
 {
     partial class Ping
     {
@@ -28,32 +28,31 @@ namespace Metro
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.TextHost = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.ButtonStart = new System.Windows.Forms.Button();
+            this.ButtonStop = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.TabResults = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.zg1 = new ZedGraph.ZedGraphControl();
+            this.TabGraph = new System.Windows.Forms.TabPage();
+            this.ZGraph = new ZedGraph.ZedGraphControl();
             this.label2 = new System.Windows.Forms.Label();
             this.DelayNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.TabResults.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            this.TabGraph.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DelayNumericUpDown)).BeginInit();
             this.SuspendLayout();
             // 
-            // textBox1
+            // TextHost
             // 
-            this.textBox1.Location = new System.Drawing.Point(41, 3);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(145, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp);
+            this.TextHost.Location = new System.Drawing.Point(41, 3);
+            this.TextHost.Name = "TextHost";
+            this.TextHost.Size = new System.Drawing.Size(145, 20);
+            this.TextHost.TabIndex = 0;
+            this.TextHost.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextHost_KeyPress);
             // 
             // label1
             // 
@@ -64,49 +63,49 @@ namespace Metro
             this.label1.TabIndex = 1;
             this.label1.Text = "Host:";
             // 
-            // button1
+            // ButtonStart
             // 
-            this.button1.Location = new System.Drawing.Point(192, 1);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "&Start";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.ButtonStart.Location = new System.Drawing.Point(192, 1);
+            this.ButtonStart.Name = "ButtonStart";
+            this.ButtonStart.Size = new System.Drawing.Size(75, 23);
+            this.ButtonStart.TabIndex = 1;
+            this.ButtonStart.Text = "&Start";
+            this.ButtonStart.UseVisualStyleBackColor = true;
+            this.ButtonStart.Click += new System.EventHandler(this.ButtonStart_Click);
             // 
-            // button2
+            // ButtonStop
             // 
-            this.button2.Location = new System.Drawing.Point(273, 1);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Sto&p";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.ButtonStop.Location = new System.Drawing.Point(273, 1);
+            this.ButtonStop.Name = "ButtonStop";
+            this.ButtonStop.Size = new System.Drawing.Size(75, 23);
+            this.ButtonStop.TabIndex = 2;
+            this.ButtonStop.Text = "Sto&p";
+            this.ButtonStop.UseVisualStyleBackColor = true;
+            this.ButtonStop.Click += new System.EventHandler(this.ButtonStop_Click);
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.TabResults);
+            this.tabControl1.Controls.Add(this.TabGraph);
             this.tabControl1.Location = new System.Drawing.Point(3, 29);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(491, 260);
             this.tabControl1.TabIndex = 5;
             // 
-            // tabPage1
+            // TabResults
             // 
-            this.tabPage1.Controls.Add(this.dataGridView1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(483, 234);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Raw Results";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.TabResults.Controls.Add(this.dataGridView1);
+            this.TabResults.Location = new System.Drawing.Point(4, 22);
+            this.TabResults.Name = "TabResults";
+            this.TabResults.Padding = new System.Windows.Forms.Padding(3);
+            this.TabResults.Size = new System.Drawing.Size(483, 234);
+            this.TabResults.TabIndex = 0;
+            this.TabResults.Text = "Raw Results";
+            this.TabResults.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
             // 
@@ -121,31 +120,31 @@ namespace Metro
             this.dataGridView1.Size = new System.Drawing.Size(477, 228);
             this.dataGridView1.TabIndex = 5;
             // 
-            // tabPage2
+            // TabGraph
             // 
-            this.tabPage2.Controls.Add(this.zg1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(483, 234);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Graph";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.TabGraph.Controls.Add(this.ZGraph);
+            this.TabGraph.Location = new System.Drawing.Point(4, 22);
+            this.TabGraph.Name = "TabGraph";
+            this.TabGraph.Padding = new System.Windows.Forms.Padding(3);
+            this.TabGraph.Size = new System.Drawing.Size(483, 234);
+            this.TabGraph.TabIndex = 1;
+            this.TabGraph.Text = "Graph";
+            this.TabGraph.UseVisualStyleBackColor = true;
             // 
-            // zg1
+            // ZGraph
             // 
-            this.zg1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.zg1.Location = new System.Drawing.Point(3, 3);
-            this.zg1.Name = "zg1";
-            this.zg1.ScrollGrace = 0;
-            this.zg1.ScrollMaxX = 0;
-            this.zg1.ScrollMaxY = 0;
-            this.zg1.ScrollMaxY2 = 0;
-            this.zg1.ScrollMinX = 0;
-            this.zg1.ScrollMinY = 0;
-            this.zg1.ScrollMinY2 = 0;
-            this.zg1.Size = new System.Drawing.Size(477, 228);
-            this.zg1.TabIndex = 0;
+            this.ZGraph.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ZGraph.Location = new System.Drawing.Point(3, 3);
+            this.ZGraph.Name = "ZGraph";
+            this.ZGraph.ScrollGrace = 0D;
+            this.ZGraph.ScrollMaxX = 0D;
+            this.ZGraph.ScrollMaxY = 0D;
+            this.ZGraph.ScrollMaxY2 = 0D;
+            this.ZGraph.ScrollMinX = 0D;
+            this.ZGraph.ScrollMinY = 0D;
+            this.ZGraph.ScrollMinY2 = 0D;
+            this.ZGraph.Size = new System.Drawing.Size(477, 228);
+            this.ZGraph.TabIndex = 0;
             // 
             // label2
             // 
@@ -169,6 +168,11 @@ namespace Metro
             0,
             0,
             0});
+            this.DelayNumericUpDown.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.DelayNumericUpDown.Name = "DelayNumericUpDown";
             this.DelayNumericUpDown.ReadOnly = true;
             this.DelayNumericUpDown.Size = new System.Drawing.Size(71, 20);
@@ -187,18 +191,18 @@ namespace Metro
             this.Controls.Add(this.DelayNumericUpDown);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.ButtonStop);
+            this.Controls.Add(this.ButtonStart);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.TextHost);
             this.Name = "Ping";
             this.Size = new System.Drawing.Size(497, 289);
             this.Load += new System.EventHandler(this.Ping_Load);
             this.Resize += new System.EventHandler(this.Ping_Resize);
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.TabResults.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.tabPage2.ResumeLayout(false);
+            this.TabGraph.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DelayNumericUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -207,15 +211,15 @@ namespace Metro
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox TextHost;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button ButtonStart;
+        private System.Windows.Forms.Button ButtonStop;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage TabResults;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private ZedGraph.ZedGraphControl zg1;
+        private System.Windows.Forms.TabPage TabGraph;
+        private ZedGraph.ZedGraphControl ZGraph;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown DelayNumericUpDown;
     }
