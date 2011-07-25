@@ -1,14 +1,10 @@
-﻿using TabControl;
-using Terminals.Connections;
-
-namespace Terminals
+﻿namespace Terminals
 {
   /// <summary>
   /// Adapter between all windows (including main window) and TabControl
   /// </summary>
   internal class TerminalTabsSelectionControler
   {
-    private TerminalTabControlItem selected = null;
     private TabControl.TabControl mainTabControl;
 
     internal TerminalTabsSelectionControler(TabControl.TabControl tabControl)

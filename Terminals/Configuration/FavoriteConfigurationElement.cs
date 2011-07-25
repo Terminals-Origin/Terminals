@@ -1384,6 +1384,26 @@ namespace Terminals
             }
         }
 
+        internal String GetToolTipText()
+        {
+          string toolTip = String.Empty;
+
+          toolTip =
+              "Computer: " + this.ServerName + Environment.NewLine +
+              "User: " + Functions.UserDisplayName(this.DomainName, this.UserName) + Environment.NewLine;
+
+          if (Settings.ShowFullInformationToolTips)
+          {
+            toolTip +=
+            "Tag: " + this.Tags + Environment.NewLine +
+            "Port: " + this.Port + Environment.NewLine +
+            "Connect to Console: " + this.ConnectToConsole.ToString() + Environment.NewLine +
+            "Notes: " + this.Notes + Environment.NewLine;
+          }
+
+          return toolTip;
+        }
+
         #region ICloneable Members
         public object Clone()
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
@@ -38,7 +39,6 @@ namespace Terminals
         private Size _lastSize;
         private FormWindowState _lastState;
         private FormSettings _formSettings;
-        private ImageFormatHandler _imageFormatHandler;
         private Int32 _currentToolBarCount = 0;
         private FormWindowState _originalFormWindowState;
         private TabControlItem _currentToolTipItem = null;
@@ -68,13 +68,13 @@ namespace Terminals
                     if (selectedTab != null)
                     {
                         Rectangle r = selectedTab.RectangleToScreen(selectedTab.ClientRectangle);
-                        if (r.Contains(Form.MousePosition))
+                        if (r.Contains(Control.MousePosition))
                         {
                             SetGrabInput(true);
                         }
                         else
                         {
-                            TabControlItem item = tcTerminals.GetTabItemByPoint(tcTerminals.PointToClient(Form.MousePosition));
+                            TabControlItem item = tcTerminals.GetTabItemByPoint(tcTerminals.PointToClient(Control.MousePosition));
                             if (item == null)
                                 SetGrabInput(false);
                             else if (item == selectedTab)
@@ -103,7 +103,7 @@ namespace Terminals
             }
             catch (Exception e)
             {
-                Terminals.Logging.Log.Info("WnProc Failure", e);
+                Logging.Log.Info("WnProc Failure", e);
             }
         }
 
@@ -128,13 +128,11 @@ namespace Terminals
                 }
                 else
                 {
-                    System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ReloadSpecialCommands), null);
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(ReloadSpecialCommands), null);
                 }
 
                 // Set default font type by Windows theme to use for all controls on form
-                this.Font = System.Drawing.SystemFonts.IconTitleFont;
-
-                _imageFormatHandler = new ImageFormatHandler();
+                this.Font = SystemFonts.IconTitleFont;
                 _formSettings = new FormSettings(this);
                 
                 InitializeComponent();
@@ -145,7 +143,7 @@ namespace Terminals
                 else if (Settings.Office2007BlackFeel)
                     ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Black);
                 else
-                    ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
+                    ToolStripManager.Renderer = new ToolStripProfessionalRenderer();
 
                 // Update the old treeview theme to the new theme from Win Vista and up
                 NativeApi.SetWindowTheme(this.menuStrip.Handle, "Explorer", null);
@@ -188,7 +186,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Error("Error loading the Main Form", exc);
+                Logging.Log.Error("Error loading the Main Form", exc);
             }
         }
 
@@ -221,10 +219,10 @@ namespace Terminals
         {
             Cursor = Cursors.Default;
             MouseDown = false;
-            Int32 mouseLeft = System.Windows.Forms.Control.MousePosition.X;
+            Int32 mouseLeft = MousePosition.X;
             Int32 downLeft = MouseDownLocation.X;
 
-            Int32 mouseTop = System.Windows.Forms.Control.MousePosition.Y;
+            Int32 mouseTop = MousePosition.Y;
             Int32 downTop = MouseDownLocation.Y;
 
             if ((Math.Abs(mouseLeft - downLeft) >= MouseBreakThreshold) || (Math.Abs(mouseTop - downTop) >= MouseBreakThreshold))
@@ -235,7 +233,7 @@ namespace Terminals
 
         private void tcTerminals_MouseDown(object sender, MouseEventArgs e)
         {
-            MouseDownLocation = System.Windows.Forms.Control.MousePosition;
+            MouseDownLocation = MousePosition;
             // TODO: only show arrow when mousedown over connection tab and mouse is moving
             // Maybe also use another cursor?
             // Cursor = Cursors.UpArrow; 
@@ -288,7 +286,6 @@ namespace Terminals
 
                     if (strip != null)
                     {
-                        int row = setting.Row + 1;
                         Point p = new Point(setting.Left, setting.Top);
                         switch (setting.Dock)
                         {
@@ -346,16 +343,14 @@ namespace Terminals
 
             if (CurrentConnection != null)
             {
-                Connections.VMRCConnection vmrc;
-                vmrc = (this.CurrentConnection as Connections.VMRCConnection);
+                VMRCConnection vmrc = this.CurrentConnection as VMRCConnection;
                 if (vmrc != null)
                 {
                     VMRCAdminSwitchButton.Visible = true;
                     VMRCViewOnlyButton.Visible = true;
                 }
 
-                Connections.VNCConnection vnc;
-                vnc = (this.CurrentConnection as Connections.VNCConnection);
+                VNCConnection vnc = this.CurrentConnection as VNCConnection;
                 if (vnc != null)
                 {
                     vncActionButton.Visible = true;
@@ -369,12 +364,12 @@ namespace Terminals
         {
             get
             {
-                return MainForm._commandLineArgs;
+                return _commandLineArgs;
             }
             
             set
             {
-                MainForm._commandLineArgs = value;
+                _commandLineArgs = value;
             }
         }
 
@@ -383,8 +378,11 @@ namespace Terminals
             return _mainForm;
         }
 
-        public void CloseTabControlItem()
+        private void CloseTabControlItem()
         {
+          this.Text = Program.Info.AboutText;
+          if (this.tcTerminals.Items.Count == 0)
+            this.FullScreen = false;
             tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
         }
 
@@ -490,12 +488,12 @@ namespace Terminals
                 terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
                 this.terminalsControler.AddAndSelect(terminalTabPage);
                 tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
-                Terminals.Connections.NetworkingToolsConnection conn = new Terminals.Connections.NetworkingToolsConnection();
+                NetworkingToolsConnection conn = new NetworkingToolsConnection();
                 conn.TerminalTabPage = terminalTabPage;
                 conn.ParentForm = this;
                 conn.Connect();
-                (conn as Control).BringToFront();
-                (conn as Control).Update();
+                conn.BringToFront();
+                conn.Update();
                 UpdateControls();
                 conn.Execute(Action, Host);
             }
@@ -533,8 +531,8 @@ namespace Terminals
             {
                 if (CurrentConnection != null)
                 {
-                    if (CurrentConnection is Connections.RDPConnection)
-                        return (CurrentConnection as Connections.RDPConnection).AxMsRdpClient;
+                    if (CurrentConnection is RDPConnection)
+                        return (CurrentConnection as RDPConnection).AxMsRdpClient;
                 }
 
                 return null;
@@ -573,14 +571,14 @@ namespace Terminals
                         Settings.AddFavorite(release, false);
                     }
 
-                    System.Threading.Thread.Sleep(5000);
+                    Thread.Sleep(5000);
                     if (OnReleaseIsAvailable != null) 
                         OnReleaseIsAvailable(release);
                 }
             }
         }
 
-        public static Unified.Rss.RssItem ReleaseDescription
+        public static RssItem ReleaseDescription
         {
             get
             {
@@ -595,33 +593,12 @@ namespace Terminals
         internal void RemoveTabPage(TabControlItem tabControlToRemove)
         {
             this.tcTerminals.RemoveTab(tabControlToRemove);
+            CloseTabControlItem();
         }
 
         #endregion
 
         #region private made by developer
-
-        private String GetToolTipText(FavoriteConfigurationElement favorite)
-        {
-            string toolTip = String.Empty;
-            if (favorite != null)
-            {
-                toolTip =
-                    "Computer: " + favorite.ServerName + Environment.NewLine +
-                    "User: " + Functions.UserDisplayName(favorite.DomainName, favorite.UserName) + Environment.NewLine;
-
-                if (Settings.ShowFullInformationToolTips)
-                {
-                    toolTip +=
-                    "Tag: " + favorite.Tags + Environment.NewLine +
-                    "Port: " + favorite.Port + Environment.NewLine +
-                    "Connect to Console: " + favorite.ConnectToConsole.ToString() + Environment.NewLine +
-                    "Notes: " + favorite.Notes + Environment.NewLine;
-                }
-            }
-
-            return toolTip;
-        }
 
         public void CreateTerminalTab(FavoriteConfigurationElement favorite)
         {
@@ -658,7 +635,7 @@ namespace Terminals
           terminalTabPage.DragOver += this.terminalTabPage_DragOver;
           terminalTabPage.DragEnter += new DragEventHandler(this.terminalTabPage_DragEnter);
           this.Resize += new EventHandler(this.MainForm_Resize);
-          terminalTabPage.ToolTipText = this.GetToolTipText(favorite);
+          terminalTabPage.ToolTipText = favorite.GetToolTipText();
           terminalTabPage.Favorite = favorite;
           terminalTabPage.DoubleClick += new EventHandler(this.terminalTabPage_DoubleClick);
           this.terminalsControler.AddAndSelect(terminalTabPage);
@@ -799,7 +776,6 @@ namespace Terminals
         private void LoadSpecialCommands()
         {
             SpecialCommandsToolStrip.Items.Clear();
-            SpecialCommandConfigurationElementCollection cmdList = Settings.SpecialCommands;
 
             foreach (SpecialCommandConfigurationElement cmd in Settings.SpecialCommands)
             {
@@ -816,7 +792,7 @@ namespace Terminals
 
         private void ShowCredentialsManager()
         {
-            Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
+            CredentialManager mgr = new CredentialManager();
             mgr.ShowDialog();
         }
 
@@ -906,7 +882,7 @@ namespace Terminals
 
         private void ResetToolbars()
         {
-            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ToolbarResetThread));
+            ThreadPool.QueueUserWorkItem(new WaitCallback(ToolbarResetThread));
         }
 
         private void ToolbarResetThread(object state)
@@ -924,10 +900,6 @@ namespace Terminals
             }
 
             tscConnectTo.Items.Clear();
-            foreach (String key in favorites.Keys)
-            {
-                FavoriteConfigurationElement favorite = favorites[key];
-            }
 
             Dictionary<String, ToolStripMenuItem> tagTools = new Dictionary<String, ToolStripMenuItem>();
 
@@ -978,7 +950,7 @@ namespace Terminals
                     item.Name = favorite.Name;
                     item.Tag = "favorite";
 
-                    if (favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                    if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
                         item.Image = Image.FromFile(favorite.ToolBarIcon);
 
                     favoritesToolStripMenuItem.DropDown.Items.Add(item);
@@ -1011,7 +983,7 @@ namespace Terminals
                                 }
                                 catch (Exception ex)
                                 {
-                                    Terminals.Logging.Log.Error("Error Loading Favorites Toolbar (Button Bar)", ex);
+                                    Logging.Log.Error("Error Loading Favorites Toolbar (Button Bar)", ex);
                                     if (button != Resources.smallterm) 
                                         button = Resources.smallterm;
                                 }
@@ -1030,7 +1002,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Error("Error Loading Favorites Toolbar", exc);
+                Logging.Log.Error("Error Loading Favorites Toolbar", exc);
             }
         }
 
@@ -1233,27 +1205,27 @@ namespace Terminals
         private void HandleCommandLineActions()
         {
 
-            bool ConnectToConsole = Terminals.MainForm._commandLineArgs.console;
-            this.FullScreen = Terminals.MainForm._commandLineArgs.fullscreen;
-            if (Terminals.MainForm._commandLineArgs.url != null && Terminals.MainForm._commandLineArgs.url != String.Empty)
+            bool ConnectToConsole = _commandLineArgs.console;
+            this.FullScreen = _commandLineArgs.fullscreen;
+            if (!string.IsNullOrEmpty(_commandLineArgs.url))
             {
                 String server; 
                 Int32 port;
-                ProtocolHandler.Parse(Terminals.MainForm._commandLineArgs.url, out server, out port);
+                ProtocolHandler.Parse(_commandLineArgs.url, out server, out port);
                 QuickConnect(server, port, ConnectToConsole);
             }
 
-            if (!String.IsNullOrEmpty(Terminals.MainForm._commandLineArgs.machine))
+            if (!String.IsNullOrEmpty(_commandLineArgs.machine))
             {
                 String server = String.Empty;
                 Int32 port = 3389;
 
-                server = Terminals.MainForm._commandLineArgs.machine;
-                Int32 index = Terminals.MainForm._commandLineArgs.machine.IndexOf(":");
+                server = _commandLineArgs.machine;
+                Int32 index = _commandLineArgs.machine.IndexOf(":");
                 if (index > 0)
                 {
-                    server = Terminals.MainForm._commandLineArgs.machine.Substring(0, index);
-                    String p = Terminals.MainForm._commandLineArgs.machine.Substring(index + 1);
+                    server = _commandLineArgs.machine.Substring(0, index);
+                    String p = _commandLineArgs.machine.Substring(index + 1);
                     if (!Int32.TryParse(p, out port))
                     {
                         port = 3389;
@@ -1263,9 +1235,9 @@ namespace Terminals
                 QuickConnect(server, port, ConnectToConsole);
             } 
             
-            if (!String.IsNullOrEmpty(Terminals.MainForm._commandLineArgs.favs))
+            if (!String.IsNullOrEmpty(_commandLineArgs.favs))
             {
-                String favs = Terminals.MainForm._commandLineArgs.favs;
+                String favs = _commandLineArgs.favs;
                 if (favs.Contains(","))
                 {
                     String[] favlist = favs.Split(',');
@@ -1334,7 +1306,6 @@ namespace Terminals
             if (Settings.Tags.Length == 0)
             {
                 FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-                List<FavoriteConfigurationElement> tagFavorites = new List<FavoriteConfigurationElement>();
                 foreach (FavoriteConfigurationElement favorite in favorites)
                 {
                     if (unTaggedFavorites.IndexOf(favorite) < 0)
@@ -1383,7 +1354,7 @@ namespace Terminals
         {
             while (!this.Created)
             {
-                System.Threading.Thread.Sleep(500);
+                Thread.Sleep(500);
             }
 
             this.rebuildShortcutsToolStripMenuItem_Click(null, null);
@@ -1395,7 +1366,7 @@ namespace Terminals
             {
                 if (tab.Title == Program.Resources.GetString("CaptureManager"))
                 {
-                    Terminals.Connections.CaptureManagerConnection conn = (tab.Connection as Terminals.Connections.CaptureManagerConnection);
+                    CaptureManagerConnection conn = (tab.Connection as CaptureManagerConnection);
                     conn.RefreshView();
                     if (setFocus && Settings.EnableCaptureToFolder && Settings.AutoSwitchOnCapture)
                     {
@@ -1451,7 +1422,7 @@ namespace Terminals
                 foreach (SpecialCommandConfigurationElement elm in Settings.SpecialCommands)
                 {
                     Image img = null;
-                    if (!String.IsNullOrEmpty(elm.Thumbnail) && System.IO.File.Exists(elm.Thumbnail))
+                    if (!String.IsNullOrEmpty(elm.Thumbnail) && File.Exists(elm.Thumbnail))
                     {
                         img = Image.FromFile(elm.Thumbnail);
                     }
@@ -1491,10 +1462,10 @@ namespace Terminals
                 {
                     FavoriteConfigurationElement favorite = favorites[key];
 
-                    System.Windows.Forms.ToolStripMenuItem sortedItem = new ToolStripMenuItem();
+                    ToolStripMenuItem sortedItem = new ToolStripMenuItem();
                     sortedItem.Text = favorite.Name;
                     sortedItem.Tag = "favorite";
-                    if (favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                    if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
                         sortedItem.Image = Image.FromFile(favorite.ToolBarIcon);
 
                     sortedList.Add(favorite.Name, sortedItem);
@@ -1503,7 +1474,7 @@ namespace Terminals
                     {
                         foreach (String tag in favorite.TagList)
                         {
-                            System.Windows.Forms.ToolStripMenuItem parent;
+                            ToolStripMenuItem parent;
                             if (tagTools.ContainsKey(tag))
                             {
                                 parent = tagTools[tag];
@@ -1518,10 +1489,10 @@ namespace Terminals
                                 this.QuickContextMenu.Items.Add(parent);
                             }
 
-                            System.Windows.Forms.ToolStripMenuItem item = new ToolStripMenuItem();
+                            ToolStripMenuItem item = new ToolStripMenuItem();
                             item.Text = favorite.Name;
                             item.Tag = "favorite";
-                            if (favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                            if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
                                 item.Image = Image.FromFile(favorite.ToolBarIcon);
 
                             parent.DropDown.Items.Add(item);
@@ -1531,7 +1502,7 @@ namespace Terminals
                     {
                         ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
                         item.Tag = "favorite";
-                        if (favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+                        if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
                             item.Image = Image.FromFile(favorite.ToolBarIcon);
 
                         this.QuickContextMenu.Items.Add(item);
@@ -1541,7 +1512,7 @@ namespace Terminals
                 if (sortedList != null && sortedList.Count > 0)
                 {
                     this.QuickContextMenu.Items.Add(sortedMenu);
-                    sortedMenu.Image = Terminals.Properties.Resources.atoz;
+                    sortedMenu.Image = Resources.atoz;
                     foreach (string name in sortedList.Keys)
                     {
                         sortedMenu.DropDownItems.Add(sortedList[name]);
@@ -1627,10 +1598,10 @@ namespace Terminals
 
                     if (tag == "tag")
                     {
-                        System.Windows.Forms.ToolStripMenuItem parent = (e.ClickedItem as System.Windows.Forms.ToolStripMenuItem);
+                        ToolStripMenuItem parent = (e.ClickedItem as ToolStripMenuItem);
                         if (parent.DropDownItems.Count > 0)
                         {
-                            if (System.Windows.Forms.MessageBox.Show(String.Format(Program.Resources.GetString("Areyousureyouwanttoconnecttoalltheseterminals"), parent.DropDownItems.Count), Program.Resources.GetString(Program.Resources.GetString("Confirmation")), MessageBoxButtons.OKCancel) == DialogResult.OK)
+                            if (MessageBox.Show(String.Format(Program.Resources.GetString("Areyousureyouwanttoconnecttoalltheseterminals"), parent.DropDownItems.Count), Program.Resources.GetString(Program.Resources.GetString("Confirmation")), MessageBoxButtons.OKCancel) == DialogResult.OK)
                             {
                                 foreach (ToolStripMenuItem button in parent.DropDownItems)
                                 {
@@ -1692,19 +1663,19 @@ namespace Terminals
                 if (menu.Text == Program.Resources.GetString("Shutdown"))
                 {
                     TerminalServices.TerminalServer server = (menu.Tag as TerminalServices.TerminalServer);
-                    if (server != null && System.Windows.Forms.MessageBox.Show(Program.Resources.GetString("Areyousureyouwanttoshutthismachineoff"), Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    if (server != null && MessageBox.Show(Program.Resources.GetString("Areyousureyouwanttoshutthismachineoff"), Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
                         TerminalServices.TerminalServicesAPI.ShutdownSystem(server, false);
                 }
                 else if (menu.Text == Program.Resources.GetString("Reboot"))
                 {
                     TerminalServices.TerminalServer server = (menu.Tag as TerminalServices.TerminalServer);
-                    if (server != null && System.Windows.Forms.MessageBox.Show(Program.Resources.GetString("Areyousureyouwanttorebootthismachine"), Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    if (server != null && MessageBox.Show(Program.Resources.GetString("Areyousureyouwanttorebootthismachine"), Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
                         TerminalServices.TerminalServicesAPI.ShutdownSystem(server, true);
                 }
                 else if (menu.Text == Program.Resources.GetString("Logoff"))
                 {
                     TerminalServices.Session session = (menu.Tag as TerminalServices.Session);
-                    if (session != null && System.Windows.Forms.MessageBox.Show(Program.Resources.GetString("Areyousureyouwanttologthissessionoff"), Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
+                    if (session != null && MessageBox.Show(Program.Resources.GetString("Areyousureyouwanttologthissessionoff"), Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
                         TerminalServices.TerminalServicesAPI.LogOffSession(session, false);
                 }
                 else if (menu.Text == Program.Resources.GetString("Send Message"))
@@ -1712,7 +1683,7 @@ namespace Terminals
                     TerminalServices.Session session = (menu.Tag as TerminalServices.Session);
                     if (session != null)
                     {
-                        Terminals.InputBoxResult result = Terminals.InputBox.Show(Program.Resources.GetString("Pleaseenterthemessagetosend"));
+                        InputBoxResult result = InputBox.Show(Program.Resources.GetString("Pleaseenterthemessagetosend"));
                         if (result.ReturnCode == DialogResult.OK && result.Text.Trim() != null)
                         {
                             TerminalServices.TerminalServicesAPI.SendMessage(session, Program.Resources.GetString("MessagefromyourAdministrator"), result.Text.Trim(), 0, 10, false);
@@ -1903,9 +1874,7 @@ namespace Terminals
 
         private void tcTerminals_TabControlItemClosed(object sender, EventArgs e)
         {
-            this.Text = Program.Info.AboutText;
-            if (this.tcTerminals.Items.Count == 0)
-                this.FullScreen = false;
+          CloseTabControlItem();
         }
 
         private void tcTerminals_DoubleClick(object sender, EventArgs e)
@@ -1923,7 +1892,7 @@ namespace Terminals
         {
             foreach (ToolStripItem item in this.tcTerminals.Menu.Items)
             {
-                item.Image = Terminals.Properties.Resources.smallterm;
+                item.Image = Resources.smallterm;
             }
 
             if (this.FullScreen)
@@ -1941,7 +1910,7 @@ namespace Terminals
         {
             //put in a check to see if terminals is off the viewing area
             Screen farRightScreen = null;
-            foreach (Screen screen in System.Windows.Forms.Screen.AllScreens)
+            foreach (Screen screen in Screen.AllScreens)
             {
                 if (farRightScreen == null)
                     farRightScreen = screen;
@@ -2101,12 +2070,12 @@ namespace Terminals
                 else if (Settings.Office2007BlackFeel)
                     ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Black);
                 else
-                    ToolStripManager.Renderer = new System.Windows.Forms.ToolStripProfessionalRenderer();
+                    ToolStripManager.Renderer = new ToolStripProfessionalRenderer();
 
                 this.tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
                 if (this.terminalsControler.HasSelected)
                 {
-                    this.terminalsControler.Selected.ToolTipText = this.GetToolTipText(this.terminalsControler.Selected.Favorite);
+                    this.terminalsControler.Selected.ToolTipText = this.terminalsControler.Selected.Favorite.GetToolTipText();
                 }
 
                 // Disable capture button when function is disabled in options
@@ -2190,7 +2159,7 @@ namespace Terminals
 
         private void CaptureScreenToolStripButton_Click(object sender, EventArgs e)
         {
-            Terminals.CaptureManager.Capture cap = Terminals.CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
+            CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
             this.RefreshCaptureManager(false);
 
             if (Settings.EnableCaptureToFolder && Settings.AutoSwitchOnCapture)
@@ -2206,8 +2175,7 @@ namespace Terminals
         {
             if (this.CurrentConnection != null)
             {
-                Connections.VMRCConnection vmrc;
-                vmrc = (this.CurrentConnection as Connections.VMRCConnection);
+                VMRCConnection vmrc = this.CurrentConnection as VMRCConnection;
                 if (vmrc != null)
                 {
                     vmrc.AdminDisplay();
@@ -2219,8 +2187,7 @@ namespace Terminals
         {
             if (this.CurrentConnection != null)
             {
-                Connections.VMRCConnection vmrc;
-                vmrc = (this.CurrentConnection as Connections.VMRCConnection);
+                VMRCConnection vmrc = this.CurrentConnection as VMRCConnection;
                 if (vmrc != null)
                 {
                     vmrc.ViewOnlyMode = !vmrc.ViewOnlyMode;
@@ -2424,10 +2391,10 @@ namespace Terminals
             if (sender != null && (sender as ToolStripMenuItem) != null)
             {
                 String key = (sender as ToolStripMenuItem).Text;
-                Connections.VNCConnection vnc;
+                VNCConnection vnc;
                 if (this.CurrentConnection != null)
                 {
-                    vnc = (this.CurrentConnection as Connections.VNCConnection);
+                    vnc = (this.CurrentConnection as VNCConnection);
                     if (vnc != null)
                     {
                         if (key == sendALTF4KeyToolStripMenuItem.Text)
@@ -2505,7 +2472,7 @@ namespace Terminals
         {
             this._releaseMIV = new MethodInvoker(this.OpenReleasePage);
             this.Text = Program.Info.AboutText;
-            MainForm.OnReleaseIsAvailable += new ReleaseIsAvailable(this.MainForm_OnReleaseIsAvailable);
+            OnReleaseIsAvailable += new ReleaseIsAvailable(this.MainForm_OnReleaseIsAvailable);
         }
 
         private void MainForm_OnReleaseIsAvailable(FavoriteConfigurationElement ReleaseFavorite)
@@ -2537,7 +2504,7 @@ namespace Terminals
             //handle global keyup events
             if (e.Control && e.KeyCode == Keys.F12)
             {
-                Terminals.CaptureManager.Capture cap = Terminals.CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
+                CaptureManager.Capture cap = CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
                 this.toolStripMenuItemCaptureManager_Click(null, null);
             }
             else if (e.KeyCode == Keys.F4)
@@ -2548,7 +2515,7 @@ namespace Terminals
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("mmc.exe", "compmgmt.msc /a /computer=.");
+            Process.Start("mmc.exe", "compmgmt.msc /a /computer=.");
         }
 
         private void rebuildTagsIndexToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2571,7 +2538,7 @@ namespace Terminals
         private void rebuildShortcutsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings.SpecialCommands.Clear();
-            Settings.SpecialCommands = Terminals.Wizard.SpecialCommandsWizard.LoadSpecialCommands();
+            Settings.SpecialCommands = Wizard.SpecialCommandsWizard.LoadSpecialCommands();
             this.Invoke(this._specialCommandsMIV);
         }
 
@@ -2582,7 +2549,7 @@ namespace Terminals
 
         private void openLogFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Application.ExecutablePath),"Logs"));
+            Process.Start(Path.Combine(Path.GetDirectoryName(Application.ExecutablePath),"Logs"));
         }
 
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
