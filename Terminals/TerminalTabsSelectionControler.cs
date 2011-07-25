@@ -1,4 +1,9 @@
-﻿namespace Terminals
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using Terminals.Connections;
+
+namespace Terminals
 {
   /// <summary>
   /// Adapter between all windows (including main window) and TabControl
@@ -6,10 +11,13 @@
   internal class TerminalTabsSelectionControler
   {
     private TabControl.TabControl mainTabControl;
+    private MainForm mainForm;
+    private List<PopupTerminal> detachedWindows = new List<PopupTerminal>();
 
-    internal TerminalTabsSelectionControler(TabControl.TabControl tabControl)
+    internal TerminalTabsSelectionControler(MainForm mainForm, TabControl.TabControl tabControl)
     {
       this.mainTabControl = tabControl;
+      this.mainForm = mainForm;
     }
 
     /// <summary>
@@ -65,12 +73,12 @@
     /// <summary>
     /// Releases actualy selected tab to the new window
     /// </summary>
-    internal void ReleaseTabToNewWindow()
+    internal void DetachTabToNewWindow()
     {
-      this.ReleaseTabToNewWindow(this.Selected);
+      this.DetachTabToNewWindow(this.Selected);
     }
 
-    internal void ReleaseTabToNewWindow(TerminalTabControlItem tabControlToOpen)
+    internal void DetachTabToNewWindow(TerminalTabControlItem tabControlToOpen)
     {
       if (tabControlToOpen != null)
       {
@@ -81,13 +89,109 @@
         pop.AddTerminal(tabControlToOpen);
 
         this.mainTabControl.Items.ResumeEvents();
+        this.detachedWindows.Add(pop);
         pop.Show();
       }
     }
 
     internal void AttachTabFromWindow(TerminalTabControlItem tabControlToAttach)
     {
-       this.mainTabControl.AddTab(tabControlToAttach);
+      this.mainTabControl.AddTab(tabControlToAttach);
+      PopupTerminal popupTerminal = tabControlToAttach.FindForm() as PopupTerminal;
+      if (popupTerminal != null)
+      {
+        UnRegisterPopUp(popupTerminal);
+      }
+    }
+
+    internal void UnRegisterPopUp(PopupTerminal popupTerminal)
+    {
+      if (this.detachedWindows.Contains(popupTerminal))
+      {
+        this.detachedWindows.Remove(popupTerminal);
+      }
+    }
+
+    internal void RefreshCaptureManagerAndCreateItsTab(bool openManagerTab)
+    {
+      Boolean createNew = !this.RefreshCaptureManager(true);
+
+      if (createNew) // capture manager wasnt found
+      {
+        if (!openManagerTab && (!Settings.EnableCaptureToFolder || !Settings.AutoSwitchOnCapture))
+          createNew = false;
+      }
+
+      if (createNew)
+      {
+        this.CreateCaptureManagerTab();
+      }
+    }
+
+    /// <summary>
+    /// Updates the CaptureManager tabcontrol, focuses it and updates its content.
+    /// </summary>
+    /// <param name="setFocus">If true, focuses the capture manager Tab; otherwise nothting</param>
+    /// <returns>true, Tab exists and was updated, otherwise false.</returns>
+    internal Boolean RefreshCaptureManager(Boolean setFocus)
+    {
+      foreach (TerminalTabControlItem tab in this.mainTabControl.Items)
+      {
+        if (tab.Title == Program.Resources.GetString("CaptureManager"))
+        {
+          CaptureManagerConnection conn = (tab.Connection as CaptureManagerConnection);
+          conn.RefreshView();
+          if (setFocus && Settings.EnableCaptureToFolder && Settings.AutoSwitchOnCapture)
+          {
+            conn.BringToFront();
+            conn.Update();
+            this.Select(tab);
+          }
+
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    private void CreateCaptureManagerTab()
+    {
+      string captureTitle = Program.Resources.GetString("CaptureManager");
+      TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(captureTitle);
+      try
+      {
+        terminalTabPage.AllowDrop = false;
+        terminalTabPage.ToolTipText = captureTitle;
+        terminalTabPage.Favorite = null;
+        terminalTabPage.DoubleClick += new EventHandler(this.mainForm.terminalTabPage_DoubleClick);
+        this.AddAndSelect(terminalTabPage);
+        this.mainForm.UpdateControls();
+
+        IConnection conn = new CaptureManagerConnection();
+        conn.TerminalTabPage = terminalTabPage;
+        conn.ParentForm = this.mainForm;
+        conn.Connect();
+        (conn as Control).BringToFront();
+        (conn as Control).Update();
+
+        this.mainForm.UpdateControls();
+      }
+      catch (Exception exc)
+      {
+        Logging.Log.Error("Error loading the Capture Manager Tab Page", exc);
+        this.RemoveAndUnSelect(terminalTabPage);
+        terminalTabPage.Dispose();
+      }
+    }
+
+    internal void UpdateCaptureButtonOnDetachedPopUps()
+    {
+      bool newEnable = Settings.EnabledCaptureToFolderAndClipBoard;
+      foreach (PopupTerminal detachedWindow in this.detachedWindows)
+      {
+        detachedWindow.UpdateCaptureButtonEnabled(newEnable);
+      }
     }
   }
 }

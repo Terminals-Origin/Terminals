@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
-using System.Runtime.InteropServices;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Terminals.CaptureManager
 {
@@ -24,8 +24,8 @@ namespace Terminals.CaptureManager
         public static Captures LoadCaptures(string Path)
         {
             Captures c = new Captures();
-            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(Path);
-            foreach (System.IO.FileInfo cap in dir.GetFiles("*.png"))
+            DirectoryInfo dir = new DirectoryInfo(Path);
+            foreach (FileInfo cap in dir.GetFiles("*.png"))
             {
                 Capture newCap = new Capture(cap.FullName);
                 c.Add(newCap);
@@ -37,23 +37,23 @@ namespace Terminals.CaptureManager
         public static Capture PerformScreenCapture(TabControl.TabControl tab)
         {
             string filename = DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss");
-            string tempFile = System.IO.Path.Combine(CaptureManager.CaptureRoot, string.Format("{0}.png", filename));
+            string tempFile = Path.Combine(CaptureRoot, string.Format("{0}.png", filename));
             ScreenCapture sc = new ScreenCapture();
             Bitmap bmp = sc.CaptureControl(tab, tempFile, ImageFormatHandler.ImageFormatTypes.imgPNG);
 
             if (Settings.EnableCaptureToClipboard)
-                System.Windows.Forms.Clipboard.SetImage(bmp);
+                Clipboard.SetImage(bmp);
 
             return null;
         }
 
-        public static List<System.IO.DirectoryInfo> LoadCaptureFolder(string Path)
+        public static List<DirectoryInfo> LoadCaptureFolder(string Path)
         {
-            if (!System.IO.Directory.Exists(Path)) 
+            if (!Directory.Exists(Path)) 
                 return null;
 
-            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(Path);
-            return new List<System.IO.DirectoryInfo>(dir.GetDirectories());
+            DirectoryInfo dir = new DirectoryInfo(Path);
+            return new List<DirectoryInfo>(dir.GetDirectories());
         }
     }
 }

@@ -666,6 +666,11 @@ namespace Terminals
             }
         }
 
+        internal static bool EnabledCaptureToFolderAndClipBoard
+        {
+          get { return EnableCaptureToClipboard && EnableCaptureToFolder; }
+        }
+
         public static bool AutoSwitchOnCapture
         {
             get

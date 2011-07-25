@@ -155,5 +155,21 @@ namespace Terminals
         this.tabControl1.CloseTab(activeTab);
       }
     }
+
+    private void CaptureToolStripButton_Click(object sender, EventArgs e)
+    {
+      CaptureManager.CaptureManager.PerformScreenCapture(this.tabControl1);
+      this.mainTabsControler.RefreshCaptureManagerAndCreateItsTab(false);
+    }
+
+    private void PopupTerminal_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      this.mainTabsControler.UnRegisterPopUp(this);
+    }
+
+    internal void UpdateCaptureButtonEnabled(bool newEnabledState)
+    {
+      this.CaptureToolStripButton.Enabled = newEnabledState;
+    }
   }
 }

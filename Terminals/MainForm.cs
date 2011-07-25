@@ -136,7 +136,7 @@ namespace Terminals
                 _formSettings = new FormSettings(this);
                 
                 InitializeComponent();
-                this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals);
+                this.terminalsControler = new TerminalTabsSelectionControler(this, this.tcTerminals);
 
                 if (Settings.Office2007BlueFeel)
                     ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Blue);
@@ -171,10 +171,7 @@ namespace Terminals
                 else
                     MainMenuStrip.GripStyle = ToolStripGripStyle.Visible;
 
-                // Disable capture button when function is disabled in options
-                Boolean enableCapture = (Settings.EnableCaptureToClipboard && Settings.EnableCaptureToFolder);
-                this.CaptureScreenToolStripButton.Enabled = enableCapture;
-                this.captureTerminalScreenToolStripMenuItem.Enabled = enableCapture;
+                UpdateCaptureButtonEnabled();
 
                 _mainForm = this;
 
@@ -227,7 +224,7 @@ namespace Terminals
 
             if ((Math.Abs(mouseLeft - downLeft) >= MouseBreakThreshold) || (Math.Abs(mouseTop - downTop) >= MouseBreakThreshold))
             {
-              this.terminalsControler.ReleaseTabToNewWindow();
+              this.terminalsControler.DetachTabToNewWindow();
             }
         }
 
@@ -619,7 +616,7 @@ namespace Terminals
 
             if (conn.Connected && favorite.NewWindow)
             {
-              this.terminalsControler.ReleaseTabToNewWindow(terminalTabPage);
+              this.terminalsControler.DetachTabToNewWindow(terminalTabPage);
             }
           }
           catch (Exception exc)
@@ -1360,27 +1357,6 @@ namespace Terminals
             this.rebuildShortcutsToolStripMenuItem_Click(null, null);
         }
 
-        private Boolean RefreshCaptureManager(Boolean setFocus)
-        {
-            foreach (TerminalTabControlItem tab in tcTerminals.Items)
-            {
-                if (tab.Title == Program.Resources.GetString("CaptureManager"))
-                {
-                    CaptureManagerConnection conn = (tab.Connection as CaptureManagerConnection);
-                    conn.RefreshView();
-                    if (setFocus && Settings.EnableCaptureToFolder && Settings.AutoSwitchOnCapture)
-                    {
-                        conn.BringToFront();
-                        conn.Update();
-                        this.terminalsControler.Select(tab);
-                    }
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         #endregion
 
@@ -1569,7 +1545,7 @@ namespace Terminals
             }
             else if (e.ClickedItem.Text == Program.Resources.GetString("ScreenCaptureManager"))
             {
-                this.toolStripMenuItemCaptureManager_Click(new Object(), null);
+                this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(true);
             }
             else if (e.ClickedItem.Text == Program.Resources.GetString("Exit"))
             {
@@ -1710,7 +1686,7 @@ namespace Terminals
             this.terminalsControler.Select(sender as TerminalTabControlItem);
         }
 
-        private void terminalTabPage_DoubleClick(object sender, EventArgs e)
+        internal void terminalTabPage_DoubleClick(object sender, EventArgs e)
         {
             if (this.terminalsControler.HasSelected)
             {
@@ -2078,14 +2054,22 @@ namespace Terminals
                     this.terminalsControler.Selected.ToolTipText = this.terminalsControler.Selected.Favorite.GetToolTipText();
                 }
 
-                // Disable capture button when function is disabled in options
-                Boolean enableCapture = (Settings.EnableCaptureToClipboard && Settings.EnableCaptureToFolder);
-                this.CaptureScreenToolStripButton.Enabled = enableCapture;
-                this.captureTerminalScreenToolStripMenuItem.Enabled = enableCapture;
+                UpdateCaptureButtonEnabled();
             }
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+      /// <summary>
+      /// Disable capture button when function is disabled in options
+      /// </summary>
+      private void UpdateCaptureButtonEnabled()
+      {
+        Boolean enableCapture = Settings.EnabledCaptureToFolderAndClipBoard;
+        this.CaptureScreenToolStripButton.Enabled = enableCapture;
+        this.captureTerminalScreenToolStripMenuItem.Enabled = enableCapture;
+        this.terminalsControler.UpdateCaptureButtonOnDetachedPopUps();
+      }
+
+      private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (AboutForm frmAbout = new AboutForm())
             {
@@ -2160,10 +2144,10 @@ namespace Terminals
         private void CaptureScreenToolStripButton_Click(object sender, EventArgs e)
         {
             CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
-            this.RefreshCaptureManager(false);
+            this.terminalsControler.RefreshCaptureManager(false);
 
             if (Settings.EnableCaptureToFolder && Settings.AutoSwitchOnCapture)
-                this.toolStripMenuItemCaptureManager_Click(null, null);
+                this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(false);
         }
 
         private void captureTerminalScreenToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2336,42 +2320,7 @@ namespace Terminals
 
         private void toolStripMenuItemCaptureManager_Click(object sender, EventArgs e)
         {
-            Boolean createNew = !this.RefreshCaptureManager(true);
-
-            if (createNew)
-            {
-                if (sender == null && (!Settings.EnableCaptureToFolder || !Settings.AutoSwitchOnCapture))
-                    createNew = false;
-            }
-
-            if (createNew)
-            {
-                TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(Program.Resources.GetString("CaptureManager"));
-                try
-                {
-                    terminalTabPage.AllowDrop = false;
-                    terminalTabPage.ToolTipText = Program.Resources.GetString("CaptureManager");
-                    terminalTabPage.Favorite = null;
-                    terminalTabPage.DoubleClick += new EventHandler(terminalTabPage_DoubleClick);
-                    this.terminalsControler.AddAndSelect(terminalTabPage);
-                    tcTerminals_SelectedIndexChanged(this, EventArgs.Empty);
-
-                    IConnection conn = new CaptureManagerConnection();
-                    conn.TerminalTabPage = terminalTabPage;
-                    conn.ParentForm = this;
-                    conn.Connect();
-                    (conn as Control).BringToFront();
-                    (conn as Control).Update();
-
-                    this.UpdateControls();
-                }
-                catch (Exception exc)
-                {
-                    Logging.Log.Error("Error loading the Capture Manager Tab Page", exc);
-                    this.terminalsControler.RemoveAndUnSelect(terminalTabPage);
-                    terminalTabPage.Dispose();
-                }
-            }
+          this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(true);
         }
 
         private void toolStripButtonCaptureManager_Click(object sender, EventArgs e)
@@ -2382,7 +2331,7 @@ namespace Terminals
                 Settings.AutoSwitchOnCapture = true;
             }
 
-            toolStripMenuItemCaptureManager_Click(new object(), null);
+            this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(true);
             Settings.AutoSwitchOnCapture = origval;
         }
 
@@ -2504,8 +2453,8 @@ namespace Terminals
             //handle global keyup events
             if (e.Control && e.KeyCode == Keys.F12)
             {
-                CaptureManager.Capture cap = CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
-                this.toolStripMenuItemCaptureManager_Click(null, null);
+                CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
+                this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(false);
             }
             else if (e.KeyCode == Keys.F4)
             {
@@ -2531,7 +2480,7 @@ namespace Terminals
         {
             if (this.CurrentConnection != null)
             {
-              this.terminalsControler.ReleaseTabToNewWindow();
+              this.terminalsControler.DetachTabToNewWindow();
             }
         }
 
