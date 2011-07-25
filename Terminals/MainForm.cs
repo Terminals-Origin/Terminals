@@ -380,7 +380,6 @@ namespace Terminals
           this.Text = Program.Info.AboutText;
           if (this.tcTerminals.Items.Count == 0)
             this.FullScreen = false;
-            tcTerminals_TabControlItemClosed(null, EventArgs.Empty);
         }
 
         public String GetDesktopShare()

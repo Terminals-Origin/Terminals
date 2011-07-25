@@ -106,7 +106,6 @@ namespace Terminals {
           this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
           this.splitContainer1 = new System.Windows.Forms.SplitContainer();
           this.pnlTagsFavorites = new System.Windows.Forms.Panel();
-          this.favsList1 = new Terminals.FavsList();
           this.pnlHideTagsFavorites = new System.Windows.Forms.Panel();
           this.pbHideTagsFavorites = new System.Windows.Forms.PictureBox();
           this.pnlShowTagsFavorites = new System.Windows.Forms.Panel();
@@ -127,6 +126,7 @@ namespace Terminals {
           this.remoteDesktop1 = new VncSharp.RemoteDesktop();
           this.tabControlItem1 = new TabControl.TabControlItem();
           this.tabControlItem2 = new TabControl.TabControlItem();
+          this.favsList1 = new Terminals.FavsList();
           this.menuStrip.SuspendLayout();
           this.toolbarStd.SuspendLayout();
           this.toolStripContainer.ContentPanel.SuspendLayout();
@@ -627,7 +627,7 @@ namespace Terminals {
           this.tscConnectTo.Name = "tscConnectTo";
           this.tscConnectTo.Size = new System.Drawing.Size(199, 25);
           this.tscConnectTo.Sorted = true;
-          this.tscConnectTo.ToolTipText = "Ty address of a server where to connect";
+          this.tscConnectTo.ToolTipText = "Ty address of a server where to connect (F4)";
           this.tscConnectTo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscConnectTo_KeyDown);
           this.tscConnectTo.TextChanged += new System.EventHandler(this.tscConnectTo_TextChanged);
           // 
@@ -763,7 +763,8 @@ namespace Terminals {
           this.CaptureScreenToolStripButton.Name = "CaptureScreenToolStripButton";
           this.CaptureScreenToolStripButton.Size = new System.Drawing.Size(23, 22);
           this.CaptureScreenToolStripButton.Text = "Capture Terminal Screen";
-          this.CaptureScreenToolStripButton.ToolTipText = "Capture Terminal Screen";
+          this.CaptureScreenToolStripButton.ToolTipText = "Capture Terminal Screen. This feature has to be enabled in application options fi" +
+              "rst.  (Ctrl+F12)";
           this.CaptureScreenToolStripButton.Click += new System.EventHandler(this.CaptureScreenToolStripButton_Click);
           // 
           // toolStripButtonCaptureManager
@@ -936,14 +937,6 @@ namespace Terminals {
           this.pnlTagsFavorites.Name = "pnlTagsFavorites";
           this.pnlTagsFavorites.Size = new System.Drawing.Size(224, 474);
           this.pnlTagsFavorites.TabIndex = 6;
-          // 
-          // favsList1
-          // 
-          this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
-          this.favsList1.Location = new System.Drawing.Point(5, 0);
-          this.favsList1.Name = "favsList1";
-          this.favsList1.Size = new System.Drawing.Size(212, 472);
-          this.favsList1.TabIndex = 2;
           // 
           // pnlHideTagsFavorites
           // 
@@ -1139,6 +1132,14 @@ namespace Terminals {
           this.tabControlItem2.TabIndex = 3;
           this.tabControlItem2.Title = "TabControl Page 4";
           this.tabControlItem2.ToolTipText = "";
+          // 
+          // favsList1
+          // 
+          this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
+          this.favsList1.Location = new System.Drawing.Point(5, 0);
+          this.favsList1.Name = "favsList1";
+          this.favsList1.Size = new System.Drawing.Size(212, 472);
+          this.favsList1.TabIndex = 2;
           // 
           // MainForm
           // 

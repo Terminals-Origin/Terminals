@@ -74,6 +74,8 @@
           this.CaptureToolStripButton.Name = "CaptureToolStripButton";
           this.CaptureToolStripButton.Size = new System.Drawing.Size(101, 22);
           this.CaptureToolStripButton.Text = "Capture screen";
+          this.CaptureToolStripButton.ToolTipText = "Capture Terminal Screen. This feature has to be enabled in application options fi" +
+              "rst. (Ctrl+F12)";
           this.CaptureToolStripButton.Click += new System.EventHandler(this.CaptureToolStripButton_Click);
           // 
           // PopupTerminal
@@ -84,10 +86,12 @@
           this.Controls.Add(this.tabControl1);
           this.Controls.Add(this.mainToolStrip);
           this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+          this.KeyPreview = true;
           this.Name = "PopupTerminal";
           this.Text = "Terminal Window";
           this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PopupTerminal_FormClosing);
           this.Load += new System.EventHandler(this.PopupTerminal_Load);
+          this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.PopupTerminal_KeyUp);
           ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).EndInit();
           this.mainToolStrip.ResumeLayout(false);
           this.mainToolStrip.PerformLayout();

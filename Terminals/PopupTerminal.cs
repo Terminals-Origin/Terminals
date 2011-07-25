@@ -158,6 +158,11 @@ namespace Terminals
 
     private void CaptureToolStripButton_Click(object sender, EventArgs e)
     {
+      CaptureScreen();
+    }
+
+    private void CaptureScreen()
+    {
       CaptureManager.CaptureManager.PerformScreenCapture(this.tabControl1);
       this.mainTabsControler.RefreshCaptureManagerAndCreateItsTab(false);
     }
@@ -170,6 +175,14 @@ namespace Terminals
     internal void UpdateCaptureButtonEnabled(bool newEnabledState)
     {
       this.CaptureToolStripButton.Enabled = newEnabledState;
+    }
+
+    private void PopupTerminal_KeyUp(object sender, KeyEventArgs e)
+    {
+      if(e.Control && e.KeyCode == Keys.F12)
+      {
+        CaptureScreen();
+      }
     }
   }
 }
