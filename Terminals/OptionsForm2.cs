@@ -12,11 +12,11 @@ namespace Terminals
 {
     public partial class OptionsForm2 : Form
     {
-        private AxMsRdpClient6 _currentTerminal;
-        private String _tempFrob;
-        private String _amazonBucket = "Terminals";
-        private String _amazonConfigKeyName = "Terminals.config";
-        private Panel _currentPanel = null;
+        private AxMsRdpClient6 currentTerminal;
+        private String tempFrob;
+        private readonly String amazonBucket = "Terminals";
+        private readonly String amazonConfigKeyName = "Terminals.config";
+        private Panel currentPanel = null;
 
         #region Constructors
         
@@ -140,12 +140,12 @@ namespace Terminals
             else
                 this.RenderNormalRadio.Checked = true;
 
-            this._currentTerminal = terminal;
+            this.currentTerminal = terminal;
 
             // Edit appearance
             this.EvaluatedDesktopShareLabel.Visible = false;
             this.PasswordsMatchLabel.Text = String.Empty;
-            this._currentPanel = this.panelStartupShutdown;
+            this.currentPanel = this.panelStartupShutdown;
             this.OptionsTreeView.SelectedNode = this.OptionsTreeView.Nodes[0];
             this.OptionsTreeView.Select();
             this.OptionTitelLabel.BackColor = Color.FromArgb(17, 0, 252);
@@ -215,10 +215,11 @@ namespace Terminals
 
         private void EvaluateDesktopShare()
         {
-            if (this._currentTerminal != null)
+            if (this.currentTerminal != null)
             {
-                this.EvaluatedDesktopShareLabel.Text = this.txtDefaultDesktopShare.Text.Replace("%SERVER%", this._currentTerminal.Server).Replace(
-                    "%USER%", this._currentTerminal.UserName);
+                this.EvaluatedDesktopShareLabel.Text = 
+                    this.txtDefaultDesktopShare.Text.Replace("%SERVER%", this.currentTerminal.Server).Replace(
+                    "%USER%", this.currentTerminal.UserName);
             }
             else
             {
@@ -234,19 +235,32 @@ namespace Terminals
         {
             try
             {
-                this._currentPanel.Hide();
-                this._currentPanel = (Panel)this.Controls["panel" + this.OptionsTreeView.SelectedNode.Tag.ToString()];
+                // Show correct options panel on node selection
+                this.currentPanel.Hide();
+                this.currentPanel = (Panel)this.Controls["panel" + this.OptionsTreeView.SelectedNode.Tag.ToString()];
 
                 Int32 x = this.OptionTitelLabel.Left;
                 Int32 y = this.OptionTitelLabel.Top + this.OptionTitelLabel.Height + 3;
-                this._currentPanel.Location = new Point(x, y);
-                this._currentPanel.Show();
+                this.currentPanel.Location = new Point(x, y);
+                this.currentPanel.Show();
 
                 this.OptionTitelLabel.Text = this.OptionsTreeView.SelectedNode.Name.Replace("&", "&&");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Terminals.Logging.Log.Info(ex);
+            }
+        }
 
+        private void OptionsTreeView_NodeMouseClick(object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
+        {
+            // Expand or collapse parent node with a single mouseclick
+            if (e.Node.GetNodeCount(true) > 0)
+            {
+                if (e.Node.IsExpanded)
+                    e.Node.Collapse();
+                else
+                    e.Node.Expand();
             }
         }
 
@@ -388,9 +402,9 @@ namespace Terminals
             // Create Flickr instance    
             Flickr flickr = new Flickr(Program.FlickrAPIKey, Program.FlickrSharedSecretKey);    
             // Get Frob        
-            this._tempFrob = flickr.AuthGetFrob();
+            this.tempFrob = flickr.AuthGetFrob();
             // Calculate the URL at Flickr to redirect the user to    
-            String flickrUrl = flickr.AuthCalcUrl(this._tempFrob, AuthLevel.Write);    
+            String flickrUrl = flickr.AuthCalcUrl(this.tempFrob, AuthLevel.Write);    
             // The following line will load the URL in the users default browser.    
             System.Diagnostics.Process.Start(flickrUrl);
             CompleteAuthButton.Enabled = true;
@@ -403,7 +417,7 @@ namespace Terminals
             try
             {
                 // use the temporary Frob to get the authentication
-                Auth auth = flickr.AuthGetToken(this._tempFrob);
+                Auth auth = flickr.AuthGetToken(this.tempFrob);
                 // Store this Token for later usage,
                 // or set your Flickr instance to use it.
                 MessageBox.Show("User authenticated successfully");
@@ -469,14 +483,14 @@ namespace Terminals
 
                 try
                 {
-                    String terminals = wrapper.ListBucket(this._amazonBucket);
+                    String terminals = wrapper.ListBucket(this.amazonBucket);
                 }
                 catch (Exception exc)
                 {
                     if (exc.Message == "The specified bucket does not exist")
                     {
-                        wrapper.AddBucket(this._amazonBucket);
-                        String terminals = wrapper.ListBucket(this._amazonBucket);
+                        wrapper.AddBucket(this.amazonBucket);
+                        String terminals = wrapper.ListBucket(this.amazonBucket);
                     }
                 }
 
@@ -512,17 +526,17 @@ namespace Terminals
                 String url = String.Empty;
                 try
                 {
-                    String terminals = wrapper.ListBucket(this._amazonBucket);
+                    String terminals = wrapper.ListBucket(this.amazonBucket);
                 }
                 catch (Exception)
                 {
-                    wrapper.AddBucket(this._amazonBucket);
+                    wrapper.AddBucket(this.amazonBucket);
                 }
 
                 try
                 {
-                    wrapper.AddFileObject(this._amazonBucket, this._amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
-                    url = wrapper.GetUrl(this._amazonBucket, this._amazonConfigKeyName);
+                    wrapper.AddFileObject(this.amazonBucket, this.amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
+                    url = wrapper.GetUrl(this.amazonBucket, this.amazonConfigKeyName);
                 }
                 catch (Exception exc)
                 {
@@ -543,7 +557,7 @@ namespace Terminals
                 Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
                 try
                 {
-                    String terminals = wrapper.ListBucket(this._amazonBucket);
+                    String terminals = wrapper.ListBucket(this.amazonBucket);
                 }
                 catch (Exception exc)
                 {
@@ -554,7 +568,7 @@ namespace Terminals
 
                 try
                 {
-                    wrapper.GetFileObject(this._amazonBucket, this._amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
+                    wrapper.GetFileObject(this.amazonBucket, this.amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
                 }
                 catch (Exception exc)
                 {

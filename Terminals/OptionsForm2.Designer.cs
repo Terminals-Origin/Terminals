@@ -603,6 +603,7 @@ namespace Terminals
             this.OptionsTreeView.Size = new System.Drawing.Size(192, 365);
             this.OptionsTreeView.TabIndex = 6;
             this.OptionsTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OptionsTreeView_AfterSelect);
+            this.OptionsTreeView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(OptionsTreeView_NodeMouseClick);
             // 
             // tabControl3
             // 
