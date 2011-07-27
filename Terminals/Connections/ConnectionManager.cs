@@ -1,170 +1,153 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using AxMSTSCLib;
-using MSTSC = MSTSCLib;
-using Terminals.Properties;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using TabControl;
-using System.IO;
 
-namespace Terminals.Connections {
-    public class ConnectionManager {
+namespace Terminals.Connections
+{
+  public class ConnectionManager
+  {
+    public const int RDPPort = 3389;
+    public const int VNCVMRCPort = 5900;
+    public const int TelnetPort = 23;
+    public const int SSHPort = 22;
+    public const int ICAPort = 1494;
+    public const int HTTPPort = 80;
+    public const int HTTPSPort = 443;
 
-        public const int RDPPort = 3389;
-        public const int VNCVMRCPort = 5900;
-        public const int TelnetPort = 23;
-        public const int SSHPort = 22;
-        public const int ICAPort = 1494;
-        public const int HTTPPort = 80;
-        public const int HTTPSPort = 443;
+    private const string VNC = "VNC";
+    private const string VMRC = "VMRC";
+    private const string RAS = "RAS";
+    private const string TELNET = "Telnet";
+    private const string SSH = "SSH";
+    private const string RDP = "RDP";
+    private const string ICA_CITRIX = "ICA Citrix";
+    private const string HTTP = "HTTP";
+    private const string HTTPS = "HTTPS";
 
-        public static void GetSize(ref int Height, ref int Width, Connections.Connection Connection, DesktopSize Size) {
-            switch(Size) {
-                case DesktopSize.x640:
-                    Width = 640;
-                    Height = 480;
-                    break;
-                case DesktopSize.x800:
-                    Width = 800;
-                    Height = 600;
-                    break;
-                case DesktopSize.x1024:
-                    Width = 1024;
-                    Height = 768;
-                    break;
-                case DesktopSize.x1152:
-                    Width = 1152;
-                    Height = 864;
-                    break;
-                case DesktopSize.x1280:
-                    Width = 1280;
-                    Height = 1024;
-                    break;
-                case DesktopSize.FitToWindow:
-                    Width = Connection.TerminalTabPage.Width;
-                    Height = Connection.TerminalTabPage.Height;
-                    break;
-                case DesktopSize.FullScreen:
-                    Width = Screen.FromControl(Connection).Bounds.Width - 13;
-                    Height = Screen.FromControl(Connection).Bounds.Height - 1;
-                    break;
-                case DesktopSize.AutoScale:
-                    Width = Math.Max(Connection.TerminalTabPage.Width, Width);
-                    Height = Math.Max(Connection.TerminalTabPage.Height, Height);
-                    break;
-                case DesktopSize.Custom:
-                    break;
-            }
-            int maxWidth = 4096;
-            int maxHeight = 2048;
+    private const int MAX_WIDTH = 4096;
+    private const int MAX_HEIGHT = 2048;
 
-            Width = Math.Min(maxWidth, Width);
-            Height = Math.Min(maxHeight, Height); ;
+    public static Size GetSize(Connection Connection, FavoriteConfigurationElement favorite)
+    {
+      int height = favorite.DesktopSizeHeight;
+      int width = favorite.DesktopSizeWidth;
 
-        }
-        public static IConnection CreateConnection(FavoriteConfigurationElement Favorite, TerminalTabControlItem TerminalTabPage, MainForm parentForm) {
-            IConnection conn = null; ;
-            switch (Favorite.Protocol) {
-                case "VNC":
-                    conn = new VNCConnection();
-                    break;
-                case "VMRC":
-                    conn = new VMRCConnection();
-                    break;
-                case "RAS":
-                    conn = new RASConnection();
-                    break;
-                case "Telnet":
-                    conn = new TerminalConnection();
-                    break;
-                case "SSH":
-                    conn = new TerminalConnection();
-                    break;
-                case "ICA Citrix":
-                    conn = new ICAConnection();
-                    break;
-                case "HTTP":
-                    conn = new HTTPConnection();
-                    break;
-                case "HTTPS":
-                    conn = new HTTPConnection();
-                    break;
-                default:
-                    conn = new RDPConnection();
-                    break;
-            }
-            conn.Favorite = Favorite;
-            TerminalTabPage.Connection = conn;
-            conn.TerminalTabPage = TerminalTabPage;
-            conn.ParentForm = parentForm;
-            return conn;
-        }
-        public static int GetPort(string Name) {
-            int port = 0;
-            switch (Name) {
-                case "VNC":
-                    port = VNCVMRCPort;
-                    break;
-                case "VMRC":
-                    port = VNCVMRCPort;
-                    break;
-                case "Telnet":
-                    port = TelnetPort;
-                    break;
-                case "RDP":
-                    port = RDPPort;
-                    break;
-                case "ICA Citrix":
-                    port = ICAPort;
-                    break;
-                case "HTTP":
-                    port = HTTPPort;
-                    break;
-                case "HTTPS":
-                    port = HTTPSPort;
-                    break;
-                default:
-                    port = 0;
-                    break;
-            }
-            return port;
-        }
-        public static string GetPortName(int Port, bool isVMRC) {
-            string port = "RDP";
-            switch (Port) {
-                case VNCVMRCPort:
-                    if (isVMRC) {
-                        port = "VMRC";
-                    } else {
-                        port = "VNC";
-                    }
-                    break;
-                case TelnetPort:
-                    port = "Telnet";
-                    break;
-                case SSHPort:
-                    port = "SSH";
-                    break;
-                case ICAPort:
-                    port = "ICA Citrix";
-                    break;
-                case HTTPPort:
-                    port = "HTTP";
-                    break;
-                case HTTPSPort:
-                    port = "HTTPS";
-                    break;
-                default:
-                    port = "RDP";
-                    break;
-            }
-            return port;
-        }
+      switch (favorite.DesktopSize)
+      {
+        case DesktopSize.x640:
+          return new Size(640, 480);
+        case DesktopSize.x800:
+          return new Size(800, 600);
+        case DesktopSize.x1024:
+          return new Size(1024, 768);
+        case DesktopSize.x1152:
+          return new Size(1152, 864);
+        case DesktopSize.x1280:
+          return new Size(1280, 1024);
+        case DesktopSize.FullScreen:
+          width = Screen.FromControl(Connection).Bounds.Width - 13;
+          height = Screen.FromControl(Connection).Bounds.Height - 1;
+          return GetMaxAvailableSize(width, height);
+        case DesktopSize.FitToWindow:
+        case DesktopSize.AutoScale:
+          width = Connection.TerminalTabPage.Width;
+          height = Connection.TerminalTabPage.Height;
+          return GetMaxAvailableSize(width, height);
+        default:
+          return new Size(width, height);
+      }
     }
+
+    private static Size GetMaxAvailableSize(int width, int height)
+    {
+      width = Math.Min(MAX_WIDTH, width);
+      height = Math.Min(MAX_HEIGHT, height);
+      return new Size(width, height);
+    }
+
+    public static IConnection CreateConnection(FavoriteConfigurationElement Favorite,
+      TerminalTabControlItem TerminalTabPage, MainForm parentForm)
+    {
+      IConnection conn = CreateConnection(Favorite);
+      conn.Favorite = Favorite;
+      TerminalTabPage.Connection = conn;
+      conn.TerminalTabPage = TerminalTabPage;
+      conn.ParentForm = parentForm;
+      return conn;
+    }
+
+    private static IConnection CreateConnection(FavoriteConfigurationElement Favorite)
+    {
+      switch (Favorite.Protocol)
+      {
+        case VNC:
+          return new VNCConnection();
+        case VMRC:
+          return new VMRCConnection();
+        case RAS:
+          return new RASConnection();
+        case TELNET:
+          return new TerminalConnection();
+        case SSH:
+          return new TerminalConnection();
+        case ICA_CITRIX:
+          return new ICAConnection();
+        case HTTP:
+          return new HTTPConnection();
+        case HTTPS:
+          return new HTTPConnection();
+        default:
+          return new RDPConnection();
+      }
+    }
+
+    public static int GetPort(string Name)
+    {
+      switch (Name)
+      {
+        case VNC:
+          return VNCVMRCPort;
+        case VMRC:
+          return VNCVMRCPort;
+        case TELNET:
+          return TelnetPort;
+        case RDP:
+          return RDPPort;
+        case ICA_CITRIX:
+          return ICAPort;
+        case HTTP:
+          return HTTPPort;
+        case HTTPS:
+          return HTTPSPort;
+        default:
+          return 0;
+      }
+    }
+
+    public static string GetPortName(int Port, bool isVMRC)
+    {
+      switch (Port)
+      {
+        case VNCVMRCPort:
+          if (isVMRC)
+          {
+            return VMRC;
+          }
+
+          return VNC;
+        case TelnetPort:
+          return TELNET;
+        case SSHPort:
+          return SSH;
+        case ICAPort:
+          return ICA_CITRIX;
+        case HTTPPort:
+          return HTTP;
+        case HTTPSPort:
+          return HTTPS;
+        default:
+          return RDP;
+      }
+    }
+  }
 }

@@ -1,27 +1,24 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+using System.Drawing;
 using AxVMRCClientControlLib;
-using System.IO;
 
 namespace Terminals.Connections {
     public class VMRCConnection : Connection {
         #region IConnection Members
         private bool connected = false;
         public override bool Connected { get { return connected; } }
-        public override void ChangeDesktopSize(Terminals.DesktopSize Size) {
+        public override void ChangeDesktopSize(DesktopSize Size) {
         }
 
-        AxVMRCClientControlLib.AxVMRCClientControl vmrc;
+        AxVMRCClientControl vmrc;
         public override bool Connect() {
             try
             {
-                vmrc = new AxVMRCClientControlLib.AxVMRCClientControl();
-                Controls.Add((System.Windows.Forms.Control)vmrc);
+                vmrc = new AxVMRCClientControl();
+                Controls.Add(vmrc);
                 vmrc.BringToFront();
                 this.BringToFront();
-                vmrc.Parent = base.TerminalTabPage;
+                vmrc.Parent = TerminalTabPage;
                 this.Parent = TerminalTabPage;
 
                 //vmrc.CtlAutoSize = true;
@@ -43,16 +40,11 @@ namespace Terminals.Connections {
                 vmrc.AdministratorMode = Favorite.VMRCAdministratorMode;
                 vmrc.ReducedColorsMode = Favorite.VMRCReducedColorsMode;
 
-                int height = Favorite.DesktopSizeHeight, width = Favorite.DesktopSizeWidth;
-                ConnectionManager.GetSize(ref height, ref width, this, Favorite.DesktopSize);
+                Size size = ConnectionManager.GetSize(this, Favorite);
+                //vmrc.ServerDisplayHeight = size.Height;
+                //vmrc.ServerDisplayWidth = size.Width;
 
-                //vmrc.ServerDisplayHeight = height;
-                //vmrc.ServerDisplayWidth = width;
                 vmrc.OnStateChanged += new _IVMRCClientControlEvents_OnStateChangedEventHandler(vmrc_OnStateChanged);
-
-                //vmrc.ServerDisplayHeight;
-                //vmrc.ServerDisplayWidth;
-
                 vmrc.OnSwitchedDisplay += new _IVMRCClientControlEvents_OnSwitchedDisplayEventHandler(vmrc_OnSwitchedDisplay);
 
                 Text = "Connecting to VMRC Server...";
@@ -63,23 +55,23 @@ namespace Terminals.Connections {
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Fatal("Connecting to VMRC", exc);
+                Logging.Log.Fatal("Connecting to VMRC", exc);
                 return false;
             }
         }
 
-        void vmrc_OnSwitchedDisplay(object sender, _IVMRCClientControlEvents_OnSwitchedDisplayEvent e)
+        private void vmrc_OnSwitchedDisplay(object sender, _IVMRCClientControlEvents_OnSwitchedDisplayEvent e)
         {
             Text = e.displayName;
         }
 
-        void vmrc_OnStateChanged(object sender, _IVMRCClientControlEvents_OnStateChangedEvent e)
+        private void vmrc_OnStateChanged(object sender, _IVMRCClientControlEvents_OnStateChangedEvent e)
         {
             if(e.state == VMRCClientControlLib.VMRCState.vmrcState_Connected) 
                 this.connected = true;
             else {
                 connected = false;
-                Terminals.Logging.Log.Fatal("VMRC Connection Lost" + this.Favorite.Name);
+                Logging.Log.Fatal("VMRC Connection Lost" + this.Favorite.Name);
                 this.connected = false;
 
                 if (ParentForm.InvokeRequired)
@@ -117,7 +109,7 @@ namespace Terminals.Connections {
             try {
                 vmrc.Disconnect();
             } catch (Exception e) {
-                Terminals.Logging.Log.Error("Disconnect", e);
+                Logging.Log.Error("Disconnect", e);
             }
         }
 

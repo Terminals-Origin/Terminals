@@ -185,7 +185,10 @@
     </Compile>
     <Compile Include="CaptureManager\Captures.cs" />
     <Compile Include="CommandLine\TerminalsCA.cs" />
-    <Compile Include="Configuration\CommonEnums.cs" />
+    <Compile Include="Configuration\Colors.cs" />
+    <Compile Include="Configuration\DesktopSize.cs" />
+    <Compile Include="Configuration\RemoteSounds.cs" />
+    <Compile Include="Configuration\PerfomanceOptions.cs" />
     <Compile Include="Configuration\SpecialCommandConfigurationElement.cs" />
     <Compile Include="Configuration\SpecialCommandConfigurationElementCollection.cs" />
     <Compile Include="Configuration\FavoriteAliasConfigurationElement.cs" />

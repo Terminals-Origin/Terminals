@@ -208,14 +208,14 @@ namespace Terminals
           }
         }
 
-        private Boolean MouseDown { get; set; }
+        private Boolean IsMouseDown { get; set; }
         private  Point MouseDownLocation { get; set; }
         private Int32 MouseBreakThreshold = 200;
 
         private void tcTerminals_MouseUp(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Default;
-            MouseDown = false;
+            this.IsMouseDown = false;
             Int32 mouseLeft = MousePosition.X;
             Int32 downLeft = MouseDownLocation.X;
 
@@ -234,7 +234,7 @@ namespace Terminals
             // TODO: only show arrow when mousedown over connection tab and mouse is moving
             // Maybe also use another cursor?
             // Cursor = Cursors.UpArrow; 
-            MouseDown = true;
+            this.IsMouseDown = true;
         }
 
         public void LoadWindowState()
@@ -630,12 +630,27 @@ namespace Terminals
           terminalTabPage.AllowDrop = true;
           terminalTabPage.DragOver += this.terminalTabPage_DragOver;
           terminalTabPage.DragEnter += new DragEventHandler(this.terminalTabPage_DragEnter);
-          this.Resize += new EventHandler(this.MainForm_Resize);
+          terminalTabPage.Resize += new EventHandler(terminalTabPage_Resize);
           terminalTabPage.ToolTipText = favorite.GetToolTipText();
           terminalTabPage.Favorite = favorite;
           terminalTabPage.DoubleClick += new EventHandler(this.terminalTabPage_DoubleClick);
           this.terminalsControler.AddAndSelect(terminalTabPage);
           this.UpdateControls();
+        }
+
+        private void terminalTabPage_Resize(object sender, EventArgs e)
+        {
+          TerminalTabControlItem terminalTabControlItem = sender as TerminalTabControlItem;
+          RDPConnection rdpConnection = terminalTabControlItem.Connection as RDPConnection;
+          if (rdpConnection != null &&
+              !rdpConnection.AxMsRdpClient.AdvancedSettings3.SmartSizing)
+          {
+            //rdpConnection.AxMsRdpClient.DesktopWidth = terminalTabControlItem.Width;
+            //rdpConnection.AxMsRdpClient.DesktopHeight = terminalTabControlItem.Height;
+            //Debug.WriteLine("Tab size:" + terminalTabControlItem.Size.ToString() + ";" +
+            //  rdpConnection.AxMsRdpClient.DesktopHeight.ToString() + "," +
+            //  rdpConnection.AxMsRdpClient.DesktopWidth.ToString());
+          }
         }
 
         private void UpdateConnectionTabPageByConnectionState(FavoriteConfigurationElement favorite, TerminalTabControlItem terminalTabPage, IConnection conn)
@@ -1761,8 +1776,23 @@ namespace Terminals
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyValue == 3)
+          if (e.KeyCode == Keys.Cancel)
                 this.ToggleGrabInput();
+        }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+          //handle global keyup events
+          if (e.Control && e.KeyCode == Keys.F12)
+          {
+            CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
+            this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(false);
+          }
+          else if (e.KeyCode == Keys.F4)
+          {
+            if (!this.tscConnectTo.Focused)
+              this.tscConnectTo.Focus();
+          }
         }
 
         private void tcTerminals_TabControlItemClosing(TabControlItemClosingEventArgs e)
@@ -2444,20 +2474,6 @@ namespace Terminals
                         this.updateToolStripItem.Text = string.Format("{0} - {1}", this.updateToolStripItem.Text, ReleaseDescription.Title);
                     }
                 }
-            }
-        }
-
-        private void MainForm_KeyUp(object sender, KeyEventArgs e)
-        {
-            //handle global keyup events
-            if (e.Control && e.KeyCode == Keys.F12)
-            {
-                CaptureManager.CaptureManager.PerformScreenCapture(this.tcTerminals);
-                this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(false);
-            }
-            else if (e.KeyCode == Keys.F4)
-            {
-                this.tscConnectTo.Focus();
             }
         }
 

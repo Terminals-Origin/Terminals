@@ -1,14 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using Terminals.Properties;
-using System.Diagnostics;
-
-using MSTSC = MSTSCLib;
 using AxMSTSCLib;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -54,40 +47,32 @@ namespace Terminals.Connections
             fo.DoOperation();
         }
         #region IConnection Members
-        public override void ChangeDesktopSize(Terminals.DesktopSize Size)
+        public override void ChangeDesktopSize(DesktopSize Size)
         {
-
-
-
-            int height = Favorite.DesktopSizeHeight, width = Favorite.DesktopSizeWidth;
-            ConnectionManager.GetSize(ref height, ref width, this, Favorite.DesktopSize);
+            Size size = ConnectionManager.GetSize(this, Favorite);
 
             try
             {
-
-                if(Size == DesktopSize.AutoScale)
+                switch (Size)
                 {
-                    _axMsRdpClient.AdvancedSettings3.SmartSizing = true;
-                    _axMsRdpClient.DesktopWidth = width;
-                    _axMsRdpClient.DesktopHeight = height;
-                    return;
-                }
-                if(Size == DesktopSize.FullScreen)
-                {
+                  case DesktopSize.AutoScale:
+                  case DesktopSize.FitToWindow:
+                    this._axMsRdpClient.AdvancedSettings3.SmartSizing = true;
+                    break;
+                  case DesktopSize.FullScreen:
                     _axMsRdpClient.FullScreen = true;
-                    _axMsRdpClient.DesktopWidth = width;
-                    _axMsRdpClient.DesktopHeight = height;
-                    return;
+                    break;
                 }
-                _axMsRdpClient.DesktopWidth = width;
-                _axMsRdpClient.DesktopHeight = height;
 
+                _axMsRdpClient.DesktopWidth = size.Width;
+                _axMsRdpClient.DesktopHeight = size.Height;
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Error("Error trying to set the desktop dimensions",exc);
+                Logging.Log.Error("Error trying to set the desktop dimensions",exc);
             }
-        }                
+        }
+                
         public override bool Connect()
         {
             try
@@ -96,7 +81,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Info("Please Update your RDP client to at least version 6.", exc);
+                Logging.Log.Info("Please Update your RDP client to at least version 6.", exc);
                 MessageBox.Show("Please Update your RDP client to at least version 6.");
                 return false;
             }
@@ -106,7 +91,7 @@ namespace Terminals.Connections
                 Controls.Add(_axMsRdpClient);
                 _axMsRdpClient.BringToFront();
                 this.BringToFront();
-                _axMsRdpClient.Parent = base.TerminalTabPage;
+                _axMsRdpClient.Parent = TerminalTabPage;
                 this.Parent = TerminalTabPage;
                 _axMsRdpClient.AllowDrop = true;
 
@@ -223,7 +208,7 @@ namespace Terminals.Connections
                         //axMsRdpClient2.AdvancedSettings2.WinceFixedPalette;
                         //axMsRdpClient2.AdvancedSettings3.CanAutoReconnect = Favorite.CanAutoReconnect;
                     } catch(Exception exc) {
-                        Terminals.Logging.Log.Error("Error when trying to set timeout values.", exc);
+                        Logging.Log.Error("Error when trying to set timeout values.", exc);
                     }
 
                     _axMsRdpClient.AdvancedSettings3.RedirectPorts = Favorite.RedirectPorts;
@@ -307,7 +292,7 @@ namespace Terminals.Connections
                                 _nonScriptable.ClearTextPassword = pass;
                         }
                     } catch(Exception exc) {
-                        Terminals.Logging.Log.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
+                        Logging.Log.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
                     }
 
                     _axMsRdpClient.Server = Favorite.ServerName;
@@ -330,14 +315,14 @@ namespace Terminals.Connections
                 }
                 catch(Exception exc)
                 {
-                    Terminals.Logging.Log.Info("There was an exception setting an RDP Value.", exc);
+                    Logging.Log.Info("There was an exception setting an RDP Value.", exc);
                 }
                 _axMsRdpClient.Connect();
                 return true;
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Fatal("Connecting to RDP", exc);
+                Logging.Log.Fatal("Connecting to RDP", exc);
                 return false;
             }
         }        
@@ -350,7 +335,7 @@ namespace Terminals.Connections
             }
             catch(Exception e)
             {
-                Terminals.Logging.Log.Info("Error on Disconnect RDP", e);
+                Logging.Log.Info("Error on Disconnect RDP", e);
             }
         }
         public override bool Connected { get { return Convert.ToBoolean(_axMsRdpClient.Connected); } }

@@ -131,6 +131,14 @@
   <metadata name="ras1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="cmbResolution.ToolTip" xml:space="preserve">
+    <value>Set the default terminal window mode. Available values are:
+Fit to window = Maximum window size will respect the actual window
+and window is resizable.
+Auto Scale = Define your custom maximum size and allow resizing.
+Custom = Define custom maximum size without resizing.
+Other values define fix terminal window size.</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

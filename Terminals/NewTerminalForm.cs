@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Windows.Forms;
 
 using FalafelSoftware.TransPort;
-using Terminals.Properties;
 using Terminals.Network.Servers;
 
 namespace Terminals
@@ -120,10 +119,10 @@ namespace Terminals
         private void NewTerminalForm_Load(Object sender, EventArgs e)
         {
             this.SuspendLayout();
-            this._terminalServerManager.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._terminalServerManager.Location = new System.Drawing.Point(0, 0);
+            this._terminalServerManager.Dock = DockStyle.Fill;
+            this._terminalServerManager.Location = new Point(0, 0);
             this._terminalServerManager.Name = "terminalServerManager1";
-            this._terminalServerManager.Size = new System.Drawing.Size(748, 309);
+            this._terminalServerManager.Size = new Size(748, 309);
             this._terminalServerManager.TabIndex = 0;
             this.tabPage10.Controls.Add(_terminalServerManager);
 
@@ -259,7 +258,7 @@ namespace Terminals
                 }
             }
 
-            if (favorite.ToolBarIcon != null && System.IO.File.Exists(favorite.ToolBarIcon))
+            if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
             {
                 this.pictureBox2.Load(favorite.ToolBarIcon);
                 this._currentToolBarFileName = favorite.ToolBarIcon;
@@ -306,8 +305,8 @@ namespace Terminals
                 this.AllowDesktopCompositionCheckbox.Checked = favorite.EnableDesktopComposition;
             }
 
-            this.widthUpDown.Value = (Decimal)favorite.DesktopSizeWidth;
-            this.heightUpDown.Value = (Decimal)favorite.DesktopSizeHeight;
+            this.widthUpDown.Value = favorite.DesktopSizeWidth;
+            this.heightUpDown.Value = favorite.DesktopSizeHeight;
 
             this.ICAClientINI.Text = favorite.IcaClientINI;
             this.ICAServerINI.Text = favorite.IcaServerINI;
@@ -413,7 +412,7 @@ namespace Terminals
                 this._favorite.TsgwSeparateLogin = this.chkTSGWlogin.Checked;
                 this._favorite.TsgwCredsSource = this.cmbTSGWLogonMethod.SelectedIndex;
 
-                this._favorite.Port = this.ValidatePort(this.txtPort.Text);
+                this._favorite.Port = this.ValidatePort();
                 this._favorite.DesktopShare = this.txtDesktopShare.Text;
                 this._favorite.ExecuteBeforeConnect = this.chkExecuteBeforeConnect.Checked;
                 this._favorite.ExecuteBeforeConnectCommand = this.txtCommand.Text;
@@ -539,7 +538,7 @@ namespace Terminals
             }
             else
             {
-                if (serverName == null) 
+                if (String.IsNullOrEmpty(serverName)) 
                     throw new ArgumentException("Server name was not specified.");
 
                 if (serverName.Length < 0) 
@@ -549,18 +548,18 @@ namespace Terminals
             return serverName;
         }
 
-        private Int32 ValidatePort(String port)
+        private Int32 ValidatePort()
         {
             if (this.txtPort.Text.Trim() != String.Empty)
             {
                 Int32 result;
                 if (Int32.TryParse(this.txtPort.Text, out result) && result < 65536 && result > 0)
                     return result;
-                else
-                    throw new ArgumentException("Port must be a number between 0 and 65535");
+
+                throw new ArgumentException("Port must be a number between 0 and 65535");
             }
-            else
-                return RDPPORT;
+            
+            return RDPPORT;
         }
 
         private void SetOkButtonState()
@@ -829,10 +828,10 @@ namespace Terminals
                 String filename = openFileDialog.FileName;
                 try
                 {
-                    Image i = Image.FromFile(filename);
-                    if (i != null)
+                    Image image = Image.FromFile(filename);
+                    if (image != null)
                     {                        
-                        this.pictureBox2.Image = i;
+                        this.pictureBox2.Image = image;
                         String newFile = Path.Combine(thumbsFolder, Path.GetFileName(filename));
                         if (newFile != filename && !File.Exists(newFile)) 
                             File.Copy(filename, newFile);
@@ -841,9 +840,9 @@ namespace Terminals
                 }
                 catch(Exception ex)
                 {
-                    Terminals.Logging.Log.Info("Set Terminal Image Failed", ex);
+                    Logging.Log.Info("Set Terminal Image Failed", ex);
                     this._currentToolBarFileName = String.Empty;
-                    System.Windows.Forms.MessageBox.Show("You have chosen an invalid image. Try again.");
+                    MessageBox.Show("You have chosen an invalid image. Try again.");
                 }
             }
         }
@@ -871,10 +870,11 @@ namespace Terminals
         }
 
         private void cmbResolution_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.customSizePanel.Visible = false;
+        { 
             if (this.cmbResolution.Text == "Custom" || this.cmbResolution.Text == "Auto Scale")
                 this.customSizePanel.Visible = true;
+            else
+                this.customSizePanel.Visible = false;
         }
 
         private void AllTagsAddButton_Click(object sender, EventArgs e) 
@@ -902,7 +902,7 @@ namespace Terminals
                 String url = this.httpUrlTextBox.Text;
                 try
                 {
-                    System.Uri u = new Uri(url);
+                    Uri u = new Uri(url);
                     this.cmbServers.Text = u.Host;
                     this.txtPort.Text = u.Port.ToString();
                 }
@@ -924,7 +924,7 @@ namespace Terminals
             if (this.CredentialDropdown.SelectedItem.GetType() != typeof(string))
                 cred = ((Credentials.CredentialSet)this.CredentialDropdown.SelectedItem).Name;
             
-            Credentials.CredentialManager mgr = new Terminals.Credentials.CredentialManager();
+            Credentials.CredentialManager mgr = new Credentials.CredentialManager();
             mgr.ShowDialog();
             this.FillCredentials(cred);
         }
