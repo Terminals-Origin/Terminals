@@ -17,9 +17,9 @@ namespace SSHClient
 	/// <summary>
 	///  subclass of Granados class with added string conversion.
 	/// </summary>
-    public class SSH2UserAuthKey : Routrek.SSHCV2.SSH2UserAuthKey
+    public class SSH2UserAuthKey : Granados.SSH2.SSH2UserAuthKey
     {
-        public SSH2UserAuthKey(Routrek.PKI.KeyPair kp) : base(kp)
+        public SSH2UserAuthKey(Granados.PKI.KeyPair kp) : base(kp)
         {
         }
 
@@ -54,8 +54,8 @@ namespace SSHClient
         {
     		byte[] cyphertext = Convert.FromBase64String(value);
             byte[] plaintext = ProtectedData.Unprotect(cyphertext, null, DataProtectionScope.CurrentUser);
-            Routrek.SSHCV2.SSH2UserAuthKey k =
-            	Routrek.SSHCV2.SSH2UserAuthKey.FromByteArray(plaintext, null);
+            Granados.SSH2.SSH2UserAuthKey k =
+                Granados.SSH2.SSH2UserAuthKey.FromByteArray(plaintext, null);
             return new SSH2UserAuthKey(k.KeyPair);
         }
         

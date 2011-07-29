@@ -14,7 +14,6 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("Granados")]
 [assembly: AssemblyDescription("SSH Client Library")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Routrek Networks, Inc")]
 [assembly: AssemblyProduct("")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]

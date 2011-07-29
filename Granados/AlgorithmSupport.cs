@@ -10,11 +10,11 @@
  */
 
 using System;
+using System.Diagnostics;
 using HMACSHA1 = System.Security.Cryptography.HMACSHA1;
-using Routrek.Crypto;
+using Granados.Crypto;
 
-namespace Routrek.SSHC
-{
+namespace Granados.Crypto {
 	/*
 	 * Cipher
 	 *  The numbers at the tail of the class names indicates the version of SSH protocol.
@@ -26,142 +26,6 @@ namespace Routrek.SSHC
 		int BlockSize { get; }
 	}
 
-	internal class BlowfishCipher1 : Cipher {
-		private Blowfish _bf;
-	
-		public BlowfishCipher1(byte[] key) {
-			_bf = new Blowfish();
-			_bf.initializeKey(key);
-		}
-		public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro) {
-			_bf.encryptSSH1Style(data, offset, len, result, ro);
-		}
-		public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro) {
-			_bf.decryptSSH1Style(data, offset, len, result, ro);
-		}
-		public int BlockSize { get { return 8; } } 
-	}
-	internal class BlowfishCipher2 : Cipher {
-		private Blowfish _bf;
-	
-		public BlowfishCipher2(byte[] key) {
-			_bf = new Blowfish();
-			_bf.initializeKey(key);
-		}
-		public BlowfishCipher2(byte[] key, byte[] iv) {
-			_bf = new Blowfish();
-			_bf.SetIV(iv);
-			_bf.initializeKey(key);
-		}
-		public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro) {
-			_bf.encryptCBC(data, offset, len, result, ro);
-		}
-		public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro) {
-			_bf.decryptCBC(data, offset, len, result, ro);
-		}
-		public int BlockSize { get { return 8; } }
-	}
-
-	internal class TripleDESCipher1 : Cipher {
-		private DES _DESCipher1;
-		private DES _DESCipher2;
-		private DES _DESCipher3;
-	
-		public TripleDESCipher1(byte[] key) {
-			_DESCipher1 = new DES();
-			_DESCipher2 = new DES();
-			_DESCipher3 = new DES();
-			
-			_DESCipher1.InitializeKey(key, 0);
-			_DESCipher2.InitializeKey(key, 8);
-			_DESCipher3.InitializeKey(key,16);
-		}
-		public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro) {
-			byte[] buf1 = new byte[len];
-			_DESCipher1.EncryptCBC(data, offset, len, result, ro);
-			_DESCipher2.DecryptCBC(result, ro, buf1.Length, buf1, 0);
-			_DESCipher3.EncryptCBC(buf1, 0, buf1.Length, result, ro);
-		}
-		public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro) {
-			byte[] buf1 = new byte[len];
-			_DESCipher3.DecryptCBC(data, offset, len, result, ro);
-			_DESCipher2.EncryptCBC(result, ro, buf1.Length, buf1, 0);
-			_DESCipher1.DecryptCBC(buf1, 0, buf1.Length, result, ro);
-		}
-		public int BlockSize { get { return 8; } } 
-	}
-	internal class TripleDESCipher2 : Cipher {
-		private DES _DESCipher1;
-		private DES _DESCipher2;
-		private DES _DESCipher3;
-	
-		public TripleDESCipher2(byte[] key) {
-			_DESCipher1 = new DES();
-			_DESCipher2 = new DES();
-			_DESCipher3 = new DES();
-			
-			_DESCipher1.InitializeKey(key, 0);
-			_DESCipher2.InitializeKey(key, 8);
-			_DESCipher3.InitializeKey(key,16);
-		}
-		public TripleDESCipher2(byte[] key, byte[] iv) {
-			_DESCipher1 = new DES();
-			_DESCipher1.SetIV(iv);
-			_DESCipher2 = new DES();
-			_DESCipher2.SetIV(iv);
-			_DESCipher3 = new DES();
-			_DESCipher3.SetIV(iv);
-			
-			_DESCipher1.InitializeKey(key, 0);
-			_DESCipher2.InitializeKey(key, 8);
-			_DESCipher3.InitializeKey(key,16);
-		}
-		public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro) {
-			byte[] buf1 = new byte[8];
-			int n = 0;
-			while(n < len) {
-				_DESCipher1.EncryptCBC(data, offset+n, 8, result, ro+n);
-				_DESCipher2.DecryptCBC(result, ro+n, 8, buf1, 0);
-				_DESCipher3.EncryptCBC(buf1, 0, 8, result, ro+n);
-				_DESCipher1.SetIV(result, ro+n);
-				_DESCipher2.SetIV(result, ro+n);
-				_DESCipher3.SetIV(result, ro+n);
-				n += 8;
-			}
-		}
-		public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro) {
-			byte[] buf1 = new byte[8];
-			int n = 0;
-			while(n < len) {
-				_DESCipher3.DecryptCBC(data, offset+n, 8, result, ro+n);
-				_DESCipher2.EncryptCBC(result, ro+n, 8, buf1, 0);
-				_DESCipher1.DecryptCBC(buf1, 0, 8, result, ro+n);
-				_DESCipher3.SetIV(data, offset+n);
-				_DESCipher2.SetIV(data, offset+n);
-				_DESCipher1.SetIV(data, offset+n);
-				n += 8;
-			}
-		}
-		public int BlockSize { get { return 8; } } 
-	}
-	internal class RijindaelCipher2 : Cipher {
-
-		private Rijndael _rijindael;
-	
-		public RijindaelCipher2(byte[] key, byte[] iv) {
-			_rijindael = new Rijndael();
-			_rijindael.SetIV(iv);
-			_rijindael.InitializeKey(key);
-		}
-		public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro) {
-			_rijindael.encryptCBC(data, offset, len, result, ro);
-		}
-		public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro) {
-			_rijindael.decryptCBC(data, offset, len, result, ro);
-		}
-		public int BlockSize { get { return _rijindael.GetBlockSize(); } }
-	}
-
 	/// <summary>
 	/// Creates a cipher from given parameters
 	/// </summary>
@@ -170,9 +34,9 @@ namespace Routrek.SSHC
 			if(protocol==SSHProtocol.SSH1) {
 				switch(algorithm) {
 					case CipherAlgorithm.TripleDES:
-						return new TripleDESCipher1(key);
+						return new SSH1.TripleDESCipher1(key);
 					case CipherAlgorithm.Blowfish:
-						return new BlowfishCipher1(key);
+						return new SSH1.BlowfishCipher1(key);
 					default:
 						throw new SSHException("unknown algorithm " + algorithm);
 				}
@@ -180,26 +44,26 @@ namespace Routrek.SSHC
 			else {
 				switch(algorithm) {
 					case CipherAlgorithm.TripleDES:
-						return new TripleDESCipher2(key);
+						return new SSH2.TripleDESCipher2(key);
 					case CipherAlgorithm.Blowfish:
-						return new BlowfishCipher2(key);
+						return new SSH2.BlowfishCipher2(key);
 					default:
 						throw new SSHException("unknown algorithm " + algorithm);
 				}
 			}
 		}
 		public static Cipher CreateCipher(SSHProtocol protocol, CipherAlgorithm algorithm, byte[] key, byte[] iv) {
-			if(protocol==SSHProtocol.SSH1) {
+			if(protocol==SSHProtocol.SSH1) { //ignoring iv
 				return CreateCipher(protocol, algorithm, key);
 			}
 			else {
 				switch(algorithm) {
 					case CipherAlgorithm.TripleDES:
-						return new TripleDESCipher2(key, iv);
+						return new SSH2.TripleDESCipher2(key, iv);
 					case CipherAlgorithm.Blowfish:
-						return new BlowfishCipher2(key, iv);
+						return new SSH2.BlowfishCipher2(key, iv);
 					case CipherAlgorithm.AES128:
-						return new RijindaelCipher2(key, iv);
+						return new SSH2.RijindaelCipher2(key, iv);
 					default:
 						throw new SSHException("unknown algorithm " + algorithm);
 				}
@@ -263,18 +127,18 @@ namespace Routrek.SSHC
 	/**********        MAC        ***********/
 
 	interface MAC {
-		byte[] Calc(byte[] data);
+		byte[] ComputeHash(byte[] data, int offset, int length);
 		int Size { get; }
 	}
 	internal class MACSHA1 : MAC {
-		private HMACSHA1 _algorithm;
+		internal HMACSHA1 _algorithm;
 		public MACSHA1(byte[] key) {
 			_algorithm = new HMACSHA1(key);
 		}
 
-		public byte[] Calc(byte[] data) {
+		public byte[] ComputeHash(byte[] data, int offset, int length) {
 			_algorithm.Initialize();
-			return _algorithm.ComputeHash(data);
+			return _algorithm.ComputeHash(data, offset, length);
 		}
 
 		public int Size { get { return 20; } }
@@ -284,13 +148,187 @@ namespace Routrek.SSHC
 			if(algorithm==MACAlgorithm.HMACSHA1)
 				return new MACSHA1(key);
 			else
-				throw new SSHException("unknown algorithm"+algorithm);
+				throw new SSHException("unknown algorithm "+algorithm);
 		}
 		public static int GetSize(MACAlgorithm algorithm) {
 			if(algorithm==MACAlgorithm.HMACSHA1)
 				return 20;
 			else
-				throw new SSHException("unknown algorithm"+algorithm);
+				throw new SSHException("unknown algorithm "+algorithm);
 		}
 	}
+}
+
+namespace Granados.Crypto.SSH1 {
+
+	using Granados.Algorithms;
+
+	/// <summary>
+	/// Blowfish for SSH1
+	/// </summary>
+	internal class BlowfishCipher1 : Cipher {
+		private Blowfish _bf;
+	
+		public BlowfishCipher1(byte[] key) {
+			Debug.Assert(key.Length==32);
+			_bf = new Blowfish();
+			_bf.initializeKey(key);
+		}
+		public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro) {
+			_bf.encryptSSH1Style(data, offset, len, result, ro);
+		}
+		public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro) {
+			_bf.decryptSSH1Style(data, offset, len, result, ro);
+		}
+		public int BlockSize { get { return 8; } } 
+	}
+
+	/// <summary>
+	/// TripleDES for SSH1
+	/// </summary>
+	internal class TripleDESCipher1 : Cipher {
+		private DES _DESCipher1;
+		private DES _DESCipher2;
+		private DES _DESCipher3;
+		private byte[] _buffer;
+	
+		public TripleDESCipher1(byte[] key) {
+			Debug.Assert(key.Length==24);
+			_DESCipher1 = new DES();
+			_DESCipher2 = new DES();
+			_DESCipher3 = new DES();
+			
+			_DESCipher1.InitializeKey(key, 0);
+			_DESCipher2.InitializeKey(key, 8);
+			_DESCipher3.InitializeKey(key,16);
+
+			_buffer = new byte[8];
+		}
+		public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro) {
+			_DESCipher1.EncryptCBC(data, offset, len, result, ro);
+			_DESCipher2.DecryptCBC(result, ro, _buffer.Length, _buffer, 0);
+			_DESCipher3.EncryptCBC(_buffer, 0, _buffer.Length, result, ro);
+		}
+		public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro) {
+			_DESCipher3.DecryptCBC(data, offset, len, result, ro);
+			_DESCipher2.EncryptCBC(result, ro, _buffer.Length, _buffer, 0);
+			_DESCipher1.DecryptCBC(_buffer, 0, _buffer.Length, result, ro);
+		}
+		public int BlockSize { get { return 8; } } 
+	}
+
+}
+
+namespace Granados.Crypto.SSH2 {
+
+	using Granados.Algorithms;
+
+	/// <summary>
+	/// Blowfish for SSH2
+	/// </summary>
+	internal class BlowfishCipher2 : Cipher {
+		private Blowfish _bf;
+	
+		public BlowfishCipher2(byte[] key) {
+			Debug.Assert(key.Length==32);
+			_bf = new Blowfish();
+			_bf.initializeKey(key);
+		}
+		public BlowfishCipher2(byte[] key, byte[] iv) {
+			_bf = new Blowfish();
+			_bf.SetIV(iv);
+			_bf.initializeKey(key);
+		}
+		public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro) {
+			_bf.encryptCBC(data, offset, len, result, ro);
+		}
+		public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro) {
+			_bf.decryptCBC(data, offset, len, result, ro);
+		}
+		public int BlockSize { get { return 8; } }
+	}
+
+	/// <summary>
+	/// TripleDES for SSH2
+	/// </summary>
+	internal class TripleDESCipher2 : Cipher {
+		private DES _DESCipher1;
+		private DES _DESCipher2;
+		private DES _DESCipher3;
+
+		private byte[] _buffer;
+	
+		public TripleDESCipher2(byte[] key) {
+			Init(key);
+		}
+		public TripleDESCipher2(byte[] key, byte[] iv) {
+			Init(key);
+			_DESCipher1.SetIV(iv);
+			_DESCipher2.SetIV(iv);
+			_DESCipher3.SetIV(iv);
+			
+			_DESCipher1.InitializeKey(key, 0);
+			_DESCipher2.InitializeKey(key, 8);
+			_DESCipher3.InitializeKey(key,16);
+		}
+		private void Init(byte[] key) {
+			Debug.Assert(key.Length==24);
+			_buffer = new byte[8];
+			_DESCipher1 = new DES();
+			_DESCipher2 = new DES();
+			_DESCipher3 = new DES();
+			
+			_DESCipher1.InitializeKey(key, 0);
+			_DESCipher2.InitializeKey(key, 8);
+			_DESCipher3.InitializeKey(key,16);
+		}
+
+		public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro) {
+			int n = 0;
+			while(n < len) {
+				_DESCipher1.EncryptCBC(data, offset+n, 8, result, ro+n);
+				_DESCipher2.DecryptCBC(result, ro+n, 8, _buffer, 0);
+				_DESCipher3.EncryptCBC(_buffer, 0, 8, result, ro+n);
+				_DESCipher1.SetIV(result, ro+n);
+				_DESCipher2.SetIV(result, ro+n);
+				_DESCipher3.SetIV(result, ro+n);
+				n += 8;
+			}
+		}
+		public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro) {
+			int n = 0;
+			while(n < len) {
+				_DESCipher3.DecryptCBC(data, offset+n, 8, result, ro+n);
+				_DESCipher2.EncryptCBC(result, ro+n, 8, _buffer, 0);
+				_DESCipher1.DecryptCBC(_buffer, 0, 8, result, ro+n);
+				_DESCipher3.SetIV(data, offset+n);
+				_DESCipher2.SetIV(data, offset+n);
+				_DESCipher1.SetIV(data, offset+n);
+				n += 8;
+			}
+		}
+		public int BlockSize { get { return 8; } } 
+	}
+
+	/// <summary>
+	/// Rijindael (SSH2 only)
+	/// </summary>
+	internal class RijindaelCipher2 : Cipher {
+
+		private Rijndael _rijindael;
+	
+		public RijindaelCipher2(byte[] key, byte[] iv) {
+			_rijindael = new Rijndael();
+			_rijindael.SetIV(iv);
+			_rijindael.InitializeKey(key);
+		}
+		public void Encrypt(byte[] data, int offset, int len, byte[] result, int ro) {
+			_rijindael.encryptCBC(data, offset, len, result, ro);
+		}
+		public void Decrypt(byte[] data, int offset, int len, byte[] result, int ro) {
+			_rijindael.decryptCBC(data, offset, len, result, ro);
+		}
+		public int BlockSize { get { return _rijindael.GetBlockSize(); } }
+	}
+
 }

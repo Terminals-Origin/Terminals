@@ -11,7 +11,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Routrek.Granados</AssemblyName>
+    <AssemblyName>Granados</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -104,6 +104,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgentForward.cs" />
     <Compile Include="AlgorithmSupport.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -119,6 +120,7 @@
     <Compile Include="Blowfish.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ChannelCollection.cs" />
     <Compile Include="CipherUtil.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -134,6 +136,7 @@
     <Compile Include="CRC.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataFragment.cs" />
     <Compile Include="DES.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -158,6 +161,7 @@
     <Compile Include="RSA.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SCP.cs" />
     <Compile Include="Socket.cs">
       <SubType>Code</SubType>
     </Compile>

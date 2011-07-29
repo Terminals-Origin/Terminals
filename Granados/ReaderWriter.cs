@@ -12,9 +12,10 @@ using System;
 using System.Text;
 using System.IO;
 
-using Routrek.PKI;
+using Granados.PKI;
+using Granados.Util;
 
-namespace Routrek.SSHC {
+namespace Granados.IO {
 	////////////////////////////////////////////////////////////
 	/// read/write primitive types
 	/// 
@@ -22,10 +23,23 @@ namespace Routrek.SSHC {
 		
 		protected byte[] _data;
 		protected int _offset;
+		protected int _limit;
 		
 		public SSHDataReader(byte[] image) {
 			_data = image;
 			_offset = 0;
+			_limit = image.Length;
+		}
+		public SSHDataReader(DataFragment data) {
+			Init(data);
+		}
+		public void Recycle(DataFragment data) {
+			Init(data);
+		}
+		private void Init(DataFragment data) {
+			_data = data.Data;
+			_offset = data.Offset;
+			_limit = _offset + data.Length;
 		}
 
 		public byte[] Image {
@@ -40,7 +54,7 @@ namespace Routrek.SSHC {
 		}
 
 		public int ReadInt32() {
-			if(_offset+3>=_data.Length) throw new IOException(Strings.GetString("UnexpectedEOF"));
+			if(_offset+3>=_limit) throw new IOException(Strings.GetString("UnexpectedEOF"));
 
 			int ret = (((int)_data[_offset])<<24) + (((int)_data[_offset+1])<<16) + (((int)_data[_offset+2])<<8) + _data[_offset+3];
 			
@@ -49,11 +63,11 @@ namespace Routrek.SSHC {
 		}
 
 		public byte ReadByte() {
-			if(_offset>=_data.Length) throw new IOException(Strings.GetString("UnexpectedEOF"));
+			if(_offset>=_limit) throw new IOException(Strings.GetString("UnexpectedEOF"));
 			return _data[_offset++];
 		}
 		public bool ReadBool() {
-			if(_offset>=_data.Length) throw new IOException(Strings.GetString("UnexpectedEOF"));
+			if(_offset>=_limit) throw new IOException(Strings.GetString("UnexpectedEOF"));
 			return _data[_offset++]==0? false : true;
 		}
 		/**
@@ -68,38 +82,50 @@ namespace Routrek.SSHC {
 
 		public byte[] Read(int length) {
 			byte[] image = new byte[length];
-			for(int i=0; i<image.Length; i++) {
-				if(_offset==_data.Length) throw new IOException(Strings.GetString("UnexpectedEOF"));
-				image[i] = _data[_offset++];
-			}
+			if(_offset+length>_limit) throw new IOException(Strings.GetString("UnexpectedEOF"));
+			Array.Copy(_data, _offset, image, 0, length);
+			_offset += length;
 			return image;
 		}
 
 		public byte[] ReadAll() {
-			byte[] t = new byte[_data.Length - _offset];
+			byte[] t = new byte[_limit - _offset];
 			Array.Copy(_data, _offset, t, 0, t.Length);
+			_offset = _limit;
 			return t;
 		}
 		
 		public int Rest {
 			get {
-				return _data.Length - _offset;
+				return _limit - _offset;
 			}
 		}
 	}
 
 
 	internal abstract class SSHDataWriter : IKeyWriter {
-		protected MemoryStream _strm; 
+		protected SimpleMemoryStream _strm; 
 	
 		public SSHDataWriter() {
-			_strm = new MemoryStream(512);
+			_strm = new SimpleMemoryStream();
 		}
-		public byte[] ToByteArray() { return _strm.ToArray(); }
 
-		public long Length {
+		public byte[] ToByteArray() { return _strm.ToNewArray(); }
+
+		public int Length {
 			get {
 				return _strm.Length;
+			}
+		}
+		public void Reset() {
+			_strm.Reset();
+		}
+		public void SetOffset(int value) {
+			_strm.SetOffset(value);
+		}
+		public byte[] UnderlyingBuffer {
+			get {
+				return _strm.UnderlyingBuffer;
 			}
 		}
 	
@@ -144,11 +170,17 @@ namespace Routrek.SSHC {
 	}
 }
 
-namespace Routrek.SSHCV1 {
+namespace Granados.IO.SSH1 {
+	using Granados.SSH1;
 
-	internal class SSH1DataReader : Routrek.SSHC.SSHDataReader {
+	internal class SSH1DataReader : SSHDataReader {
 
 		public SSH1DataReader(byte[] image) : base(image) {}
+		public SSH1DataReader(DataFragment data) : base(data) {}
+
+		public PacketType ReadPacketType() {
+			return (PacketType)this.ReadByte();
+		}
 
 		public override BigInteger ReadMPInt() {
 			//first 2 bytes describes the bit count
@@ -159,7 +191,7 @@ namespace Routrek.SSHCV1 {
 		}
 	}
 
-	internal class SSH1DataWriter : Routrek.SSHC.SSHDataWriter {
+	internal class SSH1DataWriter : SSHDataWriter {
 		public override void Write(BigInteger data) {
 			byte[] image = data.getBytes();
 			int off = (image[0]==0? 1 : 0);
@@ -177,11 +209,13 @@ namespace Routrek.SSHCV1 {
 	}
 }
 
-namespace Routrek.SSHCV2 {
+namespace Granados.IO.SSH2 {
+	using Granados.SSH2;
 
-	internal class SSH2DataReader : Routrek.SSHC.SSHDataReader {
+	internal class SSH2DataReader : SSHDataReader {
 
 		public SSH2DataReader(byte[] image) : base(image) {}
+		public SSH2DataReader(DataFragment data) : base(data) {}
 
 		//SSH2 Key File Only
 		public BigInteger ReadBigIntWithBits() {
@@ -197,7 +231,7 @@ namespace Routrek.SSHCV2 {
 		}
 	}
 
-	internal class SSH2DataWriter : Routrek.SSHC.SSHDataWriter {
+	internal class SSH2DataWriter : SSHDataWriter {
 		//writes mpint in SSH2 format
 		public override void Write(BigInteger data) {
 			byte[] t = data.getBytes();

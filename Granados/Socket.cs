@@ -1,290 +1,414 @@
 using System;
-using System.Text;
-using System.IO;
-using System.Net.Sockets;
-using System.Threading;
+using System.Collections;
 using System.Diagnostics;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
 
-namespace Routrek.SSHC
+using Granados.Util;
+
+namespace Granados.IO
 {
-	internal enum ReceiverState {
-		Ready,
-		Closed,
-		Error
-	}
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <exclude/>
+    public enum SocketStatus {
+        Ready,            
+        Negotiating,       //preparing for connection
+        RequestingClose,   //the client is requesting termination
+        Closed,            //closed
+        Unknown
+    }
 
-	internal interface IHandlerBase {
-		void OnClosed();
-		void OnError(Exception error, string msg);
-	}
-	internal interface IByteArrayHandler : IHandlerBase {
-		void OnData(byte[] data, int offset, int length);
-	}
-	internal interface IStringHandler : IHandlerBase {
-		void OnString(string data);
-	}
+    //interface to receive data through AbstractGranadosSocket asynchronously
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <exclude/>
+    public interface IDataHandler {
+        void OnData(DataFragment data);
+        void OnClosed();
+        void OnError(Exception error);
+    }
 
-	internal abstract class SynchronizedHandlerBase {
+    //System.IO.SocketÇ∆IChannelEventReceiverÇíäè€âªÇ∑ÇÈ
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <exclude/>
+    public abstract class AbstractGranadosSocket {
+        protected IDataHandler _handler;
+        protected SocketStatus _socketStatus;
 
-		public virtual void SetClosed() {
-			_state = ReceiverState.Closed;
-			_event.Set();
-		}
-		public virtual void SetError(string msg) {
-			_errorMessage = msg;
-			_state = ReceiverState.Error;
-			_event.Set();
-		}
-		public virtual void SetReady() {
-			_state = ReceiverState.Ready;
-			_event.Set();
-		}
+        protected AbstractGranadosSocket(IDataHandler h) {
+            _handler = h;
+            _single = new byte[1];
+            _socketStatus = SocketStatus.Unknown;
+        }
 
-		protected ManualResetEvent _event;
-		protected ReceiverState _state;
-		protected string _errorMessage;
+        public SocketStatus SocketStatus {
+            get {
+                return _socketStatus;
+            }
+        }
+        public IDataHandler DataHandler {
+            get {
+                return _handler;
+            }
+        }
 
-		public WaitHandle WaitHandle {
-			get {
-				return _event;
-			}
-		}
-		public ReceiverState State {
-			get {
-				return _state;
-			}
-		}
-		public string ErrorMessage {
-			get {
-				return _errorMessage;
-			}
-		}
+        public void SetHandler(IDataHandler h) {
+            _handler = h;
+        }
 
-		public void Wait() {
-			_event.WaitOne();
-			_event.Reset();
-		}
+        internal abstract void Write(byte[] data, int offset, int length);
 
-		protected SynchronizedHandlerBase() {
-			_event = new ManualResetEvent(false);
-		}
-	}
+        private byte[] _single;
+        internal void WriteByte(byte data) {
+            _single[0] = data;
+            Write(_single, 0, 1);
+        }
 
-	internal class ProtocolNegotiationHandler : SynchronizedHandlerBase, IByteArrayHandler {
-		protected string _serverVersion;
-		protected SSHConnectionParameter _param;
-		protected string _endOfLine;
+        internal abstract void Close();
+        internal abstract bool DataAvailable { get; }
+    }
 
-		public ProtocolNegotiationHandler(SSHConnectionParameter param) {
-			_param = param;
-			_errorMessage = Strings.GetString("NotSSHServer");
-		}
+    // base class for processing data and passing another IDataHandler
+    internal abstract class FilterDataHandler : IDataHandler {
+        protected IDataHandler _inner_handler;
 
-		public string ServerVersion {
-			get {
-				return _serverVersion;
-			}
-		}
-		public string EOL {
-			get {
-				return _endOfLine;
-			}
-		}
+        public FilterDataHandler(IDataHandler inner_handler) {
+            _inner_handler = inner_handler;
+        }
+        public IDataHandler InnerHandler {
+            get {
+                return _inner_handler;
+            }
+            set {
+                _inner_handler = value;
+            }
+        }
 
-		public void OnData(byte[] buf, int offset, int length) {
-			try {
-				//the specification claims the version string ends with CRLF, however some servers send LF only
-				if(length<=2 || buf[offset+length-1]!=0x0A) throw new SSHException(Strings.GetString("NotSSHServer"));
-				//Debug.WriteLine(String.Format("receiveServerVersion len={0}",len));
-				string sv = Encoding.ASCII.GetString(buf, offset, length);
-				_serverVersion = sv.Trim();
-				_endOfLine = sv.EndsWith("\r\n")? "\r\n" : "\n"; //quick hack
+        public abstract void OnData(DataFragment data);
 
-				//check compatibility
-				int a = _serverVersion.IndexOf('-');
-				if(a==-1) throw new SSHException("Format of server version is invalid");
-				int b = _serverVersion.IndexOf('-', a+1);
-				if(b==-1) throw new SSHException("Format of server version is invalid");
-				int comma = _serverVersion.IndexOf('.', a, b-a);
-				if(comma==-1) throw new SSHException("Format of server version is invalid");
+        public virtual void OnClosed() {
+            _inner_handler.OnClosed();
+        }
+        public virtual void OnError(Exception error) {
+            _inner_handler.OnError(error);
+        }
+    }
 
-				int major = Int32.Parse(_serverVersion.Substring(a+1, comma-a-1));
-				int minor = Int32.Parse(_serverVersion.Substring(comma+1, b-comma-1));
+    //Handler for receiving the response synchronously
+    internal abstract class SynchronizedDataHandler : IDataHandler {
 
-				if(_param.Protocol==SSHProtocol.SSH1) {
-					if(major!=1) throw new SSHException("The protocol version of server is not compatible for SSH1");
-				}
-				else {
-					if(major>=3 || major<=0 || (major==1 && minor!=99)) throw new SSHException("The protocol version of server is not compatible with SSH2");
-				}
+        private AbstractGranadosSocket _socket;
+        private ManualResetEvent _event;
+        private Queue _results;
 
-				this.SetReady();
-			}
-			catch(Exception ex) {
-				OnError(ex, ex.Message);
-			}
-		}
+        public SynchronizedDataHandler(AbstractGranadosSocket socket) {
+            _socket = socket;
+            _event = new ManualResetEvent(false);
+            _results = new Queue();
+        }
 
-		public void OnError(Exception error, string msg) {
-			base.SetError(msg);
-		}
-		public void OnClosed() {
-			base.SetClosed();
-		}
-	}
+        public void Close() {
+            _event.Close();
+        }
 
-	//System.IO.SocketÇ∆IChannelEventReceiverÇíäè€âªÇ∑ÇÈ
-	internal abstract class AbstractSocket {
-		
-		protected IByteArrayHandler _handler;
+        public void OnData(DataFragment data) {
+            lock(_socket) {
+                OnDataInLock(data);
+            }
+        }
+        public void OnClosed() {
+            lock(_socket) {
+                OnClosedInLock();
+            }
+        }
+        public void OnError(Exception error) {
+            lock(_socket) {
+                OnErrorInLock(error);
+            }
+        }
 
-		protected AbstractSocket(IByteArrayHandler h) {
-			_handler = h;
-		}
+        protected abstract void OnDataInLock(DataFragment data);
+        protected virtual void OnClosedInLock() {
+            SetFailureResult(new SSHException("the connection is closed with unexpected condition."));
+        }
+        protected virtual void OnErrorInLock(Exception error) {
+            SetFailureResult(error);
+        }
 
-		public void SetHandler(IByteArrayHandler h) {
-			_handler = h;
-		}
+        //Set the response
+        protected void SetSuccessfulResult(DataFragment data) {
+            _results.Enqueue(data.Isolate());
+            _event.Set();
+        }
+        protected void SetFailureResult(Exception error) {
+            _results.Enqueue(error);
+            _event.Set();
+        }
 
-		internal abstract void Write(byte[] data, int offset, int length);
-		internal abstract void WriteByte(byte data);
-		internal abstract void Flush();
-		internal abstract void Close();
-		internal abstract bool DataAvailable { get; }
-	}
+        //Send request and wait response
+        public DataFragment SendAndWaitResponse(DataFragment data) {
+            //this lock is important
+            lock(_socket) {
+                Debug.Assert(_results.Count==0);
+                _event.Reset();
+                if(data.Length>0) _socket.Write(data.Data, data.Offset, data.Length);
+            }
 
-	internal class PlainSocket : AbstractSocket {
-		private Socket _socket;
-		private byte[] _buf;
-		private bool _closed;
+            _event.WaitOne();
+            Debug.Assert(_results.Count>0);
+            return Dequeue();
+        }
 
-		internal PlainSocket(Socket s, IByteArrayHandler h) : base(h) {
-			_socket = s;
-			_buf = new byte[0x1000];
-			_closed = false;
-		}
-		
-		internal override void Write(byte[] data, int offset, int length) {
-			_socket.Send(data, offset, length, SocketFlags.None);
-		}
-		internal override void WriteByte(byte data) {
-			byte[] t = new byte[1];
-			t[0] = data;
-			_socket.Send(t, 0, 1, SocketFlags.None);
-		}
+        //asynchronously data exchange
+        public DataFragment WaitResponse() {
+            lock(_socket) {
+                if(_results.Count>0)
+                    return Dequeue(); //we have data already 
+                else
+                    _event.Reset();
+            }
 
-		internal override void Flush() {
-		}
-		internal override void Close() {
-			_socket.Close();
-			_closed = true;
-		}
-		
-		internal void RepeatAsyncRead() {
-			_socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, new AsyncCallback(RepeatCallback), null);
-		}
+            _event.WaitOne();
+            return Dequeue();
+        }
 
-		internal override bool DataAvailable {
-			get {
-				return _socket.Available>0;
-			}
-		}
+        //Pop the data from the queue
+        private DataFragment Dequeue() {
+            lock(_socket) {
+                object t = _results.Dequeue();
+                Debug.Assert(t!=null);
 
-		private void RepeatCallback(IAsyncResult result) {
-			try {
-				int n = _socket.EndReceive(result);
-				//GUtil.WriteDebugLog(String.Format("t={0}, n={1} cr={2} cw={3}", DateTime.Now.ToString(), n, _socket.CanRead, _socket.CanWrite));
-				//Debug.WriteLine(String.Format("r={0}, n={1} cr={2} cw={3}", result.IsCompleted, n, _socket.CanRead, _socket.CanWrite));
-				if(n > 0) {
-					_handler.OnData(_buf, 0, n);
-					_socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, new AsyncCallback(RepeatCallback), null);
-				}
-				else if(n < 0) {
-					//in case of Win9x, EndReceive() returns 0 every 288 seconds even if no data is available
-					_socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, new AsyncCallback(RepeatCallback), null);
-				}
-				else
-					_handler.OnClosed();
-			}
-			catch(Exception ex) {
-				if((ex is SocketException) && ((SocketException)ex).ErrorCode==995) {
-					//in case of .NET1.1 on Win9x, EndReceive() changes the behavior. it throws SocketException with an error code 995. 
-					_socket.BeginReceive(_buf, 0, _buf.Length, SocketFlags.None, new AsyncCallback(RepeatCallback), null);
-				}
-				else if(!_closed)
-					_handler.OnError(ex, ex.Message);
-				else
-					_handler.OnClosed();
-			}
-		}
-	}
-
-	internal class ChannelSocket : AbstractSocket, ISSHChannelEventReceiver {
-		private SSHChannel _channel;
-		private bool _ready;
-
-		internal ChannelSocket(IByteArrayHandler h) : base(h) {
-			_ready = false;
-		}
-		internal SSHChannel SSHChennal {
-			get {
-				return _channel;
-			}
-			set {
-				_channel = value;
-			}
-		}
-
-		internal override void Write(byte[] data, int offset, int length) {
-			if(!_ready || _channel==null) throw new SSHException("channel not ready");
-			_channel.Transmit(data, offset, length);
-		}
-		internal override void WriteByte(byte data) {
-			if(!_ready || _channel==null) throw new SSHException("channel not ready");
-			byte[] t = new byte[1];
-			t[0] = data;
-			_channel.Transmit(t);
-		}
-		internal override bool DataAvailable {
-			get {
-				return _channel.Connection.Available;
-			}
-		}
+                DataFragment d = t as DataFragment;
+                if(d!=null)
+                    return d;
+                else {
+                    Exception e = t as Exception;
+                    Debug.Assert(e!=null);
+                    throw e;
+                }
+            }
+        }
+    }
 
 
-		internal override void Flush() {
-		}
-		internal override void Close() {
-			if(!_ready || _channel==null) throw new SSHException("channel not ready");
-			_channel.Close();
-			if(_channel.Connection.ChannelCount<=1) //close last channel
-				_channel.Connection.Close();
-		}
 
-		public void OnData(byte[] data, int offset, int length) {
-			_handler.OnData(data, offset, length);
-		}
+    // Connecting to SSH daemon
+    internal class VersionExchangeHandler : SynchronizedDataHandler {
+        private SSHConnectionParameter _param;
+        private string _serverVersion;
 
-		public void OnChannelEOF() {
-			_handler.OnClosed();
-		}
+        public VersionExchangeHandler(SSHConnectionParameter param, AbstractGranadosSocket socket) : base(socket) {
+            _param = param;
+        }
 
-		public void OnChannelError(Exception error, string msg) {
-			_handler.OnError(error, msg);
-		}
+        public string ServerVersion {
+            get {
+                return _serverVersion;
+            }
+        }
 
-		public void OnChannelClosed() {
-			_handler.OnClosed();
-		}
+        protected override void OnDataInLock(DataFragment data) {
+            try {
+                //the specification claims the version string ends with CRLF, however some servers send LF only
+                if(data.Length<=2 || data.Data[data.Offset+data.Length-1]!=0x0A) throw new SSHException(Strings.GetString("NotSSHServer"));
+                //Debug.WriteLine(String.Format("receiveServerVersion len={0}",len));
 
-		public void OnChannelReady() {
-			_ready = true;
-		}
+                //this Trim() is necessary for computing hash in the host key authentication stage
+                string sv = Encoding.ASCII.GetString(data.Data, data.Offset, data.Length).Trim();
 
-		public void OnExtendedData(int type, byte[] data) {
-			//!!handle data
-		}
-		public void OnMiscPacket(byte type, byte[] data, int offset, int length) {
-		}
-	}
+                //check compatibility
+                int a = sv.IndexOf('-');
+                if(a==-1) ThrowUnexpectedFormatException(sv);
+                int b = sv.IndexOf('-', a+1);
+                if(b==-1) ThrowUnexpectedFormatException(sv);
+                int comma = sv.IndexOf('.', a, b-a);
+                if(comma==-1) ThrowUnexpectedFormatException(sv);
+
+                int major = Int32.Parse(sv.Substring(a+1, comma-a-1));
+                int minor = Int32.Parse(sv.Substring(comma+1, b-comma-1));
+
+                if(_param.Protocol==SSHProtocol.SSH1) {
+                    if(major!=1) ThrowVersionMismatchException(sv, SSHProtocol.SSH1);
+                }
+                else {
+                    if(major>=3 || major<=0 || (major==1 && minor!=99)) ThrowVersionMismatchException(sv, SSHProtocol.SSH2);
+                }
+
+                _serverVersion = sv;
+                this.SetSuccessfulResult(data);
+            }
+            catch(Exception ex) {
+                this.SetFailureResult(ex);
+            }
+        }
+        private void ThrowSSHException(string msg) {
+            throw new SSHException(msg);
+        }
+        private void ThrowUnexpectedFormatException(string version) {
+            ThrowSSHException("Format of server version is invalid:[" + version + "]");
+        }
+        private void ThrowVersionMismatchException(string version, SSHProtocol client) {
+            StringBuilder bld = new StringBuilder();
+            bld.Append("The protocol version of the server [");
+            bld.Append(version);
+            bld.Append("] is not compatible with ");
+            bld.Append(client.ToString());
+            ThrowSSHException(bld.ToString());
+        }
+
+    }
+
+    //directly notification to synchronized
+    internal class SynchronizedPacketReceiver : SynchronizedDataHandler {
+
+        private SSHConnection _connection;
+
+        public SynchronizedPacketReceiver(SSHConnection c) : base(c.UnderlyingStream) {
+            _connection = c;
+        }
+
+        protected override void OnDataInLock(DataFragment data) {
+            this.SetSuccessfulResult(data);
+        }
+    }
+
+    // GranadosSocket on an underlying .NET socket
+    internal class PlainSocket : AbstractGranadosSocket {
+        private Socket _socket;
+        private DataFragment _data;
+
+        private AsyncCallback _callback;
+
+        internal PlainSocket(Socket s, IDataHandler h) : base(h) {
+            _socket = s;
+            Debug.Assert(_socket.Connected);
+            _socketStatus = SocketStatus.Ready;
+
+            _data = new DataFragment(0x1000);
+            _callback = new AsyncCallback(RepeatCallback);
+        }
+        
+        internal override void Write(byte[] data, int offset, int length) {
+            _socket.Send(data, offset, length, SocketFlags.None);
+        }
+
+        internal override void Close() {
+            if(_socketStatus!=SocketStatus.Closed) {
+                _socket.Shutdown(SocketShutdown.Both);
+                _socket.Close();
+                _socketStatus = SocketStatus.Closed;
+            }
+        }
+        
+        internal void RepeatAsyncRead() {
+            _socket.BeginReceive(_data.Data, 0, _data.Capacity, SocketFlags.None, _callback, null);
+        }
+
+        internal override bool DataAvailable {
+            get {
+                return _socket.Available>0;
+            }
+        }
+
+        private void RepeatCallback(IAsyncResult result) {
+            try {
+                int n = _socket.EndReceive(result);
+                if(n > 0) {
+                    _data.SetLength(0, n);
+                    _handler.OnData(_data);
+                    if(_socketStatus!=SocketStatus.Closed)
+                        RepeatAsyncRead();
+                }
+                else if(n < 0) {
+                    //in case of Win9x, EndReceive() returns 0 every 288 seconds even if no data is available
+                    RepeatAsyncRead();
+                }
+                else
+                    _handler.OnClosed();
+            }
+            catch(Exception ex) {
+                if((ex is SocketException) && ((SocketException)ex).ErrorCode==995) {
+                    //in case of .NET1.1 on Win9x, EndReceive() changes the behavior. it throws SocketException with an error code 995. 
+                    RepeatAsyncRead();
+                }
+                else if(_socketStatus!=SocketStatus.Closed)
+                    _handler.OnError(ex);
+            }
+        }
+    }
+
+    // GranadosSocket on an underlying another SSH channel
+    internal class ChannelSocket : AbstractGranadosSocket, ISSHChannelEventReceiver {
+        private SSHChannel _channel;
+        private DataFragment _fragment;
+
+        internal ChannelSocket(IDataHandler h) : base(h) {
+        }
+        internal SSHChannel SSHChennal {
+            get {
+                return _channel;
+            }
+            set {
+                _channel = value;
+                _socketStatus = SocketStatus.Negotiating;
+            }
+        }
+
+        internal override void Write(byte[] data, int offset, int length) {
+            if(_socketStatus!=SocketStatus.Ready) throw new SSHException("channel not ready");
+            _channel.Transmit(data, offset, length);
+        }
+        internal override bool DataAvailable {
+            get {
+                //Note: this may be not correct
+                return _channel.Connection.Available;
+            }
+        }
+
+        internal override void Close() {
+            if(_socketStatus!=SocketStatus.Ready) throw new SSHException("channel not ready");
+
+            _channel.Close();
+            if(_channel.Connection.ChannelCollection.Count<=1) //close last channel
+                _channel.Connection.Close();
+        }
+
+        public void OnData(byte[] data, int offset, int length) {
+            if(_fragment==null)
+                _fragment = new DataFragment(data, offset, length);
+            else
+                _fragment.Init(data, offset, length);
+
+            _handler.OnData(_fragment);
+        }
+
+        public void OnChannelEOF() {
+            _handler.OnClosed();
+        }
+
+        public void OnChannelError(Exception error) {
+            _handler.OnError(error);
+        }
+
+        public void OnChannelClosed() {
+            _handler.OnClosed();
+        }
+
+        public void OnChannelReady() {
+            _socketStatus = SocketStatus.Ready;
+        }
+
+        public void OnExtendedData(int type, byte[] data) {
+            //!!handle data
+        }
+        public void OnMiscPacket(byte type, byte[] data, int offset, int length) {
+            //!!handle data
+        }
+    }
 }

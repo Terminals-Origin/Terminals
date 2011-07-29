@@ -7,8 +7,7 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
-using Routrek.SSHC;
-//using System.Net;
+using Granados;
 using System.Net.Sockets;
 
 namespace SSHClient
@@ -51,7 +50,7 @@ namespace SSHClient
             	_params.Password = value;
             }
         }
-        public Routrek.SSHC.SSHProtocol SSHProtocol
+        public Granados.SSHProtocol SSHProtocol
         {
             set
             {
@@ -153,11 +152,11 @@ namespace SSHClient
             }
             if (SSH1)
             {
-                SSHProtocol = Routrek.SSHC.SSHProtocol.SSH1;
+                SSHProtocol = Granados.SSHProtocol.SSH1;
             }
             else
             {
-                SSHProtocol = Routrek.SSHC.SSHProtocol.SSH2;
+                SSHProtocol = Granados.SSHProtocol.SSH2;
             }
 		}
 		public void RequestData (byte[] data)
@@ -230,10 +229,10 @@ namespace SSHClient
 		{
 			//Debug.WriteLine("Unknown Message " + type);
 		}
-		public void OnChannelReady() 
-		{
-			_ready = true;
-		}
+        public void OnChannelReady() 
+        {
+        //    _ready = true;
+        }
 
 		public void OnChannelError(Exception error, string msg) 
 		{
@@ -267,7 +266,7 @@ namespace SSHClient
 		#region Private Fields
 		private SSHConnectionParameter _params;
 		private SSHConnection _conn;
-		private bool _ready;
+		//private bool _ready;
 		public SSHChannel _pf;
 		#endregion
     }

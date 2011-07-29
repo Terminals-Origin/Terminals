@@ -1,13 +1,23 @@
+/* ---------------------------------------------------------------------------
+ *
+ * Copyright (c) Poderosa Project.    All Rights Reserved..
+ * 
+ * This file is a part of the Granados SSH Client Library that is subject to
+ * the license included in the distributed package.
+ * You may not use this file except in compliance with the license.
+ * 
+ * $Id: StringResource.cs,v 1.2 2006/05/18 09:20:44 okajima Exp $
+ */
 using System;
 using System.Globalization;
 using System.Resources;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace Routrek.SSHC {
+namespace Granados.Util {
 
 	/// <summary>
-	/// StringResource の概要の説明です。
+	/// StringResource
 	/// </summary>
 	internal class StringResources {
 		private string _resourceName;
@@ -19,11 +29,10 @@ namespace Routrek.SSHC {
 		}
 
 		public string GetString(string id) {
-			return _resMan.GetString(id); //もしこれが遅いようならこのクラスでキャッシュでもつくればいいだろう
+			return _resMan.GetString(id);
 		}
 
 		private void LoadResourceManager(string name, Assembly asm) {
-			//当面は英語・日本語しかしない
 			CultureInfo ci = System.Threading.Thread.CurrentThread.CurrentUICulture;
 			if(ci.Name.StartsWith("ja"))
 				_resMan = new ResourceManager(name+"_ja", asm);

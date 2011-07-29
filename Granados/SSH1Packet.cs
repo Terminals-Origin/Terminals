@@ -21,13 +21,12 @@
  */
 
 using System;
-using System.Collections;
-using System.Diagnostics;
-using System.Threading;
-using Routrek.Crypto;
-using Routrek.SSHC;
+using Granados.Crypto;
+using Granados.IO;
+using Granados.IO.SSH1;
+using Granados.Util;
 
-namespace Routrek.SSHCV1
+namespace Granados.SSH1
 {
 	
 	internal class SSH1Packet
@@ -36,26 +35,6 @@ namespace Routrek.SSHCV1
 		private byte[] _data;
 		private uint _CRC;
 
-		/**
-		* reads type, data, and crc from byte array.
-		* an exception is thrown if crc check fails.
-		*/
-		internal void ConstructAndCheck(byte[] buf, int packet_length, int padding_length, bool check_crc) {
-			_type = buf[padding_length];
-			//System.out.println("Type: " + _type);
-			if(packet_length > 5) //the body is not empty
-			{
-				_data = new byte[packet_length-5]; //5 is the length of [type] and [crc]
-				Array.Copy(buf, padding_length+1, _data, 0, packet_length-5);
-			}
-			_CRC = (uint)SSHUtil.ReadInt32(buf, buf.Length-4);
-			if(check_crc) {
-				uint c = CRC.Calc(buf, 0, buf.Length-4);
-				if(_CRC != c)
-					throw new SSHException("CRC Error", buf);
-			}
-		}
-		
 		/**
 		* constructs from the packet type and the body
 		*/
@@ -102,14 +81,14 @@ namespace Routrek.SSHCV1
 		/**
 		* writes to plain stream
 		*/
-		public void WriteTo(AbstractSocket output) {
+		public void WriteTo(AbstractGranadosSocket output) {
 			byte[] image = BuildImage();
 			output.Write(image, 0, image.Length);
 		}
 		/**
 		* writes to encrypted stream
 		*/
-		public void WriteTo(AbstractSocket output, Cipher cipher) {
+		public void WriteTo(AbstractGranadosSocket output, Cipher cipher) {
 			byte[] image = BuildImage();
 			//dumpBA(image);
 			byte[] encrypted = new byte[image.Length-4];
@@ -136,130 +115,65 @@ namespace Routrek.SSHCV1
 		}
 	}
 
-	internal interface ISSH1PacketHandler : IHandlerBase {
-		void OnPacket(SSH1Packet packet);
-	}
 
-	internal class SynchronizedSSH1PacketHandler : SynchronizedHandlerBase, ISSH1PacketHandler {
-		internal ArrayList _packets;
-
-		internal SynchronizedSSH1PacketHandler() {
-			_packets = new ArrayList();
-		}
-
-		public void OnPacket(SSH1Packet packet) {
-			lock(this) {
-				_packets.Add(packet);
-				if(_packets.Count > 0)
-					SetReady();
-			}
-		}
-		public void OnError(Exception error, string msg) {
-			base.SetError(msg);
-		}
-		public void OnClosed() {
-			base.SetClosed();
-		}
-
-		public bool HasPacket {
-			get {
-				return _packets.Count>0;
-			}
-		}
-		public SSH1Packet PopPacket() {
-			lock(this) {
-				if(_packets.Count==0)
-					return null;
-				else {
-					SSH1Packet p = null;
-					p = (SSH1Packet)_packets[0];
-					_packets.RemoveAt(0);
-					if(_packets.Count==0) _event.Reset();
-					return p;
-				}
-			}
-		}
-	}
-	internal class CallbackSSH1PacketHandler : ISSH1PacketHandler {
+	internal class CallbackSSH1PacketHandler : IDataHandler {
 		internal SSH1Connection _connection;
 
 		internal CallbackSSH1PacketHandler(SSH1Connection con) {
 			_connection = con;
 		}
-		public void OnPacket(SSH1Packet packet) {
-			_connection.AsyncReceivePacket(packet);
+		public void OnData(DataFragment data) {
+			_connection.AsyncReceivePacket(data);
 		}
-		public void OnError(Exception error, string msg) {
-			_connection.EventReceiver.OnError(error, msg);
+		public void OnError(Exception error) {
+			_connection.EventReceiver.OnError(error);
 		}
 		public void OnClosed() {
 			_connection.EventReceiver.OnConnectionClosed();
 		}
+
 	}
 
-	internal class SSH1PacketBuilder : IByteArrayHandler {
-		private ISSH1PacketHandler _handler;
+	internal class SSH1PacketBuilder : FilterDataHandler {
 		private byte[] _buffer;
 		private int _readOffset;
 		private int _writeOffset;
 		private Cipher _cipher;
 		private bool _checkMAC;
-		private ManualResetEvent _event;
 
-		public SSH1PacketBuilder(ISSH1PacketHandler handler) {
-			_handler = handler;
+		public SSH1PacketBuilder(IDataHandler handler) : base(handler) {
 			_buffer = new byte[0x1000];
 			_readOffset = 0;
 			_writeOffset = 0;
 			_cipher = null;
 			_checkMAC = false;
-			_event = null;
-		}
-
-		public void SetSignal(bool value) {
-			if(_event==null) _event = new ManualResetEvent(true);
-
-			if(value)
-				_event.Set();
-			else
-				_event.Reset();
 		}
 
 		public void SetCipher(Cipher c, bool check_mac) {
 			_cipher = c;
 			_checkMAC = check_mac;
 		}
-		public ISSH1PacketHandler Handler {
-			get {
-				return _handler;
-			}
-			set {
-				_handler = value;
-			}
-		}
 
-		public void OnData(byte[] data, int offset, int length) {
+		public override void OnData(DataFragment data) {
 			try {
-				while(_buffer.Length - _writeOffset < length)
+				while(_buffer.Length - _writeOffset < data.Length)
 					ExpandBuffer();
-				Array.Copy(data, offset, _buffer, _writeOffset, length);
-				_writeOffset += length;
+				Array.Copy(data.Data, data.Offset, _buffer, _writeOffset, data.Length);
+				_writeOffset += data.Length;
 
-				SSH1Packet p = ConstructPacket();
+				DataFragment p = ConstructPacket();
 				while(p!=null) {
-					_handler.OnPacket(p);
+					_inner_handler.OnData(p);
 					p = ConstructPacket();
 				}
 				ReduceBuffer();
 			}
 			catch(Exception ex) {
-				OnError(ex, ex.Message);
+				_inner_handler.OnError(ex);
 			}
 		}
 		//returns true if a new packet could be obtained
-		private SSH1Packet ConstructPacket() {
-			if(_event!=null && !_event.WaitOne(3000, false))
-				throw new Exception("waithandle timed out");
+		private DataFragment ConstructPacket() {
 
 			if(_writeOffset-_readOffset<4) return null;
 			int packet_length = SSHUtil.ReadInt32(_buffer, _readOffset);
@@ -275,8 +189,26 @@ namespace Routrek.SSHCV1
 			_readOffset += 4 + total;
 			
 			SSH1Packet p = new SSH1Packet();
-			p.ConstructAndCheck(decrypted, packet_length, padding_length, _checkMAC);
-			return p;
+			return ConstructAndCheck(decrypted, packet_length, padding_length, _checkMAC);
+		}
+
+		/**
+		* reads type, data, and crc from byte array.
+		* an exception is thrown if crc check fails.
+		*/
+		private DataFragment ConstructAndCheck(byte[] buf, int packet_length, int padding_length, bool check_crc) {
+			int body_len = packet_length-4;
+			byte[] body = new byte[body_len];
+			Array.Copy(buf, padding_length, body, 0, body_len);
+
+			uint received_crc = (uint)SSHUtil.ReadInt32(buf, buf.Length-4);
+			if(check_crc) {
+				uint crc = CRC.Calc(buf, 0, buf.Length-4);
+				if(received_crc != crc)
+					throw new SSHException("CRC Error", buf);
+			}
+
+			return new DataFragment(body, 0, body_len);
 		}
 
 		private void ExpandBuffer() {
@@ -298,12 +230,5 @@ namespace Routrek.SSHCV1
 			}
 		}
 
-		public void OnError(Exception error, string msg) {
-			_handler.OnError(error, msg);
-		}
-		public void OnClosed() {
-			_handler.OnClosed();
-			if(_event!=null) _event.Close();
-		}
 	}
 }

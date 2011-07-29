@@ -12,127 +12,129 @@ using System;
 using System.IO;
 using System.Text;
 using System.Security.Cryptography;
-using System.Diagnostics;
 
-using Routrek.SSHC;
+using Granados.IO.SSH1;
+using Granados.Crypto;
+using Granados.Util;
 
-namespace Routrek.SSHCV1
+namespace Granados.SSH1
 {
-	/// <summary>
-	/// private key for user authentication
-	/// </summary>
-	public class SSH1UserAuthKey
-	{
-		private BigInteger _modulus;
-		private BigInteger _publicExponent;
-		private BigInteger _privateExponent;
-		private BigInteger _primeP;
-		private BigInteger _primeQ;
-		private BigInteger _crtCoefficient;
+    /// <summary>
+    /// private key for user authentication
+    /// </summary>
+    /// <exclude/>
+    public class SSH1UserAuthKey
+    {
+        private BigInteger _modulus;
+        private BigInteger _publicExponent;
+        private BigInteger _privateExponent;
+        private BigInteger _primeP;
+        private BigInteger _primeQ;
+        private BigInteger _crtCoefficient;
 
-		public BigInteger PublicModulus {
-			get {
-				return _modulus;
-			}
-		}
-		public BigInteger PublicExponent {
-			get {
-				return _publicExponent;
-			}
-		}
+        public BigInteger PublicModulus {
+            get {
+                return _modulus;
+            }
+        }
+        public BigInteger PublicExponent {
+            get {
+                return _publicExponent;
+            }
+        }
 
-		/// <summary>
-		/// constructs from file
-		/// </summary>
-		/// <param name="path">file name</param>
-		/// <param name="passphrase">passphrase or empty string if passphrase is not required</param>
-		public SSH1UserAuthKey(string path, string passphrase)
-		{
-			Stream s = File.Open(path, FileMode.Open);
-			byte[] header = new byte[32];
-			s.Read(header, 0, header.Length);
-			if(Encoding.ASCII.GetString(header)!="SSH PRIVATE KEY FILE FORMAT 1.1\n")
-				throw new SSHException(String.Format(Strings.GetString("BrokenKeyFile"), path));
+        /// <summary>
+        /// constructs from file
+        /// </summary>
+        /// <param name="path">file name</param>
+        /// <param name="passphrase">passphrase or empty string if passphrase is not required</param>
+        public SSH1UserAuthKey(string path, string passphrase)
+        {
+            Stream s = File.Open(path, FileMode.Open);
+            byte[] header = new byte[32];
+            s.Read(header, 0, header.Length);
+            if(Encoding.ASCII.GetString(header)!="SSH PRIVATE KEY FILE FORMAT 1.1\n")
+                throw new SSHException(String.Format(Strings.GetString("BrokenKeyFile"), path));
 
-			SSH1DataReader reader = new SSH1DataReader(ReadAll(s));
-			s.Close();
+            SSH1DataReader reader = new SSH1DataReader(ReadAll(s));
+            s.Close();
 
-			byte[] cipher = reader.Read(2); //first 2 bytes indicates algorithm and next 8 bytes is space
-			reader.Read(8);
+            byte[] cipher = reader.Read(2); //first 2 bytes indicates algorithm and next 8 bytes is space
+            reader.Read(8);
 
-			_modulus = reader.ReadMPInt();
-			_publicExponent = reader.ReadMPInt();
-			byte[] comment = reader.ReadString();
-			byte[] prvt = reader.ReadAll();
-			//必要なら復号
-			CipherAlgorithm algo = (CipherAlgorithm)cipher[1];
-			if(algo!=0) {
-				Cipher c = CipherFactory.CreateCipher(SSHProtocol.SSH1, algo, ConvertToKey(passphrase));
-				byte[] buf = new byte[prvt.Length];
-				c.Decrypt(prvt, 0, prvt.Length, buf, 0);
-				prvt = buf;
-			}
+            _modulus = reader.ReadMPInt();
+            _publicExponent = reader.ReadMPInt();
+            byte[] comment = reader.ReadString();
+            byte[] prvt = reader.ReadAll();
+            //必要なら復号
+            CipherAlgorithm algo = (CipherAlgorithm)cipher[1];
+            if(algo!=0) {
+                Cipher c = CipherFactory.CreateCipher(SSHProtocol.SSH1, algo, ConvertToKey(passphrase));
+                byte[] buf = new byte[prvt.Length];
+                c.Decrypt(prvt, 0, prvt.Length, buf, 0);
+                prvt = buf;
+            }
 
-			SSH1DataReader prvtreader = new SSH1DataReader(prvt);
-			byte[] mark = prvtreader.Read(4);
-			if(mark[0]!=mark[2] || mark[1]!=mark[3])
-				throw new SSHException(Strings.GetString("WrongPassphrase"));
+            SSH1DataReader prvtreader = new SSH1DataReader(prvt);
+            byte[] mark = prvtreader.Read(4);
+            if(mark[0]!=mark[2] || mark[1]!=mark[3])
+                throw new SSHException(Strings.GetString("WrongPassphrase"));
 
-			_privateExponent = prvtreader.ReadMPInt();
-			_crtCoefficient = prvtreader.ReadMPInt();
-			_primeP = prvtreader.ReadMPInt();
-			_primeQ = prvtreader.ReadMPInt();
-		}
+            _privateExponent = prvtreader.ReadMPInt();
+            _crtCoefficient = prvtreader.ReadMPInt();
+            _primeP = prvtreader.ReadMPInt();
+            _primeQ = prvtreader.ReadMPInt();
+        }
 
-		public BigInteger decryptChallenge(BigInteger encryptedchallenge) {
-			BigInteger primeExponentP = PrimeExponent(_privateExponent, _primeP);
-			BigInteger primeExponentQ = PrimeExponent(_privateExponent, _primeQ);
+        public BigInteger decryptChallenge(BigInteger encryptedchallenge) {
+            BigInteger primeExponentP = PrimeExponent(_privateExponent, _primeP);
+            BigInteger primeExponentQ = PrimeExponent(_privateExponent, _primeQ);
 
-			BigInteger p2;
-			BigInteger q2;
-			BigInteger k;
-			BigInteger result;
+            BigInteger p2;
+            BigInteger q2;
+            BigInteger k;
+            BigInteger result;
 
-			p2 = encryptedchallenge % _primeP;
-			p2 = p2.modPow(primeExponentP, _primeP);
+            p2 = encryptedchallenge % _primeP;
+            p2 = p2.modPow(primeExponentP, _primeP);
 
-			q2 = encryptedchallenge % _primeQ;
-			q2 = q2.modPow(primeExponentQ, _primeQ);
+            q2 = encryptedchallenge % _primeQ;
+            q2 = q2.modPow(primeExponentQ, _primeQ);
 
-			if(p2==q2) return p2;
+            if(p2==q2) return p2;
 
-			k = (q2 - p2) % _primeQ;
-			if(k.IsNegative) k += _primeQ;
-			k = k * _crtCoefficient;
-			k = k % _primeQ;
+            k = (q2 - p2) % _primeQ;
+            if(k.IsNegative) k += _primeQ;
+            k = k * _crtCoefficient;
+            k = k % _primeQ;
 
-			result = k * _primeP;
-			result = result + p2;
-			
-			return result;
-		}
+            result = k * _primeP;
+            result = result + p2;
+            
+            return result;
+        }
 
-		private static BigInteger PrimeExponent(BigInteger privateExponent,	BigInteger prime) {
-			BigInteger pe = prime - new BigInteger(1);
-			return privateExponent % pe;
+        private static BigInteger PrimeExponent(BigInteger privateExponent,	BigInteger prime) {
+            BigInteger pe = prime - new BigInteger(1);
+            return privateExponent % pe;
 
-		}
+        }
 
-		private static byte[] ReadAll(Stream s) {
-			byte[] t = new byte[0x1000];
-			int l = s.Read(t, 0, 0x1000);
-			if(l==t.Length) throw new IOException("Key file is too big");
-			return t;
-		}
+        private static byte[] ReadAll(Stream s) {
+            byte[] t = new byte[0x1000];
+            int l = s.Read(t, 0, 0x1000);
+            if(l==t.Length) throw new IOException("Key file is too big");
+            return t;
+        }
 
-		//key from passphrase
-		private static byte[] ConvertToKey(string passphrase) {
-			byte[] t = Encoding.ASCII.GetBytes(passphrase);
-			byte[] md5 = new MD5CryptoServiceProvider().ComputeHash(t);
-			byte[] result = new byte[32];
-			Array.Copy(md5, 0, result, 0, 16);
-			Array.Copy(md5, 0, result, 16, 16);
-			return result;
-		}
-	}
+        //key from passphrase
+        private static byte[] ConvertToKey(string passphrase) {
+            byte[] t = Encoding.ASCII.GetBytes(passphrase);
+            byte[] md5 = new MD5CryptoServiceProvider().ComputeHash(t);
+            byte[] result = new byte[32];
+            Array.Copy(md5, 0, result, 0, 16);
+            Array.Copy(md5, 0, result, 16, 16);
+            return result;
+        }
+    }
 }

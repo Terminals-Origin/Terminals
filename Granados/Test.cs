@@ -9,20 +9,13 @@
  * ---------------------------------------------------------------------------
  */
 using System;
-using System.IO;
-using System.Text;
-using System.Threading;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Globalization;
+using System.Text;
+using System.Threading;
 
-using Routrek.Crypto;
-using Routrek.SSHC;
-using Routrek.SSHCV1;
-using Routrek.SSHCV2;
-using Routrek.Toolkit;
-using Routrek.PKI;
+using Granados;
 
 namespace Routrek.SSHCTest
 {
@@ -43,8 +36,8 @@ namespace Routrek.SSHCTest
 			Debug.WriteLine("Auth Prompt "+msg[0]);
 		}
 
-		public void OnError(Exception error, string msg) {
-			Debug.WriteLine("ERROR: "+ msg);
+		public void OnError(Exception error) {
+			Debug.WriteLine("ERROR: "+ error.Message);
 		}
 		public void OnChannelClosed() {
 			Debug.WriteLine("Channel closed");
@@ -67,8 +60,8 @@ namespace Routrek.SSHCTest
 		public void OnChannelReady() {
 			_ready = true;
 		}
-		public void OnChannelError(Exception error, string msg) {
-			Debug.WriteLine("Channel ERROR: "+ msg);
+		public void OnChannelError(Exception error) {
+			Debug.WriteLine("Channel ERROR: "+ error.Message);
 		}
 		public void OnMiscPacket(byte type, byte[] data, int offset, int length) {
 		}

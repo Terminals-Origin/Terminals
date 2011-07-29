@@ -10,309 +10,242 @@
  */
 
 using System;
-using System.Collections;
-using System.IO;
-using System.Threading;
-using System.Diagnostics;
 
-using Routrek.SSHC;
+using Granados.Crypto;
+using Granados.IO;
+using Granados.IO.SSH2;
+using Granados.Util;
 
-namespace Routrek.SSHCV2
+namespace Granados.SSH2
 {
-	/* SSH2 Packet Structure
-	 * 
-	 * uint32    packet_length
+    /* SSH2 Packet Structure
+     * 
+     * uint32    packet_length
      * byte      padding_length
      * byte[n1]  payload; n1 = packet_length - padding_length - 1
      * byte[n2]  random padding; n2 = padding_length (max 255)
      * byte[m]   mac (message authentication code); m = mac_length
-	 * 
-	 * 4+1+n1+n2 must be a multiple of the cipher block size
-	 */
+     * 
+     * 4+1+n1+n2 must be a multiple of the cipher block size
+     */
+    
+    //SSH2 Packet for Transmission
+    internal class SSH2TransmissionPacket {
+        private int _packetLength;
+        private int _paddingLength;
+        private SSH2DataWriter _writer;
+        private byte[] _padding;
+        private byte[] _mac;
 
-	internal class SSH2Packet
-	{
-		private int _packetLength;
-		private byte[] _payload;
-		private byte[] _padding;
-		private byte[] _mac;
+        private bool _is_open;
 
-		private const int MAX_PACKET_LENGTH = 0x80000; //there was the case that 64KB is insufficient
+        private const int SEQUENCE_MARGIN = 4;
+        private const int LENGTH_MARGIN = 4;
+        private const int PADDING_MARGIN = 1;
 
-		public byte[] Data {
-			get {
-				return _payload;
-			}
-		}
-		//constracts and appends mac
-		public void CalcHash(MAC mac, int sequence) {
-			byte[] buf = new byte[4+4+_packetLength];
-			SSHUtil.WriteIntToByteArray(buf, 0, sequence);
-			WriteTo(buf, 4, false);
-			
-			_mac = mac.Calc(buf);
-		}
-		public void WriteTo(AbstractSocket strm, Cipher cipher) {
-			int bodylen = 4+_packetLength;
-			byte[] buf = new byte[bodylen + (_mac==null? 0 : _mac.Length)];
-			WriteTo(buf, 0, false);
+        public const int INITIAL_OFFSET = SEQUENCE_MARGIN + LENGTH_MARGIN + PADDING_MARGIN;
 
-			if(cipher!=null)
-				cipher.Encrypt(buf, 0, bodylen, buf, 0);
-			
-			if(_mac!=null)
-				Array.Copy(_mac, 0, buf, bodylen, _mac.Length);
-			
-			strm.Write(buf, 0, buf.Length);
-			strm.Flush();
-		}
-		public void WriteTo(byte[] buf, int offset, bool includes_mac) {
-			SSHUtil.WriteIntToByteArray(buf, offset, _packetLength);
-			buf[offset+4] = (byte)_padding.Length;
-			Array.Copy(_payload, 0, buf, offset+5, _payload.Length);
-			Array.Copy(_padding, 0, buf, offset+5+_payload.Length, _padding.Length);
-			if(includes_mac && _mac!=null)
-				Array.Copy(_mac, 0, buf, offset+5+_payload.Length+_padding.Length, _mac.Length);
-		}
+        public SSH2TransmissionPacket() {
+            _padding = new byte[32];
+            _writer = new SSH2DataWriter();
+            _is_open = false;
+        }
 
-		public static SSH2Packet FromPlainPayload(byte[] payload, int blocksize, Random rnd) {
-			SSH2Packet p = new SSH2Packet();
-			int r = 11 - payload.Length % blocksize;
-			while(r < 4) r += blocksize;
-			p._padding = new byte[r]; //block size is 8, and padding length is at least 4 bytes
-			rnd.NextBytes(p._padding);
-			p._payload = payload;
-			p._packetLength = 1+payload.Length+p._padding.Length;
-			return p;
-		}
-		//no decryption, no mac
-		public static SSH2Packet FromPlainStream(byte[] buffer, int offset) {
-			SSH2Packet p = new SSH2Packet();
-			p._packetLength = SSHUtil.ReadInt32(buffer, offset);
-			if(p._packetLength<=0 || p._packetLength>=MAX_PACKET_LENGTH) throw new SSHException(String.Format("packet size {0} is invalid", p._packetLength));
-			offset += 4;
+        public SSH2DataWriter Open() {
+            if(_is_open) throw new SSHException("internal state error");
+            _writer.Reset();
+            _writer.SetOffset(INITIAL_OFFSET);
+            _is_open = true;
+            return _writer;
+        }
+        public SSH2DataWriter UnderlyingWriter {
+            get {
+                return _writer;
+            }
+        }
 
-			byte pl = buffer[offset++];
-			if(pl < 4) throw new SSHException(String.Format("padding length {0} is invalid", pl));
-			p._payload = new byte[p._packetLength - 1 - pl];
-			Array.Copy(buffer, offset, p._payload, 0, p._payload.Length);
-			return p;
-		}
+        public void Close(Cipher cipher, Random rnd, MAC mac, int sequence, DataFragment result) {
+            if(!_is_open) throw new SSHException("internal state error");
+            
+            int blocksize = cipher==null? 8 : cipher.BlockSize;
+            int payload_length = _writer.Length - (SEQUENCE_MARGIN + LENGTH_MARGIN + PADDING_MARGIN);
+            int r = 11 - payload_length % blocksize;
+            while(r < 4) r += blocksize;
+            _paddingLength = r;
+            _packetLength = PADDING_MARGIN + payload_length + _paddingLength;
+            int image_length = _packetLength + LENGTH_MARGIN;
 
-		public static SSH2Packet FromDecryptedHead(byte[] head, byte[] buffer, int offset, Cipher cipher, int sequence, MAC mac) {
+            //fill padding
+            for(int i=0; i<_paddingLength; i+=4)
+                _writer.Write(rnd.Next());
 
-			SSH2Packet p = new SSH2Packet();
-			p._packetLength = SSHUtil.ReadInt32(head, 0);
-			if(p._packetLength<=0 || p._packetLength>=MAX_PACKET_LENGTH) throw new SSHException(String.Format("packet size {0} is invalid", p._packetLength));
-			SSH2DataWriter buf = new SSH2DataWriter();
-			buf.Write(sequence);
-			buf.Write(head);
-			if(p._packetLength > (cipher.BlockSize - 4)) {
-				byte[] tmp = new byte[p._packetLength-(cipher.BlockSize - 4)];
-				cipher.Decrypt(buffer, offset, tmp.Length, tmp, 0);
-				offset += tmp.Length;
-				buf.Write(tmp);
-			}
-			byte[] result = buf.ToByteArray();
-			int padding_len = (int)result[8];
-			if(padding_len<4) throw new SSHException("padding length is invalid");
+            //manipulate stream
+            byte[] rawbuf = _writer.UnderlyingBuffer;
+            SSHUtil.WriteIntToByteArray(rawbuf, 0, sequence);
+            SSHUtil.WriteIntToByteArray(rawbuf, SEQUENCE_MARGIN, _packetLength);
+            rawbuf[SEQUENCE_MARGIN + LENGTH_MARGIN] = (byte)_paddingLength;
 
-			byte[] payload = new byte[result.Length-9-padding_len];
-			Array.Copy(result, 9, payload, 0, payload.Length);
-			p._payload = payload;
+            //mac
+            if(mac!=null) {
+                _mac = mac.ComputeHash(rawbuf, 0, _packetLength+LENGTH_MARGIN+SEQUENCE_MARGIN);
+                Array.Copy(_mac, 0, rawbuf, _packetLength+LENGTH_MARGIN+SEQUENCE_MARGIN, _mac.Length);
+                image_length += _mac.Length;
+            }
 
-			if(mac!=null) {
-				p._mac = mac.Calc(result);
-				if(SSHUtil.memcmp(p._mac, 0, buffer, offset, mac.Size)!=0)
-					throw new SSHException("MAC Error");
-			}
-			return p;
-		}
-	}
+            //encrypt
+            if(cipher!=null)
+                cipher.Encrypt(rawbuf, SEQUENCE_MARGIN, _packetLength+LENGTH_MARGIN, rawbuf, SEQUENCE_MARGIN);
 
-	internal interface ISSH2PacketHandler : IHandlerBase {
-		void OnPacket(SSH2Packet packet);
-	}
+            result.Init(rawbuf, SEQUENCE_MARGIN, image_length);
+            _is_open = false;
+        }
+    }
 
-	internal class SynchronizedSSH2PacketHandler : SynchronizedHandlerBase, ISSH2PacketHandler {
-		internal ArrayList _packets;
 
-		internal SynchronizedSSH2PacketHandler() {
-			_packets = new ArrayList();
-		}
 
-		public void OnPacket(SSH2Packet packet) {
-			lock(this) {
-				_packets.Add(packet);
-				if(_packets.Count > 0)
-					SetReady();
-			}
-		}
-		public void OnError(Exception error, string msg) {
-			base.SetError(msg);
-		}
-		public void OnClosed() {
-			base.SetClosed();
-		}
+    internal class CallbackSSH2PacketHandler : IDataHandler {
+        internal SSH2Connection _connection;
 
-		public bool HasPacket {
-			get {
-				return _packets.Count>0;
-			}
-		}
-		public SSH2Packet PopPacket() {
-			lock(this) {
-				if(_packets.Count==0)
-					return null;
-				else {
-					SSH2Packet p = null;
-					p = (SSH2Packet)_packets[0];
-					_packets.RemoveAt(0);
-					if(_packets.Count==0) _event.Reset();
-					return p;
-				}
-			}
-		}
-	}
-	internal class CallbackSSH2PacketHandler : ISSH2PacketHandler {
-		internal SSH2Connection _connection;
+        internal CallbackSSH2PacketHandler(SSH2Connection con) {
+            _connection = con;
+        }
+        public void OnData(DataFragment data) {
+            _connection.AsyncReceivePacket(data);
+        }
+        public void OnError(Exception error) {
+            _connection.EventReceiver.OnError(error);
+        }
+        public void OnClosed() {
+            _connection.EventReceiver.OnConnectionClosed();
+        }
+    }
 
-		internal CallbackSSH2PacketHandler(SSH2Connection con) {
-			_connection = con;
-		}
-		public void OnPacket(SSH2Packet packet) {
-			_connection.AsyncReceivePacket(packet);
-		}
-		public void OnError(Exception error, string msg) {
-			_connection.EventReceiver.OnError(error, msg);
-		}
-		public void OnClosed() {
-			_connection.EventReceiver.OnConnectionClosed();
-		}
-	}
 
-	internal class SSH2PacketBuilder : IByteArrayHandler {
-		private ISSH2PacketHandler _handler;
-		private byte[] _buffer;
-		private byte[] _head;
-		private int _readOffset;
-		private int _writeOffset;
-		private int _sequence;
-		private Cipher _cipher;
-		private MAC _mac;
-		private ManualResetEvent _event;
+    internal class SSH2PacketBuilder : FilterDataHandler {
+        private const int MAX_PACKET_LENGTH = 0x80000; //there was the case that 64KB is insufficient
 
-		public SSH2PacketBuilder(ISSH2PacketHandler handler) {
-			_handler = handler;
-			_buffer = new byte[0x1000];
-			_readOffset = 0;
-			_writeOffset = 0;
-			_sequence = 0;
-			_cipher = null;
-			_mac = null;
-			_head = null;
-		}
-		public void SetSignal(bool value) {
-			if(_event==null) _event = new ManualResetEvent(true);
+        private DataFragment _buffer;
+        private DataFragment _packet;
+        private byte[] _head;
+        private bool _head_is_available;
+        private int _sequence;
+        private Cipher _cipher;
+        private MAC _mac;
+        private bool _macEnabled;
 
-			if(value)
-				_event.Set();
-			else
-				_event.Reset();
-		}
+        private const int SEQUENCE_FIELD_LEN = 4;
+        private const int PACKET_LENGTH_FIELD_LEN = 4;
+        private const int PADDING_LENGTH_FIELD_LEN = 1;
 
-		public void SetCipher(Cipher c, MAC m) {
-			_cipher = c;
-			_mac = m;
-		}
-		public ISSH2PacketHandler Handler {
-			get {
-				return _handler;
-			}
-			set {
-				_handler = value;
-			}
-		}
+        public SSH2PacketBuilder(IDataHandler handler) : base(handler) {
+            _buffer = new DataFragment(0x1000);
+            _packet = new DataFragment(_buffer.Capacity);
+            _sequence = 0;
+            _cipher = null;
+            _mac = null;
+            _head = null;
+        }
 
-		public void OnData(byte[] data, int offset, int length) {
-			try {
-				while(_buffer.Length - _writeOffset < length)
-					ExpandBuffer();
-				Array.Copy(data, offset, _buffer, _writeOffset, length);
-				_writeOffset += length;
+        public void SetCipher(Cipher cipher, MAC mac, bool mac_enabled) {
+            _cipher = cipher;
+            _mac = mac;
+            _macEnabled = mac_enabled;
+            _head = new byte[cipher.BlockSize];
+        }
 
-				SSH2Packet p = ConstructPacket();
-				while(p!=null) {
-					_handler.OnPacket(p);
-					p = ConstructPacket();
-				}
-				ReduceBuffer();
-			}
-			catch(Exception ex) {
-				OnError(ex, ex.Message);
-			}
-		}
-		//returns true if a new packet could be obtained
-		private SSH2Packet ConstructPacket() {
-			SSH2Packet packet = null;
-			if(_event!=null && !_event.WaitOne(3000, false))
-				throw new Exception("waithandle timed out");
+        public override void OnData(DataFragment data) {
+            try {
+                _buffer.Append(data);
 
-			if(_cipher==null) {
-				if(_writeOffset-_readOffset<4) return null;
-				int len = SSHUtil.ReadInt32(_buffer, _readOffset);
-				if(_writeOffset-_readOffset<4+len) return null;
+                //ここで複数パケットを一括して受け取った場合を考慮している
+                while(ConstructPacket()) {
+                    _inner_handler.OnData(_packet);
+                }
 
-				packet = SSH2Packet.FromPlainStream(_buffer, _readOffset);
-				_readOffset += 4 + len;
-				_sequence++;
-			}
-			else {
-				if(_head==null) {
-					if(_writeOffset-_readOffset<_cipher.BlockSize) return null;
-					_head = new byte[_cipher.BlockSize];
-					byte[] eh = new byte[_cipher.BlockSize];
-					Array.Copy(_buffer, _readOffset, eh, 0, eh.Length);
-					_readOffset += eh.Length;
-					_cipher.Decrypt(eh, 0, eh.Length, _head, 0);
-				}
+            }
+            catch(Exception ex) {
+                OnError(ex);
+            }
+        }
 
-				int len = SSHUtil.ReadInt32(_head, 0);
-				if(_writeOffset-_readOffset < len+4-_head.Length+_mac.Size) return null;
+        //returns true if a new packet is obtained to _packet
+        private bool ConstructPacket() {
+            if(_cipher==null) { //暗号が確立する前
+                if(_buffer.Length<PACKET_LENGTH_FIELD_LEN) return false;
+                int len = SSHUtil.ReadInt32(_buffer.Data, _buffer.Offset);
+                if(_buffer.Length<PACKET_LENGTH_FIELD_LEN+len) return false;
 
-				packet = SSH2Packet.FromDecryptedHead(_head, _buffer, _readOffset, _cipher, _sequence++, _mac);
-				_readOffset += 4 + len - _head.Length + _mac.Size;
-				_head = null;
-			}
+                ReadPacketFromPlainStream();
+            }
+            else {
+                if(!_head_is_available) {
+                    if(_buffer.Length<_cipher.BlockSize) return false;
+                    _cipher.Decrypt(_buffer.Data, _buffer.Offset, _head.Length, _head, 0);
+                    _buffer.Consume(_head.Length);
+                    _head_is_available = true;
+                }
 
-			return packet;
-		}
+                int len = SSHUtil.ReadInt32(_head, 0);
+                if(_buffer.Length < len+PACKET_LENGTH_FIELD_LEN-_head.Length+_mac.Size) return false;
 
-		private void ExpandBuffer() {
-			byte[] t = new byte[_buffer.Length*2];
-			Array.Copy(_buffer, 0, t, 0, _buffer.Length);
-			_buffer = t;
-		}
-		private void ReduceBuffer() {
-			if(_readOffset==_writeOffset) {
-				_readOffset = 0;
-				_writeOffset = 0;
-			}
-			else {
-				byte[] temp = new byte[_writeOffset - _readOffset];
-				Array.Copy(_buffer, _readOffset, temp, 0, temp.Length);
-				Array.Copy(temp, 0, _buffer, 0, temp.Length);
-				_readOffset = 0;
-				_writeOffset = temp.Length;
-			}
-		}
+                ReadPacketWithDecryptedHead();
+                _head_is_available = false;
+            }
 
-		public void OnError(Exception error, string msg) {
-			_handler.OnError(error, msg);
-		}
-		public void OnClosed() {
-			_handler.OnClosed();
-			if(_event!=null) _event.Close();
-		}
-	}
+            _sequence++;
+            return true;
+        }
+
+        //no decryption, no mac
+        private void ReadPacketFromPlainStream() {
+            int offset = _buffer.Offset;
+            int packet_length = SSHUtil.ReadInt32(_buffer.Data, offset);
+            if(packet_length<=0 || packet_length>=MAX_PACKET_LENGTH) throw new SSHException(String.Format("packet size {0} is invalid", packet_length));
+            offset += PACKET_LENGTH_FIELD_LEN;
+
+            byte padding_length = _buffer.Data[offset++];
+            if(padding_length < 4) throw new SSHException(String.Format("padding length {0} is invalid", padding_length));
+            
+            int payload_length = packet_length - 1 - padding_length;
+            Array.Copy(_buffer.Data, offset, _packet.Data, 0, payload_length);
+            _packet.SetLength(0, payload_length);
+
+            _buffer.Consume(packet_length + PACKET_LENGTH_FIELD_LEN);
+        }
+
+        private void ReadPacketWithDecryptedHead() {
+            /* SOURCE      : _head(packet_size, padding_length) + _buffer(payload + mac)
+             * DESTINATION : _packet(payload)
+             */ 
+
+            int offset = _buffer.Offset;
+            int packet_length = SSHUtil.ReadInt32(_head, 0);
+            if(packet_length<=0 || packet_length>=MAX_PACKET_LENGTH)
+                throw new SSHException(String.Format("packet size {0} is invalid", packet_length));
+
+            _packet.AssureCapacity(packet_length+PACKET_LENGTH_FIELD_LEN+SEQUENCE_FIELD_LEN);
+            int padding_length = (int)_head[PACKET_LENGTH_FIELD_LEN];
+            if(padding_length<4) throw new SSHException("padding length is invalid");
+            
+            //to compute hash, we write _sequence at the top of _packet.Data
+            SSHUtil.WriteIntToByteArray(_packet.Data, 0, _sequence);
+            Array.Copy(_head, 0, _packet.Data, SEQUENCE_FIELD_LEN, _head.Length);
+
+            if(packet_length > (_cipher.BlockSize - PACKET_LENGTH_FIELD_LEN)) { //in case of _head is NOT the entire of the packet
+                int decrypting_size = packet_length-(_cipher.BlockSize - PACKET_LENGTH_FIELD_LEN);
+                _cipher.Decrypt(_buffer.Data, _buffer.Offset, decrypting_size, _packet.Data, SEQUENCE_FIELD_LEN+_head.Length);
+            }
+
+            _packet.SetLength(SEQUENCE_FIELD_LEN+PACKET_LENGTH_FIELD_LEN+PADDING_LENGTH_FIELD_LEN, packet_length-1-padding_length);
+            _buffer.Consume(packet_length + PACKET_LENGTH_FIELD_LEN - _head.Length + _mac.Size);
+            
+            if(_macEnabled) {
+                byte[] result = _mac.ComputeHash(_packet.Data, 0, 4+PACKET_LENGTH_FIELD_LEN+packet_length);
+            
+                if(SSHUtil.memcmp(result, 0, _buffer.Data, _buffer.Offset-_mac.Size, _mac.Size)!=0)
+                    throw new SSHException("MAC mismatch");
+            }
+        }
+
+    }
 }
