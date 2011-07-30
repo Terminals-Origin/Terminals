@@ -1288,6 +1288,18 @@ namespace Terminals
             set { Settings._delayConfigurationSave = value; }
         }
 
+        public static void Save()
+        {
+            Configuration configuration = Config;
+            configuration.Save();
+        }
+
+        public static void SaveAs(String fileName, ConfigurationSaveMode saveMode = ConfigurationSaveMode.Modified, Boolean forceSaveAll = false)
+        {
+            Configuration configuration = Config;
+            configuration.SaveAs(fileName, saveMode, forceSaveAll);
+        }
+
         public static void RebuildTagIndex()
         {
             foreach (string Tag in Settings.Tags)

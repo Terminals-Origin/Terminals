@@ -2061,44 +2061,49 @@ namespace Terminals
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OptionsForm2 frmOptions = new OptionsForm2(CurrentTerminal);
-            if (frmOptions.ShowDialog() == DialogResult.OK)
+            using (OptionsForm2 frmOptions = new OptionsForm2(CurrentTerminal))
             {
-                this.groupsToolStripMenuItem.Visible = Settings.EnableGroupsMenu;
-                this.HideShowFavoritesPanel(Settings.ShowFavoritePanel);
-
-                this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
-                if (!Settings.MinimizeToTray && !this.Visible) this.Visible = true;
-
-                if (Settings.Office2007BlueFeel)
-                    ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Blue);
-                else if (Settings.Office2007BlackFeel)
-                    ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Black);
-                else
-                    ToolStripManager.Renderer = new ToolStripProfessionalRenderer();
-
-                this.tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
-                if (this.terminalsControler.HasSelected)
+                if (frmOptions.ShowDialog() == DialogResult.OK)
                 {
-                    this.terminalsControler.Selected.ToolTipText = this.terminalsControler.Selected.Favorite.GetToolTipText();
-                }
+                    this.groupsToolStripMenuItem.Visible = Settings.EnableGroupsMenu;
+                    this.HideShowFavoritesPanel(Settings.ShowFavoritePanel);
+                    this.MainWindowNotifyIcon.Visible = Settings.MinimizeToTray;
+                    if (!Settings.MinimizeToTray && !this.Visible)
+                        this.Visible = true;
 
-                UpdateCaptureButtonEnabled();
+                    if (Settings.Office2007BlueFeel)
+                    {
+                        ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Blue);
+                    }
+                    else
+                    {
+                        if (Settings.Office2007BlackFeel)
+                            ToolStripManager.Renderer = Office2007Renderer.Office2007Renderer.GetRenderer(Office2007Renderer.RenderColors.Black);
+                        else
+                            ToolStripManager.Renderer = new ToolStripProfessionalRenderer();
+                    }
+
+                    this.tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
+                    if (this.terminalsControler.HasSelected)
+                        this.terminalsControler.Selected.ToolTipText = this.terminalsControler.Selected.Favorite.GetToolTipText();
+
+                    UpdateCaptureButtonEnabled();
+                }
             }
         }
 
-      /// <summary>
-      /// Disable capture button when function is disabled in options
-      /// </summary>
-      private void UpdateCaptureButtonEnabled()
-      {
-        Boolean enableCapture = Settings.EnabledCaptureToFolderAndClipBoard;
-        this.CaptureScreenToolStripButton.Enabled = enableCapture;
-        this.captureTerminalScreenToolStripMenuItem.Enabled = enableCapture;
-        this.terminalsControler.UpdateCaptureButtonOnDetachedPopUps();
-      }
+        /// <summary>
+        /// Disable capture button when function is disabled in options
+        /// </summary>
+        private void UpdateCaptureButtonEnabled()
+        {
+            Boolean enableCapture = Settings.EnabledCaptureToFolderAndClipBoard;
+            this.CaptureScreenToolStripButton.Enabled = enableCapture;
+            this.captureTerminalScreenToolStripMenuItem.Enabled = enableCapture;
+            this.terminalsControler.UpdateCaptureButtonOnDetachedPopUps();
+        }
 
-      private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (AboutForm frmAbout = new AboutForm())
             {

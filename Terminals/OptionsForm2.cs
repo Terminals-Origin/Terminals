@@ -177,6 +177,8 @@ namespace Terminals
                 }
             }
 
+            
+
             // The option title label is the anchor for the form's width
             Int32 formWidth = this.OptionTitelLabel.Location.X + this.OptionTitelLabel.Width + 15;
             this.Width = formWidth;
@@ -245,22 +247,24 @@ namespace Terminals
                 this.currentPanel.Show();
 
                 this.OptionTitelLabel.Text = this.OptionsTreeView.SelectedNode.Name.Replace("&", "&&");
+
+                if (e.Node.GetNodeCount(true) > 0)
+                {
+                    switch (e.Action)
+                    {
+                        case TreeViewAction.ByKeyboard:
+                        case TreeViewAction.ByMouse:
+                            if (e.Node.IsExpanded)
+                                e.Node.Collapse();
+                            else
+                                e.Node.Expand();
+                            break;
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Terminals.Logging.Log.Info(ex);
-            }
-        }
-
-        private void OptionsTreeView_NodeMouseClick(object sender, System.Windows.Forms.TreeNodeMouseClickEventArgs e)
-        {
-            // Expand or collapse parent node with a single mouseclick
-            if (e.Node.GetNodeCount(true) > 0)
-            {
-                if (e.Node.IsExpanded)
-                    e.Node.Collapse();
-                else
-                    e.Node.Expand();
             }
         }
 
@@ -362,7 +366,19 @@ namespace Terminals
                 Settings.Office2007BlackFeel = true;
             }
 
-            Settings.DelayConfigurationSave = false;
+            try
+            {
+                Settings.Save();
+            }
+            catch (Exception ex)
+            {
+                Terminals.Logging.Log.Error(ex);
+                MessageBox.Show(String.Format("Error saving settings.\r\n{0}", ex.Message));
+            }
+            finally
+            {
+                Settings.DelayConfigurationSave = false;
+            }
         }
 
         private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)
