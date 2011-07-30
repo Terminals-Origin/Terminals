@@ -11,7 +11,7 @@
  *   * MindTerm ( AppGate Network Security )
  */
 
-namespace Routrek.SSHCV1
+namespace Granados.SSH1
 {
 public class CRC
 {

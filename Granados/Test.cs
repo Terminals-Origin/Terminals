@@ -17,7 +17,7 @@ using System.Threading;
 
 using Granados;
 
-namespace Routrek.SSHCTest
+namespace Granados.SSHCTest
 {
 	class Reader : ISSHConnectionEventReceiver, ISSHChannelEventReceiver {
 		public SSHConnection _conn;
