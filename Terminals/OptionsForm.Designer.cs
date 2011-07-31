@@ -88,6 +88,7 @@ namespace Terminals
             this.chkWaitForExit = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.GeneralTabPage = new System.Windows.Forms.TabPage();
+            this.NeverShowTerminalsCheckbox = new System.Windows.Forms.CheckBox();
             this.autoCaseTagsCheckbox = new System.Windows.Forms.CheckBox();
             this.warnDisconnectCheckBox = new System.Windows.Forms.CheckBox();
             this.validateServerNamesCheckbox = new System.Windows.Forms.CheckBox();
@@ -127,7 +128,6 @@ namespace Terminals
             this.EnableFavoritesPanel = new System.Windows.Forms.CheckBox();
             this.EnableGroupsMenu = new System.Windows.Forms.CheckBox();
             this.serviceController1 = new System.ServiceProcess.ServiceController();
-            this.NeverShowTerminalsCheckbox = new System.Windows.Forms.CheckBox();
             this.ProxyTabPage.SuspendLayout();
             this.panel1.SuspendLayout();
             this.FlickrTabPage.SuspendLayout();
@@ -177,7 +177,7 @@ namespace Terminals
             this.label1.Size = new System.Drawing.Size(470, 39);
             this.label1.TabIndex = 3;
             this.label1.Text = "More options coming soon to a version near you.\r\nHave a suggestion? submit a feat" +
-                "ure request \r\nthrough the Terminals website:\r\n";
+    "ure request \r\nthrough the Terminals website:\r\n";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkLabel1
@@ -295,7 +295,7 @@ namespace Terminals
             this.label10.Size = new System.Drawing.Size(255, 59);
             this.label10.TabIndex = 15;
             this.label10.Text = "Second you must click the Complete button to finish the process.  Only do this AF" +
-                "TER you have accepted Terminals access to your account on the Flickr Web Site.";
+    "TER you have accepted Terminals access to your account on the Flickr Web Site.";
             this.label10.DoubleClick += new System.EventHandler(this.label10_DoubleClick);
             // 
             // label9
@@ -305,8 +305,8 @@ namespace Terminals
             this.label9.Size = new System.Drawing.Size(255, 59);
             this.label9.TabIndex = 14;
             this.label9.Text = "First you must first Authorize Terminals with your Flickr Account.  Press the Aut" +
-                "horize button now, login to your Flickr Account and allow Terminals limited acce" +
-                "ss to your account.";
+    "horize button now, login to your Flickr Account and allow Terminals limited acce" +
+    "ss to your account.";
             // 
             // CompleteAuthButton
             // 
@@ -760,6 +760,16 @@ namespace Terminals
             this.GeneralTabPage.Text = "General";
             this.GeneralTabPage.UseVisualStyleBackColor = true;
             // 
+            // NeverShowTerminalsCheckbox
+            // 
+            this.NeverShowTerminalsCheckbox.AutoSize = true;
+            this.NeverShowTerminalsCheckbox.Location = new System.Drawing.Point(253, 99);
+            this.NeverShowTerminalsCheckbox.Name = "NeverShowTerminalsCheckbox";
+            this.NeverShowTerminalsCheckbox.Size = new System.Drawing.Size(158, 17);
+            this.NeverShowTerminalsCheckbox.TabIndex = 24;
+            this.NeverShowTerminalsCheckbox.Text = "Never show Terminals Page";
+            this.NeverShowTerminalsCheckbox.UseVisualStyleBackColor = true;
+            // 
             // autoCaseTagsCheckbox
             // 
             this.autoCaseTagsCheckbox.AutoSize = true;
@@ -939,9 +949,9 @@ namespace Terminals
             // 
             // tabControl1
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.GeneralTabPage);
             this.tabControl1.Controls.Add(this.ExecuteBeforeConnectTabPage);
             this.tabControl1.Controls.Add(this.SecurityTabPage);
@@ -1182,16 +1192,6 @@ namespace Terminals
             this.EnableGroupsMenu.TabIndex = 23;
             this.EnableGroupsMenu.Text = "Enable Groups Menu";
             this.EnableGroupsMenu.UseVisualStyleBackColor = true;
-            // 
-            // NeverShowTerminalsCheckbox
-            // 
-            this.NeverShowTerminalsCheckbox.AutoSize = true;
-            this.NeverShowTerminalsCheckbox.Location = new System.Drawing.Point(253, 99);
-            this.NeverShowTerminalsCheckbox.Name = "NeverShowTerminalsCheckbox";
-            this.NeverShowTerminalsCheckbox.Size = new System.Drawing.Size(158, 17);
-            this.NeverShowTerminalsCheckbox.TabIndex = 24;
-            this.NeverShowTerminalsCheckbox.Text = "Never show Terminals Page";
-            this.NeverShowTerminalsCheckbox.UseVisualStyleBackColor = true;
             // 
             // OptionsForm
             // 

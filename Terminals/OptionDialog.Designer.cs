@@ -1,6 +1,6 @@
-namespace Terminals
+namespace Terminals.Forms
 {
-    partial class OptionsForm2
+    partial class OptionDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -47,7 +47,7 @@ namespace Terminals
             System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Flickr");
             System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Screen Capture", new System.Windows.Forms.TreeNode[] {
             treeNode11});
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionsForm2));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionDialog));
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -982,7 +982,7 @@ namespace Terminals
             this.ErrorLabel.ForeColor = System.Drawing.Color.Red;
             this.ErrorLabel.Location = new System.Drawing.Point(3, 137);
             this.ErrorLabel.Name = "ErrorLabel";
-            this.ErrorLabel.Size = new System.Drawing.Size(233, 70);
+            this.ErrorLabel.Size = new System.Drawing.Size(211, 70);
             this.ErrorLabel.TabIndex = 19;
             // 
             // TestButton

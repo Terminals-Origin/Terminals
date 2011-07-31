@@ -2061,7 +2061,7 @@ namespace Terminals
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (OptionsForm2 frmOptions = new OptionsForm2(CurrentTerminal))
+            using (Forms.OptionDialog frmOptions = new Forms.OptionDialog(CurrentTerminal))
             {
                 if (frmOptions.ShowDialog() == DialogResult.OK)
                 {

@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using AxMSTSCLib;
 using FlickrNet;
 
-namespace Terminals
+namespace Terminals.Forms
 {
-    public partial class OptionsForm2 : Form
+    public partial class OptionDialog : Form
     {
         private AxMsRdpClient6 currentTerminal;
         private String tempFrob;
@@ -20,7 +17,7 @@ namespace Terminals
 
         #region Constructors
         
-        public OptionsForm2(AxMsRdpClient6 terminal) 
+        public OptionDialog(AxMsRdpClient6 terminal) 
         {
             // Set default font type by Windows theme to use for all controls on form
             this.Font = System.Drawing.SystemFonts.IconTitleFont;
