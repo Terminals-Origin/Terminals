@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
+using Terminals.Configuration;
 
 namespace Terminals.Forms
 {
     internal class StartShutdownOptionPanel : OptionDialogCategoryPanel
     {
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.GroupBox groupBoxShutdown;
-        private System.Windows.Forms.CheckBox chkSaveConnections;
-        private System.Windows.Forms.CheckBox chkShowConfirmDialog;
-        private System.Windows.Forms.GroupBox groupBoxStartup;
-        private System.Windows.Forms.CheckBox chkNeverShowTerminalsCheckbox;
-        private System.Windows.Forms.CheckBox chkSingleInstance;
+        private Panel panel1;
+        private GroupBox groupBoxShutdown;
+        private CheckBox chkSaveConnections;
+        private CheckBox chkShowConfirmDialog;
+        private GroupBox groupBoxStartup;
+        private CheckBox chkNeverShowTerminalsCheckbox;
+        private CheckBox chkSingleInstance;
 
         public StartShutdownOptionPanel()
         {
@@ -156,7 +156,7 @@ namespace Terminals.Forms
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Error(ex);
+                Logging.Log.Error(ex);
                 return false;
             }
         }

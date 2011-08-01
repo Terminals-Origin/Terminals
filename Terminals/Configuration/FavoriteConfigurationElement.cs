@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Configuration;
+using Terminals.Configuration;
 
 namespace Terminals
 {
@@ -591,11 +592,11 @@ namespace Terminals
         {
             get
             {
-                Credentials.CredentialSet cred = Credentials.CredentialSet.CredentialByName(Credential);
+                CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
                 if (cred != null)
                     return cred.Domain;
-                else
-                    return (string)this["domainName"];
+                
+                return (string)this["domainName"];
             }
             set
             {
@@ -633,11 +634,11 @@ namespace Terminals
         {
             get
             {
-                Credentials.CredentialSet cred = Credentials.CredentialSet.CredentialByName(Credential);
+                CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
                 if (cred != null)
                     return cred.Username;
-                else
-                    return (string)this["userName"];
+                
+                return (string)this["userName"];
             }
             set
             {
@@ -658,15 +659,18 @@ namespace Terminals
             }
         }
 
+        /// <summary>
+        /// Gets or sets the password string in not ecrypted form
+        /// </summary>
         public string Password
         {
             get
             {
-                Credentials.CredentialSet cred = Credentials.CredentialSet.CredentialByName(Credential);
+                CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
                 if (cred != null)
-                    return cred.Password;
-                else
-                    return Functions.DecryptPassword(EncryptedPassword);
+                    return cred.SecretKey;
+                
+                return Functions.DecryptPassword(EncryptedPassword);
             }
             set
             {

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using Terminals.Configuration;
 
 namespace Terminals.Scanner
 {
@@ -40,7 +40,7 @@ namespace Terminals.Scanner
             }
             catch (Exception e)
             {
-                Terminals.Logging.Log.Error("Scan Failed", e);
+                Logging.Log.Error("Scan Failed", e);
             }
         }
 
@@ -66,12 +66,12 @@ namespace Terminals.Scanner
             }
             catch (System.Security.Cryptography.CryptographicException ce)
             {
-                Terminals.Logging.Log.Info(string.Empty, ce);
+                Logging.Log.Info(string.Empty, ce);
                 return true;
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Error("VNC Port Scan Failed", exc);
+                Logging.Log.Error("VNC Port Scan Failed", exc);
                 exc.ToString();
             }
 
@@ -123,7 +123,7 @@ namespace Terminals.Scanner
                     }
                     catch (Exception exc)
                     {
-                        Terminals.Logging.Log.Error("Attempting to Resolve host named failed", exc);
+                        Logging.Log.Error("Attempting to Resolve host named failed", exc);
                         args.NetworkScanItem.HostName = args.NetworkScanItem.IPAddress;
                         if(!KnownHostNames.ContainsKey(args.NetworkScanItem.IPAddress))
                             KnownHostNames.Add(args.NetworkScanItem.IPAddress, args.NetworkScanItem.IPAddress);

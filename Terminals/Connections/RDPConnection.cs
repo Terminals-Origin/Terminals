@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using AxMSTSCLib;
 using System.IO;
 using System.Runtime.InteropServices;
+using Terminals.Configuration;
 
 //http://msdn.microsoft.com/en-us/library/aa381172(v=vs.85).aspx
 //http://msdn.microsoft.com/en-us/library/aa380838(v=VS.85).aspx

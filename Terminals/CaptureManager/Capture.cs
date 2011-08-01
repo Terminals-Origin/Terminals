@@ -1,6 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
+using FlickrNet;
+using Terminals.Configuration;
 
 namespace Terminals.CaptureManager
 {
@@ -18,12 +19,12 @@ namespace Terminals.CaptureManager
         {
             try
             {
-                if (System.IO.File.Exists(this.FilePath)) System.IO.File.Delete(this.FilePath);
-                if (System.IO.File.Exists(this.CommentsFilename)) System.IO.File.Delete(this.CommentsFilename);
+                if (File.Exists(this.FilePath)) File.Delete(this.FilePath);
+                if (File.Exists(this.CommentsFilename)) File.Delete(this.CommentsFilename);
             }
             catch (Exception ec)
             {
-                Terminals.Logging.Log.Error("Error trying to Delete", ec);
+                Logging.Log.Error("Error trying to Delete", ec);
             }
         }
 
@@ -31,13 +32,14 @@ namespace Terminals.CaptureManager
         {
             if (Settings.FlickrToken != string.Empty)
             {
-                FlickrNet.Flickr flckr = new FlickrNet.Flickr(Program.FlickrAPIKey, Program.FlickrSharedSecretKey);
+                Flickr flckr = new Flickr(Program.FlickrAPIKey, Program.FlickrSharedSecretKey);
                 flckr.AuthToken = Settings.FlickrToken;
                 string c = this.Comments;
                 if (c == null) c = string.Empty;
-                using (System.IO.FileStream fs = new System.IO.FileStream(this.FilePath, System.IO.FileMode.Open))
+                using (FileStream fs = new FileStream(this.FilePath, FileMode.Open))
                 {
-                    flckr.UploadPicture(fs, System.IO.Path.GetFileName(this.FilePath), c, "screenshot Terminals", 1, 1, 1, FlickrNet.ContentType.Screenshot, FlickrNet.SafetyLevel.Safe, FlickrNet.HiddenFromSearch.Visible);
+                    flckr.UploadPicture(fs, Path.GetFileName(this.FilePath), c, "screenshot Terminals", 1, 1, 1,
+                        ContentType.Screenshot, SafetyLevel.Safe, HiddenFromSearch.Visible);
                 }
             } 
             else
@@ -50,37 +52,37 @@ namespace Terminals.CaptureManager
         {
             try
             {
-                if (System.IO.File.Exists(Destination))
+                if (File.Exists(Destination))
                 {
-                    System.IO.File.Delete(this.FilePath);
+                    File.Delete(this.FilePath);
                 }
                 else
                 {
-                    System.IO.File.Move(this.FilePath, Destination);
+                    File.Move(this.FilePath, Destination);
                 }
 
                 Destination = Destination + ".comments";
-                if (System.IO.File.Exists(Destination))
+                if (File.Exists(Destination))
                 {
-                    System.IO.File.Delete(this.CommentsFilename);
+                    File.Delete(this.CommentsFilename);
                 }
                 else
                 {
-                    System.IO.File.Move(this.CommentsFilename, Destination);
+                    File.Move(this.CommentsFilename, Destination);
                 }
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Error("Error trying to call Move (file)", exc);                
+                Logging.Log.Error("Error trying to call Move (file)", exc);                
             }
         }
 
         public void Save()
         {
-            if (System.IO.File.Exists(this.CommentsFilename)) System.IO.File.Delete(this.CommentsFilename);
+            if (File.Exists(this.CommentsFilename)) File.Delete(this.CommentsFilename);
             if (this.Comments != null && this.Comments.Trim() != string.Empty)
             {
-                System.IO.File.WriteAllText(this.CommentsFilename, this.comments);
+                File.WriteAllText(this.CommentsFilename, this.comments);
             }
         }
 
@@ -98,7 +100,7 @@ namespace Terminals.CaptureManager
         {
             get
             {
-                return System.IO.Path.Combine(System.IO.Path.GetDirectoryName(this.FilePath), string.Format("{0}.comments", System.IO.Path.GetFileName(this.filepath)));
+                return Path.Combine(Path.GetDirectoryName(this.FilePath), string.Format("{0}.comments", Path.GetFileName(this.filepath)));
             }
         }
 
@@ -106,7 +108,7 @@ namespace Terminals.CaptureManager
         {
             get 
             {
-                return System.IO.Path.GetFileName(this.FilePath);
+                return Path.GetFileName(this.FilePath);
             }
         }
 
@@ -116,8 +118,8 @@ namespace Terminals.CaptureManager
             {
                 if (this.image == null)
                 {
-                    string copy = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.IO.Path.GetTempFileName()), System.IO.Path.GetFileName(this.filepath));
-                    if (!System.IO.File.Exists(copy)) System.IO.File.Copy(this.filepath, copy);
+                    string copy = Path.Combine(Path.GetDirectoryName(Path.GetTempFileName()), Path.GetFileName(this.filepath));
+                    if (!File.Exists(copy)) File.Copy(this.filepath, copy);
                     using (System.Drawing.Image i = System.Drawing.Image.FromFile(copy))
                     {
                         this.image = (System.Drawing.Image)i.Clone();
@@ -134,13 +136,13 @@ namespace Terminals.CaptureManager
             {
                 if (this.comments == null)
                 {
-                    if (System.IO.File.Exists(this.CommentsFilename))
+                    if (File.Exists(this.CommentsFilename))
                     {
-                        string copy = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.IO.Path.GetTempFileName()), System.IO.Path.GetFileName(this.CommentsFilename));
-                        if (!System.IO.File.Exists(copy))
-                            System.IO.File.Copy(this.CommentsFilename, copy);
+                        string copy = Path.Combine(Path.GetDirectoryName(Path.GetTempFileName()), Path.GetFileName(this.CommentsFilename));
+                        if (!File.Exists(copy))
+                            File.Copy(this.CommentsFilename, copy);
 
-                        this.comments = System.IO.File.ReadAllText(copy);
+                        this.comments = File.ReadAllText(copy);
                     }
                 }
 

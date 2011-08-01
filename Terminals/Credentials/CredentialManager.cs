@@ -1,36 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using Terminals.Configuration;
 
 namespace Terminals.Credentials
 {
-    public partial class CredentialManager : Form
+    internal partial class CredentialManager : Form
     {
-        public CredentialManager()
+        internal CredentialManager()
         {
             InitializeComponent();
-
         }
 
-        public void BindList()
+        private void BindList()
         {
             CredentialsListView.Items.Clear();
-            
-            List<CredentialSet> list = Settings.SavedCredentials;
+            List<CredentialSet> credentials = StoredCredentials.Instance.Items;
 
-            foreach (CredentialSet s in list)
+            foreach (CredentialSet credential in credentials)
             {
-                ListViewItem item = new ListViewItem(s.Name);
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, s.Username));
-                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, s.Domain));
+                ListViewItem item = new ListViewItem(credential.Name);
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, credential.Username));
+                item.SubItems.Add(new ListViewItem.ListViewSubItem(item, credential.Domain));
                 CredentialsListView.Items.Add(item);
             }
         }
-
 
         private void DoneButton_Click(object sender, EventArgs e)
         {
@@ -44,61 +38,49 @@ namespace Terminals.Credentials
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            ManageCredentialForm frm = new ManageCredentialForm(null);
-            frm.ShowDialog();
-            BindList();
+            EditCredential(null);
+        }
+
+        private CredentialSet GetSelectedItemCredentials()
+        {
+            if (CredentialsListView.SelectedItems != null && CredentialsListView.SelectedItems.Count > 0)
+            {
+                string name = CredentialsListView.SelectedItems[0].Text;
+                return StoredCredentials.Instance.GetByName(name);
+            }
+
+            return null;
         }
 
         private void EditButton_Click(object sender, EventArgs e)
         {
-            if (CredentialsListView.SelectedItems != null && CredentialsListView.SelectedItems.Count > 0)
+            CredentialSet selected = GetSelectedItemCredentials();
+            if (selected != null)
             {
-                string name = CredentialsListView.SelectedItems[0].Text;
-                List<CredentialSet> list = Settings.SavedCredentials;
-                foreach (CredentialSet set in list)
-                {
-                    if (set.Name == name)
-                    {
-                        ManageCredentialForm mgr = new ManageCredentialForm(set);
-                        mgr.ShowDialog();
-                        BindList();
-                        break;
-                    }
-                }
+                EditCredential(selected);
             }
+        }
+
+        private void EditCredential(CredentialSet selected)
+        {
+            ManageCredentialForm mgr = new ManageCredentialForm(selected);
+            if (mgr.ShowDialog() == DialogResult.OK)
+                this.BindList();
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            if (CredentialsListView.SelectedItems != null && CredentialsListView.SelectedItems.Count > 0)
+            CredentialSet toRemove = GetSelectedItemCredentials();
+            if (toRemove != null)
             {
-                string name = CredentialsListView.SelectedItems[0].Text;
-                List<CredentialSet> list = Settings.SavedCredentials;
-
-                CredentialSet foundSet = null;
-
-                foreach (CredentialSet set in list)
+                if (MessageBox.Show("Are you sure you want to delete credential " + toRemove.Name + "?",
+                                    "Credential manager", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    if (set.Name == name)
-                    {
-                        foundSet = set;
-                        break;
-                    }
-                }
-                if (foundSet != null)
-                {
-                    if (MessageBox.Show("Are you sure you want to delete credential "+name+"?", "Confirmation Required", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                    {
-                        list.Remove(foundSet);
-                        Settings.SavedCredentials = list;
-                        BindList();
-                    }
+                    StoredCredentials.Instance.Remove(toRemove);
+                    StoredCredentials.Instance.Save();
+                    BindList();
                 }
             }
-
         }
-
-        
-
     }
 }

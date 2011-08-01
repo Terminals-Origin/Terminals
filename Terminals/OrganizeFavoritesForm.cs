@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Integration.Import;
 
 namespace Terminals
@@ -137,7 +138,7 @@ namespace Terminals
             if (favorite != null)
             {
                 InputBoxResult result = InputBox.Show("New Connection Name");
-                if (result.ReturnCode == System.Windows.Forms.DialogResult.OK && !string.IsNullOrEmpty(result.Text))
+                if (result.ReturnCode == DialogResult.OK && !string.IsNullOrEmpty(result.Text))
                 {
                     FavoriteConfigurationElement newFav = (favorite.Clone() as FavoriteConfigurationElement);
                     if (newFav != null)

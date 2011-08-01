@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using AxVMRCClientControlLib;
+using Terminals.Configuration;
 
 namespace Terminals.Connections {
     public class VMRCConnection : Connection {

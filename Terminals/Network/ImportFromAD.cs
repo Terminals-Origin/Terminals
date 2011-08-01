@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using Terminals.Configuration;
 
 namespace Terminals.Network
 {
@@ -25,7 +22,7 @@ namespace Terminals.Network
             }
             else
             {
-                this.domainTextbox.Text = System.Environment.UserDomainName;
+                this.domainTextbox.Text = Environment.UserDomainName;
             }
         }
         MethodInvoker listComplete;
@@ -33,7 +30,7 @@ namespace Terminals.Network
         private void ScanADButton_Click(object sender, EventArgs e)
         {
             this.progressBar1.Visible = true;
-            Network.ActiveDirectoryClient adClient = new ActiveDirectoryClient();
+            ActiveDirectoryClient adClient = new ActiveDirectoryClient();
             adClient.OnListComputersDoneDelegate += new ActiveDirectoryClient.ListComputersDoneDelegate(adClient_OnListComputersDoneDelegate);
             adClient.ListComputers(this.domainTextbox.Text);
         }
@@ -43,7 +40,7 @@ namespace Terminals.Network
             this.progressBar1.Visible = false;
             if(!this.Success)
             {
-                System.Windows.Forms.MessageBox.Show("Could not connect to the Domain: " + this.domainTextbox.Text);
+                MessageBox.Show("Could not connect to the Domain: " + this.domainTextbox.Text);
             }
         }
         List<ActiveDirectoryComputer> Computers;
@@ -58,7 +55,7 @@ namespace Terminals.Network
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Error("Could not call invoke on AD Client List, this probably means they closed the form before waiting for a response", exc);
+                Logging.Log.Error("Could not call invoke on AD Client List, this probably means they closed the form before waiting for a response", exc);
             }
         }
 
@@ -76,7 +73,7 @@ namespace Terminals.Network
                 FavoriteConfigurationElement elm = new FavoriteConfigurationElement(computer.ComputerName);
                 elm.Name = computer.ComputerName;
                 elm.ServerName = computer.ComputerName;
-                elm.UserName = System.Environment.UserName;
+                elm.UserName = Environment.UserName;
                 elm.DomainName = this.domainTextbox.Text;
                 elm.Tags = computer.Tags;                
                 elm.Port = Connections.ConnectionManager.GetPort(computer.Protocol);

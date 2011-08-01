@@ -1,47 +1,70 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Xml.Serialization;
 
-namespace Terminals.Credentials
+namespace Terminals.Configuration
 {
-    [Serializable()]
-    public class CredentialSet : ICloneable
+  /// <summary>
+  /// Container of stored user authentication.
+  /// </summary>
+  [Serializable]
+  public class CredentialSet
+  {
+    private string name;
+    public string Name
     {
-        public string Name { get; set; }
-        public string Domain { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+      get { return name; }
+      set
+      {
+        if (String.IsNullOrEmpty(value))
+          return;
 
-        public override string ToString()
-        {
-            return Name;
-        }
-
-        public static CredentialSet CredentialByName(string Name)
-        {
-            List<CredentialSet> list = Settings.SavedCredentials;
-            if (string.IsNullOrEmpty(Name) || list == null || list.Count < 1)
-                return null;
-            foreach (CredentialSet set in list)
-            {
-                if (set.Name == Name) return set;
-            }
-            return null;
-        }
-
-
-        #region ICloneable Members
-
-        public object Clone()
-        {
-            CredentialSet s = new CredentialSet();
-            s.Name = this.Name;
-            s.Username = this.Username;
-            s.Domain = this.Domain;
-            s.Password = this.Password;
-                return s;
-        }
-
-        #endregion
+        this.name = value;
+      }
     }
+
+    private string userName;
+    public string Username
+    {
+      get { return userName; }
+      set
+      {
+        if (String.IsNullOrEmpty(value))
+          return;
+
+        this.userName = value;
+      }
+    }
+
+    public string Domain { get; set; }
+
+    /// <summary>
+    /// Gets or sets the encrypted password hash.
+    /// </summary>
+    public string Password { get; set; }
+
+    /// <summary>
+    /// Gets or sets the password in not encrypted form.
+    /// </summary>
+    [XmlIgnore]
+    internal string SecretKey
+    {
+      get
+      {
+        if (!string.IsNullOrEmpty(this.Password))
+            return Functions.DecryptPassword(this.Password);
+
+        return String.Empty;
+      }
+      set
+      {
+        if (!string.IsNullOrEmpty(value))
+          this.Password = Functions.EncryptPassword(value);
+      }
+    }
+
+    public override string ToString()
+    {
+      return String.Format(@"{0}:{1}\{2}", Name, Domain, Username);
+    }
+  }
 }

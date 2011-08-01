@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.IO;
-using Terminals.Credentials;
+using Terminals.Configuration;
 using vRdImport;
 
 namespace Terminals.Integration.Import
@@ -98,40 +98,35 @@ namespace Terminals.Integration.Import
 
         #region Convert vrd confirguration to local configuration
 
-        private void SaveCredentials(Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials)
+        private void SaveCredentials(Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials)
         {
-            List<CredentialSet> list = Settings.SavedCredentials;
-            if (list == null)
-            {
-                list = new List<CredentialSet>();
-            }
             foreach (string guid in credentials.Keys)
             {
-                CredentialSet set = new CredentialSet();
-                set.Domain = credentials[guid].Domain;
-                set.Name = credentials[guid].Name;
-                set.Password = credentials[guid].Password;
-                set.Username = credentials[guid].UserName;
-                //will store the last one if the same credential name
-                CredentialSet foundSet = null;
-                foreach (CredentialSet item in list)
+                vRDConfigurationFileCredentialsFolderCredentials toImport = credentials[guid];
+                //will store the last one if the same credential name 
+                CredentialSet destination = StoredCredentials.Instance.GetByName(toImport.Name);
+                if (destination == null)
                 {
-                    if (item.Name.ToLower() == set.Name.ToLower())
-                    {
-                        foundSet = item;
-                        break;
-                    }
+                  destination = new CredentialSet();
+                  StoredCredentials.Instance.Add(destination);
                 }
-                if (foundSet != null)
-                {
-                    list.Remove(foundSet);
-                }
-                list.Add(set);
+
+                UpdateFromvrDCredentials(toImport, destination);
             }
-            Settings.SavedCredentials = list;
+
+            StoredCredentials.Instance.Save();
         }
 
-        private FavoriteConfigurationElementCollection ConvertVRDConnectionCollectionToLocal(vRdImport.Connection[] connections, vRDConfigurationFileConnectionsFolder[] folders, vRDConfigurationFileConnectionsFolderFolder[] subFolders, String connectionTag, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials, FavoriteConfigurationElementCollection coll)
+      private static void UpdateFromvrDCredentials(vRDConfigurationFileCredentialsFolderCredentials source,
+                                                   CredentialSet target)
+      {
+        target.Domain = source.Domain;
+        target.Name = source.Name;
+        target.SecretKey = source.Password;
+        target.Username = source.UserName;
+      }
+
+      private FavoriteConfigurationElementCollection ConvertVRDConnectionCollectionToLocal(vRdImport.Connection[] connections, vRDConfigurationFileConnectionsFolder[] folders, vRDConfigurationFileConnectionsFolderFolder[] subFolders, String connectionTag, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials, FavoriteConfigurationElementCollection coll)
         {
             if (coll == null)
             {

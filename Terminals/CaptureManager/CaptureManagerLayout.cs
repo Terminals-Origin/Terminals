@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Terminals.Configuration;
 
 namespace Terminals.CaptureManager
 {

@@ -1,16 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
-using Terminals.Properties;
-using System.Diagnostics;
-using System.IO;
+using Terminals.Configuration;
 
 namespace Terminals.Connections {
     public class VNCConnection : Connection {
         #region IConnection Members
         private bool connected = false;
-        public override void ChangeDesktopSize(Terminals.DesktopSize Size) {
+        public override void ChangeDesktopSize(DesktopSize Size) {
         }
 
         public void SendSpecialKeys(VncSharp.SpecialKeys Keys) {
@@ -27,21 +23,23 @@ namespace Terminals.Connections {
                 string pass = null;
                 if (!string.IsNullOrEmpty(Favorite.Credential))
                 {
-                    Credentials.CredentialSet set = Credentials.CredentialSet.CredentialByName(Favorite.Credential);
-                    if (set != null) pass = set.Password;
+                  CredentialSet set = StoredCredentials.Instance.GetByName(Favorite.Credential);
+                    if (set != null) 
+                      pass = set.SecretKey;
                 }
                 else
                 {
                     pass = Favorite.Password;
                 }
 
-                if(pass == null || pass == "") pass = Settings.DefaultPassword;
+                if(string.IsNullOrEmpty(pass))
+                  pass = Settings.DefaultPassword;
                 this.vncPassword = pass;
 
                 if (string.IsNullOrEmpty(vncPassword)) return false;
 
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
-                rd.Parent = base.TerminalTabPage;
+                rd.Parent = TerminalTabPage;
                 this.Parent = TerminalTabPage;
                 rd.Dock = DockStyle.Fill;
 
@@ -56,12 +54,12 @@ namespace Terminals.Connections {
                 return true;
 
             } catch(Exception exc) {
-                Terminals.Logging.Log.Error("Connecting to VNC", exc);
+                Logging.Log.Error("Connecting to VNC", exc);
                 return false;
             }
         }
 
-        void rd_ConnectionLost(object sender, EventArgs e)
+        private void rd_ConnectionLost(object sender, EventArgs e)
         {
             //Terminals.Logging.Log.Fatal("VNC Connection Lost" + this.Favorite.Name);
             this.connected = false;
@@ -79,7 +77,7 @@ namespace Terminals.Connections {
             return vncPassword;
         }
 
-        void rd_ConnectComplete(object sender, VncSharp.ConnectEventArgs e) {
+        private void rd_ConnectComplete(object sender, VncSharp.ConnectEventArgs e) {
             // Update Form to match geometry of remote desktop
             //ClientSize = new Size(e.DesktopWidth, e.DesktopHeight);
             try {
@@ -90,7 +88,7 @@ namespace Terminals.Connections {
                 rd.FullScreenUpdate();
                 rd.Enabled = true;
             } catch(Exception Exc) {
-                Terminals.Logging.Log.Error("ConnectComplete to VNC", Exc);
+                Logging.Log.Error("ConnectComplete to VNC", Exc);
             }
             // Change the Form's title to match desktop name
         }
@@ -100,7 +98,7 @@ namespace Terminals.Connections {
                 connected = false;
                 rd.Disconnect();
             } catch(Exception e) {
-                Terminals.Logging.Log.Error("Disconnect", e);
+                Logging.Log.Error("Disconnect", e);
             }
         }
 

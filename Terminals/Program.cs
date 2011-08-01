@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Resources;
-using System.Reflection;
 using System.Threading;
-using System.Text;
 using System.Windows.Forms;
+using Terminals.Configuration;
+using Terminals.Security;
+using Terminals.Updates;
 
 namespace Terminals
 {
@@ -32,7 +32,7 @@ namespace Terminals
 
             mtx = new Mutex(false, "TerminalsMutex");
 
-            Terminals.Logging.Log.Info(String.Format("{0} started", Info.TitleVersion));
+            Logging.Log.Info(String.Format("{0} started", Info.TitleVersion));
             
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
@@ -46,15 +46,15 @@ namespace Terminals
             SingleInstanceApplication.Initialize();
 
             // Check if update changes have to be made
-            Updates.UpdateConfig.CheckConfigVersionUpdate();
+            UpdateConfig.CheckConfigVersionUpdate();
 
             // Check for available application updates
-            Terminals.Updates.UpdateManager.CheckForUpdates();
+            UpdateManager.CheckForUpdates();
 
             // Check for Terminals master password
             if (Settings.TerminalsPassword != String.Empty)
             {
-                Security.RequestPassword rp = new Terminals.Security.RequestPassword();
+                RequestPassword rp = new RequestPassword();
                 DialogResult result = rp.ShowDialog();
                 if (result == DialogResult.Cancel)
                 {
@@ -74,17 +74,17 @@ namespace Terminals
                 }
                 catch (Exception exc)
                 {
-                    Terminals.Logging.Log.Fatal("Main Form Execption", exc);
+                    Logging.Log.Fatal("Main Form Execption", exc);
                 }
             }
 
             SingleInstanceApplication.Close();
-            Terminals.Logging.Log.Info(String.Format("{0} stopped", Info.TitleVersion));
+            Logging.Log.Info(String.Format("{0} stopped", Info.TitleVersion));
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            Terminals.Logging.Log.Fatal("Application Exception", e.Exception);
+            Logging.Log.Fatal("Application Exception", e.Exception);
         }
 
         private static Boolean ReuseExistingInstance()
@@ -104,10 +104,10 @@ namespace Terminals
 
         private static void ParseCommandline(String[] cmdLineArgs)
         {
-            Terminals.CommandLine.Parser.ParseArguments(cmdLineArgs, Terminals.MainForm.CommandLineArgs);
-            if (Terminals.MainForm.CommandLineArgs.config != null && Terminals.MainForm.CommandLineArgs.config != String.Empty)
+            CommandLine.Parser.ParseArguments(cmdLineArgs, MainForm.CommandLineArgs);
+            if (MainForm.CommandLineArgs.config != null && MainForm.CommandLineArgs.config != String.Empty)
             {
-                Terminals.Program.ConfigurationFileLocation = Terminals.MainForm.CommandLineArgs.config;
+                ConfigurationFileLocation = MainForm.CommandLineArgs.config;
             }
         }
     }

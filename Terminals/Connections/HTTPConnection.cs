@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Terminals.Configuration;
 
 namespace Terminals.Connections
 {
@@ -39,7 +40,7 @@ namespace Terminals.Connections
                 this.browser.Home = Favorite.Url;
 
                 if(!String.IsNullOrEmpty(Favorite.UserName) && !String.IsNullOrEmpty(Favorite.Password)) {
-                    string hdr = "Authorization: Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(userName + ":" + pass)) + System.Environment.NewLine;
+                    string hdr = "Authorization: Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(userName + ":" + pass)) + Environment.NewLine;
                     this.browser.Browser.Navigate(Favorite.Url,null,null, hdr);
                 } else {
                     this.browser.Browser.Navigate(Favorite.Url);
@@ -56,7 +57,7 @@ namespace Terminals.Connections
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Fatal("Connecting to HTTP", exc);
+                Logging.Log.Fatal("Connecting to HTTP", exc);
                 return false;
             }
             return true;

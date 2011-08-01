@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using AxMSTSCLib;
+using Terminals.Configuration;
 
 namespace Terminals.Forms
 {

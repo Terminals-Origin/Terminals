@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Connections;
 
 namespace Terminals

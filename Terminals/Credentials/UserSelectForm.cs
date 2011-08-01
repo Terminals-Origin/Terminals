@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using Terminals.Configuration;
 
 namespace Terminals.Credentials
 {
@@ -26,7 +22,7 @@ namespace Terminals.Credentials
             set = new CredentialSet();
             set.Name = "";
             set.Username = userTextBox.Text;
-            set.Password = passwordTextBox.Text;
+            set.SecretKey = passwordTextBox.Text;
             set.Domain = domainTextBox.Text;
             Close();
         }

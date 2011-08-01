@@ -429,6 +429,8 @@
     <Compile Include="Scanner\StreamHelper.cs" />
     <Compile Include="SerializableDictionary.cs" />
     <Compile Include="SerializableSortedDictionary.cs" />
+    <Compile Include="Settings\SortProperties.cs" />
+    <Compile Include="Settings\StoredCredentials.cs" />
     <Compile Include="Settings\ToolStripSetting.cs" />
     <Compile Include="Settings\ToolStripSettings.cs" />
     <Compile Include="TcpProtocol.cs" />
@@ -1038,7 +1040,6 @@
     <None Include="Resources\Filtering.html" />
     <Content Include="Resources\CompMgmt.png" />
     <EmbeddedResource Include="Resources\computer_security.png" />
-    <None Include="Resources\computer_security1.png" />
     <Content Include="Resources\ControlPanel.jpg" />
     <Content Include="Resources\green.jpg" />
     <Content Include="Resources\ico101.ico" />

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using AxMSTSCLib;
 using FlickrNet;
+using Terminals.Configuration;
 
 namespace Terminals.Forms
 {
@@ -20,8 +21,8 @@ namespace Terminals.Forms
         public OptionDialog(AxMsRdpClient6 terminal) 
         {
             // Set default font type by Windows theme to use for all controls on form
-            this.Font = System.Drawing.SystemFonts.IconTitleFont;
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.Font = SystemFonts.IconTitleFont;
+            this.AutoScaleMode = AutoScaleMode.Dpi;
 
             InitializeComponent();
 
@@ -112,16 +113,16 @@ namespace Terminals.Forms
 
             switch (Settings.DefaultSortProperty)
             {
-                case Settings.SortProperties.ServerName:
+                case SortProperties.ServerName:
                     this.ServerNameRadio.Checked = true;
                     break;
-                case Settings.SortProperties.ConnectionName:
+                case SortProperties.ConnectionName:
                     this.ConnectionNameRadioButton.Checked = true;
                     break;
-                case Settings.SortProperties.Protocol:
+                case SortProperties.Protocol:
                     this.ProtocolRadionButton.Checked = true;
                     break;
-                case Settings.SortProperties.None:
+                case SortProperties.None:
                     this.NoneRadioButton.Checked = true;
                     break;
             }
@@ -337,19 +338,19 @@ namespace Terminals.Forms
 
             if (this.ServerNameRadio.Checked)
             {
-                Settings.DefaultSortProperty = Settings.SortProperties.ServerName;
+                Settings.DefaultSortProperty = SortProperties.ServerName;
             }
             else if (this.NoneRadioButton.Checked)
             {
-                Settings.DefaultSortProperty = Settings.SortProperties.None;
+                Settings.DefaultSortProperty = SortProperties.None;
             }
             else if (this.ConnectionNameRadioButton.Checked)
             {
-                Settings.DefaultSortProperty = Settings.SortProperties.ConnectionName;
+                Settings.DefaultSortProperty = SortProperties.ConnectionName;
             }
             else
             {
-                Settings.DefaultSortProperty = Settings.SortProperties.Protocol;
+                Settings.DefaultSortProperty = SortProperties.Protocol;
             }
 
             Settings.Office2007BlackFeel = false;

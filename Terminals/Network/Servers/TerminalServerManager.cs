@@ -1,12 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using Terminals;
-using Terminals.Network;
+using Terminals.Configuration;
 
 namespace Terminals.Network.Servers
 {
@@ -38,7 +32,7 @@ namespace Terminals.Network.Servers
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("This machine does not appear to be a Terminal Server");
+                MessageBox.Show("This machine does not appear to be a Terminal Server");
             }
 
         }
@@ -70,7 +64,7 @@ namespace Terminals.Network.Servers
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Error("Connection Failure.", exc);
+                Logging.Log.Error("Connection Failure.", exc);
             }
         }
         TerminalServices.Session SelectedSession = null;
@@ -91,7 +85,7 @@ namespace Terminals.Network.Servers
         {
             if(SelectedSession != null)
             {
-                Terminals.InputBoxResult result = Terminals.InputBox.Show("Please enter the message to send..");
+                InputBoxResult result = InputBox.Show("Please enter the message to send..");
                 if(result.ReturnCode == DialogResult.OK && result.Text.Trim() != null)
                 {
                     TerminalServices.TerminalServicesAPI.SendMessage(SelectedSession, "Message from your Administrator", result.Text.Trim(), 0, 10, false);
@@ -103,7 +97,7 @@ namespace Terminals.Network.Servers
         {
             if(SelectedSession != null)
             {
-                if(System.Windows.Forms.MessageBox.Show("Are you sure you want to log off the selected session?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                if(MessageBox.Show("Are you sure you want to log off the selected session?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
                 {
                     TerminalServices.TerminalServicesAPI.LogOffSession(SelectedSession, false);
                 }
@@ -113,7 +107,7 @@ namespace Terminals.Network.Servers
         {
             if(server.IsATerminalServer)
             {
-                if(System.Windows.Forms.MessageBox.Show("Are you sure you want to reboot this server?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                if(MessageBox.Show("Are you sure you want to reboot this server?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
                 {
                     TerminalServices.TerminalServicesAPI.ShutdownSystem(this.server, true);
                 }
@@ -123,7 +117,7 @@ namespace Terminals.Network.Servers
         {
             if(server.IsATerminalServer)
             {
-                if(System.Windows.Forms.MessageBox.Show("Are you sure you want to shutdown this server?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
+                if(MessageBox.Show("Are you sure you want to shutdown this server?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
                 {
                     TerminalServices.TerminalServicesAPI.ShutdownSystem(this.server, false);
                 }

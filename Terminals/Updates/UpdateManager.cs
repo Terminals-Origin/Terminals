@@ -4,6 +4,7 @@ using System.Text;
 using System.IO;
 using System.Security;
 using System.Security.Cryptography;
+using Terminals.Configuration;
 
 namespace Terminals.Updates
 {
@@ -103,12 +104,12 @@ namespace Terminals.Updates
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Error("Failed during CheckForCodeplexRelease.", exc);
+                Logging.Log.Error("Failed during CheckForCodeplexRelease.", exc);
             }
 
             try
             {
-                String autoUpdate = Terminals.MainForm.CommandLineArgs.AutomaticallyUpdate;
+                String autoUpdate = MainForm.CommandLineArgs.AutomaticallyUpdate;
                 if (autoUpdate != null)
                 {
                     Boolean update = false;
@@ -145,7 +146,7 @@ namespace Terminals.Updates
                                         if (!File.Exists(filename)) 
                                             downloaded = DownloadNewBuild((row["Url"] as String), filename);
 
-                                        if (downloaded && System.IO.File.Exists(filename))
+                                        if (downloaded && File.Exists(filename))
                                         {
                                             //ICSharpCode.SharpZipLib.Zip.FastZipEvents evts = new ICSharpCode.SharpZipLib.Zip.FastZipEvents();
                                             ICSharpCode.SharpZipLib.Zip.FastZip fz = new ICSharpCode.SharpZipLib.Zip.FastZip();
@@ -193,7 +194,7 @@ namespace Terminals.Updates
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Error("Failed during update.", exc);
+                Logging.Log.Error("Failed during update.", exc);
             }
         }
 
@@ -202,7 +203,7 @@ namespace Terminals.Updates
             if (Path.GetFiles(Filename).Length > 0) 
                 return Path;
 
-            foreach (System.IO.DirectoryInfo dir in Path.GetDirectories())
+            foreach (DirectoryInfo dir in Path.GetDirectories())
             {
                 DirectoryInfo found = FindFileInFolder(dir, Filename);
                 if (found != null) 

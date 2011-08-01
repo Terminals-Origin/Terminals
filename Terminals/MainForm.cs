@@ -1,20 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using System.IO;
-
 using AxMSTSCLib;
-using Terminals.Connections;
-using Terminals.Properties;
-using Terminals.CommandLine;
 using TabControl;
-using Unified.Rss;
+using Terminals.CommandLine;
+using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Credentials;
+using Terminals.Properties;
+using Unified.Rss;
+using Settings = Terminals.Configuration.Settings;
 
 namespace Terminals
 {
@@ -387,7 +388,8 @@ namespace Terminals
             String desktopShare = this.terminalsControler.Selected.Favorite.DesktopShare;
             if (String.IsNullOrEmpty(desktopShare))
             {
-                desktopShare = Settings.DefaultDesktopShare.Replace("%SERVER%", CurrentTerminal.Server).Replace("%USER%", CurrentTerminal.UserName);
+                desktopShare = Settings.DefaultDesktopShare.Replace("%SERVER%", CurrentTerminal.Server)
+                                                                    .Replace("%USER%", CurrentTerminal.UserName);
             }
 
             return desktopShare;
@@ -421,7 +423,7 @@ namespace Terminals
                 favorite.Credential = Credential.Name;
                 favorite.UserName = Credential.Username;
                 favorite.DomainName = Credential.Domain;
-                favorite.Password = Credential.Password;
+                favorite.EncryptedPassword = Credential.Password;
             }
 
             if (!this.Visible)
@@ -1289,7 +1291,7 @@ namespace Terminals
                     ListViewItem item = new ListViewItem();
                     item.ImageIndex = 0;
                     item.StateImageIndex = 0;
-                    SortedDictionary<String, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.SortProperties.ConnectionName);
+                    SortedDictionary<String, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(SortProperties.ConnectionName);
 
                     List<FavoriteConfigurationElement> tagFavorites = new List<FavoriteConfigurationElement>();
                     foreach (String key in favorites.Keys)

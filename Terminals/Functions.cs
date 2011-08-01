@@ -1,75 +1,95 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
-using System.IO;
 using System.Security.Cryptography;
+using Terminals.Configuration;
 
-namespace Terminals {
-    internal static class Functions {
+namespace Terminals
+{
+    internal static class Functions
+    {
         public static Unified.Encryption.EncryptionAlgorithm EncryptionAlgorithm = Unified.Encryption.EncryptionAlgorithm.Rijndael;
-        internal static string DecryptPassword(string encryptedPassword) {
+        internal static string DecryptPassword(string encryptedPassword)
+        {
             if (String.IsNullOrEmpty(encryptedPassword))
                 return encryptedPassword;
-            try {
-                if(Settings.KeyMaterial==string.Empty) {
+            try
+            {
+                if (Settings.KeyMaterial == string.Empty)
+                {
                     byte[] cyphertext = Convert.FromBase64String(encryptedPassword);
                     byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
                     byte[] plaintext = ProtectedData.Unprotect(cyphertext, b_entropy, DataProtectionScope.CurrentUser);
                     return Encoding.UTF8.GetString(plaintext);
-                } else {
+                }
+                else
+                {
                     string hashedPass = Settings.KeyMaterial.Substring(0, keyLength);
-                    byte[] IV = System.Text.Encoding.Default.GetBytes(Settings.KeyMaterial.Substring(Settings.KeyMaterial.Length - ivLength));
+                    byte[] IV = Encoding.Default.GetBytes(Settings.KeyMaterial.Substring(Settings.KeyMaterial.Length - ivLength));
                     //string hashedPass = Settings.KeyMaterial.Substring(0, keyLength);
                     string password = "";
                     //System.Text.Encoding.Default.GetString(System.Convert.FromBase64String(encryptedPassword))
                     Unified.Encryption.Decryptor dec = new Unified.Encryption.Decryptor(EncryptionAlgorithm);
                     dec.IV = IV;
-                    byte[] data = dec.Decrypt(System.Convert.FromBase64String(encryptedPassword), System.Text.Encoding.Default.GetBytes(hashedPass));
-                    if (data != null && data.Length > 0) {
-                        password = System.Text.Encoding.Default.GetString(data);
+                    byte[] data = dec.Decrypt(Convert.FromBase64String(encryptedPassword), Encoding.Default.GetBytes(hashedPass));
+                    if (data != null && data.Length > 0)
+                    {
+                        password = Encoding.Default.GetString(data);
                     }
                     return password;
                 }
-            } catch (Exception e) {
-                Terminals.Logging.Log.Error("Error Decrypting Password", e);
+            }
+            catch (Exception e)
+            {
+                Logging.Log.Error("Error Decrypting Password", e);
                 return "";
             }
         }
         internal static int keyLength = 24;
         internal static int ivLength = 16;
-        internal static string EncryptPassword(string decryptedPassword) {
-            if (Settings.KeyMaterial == string.Empty) {
+        internal static string EncryptPassword(string decryptedPassword)
+        {
+            if (Settings.KeyMaterial == string.Empty)
+            {
                 byte[] plaintext = Encoding.UTF8.GetBytes(decryptedPassword);
                 byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
                 byte[] cyphertext = ProtectedData.Protect(plaintext, b_entropy, DataProtectionScope.CurrentUser);
                 return Convert.ToBase64String(cyphertext);
-            } else {
+            }
+            else
+            {
                 string password = "";
-                try {
+                try
+                {
                     string hashedPass = Settings.KeyMaterial.Substring(0, keyLength);
-                    byte[] IV = System.Text.Encoding.Default.GetBytes(Settings.KeyMaterial.Substring(Settings.KeyMaterial.Length - ivLength));
+                    byte[] IV = Encoding.Default.GetBytes(Settings.KeyMaterial.Substring(Settings.KeyMaterial.Length - ivLength));
                     Unified.Encryption.Encryptor enc = new Unified.Encryption.Encryptor(EncryptionAlgorithm);
                     enc.IV = IV;
-                    byte[] data = enc.Encrypt(System.Text.Encoding.Default.GetBytes(decryptedPassword), System.Text.Encoding.Default.GetBytes(hashedPass));
-                    if (data != null && data.Length > 0) {
+                    byte[] data = enc.Encrypt(Encoding.Default.GetBytes(decryptedPassword), Encoding.Default.GetBytes(hashedPass));
+                    if (data != null && data.Length > 0)
+                    {
                         password = Convert.ToBase64String(data);
                         //password = System.Text.Encoding.Default.GetString(data);
                     }
-                } catch (Exception ec) {
-                    Terminals.Logging.Log.Error("Error Encrypting Password", ec);
+                }
+                catch (Exception ec)
+                {
+                    Logging.Log.Error("Error Encrypting Password", ec);
                 }
                 return password;
-                
+
             }
         }
 
-        internal static string UserDisplayName(string domain, string user) {
+        internal static string UserDisplayName(string domain, string user)
+        {
             return String.IsNullOrEmpty(domain) ? (user) : (domain + "\\" + user);
         }
 
-        internal static string GetErrorMessage(int code) {
+        internal static string GetErrorMessage(int code)
+        {
             //error messages from: http://msdn2.microsoft.com/en-us/aa382170.aspx
-            switch (code) {
+            switch (code)
+            {
                 case 260: return "DNS name lookup failure";
                 case 262: return "Out of memory";
                 case 264: return "Connection timed out";

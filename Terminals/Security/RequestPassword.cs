@@ -1,37 +1,43 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
+using Terminals.Configuration;
+using Unified.Encryption.Hash;
 
-namespace Terminals.Security {
-    public partial class RequestPassword : Form {
-        public RequestPassword() {
+namespace Terminals.Security
+{
+    public partial class RequestPassword : Form
+    {
+        public RequestPassword()
+        {
             InitializeComponent();
         }
         string hashedPassword = Settings.TerminalsPassword;
-        private void OkButton_Click(object sender, EventArgs e) {
+        private void OkButton_Click(object sender, EventArgs e)
+        {
             string newPass = this.PasswordTextBox.Text;
-            string newHashed = Unified.Encryption.Hash.Hash.GetHash(newPass, Unified.Encryption.Hash.Hash.HashType.SHA512);
-            if (newHashed != hashedPassword) {
+            string newHashed = Hash.GetHash(newPass, Hash.HashType.SHA512);
+            if (newHashed != hashedPassword)
+            {
                 this.PasswordTextBox.Focus();
                 this.PasswordTextBox.Text = "";
                 this.label2.Visible = true;
                 //System.Windows.Forms.MessageBox.Show("Invalid Password.");
-            } else {
-                Settings.KeyMaterial = Unified.Encryption.Hash.Hash.GetHash(newPass + hashedPassword, Unified.Encryption.Hash.Hash.HashType.SHA512);
+            }
+            else
+            {
+                Settings.KeyMaterial = Hash.GetHash(newPass + hashedPassword, Hash.HashType.SHA512);
                 this.DialogResult = DialogResult.OK;
                 this.Hide();
             }
         }
 
-        private void RequestPassword_Load(object sender, EventArgs e) {
+        private void RequestPassword_Load(object sender, EventArgs e)
+        {
 
         }
 
-        private void CancelPasswordButton_Click(object sender, EventArgs e) {
+        private void CancelPasswordButton_Click(object sender, EventArgs e)
+        {
             this.DialogResult = DialogResult.Cancel;
             this.Hide();
 

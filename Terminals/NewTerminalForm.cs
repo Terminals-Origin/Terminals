@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Windows.Forms;
 
 using FalafelSoftware.TransPort;
+using Terminals.Configuration;
 using Terminals.Network.Servers;
 
 namespace Terminals
@@ -99,13 +100,13 @@ namespace Terminals
         private void FillCredentials(String CredentialName)
         {
             this.CredentialDropdown.Items.Clear();
-            List<Credentials.CredentialSet> creds = Settings.SavedCredentials;
+            List<CredentialSet> creds = StoredCredentials.Instance.Items;
             this.CredentialDropdown.Items.Add("(custom)");
 
             Int32 selIndex = 0;
             if (creds != null)
             {
-                foreach (Credentials.CredentialSet item in creds)
+                foreach (CredentialSet item in creds)
                 {
                     Int32 index = this.CredentialDropdown.Items.Add(item);
                     if (!String.IsNullOrEmpty(CredentialName) && CredentialName == item.Name)
@@ -350,7 +351,7 @@ namespace Terminals
                 if (!defaultFav)
                     this._favorite.ServerName = this.ValidateServer(this.cmbServers.Text);
 
-                Credentials.CredentialSet set = (this.CredentialDropdown.SelectedItem as Credentials.CredentialSet);
+                CredentialSet set = (this.CredentialDropdown.SelectedItem as CredentialSet);
                 this._favorite.Credential = (set == null ? String.Empty : set.Name);
 
                 this._favorite.DomainName = this.cmbDomains.Text;
@@ -922,7 +923,7 @@ namespace Terminals
         {
             String cred = String.Empty;
             if (this.CredentialDropdown.SelectedItem.GetType() != typeof(string))
-                cred = ((Credentials.CredentialSet)this.CredentialDropdown.SelectedItem).Name;
+                cred = ((CredentialSet)this.CredentialDropdown.SelectedItem).Name;
             
             Credentials.CredentialManager mgr = new Credentials.CredentialManager();
             mgr.ShowDialog();
@@ -932,14 +933,14 @@ namespace Terminals
         private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.CredentialsPanel.Enabled = true;
-            Credentials.CredentialSet set = (this.CredentialDropdown.SelectedItem as Credentials.CredentialSet);
+            CredentialSet set = (this.CredentialDropdown.SelectedItem as CredentialSet);
 
             if (set != null)
             {
                 this.CredentialsPanel.Enabled = false;
                 this.cmbDomains.Text = set.Domain;
                 this.cmbUsers.Text = set.Username;
-                this.txtPassword.Text = set.Password;
+                this.txtPassword.Text = set.SecretKey;
                 this.chkSavePassword.Checked = true;
             }
         }

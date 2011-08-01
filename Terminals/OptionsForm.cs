@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using AxMSTSCLib;
 using FlickrNet;
+using Terminals.Configuration;
 
 namespace Terminals
 {
@@ -97,16 +98,16 @@ namespace Terminals
 
             switch (Settings.DefaultSortProperty)
             {
-                case Settings.SortProperties.ServerName:
+                case SortProperties.ServerName:
                     this.ServerNameRadio.Checked = true;
                     break;
-                case Settings.SortProperties.ConnectionName:
+                case SortProperties.ConnectionName:
                     this.ConnectionNameRadioButton.Checked = true;
                     break;
-                case Settings.SortProperties.Protocol:
+                case SortProperties.Protocol:
                     this.ProtocolRadionButton.Checked = true;
                     break;
-                case Settings.SortProperties.None:
+                case SortProperties.None:
                     this.NoneRadioButton.Checked = true;
                     break;
             }
@@ -227,19 +228,19 @@ namespace Terminals
 
             if (this.ServerNameRadio.Checked)
             {
-                Settings.DefaultSortProperty = Settings.SortProperties.ServerName;
+                Settings.DefaultSortProperty = SortProperties.ServerName;
             }
             else if (this.NoneRadioButton.Checked)
             {
-                Settings.DefaultSortProperty = Settings.SortProperties.None;
+                Settings.DefaultSortProperty = SortProperties.None;
             }
             else if (this.ConnectionNameRadioButton.Checked)
             {
-                Settings.DefaultSortProperty = Settings.SortProperties.ConnectionName;
+                Settings.DefaultSortProperty = SortProperties.ConnectionName;
             }
             else
             {
-                Settings.DefaultSortProperty = Settings.SortProperties.Protocol;
+                Settings.DefaultSortProperty = SortProperties.Protocol;
             }
 
             Settings.Office2007BlackFeel = false;

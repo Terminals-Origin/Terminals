@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Terminals.Configuration;
 
 namespace Terminals.Forms
 {
@@ -151,7 +152,7 @@ namespace Terminals.Forms
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Error(ex);
+                Logging.Log.Error(ex);
                 return false;
             }
         }

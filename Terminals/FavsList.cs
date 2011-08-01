@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Drawing;
-using System.Data;
-using System.Text;
-using System.Windows.Forms;
-using System.Xml;
 using System.IO;
-
-using Terminals.History;
+using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Credentials;
+using Terminals.History;
 
 namespace Terminals
 {
@@ -412,7 +406,7 @@ namespace Terminals
             InputBoxResult result = InputBox.Show("Set Credential by Tag\r\n\r\nThis will replace the credential used for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Credential" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-                if (Credentials.CredentialSet.CredentialByName(result.Text) == null)
+                if (StoredCredentials.Instance.GetByName(result.Text) == null)
                 {
                     MessageBox.Show("The credential you specified does not exist.");
                     return;
@@ -609,7 +603,7 @@ namespace Terminals
             this.connectAsToolStripMenuItem.DropDownItems.Clear();
             this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
 
-            List<CredentialSet> list = Settings.SavedCredentials;
+            List<CredentialSet> list = StoredCredentials.Instance.Items;
             
             foreach (CredentialSet s in list)
             {
@@ -622,7 +616,9 @@ namespace Terminals
             FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if (fav != null)
             {
-                this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked, CredentialSet.CredentialByName(sender.ToString()));
+                this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked, 
+                                           this.newWindowToolStripMenuItem.Checked,
+                                           StoredCredentials.Instance.GetByName(sender.ToString()));
             }
         }
 

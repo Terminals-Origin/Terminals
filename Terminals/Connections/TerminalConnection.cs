@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Net.Sockets;
 using System.Text;
+using Terminals.Configuration;
 using WalburySoftware;
 
 namespace Terminals.Connections

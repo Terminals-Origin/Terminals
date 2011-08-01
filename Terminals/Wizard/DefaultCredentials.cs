@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using Terminals.Configuration;
 
 namespace Terminals.Wizard
 {
@@ -18,10 +19,10 @@ namespace Terminals.Wizard
             this.passwordTextbox.Text = Settings.DefaultPassword;
             this.usernameTextbox.Text = Settings.DefaultUsername;
 
-            if(System.Environment.UserDomainName != System.Environment.MachineName) {
-                if(this.domainTextbox.Text == "") this.domainTextbox.Text = System.Environment.UserDomainName;
+            if(Environment.UserDomainName != Environment.MachineName) {
+                if(this.domainTextbox.Text == "") this.domainTextbox.Text = Environment.UserDomainName;
             }
-            if(this.usernameTextbox.Text == "") this.usernameTextbox.Text = System.Environment.UserName;
+            if(this.usernameTextbox.Text == "") this.usernameTextbox.Text = Environment.UserName;
         }
 
         public string DefaultDomain

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using System.Net.NetworkInformation;
+using Terminals.Configuration;
+using Terminals.Network;
+using Terminals.Scanner;
 
 namespace Terminals {
     public partial class NetworkScanner : Form {
@@ -15,7 +14,7 @@ namespace Terminals {
             mivStatus = new MethodInvoker(UpdateStatus);
             string localIP = "127.0.0.1";
             try {
-                NetworkInterface[] nics = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces();
+                NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
                 foreach(NetworkInterface nic in nics)
                 {
                     if(nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
@@ -25,7 +24,7 @@ namespace Terminals {
                     }
                 }
             }
-            catch (Exception e) { Terminals.Logging.Log.Error("Network Scanner Failed to Initialize", e); }
+            catch (Exception e) { Logging.Log.Error("Network Scanner Failed to Initialize", e); }
             string[] ipList = localIP.Split('.');
             ATextbox.Text = ipList[0];
             BTextbox.Text = ipList[1];
@@ -33,25 +32,22 @@ namespace Terminals {
             DTextbox.Text = "1";
             ETextbox.Text = "255";
             ServerAddressLabel.Text = localIP;
-            Network.Server.OnClientConnection += new Terminals.Network.Server.ClientConnection(Server_OnClientConnection);
-            Network.Client.OnServerConnection += new Terminals.Network.Client.ServerConnection(Client_OnServerConnection);
+            Server.OnClientConnection += new Server.ClientConnection(Server_OnClientConnection);
+            Client.OnServerConnection += new Client.ServerConnection(Client_OnServerConnection);
         }
-
-
-
 
         int scanCount = 0;
 
-        System.Windows.Forms.MethodInvoker miv;
-        System.Windows.Forms.MethodInvoker mivStatus;
+        MethodInvoker miv;
+        MethodInvoker mivStatus;
 
-        Scanner.NetworkScanManager manager = null;
+        NetworkScanManager manager = null;
         private object updateListLock = new object();
         private object scanCountLock = new object();
 
-        private void AddPort(Terminals.Scanner.NetworkScanItem port) {
+        private void AddPort(NetworkScanItem port) {
             bool add = true;
-            foreach (Scanner.NetworkScanItem item in this.OpenPorts) {
+            foreach (NetworkScanItem item in this.OpenPorts) {
                 if (item.IPAddress == port.IPAddress && item.Port == port.Port && item.IsVMRC == port.IsVMRC) {
                     add = false;
                     break;
@@ -60,8 +56,8 @@ namespace Terminals {
             if (add) this.openPorts.Add(port);
         }
 
-        System.Collections.Generic.List<Terminals.Scanner.NetworkScanItem> openPorts = new List<Terminals.Scanner.NetworkScanItem>();
-        public System.Collections.Generic.List<Terminals.Scanner.NetworkScanItem> OpenPorts {
+        List<NetworkScanItem> openPorts = new List<NetworkScanItem>();
+        public List<NetworkScanItem> OpenPorts {
             get { return openPorts; }
             set { openPorts = value; }
         }
@@ -69,7 +65,7 @@ namespace Terminals {
         private void UpdateScanItemList() {
             lock (updateListLock) {
                 this.ScanResultsListView.Items.Clear();
-                foreach (Scanner.NetworkScanItem item in this.OpenPorts) {
+                foreach (NetworkScanItem item in this.OpenPorts) {
                     ListViewItem lvi = new ListViewItem(item.IPAddress);
                     lvi.Tag = item;
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, item.HostName));
@@ -107,10 +103,10 @@ namespace Terminals {
                 List<int> ports = new List<int>();
                 if (this.RDPCheckbox.Checked) ports.Add(Connections.ConnectionManager.RDPPort);
                 if (this.VNCCheckbox.Checked || this.VMRCCheckbox.Checked) ports.Add(Connections.ConnectionManager.VNCVMRCPort);
-                manager = new Terminals.Scanner.NetworkScanManager(ATextbox.Text, BTextbox.Text, CTextbox.Text, DTextbox.Text, ETextbox.Text, ports);
-                manager.OnScanHit += new Terminals.Scanner.NetworkScanManager.ScanHitHandler(manager_OnScanHit);
-                manager.OnScanStart += new Terminals.Scanner.NetworkScanManager.ScanStartHandler(manager_OnScanStart);
-                manager.OnScanMiss += new Terminals.Scanner.NetworkScanManager.ScanMissHandler(manager_OnScanMiss);
+                manager = new NetworkScanManager(ATextbox.Text, BTextbox.Text, CTextbox.Text, DTextbox.Text, ETextbox.Text, ports);
+                manager.OnScanHit += new NetworkScanManager.ScanHitHandler(manager_OnScanHit);
+                manager.OnScanStart += new NetworkScanManager.ScanStartHandler(manager_OnScanStart);
+                manager.OnScanMiss += new NetworkScanManager.ScanMissHandler(manager_OnScanMiss);
                 manager.StartScan();
             } else {
                 ScanStatusLabel.Text = "Scan Stopped.";
@@ -122,18 +118,18 @@ namespace Terminals {
             }
 
         }
-        void manager_OnScanMiss(Terminals.Scanner.ScanItemEventArgs args) {
+        void manager_OnScanMiss(ScanItemEventArgs args) {
             scanCount--;
             this.Invoke(mivStatus);
         }
 
-        void manager_OnScanStart(Terminals.Scanner.ScanItemEventArgs args) {
+        void manager_OnScanStart(ScanItemEventArgs args) {
             scanCount++;
             this.Invoke(mivStatus);
         }
 
 
-        void manager_OnScanHit(Terminals.Scanner.ScanItemEventArgs args) {
+        void manager_OnScanHit(ScanItemEventArgs args) {
             scanCount--;
             AddPort(args.NetworkScanItem);
             this.Invoke(miv);
@@ -143,15 +139,15 @@ namespace Terminals {
         private void ScanResultsListView_MouseClick(object sender, MouseEventArgs e) {
             if (ScanResultsListView.SelectedItems[0].Tag != null) {
                 lock (updateListLock) {
-                    selecctedScanItem = (Terminals.Scanner.NetworkScanItem)ScanResultsListView.SelectedItems[0].Tag;
+                    selecctedScanItem = (NetworkScanItem)ScanResultsListView.SelectedItems[0].Tag;
                 }
             } else {
                 selecctedScanItem = null;
             }
         }
-        private Terminals.Scanner.NetworkScanItem selecctedScanItem;
+        private NetworkScanItem selecctedScanItem;
 
-        public Terminals.Scanner.NetworkScanItem SelectedScanItem {
+        public NetworkScanItem SelectedScanItem {
             get { return selecctedScanItem; }
             set { selecctedScanItem = value; }
         }
@@ -167,7 +163,7 @@ namespace Terminals {
         private void AddAllButton_Click(object sender, EventArgs e) {
             int count = 0;
             foreach (ListViewItem lvi in this.ScanResultsListView.Items) {
-                Terminals.Scanner.NetworkScanItem item = (Terminals.Scanner.NetworkScanItem)lvi.Tag;
+                NetworkScanItem item = (NetworkScanItem)lvi.Tag;
                 FavoriteConfigurationElement fav = new FavoriteConfigurationElement();
                 fav.ServerName = item.IPAddress;
                 fav.Port = item.Port;
@@ -176,8 +172,8 @@ namespace Terminals {
                 tags = tags.Replace("Tags...","").Trim();
                 if (tags != string.Empty)  fav.Tags = tags;
                 fav.Name = string.Format("{0}_{1}", item.HostName, fav.Protocol);
-                fav.DomainName = System.Environment.UserDomainName;
-                fav.UserName = System.Environment.UserName;
+                fav.DomainName = Environment.UserDomainName;
+                fav.UserName = Environment.UserName;
                 Settings.AddFavorite(fav, false);
                 count++;
             }
@@ -185,14 +181,14 @@ namespace Terminals {
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            if (Network.Server.ServerOnline) {
+            if (Server.ServerOnline) {
                 this.button1.Text = "Start Server";
-                Network.Server.Stop();
+                Server.Stop();
             } else {
                 this.button1.Text = "Stop Server";
-                Network.Server.Start();
+                Server.Start();
             }
-            if (Network.Server.ServerOnline) {
+            if (Server.ServerOnline) {
                 this.ServerStatusLabel.Text = "Server is ONLINE";
             } else {
                 this.ServerStatusLabel.Text = "Server is OFFLINE";
@@ -200,23 +196,23 @@ namespace Terminals {
             
         }
 
-        void Client_OnServerConnection(System.IO.MemoryStream Response) {
+        private void Client_OnServerConnection(System.IO.MemoryStream Response) {
 
             if(Response.Length==0) {
-                System.Windows.Forms.MessageBox.Show("The server has nothing to share with you.");
+                MessageBox.Show("The server has nothing to share with you.");
             } else {
                 int count = 0;
                 System.Collections.ArrayList favs = (System.Collections.ArrayList)Unified.Serialize.DeSerializeBinary(Response);
                 foreach (object fav in favs) {
-                    FavoriteConfigurationElement newfav = Network.SharedFavorite.ConvertFromFavorite((Network.SharedFavorite)fav);
+                    FavoriteConfigurationElement newfav = SharedFavorite.ConvertFromFavorite((SharedFavorite)fav);
                     newfav.Name = newfav.Name + "_new";
-                    newfav.UserName = System.Environment.UserName;
-                    newfav.DomainName = System.Environment.UserDomainName;
+                    newfav.UserName = Environment.UserName;
+                    newfav.DomainName = Environment.UserDomainName;
                     Settings.AddFavorite(newfav, false);
                     count++;
                 }
 
-                System.Windows.Forms.MessageBox.Show(string.Format("Successfully imported {0} connections.", count));
+                MessageBox.Show(string.Format("Successfully imported {0} connections.", count));
             }
         }
 
@@ -224,7 +220,7 @@ namespace Terminals {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             System.Collections.ArrayList list = new System.Collections.ArrayList();
             foreach (FavoriteConfigurationElement elem in favorites) {
-                list.Add(Network.SharedFavorite.ConvertFromFavorite(elem));
+                list.Add(SharedFavorite.ConvertFromFavorite(elem));
             }
 
             System.IO.MemoryStream favs = Unified.Serialize.SerializeBinary(list);
@@ -238,20 +234,20 @@ namespace Terminals {
                 data = new byte[0];
             }
             Socket.Send(data);
-            Network.Server.FinishDisconnect(Socket);
+            Server.FinishDisconnect(Socket);
 
         }
 
         private void button2_Click(object sender, EventArgs e) {
-            Network.Client.Start(this.ServerAddressTextbox.Text);
+            Client.Start(this.ServerAddressTextbox.Text);
         }
 
         private void NetworkScanner_FormClosing(object sender, FormClosingEventArgs e) {
             try {
-                Network.Server.Stop();
-                Network.Client.Stop();
+                Server.Stop();
+                Client.Stop();
             }
-            catch (Exception exc) { Terminals.Logging.Log.Info("Network Scanner failed to stop server and client at close", exc); }
+            catch (Exception exc) { Logging.Log.Info("Network Scanner failed to stop server and client at close", exc); }
         }
         private void CancelButton_Click(object sender, EventArgs e)
         {

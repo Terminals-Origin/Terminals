@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Forms;
 using FlickrNet;
+using Terminals.Configuration;
 
 namespace Terminals.Forms
 {
@@ -148,7 +150,7 @@ namespace Terminals.Forms
             // Calculate the URL at Flickr to redirect the user to    
             String flickrUrl = flickr.AuthCalcUrl(this.tempFrob, AuthLevel.Write);
             // The following line will load the URL in the users default browser.    
-            System.Diagnostics.Process.Start(flickrUrl);
+            Process.Start(flickrUrl);
             CompleteAuthButton.Enabled = true;
         }
 
@@ -164,7 +166,7 @@ namespace Terminals.Forms
                 // Store this Token for later usage,
                 // or set your Flickr instance to use it.
                 MessageBox.Show("User authenticated successfully");
-                Terminals.Logging.Log.Info(String.Format("User authenticated successfully. Authentication token is {0}. User id is {1}, username is {2}", auth.Token, auth.User.UserId, auth.User.Username));
+                Logging.Log.Info(String.Format("User authenticated successfully. Authentication token is {0}. User id is {1}, username is {2}", auth.Token, auth.User.UserId, auth.User.Username));
                 flickr.AuthToken = auth.Token;
                 Settings.FlickrToken = auth.Token;
             }
@@ -172,7 +174,7 @@ namespace Terminals.Forms
             {
                 // If user did not authenticat your application
                 // then a FlickrException will be thrown.
-                Terminals.Logging.Log.Info("User not authenticated successfully", ex);
+                Logging.Log.Info("User not authenticated successfully", ex);
                 MessageBox.Show("User did not authenticate you" + ex.Message);
             }
         }

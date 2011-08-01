@@ -1,8 +1,6 @@
-using System;
 using System.IO;
 using System.Net;
-using Microsoft.Win32;
-using System.Text.RegularExpressions;
+using Terminals.Configuration;
 
 namespace Unified.Network.HTTP
 {
@@ -11,15 +9,6 @@ namespace Unified.Network.HTTP
         /// <summary>
         /// Generic HTTP String Reader
         /// </summary>
-        /// <param name="URL"></param>
-        /// <param name="Data"></param>
-        /// <param name="Username"></param>
-        /// <param name="Password"></param>
-        /// <param name="Domain"></param>
-        /// <param name="ProxyAddress"></param>
-        /// <param name="ProxyPort"></param>
-        /// <param name="DoPOST"></param>
-        /// <returns></returns>
         public static string HTTPAsString(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST)
         {
             return System.Text.ASCIIEncoding.ASCII.GetString(HTTPAsBytes(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, DoPOST));
@@ -30,17 +19,17 @@ namespace Unified.Network.HTTP
             return HTTPAsString(URL, null, string.Empty, string.Empty, string.Empty, string.Empty, 0, false);
         }
 
-        public static System.Net.WebResponse HTTPAsWebResponse(string URL)
+        public static WebResponse HTTPAsWebResponse(string URL)
         {
             return HTTPAsWebResponse(URL, null, string.Empty, string.Empty, string.Empty, string.Empty, 0, false);
         }
 
-        public static System.Net.WebResponse HTTPAsWebResponse(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST)
+        public static WebResponse HTTPAsWebResponse(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST)
         {
-            if (Terminals.Settings.UseProxy)
+            if (Settings.UseProxy)
             {
-                ProxyAddress = Terminals.Settings.ProxyAddress;
-                ProxyPort = Terminals.Settings.ProxyPort;
+                ProxyAddress = Settings.ProxyAddress;
+                ProxyPort = Settings.ProxyPort;
             }
 
             if (!DoPOST && Data != null && Data.Length > 0)
@@ -70,14 +59,14 @@ namespace Unified.Network.HTTP
             }
 
             if (Username != null && Password != null && Domain != null && Username.Trim() != string.Empty && Password.Trim() != null && Domain.Trim() != null)
-                wreq.Credentials = new System.Net.NetworkCredential(Username, Password, Domain);
+                wreq.Credentials = new NetworkCredential(Username, Password, Domain);
             else if (Username != null && Password != null && Username.Trim() != string.Empty && Password.Trim() != null)
-                wreq.Credentials = new System.Net.NetworkCredential(Username, Password);
+                wreq.Credentials = new NetworkCredential(Username, Password);
 
             if (DoPOST && Data != null && Data.Length > 0)
             {
                 wreq.ContentType = "application/x-www-form-urlencoded";
-                System.IO.Stream request = wreq.GetRequestStream();
+                Stream request = wreq.GetRequestStream();
                 request.Write(Data, 0, Data.Length);
                 request.Close();
             }
@@ -95,16 +84,14 @@ namespace Unified.Network.HTTP
         /// with different buffersizes for optimal performance
         /// with my tests 1024 (1kb/s) was optimal for text and binary data
         /// </summary>
-        /// <param name="res"></param>
-        /// <returns></returns>
         private static int BufferSize = 1024;
 
-        public static byte[] ConvertWebResponseToByteArray(System.Net.WebResponse res)
+        public static byte[] ConvertWebResponseToByteArray(WebResponse res)
         {
-            System.IO.BinaryReader br = new BinaryReader(res.GetResponseStream());
+            BinaryReader br = new BinaryReader(res.GetResponseStream());
 
             // Download and buffer the binary stream into a memory stream
-            System.IO.MemoryStream stm = new MemoryStream();
+            MemoryStream stm = new MemoryStream();
             int pos = 0;
             int maxread = BufferSize;
             while (true)
@@ -142,7 +129,7 @@ namespace Unified.Network.HTTP
         /// <returns></returns>
         public static byte[] HTTPAsBytes(string URL, byte[] Data, string Username, string Password, string Domain, string ProxyAddress, int ProxyPort, bool DoPOST)
         {
-            System.Net.WebResponse res = HTTPAsWebResponse(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, DoPOST);
+            WebResponse res = HTTPAsWebResponse(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, DoPOST);
             return ConvertWebResponseToByteArray(res);
         }
 
@@ -154,22 +141,12 @@ namespace Unified.Network.HTTP
         /// <summary>
         /// Save content at any URL to disk, either with a POST or a GET
         /// </summary>
-        /// <param name="URL"></param>
-        /// <param name="Data"></param>
-        /// <param name="Username"></param>
-        /// <param name="Password"></param>
-        /// <param name="Domain"></param>
-        /// <param name="Filename"></param>
-        /// <param name="ProxyAddress"></param>
-        /// <param name="ProxyPort"></param>
-        /// <param name="DoPost"></param>
-        /// <returns></returns>
         public static bool SaveHTTPToFile(string URL, byte[] Data, string Username, string Password, string Domain, string Filename, string ProxyAddress, int ProxyPort, bool DoPost)
         {
             byte[] data = HTTPAsBytes(URL, Data, Username, Password, Domain, ProxyAddress, ProxyPort, DoPost);
             if (data != null)
             {
-                System.IO.FileStream fs = new FileStream(Filename, System.IO.FileMode.Create);
+                FileStream fs = new FileStream(Filename, FileMode.Create);
                 fs.Write(data, 0, data.Length);
                 fs.Close();
                 return true;
@@ -186,21 +163,12 @@ namespace Unified.Network.HTTP
         /// <summary>
         /// Upload content to HTTP
         /// </summary>
-        /// <param name="URL"></param>
-        /// <param name="Username"></param>
-        /// <param name="Password"></param>
-        /// <param name="Domain"></param>
-        /// <param name="Filename"></param>
-        /// <param name="ProxyAddress"></param>
-        /// <param name="ProxyPort"></param>
-        /// <param name="DoPost"></param>
-        /// <returns></returns>
         public static bool SendFileToHTTP(string URL, string Username, string Password, string Domain, string Filename, string ProxyAddress, int ProxyPort, bool DoPost)
         {
-            if (!System.IO.File.Exists(Filename)) 
+            if (!File.Exists(Filename)) 
                 return false;
 
-            System.IO.FileStream fs = new FileStream(Filename, System.IO.FileMode.Open);
+            FileStream fs = new FileStream(Filename, FileMode.Open);
             byte[] d = new byte[(int)fs.Length];
             fs.Read(d, 0, d.Length);
             fs.Close();

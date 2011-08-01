@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManageCredentialForm));
             this.CancelButton_cred = new System.Windows.Forms.Button();
             this.SaveButton_cred = new System.Windows.Forms.Button();
@@ -39,6 +40,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.DomainTextbox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // CancelButton_cred
@@ -50,7 +52,6 @@
             this.CancelButton_cred.TabIndex = 5;
             this.CancelButton_cred.Text = "Cancel";
             this.CancelButton_cred.UseVisualStyleBackColor = true;
-            this.CancelButton_cred.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // SaveButton_cred
             // 
@@ -77,6 +78,7 @@
             this.NameTextbox.Name = "NameTextbox";
             this.NameTextbox.Size = new System.Drawing.Size(204, 20);
             this.NameTextbox.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.NameTextbox, "An alias for the credential.\r\nThis is a required field.");
             // 
             // PasswordTextbox
             // 
@@ -85,6 +87,9 @@
             this.PasswordTextbox.PasswordChar = '*';
             this.PasswordTextbox.Size = new System.Drawing.Size(204, 20);
             this.PasswordTextbox.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.PasswordTextbox, "User password associated with the user name.\r\nThis is an optional field. If you d" +
+                    "on\'t type, an empty password will be used.\r\nStored passwords are encrypted, so n" +
+                    "obody can read them.");
             // 
             // label2
             // 
@@ -101,6 +106,7 @@
             this.UsernameTextbox.Name = "UsernameTextbox";
             this.UsernameTextbox.Size = new System.Drawing.Size(204, 20);
             this.UsernameTextbox.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.UsernameTextbox, "User login name for the credential.\r\nThis is a required field.");
             // 
             // label3
             // 
@@ -117,6 +123,9 @@
             this.DomainTextbox.Name = "DomainTextbox";
             this.DomainTextbox.Size = new System.Drawing.Size(204, 20);
             this.DomainTextbox.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.DomainTextbox, "Windows domain name.\r\nThis is an optional fiedl. It isn\'t necessary, \r\nif all you" +
+                    "r computers are on the same network\r\nor if you don\'t use Windows authentication." +
+                    "");
             // 
             // label4
             // 
@@ -134,7 +143,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelButton_cred;
             this.ClientSize = new System.Drawing.Size(284, 145);
-            this.ControlBox = false;
             this.Controls.Add(this.DomainTextbox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.UsernameTextbox);
@@ -145,11 +153,13 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.SaveButton_cred);
             this.Controls.Add(this.CancelButton_cred);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ManageCredentialForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Manage Credential";
+            this.Text = "Terminals - Manage Credential";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -167,5 +177,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox DomainTextbox;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
