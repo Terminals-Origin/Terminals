@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Forms;
 
 namespace Terminals.Network.Servers
 {

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Terminals
@@ -37,11 +34,11 @@ namespace Terminals
 
         private void FontButton_Click(object sender, EventArgs e)
         {
-            this.fontDialog1.Font = FontParser.FromString(FontTextbox.Text);
+            this.fontDialog1.Font = Terminals.Forms.FontParser.FromString(FontTextbox.Text);
             DialogResult result = this.fontDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                FontTextbox.Text = FontParser.ToString(this.fontDialog1.Font);
+                FontTextbox.Text = Terminals.Forms.FontParser.ToString(this.fontDialog1.Font);
             }
         }
 

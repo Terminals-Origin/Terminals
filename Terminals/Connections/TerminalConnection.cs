@@ -1,8 +1,8 @@
 using System;
 using System.Drawing;
 using System.Net.Sockets;
-using System.Text;
 using Terminals.Configuration;
+using Terminals.Forms;
 using WalburySoftware;
 
 namespace Terminals.Connections
@@ -10,10 +10,12 @@ namespace Terminals.Connections
     public class TerminalConnection : Connection
     {
         #region Fields
+
         private Boolean connected = false;
         private TerminalEmulator term;
         private Socket client;
         private SSHClient.Protocol sshProtocol;
+
         #endregion
 
         #region Connection Members
@@ -30,7 +32,7 @@ namespace Terminals.Connections
         {
         }
                 
-        public override bool Connect()
+        public override Boolean Connect()
         {
             String protocol = "unknown";
             try

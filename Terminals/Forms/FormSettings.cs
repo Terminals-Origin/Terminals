@@ -1,23 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
-using System.Configuration;
 using System.Drawing;
 
-namespace Terminals
+namespace Terminals.Forms
 {
-    public class FormSettings
+    internal class FormSettings
     {
-        System.Windows.Forms.Form _form;
-        bool _saveSettings = false;
-        bool _loadCalled = false;
-        bool _enabled = true;
-        System.Drawing.Size _lastNormalSize;
-        System.Drawing.Point _lastNormalLocation;
-        private const string WindowStateSetting = "WindowState";
-        private const string SizeSetting = "Size";
-        private const string LocationSetting = "Location";
+        private System.Windows.Forms.Form _form;
+        private Boolean _saveSettings = false;
+        private Boolean _loadCalled = false;
+        private System.Drawing.Size _lastNormalSize;
+        private System.Drawing.Point _lastNormalLocation;
+        private const String WindowStateSetting = "WindowState";
+        private const String SizeSetting = "Size";
+        private const String LocationSetting = "Location";
 
         public FormSettings(System.Windows.Forms.Form form)
         {
@@ -28,12 +25,12 @@ namespace Terminals
             _form.Resize += new EventHandler(FormResize);
         }
 
-        void FormLoad(object sender, EventArgs e)
+        private void FormLoad(object sender, EventArgs e)
         {
             LoadFormState();
         }
 
-        void FormResize(object sender, EventArgs e)
+        private void FormResize(object sender, EventArgs e)
         {
             if (_form.WindowState == FormWindowState.Normal)
             {
@@ -42,12 +39,12 @@ namespace Terminals
             }
         }
 
-        void FormHandleCreated(object sender, EventArgs e)
+        private void FormHandleCreated(object sender, EventArgs e)
         {
             LoadFormSize();
         }
 
-        void FormHandleDestroyed(object sender, EventArgs e)
+        private void FormHandleDestroyed(object sender, EventArgs e)
         {
             if (!_form.RecreatingHandle)
             {
@@ -55,12 +52,12 @@ namespace Terminals
             }
         }
 
-        private string BuildPropertyName(string settingName)
+        private string BuildPropertyName(String settingName)
         {
-            return _form.GetType().Name + "." + _form.Name + "." + settingName;
+            return String.Format("{0}.{1}.{2}", _form.GetType().Name, _form.Name, settingName);
         }
 
-        private void ValidateProperty(string propertyName, Type propertyType)
+        private void ValidateProperty(String propertyName, Type propertyType)
         {
             System.Configuration.SettingsProperty property = Properties.Settings.Default.Properties[propertyName];
             if (property == null)
@@ -74,26 +71,26 @@ namespace Terminals
             }
         }
 
-        private T GetValue<T>(string settingName, T defaultValue)
+        private T GetValue<T>(String settingName, T defaultValue)
         {
-            string propertyName = BuildPropertyName(settingName);
+            String propertyName = BuildPropertyName(settingName);
             ValidateProperty(propertyName, typeof(T));
-            object result = Properties.Settings.Default[propertyName];
+            Object result = Properties.Settings.Default[propertyName];
             if (result == null)
                 result = defaultValue;
             return (T)result;
         }
 
-        private void SetValue(string settingName, object value)
+        private void SetValue(String settingName, Object value)
         {
-            string propertyName = BuildPropertyName(settingName);
+            String propertyName = BuildPropertyName(settingName);
             ValidateProperty(propertyName, value.GetType());
             Properties.Settings.Default[propertyName] = value;
         }
 
         private void LoadFormState()
         {
-            if (_enabled)
+            if (this.Enabled)
             {
                 _form.WindowState = GetValue<FormWindowState>(WindowStateSetting, _form.WindowState);
                 if (_form.WindowState == FormWindowState.Minimized)
@@ -107,7 +104,7 @@ namespace Terminals
             {
                 _loadCalled = true;
 
-                if (_enabled)
+                if (this.Enabled)
                 {
                     if (_form.FormBorderStyle == FormBorderStyle.Sizable ||
                       _form.FormBorderStyle == FormBorderStyle.SizableToolWindow)
@@ -130,7 +127,7 @@ namespace Terminals
 
         private void SaveFormState()
         {
-            if (_saveSettings && _enabled)
+            if (_saveSettings && this.Enabled)
             {
                 if (_form.WindowState != FormWindowState.Normal)
                 {
@@ -147,20 +144,11 @@ namespace Terminals
                 {
                     SetValue(WindowStateSetting, _form.WindowState);
                 }
+
                 Properties.Settings.Default.Save();
             }
         }
 
-        public bool Enabled
-        {
-            get
-            {
-                return _enabled;
-            }
-            set
-            {
-                _enabled = value;
-            }
-        }
+        public Boolean Enabled { get; set; }
     }
 }

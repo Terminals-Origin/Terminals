@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Configuration;
 using Terminals.Configuration;
 
@@ -13,38 +11,45 @@ namespace Terminals
     {
         public FavoriteConfigurationElement()
         {
-
         }
+
+        public FavoriteConfigurationElement(String name)
+        {
+            Name = name;
+        }
+
         [ConfigurationProperty("telnet", IsRequired = false, DefaultValue = true)]
-        public bool Telnet
+        public Boolean Telnet
         {
             get
             {
-                return (bool)this["telnet"];
+                return (Boolean)this["telnet"];
             }
             set
             {
                 this["telnet"] = value;
             }
         }
+
         [ConfigurationProperty("telnetrows", IsRequired = false, DefaultValue = 33)]
-        public int TelnetRows
+        public Int32 TelnetRows
         {
             get
             {
-                return (int)this["telnetrows"];
+                return (Int32)this["telnetrows"];
             }
             set
             {
                 this["telnetrows"] = value;
             }
         }
+
         [ConfigurationProperty("telnetcols", IsRequired = false, DefaultValue = 110)]
-        public int TelnetCols
+        public Int32 TelnetCols
         {
             get
             {
-                return (int)this["telnetcols"];
+                return (Int32)this["telnetcols"];
             }
             set
             {
@@ -52,109 +57,141 @@ namespace Terminals
             }
         }
 
-        public FavoriteConfigurationElement(string name)
-        {
-            Name = name;
-        }
         [ConfigurationProperty("shutdownTimeout", IsRequired = false, DefaultValue = 10)]
-        public int ShutdownTimeout
+        public Int32 ShutdownTimeout
         {
             get
             {
-                int val = (int)this["shutdownTimeout"];
-                if (val > 600) val = 600;
-                if (val < 10) val = 10;
+                Int32 val = (Int32)this["shutdownTimeout"];
+                if (val > 600)
+                    val = 600;
+
+                if (val < 10)
+                    val = 10;
+
                 return val;
             }
             set
             {
-                if (value > 600) value = 600;
-                if (value < 10) value = 10;
+                if (value > 600) 
+                    value = 600;
+
+                if (value < 10) 
+                    value = 10;
+
                 this["shutdownTimeout"] = value;
             }
         }
         [ConfigurationProperty("overallTimeout", IsRequired = false, DefaultValue = 600)]
-        public int OverallTimeout
+        public Int32 OverallTimeout
         {
             get
             {
-                int val = (int)this["overallTimeout"];
-                if (val > 600) val = 600;
-                if (val < 10) val = 10;
+                Int32 val = (Int32)this["overallTimeout"];
+                if (val > 600) 
+                    val = 600;
+
+                if (val < 10) 
+                    val = 10;
+
                 return val;
             }
             set
             {
-                if (value > 600) value = 600;
-                if (value < 0) value = 0;
+                if (value > 600) 
+                    value = 600;
+
+                if (value < 0) 
+                    value = 0;
+
                 this["overallTimeout"] = value;
             }
         }
+
         [ConfigurationProperty("connectionTimeout", IsRequired = false, DefaultValue = 600)]
-        public int ConnectionTimeout
+        public Int32 ConnectionTimeout
         {
             get
             {
-                int val = (int)this["connectionTimeout"];
-                if (val > 600) val = 600;
-                if (val < 10) val = 10;
+                Int32 val = (Int32)this["connectionTimeout"];
+                if (val > 600) 
+                    val = 600;
+
+                if (val < 10) 
+                    val = 10;
+
                 return val;
             }
             set
             {
-                if (value > 600) value = 600;
-                if (value < 0) value = 0;
+                if (value > 600) 
+                    value = 600;
+
+                if (value < 0) 
+                    value = 0;
+
                 this["connectionTimeout"] = value;
             }
         }
 
         [ConfigurationProperty("idleTimeout", IsRequired = false, DefaultValue = 240)]
-        public int IdleTimeout
+        public Int32 IdleTimeout
         {
             get
             {
-                int val = (int)this["idleTimeout"];
-                if (val > 600) val = 600;
-                if (val < 10) val = 10;
+                Int32 val = (Int32)this["idleTimeout"];
+                if (val > 600) 
+                    val = 600;
+
+                if (val < 10) 
+                    val = 10;
+
                 return val;
             }
             set
             {
-                if (value > 240) value = 240;
-                if (value < 0) value = 0;
+                if (value > 240) 
+                    value = 240;
+
+                if (value < 0) 
+                    value = 0;
+
                 this["idleTimeout"] = value;
             }
         }
+
         [ConfigurationProperty("securityWorkingFolder", IsRequired = false, DefaultValue = "")]
-        public string SecurityWorkingFolder
+        public String SecurityWorkingFolder
         {
             get
             {
-                return (string)this["securityWorkingFolder"];
+                return (String)this["securityWorkingFolder"];
             }
             set
             {
                 this["securityWorkingFolder"] = value;
             }
         }
+
         [ConfigurationProperty("securityStartProgram", IsRequired = false, DefaultValue = "")]
-        public string SecurityStartProgram
+        public String SecurityStartProgram
         {
             get
             {
-                return (string)this["securityStartProgram"];
+                return (String)this["securityStartProgram"];
             }
             set
             {
                 this["securityStartProgram"] = value;
             }
         }
+
         [ConfigurationProperty("credential", IsRequired = false, DefaultValue = "")]
-        public string Credential
+        public String Credential
         {
             get
             {
-                return (string)this["credential"];
+                return (String)this["credential"];
             }
             set
             {
@@ -163,35 +200,37 @@ namespace Terminals
         }
 
         [ConfigurationProperty("securityFullScreen", IsRequired = false, DefaultValue = false)]
-        public bool SecurityFullScreen
+        public Boolean SecurityFullScreen
         {
             get
             {
-                return (bool)this["securityFullScreen"];
+                return (Boolean)this["securityFullScreen"];
             }
             set
             {
                 this["securityFullScreen"] = value;
             }
         }
+
         [ConfigurationProperty("enableSecuritySettings", IsRequired = false, DefaultValue = false)]
-        public bool EnableSecuritySettings
+        public Boolean EnableSecuritySettings
         {
             get
             {
-                return (bool)this["enableSecuritySettings"];
+                return (Boolean)this["enableSecuritySettings"];
             }
             set
             {
                 this["enableSecuritySettings"] = value;
             }
         }
+
         [ConfigurationProperty("grabFocusOnConnect", IsRequired = false, DefaultValue = false)]
-        public bool GrabFocusOnConnect
+        public Boolean GrabFocusOnConnect
         {
             get
             {
-                return (bool)this["grabFocusOnConnect"];
+                return (Boolean)this["grabFocusOnConnect"];
             }
             set
             {
@@ -200,11 +239,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("enableEncryption", IsRequired = false, DefaultValue = false)]
-        public bool EnableEncryption
+        public Boolean EnableEncryption
         {
             get
             {
-                return (bool)this["enableEncryption"];
+                return (Boolean)this["enableEncryption"];
             }
             set
             {
@@ -213,11 +252,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("disableWindowsKey", IsRequired = false, DefaultValue = false)]
-        public bool DisableWindowsKey
+        public Boolean DisableWindowsKey
         {
             get
             {
-                return (bool)this["disableWindowsKey"];
+                return (Boolean)this["disableWindowsKey"];
             }
             set
             {
@@ -226,11 +265,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("doubleClickDetect", IsRequired = false, DefaultValue = false)]
-        public bool DoubleClickDetect
+        public Boolean DoubleClickDetect
         {
             get
             {
-                return (bool)this["doubleClickDetect"];
+                return (Boolean)this["doubleClickDetect"];
             }
             set
             {
@@ -239,11 +278,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("displayConnectionBar", IsRequired = false, DefaultValue = false)]
-        public bool DisplayConnectionBar
+        public Boolean DisplayConnectionBar
         {
             get
             {
-                return (bool)this["displayConnectionBar"];
+                return (Boolean)this["displayConnectionBar"];
             }
             set
             {
@@ -252,83 +291,89 @@ namespace Terminals
         }
 
         [ConfigurationProperty("disableControlAltDelete", IsRequired = false, DefaultValue = false)]
-        public bool DisableControlAltDelete
+        public Boolean DisableControlAltDelete
         {
             get
             {
-                return (bool)this["disableControlAltDelete"];
+                return (Boolean)this["disableControlAltDelete"];
             }
             set
             {
                 this["disableControlAltDelete"] = value;
             }
         }
+
         [ConfigurationProperty("acceleratorPassthrough", IsRequired = false, DefaultValue = false)]
-        public bool AcceleratorPassthrough
+        public Boolean AcceleratorPassthrough
         {
             get
             {
-                return (bool)this["acceleratorPassthrough"];
+                return (Boolean)this["acceleratorPassthrough"];
             }
             set
             {
                 this["acceleratorPassthrough"] = value;
             }
         }
+
         [ConfigurationProperty("enableCompression", IsRequired = false, DefaultValue = false)]
-        public bool EnableCompression
+        public Boolean EnableCompression
         {
             get
             {
-                return (bool)this["enableCompression"];
+                return (Boolean)this["enableCompression"];
             }
             set
             {
                 this["enableCompression"] = value;
             }
         }
+
         [ConfigurationProperty("bitmapPeristence", IsRequired = false, DefaultValue = false)]
-        public bool BitmapPeristence
+        public Boolean BitmapPeristence
         {
             get
             {
-                return (bool)this["bitmapPeristence"];
+                return (Boolean)this["bitmapPeristence"];
             }
             set
             {
                 this["bitmapPeristence"] = value;
             }
         }
+
         [ConfigurationProperty("enableTLSAuthentication", IsRequired = false, DefaultValue = false)]
-        public bool EnableTLSAuthentication
+        public Boolean EnableTLSAuthentication
         {
             get
             {
-                return (bool)this["enableTLSAuthentication"];
+                return (Boolean)this["enableTLSAuthentication"];
             }
             set
             {
                 this["enableTLSAuthentication"] = value;
             }
         }
+
         [ConfigurationProperty("enableNLAAuthentication", IsRequired = false, DefaultValue = false)]
-        public bool EnableNLAAuthentication
+        public Boolean EnableNLAAuthentication
         {
             get
             {
-                return (bool)this["enableNLAAuthentication"];
+                return (Boolean)this["enableNLAAuthentication"];
             }
             set
             {
                 this["enableNLAAuthentication"] = value;
             }
         }
+
         [ConfigurationProperty("allowBackgroundInput", IsRequired = false, DefaultValue = false)]
-        public bool AllowBackgroundInput
+        public Boolean AllowBackgroundInput
         {
             get
             {
-                return (bool)this["allowBackgroundInput"];
+                return (Boolean)this["allowBackgroundInput"];
             }
             set
             {
@@ -337,59 +382,63 @@ namespace Terminals
         }
 
         [ConfigurationProperty("ICAApplicationName", IsRequired = false, DefaultValue = "")]
-        public string ICAApplicationName
+        public String ICAApplicationName
         {
             get
             {
-                return (string)this["ICAApplicationName"];
+                return (String)this["ICAApplicationName"];
             }
             set
             {
                 this["ICAApplicationName"] = value;
             }
         }
+
         [ConfigurationProperty("ICAApplicationWorkingFolder", IsRequired = false, DefaultValue = "")]
-        public string ICAApplicationWorkingFolder
+        public String ICAApplicationWorkingFolder
         {
             get
             {
-                return (string)this["ICAApplicationWorkingFolder"];
+                return (String)this["ICAApplicationWorkingFolder"];
             }
             set
             {
                 this["ICAApplicationWorkingFolder"] = value;
             }
         }
+
         [ConfigurationProperty("ICAApplicationPath", IsRequired = false, DefaultValue = "")]
-        public string ICAApplicationPath
+        public String ICAApplicationPath
         {
             get
             {
-                return (string)this["ICAApplicationPath"];
+                return (String)this["ICAApplicationPath"];
             }
             set
             {
                 this["ICAApplicationPath"] = value;
             }
         }
+
         [ConfigurationProperty("vmrcreducedcolorsmode", IsRequired = false, DefaultValue = false)]
-        public bool VMRCReducedColorsMode
+        public Boolean VMRCReducedColorsMode
         {
             get
             {
-                return (bool)this["vmrcreducedcolorsmode"];
+                return (Boolean)this["vmrcreducedcolorsmode"];
             }
             set
             {
                 this["vmrcreducedcolorsmode"] = value;
             }
         }
+
         [ConfigurationProperty("vmrcadministratormode", IsRequired = false, DefaultValue = false)]
-        public bool VMRCAdministratorMode
+        public Boolean VMRCAdministratorMode
         {
             get
             {
-                return (bool)this["vmrcadministratormode"];
+                return (Boolean)this["vmrcadministratormode"];
             }
             set
             {
@@ -397,11 +446,11 @@ namespace Terminals
             }
         }
         [ConfigurationProperty("ssh1", IsRequired = false, DefaultValue = false)]
-        public bool SSH1
+        public Boolean SSH1
         {
             get
             {
-                return (bool)this["ssh1"];
+                return (Boolean)this["ssh1"];
             }
             set
             {
@@ -409,11 +458,11 @@ namespace Terminals
             }
         }
         [ConfigurationProperty("consolerows", IsRequired = false, DefaultValue = 33)]
-        public int ConsoleRows
+        public Int32 ConsoleRows
         {
             get
             {
-                return (int)this["consolerows"];
+                return (Int32)this["consolerows"];
             }
             set
             {
@@ -421,25 +470,27 @@ namespace Terminals
             }
         }
         [ConfigurationProperty("consolecols", IsRequired = false, DefaultValue = 110)]
-        public int ConsoleCols
+        public Int32 ConsoleCols
         {
             get
             {
-                return (int)this["consolecols"];
+                return (Int32)this["consolecols"];
             }
             set
             {
                 this["consolecols"] = value;
             }
         }
+
         [ConfigurationProperty("consolefont", IsRequired = false)]
-        public string ConsoleFont
+        public String ConsoleFont
         {
             get
             {
-                string font = (string)this["consolefont"];
+                String font = (String)this["consolefont"];
                 if (String.IsNullOrEmpty(font))
-                  font = FontParser.DEFAULT_FONT;
+                    font = Terminals.Forms.FontParser.DEFAULT_FONT;
+                
                 return font;
             }
             set
@@ -447,12 +498,13 @@ namespace Terminals
                 this["consolefont"] = value;
             }
         }
+
         [ConfigurationProperty("consolebackcolor", IsRequired = false, DefaultValue = "Black")]
-        public string ConsoleBackColor
+        public String ConsoleBackColor
         {
             get
             {
-                return (string)this["consolebackcolor"];
+                return (String)this["consolebackcolor"];
             }
             set
             {
@@ -461,47 +513,50 @@ namespace Terminals
         }
 
         [ConfigurationProperty("consoletextcolor", IsRequired = false, DefaultValue = "White")]
-        public string ConsoleTextColor
+        public String ConsoleTextColor
         {
             get
             {
-                return (string)this["consoletextcolor"];
+                return (String)this["consoletextcolor"];
             }
             set
             {
                 this["consoletextcolor"] = value;
             }
         }
+
         [ConfigurationProperty("consolecursorcolor", IsRequired = false, DefaultValue = "Green")]
-        public string ConsoleCursorColor
+        public String ConsoleCursorColor
         {
             get
             {
-                return (string)this["consolecursorcolor"];
+                return (String)this["consolecursorcolor"];
             }
             set
             {
                 this["consolecursorcolor"] = value;
             }
         }
+
         [ConfigurationProperty("protocol", IsRequired = true, DefaultValue = "RDP")]
-        public string Protocol
+        public String Protocol
         {
             get
             {
-                return (string)this["protocol"];
+                return (String)this["protocol"];
             }
             set
             {
                 this["protocol"] = value;
             }
         }
+
         [ConfigurationProperty("toolBarIcon", IsRequired = false, DefaultValue = "")]
-        public string ToolBarIcon
+        public String ToolBarIcon
         {
             get
             {
-                return (string)this["toolBarIcon"];
+                return (String)this["toolBarIcon"];
             }
             set
             {
@@ -509,13 +564,14 @@ namespace Terminals
             }
         }
         [ConfigurationProperty("telnetfont", IsRequired = false)]
-        public string TelnetFont
+        public String TelnetFont
         {
             get
             {
-                string font = (string)this["telnetfont"];
+                String font = (String)this["telnetfont"];
                 if (String.IsNullOrEmpty(font))
-                  font = FontParser.DEFAULT_FONT;
+                    font = Terminals.Forms.FontParser.DEFAULT_FONT;
+
                 return font;
             }
             set
@@ -523,12 +579,13 @@ namespace Terminals
                 this["telnetfont"] = value;
             }
         }
+
         [ConfigurationProperty("telnetbackcolor", IsRequired = false, DefaultValue = "Black")]
-        public string TelnetBackColor
+        public String TelnetBackColor
         {
             get
             {
-                return (string)this["telnetbackcolor"];
+                return (String)this["telnetbackcolor"];
             }
             set
             {
@@ -537,23 +594,24 @@ namespace Terminals
         }
 
         [ConfigurationProperty("telnettextcolor", IsRequired = false, DefaultValue = "White")]
-        public string TelnetTextColor
+        public String TelnetTextColor
         {
             get
             {
-                return (string)this["telnettextcolor"];
+                return (String)this["telnettextcolor"];
             }
             set
             {
                 this["telnettextcolor"] = value;
             }
         }
+
         [ConfigurationProperty("telnetcursorcolor", IsRequired = false, DefaultValue = "Green")]
-        public string TelnetCursorColor
+        public String TelnetCursorColor
         {
             get
             {
-                return (string)this["telnetcursorcolor"];
+                return (String)this["telnetcursorcolor"];
             }
             set
             {
@@ -562,11 +620,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("name", IsRequired = true)]
-        public string Name
+        public String Name
         {
             get
             {
-                return (string)this["name"];
+                return (String)this["name"];
             }
             set
             {
@@ -575,11 +633,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("serverName", IsRequired = true)]
-        public string ServerName
+        public String ServerName
         {
             get
             {
-                return (string)this["serverName"];
+                return (String)this["serverName"];
             }
             set
             {
@@ -588,21 +646,22 @@ namespace Terminals
         }
 
         [ConfigurationProperty("domainName", IsRequired = false)]
-        public string DomainName
+        public String DomainName
         {
             get
             {
                 CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
                 if (cred != null)
                     return cred.Domain;
-                
-                return (string)this["domainName"];
+
+                return (String)this["domainName"];
             }
             set
             {
                 this["domainName"] = value;
             }
         }
+
         [ConfigurationProperty("authMethod", DefaultValue = SSHClient.AuthMethod.Password)]
         public SSHClient.AuthMethod AuthMethod
         {
@@ -617,11 +676,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("keyTag", DefaultValue = "")]
-        public string KeyTag
+        public String KeyTag
         {
             get
             {
-                return (string)this["keyTag"];
+                return (String)this["keyTag"];
             }
             set
             {
@@ -630,15 +689,15 @@ namespace Terminals
         }
 
         [ConfigurationProperty("userName", IsRequired = false)]
-        public string UserName
+        public String UserName
         {
             get
             {
                 CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
                 if (cred != null)
                     return cred.Username;
-                
-                return (string)this["userName"];
+
+                return (String)this["userName"];
             }
             set
             {
@@ -647,11 +706,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("encryptedPassword", IsRequired = false)]
-        public string EncryptedPassword
+        public String EncryptedPassword
         {
             get
             {
-                return (string)this["encryptedPassword"];
+                return (String)this["encryptedPassword"];
             }
             set
             {
@@ -660,9 +719,9 @@ namespace Terminals
         }
 
         /// <summary>
-        /// Gets or sets the password string in not ecrypted form
+        /// Gets or sets the password String in not ecrypted form
         /// </summary>
-        public string Password
+        public String Password
         {
             get
             {
@@ -679,11 +738,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("vncAutoScale", IsRequired = false, DefaultValue = false)]
-        public bool VncAutoScale
+        public Boolean VncAutoScale
         {
             get
             {
-                return (bool)this["vncAutoScale"];
+                return (Boolean)this["vncAutoScale"];
             }
             set
             {
@@ -692,11 +751,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("vncViewOnly", IsRequired = false, DefaultValue = false)]
-        public bool VncViewOnly
+        public Boolean VncViewOnly
         {
             get
             {
-                return (bool)this["vncViewOnly"];
+                return (Boolean)this["vncViewOnly"];
             }
             set
             {
@@ -705,11 +764,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("vncDisplayNumber", IsRequired = false, DefaultValue = 0)]
-        public int VncDisplayNumber
+        public Int32 VncDisplayNumber
         {
             get
             {
-                return (int)this["vncDisplayNumber"];
+                return (Int32)this["vncDisplayNumber"];
             }
             set
             {
@@ -719,11 +778,11 @@ namespace Terminals
 
 
         [ConfigurationProperty("connectToConsole", IsRequired = false)]
-        public bool ConnectToConsole
+        public Boolean ConnectToConsole
         {
             get
             {
-                return (bool)this["connectToConsole"];
+                return (Boolean)this["connectToConsole"];
             }
             set
             {
@@ -732,11 +791,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("desktopSizeHeight", IsRequired = false)]
-        public int DesktopSizeHeight
+        public Int32 DesktopSizeHeight
         {
             get
             {
-                return (int)this["desktopSizeHeight"];
+                return (Int32)this["desktopSizeHeight"];
             }
             set
             {
@@ -745,11 +804,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("desktopSizeWidth", IsRequired = false)]
-        public int DesktopSizeWidth
+        public Int32 DesktopSizeWidth
         {
             get
             {
-                return (int)this["desktopSizeWidth"];
+                return (Int32)this["desktopSizeWidth"];
             }
             set
             {
@@ -797,11 +856,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("redirectDrives")]
-        public string redirectedDrives
+        public String redirectedDrives
         {
             get
             {
-                return (string)this["redirectDrives"];
+                return (String)this["redirectDrives"];
             }
             set
             {
@@ -809,12 +868,12 @@ namespace Terminals
             }
         }
 
-        public List<string> RedirectedDrives
+        public List<String> RedirectedDrives
         {
             get
             {
-                List<string> outputList = new List<string>();
-                if (!string.IsNullOrEmpty(redirectedDrives))
+                List<String> outputList = new List<String>();
+                if (!String.IsNullOrEmpty(redirectedDrives))
                 {
                     /* Following added for backwards compatibility
                     if (redirectedDrives.Equals("true"))
@@ -832,43 +891,48 @@ namespace Terminals
                     }
                     */
 
-                    string[] driveArray = redirectedDrives.Split(";".ToCharArray());
-                    foreach (string drive in driveArray)
+                    String[] driveArray = redirectedDrives.Split(";".ToCharArray());
+                    foreach (String drive in driveArray)
+                    {
                         outputList.Add(drive);
+                    }
                 }
+
                 return outputList;
             }
             set
             {
-                string drives = "";
-                for (int i = 0; i < value.Count; i++)
+                String drives = String.Empty;
+                for (Int32 i = 0; i < value.Count; i++)
                 {
                     drives += value[i];
                     if (i < value.Count - 1)
                         drives += ";";
                 }
+
                 redirectedDrives = drives;
             }
         }
 
         [ConfigurationProperty("redirectPorts")]
-        public bool RedirectPorts
+        public Boolean RedirectPorts
         {
             get
             {
-                return (bool)this["redirectPorts"];
+                return (Boolean)this["redirectPorts"];
             }
             set
             {
                 this["redirectPorts"] = value;
             }
         }
+
         [ConfigurationProperty("newWindow")]
-        public bool NewWindow
+        public Boolean NewWindow
         {
             get
             {
-                return (bool)this["newWindow"];
+                return (Boolean)this["newWindow"];
             }
             set
             {
@@ -877,11 +941,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("redirectPrinters")]
-        public bool RedirectPrinters
+        public Boolean RedirectPrinters
         {
             get
             {
-                return (bool)this["redirectPrinters"];
+                return (Boolean)this["redirectPrinters"];
             }
             set
             {
@@ -890,11 +954,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("redirectSmartCards")]
-        public bool RedirectSmartCards
+        public Boolean RedirectSmartCards
         {
             get
             {
-                return (bool)this["redirectSmartCards"];
+                return (Boolean)this["redirectSmartCards"];
             }
             set
             {
@@ -903,11 +967,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("redirectClipboard", DefaultValue = true)]
-        public bool RedirectClipboard
+        public Boolean RedirectClipboard
         {
             get
             {
-                return (bool)this["redirectClipboard"];
+                return (Boolean)this["redirectClipboard"];
             }
             set
             {
@@ -916,11 +980,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("redirectDevices")]
-        public bool RedirectDevices
+        public Boolean RedirectDevices
         {
             get
             {
-                return (bool)this["redirectDevices"];
+                return (Boolean)this["redirectDevices"];
             }
             set
             {
@@ -945,11 +1009,11 @@ namespace Terminals
         /// Do not use an RD Gateway server. In the RDC client UI, the Bypass RD Gateway server for local addresses check box is selected.
         /// </summary>
         [ConfigurationProperty("tsgwUsageMethod", DefaultValue = 0)]
-        public int TsgwUsageMethod
+        public Int32 TsgwUsageMethod
         {
             get
             {
-                return (int)this["tsgwUsageMethod"];
+                return (Int32)this["tsgwUsageMethod"];
             }
             set
             {
@@ -958,11 +1022,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("tsgwHostname", DefaultValue = "")]
-        public string TsgwHostname
+        public String TsgwHostname
         {
             get
             {
-                return (string)this["tsgwHostname"];
+                return (String)this["tsgwHostname"];
             }
             set
             {
@@ -971,11 +1035,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("tsgwCredsSource", DefaultValue = 0)]
-        public int TsgwCredsSource
+        public Int32 TsgwCredsSource
         {
             get
             {
-                return (int)this["tsgwCredsSource"];
+                return (Int32)this["tsgwCredsSource"];
             }
             set
             {
@@ -984,11 +1048,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("tsgwSeparateLogin", DefaultValue = false)]
-        public bool TsgwSeparateLogin
+        public Boolean TsgwSeparateLogin
         {
             get
             {
-                return (bool)this["tsgwSeparateLogin"];
+                return (Boolean)this["tsgwSeparateLogin"];
             }
             set
             {
@@ -997,11 +1061,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("tsgwUsername", DefaultValue = "")]
-        public string TsgwUsername
+        public String TsgwUsername
         {
             get
             {
-                return (string)this["tsgwUsername"];
+                return (String)this["tsgwUsername"];
             }
             set
             {
@@ -1010,11 +1074,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("tsgwDomain", DefaultValue = "")]
-        public string TsgwDomain
+        public String TsgwDomain
         {
             get
             {
-                return (string)this["tsgwDomain"];
+                return (String)this["tsgwDomain"];
             }
             set
             {
@@ -1023,11 +1087,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("tsgwPassword", DefaultValue = "")]
-        public string TsgwEncryptedPassword
+        public String TsgwEncryptedPassword
         {
             get
             {
-                return (string)this["tsgwPassword"];
+                return (String)this["tsgwPassword"];
             }
             set
             {
@@ -1035,7 +1099,7 @@ namespace Terminals
             }
         }
 
-        public string TsgwPassword
+        public String TsgwPassword
         {
             get
             {
@@ -1048,38 +1112,39 @@ namespace Terminals
         }
 
         [ConfigurationProperty("url", DefaultValue = "http://terminals.codeplex.com")]
-        public string Url
+        public String Url
         {
             get
             {
-                return (string)this["url"];
+                return (String)this["url"];
             }
             set
             {
                 this["url"] = value;
             }
         }
-        static public string EncodeTo64(string toEncode)
+
+        public static String EncodeTo64(String toEncode)
         {
-            byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(toEncode);
-            string returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
+            Byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(toEncode);
+            String returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
             return returnValue;
         }
-        static public string DecodeFrom64(string encodedData)
-        {
-            byte[] encodedDataAsBytes = System.Convert.FromBase64String(encodedData);
-            string returnValue = System.Text.ASCIIEncoding.ASCII.GetString(encodedDataAsBytes);
-            return returnValue;
 
+        public static String DecodeFrom64(String encodedData)
+        {
+            Byte[] encodedDataAsBytes = System.Convert.FromBase64String(encodedData);
+            String returnValue = System.Text.ASCIIEncoding.ASCII.GetString(encodedDataAsBytes);
+            return returnValue;
         }
 
         [ConfigurationProperty("notes")]
-        public string Notes
+        public String Notes
         {
             get
             {
 
-                return DecodeFrom64((string)this["notes"]);
+                return DecodeFrom64((String)this["notes"]);
             }
             set
             {
@@ -1088,11 +1153,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("icaServerINI")]
-        public string IcaServerINI
+        public String IcaServerINI
         {
             get
             {
-                return (string)this["icaServerINI"];
+                return (String)this["icaServerINI"];
             }
             set
             {
@@ -1100,11 +1165,11 @@ namespace Terminals
             }
         }
         [ConfigurationProperty("icaClientINI")]
-        public string IcaClientINI
+        public String IcaClientINI
         {
             get
             {
-                return (string)this["icaClientINI"];
+                return (String)this["icaClientINI"];
             }
             set
             {
@@ -1112,11 +1177,11 @@ namespace Terminals
             }
         }
         [ConfigurationProperty("icaEnableEncryption")]
-        public bool IcaEnableEncryption
+        public Boolean IcaEnableEncryption
         {
             get
             {
-                return (bool)this["icaEnableEncryption"];
+                return (Boolean)this["icaEnableEncryption"];
             }
             set
             {
@@ -1124,11 +1189,11 @@ namespace Terminals
             }
         }
         [ConfigurationProperty("icaEncryptionLevel")]
-        public string IcaEncryptionLevel
+        public String IcaEncryptionLevel
         {
             get
             {
-                return (string)this["icaEncryptionLevel"];
+                return (String)this["icaEncryptionLevel"];
             }
             set
             {
@@ -1137,11 +1202,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("port", DefaultValue = 3389)]
-        public int Port
+        public Int32 Port
         {
             get
             {
-                return (int)this["port"];
+                return (Int32)this["port"];
             }
             set
             {
@@ -1150,11 +1215,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("desktopShare")]
-        public string DesktopShare
+        public String DesktopShare
         {
             get
             {
-                return (string)this["desktopShare"];
+                return (String)this["desktopShare"];
             }
             set
             {
@@ -1163,11 +1228,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("executeBeforeConnect")]
-        public bool ExecuteBeforeConnect
+        public Boolean ExecuteBeforeConnect
         {
             get
             {
-                return (bool)this["executeBeforeConnect"];
+                return (Boolean)this["executeBeforeConnect"];
             }
             set
             {
@@ -1176,11 +1241,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("executeBeforeConnectCommand")]
-        public string ExecuteBeforeConnectCommand
+        public String ExecuteBeforeConnectCommand
         {
             get
             {
-                return (string)this["executeBeforeConnectCommand"];
+                return (String)this["executeBeforeConnectCommand"];
             }
             set
             {
@@ -1189,11 +1254,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("executeBeforeConnectArgs")]
-        public string ExecuteBeforeConnectArgs
+        public String ExecuteBeforeConnectArgs
         {
             get
             {
-                return (string)this["executeBeforeConnectArgs"];
+                return (String)this["executeBeforeConnectArgs"];
             }
             set
             {
@@ -1202,11 +1267,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("executeBeforeConnectInitialDirectory")]
-        public string ExecuteBeforeConnectInitialDirectory
+        public String ExecuteBeforeConnectInitialDirectory
         {
             get
             {
-                return (string)this["executeBeforeConnectInitialDirectory"];
+                return (String)this["executeBeforeConnectInitialDirectory"];
             }
             set
             {
@@ -1215,11 +1280,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("executeBeforeConnectWaitForExit")]
-        public bool ExecuteBeforeConnectWaitForExit
+        public Boolean ExecuteBeforeConnectWaitForExit
         {
             get
             {
-                return (bool)this["executeBeforeConnectWaitForExit"];
+                return (Boolean)this["executeBeforeConnectWaitForExit"];
             }
             set
             {
@@ -1228,11 +1293,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("disableTheming")]
-        public bool DisableTheming
+        public Boolean DisableTheming
         {
             get
             {
-                return (bool)this["disableTheming"];
+                return (Boolean)this["disableTheming"];
             }
             set
             {
@@ -1241,11 +1306,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("disableMenuAnimations")]
-        public bool DisableMenuAnimations
+        public Boolean DisableMenuAnimations
         {
             get
             {
-                return (bool)this["disableMenuAnimations"];
+                return (Boolean)this["disableMenuAnimations"];
             }
             set
             {
@@ -1254,11 +1319,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("disableFullWindowDrag")]
-        public bool DisableFullWindowDrag
+        public Boolean DisableFullWindowDrag
         {
             get
             {
-                return (bool)this["disableFullWindowDrag"];
+                return (Boolean)this["disableFullWindowDrag"];
             }
             set
             {
@@ -1267,11 +1332,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("disableCursorBlinking")]
-        public bool DisableCursorBlinking
+        public Boolean DisableCursorBlinking
         {
             get
             {
-                return (bool)this["disableCursorBlinking"];
+                return (Boolean)this["disableCursorBlinking"];
             }
             set
             {
@@ -1280,11 +1345,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("enableDesktopComposition")]
-        public bool EnableDesktopComposition
+        public Boolean EnableDesktopComposition
         {
             get
             {
-                return (bool)this["enableDesktopComposition"];
+                return (Boolean)this["enableDesktopComposition"];
             }
             set
             {
@@ -1293,11 +1358,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("enableFontSmoothing")]
-        public bool EnableFontSmoothing
+        public Boolean EnableFontSmoothing
         {
             get
             {
-                return (bool)this["enableFontSmoothing"];
+                return (Boolean)this["enableFontSmoothing"];
             }
             set
             {
@@ -1306,11 +1371,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("disableCursorShadow")]
-        public bool DisableCursorShadow
+        public Boolean DisableCursorShadow
         {
             get
             {
-                return (bool)this["disableCursorShadow"];
+                return (Boolean)this["disableCursorShadow"];
             }
             set
             {
@@ -1319,11 +1384,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("disableWallPaper")]
-        public bool DisableWallPaper
+        public Boolean DisableWallPaper
         {
             get
             {
-                return (bool)this["disableWallPaper"];
+                return (Boolean)this["disableWallPaper"];
             }
             set
             {
@@ -1332,11 +1397,11 @@ namespace Terminals
         }
 
         [ConfigurationProperty("tags")]
-        public string Tags
+        public String Tags
         {
             get
             {
-                return (string)this["tags"];
+                return (String)this["tags"];
             }
             set
             {
@@ -1351,38 +1416,38 @@ namespace Terminals
             }
         }
 
-        public List<string> TagList
+        public List<String> TagList
         {
             get
             {
-                List<string> tagList = new List<string>();
-                string[] splittedTags = Tags.Split(',');
+                List<String> tagList = new List<String>();
+                String[] splittedTags = Tags.Split(',');
                 if (!((splittedTags.Length == 1) && (String.IsNullOrEmpty(splittedTags[0]))))
                 {
-                    foreach (string tag in splittedTags)
+                    foreach (String tag in splittedTags)
                     {
                         tagList.Add(tag);
                     }
                 }
+
                 return tagList;
             }
         }
 
-        public int PerformanceFlags
+        public Int32 PerformanceFlags
         {
             get
             {
-                int result = 0;
+                Int32 result = 0;
 
-                if (DisableCursorShadow) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSOR_SHADOW;
-                if (DisableCursorBlinking) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSORSETTINGS;
-                if (DisableFullWindowDrag) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_FULLWINDOWDRAG;
-                if (DisableMenuAnimations) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_MENUANIMATIONS;
-                if (DisableTheming) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_THEMING;
-                if (DisableWallPaper) result += (int)Terminals.PerfomanceOptions.TS_PERF_DISABLE_WALLPAPER;
-                if (EnableDesktopComposition) result += (int)Terminals.PerfomanceOptions.TS_PERF_ENABLE_DESKTOP_COMPOSITION;
-                if (EnableFontSmoothing) result += (int)Terminals.PerfomanceOptions.TS_PERF_ENABLE_FONT_SMOOTHING;
-
+                if (DisableCursorShadow) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSOR_SHADOW;
+                if (DisableCursorBlinking) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSORSETTINGS;
+                if (DisableFullWindowDrag) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_FULLWINDOWDRAG;
+                if (DisableMenuAnimations) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_MENUANIMATIONS;
+                if (DisableTheming) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_THEMING;
+                if (DisableWallPaper) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_WALLPAPER;
+                if (EnableDesktopComposition) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_ENABLE_DESKTOP_COMPOSITION;
+                if (EnableFontSmoothing) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_ENABLE_FONT_SMOOTHING;
 
                 return result;
             }
@@ -1390,25 +1455,20 @@ namespace Terminals
 
         internal String GetToolTipText()
         {
-          string toolTip = String.Empty;
+            String toolTip = String.Empty;
 
-          toolTip =
-              "Computer: " + this.ServerName + Environment.NewLine +
-              "User: " + Functions.UserDisplayName(this.DomainName, this.UserName) + Environment.NewLine;
+            toolTip = String.Format("Computer: {0}{1}User: {2}{1}", this.ServerName, Environment.NewLine, Functions.UserDisplayName(this.DomainName, this.UserName));
 
-          if (Settings.ShowFullInformationToolTips)
-          {
-            toolTip +=
-            "Tag: " + this.Tags + Environment.NewLine +
-            "Port: " + this.Port + Environment.NewLine +
-            "Connect to Console: " + this.ConnectToConsole.ToString() + Environment.NewLine +
-            "Notes: " + this.Notes + Environment.NewLine;
-          }
+            if (Settings.ShowFullInformationToolTips)
+            {
+                toolTip += String.Format("Tag: {0}{1}Port: {2}{1}Connect to Console: {3}{1}Notes: {4}{1}", this.Tags, Environment.NewLine, this.Port, this.ConnectToConsole, this.Notes);
+            }
 
-          return toolTip;
+            return toolTip;
         }
 
         #region ICloneable Members
+
         public object Clone()
         {
             FavoriteConfigurationElement fav = new FavoriteConfigurationElement
@@ -1453,10 +1513,8 @@ namespace Terminals
                                                        ExecuteBeforeConnect = this.ExecuteBeforeConnect,
                                                        ExecuteBeforeConnectArgs = this.ExecuteBeforeConnectArgs,
                                                        ExecuteBeforeConnectCommand = this.ExecuteBeforeConnectCommand,
-                                                       ExecuteBeforeConnectInitialDirectory =
-                                                           this.ExecuteBeforeConnectInitialDirectory,
-                                                       ExecuteBeforeConnectWaitForExit =
-                                                           this.ExecuteBeforeConnectWaitForExit,
+                                                       ExecuteBeforeConnectInitialDirectory = this.ExecuteBeforeConnectInitialDirectory,
+                                                       ExecuteBeforeConnectWaitForExit = this.ExecuteBeforeConnectWaitForExit,
                                                        GrabFocusOnConnect = this.GrabFocusOnConnect,
                                                        ICAApplicationName = this.ICAApplicationName,
                                                        ICAApplicationWorkingFolder = this.ICAApplicationWorkingFolder,
@@ -1513,7 +1571,8 @@ namespace Terminals
             return fav;
 
         }
-        #endregion        
+
+        #endregion
     }
 }
 

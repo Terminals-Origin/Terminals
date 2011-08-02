@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Credentials;
+using Terminals.Forms;
 using Terminals.History;
 
 namespace Terminals

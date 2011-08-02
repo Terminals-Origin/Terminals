@@ -1,5 +1,7 @@
-namespace Terminals {
-    partial class MainForm {
+namespace Terminals
+{
+    partial class MainForm
+    {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -9,10 +11,13 @@ namespace Terminals {
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing) {
-            if(disposing && (components != null)) {
+        protected override void Dispose(bool disposing) 
+        {
+            if(disposing && (components != null))
+            {
                 components.Dispose();
             }
+
             base.Dispose(disposing);
         }
 
@@ -1106,7 +1111,7 @@ namespace Terminals {
           this.MainWindowNotifyIcon.ContextMenuStrip = this.QuickContextMenu;
           this.MainWindowNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("MainWindowNotifyIcon.Icon")));
           this.MainWindowNotifyIcon.Text = "Click to Show or Hide Terminals Main Window";
-          this.MainWindowNotifyIcon.Visible = true;
+          this.MainWindowNotifyIcon.Visible = false;
           this.MainWindowNotifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MainWindowNotifyIcon_MouseClick);
           // 
           // QuickContextMenu

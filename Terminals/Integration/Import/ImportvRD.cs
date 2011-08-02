@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.IO;
 using Terminals.Configuration;
+using Terminals.Forms;
 using vRdImport;
 
 namespace Terminals.Integration.Import

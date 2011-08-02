@@ -14,12 +14,12 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Office2007Renderer
+namespace Terminals.Forms.Rendering
 {
     /// <summary>
     /// Provide Office 2007 Blue Theme colors
     /// </summary>
-    public class Office2007BlackColorTable : ProfessionalColorTable
+    internal class Office2007BlackColorTable : ProfessionalColorTable
     {
         #region Static Fixed Colors - Blue Color Scheme
         private static Color _contextMenuBack = Color.FromArgb(5, 5, 5);

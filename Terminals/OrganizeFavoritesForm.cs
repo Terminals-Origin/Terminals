@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Forms;
 using Terminals.Integration.Import;
 
 namespace Terminals

@@ -12,19 +12,18 @@
 /********************************************************************/
 
 using System.Drawing;
-using System.Drawing.Text;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
-namespace Office2007Renderer
+namespace Terminals.Forms.Rendering
 {
     public enum RenderColors { Black, Blue };
 
     /// <summary>
     /// Draw ToolStrips using the Office 2007 themed appearance.
     /// </summary>
-    public class Office2007Renderer : ToolStripProfessionalRenderer
+    internal class Office2007Renderer : ToolStripProfessionalRenderer
     {
         #region GradientItemColors
         private class GradientItemColors

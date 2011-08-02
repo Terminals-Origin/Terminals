@@ -33,35 +33,29 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
-namespace Org.Mentalis.Utilities 
+namespace Terminals.Network.WhoIs
 {
 	/// <summary>
 	/// Queries the appropriate whois server for a given domain name and returns the results.
 	/// </summary>
-	public class WhoisResolver
+	public static class WhoisResolver
 	{
-		/// <summary>
-		/// Do not allow any instances of this class.
-		/// </summary>
-		private WhoisResolver() 
-		{
-		}
-
-		public static string Whois(string domain, string host)
+		public static String Whois(String domain, String host)
 		{
 			if (domain == null)
 				return "No Domain Specified";
 
-			string ret = "";
+			String ret = String.Empty;
 			Socket s = null;
 			try
 			{
 				s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 				//s.Connect(new IPEndPoint(Dns.Resolve(host).AddressList[0], 43));
 				s.Connect(new IPEndPoint(Dns.GetHostEntry(host).AddressList[0], 43));
-				s.Send(Encoding.ASCII.GetBytes(domain + "\r\n"));
-				byte[] buffer = new byte[1024];
-				int recv = s.Receive(buffer);
+				s.Send(Encoding.ASCII.GetBytes(domain + Environment.NewLine));
+
+				Byte[] buffer = new Byte[1024];
+				Int32 recv = s.Receive(buffer);
 				while (recv > 0)
 				{
 					ret += Encoding.ASCII.GetString(buffer, 0, recv);
@@ -92,14 +86,14 @@ namespace Org.Mentalis.Utilities
 		/// <exception cref="ArgumentNullException"><c>domain</c> is null.</exception>
 		/// <exception cref="ArgumentException"><c>domain</c> is invalid.</exception>
 		/// <exception cref="SocketException">A network error occured.</exception>
-		public static string Whois(string domain)
+		public static String Whois(String domain)
 		{
-			int ccStart = domain.LastIndexOf(".");
+			Int32 ccStart = domain.LastIndexOf(".");
 			if (ccStart < 0 || ccStart == domain.Length)
 				throw new ArgumentException();
 
-			string cc = domain.Substring(ccStart + 1);
-			string host = (cc + ".whois-servers.net");
+			String cc = domain.Substring(ccStart + 1);
+			String host = (cc + ".whois-servers.net");
 			return Whois(domain, host);
 		}
 	}

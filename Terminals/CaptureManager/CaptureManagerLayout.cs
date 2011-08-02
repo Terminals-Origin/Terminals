@@ -2,12 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using Terminals.Configuration;
+using Terminals.Forms;
 
 namespace Terminals.CaptureManager
 {
@@ -134,7 +131,7 @@ namespace Terminals.CaptureManager
             if (this.treeView1.SelectedNode != null)
             {
                 System.IO.DirectoryInfo dir = (this.treeView1.SelectedNode.Tag as System.IO.DirectoryInfo);
-                Terminals.InputBoxResult result = Terminals.InputBox.Show("New Folder Name");
+                InputBoxResult result = InputBox.Show("New Folder Name");
                 if (result.ReturnCode == DialogResult.OK)
                 {
                     string rootFolder = dir.FullName;

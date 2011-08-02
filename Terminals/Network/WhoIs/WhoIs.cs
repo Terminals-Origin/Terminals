@@ -1,9 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Terminals.Network.WhoIs
@@ -17,24 +13,29 @@ namespace Terminals.Network.WhoIs
 
         private void whoisButton_Click(object sender, EventArgs e)
         {
-            string server = this.hostTextbox.Text.Trim();
-            if (server != "")
+            String server = this.hostTextbox.Text.Trim();
+            if (server != String.Empty)
             {
-                if (!server.StartsWith("=") && !server.ToLower().EndsWith(".ca")) server = "=" + server;
-                string result = Org.Mentalis.Utilities.WhoisResolver.Whois(server);
-                result = result.Replace("\n", "\r\n");
-                int pos = result.IndexOf("Whois Server:");
+                if (!server.StartsWith("=") && !server.ToLower().EndsWith(".ca")) 
+                    server = "=" + server;
+
+                String result = WhoisResolver.Whois(server);
+                result = result.Replace("\n", Environment.NewLine);
+                Int32 pos = result.IndexOf("Whois Server:");
                 if (pos > 0)
                 {
-                    string newServer = result.Substring(pos + 13, result.IndexOf("\r\n", pos) - pos - 13);
-                    if (server.StartsWith("=")) server = this.hostTextbox.Text.Trim();
-                    string newResults = Org.Mentalis.Utilities.WhoisResolver.Whois(server, newServer.Trim());
-                    if (newResults != null && newResults != "") newResults = newResults.Replace("\n", "\r\n"); ;
-                    result = result + "\r\n----------------------Sub Query:"+newServer+"--------------------------\r\n" + newResults;
+                    String newServer = result.Substring(pos + 13, result.IndexOf("\r\n", pos) - pos - 13);
+                    if (server.StartsWith("=")) 
+                        server = this.hostTextbox.Text.Trim();
+
+                    String newResults = WhoisResolver.Whois(server, newServer.Trim());
+                    if (!String.IsNullOrEmpty(newResults)) 
+                        newResults = newResults.Replace("\n", Environment.NewLine); ;
+
+                    result = String.Format("{0}\r\n----------------------Sub Query:{1}--------------------------\r\n{2}", result, newServer, newResults);
                 }
+
                 this.textBox2.Text = result;
-
-
             }
         }
 
