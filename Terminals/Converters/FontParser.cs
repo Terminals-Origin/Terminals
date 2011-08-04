@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Drawing;
 
-namespace Terminals.Forms
+namespace Terminals.Converters
 {
     /// <summary>
     /// Converts font to string and viceversa in example form:
@@ -57,7 +57,7 @@ namespace Terminals.Forms
             String sizeText = fontText.Substring(sizeIndex + 5, unitsIndex - sizeIndex - 7);
             if (!sizeText.Contains(",")) // recover from previous trubles
             {
-                return System.Convert.ToSingle(sizeText, CultureInfo.InvariantCulture);
+                return Convert.ToSingle(sizeText, CultureInfo.InvariantCulture);
             }
             
             return 8.25f;
@@ -66,13 +66,13 @@ namespace Terminals.Forms
         private static GraphicsUnit ParseUnits(String fontText, Int32 unitsIndex, Int32 charSetIndex)
         {
             String unitText = fontText.Substring(unitsIndex + 6, charSetIndex - unitsIndex - 8);
-            return (GraphicsUnit)System.Convert.ToByte(unitText);
+            return (GraphicsUnit)Convert.ToByte(unitText);
         }
 
         private static Byte ParseGdi(String fontText, Int32 charSetIndex, Int32 verticalIndex)
         {
             String gdiCharText = fontText.Substring(charSetIndex + 11, verticalIndex - charSetIndex - 13);
-            return System.Convert.ToByte(gdiCharText);
+            return Convert.ToByte(gdiCharText);
         }
 
         private static Boolean ParseVertical(String fontText, Int32 verticalIndex, Int32 styleIndex)
@@ -87,7 +87,7 @@ namespace Terminals.Forms
                 verticalText = fontText.Substring(verticalIndex + 16, styleIndex - verticalIndex - 18);
             }
 
-            return System.Convert.ToBoolean(verticalText);
+            return Convert.ToBoolean(verticalText);
         }
 
         private static FontStyle ParseFontStyle(String fontText, Int32 styleIndex)
@@ -95,7 +95,7 @@ namespace Terminals.Forms
             if (styleIndex > 0)
             {
                 String styleText = fontText.Substring(styleIndex + 6, fontText.Length - 7 - styleIndex);
-                return (FontStyle)System.Convert.ToByte(styleText);
+                return (FontStyle)Convert.ToByte(styleText);
             }
     
             return FontStyle.Regular;

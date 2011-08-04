@@ -1,8 +1,7 @@
 using System;
-using System.Drawing;
 using System.Net.Sockets;
 using Terminals.Configuration;
-using Terminals.Forms;
+using Terminals.Converters;
 using WalburySoftware;
 
 namespace Terminals.Connections
@@ -28,7 +27,7 @@ namespace Terminals.Connections
             }
         }
 
-        public override void ChangeDesktopSize(Terminals.DesktopSize Size)
+        public override void ChangeDesktopSize(DesktopSize Size)
         {
         }
                 
@@ -37,7 +36,7 @@ namespace Terminals.Connections
             String protocol = "unknown";
             try
             {
-                Terminals.Logging.Log.Info(String.Format("Connecting to a {0} Connection", Favorite.Protocol));
+                Logging.Log.Info(String.Format("Connecting to a {0} Connection", Favorite.Protocol));
                 term = new TerminalEmulator();
 
                 Controls.Add(term);
@@ -48,9 +47,8 @@ namespace Terminals.Connections
                 this.Parent = TerminalTabPage;
                 term.Dock = System.Windows.Forms.DockStyle.Fill;
 
-                term.BackColor = Color.FromName(Favorite.ConsoleBackColor);
+                AssignTerminalCollors();
                 term.Font = FontParser.FromString(Favorite.ConsoleFont);
-                term.ForeColor = Color.FromName(Favorite.ConsoleTextColor);
 
                 term.Rows = Favorite.ConsoleRows;
                 term.Columns = Favorite.ConsoleCols;
@@ -105,14 +103,21 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Fatal(String.Format("Connecting to {0} Connection", protocol), exc);
+                Logging.Log.Fatal(String.Format("Connecting to {0} Connection", protocol), exc);
                 return false;
             }
         }
 
+        private void AssignTerminalCollors()
+        {
+            this.term.BackColor = ColorParser.FromString(this.Favorite.ConsoleBackColor);
+            this.term.ForeColor = ColorParser.FromString(this.Favorite.ConsoleTextColor);
+            this.term.BlinkColor = ColorParser.FromString(this.Favorite.ConsoleCursorColor);
+        }
+
         private void OnDisconnected()
         {
-            Terminals.Logging.Log.Fatal(String.Format("{0} Connection Lost {1}", this.Favorite.Protocol, this.Favorite.Name));
+            Logging.Log.Fatal(String.Format("{0} Connection Lost {1}", this.Favorite.Protocol, this.Favorite.Name));
             this.connected = false;
             if (this.ParentForm.InvokeRequired)
             {
@@ -135,7 +140,7 @@ namespace Terminals.Connections
             }
             catch (Exception e)
             {
-                Terminals.Logging.Log.Error("Disconnect", e);
+                Logging.Log.Error("Disconnect", e);
             }
         }
 

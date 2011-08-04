@@ -45,15 +45,25 @@ namespace WalburySoftware
         private uc_Caret Caret;
         private System.Collections.ArrayList SavedCarets;
         private Point DrawStringOffset;
-        private Color FGColor;
         private Color BoldColor;
-        private Color BlinkColor;
+        
         private uc_Chars G0;
         private uc_Chars G1;
         private uc_Chars G2;
         private uc_Chars G3;
         private uc_Mode Modes;
         private uc_VertScrollBar VertScrollBar;
+
+        private Color blinkColor;
+        public Color BlinkColor
+        {
+            get { return blinkColor; }
+            set 
+            {
+                blinkColor = value;
+                UpdateCaret();
+            }
+        }
 
         #endregion
 
@@ -114,11 +124,7 @@ namespace WalburySoftware
             this.Font = new Font(this.TypeFace, this.TypeSize, this.TypeStyle);
             ////this.Font       = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
 
-            ////this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
-            this.FGColor = Color.GreenYellow;
-            this.BackColor = Color.FromArgb(0, 0, 160);
-            this.BoldColor = Color.FromArgb(255, 255, 255);
-            this.BlinkColor = Color.Red;
+            AssignDefaultColors();
 
             this.G0 = new uc_Chars(uc_Chars.Sets.ASCII);
             this.G1 = new uc_Chars(uc_Chars.Sets.ASCII);
@@ -176,7 +182,16 @@ namespace WalburySoftware
             this.Cursor = Cursors.IBeam;
         }
 
-        #endregion
+      private void AssignDefaultColors()
+      {
+        //this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
+        this.ForeColor = Color.GreenYellow;
+        this.BackColor = Color.FromArgb(0, 0, 160);
+        this.BoldColor = Color.FromArgb(255, 255, 255);
+        this.BlinkColor = Color.Red;
+      }
+
+      #endregion
 
         #region Public Properties
 
@@ -907,11 +922,19 @@ namespace WalburySoftware
             tmpGraphics.Dispose ();
             this.UnderlinePos = this.CharSize.Height - 2;
 
-            this.Caret.Bitmap    =  new Bitmap (this.CharSize.Width, this.CharSize.Height);
-            this.Caret.Buffer    =  Graphics.FromImage (this.Caret.Bitmap);
-            this.Caret.Buffer.Clear (Color.FromArgb (255, 181, 106));
+            UpdateCaret();
             this.EraseBitmap     =  new Bitmap (this.CharSize.Width, this.CharSize.Height);
             this.EraseBuffer     =  Graphics.FromImage (this.EraseBitmap);
+        }
+
+        private void UpdateCaret()
+        {
+            if (this.CharSize.Width > 0 && this.CharSize.Height > 0)
+            {
+                this.Caret.Bitmap = new Bitmap(this.CharSize.Width, this.CharSize.Height);
+                this.Caret.Buffer = Graphics.FromImage(this.Caret.Bitmap);
+                this.Caret.Buffer.Clear(this.BlinkColor);
+            }
         }
 
         private void OnClickFont (Object Sender, EventArgs e)

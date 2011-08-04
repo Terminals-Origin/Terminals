@@ -262,6 +262,7 @@
     <Compile Include="ConsolePreferences.Designer.cs">
       <DependentUpon>ConsolePreferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ColorParser.cs" />
     <Compile Include="Credentials\ManageCredentialForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -512,7 +513,7 @@
     <Compile Include="Wizard\FirstRunWizard.Designer.cs">
       <DependentUpon>FirstRunWizard.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FontParser.cs" />
+    <Compile Include="Converters\FontParser.cs" />
     <Compile Include="Forms\FormSettings.cs" />
     <Compile Include="IconHandler.cs" />
     <Compile Include="Forms\InputBox.cs" />

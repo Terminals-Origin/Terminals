@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using Terminals.Configuration;
+using Terminals.Converters;
 
 namespace Terminals
 {
@@ -489,7 +490,7 @@ namespace Terminals
             {
                 String font = (String)this["consolefont"];
                 if (String.IsNullOrEmpty(font))
-                    font = Terminals.Forms.FontParser.DEFAULT_FONT;
+                    font = FontParser.DEFAULT_FONT;
                 
                 return font;
             }
@@ -570,7 +571,7 @@ namespace Terminals
             {
                 String font = (String)this["telnetfont"];
                 if (String.IsNullOrEmpty(font))
-                    font = Terminals.Forms.FontParser.DEFAULT_FONT;
+                    font = FontParser.DEFAULT_FONT;
 
                 return font;
             }

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Converters;
 
 namespace Terminals
 {
-    public partial class ConsolePreferences : UserControl
+    internal partial class ConsolePreferences : UserControl
     {
         public ConsolePreferences()
         {
@@ -34,41 +33,41 @@ namespace Terminals
 
         private void FontButton_Click(object sender, EventArgs e)
         {
-            this.fontDialog1.Font = Terminals.Forms.FontParser.FromString(FontTextbox.Text);
+            this.fontDialog1.Font = FontParser.FromString(FontTextbox.Text);
             DialogResult result = this.fontDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                FontTextbox.Text = Terminals.Forms.FontParser.ToString(this.fontDialog1.Font);
+                FontTextbox.Text = FontParser.ToString(this.fontDialog1.Font);
             }
         }
 
         private void BackcolorButton_Click(object sender, EventArgs e)
         {
-            this.colorDialog1.Color = Color.FromName(BackColorTextBox.Text);
+            this.colorDialog1.Color = ColorParser.FromString(BackColorTextBox.Text);
             DialogResult result = this.colorDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                BackColorTextBox.Text = this.colorDialog1.Color.Name;
+                BackColorTextBox.Text = ColorParser.ToString(this.colorDialog1.Color);
             }
         }
 
         private void TextColorButton_Click(object sender, EventArgs e)
         {
-            this.colorDialog1.Color = Color.FromName(TextColorTextBox.Text);
+            this.colorDialog1.Color = ColorParser.FromString(TextColorTextBox.Text);
             DialogResult result = this.colorDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                TextColorTextBox.Text = this.colorDialog1.Color.Name;
+                TextColorTextBox.Text = ColorParser.ToString(this.colorDialog1.Color);
             }
         }
 
         private void CursorColorButton_Click(object sender, EventArgs e)
         {
-            this.colorDialog1.Color = Color.FromName(CursorColorTextBox.Text);
+            this.colorDialog1.Color = ColorParser.FromString(CursorColorTextBox.Text);
             DialogResult result = this.colorDialog1.ShowDialog();
             if (result == DialogResult.OK)
             {
-                CursorColorTextBox.Text = this.colorDialog1.Color.Name;
+                CursorColorTextBox.Text = ColorParser.ToString(this.colorDialog1.Color);
             }
         }
     }

@@ -91,7 +91,7 @@ namespace WalburySoftware
 
         private void AssignColors(CharAttribStruct CurAttribs, ref Color CurFGColor, ref Color CurBGColor)
         {
-            CurFGColor = this.FGColor;
+            CurFGColor = this.ForeColor;
             CurBGColor = this.BackColor;
 
             if (CurAttribs.IsBlinking == true)
@@ -148,7 +148,7 @@ namespace WalburySoftware
             this.AssignColors(CurAttribs, ref CurFGColor, ref CurBGColor);
 
             if ((CurBGColor != this.BackColor && (this.Modes.Flags & uc_Mode.LightBackground) == 0) ||
-                (CurBGColor != this.FGColor && (this.Modes.Flags & uc_Mode.LightBackground) > 0))
+                (CurBGColor != this.ForeColor && (this.Modes.Flags & uc_Mode.LightBackground) > 0))
             {
                 // Erase the current Character underneath the cursor postion
                 this.EraseBuffer.Clear(CurBGColor);
@@ -320,7 +320,7 @@ namespace WalburySoftware
             // clear the screen buffer area
             if ((this.Modes.Flags & uc_Mode.LightBackground) > 0)
             {
-                CurGraphics.Clear(this.FGColor);
+                CurGraphics.Clear(this.ForeColor);
             }
             else
             {
