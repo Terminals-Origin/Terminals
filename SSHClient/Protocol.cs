@@ -118,48 +118,83 @@ namespace SSHClient
 			string key,
 			bool SSH1)
 		{
-            if(userName==null)
-            	userName="";
-            if (userName == "") // can't do auto login without username
-                authMethod = AuthMethod.KeyboardInteractive;
-        	Username=userName;
-            
-            if(authMethod==AuthMethod.PublicKey)
-            {
-                if (key == null || key == "")
-                {
-                    authMethod = AuthMethod.Password;
-                }
-                else
-                {
-            		Key = SSH2UserAuthKey.FromBase64String(key).toSECSHStyle("");
-            	    AuthenticationType=AuthenticationType.PublicKey;
-                }
-            }
-            if(authMethod==AuthMethod.Password)
-            {
-                if(pass==null)
-            	    pass="";
-                if(pass=="")
-                {
-            	    AuthenticationType=AuthenticationType.KeyboardInteractive;
-                }
-                else
-                {
-            	    AuthenticationType=AuthenticationType.Password;
-            	    Password=pass;
-                }
-            }
-            if (SSH1)
-            {
-                SSHProtocol = Granados.SSHProtocol.SSH1;
-            }
-            else
-            {
-                SSHProtocol = Granados.SSHProtocol.SSH2;
-            }
+            // each following check can force to different authentication
+            authMethod = CheckUserName(userName, authMethod);
+		    authMethod = CheckPublickKey(key, authMethod);
+            authMethod = CheckPassword(pass, authMethod);
+		    AssingAuthentization(authMethod);
+            ChooseProtocolVersion(SSH1);
+		    _params.EventTracer = new SShTraceLissener();
 		}
-		public void RequestData (byte[] data)
+
+	    private AuthMethod CheckUserName(String userName, AuthMethod authMethod)
+        {
+            if (userName == null)
+                userName = "";
+            this.Username = userName;
+
+            if (userName == "") // can't do auto login without username
+                return AuthMethod.KeyboardInteractive;
+
+            return authMethod;
+        }
+
+	    private AuthMethod CheckPublickKey(String key, AuthMethod authMethod)
+        {
+            if (authMethod == AuthMethod.PublicKey)
+            {
+                if (string.IsNullOrEmpty(key))
+                    return AuthMethod.Password;
+                
+                this.Key = SSH2UserAuthKey.FromBase64String(key).toSECSHStyle("");
+            }
+
+            return authMethod;
+        }
+ 	    
+        private AuthMethod CheckPassword(String pass, AuthMethod authMethod)
+        {
+            if (pass == null)
+                pass = "";
+            this.Password = pass; // password always has to be set: required by grandados
+
+            if (authMethod == AuthMethod.Password && pass == "")
+                return AuthMethod.KeyboardInteractive;
+
+            return authMethod;
+        } 
+      
+        private void AssingAuthentization(AuthMethod authMethod)
+        {
+            switch (authMethod)
+            {
+                case AuthMethod.Password:
+                    this.AuthenticationType = AuthenticationType.Password;
+                    break;
+                case AuthMethod.PublicKey:
+                    this.AuthenticationType = AuthenticationType.PublicKey;
+                    break;
+                
+                default:
+                    this.AuthenticationType = AuthenticationType.KeyboardInteractive;
+                    break;                
+                // granados doesnt support Host authentication
+            }
+        }
+
+        private void ChooseProtocolVersion(bool SSH1)
+	    {
+	        if (SSH1)
+	        {
+	            this.SSHProtocol = SSHProtocol.SSH1;
+	        }
+	        else
+	        {
+	            this.SSHProtocol = SSHProtocol.SSH2;
+	        }
+	    }
+
+	    public void RequestData (byte[] data)
 		{
 			_pf.Transmit(data, 0, data.Length);
 		}

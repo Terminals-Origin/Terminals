@@ -94,6 +94,7 @@
     <Compile Include="Preferences.Designer.cs" />
     <Compile Include="Protocol.cs" />
     <Compile Include="SSH2UserAuthKey.cs" />
+    <Compile Include="SShTraceLissener.cs" />
     <EmbeddedResource Include="KeyChooser.resx">
       <DependentUpon>KeyChooser.cs</DependentUpon>
     </EmbeddedResource>
