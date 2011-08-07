@@ -429,5 +429,19 @@ namespace Terminals.Properties {
                 return ResourceManager.GetString("Terminals", resourceCulture);
             }
         }
+        
+        public static System.Drawing.Bitmap XPfolder_closed {
+            get {
+                object obj = ResourceManager.GetObject("XPfolder_closed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap XPfolder_Open {
+            get {
+                object obj = ResourceManager.GetObject("XPfolder_Open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

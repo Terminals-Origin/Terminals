@@ -75,47 +75,65 @@ namespace Terminals.CaptureManager
 
         public void RefreshView()
         {
-            if (this.treeView1.SelectedNode != null)
+            if (this.treeViewFolders.SelectedNode != null)
             {
-                DirectoryInfo folder = (this.treeView1.SelectedNode.Tag as DirectoryInfo);
-                this.LoadFolder(folder.FullName, this.treeView1.SelectedNode);
+                DirectoryInfo folder = (this.treeViewFolders.SelectedNode.Tag as DirectoryInfo);
+                this.LoadFolder(folder.FullName, this.treeViewFolders.SelectedNode);
             }
         }
 
         private void LoadRoot()
         {
             this.root.Tag = new DirectoryInfo(CaptureManager.CaptureRoot);
-
-            this.treeView1.Nodes.Add(this.root);
-            this.treeView1.SelectedNode = this.root;
-
+            AssignImageIndexes(this.root);
+            
+            this.treeViewFolders.Nodes.Add(this.root);
+            this.treeViewFolders.SelectedNode = this.root;
+            
             this.LoadFolder(CaptureManager.CaptureRoot, this.root);
             this.root.Expand();
+        }
+
+        private static void AssignImageIndexes(TreeNode treeNodeToConfigure)
+        {
+            treeNodeToConfigure.ImageIndex = 0;
+            treeNodeToConfigure.SelectedImageIndex = 1;           
         }
 
         private void LoadFolder(string Path, TreeNode Parent)
         {
             this.listViewFiles.Items.Clear();
             Parent.Nodes.Clear();
-            List<DirectoryInfo> list = CaptureManager.LoadCaptureFolder(Path);
-            foreach (DirectoryInfo folder in list)
+            List<DirectoryInfo> directories = CaptureManager.LoadCaptureFolder(Path);
+            foreach (DirectoryInfo folder in directories)
             {
-                TreeNode child = new TreeNode(folder.Name);
-                child.Tag = folder;
-                Parent.Nodes.Add(child);
+                AddNewDirectoryTreeNode(Parent, folder);
             }
 
             Captures c = CaptureManager.LoadCaptures(Path);
             foreach (Capture cap in c)
             {
-                ListViewItem item = new ListViewItem();
-                item.Tag = cap;
-                item.Text = cap.Name;
-                item.ToolTipText = cap.FilePath;
-                int index = this.imageList1.Images.Add(cap.Image, Color.HotPink);
-                item.ImageIndex = index;
-                this.listViewFiles.Items.Add(item);
+                AddNewCaptureListViewItem(cap);
             }
+        }
+
+        private static void AddNewDirectoryTreeNode(TreeNode Parent, DirectoryInfo folder)
+        {
+            TreeNode child = new TreeNode(folder.Name);
+            AssignImageIndexes(child);
+            child.Tag = folder;
+            Parent.Nodes.Add(child);
+        }
+
+        private void AddNewCaptureListViewItem(Capture cap)
+        {
+            ListViewItem item = new ListViewItem();
+            item.Tag = cap;
+            item.Text = cap.Name;
+            item.ToolTipText = cap.FilePath;
+            int index = this.imageList1.Images.Add(cap.Image, Color.HotPink);
+            item.ImageIndex = index;
+            this.listViewFiles.Items.Add(item);
         }
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -131,9 +149,9 @@ namespace Terminals.CaptureManager
 
         private void newFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.treeView1.SelectedNode != null)
+            if (this.treeViewFolders.SelectedNode != null)
             {
-                DirectoryInfo dir = (this.treeView1.SelectedNode.Tag as DirectoryInfo);
+                DirectoryInfo dir = (this.treeViewFolders.SelectedNode.Tag as DirectoryInfo);
                 InputBoxResult result = InputBox.Show("New Folder Name");
                 if (result.ReturnCode == DialogResult.OK)
                 {
@@ -144,8 +162,8 @@ namespace Terminals.CaptureManager
                         DirectoryInfo info = Directory.CreateDirectory(fullNewName);
                         TreeNode node = new TreeNode(result.Text);
                         node.Tag = info;
-                        this.treeView1.SelectedNode.Nodes.Add(node);
-                        this.treeView1.SelectedNode.Expand();
+                        this.treeViewFolders.SelectedNode.Nodes.Add(node);
+                        this.treeViewFolders.SelectedNode.Expand();
                     }
                 }
             }
@@ -153,9 +171,9 @@ namespace Terminals.CaptureManager
 
         private void deleteFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.treeView1.SelectedNode != null && this.treeView1.SelectedNode != this.root)
+            if (this.treeViewFolders.SelectedNode != null && this.treeViewFolders.SelectedNode != this.root)
             {
-                DirectoryInfo dir = (this.treeView1.SelectedNode.Tag as DirectoryInfo);
+                DirectoryInfo dir = (this.treeViewFolders.SelectedNode.Tag as DirectoryInfo);
                 if (Directory.Exists(dir.FullName))
                 {
                     FileInfo[] files = dir.GetFiles();
@@ -163,12 +181,12 @@ namespace Terminals.CaptureManager
                     string msg = string.Format("{0}\r\n\r\n", Program.Resources.GetString("ConfirmDeleteSingleFolder"));
                     if (files.Length > 0)
                     {
-                        msg += string.Format("The folder \"{0}\" contains {1} files.", this.treeView1.SelectedNode.Text, files.Length);
+                        msg += string.Format("The folder \"{0}\" contains {1} files.", this.treeViewFolders.SelectedNode.Text, files.Length);
                     }
 
                     if (dirs.Length > 0)
                     {
-                        msg += string.Format("The folder \"{0}\" contains {1} directories.", this.treeView1.SelectedNode.Text, dirs.Length);
+                        msg += string.Format("The folder \"{0}\" contains {1} directories.", this.treeViewFolders.SelectedNode.Text, dirs.Length);
                     }
 
                     DialogResult result = MessageBox.Show(msg, Program.Resources.GetString("ConfirmCaptionDeleteSingleFolder"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
@@ -176,12 +194,12 @@ namespace Terminals.CaptureManager
                     {
                         string rootFolder = dir.FullName;
                         Directory.Delete(rootFolder, true);
-                        this.treeView1.SelectedNode.Remove();
+                        this.treeViewFolders.SelectedNode.Remove();
                     }
                 }
                 else
                 {
-                    this.treeView1.SelectedNode.Remove();
+                    this.treeViewFolders.SelectedNode.Remove();
                 }
             }
         }
@@ -218,7 +236,7 @@ namespace Terminals.CaptureManager
                     string dest = Path.Combine(destInfo.FullName, Path.GetFileName(c.FilePath));
                     c.Move(dest);
 
-                    this.treeView1_AfterSelect(null, new TreeViewEventArgs(this.treeView1.SelectedNode));
+                    this.treeView1_AfterSelect(null, new TreeViewEventArgs(this.treeViewFolders.SelectedNode));
                 }
             }
         }
@@ -272,21 +290,21 @@ namespace Terminals.CaptureManager
 
         private void treeView1_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && this.treeView1.SelectedNode != null)
+            if (e.Button == MouseButtons.Right && this.treeViewFolders.SelectedNode != null)
             {
-                this.treeView1.SelectedNode = this.treeView1.HitTest(e.Location).Node;
+                this.treeViewFolders.SelectedNode = this.treeViewFolders.HitTest(e.Location).Node;
             }
         }
 
         private void treeView1_DragOver(object sender, DragEventArgs e)
         {
-            Point pos = this.treeView1.PointToClient(new Point(e.X, e.Y));
-            TreeViewHitTestInfo hit = this.treeView1.HitTest(pos);
+            Point pos = this.treeViewFolders.PointToClient(new Point(e.X, e.Y));
+            TreeViewHitTestInfo hit = this.treeViewFolders.HitTest(pos);
 
             if (hit.Node != null)
             {
                 hit.Node.Expand();
-                this.treeView1.SelectedNode = hit.Node;
+                this.treeViewFolders.SelectedNode = hit.Node;
                 e.Effect = DragDropEffects.Move;
             }
         }

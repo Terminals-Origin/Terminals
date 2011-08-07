@@ -30,11 +30,13 @@ namespace Terminals.CaptureManager
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CaptureManagerLayout));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.treeViewFolders = new System.Windows.Forms.TreeView();
             this.treeContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.newFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageListTree = new System.Windows.Forms.ImageList(this.components);
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listViewFiles = new System.Windows.Forms.ListView();
             this.thumbsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -78,7 +80,7 @@ namespace Terminals.CaptureManager
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.treeView1);
+            this.splitContainer1.Panel1.Controls.Add(this.treeViewFolders);
             // 
             // splitContainer1.Panel2
             // 
@@ -87,21 +89,24 @@ namespace Terminals.CaptureManager
             this.splitContainer1.SplitterDistance = 131;
             this.splitContainer1.TabIndex = 0;
             // 
-            // treeView1
+            // treeViewFolders
             // 
-            this.treeView1.AllowDrop = true;
-            this.treeView1.ContextMenuStrip = this.treeContextMenu;
-            this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeView1.Location = new System.Drawing.Point(0, 0);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(131, 491);
-            this.treeView1.TabIndex = 0;
-            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
-            this.treeView1.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView1_DragDrop);
-            this.treeView1.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView1_DragEnter);
-            this.treeView1.DragOver += new System.Windows.Forms.DragEventHandler(this.treeView1_DragOver);
-            this.treeView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
-            this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
+            this.treeViewFolders.AllowDrop = true;
+            this.treeViewFolders.ContextMenuStrip = this.treeContextMenu;
+            this.treeViewFolders.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeViewFolders.ImageIndex = 0;
+            this.treeViewFolders.ImageList = this.imageListTree;
+            this.treeViewFolders.Location = new System.Drawing.Point(0, 0);
+            this.treeViewFolders.Name = "treeViewFolders";
+            this.treeViewFolders.SelectedImageIndex = 0;
+            this.treeViewFolders.Size = new System.Drawing.Size(131, 491);
+            this.treeViewFolders.TabIndex = 0;
+            this.treeViewFolders.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.treeViewFolders.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeView1_DragDrop);
+            this.treeViewFolders.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeView1_DragEnter);
+            this.treeViewFolders.DragOver += new System.Windows.Forms.DragEventHandler(this.treeView1_DragOver);
+            this.treeViewFolders.KeyDown += new System.Windows.Forms.KeyEventHandler(this.treeView1_KeyDown);
+            this.treeViewFolders.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
             // 
             // treeContextMenu
             // 
@@ -126,6 +131,13 @@ namespace Terminals.CaptureManager
             this.deleteFolderToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.deleteFolderToolStripMenuItem.Text = "Delete Folder";
             this.deleteFolderToolStripMenuItem.Click += new System.EventHandler(this.deleteFolderToolStripMenuItem_Click);
+            // 
+            // imageListTree
+            // 
+            this.imageListTree.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListTree.ImageStream")));
+            this.imageListTree.TransparentColor = System.Drawing.Color.Magenta;
+            this.imageListTree.Images.SetKeyName(0, "XPfolder_closed.bmp");
+            this.imageListTree.Images.SetKeyName(1, "XPfolder_Open.bmp");
             // 
             // splitContainer2
             // 
@@ -378,7 +390,7 @@ namespace Terminals.CaptureManager
         #endregion
 
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.TreeView treeViewFolders;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.ContextMenuStrip treeContextMenu;
@@ -402,5 +414,6 @@ namespace Terminals.CaptureManager
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.TextBox pictureCommentsTextBox;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ImageList imageListTree;
     }
 }

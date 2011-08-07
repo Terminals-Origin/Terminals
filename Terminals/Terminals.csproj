@@ -852,6 +852,8 @@
     <Content Include="Resources\polarized-glasses.png" />
     <Content Include="Resources\Properties.png" />
     <Content Include="Resources\red.png" />
+    <None Include="Resources\XPfolder_Open.bmp" />
+    <None Include="Resources\XPfolder_closed.bmp" />
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
