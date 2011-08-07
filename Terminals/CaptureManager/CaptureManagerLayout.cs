@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Forms;
@@ -23,6 +25,7 @@ namespace Terminals.CaptureManager
             this.flickrMenuItem = new ToolStripMenuItem("Post selected images to Flickr");
             this.flickrMenuItem.Click += new EventHandler(this.flickrMenuItem_Click);
             this.LoadRoot();
+            this.viewComboBox.SelectedIndex = 0;
         }
 
         private void SendToFlickr(object state)
@@ -51,22 +54,22 @@ namespace Terminals.CaptureManager
         public void flickrMenuItem_Click(object sender, EventArgs e)
         {
             List<ListViewItem> items = new List<ListViewItem>();
-            foreach (ListViewItem item in this.listView1.SelectedItems)
+            foreach (ListViewItem item in this.listViewFiles.SelectedItems)
             {
                 items.Add(item);
             }
 
             if (items.Count > 0)
             {
-                if (System.Windows.Forms.MessageBox.Show("Are you sure you want to post " + items.Count + " images to your Flickr account?", "Confirmation Required", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                if (MessageBox.Show("Are you sure you want to post " + items.Count + " images to your Flickr account?", "Confirmation Required", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
-                    System.Windows.Forms.MessageBox.Show("All items have been queued for upload to Flickr.  Once the upload has been completed you will be notified.");
-                    System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(this.SendToFlickr), items);
+                    MessageBox.Show("All items have been queued for upload to Flickr.  Once the upload has been completed you will be notified.");
+                    ThreadPool.QueueUserWorkItem(new WaitCallback(this.SendToFlickr), items);
                 }
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("You must first select a screen capture to upload.");
+                MessageBox.Show("You must first select a screen capture to upload.");
             }
         }
 
@@ -74,14 +77,14 @@ namespace Terminals.CaptureManager
         {
             if (this.treeView1.SelectedNode != null)
             {
-                System.IO.DirectoryInfo folder = (this.treeView1.SelectedNode.Tag as System.IO.DirectoryInfo);
+                DirectoryInfo folder = (this.treeView1.SelectedNode.Tag as DirectoryInfo);
                 this.LoadFolder(folder.FullName, this.treeView1.SelectedNode);
             }
         }
 
         private void LoadRoot()
         {
-            this.root.Tag = new System.IO.DirectoryInfo(CaptureManager.CaptureRoot);
+            this.root.Tag = new DirectoryInfo(CaptureManager.CaptureRoot);
 
             this.treeView1.Nodes.Add(this.root);
             this.treeView1.SelectedNode = this.root;
@@ -92,10 +95,10 @@ namespace Terminals.CaptureManager
 
         private void LoadFolder(string Path, TreeNode Parent)
         {
-            this.listView1.Items.Clear();
+            this.listViewFiles.Items.Clear();
             Parent.Nodes.Clear();
-            List<System.IO.DirectoryInfo> list = CaptureManager.LoadCaptureFolder(Path);
-            foreach (System.IO.DirectoryInfo folder in list)
+            List<DirectoryInfo> list = CaptureManager.LoadCaptureFolder(Path);
+            foreach (DirectoryInfo folder in list)
             {
                 TreeNode child = new TreeNode(folder.Name);
                 child.Tag = folder;
@@ -111,7 +114,7 @@ namespace Terminals.CaptureManager
                 item.ToolTipText = cap.FilePath;
                 int index = this.imageList1.Images.Add(cap.Image, Color.HotPink);
                 item.ImageIndex = index;
-                this.listView1.Items.Add(item);
+                this.listViewFiles.Items.Add(item);
             }
         }
 
@@ -122,7 +125,7 @@ namespace Terminals.CaptureManager
             this.saveButton.Enabled = false;
             this.deleteButton.Enabled = false;
 
-            System.IO.DirectoryInfo dir = (e.Node.Tag as System.IO.DirectoryInfo);
+            DirectoryInfo dir = (e.Node.Tag as DirectoryInfo);
             this.LoadFolder(dir.FullName, e.Node);
         }
 
@@ -130,15 +133,15 @@ namespace Terminals.CaptureManager
         {
             if (this.treeView1.SelectedNode != null)
             {
-                System.IO.DirectoryInfo dir = (this.treeView1.SelectedNode.Tag as System.IO.DirectoryInfo);
+                DirectoryInfo dir = (this.treeView1.SelectedNode.Tag as DirectoryInfo);
                 InputBoxResult result = InputBox.Show("New Folder Name");
                 if (result.ReturnCode == DialogResult.OK)
                 {
                     string rootFolder = dir.FullName;
-                    string fullNewName = System.IO.Path.Combine(rootFolder, result.Text);
-                    if (!System.IO.Directory.Exists(fullNewName))
+                    string fullNewName = Path.Combine(rootFolder, result.Text);
+                    if (!Directory.Exists(fullNewName))
                     {
-                        System.IO.DirectoryInfo info = System.IO.Directory.CreateDirectory(fullNewName);
+                        DirectoryInfo info = Directory.CreateDirectory(fullNewName);
                         TreeNode node = new TreeNode(result.Text);
                         node.Tag = info;
                         this.treeView1.SelectedNode.Nodes.Add(node);
@@ -152,11 +155,11 @@ namespace Terminals.CaptureManager
         {
             if (this.treeView1.SelectedNode != null && this.treeView1.SelectedNode != this.root)
             {
-                System.IO.DirectoryInfo dir = (this.treeView1.SelectedNode.Tag as System.IO.DirectoryInfo);
-                if (System.IO.Directory.Exists(dir.FullName))
+                DirectoryInfo dir = (this.treeView1.SelectedNode.Tag as DirectoryInfo);
+                if (Directory.Exists(dir.FullName))
                 {
-                    System.IO.FileInfo[] files = dir.GetFiles();
-                    System.IO.DirectoryInfo[] dirs = dir.GetDirectories();
+                    FileInfo[] files = dir.GetFiles();
+                    DirectoryInfo[] dirs = dir.GetDirectories();
                     string msg = string.Format("{0}\r\n\r\n", Program.Resources.GetString("ConfirmDeleteSingleFolder"));
                     if (files.Length > 0)
                     {
@@ -168,11 +171,11 @@ namespace Terminals.CaptureManager
                         msg += string.Format("The folder \"{0}\" contains {1} directories.", this.treeView1.SelectedNode.Text, dirs.Length);
                     }
 
-                    DialogResult result = System.Windows.Forms.MessageBox.Show(msg, Program.Resources.GetString("ConfirmCaptionDeleteSingleFolder"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                    DialogResult result = MessageBox.Show(msg, Program.Resources.GetString("ConfirmCaptionDeleteSingleFolder"), MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                     if (result == DialogResult.OK)
                     {
                         string rootFolder = dir.FullName;
-                        System.IO.Directory.Delete(rootFolder, true);
+                        Directory.Delete(rootFolder, true);
                         this.treeView1.SelectedNode.Remove();
                     }
                 }
@@ -200,19 +203,19 @@ namespace Terminals.CaptureManager
 
         private void treeView1_DragDrop(object sender, DragEventArgs e)
         {
-            System.Windows.Forms.ListViewItem NewNode;
+            ListViewItem NewNode;
 
             if (e.Data.GetDataPresent("System.Windows.Forms.ListViewItem", false))
             {
                 Point pt = ((TreeView)sender).PointToClient(new Point(e.X, e.Y));
                 TreeNode DestinationNode = ((TreeView)sender).GetNodeAt(pt);
-                NewNode = (System.Windows.Forms.ListViewItem)e.Data.GetData("System.Windows.Forms.ListViewItem");
-                Terminals.CaptureManager.Capture c = (NewNode.Tag as Terminals.CaptureManager.Capture);
+                NewNode = (ListViewItem)e.Data.GetData("System.Windows.Forms.ListViewItem");
+                Capture c = (NewNode.Tag as Capture);
 
                 if (DestinationNode != null)
                 {
-                    System.IO.DirectoryInfo destInfo = (DestinationNode.Tag as System.IO.DirectoryInfo);
-                    string dest = System.IO.Path.Combine(destInfo.FullName, System.IO.Path.GetFileName(c.FilePath));
+                    DirectoryInfo destInfo = (DestinationNode.Tag as DirectoryInfo);
+                    string dest = Path.Combine(destInfo.FullName, Path.GetFileName(c.FilePath));
                     c.Move(dest);
 
                     this.treeView1_AfterSelect(null, new TreeViewEventArgs(this.treeView1.SelectedNode));
@@ -222,9 +225,9 @@ namespace Terminals.CaptureManager
 
         private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (this.listView1.SelectedItems != null && this.listView1.SelectedItems.Count > 0)
+            if (this.listViewFiles.SelectedItems != null && this.listViewFiles.SelectedItems.Count > 0)
             {
-                foreach (ListViewItem lvi in this.listView1.SelectedItems)
+                foreach (ListViewItem lvi in this.listViewFiles.SelectedItems)
                 {
                     Capture cap = (lvi.Tag as Capture);
                     cap.Show();
@@ -238,9 +241,9 @@ namespace Terminals.CaptureManager
             this.pictureCommentsTextBox.Text = string.Empty;
             this.saveButton.Enabled = false;
             this.deleteButton.Enabled = false;
-            if (this.listView1.SelectedItems != null && this.listView1.SelectedItems.Count > 0)
+            if (this.listViewFiles.SelectedItems != null && this.listViewFiles.SelectedItems.Count > 0)
             {
-                Capture cap = (this.listView1.SelectedItems[0].Tag as Capture);
+                Capture cap = (this.listViewFiles.SelectedItems[0].Tag as Capture);
                 this.pictureBox1.Image = cap.Image;
                 this.pictureCommentsTextBox.Text = cap.Comments;
                 this.saveButton.Enabled = true;
@@ -250,18 +253,16 @@ namespace Terminals.CaptureManager
 
         private void listView1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right && this.listView1.SelectedItems != null && this.listView1.SelectedItems.Count > 0)
+            if (e.Button == MouseButtons.Right && this.listViewFiles.SelectedItems != null && this.listViewFiles.SelectedItems.Count > 0)
             {
-                this.listView1.ContextMenuStrip.Show();
+                this.listViewFiles.ContextMenuStrip.Show();
             }
         }
 
         /// <summary>
         /// Delete selected listview item on delete key press.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void listView1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        private void listView1_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Delete)
             {
@@ -269,7 +270,7 @@ namespace Terminals.CaptureManager
             }
         }
 
-        private void treeView1_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
+        private void treeView1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right && this.treeView1.SelectedNode != null)
             {
@@ -277,7 +278,7 @@ namespace Terminals.CaptureManager
             }
         }
 
-        private void treeView1_DragOver(object sender, System.Windows.Forms.DragEventArgs e)
+        private void treeView1_DragOver(object sender, DragEventArgs e)
         {
             Point pos = this.treeView1.PointToClient(new Point(e.X, e.Y));
             TreeViewHitTestInfo hit = this.treeView1.HitTest(pos);
@@ -290,20 +291,20 @@ namespace Terminals.CaptureManager
             }
         }
 
-        private void treeView1_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        private void treeView1_KeyDown(object sender, KeyEventArgs e)
         {
             this.deleteFolderToolStripMenuItem_Click(null, null);
         }
 
         private void deleteFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.listView1.SelectedItems != null && this.listView1.SelectedItems.Count > 0)
+            if (this.listViewFiles.SelectedItems != null && this.listViewFiles.SelectedItems.Count > 0)
             {
-                int cnt = this.listView1.SelectedItems.Count;
+                int cnt = this.listViewFiles.SelectedItems.Count;
                 string msg = string.Empty;
                 string cpt = string.Empty;
 
-                if (this.listView1.SelectedItems.Count == 1)
+                if (this.listViewFiles.SelectedItems.Count == 1)
                 {
                     msg = Program.Resources.GetString("ConfirmDeleteSingleFile");
                     cpt = Program.Resources.GetString("ConfirmCaptionDeleteSingleItem");
@@ -316,11 +317,11 @@ namespace Terminals.CaptureManager
 
                 if (MessageBox.Show(msg, cpt, MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
                 {
-                    foreach (ListViewItem lvi in this.listView1.SelectedItems)
+                    foreach (ListViewItem lvi in this.listViewFiles.SelectedItems)
                     {
                         Capture cap = (lvi.Tag as Capture);
                         cap.Delete();
-                        this.listView1.Items.Remove(lvi);
+                        this.listViewFiles.Items.Remove(lvi);
                     }
                 }
             }
@@ -328,18 +329,18 @@ namespace Terminals.CaptureManager
 
         private void copyImageToClipboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.listView1.SelectedItems != null && this.listView1.SelectedItems.Count > 0)
+            if (this.listViewFiles.SelectedItems != null && this.listViewFiles.SelectedItems.Count > 0)
             {
-                Capture cap = (this.listView1.SelectedItems[0].Tag as Capture);
+                Capture cap = (this.listViewFiles.SelectedItems[0].Tag as Capture);
                 Clipboard.SetImage(cap.Image);
             }
         }
 
         private void copyImagePathToClipboardToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.listView1.SelectedItems != null && this.listView1.SelectedItems.Count > 0)
+            if (this.listViewFiles.SelectedItems != null && this.listViewFiles.SelectedItems.Count > 0)
             {
-                Capture cap = (this.listView1.SelectedItems[0].Tag as Capture);
+                Capture cap = (this.listViewFiles.SelectedItems[0].Tag as Capture);
                 Clipboard.SetText(cap.FilePath);
             }
         }
@@ -351,9 +352,9 @@ namespace Terminals.CaptureManager
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (this.listView1.SelectedItems != null && this.listView1.SelectedItems.Count > 0)
+            if (this.listViewFiles.SelectedItems != null && this.listViewFiles.SelectedItems.Count > 0)
             {
-                Capture cap = (this.listView1.SelectedItems[0].Tag as Capture);
+                Capture cap = (this.listViewFiles.SelectedItems[0].Tag as Capture);
                 cap.Comments = this.pictureCommentsTextBox.Text;
                 cap.Save();
             }
@@ -361,26 +362,26 @@ namespace Terminals.CaptureManager
 
         private void View_SelectedIndexChanged(object sender, EventArgs e)
         {
-            switch (this.ViewMode.Text)
+            switch (this.viewComboBox.Text)
             {
                 case "Large Icons":
                     this.imageList1.ImageSize = new Size(150, 150);
-                    this.listView1.View = View.LargeIcon;
+                    this.listViewFiles.View = View.LargeIcon;
                     break;
 
                 case "Small Icons":
                     this.imageList1.ImageSize = new Size(50, 50);
-                    this.listView1.View = View.LargeIcon;
+                    this.listViewFiles.View = View.LargeIcon;
                     break;
 
                 case "List":
                     this.imageList1.ImageSize = new Size(150, 150);
-                    this.listView1.View = View.List;
+                    this.listViewFiles.View = View.List;
                     break;
 
                 case "Tile":
                     this.imageList1.ImageSize = new Size(150, 150);
-                    this.listView1.View = View.Tile;
+                    this.listViewFiles.View = View.Tile;
                     break;
 
                 default:
@@ -392,14 +393,14 @@ namespace Terminals.CaptureManager
 
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
-            this.imageList1.ImageSize = new Size(this.trackBar1.Value, this.trackBar1.Value);
-            this.listView1.View = View.LargeIcon;
+            this.imageList1.ImageSize = new Size(this.trackBarZoom.Value, this.trackBarZoom.Value);
+            this.listViewFiles.View = View.LargeIcon;
             this.RefreshView();
         }
 
         private void thumbsContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            if (Settings.FlickrToken != string.Empty && (this.listView1.SelectedItems != null && this.listView1.SelectedItems.Count > 0))
+            if (Settings.FlickrToken != string.Empty && (this.listViewFiles.SelectedItems != null && this.listViewFiles.SelectedItems.Count > 0))
             {
                 this.thumbsContextMenu.Items.Add(this.flickrMenuItem);
             }

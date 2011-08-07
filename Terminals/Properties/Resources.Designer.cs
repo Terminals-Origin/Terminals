@@ -206,6 +206,20 @@ namespace Terminals.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap DeleteFolderHS {
+            get {
+                object obj = ResourceManager.GetObject("DeleteFolderHS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap DeleteHS {
+            get {
+                object obj = ResourceManager.GetObject("DeleteHS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap disconnect {
             get {
                 object obj = ResourceManager.GetObject("disconnect", resourceCulture);
@@ -278,6 +292,13 @@ namespace Terminals.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap NewFolderHS {
+            get {
+                object obj = ResourceManager.GetObject("NewFolderHS", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap options {
             get {
                 object obj = ResourceManager.GetObject("options", resourceCulture);
@@ -288,6 +309,13 @@ namespace Terminals.Properties {
         public static System.Drawing.Bitmap polarized_glasses {
             get {
                 object obj = ResourceManager.GetObject("polarized_glasses", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap Properties {
+            get {
+                object obj = ResourceManager.GetObject("Properties", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

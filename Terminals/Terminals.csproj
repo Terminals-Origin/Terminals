@@ -843,10 +843,14 @@
     <None Include="Migrated rules for Terminals.ruleset" />
     <Content Include="Resources\amber.png" />
     <Content Include="Resources\back.png" />
+    <Content Include="Resources\DeleteFolderHS.png" />
+    <Content Include="Resources\DeleteHS.png" />
     <Content Include="Resources\forward.png" />
     <Content Include="Resources\green.png" />
     <Content Include="Resources\home.png" />
+    <Content Include="Resources\NewFolderHS.png" />
     <Content Include="Resources\polarized-glasses.png" />
+    <Content Include="Resources\Properties.png" />
     <Content Include="Resources\red.png" />
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
