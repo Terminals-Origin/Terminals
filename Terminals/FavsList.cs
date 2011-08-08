@@ -9,9 +9,9 @@ using Terminals.History;
 
 namespace Terminals
 {
-    public partial class FavsList : UserControl
+    internal partial class FavsList : UserControl
     {
-        private String _untaggedKey = "Untagged";
+        internal const String UNTAGGED_NODENAME = "Untagged";
         private MethodInvoker _historyInvoker;
         private Boolean _eventDone = false;
         private Object _historyLock = new Object();
@@ -53,8 +53,8 @@ namespace Terminals
             this.favsTree.Nodes.Clear();
             SortedDictionary<String, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
             SortedDictionary<String, TreeNode> SortedTags = new SortedDictionary<String, TreeNode>();
-            SortedTags.Add(_untaggedKey, new TreeNode(this._untaggedKey));
-            this.favsTree.Nodes.Add(SortedTags[this._untaggedKey]);
+            SortedTags.Add(UNTAGGED_NODENAME, new TreeNode(UNTAGGED_NODENAME));
+            this.favsTree.Nodes.Add(SortedTags[UNTAGGED_NODENAME]);
             if (favorites != null)
             {
                 foreach (String key in favorites.Keys)
@@ -82,8 +82,8 @@ namespace Terminals
                         TreeNode favNode = new TreeNode(fav.Name);
                         favNode.Tag = fav;
 
-                        if (!SortedTags[this._untaggedKey].Nodes.Contains(favNode))
-                            SortedTags[this._untaggedKey].Nodes.Add(favNode);
+                        if (!SortedTags[UNTAGGED_NODENAME].Nodes.Contains(favNode))
+                            SortedTags[UNTAGGED_NODENAME].Nodes.Add(favNode);
                     }
                 }
             }

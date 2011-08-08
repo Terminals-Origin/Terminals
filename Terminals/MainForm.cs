@@ -2543,7 +2543,7 @@ namespace Terminals
 
         private void exportImportConnectionsListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Export ei = new Export();
+            ExportFrom ei = new ExportFrom();
             ei.Show();
         }
 

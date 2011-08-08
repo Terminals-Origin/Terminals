@@ -1120,6 +1120,10 @@ namespace Terminals.Configuration
                 configuration.Save();
         }
 
+        /// <summary>
+        /// Gets favorites organized by their Connection name. Key contains suffix "a" and number (eg. a0, a1 etc.).
+        /// Becuase depending on the sort type the key doesn't have to be unique.
+        /// </summary>
         public static SortedDictionary<string, FavoriteConfigurationElement> GetSortedFavorites(SortProperties SortProperty)
         {
             FavoriteConfigurationElementCollection favlist = GetFavorites();
