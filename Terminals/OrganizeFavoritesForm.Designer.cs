@@ -231,6 +231,7 @@ namespace Terminals
             // 
             // btnExport
             // 
+            this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExport.Location = new System.Drawing.Point(613, 264);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(105, 23);
@@ -263,12 +264,11 @@ namespace Terminals
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(700, 350);
+            this.MinimumSize = new System.Drawing.Size(734, 388);
             this.Name = "OrganizeFavoritesForm";
-            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Organize Favorites";
+            this.Text = "Terminals - Organize Favorites";
             this.Activated += new System.EventHandler(this.OrganizeFavoritesForm_Activated);
             this.Shown += new System.EventHandler(this.OrganizeFavoritesForm_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionManager_KeyDown);
