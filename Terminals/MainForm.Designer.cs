@@ -33,6 +33,8 @@ namespace Terminals
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newTerminalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemImport = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemExport = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +54,11 @@ namespace Terminals
             this.grabInputToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.organizeGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveTerminalsAsGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addTerminalToGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupsSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.captureTerminalScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemCaptureManager = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,11 +74,6 @@ namespace Terminals
             this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.organizeGroupsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveTerminalsAsGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addTerminalToGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupsSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,6 +112,7 @@ namespace Terminals
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pnlTagsFavorites = new System.Windows.Forms.Panel();
+            this.favsList1 = new Terminals.FavsList();
             this.pnlHideTagsFavorites = new System.Windows.Forms.Panel();
             this.pbHideTagsFavorites = new System.Windows.Forms.PictureBox();
             this.pnlShowTagsFavorites = new System.Windows.Forms.Panel();
@@ -130,9 +133,6 @@ namespace Terminals
             this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.tabControlItem1 = new TabControl.TabControlItem();
             this.tabControlItem2 = new TabControl.TabControlItem();
-            this.toolStripMenuItemExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemImport = new System.Windows.Forms.ToolStripMenuItem();
-            this.favsList1 = new Terminals.FavsList();
             this.menuStrip.SuspendLayout();
             this.toolbarStd.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
@@ -193,6 +193,21 @@ namespace Terminals
             this.newTerminalToolStripMenuItem.Text = "&New Connection";
             this.newTerminalToolStripMenuItem.ToolTipText = "Make a new connection";
             this.newTerminalToolStripMenuItem.Click += new System.EventHandler(this.newTerminalToolStripMenuItem_Click_1);
+            // 
+            // toolStripMenuItemImport
+            // 
+            this.toolStripMenuItemImport.Name = "toolStripMenuItemImport";
+            this.toolStripMenuItemImport.Size = new System.Drawing.Size(202, 22);
+            this.toolStripMenuItemImport.Text = "&Import connections";
+            this.toolStripMenuItemImport.Click += new System.EventHandler(this.toolStripMenuItemImport_Click);
+            // 
+            // toolStripMenuItemExport
+            // 
+            this.toolStripMenuItemExport.Name = "toolStripMenuItemExport";
+            this.toolStripMenuItemExport.Size = new System.Drawing.Size(202, 22);
+            this.toolStripMenuItemExport.Text = "&Export connections";
+            this.toolStripMenuItemExport.ToolTipText = "Opens export dialog to select connections to export into a xml file.";
+            this.toolStripMenuItemExport.Click += new System.EventHandler(this.exportConnectionsListToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -365,6 +380,46 @@ namespace Terminals
             this.disconnectToolStripMenuItem.Text = "&Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.tsbDisconnect_Click);
             // 
+            // groupsToolStripMenuItem
+            // 
+            this.groupsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.organizeGroupsToolStripMenuItem,
+            this.saveTerminalsAsGroupToolStripMenuItem,
+            this.addTerminalToGroupToolStripMenuItem,
+            this.groupsSeparator});
+            this.groupsToolStripMenuItem.Name = "groupsToolStripMenuItem";
+            this.groupsToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.groupsToolStripMenuItem.Text = "&Groups";
+            this.groupsToolStripMenuItem.Visible = false;
+            // 
+            // organizeGroupsToolStripMenuItem
+            // 
+            this.organizeGroupsToolStripMenuItem.Name = "organizeGroupsToolStripMenuItem";
+            this.organizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(272, 22);
+            this.organizeGroupsToolStripMenuItem.Text = "&Organize Groups";
+            this.organizeGroupsToolStripMenuItem.ToolTipText = "Organize Groups";
+            this.organizeGroupsToolStripMenuItem.Click += new System.EventHandler(this.organizeGroupsToolStripMenuItem_Click);
+            // 
+            // saveTerminalsAsGroupToolStripMenuItem
+            // 
+            this.saveTerminalsAsGroupToolStripMenuItem.Name = "saveTerminalsAsGroupToolStripMenuItem";
+            this.saveTerminalsAsGroupToolStripMenuItem.Size = new System.Drawing.Size(272, 22);
+            this.saveTerminalsAsGroupToolStripMenuItem.Text = "&Create Group From Active Connections";
+            this.saveTerminalsAsGroupToolStripMenuItem.ToolTipText = "Create Group From Active Connections";
+            this.saveTerminalsAsGroupToolStripMenuItem.Click += new System.EventHandler(this.saveTerminalsAsGroupToolStripMenuItem_Click);
+            // 
+            // addTerminalToGroupToolStripMenuItem
+            // 
+            this.addTerminalToGroupToolStripMenuItem.Name = "addTerminalToGroupToolStripMenuItem";
+            this.addTerminalToGroupToolStripMenuItem.Size = new System.Drawing.Size(272, 22);
+            this.addTerminalToGroupToolStripMenuItem.Text = "&Add Current Connection To";
+            this.addTerminalToGroupToolStripMenuItem.ToolTipText = "Add Current Connection To";
+            // 
+            // groupsSeparator
+            // 
+            this.groupsSeparator.Name = "groupsSeparator";
+            this.groupsSeparator.Size = new System.Drawing.Size(269, 6);
+            // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -492,46 +547,6 @@ namespace Terminals
             this.optionsToolStripMenuItem.Text = "&Options";
             this.optionsToolStripMenuItem.ToolTipText = "Open Options";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
-            // 
-            // groupsToolStripMenuItem
-            // 
-            this.groupsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.organizeGroupsToolStripMenuItem,
-            this.saveTerminalsAsGroupToolStripMenuItem,
-            this.addTerminalToGroupToolStripMenuItem,
-            this.groupsSeparator});
-            this.groupsToolStripMenuItem.Name = "groupsToolStripMenuItem";
-            this.groupsToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
-            this.groupsToolStripMenuItem.Text = "&Groups";
-            this.groupsToolStripMenuItem.Visible = false;
-            // 
-            // organizeGroupsToolStripMenuItem
-            // 
-            this.organizeGroupsToolStripMenuItem.Name = "organizeGroupsToolStripMenuItem";
-            this.organizeGroupsToolStripMenuItem.Size = new System.Drawing.Size(272, 22);
-            this.organizeGroupsToolStripMenuItem.Text = "&Organize Groups";
-            this.organizeGroupsToolStripMenuItem.ToolTipText = "Organize Groups";
-            this.organizeGroupsToolStripMenuItem.Click += new System.EventHandler(this.organizeGroupsToolStripMenuItem_Click);
-            // 
-            // saveTerminalsAsGroupToolStripMenuItem
-            // 
-            this.saveTerminalsAsGroupToolStripMenuItem.Name = "saveTerminalsAsGroupToolStripMenuItem";
-            this.saveTerminalsAsGroupToolStripMenuItem.Size = new System.Drawing.Size(272, 22);
-            this.saveTerminalsAsGroupToolStripMenuItem.Text = "&Create Group From Active Connections";
-            this.saveTerminalsAsGroupToolStripMenuItem.ToolTipText = "Create Group From Active Connections";
-            this.saveTerminalsAsGroupToolStripMenuItem.Click += new System.EventHandler(this.saveTerminalsAsGroupToolStripMenuItem_Click);
-            // 
-            // addTerminalToGroupToolStripMenuItem
-            // 
-            this.addTerminalToGroupToolStripMenuItem.Name = "addTerminalToGroupToolStripMenuItem";
-            this.addTerminalToGroupToolStripMenuItem.Size = new System.Drawing.Size(272, 22);
-            this.addTerminalToGroupToolStripMenuItem.Text = "&Add Current Connection To";
-            this.addTerminalToGroupToolStripMenuItem.ToolTipText = "Add Current Connection To";
-            // 
-            // groupsSeparator
-            // 
-            this.groupsSeparator.Name = "groupsSeparator";
-            this.groupsSeparator.Size = new System.Drawing.Size(269, 6);
             // 
             // helpToolStripMenuItem
             // 
@@ -937,6 +952,14 @@ namespace Terminals
             this.pnlTagsFavorites.Size = new System.Drawing.Size(224, 474);
             this.pnlTagsFavorites.TabIndex = 6;
             // 
+            // favsList1
+            // 
+            this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.favsList1.Location = new System.Drawing.Point(5, 0);
+            this.favsList1.Name = "favsList1";
+            this.favsList1.Size = new System.Drawing.Size(212, 472);
+            this.favsList1.TabIndex = 2;
+            // 
             // pnlHideTagsFavorites
             // 
             this.pnlHideTagsFavorites.BackColor = System.Drawing.Color.Gray;
@@ -1130,29 +1153,6 @@ namespace Terminals
             this.tabControlItem2.TabIndex = 3;
             this.tabControlItem2.Title = "TabControl Page 4";
             this.tabControlItem2.ToolTipText = "";
-            // 
-            // toolStripMenuItemExport
-            // 
-            this.toolStripMenuItemExport.Name = "toolStripMenuItemExport";
-            this.toolStripMenuItemExport.Size = new System.Drawing.Size(202, 22);
-            this.toolStripMenuItemExport.Text = "&Export connections";
-            this.toolStripMenuItemExport.ToolTipText = "Opens export dialog to select connections to export into a xml file.";
-            this.toolStripMenuItemExport.Click += new System.EventHandler(this.exportConnectionsListToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItemImport
-            // 
-            this.toolStripMenuItemImport.Name = "toolStripMenuItemImport";
-            this.toolStripMenuItemImport.Size = new System.Drawing.Size(202, 22);
-            this.toolStripMenuItemImport.Text = "&Import connections";
-            this.toolStripMenuItemImport.Click += new System.EventHandler(this.toolStripMenuItemImport_Click);
-            // 
-            // favsList1
-            // 
-            this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.favsList1.Location = new System.Drawing.Point(5, 0);
-            this.favsList1.Name = "favsList1";
-            this.favsList1.Size = new System.Drawing.Size(212, 472);
-            this.favsList1.TabIndex = 2;
             // 
             // MainForm
             // 

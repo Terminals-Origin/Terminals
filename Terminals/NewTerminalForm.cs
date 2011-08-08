@@ -696,12 +696,17 @@ namespace Terminals
 
         private void btnSaveDefault_Click(object sender, EventArgs e)
         {
-            DefaultDialog frm = new DefaultDialog();
-            DialogResult dr = frm.ShowDialog(this);
-            if (dr == DialogResult.Yes)
-                this.FillFavorite(true);
-            else if (dr == DialogResult.No)
-                Settings.RemoveDefaultFavorite();
+            this.contextMenuStripDefaults.Show(this.btnSaveDefault, 0, this.btnSaveDefault.Height);
+        }
+
+        private void saveCurrentSettingsAsDefaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.FillFavorite(true);
+        }
+
+        private void removeSavedDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.RemoveDefaultFavorite();
         }
 
         private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
