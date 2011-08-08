@@ -312,6 +312,7 @@
     <Compile Include="History\HistoryByFavorite.cs" />
     <Compile Include="History\HistoryItem.cs" />
     <Compile Include="Integration\Importers.cs" />
+    <Compile Include="Integration\Import\ImportTerminals.cs" />
     <Compile Include="Integration\Import\ImportvRD.cs" />
     <Compile Include="Integration\Import\vrd.cs" />
     <Compile Include="ListViewColumnSorter.cs" />

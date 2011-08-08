@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Terminals.Integration.Import
 {
   /// <summary>
@@ -10,7 +12,7 @@ namespace Terminals.Integration.Import
     /// </summary>
     /// <param name="Filename">Full path and file name of the file to import from</param>
     /// <returns>Null, in incorect cases; otherwise collection with found favorites.</returns>
-    FavoriteConfigurationElementCollection ImportFavorites(string Filename);
+    List<FavoriteConfigurationElement> ImportFavorites(string Filename);
 
     /// <summary>
     /// Gets the name of the imported file

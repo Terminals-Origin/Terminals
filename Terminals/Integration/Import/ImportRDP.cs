@@ -8,10 +8,10 @@ namespace Terminals.Integration.Import
     {
         #region IImport Members
 
-        FavoriteConfigurationElementCollection IImport.ImportFavorites(string Filename)
+        List<FavoriteConfigurationElement> IImport.ImportFavorites(string Filename)
         {
             string name = System.IO.Path.GetFileName(Filename).Replace(System.IO.Path.GetExtension(Filename),"");
-            FavoriteConfigurationElementCollection coll = new FavoriteConfigurationElementCollection();
+            List<FavoriteConfigurationElement> coll = new List<FavoriteConfigurationElement>();
             if(System.IO.File.Exists(Filename))
             {
                 FavoriteConfigurationElement fav = null;

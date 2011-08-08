@@ -16,9 +16,9 @@ namespace Terminals.Integration.Import
     {
         #region IImport Members
 
-        public FavoriteConfigurationElementCollection ImportFavorites(string Filename)
+        public List<FavoriteConfigurationElement> ImportFavorites(string Filename)
         {
-            FavoriteConfigurationElementCollection fav = null;
+            List<FavoriteConfigurationElement> fav = new List<FavoriteConfigurationElement>();
             InputBoxResult result = InputBox.Show("Password", "vRD Password", '*');
 
             if (result.ReturnCode == System.Windows.Forms.DialogResult.OK)
@@ -91,7 +91,8 @@ namespace Terminals.Integration.Import
                     //save credential item to local
                     SaveCredentials(credentials);
                     //save VRD connection to local
-                    fav = ConvertVRDConnectionCollectionToLocal(connections.ToArray(), folders.ToArray(), null, String.Empty, credentials, fav);
+                    fav = ConvertVRDConnectionCollectionToLocal(connections.ToArray(), folders.ToArray(), null,
+                                                                String.Empty, credentials);
                 }
             }
             return fav;
@@ -127,16 +128,15 @@ namespace Terminals.Integration.Import
         target.Username = source.UserName;
       }
 
-      private FavoriteConfigurationElementCollection ConvertVRDConnectionCollectionToLocal(vRdImport.Connection[] connections, vRDConfigurationFileConnectionsFolder[] folders, vRDConfigurationFileConnectionsFolderFolder[] subFolders, String connectionTag, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials, FavoriteConfigurationElementCollection coll)
+      private List<FavoriteConfigurationElement> ConvertVRDConnectionCollectionToLocal(Connection[] connections, vRDConfigurationFileConnectionsFolder[] folders,
+          vRDConfigurationFileConnectionsFolderFolder[] subFolders, String connectionTag,
+          Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials)
         {
-            if (coll == null)
-            {
-                coll = new FavoriteConfigurationElementCollection();
-            }
+            List<FavoriteConfigurationElement> coll = new List<FavoriteConfigurationElement>();
             //covert vrd connection
             if (connections != null && connections.Length > 0)
             {
-                foreach (vRdImport.Connection con in connections)
+                foreach (Connection con in connections)
                 {
                     FavoriteConfigurationElement fav = ConvertVRDConnectionToLocal(credentials, con);
                     if (connectionTag != null && connectionTag != String.Empty && !fav.TagList.Contains(connectionTag))
@@ -150,9 +150,9 @@ namespace Terminals.Integration.Import
             //get connection object from root folder
             if (folders != null && folders.Length > 0)
             {
-                foreach (vRdImport.vRDConfigurationFileConnectionsFolder folder in folders)
+                foreach (vRDConfigurationFileConnectionsFolder folder in folders)
                 {
-                    ConvertVRDConnectionCollectionToLocal(folder.Connection, null, folder.Folder, folder.Name, credentials, coll);
+                    coll.AddRange(ConvertVRDConnectionCollectionToLocal(folder.Connection, null, folder.Folder, folder.Name, credentials));
                 }
             }
             //get connection object from sub folder
@@ -160,13 +160,14 @@ namespace Terminals.Integration.Import
             {
                 foreach (vRDConfigurationFileConnectionsFolderFolder folder in subFolders)
                 {
-                    ConvertVRDConnectionCollectionToLocal(folder.Connection, null, null, connectionTag + folder.Name, credentials, coll);
+                    string tag = connectionTag + folder.Name;
+                    coll.AddRange(ConvertVRDConnectionCollectionToLocal(folder.Connection, null, null, tag, credentials));
                 }
             }
             return coll;
         }
 
-        private static FavoriteConfigurationElement ConvertVRDConnectionToLocal(Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials, vRdImport.Connection con)
+        private static FavoriteConfigurationElement ConvertVRDConnectionToLocal(Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials, vRdImport.Connection con)
         {
             FavoriteConfigurationElement fav = new FavoriteConfigurationElement();
 
@@ -232,17 +233,17 @@ namespace Terminals.Integration.Import
 
         #endregion
 
-        private void ImportConnection(vRdImport.Connection Connection, List<string> FolderNames, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> Credentials)
+        private void ImportConnection(Connection Connection, List<string> FolderNames, Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> Credentials)
         {
         }
 
-        private void ImportFolder(vRdImport.vRDConfigurationFileConnectionsFolder Folder, List<string> FolderNames, Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> Credentials)
+        private void ImportFolder(vRDConfigurationFileConnectionsFolder Folder, List<string> FolderNames, Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> Credentials)
         {
-            foreach (vRdImport.Connection conn in Folder.Connection)
+            foreach (Connection conn in Folder.Connection)
             {
                 ImportConnection(conn, FolderNames, Credentials);
             }
-            foreach (vRdImport.vRDConfigurationFileConnectionsFolderFolder folder in Folder.Folder)
+            foreach (vRDConfigurationFileConnectionsFolderFolder folder in Folder.Folder)
             {
                 FolderNames.Add(folder.Name);
             }

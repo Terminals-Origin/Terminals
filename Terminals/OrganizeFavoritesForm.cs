@@ -237,7 +237,7 @@ namespace Terminals
             {
                 string filename = ImportOpenFileDialog.FileName;
 
-                FavoriteConfigurationElementCollection coll = Importers.ImportFavorites(filename);
+                List<FavoriteConfigurationElement> coll = Importers.ImportFavorites(filename);
                 if (coll != null)
                 {
                     needsReload = true;

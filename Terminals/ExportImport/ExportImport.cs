@@ -2,139 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
-using System.Xml.Serialization;
 using Terminals.Configuration;
 
 namespace Terminals.ExportImport
 {
-    class ExportImport
+    /// <summary>
+    /// Main class which manages terminals import and export into the xml file
+    /// </summary>
+    internal class ExportImport
     {
-        public static void ExportXML(string fileName, List<FavoriteConfigurationElement> favorites, bool includePassword)
+        internal static void ExportXML(string fileName, List<FavoriteConfigurationElement> favorites, bool includePassword)
         {
             try
             {
                 XmlTextWriter w = new XmlTextWriter(fileName, Encoding.UTF8);
                 w.WriteStartElement("favorites");
-                foreach (FavoriteConfigurationElement element in favorites)
+                foreach (FavoriteConfigurationElement favorite in favorites)
                 {
-                    w.WriteStartElement("favorite");
-                    if (includePassword)
-                    {
-                        w.WriteElementString("userName", element.UserName);
-                        //w.WriteElementString("encryptedPassword", element.EncryptedPassword);
-                        w.WriteElementString("password", element.Password);
-                    }
-
-                    w.WriteElementString("acceleratorPassthrough", element.AcceleratorPassthrough.ToString());
-                    w.WriteElementString("allowBackgroundInput", element.AllowBackgroundInput.ToString());
-                    w.WriteElementString("authMethod", element.AuthMethod.ToString());
-
-                    w.WriteElementString("bitmapPeristence", element.Protocol);
-
-                    w.WriteElementString("connectionTimeout", element.ConnectionTimeout.ToString());
-                    w.WriteElementString("consolefont", element.ConsoleFont);
-                    w.WriteElementString("consolerows", element.ConsoleRows.ToString());
-                    w.WriteElementString("consolecols", element.ConsoleCols.ToString());
-                    w.WriteElementString("consolebackcolor", element.ConsoleBackColor);
-                    w.WriteElementString("consoletextcolor", element.ConsoleTextColor);
-                    w.WriteElementString("consolecursorcolor", element.ConsoleCursorColor);
-                    w.WriteElementString("connectToConsole", element.ConnectToConsole.ToString());
-                    w.WriteElementString("colors", element.Colors.ToString());
-                    w.WriteElementString("credential", element.Credential);
-
-                    w.WriteElementString("disableWindowsKey", element.DisableWindowsKey.ToString());
-                    w.WriteElementString("doubleClickDetect", element.DoubleClickDetect.ToString());
-                    w.WriteElementString("displayConnectionBar", element.DisplayConnectionBar.ToString());
-                    w.WriteElementString("disableControlAltDelete", element.DisableControlAltDelete.ToString());
-                    w.WriteElementString("domainName", element.DomainName);
-                    w.WriteElementString("desktopSizeHeight", element.DesktopSizeHeight.ToString());
-                    w.WriteElementString("desktopSizeWidth", element.DesktopSizeWidth.ToString());
-                    w.WriteElementString("desktopSize", element.DesktopSize.ToString());
-                    w.WriteElementString("desktopShare", element.DesktopShare);
-                    w.WriteElementString("disableTheming", element.DisableTheming.ToString());
-                    w.WriteElementString("disableMenuAnimations", element.DisableMenuAnimations.ToString());
-                    w.WriteElementString("disableFullWindowDrag", element.DisableFullWindowDrag.ToString());
-                    w.WriteElementString("disableCursorBlinking", element.DisableCursorBlinking.ToString());
-                    w.WriteElementString("disableCursorShadow", element.DisableCursorShadow.ToString());
-                    w.WriteElementString("disableWallPaper", element.DisableWallPaper.ToString());
-
-                    w.WriteElementString("executeBeforeConnect", element.ExecuteBeforeConnect.ToString());
-                    w.WriteElementString("executeBeforeConnectCommand", element.ExecuteBeforeConnectCommand);
-                    w.WriteElementString("executeBeforeConnectArgs", element.ExecuteBeforeConnectArgs);
-                    w.WriteElementString("executeBeforeConnectInitialDirectory", element.ExecuteBeforeConnectInitialDirectory);
-                    w.WriteElementString("executeBeforeConnectWaitForExit", element.ExecuteBeforeConnectWaitForExit.ToString());
-                    w.WriteElementString("enableDesktopComposition", element.EnableDesktopComposition.ToString());
-                    w.WriteElementString("enableFontSmoothing", element.EnableFontSmoothing.ToString());
-                    w.WriteElementString("enableSecuritySettings", element.EnableSecuritySettings.ToString());
-                    w.WriteElementString("enableEncryption", element.EnableEncryption.ToString());
-                    w.WriteElementString("enableCompression", element.EnableCompression.ToString());
-                    w.WriteElementString("enableTLSAuthentication", element.EnableTLSAuthentication.ToString());
-                    w.WriteElementString("enableNLAAuthentication", element.EnableNLAAuthentication.ToString());
-
-                    w.WriteElementString("grabFocusOnConnect", element.GrabFocusOnConnect.ToString());
-
-                    w.WriteElementString("idleTimeout", element.IdleTimeout.ToString());
-                    w.WriteElementString("icaServerINI", element.IcaServerINI);
-                    w.WriteElementString("icaClientINI", element.IcaClientINI);
-                    w.WriteElementString("icaEncryptionLevel", element.IcaEncryptionLevel);
-                    w.WriteElementString("iCAApplicationName", element.ICAApplicationName);
-                    w.WriteElementString("iCAApplicationWorkingFolder", element.ICAApplicationWorkingFolder);
-                    w.WriteElementString("iCAApplicationPath", element.ICAApplicationPath);
-                    w.WriteElementString("icaEnableEncryption", element.IcaEnableEncryption.ToString());
-
-                    w.WriteElementString("keyTag", element.KeyTag);
-
-                    w.WriteElementString("newWindow", element.NewWindow.ToString());
-                    w.WriteElementString("notes", element.Notes);
-                    w.WriteElementString("name", element.Name);
-
-                    w.WriteElementString("overallTimeout", element.OverallTimeout.ToString());
-
-                    w.WriteElementString("protocol", element.Protocol);
-                    w.WriteElementString("port", element.Port.ToString());
-
-                    w.WriteElementString("redirectedDrives", element.redirectedDrives);
-                    w.WriteElementString("redirectPorts", element.RedirectPorts.ToString());
-                    w.WriteElementString("redirectPrinters", element.RedirectPrinters.ToString());
-                    w.WriteElementString("redirectSmartCards", element.RedirectSmartCards.ToString());
-                    w.WriteElementString("redirectClipboard", element.RedirectClipboard.ToString());
-                    w.WriteElementString("redirectDevices", element.RedirectDevices.ToString());
-
-                    w.WriteElementString("sounds", element.Sounds.ToString());
-                    w.WriteElementString("serverName", element.ServerName);
-                    w.WriteElementString("shutdownTimeout", element.ShutdownTimeout.ToString());
-                    w.WriteElementString("securityFullScreen", element.SecurityFullScreen.ToString());
-                    w.WriteElementString("ssh1", element.SSH1.ToString());
-                    w.WriteElementString("securityStartProgram", element.SecurityStartProgram);
-                    w.WriteElementString("securityWorkingFolder", element.SecurityWorkingFolder);
-
-                    w.WriteElementString("telnet", element.Telnet.ToString());
-                    w.WriteElementString("tags", element.Tags.ToString());
-                    w.WriteElementString("toolBarIcon", element.ToolBarIcon);
-                    w.WriteElementString("telnetBackColor", element.TelnetBackColor);
-                    w.WriteElementString("telnetCols", element.TelnetCols.ToString());
-                    w.WriteElementString("telnetCursorColor", element.TelnetCursorColor);
-                    w.WriteElementString("telnetFont", element.TelnetFont);
-                    w.WriteElementString("telnetRows", element.TelnetRows.ToString());
-                    w.WriteElementString("telnetTextColor", element.TelnetTextColor);
-                    
-                    w.WriteElementString("tsgwCredsSource", element.TsgwCredsSource.ToString());
-                    w.WriteElementString("tsgwDomain", element.TsgwDomain);
-                    w.WriteElementString("tsgwHostname", element.TsgwHostname);
-                    w.WriteElementString("tsgwPassword", element.TsgwPassword);
-                    w.WriteElementString("tsgwSeparateLogin", element.TsgwSeparateLogin.ToString());
-                    w.WriteElementString("tsgwUsageMethod", element.TsgwUsageMethod.ToString());
-                    w.WriteElementString("tsgwUsername", element.TsgwUsername);
-
-                    w.WriteElementString("url", element.Url);
-
-                    w.WriteElementString("vncAutoScale", element.VncAutoScale.ToString());
-                    w.WriteElementString("vncViewOnly", element.VncViewOnly.ToString());
-                    w.WriteElementString("vncDisplayNumber", element.VncDisplayNumber.ToString());
-                    w.WriteElementString("vmrcadministratormode", element.VMRCAdministratorMode.ToString());
-                    w.WriteElementString("vmrcreducedcolorsmode", element.VMRCReducedColorsMode.ToString());
-
-                    w.WriteEndElement();
+                    WriteFavorite(w, includePassword, favorite);
                 }
                 w.WriteEndElement();
                 w.Flush();
@@ -142,319 +27,470 @@ namespace Terminals.ExportImport
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Error("Export XML Failed", ex);
+                Logging.Log.Error("Export XML Failed", ex);
             }
         }
-        public static void ImportXML(string file, bool showOnToolbar)
+
+        private static void WriteFavorite(XmlTextWriter w, bool includePassword, FavoriteConfigurationElement favorite)
         {
-            FavoriteConfigurationElement fav = null;
+            w.WriteStartElement("favorite");
+            if (includePassword)
+            {
+                w.WriteElementString("userName", favorite.UserName);
+                //w.WriteElementString("encryptedPassword", element.EncryptedPassword);
+                w.WriteElementString("password", favorite.Password);
+            }
+
+            w.WriteElementString("acceleratorPassthrough", favorite.AcceleratorPassthrough.ToString());
+            w.WriteElementString("allowBackgroundInput", favorite.AllowBackgroundInput.ToString());
+            w.WriteElementString("authMethod", favorite.AuthMethod.ToString());
+
+            w.WriteElementString("bitmapPeristence", favorite.Protocol);
+
+            w.WriteElementString("connectionTimeout", favorite.ConnectionTimeout.ToString());
+            w.WriteElementString("consolefont", favorite.ConsoleFont);
+            w.WriteElementString("consolerows", favorite.ConsoleRows.ToString());
+            w.WriteElementString("consolecols", favorite.ConsoleCols.ToString());
+            w.WriteElementString("consolebackcolor", favorite.ConsoleBackColor);
+            w.WriteElementString("consoletextcolor", favorite.ConsoleTextColor);
+            w.WriteElementString("consolecursorcolor", favorite.ConsoleCursorColor);
+            w.WriteElementString("connectToConsole", favorite.ConnectToConsole.ToString());
+            w.WriteElementString("colors", favorite.Colors.ToString());
+            w.WriteElementString("credential", favorite.Credential);
+
+            w.WriteElementString("disableWindowsKey", favorite.DisableWindowsKey.ToString());
+            w.WriteElementString("doubleClickDetect", favorite.DoubleClickDetect.ToString());
+            w.WriteElementString("displayConnectionBar", favorite.DisplayConnectionBar.ToString());
+            w.WriteElementString("disableControlAltDelete", favorite.DisableControlAltDelete.ToString());
+            w.WriteElementString("domainName", favorite.DomainName);
+            w.WriteElementString("desktopSizeHeight", favorite.DesktopSizeHeight.ToString());
+            w.WriteElementString("desktopSizeWidth", favorite.DesktopSizeWidth.ToString());
+            w.WriteElementString("desktopSize", favorite.DesktopSize.ToString());
+            w.WriteElementString("desktopShare", favorite.DesktopShare);
+            w.WriteElementString("disableTheming", favorite.DisableTheming.ToString());
+            w.WriteElementString("disableMenuAnimations", favorite.DisableMenuAnimations.ToString());
+            w.WriteElementString("disableFullWindowDrag", favorite.DisableFullWindowDrag.ToString());
+            w.WriteElementString("disableCursorBlinking", favorite.DisableCursorBlinking.ToString());
+            w.WriteElementString("disableCursorShadow", favorite.DisableCursorShadow.ToString());
+            w.WriteElementString("disableWallPaper", favorite.DisableWallPaper.ToString());
+
+            w.WriteElementString("executeBeforeConnect", favorite.ExecuteBeforeConnect.ToString());
+            w.WriteElementString("executeBeforeConnectCommand", favorite.ExecuteBeforeConnectCommand);
+            w.WriteElementString("executeBeforeConnectArgs", favorite.ExecuteBeforeConnectArgs);
+            w.WriteElementString("executeBeforeConnectInitialDirectory", favorite.ExecuteBeforeConnectInitialDirectory);
+            w.WriteElementString("executeBeforeConnectWaitForExit", favorite.ExecuteBeforeConnectWaitForExit.ToString());
+            w.WriteElementString("enableDesktopComposition", favorite.EnableDesktopComposition.ToString());
+            w.WriteElementString("enableFontSmoothing", favorite.EnableFontSmoothing.ToString());
+            w.WriteElementString("enableSecuritySettings", favorite.EnableSecuritySettings.ToString());
+            w.WriteElementString("enableEncryption", favorite.EnableEncryption.ToString());
+            w.WriteElementString("enableCompression", favorite.EnableCompression.ToString());
+            w.WriteElementString("enableTLSAuthentication", favorite.EnableTLSAuthentication.ToString());
+            w.WriteElementString("enableNLAAuthentication", favorite.EnableNLAAuthentication.ToString());
+
+            w.WriteElementString("grabFocusOnConnect", favorite.GrabFocusOnConnect.ToString());
+
+            w.WriteElementString("idleTimeout", favorite.IdleTimeout.ToString());
+            w.WriteElementString("icaServerINI", favorite.IcaServerINI);
+            w.WriteElementString("icaClientINI", favorite.IcaClientINI);
+            w.WriteElementString("icaEncryptionLevel", favorite.IcaEncryptionLevel);
+            w.WriteElementString("iCAApplicationName", favorite.ICAApplicationName);
+            w.WriteElementString("iCAApplicationWorkingFolder", favorite.ICAApplicationWorkingFolder);
+            w.WriteElementString("iCAApplicationPath", favorite.ICAApplicationPath);
+            w.WriteElementString("icaEnableEncryption", favorite.IcaEnableEncryption.ToString());
+
+            w.WriteElementString("keyTag", favorite.KeyTag);
+
+            w.WriteElementString("newWindow", favorite.NewWindow.ToString());
+            w.WriteElementString("notes", favorite.Notes);
+            w.WriteElementString("name", favorite.Name);
+
+            w.WriteElementString("overallTimeout", favorite.OverallTimeout.ToString());
+
+            w.WriteElementString("protocol", favorite.Protocol);
+            w.WriteElementString("port", favorite.Port.ToString());
+
+            w.WriteElementString("redirectedDrives", favorite.redirectedDrives);
+            w.WriteElementString("redirectPorts", favorite.RedirectPorts.ToString());
+            w.WriteElementString("redirectPrinters", favorite.RedirectPrinters.ToString());
+            w.WriteElementString("redirectSmartCards", favorite.RedirectSmartCards.ToString());
+            w.WriteElementString("redirectClipboard", favorite.RedirectClipboard.ToString());
+            w.WriteElementString("redirectDevices", favorite.RedirectDevices.ToString());
+
+            w.WriteElementString("sounds", favorite.Sounds.ToString());
+            w.WriteElementString("serverName", favorite.ServerName);
+            w.WriteElementString("shutdownTimeout", favorite.ShutdownTimeout.ToString());
+            w.WriteElementString("securityFullScreen", favorite.SecurityFullScreen.ToString());
+            w.WriteElementString("ssh1", favorite.SSH1.ToString());
+            w.WriteElementString("securityStartProgram", favorite.SecurityStartProgram);
+            w.WriteElementString("securityWorkingFolder", favorite.SecurityWorkingFolder);
+
+            w.WriteElementString("telnet", favorite.Telnet.ToString());
+            w.WriteElementString("tags", favorite.Tags.ToString());
+            w.WriteElementString("toolBarIcon", favorite.ToolBarIcon);
+            w.WriteElementString("telnetBackColor", favorite.TelnetBackColor);
+            w.WriteElementString("telnetCols", favorite.TelnetCols.ToString());
+            w.WriteElementString("telnetCursorColor", favorite.TelnetCursorColor);
+            w.WriteElementString("telnetFont", favorite.TelnetFont);
+            w.WriteElementString("telnetRows", favorite.TelnetRows.ToString());
+            w.WriteElementString("telnetTextColor", favorite.TelnetTextColor);
+
+            w.WriteElementString("tsgwCredsSource", favorite.TsgwCredsSource.ToString());
+            w.WriteElementString("tsgwDomain", favorite.TsgwDomain);
+            w.WriteElementString("tsgwHostname", favorite.TsgwHostname);
+            w.WriteElementString("tsgwPassword", favorite.TsgwPassword);
+            w.WriteElementString("tsgwSeparateLogin", favorite.TsgwSeparateLogin.ToString());
+            w.WriteElementString("tsgwUsageMethod", favorite.TsgwUsageMethod.ToString());
+            w.WriteElementString("tsgwUsername", favorite.TsgwUsername);
+
+            w.WriteElementString("url", favorite.Url);
+
+            w.WriteElementString("vncAutoScale", favorite.VncAutoScale.ToString());
+            w.WriteElementString("vncViewOnly", favorite.VncViewOnly.ToString());
+            w.WriteElementString("vncDisplayNumber", favorite.VncDisplayNumber.ToString());
+            w.WriteElementString("vmrcadministratormode", favorite.VMRCAdministratorMode.ToString());
+            w.WriteElementString("vmrcreducedcolorsmode", favorite.VMRCReducedColorsMode.ToString());
+
+            w.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Imports favorites from required xml file and returns newly imported items
+        /// </summary>
+        internal static List<FavoriteConfigurationElement> ImportXML(string file, bool showOnToolbar)
+        {
+            List<FavoriteConfigurationElement> favorites = ImportFavorites(file);
+            foreach (var favorite in favorites)
+            {
+                Settings.AddFavorite(favorite, showOnToolbar);
+            }
+
+            return favorites;
+        }
+
+        private static List<FavoriteConfigurationElement> ImportFavorites(string file)
+        {
+            List<FavoriteConfigurationElement> favorites = new List<FavoriteConfigurationElement>();
+            FavoriteConfigurationElement favorite = null;
             try
             {
-                XmlTextReader reader = new XmlTextReader(file);
-                while (reader.Read())
+                using (XmlTextReader reader = new XmlTextReader(file))
                 {
-                    switch (reader.NodeType)
+                    while (reader.Read())
                     {
-                        case XmlNodeType.Element:
-                            switch (reader.Name)
-                            {
-                                case "favorite":
-                                    if (fav != null)
-                                        Settings.AddFavorite(fav, showOnToolbar);
-                                    fav = new FavoriteConfigurationElement();
-                                    break;
-                                case "userName":
-                                    fav.UserName = reader.ReadString();
-                                    break;
-                                //case "encryptedPassword":
-                                //    fav.EncryptedPassword = reader.ReadString();
-                                //    break;
-                                case "password":
-                                    fav.Password = reader.ReadString();
-                                    break;
-
-                                case "acceleratorPassthrough":
-                                    fav.AcceleratorPassthrough = ReadBool(reader.ReadString());
-                                    break;
-                                case "allowBackgroundInput":
-                                    fav.AllowBackgroundInput = ReadBool(reader.ReadString());
-                                    break;
-                                case "authMethod":
-                                    fav.AuthMethod = ReadAuthMethod(reader.ReadString());
-                                    break;
-                                case "bitmapPeristence":
-                                    fav.BitmapPeristence = ReadBool(reader.ReadString());
-                                    break;
-                                case "connectionTimeout":
-                                    fav.ConnectionTimeout = ReadInt(reader.ReadString());
-                                    break;
-                                case "consolefont":
-                                    fav.ConsoleFont = reader.ReadString();
-                                    break;
-                                case "consolerows":
-                                    fav.ConsoleRows = ReadInt(reader.ReadString());
-                                    break;
-                                case "consolecols":
-                                    fav.ConsoleCols = ReadInt(reader.ReadString());
-                                    break;
-                                case "consolebackcolor":
-                                    fav.ConsoleBackColor = reader.ReadString();
-                                    break;
-                                case "consoletextcolor":
-                                    fav.ConsoleTextColor = reader.ReadString();
-                                    break;
-                                case "consolecursorcolor":
-                                    fav.ConsoleCursorColor = reader.ReadString();
-                                    break;
-                                case "connectToConsole":
-                                    fav.ConnectToConsole = ReadBool(reader.ReadString());
-                                    break;
-                                case "colors":
-                                    fav.Colors = ReadColors(reader.ReadString());
-                                    break;
-                                case "credential":
-                                    fav.Credential = reader.ReadString();
-                                    break;
-                                case "disableWindowsKey":
-                                    fav.DisableWindowsKey = ReadBool(reader.ReadString());
-                                    break;
-                                case "doubleClickDetect":
-                                    fav.DoubleClickDetect = ReadBool(reader.ReadString());
-                                    break;
-                                case "displayConnectionBar":
-                                    fav.DisplayConnectionBar = ReadBool(reader.ReadString());
-                                    break;
-                                case "disableControlAltDelete":
-                                    fav.DisableControlAltDelete = ReadBool(reader.ReadString());
-                                    break;
-                                case "domainName":
-                                    fav.DomainName = reader.ReadString();
-                                    break;
-                                case "desktopSizeHeight":
-                                    fav.DesktopSizeHeight = ReadInt(reader.ReadString());
-                                    break;
-                                case "desktopSizeWidth":
-                                    fav.DesktopSizeWidth = ReadInt(reader.ReadString());
-                                    break;
-                                case "desktopSize":
-                                    fav.DesktopSize = ReadDesktopSize(reader.ReadString());
-                                    break;
-                                case "desktopShare":
-                                    fav.DesktopShare = reader.ReadString();
-                                    break;
-                                case "disableTheming":
-                                    fav.DisableTheming = ReadBool(reader.ReadString());
-                                    break;
-                                case "disableMenuAnimations":
-                                    fav.DisableMenuAnimations = ReadBool(reader.ReadString());
-                                    break;
-                                case "disableFullWindowDrag":
-                                    fav.DisableFullWindowDrag = ReadBool(reader.ReadString());
-                                    break;
-                                case "disableCursorBlinking":
-                                    fav.DisableCursorBlinking = ReadBool(reader.ReadString());
-                                    break;
-                                case "disableCursorShadow":
-                                    fav.DisableCursorShadow = ReadBool(reader.ReadString());
-                                    break;
-                                case "disableWallPaper":
-                                    fav.DisableWallPaper = ReadBool(reader.ReadString());
-                                    break;
-                                case "executeBeforeConnect":
-                                    fav.ExecuteBeforeConnect = ReadBool(reader.ReadString());
-                                    break;
-                                case "executeBeforeConnectCommand":
-                                    fav.ExecuteBeforeConnectCommand = reader.ReadString();
-                                    break;
-                                case "executeBeforeConnectArgs":
-                                    fav.ExecuteBeforeConnectArgs = reader.ReadString();
-                                    break;
-                                case "executeBeforeConnectInitialDirectory":
-                                    fav.ExecuteBeforeConnectInitialDirectory = reader.ReadString();
-                                    break;
-                                case "executeBeforeConnectWaitForExit":
-                                    fav.ExecuteBeforeConnectWaitForExit = ReadBool(reader.ReadString());
-                                    break;
-                                case "enableDesktopComposition":
-                                    fav.EnableDesktopComposition = ReadBool(reader.ReadString());
-                                    break;
-                                case "enableFontSmoothing":
-                                    fav.EnableFontSmoothing = ReadBool(reader.ReadString());
-                                    break;
-                                case "enableSecuritySettings":
-                                    fav.EnableSecuritySettings = ReadBool(reader.ReadString());
-                                    break;
-                                case "enableEncryption":
-                                    fav.EnableEncryption = ReadBool(reader.ReadString());
-                                    break;
-                                case "enableCompression":
-                                    fav.EnableCompression = ReadBool(reader.ReadString());
-                                    break;
-                                case "enableTLSAuthentication":
-                                    fav.EnableTLSAuthentication = ReadBool(reader.ReadString());
-                                    break;
-                                case "enableNLAAuthentication":
-                                    fav.EnableNLAAuthentication = ReadBool(reader.ReadString());
-                                    break;
-                                case "grabFocusOnConnect":
-                                    fav.GrabFocusOnConnect = ReadBool(reader.ReadString());
-                                    break;
-                                case "idleTimeout":
-                                    fav.IdleTimeout = ReadInt(reader.ReadString());
-                                    break;
-                                case "icaServerINI":
-                                    fav.IcaServerINI = reader.ReadString();
-                                    break;
-                                case "icaClientINI":
-                                    fav.IcaClientINI = reader.ReadString();
-                                    break;
-                                case "icaEncryptionLevel":
-                                    fav.IcaEncryptionLevel = reader.ReadString();
-                                    break;
-                                case "iCAApplicationName":
-                                    fav.ICAApplicationName = reader.ReadString();
-                                    break;
-                                case "iCAApplicationWorkingFolder":
-                                    fav.ICAApplicationWorkingFolder = reader.ReadString();
-                                    break;
-                                case "iCAApplicationPath":
-                                    fav.ICAApplicationPath = reader.ReadString();
-                                    break;
-                                case "icaEnableEncryption":
-                                    fav.IcaEnableEncryption = ReadBool(reader.ReadString());
-                                    break;
-                                case "keyTag":
-                                    fav.KeyTag = reader.ReadString();
-                                    break;
-                                case "newWindow":
-                                    fav.NewWindow = ReadBool(reader.ReadString());
-                                    break;
-                                case "notes":
-                                    fav.Notes = reader.ReadString();
-                                    break;
-                                case "name":
-                                    fav.Name = reader.ReadString();
-                                    break;
-                                case "overallTimeout":
-                                    fav.OverallTimeout = ReadInt(reader.ReadString());
-                                    break;
-                                case "protocol":
-                                    fav.Protocol = reader.ReadString();
-                                    break;
-                                case "port":
-                                    fav.Port = ReadInt(reader.ReadString());
-                                    break;
-                                case "redirectedDrives":
-                                    fav.redirectedDrives = reader.ReadString();
-                                    break;
-                                case "redirectPorts":
-                                    fav.RedirectPorts = ReadBool(reader.ReadString());
-                                    break;
-                                case "redirectPrinters":
-                                    fav.RedirectPrinters = ReadBool(reader.ReadString());
-                                    break;
-                                case "redirectSmartCards":
-                                    fav.RedirectSmartCards = ReadBool(reader.ReadString());
-                                    break;
-                                case "redirectClipboard":
-                                    fav.RedirectClipboard = ReadBool(reader.ReadString());
-                                    break;
-                                case "redirectDevices":
-                                    fav.RedirectDevices = ReadBool(reader.ReadString());
-                                    break;
-                                case "sounds":
-                                    fav.Sounds = ReadRemoteSounds(reader.ReadString());
-                                    break;
-                                case "serverName":
-                                    fav.ServerName = reader.ReadString();
-                                    break;
-                                case "shutdownTimeout":
-                                    fav.ShutdownTimeout = ReadInt(reader.ReadString());
-                                    break;
-                                case "ssh1":
-                                    fav.SSH1 = ReadBool(reader.ReadString());
-                                    break;
-                                case "securityFullScreen":
-                                    fav.SecurityFullScreen = ReadBool(reader.ReadString());
-                                    break;
-                                case "securityStartProgram":
-                                    fav.SecurityStartProgram = reader.ReadString();
-                                    break;
-                                case "securityWorkingFolder":
-                                    fav.SecurityWorkingFolder = reader.ReadString();
-                                    break;
-                                case "tags":
-                                    fav.Tags = reader.ReadString();
-                                    break;
-                                case "telnet":
-                                    fav.Telnet = ReadBool(reader.ReadString());
-                                    break;
-                                case "telnetBackColor":
-                                    fav.TelnetBackColor = reader.ReadString();
-                                    break;
-                                case "telnetCols":
-                                    fav.TelnetCols = ReadInt(reader.ReadString());
-                                    break;
-                                case "telnetCursorColor":
-                                    fav.TelnetCursorColor = reader.ReadString();
-                                    break;
-                                case "telnetFont":
-                                    fav.TelnetFont = reader.ReadString();
-                                    break;
-                                case "telnetRows":
-                                    fav.TelnetRows = ReadInt(reader.ReadString());
-                                    break;
-                                case "toolBarIcon":
-                                    fav.ToolBarIcon = reader.ReadString();
-                                    break;
-                                case "tsgwCredsSource":
-                                    fav.TsgwCredsSource = ReadInt(reader.ReadString());
-                                    break;
-                                case "tsgwDomain":
-                                    fav.TsgwDomain = reader.ReadString();
-                                    break;
-                                case "tsgwHostname":
-                                    fav.TsgwHostname = reader.ReadString();
-                                    break;
-                                case "tsgwPassword":
-                                    fav.TsgwPassword = reader.ReadString();
-                                    break;
-                                case "tsgwSeparateLogin":
-                                    fav.TsgwSeparateLogin = ReadBool(reader.ReadString());
-                                    break;
-                                case "tsgwUsageMethod":
-                                    fav.TsgwUsageMethod = ReadInt(reader.ReadString());
-                                    break;
-                                case "tsgwUsername":
-                                    fav.TsgwUsername = reader.ReadString();
-                                    break;
-                                case "url":
-                                    fav.Url = reader.ReadString();
-                                    break;
-                                case "vncAutoScale":
-                                    fav.VncAutoScale = ReadBool(reader.ReadString());
-                                    break;
-                                case "vncViewOnly":
-                                    fav.VncViewOnly = ReadBool(reader.ReadString());
-                                    break;
-                                case "vncDisplayNumber":
-                                    fav.VncDisplayNumber = ReadInt(reader.ReadString());
-                                    break;
-                                case "vmrcadministratormode":
-                                    fav.VMRCAdministratorMode = ReadBool(reader.ReadString());
-                                    break;
-                                case "vmrcreducedcolorsmode":
-                                    fav.VMRCReducedColorsMode = ReadBool(reader.ReadString());
-                                    break;
-                            }
-                            break;
+                        favorite = ReadProperty(reader, favorites, favorite);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Error("Import XML Failed", ex);
+                Logging.Log.Error("Import XML Failed", ex);
             }
+
+            return favorites;
+        }
+
+        private static FavoriteConfigurationElement ReadProperty(XmlTextReader reader, List<FavoriteConfigurationElement> favorites, FavoriteConfigurationElement favorite)
+        {
+            switch (reader.NodeType)
+            {
+                case XmlNodeType.Element:
+                    switch (reader.Name)
+                    {
+                        case "favorite":
+                            favorite = new FavoriteConfigurationElement();
+                            favorites.Add(favorite);
+                            break;
+                        case "userName":
+                            favorite.UserName = reader.ReadString();
+                            break;
+                            //case "encryptedPassword":
+                            //    fav.EncryptedPassword = reader.ReadString();
+                            //    break;
+                        case "password":
+                            favorite.Password = reader.ReadString();
+                            break;
+
+                        case "acceleratorPassthrough":
+                            favorite.AcceleratorPassthrough = ReadBool(reader.ReadString());
+                            break;
+                        case "allowBackgroundInput":
+                            favorite.AllowBackgroundInput = ReadBool(reader.ReadString());
+                            break;
+                        case "authMethod":
+                            favorite.AuthMethod = ReadAuthMethod(reader.ReadString());
+                            break;
+                        case "bitmapPeristence":
+                            favorite.BitmapPeristence = ReadBool(reader.ReadString());
+                            break;
+                        case "connectionTimeout":
+                            favorite.ConnectionTimeout = ReadInt(reader.ReadString());
+                            break;
+                        case "consolefont":
+                            favorite.ConsoleFont = reader.ReadString();
+                            break;
+                        case "consolerows":
+                            favorite.ConsoleRows = ReadInt(reader.ReadString());
+                            break;
+                        case "consolecols":
+                            favorite.ConsoleCols = ReadInt(reader.ReadString());
+                            break;
+                        case "consolebackcolor":
+                            favorite.ConsoleBackColor = reader.ReadString();
+                            break;
+                        case "consoletextcolor":
+                            favorite.ConsoleTextColor = reader.ReadString();
+                            break;
+                        case "consolecursorcolor":
+                            favorite.ConsoleCursorColor = reader.ReadString();
+                            break;
+                        case "connectToConsole":
+                            favorite.ConnectToConsole = ReadBool(reader.ReadString());
+                            break;
+                        case "colors":
+                            favorite.Colors = ReadColors(reader.ReadString());
+                            break;
+                        case "credential":
+                            favorite.Credential = reader.ReadString();
+                            break;
+                        case "disableWindowsKey":
+                            favorite.DisableWindowsKey = ReadBool(reader.ReadString());
+                            break;
+                        case "doubleClickDetect":
+                            favorite.DoubleClickDetect = ReadBool(reader.ReadString());
+                            break;
+                        case "displayConnectionBar":
+                            favorite.DisplayConnectionBar = ReadBool(reader.ReadString());
+                            break;
+                        case "disableControlAltDelete":
+                            favorite.DisableControlAltDelete = ReadBool(reader.ReadString());
+                            break;
+                        case "domainName":
+                            favorite.DomainName = reader.ReadString();
+                            break;
+                        case "desktopSizeHeight":
+                            favorite.DesktopSizeHeight = ReadInt(reader.ReadString());
+                            break;
+                        case "desktopSizeWidth":
+                            favorite.DesktopSizeWidth = ReadInt(reader.ReadString());
+                            break;
+                        case "desktopSize":
+                            favorite.DesktopSize = ReadDesktopSize(reader.ReadString());
+                            break;
+                        case "desktopShare":
+                            favorite.DesktopShare = reader.ReadString();
+                            break;
+                        case "disableTheming":
+                            favorite.DisableTheming = ReadBool(reader.ReadString());
+                            break;
+                        case "disableMenuAnimations":
+                            favorite.DisableMenuAnimations = ReadBool(reader.ReadString());
+                            break;
+                        case "disableFullWindowDrag":
+                            favorite.DisableFullWindowDrag = ReadBool(reader.ReadString());
+                            break;
+                        case "disableCursorBlinking":
+                            favorite.DisableCursorBlinking = ReadBool(reader.ReadString());
+                            break;
+                        case "disableCursorShadow":
+                            favorite.DisableCursorShadow = ReadBool(reader.ReadString());
+                            break;
+                        case "disableWallPaper":
+                            favorite.DisableWallPaper = ReadBool(reader.ReadString());
+                            break;
+                        case "executeBeforeConnect":
+                            favorite.ExecuteBeforeConnect = ReadBool(reader.ReadString());
+                            break;
+                        case "executeBeforeConnectCommand":
+                            favorite.ExecuteBeforeConnectCommand = reader.ReadString();
+                            break;
+                        case "executeBeforeConnectArgs":
+                            favorite.ExecuteBeforeConnectArgs = reader.ReadString();
+                            break;
+                        case "executeBeforeConnectInitialDirectory":
+                            favorite.ExecuteBeforeConnectInitialDirectory = reader.ReadString();
+                            break;
+                        case "executeBeforeConnectWaitForExit":
+                            favorite.ExecuteBeforeConnectWaitForExit = ReadBool(reader.ReadString());
+                            break;
+                        case "enableDesktopComposition":
+                            favorite.EnableDesktopComposition = ReadBool(reader.ReadString());
+                            break;
+                        case "enableFontSmoothing":
+                            favorite.EnableFontSmoothing = ReadBool(reader.ReadString());
+                            break;
+                        case "enableSecuritySettings":
+                            favorite.EnableSecuritySettings = ReadBool(reader.ReadString());
+                            break;
+                        case "enableEncryption":
+                            favorite.EnableEncryption = ReadBool(reader.ReadString());
+                            break;
+                        case "enableCompression":
+                            favorite.EnableCompression = ReadBool(reader.ReadString());
+                            break;
+                        case "enableTLSAuthentication":
+                            favorite.EnableTLSAuthentication = ReadBool(reader.ReadString());
+                            break;
+                        case "enableNLAAuthentication":
+                            favorite.EnableNLAAuthentication = ReadBool(reader.ReadString());
+                            break;
+                        case "grabFocusOnConnect":
+                            favorite.GrabFocusOnConnect = ReadBool(reader.ReadString());
+                            break;
+                        case "idleTimeout":
+                            favorite.IdleTimeout = ReadInt(reader.ReadString());
+                            break;
+                        case "icaServerINI":
+                            favorite.IcaServerINI = reader.ReadString();
+                            break;
+                        case "icaClientINI":
+                            favorite.IcaClientINI = reader.ReadString();
+                            break;
+                        case "icaEncryptionLevel":
+                            favorite.IcaEncryptionLevel = reader.ReadString();
+                            break;
+                        case "iCAApplicationName":
+                            favorite.ICAApplicationName = reader.ReadString();
+                            break;
+                        case "iCAApplicationWorkingFolder":
+                            favorite.ICAApplicationWorkingFolder = reader.ReadString();
+                            break;
+                        case "iCAApplicationPath":
+                            favorite.ICAApplicationPath = reader.ReadString();
+                            break;
+                        case "icaEnableEncryption":
+                            favorite.IcaEnableEncryption = ReadBool(reader.ReadString());
+                            break;
+                        case "keyTag":
+                            favorite.KeyTag = reader.ReadString();
+                            break;
+                        case "newWindow":
+                            favorite.NewWindow = ReadBool(reader.ReadString());
+                            break;
+                        case "notes":
+                            favorite.Notes = reader.ReadString();
+                            break;
+                        case "name":
+                            favorite.Name = reader.ReadString();
+                            break;
+                        case "overallTimeout":
+                            favorite.OverallTimeout = ReadInt(reader.ReadString());
+                            break;
+                        case "protocol":
+                            favorite.Protocol = reader.ReadString();
+                            break;
+                        case "port":
+                            favorite.Port = ReadInt(reader.ReadString());
+                            break;
+                        case "redirectedDrives":
+                            favorite.redirectedDrives = reader.ReadString();
+                            break;
+                        case "redirectPorts":
+                            favorite.RedirectPorts = ReadBool(reader.ReadString());
+                            break;
+                        case "redirectPrinters":
+                            favorite.RedirectPrinters = ReadBool(reader.ReadString());
+                            break;
+                        case "redirectSmartCards":
+                            favorite.RedirectSmartCards = ReadBool(reader.ReadString());
+                            break;
+                        case "redirectClipboard":
+                            favorite.RedirectClipboard = ReadBool(reader.ReadString());
+                            break;
+                        case "redirectDevices":
+                            favorite.RedirectDevices = ReadBool(reader.ReadString());
+                            break;
+                        case "sounds":
+                            favorite.Sounds = ReadRemoteSounds(reader.ReadString());
+                            break;
+                        case "serverName":
+                            favorite.ServerName = reader.ReadString();
+                            break;
+                        case "shutdownTimeout":
+                            favorite.ShutdownTimeout = ReadInt(reader.ReadString());
+                            break;
+                        case "ssh1":
+                            favorite.SSH1 = ReadBool(reader.ReadString());
+                            break;
+                        case "securityFullScreen":
+                            favorite.SecurityFullScreen = ReadBool(reader.ReadString());
+                            break;
+                        case "securityStartProgram":
+                            favorite.SecurityStartProgram = reader.ReadString();
+                            break;
+                        case "securityWorkingFolder":
+                            favorite.SecurityWorkingFolder = reader.ReadString();
+                            break;
+                        case "tags":
+                            favorite.Tags = reader.ReadString();
+                            break;
+                        case "telnet":
+                            favorite.Telnet = ReadBool(reader.ReadString());
+                            break;
+                        case "telnetBackColor":
+                            favorite.TelnetBackColor = reader.ReadString();
+                            break;
+                        case "telnetCols":
+                            favorite.TelnetCols = ReadInt(reader.ReadString());
+                            break;
+                        case "telnetCursorColor":
+                            favorite.TelnetCursorColor = reader.ReadString();
+                            break;
+                        case "telnetFont":
+                            favorite.TelnetFont = reader.ReadString();
+                            break;
+                        case "telnetRows":
+                            favorite.TelnetRows = ReadInt(reader.ReadString());
+                            break;
+                        case "telnetTextColor":
+                            favorite.TelnetTextColor = reader.ReadString();
+                            break;
+                        case "toolBarIcon":
+                            favorite.ToolBarIcon = reader.ReadString();
+                            break;
+                        case "tsgwCredsSource":
+                            favorite.TsgwCredsSource = ReadInt(reader.ReadString());
+                            break;
+                        case "tsgwDomain":
+                            favorite.TsgwDomain = reader.ReadString();
+                            break;
+                        case "tsgwHostname":
+                            favorite.TsgwHostname = reader.ReadString();
+                            break;
+                        case "tsgwPassword":
+                            favorite.TsgwPassword = reader.ReadString();
+                            break;
+                        case "tsgwSeparateLogin":
+                            favorite.TsgwSeparateLogin = ReadBool(reader.ReadString());
+                            break;
+                        case "tsgwUsageMethod":
+                            favorite.TsgwUsageMethod = ReadInt(reader.ReadString());
+                            break;
+                        case "tsgwUsername":
+                            favorite.TsgwUsername = reader.ReadString();
+                            break;
+                        case "url":
+                            favorite.Url = reader.ReadString();
+                            break;
+                        case "vncAutoScale":
+                            favorite.VncAutoScale = ReadBool(reader.ReadString());
+                            break;
+                        case "vncViewOnly":
+                            favorite.VncViewOnly = ReadBool(reader.ReadString());
+                            break;
+                        case "vncDisplayNumber":
+                            favorite.VncDisplayNumber = ReadInt(reader.ReadString());
+                            break;
+                        case "vmrcadministratormode":
+                            favorite.VMRCAdministratorMode = ReadBool(reader.ReadString());
+                            break;
+                        case "vmrcreducedcolorsmode":
+                            favorite.VMRCReducedColorsMode = ReadBool(reader.ReadString());
+                            break;
+                    }
+                    break;
+            }
+
+            return favorite;
         }
 
         private static bool ReadBool(string str)
