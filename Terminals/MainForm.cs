@@ -489,16 +489,6 @@ namespace Terminals
             }
         }
 
-        public void ShowManagedConnections()
-        {
-            using (OrganizeFavoritesForm conMgr = new OrganizeFavoritesForm())
-            {
-                conMgr.ShowDialog();
-            }
-
-            LoadFavorites();
-        }
-
         public void OpenNetworkingTools(string Action, string Host)
         {
             TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(Program.Resources.GetString("NetworkingTools"));
@@ -1331,7 +1321,6 @@ namespace Terminals
             this.rebuildShortcutsToolStripMenuItem_Click(null, null);
         }
 
-
         #endregion
 
         #region Mainform events
@@ -1991,7 +1980,9 @@ namespace Terminals
 
         private void manageConnectionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.ShowManagedConnections();
+            OrganizeFavoritesForm conMgr = new OrganizeFavoritesForm();
+            conMgr.ShowDialog();
+            LoadFavorites();
         }
 
         private void saveTerminalsAsGroupToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2541,10 +2532,18 @@ namespace Terminals
             this.ShowCredentialsManager();
         }        
 
-        private void exportImportConnectionsListToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exportConnectionsListToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ExportFrom ei = new ExportFrom();
             ei.Show();
+        }
+
+        private void toolStripMenuItemImport_Click(object sender, EventArgs e)
+        {
+            OrganizeFavoritesForm conMgr = new OrganizeFavoritesForm();
+            conMgr.CallImport();
+            conMgr.ShowDialog();
+            LoadFavorites();
         }
 
         private void showInDualScreensToolStripMenuItem_Click(object sender, EventArgs e)

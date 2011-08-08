@@ -21,7 +21,6 @@ namespace Terminals
             ImportOpenFileDialog.Filter = Importers.GetImportersDialogFilter();
         }
 
-        #region Private
         private void LoadConnections()
         {            
             lvConnections.BeginUpdate();
@@ -200,24 +199,7 @@ namespace Terminals
 
         private void ImportButton_Click(object sender, EventArgs e)
         {
-          bool needsReload = false;
-          if (ImportOpenFileDialog.ShowDialog() == DialogResult.OK)
-          {
-            string filename = ImportOpenFileDialog.FileName;
-
-            FavoriteConfigurationElementCollection coll = Importers.ImportFavorites(filename);
-            if (coll != null)
-            {
-              needsReload = true;
-              foreach (FavoriteConfigurationElement fav in coll)
-              {
-                Settings.AddFavorite(fav, false);
-              }
-            }
-          }
-
-          if (needsReload) 
-            LoadConnections();
+            CallImport();
         }
 
         private void lvConnections_ColumnClick(object sender, ColumnClickEventArgs e)
@@ -241,6 +223,33 @@ namespace Terminals
             // Perform the sort with these new sort options.
             lvConnections.Sort();
         }
-        #endregion
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            ExportFrom ei = new ExportFrom();
+            ei.Show();
+        }
+
+        internal void CallImport()
+        {
+            bool needsReload = false;
+            if (ImportOpenFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filename = ImportOpenFileDialog.FileName;
+
+                FavoriteConfigurationElementCollection coll = Importers.ImportFavorites(filename);
+                if (coll != null)
+                {
+                    needsReload = true;
+                    foreach (FavoriteConfigurationElement fav in coll)
+                    {
+                        Settings.AddFavorite(fav, false);
+                    }
+                }
+            }
+
+            if (needsReload)
+                LoadConnections();
+        }
     }
 }

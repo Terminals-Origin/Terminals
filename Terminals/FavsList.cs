@@ -11,7 +11,6 @@ namespace Terminals
 {
     internal partial class FavsList : UserControl
     {
-        internal const String UNTAGGED_NODENAME = "Untagged";
         private MethodInvoker _historyInvoker;
         private Boolean _eventDone = false;
         private Object _historyLock = new Object();
@@ -50,45 +49,8 @@ namespace Terminals
                     this._nodeTextList.Add(node.Text);
             }
 
-            this.favsTree.Nodes.Clear();
-            SortedDictionary<String, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
-            SortedDictionary<String, TreeNode> SortedTags = new SortedDictionary<String, TreeNode>();
-            SortedTags.Add(UNTAGGED_NODENAME, new TreeNode(UNTAGGED_NODENAME));
-            this.favsTree.Nodes.Add(SortedTags[UNTAGGED_NODENAME]);
-            if (favorites != null)
-            {
-                foreach (String key in favorites.Keys)
-                {
-                    FavoriteConfigurationElement fav = favorites[key];
-                    if (fav.TagList.Count > 0)
-                    {
-                        foreach (String tag in fav.TagList)
-                        {
-                            TreeNode favNode = new TreeNode(fav.Name);
-                            favNode.Tag = fav;
-                            if (!SortedTags.ContainsKey(tag))
-                            {
-                                TreeNode tagNode = new TreeNode(tag);
-                                favsTree.Nodes.Add(tagNode);
-                                SortedTags.Add(tag, tagNode);
-                            }
-
-                            if (!SortedTags[tag].Nodes.Contains(favNode)) 
-                                SortedTags[tag].Nodes.Add(favNode);
-                        }
-                    }
-                    else
-                    {
-                        TreeNode favNode = new TreeNode(fav.Name);
-                        favNode.Tag = fav;
-
-                        if (!SortedTags[UNTAGGED_NODENAME].Nodes.Contains(favNode))
-                            SortedTags[UNTAGGED_NODENAME].Nodes.Add(favNode);
-                    }
-                }
-            }
-
-            favsTree.Sort();
+            FavoriteTreeListLoader loader = new FavoriteTreeListLoader(this.favsTree);
+            loader.Load();
 
             foreach (TreeNode node in favsTree.Nodes)
             {

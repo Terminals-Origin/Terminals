@@ -301,6 +301,7 @@
       <DependentUpon>ExportFrom.cs</DependentUpon>
     </Compile>
     <Compile Include="ExportImport\ExportImport.cs" />
+    <Compile Include="FavoriteTreeListLoader.cs" />
     <Compile Include="FavsList.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Terminals.Configuration;
 
 namespace Terminals
 {
@@ -94,60 +93,8 @@ namespace Terminals
         
         private void LoadExportList()
         {
-            favsTree.Nodes.Clear();
-            SortedDictionary<string, FavoriteConfigurationElement> favorites =
-                Settings.GetSortedFavorites(Settings.DefaultSortProperty);
-            
-            if (favorites != null)
-            {
-                SortedDictionary<string, TreeNode> sortedTags = new SortedDictionary<string, TreeNode>();
-                foreach (KeyValuePair<string, FavoriteConfigurationElement> favoriteKeyPair in favorites)
-                {
-                    AddFavoriteTreeNode(favoriteKeyPair, sortedTags);
-                }
-            }
-            favsTree.Sort();
-        }
-
-        private void AddFavoriteTreeNode(KeyValuePair<string, FavoriteConfigurationElement> favoriteKeyPair,
-                                         SortedDictionary<string, TreeNode> sortedTags)
-        {
-            FavoriteConfigurationElement favorite = favoriteKeyPair.Value;
-            if (favorite.TagList.Count > 0)
-            {
-                foreach (string tag in favorite.TagList)
-                {
-                    this.CreateNodeInSortedTagsByTag(sortedTags, tag, favorite);
-                }
-            }
-            else
-            {
-                this.CreateNodeInSortedTagsByTag(sortedTags, FavsList.UNTAGGED_NODENAME, favorite);
-            }
-        }
-
-        private void CreateNodeInSortedTagsByTag(SortedDictionary<string, TreeNode> sortedTags,
-                                                 string tag, FavoriteConfigurationElement favorite)
-        {
-            this.EnsureTagNode(sortedTags, tag);
-            TreeNode favNode = new TreeNode(favorite.Name);
-            favNode.Tag = favorite;
-
-            if (!sortedTags[tag].Nodes.Contains(favNode))
-                sortedTags[tag].Nodes.Add(favNode);
-        }
-
-        /// <summary>
-        /// Create tree node for Tag, if isn't already in sortedTags
-        /// </summary>
-        private void EnsureTagNode(SortedDictionary<string, TreeNode> sortedTags, string tag)
-        {
-            if (!sortedTags.ContainsKey(tag))
-            {
-                TreeNode tagNode = new TreeNode(tag);
-                this.favsTree.Nodes.Add(tagNode);
-                sortedTags.Add(tag, tagNode);
-            }
+            FavoriteTreeListLoader loader = new FavoriteTreeListLoader(this.favsTree);
+            loader.Load();
         }
     }
 }
