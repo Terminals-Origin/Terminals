@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Forms;
 
 namespace Terminals.Network.Servers
@@ -74,7 +75,8 @@ namespace Terminals.Network.Servers
             ServerNameComboBox.Items.Clear();
             if(Settings.GetFavorites()!=null) {
                 foreach(FavoriteConfigurationElement elm in Settings.GetFavorites()) {
-                    if(elm.Protocol == "RDP") {
+                    if (elm.Protocol == ConnectionManager.RDP)
+                    {
                         this.ServerNameComboBox.Items.Add(elm.ServerName);
                     }
                 }

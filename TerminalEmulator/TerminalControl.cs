@@ -37,9 +37,6 @@ namespace WalburySoftware
         private Int32 _rows;
         private Int32 TopMargin;
         private Int32 BottomMargin;
-        private String TypeFace = FontFamily.GenericMonospace.GetName(0);
-        private FontStyle TypeStyle = System.Drawing.FontStyle.Regular;
-        private Int32 TypeSize = 8;
         private Size CharSize;
         private Int32 UnderlinePos;
         private uc_Caret Caret;
@@ -121,8 +118,6 @@ namespace WalburySoftware
 
             this.Caret.Pos = new Point(0, 0);
             this.CharSize = new Size();
-            this.Font = new Font(this.TypeFace, this.TypeSize, this.TypeStyle);
-            ////this.Font       = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
 
             AssignDefaultColors();
 
@@ -175,12 +170,19 @@ namespace WalburySoftware
             this.CaretOffEvent += new CaretOffEventHandler(this.CaretOff);
             this.CaretOnEvent += new CaretOnEventHandler(this.CaretOn);
             this.RxdTextEvent += new RxdTextEventHandler(this.Parser.ParseString);
+            this.FontChanged += new EventHandler(OnFontChanged);
 
             this.BeginDrag = new Point();
             this.EndDrag = new Point();
 
             this.Cursor = Cursors.IBeam;
         }
+
+      private  void OnFontChanged(object sender, EventArgs e)
+      {
+          System.Diagnostics.Debug.WriteLine(String.Format("Font changed to {0}", this.Font.ToString()));
+          GetFontInfo();
+      }
 
       private void AssignDefaultColors()
       {
@@ -204,6 +206,7 @@ namespace WalburySoftware
 
             set
             {
+                SetSize(value, this._cols);
             }
         }
 
@@ -216,6 +219,7 @@ namespace WalburySoftware
 
             set
             {
+                SetSize(this._rows, value);
             }
         }
 
@@ -273,9 +277,9 @@ namespace WalburySoftware
 
         protected override void OnResize (System.EventArgs e)
         {
-            this.Font = new Font (this.TypeFace, this.TypeSize, this.TypeStyle);
-
-            // reset scrollbar values
+            System.Diagnostics.Debug.WriteLine(String.Format("Before: {0}x{1}, Console: {2}x{3}",
+                this.Width, this.Height, this.CharSize.Width, this.CharSize.Height));
+            // reset scrollbar values);
             this.SetScrollBarValues();
 
             // capture text at cursor b/c it's not in the scrollback buffer yet
@@ -366,6 +370,8 @@ namespace WalburySoftware
             this.Refresh();
             
             base.OnResize(e);
+            System.Diagnostics.Debug.WriteLine(String.Format("After: {0}x{1}, Console: {2}x{3}",
+                this.Width, this.Height, this.CharSize.Width, this.CharSize.Height));
         }
             
         protected override void OnPaint (System.Windows.Forms.PaintEventArgs e)
@@ -552,11 +558,6 @@ namespace WalburySoftware
             }
             
             base.OnMouseDown (CurArgs);
-        }
-
-        protected override void OnFontChanged (EventArgs e)
-        {
-            //MessageBox.Show(this.Font.Name + " " + Convert.ToString(this.Font.Size));
         }
 
         // Handle Keyboard Events:

@@ -285,7 +285,7 @@ namespace Terminals
                         release = new FavoriteConfigurationElement(_terminalsReleasesFavoriteName);
                         release.Url = "http://terminals.codeplex.com";
                         release.Tags = Program.Resources.GetString("Terminals");
-                        release.Protocol = "HTTP";
+                        release.Protocol = ConnectionManager.HTTP;
                         Settings.AddFavorite(release, false);
                     }
 

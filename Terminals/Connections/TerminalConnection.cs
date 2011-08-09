@@ -6,7 +6,7 @@ using WalburySoftware;
 
 namespace Terminals.Connections
 {
-    public class TerminalConnection : Connection
+    internal class TerminalConnection : Connection
     {
         #region Fields
 
@@ -56,45 +56,21 @@ namespace Terminals.Connections
                 this.client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 this.client.Connect(Favorite.ServerName, Favorite.Port);
 
-                String domainName = String.IsNullOrEmpty(Favorite.DomainName) ? Settings.DefaultDomain : Favorite.DomainName;
                 String password = String.IsNullOrEmpty(Favorite.Password) ? Settings.DefaultPassword : Favorite.Password;
                 String userName = String.IsNullOrEmpty(Favorite.UserName) ? Settings.DefaultUsername : Favorite.UserName;
 
                 switch (Favorite.Protocol)
                 {
-                    case "Telnet":
-                        protocol = "Telnet";
-                        TcpProtocol t = new TcpProtocol(new NetworkStream(this.client));
-                        TelnetProtocol p = new TelnetProtocol();
-                        t.OnDataIndicated += p.IndicateData;
-                        t.OnDisconnect += this.OnDisconnected;
-                        p.TerminalType = term.TerminalType;
-                        p.Username = userName;
-                        p.Password = password;
-                        p.OnDataIndicated += term.IndicateData;
-                        p.OnDataRequested += t.RequestData;
-                        term.OnDataRequested += p.RequestData;
-                        this.connected = this.client.Connected;
+                    case ConnectionManager.TELNET:
+                        {
+                           protocol = ConfigureTelnetConnection(userName, password);
+                        }
                         break;
 
-                    case "SSH":
-                        this.sshProtocol = new SSHClient.Protocol();
-                        this.sshProtocol.setTerminalParams(term.TerminalType, term.Rows, term.Columns);
-                        this.sshProtocol.OnDataIndicated += term.IndicateData;
-                        this.sshProtocol.OnDisconnect += this.OnDisconnected;
-                        term.OnDataRequested += this.sshProtocol.RequestData;
-
-                        String key = String.Empty;
-                        SSHClient.KeyConfigElement e = Settings.SSHKeys.Keys[Favorite.KeyTag];
-
-                        if (e != null)
-                            key = e.Key;
-
-                        this.sshProtocol.setProtocolParams(Favorite.AuthMethod, userName, password, key, Favorite.SSH1);
-                        protocol = (Favorite.SSH1) ? "SSH1" : "SSH2";
-
-                        this.sshProtocol.Connect(client);
-                        this.connected = true; // SSH will throw if fails
+                    case ConnectionManager.SSH:
+                        {
+                            protocol = ConfigureSshConnection(userName, password);
+                        }
                         break;
                 }
 
@@ -106,6 +82,44 @@ namespace Terminals.Connections
                 Logging.Log.Fatal(String.Format("Connecting to {0} Connection", protocol), exc);
                 return false;
             }
+        }
+
+        private string ConfigureTelnetConnection(string userName, string password)
+        {
+            TcpProtocol tcpProtocol = new TcpProtocol(new NetworkStream(this.client));
+            TelnetProtocol p = new TelnetProtocol();
+            tcpProtocol.OnDataIndicated += p.IndicateData;
+            tcpProtocol.OnDisconnect += this.OnDisconnected;
+            p.TerminalType = this.term.TerminalType;
+            p.Username = userName;
+            p.Password = password;
+            p.OnDataIndicated += this.term.IndicateData;
+            p.OnDataRequested += tcpProtocol.RequestData;
+            this.term.OnDataRequested += p.RequestData;
+            this.connected = this.client.Connected;
+
+            return ConnectionManager.TELNET;
+        }
+
+        private string ConfigureSshConnection(string userName, string password)
+        {
+            this.sshProtocol = new SSHClient.Protocol();
+            this.sshProtocol.setTerminalParams(term.TerminalType, term.Rows, term.Columns);
+            this.sshProtocol.OnDataIndicated += term.IndicateData;
+            this.sshProtocol.OnDisconnect += this.OnDisconnected;
+            term.OnDataRequested += this.sshProtocol.RequestData;
+
+            String key = String.Empty;
+            SSHClient.KeyConfigElement keyConfigElement = Settings.SSHKeys.Keys[Favorite.KeyTag];
+
+            if (keyConfigElement != null)
+                key = keyConfigElement.Key;
+
+            this.sshProtocol.setProtocolParams(Favorite.AuthMethod, userName, password, key, Favorite.SSH1);
+
+            this.sshProtocol.Connect(client);
+            this.connected = true; // SSH will throw if fails
+            return (Favorite.SSH1) ? "SSH1" : "SSH2";
         }
 
         private void AssignTerminalCollors()

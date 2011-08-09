@@ -82,7 +82,7 @@ namespace Terminals.Connections
 
         public void CheckForTerminalServer(FavoriteConfigurationElement Fav)
         {
-            if (Fav.Protocol == "RDP")
+            if (Fav.Protocol == ConnectionManager.RDP)
             {
                 System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(this.CheckForTS), (object)Fav);
             }
