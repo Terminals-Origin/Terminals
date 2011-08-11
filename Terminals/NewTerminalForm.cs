@@ -488,7 +488,7 @@ namespace Terminals
                 this._favorite.IcaClientINI = this.ICAClientINI.Text;
                 this._favorite.IcaServerINI = this.ICAServerINI.Text;
                 this._favorite.IcaEncryptionLevel = this.ICAEncryptionLevelCombobox.Text;
-                this.ICAEnableEncryptionCheckbox.Checked = this.ICAEncryptionLevelCombobox.Enabled;
+                this._favorite.IcaEnableEncryption = this.ICAEnableEncryptionCheckbox.Checked;
 
                 this._favorite.Notes = this.NotesTextbox.Text;
 

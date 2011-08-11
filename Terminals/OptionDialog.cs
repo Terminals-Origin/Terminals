@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using AxMSTSCLib;
@@ -435,7 +434,7 @@ namespace Terminals.Forms
                 // Store this Token for later usage,
                 // or set your Flickr instance to use it.
                 MessageBox.Show("User authenticated successfully");
-                Terminals.Logging.Log.Info("User authenticated successfully. Authentication token is " + auth.Token + ".User id is " + auth.User.UserId + ", username is" + auth.User.Username);
+                Logging.Log.Info("User authenticated successfully. Authentication token is " + auth.Token + ".User id is " + auth.User.UserId + ", username is" + auth.User.Username);
                 flickr.AuthToken = auth.Token;
                 Settings.FlickrToken = auth.Token;
             }
@@ -443,14 +442,15 @@ namespace Terminals.Forms
             {
                 // If user did not authenticat your application
                 // then a FlickrException will be thrown.
-                Terminals.Logging.Log.Info("User not authenticated successfully", ex);
+                Logging.Log.Info("User not authenticated successfully", ex);
                 MessageBox.Show("User did not authenticate you" +ex.Message);
             }
         }
 
         private void ClearMasterButton_Click(object sender, EventArgs e)
         {
-            if(System.Windows.Forms.MessageBox.Show("Are you sure you want to remove the master password?\r\n\r\n**Please be advised that this will render ALL saved passwords inactive!**", Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
+            if(MessageBox.Show("Are you sure you want to remove the master password?\r\n\r\n**Please be advised that this will render ALL saved passwords inactive!**",
+                               Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 Settings.TerminalsPassword = String.Empty;
                 Settings.KeyMaterial = String.Empty;
@@ -549,7 +549,7 @@ namespace Terminals.Forms
 
                 try
                 {
-                    wrapper.AddFileObject(this.amazonBucket, this.amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
+                    wrapper.AddFileObject(this.amazonBucket, this.amazonConfigKeyName, Program.ConfigurationFileLocation);
                     url = wrapper.GetUrl(this.amazonBucket, this.amazonConfigKeyName);
                 }
                 catch (Exception exc)
@@ -582,7 +582,7 @@ namespace Terminals.Forms
 
                 try
                 {
-                    wrapper.GetFileObject(this.amazonBucket, this.amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
+                    wrapper.GetFileObject(this.amazonBucket, this.amazonConfigKeyName, Program.ConfigurationFileLocation);
                 }
                 catch (Exception exc)
                 {
