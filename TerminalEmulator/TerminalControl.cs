@@ -175,6 +175,9 @@ namespace WalburySoftware
             this.BeginDrag = new Point();
             this.EndDrag = new Point();
 
+            // Enable autowrap when reaching the end of columnwidth
+            this.Modes.Flags = this.Modes.Flags | uc_Mode.AutoWrap;
+
             this.Cursor = Cursors.IBeam;
         }
 
