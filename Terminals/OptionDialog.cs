@@ -1,18 +1,17 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Affirma.ThreeSharp.Wrapper;
 using AxMSTSCLib;
 using FlickrNet;
 using Terminals.Configuration;
 
 namespace Terminals.Forms
 {
-    public partial class OptionDialog : Form
+    internal partial class OptionDialog : Form
     {
         private AxMsRdpClient6 currentTerminal;
         private String tempFrob;
-        private readonly String amazonBucket = "Terminals";
-        private readonly String amazonConfigKeyName = "Terminals.config";
         private Panel currentPanel = null;
 
         #region Constructors
@@ -79,13 +78,8 @@ namespace Terminals.Forms
             this.AmazonBackupCheckbox.Checked = Settings.UseAmazon;
             this.AccessKeyTextbox.Text = Settings.AmazonAccessKey;
             this.SecretKeyTextbox.Text = Settings.AmazonSecretKey;
-
-            this.AccessKeyTextbox.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.SecretKeyTextbox.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.BucketNameTextBox.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.TestButton.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.BackupButton.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.RestoreButton.Enabled = this.AmazonBackupCheckbox.Checked;
+            this.BucketName = Settings.AmazonBucketName;
+            UpdateAmazonControlsEnabledState();
 
             // Proxy tab
             this.AutoProxyRadioButton.Checked = !Settings.UseProxy;
@@ -319,6 +313,7 @@ namespace Terminals.Forms
             Settings.UseAmazon = this.AmazonBackupCheckbox.Checked;
             Settings.AmazonAccessKey = this.AccessKeyTextbox.Text;
             Settings.AmazonSecretKey = this.SecretKeyTextbox.Text;
+            Settings.AmazonBucketName = this.BucketName;
 
             // Proxy tab
             Settings.UseProxy = this.ProxyRadionButton.Checked;
@@ -471,7 +466,7 @@ namespace Terminals.Forms
             {
                 if (ofd.ShowDialog(this) == DialogResult.OK)
                 {
-                    String md5 = Terminals.Updates.UpdateManager.GetMD5HashFromFile(ofd.FileName);
+                    String md5 = Updates.UpdateManager.GetMD5HashFromFile(ofd.FileName);
                     Clipboard.SetText(String.Format("{0}\r\n{1}", ofd.FileName, md5));
                     MessageBox.Show(String.Format("MD5 of {0}, value:{1}, was copied to the clipboard;", ofd.FileName, md5));
                 }
@@ -482,118 +477,6 @@ namespace Terminals.Forms
         {
             this.ProxyAddressTextbox.Enabled = this.ProxyRadionButton.Checked;
             this.ProxyPortTextbox.Enabled = this.ProxyRadionButton.Checked;
-        }
-
-        private void TestButton_Click(object sender, EventArgs e)
-        {
-            this.Cursor = Cursors.WaitCursor;
-            try
-            {
-                Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                String testBucket = Guid.NewGuid().ToString();
-                wrapper.AddBucket(testBucket);
-                String bucket = wrapper.ListBucket(testBucket);
-                wrapper.DeleteBucket(testBucket);
-
-                try
-                {
-                    String terminals = wrapper.ListBucket(this.amazonBucket);
-                }
-                catch (Exception exc)
-                {
-                    if (exc.Message == "The specified bucket does not exist")
-                    {
-                        wrapper.AddBucket(this.amazonBucket);
-                        String terminals = wrapper.ListBucket(this.amazonBucket);
-                    }
-                }
-
-                this.ErrorLabel.Text = "Test was successful!";
-                this.ErrorLabel.ForeColor = Color.Black;
-            }
-            catch (Exception exc)
-            {
-                this.ErrorLabel.ForeColor = Color.Red;
-                this.ErrorLabel.Text = exc.Message;
-            }
-            finally
-            {
-                this.Cursor = Cursors.Default;
-            }
-        }
-
-        private void AmazonBackupCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            this.AccessKeyTextbox.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.SecretKeyTextbox.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.BucketNameTextBox.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.TestButton.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.BackupButton.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.RestoreButton.Enabled = this.AmazonBackupCheckbox.Checked;
-        }
-
-        private void BackupButton_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Are you sure you want to upload your current configuration?", "Amazon S3 Backup", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                String url = String.Empty;
-                try
-                {
-                    String terminals = wrapper.ListBucket(this.amazonBucket);
-                }
-                catch (Exception)
-                {
-                    wrapper.AddBucket(this.amazonBucket);
-                }
-
-                try
-                {
-                    wrapper.AddFileObject(this.amazonBucket, this.amazonConfigKeyName, Program.ConfigurationFileLocation);
-                    url = wrapper.GetUrl(this.amazonBucket, this.amazonConfigKeyName);
-                }
-                catch (Exception exc)
-                {
-                    this.ErrorLabel.ForeColor = Color.Red;
-                    this.ErrorLabel.Text = exc.Message;
-                    return;
-                }
-
-                this.ErrorLabel.ForeColor = Color.Black;
-                this.ErrorLabel.Text = "The backup was a success!";
-            }
-        }
-
-        private void RestoreButton_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Are you sure you want to restore your current configuration?", "Amazon S3 Backup", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                try
-                {
-                    String terminals = wrapper.ListBucket(this.amazonBucket);
-                }
-                catch (Exception exc)
-                {
-                    this.ErrorLabel.ForeColor = Color.Red;
-                    this.ErrorLabel.Text = exc.Message;
-                    return;
-                }
-
-                try
-                {
-                    wrapper.GetFileObject(this.amazonBucket, this.amazonConfigKeyName, Program.ConfigurationFileLocation);
-                }
-                catch (Exception exc)
-                {
-                    this.ErrorLabel.ForeColor = Color.Red;
-                    this.ErrorLabel.Text = exc.Message;
-                    return;
-                }
-
-                this.ErrorLabel.ForeColor = Color.Black;
-                this.ErrorLabel.Text = "The restore was a success!";
-            }
         }
 
         private void ButtonBrowseCaptureFolder_Click(object sender, EventArgs e)
@@ -635,6 +518,141 @@ namespace Terminals.Forms
             this.txtArguments.Enabled = enabled;
             this.txtInitialDirectory.Enabled = enabled;
             this.chkWaitForExit.Enabled = enabled;
+        }
+
+        #endregion
+
+        #region Amazon S3
+
+        private const String AMAZON_BUCKET = "Terminals";
+        private const String AMAZON_FILE = "Terminals.config";
+        private const String AMAZON_MESSAGETITLE = "Amazon S3 Backup";
+
+        /// <summary>
+        /// Gets or sets the bucket name into/from the text box (it is a proxy).
+        /// Returns default "Terminals" bucket name or text filled into associated text box.
+        /// </summary>
+        private String BucketName
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(this.BucketNameTextBox.Text))
+                    this.BucketNameTextBox.Text = AMAZON_BUCKET;
+                return this.BucketNameTextBox.Text;
+            }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                    this.BucketNameTextBox.Text = AMAZON_BUCKET;
+            }
+        }
+
+        private void AmazonBackupCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAmazonControlsEnabledState();
+        }
+
+        private void UpdateAmazonControlsEnabledState()
+        {
+            this.AccessKeyTextbox.Enabled = this.AmazonBackupCheckbox.Checked;
+            this.SecretKeyTextbox.Enabled = this.AmazonBackupCheckbox.Checked;
+            this.BucketNameTextBox.Enabled = this.AmazonBackupCheckbox.Checked;
+            this.TestButton.Enabled = this.AmazonBackupCheckbox.Checked;
+            this.BackupButton.Enabled = this.AmazonBackupCheckbox.Checked;
+            this.RestoreButton.Enabled = this.AmazonBackupCheckbox.Checked;
+        }
+
+        private void TestButton_Click(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.WaitCursor;
+            try
+            {
+                ThreeSharpWrapper wrapper = new ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
+                EnsureBucketExists(wrapper);
+
+                this.ErrorLabel.Text = "Test was successful!";
+                this.ErrorLabel.ForeColor = Color.Black;
+            }
+            catch (Exception exc)
+            {
+                this.ErrorLabel.ForeColor = Color.Red;
+                this.ErrorLabel.Text = exc.Message;
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+        }
+        
+        private void BackupButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to upload your current configuration?",
+                AMAZON_MESSAGETITLE, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                ThreeSharpWrapper wrapper = new ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
+                EnsureBucketExists(wrapper);
+                BackUpToAmazon(wrapper);
+            }
+        }
+
+        private void RestoreButton_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to restore your current configuration?",
+                AMAZON_MESSAGETITLE, MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                ThreeSharpWrapper wrapper = new ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
+                RestoreFromAmazon(wrapper);
+            }
+        }
+
+        private void EnsureBucketExists(ThreeSharpWrapper wrapper)
+        {
+            try
+            {
+                wrapper.ListBucket(this.BucketName);
+            }
+            catch (Exception exc)
+            {
+                if (exc.Message == "The specified bucket does not exist")
+                {
+                    wrapper.AddBucket(this.BucketName);
+                    wrapper.ListBucket(this.BucketName);
+                }
+            }
+        }
+
+        private void BackUpToAmazon(ThreeSharpWrapper wrapper)
+        {
+            try
+            {
+                wrapper.AddFileObject(this.BucketName, AMAZON_FILE, Program.ConfigurationFileLocation);
+                wrapper.GetUrl(this.BucketName, AMAZON_FILE);
+                    
+                this.ErrorLabel.ForeColor = Color.Black;
+                this.ErrorLabel.Text = "The backup was a success!";
+            }
+            catch (Exception exc)
+            {
+                this.ErrorLabel.ForeColor = Color.Red;
+                this.ErrorLabel.Text = exc.Message;
+            }
+        }
+
+        private void RestoreFromAmazon(ThreeSharpWrapper wrapper)
+        {
+            try
+            {
+                wrapper.ListBucket(this.BucketName);
+                wrapper.GetFileObject(this.BucketName, AMAZON_FILE, Program.ConfigurationFileLocation);
+                
+                this.ErrorLabel.ForeColor = Color.Black;
+                this.ErrorLabel.Text = "The restore was a success!";
+            }
+            catch (Exception exc)
+            {
+                this.ErrorLabel.ForeColor = Color.Red;
+                this.ErrorLabel.Text = exc.Message;
+            }
         }
 
         #endregion

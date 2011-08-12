@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Affirma.ThreeSharp.Wrapper;
 using Terminals.Configuration;
 
 namespace Terminals.Forms
@@ -22,8 +23,28 @@ namespace Terminals.Forms
         private CheckBox AmazonBackupCheckbox;
         private PictureBox pictureBox1;
 
-        private readonly String amazonBucketName = "Terminals";
-        private readonly String amazonConfigKeyName = "Terminals.config";
+        private const String AMAZON_BUCKET = "Terminals";
+        private const String AMAZON_FILE = "Terminals.config";
+        private const String AMAZON_MESSAGETITLE = "Amazon S3 Backup";
+
+        /// <summary>
+        /// Gets or sets the bucket name into/from the text box (it is a proxy).
+        /// Returns default "Terminals" bucket name or text filled into associated text box.
+        /// </summary>
+        private String BucketName
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(this.BucketNameTextBox.Text))
+                    this.BucketNameTextBox.Text = AMAZON_BUCKET;
+                return this.BucketNameTextBox.Text;
+            }
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                    this.BucketNameTextBox.Text = AMAZON_BUCKET;
+            }
+        }
 
         public AmazonOptionPanel()
         {
@@ -209,13 +230,9 @@ namespace Terminals.Forms
             this.AmazonBackupCheckbox.Checked = Settings.UseAmazon;
             this.AccessKeyTextbox.Text = Settings.AmazonAccessKey;
             this.SecretKeyTextbox.Text = Settings.AmazonSecretKey;
+            this.BucketName = Settings.AmazonBucketName;
 
-            this.AccessKeyTextbox.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.SecretKeyTextbox.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.BucketNameTextBox.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.TestButton.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.BackupButton.Enabled = this.AmazonBackupCheckbox.Checked;
-            this.RestoreButton.Enabled = this.AmazonBackupCheckbox.Checked;
+            UpdateAmazonControlsEnabledState();
         }
 
         public override Boolean Save()
@@ -223,21 +240,26 @@ namespace Terminals.Forms
             try
             {
                 Settings.DelayConfigurationSave = true;
-
-                this.AmazonBackupCheckbox.Checked = Settings.UseAmazon;
-                this.AccessKeyTextbox.Text = Settings.AmazonAccessKey;
-                this.SecretKeyTextbox.Text = Settings.AmazonSecretKey;
+                Settings.UseAmazon = this.AmazonBackupCheckbox.Checked;
+                Settings.AmazonAccessKey = this.AccessKeyTextbox.Text;
+                Settings.AmazonSecretKey = this.SecretKeyTextbox.Text;
+                Settings.AmazonBucketName = this.BucketName;
 
                 return true;
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Error(ex);
+                Logging.Log.Error(ex);
                 return false;
             }
         }
 
         private void AmazonBackupCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateAmazonControlsEnabledState();
+        }
+
+        private void UpdateAmazonControlsEnabledState()
         {
             this.AccessKeyTextbox.Enabled = this.AmazonBackupCheckbox.Checked;
             this.SecretKeyTextbox.Enabled = this.AmazonBackupCheckbox.Checked;
@@ -252,24 +274,8 @@ namespace Terminals.Forms
             this.Cursor = Cursors.WaitCursor;
             try
             {
-                Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                String testBucket = Guid.NewGuid().ToString();
-                wrapper.AddBucket(testBucket);
-                String bucket = wrapper.ListBucket(testBucket);
-                wrapper.DeleteBucket(testBucket);
-
-                try
-                {
-                    String terminals = wrapper.ListBucket(this.amazonBucketName);
-                }
-                catch (Exception exc)
-                {
-                    if (exc.Message == "The specified bucket does not exist")
-                    {
-                        wrapper.AddBucket(this.amazonBucketName);
-                        String terminals = wrapper.ListBucket(this.amazonBucketName);
-                    }
-                }
+                ThreeSharpWrapper wrapper = new ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
+                EnsureBucketExists(wrapper);
 
                 this.ErrorLabel.Text = "Test was successful!";
                 this.ErrorLabel.ForeColor = Color.Black;
@@ -287,65 +293,72 @@ namespace Terminals.Forms
 
         private void BackupButton_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to upload your current configuration?", "Amazon S3 Backup", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Are you sure you want to upload your current configuration?",
+                AMAZON_MESSAGETITLE, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                String url = String.Empty;
-                try
-                {
-                    String terminals = wrapper.ListBucket(this.amazonBucketName);
-                }
-                catch (Exception)
-                {
-                    wrapper.AddBucket(this.amazonBucketName);
-                }
-
-                try
-                {
-                    wrapper.AddFileObject(this.amazonBucketName, this.amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
-                    url = wrapper.GetUrl(this.amazonBucketName, this.amazonConfigKeyName);
-                }
-                catch (Exception exc)
-                {
-                    this.ErrorLabel.ForeColor = Color.Red;
-                    this.ErrorLabel.Text = exc.Message;
-                    return;
-                }
-
-                this.ErrorLabel.ForeColor = Color.Black;
-                this.ErrorLabel.Text = "The backup was a success!";
+                ThreeSharpWrapper wrapper = new ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
+                EnsureBucketExists(wrapper);
+                BackUpToAmazon(wrapper);
             }
         }
 
         private void RestoreButton_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to restore your current configuration?", "Amazon S3 Backup", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Are you sure you want to restore your current configuration?",
+                AMAZON_MESSAGETITLE, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                try
-                {
-                    String terminals = wrapper.ListBucket(this.amazonBucketName);
-                }
-                catch (Exception exc)
-                {
-                    this.ErrorLabel.ForeColor = Color.Red;
-                    this.ErrorLabel.Text = exc.Message;
-                    return;
-                }
+                ThreeSharpWrapper wrapper = new ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
+                RestoreFromAmazon(wrapper);
+            }
+        }
 
-                try
+        private void EnsureBucketExists(ThreeSharpWrapper wrapper)
+        {
+            try
+            {
+                wrapper.ListBucket(this.BucketName);
+            }
+            catch (Exception exc)
+            {
+                if (exc.Message == "The specified bucket does not exist")
                 {
-                    wrapper.GetFileObject(this.amazonBucketName, this.amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
+                    wrapper.AddBucket(this.BucketName);
+                    wrapper.ListBucket(this.BucketName);
                 }
-                catch (Exception exc)
-                {
-                    this.ErrorLabel.ForeColor = Color.Red;
-                    this.ErrorLabel.Text = exc.Message;
-                    return;
-                }
+            }
+        }
+
+        private void BackUpToAmazon(ThreeSharpWrapper wrapper)
+        {
+            try
+            {
+                wrapper.AddFileObject(this.BucketName, AMAZON_FILE, Program.ConfigurationFileLocation);
+                wrapper.GetUrl(this.BucketName, AMAZON_FILE);
+
+                this.ErrorLabel.ForeColor = Color.Black;
+                this.ErrorLabel.Text = "The backup was a success!";
+            }
+            catch (Exception exc)
+            {
+                this.ErrorLabel.ForeColor = Color.Red;
+                this.ErrorLabel.Text = exc.Message;
+            }
+        }
+
+        private void RestoreFromAmazon(ThreeSharpWrapper wrapper)
+        {
+            try
+            {
+                wrapper.ListBucket(this.BucketName);
+                wrapper.GetFileObject(this.BucketName, AMAZON_FILE, Program.ConfigurationFileLocation);
 
                 this.ErrorLabel.ForeColor = Color.Black;
                 this.ErrorLabel.Text = "The restore was a success!";
+            }
+            catch (Exception exc)
+            {
+                this.ErrorLabel.ForeColor = Color.Red;
+                this.ErrorLabel.Text = exc.Message;
             }
         }
     }
