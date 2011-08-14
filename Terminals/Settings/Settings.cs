@@ -936,7 +936,8 @@ namespace Terminals.Configuration
             {
                 SysConfig.Configuration configuration = Config;
                 GetSection(configuration).ShowFavoritePanel = value;
-                if (!DelayConfigurationSave) configuration.Save();
+                if (!DelayConfigurationSave)
+                    configuration.Save();
             }
         }
 
@@ -1480,6 +1481,11 @@ namespace Terminals.Configuration
                     _config = GetConfiguration();
                 return _config;
             }
+        }
+
+        internal static void ForceReload()
+        {
+            _config = GetConfiguration();
         }
 
         #endregion

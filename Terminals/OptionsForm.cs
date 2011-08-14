@@ -365,35 +365,35 @@ namespace Terminals
 
         private void TestButton_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                string testBucket = Guid.NewGuid().ToString();
-                wrapper.AddBucket(testBucket);
-                string bucket = wrapper.ListBucket(testBucket);
-                wrapper.DeleteBucket(testBucket);
+            //try
+            //{
+            //    Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
+            //    string testBucket = Guid.NewGuid().ToString();
+            //    wrapper.AddBucket(testBucket);
+            //    string bucket = wrapper.ListBucket(testBucket);
+            //    wrapper.DeleteBucket(testBucket);
 
-                try
-                {
-                    string terminals = wrapper.ListBucket(_amazonBucket);
-                }
-                catch (Exception exc)
-                {
-                    if (exc.Message == "The specified bucket does not exist")
-                    {
-                        wrapper.AddBucket(_amazonBucket);
-                        string terminals = wrapper.ListBucket(_amazonBucket);
-                    }
-                }
+            //    try
+            //    {
+            //        string terminals = wrapper.ListBucket(_amazonBucket);
+            //    }
+            //    catch (Exception exc)
+            //    {
+            //        if (exc.Message == "The specified bucket does not exist")
+            //        {
+            //            wrapper.AddBucket(_amazonBucket);
+            //            string terminals = wrapper.ListBucket(_amazonBucket);
+            //        }
+            //    }
 
-                this.ErrorLabel.Text = "Test was successful!";
-                this.ErrorLabel.ForeColor = Color.Black;
-            }
-            catch (Exception exc)
-            {
-                this.ErrorLabel.ForeColor = Color.Red;
-                this.ErrorLabel.Text = exc.Message;
-            }
+            //    this.ErrorLabel.Text = "Test was successful!";
+            //    this.ErrorLabel.ForeColor = Color.Black;
+            //}
+            //catch (Exception exc)
+            //{
+            //    this.ErrorLabel.ForeColor = Color.Red;
+            //    this.ErrorLabel.Text = exc.Message;
+            //}
         }
 
         private void AmazonBackupCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -407,66 +407,66 @@ namespace Terminals
 
         private void BackupButton_Click(object sender, EventArgs e)
         {
-            if (System.Windows.Forms.MessageBox.Show("Are you sure you want to upload your current configuration?", "Amazon S3 Backup", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                string url = null;
-                try
-                {
-                    string terminals = wrapper.ListBucket(_amazonBucket);
-                }
-                catch (Exception)
-                {
-                    wrapper.AddBucket(_amazonBucket);
-                }
+            //if (System.Windows.Forms.MessageBox.Show("Are you sure you want to upload your current configuration?", "Amazon S3 Backup", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            //{
+            //    Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
+            //    string url = null;
+            //    try
+            //    {
+            //        string terminals = wrapper.ListBucket(_amazonBucket);
+            //    }
+            //    catch (Exception)
+            //    {
+            //        wrapper.AddBucket(_amazonBucket);
+            //    }
 
-                try
-                {
-                    wrapper.AddFileObject(_amazonBucket, _amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
-                    url = wrapper.GetUrl(_amazonBucket, _amazonConfigKeyName);
-                }
-                catch (Exception exc)
-                {
-                    this.ErrorLabel.ForeColor = Color.Red;
-                    this.ErrorLabel.Text = exc.Message;
-                    return;
-                }
+            //    try
+            //    {
+            //        wrapper.AddFileObject(_amazonBucket, _amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
+            //        url = wrapper.GetUrl(_amazonBucket, _amazonConfigKeyName);
+            //    }
+            //    catch (Exception exc)
+            //    {
+            //        this.ErrorLabel.ForeColor = Color.Red;
+            //        this.ErrorLabel.Text = exc.Message;
+            //        return;
+            //    }
 
-                this.ErrorLabel.ForeColor = Color.Black;
-                this.ErrorLabel.Text = "The backup was a success!";
-            }
+            //    this.ErrorLabel.ForeColor = Color.Black;
+            //    this.ErrorLabel.Text = "The backup was a success!";
+            //}
         }
 
         private void RestoreButton_Click(object sender, EventArgs e)
         {
-            if (System.Windows.Forms.MessageBox.Show("Are you sure you want to restore your current configuration?", "Amazon S3 Backup", MessageBoxButtons.YesNo) == DialogResult.Yes)
-            {
-                Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                try
-                {
-                    string terminals = wrapper.ListBucket(_amazonBucket);
-                }
-                catch (Exception exc)
-                {
-                    this.ErrorLabel.ForeColor = Color.Red;
-                    this.ErrorLabel.Text = exc.Message;
-                    return;
-                }
+            //if (System.Windows.Forms.MessageBox.Show("Are you sure you want to restore your current configuration?", "Amazon S3 Backup", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            //{
+            //    Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper wrapper = new Affirma.ThreeSharp.Wrapper.ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
+            //    try
+            //    {
+            //        string terminals = wrapper.ListBucket(_amazonBucket);
+            //    }
+            //    catch (Exception exc)
+            //    {
+            //        this.ErrorLabel.ForeColor = Color.Red;
+            //        this.ErrorLabel.Text = exc.Message;
+            //        return;
+            //    }
 
-                try
-                {
-                    wrapper.GetFileObject(_amazonBucket, _amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
-                }
-                catch (Exception exc)
-                {
-                    this.ErrorLabel.ForeColor = Color.Red;
-                    this.ErrorLabel.Text = exc.Message;
-                    return;
-                }
+            //    try
+            //    {
+            //        wrapper.GetFileObject(_amazonBucket, _amazonConfigKeyName, Terminals.Program.ConfigurationFileLocation);
+            //    }
+            //    catch (Exception exc)
+            //    {
+            //        this.ErrorLabel.ForeColor = Color.Red;
+            //        this.ErrorLabel.Text = exc.Message;
+            //        return;
+            //    }
 
-                this.ErrorLabel.ForeColor = Color.Black;
-                this.ErrorLabel.Text = "The restore was a success!";
-            }
+            //    this.ErrorLabel.ForeColor = Color.Black;
+            //    this.ErrorLabel.Text = "The restore was a success!";
+            //}
         }
 
         private void ButtonBrowseCaptureFolder_Click(object sender, EventArgs e)

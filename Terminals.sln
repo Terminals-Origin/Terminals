@@ -15,10 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HexEditor", "HexEditor\HexE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpPcap", "SharpPcap\SharpPcap.csproj", "{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Affirma.ThreeSharp", "Affirma.ThreeSharp\Affirma.ThreeSharp.csproj", "{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Affirma.ThreeSharp.Wrapper", "Affirma.ThreeSharp.Wrapper\Affirma.ThreeSharp.Wrapper.csproj", "{FD252676-D01F-453A-8DC1-4AC39DF7D22A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Granados", "Granados\Granados.csproj", "{9780D85D-2E12-4747-9E08-DEDB95A71FC3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminalEmulator", "TerminalEmulator\TerminalEmulator.csproj", "{933C6FDB-9617-4F19-89AF-C5D373F88479}"
@@ -31,7 +27,7 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupTerminals", "SetupTerm
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 15
+		SccNumberOfProjects = 13
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -59,27 +55,21 @@ Global
 		SccProjectUniqueName7 = SharpPcap\\SharpPcap.csproj
 		SccProjectName7 = SharpPcap
 		SccLocalPath7 = SharpPcap
-		SccProjectUniqueName8 = Affirma.ThreeSharp\\Affirma.ThreeSharp.csproj
-		SccProjectName8 = Affirma.ThreeSharp
-		SccLocalPath8 = Affirma.ThreeSharp
-		SccProjectUniqueName9 = Affirma.ThreeSharp.Wrapper\\Affirma.ThreeSharp.Wrapper.csproj
-		SccProjectName9 = Affirma.ThreeSharp.Wrapper
-		SccLocalPath9 = Affirma.ThreeSharp.Wrapper
-		SccProjectUniqueName10 = Granados\\Granados.csproj
-		SccProjectName10 = Granados
-		SccLocalPath10 = Granados
-		SccProjectUniqueName11 = SSHClient\\SSHClient.csproj
-		SccProjectName11 = SSHClient
-		SccLocalPath11 = SSHClient
-		SccProjectUniqueName12 = TerminalEmulator\\TerminalEmulator.csproj
-		SccProjectName12 = TerminalEmulator
-		SccLocalPath12 = TerminalEmulator
-		SccProjectUniqueName13 = zlib.net\\zlib.net.csproj
-		SccProjectName13 = zlib.net
-		SccLocalPath13 = zlib.net
-		SccProjectUniqueName14 = SetupTerminals\\SetupTerminals.vdproj
-		SccProjectName14 = SetupTerminals
-		SccLocalPath14 = SetupTerminals
+		SccProjectUniqueName8 = Granados\\Granados.csproj
+		SccProjectName8 = Granados
+		SccLocalPath8 = Granados
+		SccProjectUniqueName9 = SSHClient\\SSHClient.csproj
+		SccProjectName9 = SSHClient
+		SccLocalPath9 = SSHClient
+		SccProjectUniqueName10 = TerminalEmulator\\TerminalEmulator.csproj
+		SccProjectName10 = TerminalEmulator
+		SccLocalPath10 = TerminalEmulator
+		SccProjectUniqueName11 = zlib.net\\zlib.net.csproj
+		SccProjectName11 = zlib.net
+		SccLocalPath11 = zlib.net
+		SccProjectUniqueName12 = SetupTerminals\\SetupTerminals.vdproj
+		SccProjectName12 = SetupTerminals
+		SccLocalPath12 = SetupTerminals
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -194,30 +184,6 @@ Global
 		{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}.StrongMagic|Any CPU.ActiveCfg = Distribution Release|x86
 		{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}.StrongMagic|x86.ActiveCfg = Distribution Release|x86
 		{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}.StrongMagic|x86.Build.0 = Distribution Release|x86
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Distribution Release|Any CPU.ActiveCfg = Distribution Release|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Distribution Release|Any CPU.Build.0 = Distribution Release|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Distribution Release|x86.ActiveCfg = Distribution Release|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.Release|x86.ActiveCfg = Release|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.StrongMagic|Any CPU.ActiveCfg = Distribution Release|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.StrongMagic|Any CPU.Build.0 = Distribution Release|Any CPU
-		{1A12C68D-7C3B-46A6-8406-10ADCFA51B7A}.StrongMagic|x86.ActiveCfg = Distribution Release|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Distribution Release|Any CPU.ActiveCfg = Distribution Release|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Distribution Release|Any CPU.Build.0 = Distribution Release|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Distribution Release|x86.ActiveCfg = Distribution Release|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.Release|x86.ActiveCfg = Release|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.StrongMagic|Any CPU.ActiveCfg = Distribution Release|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.StrongMagic|Any CPU.Build.0 = Distribution Release|Any CPU
-		{FD252676-D01F-453A-8DC1-4AC39DF7D22A}.StrongMagic|x86.ActiveCfg = Distribution Release|Any CPU
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Debug|x86.ActiveCfg = Debug|Any CPU

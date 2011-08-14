@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using Affirma.ThreeSharp.Wrapper;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Model;
 using Terminals.Configuration;
 
 namespace Terminals.Forms
@@ -43,6 +46,8 @@ namespace Terminals.Forms
             {
                 if (String.IsNullOrEmpty(value))
                     this.BucketNameTextBox.Text = AMAZON_BUCKET;
+                else
+                    this.BucketNameTextBox.Text = value;
             }
         }
 
@@ -272,23 +277,37 @@ namespace Terminals.Forms
         private void TestButton_Click(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            try
+            Exception testError = null;
+            using (AmazonS3 client = CreateClient())
             {
-                ThreeSharpWrapper wrapper = new ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                EnsureBucketExists(wrapper);
+                testError = EnsureBucketExists(client);
+            }
 
-                this.ErrorLabel.Text = "Test was successful!";
+            this.ShowActionResult(testError, "Test was successful!");
+            this.Cursor = Cursors.Default;
+        }
+
+        private void ShowActionResult(Exception testError, string successMessage)
+        {
+            if (testError == null)
+            {
+                this.ErrorLabel.Text = successMessage;
                 this.ErrorLabel.ForeColor = Color.Black;
             }
-            catch (Exception exc)
+            else
             {
                 this.ErrorLabel.ForeColor = Color.Red;
-                this.ErrorLabel.Text = exc.Message;
+                this.ErrorLabel.Text = testError.Message;
             }
-            finally
-            {
-                this.Cursor = Cursors.Default;
-            }
+        }
+
+        /// <summary>
+        /// Ceateates new S3 webservice client. Note, that the client is Disposable
+        /// </summary>
+        private AmazonS3 CreateClient()
+        {
+            return AWSClientFactory.CreateAmazonS3Client(
+                this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
         }
 
         private void BackupButton_Click(object sender, EventArgs e)
@@ -296,9 +315,11 @@ namespace Terminals.Forms
             if (MessageBox.Show("Are you sure you want to upload your current configuration?",
                 AMAZON_MESSAGETITLE, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                ThreeSharpWrapper wrapper = new ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                EnsureBucketExists(wrapper);
-                BackUpToAmazon(wrapper);
+                using (AmazonS3 client = CreateClient())
+                {
+                    EnsureBucketExists(client);
+                    BackUpToAmazon(client);
+                }
             }
         }
 
@@ -307,50 +328,81 @@ namespace Terminals.Forms
             if (MessageBox.Show("Are you sure you want to restore your current configuration?",
                 AMAZON_MESSAGETITLE, MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                ThreeSharpWrapper wrapper = new ThreeSharpWrapper(this.AccessKeyTextbox.Text, this.SecretKeyTextbox.Text);
-                RestoreFromAmazon(wrapper);
-            }
-        }
-
-        private void EnsureBucketExists(ThreeSharpWrapper wrapper)
-        {
-            try
-            {
-                wrapper.ListBucket(this.BucketName);
-            }
-            catch (Exception exc)
-            {
-                if (exc.Message == "The specified bucket does not exist")
+                using (AmazonS3 client = CreateClient())
                 {
-                    wrapper.AddBucket(this.BucketName);
-                    wrapper.ListBucket(this.BucketName);
+                    RestoreFromAmazon(client);
                 }
             }
         }
 
-        private void BackUpToAmazon(ThreeSharpWrapper wrapper)
+        private Exception EnsureBucketExists(AmazonS3 client)
         {
             try
             {
-                wrapper.AddFileObject(this.BucketName, AMAZON_FILE, Program.ConfigurationFileLocation);
-                wrapper.GetUrl(this.BucketName, AMAZON_FILE);
+                S3Bucket bucket = GetBucket(client);
+                if (bucket == null)
+                {
+                    CreateBucket(client);
+                }
+
+                return null;
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Amazon S3 exception occured", exception);
+                return exception;
+            }
+        }
+
+        private S3Bucket GetBucket(AmazonS3 client)
+        {
+            ListBucketsRequest listRequest = new ListBucketsRequest();
+            ListBucketsResponse response = client.ListBuckets(listRequest);
+            return response.Buckets
+                .Where(candidate => candidate.BucketName == this.BucketName)
+                .FirstOrDefault();
+        }
+
+        private void CreateBucket(AmazonS3 client)
+        {
+            PutBucketRequest request = new PutBucketRequest();
+            request.BucketName = this.BucketName;
+            client.PutBucket(request);
+        }
+
+        private void BackUpToAmazon(AmazonS3 client)
+        {
+            try
+            {
+                PutObjectRequest request = new PutObjectRequest();
+                request.WithBucketName(this.BucketName).WithKey(AMAZON_FILE)
+                    .WithFilePath(Program.ConfigurationFileLocation);
+
+                client.PutObject(request);
 
                 this.ErrorLabel.ForeColor = Color.Black;
                 this.ErrorLabel.Text = "The backup was a success!";
             }
-            catch (Exception exc)
+            catch (Exception exception)
             {
                 this.ErrorLabel.ForeColor = Color.Red;
-                this.ErrorLabel.Text = exc.Message;
+                this.ErrorLabel.Text = exception.Message;
             }
         }
 
-        private void RestoreFromAmazon(ThreeSharpWrapper wrapper)
+        private void RestoreFromAmazon(AmazonS3 client)
         {
             try
             {
-                wrapper.ListBucket(this.BucketName);
-                wrapper.GetFileObject(this.BucketName, AMAZON_FILE, Program.ConfigurationFileLocation);
+                GetObjectRequest request = new GetObjectRequest()
+                    .WithBucketName(this.BucketName)
+                    .WithKey(AMAZON_FILE);
+
+                using (GetObjectResponse response = client.GetObject(request))
+                {
+                    response.WriteResponseStreamToFile(Program.ConfigurationFileLocation);
+                    Settings.ForceReload();
+                }
 
                 this.ErrorLabel.ForeColor = Color.Black;
                 this.ErrorLabel.Text = "The restore was a success!";
