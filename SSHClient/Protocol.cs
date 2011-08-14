@@ -249,6 +249,7 @@ namespace SSHClient
 		public void OnChannelEOF()
 		{
 			_pf.Close();
+            OnConnectionClosed();
 			//Debug.WriteLine("Channel EOF");
 		}
 		public void OnExtendedData(int type, byte[] data) 
