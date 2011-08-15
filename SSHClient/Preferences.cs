@@ -1,31 +1,15 @@
-/*
- * Created by SharpDevelop.
- * User: cablej01
- * Date: 03/11/2008
- * Time: 18:30
- * 
- * To change this template use Tools | Options | Coding | Edit Standard Headers.
- */
 using System;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace SSHClient
 {
-    public enum AuthMethod {Host,Password,PublicKey,KeyboardInteractive};
-
 	/// <summary>
 	/// Description of Preferences.
 	/// </summary>
 	public partial class Preferences : UserControl
 	{
-		
 		public Preferences()
 		{
-			//
-			// The InitializeComponent() call is required for Windows Forms designer support.
-			//
 			InitializeComponent();
 			
 			buttonPublicKey.Checked = true;
@@ -45,35 +29,34 @@ namespace SSHClient
 		}
 
 		public KeysSection keysSection;
-		
-		public AuthMethod AuthMethod
-		{
-			get
-			{
-				if(buttonPublicKey.Checked) return AuthMethod.PublicKey;
-				if(buttonPassword.Checked) return AuthMethod.Password;
-				if(buttonKbd.Checked) return AuthMethod.KeyboardInteractive;
-				return AuthMethod.Host;
-			}
-			set
-			{
-				switch(value)
-				{
-					case AuthMethod.Password:
-						buttonPassword.Checked = true;
-						break;
-					case AuthMethod.PublicKey:
-						buttonPublicKey.Checked = true;
-						break;
-					case AuthMethod.KeyboardInteractive:
-						buttonKbd.Checked = true;
-						break;
-					case AuthMethod.Host:
-						buttonHost.Checked = true;
-						break;
-				}
-			}
-		}
+
+        public AuthMethod AuthMethod
+        {
+            get
+            {
+                if (buttonPublicKey.Checked)
+                    return AuthMethod.PublicKey;
+                if (buttonPassword.Checked)
+                    return AuthMethod.Password;
+
+                return AuthMethod.KeyboardInteractive;
+            }
+            set
+            {
+                switch (value)
+                {
+                    case AuthMethod.Password:
+                        buttonPassword.Checked = true;
+                        break;
+                    case AuthMethod.PublicKey:
+                        buttonPublicKey.Checked = true;
+                        break;
+                    default:
+                        buttonKbd.Checked = true;
+                        break;
+                }
+            }
+        }
 		public bool SSH1
 		{
 			get{ return buttonSSH1.Checked;}
