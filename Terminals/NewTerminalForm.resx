@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>240, 17</value>
+    <value>91, 17</value>
   </metadata>
   <data name="EnableBitmapPersistanceCheckbox.ToolTip" xml:space="preserve">
     <value>The persistent bitmap cache can provide a substantial improvement in performance over low-bandwidth connections, especially when running applications which use large bitmaps.  Persistent caching can improve performance but requires additional disk space.
@@ -140,7 +140,10 @@ Other values define fix terminal window size.</value>
     <value>17, 17</value>
   </metadata>
   <metadata name="contextMenuStripDefaults.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>332, 17</value>
+    <value>188, 17</value>
+  </metadata>
+  <metadata name="contextMenuStripSave.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>382, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

@@ -305,6 +305,9 @@
     <Compile Include="FavsList.Designer.cs">
       <DependentUpon>FavsList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SplitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="History\HistoryController.cs" />
     <Compile Include="History\HistoryByFavorite.cs" />
     <Compile Include="History\HistoryItem.cs" />

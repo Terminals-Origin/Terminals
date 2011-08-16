@@ -65,10 +65,11 @@ namespace Terminals
         {
             NewTerminalForm frmNewTerminal = new NewTerminalForm(favorite);
             string oldName = favorite.Name;
-            if (frmNewTerminal.ShowDialog() == DialogResult.OK)
+            if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
             {
                 if (oldName != frmNewTerminal.Favorite.Name) 
                     Settings.DeleteFavorite(oldName);
+
                 LoadConnections();
             }
         }
@@ -165,9 +166,9 @@ namespace Terminals
 
         private void btnNew_Click(object sender, EventArgs e)
         {
-            using (NewTerminalForm frmNewTerminal = new NewTerminalForm(String.Empty, false))
+            using (NewTerminalForm frmNewTerminal = new NewTerminalForm(String.Empty))
             {
-                if (frmNewTerminal.ShowDialog() == DialogResult.OK)
+                if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
                 {
                     Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
                     LoadConnections();

@@ -439,12 +439,7 @@ namespace Terminals
             return desktopShare;
         }
 
-        public void Connect(String connectionName, Boolean ForceConsole, Boolean ForceNewWindow)
-        {
-            this.Connect(connectionName, ForceConsole, ForceNewWindow, null);
-        }
-
-        public void Connect(String connectionName, Boolean ForceConsole, Boolean ForceNewWindow, CredentialSet Credential)
+        public void Connect(String connectionName, Boolean forceConsole, Boolean forceNewWindow, CredentialSet credential = null)
         {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             FavoriteConfigurationElement favorite = favorites[connectionName];
@@ -456,18 +451,18 @@ namespace Terminals
 
             favorite = (FavoriteConfigurationElement)favorite.Clone();
             favsList1.RecordHistoryItem(connectionName);
-            if (ForceConsole)
+            if (forceConsole)
                 favorite.ConnectToConsole = true;
 
-            if (ForceNewWindow)
+            if (forceNewWindow)
                 favorite.NewWindow = true;
 
-            if (Credential != null)
+            if (credential != null)
             {
-                favorite.Credential = Credential.Name;
-                favorite.UserName = Credential.Username;
-                favorite.DomainName = Credential.Domain;
-                favorite.EncryptedPassword = Credential.Password;
+                favorite.Credential = credential.Name;
+                favorite.UserName = credential.Username;
+                favorite.DomainName = credential.Domain;
+                favorite.EncryptedPassword = credential.Password;
             }
 
             if (!this.Visible)
@@ -517,12 +512,19 @@ namespace Terminals
             }
         }
 
-        public void ShowManageTerminalForm(FavoriteConfigurationElement Favorite)
+        public void ShowManageTerminalForm(FavoriteConfigurationElement favorite)
         {
-            using (NewTerminalForm frmNewTerminal = new NewTerminalForm(Favorite))
+            using (NewTerminalForm frmNewTerminal = new NewTerminalForm(favorite))
             {
-                if (frmNewTerminal.ShowDialog() == DialogResult.OK)
+                TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
+
+                if (result != TerminalFormDialogResult.Cancel)
+                {
                     this.LoadFavorites();
+
+                    if (result == TerminalFormDialogResult.SaveAndConnect)
+                        this.CreateTerminalTab(frmNewTerminal.Favorite);
+                }
             }
         }
 
@@ -1026,21 +1028,20 @@ namespace Terminals
             }
         }
 
-        private void CreateNewTerminal()
+        private void CreateNewTerminal(String name = null)
         {
-            this.CreateNewTerminal(null);
-        }
-
-        private void CreateNewTerminal(String name)
-        {
-            using (NewTerminalForm frmNewTerminal = new NewTerminalForm(name, true))
+            using (NewTerminalForm frmNewTerminal = new NewTerminalForm(name))
             {
-                if (frmNewTerminal.ShowDialog() == DialogResult.OK)
+                TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
+
+                if (result != TerminalFormDialogResult.Cancel)
                 {
                     Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
                     this.LoadFavorites();
                     this.tscConnectTo.SelectedIndex = this.tscConnectTo.Items.IndexOf(frmNewTerminal.Favorite.Name);
-                    this.CreateTerminalTab(frmNewTerminal.Favorite);
+
+                    if (result == TerminalFormDialogResult.SaveAndConnect)
+                        this.CreateTerminalTab(frmNewTerminal.Favorite);
                 }
             }
         }

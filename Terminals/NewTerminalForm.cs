@@ -11,6 +11,13 @@ using Terminals.Network.Servers;
 
 namespace Terminals
 {
+    enum TerminalFormDialogResult
+    {
+        Cancel = 0,
+        SaveAndClose,
+        SaveAndConnect
+    }
+
     internal partial class NewTerminalForm : Form
     {
         private TerminalServerManager _terminalServerManager = new TerminalServerManager();
@@ -25,18 +32,25 @@ namespace Terminals
         internal List<String> _redirectedDrives = new List<String>();
         internal Boolean _redirectDevices = false;
 
-        #region Public
-        public NewTerminalForm(String server, Boolean connect)
+        #region Constructors
+
+        public NewTerminalForm(String serverName)
         {
             this.InitializeComponent();
-            this.Init(null, server, connect);
+            this.Init(null, serverName);
         }
 
         public NewTerminalForm(FavoriteConfigurationElement favorite)
         {
             this.InitializeComponent();
-            this.Init(favorite, String.Empty, false);
+            this.Init(favorite, String.Empty);
         }
+
+        #endregion
+
+        #region Properties
+
+        public new TerminalFormDialogResult DialogResult { get; private set; }
 
         public FavoriteConfigurationElement Favorite
         {
@@ -53,14 +67,15 @@ namespace Terminals
                 return this._showOnToolbar;
             }
         }
+
         #endregion
 
         #region Private Developer made
-        private void Init(FavoriteConfigurationElement favorite, String server, Boolean connect)
+
+        private void Init(FavoriteConfigurationElement favorite, String serverName)
         {
             this.LoadMRUs();
             this.SetOkButtonState();
-            this.SetOkTitle(connect);
             this.SSHPreferences.Keys = Settings.SSHKeys;
 
             // move following line down to default value only once smart card access worked out.
@@ -83,10 +98,10 @@ namespace Terminals
                     this.ProtocolComboBox.SelectedIndex = 0;
                 }
 
-                String Server = server;
+                String server = serverName;
                 Int32 port = RDPPORT;
-                this.GetServerAndPort(server, out Server, out port);
-                this.cmbServers.Text = Server;
+                this.GetServerAndPort(serverName, out server, out port);
+                this.cmbServers.Text = server;
                 this.txtPort.Text = port.ToString();
             }
             else
@@ -97,7 +112,7 @@ namespace Terminals
             }
         }
 
-        private void FillCredentials(String CredentialName)
+        private void FillCredentials(String credentialName)
         {
             this.CredentialDropdown.Items.Clear();
             List<CredentialSet> creds = StoredCredentials.Instance.Items;
@@ -109,7 +124,7 @@ namespace Terminals
                 foreach (CredentialSet item in creds)
                 {
                     Int32 index = this.CredentialDropdown.Items.Add(item);
-                    if (!String.IsNullOrEmpty(CredentialName) && CredentialName == item.Name)
+                    if (!String.IsNullOrEmpty(credentialName) && credentialName == item.Name)
                         selIndex = index;
                 }
             }
@@ -152,14 +167,6 @@ namespace Terminals
             }
         }
 
-        private void SetOkTitle(bool connect)
-        {
-            if (connect)
-                this.btnOk.Text = "Co&nnect";
-            else
-                this.btnOk.Text = "OK";
-        }
-
         private void LoadMRUs()
         {
             this.cmbServers.Items.AddRange(Settings.MRUServerNames);
@@ -197,6 +204,10 @@ namespace Terminals
             {
                 this.txtPassword.Text = HIDDEN_PASSWORD;
                 this.favoritePassword = favorite.Password;
+            }
+            else
+            {
+                this.txtPassword.Text = String.Empty;
             }
 
             this.chkSavePassword.Checked = favorite.Password != String.Empty;
@@ -359,13 +370,9 @@ namespace Terminals
                 if (this.chkSavePassword.Checked)
                 {
                     if (this.txtPassword.Text != HIDDEN_PASSWORD)
-                    {
                         this._favorite.Password = this.txtPassword.Text;
-                    }
                     else
-                    {
                         this._favorite.Password = this.favoritePassword;
-                    }
                 }
                 else
                 {
@@ -565,7 +572,7 @@ namespace Terminals
 
         private void SetOkButtonState()
         {
-            this.btnOk.Enabled = this.cmbServers.Text != String.Empty;
+            this.btnSave.Enabled = this.cmbServers.Text != String.Empty;
         }
 
         private void GetServerAndPort(String Connection, out String Server, out Int32 Port)
@@ -618,15 +625,75 @@ namespace Terminals
                 this.lvConnectionTags.Items.Remove(item);
             }
         }
+
         #endregion
 
-        #region Private
-        private void btnOk_Click(object sender, EventArgs e)
+        #region Private eventhandlers
+
+        /// <summary>
+        /// Overload ShowDialog and return custom result.
+        /// </summary>
+        /// <returns>Returns custom dialogresult.</returns>
+        public new TerminalFormDialogResult ShowDialog()
+        {
+            base.ShowDialog();
+
+            return this.DialogResult;
+        }
+
+        /// <summary>
+        /// Save favorite and close form.
+        /// </summary>
+        private void btnSave_Click(object sender, EventArgs e)
         {
             this.SaveMRUs();
 
             if (this.FillFavorite(false))
-                DialogResult = DialogResult.OK;
+                this.DialogResult = TerminalFormDialogResult.SaveAndClose;
+
+            this.Close();
+        }
+
+        /// <summary>
+        /// Save favorite, close form and immediatly connect to the favorite.
+        /// </summary>
+        private void saveConnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SaveMRUs();
+
+            if (this.FillFavorite(false))
+                this.DialogResult = TerminalFormDialogResult.SaveAndConnect;
+
+            this.Close();
+        }
+
+        /// <summary>
+        /// Save favorite and clear form for a new favorite.
+        /// </summary>
+        private void saveNewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SaveMRUs();
+            if (this.FillFavorite(false))
+            {
+                FavoriteConfigurationElement favorite = new FavoriteConfigurationElement();
+                this.Init(favorite, String.Empty);
+                this.cmbServers.Focus();
+            }
+        }
+
+        /// <summary>
+        /// Save favorite and copy the current favorite settings, except favorite and connection name.
+        /// </summary>
+        private void saveCopyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SaveMRUs();
+            if (this.FillFavorite(false))
+            {
+                FavoriteConfigurationElement favorite = new FavoriteConfigurationElement();
+                this.cmbServers.Text = String.Empty;
+                this.txtName.Text = String.Empty;
+                this.cmbServers.Focus();
+            }
         }
 
         private void control_TextChanged(object sender, EventArgs e)
@@ -636,7 +703,7 @@ namespace Terminals
 
         private void chkSavePassword_CheckedChanged(object sender, EventArgs e)
         {
-            this.txtPassword.ReadOnly = !this.chkSavePassword.Checked;
+            //this.txtPassword.ReadOnly = !this.chkSavePassword.Checked;
         }
 
         private void txtPassword_TextChanged(object sender, EventArgs e)
@@ -679,7 +746,7 @@ namespace Terminals
                 dialog.Description = "Select Desktop Share:";
                 dialog.ShowNewFolderButton = false;
                 dialog.SelectedPath = @"\\" + this.cmbServers.Text;
-                if (dialog.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     this.txtDesktopShare.Text = dialog.SelectedPath;
             }
         }
@@ -828,7 +895,7 @@ namespace Terminals
                 Directory.CreateDirectory(thumbsFolder);
 
             this._currentToolBarFileName = String.Empty;
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 //make it relative to the current application executable
                 String filename = openFileDialog.FileName;
@@ -965,6 +1032,7 @@ namespace Terminals
             DiskDrivesForm drivesForm = new DiskDrivesForm(this);
             drivesForm.ShowDialog(this);
         }
+
         #endregion
     }
 }
