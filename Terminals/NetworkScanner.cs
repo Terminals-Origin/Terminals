@@ -6,18 +6,22 @@ using Terminals.Configuration;
 using Terminals.Network;
 using Terminals.Scanner;
 
-namespace Terminals {
-    public partial class NetworkScanner : Form {
-        public NetworkScanner() {
+namespace Terminals
+{
+    internal partial class NetworkScanner : Form
+    {
+        public NetworkScanner()
+        {
             InitializeComponent();
             miv = new MethodInvoker(UpdateScanItemList);
             mivStatus = new MethodInvoker(UpdateStatus);
             string localIP = "127.0.0.1";
-            try {
+            try
+            {
                 NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
-                foreach(NetworkInterface nic in nics)
+                foreach (NetworkInterface nic in nics)
                 {
-                    if(nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
+                    if (nic.OperationalStatus == OperationalStatus.Up && nic.NetworkInterfaceType == NetworkInterfaceType.Ethernet)
                     {
                         localIP = nic.GetIPProperties().GatewayAddresses[0].Address.ToString();
                         break;
@@ -45,10 +49,13 @@ namespace Terminals {
         private object updateListLock = new object();
         private object scanCountLock = new object();
 
-        private void AddPort(NetworkScanItem port) {
+        private void AddPort(NetworkScanItem port)
+        {
             bool add = true;
-            foreach (NetworkScanItem item in this.OpenPorts) {
-                if (item.IPAddress == port.IPAddress && item.Port == port.Port && item.IsVMRC == port.IsVMRC) {
+            foreach (NetworkScanItem item in this.OpenPorts)
+            {
+                if (item.IPAddress == port.IPAddress && item.Port == port.Port && item.IsVMRC == port.IsVMRC)
+                {
                     add = false;
                     break;
                 }
@@ -57,15 +64,19 @@ namespace Terminals {
         }
 
         List<NetworkScanItem> openPorts = new List<NetworkScanItem>();
-        public List<NetworkScanItem> OpenPorts {
+        public List<NetworkScanItem> OpenPorts
+        {
             get { return openPorts; }
             set { openPorts = value; }
         }
 
-        private void UpdateScanItemList() {
-            lock (updateListLock) {
+        private void UpdateScanItemList()
+        {
+            lock (updateListLock)
+            {
                 this.ScanResultsListView.Items.Clear();
-                foreach (NetworkScanItem item in this.OpenPorts) {
+                foreach (NetworkScanItem item in this.OpenPorts)
+                {
                     ListViewItem lvi = new ListViewItem(item.IPAddress);
                     lvi.Tag = item;
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, item.HostName));
@@ -76,15 +87,19 @@ namespace Terminals {
             }
             IncrementProgress();
         }
-        private void UpdateStatus() {
+
+        private void UpdateStatus()
+        {
             IncrementProgress();
         }
-        private void IncrementProgress() {
-            
+
+        private void IncrementProgress()
+        {
             scanProgressBar.Increment(1);
             ScanStatusLabel.Text = string.Format("Pending items:{0}", scanCount);
             if (scanProgressBar.Value >= scanProgressBar.Maximum) scanProgressBar.Value = 0;
-            if (scanCount == 0) {
+            if (scanCount == 0)
+            {
                 this.ScanButton.Text = "Scan";
                 ScanStatusLabel.Text = string.Format("Completed scan, found: {0} items.", manager.OpenPorts.Count);
                 scanProgressBar.Value = 0;
@@ -92,11 +107,14 @@ namespace Terminals {
             }
             Application.DoEvents();
         }
-        private void ScanButton_Click(object sender, EventArgs e) {
+
+        private void ScanButton_Click(object sender, EventArgs e)
+        {
             scanCount = 0;
             scanProgressBar.Value = 0;
             //this.ScanResultsListView.Items.Clear();
-            if (ScanButton.Text == "Scan") {
+            if (ScanButton.Text == "Scan")
+            {
                 ScanStatusLabel.Text = "Initiating Scan...";
                 ScanButton.Text = "Stop";
                 Application.DoEvents();
@@ -108,51 +126,59 @@ namespace Terminals {
                 manager.OnScanStart += new NetworkScanManager.ScanStartHandler(manager_OnScanStart);
                 manager.OnScanMiss += new NetworkScanManager.ScanMissHandler(manager_OnScanMiss);
                 manager.StartScan();
-            } else {
+            }
+            else
+            {
                 ScanStatusLabel.Text = "Scan Stopped.";
                 ScanButton.Text = "Scan";
                 Application.DoEvents();
-                if (manager != null) {
+                if (manager != null)
+                {
                     manager.StopScan();
                 }
             }
-
         }
-        void manager_OnScanMiss(ScanItemEventArgs args) {
+
+        private void manager_OnScanMiss(ScanItemEventArgs args)
+        {
             scanCount--;
             this.Invoke(mivStatus);
         }
 
-        void manager_OnScanStart(ScanItemEventArgs args) {
+        private void manager_OnScanStart(ScanItemEventArgs args)
+        {
             scanCount++;
             this.Invoke(mivStatus);
         }
 
 
-        void manager_OnScanHit(ScanItemEventArgs args) {
+        private void manager_OnScanHit(ScanItemEventArgs args)
+        {
             scanCount--;
             AddPort(args.NetworkScanItem);
             this.Invoke(miv);
 
         }
 
-        private void ScanResultsListView_MouseClick(object sender, MouseEventArgs e) {
-            if (ScanResultsListView.SelectedItems[0].Tag != null) {
-                lock (updateListLock) {
-                    selecctedScanItem = (NetworkScanItem)ScanResultsListView.SelectedItems[0].Tag;
+        private void ScanResultsListView_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (ScanResultsListView.SelectedItems[0].Tag != null)
+            {
+                lock (updateListLock)
+                {
+                    selectedScanItem = (NetworkScanItem)ScanResultsListView.SelectedItems[0].Tag;
                 }
-            } else {
-                selecctedScanItem = null;
+            }
+            else
+            {
+                selectedScanItem = null;
             }
         }
-        private NetworkScanItem selecctedScanItem;
 
-        public NetworkScanItem SelectedScanItem {
-            get { return selecctedScanItem; }
-            set { selecctedScanItem = value; }
-        }
+        private NetworkScanItem selectedScanItem;
 
-        private void AllCheckbox_CheckedChanged(object sender, EventArgs e) {
+        private void AllCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
             this.RDPCheckbox.Checked = AllCheckbox.Checked;
             this.VNCCheckbox.Checked = AllCheckbox.Checked;
             this.VMRCCheckbox.Checked = AllCheckbox.Checked;
@@ -160,17 +186,19 @@ namespace Terminals {
             this.SSHCheckbox.Checked = AllCheckbox.Checked;
         }
 
-        private void AddAllButton_Click(object sender, EventArgs e) {
+        private void AddAllButton_Click(object sender, EventArgs e)
+        {
             int count = 0;
-            foreach (ListViewItem lvi in this.ScanResultsListView.Items) {
+            foreach (ListViewItem lvi in this.ScanResultsListView.Items)
+            {
                 NetworkScanItem item = (NetworkScanItem)lvi.Tag;
                 FavoriteConfigurationElement fav = new FavoriteConfigurationElement();
                 fav.ServerName = item.IPAddress;
                 fav.Port = item.Port;
                 fav.Protocol = Connections.ConnectionManager.GetPortName(fav.Port, item.IsVMRC);
                 string tags = TagsTextbox.Text;
-                tags = tags.Replace("Tags...","").Trim();
-                if (tags != string.Empty)  fav.Tags = tags;
+                tags = tags.Replace("Tags...", "").Trim();
+                if (tags != string.Empty) fav.Tags = tags;
                 fav.Name = string.Format("{0}_{1}", item.HostName, fav.Protocol);
                 fav.DomainName = Environment.UserDomainName;
                 fav.UserName = Environment.UserName;
@@ -180,30 +208,42 @@ namespace Terminals {
             MessageBox.Show(string.Format("{0} items were added to your favorites.", count));
         }
 
-        private void button1_Click(object sender, EventArgs e) {
-            if (Server.ServerOnline) {
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (Server.ServerOnline)
+            {
                 this.button1.Text = "Start Server";
                 Server.Stop();
-            } else {
+            }
+            else
+            {
                 this.button1.Text = "Stop Server";
                 Server.Start();
             }
-            if (Server.ServerOnline) {
+            if (Server.ServerOnline)
+            {
                 this.ServerStatusLabel.Text = "Server is ONLINE";
-            } else {
+            }
+            else
+            {
                 this.ServerStatusLabel.Text = "Server is OFFLINE";
             }
-            
+
         }
 
-        private void Client_OnServerConnection(System.IO.MemoryStream Response) {
+        private void Client_OnServerConnection(System.IO.MemoryStream Response)
+        {
 
-            if(Response.Length==0) {
+            if (Response.Length == 0)
+            {
                 MessageBox.Show("The server has nothing to share with you.");
-            } else {
+            }
+            else
+            {
                 int count = 0;
                 System.Collections.ArrayList favs = (System.Collections.ArrayList)Unified.Serialize.DeSerializeBinary(Response);
-                foreach (object fav in favs) {
+                foreach (object fav in favs)
+                {
                     FavoriteConfigurationElement newfav = SharedFavorite.ConvertFromFavorite((SharedFavorite)fav);
                     newfav.Name = newfav.Name + "_new";
                     newfav.UserName = Environment.UserName;
@@ -216,21 +256,26 @@ namespace Terminals {
             }
         }
 
-        void Server_OnClientConnection(string Username, System.Net.Sockets.Socket Socket) {
+        private void Server_OnClientConnection(string Username, System.Net.Sockets.Socket Socket)
+        {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             System.Collections.ArrayList list = new System.Collections.ArrayList();
-            foreach (FavoriteConfigurationElement elem in favorites) {
+            foreach (FavoriteConfigurationElement elem in favorites)
+            {
                 list.Add(SharedFavorite.ConvertFromFavorite(elem));
             }
 
             System.IO.MemoryStream favs = Unified.Serialize.SerializeBinary(list);
             byte[] data = null;
-            if (favs != null &&  favs.Length > 0) {
+            if (favs != null && favs.Length > 0)
+            {
                 if (favs.CanRead && favs.Position > 0) favs.Position = 0;
                 data = favs.ToArray();
                 favs.Close();
                 favs.Dispose();
-            } else {
+            }
+            else
+            {
                 data = new byte[0];
             }
             Socket.Send(data);
@@ -238,12 +283,15 @@ namespace Terminals {
 
         }
 
-        private void button2_Click(object sender, EventArgs e) {
+        private void button2_Click(object sender, EventArgs e)
+        {
             Client.Start(this.ServerAddressTextbox.Text);
         }
 
-        private void NetworkScanner_FormClosing(object sender, FormClosingEventArgs e) {
-            try {
+        private void NetworkScanner_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
                 Server.Stop();
                 Client.Stop();
             }
@@ -253,6 +301,6 @@ namespace Terminals {
         {
             this.Close();
         }
-	
+
     }
 }

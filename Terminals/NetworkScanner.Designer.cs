@@ -23,6 +23,7 @@ namespace Terminals {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NetworkScanner));
             this.label1 = new System.Windows.Forms.Label();
             this.ATextbox = new System.Windows.Forms.TextBox();
             this.BTextbox = new System.Windows.Forms.TextBox();
@@ -35,10 +36,10 @@ namespace Terminals {
             this.TelnetCheckbox = new System.Windows.Forms.CheckBox();
             this.SSHCheckbox = new System.Windows.Forms.CheckBox();
             this.ScanResultsListView = new System.Windows.Forms.ListView();
-            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
             this.AllCheckbox = new System.Windows.Forms.CheckBox();
             this.ScanButton = new System.Windows.Forms.Button();
@@ -267,7 +268,7 @@ namespace Terminals {
             this.ScanButton.Name = "ScanButton";
             this.ScanButton.Size = new System.Drawing.Size(75, 23);
             this.ScanButton.TabIndex = 11;
-            this.ScanButton.Text = "Scan";
+            this.ScanButton.Text = "&Scan";
             this.ScanButton.UseVisualStyleBackColor = true;
             this.ScanButton.Click += new System.EventHandler(this.ScanButton_Click);
             // 
@@ -282,20 +283,20 @@ namespace Terminals {
             // AddAllButton
             // 
             this.AddAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddAllButton.Location = new System.Drawing.Point(407, 6);
+            this.AddAllButton.Location = new System.Drawing.Point(329, 6);
             this.AddAllButton.Name = "AddAllButton";
             this.AddAllButton.Size = new System.Drawing.Size(75, 23);
             this.AddAllButton.TabIndex = 17;
-            this.AddAllButton.Text = "OK";
+            this.AddAllButton.Text = "&OK";
             this.AddAllButton.UseVisualStyleBackColor = true;
             this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
             // 
-            // CancelButton
+            // ButtonCancel
             // 
             this.ButtonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.ButtonCancel.Location = new System.Drawing.Point(326, 6);
-            this.ButtonCancel.Name = "CancelButton";
+            this.ButtonCancel.Location = new System.Drawing.Point(410, 6);
+            this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
             this.ButtonCancel.TabIndex = 15;
             this.ButtonCancel.Text = "&Cancel";
@@ -451,8 +452,8 @@ namespace Terminals {
             this.label4.Size = new System.Drawing.Size(415, 45);
             this.label4.TabIndex = 24;
             this.label4.Text = "Step 2: On the machine which you would like to share your connections with, place" +
-                " your IP address in the \"IP Address\" box on the right, and then it the \"Connect " +
-                "to Server\" button.";
+    " your IP address in the \"IP Address\" box on the right, and then it the \"Connect " +
+    "to Server\" button.";
             // 
             // label3
             // 
@@ -469,7 +470,7 @@ namespace Terminals {
             this.label2.Size = new System.Drawing.Size(421, 30);
             this.label2.TabIndex = 22;
             this.label2.Text = "You can use this form to establish a direct connection with another machine on th" +
-                "e network in order to share connections.";
+    "e network in order to share connections.";
             // 
             // panel2
             // 
@@ -500,8 +501,11 @@ namespace Terminals {
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.statusStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimumSize = new System.Drawing.Size(497, 423);
             this.Name = "NetworkScanner";
-            this.Text = "Network Scanner";
+            this.ShowInTaskbar = false;
+            this.Text = "Terminals - Network Scanner";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NetworkScanner_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
