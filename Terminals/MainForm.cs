@@ -1362,20 +1362,10 @@ namespace Terminals
 
         private void MainForm_Activated(object sender, EventArgs e)
         {
-            //put in a check to see if terminals is off the viewing area
-            Screen farRightScreen = null;
-            foreach (Screen screen in Screen.AllScreens)
-            {
-                if (farRightScreen == null)
-                    farRightScreen = screen;
-                else
-                    if (screen.Bounds.X > farRightScreen.Bounds.X)
-                        farRightScreen = screen;
-            }
-
-            if (this.Location.X > farRightScreen.Bounds.X + farRightScreen.Bounds.Width)
-                this.Location = new Point(0, 0);
-
+            Rectangle primaryScreen = Screen.PrimaryScreen.Bounds;
+            if (this.Location.X < primaryScreen.X || primaryScreen.Width < this.Location.X ||
+                this.Location.Y < primaryScreen.Y || primaryScreen.Height < this.Location.Y)
+                this.Location = new Point(100, 100);
 
             if (this.FullScreen)
                 this.tcTerminals.ShowTabs = false;
