@@ -429,7 +429,7 @@
       <DependentUpon>PopupTerminal.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramInfo.cs" />
-    <Compile Include="Scanner\StreamHelper.cs" />
+    <Compile Include="Serialization\StreamHelper.cs" />
     <Compile Include="SerializableDictionary.cs" />
     <Compile Include="SerializableSortedDictionary.cs" />
     <Compile Include="Settings\SortProperties.cs" />
@@ -799,7 +799,7 @@
     <Compile Include="Network\PortScanner\NetworkScanItem.cs" />
     <Compile Include="Network\PortScanner\NetworkScanManager.cs" />
     <Compile Include="Network\PortScanner\ScanItemEventArgs.cs" />
-    <Compile Include="Scanner\Serialize.cs" />
+    <Compile Include="Serialization\Serialize.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Compile Include="ProtocolHandler.cs" />
     <Compile Include="Security\Decryptor.cs" />
