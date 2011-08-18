@@ -1,31 +1,32 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using System.Security.Cryptography;
 using Terminals.Configuration;
+using Terminals.Connections;
+using VncSharp;
 
 namespace Terminals.Scanner
 {
-    public class NetworkScanItem
+    internal class NetworkScanItem
     {
-        public delegate void ScanHitHandler(ScanItemEventArgs args);
+        internal event NetworkScanHandler OnScanHit;
+        internal event NetworkScanHandler OnScanMiss;
 
-        public event ScanHitHandler OnScanHit;
-        
-        public delegate void ScanMissHandler(ScanItemEventArgs args);
+        internal string IPAddress { get; set; }
+        internal int Port { get; set; }
+        internal string HostName { get; set; }
+        internal bool IsVMRC { get; set; }
 
-        public event ScanMissHandler OnScanMiss;
-
-        private static Dictionary<string, string> KnownHostNames = new Dictionary<string, string>();
-        public string IPAddress;
-        public int Port;
-        public bool IsOpen = false;
-        private bool isVMRC = false;
-        public string HostName;
         private string vncPassword = string.Empty;
         private object vncConnection = new object();
 
-        public void Scan(object data)
+        private static Dictionary<string, string> knownHostNames = new Dictionary<string, string>();
+
+        internal void Scan(object data)
         {
-            System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient();
+            TcpClient client = new TcpClient();
             try
             {
                 client.BeginConnect(this.IPAddress, this.Port, new AsyncCallback(AttemptConnect), client);
@@ -55,16 +56,16 @@ namespace Terminals.Scanner
             {
                 lock (this.vncConnection)
                 {
-                    VncSharp.RemoteDesktop rd = new VncSharp.RemoteDesktop();
+                    RemoteDesktop rd = new RemoteDesktop();
                     rd.VncPort = Port;
-                    rd.GetPassword = new VncSharp.AuthenticateDelegate(this.VNCPassword);
-                    rd.Connect(IPAddress);
+                    rd.GetPassword = new AuthenticateDelegate(this.VNCPassword);
+                    rd.Connect(this.IPAddress);
                     rd.Disconnect();
                 }
 
                 return true;
             }
-            catch (System.Security.Cryptography.CryptographicException ce)
+            catch (CryptographicException ce)
             {
                 Logging.Log.Info(string.Empty, ce);
                 return true;
@@ -78,71 +79,77 @@ namespace Terminals.Scanner
             return false;
         }
 
-        public bool IsVMRC
-        {
-            get
-            {
-                return this.isVMRC;
-            }
-
-            set
-            {
-                this.isVMRC = value;
-            }
-        }
-    
         private void AttemptConnect(IAsyncResult result)
         {
-            System.Net.Sockets.TcpClient client = (System.Net.Sockets.TcpClient)result.AsyncState;
-            if (client.Client!=null && client.Connected)
+            TcpClient client = result.AsyncState as TcpClient;
+            if (client.Client != null && client.Connected)
             {
-                if (this.OnScanHit != null)
-                {
-                    ScanItemEventArgs args = new ScanItemEventArgs();
-                    if (this.Port == Connections.ConnectionManager.VNCVMRCPort)
-                    {
-                        this.IsVMRC = !IsPortVNC();
-                    }
-
-                    args.DateTime = DateTime.Now;
-                    args.NetworkScanItem = this;
-                    try
-                    {
-                        if (KnownHostNames.ContainsKey(args.NetworkScanItem.IPAddress))
-                        {
-                            args.NetworkScanItem.HostName = KnownHostNames[args.NetworkScanItem.IPAddress];
-                        }
-                        else
-                        {
-                            //System.Net.IPHostEntry entry = System.Net.Dns.Resolve(args.NetworkScanItem.IPAddress);
-                            System.Net.IPHostEntry entry = System.Net.Dns.GetHostEntry(args.NetworkScanItem.IPAddress);
-                            args.NetworkScanItem.HostName = entry.HostName;
-                            if (!KnownHostNames.ContainsKey(args.NetworkScanItem.IPAddress)) 
-                                KnownHostNames.Add(args.NetworkScanItem.IPAddress, args.NetworkScanItem.HostName);
-                        }
-                    }
-                    catch (Exception exc)
-                    {
-                        Logging.Log.Error("Attempting to Resolve host named failed", exc);
-                        args.NetworkScanItem.HostName = args.NetworkScanItem.IPAddress;
-                        if(!KnownHostNames.ContainsKey(args.NetworkScanItem.IPAddress))
-                            KnownHostNames.Add(args.NetworkScanItem.IPAddress, args.NetworkScanItem.IPAddress);
-                    }
-
-                    this.IsOpen = true;
-                    OnScanHit(args);
-                }
+                CheckVNCPport();
+                CheckHostName();
+                FireOnScanHit();
             }
             else
             {
-                if (OnScanMiss != null)
+                FireOnscanMiss();
+            }
+        }
+
+        private void CheckHostName()
+        {
+            try
+            {
+                if (knownHostNames.ContainsKey(this.IPAddress))
                 {
-                    ScanItemEventArgs args = new ScanItemEventArgs();
-                    args.DateTime = DateTime.Now;
-                    args.NetworkScanItem = this;
-                    OnScanMiss(args);
+                    this.HostName = knownHostNames[this.IPAddress];
+                }
+                else
+                {
+                    IPHostEntry entry = Dns.GetHostEntry(this.IPAddress);
+                    this.HostName = entry.HostName;
+                    if (!knownHostNames.ContainsKey(this.IPAddress))
+                        knownHostNames.Add(this.IPAddress, this.HostName);
                 }
             }
+            catch (Exception exc)
+            {
+                Logging.Log.Error("Attempting to Resolve host named failed", exc);
+                this.HostName = this.IPAddress;
+                if (!knownHostNames.ContainsKey(this.IPAddress))
+                    knownHostNames.Add(this.IPAddress, this.IPAddress);
+            }
+        }
+
+        private void CheckVNCPport()
+        {
+            if (this.Port == ConnectionManager.VNCVMRCPort)
+            {
+                this.IsVMRC = !this.IsPortVNC();
+            }
+        }
+
+        private void FireOnscanMiss()
+        {
+            if (this.OnScanMiss != null)
+            {
+                this.OnScanMiss(this.CreateNewEventArguments());
+            }
+        }
+
+        private void FireOnScanHit()
+        {
+            if (this.OnScanHit != null)
+            {
+                ScanItemEventArgs args = this.CreateNewEventArguments();
+                this.OnScanHit(args);
+            }
+        }
+
+        internal ScanItemEventArgs CreateNewEventArguments()
+        {
+            ScanItemEventArgs args = new ScanItemEventArgs();
+            args.DateTime = DateTime.Now;
+            args.NetworkScanItem = this;
+            return args;
         }
     }
 }
