@@ -328,14 +328,14 @@
     <Compile Include="ManageToolStrip.Designer.cs">
       <DependentUpon>ManageToolStrip.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\ActiveDirectoryClient.cs" />
-    <Compile Include="Network\ActiveDirectoryComputer.cs" />
+    <Compile Include="Network\AD\ActiveDirectoryClient.cs" />
+    <Compile Include="Network\AD\ActiveDirectoryComputer.cs" />
     <Compile Include="Network\DNS\Adapter.cs" />
     <Compile Include="Network\DNS\AdapterInfo.cs" />
-    <Compile Include="Network\ImportFromAD.cs">
+    <Compile Include="Network\AD\ImportFromAD.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Network\ImportFromAD.Designer.cs">
+    <Compile Include="Network\AD\ImportFromAD.Designer.cs">
       <DependentUpon>ImportFromAD.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\MagicPaket.cs" />
@@ -523,10 +523,10 @@
     <Compile Include="Integration\Import\IImport.cs" />
     <Compile Include="Integration\Import\ImportMuRD.cs" />
     <Compile Include="NativeApi.cs" />
-    <Compile Include="NetworkScanner.cs">
+    <Compile Include="Network\PortScanner\NetworkScanner.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NetworkScanner.Designer.cs">
+    <Compile Include="Network\PortScanner\NetworkScanner.Designer.cs">
       <DependentUpon>NetworkScanner.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\Client.cs" />
@@ -706,7 +706,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>TabbedTools.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NetworkScanner.resx">
+    <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkScanner.cs</DependentUpon>
     </EmbeddedResource>
@@ -796,9 +796,9 @@
     <Compile Include="SaveActiveConnectionsForm.Designer.cs">
       <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Scanner\NetworkScanItem.cs" />
-    <Compile Include="Scanner\NetworkScanManager.cs" />
-    <Compile Include="Scanner\ScanItemEventArgs.cs" />
+    <Compile Include="Network\PortScanner\NetworkScanItem.cs" />
+    <Compile Include="Network\PortScanner\NetworkScanManager.cs" />
+    <Compile Include="Network\PortScanner\ScanItemEventArgs.cs" />
     <Compile Include="Scanner\Serialize.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Compile Include="ProtocolHandler.cs" />
@@ -939,7 +939,7 @@
       <DependentUpon>ManageToolStrip.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Network\ImportFromAD.resx">
+    <EmbeddedResource Include="Network\AD\ImportFromAD.resx">
       <DependentUpon>ImportFromAD.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
