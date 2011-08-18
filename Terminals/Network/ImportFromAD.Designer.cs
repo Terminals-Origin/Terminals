@@ -34,8 +34,6 @@
             this.Import = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ComputerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OperatingSystem = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.importDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.computerNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bsComputers = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.domainTextbox = new System.Windows.Forms.TextBox();
@@ -57,16 +55,12 @@
             this.gridComputers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gridComputers.AutoGenerateColumns = false;
             this.gridComputers.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.gridComputers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridComputers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Import,
             this.ComputerName,
-            this.OperatingSystem,
-            this.importDataGridViewCheckBoxColumn,
-            this.computerNameDataGridViewTextBoxColumn});
-            this.gridComputers.DataSource = this.bsComputers;
+            this.OperatingSystem});
             this.gridComputers.Location = new System.Drawing.Point(8, 76);
             this.gridComputers.Name = "gridComputers";
             this.gridComputers.RowHeadersVisible = false;
@@ -95,18 +89,6 @@
             this.OperatingSystem.Name = "OperatingSystem";
             this.OperatingSystem.ReadOnly = true;
             this.OperatingSystem.Width = 300;
-            // 
-            // importDataGridViewCheckBoxColumn
-            // 
-            this.importDataGridViewCheckBoxColumn.DataPropertyName = "Import";
-            this.importDataGridViewCheckBoxColumn.HeaderText = "Import";
-            this.importDataGridViewCheckBoxColumn.Name = "importDataGridViewCheckBoxColumn";
-            // 
-            // computerNameDataGridViewTextBoxColumn
-            // 
-            this.computerNameDataGridViewTextBoxColumn.DataPropertyName = "ComputerName";
-            this.computerNameDataGridViewTextBoxColumn.HeaderText = "ComputerName";
-            this.computerNameDataGridViewTextBoxColumn.Name = "computerNameDataGridViewTextBoxColumn";
             // 
             // bsComputers
             // 
@@ -262,7 +244,5 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn Import;
         private System.Windows.Forms.DataGridViewTextBoxColumn ComputerName;
         private System.Windows.Forms.DataGridViewTextBoxColumn OperatingSystem;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn importDataGridViewCheckBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn computerNameDataGridViewTextBoxColumn;
     }
 }

@@ -16,6 +16,7 @@ namespace Terminals.Network
             adClient = new ActiveDirectoryClient();
             adClient.ListComputersDone += new ListComputersDoneDelegate(this.AdClient_OnListComputersDone);
             adClient.ComputerFound += new ComputerFoundDelegate(this.OnClientComputerFound);
+            this.gridComputers.DataSource = this.bsComputers;
         }
 
         private void ImportFromAD_Load(object sender, EventArgs e)
@@ -37,6 +38,7 @@ namespace Terminals.Network
         {
             if (!this.adClient.IsRunning)
             {
+                this.bsComputers.Clear();
                 adClient.FindComputers(this.domainTextbox.Text);
                 this.lblProgressStatus.Text = "Contacting domain...";
                 this.SwitchToRunningMode();
