@@ -845,6 +845,7 @@
     <None Include="Migrated rules for Terminals.ruleset" />
     <Content Include="Resources\amber.png" />
     <Content Include="Resources\back.png" />
+    <None Include="Properties\DataSources\Terminals.Network.ActiveDirectoryComputer.datasource" />
     <None Include="Resources\ControlPanel.png" />
     <Content Include="Resources\DeleteFolderHS.png" />
     <Content Include="Resources\DeleteHS.png" />

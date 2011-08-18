@@ -1,56 +1,93 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.DirectoryServices;
+using Terminals.Connections;
 
 namespace Terminals.Network
 {
     public class ActiveDirectoryComputer
     {
+        private const string NAME = "name";
+        private const string OS = "operatingSystem";
+        private const string DN = "distinguishedName";
 
-        private string protocol = "RDP";
-
-        public string Protocol
+        internal ActiveDirectoryComputer()
         {
-            get { return protocol; }
-            set { protocol = value; }
+            this.Import = true;
+            this.Protocol = ConnectionManager.RDP;
+            this.ComputerName = String.Empty;
+            this.OperatingSystem = String.Empty;
+            this.Tags = String.Empty;
+            this.Notes = String.Empty;
         }
 
+        internal String Protocol { get; set; }
+        public Boolean Import { get; set; }
+        public String ComputerName { get; set; }
+        internal String OperatingSystem { get; set; }
+        internal String Tags { get; set; }
+        internal String Notes { get; set; }
 
-        private bool import=true;
-
-        public bool Import
+        internal static ActiveDirectoryComputer FromDirectoryEntry(String domain, DirectoryEntry computer)
         {
-            get { return import; }
-            set { import = value; }
+            ActiveDirectoryComputer comp = new ActiveDirectoryComputer();
+            comp.Tags = domain;
+
+            if (computer.Properties != null)
+            {
+                comp.NameFromEntry(computer);
+                comp.OperationSystemFromEntry(computer);
+                comp.DistinquishedNameFromEntry(computer);
+            }
+
+            return comp;
         }
 
-        private string computerName;
-
-        public string ComputerName
+        private void NameFromEntry(DirectoryEntry computer)
         {
-            get { return computerName; }
-            set { computerName = value; }
+            PropertyValueCollection nameValues = computer.Properties[NAME];
+            String name = computer.Name.Replace("CN=", "");
+            if (nameValues != null && nameValues.Count > 0)
+            {
+                name = nameValues[0].ToString();
+            }
+            this.ComputerName = name;
         }
-        private string operatingSystem;
-
-        public string OperatingSystem
+        
+        private void OperationSystemFromEntry(DirectoryEntry computer)
         {
-            get { return operatingSystem; }
-            set { operatingSystem = value; }
+            PropertyValueCollection osValues = computer.Properties[OS];
+            if (osValues != null && osValues.Count > 0)
+            {
+                this.Tags += "," + osValues[0].ToString();
+                this.OperatingSystem = osValues[0].ToString();
+            }
         }
-        private string tags;
 
-        public string Tags
+        private void DistinquishedNameFromEntry(DirectoryEntry computer)
         {
-            get { return tags; }
-            set { tags = value; }
+            PropertyValueCollection dnameValues = computer.Properties[DN];
+            if (dnameValues != null && dnameValues.Count > 0)
+            {
+                string distinguishedName = dnameValues[0].ToString();
+                if (distinguishedName.Contains("OU=Domain Controllers"))
+                {
+                    this.Tags += ",Domain Controllers";
+                }
+            }
         }
-        private string notes = "";
 
-        public string Notes
+        internal FavoriteConfigurationElement ToFavorite(String domain)
         {
-            get { return notes; }
-            set { notes = value; }
+            FavoriteConfigurationElement favorite = new FavoriteConfigurationElement(this.ComputerName);
+            favorite.Name = this.ComputerName;
+            favorite.ServerName = this.ComputerName;
+            favorite.UserName = Environment.UserName;
+            favorite.DomainName = domain;
+            favorite.Tags = this.Tags;
+            favorite.Port = ConnectionManager.GetPort(this.Protocol);
+            favorite.Protocol = this.Protocol;
+            favorite.Notes = this.Notes;
+            return favorite;
         }
     }
 }

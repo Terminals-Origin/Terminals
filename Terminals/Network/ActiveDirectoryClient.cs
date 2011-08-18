@@ -1,75 +1,105 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.DirectoryServices;
+using System.Threading;
 
 namespace Terminals.Network
 {
-    public class ActiveDirectoryClient
+    internal delegate void ListComputersDoneDelegate(bool success);
+    internal delegate void ComputerFoundDelegate(ActiveDirectoryComputer computer);
+    
+    internal class ActiveDirectoryClient
     {
-
-        public delegate void ListComputersDoneDelegate(List<ActiveDirectoryComputer> Computers, bool Success);
-        public event ListComputersDoneDelegate OnListComputersDoneDelegate;
-
-        private void ListComputersThread(object state)
+        internal event ListComputersDoneDelegate ListComputersDone;
+        internal event ComputerFoundDelegate ComputerFound;
+        private Thread clientThred;
+        private object runLock = new object();
+        
+        private Boolean isRunning;
+        internal Boolean IsRunning
         {
-            List<ActiveDirectoryComputer> Computers = new List<ActiveDirectoryComputer>();
-            bool Success = true;
-            string Domain = (string)state;
+            get
+            {
+                lock (runLock)
+                {
+                    return this.isRunning;
+                }
+            }
+            private set
+            {
+                lock (runLock)
+                {
+                    this.isRunning = value;
+                }
+            }
+        }
+
+        internal void FindComputers(string domain)
+        {
+            if (!this.IsRunning) // nothing is running
+            {
+                this.IsRunning = true;
+                this.clientThred = new Thread(new ParameterizedThreadStart(this.StartScan));
+                this.clientThred.IsBackground = true;
+                this.clientThred.Start(domain);
+            }
+        }
+
+        internal void Stop()
+        {
+            if(this.IsRunning)
+               this.clientThred.Abort();
+        }
+
+        private void StartScan(object domain)
+        {
             try
             {
-                using(DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://{0}", Domain)))
+                SearchComputers(domain.ToString());
+                FireListComputersDone(true);
+            }
+            catch (ThreadAbortException)
+            {
+                FireListComputersDone(true); // because the abort can raise during the final part
+            }
+            catch (Exception exc)
+            {
+                FireListComputersDone(false);
+                Logging.Log.Error("Could not list the computers on the domain:" + domain, exc);
+            }
+            finally
+            {
+                this.IsRunning = false;
+            }
+        }
+
+        private void SearchComputers(string domain)
+        {
+            using (DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://{0}", domain)))
+            {
+                using (DirectorySearcher mySearcher = new DirectorySearcher(entry))
                 {
-                    using(DirectorySearcher mySearcher = new DirectorySearcher(entry))
+                    mySearcher.Asynchronous = true;
+                    mySearcher.Filter = ("(objectClass=computer)");
+                    foreach (SearchResult result in mySearcher.FindAll())
                     {
-                        mySearcher.Filter = ("(objectClass=computer)");
-                        foreach(SearchResult resEnt in mySearcher.FindAll())
-                        {
-                            ActiveDirectoryComputer comp = new ActiveDirectoryComputer();
-
-                            DirectoryEntry computer = resEnt.GetDirectoryEntry();
-                            string name = computer.Name.Replace("CN=", "");
-
-                            comp.Tags = Domain;
-
-                            if(computer.Properties != null && computer.Properties["name"] != null && computer.Properties["name"].Count > 0)
-                            {
-                                name = computer.Properties["name"][0].ToString();
-                            }
-                            comp.ComputerName = name;
-
-                            if(computer.Properties != null && computer.Properties["operatingSystem"] != null && computer.Properties["operatingSystem"].Count > 0)
-                            {
-                                comp.Tags += "," + computer.Properties["operatingSystem"][0].ToString();
-                                comp.OperatingSystem = computer.Properties["operatingSystem"][0].ToString();
-
-                            }
-                            if(computer.Properties != null && computer.Properties["distinguishedName"] != null && computer.Properties["distinguishedName"].Count > 0)
-                            {
-                                string distinguishedName = computer.Properties["distinguishedName"][0].ToString();
-                                if(distinguishedName.Contains("OU=Domain Controllers"))
-                                {
-                                    comp.Tags += ",Domain Controllers";
-                                }
-                            }
-
-                            Computers.Add(comp);
-
-                        }
+                        DirectoryEntry computer = result.GetDirectoryEntry();
+                        var comp = ActiveDirectoryComputer.FromDirectoryEntry(domain, computer);
+                        FireComputerFound(comp);
                     }
                 }
             }
-            catch(Exception exc)
-            {
-                Success = false;
-                Terminals.Logging.Log.Error("Could not list the computers on the domain:" + Domain, exc);
-            }
-            if(OnListComputersDoneDelegate != null) OnListComputersDoneDelegate(Computers, Success);
         }
 
-        public void ListComputers(string Domain)
+        private void FireListComputersDone(Boolean success)
         {
-            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ListComputersThread), (object)Domain);
+            if (this.ListComputersDone != null)
+                this.ListComputersDone(success);
+        }
+
+        private void FireComputerFound(ActiveDirectoryComputer computer)
+        {
+            if (this.ComputerFound != null)
+                ComputerFound(computer);
         }
     }
 }
