@@ -4,7 +4,7 @@ using Terminals.Connections;
 
 namespace Terminals.Network
 {
-    public class ActiveDirectoryComputer
+    internal class ActiveDirectoryComputer
     {
         private const string NAME = "name";
         private const string OS = "operatingSystem";
@@ -20,10 +20,12 @@ namespace Terminals.Network
             this.Notes = String.Empty;
         }
 
-        internal String Protocol { get; set; }
+        // public required by databinding
         public Boolean Import { get; set; }
         public String ComputerName { get; set; }
-        internal String OperatingSystem { get; set; }
+        public String OperatingSystem { get; set; }
+        
+        internal String Protocol { get; set; }
         internal String Tags { get; set; }
         internal String Notes { get; set; }
 
