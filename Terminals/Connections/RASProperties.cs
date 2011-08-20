@@ -1,21 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
-using FalafelSoftware;
 using FalafelSoftware.TransPort;
 
 namespace Terminals.Connections
 {
-    public partial class RASProperties : System.Windows.Forms.UserControl, Connections.IConnection
+    internal partial class RASProperties : UserControl, IConnection
     {
         private RASConnection rASConnection;
-        private System.Windows.Forms.Timer timer;
-        private System.Windows.Forms.MethodInvoker logMiv;
-        System.DateTime connectedTime = DateTime.MinValue;
+        private Timer timer;
+        private MethodInvoker logMiv;
+        DateTime connectedTime = DateTime.MinValue;
         private MainForm parentForm;
         string Entry = string.Empty;
 
@@ -33,7 +27,7 @@ namespace Terminals.Connections
             }
         }
 
-        public void ChangeDesktopSize(Terminals.DesktopSize Size)
+        public void ChangeDesktopSize(DesktopSize Size)
         {
         }
 
@@ -60,7 +54,7 @@ namespace Terminals.Connections
             {
             }
         }
-    
+
         public RASProperties()
         {
             InitializeComponent();
@@ -82,7 +76,7 @@ namespace Terminals.Connections
         }
 
         #region IConnection Members
-        
+
         public TerminalTabControlItem TerminalTabPage
         {
             get
@@ -155,7 +149,7 @@ namespace Terminals.Connections
                 this.AddDetailsText("Connection Status", "Connected");
                 this.AddDetailsText("Host", entry.LocalPhoneNumber);
                 this.AddDetailsText("IP Address", this.rASConnection.ras.IPAddress());
-                System.TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - this.connectedTime.Ticks);
+                TimeSpan ts = new TimeSpan(DateTime.Now.Ticks - this.connectedTime.Ticks);
                 this.AddDetailsText("Connection Duration:", string.Format("{0} Days, {1} Hours, {2} Minutes, {3} Seconds", ts.Days, ts.Hours, ts.Minutes, ts.Seconds));
             }
             else

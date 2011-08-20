@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
-using System.IO;
 
-namespace Terminals.Connections {
-    public class NetworkingToolsConnection : Connection//System.Windows.Forms.Control//
+namespace Terminals.Connections
+{
+    internal class NetworkingToolsConnection : Connection
     {
 
         public NetworkingToolsConnection()
@@ -17,7 +15,7 @@ namespace Terminals.Connections {
 
         #region IConnection Members
         private bool connected = false;
-        public override void ChangeDesktopSize(Terminals.DesktopSize Size)
+        public override void ChangeDesktopSize(DesktopSize Size)
         {
         }
 
@@ -32,12 +30,10 @@ namespace Terminals.Connections {
             return true;
         }
 
-        void networkingToolsLayout1_OnTabChanged(object sender, TabControlEventArgs e)
+        private void networkingToolsLayout1_OnTabChanged(object sender, TabControlEventArgs e)
         {
             this.TerminalTabPage.Title = e.TabPage.Text;
         }
-
-
 
         public override void Disconnect()
         {
@@ -45,8 +41,9 @@ namespace Terminals.Connections {
             {
                 connected = false;
             }
-            catch (Exception e) {
-                Terminals.Logging.Log.Error("Error on Disconnect", e);
+            catch (Exception e)
+            {
+                Logging.Log.Error("Error on Disconnect", e);
             }
         }
 
@@ -54,7 +51,7 @@ namespace Terminals.Connections {
 
         private void InitializeComponent()
         {
-            this.networkingToolsLayout1 = new Terminals.Connections.NetworkingToolsLayout();
+            this.networkingToolsLayout1 = new NetworkingToolsLayout();
             this.SuspendLayout();
             // 
             // networkingToolsLayout1
@@ -70,8 +67,6 @@ namespace Terminals.Connections {
         public void Execute(string Action, string Host)
         {
             this.networkingToolsLayout1.Execute(Action, Host);
-
         }
-        
     }
 }

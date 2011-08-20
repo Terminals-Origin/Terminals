@@ -1,12 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading;
+using System.Windows.Forms;
 using TabControl;
 using System.Runtime.InteropServices;
 
 namespace Terminals.Connections
 {
-    public abstract class Connection : System.Windows.Forms.Control, IConnection
+    internal abstract class Connection : Control, IConnection
     {
         #region IConnection Members
 
@@ -67,13 +67,13 @@ namespace Terminals.Connections
             FavoriteConfigurationElement host = (FavoriteConfigurationElement)state;
             try
             {
-                System.Threading.Thread.Sleep(3000);
+                Thread.Sleep(3000);
                 this.server = TerminalServices.TerminalServer.LoadServer(host.ServerName);
                 this.isTerminalServer = this.server.IsATerminalServer;
             }
             catch (Exception)
             {
-                Terminals.Logging.Log.Error(string.Format("Checked to see if {0} is a terminal server.  {0} is not a terminal server", host.ServerName));
+                Logging.Log.Error(string.Format("Checked to see if {0} is a terminal server.  {0} is not a terminal server", host.ServerName));
             }
 
             if (this.OnTerminalServerStateDiscovery != null)
@@ -84,7 +84,7 @@ namespace Terminals.Connections
         {
             if (Fav.Protocol == ConnectionManager.RDP)
             {
-                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(this.CheckForTS), (object)Fav);
+                ThreadPool.QueueUserWorkItem(new WaitCallback(this.CheckForTS), Fav);
             }
 
             this.isTerminalServer = false;
@@ -96,7 +96,7 @@ namespace Terminals.Connections
                 this.OnLog(Text);
         }
         
-        public abstract void ChangeDesktopSize(Terminals.DesktopSize Size);
+        public abstract void ChangeDesktopSize(DesktopSize Size);
         
         public FavoriteConfigurationElement Favorite 
         {
@@ -157,11 +157,11 @@ namespace Terminals.Connections
         {
             this.SuspendLayout();
             
-            this.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.Connection_ControlAdded);
+            this.ControlAdded += new ControlEventHandler(this.Connection_ControlAdded);
             this.ResumeLayout(false);
         }
 
-        private void Connection_ControlAdded(object sender, System.Windows.Forms.ControlEventArgs e)
+        private void Connection_ControlAdded(object sender, ControlEventArgs e)
         {
         }
     }

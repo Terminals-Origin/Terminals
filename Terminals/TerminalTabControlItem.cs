@@ -7,7 +7,7 @@ using TabControl;
 
 namespace Terminals
 {
-    public class TerminalTabControlItem : TabControlItem
+    internal class TerminalTabControlItem : TabControlItem
     {
         private Connections.IConnection _connection;
         private AxMsRdpClient6 _terminalControl;

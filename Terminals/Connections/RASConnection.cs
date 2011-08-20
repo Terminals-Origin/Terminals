@@ -1,30 +1,26 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
+using FalafelSoftware.TransPort;
 using Terminals.Configuration;
 
 namespace Terminals.Connections
 {
-    public class RASConnection : Connection
+    internal class RASConnection : Connection
     {
         public override bool Connected
         {
             get { return ras.Connected; }
         }
-        public override void ChangeDesktopSize(Terminals.DesktopSize Size)
+        public override void ChangeDesktopSize(DesktopSize Size)
         {
         }
-        public FalafelSoftware.TransPort.Ras ras;
 
-        private void EnsureConnection()
-        {
-        }
+        public Ras ras { get; set; }
 
         public override bool Connect()
         {
             try
             {
-                ras = new FalafelSoftware.TransPort.Ras();
+                ras = new Ras();
                 RASProperties p = new RASProperties();
                 p.RASConnection = this;
                 p.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -39,9 +35,9 @@ namespace Terminals.Connections
                 this.ras.UsePrefixSuffix = false;
                 ras.HangUpOnDestroy = true;
 
-                ras.DialError += new FalafelSoftware.TransPort.DialErrorEventHandler(ras_DialError);
-                ras.DialStatus += new FalafelSoftware.TransPort.DialStatusEventHandler(ras_DialStatus);
-                ras.ConnectionChanged += new FalafelSoftware.TransPort.ConnectionChangedEventHandler(ras_ConnectionChanged);
+                ras.DialError += new DialErrorEventHandler(ras_DialError);
+                ras.DialStatus += new DialStatusEventHandler(ras_DialStatus);
+                ras.ConnectionChanged += new ConnectionChangedEventHandler(ras_ConnectionChanged);
                 ras.EntryName = Favorite.ServerName;
 
                 string domainName = Favorite.DomainName;
@@ -54,7 +50,7 @@ namespace Terminals.Connections
 
 
 
-                FalafelSoftware.TransPort.RasError error;
+                RasError error;
                 if(!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(pass))
                 {
                     Log("Using Terminals Credentials, Dialing...");
@@ -70,34 +66,31 @@ namespace Terminals.Connections
                 }
 
                 Log("Dial Result:" + error.ToString());
-                return (error == FalafelSoftware.TransPort.RasError.Success);
+                return (error == RasError.Success);
 
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Fatal("Connecting to RAS", exc);
+                Logging.Log.Fatal("Connecting to RAS", exc);
                 return false;
             }
         }
 
-        void ras_DialStatus(object sender, FalafelSoftware.TransPort.DialStatusEventArgs e)
+        private void ras_DialStatus(object sender, DialStatusEventArgs e)
         {
             Log("Status:" + e.ConnectionState.ToString());
         }
 
-        void ras_DialError(object sender, FalafelSoftware.TransPort.DialErrorEventArgs e)
+        private void ras_DialError(object sender, DialErrorEventArgs e)
         {
-            if(e.RasError != FalafelSoftware.TransPort.RasError.Success)
+            if(e.RasError != RasError.Success)
             {
                 Log("Error:" + e.RasError.ToString());
                 System.Windows.Forms.MessageBox.Show("Could not connect to the server. Reason:" + e.RasError.ToString());
             }
-            else
-            {
-            }
         }
 
-        void ras_ConnectionChanged(object sender, FalafelSoftware.TransPort.ConnectionChangedEventArgs e)
+        private void ras_ConnectionChanged(object sender, ConnectionChangedEventArgs e)
         {
             Log("Connected:" + e.Connected.ToString());
 
@@ -112,6 +105,7 @@ namespace Terminals.Connections
                     CloseTabPage(this.Parent);
             }
         }
+
         public override void Disconnect()
         {
             Log("Hanging Up:" + ras.HangUp().ToString());

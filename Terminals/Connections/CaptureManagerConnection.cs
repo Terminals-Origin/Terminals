@@ -1,13 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
-using System.IO;
+using Terminals.CaptureManager;
 
-namespace Terminals.Connections {
-    public class CaptureManagerConnection : Connection//System.Windows.Forms.Control//
+namespace Terminals.Connections
+{
+    internal class CaptureManagerConnection : Connection
     {
-
         public CaptureManagerConnection()
         {
             InitializeComponent();
@@ -16,11 +14,11 @@ namespace Terminals.Connections {
         {
             layout.RefreshView();
         }
-        private Terminals.CaptureManager.CaptureManagerLayout layout;
+        private CaptureManagerLayout layout;
 
         #region IConnection Members
         private bool connected = false;
-        public override void ChangeDesktopSize(Terminals.DesktopSize Size)
+        public override void ChangeDesktopSize(DesktopSize Size)
         {
         }
 
@@ -35,15 +33,15 @@ namespace Terminals.Connections {
             return true;
         }
 
-        
         public override void Disconnect()
         {
             try
             {
                 connected = false;
             }
-            catch (Exception e) {
-                Terminals.Logging.Log.Error("Error on Disconnect", e);
+            catch (Exception e)
+            {
+                Logging.Log.Error("Error on Disconnect", e);
             }
         }
 
@@ -51,7 +49,7 @@ namespace Terminals.Connections {
 
         private void InitializeComponent()
         {
-            this.layout = new Terminals.CaptureManager.CaptureManagerLayout();
+            this.layout = new CaptureManagerLayout();
             this.SuspendLayout();
             // 
             // networkingToolsLayout1
@@ -62,7 +60,6 @@ namespace Terminals.Connections {
             this.layout.TabIndex = 0;
             this.layout.Dock = DockStyle.Fill;
             this.ResumeLayout(false);
-
         }
     }
 }

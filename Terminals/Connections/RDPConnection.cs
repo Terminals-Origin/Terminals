@@ -16,7 +16,7 @@ using Terminals.Configuration;
 
 namespace Terminals.Connections
 {
-    public class RDPConnection : Connection
+    internal class RDPConnection : Connection
     {
         private MSTSCLib.IMsRdpClientNonScriptable4 _nonScriptable;
         private AxMsRdpClient6 _axMsRdpClient = null;

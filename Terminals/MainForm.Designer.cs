@@ -502,7 +502,7 @@ namespace Terminals
             this.rebuildTagsIndexToolStripMenuItem.Name = "rebuildTagsIndexToolStripMenuItem";
             this.rebuildTagsIndexToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.rebuildTagsIndexToolStripMenuItem.Text = "Rebuild Tags Index";
-            this.rebuildTagsIndexToolStripMenuItem.ToolTipText = "Rebuild Tags Index";
+            this.rebuildTagsIndexToolStripMenuItem.ToolTipText = "Recreates connection \"Tags\" list used by all connections.";
             this.rebuildTagsIndexToolStripMenuItem.Click += new System.EventHandler(this.rebuildTagsIndexToolStripMenuItem_Click);
             // 
             // rebuildShortcutsToolStripMenuItem
@@ -510,7 +510,7 @@ namespace Terminals
             this.rebuildShortcutsToolStripMenuItem.Name = "rebuildShortcutsToolStripMenuItem";
             this.rebuildShortcutsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.rebuildShortcutsToolStripMenuItem.Text = "Rebuild Shortcuts";
-            this.rebuildShortcutsToolStripMenuItem.ToolTipText = "Rebuild Shortcuts";
+            this.rebuildShortcutsToolStripMenuItem.ToolTipText = "Recreates Shortcuts list to default state.";
             this.rebuildShortcutsToolStripMenuItem.Click += new System.EventHandler(this.rebuildShortcutsToolStripMenuItem_Click);
             // 
             // rebuildToolbarsToolStripMenuItem
@@ -518,7 +518,7 @@ namespace Terminals
             this.rebuildToolbarsToolStripMenuItem.Name = "rebuildToolbarsToolStripMenuItem";
             this.rebuildToolbarsToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.rebuildToolbarsToolStripMenuItem.Text = "Rebuild Toolbars";
-            this.rebuildToolbarsToolStripMenuItem.ToolTipText = "Rebuild Toolbars";
+            this.rebuildToolbarsToolStripMenuItem.ToolTipText = "Restores last saved position of all Toolbars in main window";
             this.rebuildToolbarsToolStripMenuItem.Click += new System.EventHandler(this.rebuildToolbarsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem6

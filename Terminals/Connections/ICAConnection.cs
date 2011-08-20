@@ -2,30 +2,29 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.IO;
+using AxWFICALib;
 using Terminals.Configuration;
 
 namespace Terminals.Connections
 {
-    public class ICAConnection : Connection
+    internal class ICAConnection : Connection
     {
         #region IConnection Members
         private bool connected = false;
 
-        AxWFICALib.AxICAClient iIcaClient;
+        private AxICAClient iIcaClient;
 
-        public override void ChangeDesktopSize(Terminals.DesktopSize Size)
+        public override void ChangeDesktopSize(DesktopSize Size)
         {
         }
 
         public override bool Connected { get { return connected; } }
 
-
         public override bool Connect()
         {
-
             try
             {
-                iIcaClient = new AxWFICALib.AxICAClient();
+                iIcaClient = new AxICAClient();
                 ((Control)iIcaClient).DragEnter += new DragEventHandler(ICAConnection_DragEnter);
                 ((Control)iIcaClient).DragDrop += new DragEventHandler(ICAConnection_DragDrop);
                 iIcaClient.OnDisconnect += new EventHandler(iIcaClient_OnDisconnect);
@@ -118,14 +117,14 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Fatal("Connecting to ICA", exc);
+                Logging.Log.Fatal("Connecting to ICA", exc);
                 return false;
             }
         }
 
-        void iIcaClient_OnDisconnect(object sender, EventArgs e)
+        private void iIcaClient_OnDisconnect(object sender, EventArgs e)
         {
-            Terminals.Logging.Log.Fatal("ICA Connection Lost" + this.Favorite.Name);
+            Logging.Log.Fatal("ICA Connection Lost" + this.Favorite.Name);
             this.connected = false;
 
             if (ParentForm.InvokeRequired)
@@ -137,7 +136,7 @@ namespace Terminals.Connections
                 CloseTabPage(this.Parent);
         }
 
-        void ICAConnection_DragDrop(object sender, DragEventArgs e)
+        private void ICAConnection_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             string desktopShare = ParentForm.GetDesktopShare();
@@ -151,7 +150,7 @@ namespace Terminals.Connections
                 SHCopyFiles(files, desktopShare);
         }
 
-        void ICAConnection_DragEnter(object sender, DragEventArgs e)
+        private void ICAConnection_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
             {
@@ -163,12 +162,13 @@ namespace Terminals.Connections
             }
 
         }
+
         private string icaPassword = "";
-        string ICAPassword()
+        
+        private string ICAPassword()
         {
             return icaPassword;
         }
-
 
         public override void Disconnect()
         {
@@ -179,7 +179,7 @@ namespace Terminals.Connections
             }
             catch (Exception e)
             {
-                Terminals.Logging.Log.Error("Error on Disconnect", e);
+                Logging.Log.Error("Error on Disconnect", e);
             }
         }
         private void SHCopyFiles(string[] sourceFiles, string destinationFolder)

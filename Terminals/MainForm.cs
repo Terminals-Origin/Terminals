@@ -22,7 +22,7 @@ using Settings = Terminals.Configuration.Settings;
 
 namespace Terminals
 {
-    public partial class MainForm : Form
+    internal partial class MainForm : Form
     {
         #region Declarations
         
@@ -303,7 +303,7 @@ namespace Terminals
 
         #region Public methods
 
-        public void LoadWindowState()
+        private void LoadWindowState()
         {
             this.Text = Program.Info.AboutText.ToString();
 
@@ -377,7 +377,7 @@ namespace Terminals
             }
         }
 
-        public void UpdateControls()
+        internal void UpdateControls()
         {
             tcTerminals.ShowToolTipOnTitle = Settings.ShowInformationToolTips;
             bool hasSelectedTerminal = this.terminalsControler.HasSelected;
@@ -2335,7 +2335,7 @@ namespace Terminals
             }
 
             if (Settings.EnableFavoritesPanel)
-                this.LoadTags(null);
+                this.LoadTags(String.Empty);
 
             this.Invoke(this._specialCommandsMIV);
         }

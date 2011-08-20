@@ -3,16 +3,20 @@ using System.Drawing;
 using AxVMRCClientControlLib;
 using Terminals.Configuration;
 
-namespace Terminals.Connections {
-    public class VMRCConnection : Connection {
+namespace Terminals.Connections
+{
+    internal class VMRCConnection : Connection
+    {
         #region IConnection Members
         private bool connected = false;
         public override bool Connected { get { return connected; } }
-        public override void ChangeDesktopSize(DesktopSize Size) {
+        public override void ChangeDesktopSize(DesktopSize Size)
+        {
         }
 
         AxVMRCClientControl vmrc;
-        public override bool Connect() {
+        public override bool Connect()
+        {
             try
             {
                 vmrc = new AxVMRCClientControl();
@@ -28,9 +32,9 @@ namespace Terminals.Connections {
                 string pass = Favorite.Password;
                 string userName = Favorite.UserName;
 
-                if(string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
-                if(string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
-                if(string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
+                if (string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
+                if (string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
+                if (string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
 
                 // vmrc.Dock = DockStyle.Fill;
                 vmrc.UserName = userName;
@@ -54,7 +58,7 @@ namespace Terminals.Connections {
                 //vmrc.Update();
                 return true;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Logging.Log.Fatal("Connecting to VMRC", exc);
                 return false;
@@ -68,9 +72,10 @@ namespace Terminals.Connections {
 
         private void vmrc_OnStateChanged(object sender, _IVMRCClientControlEvents_OnStateChangedEvent e)
         {
-            if(e.state == VMRCClientControlLib.VMRCState.vmrcState_Connected) 
+            if (e.state == VMRCClientControlLib.VMRCState.vmrcState_Connected)
                 this.connected = true;
-            else {
+            else
+            {
                 connected = false;
                 Logging.Log.Fatal("VMRC Connection Lost" + this.Favorite.Name);
                 this.connected = false;
@@ -85,31 +90,41 @@ namespace Terminals.Connections {
             }
         }
 
-        public bool ViewOnlyMode  {
-            get {
-                if (vmrc != null && connected) return vmrc.ViewOnlyMode ;
+        public bool ViewOnlyMode
+        {
+            get
+            {
+                if (vmrc != null && connected) return vmrc.ViewOnlyMode;
                 return false;
             }
-            set {
+            set
+            {
                 if (vmrc != null && connected) vmrc.ViewOnlyMode = value;
             }
         }
-        public void SendKeySequence(string Keys) {
+        public void SendKeySequence(string Keys)
+        {
             if (vmrc != null && connected) vmrc.SendKeySequence(Keys);
         }
-        
-        public void AdminDisplay() {
-            if (vmrc != null && connected) {
+
+        public void AdminDisplay()
+        {
+            if (vmrc != null && connected)
+            {
                 vmrc.AdministratorMode = true;
                 vmrc.AdminDisplay();
             }
         }
 
 
-        public override void Disconnect() {
-            try {
+        public override void Disconnect()
+        {
+            try
+            {
                 vmrc.Disconnect();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Logging.Log.Error("Disconnect", e);
             }
         }
