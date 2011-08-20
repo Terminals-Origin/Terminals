@@ -159,11 +159,12 @@ namespace Terminals.ExportImport
         internal static List<FavoriteConfigurationElement> ImportXML(string file, bool showOnToolbar)
         {
             List<FavoriteConfigurationElement> favorites = ImportFavorites(file);
+            Settings.DelayConfigurationSave = true;
             foreach (var favorite in favorites)
             {
                 Settings.AddFavorite(favorite, showOnToolbar);
             }
-
+            Settings.DelayConfigurationSave = true;
             return favorites;
         }
 
