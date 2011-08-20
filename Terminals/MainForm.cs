@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -1362,9 +1363,13 @@ namespace Terminals
 
         private void MainForm_Activated(object sender, EventArgs e)
         {
-            Rectangle primaryScreen = Screen.PrimaryScreen.Bounds;
-            if (this.Location.X < primaryScreen.X || primaryScreen.Width < this.Location.X ||
-                this.Location.Y < primaryScreen.Y || primaryScreen.Height < this.Location.Y)
+            Screen lastScreen = Screen.AllScreens.
+                FirstOrDefault(candidate => candidate.Bounds.X <= this.Location.X ||
+                               this.Location.X > candidate.Bounds.X + candidate.Bounds.Width ||
+                               candidate.Bounds.Y  <= this.Location.Y ||
+                               this.Location.Y < candidate.Bounds.Y + candidate.Bounds.Height);
+
+            if (lastScreen == null)
                 this.Location = new Point(100, 100);
 
             if (this.FullScreen)
