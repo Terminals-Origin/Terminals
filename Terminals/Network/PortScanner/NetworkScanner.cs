@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net.Sockets;
 using System.Windows.Forms;
@@ -15,24 +17,16 @@ namespace Terminals
 {
     internal partial class NetworkScanner : Form
     {
-        Int32 scanCount = 0;
-
-        MethodInvoker updateScanMethodInvoker;
-        MethodInvoker updateStatusMethodInvoker;
-
-        NetworkScanManager manager = null;
-        private NetworkScanItem selectedScanItem;
-        private object updateListLock = new object();
-        private object scanCountLock = new object();
+        private NetworkScanManager manager;
 
         internal NetworkScanner()
         {
             InitializeComponent();
-
-            this.updateScanMethodInvoker = new MethodInvoker(UpdateScanItemList);
-            this.updateStatusMethodInvoker = new MethodInvoker(UpdateStatus);
   
             FillTextBoxesFromLocalIp();
+            InitScanManager();
+            this.gridScanResults.AutoGenerateColumns = false;
+            this.gridScanResults.DataSource = this.bsScanResults;
 
             Server.OnClientConnection += new Server.ClientConnection(Server_OnClientConnection);
             Client.OnServerConnection += new Client.ServerConnection(Client_OnServerConnection);
@@ -72,170 +66,129 @@ namespace Terminals
             return localIP;
         }
 
-        private void AddPort(NetworkScanItem port)
+        private void InitScanManager()
         {
-            Boolean add = true;
-            foreach (NetworkScanItem item in this.OpenPorts)
-            {
-                if (item.IPAddress == port.IPAddress && item.Port == port.Port && item.IsVMRC == port.IsVMRC)
-                {
-                    add = false;
-                    break;
-                }
-            }
-
-            if (add)
-                this.openPorts.Add(port);
-        }
-
-        List<NetworkScanItem> openPorts = new List<NetworkScanItem>();
-        internal List<NetworkScanItem> OpenPorts
-        {
-            get { return openPorts; }
-            set { openPorts = value; }
-        }
-
-        private void UpdateScanItemList()
-        {
-            lock (updateListLock)
-            {
-                this.ScanResultsListView.Items.Clear();
-                foreach (NetworkScanItem item in this.OpenPorts)
-                {
-                    AddItemToResultsList(item);
-                }
-            }
-            IncrementProgress();
-        }
-
-        private void AddItemToResultsList(NetworkScanItem item)
-        {
-            ListViewItem newItem = new ListViewItem(item.IPAddress);
-            newItem.Tag = item;
-            newItem.SubItems.Add(new ListViewItem.ListViewSubItem(newItem, item.HostName));
-            newItem.SubItems.Add(new ListViewItem.ListViewSubItem(newItem, item.Port.ToString()));
-            String port = ConnectionManager.GetPortName(item.Port, item.IsVMRC);
-            newItem.SubItems.Add(new ListViewItem.ListViewSubItem(newItem, port));
-            this.ScanResultsListView.Items.Add(newItem);
-        }
-
-        private void UpdateStatus()
-        {
-            IncrementProgress();
-        }
-
-        private void IncrementProgress()
-        {
-            scanProgressBar.Increment(1);
-            ScanStatusLabel.Text = String.Format("Pending items:{0}", scanCount);
-            if (scanProgressBar.Value >= scanProgressBar.Maximum) scanProgressBar.Value = 0;
-            if (scanCount == 0)
-            {
-                this.ScanButton.Text = "Scan";
-                ScanStatusLabel.Text = String.Format("Completed scan, found: {0} items.", manager.OpenPorts);
-                scanProgressBar.Value = 0;
-            }
-            Application.DoEvents();
+            this.manager = new NetworkScanManager();
+            this.manager.OnAddressScanHit += new NetworkScanHandler(this.manager_OnScanHit);
+            this.manager.OnAddressScanFinished += new NetworkScanHandler(this.manager_OnAddresScanFinished);
         }
 
         private void ScanButton_Click(object sender, EventArgs e)
         {
-            scanCount = 0;
             scanProgressBar.Value = 0;
 
-            if (ScanButton.Text == "Scan")
+            if (ScanButton.Text == "&Scan")
             {
-                ScanStatusLabel.Text = "Initiating Scan...";
-                ScanButton.Text = "Stop";
-                Application.DoEvents();
-                StartNewScanManager();
+                this.StartScan();
             }
             else
             {
-                ScanStatusLabel.Text = "Scan Stopped.";
-                ScanButton.Text = "Scan";
-                Application.DoEvents();
-
-                if (manager != null)
-                {
-                    manager.StopScan();
-                }
+                StopScan();
             }
         }
 
-        private void StartNewScanManager()
+        private void StopScan()
+        {
+            this.manager.StopScan();
+            this.ScanStatusLabel.Text = "Scan Stopped.";
+            this.ScanButton.Text = "&Scan";
+        }
+
+        private void StartScan()
+        {
+            this.bsScanResults.Clear();
+            ScanStatusLabel.Text = "Initiating Scan...";
+            ScanButton.Text = "Stop";
+            List<int> ports = GetSelectedPorts();
+            this.manager.StartScan(this.ATextbox.Text, this.BTextbox.Text, this.CTextbox.Text,
+                                   this.DTextbox.Text, this.ETextbox.Text, ports);
+        }
+
+        private List<int> GetSelectedPorts()
         {
             List<Int32> ports = new List<Int32>();
             if (this.RDPCheckbox.Checked)
                 ports.Add(ConnectionManager.RDPPort);
             if (this.VNCCheckbox.Checked || this.VMRCCheckbox.Checked)
                 ports.Add(ConnectionManager.VNCVMRCPort);
-            
-            this.manager = new NetworkScanManager(this.ATextbox.Text, this.BTextbox.Text, this.CTextbox.Text,
-                                                  this.DTextbox.Text, this.ETextbox.Text, ports);
+            if(this.TelnetCheckbox.Checked)
+                ports.Add(ConnectionManager.TelnetPort);
+            if (this.SSHCheckbox.Checked)
+                ports.Add(ConnectionManager.SSHPort);
 
-            this.manager.OnScanHit += new NetworkScanHandler(this.manager_OnScanHit);
-            this.manager.OnScanStart += new NetworkScanHandler(this.manager_OnScanStart);
-            this.manager.OnScanMiss += new NetworkScanHandler(this.manager_OnScanMiss);
-            this.manager.StartScan();
+            return ports;
         }
 
-        private void manager_OnScanMiss(ScanItemEventArgs args)
+        private void manager_OnAddresScanFinished(ScanItemEventArgs args)
         {
-            scanCount--;
-            this.Invoke(this.updateStatusMethodInvoker);
+            this.Invoke(new MethodInvoker(UpdateScanStatus));
         }
 
-        private void manager_OnScanStart(ScanItemEventArgs args)
+        /// <summary>
+        /// Updates the status bar, button state and progress bar.
+        /// The last who sends "is done" autoamticaly informs about the compleated state.
+        /// </summary>
+        private void UpdateScanStatus()
         {
-            scanCount++;
-            this.Invoke(this.updateStatusMethodInvoker);
+            this.scanProgressBar.Maximum = this.manager.AllAddressesToScan;
+            scanProgressBar.Value = this.manager.DoneAddressScans;
+            Int32 pendingAddresses = this.manager.AllAddressesToScan - scanProgressBar.Value;
+            Debug.WriteLine(String.Format("updating status with pending ({0}): {1}", 
+                this.manager.ScanIsRunning, pendingAddresses));
+
+
+            ScanStatusLabel.Text = String.Format("Pending items:{0}", pendingAddresses);
+            if (scanProgressBar.Value >= scanProgressBar.Maximum)
+                scanProgressBar.Value = 0;
+
+            if (pendingAddresses == 0)
+            {
+                this.ScanButton.Text = "&Scan";
+                ScanStatusLabel.Text = String.Format("Completed scan, found: {0} items.", this.bsScanResults.Count);
+                scanProgressBar.Value = 0;
+            }
         }
 
         private void manager_OnScanHit(ScanItemEventArgs args)
         {
-            scanCount--;
-            AddPort(args.NetworkScanItem);
-            this.Invoke(this.updateScanMethodInvoker);
-        }
-
-        private void ScanResultsListView_MouseClick(object sender, MouseEventArgs e)
-        {
-            if (ScanResultsListView.SelectedItems[0].Tag != null)
+            if (this.InvokeRequired)
             {
-                lock (updateListLock)
-                {
-                    selectedScanItem = (NetworkScanItem)ScanResultsListView.SelectedItems[0].Tag;
-                }
+                this.Invoke(new NetworkScanHandler(manager_OnScanHit), new object[] { args });
             }
             else
             {
-                selectedScanItem = null;
+                this.bsScanResults.Add(args.ScanResult);
+                this.gridScanResults.Refresh();
             }
         }
 
         private void AllCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            this.RDPCheckbox.Checked = AllCheckbox.Checked;
-            this.VNCCheckbox.Checked = AllCheckbox.Checked;
-            this.VMRCCheckbox.Checked = AllCheckbox.Checked;
-            this.TelnetCheckbox.Checked = AllCheckbox.Checked;
-            this.SSHCheckbox.Checked = AllCheckbox.Checked;
+            if (this.AllCheckbox.Checked)
+            {
+                this.RDPCheckbox.Checked = AllCheckbox.Checked;
+                this.VNCCheckbox.Checked = AllCheckbox.Checked;
+                this.VMRCCheckbox.Checked = AllCheckbox.Checked;
+                this.TelnetCheckbox.Checked = AllCheckbox.Checked;
+                this.SSHCheckbox.Checked = AllCheckbox.Checked;
+            }
         }
 
         private void AddAllButton_Click(object sender, EventArgs e)
         {
             Int32 count = 0;
-            foreach (ListViewItem item in this.ScanResultsListView.Items)
+            foreach (NetworkScanResult scanResult in this.bsScanResults)
             {
-                NetworkScanItem service = item.Tag as NetworkScanItem;
-                this.ImportSelectedService(service);
-                count++;
+                if (scanResult.Import)
+                {
+                    this.ImportSelectedService(scanResult);
+                    count++;
+                }
             }
             MessageBox.Show(String.Format("{0} items were added to your favorites.", count));
         }
 
-        private void ImportSelectedService(NetworkScanItem service)
+        private void ImportSelectedService(NetworkScanResult service)
         {
             FavoriteConfigurationElement favorite = new FavoriteConfigurationElement();
             favorite.ServerName = service.IPAddress;
@@ -357,15 +310,48 @@ namespace Terminals
         {
             try
             {
+                this.manager.StopScan();
                 Server.Stop();
                 Client.Stop();
             }
-            catch (Exception exc) { Logging.Log.Info("Network Scanner failed to stop server and client at close", exc); }
+            catch (Exception exc)
+            {
+                Logging.Log.Info("Network Scanner failed to stop server and client at close", exc);
+            }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void PortCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if(!(sender as CheckBox).Checked)
+              this.AllCheckbox.Checked = false;
+        }
+
+        private bool validation = false;
+
+        /// <summary>
+        /// Validate text boxes to allow inser only byte.
+        /// </summary>
+        private void IPTextbox_TextChanged(object sender, EventArgs e)
+        {
+            if (validation)
+                return; // prevent stack overflow
+
+            byte testValue;
+            validation = true;
+            TextBox textBox = sender as TextBox;
+            bool isValid = Byte.TryParse(textBox.Text, NumberStyles.None, null,  out testValue);
+
+            if (!isValid && validation)
+                textBox.Text = textBox.Tag.ToString();
+            else
+                textBox.Tag = textBox.Text;
+
+            validation = false;
         }
     }
 }

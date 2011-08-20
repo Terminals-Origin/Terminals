@@ -352,6 +352,8 @@
     <Compile Include="Network\PortScanner.Designer.cs">
       <DependentUpon>PortScanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\PortScanner\ConnectionState.cs" />
+    <Compile Include="Network\PortScanner\NetworkScanResult.cs" />
     <Compile Include="Network\TraceRoute\RouteHopFoundEventArgs.cs" />
     <Compile Include="Network\TraceRoute\TraceRoute.cs">
       <SubType>Component</SubType>
@@ -846,6 +848,7 @@
     <Content Include="Resources\amber.png" />
     <Content Include="Resources\back.png" />
     <None Include="Properties\DataSources\Terminals.Network.ActiveDirectoryComputer.datasource" />
+    <None Include="Properties\DataSources\Terminals.Scanner.NetworkScanResult.datasource" />
     <None Include="Resources\ControlPanel.png" />
     <Content Include="Resources\DeleteFolderHS.png" />
     <Content Include="Resources\DeleteHS.png" />

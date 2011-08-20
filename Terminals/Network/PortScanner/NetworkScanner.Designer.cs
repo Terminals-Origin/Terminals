@@ -23,25 +23,9 @@ namespace Terminals {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NetworkScanner));
-            this.label1 = new System.Windows.Forms.Label();
-            this.ATextbox = new System.Windows.Forms.TextBox();
-            this.BTextbox = new System.Windows.Forms.TextBox();
-            this.CTextbox = new System.Windows.Forms.TextBox();
-            this.DTextbox = new System.Windows.Forms.TextBox();
-            this.ETextbox = new System.Windows.Forms.TextBox();
-            this.RDPCheckbox = new System.Windows.Forms.CheckBox();
-            this.VNCCheckbox = new System.Windows.Forms.CheckBox();
-            this.VMRCCheckbox = new System.Windows.Forms.CheckBox();
-            this.TelnetCheckbox = new System.Windows.Forms.CheckBox();
-            this.SSHCheckbox = new System.Windows.Forms.CheckBox();
-            this.ScanResultsListView = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.AllCheckbox = new System.Windows.Forms.CheckBox();
             this.ScanButton = new System.Windows.Forms.Button();
             this.TagsTextbox = new System.Windows.Forms.TextBox();
             this.AddAllButton = new System.Windows.Forms.Button();
@@ -53,6 +37,11 @@ namespace Terminals {
             this.scanProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.gridScanResults = new System.Windows.Forms.DataGridView();
+            this.Selected = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.Computer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HostName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ServiceName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.ServerAddressTextbox = new System.Windows.Forms.TextBox();
@@ -65,206 +54,50 @@ namespace Terminals {
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
+            this.groupAddressRange = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ATextbox = new System.Windows.Forms.TextBox();
+            this.BTextbox = new System.Windows.Forms.TextBox();
+            this.CTextbox = new System.Windows.Forms.TextBox();
+            this.DTextbox = new System.Windows.Forms.TextBox();
+            this.ETextbox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.AllCheckbox = new System.Windows.Forms.CheckBox();
+            this.SSHCheckbox = new System.Windows.Forms.CheckBox();
+            this.TelnetCheckbox = new System.Windows.Forms.CheckBox();
+            this.VMRCCheckbox = new System.Windows.Forms.CheckBox();
+            this.VNCCheckbox = new System.Windows.Forms.CheckBox();
+            this.RDPCheckbox = new System.Windows.Forms.CheckBox();
+            this.bsScanResults = new System.Windows.Forms.BindingSource(this.components);
             this.panel1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridScanResults)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.groupAddressRange.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bsScanResults)).BeginInit();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(55, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "IP Range:";
-            // 
-            // ATextbox
-            // 
-            this.ATextbox.Location = new System.Drawing.Point(64, 16);
-            this.ATextbox.Name = "ATextbox";
-            this.ATextbox.Size = new System.Drawing.Size(30, 20);
-            this.ATextbox.TabIndex = 1;
-            this.ATextbox.Text = "10";
-            // 
-            // BTextbox
-            // 
-            this.BTextbox.Location = new System.Drawing.Point(100, 16);
-            this.BTextbox.Name = "BTextbox";
-            this.BTextbox.Size = new System.Drawing.Size(30, 20);
-            this.BTextbox.TabIndex = 2;
-            this.BTextbox.Text = "0";
-            // 
-            // CTextbox
-            // 
-            this.CTextbox.Location = new System.Drawing.Point(136, 16);
-            this.CTextbox.Name = "CTextbox";
-            this.CTextbox.Size = new System.Drawing.Size(30, 20);
-            this.CTextbox.TabIndex = 3;
-            this.CTextbox.Text = "0";
-            // 
-            // DTextbox
-            // 
-            this.DTextbox.Location = new System.Drawing.Point(172, 4);
-            this.DTextbox.Name = "DTextbox";
-            this.DTextbox.Size = new System.Drawing.Size(30, 20);
-            this.DTextbox.TabIndex = 4;
-            this.DTextbox.Text = "99";
-            // 
-            // ETextbox
-            // 
-            this.ETextbox.Location = new System.Drawing.Point(172, 30);
-            this.ETextbox.Name = "ETextbox";
-            this.ETextbox.Size = new System.Drawing.Size(30, 20);
-            this.ETextbox.TabIndex = 5;
-            this.ETextbox.Text = "99";
-            // 
-            // RDPCheckbox
-            // 
-            this.RDPCheckbox.AutoSize = true;
-            this.RDPCheckbox.Checked = true;
-            this.RDPCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RDPCheckbox.Location = new System.Drawing.Point(221, 4);
-            this.RDPCheckbox.Name = "RDPCheckbox";
-            this.RDPCheckbox.Size = new System.Drawing.Size(49, 17);
-            this.RDPCheckbox.TabIndex = 6;
-            this.RDPCheckbox.Text = "RDP";
-            this.RDPCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // VNCCheckbox
-            // 
-            this.VNCCheckbox.AutoSize = true;
-            this.VNCCheckbox.Checked = true;
-            this.VNCCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.VNCCheckbox.Location = new System.Drawing.Point(221, 27);
-            this.VNCCheckbox.Name = "VNCCheckbox";
-            this.VNCCheckbox.Size = new System.Drawing.Size(48, 17);
-            this.VNCCheckbox.TabIndex = 7;
-            this.VNCCheckbox.Text = "VNC";
-            this.VNCCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // VMRCCheckbox
-            // 
-            this.VMRCCheckbox.AutoSize = true;
-            this.VMRCCheckbox.Checked = true;
-            this.VMRCCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.VMRCCheckbox.Location = new System.Drawing.Point(276, 4);
-            this.VMRCCheckbox.Name = "VMRCCheckbox";
-            this.VMRCCheckbox.Size = new System.Drawing.Size(57, 17);
-            this.VMRCCheckbox.TabIndex = 8;
-            this.VMRCCheckbox.Text = "VMRC";
-            this.VMRCCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // TelnetCheckbox
-            // 
-            this.TelnetCheckbox.AutoSize = true;
-            this.TelnetCheckbox.Checked = true;
-            this.TelnetCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.TelnetCheckbox.Location = new System.Drawing.Point(276, 27);
-            this.TelnetCheckbox.Name = "TelnetCheckbox";
-            this.TelnetCheckbox.Size = new System.Drawing.Size(56, 17);
-            this.TelnetCheckbox.TabIndex = 9;
-            this.TelnetCheckbox.Text = "Telnet";
-            this.TelnetCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // SSHCheckbox
-            // 
-            this.SSHCheckbox.AutoSize = true;
-            this.SSHCheckbox.Checked = true;
-            this.SSHCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.SSHCheckbox.Location = new System.Drawing.Point(339, 6);
-            this.SSHCheckbox.Name = "SSHCheckbox";
-            this.SSHCheckbox.Size = new System.Drawing.Size(48, 17);
-            this.SSHCheckbox.TabIndex = 10;
-            this.SSHCheckbox.Text = "SSH";
-            this.SSHCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // ScanResultsListView
-            // 
-            this.ScanResultsListView.Activation = System.Windows.Forms.ItemActivation.OneClick;
-            this.ScanResultsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader4,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.ScanResultsListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ScanResultsListView.FullRowSelect = true;
-            this.ScanResultsListView.GridLines = true;
-            this.ScanResultsListView.HideSelection = false;
-            this.ScanResultsListView.HotTracking = true;
-            this.ScanResultsListView.HoverSelection = true;
-            this.ScanResultsListView.Location = new System.Drawing.Point(3, 88);
-            this.ScanResultsListView.MultiSelect = false;
-            this.ScanResultsListView.Name = "ScanResultsListView";
-            this.ScanResultsListView.ShowGroups = false;
-            this.ScanResultsListView.Size = new System.Drawing.Size(475, 223);
-            this.ScanResultsListView.TabIndex = 11;
-            this.ScanResultsListView.UseCompatibleStateImageBehavior = false;
-            this.ScanResultsListView.View = System.Windows.Forms.View.Details;
-            this.ScanResultsListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ScanResultsListView_MouseClick);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Server";
-            this.columnHeader1.Width = 96;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Host";
-            this.columnHeader4.Width = 122;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Port";
-            this.columnHeader2.Width = 46;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Protocol";
-            this.columnHeader3.Width = 72;
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.AllCheckbox);
+            this.panel1.Controls.Add(this.groupBox3);
+            this.panel1.Controls.Add(this.groupAddressRange);
             this.panel1.Controls.Add(this.ScanButton);
-            this.panel1.Controls.Add(this.ETextbox);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.SSHCheckbox);
-            this.panel1.Controls.Add(this.ATextbox);
-            this.panel1.Controls.Add(this.TelnetCheckbox);
-            this.panel1.Controls.Add(this.BTextbox);
-            this.panel1.Controls.Add(this.VMRCCheckbox);
-            this.panel1.Controls.Add(this.CTextbox);
-            this.panel1.Controls.Add(this.VNCCheckbox);
-            this.panel1.Controls.Add(this.DTextbox);
-            this.panel1.Controls.Add(this.RDPCheckbox);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(475, 85);
+            this.panel1.Size = new System.Drawing.Size(475, 87);
             this.panel1.TabIndex = 12;
-            // 
-            // AllCheckbox
-            // 
-            this.AllCheckbox.AutoSize = true;
-            this.AllCheckbox.Checked = true;
-            this.AllCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.AllCheckbox.Location = new System.Drawing.Point(339, 27);
-            this.AllCheckbox.Name = "AllCheckbox";
-            this.AllCheckbox.Size = new System.Drawing.Size(37, 17);
-            this.AllCheckbox.TabIndex = 16;
-            this.AllCheckbox.Text = "All";
-            this.AllCheckbox.UseVisualStyleBackColor = true;
-            this.AllCheckbox.CheckedChanged += new System.EventHandler(this.AllCheckbox_CheckedChanged);
             // 
             // ScanButton
             // 
-            this.ScanButton.Location = new System.Drawing.Point(393, 23);
+            this.ScanButton.Location = new System.Drawing.Point(393, 31);
             this.ScanButton.Name = "ScanButton";
             this.ScanButton.Size = new System.Drawing.Size(75, 23);
             this.ScanButton.TabIndex = 11;
@@ -283,11 +116,11 @@ namespace Terminals {
             // AddAllButton
             // 
             this.AddAllButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.AddAllButton.Location = new System.Drawing.Point(329, 6);
+            this.AddAllButton.Location = new System.Drawing.Point(283, 6);
             this.AddAllButton.Name = "AddAllButton";
-            this.AddAllButton.Size = new System.Drawing.Size(75, 23);
+            this.AddAllButton.Size = new System.Drawing.Size(121, 23);
             this.AddAllButton.TabIndex = 17;
-            this.AddAllButton.Text = "&OK";
+            this.AddAllButton.Text = "&Import selected";
             this.AddAllButton.UseVisualStyleBackColor = true;
             this.AddAllButton.Click += new System.EventHandler(this.AddAllButton_Click);
             // 
@@ -299,7 +132,7 @@ namespace Terminals {
             this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
             this.ButtonCancel.TabIndex = 15;
-            this.ButtonCancel.Text = "&Cancel";
+            this.ButtonCancel.Text = "&Close";
             this.ButtonCancel.UseVisualStyleBackColor = true;
             this.ButtonCancel.Click += new System.EventHandler(this.CancelButton_Click);
             // 
@@ -361,7 +194,7 @@ namespace Terminals {
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.ScanResultsListView);
+            this.tabPage1.Controls.Add(this.gridScanResults);
             this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
@@ -370,6 +203,54 @@ namespace Terminals {
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Port Scanner";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // gridScanResults
+            // 
+            this.gridScanResults.AllowUserToAddRows = false;
+            this.gridScanResults.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.gridScanResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridScanResults.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Selected,
+            this.Computer,
+            this.HostName,
+            this.ServiceName});
+            this.gridScanResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gridScanResults.Location = new System.Drawing.Point(3, 90);
+            this.gridScanResults.Name = "gridScanResults";
+            this.gridScanResults.RowHeadersVisible = false;
+            this.gridScanResults.Size = new System.Drawing.Size(475, 221);
+            this.gridScanResults.TabIndex = 13;
+            // 
+            // Selected
+            // 
+            this.Selected.DataPropertyName = "Import";
+            this.Selected.HeaderText = "Import";
+            this.Selected.Name = "Selected";
+            this.Selected.Width = 40;
+            // 
+            // Computer
+            // 
+            this.Computer.DataPropertyName = "IPAddress";
+            this.Computer.HeaderText = "IP address";
+            this.Computer.Name = "Computer";
+            this.Computer.ReadOnly = true;
+            this.Computer.Width = 150;
+            // 
+            // HostName
+            // 
+            this.HostName.DataPropertyName = "HostName";
+            this.HostName.HeaderText = "Host name";
+            this.HostName.Name = "HostName";
+            this.HostName.ReadOnly = true;
+            this.HostName.Width = 200;
+            // 
+            // ServiceName
+            // 
+            this.ServiceName.DataPropertyName = "ServiceName";
+            this.ServiceName.HeaderText = "Service";
+            this.ServiceName.Name = "ServiceName";
+            this.ServiceName.ReadOnly = true;
+            this.ServiceName.Width = 50;
             // 
             // tabPage2
             // 
@@ -493,6 +374,182 @@ namespace Terminals {
             this.label6.TabIndex = 19;
             this.label6.Text = "Optional Tags:";
             // 
+            // groupAddressRange
+            // 
+            this.groupAddressRange.Controls.Add(this.label7);
+            this.groupAddressRange.Controls.Add(this.ETextbox);
+            this.groupAddressRange.Controls.Add(this.label1);
+            this.groupAddressRange.Controls.Add(this.ATextbox);
+            this.groupAddressRange.Controls.Add(this.BTextbox);
+            this.groupAddressRange.Controls.Add(this.CTextbox);
+            this.groupAddressRange.Controls.Add(this.DTextbox);
+            this.groupAddressRange.Location = new System.Drawing.Point(6, 6);
+            this.groupAddressRange.Name = "groupAddressRange";
+            this.groupAddressRange.Size = new System.Drawing.Size(192, 72);
+            this.groupAddressRange.TabIndex = 17;
+            this.groupAddressRange.TabStop = false;
+            this.groupAddressRange.Text = "IP address range:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(33, 13);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "From:";
+            // 
+            // ATextbox
+            // 
+            this.ATextbox.Location = new System.Drawing.Point(45, 20);
+            this.ATextbox.Name = "ATextbox";
+            this.ATextbox.Size = new System.Drawing.Size(30, 20);
+            this.ATextbox.TabIndex = 6;
+            this.ATextbox.Text = "10";
+            this.ATextbox.TextChanged += new System.EventHandler(this.IPTextbox_TextChanged);
+            // 
+            // BTextbox
+            // 
+            this.BTextbox.Location = new System.Drawing.Point(81, 20);
+            this.BTextbox.Name = "BTextbox";
+            this.BTextbox.Size = new System.Drawing.Size(30, 20);
+            this.BTextbox.TabIndex = 7;
+            this.BTextbox.Text = "0";
+            this.BTextbox.TextChanged += new System.EventHandler(this.IPTextbox_TextChanged);
+            // 
+            // CTextbox
+            // 
+            this.CTextbox.Location = new System.Drawing.Point(117, 20);
+            this.CTextbox.Name = "CTextbox";
+            this.CTextbox.Size = new System.Drawing.Size(30, 20);
+            this.CTextbox.TabIndex = 8;
+            this.CTextbox.Text = "0";
+            this.CTextbox.TextChanged += new System.EventHandler(this.IPTextbox_TextChanged);
+            // 
+            // DTextbox
+            // 
+            this.DTextbox.Location = new System.Drawing.Point(153, 20);
+            this.DTextbox.Name = "DTextbox";
+            this.DTextbox.Size = new System.Drawing.Size(30, 20);
+            this.DTextbox.TabIndex = 9;
+            this.DTextbox.Text = "99";
+            this.DTextbox.TextChanged += new System.EventHandler(this.IPTextbox_TextChanged);
+            // 
+            // ETextbox
+            // 
+            this.ETextbox.Location = new System.Drawing.Point(153, 45);
+            this.ETextbox.Name = "ETextbox";
+            this.ETextbox.Size = new System.Drawing.Size(30, 20);
+            this.ETextbox.TabIndex = 10;
+            this.ETextbox.Text = "99";
+            this.ETextbox.TextChanged += new System.EventHandler(this.IPTextbox_TextChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 48);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(23, 13);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "To:";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.AllCheckbox);
+            this.groupBox3.Controls.Add(this.SSHCheckbox);
+            this.groupBox3.Controls.Add(this.TelnetCheckbox);
+            this.groupBox3.Controls.Add(this.VMRCCheckbox);
+            this.groupBox3.Controls.Add(this.VNCCheckbox);
+            this.groupBox3.Controls.Add(this.RDPCheckbox);
+            this.groupBox3.Location = new System.Drawing.Point(204, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(183, 72);
+            this.groupBox3.TabIndex = 18;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Services to scan:";
+            // 
+            // AllCheckbox
+            // 
+            this.AllCheckbox.AutoSize = true;
+            this.AllCheckbox.Checked = true;
+            this.AllCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.AllCheckbox.Location = new System.Drawing.Point(129, 46);
+            this.AllCheckbox.Name = "AllCheckbox";
+            this.AllCheckbox.Size = new System.Drawing.Size(37, 17);
+            this.AllCheckbox.TabIndex = 22;
+            this.AllCheckbox.Text = "All";
+            this.AllCheckbox.UseVisualStyleBackColor = true;
+            this.AllCheckbox.CheckedChanged += new System.EventHandler(this.AllCheckbox_CheckedChanged);
+            // 
+            // SSHCheckbox
+            // 
+            this.SSHCheckbox.AutoSize = true;
+            this.SSHCheckbox.Checked = true;
+            this.SSHCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.SSHCheckbox.Location = new System.Drawing.Point(129, 25);
+            this.SSHCheckbox.Name = "SSHCheckbox";
+            this.SSHCheckbox.Size = new System.Drawing.Size(48, 17);
+            this.SSHCheckbox.TabIndex = 21;
+            this.SSHCheckbox.Text = "SSH";
+            this.SSHCheckbox.UseVisualStyleBackColor = true;
+            this.SSHCheckbox.CheckedChanged += new System.EventHandler(this.PortCheckbox_CheckedChanged);
+            // 
+            // TelnetCheckbox
+            // 
+            this.TelnetCheckbox.AutoSize = true;
+            this.TelnetCheckbox.Checked = true;
+            this.TelnetCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.TelnetCheckbox.Location = new System.Drawing.Point(66, 46);
+            this.TelnetCheckbox.Name = "TelnetCheckbox";
+            this.TelnetCheckbox.Size = new System.Drawing.Size(56, 17);
+            this.TelnetCheckbox.TabIndex = 20;
+            this.TelnetCheckbox.Text = "Telnet";
+            this.TelnetCheckbox.UseVisualStyleBackColor = true;
+            this.TelnetCheckbox.CheckedChanged += new System.EventHandler(this.PortCheckbox_CheckedChanged);
+            // 
+            // VMRCCheckbox
+            // 
+            this.VMRCCheckbox.AutoSize = true;
+            this.VMRCCheckbox.Checked = true;
+            this.VMRCCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.VMRCCheckbox.Location = new System.Drawing.Point(66, 23);
+            this.VMRCCheckbox.Name = "VMRCCheckbox";
+            this.VMRCCheckbox.Size = new System.Drawing.Size(57, 17);
+            this.VMRCCheckbox.TabIndex = 19;
+            this.VMRCCheckbox.Text = "VMRC";
+            this.VMRCCheckbox.UseVisualStyleBackColor = true;
+            this.VMRCCheckbox.CheckedChanged += new System.EventHandler(this.PortCheckbox_CheckedChanged);
+            // 
+            // VNCCheckbox
+            // 
+            this.VNCCheckbox.AutoSize = true;
+            this.VNCCheckbox.Checked = true;
+            this.VNCCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.VNCCheckbox.Location = new System.Drawing.Point(11, 46);
+            this.VNCCheckbox.Name = "VNCCheckbox";
+            this.VNCCheckbox.Size = new System.Drawing.Size(48, 17);
+            this.VNCCheckbox.TabIndex = 18;
+            this.VNCCheckbox.Text = "VNC";
+            this.VNCCheckbox.UseVisualStyleBackColor = true;
+            this.VNCCheckbox.CheckedChanged += new System.EventHandler(this.PortCheckbox_CheckedChanged);
+            // 
+            // RDPCheckbox
+            // 
+            this.RDPCheckbox.AutoSize = true;
+            this.RDPCheckbox.Checked = true;
+            this.RDPCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.RDPCheckbox.Location = new System.Drawing.Point(11, 23);
+            this.RDPCheckbox.Name = "RDPCheckbox";
+            this.RDPCheckbox.Size = new System.Drawing.Size(49, 17);
+            this.RDPCheckbox.TabIndex = 17;
+            this.RDPCheckbox.Text = "RDP";
+            this.RDPCheckbox.UseVisualStyleBackColor = true;
+            this.RDPCheckbox.CheckedChanged += new System.EventHandler(this.PortCheckbox_CheckedChanged);
+            // 
+            // bsScanResults
+            // 
+            this.bsScanResults.DataSource = typeof(Terminals.Scanner.NetworkScanResult);
+            // 
             // NetworkScanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -508,11 +565,11 @@ namespace Terminals {
             this.Text = "Terminals - Network Scanner";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NetworkScanner_FormClosing);
             this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridScanResults)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -520,6 +577,11 @@ namespace Terminals {
             this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.groupAddressRange.ResumeLayout(false);
+            this.groupAddressRange.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bsScanResults)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -527,30 +589,13 @@ namespace Terminals {
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox ATextbox;
-        private System.Windows.Forms.TextBox BTextbox;
-        private System.Windows.Forms.TextBox CTextbox;
-        private System.Windows.Forms.TextBox DTextbox;
-        private System.Windows.Forms.TextBox ETextbox;
-        private System.Windows.Forms.CheckBox RDPCheckbox;
-        private System.Windows.Forms.CheckBox VNCCheckbox;
-        private System.Windows.Forms.CheckBox VMRCCheckbox;
-        private System.Windows.Forms.CheckBox TelnetCheckbox;
-        private System.Windows.Forms.CheckBox SSHCheckbox;
-        private System.Windows.Forms.ListView ScanResultsListView;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button ScanButton;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel ScanStatusLabel;
         private System.Windows.Forms.ToolStripProgressBar scanProgressBar;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button ButtonCancel;
-        private System.Windows.Forms.CheckBox AllCheckbox;
         private System.Windows.Forms.Button AddAllButton;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.TextBox TagsTextbox;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
@@ -568,5 +613,26 @@ namespace Terminals {
         private System.Windows.Forms.Label ServerStatusLabel;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.DataGridView gridScanResults;
+        private System.Windows.Forms.BindingSource bsScanResults;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Selected;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Computer;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HostName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ServiceName;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.CheckBox AllCheckbox;
+        private System.Windows.Forms.CheckBox SSHCheckbox;
+        private System.Windows.Forms.CheckBox TelnetCheckbox;
+        private System.Windows.Forms.CheckBox VMRCCheckbox;
+        private System.Windows.Forms.CheckBox VNCCheckbox;
+        private System.Windows.Forms.CheckBox RDPCheckbox;
+        private System.Windows.Forms.GroupBox groupAddressRange;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox ETextbox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox ATextbox;
+        private System.Windows.Forms.TextBox BTextbox;
+        private System.Windows.Forms.TextBox CTextbox;
+        private System.Windows.Forms.TextBox DTextbox;
     }
 }

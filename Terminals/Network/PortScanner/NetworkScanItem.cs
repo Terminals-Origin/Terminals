@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
+using System.Threading;
 using Terminals.Configuration;
 using Terminals.Connections;
 using VncSharp;
@@ -11,33 +13,90 @@ namespace Terminals.Scanner
 {
     internal class NetworkScanItem
     {
-        internal event NetworkScanHandler OnScanHit;
-        internal event NetworkScanHandler OnScanMiss;
+        // dont use events, otherwise we have to unregister
+        internal NetworkScanHandler OnScanHit { get; set; }
+        internal NetworkScanHandler OnScanFinished { get; set; }
+        internal String HostName { get; private set; }
+        
+        private String iPAddress;
+        private List<Int32> ports;
+        private static readonly String vncPassword = String.Empty;
+        private Boolean cancelationPending;
+        private Boolean CancelationPending
+        {
+            get
+            {
+                lock (ports)
+                {
+                    return this.cancelationPending;
+                }
+            }
+        }
 
-        internal string IPAddress { get; set; }
-        internal int Port { get; set; }
-        internal string HostName { get; set; }
-        internal bool IsVMRC { get; set; }
+        internal NetworkScanItem(String iPAddress, List<Int32> ports)
+        {
+            this.iPAddress = iPAddress;
+            this.ports = ports;
+        }
 
-        private string vncPassword = string.Empty;
-        private object vncConnection = new object();
-
-        private static Dictionary<string, string> knownHostNames = new Dictionary<string, string>();
+        public override string ToString()
+        {
+            string portsText = String.Empty;
+            foreach (Int32 port in ports)
+            {
+                portsText += port.ToString() + ",";
+            }
+            return String.Format("NeworkScanItem:{0},{1}{{{2}}}", this.iPAddress, this.HostName, portsText);
+        }
 
         internal void Scan(object data)
         {
-            TcpClient client = new TcpClient();
+            ResolveHostname();
+            foreach (int port in this.ports)
+            {
+                if (this.CancelationPending)
+                    return;
+
+                ScanPort(port);
+            }
+            FireOnScanFinished();
+        }
+
+        internal void Stop()
+        {
+            lock (ports)
+            {
+               this.cancelationPending = true; 
+            }
+        }
+
+        private void ResolveHostname()
+        {
             try
             {
-                client.BeginConnect(this.IPAddress, this.Port, new AsyncCallback(AttemptConnect), client);
-                int x = 0;
-                while (x <= Settings.PortScanTimeoutSeconds)
-                {
-                    System.Threading.Thread.Sleep(1000);
-                    x++;
-                }
+                if (this.CancelationPending)
+                    return;
 
-                client.Close();
+                IPHostEntry entry = Dns.GetHostEntry(this.iPAddress);
+                this.HostName = entry.HostName;
+            }
+            catch (Exception exc)
+            {
+                Logging.Log.Error("Attempting to Resolve host named failed", exc);
+            }
+        }
+
+        private void ScanPort(int port)
+        {
+            try
+            {
+                using (TcpClient client = new TcpClient())
+                {
+                    var connectionState = new ConnectionState(port, client);
+                    client.BeginConnect(this.iPAddress, port, new AsyncCallback(this.AttemptConnect), connectionState);
+                    WaitUntilTimeOut(connectionState);
+                    client.Client.Close();
+                }
             }
             catch (Exception e)
             {
@@ -45,110 +104,102 @@ namespace Terminals.Scanner
             }
         }
 
-        private string VNCPassword()
+        private void FireOnScanFinished()
         {
-            return this.vncPassword;
+            if (this.OnScanFinished != null)
+            {
+                // we dont have cancel here, because it already has no more work to do);
+                this.OnScanFinished(this.CreateNewEventArguments());
+            }
         }
 
-        private bool IsPortVNC()
+        private void WaitUntilTimeOut(ConnectionState connectionState)
         {
-            try
+            Int32 timeout = 0;
+            Int32 maxTimeOut = Settings.PortScanTimeoutSeconds * 1000 / 50; // in seconds not in miliseconds
+            while (timeout <= maxTimeOut && !this.CancelationPending && !connectionState.Done)
             {
-                lock (this.vncConnection)
-                {
-                    RemoteDesktop rd = new RemoteDesktop();
-                    rd.VncPort = Port;
-                    rd.GetPassword = new AuthenticateDelegate(this.VNCPassword);
-                    rd.Connect(this.IPAddress);
-                    rd.Disconnect();
-                }
+                Thread.Sleep(50);
+                timeout++;
+            }
+        }
 
-                return true;
-            }
-            catch (CryptographicException ce)
+        private void AttemptConnect(IAsyncResult result)
+        {
+            ConnectionState connectionState = result.AsyncState as ConnectionState;
+            Socket socket = connectionState.Client.Client;
+
+            if (socket != null && socket.Connected)
             {
-                Logging.Log.Info(string.Empty, ce);
-                return true;
+                Boolean isVMRC = CheckVNCPport(connectionState.Port);
+                FireOnScanHit(connectionState.Port, isVMRC);
             }
-            catch (Exception exc)
+            else
+                Debug.WriteLine(String.Format("Port {0} not openend at {1}",
+                                              this.iPAddress, connectionState.Port));
+
+            connectionState.Done = true;
+        }
+
+        private Boolean CheckVNCPport(Int32 port)
+        {
+            if (port == ConnectionManager.VNCVMRCPort)
             {
-                Logging.Log.Error("VNC Port Scan Failed", exc);
-                exc.ToString();
+                return !this.IsPortVNC(port);
             }
 
             return false;
         }
 
-        private void AttemptConnect(IAsyncResult result)
-        {
-            TcpClient client = result.AsyncState as TcpClient;
-            if (client.Client != null && client.Connected)
-            {
-                CheckVNCPport();
-                CheckHostName();
-                FireOnScanHit();
-            }
-            else
-            {
-                FireOnscanMiss();
-            }
-        }
-
-        private void CheckHostName()
+        private bool IsPortVNC(Int32 port)
         {
             try
             {
-                if (knownHostNames.ContainsKey(this.IPAddress))
-                {
-                    this.HostName = knownHostNames[this.IPAddress];
-                }
-                else
-                {
-                    IPHostEntry entry = Dns.GetHostEntry(this.IPAddress);
-                    this.HostName = entry.HostName;
-                    if (!knownHostNames.ContainsKey(this.IPAddress))
-                        knownHostNames.Add(this.IPAddress, this.HostName);
-                }
+                RemoteDesktop rd = new RemoteDesktop();
+                rd.VncPort = port;
+                rd.GetPassword = new AuthenticateDelegate(this.GetVNCPassword);
+                rd.Connect(this.iPAddress);
+                rd.Disconnect();
+            }
+            catch (CryptographicException ce)
+            {
+                Logging.Log.Info(string.Empty, ce);
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Attempting to Resolve host named failed", exc);
-                this.HostName = this.IPAddress;
-                if (!knownHostNames.ContainsKey(this.IPAddress))
-                    knownHostNames.Add(this.IPAddress, this.IPAddress);
+                Logging.Log.Error("VNC Port Scan Failed", exc);
+                return false;
             }
-        }
 
-        private void CheckVNCPport()
+            return true;
+        }
+        
+        private string GetVNCPassword()
         {
-            if (this.Port == ConnectionManager.VNCVMRCPort)
-            {
-                this.IsVMRC = !this.IsPortVNC();
-            }
+            return vncPassword;
         }
 
-        private void FireOnscanMiss()
-        {
-            if (this.OnScanMiss != null)
-            {
-                this.OnScanMiss(this.CreateNewEventArguments());
-            }
-        }
-
-        private void FireOnScanHit()
+        private void FireOnScanHit(Int32 port, Boolean isVMRC)
         {
             if (this.OnScanHit != null)
             {
-                ScanItemEventArgs args = this.CreateNewEventArguments();
+                ScanItemEventArgs args = this.CreateNewEventArguments(port, isVMRC);
                 this.OnScanHit(args);
             }
         }
 
-        internal ScanItemEventArgs CreateNewEventArguments()
+        private ScanItemEventArgs CreateNewEventArguments(Int32 port = 0, Boolean isVMRC = false)
         {
             ScanItemEventArgs args = new ScanItemEventArgs();
             args.DateTime = DateTime.Now;
-            args.NetworkScanItem = this;
+            args.ScanResult = new NetworkScanResult
+                {
+                    HostName = this.HostName,
+                    IPAddress = this.iPAddress,
+                    Port = port,
+                    IsVMRC = isVMRC
+                };
+
             return args;
         }
     }
