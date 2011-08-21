@@ -1363,14 +1363,7 @@ namespace Terminals
 
         private void MainForm_Activated(object sender, EventArgs e)
         {
-            Screen lastScreen = Screen.AllScreens.
-                FirstOrDefault(candidate => candidate.Bounds.X <= this.Location.X ||
-                               this.Location.X > candidate.Bounds.X + candidate.Bounds.Width ||
-                               candidate.Bounds.Y  <= this.Location.Y ||
-                               this.Location.Y < candidate.Bounds.Y + candidate.Bounds.Height);
-
-            if (lastScreen == null)
-                this.Location = new Point(100, 100);
+            _formSettings.EnsureVisibleScreenArrea();
 
             if (this.FullScreen)
                 this.tcTerminals.ShowTabs = false;
