@@ -308,10 +308,10 @@
     <Compile Include="History\HistoryController.cs" />
     <Compile Include="History\HistoryByFavorite.cs" />
     <Compile Include="History\HistoryItem.cs" />
-    <Compile Include="Integration\Importers.cs" />
-    <Compile Include="Integration\Import\ImportTerminals.cs" />
-    <Compile Include="Integration\Import\ImportvRD.cs" />
-    <Compile Include="Integration\Import\vrd.cs" />
+    <Compile Include="ExportImport\Importers.cs" />
+    <Compile Include="ExportImport\Import\ImportTerminals.cs" />
+    <Compile Include="ExportImport\Import\ImportvRD.cs" />
+    <Compile Include="ExportImport\Import\vrd.cs" />
     <Compile Include="ListViewColumnSorter.cs" />
     <Compile Include="Localization\LocalizedValues.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -518,9 +518,9 @@
     <Compile Include="Forms\FormSettings.cs" />
     <Compile Include="IconHandler.cs" />
     <Compile Include="Forms\InputBox.cs" />
-    <Compile Include="Integration\Import\ImportRDP.cs" />
-    <Compile Include="Integration\Import\IImport.cs" />
-    <Compile Include="Integration\Import\ImportMuRD.cs" />
+    <Compile Include="ExportImport\Import\ImportRDP.cs" />
+    <Compile Include="ExportImport\Import\IImport.cs" />
+    <Compile Include="ExportImport\Import\ImportMuRD.cs" />
     <Compile Include="NativeApi.cs" />
     <Compile Include="Network\PortScanner\NetworkScanner.cs">
       <SubType>Form</SubType>
@@ -1217,6 +1217,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Integration\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
