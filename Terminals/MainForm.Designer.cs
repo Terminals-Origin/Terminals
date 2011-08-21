@@ -130,7 +130,6 @@ namespace Terminals
             this.timerHover = new System.Windows.Forms.Timer(this.components);
             this.MainWindowNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.QuickContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.remoteDesktop1 = new VncSharp.RemoteDesktop();
             this.tabControlItem1 = new TabControl.TabControlItem();
             this.tabControlItem2 = new TabControl.TabControlItem();
             this.menuStrip.SuspendLayout();
@@ -1128,16 +1127,6 @@ namespace Terminals
             this.QuickContextMenu.Size = new System.Drawing.Size(61, 4);
             this.QuickContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.QuickContextMenu_Opening);
             // 
-            // remoteDesktop1
-            // 
-            this.remoteDesktop1.AutoScroll = true;
-            this.remoteDesktop1.AutoScrollMinSize = new System.Drawing.Size(608, 427);
-            this.remoteDesktop1.Location = new System.Drawing.Point(131, 79);
-            this.remoteDesktop1.Name = "remoteDesktop1";
-            this.remoteDesktop1.Size = new System.Drawing.Size(400, 200);
-            this.remoteDesktop1.TabIndex = 0;
-            this.remoteDesktop1.Text = "remoteDesktop1";
-            // 
             // tabControlItem1
             // 
             this.tabControlItem1.IsDrawn = true;
@@ -1251,7 +1240,6 @@ namespace Terminals
         private System.Windows.Forms.ImageList ilTags;
         private System.Windows.Forms.ToolStripButton tsbFavorites;
         private System.Windows.Forms.NotifyIcon MainWindowNotifyIcon;
-        private VncSharp.RemoteDesktop remoteDesktop1;
         private System.Windows.Forms.ToolStripButton CaptureScreenToolStripButton;
         private System.Windows.Forms.ToolStripMenuItem captureTerminalScreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
