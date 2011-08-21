@@ -6,14 +6,17 @@ using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.IO;
+using System.Xml.Serialization;
 using Terminals.Configuration;
 using Terminals.Forms;
 using vRdImport;
 
 namespace Terminals.Integration.Import
 {
-    public class ImportvRD : IImport
+    internal class ImportvRD : IImport
     {
+        internal const string FILE_EXTENSION = ".vrb";
+
         #region IImport Members
 
         public List<FavoriteConfigurationElement> ImportFavorites(string Filename)
@@ -23,24 +26,24 @@ namespace Terminals.Integration.Import
 
             if (result.ReturnCode == System.Windows.Forms.DialogResult.OK)
             {
-                byte[] file = System.IO.File.ReadAllBytes(Filename);
-                string xml = ImportvRD.a(file, result.Text).Replace(" encoding=\"utf-16\"", "");
-                byte[] data = System.Text.ASCIIEncoding.Default.GetBytes(xml);
-                using (System.IO.MemoryStream sw = new MemoryStream(data))
+                byte[] file = File.ReadAllBytes(Filename);
+                string xml = a(file, result.Text).Replace(" encoding=\"utf-16\"", "");
+                byte[] data = ASCIIEncoding.Default.GetBytes(xml);
+                using (MemoryStream sw = new MemoryStream(data))
                 {
                     if (sw.Position > 0 & sw.CanSeek) sw.Seek(0, SeekOrigin.Begin);
-                    System.Xml.Serialization.XmlSerializer x = new System.Xml.Serialization.XmlSerializer(typeof(vRdImport.vRDConfigurationFile));
+                    XmlSerializer x = new XmlSerializer(typeof(vRDConfigurationFile));
                     object results = x.Deserialize(sw);
 
-                    List<vRdImport.Connection> connections = new List<vRdImport.Connection>();
-                    List<vRdImport.vRDConfigurationFileConnectionsFolder> folders = new List<vRdImport.vRDConfigurationFileConnectionsFolder>();
-                    Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials> credentials = new Dictionary<string, vRdImport.vRDConfigurationFileCredentialsFolderCredentials>();
+                    List<Connection> connections = new List<Connection>();
+                    List<vRDConfigurationFileConnectionsFolder> folders = new List<vRDConfigurationFileConnectionsFolder>();
+                    Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials = new Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials>();
 
                     if (results == null)
                     {
                         return fav;
                     }
-                    vRdImport.vRDConfigurationFile config = (results as vRdImport.vRDConfigurationFile);
+                    vRDConfigurationFile config = (results as vRDConfigurationFile);
                     if (config == null)
                     {
                         return fav;
@@ -52,36 +55,36 @@ namespace Terminals.Integration.Import
                         {
                             continue;
                         }
-                        if (item is vRdImport.vRDConfigurationFileCredentialsFolder)
+                        if (item is vRDConfigurationFileCredentialsFolder)
                         {
                             //scan in all credentials into a dictionary
-                            vRdImport.vRDConfigurationFileCredentialsFolder credentialFolder = (item as vRdImport.vRDConfigurationFileCredentialsFolder);
+                            vRDConfigurationFileCredentialsFolder credentialFolder = (item as vRDConfigurationFileCredentialsFolder);
                             if (credentialFolder != null && credentialFolder.Credentials != null)
                             {
-                                foreach (vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred in credentialFolder.Credentials)
+                                foreach (vRDConfigurationFileCredentialsFolderCredentials cred in credentialFolder.Credentials)
                                 {
                                     credentials.Add(cred.Guid, cred);
                                 }
                             }
                         }
-                        else if (item is vRdImport.vRDConfigurationFileCredentialsFolderCredentials)
+                        else if (item is vRDConfigurationFileCredentialsFolderCredentials)
                         {
-                            vRdImport.vRDConfigurationFileCredentialsFolderCredentials cred = (item as vRdImport.vRDConfigurationFileCredentialsFolderCredentials);
+                            vRDConfigurationFileCredentialsFolderCredentials cred = (item as vRDConfigurationFileCredentialsFolderCredentials);
                             credentials.Add(cred.Guid, cred);
                         }
-                        else if (item is vRdImport.Connection)
+                        else if (item is Connection)
                         {
                             //scan in the connections
-                            vRdImport.Connection connection = (item as vRdImport.Connection);
+                            Connection connection = (item as Connection);
                             if (connection != null)
                             {
                                 connections.Add(connection);
                             }
                         }
-                        else if (item is vRdImport.vRDConfigurationFileConnectionsFolder)
+                        else if (item is vRDConfigurationFileConnectionsFolder)
                         {
                             //scan in recurse folders
-                            vRdImport.vRDConfigurationFileConnectionsFolder folder = (item as vRdImport.vRDConfigurationFileConnectionsFolder);
+                            vRDConfigurationFileConnectionsFolder folder = (item as vRDConfigurationFileConnectionsFolder);
                             if (folder != null)
                             {
                                 folders.Add(folder);
@@ -256,7 +259,7 @@ namespace Terminals.Integration.Import
 
         public string KnownExtension
         {
-            get { return ".vrb"; }
+            get { return FILE_EXTENSION; }
         }
 
         #endregion

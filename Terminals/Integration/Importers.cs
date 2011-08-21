@@ -12,7 +12,9 @@ namespace Terminals.Integration.Import
 
         internal static string GetImportersDialogFilter()
         {
+            // LoadImportersFromAssemblies();
             LoadImporters();
+
             StringBuilder stringBuilder = new StringBuilder();
             // work with copy because it is modified
             Dictionary<string, IImport> extraImporters = new Dictionary<string, IImport>(importers);
@@ -26,6 +28,9 @@ namespace Terminals.Integration.Import
             return stringBuilder.ToString();
         }
 
+        /// <summary>
+        /// Forces terminals importer to be on first place
+        /// </summary>
         private static void AddTerminalsImporter(Dictionary<string, IImport> extraImporters, StringBuilder stringBuilder)
         {
             if (extraImporters.ContainsKey(ImportTerminals.TERMINALS_FILEEXTENSION))
@@ -62,6 +67,7 @@ namespace Terminals.Integration.Import
 
         private static IImport FindImporter(string fileName)
         {
+            //LoadImportersFromAssemblies();
             LoadImporters();
 
             string extension = Path.GetExtension(fileName);
@@ -80,7 +86,22 @@ namespace Terminals.Integration.Import
 
         private static void LoadImporters()
         {
-            // TODO Is it realy necessary to load importers dynamicly?  (Jiri Pokorny, 23.07.2011)
+            if (importers == null)
+            {
+                importers = new Dictionary<string, IImport>();
+                importers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ImportTerminals());
+                importers.Add(ImportRDP.FILE_EXTENSION, new ImportRDP());
+                importers.Add(ImportvRD.FILE_EXTENSION, new ImportvRD());
+                importers.Add(ImportMuRD.FILE_EXTENSION, new ImportMuRD());
+            }
+        }
+
+        /// <summary>
+        /// Disabled because of performance, there is no need to search all libraries,
+        /// because importers are implemented only in Terminals
+        /// </summary>
+        private static void LoadImportersFromAssemblies()
+        {
             if (importers == null)
             {
                 importers = new Dictionary<string, IImport>();

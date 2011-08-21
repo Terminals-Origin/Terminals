@@ -1,20 +1,21 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 
 namespace Terminals.Integration.Import
 {
-    public class ImportMuRD : IImport
+    internal class ImportMuRD : IImport
     {
+        internal const string FILE_EXTENSION = ".mrc";
+
         #region IImport Members
 
         List<FavoriteConfigurationElement> IImport.ImportFavorites(string Filename)
         {
             List<FavoriteConfigurationElement> coll = new List<FavoriteConfigurationElement>();
-            if(System.IO.File.Exists(Filename))
+            if(File.Exists(Filename))
             {
                 FavoriteConfigurationElement fav = null;
-                string[] lines = System.IO.File.ReadAllLines(Filename);
+                string[] lines = File.ReadAllLines(Filename);
                 foreach(string line in lines)
                 {
                     if(line.StartsWith("[") && line.EndsWith("]"))
@@ -161,7 +162,7 @@ namespace Terminals.Integration.Import
 
         public string KnownExtension
         {
-            get { return ".mrc"; }
+            get { return FILE_EXTENSION; }
         }
 
         #endregion

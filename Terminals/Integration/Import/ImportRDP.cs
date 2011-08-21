@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Terminals.Integration.Import
 {
-    public class ImportRDP : IImport
+    internal class ImportRDP : IImport
     {
+        internal const string FILE_EXTENSION = ".rdp";
         #region IImport Members
 
         List<FavoriteConfigurationElement> IImport.ImportFavorites(string Filename)
@@ -114,7 +113,7 @@ namespace Terminals.Integration.Import
 
         public string KnownExtension
         {
-            get { return ".rdp"; }
+            get { return FILE_EXTENSION; }
         }
 
         #endregion
