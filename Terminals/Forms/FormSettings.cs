@@ -154,13 +154,17 @@ namespace Terminals.Forms
             }
         }
 
+        /// <summary>
+        /// Restores form position to primary screen, if it is out of visible bounds
+        /// </summary>
         internal void EnsureVisibleScreenArrea()
         {
+            // Height - 10 = means to see atleast part of the window title
             Screen lastScreen = Screen.AllScreens.
-                FirstOrDefault(candidate => candidate.Bounds.X <= _form.Location.X ||
-                    _form.Location.X > candidate.Bounds.X + candidate.Bounds.Width ||
-                        candidate.Bounds.Y <= _form.Location.Y ||
-                            _form.Location.Y < candidate.Bounds.Y + candidate.Bounds.Height);
+                FirstOrDefault(candidate => candidate.Bounds.X <= _form.Location.X &&
+                    _form.Location.X > candidate.Bounds.X + candidate.Bounds.Width &&
+                        candidate.Bounds.Y <= _form.Location.Y &&
+                            _form.Location.Y < candidate.Bounds.Y + candidate.Bounds.Height - 10);
 
             if (lastScreen == null)
                 _form.Location = new Point(100, 100);
