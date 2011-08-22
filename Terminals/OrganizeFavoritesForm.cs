@@ -235,9 +235,9 @@ namespace Terminals
         {
             if (ImportOpenFileDialog.ShowDialog() == DialogResult.OK)
             {
-                String filename = this.ImportOpenFileDialog.FileName;
+                String[] filenames = this.ImportOpenFileDialog.FileNames;
                 this.Cursor = Cursors.WaitCursor;
-                List<FavoriteConfigurationElement> favorites = Importers.ImportFavorites(filename);
+                List<FavoriteConfigurationElement> favorites = Importers.ImportFavorites(filenames);
                 Settings.AddFavorites(favorites, false);
                 if(favorites.Count > 0)
                     LoadConnections();

@@ -209,6 +209,7 @@ namespace Terminals
             // 
             // ImportOpenFileDialog
             // 
+            this.ImportOpenFileDialog.Multiselect = true;
             this.ImportOpenFileDialog.Title = "Import favorites from...";
             // 
             // ActiveDirectoryButton
