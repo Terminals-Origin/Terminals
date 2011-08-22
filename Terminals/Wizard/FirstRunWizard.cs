@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Wizard;
 
 namespace Terminals
 {
-    public enum WizardForms 
+    internal enum WizardForms 
     { 
         Intro, 
         MasterPassword, 
@@ -18,29 +16,28 @@ namespace Terminals
         Scanner
     }
 
-    public partial class FirstRunWizard : Form
+    internal partial class FirstRunWizard : Form
     {
-        WizardForms SelectedForm = WizardForms.Intro;
+        private WizardForms SelectedForm = WizardForms.Intro;
+        private MethodInvoker miv;
+        private AddExistingRDPConnections rdp = new AddExistingRDPConnections();
+        private MasterPassword mp = new MasterPassword();
+        private CommonOptions co = new CommonOptions();
+        private DefaultCredentials dc = new DefaultCredentials();
 
         public FirstRunWizard()
         {
             InitializeComponent();
-            rdp.OnDiscoveryCompleted += new Terminals.Wizard.AddExistingRDPConnections.DiscoveryCompleted(rdp_OnDiscoveryCompleted);
+            rdp.OnDiscoveryCompleted += new AddExistingRDPConnections.DiscoveryCompleted(rdp_OnDiscoveryCompleted);
             miv = new MethodInvoker(DiscoComplete);
         }
 
-        MethodInvoker miv;
         private void FirstRunWizard_Load(object sender, EventArgs e)
         {
-            Wizard.IntroForm frm = new Terminals.Wizard.IntroForm();
+            IntroForm frm = new IntroForm();
             frm.Dock = DockStyle.Fill;
             this.panel1.Controls.Add(frm);
         }
-
-        Wizard.AddExistingRDPConnections rdp = new Terminals.Wizard.AddExistingRDPConnections();
-        Wizard.MasterPassword mp = new Terminals.Wizard.MasterPassword();
-        Wizard.CommonOptions co = new Terminals.Wizard.CommonOptions();
-        Wizard.DefaultCredentials dc = new Terminals.Wizard.DefaultCredentials();
 
         private void nextButton_Click(object sender, EventArgs e)
         {
@@ -92,11 +89,11 @@ namespace Terminals
                 try
                 {
                     if (co.LoadDefaultShortcuts)
-                        Settings.SpecialCommands = Terminals.Wizard.SpecialCommandsWizard.LoadSpecialCommands();                   
+                        Settings.SpecialCommands = SpecialCommandsWizard.LoadSpecialCommands();                   
                 }
                 catch(Exception exc)
                 {
-                    Terminals.Logging.Log.Error("Loading default shortcuts in the wizard.", exc);
+                    Logging.Log.Error("Loading default shortcuts in the wizard.", exc);
                 }
 
                 if (co.ImportRDPConnections)
@@ -143,12 +140,12 @@ namespace Terminals
         {
             if (rdp.DiscoFavs != null && rdp.DiscoFavs.Count > 0)
             {
-                if (System.Windows.Forms.MessageBox.Show("Automatic Discovery was able to find " + rdp.DiscoFavs.Count + " connections.  Would you like to add them to your connections list?", "Terminals Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                String message = String.Format("Automatic Discovery was able to find {0} connections.\r\nWould you like to add them to your connections list?",
+                                                rdp.DiscoFavs.Count);
+                if (MessageBox.Show(message, "Terminals Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
-                    foreach(FavoriteConfigurationElement  elm in rdp.DiscoFavs)
-                    {
-                        Settings.AddFavorite(elm, false);
-                    }
+                    List<FavoriteConfigurationElement> favoritesToImport = rdp.DiscoFavs.ToList();
+                    Settings.AddFavorites(favoritesToImport, false);
                 }
             }
         }

@@ -6,6 +6,7 @@ using Terminals.Configuration;
 using Terminals.Credentials;
 using Terminals.Forms;
 using Terminals.History;
+using Terminals.Integration.Import;
 
 namespace Terminals
 {
@@ -527,19 +528,18 @@ namespace Terminals
 
         private void favsTree_DragDrop(object sender, DragEventArgs e)
         {
-            String[] files = (String[])e.Data.GetData(DataFormats.FileDrop);
-            foreach (String file in files)
+            String[] files = e.Data.GetData(DataFormats.FileDrop) as String[];
+            if (files != null)
             {
-                String str = Path.GetExtension(file).ToLower();
-                if (str.Equals(".xml"))
-                {
-                    ExportImport.ExportImport.ImportXML(file, true);
+                this.Cursor = Cursors.WaitCursor;
+                List<FavoriteConfigurationElement> favoritesToImport = Importers.ImportFavorites(files);
+                Settings.AddFavorites(favoritesToImport, true);
+
+                if (favoritesToImport.Count > 0)
                     this.GetMainForm().LoadFavorites();
-                }
-                else
-                {
-                    MessageBox.Show("This are not a XML file, Quiting");
-                }
+
+                this.Cursor = Cursors.WaitCursor;
+                OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
             }
         }
 

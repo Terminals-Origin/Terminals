@@ -154,17 +154,12 @@ namespace Terminals.ExportImport
         }
 
         /// <summary>
-        /// Imports favorites from required xml file and returns newly imported items
+        /// Loads a new collection of favorites from source file.
+        /// The newly created favorites aren't imported into configuration.
         /// </summary>
         internal static List<FavoriteConfigurationElement> ImportXML(string file, bool showOnToolbar)
         {
             List<FavoriteConfigurationElement> favorites = ImportFavorites(file);
-            Settings.DelayConfigurationSave = true;
-            foreach (var favorite in favorites)
-            {
-                Settings.AddFavorite(favorite, showOnToolbar);
-            }
-            Settings.DelayConfigurationSave = true;
             return favorites;
         }
 

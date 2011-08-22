@@ -11,7 +11,6 @@ namespace Terminals.Network
     {
         internal event ListComputersDoneDelegate ListComputersDone;
         internal event ComputerFoundDelegate ComputerFound;
-        private Thread clientThred;
         private object runLock = new object();
         
         private Boolean isRunning;
@@ -33,21 +32,37 @@ namespace Terminals.Network
             }
         }
 
+        private Boolean cancelationPending;
+        private Boolean CancelationPending
+        {
+            get
+            {
+                lock (runLock)
+                {
+                    return this.cancelationPending;
+                }
+            }
+        }
+
         internal void FindComputers(string domain)
         {
             if (!this.IsRunning) // nothing is running
             {
                 this.IsRunning = true;
-                this.clientThred = new Thread(new ParameterizedThreadStart(this.StartScan));
-                this.clientThred.IsBackground = true;
-                this.clientThred.Start(domain);
+                
+                ThreadPool.QueueUserWorkItem(new WaitCallback(StartScan), domain); 
             }
         }
 
         internal void Stop()
         {
-            if(this.IsRunning)
-               this.clientThred.Abort();
+            if (this.IsRunning)
+            {
+                lock (runLock)
+                {
+                    this.cancelationPending = true;
+                }
+            }
         }
 
         private void StartScan(object domain)
@@ -56,10 +71,6 @@ namespace Terminals.Network
             {
                 SearchComputers(domain.ToString());
                 FireListComputersDone(true);
-            }
-            catch (ThreadAbortException)
-            {
-                FireListComputersDone(true); // because the abort can raise during the final part
             }
             catch (Exception exc)
             {
@@ -82,6 +93,8 @@ namespace Terminals.Network
                     mySearcher.Filter = ("(objectClass=computer)");
                     foreach (SearchResult result in mySearcher.FindAll())
                     {
+                        if (!this.IsRunning)
+                            return;
                         DirectoryEntry computer = result.GetDirectoryEntry();
                         var comp = ActiveDirectoryComputer.FromDirectoryEntry(domain, computer);
                         FireComputerFound(comp);

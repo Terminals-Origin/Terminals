@@ -233,24 +233,23 @@ namespace Terminals
 
         internal void CallImport()
         {
-            bool needsReload = false;
             if (ImportOpenFileDialog.ShowDialog() == DialogResult.OK)
             {
-                string filename = ImportOpenFileDialog.FileName;
-
-                List<FavoriteConfigurationElement> coll = Importers.ImportFavorites(filename);
-                if (coll != null)
-                {
-                    needsReload = true;
-                    foreach (FavoriteConfigurationElement fav in coll)
-                    {
-                        Settings.AddFavorite(fav, false);
-                    }
-                }
+                String filename = this.ImportOpenFileDialog.FileName;
+                this.Cursor = Cursors.WaitCursor;
+                List<FavoriteConfigurationElement> favorites = Importers.ImportFavorites(filename);
+                Settings.AddFavorites(favorites, false);
+                if(favorites.Count > 0)
+                    LoadConnections();
+                this.Cursor = Cursors.Default;
+                ShowImportResultMessage(favorites.Count);
             }
+        }
 
-            if (needsReload)
-                LoadConnections();
+        internal static void ShowImportResultMessage(Int32 importedItemsCount)
+        {
+            String message = String.Format("{0} items were added to your favorites.", importedItemsCount);
+            MessageBox.Show(message, "Terminals import result", MessageBoxButtons.OK);
         }
     }
 }

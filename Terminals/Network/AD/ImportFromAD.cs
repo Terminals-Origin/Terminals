@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
 
@@ -111,15 +113,24 @@ namespace Terminals.Network
         private void OnButtonImportClick(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
+            List<FavoriteConfigurationElement> favoritesToImport = GetFavoritesFromBindingSource(this.domainTextbox.Text);
+            Settings.AddFavorites(favoritesToImport, false);
+            this.Cursor = Cursors.Default;
+            OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
+        }
+
+        private List<FavoriteConfigurationElement> GetFavoritesFromBindingSource(String domain)
+        {
+            List<FavoriteConfigurationElement> favoritesToImport = new List<FavoriteConfigurationElement>();
             foreach (ActiveDirectoryComputer computer in this.bsComputers)
             {
                 if (computer.Import)
                 {
-                    FavoriteConfigurationElement elm = computer.ToFavorite(this.domainTextbox.Text);
-                    Settings.AddFavorite(elm, false);
+                    FavoriteConfigurationElement newFavorite = computer.ToFavorite(domain);
+                    favoritesToImport.Add(newFavorite);
                 }
             }
-            this.Cursor = Cursors.Default;
+            return favoritesToImport;
         }
 
         private void OnBtnSelectAllClick(object sender, EventArgs e)

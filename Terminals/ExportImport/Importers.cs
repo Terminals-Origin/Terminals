@@ -55,7 +55,11 @@ namespace Terminals.Integration.Import
             stringBuilder.Append(importer.KnownExtension); // already in lowercase
         }
 
-        internal static List<FavoriteConfigurationElement> ImportFavorites(string Filename)
+        /// <summary>
+        /// Loads a new collection of favorites from source file.
+        /// The newly created favorites aren't imported into configuration.
+        /// </summary>
+        internal static List<FavoriteConfigurationElement> ImportFavorites(String Filename)
         {
             IImport importer = FindImporter(Filename);
 
@@ -63,6 +67,16 @@ namespace Terminals.Integration.Import
                 return new List<FavoriteConfigurationElement>();
 
             return importer.ImportFavorites(Filename);
+        }
+
+        internal static List<FavoriteConfigurationElement> ImportFavorites(String[] files)
+        {
+            var favorites =  new List<FavoriteConfigurationElement>();
+            foreach (string file in files)
+            {
+                favorites.AddRange(ImportFavorites(file));
+            }
+            return favorites;
         }
 
         private static IImport FindImporter(string fileName)

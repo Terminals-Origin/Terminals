@@ -176,32 +176,33 @@ namespace Terminals
 
         private void AddAllButton_Click(object sender, EventArgs e)
         {
-            Int32 count = 0;
+            String tags = GetTagsToApply();
+            this.Cursor = Cursors.WaitCursor;
+            List<FavoriteConfigurationElement> favoritesToImport = GetFavoritesFromBindingSource(tags);
+            Settings.AddFavorites(favoritesToImport, false);
+            this.Cursor = Cursors.Default;
+            OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
+        }
+
+        private List<FavoriteConfigurationElement> GetFavoritesFromBindingSource(String tags)
+        {
+            List<FavoriteConfigurationElement> favoritesToImport = new List<FavoriteConfigurationElement>();
             foreach (NetworkScanResult scanResult in this.bsScanResults)
             {
                 if (scanResult.Import)
                 {
-                    this.ImportSelectedService(scanResult);
-                    count++;
+                    var favorite = scanResult.ToFavorite(tags);
+                    favoritesToImport.Add(favorite);
                 }
             }
-            MessageBox.Show(String.Format("{0} items were added to your favorites.", count));
+            return favoritesToImport;
         }
 
-        private void ImportSelectedService(NetworkScanResult service)
+        private string GetTagsToApply()
         {
-            FavoriteConfigurationElement favorite = new FavoriteConfigurationElement();
-            favorite.ServerName = service.IPAddress;
-            favorite.Port = service.Port;
-            favorite.Protocol = ConnectionManager.GetPortName(favorite.Port, service.IsVMRC);
             String tags = this.TagsTextbox.Text;
             tags = tags.Replace("Tags...", String.Empty).Trim();
-            if (tags != String.Empty)
-                favorite.Tags = tags;
-            favorite.Name = String.Format("{0}_{1}", service.HostName, favorite.Protocol);
-            favorite.DomainName = Environment.UserDomainName;
-            favorite.UserName = Environment.UserName;
-            Settings.AddFavorite(favorite, false);
+            return tags;
         }
 
         private void button1_Click(object sender, EventArgs e)

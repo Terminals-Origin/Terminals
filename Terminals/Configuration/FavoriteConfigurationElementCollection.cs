@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
 
 namespace Terminals
 {
-
     public class FavoriteConfigurationElementCollection : ConfigurationElementCollection
     {
         public FavoriteConfigurationElementCollection()
@@ -103,6 +101,17 @@ namespace Terminals
         public void Clear()
         {
             BaseClear();
+        }
+
+        internal List<FavoriteConfigurationElement> ToList()
+        {
+            List<FavoriteConfigurationElement> favorites = new List<FavoriteConfigurationElement>();
+            foreach (FavoriteConfigurationElement favorite in this)
+            {
+               favorites.Add(favorite);
+            }
+
+            return favorites;
         }
     }
 
