@@ -25,7 +25,7 @@ namespace Terminals
             if(!String.IsNullOrEmpty(this.DomainName))
                 domain = this.DomainName + "\\";
 
-            return String.Format(@"{0}({1})={2}{3}:{4}", this.Name, this.Protocol, domain, this.ServerName, this.Port);
+            return String.Format(@"Favorite:{0}({1})={2}{3}:{4}", this.Name, this.Protocol, domain, this.ServerName, this.Port);
         }
 
         public List<String> TagList

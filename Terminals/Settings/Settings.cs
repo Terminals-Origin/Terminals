@@ -1067,6 +1067,20 @@ namespace Terminals.Configuration
             DeleteFavoriteButton(name);
         }
 
+        internal static void DeleteFavorites(List<FavoriteConfigurationElement> favorites)
+        {
+            if (favorites == null || favorites.Count == 0)
+                return;
+
+            DelayConfigurationSave = true;
+            foreach (FavoriteConfigurationElement favorite in favorites)
+            {
+                DeleteFavorite(favorite.Name);
+            }
+            DelayConfigurationSave = false;
+            SaveImmediatelyIfRequested(Config);
+        }
+
         public static void AddFavorite(FavoriteConfigurationElement favorite, bool showOnToolbar)
         {
             SysConfig.Configuration configuration = Config;
@@ -1132,7 +1146,7 @@ namespace Terminals.Configuration
         }
 
         /// <summary>
-        /// Gets favorites organized by their Connection name. Key contains suffix "a" and number (eg. a0, a1 etc.).
+        /// Gets favorites organized by SortProperty name. Key contains suffix "a" and number (eg. a0, a1 etc.).
         /// Becuase depending on the sort type the key doesn't have to be unique.
         /// </summary>
         public static SortedDictionary<string, FavoriteConfigurationElement> GetSortedFavorites(SortProperties SortProperty)

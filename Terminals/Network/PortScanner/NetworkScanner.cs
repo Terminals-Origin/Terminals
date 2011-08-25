@@ -18,6 +18,8 @@ namespace Terminals
     internal partial class NetworkScanner : Form
     {
         private NetworkScanManager manager;
+        private bool validation = false;
+        internal SortableList<FavoriteConfigurationElement> ImportedFavorites { get; private set; }
 
         internal NetworkScanner()
         {
@@ -26,10 +28,12 @@ namespace Terminals
             FillTextBoxesFromLocalIp();
             InitScanManager();
             this.gridScanResults.AutoGenerateColumns = false;
-            this.gridScanResults.DataSource = this.bsScanResults;
 
             Server.OnClientConnection += new Server.ClientConnection(Server_OnClientConnection);
             Client.OnServerConnection += new Client.ServerConnection(Client_OnServerConnection);
+            this.ImportedFavorites = new SortableList<FavoriteConfigurationElement>();
+            
+            this.bsScanResults.DataSource = new SortableList<NetworkScanResult>();
         }
 
         private void FillTextBoxesFromLocalIp()
@@ -180,6 +184,7 @@ namespace Terminals
             this.Cursor = Cursors.WaitCursor;
             List<FavoriteConfigurationElement> favoritesToImport = GetFavoritesFromBindingSource(tags);
             Settings.AddFavorites(favoritesToImport, false);
+            this.ImportedFavorites.AddRange(favoritesToImport);
             this.Cursor = Cursors.Default;
             OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
         }
@@ -187,13 +192,11 @@ namespace Terminals
         private List<FavoriteConfigurationElement> GetFavoritesFromBindingSource(String tags)
         {
             List<FavoriteConfigurationElement> favoritesToImport = new List<FavoriteConfigurationElement>();
-            foreach (NetworkScanResult scanResult in this.bsScanResults)
+            foreach (DataGridViewRow scanResultRow in this.gridScanResults.SelectedRows)
             {
-                if (scanResult.Import)
-                {
-                    var favorite = scanResult.ToFavorite(tags);
+                    var computer = scanResultRow.DataBoundItem as NetworkScanResult;
+                    var favorite = computer.ToFavorite(tags);
                     favoritesToImport.Add(favorite);
-                }
             }
             return favoritesToImport;
         }
@@ -237,33 +240,32 @@ namespace Terminals
             {
                 ArrayList favorites = (ArrayList)Serialize.DeSerializeBinary(Response);
                 Int32 count = ImportSharedFavorites(favorites);
-                MessageBox.Show(string.Format("Successfully imported {0} connections.", count));
+                OrganizeFavoritesForm.ShowImportResultMessage(count);
             }
         }
 
-        private static Int32 ImportSharedFavorites(ArrayList favorites)
+        private Int32 ImportSharedFavorites(ArrayList favorites)
         {
-            Int32 count = 0;
-                
+            var importedFavorites = new SortableList<FavoriteConfigurationElement>();
             foreach (object item in favorites)
             {
                 SharedFavorite favorite = item as SharedFavorite;
                 if (favorite != null)
-                {
-                    ImportSharedFavorite(favorite);
-                    count++; 
-                }
+                    importedFavorites.Add(ImportSharedFavorite(favorite));
             }
-            return count;
+
+            Settings.AddFavorites(importedFavorites, true);
+            this.ImportedFavorites.AddRange(importedFavorites);
+            return importedFavorites.Count;
         }
 
-        private static void ImportSharedFavorite(SharedFavorite favorite)
+        private static FavoriteConfigurationElement ImportSharedFavorite(SharedFavorite favorite)
         {
             FavoriteConfigurationElement newfav = SharedFavorite.ConvertFromFavorite(favorite);
             newfav.Name = newfav.Name + "_new";
             newfav.UserName = Environment.UserName;
             newfav.DomainName = Environment.UserDomainName;
-            Settings.AddFavorite(newfav, false);
+            return newfav;
         }
 
         private void Server_OnClientConnection(String Username, Socket Socket)
@@ -332,8 +334,6 @@ namespace Terminals
               this.AllCheckbox.Checked = false;
         }
 
-        private bool validation = false;
-
         /// <summary>
         /// Validate text boxes to allow inser only byte.
         /// </summary>
@@ -353,6 +353,17 @@ namespace Terminals
                 textBox.Tag = textBox.Text;
 
             validation = false;
+        }
+
+        private void gridScanResults_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            DataGridViewColumn lastSortedColumn = this.gridScanResults.FindLastSortedColumn();
+            DataGridViewColumn column = this.gridScanResults.Columns[e.ColumnIndex];
+
+            SortOrder newSortDirection = SortableUnboundGrid.GetNewSortDirection(lastSortedColumn, column);
+            var data = this.bsScanResults.DataSource as SortableList<NetworkScanResult>;
+            this.bsScanResults.DataSource = data.SortByProperty(column.DataPropertyName, newSortDirection);
+            column.HeaderCell.SortGlyphDirection = newSortDirection;
         }
     }
 }

@@ -103,9 +103,9 @@ namespace Terminals
             BaseClear();
         }
 
-        internal List<FavoriteConfigurationElement> ToList()
+        internal SortableList<FavoriteConfigurationElement> ToList()
         {
-            List<FavoriteConfigurationElement> favorites = new List<FavoriteConfigurationElement>();
+            var favorites = new SortableList<FavoriteConfigurationElement>();
             foreach (FavoriteConfigurationElement favorite in this)
             {
                favorites.Add(favorite);

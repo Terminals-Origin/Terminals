@@ -15,10 +15,9 @@ namespace Terminals
         private MethodInvoker _historyInvoker;
         private Boolean _eventDone = false;
         private Object _historyLock = new Object();
-        private Boolean _dirtyHistory = false;        
+        private Boolean _dirtyHistory = false;
         private HistoryByFavorite _historyByFavorite = null;
-        private HistoryController _historyController = new HistoryController();        
-        private List<String> _nodeTextList;
+        private HistoryController _historyController = new HistoryController();
         private List<String> _nodeTextListHistory;
         private MainForm _mainForm;
         public static CredentialSet credSet = new CredentialSet();
@@ -33,7 +32,7 @@ namespace Terminals
             NativeApi.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
         }
 
-        private MainForm GetMainForm() 
+        private MainForm GetMainForm()
         {
             if (this._mainForm == null)
                 this._mainForm = MainForm.GetMainForm();
@@ -43,28 +42,15 @@ namespace Terminals
 
         public void LoadFavs()
         {
-            this._nodeTextList = new List<String>();
-            foreach (TreeNode node in favsTree.Nodes)
-            {
-                if (node.IsExpanded)
-                    this._nodeTextList.Add(node.Text);
-            }
-
             FavoriteTreeListLoader loader = new FavoriteTreeListLoader(this.favsTree);
             loader.Load();
-
-            foreach (TreeNode node in favsTree.Nodes)
-            {
-                if (this._nodeTextList.Contains(node.Text))
-                    node.Expand();
-            }
         }
 
         public void RecordHistoryItem(String Name)
         {
             this._historyController.RecordHistoryItem(Name, true);
             this._dirtyHistory = true;
-        }             
+        }
 
         #region private
         private void UpdateHistory()
@@ -168,35 +154,35 @@ namespace Terminals
         private void pingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if (fav != null) 
+            if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("Ping", fav.ServerName);
         }
 
         private void dNSToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if (fav != null) 
+            if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("DNS", fav.ServerName);
         }
 
         private void traceRouteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if (fav != null) 
+            if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("Trace", fav.ServerName);
         }
 
         private void tSAdminToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if (fav != null) 
+            if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("TSAdmin", fav.ServerName);
         }
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if(fav != null)
+            if (fav != null)
                 this.GetMainForm().ShowManageTerminalForm(fav);
         }
 
@@ -545,19 +531,19 @@ namespace Terminals
 
         private void StartConnection(TreeView tv)
         {
-          // connections are always under some parent node in History and in Favorites
-          if (tv.SelectedNode != null && this.favsTree.SelectedNode.Level > 0)
-          {
-            MainForm mainForm = this.GetMainForm();
-            mainForm.Connect(tv.SelectedNode.Text, false, false);
-          }
+            // connections are always under some parent node in History and in Favorites
+            if (tv.SelectedNode != null && this.favsTree.SelectedNode.Level > 0)
+            {
+                MainForm mainForm = this.GetMainForm();
+                mainForm.Connect(tv.SelectedNode.Text, false, false);
+            }
         }
 
         #endregion
 
         private void historyTreeView_KeyUp(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
                 this.StartConnection(historyTreeView);
         }
 
@@ -567,7 +553,7 @@ namespace Terminals
             this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
 
             List<CredentialSet> list = StoredCredentials.Instance.Items;
-            
+
             foreach (CredentialSet s in list)
             {
                 this.connectAsToolStripMenuItem.DropDownItems.Add(s.Name, null, new EventHandler(this.connectAsCred_Click));
@@ -579,7 +565,7 @@ namespace Terminals
             FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
             if (fav != null)
             {
-                this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked, 
+                this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked,
                                            this.newWindowToolStripMenuItem.Checked,
                                            StoredCredentials.Instance.GetByName(sender.ToString()));
             }

@@ -4,102 +4,46 @@ using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Forms;
 using Terminals.Integration.Import;
+using Terminals.Network;
 
 namespace Terminals
 {
     public partial class OrganizeFavoritesForm : Form
     {
-        private ListViewColumnSorter _lvwColumnSorter;
-        private NetworkScanner _networkScanner = new NetworkScanner();
-        
         public OrganizeFavoritesForm()
         {
             InitializeComponent();
-            LoadConnections();
-            _lvwColumnSorter = new ListViewColumnSorter();
-            lvConnections.ListViewItemSorter = _lvwColumnSorter;
+
+            this.dataGridFavorites.AutoGenerateColumns = false;
+            this.bsFavorites.DataSource = Settings.GetFavorites().ToList()
+                                                  .SortByProperty("Name",SortOrder.Ascending);
+            this.dataGridFavorites.Columns["colName"].HeaderCell.SortGlyphDirection = SortOrder.Ascending;
+
             ImportOpenFileDialog.Filter = Importers.GetImportersDialogFilter();
-        }
-
-        private void LoadConnections()
-        {            
-            lvConnections.BeginUpdate();
-            try
-            {
-                lvConnections.Items.Clear();
-                SortedDictionary<string, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
-                foreach (string key in favorites.Keys)
-                {
-                    FavoriteConfigurationElement favorite = favorites[key];
-                    lvConnections.ShowItemToolTips = true;
-                    ListViewItem item = lvConnections.Items.Add(favorite.Name);
-                    item.ToolTipText = favorite.Notes;
-
-                    item.Name = favorite.Name;
-                    item.SubItems.Add(favorite.Protocol);
-                    item.SubItems.Add(favorite.ServerName);
-                    item.SubItems.Add(favorite.Credential);
-                    item.SubItems.Add(favorite.DomainName);
-                    item.SubItems.Add(favorite.UserName);
-                    item.SubItems.Add(favorite.Tags);
-                    item.SubItems.Add(favorite.Notes);
-                    item.Tag = favorite;
-                }
-            }
-            finally
-            {
-                lvConnections.EndUpdate();
-            }
-            lvConnections.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-            if (lvConnections.Columns[0].Width < 50) lvConnections.Columns[0].Width = 50;
-            if (lvConnections.Columns[1].Width < 50) lvConnections.Columns[1].Width = 50;
-            if (lvConnections.Columns[2].Width < 50) lvConnections.Columns[2].Width = 50;
-            if (lvConnections.Columns[3].Width < 50) lvConnections.Columns[3].Width = 50;
-            if (lvConnections.Columns[4].Width < 50) lvConnections.Columns[4].Width = 50;
-            if (lvConnections.Columns[5].Width < 50) lvConnections.Columns[5].Width = 50;
-            if (lvConnections.Columns[6].Width < 50) lvConnections.Columns[6].Width = 50;
-            if (lvConnections.Columns[7].Width < 50) lvConnections.Columns[7].Width = 50;
         }
 
         private void EditFavorite(FavoriteConfigurationElement favorite)
         {
             NewTerminalForm frmNewTerminal = new NewTerminalForm(favorite);
-            string oldName = favorite.Name;
             if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
             {
-                if (oldName != frmNewTerminal.Favorite.Name) 
-                    Settings.DeleteFavorite(oldName);
-
-                LoadConnections();
+                // because the favorite instance is replaced
+                int dataSourceIndex = bsFavorites.IndexOf(favorite);
+                bsFavorites.RemoveAt(dataSourceIndex);
+                bsFavorites.Insert(dataSourceIndex, frmNewTerminal.Favorite);
             }
         }
 
         private FavoriteConfigurationElement GetSelectedFavorite()
         {
-            if (lvConnections.SelectedItems.Count > 0)
-                return (FavoriteConfigurationElement)lvConnections.SelectedItems[0].Tag;
+            if (dataGridFavorites.SelectedRows.Count > 0)
+                return dataGridFavorites.SelectedRows[0].DataBoundItem as FavoriteConfigurationElement;
             return null;
         }
 
-        private void lvConnections_AfterLabelEdit(object sender, LabelEditEventArgs e)
-        {
-            ListViewItem item = lvConnections.Items[e.Item];
-            if (!String.IsNullOrEmpty(e.Label) && e.Label != item.Text)
-            {
-                if (lvConnections.Items.ContainsKey(e.Label) && e.Label.ToLower() != item.Text.ToLower())
-                {
-                    e.CancelEdit = true;
-                    MessageBox.Show(this, "A connection named " + e.Label + " already exists", "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                FavoriteConfigurationElement favorite = (FavoriteConfigurationElement)item.Tag;
-                string oldName = favorite.Name;
-                favorite.Name = e.Label;
-                item.Name = e.Label;
-                Settings.EditFavorite(oldName, favorite);
-            }
-        }
-
+        /// <summary>
+        /// Start edit in data grid
+        /// </summary>
         private void ConnectionManager_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2)
@@ -108,22 +52,53 @@ namespace Terminals
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in lvConnections.SelectedItems)
+            var selectedFavorites = new List<FavoriteConfigurationElement>();
+            foreach (DataGridViewRow selectedRow in this.dataGridFavorites.SelectedRows)
             {
-                FavoriteConfigurationElement favorite = (item.Tag as FavoriteConfigurationElement);
-                if (favorite != null)
-                {
-                    Settings.DeleteFavorite(favorite.Name);
-                    Settings.DeleteFavoriteButton(favorite.Name);
-                }
+                var selectedFavorite = selectedRow.DataBoundItem as FavoriteConfigurationElement;
+                selectedFavorites.Add(selectedFavorite);
             }
-            LoadConnections();
-        }        
+
+            Settings.DeleteFavorites(selectedFavorites);
+            this.bsFavorites.DataSource = Settings.GetFavorites().ToList();
+        }
 
         private void btnRename_Click(object sender, EventArgs e)
         {
-            if (lvConnections.SelectedItems.Count > 0)
-                lvConnections.SelectedItems[0].BeginEdit();
+            if (this.dataGridFavorites.SelectedRows.Count > 0)
+            {
+                dataGridFavorites.CurrentCell = this.dataGridFavorites.SelectedRows[0].Cells["colName"];
+                this.dataGridFavorites.BeginEdit(true);
+            }
+        }
+
+        private string editedFavorteName = String.Empty;
+
+        private void dataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            // the only editable cell should be name
+            this.editedFavorteName = dataGridFavorites.CurrentCell.Value.ToString();
+        }
+
+        /// <summary>
+        /// Rename favorite directly in a cell has to be confirmed into the Settings
+        /// </summary>
+        private void dataGridFavorites_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            var editedFavorite = this.dataGridFavorites.SelectedRows[0].DataBoundItem as FavoriteConfigurationElement;
+            String newName = editedFavorite.Name;
+            editedFavorite.Name = this.editedFavorteName;
+            var oldFavorite = Settings.GetOneFavorite(newName);
+            if (oldFavorite != null)
+            {
+                string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", newName);
+                if (MessageBox.Show(this, message, "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    editedFavorite.Name = newName;
+                    Settings.EditFavorite(this.editedFavorteName, editedFavorite, true);
+                    this.bsFavorites.Remove(oldFavorite);
+                }
+            }
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -141,27 +116,15 @@ namespace Terminals
                 InputBoxResult result = InputBox.Show("New Connection Name");
                 if (result.ReturnCode == DialogResult.OK && !string.IsNullOrEmpty(result.Text))
                 {
-                    FavoriteConfigurationElement newFav = (favorite.Clone() as FavoriteConfigurationElement);
+                    FavoriteConfigurationElement newFav = favorite.Clone() as FavoriteConfigurationElement;
                     if (newFav != null)
                     {
                         newFav.Name = result.Text;
                         Settings.AddFavorite(newFav, Settings.HasToolbarButton(newFav.Name));
-                        LoadConnections();
+                        this.bsFavorites.Add(newFav);
                     }
                 }
             }
-        }
-
-        private string GetUniqeName(string favoriteName)
-        {
-            string result = "Copy of " + favoriteName;
-            int i = 1;
-            while (lvConnections.Items.ContainsKey(result))
-            {
-                i++;
-                result = "Copy (" + i.ToString() + ") of " + favoriteName;
-            }
-            return result;
         }
 
         private void btnNew_Click(object sender, EventArgs e)
@@ -171,31 +134,29 @@ namespace Terminals
                 if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
                 {
                     Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
-                    LoadConnections();
+                    this.bsFavorites.Add(frmNewTerminal.Favorite);
                 }
             }
         }
 
         private void OrganizeFavoritesForm_Shown(object sender, EventArgs e)
         {
-            if (lvConnections.Items.Count > 0)
-                lvConnections.Items[0].Selected = true;
+            if (this.dataGridFavorites.RowCount > 0)
+                dataGridFavorites.Rows[0].Selected = true;
         }
 
-        private void OrganizeFavoritesForm_Activated(object sender, EventArgs e)
+        private void activeDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoadConnections();
-        }
-       
-        private void activeDirectoryToolStripMenuItem_Click(object sender, EventArgs e) 
-        {
-            Network.ImportFromAD ad = new Network.ImportFromAD();
-            ad.ShowDialog();
+            ImportFromAD activeDirectoryForm = new ImportFromAD();
+            activeDirectoryForm.ShowDialog();
+            AddFavoritesToBindingSource(activeDirectoryForm.ImportedFavorites);
         }
 
-        private void networkDetectionToolStripMenuItem_Click(object sender, EventArgs e) 
+        private void networkDetectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _networkScanner.ShowDialog();
+            NetworkScanner networkScanForm = new NetworkScanner();
+            networkScanForm.ShowDialog();
+            AddFavoritesToBindingSource(networkScanForm.ImportedFavorites);
         }
 
         private void ImportButton_Click(object sender, EventArgs e)
@@ -203,32 +164,10 @@ namespace Terminals
             CallImport();
         }
 
-        private void lvConnections_ColumnClick(object sender, ColumnClickEventArgs e)
-        {
-            // Determine if clicked column is already the column that is being sorted.
-            if (e.Column == _lvwColumnSorter.SortColumn)
-            {
-                // Reverse the current sort direction for this column.
-                if (_lvwColumnSorter.Order == SortOrder.Ascending)
-                    _lvwColumnSorter.Order = SortOrder.Descending;
-                else
-                    _lvwColumnSorter.Order = SortOrder.Ascending;
-            }
-            else
-            {
-                // Set the column number that is to be sorted; default to ascending.
-                _lvwColumnSorter.SortColumn = e.Column;
-                _lvwColumnSorter.Order = SortOrder.Ascending;
-            }
-
-            // Perform the sort with these new sort options.
-            lvConnections.Sort();
-        }
-
         private void btnExport_Click(object sender, EventArgs e)
         {
-            ExportFrom ei = new ExportFrom();
-            ei.Show();
+            ExportFrom exportFrom = new ExportFrom();
+            exportFrom.Show();
         }
 
         internal void CallImport()
@@ -236,20 +175,41 @@ namespace Terminals
             if (ImportOpenFileDialog.ShowDialog() == DialogResult.OK)
             {
                 String[] filenames = this.ImportOpenFileDialog.FileNames;
+                this.Focus();
                 this.Cursor = Cursors.WaitCursor;
+
                 List<FavoriteConfigurationElement> favorites = Importers.ImportFavorites(filenames);
                 Settings.AddFavorites(favorites, false);
-                if(favorites.Count > 0)
-                    LoadConnections();
+                AddFavoritesToBindingSource(favorites);
+
                 this.Cursor = Cursors.Default;
                 ShowImportResultMessage(favorites.Count);
             }
+        }
+
+        private void AddFavoritesToBindingSource(List<FavoriteConfigurationElement> importedFavorites)
+        {
+            var favoritesSource = this.bsFavorites.DataSource as SortableList<FavoriteConfigurationElement>;
+            favoritesSource.AddRange(importedFavorites);
+            this.bsFavorites.DataSource = favoritesSource;
+            this.bsFavorites.ResetBindings(false);
         }
 
         internal static void ShowImportResultMessage(Int32 importedItemsCount)
         {
             String message = String.Format("{0} items were added to your favorites.", importedItemsCount);
             MessageBox.Show(message, "Terminals import result", MessageBoxButtons.OK);
+        }
+
+        private void dataGridFavorites_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            DataGridViewColumn lastSortedColumn = this.dataGridFavorites.FindLastSortedColumn();
+            DataGridViewColumn column = this.dataGridFavorites.Columns[e.ColumnIndex];
+
+            SortOrder newSortDirection = SortableUnboundGrid.GetNewSortDirection(lastSortedColumn, column);
+            var data = this.bsFavorites.DataSource as SortableList<FavoriteConfigurationElement>;
+            this.bsFavorites.DataSource = data.SortByProperty(column.DataPropertyName, newSortDirection);
+            column.HeaderCell.SortGlyphDirection = newSortDirection;
         }
     }
 }

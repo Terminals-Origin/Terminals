@@ -21,8 +21,16 @@ namespace Terminals
 
         internal void Load()
         {
+            List<string> nodeTextList = BackUpExpandedNodes();
             sortedTags.Clear();
             treeList.Nodes.Clear();
+            CreateTreeNodes();
+            treeList.Sort();
+            RestoreExpandedNodes(nodeTextList);
+        }
+
+        private void CreateTreeNodes()
+        {
             SortedDictionary<string, FavoriteConfigurationElement> favorites =
                 Settings.GetSortedFavorites(Settings.DefaultSortProperty);
 
@@ -30,12 +38,31 @@ namespace Terminals
             {
                 foreach (KeyValuePair<string, FavoriteConfigurationElement> favoriteKeyPair in favorites)
                 {
-                    AddFavoriteTreeNode(favoriteKeyPair);
+                    this.AddFavoriteTreeNode(favoriteKeyPair);
                 }
             }
-            treeList.Sort();
         }
 
+        private List<string> BackUpExpandedNodes()
+        {
+            List<String> nodeTextList = new List<String>();
+            foreach (TreeNode node in this.treeList.Nodes)
+            {
+                if (node.IsExpanded)
+                    nodeTextList.Add(node.Text);
+            }
+            return nodeTextList;
+        }
+
+        private void RestoreExpandedNodes(List<string> nodeTextList)
+        {
+            foreach (TreeNode node in this.treeList.Nodes)
+            {
+                if (nodeTextList.Contains(node.Text))
+                    node.Expand();
+            }
+        }
+ 
         private void AddFavoriteTreeNode(KeyValuePair<string, FavoriteConfigurationElement> favoriteKeyPair)
         {
             FavoriteConfigurationElement favorite = favoriteKeyPair.Value;

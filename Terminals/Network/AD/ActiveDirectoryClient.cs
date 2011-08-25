@@ -46,19 +46,18 @@ namespace Terminals.Network
 
         internal void FindComputers(string domain)
         {
-            if (!this.IsRunning) // nothing is running
+            if (this.IsRunning) // nothing is running
             {
                 this.IsRunning = true;
-                
                 ThreadPool.QueueUserWorkItem(new WaitCallback(StartScan), domain); 
             }
         }
 
         internal void Stop()
         {
-            if (this.IsRunning)
+            lock (runLock)
             {
-                lock (runLock)
+                if (this.isRunning)
                 {
                     this.cancelationPending = true;
                 }
@@ -93,7 +92,7 @@ namespace Terminals.Network
                     mySearcher.Filter = ("(objectClass=computer)");
                     foreach (SearchResult result in mySearcher.FindAll())
                     {
-                        if (!this.IsRunning)
+                        if (this.CancelationPending)
                             return;
                         DirectoryEntry computer = result.GetDirectoryEntry();
                         var comp = ActiveDirectoryComputer.FromDirectoryEntry(domain, computer);

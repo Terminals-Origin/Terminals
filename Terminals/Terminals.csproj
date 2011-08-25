@@ -312,7 +312,6 @@
     <Compile Include="ExportImport\Import\ImportTerminals.cs" />
     <Compile Include="ExportImport\Import\ImportvRD.cs" />
     <Compile Include="ExportImport\Import\vrd.cs" />
-    <Compile Include="ListViewColumnSorter.cs" />
     <Compile Include="Localization\LocalizedValues.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -435,6 +434,13 @@
     <Compile Include="Settings\StoredCredentials.cs" />
     <Compile Include="Settings\ToolStripSetting.cs" />
     <Compile Include="Settings\ToolStripSettings.cs" />
+    <Compile Include="SortableList.cs" />
+    <Compile Include="SortableUnboundGrid.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SortableUnboundGrid.Designer.cs">
+      <DependentUpon>SortableUnboundGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="TcpProtocol.cs" />
     <Compile Include="TelnetProtocol.cs" />
     <Compile Include="TelnetStream.cs" />
@@ -844,6 +850,7 @@
     <None Include="Migrated rules for Terminals.ruleset" />
     <Content Include="Resources\amber.png" />
     <Content Include="Resources\back.png" />
+    <None Include="Properties\DataSources\FavoriteConfigurationElement.datasource" />
     <None Include="Properties\DataSources\Terminals.Network.ActiveDirectoryComputer.datasource" />
     <None Include="Properties\DataSources\Terminals.Scanner.NetworkScanResult.datasource" />
     <None Include="Resources\ControlPanel.png" />
@@ -966,6 +973,9 @@
     <EmbeddedResource Include="PopupTerminal.resx">
       <DependentUpon>PopupTerminal.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SortableUnboundGrid.resx">
+      <DependentUpon>SortableUnboundGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\CommonOptions.resx">
       <DependentUpon>CommonOptions.cs</DependentUpon>

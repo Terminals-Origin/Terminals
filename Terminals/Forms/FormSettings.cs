@@ -162,9 +162,9 @@ namespace Terminals.Forms
             // Height - 10 = means to see atleast part of the window title
             Screen lastScreen = Screen.AllScreens.
                 FirstOrDefault(candidate => candidate.Bounds.X <= _form.Location.X &&
-                    _form.Location.X > candidate.Bounds.X + candidate.Bounds.Width &&
-                        candidate.Bounds.Y <= _form.Location.Y &&
-                            _form.Location.Y < candidate.Bounds.Y + candidate.Bounds.Height - 10);
+                               _form.Location.X < candidate.Bounds.X + candidate.Bounds.Width - 10 &&
+                               candidate.Bounds.Y <= _form.Location.Y &&
+                               _form.Location.Y < candidate.Bounds.Y + candidate.Bounds.Height - 10);
 
             if (lastScreen == null)
                 _form.Location = new Point(100, 100);

@@ -30,10 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImportFromAD));
-            this.gridComputers = new System.Windows.Forms.DataGridView();
-            this.Import = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ComputerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.OperatingSystem = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gridComputers = new Terminals.SortableUnboundGrid();
+            this.computerNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.operatingSystemDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bsComputers = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.domainTextbox = new System.Windows.Forms.TextBox();
@@ -52,43 +51,42 @@
             // gridComputers
             // 
             this.gridComputers.AllowUserToAddRows = false;
+            this.gridComputers.AllowUserToOrderColumns = true;
+            this.gridComputers.AllowUserToResizeRows = false;
             this.gridComputers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.gridComputers.AutoGenerateColumns = false;
+            this.gridComputers.BackgroundColor = System.Drawing.SystemColors.Window;
             this.gridComputers.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.gridComputers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridComputers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Import,
-            this.ComputerName,
-            this.OperatingSystem});
+            this.computerNameDataGridViewTextBoxColumn,
+            this.operatingSystemDataGridViewTextBoxColumn});
+            this.gridComputers.DataSource = this.bsComputers;
             this.gridComputers.Location = new System.Drawing.Point(8, 76);
             this.gridComputers.Name = "gridComputers";
             this.gridComputers.RowHeadersVisible = false;
+            this.gridComputers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridComputers.Size = new System.Drawing.Size(572, 248);
             this.gridComputers.TabIndex = 0;
+            this.gridComputers.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridComputers_ColumnHeaderMouseClick);
             // 
-            // Import
+            // computerNameDataGridViewTextBoxColumn
             // 
-            this.Import.DataPropertyName = "Import";
-            this.Import.HeaderText = "Import";
-            this.Import.Name = "Import";
-            this.Import.Width = 50;
+            this.computerNameDataGridViewTextBoxColumn.DataPropertyName = "ComputerName";
+            this.computerNameDataGridViewTextBoxColumn.HeaderText = "ComputerName";
+            this.computerNameDataGridViewTextBoxColumn.Name = "computerNameDataGridViewTextBoxColumn";
+            this.computerNameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.computerNameDataGridViewTextBoxColumn.Width = 200;
             // 
-            // ComputerName
+            // operatingSystemDataGridViewTextBoxColumn
             // 
-            this.ComputerName.DataPropertyName = "ComputerName";
-            this.ComputerName.HeaderText = "Computer Name";
-            this.ComputerName.Name = "ComputerName";
-            this.ComputerName.ReadOnly = true;
-            this.ComputerName.Width = 150;
-            // 
-            // OperatingSystem
-            // 
-            this.OperatingSystem.DataPropertyName = "OperatingSystem";
-            this.OperatingSystem.HeaderText = "Operating System";
-            this.OperatingSystem.Name = "OperatingSystem";
-            this.OperatingSystem.ReadOnly = true;
-            this.OperatingSystem.Width = 300;
+            this.operatingSystemDataGridViewTextBoxColumn.DataPropertyName = "OperatingSystem";
+            this.operatingSystemDataGridViewTextBoxColumn.HeaderText = "OperatingSystem";
+            this.operatingSystemDataGridViewTextBoxColumn.Name = "operatingSystemDataGridViewTextBoxColumn";
+            this.operatingSystemDataGridViewTextBoxColumn.ReadOnly = true;
+            this.operatingSystemDataGridViewTextBoxColumn.Width = 200;
             // 
             // bsComputers
             // 
@@ -229,7 +227,7 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView gridComputers;
+        private Terminals.SortableUnboundGrid gridComputers;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox domainTextbox;
         private System.Windows.Forms.Label label2;
@@ -241,8 +239,7 @@
         private System.Windows.Forms.Button btnSelectNone;
         private System.Windows.Forms.BindingSource bsComputers;
         private System.Windows.Forms.Label lblProgressStatus;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn Import;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ComputerName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn OperatingSystem;
+        private System.Windows.Forms.DataGridViewTextBoxColumn computerNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn operatingSystemDataGridViewTextBoxColumn;
     }
 }

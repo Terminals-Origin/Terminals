@@ -12,7 +12,6 @@ namespace Terminals.Network
 
         internal ActiveDirectoryComputer()
         {
-            this.Import = true;
             this.Protocol = ConnectionManager.RDP;
             this.ComputerName = String.Empty;
             this.OperatingSystem = String.Empty;
@@ -21,7 +20,6 @@ namespace Terminals.Network
         }
 
         // public required by databinding
-        public Boolean Import { get; set; }
         public String ComputerName { get; set; }
         public String OperatingSystem { get; set; }
         
