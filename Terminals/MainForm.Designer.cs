@@ -41,7 +41,7 @@ namespace Terminals
             this.fullScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menubarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.standardToolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemShowHideFavoriteToolbar = new System.Windows.Forms.ToolStripMenuItem();
             this.shortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lockToolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewInNewWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -226,7 +226,7 @@ namespace Terminals
             this.fullScreenToolStripMenuItem,
             this.menubarToolStripMenuItem,
             this.standardToolbarToolStripMenuItem,
-            this.toolStripMenuItem4,
+            this.toolStripMenuItemShowHideFavoriteToolbar,
             this.shortcutsToolStripMenuItem,
             this.lockToolbarsToolStripMenuItem,
             this.viewInNewWindowToolStripMenuItem,
@@ -265,15 +265,15 @@ namespace Terminals
             this.standardToolbarToolStripMenuItem.ToolTipText = "Show/Hide standard toolbar";
             this.standardToolbarToolStripMenuItem.Click += new System.EventHandler(this.standardToolbarToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem4
+            // toolStripMenuItemShowHideFavoriteToolbar
             // 
-            this.toolStripMenuItem4.Checked = true;
-            this.toolStripMenuItem4.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(190, 22);
-            this.toolStripMenuItem4.Text = "F&avorites";
-            this.toolStripMenuItem4.ToolTipText = "Show/Hide favorite toolbar";
-            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            this.toolStripMenuItemShowHideFavoriteToolbar.Checked = true;
+            this.toolStripMenuItemShowHideFavoriteToolbar.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.toolStripMenuItemShowHideFavoriteToolbar.Name = "toolStripMenuItemShowHideFavoriteToolbar";
+            this.toolStripMenuItemShowHideFavoriteToolbar.Size = new System.Drawing.Size(190, 22);
+            this.toolStripMenuItemShowHideFavoriteToolbar.Text = "F&avorites";
+            this.toolStripMenuItemShowHideFavoriteToolbar.ToolTipText = "Show/Hide favorite toolbar";
+            this.toolStripMenuItemShowHideFavoriteToolbar.Click += new System.EventHandler(this.toolStripMenuItemShowHideFavoriteToolbar_Click);
             // 
             // shortcutsToolStripMenuItem
             // 
@@ -336,7 +336,7 @@ namespace Terminals
             this.organizeFavoritesToolbarToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.organizeFavoritesToolbarToolStripMenuItem.Text = "O&rganize Favorites Toolbar";
             this.organizeFavoritesToolbarToolStripMenuItem.ToolTipText = "Organize your favorite connections in toolbar";
-            this.organizeFavoritesToolbarToolStripMenuItem.Visible = false;
+            this.organizeFavoritesToolbarToolStripMenuItem.Visible = true;
             this.organizeFavoritesToolbarToolStripMenuItem.Click += new System.EventHandler(this.organizeFavoritesToolbarToolStripMenuItem_Click);
             // 
             // favoritesSeparator
@@ -572,7 +572,6 @@ namespace Terminals
             this.updateToolStripItem.Text = "New Release Available";
             this.updateToolStripItem.ToolTipText = "Check if New Release is Available";
             this.updateToolStripItem.Visible = false;
-            this.updateToolStripItem.Click += new System.EventHandler(this.updateToolStripItem_Click);
             // 
             // toolbarStd
             // 
@@ -1270,7 +1269,7 @@ namespace Terminals
         private System.Windows.Forms.ToolStripDropDownButton TerminalServerMenuButton;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripMenuItem standardToolbarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemShowHideFavoriteToolbar;
         private System.Windows.Forms.ToolStripMenuItem shortcutsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lockToolbarsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateToolStripItem;

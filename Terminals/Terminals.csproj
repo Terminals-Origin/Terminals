@@ -282,6 +282,7 @@
     <Compile Include="Credentials\UserSelectForm.Designer.cs">
       <DependentUpon>UserSelectForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data\FavoritesMenuLoader.cs" />
     <Compile Include="DiskDrivesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -295,7 +296,7 @@
       <DependentUpon>ExportFrom.cs</DependentUpon>
     </Compile>
     <Compile Include="ExportImport\ExportImport.cs" />
-    <Compile Include="FavoriteTreeListLoader.cs" />
+    <Compile Include="Data\FavoriteTreeListLoader.cs" />
     <Compile Include="FavsList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -305,9 +306,9 @@
     <Compile Include="Forms\SplitButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="History\HistoryController.cs" />
-    <Compile Include="History\HistoryByFavorite.cs" />
-    <Compile Include="History\HistoryItem.cs" />
+    <Compile Include="Data\History\HistoryController.cs" />
+    <Compile Include="Data\History\HistoryByFavorite.cs" />
+    <Compile Include="Data\History\HistoryItem.cs" />
     <Compile Include="ExportImport\Importers.cs" />
     <Compile Include="ExportImport\Import\ImportTerminals.cs" />
     <Compile Include="ExportImport\Import\ImportvRD.cs" />
@@ -427,14 +428,15 @@
       <DependentUpon>PopupTerminal.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramInfo.cs" />
-    <Compile Include="Serialization\StreamHelper.cs" />
-    <Compile Include="SerializableDictionary.cs" />
-    <Compile Include="SerializableSortedDictionary.cs" />
+    <Compile Include="Data\Serialization\StreamHelper.cs" />
+    <Compile Include="Data\SerializableDictionary.cs" />
+    <Compile Include="Data\SerializableSortedDictionary.cs" />
+    <Compile Include="Settings\FavoritesFactory.cs" />
     <Compile Include="Settings\SortProperties.cs" />
     <Compile Include="Settings\StoredCredentials.cs" />
     <Compile Include="Settings\ToolStripSetting.cs" />
     <Compile Include="Settings\ToolStripSettings.cs" />
-    <Compile Include="SortableList.cs" />
+    <Compile Include="Data\SortableList.cs" />
     <Compile Include="SortableUnboundGrid.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -647,7 +649,7 @@
     <Compile Include="OrganizeFavoritesForm.Designer.cs">
       <DependentUpon>OrganizeFavoritesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Functions.cs" />
+    <Compile Include="Data\Functions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -804,7 +806,7 @@
     <Compile Include="Network\PortScanner\NetworkScanItem.cs" />
     <Compile Include="Network\PortScanner\NetworkScanManager.cs" />
     <Compile Include="Network\PortScanner\ScanItemEventArgs.cs" />
-    <Compile Include="Serialization\Serialize.cs" />
+    <Compile Include="Data\Serialization\Serialize.cs" />
     <Compile Include="ScreenCapture.cs" />
     <Compile Include="ProtocolHandler.cs" />
     <Compile Include="Security\Decryptor.cs" />
@@ -1136,9 +1138,9 @@
     <Content Include="Updates\RSS\obj\RSS.csproj.FileList.txt" />
     <Content Include="Updates\RSS\RSS.csproj" />
     <Content Include="Updates\TerminalsUpdates.xml" />
-    <Content Include="wpcap.dll">
+    <None Include="wpcap.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="Resources\star.png" />
     <None Include="Resources\ShowPanel.PNG" />
     <None Include="Resources\tag_blue_delete.png" />

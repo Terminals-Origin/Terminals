@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Terminals
 {
-    public partial class SaveActiveConnectionsForm : Form
+    internal partial class SaveActiveConnectionsForm : Form
     {
         public SaveActiveConnectionsForm()
         {
@@ -16,16 +11,18 @@ namespace Terminals
             Height = 160;
         }
 
-        private void MoreButton_Click(object sender, EventArgs e) {
-
-            if(Height == 160) {
+        private void MoreButton_Click(object sender, EventArgs e)
+        {
+            if (Height == 160)
+            {
                 MoreButton.Text = "Less...";
                 Height = 230;
-            } else {
+            }
+            else
+            {
                 MoreButton.Text = "More...";
                 Height = 160;
             }
-
         }
     }
 }
