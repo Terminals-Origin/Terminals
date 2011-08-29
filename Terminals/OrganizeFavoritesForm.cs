@@ -213,7 +213,9 @@ namespace Terminals
 
         internal static void ShowImportResultMessage(Int32 importedItemsCount)
         {
-            String message = String.Format("{0} items were added to your favorites.", importedItemsCount);
+            String message = "1 item was added to your favorites.";
+            if(importedItemsCount > 1)
+                message = String.Format("{0} items were added to your favorites.", importedItemsCount);
             MessageBox.Show(message, "Terminals import result", MessageBoxButtons.OK);
         }
 
