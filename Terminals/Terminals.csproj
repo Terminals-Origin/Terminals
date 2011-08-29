@@ -282,7 +282,11 @@
     <Compile Include="Credentials\UserSelectForm.Designer.cs">
       <DependentUpon>UserSelectForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Data\DataDispatcher.cs" />
+    <Compile Include="Data\FavoritesChangedEventArgs.cs" />
     <Compile Include="Data\FavoritesMenuLoader.cs" />
+    <Compile Include="Data\ListStringHelper.cs" />
+    <Compile Include="Data\TagsChangedArgs.cs" />
     <Compile Include="DiskDrivesForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -72,12 +72,12 @@ namespace Terminals
             }
         }
 
-        private string editedFavorteName = String.Empty;
+        private string editedFavoriteName = String.Empty;
 
         private void dataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             // the only editable cell should be name
-            this.editedFavorteName = dataGridFavorites.CurrentCell.Value.ToString();
+            this.editedFavoriteName = dataGridFavorites.CurrentCell.Value.ToString();
         }
 
         /// <summary>
@@ -86,19 +86,32 @@ namespace Terminals
         private void dataGridFavorites_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             var editedFavorite = this.dataGridFavorites.SelectedRows[0].DataBoundItem as FavoriteConfigurationElement;
-            String newName = editedFavorite.Name;
-            editedFavorite.Name = this.editedFavorteName;
-            var oldFavorite = Settings.GetOneFavorite(newName);
+            if(editedFavorite.Name.Equals(this.editedFavoriteName, StringComparison.CurrentCultureIgnoreCase))
+                return;  // cancel or nothing changed
+
+            var copy = editedFavorite.Clone() as FavoriteConfigurationElement;
+            editedFavorite.Name = this.editedFavoriteName;
+            var oldFavorite = Settings.GetOneFavorite(copy.Name);
             if (oldFavorite != null)
             {
-                string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", newName);
+                string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", copy.Name);
                 if (MessageBox.Show(this, message, "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    editedFavorite.Name = newName;
-                    Settings.EditFavorite(this.editedFavorteName, editedFavorite, true);
                     this.bsFavorites.Remove(oldFavorite);
+                    ReplaceFavoriteInBindingSource(copy, editedFavorite);
                 }
             }
+            else
+            {
+                ReplaceFavoriteInBindingSource(copy, editedFavorite);
+            }
+        }
+
+        private void ReplaceFavoriteInBindingSource(FavoriteConfigurationElement copy, FavoriteConfigurationElement oldFavorite)
+        {
+            Settings.EditFavorite(this.editedFavoriteName, copy, true);
+            this.bsFavorites.Remove(oldFavorite);
+            this.bsFavorites.Add(copy);
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -189,9 +202,12 @@ namespace Terminals
 
         private void AddFavoritesToBindingSource(List<FavoriteConfigurationElement> importedFavorites)
         {
-            var favoritesSource = this.bsFavorites.DataSource as SortableList<FavoriteConfigurationElement>;
-            favoritesSource.AddRange(importedFavorites);
-            this.bsFavorites.DataSource = favoritesSource;
+            //var favoritesSource = this.bsFavorites.DataSource as SortableList<FavoriteConfigurationElement>;
+            //favoritesSource.AddRange(importedFavorites);
+            // this.bsFavorites.DataSource = favoritesSource;
+            // todo better bindin source update
+            // todo dont replace the existing favorites by imported items 
+            this.bsFavorites.DataSource = Settings.GetFavorites().ToList();
             this.bsFavorites.ResetBindings(false);
         }
 

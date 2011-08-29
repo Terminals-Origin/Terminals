@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
-using Terminals.Configuration;
 
 namespace Terminals.ExportImport
 {
@@ -489,43 +488,48 @@ namespace Terminals.ExportImport
             return favorite;
         }
 
-        private static bool ReadBool(string str)
+        private static bool ReadBool(String str)
         {
             bool tmp = false;
             bool.TryParse(str, out tmp);
             return tmp;
         }
-        private static int ReadInt(string str)
+
+        private static int ReadInt(String str)
         {
             int tmp = 0;
             int.TryParse(str, out tmp);
             return tmp;
         }
-        private static DesktopSize ReadDesktopSize(string str)
+
+        private static DesktopSize ReadDesktopSize(String str)
         {
             DesktopSize tmp = DesktopSize.AutoScale;
-            if (string.IsNullOrEmpty(str))
+            if (!String.IsNullOrEmpty(str))
                 tmp = (DesktopSize)Enum.Parse(typeof(DesktopSize), str);
             return tmp;
         }
-        private static Colors ReadColors(string str)
+
+        private static Colors ReadColors(String str)
         {
             Colors tmp = Colors.Bit16;
-            if (string.IsNullOrEmpty(str))
+            if (!String.IsNullOrEmpty(str))
                 tmp = (Colors)Enum.Parse(typeof(Colors), str);
             return tmp;
         }
-        private static RemoteSounds ReadRemoteSounds(string str)
+
+        private static RemoteSounds ReadRemoteSounds(String str)
         {
             RemoteSounds tmp = RemoteSounds.DontPlay;
-            if (string.IsNullOrEmpty(str))
+            if (!String.IsNullOrEmpty(str))
                 tmp = (RemoteSounds)Enum.Parse(typeof(RemoteSounds), str);
             return tmp;
         }
-        private static SSHClient.AuthMethod ReadAuthMethod(string str)
+
+        private static SSHClient.AuthMethod ReadAuthMethod(String str)
         {
             SSHClient.AuthMethod tmp = SSHClient.AuthMethod.Password;
-            if (string.IsNullOrEmpty(str))
+            if (!String.IsNullOrEmpty(str))
                 tmp = (SSHClient.AuthMethod)Enum.Parse(typeof(SSHClient.AuthMethod), str);
             return tmp;
         }

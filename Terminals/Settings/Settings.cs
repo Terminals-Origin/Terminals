@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Terminals.Data;
 using SysConfig = System.Configuration;
 using System.IO;
 using System.Reflection;
@@ -1049,7 +1051,10 @@ namespace Terminals.Configuration
 
         public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite, bool showOnToolbar)
         {
-            EditFavorite(oldName, favorite);
+            if (favorite == null)
+                return;
+
+            EditFavoriteInSettings(favorite, oldName);
             bool shownOnToolbar = HasToolbarButton(oldName);
             if (shownOnToolbar && !showOnToolbar)
                 DeleteFavoriteButton(oldName);
@@ -1057,9 +1062,42 @@ namespace Terminals.Configuration
                 EditFavoriteButton(oldName, favorite.Name);
             else if (!shownOnToolbar && showOnToolbar)
                 AddFavoriteButton(favorite.Name);
+
+            DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
+        }
+
+        /// <summary>
+        /// Replaces the favorite stored with <paramref name="oldName"/> by copy of the <paramref name="favorite"/>
+        /// </summary>
+        /// <param name="oldName">favorite.Name value, before the favorite was changed</param>
+        /// <param name="favorite">Not null updated connection favorite</param>
+        public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite)
+        {
+            if (favorite == null)
+                return;
+
+            EditFavoriteInSettings(favorite, oldName);
+            DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
+        }
+
+        private static void EditFavoriteInSettings(FavoriteConfigurationElement favorite, string oldName)
+        {
+            SysConfig.Configuration configuration = Config;
+            TerminalsConfigurationSection section = GetSection(configuration);
+            section.Favorites[oldName] = (FavoriteConfigurationElement)favorite.Clone();
+            SaveImmediatelyIfRequested(configuration);
         }
 
         public static void DeleteFavorite(string name)
+        {
+            FavoriteConfigurationElement favoriteToDelete = GetOneFavorite(name);
+            DeleteFavoriteFromSettings(name);
+            List<String> deletedTags = DeleteTagsFromSettings(favoriteToDelete.TagList);
+            DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
+            DataDispatcher.Instance.ReportFavoriteDeleted(favoriteToDelete);
+        }
+
+        private static void DeleteFavoriteFromSettings(string name)
         {
             SysConfig.Configuration configuration = Config;
             GetSection(configuration).Favorites.Remove(name);
@@ -1072,16 +1110,33 @@ namespace Terminals.Configuration
             if (favorites == null || favorites.Count == 0)
                 return;
 
+            List<String> deletedTags = new List<string>();
             DelayConfigurationSave = true;
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
-                DeleteFavorite(favorite.Name);
+                DeleteFavoriteFromSettings(favorite.Name);
+                List<String> difference = DeleteTagsFromSettings(favorite.TagList);
+                deletedTags.AddRange(difference);
             }
+            
             DelayConfigurationSave = false;
             SaveImmediatelyIfRequested(Config);
+            DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
+            DataDispatcher.Instance.ReportFavoritesDeleted(favorites);
         }
 
         public static void AddFavorite(FavoriteConfigurationElement favorite, bool showOnToolbar)
+        {
+            AddFavoriteToSettings(favorite, showOnToolbar);
+            List<String> addedTags = AddTagsToSettings(favorite.TagList);
+            DataDispatcher.Instance.ReportTagsAdded(addedTags);
+            DataDispatcher.Instance.ReportFavoriteAdded(favorite);
+        }
+
+        /// <summary>
+        /// Adds favorite to the database, but doesnt fire the changed event
+        /// </summary>
+        private static void AddFavoriteToSettings(FavoriteConfigurationElement favorite, bool showOnToolbar)
         {
             SysConfig.Configuration configuration = Config;
             GetSection(configuration).Favorites.Add(favorite);
@@ -1091,14 +1146,6 @@ namespace Terminals.Configuration
                 AddFavoriteButton(favorite.Name);
             else
                 DeleteFavoriteButton(favorite.Name);
-
-            if (!string.IsNullOrEmpty(favorite.Tags))
-            {
-                foreach (string tag in favorite.TagList)
-                {
-                    AddTag(tag);
-                }
-            }
         }
 
         /// <summary>
@@ -1112,12 +1159,20 @@ namespace Terminals.Configuration
                 return;
 
             DelayConfigurationSave = true;
+            List<String> tagsToAdd = new List<string>();
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
-                AddFavorite(favorite, showOnToolbar);
+                AddFavoriteToSettings(favorite, showOnToolbar);
+                List<String> difference = ListStringHelper.GetMissingSourcesInTarget(favorite.TagList, tagsToAdd);
+                tagsToAdd.AddRange(difference);
             }
+            
+            List<String> addedTags = AddTagsToSettings(tagsToAdd);
             DelayConfigurationSave = false;
             SaveImmediatelyIfRequested(Config);
+
+            DataDispatcher.Instance.ReportTagsAdded(addedTags);
+            DataDispatcher.Instance.ReportFavoritesAdded(favorites);
         }
 
         public static FavoriteConfigurationElement GetDefaultFavorite()
@@ -1145,47 +1200,6 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested(configuration);
         }
 
-        /// <summary>
-        /// Gets favorites organized by SortProperty name. Key contains suffix "a" and number (eg. a0, a1 etc.).
-        /// Becuase depending on the sort type the key doesn't have to be unique.
-        /// </summary>
-        public static SortedDictionary<string, FavoriteConfigurationElement> GetSortedFavorites(SortProperties SortProperty)
-        {
-            FavoriteConfigurationElementCollection favlist = GetFavorites();
-            if (favlist != null)
-            {
-                SortedDictionary<string, FavoriteConfigurationElement> favs = new SortedDictionary<string, FavoriteConfigurationElement>();
-                int counter = 0;
-                foreach (FavoriteConfigurationElement fav in favlist)
-                {
-                    string key = new string('a', counter);
-                    switch (SortProperty)
-                    {
-                        case SortProperties.ConnectionName:
-                            favs.Add(fav.Name + key, fav);
-                            break;
-                        case SortProperties.Protocol:
-                            favs.Add(fav.Protocol + key, fav);
-                            break;
-                        case SortProperties.ServerName:
-                            favs.Add(fav.ServerName + key, fav);
-                            break;
-                        case SortProperties.None:
-                            favs.Add(key, fav);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    counter++;
-                }
-
-                return favs;
-            }
-
-            return null;
-        }
-
         public static FavoriteConfigurationElementCollection GetFavorites()
         {
             TerminalsConfigurationSection section = GetSection();
@@ -1197,17 +1211,6 @@ namespace Terminals.Configuration
         public static FavoriteConfigurationElement GetOneFavorite(string connectionName)
         {
             return GetFavorites()[connectionName];
-        }
-
-        public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite)
-        {
-            if (favorite == null)
-                return;
-
-            SysConfig.Configuration configuration = Config;
-            TerminalsConfigurationSection section = GetSection(configuration);
-            section.Favorites[oldName] = (FavoriteConfigurationElement)favorite.Clone();
-            SaveImmediatelyIfRequested(configuration);
         }
 
         #endregion
@@ -1315,7 +1318,7 @@ namespace Terminals.Configuration
                 configuration.Save();
         }
 
-        public static void SaveAs(String fileName, SysConfig.ConfigurationSaveMode saveMode = SysConfig.ConfigurationSaveMode.Modified,
+        private static void SaveAs(String fileName, SysConfig.ConfigurationSaveMode saveMode = SysConfig.ConfigurationSaveMode.Modified,
                                   Boolean forceSaveAll = false)
         {
             SysConfig.Configuration configuration = Config;
@@ -1324,23 +1327,33 @@ namespace Terminals.Configuration
 
         public static void RebuildTagIndex()
         {
-            foreach (string Tag in Tags)
-            {
-                DeleteTag(Tag);
-            }
+            String[] oldTags = Tags;
+            ClearTags();
+            ReCreateAllTags();
+            DataDispatcher.Instance.ReportTagsRecreated(Tags.ToList(), oldTags.ToList());
+        }
 
-            FavoriteConfigurationElementCollection favs = GetFavorites();
-
-            foreach (FavoriteConfigurationElement fav in favs)
-            {
-                foreach (string tag in fav.TagList)
-                {
-                    AddTag(tag);
-                }
+        private static void ReCreateAllTags()
+        {
+            FavoriteConfigurationElementCollection favorites = GetFavorites();
+            foreach (FavoriteConfigurationElement favorite in favorites)
+            {   // dont report update here
+                AddTagsToSettings(favorite.TagList);
             }
         }
 
-        public static string ToTitleCase(string Name)
+        /// <summary>
+        /// Clears all tags from database, but doesnt sed the tags changed event
+        /// </summary>
+        private static void ClearTags()
+        {
+            foreach (String Tag in Tags)
+            {
+                DeleteTagFromSettings(Tag);
+            }
+        }
+
+        public static string ToTitleCase(String Name)
         {
             return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(Name.ToLower());
         }
@@ -1352,7 +1365,7 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested(configuration);
         }
 
-        public static void AddDomainMRUItem(string name)
+        public static void AddDomainMRUItem(String name)
         {
             SysConfig.Configuration configuration = Config;
             AddMRUItemConfigurationElement(GetSection(configuration).DomainsMRU, name);
@@ -1387,24 +1400,84 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested(configuration);
         }
 
-        public static void AddTag(string tag)
+        public static void AddTags(List<String> tags)
         {
-            if (AutoCaseTags) tag = ToTitleCase(tag);
+            List<String> addedTags = AddTagsToSettings(tags);
+            DataDispatcher.Instance.ReportTagsAdded(addedTags);
+        }
+
+        private static List<string> AddTagsToSettings(List<String> tags)
+        {
+            List<String> addedTags = new List<string>();
+            foreach (String tag in tags)
+            {
+                if (String.IsNullOrEmpty(tag))
+                  continue;
+
+                String addedTag = AddTagToSettings(tag);
+                if (!String.IsNullOrEmpty(addedTag))
+                    addedTags.Add(addedTag);
+            }
+            return addedTags;
+        }
+
+        /// <summary>
+        /// Adds tag to the tags collection if it already isnt there.
+        /// If the tag is in database, than it returns empty string, otherwise the commited tag.
+        /// </summary>
+        private static String AddTagToSettings(String tag)
+        {
+            if (AutoCaseTags)
+                tag = ToTitleCase(tag);
+            if (Tags.Contains(tag))
+                return String.Empty;
 
             SysConfig.Configuration configuration = Config;
             AddMRUItemConfigurationElement(GetSection(configuration).Tags, tag);
             SaveImmediatelyIfRequested(configuration);
+            return tag;
         }
 
-        public static void DeleteTag(string tag)
+        public static void DeleteTags(List<String> tagsToDelete)
         {
-            if (AutoCaseTags) tag = ToTitleCase(tag);
-            SysConfig.Configuration configuration = Config;
-            DeleteMRUItemConfigurationElement(GetSection(configuration).Tags, tag);
-            SaveImmediatelyIfRequested(configuration);
+            List<String> deletedTags = DeleteTagsFromSettings(tagsToDelete);
+            DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
         }
 
-        public static void CreateFavoritesToolbarButtonsList(string[] names)
+        private static List<String> DeleteTagsFromSettings(List<String> tagsToDelete)
+        {
+            List<String> deletedTags = new List<String>();
+            foreach (String tagTodelete in tagsToDelete)
+            {
+                if (GetNumberOfFavoritesUsingTag(tagTodelete) > 0)
+                    continue;
+
+                deletedTags.Add(DeleteTagFromSettings(tagTodelete)); 
+            }
+            return deletedTags;
+        }
+
+        /// <summary>
+        /// Removes the tag from settings, but doesnt send the Tag removed event
+        /// </summary>
+        private static String DeleteTagFromSettings(String tagToDelete)
+        {
+            if (AutoCaseTags)
+                tagToDelete = ToTitleCase(tagToDelete);
+            SysConfig.Configuration configuration = Config;
+            DeleteMRUItemConfigurationElement(GetSection(configuration).Tags, tagToDelete);
+            SaveImmediatelyIfRequested(configuration);
+            return tagToDelete;
+        }
+
+        private static Int32 GetNumberOfFavoritesUsingTag(String tagToRemove)
+        {
+            var favorites = GetFavorites().ToList();
+            return favorites.Where(favorite => favorite.Tags.Contains(tagToRemove))
+                .Count();
+        }
+
+        public static void CreateFavoritesToolbarButtonsList(String[] names)
         {
             SysConfig.Configuration configuration = Config;
             GetSection(configuration).FavoritesButtons.Clear();

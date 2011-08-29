@@ -374,7 +374,7 @@ namespace Terminals
                         Settings.EditFavorite(fav.Name, fav);
                     }
                 }
-
+                Settings.DelayConfigurationSave = false;
                 Settings.Config.Save();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -401,6 +401,7 @@ namespace Terminals
                     }
                 }
 
+                Settings.DelayConfigurationSave = false;
                 Settings.Config.Save();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -427,6 +428,7 @@ namespace Terminals
                     }
                 }
 
+                Settings.DelayConfigurationSave = false;
                 Settings.Config.Save();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -453,6 +455,7 @@ namespace Terminals
                     }
                 }
 
+                Settings.DelayConfigurationSave = false;
                 Settings.Config.Save();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -524,7 +527,7 @@ namespace Terminals
                 if (favoritesToImport.Count > 0)
                     this.GetMainForm().LoadFavorites();
 
-                this.Cursor = Cursors.WaitCursor;
+                this.Cursor = Cursors.Default;
                 OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
             }
         }

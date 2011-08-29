@@ -895,10 +895,8 @@ namespace Terminals
             using (NewTerminalForm frmNewTerminal = new NewTerminalForm(name))
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
-
                 if (result != TerminalFormDialogResult.Cancel)
                 {
-                    Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
                     this.LoadFavorites();
                     this.tscConnectTo.SelectedIndex = this.tscConnectTo.Items.IndexOf(frmNewTerminal.Favorite.Name);
 
@@ -1068,31 +1066,6 @@ namespace Terminals
             }
 
             Settings.CreateSavedConnectionsList(activeConnections.ToArray());
-        }
-
-        private void AddTagToFavorite(FavoriteConfigurationElement Favorite, String Tag)
-        {
-            List<String> tagList = new List<String>();
-            foreach (String tag in Favorite.TagList)
-            {
-                tagList.Add(tag);
-            }
-
-            tagList.Add(Tag);
-            Favorite.Tags = String.Join(",", tagList.ToArray());
-        }
-
-        private void RemoveTagFromFavorite(FavoriteConfigurationElement Favorite, String Tag)
-        {
-            List<String> tagList = new List<String>();
-            String t = Tag.Trim().ToUpper();
-            foreach (String tag in Favorite.TagList)
-            {
-                if (tag.Trim().ToUpper() != t)
-                    tagList.Add(tag);
-            }
-
-            Favorite.Tags = String.Join(",", tagList.ToArray());
         }
 
         private void OpenReleasePage()

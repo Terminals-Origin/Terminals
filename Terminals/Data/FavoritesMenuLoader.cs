@@ -40,14 +40,11 @@ namespace Terminals
 
         internal void FillMenu()
         {
-            SortedDictionary<String, FavoriteConfigurationElement> favorites =
-                Settings.GetSortedFavorites(Settings.DefaultSortProperty);
-
             ClearFavoritesToolStripmenuItems();
             tscConnectTo.Items.Clear();
 
             Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss,fff") + ": CreateFavoritesToolStrips");
-            CreateFavoritesToolStrips(favorites);
+            CreateFavoritesToolStrips();
 
             Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss,fff") + ": LoadFavoritesToolbar");
             this.LoadFavoritesToolbar();
@@ -63,12 +60,13 @@ namespace Terminals
             }
         }
 
-        private void CreateFavoritesToolStrips(SortedDictionary<string, FavoriteConfigurationElement> favorites)
+        private void CreateFavoritesToolStrips()
         {
+            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
             Dictionary<String, ToolStripMenuItem> tagTools = new Dictionary<String, ToolStripMenuItem>();
-            foreach (String key in favorites.Keys)
+
+            foreach (FavoriteConfigurationElement favorite in favorites)
             {
-                FavoriteConfigurationElement favorite = favorites[key];
                 this.tscConnectTo.Items.Add(favorite.Name);
 
                 if (favorite.TagList.Count > 0) // TagList is never null
@@ -242,17 +240,15 @@ namespace Terminals
 
         private void AddFavoritesTrayContextMenu()
         {
-            SortedDictionary<String, FavoriteConfigurationElement> favorites = Settings.GetSortedFavorites(Settings.DefaultSortProperty);
+            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
 
             Dictionary<String, ToolStripMenuItem> tagTools = new Dictionary<String, ToolStripMenuItem>();
             SortedDictionary<String, ToolStripMenuItem> sortedList = new SortedDictionary<String, ToolStripMenuItem>();
             ToolStripMenuItem sortedMenu = new ToolStripMenuItem(Program.Resources.GetString("Alphabetical"));
             sortedMenu.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
 
-            foreach (String key in favorites.Keys)
+            foreach (FavoriteConfigurationElement favorite in favorites)
             {
-                FavoriteConfigurationElement favorite = favorites[key];
-
                 ToolStripMenuItem sortedItem = new ToolStripMenuItem();
                 sortedItem.Text = favorite.Name;
                 sortedItem.Tag = "favorite";

@@ -28,6 +28,9 @@ namespace Terminals
             return String.Format(@"Favorite:{0}({1})={2}{3}:{4}", this.Name, this.Protocol, domain, this.ServerName, this.Port);
         }
 
+        /// <summary>
+        /// Gets not null collection of tags obtained from "Tags" property.
+        /// </summary>
         public List<String> TagList
         {
             get

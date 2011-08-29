@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
 using FalafelSoftware.TransPort;
 using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Network.Servers;
 
 namespace Terminals
@@ -22,10 +24,12 @@ namespace Terminals
     {
         private TerminalServerManager _terminalServerManager = new TerminalServerManager();
         private Dictionary<string, RASENTRY> _dialupList = new Dictionary<string, RASENTRY>();
+        // todo dangerous usage of favorite field - it can be null for some cases
         private FavoriteConfigurationElement _favorite;
         private Boolean _showOnToolbar;
         private String _currentToolBarFileName;
         private String _oldName;
+        private List<String> oldTags = new List<string>();
         private const String HIDDEN_PASSWORD = "****************";
         private const Int32 RDPPORT = 3389;
         private String favoritePassword = string.Empty;
@@ -107,6 +111,7 @@ namespace Terminals
             else
             {
                 this._oldName = favorite.Name;
+                this.oldTags = favorite.TagList;
                 this.Text = "Edit Connection";
                 this.FillControls(favorite);                
             }
@@ -360,7 +365,7 @@ namespace Terminals
 
                 this._favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
                 if (!defaultFav)
-                    this._favorite.ServerName = this.ValidateServer(this.cmbServers.Text);
+                    this._favorite.ServerName = ValidateServer(this.cmbServers.Text);
 
                 CredentialSet set = (this.CredentialDropdown.SelectedItem as CredentialSet);
                 this._favorite.Credential = (set == null ? String.Empty : set.Name);
@@ -433,14 +438,6 @@ namespace Terminals
                 this._favorite.ICAApplicationPath = this.ICAApplicationPath.Text;
                 this._favorite.ICAApplicationWorkingFolder = this.ICAWorkingFolder.Text;
 
-                List<String> tagList = new List<String>();
-                foreach (ListViewItem listViewItem in this.lvConnectionTags.Items)
-                {
-                    tagList.Add(listViewItem.Text);
-                }
-
-                this._favorite.Tags = String.Join(",", tagList.ToArray());
-
                 //extended settings
                 if (this.ShutdownTimeoutTextBox.Text.Trim() != String.Empty)
                 {
@@ -503,6 +500,8 @@ namespace Terminals
                 this._favorite.SSH1 = this.SSHPreferences.SSH1;
                 this._favorite.AuthMethod = this.SSHPreferences.AuthMethod;
 
+                List<String> updatedTags = UpdateFavoriteTags();
+
                 if (defaultFav)
                 {
                     this._favorite.Name = String.Empty;
@@ -523,20 +522,47 @@ namespace Terminals
                     if (String.IsNullOrEmpty(this._oldName))
                         Settings.AddFavorite(this._favorite, this._showOnToolbar);
                     else
+                    {
                         Settings.EditFavorite(this._oldName, this._favorite, this._showOnToolbar);
+                        UpdateTags(updatedTags);
+                    }
                 }
 
                 return true;
             }
             catch (Exception e)
             {
-                Terminals.Logging.Log.Info("Fill Favorite Failed", e);
+                Logging.Log.Info("Fill Favorite Failed", e);
                 MessageBox.Show(this, e.Message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
 
-        private String ValidateServer(String serverName)
+        /// <summary>
+        /// Call this after favorite was saved, otherwise the removed, otherwise not used tags wouldnt be removed
+        /// </summary>
+        private void UpdateTags(List<string> updatedTags)
+        {
+            List<String> tagsToRemove = ListStringHelper.GetMissingSourcesInTarget(this.oldTags, updatedTags);
+            List<String> tagsToAdd = ListStringHelper.GetMissingSourcesInTarget(updatedTags, this.oldTags);
+            Settings.AddTags(tagsToAdd);
+            Settings.DeleteTags(tagsToRemove);
+        }
+
+        /// <summary>
+        /// Confirms changes into the favorite tags and returns collection of newly assigned tags.
+        /// </summary>
+        private List<String> UpdateFavoriteTags()
+        {   
+            List<String> updatedTags = new List<String>();
+            foreach (ListViewItem listViewItem in this.lvConnectionTags.Items)
+                updatedTags.Add(listViewItem.Text);
+
+            this._favorite.Tags = String.Join(",", updatedTags.ToArray());
+            return updatedTags;
+        }
+
+        private static String ValidateServer(String serverName)
         {
             serverName = serverName.Trim();
             if (Settings.ForceComputerNamesAsURI)
@@ -599,22 +625,24 @@ namespace Terminals
         {
             if (!String.IsNullOrEmpty(this.txtTag.Text))
             {
-                String newTag = this.txtTag.Text.ToLower();
-                foreach (String tag in Settings.Tags)
-                {
-                    if (tag.ToLower() == newTag)
-                    {
-                        this.txtTag.Text = tag;
-                        break;
-                    }
-                }
+                AddTagIfNotAlreadyThere(this.txtTag.Text);
+            }
+        }
 
-                ListViewItem[] items = lvConnectionTags.Items.Find(this.txtTag.Text, false);
-                if (items.Length == 0)
-                {
-                    Settings.AddTag(this.txtTag.Text);
-                    lvConnectionTags.Items.Add(this.txtTag.Text);
-                }
+        private void AddTagsToFavorite()
+        {
+            foreach (ListViewItem lv in this.AllTagsListView.SelectedItems)
+            {
+                AddTagIfNotAlreadyThere(lv.Text);
+            }
+        }
+
+        private void AddTagIfNotAlreadyThere(String selectedTag)
+        {
+            ListViewItem[] items = this.lvConnectionTags.Items.Find(selectedTag, false);
+            if (items.Length == 0)
+            {
+                this.lvConnectionTags.Items.Add(selectedTag);
             }
         }
 
@@ -950,17 +978,9 @@ namespace Terminals
                 this.customSizePanel.Visible = false;
         }
 
-        private void AllTagsAddButton_Click(object sender, EventArgs e) 
+        private void AllTagsAddButton_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem lv in this.AllTagsListView.SelectedItems)
-            {
-                ListViewItem[] items = this.lvConnectionTags.Items.Find(lv.Text, false);
-                if (items.Length == 0)
-                {
-                    Settings.AddTag(lv.Text);
-                    this.lvConnectionTags.Items.Add(lv.Text);
-                }
-            }
+            AddTagsToFavorite();
         }
 
         private void ICAEnableEncryptionCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -988,7 +1008,7 @@ namespace Terminals
 
         private void AllTagsListView_DoubleClick(object sender, EventArgs e)
         {
-            this.AllTagsAddButton_Click(null, null);
+            AddTagsToFavorite();
         }
 
         private void CredentialManagerPicturebox_Click(object sender, EventArgs e)

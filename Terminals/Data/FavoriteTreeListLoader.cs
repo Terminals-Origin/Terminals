@@ -11,7 +11,7 @@ namespace Terminals
     internal class FavoriteTreeListLoader
     {
         private TreeView treeList;
-        SortedDictionary<string, TreeNode> sortedTags = new SortedDictionary<string, TreeNode>();
+        SortedDictionary<String, TreeNode> sortedTags = new SortedDictionary<String, TreeNode>();
         private const String UNTAGGED_NODENAME = "Untagged";
 
         internal FavoriteTreeListLoader(TreeView treeListToFill)
@@ -31,14 +31,13 @@ namespace Terminals
 
         private void CreateTreeNodes()
         {
-            SortedDictionary<string, FavoriteConfigurationElement> favorites =
-                Settings.GetSortedFavorites(Settings.DefaultSortProperty);
+            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
 
             if (favorites != null)
             {
-                foreach (KeyValuePair<string, FavoriteConfigurationElement> favoriteKeyPair in favorites)
+                foreach (FavoriteConfigurationElement favorite in favorites)
                 {
-                    this.AddFavoriteTreeNode(favoriteKeyPair);
+                    this.AddFavoriteTreeNode(favorite);
                 }
             }
         }
@@ -54,7 +53,7 @@ namespace Terminals
             return nodeTextList;
         }
 
-        private void RestoreExpandedNodes(List<string> nodeTextList)
+        private void RestoreExpandedNodes(List<String> nodeTextList)
         {
             foreach (TreeNode node in this.treeList.Nodes)
             {
@@ -63,12 +62,11 @@ namespace Terminals
             }
         }
  
-        private void AddFavoriteTreeNode(KeyValuePair<string, FavoriteConfigurationElement> favoriteKeyPair)
+        private void AddFavoriteTreeNode(FavoriteConfigurationElement favorite)
         {
-            FavoriteConfigurationElement favorite = favoriteKeyPair.Value;
             if (favorite.TagList.Count > 0)
             {
-                foreach (string tag in favorite.TagList)
+                foreach (String tag in favorite.TagList)
                 {
                     CreateNodeInSortedTagsByTag(tag, favorite);
                 }
@@ -79,7 +77,7 @@ namespace Terminals
             }
         }
 
-        private void CreateNodeInSortedTagsByTag(string tag, FavoriteConfigurationElement favorite)
+        private void CreateNodeInSortedTagsByTag(String tag, FavoriteConfigurationElement favorite)
         {
             EnsureTagNode(sortedTags, tag);
             TreeNode favNode = new TreeNode(favorite.Name);
@@ -92,7 +90,7 @@ namespace Terminals
         /// <summary>
         /// Create tree node for Tag, if isn't already in sortedTags
         /// </summary>
-        private void EnsureTagNode(SortedDictionary<string, TreeNode> sortedTags, string tag)
+        private void EnsureTagNode(SortedDictionary<String, TreeNode> sortedTags, String tag)
         {
             if (!sortedTags.ContainsKey(tag))
             {
