@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Disk Drives");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Plug and Play Devices");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Disk Drives");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Plug and Play Devices");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DiskDrivesForm));
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.SuspendLayout();
             // 
@@ -38,25 +39,28 @@
             this.treeView1.CheckBoxes = true;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.treeView1.Name = "treeView1";
-            treeNode3.Name = "NodeDrives";
-            treeNode3.Text = "Disk Drives";
-            treeNode4.Name = "NodeDevices";
-            treeNode4.Text = "Plug and Play Devices";
+            treeNode1.Name = "NodeDrives";
+            treeNode1.Text = "Disk Drives";
+            treeNode2.Name = "NodeDevices";
+            treeNode2.Text = "Plug and Play Devices";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
-            this.treeView1.Size = new System.Drawing.Size(260, 240);
+            treeNode1,
+            treeNode2});
+            this.treeView1.Size = new System.Drawing.Size(347, 295);
             this.treeView1.TabIndex = 0;
             this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
             // 
             // DiskDrivesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(260, 240);
+            this.ClientSize = new System.Drawing.Size(347, 295);
             this.Controls.Add(this.treeView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DiskDrivesForm";

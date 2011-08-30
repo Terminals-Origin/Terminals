@@ -41,10 +41,12 @@ namespace Terminals
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pictureBox1.Image = global::Terminals.Properties.Resources.RotatedHeaderForWizard;
+            this.pictureBox1.Image = global::Terminals.Properties.Resources.terminalsbanner_left;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(61, 283);
+            this.pictureBox1.Size = new System.Drawing.Size(92, 349);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -52,9 +54,10 @@ namespace Terminals
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(61, 0);
+            this.panel1.Location = new System.Drawing.Point(92, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(379, 283);
+            this.panel1.Size = new System.Drawing.Size(495, 349);
             this.panel1.TabIndex = 1;
             // 
             // panel2
@@ -62,16 +65,18 @@ namespace Terminals
             this.panel2.Controls.Add(this.nextButton);
             this.panel2.Controls.Add(this.cancelButton);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 283);
+            this.panel2.Location = new System.Drawing.Point(0, 349);
+            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(440, 40);
+            this.panel2.Size = new System.Drawing.Size(587, 49);
             this.panel2.TabIndex = 2;
             // 
             // nextButton
             // 
-            this.nextButton.Location = new System.Drawing.Point(272, 6);
+            this.nextButton.Location = new System.Drawing.Point(363, 7);
+            this.nextButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.nextButton.Name = "nextButton";
-            this.nextButton.Size = new System.Drawing.Size(75, 23);
+            this.nextButton.Size = new System.Drawing.Size(100, 28);
             this.nextButton.TabIndex = 1;
             this.nextButton.Text = "Next >";
             this.nextButton.UseVisualStyleBackColor = true;
@@ -79,9 +84,10 @@ namespace Terminals
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(353, 6);
+            this.cancelButton.Location = new System.Drawing.Point(471, 7);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(100, 28);
             this.cancelButton.TabIndex = 0;
             this.cancelButton.Text = "C&ancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -89,14 +95,15 @@ namespace Terminals
             // 
             // FirstRunWizard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(440, 323);
+            this.ClientSize = new System.Drawing.Size(587, 398);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FirstRunWizard";

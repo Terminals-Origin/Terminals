@@ -28,6 +28,7 @@ namespace Terminals
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SaveActiveConnectionsForm));
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -52,7 +53,7 @@ namespace Terminals
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.label1.Location = new System.Drawing.Point(104, 32);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(217, 13);
+            this.label1.Size = new System.Drawing.Size(266, 17);
             this.label1.TabIndex = 0;
             this.label1.Text = "Do you want to close all connections?";
             // 
@@ -68,10 +69,11 @@ namespace Terminals
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::Terminals.Properties.Resources.rdp;
+            this.pictureBox1.Image = global::Terminals.Properties.Resources.terminalsicon;
             this.pictureBox1.Location = new System.Drawing.Point(8, 8);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(88, 67);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 10;
             this.pictureBox1.TabStop = false;
             // 
@@ -133,7 +135,7 @@ namespace Terminals
             this.chkDontShowDialog.AutoSize = true;
             this.chkDontShowDialog.Location = new System.Drawing.Point(16, 40);
             this.chkDontShowDialog.Name = "chkDontShowDialog";
-            this.chkDontShowDialog.Size = new System.Drawing.Size(166, 17);
+            this.chkDontShowDialog.Size = new System.Drawing.Size(209, 21);
             this.chkDontShowDialog.TabIndex = 1;
             this.chkDontShowDialog.Text = "Do not show this dialog again";
             this.chkDontShowDialog.UseVisualStyleBackColor = true;
@@ -143,7 +145,7 @@ namespace Terminals
             this.chkOpenOnNextTime.AutoSize = true;
             this.chkOpenOnNextTime.Location = new System.Drawing.Point(16, 16);
             this.chkOpenOnNextTime.Name = "chkOpenOnNextTime";
-            this.chkOpenOnNextTime.Size = new System.Drawing.Size(234, 17);
+            this.chkOpenOnNextTime.Size = new System.Drawing.Size(297, 21);
             this.chkOpenOnNextTime.TabIndex = 0;
             this.chkOpenOnNextTime.Text = "Open connections next time I run Terminals";
             this.chkOpenOnNextTime.UseVisualStyleBackColor = true;
@@ -151,7 +153,7 @@ namespace Terminals
             // SaveActiveConnectionsForm
             // 
             this.AcceptButton = this.btnClose;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(445, 203);
@@ -160,6 +162,7 @@ namespace Terminals
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SaveActiveConnectionsForm";

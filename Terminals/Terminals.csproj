@@ -14,7 +14,7 @@
     <SccLocalPath>.</SccLocalPath>
     <SccAuxPath>https://tfs.codeplex.com/tfs/TFS01</SccAuxPath>
     <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
-    <ApplicationIcon>Resources\ico101.ico</ApplicationIcon>
+    <ApplicationIcon>terminalsicon.ico</ApplicationIcon>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
@@ -871,6 +871,13 @@
     <Content Include="Resources\red.png" />
     <None Include="Resources\XPfolder_Open.bmp" />
     <None Include="Resources\XPfolder_closed.bmp" />
+    <None Include="Resources\terminalsbanner.png" />
+    <None Include="Resources\terminalsbanner-left.png" />
+    <None Include="Resources\terminalsbanner-mini.png" />
+    <None Include="Resources\terminalsicon.png" />
+    <None Include="Resources\terminalsbanner-small.png" />
+    <None Include="Resources\terminalsbanner1.png" />
+    <Content Include="terminalsicon.ico" />
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

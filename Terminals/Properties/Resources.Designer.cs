@@ -430,6 +430,48 @@ namespace Terminals.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap terminalsbanner {
+            get {
+                object obj = ResourceManager.GetObject("terminalsbanner", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap terminalsbanner_left {
+            get {
+                object obj = ResourceManager.GetObject("terminalsbanner-left", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap terminalsbanner_mini {
+            get {
+                object obj = ResourceManager.GetObject("terminalsbanner-mini", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap terminalsbanner_small {
+            get {
+                object obj = ResourceManager.GetObject("terminalsbanner-small", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap terminalsbanner1 {
+            get {
+                object obj = ResourceManager.GetObject("terminalsbanner1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap terminalsicon {
+            get {
+                object obj = ResourceManager.GetObject("terminalsicon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap XPfolder_closed {
             get {
                 object obj = ResourceManager.GetObject("XPfolder_closed", resourceCulture);

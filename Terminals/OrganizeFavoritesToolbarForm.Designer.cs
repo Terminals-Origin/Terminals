@@ -28,8 +28,9 @@ namespace Terminals
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrganizeFavoritesToolbarForm));
             this.lvFavoriteButtons = new System.Windows.Forms.ListView();
-            this.chName = new System.Windows.Forms.ColumnHeader();
+            this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOk = new System.Windows.Forms.Button();
             this.tsTop = new System.Windows.Forms.ToolStrip();
@@ -42,17 +43,18 @@ namespace Terminals
             // 
             // lvFavoriteButtons
             // 
-            this.lvFavoriteButtons.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvFavoriteButtons.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvFavoriteButtons.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chName});
             this.lvFavoriteButtons.FullRowSelect = true;
             this.lvFavoriteButtons.HideSelection = false;
-            this.lvFavoriteButtons.Location = new System.Drawing.Point(8, 32);
+            this.lvFavoriteButtons.Location = new System.Drawing.Point(11, 39);
+            this.lvFavoriteButtons.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lvFavoriteButtons.MultiSelect = false;
             this.lvFavoriteButtons.Name = "lvFavoriteButtons";
-            this.lvFavoriteButtons.Size = new System.Drawing.Size(254, 177);
+            this.lvFavoriteButtons.Size = new System.Drawing.Size(337, 217);
             this.lvFavoriteButtons.TabIndex = 0;
             this.lvFavoriteButtons.UseCompatibleStateImageBehavior = false;
             this.lvFavoriteButtons.View = System.Windows.Forms.View.Details;
@@ -67,9 +69,10 @@ namespace Terminals
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(182, 217);
+            this.btnCancel.Location = new System.Drawing.Point(243, 267);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(80, 23);
+            this.btnCancel.Size = new System.Drawing.Size(107, 28);
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -78,9 +81,10 @@ namespace Terminals
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOk.Location = new System.Drawing.Point(94, 217);
+            this.btnOk.Location = new System.Drawing.Point(125, 267);
+            this.btnOk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnOk.Name = "btnOk";
-            this.btnOk.Size = new System.Drawing.Size(80, 23);
+            this.btnOk.Size = new System.Drawing.Size(107, 28);
             this.btnOk.TabIndex = 4;
             this.btnOk.Text = "OK";
             this.btnOk.UseVisualStyleBackColor = true;
@@ -95,7 +99,7 @@ namespace Terminals
             this.tsbMoveToLast});
             this.tsTop.Location = new System.Drawing.Point(0, 0);
             this.tsTop.Name = "tsTop";
-            this.tsTop.Size = new System.Drawing.Size(271, 25);
+            this.tsTop.Size = new System.Drawing.Size(361, 25);
             this.tsTop.TabIndex = 7;
             this.tsTop.Text = "toolStrip1";
             // 
@@ -149,14 +153,16 @@ namespace Terminals
             // OrganizeFavoritesToolbarForm
             // 
             this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(271, 251);
+            this.ClientSize = new System.Drawing.Size(361, 309);
             this.Controls.Add(this.tsTop);
             this.Controls.Add(this.btnOk);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.lvFavoriteButtons);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "OrganizeFavoritesToolbarForm";

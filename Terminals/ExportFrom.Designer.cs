@@ -42,9 +42,10 @@
             // 
             this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(15, 351);
+            this.checkBox1.Location = new System.Drawing.Point(20, 432);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(115, 17);
+            this.checkBox1.Size = new System.Drawing.Size(147, 21);
             this.checkBox1.TabIndex = 2;
             this.checkBox1.Text = "&Include Passwords";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -52,9 +53,10 @@
             // btnExport
             // 
             this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExport.Location = new System.Drawing.Point(224, 347);
+            this.btnExport.Location = new System.Drawing.Point(299, 427);
+            this.btnExport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(75, 23);
+            this.btnExport.Size = new System.Drawing.Size(100, 28);
             this.btnExport.TabIndex = 4;
             this.btnExport.Text = "&Export";
             this.btnExport.UseVisualStyleBackColor = true;
@@ -64,9 +66,10 @@
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(305, 347);
+            this.btnCancel.Location = new System.Drawing.Point(407, 427);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(100, 28);
             this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
@@ -80,9 +83,10 @@
             // btnSelect
             // 
             this.btnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSelect.Location = new System.Drawing.Point(143, 347);
+            this.btnSelect.Location = new System.Drawing.Point(191, 427);
+            this.btnSelect.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSelect.Name = "btnSelect";
-            this.btnSelect.Size = new System.Drawing.Size(75, 23);
+            this.btnSelect.Size = new System.Drawing.Size(100, 28);
             this.btnSelect.TabIndex = 3;
             this.btnSelect.Text = "&Select all";
             this.btnSelect.UseVisualStyleBackColor = true;
@@ -97,28 +101,30 @@
             this.favsTree.CausesValidation = false;
             this.favsTree.CheckBoxes = true;
             this.favsTree.HideSelection = false;
-            this.favsTree.Location = new System.Drawing.Point(12, 31);
+            this.favsTree.Location = new System.Drawing.Point(16, 38);
+            this.favsTree.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.favsTree.Name = "favsTree";
-            this.favsTree.Size = new System.Drawing.Size(368, 310);
+            this.favsTree.Size = new System.Drawing.Size(489, 381);
             this.favsTree.TabIndex = 1;
             this.favsTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.favsTree_NodeMouseClick);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(16, 11);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 13);
+            this.label1.Size = new System.Drawing.Size(104, 17);
             this.label1.TabIndex = 6;
             this.label1.Text = "Connection list:";
             // 
             // ExportFrom
             // 
             this.AcceptButton = this.btnExport;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(392, 376);
+            this.ClientSize = new System.Drawing.Size(523, 463);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.favsTree);
             this.Controls.Add(this.btnSelect);
@@ -126,7 +132,8 @@
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.checkBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(400, 400);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MinimumSize = new System.Drawing.Size(527, 482);
             this.Name = "ExportFrom";
             this.Text = "Terminals - Export";
             this.ResumeLayout(false);
