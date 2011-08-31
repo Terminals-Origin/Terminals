@@ -523,7 +523,7 @@ namespace Terminals
         private void StartConnection(TreeView tv)
         {
             // connections are always under some parent node in History and in Favorites
-            if (tv.SelectedNode != null && this.favsTree.SelectedNode.Level > 0)
+            if (tv.SelectedNode != null && tv.SelectedNode.Level > 0)
             {
                 MainForm mainForm = this.GetMainForm();
                 mainForm.Connect(tv.SelectedNode.Text, false, false);
