@@ -55,7 +55,7 @@ namespace Terminals
             // 
             this.lblTerminals.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblTerminals.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.lblTerminals.Location = new System.Drawing.Point(0, 222);
+            this.lblTerminals.Location = new System.Drawing.Point(0, 218);
             this.lblTerminals.Name = "lblTerminals";
             this.lblTerminals.Size = new System.Drawing.Size(451, 32);
             this.lblTerminals.TabIndex = 1;
@@ -78,7 +78,7 @@ namespace Terminals
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(12, 267);
+            this.label3.Location = new System.Drawing.Point(12, 250);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(169, 17);
             this.label3.TabIndex = 4;
@@ -103,7 +103,7 @@ namespace Terminals
             this.lblVersion.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.lblVersion.Location = new System.Drawing.Point(0, 143);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(451, 17);
+            this.lblVersion.Size = new System.Drawing.Size(358, 13);
             this.lblVersion.TabIndex = 9;
             this.lblVersion.Text = "Terminals (RDP, VNC, VMRC, RAS, ICA Citrix, Telnet and SSH Supported)";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -112,7 +112,7 @@ namespace Terminals
             // 
             this.linkLabel4.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel4.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel4.Location = new System.Drawing.Point(191, 267);
+            this.linkLabel4.Location = new System.Drawing.Point(187, 250);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(85, 17);
             this.linkLabel4.TabIndex = 10;
@@ -124,19 +124,19 @@ namespace Terminals
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 287);
+            this.textBox1.Location = new System.Drawing.Point(12, 270);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(424, 284);
+            this.textBox1.Size = new System.Drawing.Size(424, 301);
             this.textBox1.TabIndex = 11;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
             // label2
             // 
             this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Location = new System.Drawing.Point(0, 160);
+            this.label2.Location = new System.Drawing.Point(0, 156);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(451, 62);
             this.label2.TabIndex = 12;
@@ -148,7 +148,7 @@ namespace Terminals
             // AboutForm
             // 
             this.AcceptButton = this.btnClose;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.btnClose;
