@@ -15,8 +15,8 @@ namespace Terminals
     {
         private AxMsRdpClient6 _currentTerminal;
         private string _tempFrob;
-        private static string _amazonBucket = "Terminals";
-        private static string _amazonConfigKeyName = "Terminals.config";
+        // private static string _amazonBucket = "Terminals";
+        // private static string _amazonConfigKeyName = "Terminals.config";
 
         public OptionsForm(AxMsRdpClient6 terminal) 
         {

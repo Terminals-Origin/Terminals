@@ -34,7 +34,7 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.btnSelect = new System.Windows.Forms.Button();
-            this.favsTree = new System.Windows.Forms.TreeView();
+            this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -136,6 +136,7 @@
             this.MinimumSize = new System.Drawing.Size(527, 482);
             this.Name = "ExportFrom";
             this.Text = "Terminals - Export";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExportFrom_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -148,7 +149,7 @@
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.Button btnSelect;
-        private System.Windows.Forms.TreeView favsTree;
+        private Terminals.Forms.Controls.FavoritesTreeView favsTree;
         private System.Windows.Forms.Label label1;
     }
 }

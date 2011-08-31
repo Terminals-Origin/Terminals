@@ -103,7 +103,7 @@ namespace Terminals.Connections
             }
         }
 
-        public MainForm ParentForm
+        public new MainForm ParentForm
         {
             get
             {

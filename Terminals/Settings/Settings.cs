@@ -1054,6 +1054,7 @@ namespace Terminals.Configuration
             if (favorite == null)
                 return;
 
+            DelayConfigurationSave = true;
             EditFavoriteInSettings(favorite, oldName);
             bool shownOnToolbar = HasToolbarButton(oldName);
             if (shownOnToolbar && !showOnToolbar)
@@ -1063,6 +1064,7 @@ namespace Terminals.Configuration
             else if (!shownOnToolbar && showOnToolbar)
                 AddFavoriteButton(favorite.Name);
 
+            DelayConfigurationSave = false;
             DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
         }
 

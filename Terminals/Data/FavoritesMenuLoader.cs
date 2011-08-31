@@ -42,13 +42,8 @@ namespace Terminals
         {
             ClearFavoritesToolStripmenuItems();
             tscConnectTo.Items.Clear();
-
-            Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss,fff") + ": CreateFavoritesToolStrips");
             CreateFavoritesToolStrips();
-
-            Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss,fff") + ": LoadFavoritesToolbar");
             this.LoadFavoritesToolbar();
-            Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss,fff") + ": LoadFavorites - DONE");
         }
 
         private void ClearFavoritesToolStripmenuItems()

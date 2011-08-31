@@ -307,6 +307,14 @@
     <Compile Include="FavsList.Designer.cs">
       <DependentUpon>FavsList.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Controls\FavoritesTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\FavoritesTreeView.Designer.cs">
+      <DependentUpon>FavoritesTreeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Controls\FavoriteTreeNode.cs" />
+    <Compile Include="Forms\Controls\TagTreeNode.cs" />
     <Compile Include="Forms\SplitButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -716,6 +724,9 @@
     <EmbeddedResource Include="Connections\TabbedTools.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TabbedTools.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Controls\FavoritesTreeView.resx">
+      <DependentUpon>FavoritesTreeView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>

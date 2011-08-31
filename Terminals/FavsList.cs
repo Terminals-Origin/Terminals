@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Credentials;
@@ -30,6 +29,7 @@ namespace Terminals
             // Update the old treeview theme to the new theme from Win Vista and up
             NativeApi.SetWindowTheme(this.favsTree.Handle, "Explorer", null);
             NativeApi.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
+            this.favsTree.Load();
         }
 
         private MainForm GetMainForm()
@@ -38,12 +38,6 @@ namespace Terminals
                 this._mainForm = MainForm.GetMainForm();
 
             return this._mainForm;
-        }
-
-        public void LoadFavs()
-        {
-            FavoriteTreeListLoader loader = new FavoriteTreeListLoader(this.favsTree);
-            loader.Load();
         }
 
         public void RecordHistoryItem(String Name)
@@ -76,7 +70,7 @@ namespace Terminals
 
                     historyTreeView.Nodes.Clear();
                     Dictionary<String, List<String>> uniqueFavsPerGroup = new Dictionary<String, List<String>>();
-                    SerializableDictionary<String, List<History.HistoryItem>> GroupedByDate = this._historyByFavorite.GroupedByDate;
+                    SerializableDictionary<String, List<HistoryItem>> GroupedByDate = this._historyByFavorite.GroupedByDate;
                     foreach (String name in GroupedByDate.Keys)
                     {
                         List<String> uniqueList = null;
@@ -90,7 +84,7 @@ namespace Terminals
                         }
 
                         TreeNode NameNode = historyTreeView.Nodes.Add(name);
-                        foreach (History.HistoryItem fav in GroupedByDate[name])
+                        foreach (HistoryItem fav in GroupedByDate[name])
                         {
                             if (!uniqueList.Contains(fav.Name))
                             {
@@ -126,7 +120,6 @@ namespace Terminals
         private void FavsList_Load(object sender, EventArgs e)
         {
             this.favsTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.FavsTree_NodeMouseClick);
-            this.LoadFavs();
             this._historyController.OnHistoryLoaded += new HistoryController.HistoryLoaded(this.History_OnHistoryLoaded);
             this._historyController.LazyLoadHistory();
         }
@@ -142,9 +135,7 @@ namespace Terminals
 
                 this.favsTree.SelectedNode = e.Node;
 
-                FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-
-                if (fav != null)
+                if (this.favsTree.SelectedFavorite != null)
                     this.favsTree.ContextMenuStrip = this.contextMenuStrip1;
                 else
                     this.favsTree.ContextMenuStrip = this.contextMenuStrip2;
@@ -153,35 +144,35 @@ namespace Terminals
 
         private void pingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("Ping", fav.ServerName);
         }
 
         private void dNSToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("DNS", fav.ServerName);
         }
 
         private void traceRouteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("Trace", fav.ServerName);
         }
 
         private void tSAdminToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("TSAdmin", fav.ServerName);
         }
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().ShowManageTerminalForm(fav);
         }
@@ -197,7 +188,7 @@ namespace Terminals
             String msg = String.Empty;
             NetTools.MagicPacket.ShutdownCommands shutdownStyle;
 
-            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
                 if (menuItem.Equals(this.shutdownToolStripMenuItem))
@@ -237,7 +228,7 @@ namespace Terminals
                     }
                     catch (System.Management.ManagementException ex)
                     {
-                        Terminals.Logging.Log.Info(ex.ToString(), ex);
+                        Logging.Log.Info(ex.ToString(), ex);
                         MessageBox.Show(Program.Resources.GetString("UnableToRemoteShutdown") + "\r\nPlease check the log file.");
                     }
                     catch (UnauthorizedAccessException)
@@ -255,7 +246,7 @@ namespace Terminals
 
         private void enableRDPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
                 Microsoft.Win32.RegistryKey reg = Microsoft.Win32.RegistryKey.OpenRemoteBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, fav.ServerName);
@@ -304,7 +295,7 @@ namespace Terminals
             }
             else
             {
-                FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+                FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
                 if (fav != null)
                 {
                     this.GetMainForm().Connect(fav.Name, Console, NewWindow);
@@ -327,7 +318,7 @@ namespace Terminals
 
         private void computerManagementMMCToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
                 System.Diagnostics.Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + fav.ServerName);
@@ -337,10 +328,10 @@ namespace Terminals
 
         private void systemInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
-                String programFiles = System.Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                String programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 //if(programFiles.Contains("(x86)")) programFiles = programFiles.Replace(" (x86)","");
                 String path = String.Format(@"{0}\common files\Microsoft Shared\MSInfo\msinfo32.exe", programFiles);
                 if (System.IO.File.Exists(path))
@@ -485,7 +476,6 @@ namespace Terminals
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");
-                this.LoadFavs();
             }
         }
 
@@ -499,14 +489,12 @@ namespace Terminals
 
         private void removeSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement favorite = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
-            if (favorite != null)
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+            if (fav != null)
             {
-                Settings.DeleteFavorite(favorite.Name);
-                Settings.DeleteFavoriteButton(favorite.Name);
+                Settings.DeleteFavorite(fav.Name);
+                Settings.DeleteFavoriteButton(fav.Name);
             }
-
-            this.LoadFavs();
         }
 
         private void favsTree_DragEnter(object sender, DragEventArgs e)
@@ -565,7 +553,7 @@ namespace Terminals
 
         private void connectAsCred_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;;
             if (fav != null)
             {
                 this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked,
@@ -580,7 +568,7 @@ namespace Terminals
             usrForm.ShowDialog(this.GetMainForm());
             if (credSet != null)
             {
-                FavoriteConfigurationElement fav = (this.favsTree.SelectedNode.Tag as FavoriteConfigurationElement);
+                FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
                 if (fav != null)
                 {
                     this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked, credSet);

@@ -836,8 +836,6 @@ namespace Terminals
 
         public void LoadFavorites()
         {
-            Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss,fff") + ": Load tree");
-            this.favsList1.LoadFavs();
             menuLoader.FillMenu();
         }
 

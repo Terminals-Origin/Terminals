@@ -14,15 +14,19 @@ namespace Terminals.ExportImport
         {
             try
             {
-                XmlTextWriter w = new XmlTextWriter(fileName, Encoding.UTF8);
-                w.WriteStartElement("favorites");
-                foreach (FavoriteConfigurationElement favorite in favorites)
+                using (XmlTextWriter w = new XmlTextWriter(fileName, Encoding.UTF8))
                 {
-                    WriteFavorite(w, includePassword, favorite);
+                    w.WriteStartDocument();
+                    w.WriteStartElement("favorites");
+                    foreach (FavoriteConfigurationElement favorite in favorites)
+                    {
+                        WriteFavorite(w, includePassword, favorite);
+                    }
+                    w.WriteEndElement();
+                    w.WriteEndDocument();
+                    w.Flush();
+                    w.Close();
                 }
-                w.WriteEndElement();
-                w.Flush();
-                w.Close();
             }
             catch (Exception ex)
             {

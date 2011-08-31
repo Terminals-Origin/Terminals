@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
+using Terminals.Forms.Controls;
 
 namespace Terminals
 {
@@ -11,93 +14,177 @@ namespace Terminals
     internal class FavoriteTreeListLoader
     {
         private TreeView treeList;
-        SortedDictionary<String, TreeNode> sortedTags = new SortedDictionary<String, TreeNode>();
         private const String UNTAGGED_NODENAME = "Untagged";
 
         internal FavoriteTreeListLoader(TreeView treeListToFill)
         {
             this.treeList = treeListToFill;
+            DataDispatcher.Instance.TagsChanged += new TagsChangedEventHandler(this.OnTagsCollectionChanged);
+            DataDispatcher.Instance.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
+        }
+
+        /// <summary>
+        /// Unregisters the Data dispatcher eventing.
+        /// Call this to release the treeview, otherwise it will result in memory gap.
+        /// </summary>
+        internal void UnregisterEvents()
+        {
+            DataDispatcher.Instance.TagsChanged -= new TagsChangedEventHandler(this.OnTagsCollectionChanged);
+            DataDispatcher.Instance.FavoritesChanged -= new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
+        }
+
+        private void OnFavoritesCollectionChanged(FavoritesChangedEventArgs args)
+        {
+            if(IsOrphan())
+              return;
+
+            RemoveFavorites(args.Removed);
+            UpdateFavorites(args.Updated);
+            AddNewFavorites(args.Added);
+        }
+
+        /// <summary>
+        /// This prevents performance problems, when someone forgets to unregister.
+        /// Returns true, if the associated treeview is already dead; otherwise false.
+        /// </summary>
+        private Boolean IsOrphan()
+        {
+            if (this.treeList.IsDisposed)
+            {
+                this.UnregisterEvents();
+                return true;
+            }
+
+            return false;
+        }
+
+        private void RemoveFavorites(List<FavoriteConfigurationElement> removedFavorites)
+        {
+            foreach (FavoriteConfigurationElement favorite in removedFavorites) // remove
+            {
+                foreach (String tag in favorite.TagList)
+                {
+                    TagTreeNode tagNode = this.treeList.Nodes[tag] as TagTreeNode;
+                    this.RemoveFavoriteFromTagNode(tagNode, favorite.Name);
+                }
+            }
+        }
+
+        private void UpdateFavorites(Dictionary<String, FavoriteConfigurationElement> updatedFavorites)
+        {
+            foreach (var updateArg in updatedFavorites)
+            {
+                foreach (TagTreeNode tagNode in this.treeList.Nodes)
+                {
+                    this.RemoveFavoriteFromTagNode(tagNode, updateArg.Key);  
+                }
+
+                this.AddFavoriteToAllItsTagNodes(updateArg.Value);
+            }
+        }
+
+        private void AddNewFavorites(List<FavoriteConfigurationElement> addedFavorites)
+        {
+            foreach (FavoriteConfigurationElement favorite in addedFavorites)
+            {
+                this.AddFavoriteToAllItsTagNodes(favorite);
+            }
+        }
+
+        private void AddFavoriteToAllItsTagNodes(FavoriteConfigurationElement favorite)
+        {
+            foreach (String tag in favorite.TagList)
+            {
+                TagTreeNode tagNode = this.treeList.Nodes[tag] as TagTreeNode;
+                if (tagNode != null && !tagNode.IsEmpty)
+                {
+                    this.AddNewFavoriteNodeToTagNode(favorite, tagNode);
+                }
+            }
+        }
+
+        private void RemoveFavoriteFromTagNode(TagTreeNode tagNode, String favoriteName)
+        {
+            if (tagNode != null && !tagNode.IsEmpty)
+                tagNode.Nodes.RemoveByKey(favoriteName);
+        }
+
+        private void AddNewFavoriteNodeToTagNode(FavoriteConfigurationElement favorite, TagTreeNode tagNode)
+        {
+            var favoriteTreeNode = new FavoriteTreeNode(favorite);
+            tagNode.Nodes.Add(favoriteTreeNode);
+        }
+
+        private void OnTagsCollectionChanged(TagsChangedArgs args)
+        {
+            if (IsOrphan())
+                return;
+
+            RemoveUnusedTagNodes(args.Removed);
+            AddMissingTagNodes(args.Added);
+        }
+
+        private void AddMissingTagNodes(List<String> newTags)
+        {
+            foreach (String newTag in newTags)
+            {
+                this.CreateAndAddTagNode(newTag);
+            }
+        }
+
+        private void RemoveUnusedTagNodes(List<String> removedTags)
+        {
+            foreach (String obsoletTag in removedTags)
+            {
+                this.treeList.Nodes.RemoveByKey(obsoletTag);
+            }
         }
 
         internal void Load()
         {
-            List<string> nodeTextList = BackUpExpandedNodes();
-            sortedTags.Clear();
-            treeList.Nodes.Clear();
-            CreateTreeNodes();
-            treeList.Sort();
-            RestoreExpandedNodes(nodeTextList);
+
         }
 
-        private void CreateTreeNodes()
+        private void CreateAndAddTagNode(String tag)
         {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            TagTreeNode tagNode = new TagTreeNode(tag);
+            treeList.Nodes.Add(tagNode);
+        }
 
-            if (favorites != null)
+        internal void LoadTags()
+        {
+            this.CreateAndAddTagNode(UNTAGGED_NODENAME);
+
+            foreach (string tagName in Settings.Tags)
             {
-                foreach (FavoriteConfigurationElement favorite in favorites)
-                {
-                    this.AddFavoriteTreeNode(favorite);
-                }
+                this.CreateAndAddTagNode(tagName);
             }
         }
 
-        private List<string> BackUpExpandedNodes()
+        internal void LoadFavorites(TagTreeNode tagNode)
         {
-            List<String> nodeTextList = new List<String>();
-            foreach (TreeNode node in this.treeList.Nodes)
+            if (tagNode.IsEmpty)
             {
-                if (node.IsExpanded)
-                    nodeTextList.Add(node.Text);
-            }
-            return nodeTextList;
-        }
-
-        private void RestoreExpandedNodes(List<String> nodeTextList)
-        {
-            foreach (TreeNode node in this.treeList.Nodes)
-            {
-                if (nodeTextList.Contains(node.Text))
-                    node.Expand();
-            }
-        }
- 
-        private void AddFavoriteTreeNode(FavoriteConfigurationElement favorite)
-        {
-            if (favorite.TagList.Count > 0)
-            {
-                foreach (String tag in favorite.TagList)
-                {
-                    CreateNodeInSortedTagsByTag(tag, favorite);
-                }
-            }
-            else
-            {
-                CreateNodeInSortedTagsByTag(UNTAGGED_NODENAME, favorite);
+                tagNode.Nodes.Clear();
+                AddFavoriteNodes(tagNode);
             }
         }
 
-        private void CreateNodeInSortedTagsByTag(String tag, FavoriteConfigurationElement favorite)
+        private void AddFavoriteNodes(TagTreeNode tagNode)
         {
-            EnsureTagNode(sortedTags, tag);
-            TreeNode favNode = new TreeNode(favorite.Name);
-            favNode.Tag = favorite;
-
-            if (!sortedTags[tag].Nodes.Contains(favNode))
-                sortedTags[tag].Nodes.Add(favNode);
+            List<FavoriteConfigurationElement> tagFavorites = GetFavoritesByTag(tagNode.Text);
+            foreach (var favorite in tagFavorites)
+            {
+                var favoriteTreeNode = new FavoriteTreeNode(favorite);
+                tagNode.Nodes.Add(favoriteTreeNode);
+            }
         }
 
-        /// <summary>
-        /// Create tree node for Tag, if isn't already in sortedTags
-        /// </summary>
-        private void EnsureTagNode(SortedDictionary<String, TreeNode> sortedTags, String tag)
+        private static List<FavoriteConfigurationElement> GetFavoritesByTag(String tag)
         {
-            if (!sortedTags.ContainsKey(tag))
-            {
-                TreeNode tagNode = new TreeNode(tag);
-                treeList.Nodes.Add(tagNode);
-                sortedTags.Add(tag, tagNode);
-            }
+            return Settings.GetFavorites().ToList()
+                .Where(favorite => favorite.TagList.Contains(tag, StringComparer.CurrentCultureIgnoreCase))
+                .ToList();
         }
     }
 }

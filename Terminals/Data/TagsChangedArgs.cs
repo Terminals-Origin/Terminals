@@ -58,10 +58,8 @@ namespace Terminals.Data
 
         public override String ToString()
         {
-            String added = String.Join(";", this.Added.ToArray());
-            String removed = String.Join(";", this.Removed.ToArray());
-            return String.Format("TagsChangedArgs:Added={0}{{{1}}};Removed={2}{{{3}}}",
-                this.Added.Count, added, this.Removed.Count, removed);
+            return String.Format("TagsChangedArgs:Added={0};Removed={1}",
+                this.Added.Count, this.Removed.Count);
         }
     }
 }

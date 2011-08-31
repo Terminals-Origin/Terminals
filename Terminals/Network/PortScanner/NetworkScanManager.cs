@@ -11,7 +11,6 @@ namespace Terminals.Scanner
     {
         internal event NetworkScanHandler OnAddressScanHit;
         internal event NetworkScanHandler OnAddressScanFinished;
-        internal event NetworkScanHandler OnAddressScanStart;
 
         private List<NetworkScanItem> scanItems = new List<NetworkScanItem>();
 

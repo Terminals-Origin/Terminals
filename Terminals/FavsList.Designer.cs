@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.favsTree = new System.Windows.Forms.TreeView();
+            this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -408,7 +408,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TreeView favsTree;
+        private Terminals.Forms.Controls.FavoritesTreeView favsTree;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;

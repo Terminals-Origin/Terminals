@@ -9,8 +9,8 @@ namespace Terminals
         public ExportFrom()
         {
             InitializeComponent();
-            LoadExportList();
-        }        
+            this.favsTree.Load();
+        }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
@@ -89,12 +89,11 @@ namespace Terminals
                 if (n.GetNodeCount(true) != 0)
                     CheckNode(n);
             }
-        }        
-        
-        private void LoadExportList()
-        {
-            FavoriteTreeListLoader loader = new FavoriteTreeListLoader(this.favsTree);
-            loader.Load();
         }
+
+        private void ExportFrom_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.favsTree.UnregisterEvents();
+        }        
     }
 }

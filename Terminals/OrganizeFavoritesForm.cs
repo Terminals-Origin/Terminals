@@ -205,7 +205,7 @@ namespace Terminals
             //var favoritesSource = this.bsFavorites.DataSource as SortableList<FavoriteConfigurationElement>;
             //favoritesSource.AddRange(importedFavorites);
             // this.bsFavorites.DataSource = favoritesSource;
-            // todo better bindin source update
+            // todo better binding source update
             // todo dont replace the existing favorites by imported items 
             this.bsFavorites.DataSource = Settings.GetFavorites().ToList();
             this.bsFavorites.ResetBindings(false);
