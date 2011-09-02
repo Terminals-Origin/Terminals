@@ -1475,7 +1475,7 @@ namespace Terminals.Configuration
         private static Int32 GetNumberOfFavoritesUsingTag(String tagToRemove)
         {
             var favorites = GetFavorites().ToList();
-            return favorites.Where(favorite => favorite.Tags.Contains(tagToRemove))
+            return favorites.Where(favorite => favorite.TagList.Contains(tagToRemove))
                 .Count();
         }
 

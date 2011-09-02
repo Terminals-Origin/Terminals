@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Properties;
 using Settings = Terminals.Configuration.Settings;
@@ -23,6 +25,45 @@ namespace Terminals
         private ContextMenuStrip quickContextMenu;
         private ToolStripItemClickedEventHandler quickContextMenu_ItemClicked;
 
+        internal const String COMMAND_EXIT = "Exit";
+        internal const String COMMAND_SPECIAL = "SpecialCommands";
+        internal const String COMMAND_RESTORESCREEN = "RestoreScreen";
+        internal const String COMMAND_FULLSCREEN = "FullScreen";
+        internal const String COMMAND_SHOWMENU = "ShowMenu";
+        internal const String COMMAND_OPTIONS = "Options";
+        internal const String COMMAND_CAPTUREMANAGER = "ScreenCaptureManager";
+        internal const String COMMAND_NETTOOLS = "NetworkingTools";
+        internal const String COMMAND_CREDENTIALMANAGER = "CredentialsManager";
+        internal const String COMMAND_ORGANIZEFAVORITES = "OrganizeFavorites";
+        private const String COMMAND_MANAGEMENT = "Management";
+        private const String COMMAND_CONTROLPANEL = "ControlPanel";
+        private const String COMMAND_OTHER = "Other";
+        private const String COMMAND_ALPHABETICAL = "Alphabetical";
+
+        private ToolStripMenuItem special;
+        private ToolStripMenuItem mgmt;
+        private ToolStripMenuItem cpl;
+        private ToolStripMenuItem other;
+        private ToolStripItem favoritesTrayStartSeparator;
+        private ToolStripMenuItem alphabeticalMenu;
+        private ToolStripItem restoreScreenMenuItem;
+        private ToolStripItem fullScreenMenuItem;
+
+        /// <summary>
+        /// Stored in context menu Tag to identify virtual context menu groups by tag
+        /// </summary>
+        internal const String TAG = "tag";
+
+        /// <summary>
+        /// Stored in context menu Tag to identify favorite context menu items
+        /// </summary>
+        internal const String FAVORITE = "favorite";
+
+        private int AlphabeticalMenuItemIndex
+        {
+            get { return this.quickContextMenu.Items.IndexOf(this.alphabeticalMenu); }
+        }
+
         internal FavoritesMenuLoader(ToolStripMenuItem favoritesToolStripMenuItem, ToolStripSeparator favoritesSeparator,
             ToolStripComboBox tscConnectTo, EventHandler serverToolStripMenuItem_Click, ToolStrip favoriteToolBar,
             ToolStripMenuItem toolStripMenuItemShowHideFavoriteToolbar, ContextMenuStrip quickContextMenu,
@@ -36,16 +77,51 @@ namespace Terminals
             this.toolStripMenuItemShowHideFavoriteToolbar = toolStripMenuItemShowHideFavoriteToolbar;
             this.quickContextMenu = quickContextMenu;
             this.quickContextMenu_ItemClicked = quickContextMenu_ItemClicked;
+
+            CreateTrayMenuItems();
+        }
+
+        private void CreateTrayMenuItems()
+        {
+            this.AddGeneralTrayContextMenu();
+            this.AddTraySpecialCommandsContextMenu();
+            this.favoritesTrayStartSeparator = this.quickContextMenu.Items.Add("-");
+
+            // here favorite Tags will be placed
+
+            this.AddAlphabeticalContextMenu();
+            this.quickContextMenu.Items.Add("-");
+            this.quickContextMenu.Items.Add(Program.Resources.GetString(COMMAND_EXIT));
         }
 
         internal void FillMenu()
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
             ClearFavoritesToolStripmenuItems();
-            tscConnectTo.Items.Clear();
+            ReFreshConnectionsComboBox();
             CreateFavoritesToolStrips();
             this.LoadFavoritesToolbar();
+
+            stopwatch.Stop();
+            Debug.WriteLine(String.Format("Favorite menu loaded in {0} ms", stopwatch.ElapsedMilliseconds));
         }
 
+        private void ReFreshConnectionsComboBox()
+        {
+            this.tscConnectTo.Items.Clear();
+            String[] connectionNames = Settings.GetFavorites()
+                .ToList()
+                .Select(favorite => favorite.Name).ToArray();
+            this.tscConnectTo.Items.AddRange(connectionNames);
+        }
+
+        #region Menu toolstrips
+
+        /// <summary>
+        /// Fills the main window "favorites" menu, after separator places all tags
+        /// and their favorites as dropdown items
+        /// </summary>
         private void ClearFavoritesToolStripmenuItems()
         {
             Int32 seperatorIndex = this.favoritesToolStripMenuItem.DropDownItems.IndexOf(this.favoritesSeparator);
@@ -62,18 +138,16 @@ namespace Terminals
 
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
-                this.tscConnectTo.Items.Add(favorite.Name);
-
                 if (favorite.TagList.Count > 0) // TagList is never null
                 {
                     foreach (String tag in favorite.TagList)
                     {
-                        ToolStripMenuItem parent = this.GetParentToolStripMenuItemByTag(tagTools, tag);
+                        ToolStripMenuItem tagMenu = this.GetParentToolStripMenuItemByTag(tagTools, tag);
 
-                        if (parent != null)
+                        if (tagMenu != null)
                         {
                             ToolStripMenuItem item = this.CreateToolStripItemByFavorite(favorite);
-                            parent.DropDown.Items.Add(item);
+                            tagMenu.DropDown.Items.Add(item);
                         }
                     }
                 }
@@ -88,42 +162,31 @@ namespace Terminals
         private ToolStripMenuItem GetParentToolStripMenuItemByTag(Dictionary<String, ToolStripMenuItem> tagTools, String tag)
         {
             tag = tag.ToLower();
-            ToolStripMenuItem parent = null;
+            ToolStripMenuItem tagMenu = null;
             if (tagTools.ContainsKey(tag))
             {
-                parent = tagTools[tag];
+                tagMenu = tagTools[tag];
             }
             else if (!tag.Contains("Terminals"))
             {
-                parent = new ToolStripMenuItem(tag);
-                parent.Name = tag;
-                tagTools.Add(tag, parent);
-                this.favoritesToolStripMenuItem.DropDown.Items.Add(parent);
+                tagMenu = new ToolStripMenuItem(tag);
+                tagMenu.Name = tag;
+                tagTools.Add(tag, tagMenu);
+                this.favoritesToolStripMenuItem.DropDown.Items.Add(tagMenu);
             }
-            return parent;
+            return tagMenu;
         }
 
         private ToolStripMenuItem CreateToolStripItemByFavorite(FavoriteConfigurationElement favorite)
         {
-            ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
-            item.Name = favorite.Name;
-            item.Tag = "favorite";
-
-            if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
-                item.Image = Image.FromFile(favorite.ToolBarIcon);
-
+            ToolStripMenuItem item = CreateFavoriteMenuItem(favorite);
             item.Click += this.serverToolStripMenuItem_Click;
             return item;
         }
 
-        private void AddFavorite(FavoriteConfigurationElement favorite)
-        {
-            tscConnectTo.Items.Add(favorite.Name);
-            ToolStripMenuItem serverToolStripMenuItem = new ToolStripMenuItem(favorite.Name);
-            serverToolStripMenuItem.Name = favorite.Name;
-            serverToolStripMenuItem.Click += serverToolStripMenuItem_Click;
-            favoritesToolStripMenuItem.DropDownItems.Add(serverToolStripMenuItem);
-        }
+        #endregion
+
+        #region Fill tool bar by user defined items
 
         private void LoadFavoritesToolbar()
         {
@@ -132,36 +195,19 @@ namespace Terminals
                 favoriteToolBar.Items.Clear();
                 if (Settings.FavoritesToolbarButtons != null)
                 {
+                    FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
                     foreach (String favoriteButton in Settings.FavoritesToolbarButtons)
                     {
-                        FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
                         FavoriteConfigurationElement favorite = favorites[favoriteButton];
-                        Bitmap button = Resources.smallterm;
                         if (favorite != null)
                         {
-                            if (!String.IsNullOrEmpty(favorite.ToolBarIcon) && File.Exists(favorite.ToolBarIcon))
-                            {
-                                try
-                                {
-                                    button = (Bitmap)Image.FromFile(favorite.ToolBarIcon);
-                                }
-                                catch (Exception ex)
-                                {
-                                    Logging.Log.Error("Error Loading Favorites Toolbar (Button Bar)", ex);
-                                    button = Resources.smallterm;
-                                }
-                            }
-
-                            ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, button, serverToolStripMenuItem_Click);
-                            favoriteBtn.Tag = favorite;
-                            favoriteBtn.Overflow = ToolStripItemOverflow.AsNeeded;
+                            ToolStripButton favoriteBtn = CreateFavoriteButton(favorite);
                             favoriteToolBar.Items.Add(favoriteBtn);
                         }
                     }
                 }
 
                 favoriteToolBar.Visible = toolStripMenuItemShowHideFavoriteToolbar.Checked;
-                //this.favsList1.LoadFavs();
             }
             catch (Exception exc)
             {
@@ -169,61 +215,99 @@ namespace Terminals
             }
         }
 
-        internal void FillTrayContextMenu(Boolean fullScreen)
+        private ToolStripButton CreateFavoriteButton(FavoriteConfigurationElement favorite)
         {
-            this.quickContextMenu.Items.Clear();
-
-            this.AddGeneralTrayContextMenu(fullScreen);
-            this.AddTraySpecialCommandsContextMenu();
-            this.quickContextMenu.Items.Add("-");
-            this.AddFavoritesTrayContextMenu();
-            this.quickContextMenu.Items.Add("-");
-            this.quickContextMenu.Items.Add(Program.Resources.GetString("Exit"));
+            Image buttonImage = GetMenuItemImage(favorite.ToolBarIcon, Resources.smallterm);
+            ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, buttonImage, this.serverToolStripMenuItem_Click);
+            favoriteBtn.Tag = favorite;
+            favoriteBtn.Overflow = ToolStripItemOverflow.AsNeeded;
+            return favoriteBtn;
         }
 
+        private static Image GetMenuItemImage(String imageFilePath, Image defaultIcon)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(imageFilePath) && File.Exists(imageFilePath))
+                {
+                    return Image.FromFile(imageFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Error("Error Loading Favorites Toolbar (Button Bar)", ex);
+            }
+
+            return defaultIcon;
+        }
+
+        #endregion
+
+        #region System tray context menu
+
+        internal void FillTrayContextMenu(Boolean fullScreen)
+        {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            this.UpdateSwitchFullScreenMenuItemsVisibility(fullScreen);
+            ClearTrayFavoritesMenu();
+            this.AddFavoritesTrayContextMenu();
+
+            stopwatch.Stop();
+            Debug.WriteLine(String.Format("System tray menu loaded in {0} ms", stopwatch.ElapsedMilliseconds));
+        }
+
+        private void ClearTrayFavoritesMenu()
+        {
+            int startIndex = this.quickContextMenu.Items.IndexOf(this.favoritesTrayStartSeparator);
+            while (startIndex + 1 < this.AlphabeticalMenuItemIndex)
+            {
+                this.quickContextMenu.Items.RemoveAt(startIndex + 1);
+            }
+        }
 
         private void AddTraySpecialCommandsContextMenu()
         {
-            ToolStripMenuItem special = new ToolStripMenuItem(Program.Resources.GetString("SpecialCommands"), Resources.computer_link);
-            ToolStripMenuItem mgmt = new ToolStripMenuItem(Program.Resources.GetString("Management"), Resources.CompMgmt);
-            ToolStripMenuItem cpl = new ToolStripMenuItem(Program.Resources.GetString("ControlPanel"), Resources.ControlPanel);
-            ToolStripMenuItem other = new ToolStripMenuItem(Program.Resources.GetString("Other"));
+            AddCommandMenuItems();
 
-            this.quickContextMenu.Items.Add(special);
-            special.DropDown.Items.Add(mgmt);
-            special.DropDown.Items.Add(cpl);
-            special.DropDown.Items.Add(other);
-
-            foreach (SpecialCommandConfigurationElement elm in Settings.SpecialCommands)
+            foreach (SpecialCommandConfigurationElement commad in Settings.SpecialCommands)
             {
-                Image img = null;
-                if (!String.IsNullOrEmpty(elm.Thumbnail) && File.Exists(elm.Thumbnail))
-                {
-                    img = Image.FromFile(elm.Thumbnail);
-                }
-                else
-                {
-                    img = Resources.server_administrator_icon;
-                }
-
-                ToolStripItem specialItem;
-                if (elm.Executable.ToLower().EndsWith("cpl"))
-                {
-                    specialItem = cpl.DropDown.Items.Add(elm.Name, img);
-                }
-                else if (elm.Executable.ToLower().EndsWith("msc"))
-                {
-                    specialItem = mgmt.DropDown.Items.Add(elm.Name, img);
-                }
-                else
-                {
-                    specialItem = other.DropDown.Items.Add(elm.Name, img);
-                }
-
-                specialItem.Click += new EventHandler(this.specialItem_Click);
-                specialItem.Tag = elm;
-                specialItem.ImageTransparentColor = Color.Magenta;
+                AddSpecialMenuItem(commad);
             }
+        }
+
+        private void AddSpecialMenuItem(SpecialCommandConfigurationElement commad)
+        {
+            ToolStripItem specialItem = CreateSpecialItem(commad);
+            specialItem.Image = GetMenuItemImage(commad.Thumbnail, Resources.server_administrator_icon);
+            specialItem.ImageTransparentColor = Color.Magenta;
+            specialItem.Tag = commad;
+            specialItem.Click += new EventHandler(this.specialItem_Click);
+        }
+
+        private ToolStripItem CreateSpecialItem(SpecialCommandConfigurationElement commad)
+        {
+            String commandExeName = commad.Executable.ToLower();
+
+            if (commandExeName.EndsWith("cpl"))
+                return this.cpl.DropDown.Items.Add(commad.Name);
+            if (commandExeName.EndsWith("msc"))
+                return this.mgmt.DropDown.Items.Add(commad.Name);
+
+            return this.other.DropDown.Items.Add(commad.Name);
+        }
+
+        private void AddCommandMenuItems()
+        {
+            this.special = new ToolStripMenuItem(Program.Resources.GetString(COMMAND_SPECIAL), Resources.computer_link);
+            this.mgmt = new ToolStripMenuItem(Program.Resources.GetString(COMMAND_MANAGEMENT), Resources.CompMgmt);
+            this.cpl = new ToolStripMenuItem(Program.Resources.GetString(COMMAND_CONTROLPANEL), Resources.ControlPanel);
+            this.other = new ToolStripMenuItem(Program.Resources.GetString(COMMAND_OTHER));
+
+            this.quickContextMenu.Items.Add(this.special);
+            this.special.DropDown.Items.Add(this.mgmt);
+            this.special.DropDown.Items.Add(this.cpl);
+            this.special.DropDown.Items.Add(this.other);
         }
 
         private void specialItem_Click(object sender, EventArgs e)
@@ -232,94 +316,124 @@ namespace Terminals
             SpecialCommandConfigurationElement elm = (SpecialCommandConfigurationElement)specialItem.Tag;
             elm.Launch();
         }
-
+        
         private void AddFavoritesTrayContextMenu()
         {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-
             Dictionary<String, ToolStripMenuItem> tagTools = new Dictionary<String, ToolStripMenuItem>();
             SortedDictionary<String, ToolStripMenuItem> sortedList = new SortedDictionary<String, ToolStripMenuItem>();
-            ToolStripMenuItem sortedMenu = new ToolStripMenuItem(Program.Resources.GetString("Alphabetical"));
-            sortedMenu.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
 
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
-                ToolStripMenuItem sortedItem = new ToolStripMenuItem();
-                sortedItem.Text = favorite.Name;
-                sortedItem.Tag = "favorite";
-                if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
-                    sortedItem.Image = Image.FromFile(favorite.ToolBarIcon);
-
+                ToolStripMenuItem sortedItem = CreateFavoriteMenuItem(favorite);
                 sortedList.Add(favorite.Name, sortedItem);
-
-                if (favorite.TagList != null && favorite.TagList.Count > 0)
-                {
-                    foreach (String tag in favorite.TagList)
-                    {
-                        ToolStripMenuItem parent;
-                        if (tagTools.ContainsKey(tag))
-                        {
-                            parent = tagTools[tag];
-                        }
-                        else
-                        {
-                            parent = new ToolStripMenuItem();
-                            parent.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
-                            parent.Tag = "tag";
-                            parent.Text = tag;
-                            tagTools.Add(tag, parent);
-                            this.quickContextMenu.Items.Add(parent);
-                        }
-
-                        ToolStripMenuItem item = new ToolStripMenuItem();
-                        item.Text = favorite.Name;
-                        item.Tag = "favorite";
-                        if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
-                            item.Image = Image.FromFile(favorite.ToolBarIcon);
-
-                        parent.DropDown.Items.Add(item);
-                    }
-                }
-                else
-                {
-                    ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
-                    item.Tag = "favorite";
-                    if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
-                        item.Image = Image.FromFile(favorite.ToolBarIcon);
-
-                    this.quickContextMenu.Items.Add(item);
-                }
+                AddFavoriteMenuItemByTag(favorite, tagTools);
             }
 
-            if (sortedList != null && sortedList.Count > 0)
-            {
-                this.quickContextMenu.Items.Add(sortedMenu);
-                sortedMenu.Image = Resources.atoz;
-                foreach (string name in sortedList.Keys)
-                {
-                    sortedMenu.DropDownItems.Add(sortedList[name]);
-                }
-            }
+            FillAlphabeticalMenu(sortedList);
         }
 
-        private void AddGeneralTrayContextMenu(Boolean fullScreen)
+        private void AddFavoriteMenuItemByTag(FavoriteConfigurationElement favorite, Dictionary<String, ToolStripMenuItem> tagTools)
         {
-            if (fullScreen)
-                this.quickContextMenu.Items.Add(Program.Resources.GetString("RestoreScreen"), Resources.arrow_in);
+            if (favorite.TagList.Count > 0)
+            {
+                foreach (String tag in favorite.TagList)
+                {
+                    ToolStripMenuItem parent = this.EnsureTagMenuItem(tagTools, tag);
+                    ToolStripMenuItem item = this.CreateFavoriteMenuItem(favorite);
+                    parent.DropDown.Items.Add(item);
+                }
+            }
             else
-                this.quickContextMenu.Items.Add(Program.Resources.GetString("FullScreen"), Resources.arrow_out);
+            {
+                ToolStripMenuItem item = this.CreateFavoriteMenuItem(favorite);
+                this.quickContextMenu.Items.Add(item);
+            }
+        }
 
-            this.quickContextMenu.Items.Add("-");
-            this.quickContextMenu.Items.Add(Program.Resources.GetString("ShowMenu"));
+        private ToolStripMenuItem EnsureTagMenuItem(Dictionary<String, ToolStripMenuItem> tagTools, String tag)
+        {
+            if (tagTools.ContainsKey(tag))
+                return tagTools[tag];
 
+            ToolStripMenuItem parent = this.CreateTagMenuItem(tag);
+            tagTools.Add(tag, parent);
+            
+            this.quickContextMenu.Items.Insert(this.AlphabeticalMenuItemIndex, parent);
+            return parent;
+        }
+
+        private ToolStripMenuItem CreateTagMenuItem(String tag)
+        {
+            ToolStripMenuItem parent = new ToolStripMenuItem();
+            parent.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
+            parent.Tag = TAG;
+            parent.Text = tag;
+            return parent;
+        }
+       
+        private ToolStripMenuItem CreateFavoriteMenuItem(FavoriteConfigurationElement favorite)
+        {
+            ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
+            item.Tag = FAVORITE;
+            item.Image = GetMenuItemImage(favorite.ToolBarIcon, Resources.smallterm);
+            return item;
+        }
+
+        private void AddAlphabeticalContextMenu()
+        {
+            this.alphabeticalMenu = new ToolStripMenuItem(Program.Resources.GetString(COMMAND_ALPHABETICAL));
+            this.alphabeticalMenu.Name = COMMAND_ALPHABETICAL;
+            this.alphabeticalMenu.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
+            this.alphabeticalMenu.Image = Resources.atoz;
+            this.quickContextMenu.Items.Add(this.alphabeticalMenu);
+        }
+
+        private void FillAlphabeticalMenu(SortedDictionary<String, ToolStripMenuItem> sortedList)
+        {
+            this.alphabeticalMenu.DropDownItems.Clear();
+            foreach (String name in sortedList.Keys)
+            {
+                this.alphabeticalMenu.DropDownItems.Add(sortedList[name]);
+            }
+
+            Boolean alphaMenuVisible = sortedList.Count > 0;
+            this.alphabeticalMenu.Visible = alphaMenuVisible;
+            this.favoritesTrayStartSeparator.Visible = alphaMenuVisible;
+        }
+
+        private void AddGeneralTrayContextMenu()
+        {
+            restoreScreenMenuItem = this.CreateGeneralTrayContextMenuItem(COMMAND_RESTORESCREEN, Resources.arrow_in);
+            fullScreenMenuItem = this.CreateGeneralTrayContextMenuItem(COMMAND_FULLSCREEN, Resources.arrow_out);
+            
             this.quickContextMenu.Items.Add("-");
-            this.quickContextMenu.Items.Add(Program.Resources.GetString("ScreenCaptureManager"), Resources.screen_capture_box);
-            this.quickContextMenu.Items.Add(Program.Resources.GetString("NetworkingTools"), Resources.computer_link);
+            ToolStripItem showMenu = this.quickContextMenu.Items.Add(Program.Resources.GetString(COMMAND_SHOWMENU));
+            showMenu.Name = COMMAND_SHOWMENU;
             this.quickContextMenu.Items.Add("-");
-            this.quickContextMenu.Items.Add(Program.Resources.GetString("CredentialsManager"), Resources.computer_security);
-            this.quickContextMenu.Items.Add(Program.Resources.GetString("OrganizeFavorites"), Resources.star);
-            this.quickContextMenu.Items.Add(Program.Resources.GetString("Options"), Resources.options);
+            CreateGeneralTrayContextMenuItem(COMMAND_CAPTUREMANAGER, Resources.screen_capture_box);
+            CreateGeneralTrayContextMenuItem(COMMAND_NETTOOLS, Resources.computer_link);
+            this.quickContextMenu.Items.Add("-");
+            CreateGeneralTrayContextMenuItem(COMMAND_CREDENTIALMANAGER, Resources.computer_security);
+            CreateGeneralTrayContextMenuItem(COMMAND_ORGANIZEFAVORITES, Resources.star);
+            CreateGeneralTrayContextMenuItem(COMMAND_OPTIONS, Resources.options);
             this.quickContextMenu.Items.Add("-");
         }
+
+        private void UpdateSwitchFullScreenMenuItemsVisibility(Boolean fullScreen)
+        {
+            restoreScreenMenuItem.Visible = fullScreen;
+            fullScreenMenuItem.Visible = !fullScreen;
+        }
+
+        private ToolStripItem CreateGeneralTrayContextMenuItem(String commnadName, Image icon)
+        {
+            String menuText = Program.Resources.GetString(commnadName);
+            ToolStripItem menuItem = this.quickContextMenu.Items.Add(menuText, icon);
+            menuItem.Name = commnadName;
+            return menuItem;
+        }
+
+        #endregion
     }
 }

@@ -836,7 +836,10 @@ namespace Terminals
 
         public void LoadFavorites()
         {
+            this.Cursor = Cursors.WaitCursor;
             menuLoader.FillMenu();
+            menuLoader.FillTrayContextMenu(this.FullScreen);
+            this.Cursor = Cursors.Default;
         }
 
         private void LoadGroups()
@@ -1206,7 +1209,7 @@ namespace Terminals
         {
             if (e.Button == MouseButtons.Right)
             {
-                menuLoader.FillTrayContextMenu(this.FullScreen);
+                // todo menuLoader.FillTrayContextMenu(this.FullScreen);
 
                 if (tcTerminals != null && sender != null)
                     this.QuickContextMenu.Show(tcTerminals, e.Location);
@@ -1215,7 +1218,7 @@ namespace Terminals
 
         private void QuickContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            if (this.QuickContextMenu.Items.Count <= 0)
+            //if (this.QuickContextMenu.Items.Count <= 0)
             {
                 tcTerminals_MouseClick(null, new MouseEventArgs(MouseButtons.Right, 1, 0, 0, 0));
                 e.Cancel = false;
@@ -1224,43 +1227,44 @@ namespace Terminals
 
         private void QuickContextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            if (e.ClickedItem.Text == Program.Resources.GetString("Restore") ||
-                e.ClickedItem.Text == Program.Resources.GetString("RestoreScreen") ||
-                e.ClickedItem.Text == Program.Resources.GetString("FullScreen"))
+            ToolStripItem clickedItem = e.ClickedItem;
+            if (clickedItem.Text == Program.Resources.GetString("Restore") ||
+                clickedItem.Name == FavoritesMenuLoader.COMMAND_RESTORESCREEN ||
+                clickedItem.Name == FavoritesMenuLoader.COMMAND_FULLSCREEN)
             {
                 this.FullScreen = !this.FullScreen;
             }
-            else if (e.ClickedItem.Text == Program.Resources.GetString("CredentialsManager"))
+            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_CREDENTIALMANAGER)
             {
                 this.ShowCredentialsManager();
             }
-            else if (e.ClickedItem.Text == Program.Resources.GetString("OrganizeFavorites"))
+            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_ORGANIZEFAVORITES)
             {
                 this.manageConnectionsToolStripMenuItem_Click(null, null);
             }
-            else if (e.ClickedItem.Text == Program.Resources.GetString("Options"))
+            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_OPTIONS)
             {
                 this.optionsToolStripMenuItem_Click(null, null);
             }
-            else if (e.ClickedItem.Text == Program.Resources.GetString("NetworkingTools"))
+            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_NETTOOLS)
             {
                 this.toolStripButton2_Click(null, null);
             }
-            else if (e.ClickedItem.Text == Program.Resources.GetString("ScreenCaptureManager"))
+            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_CAPTUREMANAGER)
             {
                 this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(true);
             }
-            else if (e.ClickedItem.Text == Program.Resources.GetString("Exit"))
+            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_EXIT)
             {
                 this.Close();
             }
-            else if (e.ClickedItem.Text == Program.Resources.GetString("ShowMenu"))
+            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_SHOWMENU)
             {
                 Boolean visible = !this.menuStrip.Visible;
                 this.menuStrip.Visible = visible;
                 this.menubarToolStripMenuItem.Checked = visible;
             }
-            else if (e.ClickedItem.Text == Program.Resources.GetString("SpecialCommands"))
+            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_SPECIAL)
             {
                 return;
             }
@@ -1280,10 +1284,10 @@ namespace Terminals
             if (tag != null)
             {
                 String itemName = e.ClickedItem.Text;
-                if (tag == "favorite")
+                if (tag == FavoritesMenuLoader.FAVORITE)
                     this.Connect(itemName, false, false);
 
-                if (tag == "tag")
+                if (tag == FavoritesMenuLoader.TAG)
                 {
                     ToolStripMenuItem parent = e.ClickedItem as ToolStripMenuItem;
                     ConnectToAllFavoritesUnderTag(parent);
