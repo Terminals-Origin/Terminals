@@ -289,6 +289,7 @@ namespace Terminals
             this.Connect(this.favsTree.SelectedNode, false, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked);
         }
 
+        // todo assign normallyToolStripMenuItem_Click
         private void normallyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.connectToolStripMenuItem_Click(null, null);
@@ -518,9 +519,6 @@ namespace Terminals
                 List<FavoriteConfigurationElement> favoritesToImport = Importers.ImportFavorites(files);
                 Settings.AddFavorites(favoritesToImport, true);
 
-                if (favoritesToImport.Count > 0)
-                    this.GetMainForm().LoadFavorites();
-
                 this.Cursor = Cursors.Default;
                 OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
             }
@@ -557,7 +555,7 @@ namespace Terminals
 
         private void connectAsCred_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;;
+            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
                 this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked,

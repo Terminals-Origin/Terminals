@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Data;
 using Terminals.Properties;
 using Settings = Terminals.Configuration.Settings;
 
@@ -21,7 +21,6 @@ namespace Terminals
         private ToolStripComboBox tscConnectTo;
         private EventHandler serverToolStripMenuItem_Click;
         private ToolStrip favoriteToolBar;
-        private ToolStripMenuItem toolStripMenuItemShowHideFavoriteToolbar;
         private ContextMenuStrip quickContextMenu;
         private ToolStripItemClickedEventHandler quickContextMenu_ItemClicked;
 
@@ -64,23 +63,47 @@ namespace Terminals
             get { return this.quickContextMenu.Items.IndexOf(this.alphabeticalMenu); }
         }
 
-        internal FavoritesMenuLoader(ToolStripMenuItem favoritesToolStripMenuItem, ToolStripSeparator favoritesSeparator,
+        internal FavoritesMenuLoader(ToolStripMenuItem favoritesToolStripMenuItem,
             ToolStripComboBox tscConnectTo, EventHandler serverToolStripMenuItem_Click, ToolStrip favoriteToolBar,
-            ToolStripMenuItem toolStripMenuItemShowHideFavoriteToolbar, ContextMenuStrip quickContextMenu,
-            ToolStripItemClickedEventHandler quickContextMenu_ItemClicked)
+            ContextMenuStrip quickContextMenu, ToolStripItemClickedEventHandler quickContextMenu_ItemClicked)
         {
             this.favoritesToolStripMenuItem = favoritesToolStripMenuItem;
-            this.favoritesSeparator = favoritesSeparator;
             this.tscConnectTo = tscConnectTo;
             this.serverToolStripMenuItem_Click = serverToolStripMenuItem_Click;
             this.favoriteToolBar = favoriteToolBar;
-            this.toolStripMenuItemShowHideFavoriteToolbar = toolStripMenuItemShowHideFavoriteToolbar;
             this.quickContextMenu = quickContextMenu;
             this.quickContextMenu_ItemClicked = quickContextMenu_ItemClicked;
 
+            CreateFavoritesSeparator();
             CreateTrayMenuItems();
+            UpdateMenuAndContextMenu();
+            
+            DataDispatcher.Instance.TagsChanged += new TagsChangedEventHandler(this.OnDataChanged);
+            DataDispatcher.Instance.FavoritesChanged += new FavoritesChangedEventHandler(this.OnDataChanged);
         }
 
+        private void OnDataChanged(EventArgs args)
+        {
+            UpdateMenuAndContextMenu();
+        }
+
+        private void UpdateMenuAndContextMenu()
+        {
+            this.FillMainMenu();
+            this.FillTrayContextMenu();
+        }
+
+        private void CreateFavoritesSeparator()
+        {
+            this.favoritesSeparator = new ToolStripSeparator();
+            this.favoritesSeparator.Name = "favoritesSeparator";
+            this.favoritesSeparator.Size = new Size(212, 6);
+            this.favoritesToolStripMenuItem.DropDownItems.Add(this.favoritesSeparator);
+        }
+
+        /// <summary>
+        /// Creates skeleton for system tray menu items. No tags or favorites are added here.
+        /// </summary>
         private void CreateTrayMenuItems()
         {
             this.AddGeneralTrayContextMenu();
@@ -94,17 +117,12 @@ namespace Terminals
             this.quickContextMenu.Items.Add(Program.Resources.GetString(COMMAND_EXIT));
         }
 
-        internal void FillMenu()
+        private void FillMainMenu()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
-            ClearFavoritesToolStripmenuItems();
             ReFreshConnectionsComboBox();
-            CreateFavoritesToolStrips();
+            this.ClearFavoritesToolStripmenuItems();
+            this.CreateTagsToolStripMenuItems();
             this.LoadFavoritesToolbar();
-
-            stopwatch.Stop();
-            Debug.WriteLine(String.Format("Favorite menu loaded in {0} ms", stopwatch.ElapsedMilliseconds));
         }
 
         private void ReFreshConnectionsComboBox()
@@ -118,63 +136,55 @@ namespace Terminals
 
         #region Menu toolstrips
 
+        private void ClearFavoritesToolStripmenuItems()
+        {
+            Int32 seperatorIndex = this.favoritesToolStripMenuItem.DropDownItems.IndexOf(this.favoritesSeparator);
+            for (Int32 index = this.favoritesToolStripMenuItem.DropDownItems.Count - 1; index > seperatorIndex; index--)
+            {
+                ToolStripMenuItem tagMenuItem = this.favoritesToolStripMenuItem.DropDownItems[index] as ToolStripMenuItem;
+                UnregisterTagMenuItemEventHandlers(tagMenuItem);
+                this.favoritesToolStripMenuItem.DropDownItems.RemoveAt(index);
+            }
+        }
+
+        private void UnregisterTagMenuItemEventHandlers(ToolStripMenuItem tagMenuItem)
+        {
+            tagMenuItem.DropDownOpening -= OnTagMenuDropDownOpening;
+            foreach (ToolStripMenuItem favoriteItem in tagMenuItem.DropDownItems)
+            {
+                favoriteItem.Click += serverToolStripMenuItem_Click;
+            }
+        }
+
         /// <summary>
         /// Fills the main window "favorites" menu, after separator places all tags
         /// and their favorites as dropdown items
         /// </summary>
-        private void ClearFavoritesToolStripmenuItems()
+        private void CreateTagsToolStripMenuItems()
         {
-            Int32 seperatorIndex = this.favoritesToolStripMenuItem.DropDownItems.IndexOf(this.favoritesSeparator);
-            for (Int32 i = this.favoritesToolStripMenuItem.DropDownItems.Count - 1; i > seperatorIndex; i--)
+            foreach (String tag in Settings.Tags)
             {
-                this.favoritesToolStripMenuItem.DropDownItems.RemoveAt(i);
+                ToolStripMenuItem tagMenu = CreateTagMenuItem(tag);
+                tagMenu.DropDownOpening += new EventHandler(this.OnTagMenuDropDownOpening);
+                this.favoritesToolStripMenuItem.DropDownItems.Add(tagMenu);
             }
         }
 
-        private void CreateFavoritesToolStrips()
+        /// <summary>
+        /// Lazy loading for favorites dropdown menu items in Tag menu item
+        /// </summary>
+        private void OnTagMenuDropDownOpening(object sender, EventArgs e)
         {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-            Dictionary<String, ToolStripMenuItem> tagTools = new Dictionary<String, ToolStripMenuItem>();
-
-            foreach (FavoriteConfigurationElement favorite in favorites)
+            ToolStripMenuItem tagMenu = sender as ToolStripMenuItem;
+            if (!tagMenu.HasDropDownItems)
             {
-                if (favorite.TagList.Count > 0) // TagList is never null
-                {
-                    foreach (String tag in favorite.TagList)
-                    {
-                        ToolStripMenuItem tagMenu = this.GetParentToolStripMenuItemByTag(tagTools, tag);
-
-                        if (tagMenu != null)
-                        {
-                            ToolStripMenuItem item = this.CreateToolStripItemByFavorite(favorite);
-                            tagMenu.DropDown.Items.Add(item);
-                        }
-                    }
-                }
-                else
+                List<FavoriteConfigurationElement> tagFavorites = Settings.GetFavoritesByTag(tagMenu.Text);
+                foreach (FavoriteConfigurationElement favorite in tagFavorites)
                 {
                     ToolStripMenuItem item = this.CreateToolStripItemByFavorite(favorite);
-                    this.favoritesToolStripMenuItem.DropDown.Items.Add(item);
+                    tagMenu.DropDown.Items.Add(item);
                 }
             }
-        }
-
-        private ToolStripMenuItem GetParentToolStripMenuItemByTag(Dictionary<String, ToolStripMenuItem> tagTools, String tag)
-        {
-            tag = tag.ToLower();
-            ToolStripMenuItem tagMenu = null;
-            if (tagTools.ContainsKey(tag))
-            {
-                tagMenu = tagTools[tag];
-            }
-            else if (!tag.Contains("Terminals"))
-            {
-                tagMenu = new ToolStripMenuItem(tag);
-                tagMenu.Name = tag;
-                tagTools.Add(tag, tagMenu);
-                this.favoritesToolStripMenuItem.DropDown.Items.Add(tagMenu);
-            }
-            return tagMenu;
         }
 
         private ToolStripMenuItem CreateToolStripItemByFavorite(FavoriteConfigurationElement favorite)
@@ -206,8 +216,6 @@ namespace Terminals
                         }
                     }
                 }
-
-                favoriteToolBar.Visible = toolStripMenuItemShowHideFavoriteToolbar.Checked;
             }
             catch (Exception exc)
             {
@@ -245,24 +253,48 @@ namespace Terminals
 
         #region System tray context menu
 
-        internal void FillTrayContextMenu(Boolean fullScreen)
+        private void FillTrayContextMenu()
         {
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
-            this.UpdateSwitchFullScreenMenuItemsVisibility(fullScreen);
-            ClearTrayFavoritesMenu();
-            this.AddFavoritesTrayContextMenu();
-
-            stopwatch.Stop();
-            Debug.WriteLine(String.Format("System tray menu loaded in {0} ms", stopwatch.ElapsedMilliseconds));
+            this.ClearTrayFavoritesMenu();
+            this.AddTagTrayMenuItems();
+            this.alphabeticalMenu.DropDownItems.Clear();
         }
 
         private void ClearTrayFavoritesMenu()
         {
-            int startIndex = this.quickContextMenu.Items.IndexOf(this.favoritesTrayStartSeparator);
-            while (startIndex + 1 < this.AlphabeticalMenuItemIndex)
+            int startIndex = this.quickContextMenu.Items.IndexOf(this.favoritesTrayStartSeparator) + 1;
+            while (startIndex < this.AlphabeticalMenuItemIndex)
             {
-                this.quickContextMenu.Items.RemoveAt(startIndex + 1);
+                // unregister event handler to release the menu item
+                ToolStripMenuItem tagItem = this.quickContextMenu.Items[startIndex] as ToolStripMenuItem;
+                tagItem.DropDownItemClicked -= this.quickContextMenu_ItemClicked;
+                tagItem.DropDownOpening -= this.OnTagTrayMenuItemDropDownOpening;
+                this.quickContextMenu.Items.RemoveAt(startIndex);
+            }
+        }
+
+        private void AddTagTrayMenuItems()
+        {
+            foreach (String tag in Settings.Tags)
+            {
+                ToolStripMenuItem tagMenuItem = CreateTagMenuItem(tag);
+                tagMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
+                tagMenuItem.DropDownOpening += new EventHandler(this.OnTagTrayMenuItemDropDownOpening);
+                this.quickContextMenu.Items.Insert(this.AlphabeticalMenuItemIndex, tagMenuItem);
+            }
+        }
+
+        private void OnTagTrayMenuItemDropDownOpening(object sender, EventArgs e)
+        {
+            ToolStripMenuItem tagMenu = sender as ToolStripMenuItem;
+            if (!tagMenu.HasDropDownItems)
+            {
+                List<FavoriteConfigurationElement> tagFavorites = Settings.GetFavoritesByTag(tagMenu.Text);
+                foreach (FavoriteConfigurationElement favorite in tagFavorites)
+                {
+                    ToolStripMenuItem item = CreateFavoriteMenuItem(favorite);
+                    tagMenu.DropDown.Items.Add(item);
+                }
             }
         }
 
@@ -282,7 +314,7 @@ namespace Terminals
             specialItem.Image = GetMenuItemImage(commad.Thumbnail, Resources.server_administrator_icon);
             specialItem.ImageTransparentColor = Color.Magenta;
             specialItem.Tag = commad;
-            specialItem.Click += new EventHandler(this.specialItem_Click);
+            specialItem.Click += new EventHandler(specialItem_Click);
         }
 
         private ToolStripItem CreateSpecialItem(SpecialCommandConfigurationElement commad)
@@ -310,69 +342,22 @@ namespace Terminals
             this.special.DropDown.Items.Add(this.other);
         }
 
-        private void specialItem_Click(object sender, EventArgs e)
+        private static void specialItem_Click(object sender, EventArgs e)
         {
             ToolStripItem specialItem = (ToolStripItem)sender;
             SpecialCommandConfigurationElement elm = (SpecialCommandConfigurationElement)specialItem.Tag;
             elm.Launch();
         }
-        
-        private void AddFavoritesTrayContextMenu()
+
+        private static ToolStripMenuItem CreateTagMenuItem(String tag)
         {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-            Dictionary<String, ToolStripMenuItem> tagTools = new Dictionary<String, ToolStripMenuItem>();
-            SortedDictionary<String, ToolStripMenuItem> sortedList = new SortedDictionary<String, ToolStripMenuItem>();
-
-            foreach (FavoriteConfigurationElement favorite in favorites)
-            {
-                ToolStripMenuItem sortedItem = CreateFavoriteMenuItem(favorite);
-                sortedList.Add(favorite.Name, sortedItem);
-                AddFavoriteMenuItemByTag(favorite, tagTools);
-            }
-
-            FillAlphabeticalMenu(sortedList);
+            ToolStripMenuItem tagMenuItem = new ToolStripMenuItem();
+            tagMenuItem.Tag = TAG;
+            tagMenuItem.Text = tag;
+            return tagMenuItem;
         }
 
-        private void AddFavoriteMenuItemByTag(FavoriteConfigurationElement favorite, Dictionary<String, ToolStripMenuItem> tagTools)
-        {
-            if (favorite.TagList.Count > 0)
-            {
-                foreach (String tag in favorite.TagList)
-                {
-                    ToolStripMenuItem parent = this.EnsureTagMenuItem(tagTools, tag);
-                    ToolStripMenuItem item = this.CreateFavoriteMenuItem(favorite);
-                    parent.DropDown.Items.Add(item);
-                }
-            }
-            else
-            {
-                ToolStripMenuItem item = this.CreateFavoriteMenuItem(favorite);
-                this.quickContextMenu.Items.Add(item);
-            }
-        }
-
-        private ToolStripMenuItem EnsureTagMenuItem(Dictionary<String, ToolStripMenuItem> tagTools, String tag)
-        {
-            if (tagTools.ContainsKey(tag))
-                return tagTools[tag];
-
-            ToolStripMenuItem parent = this.CreateTagMenuItem(tag);
-            tagTools.Add(tag, parent);
-            
-            this.quickContextMenu.Items.Insert(this.AlphabeticalMenuItemIndex, parent);
-            return parent;
-        }
-
-        private ToolStripMenuItem CreateTagMenuItem(String tag)
-        {
-            ToolStripMenuItem parent = new ToolStripMenuItem();
-            parent.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
-            parent.Tag = TAG;
-            parent.Text = tag;
-            return parent;
-        }
-       
-        private ToolStripMenuItem CreateFavoriteMenuItem(FavoriteConfigurationElement favorite)
+        private static ToolStripMenuItem CreateFavoriteMenuItem(FavoriteConfigurationElement favorite)
         {
             ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
             item.Tag = FAVORITE;
@@ -385,28 +370,32 @@ namespace Terminals
             this.alphabeticalMenu = new ToolStripMenuItem(Program.Resources.GetString(COMMAND_ALPHABETICAL));
             this.alphabeticalMenu.Name = COMMAND_ALPHABETICAL;
             this.alphabeticalMenu.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
+            this.alphabeticalMenu.DropDownOpening += new EventHandler(this.OnAlphabeticalMenuDropDownOpening);
             this.alphabeticalMenu.Image = Resources.atoz;
             this.quickContextMenu.Items.Add(this.alphabeticalMenu);
         }
 
-        private void FillAlphabeticalMenu(SortedDictionary<String, ToolStripMenuItem> sortedList)
+        private void OnAlphabeticalMenuDropDownOpening(object sender, EventArgs e)
         {
-            this.alphabeticalMenu.DropDownItems.Clear();
-            foreach (String name in sortedList.Keys)
+            if (!this.alphabeticalMenu.HasDropDownItems)
             {
-                this.alphabeticalMenu.DropDownItems.Add(sortedList[name]);
-            }
+                foreach (FavoriteConfigurationElement favorite in Settings.GetFavorites())
+                {
+                    ToolStripMenuItem sortedItem = CreateFavoriteMenuItem(favorite);
+                    this.alphabeticalMenu.DropDownItems.Add(sortedItem);
+                }
 
-            Boolean alphaMenuVisible = sortedList.Count > 0;
-            this.alphabeticalMenu.Visible = alphaMenuVisible;
-            this.favoritesTrayStartSeparator.Visible = alphaMenuVisible;
+                Boolean alphaMenuVisible = this.alphabeticalMenu.DropDownItems.Count > 0;
+                this.alphabeticalMenu.Visible = alphaMenuVisible;
+                this.favoritesTrayStartSeparator.Visible = alphaMenuVisible;
+            }
         }
 
         private void AddGeneralTrayContextMenu()
         {
             restoreScreenMenuItem = this.CreateGeneralTrayContextMenuItem(COMMAND_RESTORESCREEN, Resources.arrow_in);
             fullScreenMenuItem = this.CreateGeneralTrayContextMenuItem(COMMAND_FULLSCREEN, Resources.arrow_out);
-            
+
             this.quickContextMenu.Items.Add("-");
             ToolStripItem showMenu = this.quickContextMenu.Items.Add(Program.Resources.GetString(COMMAND_SHOWMENU));
             showMenu.Name = COMMAND_SHOWMENU;
@@ -420,7 +409,7 @@ namespace Terminals
             this.quickContextMenu.Items.Add("-");
         }
 
-        private void UpdateSwitchFullScreenMenuItemsVisibility(Boolean fullScreen)
+        internal void UpdateSwitchFullScreenMenuItemsVisibility(Boolean fullScreen)
         {
             restoreScreenMenuItem.Visible = fullScreen;
             fullScreenMenuItem.Visible = !fullScreen;

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -14,7 +13,11 @@ namespace Terminals
     internal class FavoriteTreeListLoader
     {
         private TreeView treeList;
-        private const String UNTAGGED_NODENAME = "Untagged";
+
+        /// <summary>
+        /// gets or sets virtual tree node for favorites, which have no tag defined
+        /// </summary>
+        private TagTreeNode unTaggedNode;
 
         internal FavoriteTreeListLoader(TreeView treeListToFill)
         {
@@ -60,13 +63,15 @@ namespace Terminals
 
         private void RemoveFavorites(List<FavoriteConfigurationElement> removedFavorites)
         {
-            foreach (FavoriteConfigurationElement favorite in removedFavorites) // remove
+            foreach (FavoriteConfigurationElement favorite in removedFavorites)
             {
                 foreach (String tag in favorite.TagList)
                 {
                     TagTreeNode tagNode = this.treeList.Nodes[tag] as TagTreeNode;
                     this.RemoveFavoriteFromTagNode(tagNode, favorite.Name);
                 }
+
+                this.RemoveFavoriteFromTagNode(this.unTaggedNode, favorite.Name);  
             }
         }
 
@@ -100,6 +105,11 @@ namespace Terminals
                 {
                     this.AddNewFavoriteNodeToTagNode(favorite, tagNode);
                 }
+            }
+
+            if (String.IsNullOrEmpty(favorite.Tags))
+            {
+                this.AddNewFavoriteNodeToTagNode(favorite, this.unTaggedNode);
             }
         }
 
@@ -140,20 +150,16 @@ namespace Terminals
             }
         }
 
-        internal void Load()
-        {
-
-        }
-
-        private void CreateAndAddTagNode(String tag)
+        private TagTreeNode CreateAndAddTagNode(String tag)
         {
             TagTreeNode tagNode = new TagTreeNode(tag);
             treeList.Nodes.Add(tagNode);
+            return tagNode;
         }
 
         internal void LoadTags()
         {
-            this.CreateAndAddTagNode(UNTAGGED_NODENAME);
+            this.unTaggedNode = this.CreateAndAddTagNode(Settings.UNTAGGED_NODENAME);
 
             foreach (string tagName in Settings.Tags)
             {
@@ -170,21 +176,14 @@ namespace Terminals
             }
         }
 
-        private void AddFavoriteNodes(TagTreeNode tagNode)
+        private static void AddFavoriteNodes(TagTreeNode tagNode)
         {
-            List<FavoriteConfigurationElement> tagFavorites = GetFavoritesByTag(tagNode.Text);
+            List<FavoriteConfigurationElement> tagFavorites = Settings.GetFavoritesByTag(tagNode.Text);
             foreach (var favorite in tagFavorites)
             {
                 var favoriteTreeNode = new FavoriteTreeNode(favorite);
                 tagNode.Nodes.Add(favoriteTreeNode);
             }
-        }
-
-        private static List<FavoriteConfigurationElement> GetFavoritesByTag(String tag)
-        {
-            return Settings.GetFavorites().ToList()
-                .Where(favorite => favorite.TagList.Contains(tag, StringComparer.CurrentCultureIgnoreCase))
-                .ToList();
         }
     }
 }

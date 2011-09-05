@@ -1065,6 +1065,7 @@ namespace Terminals.Configuration
                 AddFavoriteButton(favorite.Name);
 
             DelayConfigurationSave = false;
+            Save();
             DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
         }
 
@@ -1208,6 +1209,29 @@ namespace Terminals.Configuration
             if (section != null)
                 return section.Favorites;
             return null;
+        }
+
+        /// <summary>
+        /// Gets the default tag name for favorites without any tag
+        /// </summary>
+        internal const String UNTAGGED_NODENAME = "Untagged";
+
+        /// <summary>
+        /// Gets all favorites, which contain required tag. If, the tag is empty,
+        /// than returns "Untagged" favorites.
+        /// </summary>
+        internal static List<FavoriteConfigurationElement> GetFavoritesByTag(String tag)
+        {
+            if (String.IsNullOrEmpty(tag) || tag == UNTAGGED_NODENAME)
+            {
+                return GetFavorites().ToList()
+                    .Where(favorite => String.IsNullOrEmpty(favorite.Tags))
+                    .ToList();
+            }
+
+            return GetFavorites().ToList()
+                .Where(favorite => favorite.TagList.Contains(tag, StringComparer.CurrentCultureIgnoreCase))
+                .ToList();
         }
 
         public static FavoriteConfigurationElement GetOneFavorite(string connectionName)

@@ -141,14 +141,13 @@ namespace Terminals
 
                 this.terminalsControler = new TerminalTabsSelectionControler(this, this.tcTerminals);
 this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
-                    this.favoritesSeparator, this.tscConnectTo, this.serverToolStripMenuItem_Click,
-                    this.favoriteToolBar, this.toolStripMenuItemShowHideFavoriteToolbar,
-                    this.QuickContextMenu, this.QuickContextMenu_ItemClicked);
+                    this.tscConnectTo, this.serverToolStripMenuItem_Click,
+                    this.favoriteToolBar,this.QuickContextMenu, this.QuickContextMenu_ItemClicked);
+                this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
 
                 // Update the old treeview theme to the new theme from Win Vista and up
                 Native.Methods.SetWindowTheme(this.menuStrip.Handle, "Explorer", null);
 
-                this.LoadFavorites();
                 this.LoadGroups();
                 this.UpdateControls();
                 this.LoadWindowState();
@@ -238,7 +237,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
             {
                 return this._fullScreen;
             }
-
             set
             {
                 if (value)
@@ -249,6 +247,8 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
 
                 if (!_fullScreen)
                     this.ResetToolbars();
+
+                menuLoader.UpdateSwitchFullScreenMenuItemsVisibility(value);
             }
         }
 
@@ -258,8 +258,8 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
             {
                 if (this.terminalsControler.HasSelected)
                     return this.terminalsControler.Selected.Connection;
-                else
-                    return null;
+                
+                return null;
             }
         }
 
@@ -506,8 +506,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
 
                 if (result != TerminalFormDialogResult.Cancel)
                 {
-                    this.LoadFavorites();
-
                     if (result == TerminalFormDialogResult.SaveAndConnect)
                         this.CreateTerminalTab(frmNewTerminal.Favorite);
                 }
@@ -838,14 +836,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
             this.Invoke(_resetMethodInvoker);
         }
 
-        public void LoadFavorites()
-        {
-            this.Cursor = Cursors.WaitCursor;
-            menuLoader.FillMenu();
-            menuLoader.FillTrayContextMenu(this.FullScreen);
-            this.Cursor = Cursors.Default;
-        }
-
         private void LoadGroups()
         {
             GroupConfigurationElementCollection serversGroups = Settings.GetGroups();
@@ -902,7 +892,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
                 if (result != TerminalFormDialogResult.Cancel)
                 {
-                    this.LoadFavorites();
                     this.tscConnectTo.SelectedIndex = this.tscConnectTo.Items.IndexOf(frmNewTerminal.Favorite.Name);
 
                     if (result == TerminalFormDialogResult.SaveAndConnect)
@@ -1213,8 +1202,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
         {
             if (e.Button == MouseButtons.Right)
             {
-                // todo menuLoader.FillTrayContextMenu(this.FullScreen);
-
                 if (tcTerminals != null && sender != null)
                     this.QuickContextMenu.Show(tcTerminals, e.Location);
             }
@@ -1222,11 +1209,8 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
 
         private void QuickContextMenu_Opening(object sender, CancelEventArgs e)
         {
-            //if (this.QuickContextMenu.Items.Count <= 0)
-            {
-                tcTerminals_MouseClick(null, new MouseEventArgs(MouseButtons.Right, 1, 0, 0, 0));
-                e.Cancel = false;
-            }
+            tcTerminals_MouseClick(null, new MouseEventArgs(MouseButtons.Right, 1, 0, 0, 0));
+            e.Cancel = false;
         }
 
         private void QuickContextMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -1590,7 +1574,7 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
 
         private void tcTerminals_DoubleClick(object sender, EventArgs e)
         {
-            this.FullScreen = !this._fullScreen;
+            this.FullScreen = !this.FullScreen;
         }
 
         private void tsbFullScreen_Click(object sender, EventArgs e)
@@ -1621,7 +1605,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
         {
             OrganizeFavoritesForm conMgr = new OrganizeFavoritesForm();
             conMgr.ShowDialog();
-            LoadFavorites();
         }
 
         private void saveTerminalsAsGroupToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1710,7 +1693,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
         {
             OrganizeFavoritesToolbarForm frmOrganizeFavoritesToolbar = new OrganizeFavoritesToolbarForm();
             frmOrganizeFavoritesToolbar.ShowDialog();
-            //todo FavoritesMenuLoader.LoadFavoritesToolbar();
         }
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2119,7 +2101,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
         private void rebuildTagsIndexToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings.RebuildTagIndex();
-            this.LoadFavorites();
             this.LoadGroups();
             this.UpdateControls();
         }
@@ -2176,7 +2157,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
             OrganizeFavoritesForm conMgr = new OrganizeFavoritesForm();
             conMgr.CallImport();
             conMgr.ShowDialog();
-            LoadFavorites();
         }
 
         private void showInDualScreensToolStripMenuItem_Click(object sender, EventArgs e)

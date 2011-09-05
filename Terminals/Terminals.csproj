@@ -381,12 +381,6 @@
     <Compile Include="Network\PortScanner.Designer.cs">
       <DependentUpon>PortScanner.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\PortScanner1.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Network\PortScanner1.Designer.cs">
-      <DependentUpon>PortScanner1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Network\PortScanner\ConnectionState.cs" />
     <Compile Include="Network\PortScanner\NetworkScanResult.cs" />
     <Compile Include="Network\SubnetMask.cs" />
@@ -749,9 +743,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\FavoritesTreeView.resx">
       <DependentUpon>FavoritesTreeView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Network\PortScanner1.resx">
-      <DependentUpon>PortScanner1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>
