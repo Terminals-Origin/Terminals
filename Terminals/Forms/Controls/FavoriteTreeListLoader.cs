@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
-using Terminals.Forms;
 
-namespace Terminals
+namespace Terminals.Forms.Controls
 {
     /// <summary>
     /// Fills tree list with favorites

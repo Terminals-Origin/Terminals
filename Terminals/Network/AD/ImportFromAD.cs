@@ -8,7 +8,6 @@ namespace Terminals.Network
     internal partial class ImportFromAD : Form
     {
         private ActiveDirectoryClient adClient;
-        internal SortableList<FavoriteConfigurationElement> ImportedFavorites { get; private set; }
 
         public ImportFromAD()
         {
@@ -21,7 +20,6 @@ namespace Terminals.Network
 
             var computers = new SortableList<ActiveDirectoryComputer>();
             this.bsComputers.DataSource = computers;
-            this.ImportedFavorites = new SortableList<FavoriteConfigurationElement>();
         }
 
         private void ImportFromAD_Load(object sender, EventArgs e)
@@ -118,7 +116,6 @@ namespace Terminals.Network
             this.Cursor = Cursors.WaitCursor;
             List<FavoriteConfigurationElement> favoritesToImport = GetFavoritesFromBindingSource(this.domainTextbox.Text);
             Settings.AddFavorites(favoritesToImport, false);
-            this.ImportedFavorites.AddRange(favoritesToImport);
             this.Cursor = Cursors.Default;
             OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
         }

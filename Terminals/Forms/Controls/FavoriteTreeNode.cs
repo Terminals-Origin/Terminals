@@ -1,8 +1,6 @@
-﻿using System;
-using System.Windows.Forms;
-using Terminals.Connections;
+﻿using System.Windows.Forms;
 
-namespace Terminals.Forms
+namespace Terminals.Forms.Controls
 {
     internal class FavoriteTreeNode : TreeNode
     {
@@ -13,12 +11,9 @@ namespace Terminals.Forms
             this.Favorite = favorite;
             this.Tag = favorite; // temporar solution, for backwarad compatibility only
 
-            this.ImageIndex = IconIndexFromProtocol();
+            this.ImageIndex = FavoriteIcons.GetTreeviewImageListIndex(favorite);
             this.SelectedImageIndex = this.ImageIndex;
-
-            String service = ConnectionManager.GetPortName(favorite.Port, true);
-            this.ToolTipText = String.Format("{0} service at {1} (port {2})",
-                service, favorite.ServerName, favorite.Port);
+            this.ToolTipText = favorite.GetToolTipText();
         }
 
         /// <summary>
@@ -26,29 +21,5 @@ namespace Terminals.Forms
         /// </summary>
         internal FavoriteConfigurationElement Favorite { get; private set; }
 
-        /// <summary>
-        /// Gets the icon indexes by icons defined in FavoritesTreeView imageListIcons
-        /// </summary>
-        private Int32 IconIndexFromProtocol()
-        {
-            switch (this.Favorite.Protocol)
-            {
-                case ConnectionManager.RDP:
-                    return 2;
-                case ConnectionManager.HTTP:
-                case ConnectionManager.HTTPS:
-                    return 3;
-                case ConnectionManager.VNC:
-                    return 4;
-                case ConnectionManager.TELNET:
-                    return 5;
-                case ConnectionManager.SSH:
-                    return 6;
-                case ConnectionManager.VMRC:
-                default:
-                    return 7;
-            }
-
-        }
     }
 }

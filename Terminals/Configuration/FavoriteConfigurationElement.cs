@@ -72,11 +72,13 @@ namespace Terminals
         {
             String toolTip = String.Empty;
 
-            toolTip = String.Format("Computer: {0}{1}User: {2}{1}", this.ServerName, Environment.NewLine, Functions.UserDisplayName(this.DomainName, this.UserName));
+            toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
+                Environment.NewLine, this.ServerName, this.Port, Functions.UserDisplayName(this.DomainName, this.UserName));
 
             if (Settings.ShowFullInformationToolTips)
             {
-                toolTip += String.Format("Tag: {0}{1}Port: {2}{1}Connect to Console: {3}{1}Notes: {4}{1}", this.Tags, Environment.NewLine, this.Port, this.ConnectToConsole, this.Notes);
+                toolTip += String.Format("Tag: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
+                    Environment.NewLine, this.Tags, this.ConnectToConsole, this.Notes);
             }
 
             return toolTip;

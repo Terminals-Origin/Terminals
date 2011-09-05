@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using AxMSTSCLib;
 using TabControl;
 using Terminals.Forms;
+using Terminals.Forms.Controls;
 using Terminals.Forms.Rendering;
 using Terminals.CommandLine;
 using Terminals.Configuration;

@@ -52,6 +52,7 @@ namespace Terminals
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             var selectedFavorites = new List<FavoriteConfigurationElement>();
             foreach (DataGridViewRow selectedRow in this.dataGridFavorites.SelectedRows)
             {
@@ -60,7 +61,8 @@ namespace Terminals
             }
 
             Settings.DeleteFavorites(selectedFavorites);
-            this.bsFavorites.DataSource = Settings.GetFavorites().ToList();
+            AddFavoritesToBindingSource();
+            this.Cursor = Cursors.Default;
         }
 
         private void btnRename_Click(object sender, EventArgs e)
@@ -162,14 +164,14 @@ namespace Terminals
         {
             ImportFromAD activeDirectoryForm = new ImportFromAD();
             activeDirectoryForm.ShowDialog();
-            AddFavoritesToBindingSource(activeDirectoryForm.ImportedFavorites);
+            AddFavoritesToBindingSource();
         }
 
         private void networkDetectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NetworkScanner networkScanForm = new NetworkScanner();
             networkScanForm.ShowDialog();
-            AddFavoritesToBindingSource(networkScanForm.ImportedFavorites);
+            AddFavoritesToBindingSource();
         }
 
         private void ImportButton_Click(object sender, EventArgs e)
@@ -189,24 +191,20 @@ namespace Terminals
             {
                 String[] filenames = this.ImportOpenFileDialog.FileNames;
                 this.Focus();
+                this.Refresh();
                 this.Cursor = Cursors.WaitCursor;
 
                 List<FavoriteConfigurationElement> favorites = Importers.ImportFavorites(filenames);
                 Settings.AddFavorites(favorites, false);
-                AddFavoritesToBindingSource(favorites);
+                AddFavoritesToBindingSource();
 
                 this.Cursor = Cursors.Default;
                 ShowImportResultMessage(favorites.Count);
             }
         }
 
-        private void AddFavoritesToBindingSource(List<FavoriteConfigurationElement> importedFavorites)
+        private void AddFavoritesToBindingSource()
         {
-            //var favoritesSource = this.bsFavorites.DataSource as SortableList<FavoriteConfigurationElement>;
-            //favoritesSource.AddRange(importedFavorites);
-            // this.bsFavorites.DataSource = favoritesSource;
-            // todo better binding source update
-            // todo dont replace the existing favorites by imported items 
             this.bsFavorites.DataSource = Settings.GetFavorites().ToList();
             this.bsFavorites.ResetBindings(false);
         }

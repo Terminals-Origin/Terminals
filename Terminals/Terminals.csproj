@@ -288,6 +288,7 @@
     </Compile>
     <Compile Include="Data\DataDispatcher.cs" />
     <Compile Include="Data\FavoritesChangedEventArgs.cs" />
+    <Compile Include="Forms\Controls\FavoriteIcons.cs" />
     <Compile Include="Forms\Controls\FavoritesMenuLoader.cs" />
     <Compile Include="Data\ListStringHelper.cs" />
     <Compile Include="Data\TagsChangedArgs.cs" />
@@ -464,6 +465,7 @@
     <Compile Include="Data\SerializableDictionary.cs" />
     <Compile Include="Data\SerializableSortedDictionary.cs" />
     <Compile Include="Settings\FavoritesFactory.cs" />
+    <Compile Include="Settings\Settings_Favorites.cs" />
     <Compile Include="Settings\SortProperties.cs" />
     <Compile Include="Settings\StoredCredentials.cs" />
     <Compile Include="Settings\ToolStripSetting.cs" />
@@ -906,6 +908,11 @@
     <None Include="Resources\terminalsicon.png" />
     <None Include="Resources\terminalsbanner-small.png" />
     <None Include="Resources\terminalsbanner1.png" />
+    <None Include="Resources\treeIcon_ssh.png" />
+    <None Include="Resources\treeIcon_telnet.png" />
+    <None Include="Resources\treeIcon_vnc.png" />
+    <None Include="Resources\treeIcon_http.png" />
+    <None Include="Resources\treeIcon_rdp.png" />
     <Content Include="terminalsicon.ico" />
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

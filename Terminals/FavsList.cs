@@ -456,6 +456,7 @@ namespace Terminals
                     }
                 }
 
+                Settings.DelayConfigurationSave = false;
                 Settings.Config.Save();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();

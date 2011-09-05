@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -9,7 +8,7 @@ using Terminals.Data;
 using Terminals.Properties;
 using Settings = Terminals.Configuration.Settings;
 
-namespace Terminals
+namespace Terminals.Forms.Controls
 {
     /// <summary>
     /// Fills menu, tool strip menu and tool bar with favorite buttons
@@ -225,28 +224,12 @@ namespace Terminals
 
         private ToolStripButton CreateFavoriteButton(FavoriteConfigurationElement favorite)
         {
-            Image buttonImage = GetMenuItemImage(favorite.ToolBarIcon, Resources.smallterm);
+            Image buttonImage = FavoriteIcons.GetFavoriteIcon(favorite);
             ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, buttonImage, this.serverToolStripMenuItem_Click);
+            favoriteBtn.ToolTipText = favorite.GetToolTipText();
             favoriteBtn.Tag = favorite;
             favoriteBtn.Overflow = ToolStripItemOverflow.AsNeeded;
             return favoriteBtn;
-        }
-
-        private static Image GetMenuItemImage(String imageFilePath, Image defaultIcon)
-        {
-            try
-            {
-                if (!String.IsNullOrEmpty(imageFilePath) && File.Exists(imageFilePath))
-                {
-                    return Image.FromFile(imageFilePath);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.Error("Error Loading Favorites Toolbar (Button Bar)", ex);
-            }
-
-            return defaultIcon;
         }
 
         #endregion
@@ -311,7 +294,7 @@ namespace Terminals
         private void AddSpecialMenuItem(SpecialCommandConfigurationElement commad)
         {
             ToolStripItem specialItem = CreateSpecialItem(commad);
-            specialItem.Image = GetMenuItemImage(commad.Thumbnail, Resources.server_administrator_icon);
+            specialItem.Image = FavoriteIcons.LoadImage(commad.Thumbnail, Resources.server_administrator_icon);
             specialItem.ImageTransparentColor = Color.Magenta;
             specialItem.Tag = commad;
             specialItem.Click += new EventHandler(specialItem_Click);
@@ -361,7 +344,8 @@ namespace Terminals
         {
             ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
             item.Tag = FAVORITE;
-            item.Image = GetMenuItemImage(favorite.ToolBarIcon, Resources.smallterm);
+            item.Image = FavoriteIcons.GetFavoriteIcon(favorite);
+            item.ToolTipText = favorite.GetToolTipText();
             return item;
         }
 
@@ -379,7 +363,10 @@ namespace Terminals
         {
             if (!this.alphabeticalMenu.HasDropDownItems)
             {
-                foreach (FavoriteConfigurationElement favorite in Settings.GetFavorites())
+                List<FavoriteConfigurationElement> favorites = Settings.GetFavorites()
+                    .ToList().SortByProperty("Name",SortOrder.Ascending);
+
+                foreach (FavoriteConfigurationElement favorite in favorites)
                 {
                     ToolStripMenuItem sortedItem = CreateFavoriteMenuItem(favorite);
                     this.alphabeticalMenu.DropDownItems.Add(sortedItem);

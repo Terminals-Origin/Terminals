@@ -472,6 +472,41 @@ namespace Terminals.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap treeIcon_http {
+            get {
+                object obj = ResourceManager.GetObject("treeIcon_http", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap treeIcon_rdp {
+            get {
+                object obj = ResourceManager.GetObject("treeIcon_rdp", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap treeIcon_ssh {
+            get {
+                object obj = ResourceManager.GetObject("treeIcon_ssh", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap treeIcon_telnet {
+            get {
+                object obj = ResourceManager.GetObject("treeIcon_telnet", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap treeIcon_vnc {
+            get {
+                object obj = ResourceManager.GetObject("treeIcon_vnc", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap XPfolder_closed {
             get {
                 object obj = ResourceManager.GetObject("XPfolder_closed", resourceCulture);

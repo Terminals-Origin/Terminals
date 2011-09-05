@@ -19,7 +19,6 @@ namespace Terminals
     {
         private NetworkScanManager manager;
         private bool validation = false;
-        internal SortableList<FavoriteConfigurationElement> ImportedFavorites { get; private set; }
 
         internal NetworkScanner()
         {
@@ -31,7 +30,6 @@ namespace Terminals
 
             Server.OnClientConnection += new Server.ClientConnection(Server_OnClientConnection);
             Client.OnServerConnection += new Client.ServerConnection(Client_OnServerConnection);
-            this.ImportedFavorites = new SortableList<FavoriteConfigurationElement>();
             
             this.bsScanResults.DataSource = new SortableList<NetworkScanResult>();
         }
@@ -184,7 +182,6 @@ namespace Terminals
             this.Cursor = Cursors.WaitCursor;
             List<FavoriteConfigurationElement> favoritesToImport = GetFavoritesFromBindingSource(tags);
             Settings.AddFavorites(favoritesToImport, false);
-            this.ImportedFavorites.AddRange(favoritesToImport);
             this.Cursor = Cursors.Default;
             OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
         }
@@ -255,7 +252,6 @@ namespace Terminals
             }
 
             Settings.AddFavorites(importedFavorites, true);
-            this.ImportedFavorites.AddRange(importedFavorites);
             return importedFavorites.Count;
         }
 
