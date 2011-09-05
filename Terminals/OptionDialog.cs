@@ -32,7 +32,7 @@ namespace Terminals.Forms
             this.SetFormSize();
 
             // Update the old treeview theme to the new theme
-            NativeApi.SetWindowTheme(this.OptionsTreeView.Handle, "Explorer", null);
+            Native.Methods.SetWindowTheme(this.OptionsTreeView.Handle, "Explorer", null);
 
             // General tab
             this.NeverShowTerminalsCheckbox.Checked = Settings.NeverShowTerminalsWindow;

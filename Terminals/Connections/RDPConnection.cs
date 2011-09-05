@@ -367,11 +367,12 @@ namespace Terminals.Connections
             else
                 e.Effect = DragDropEffects.None;
         }
+
         private void axMsTscAx_OnRequestLeaveFullScreen(object sender, EventArgs e)
         {
             ParentForm.tsbGrabInput.Checked = false;
             ParentForm.UpdateControls();
-            NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+            Native.Methods.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
         }
 
         private void axMsTscAx_OnRequestGoFullScreen(object sender, EventArgs e)

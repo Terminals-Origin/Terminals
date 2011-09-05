@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Terminals.Connections;
 
-namespace Terminals.Forms.Controls
+namespace Terminals.Forms
 {
     internal class FavoriteTreeNode : TreeNode
     {

@@ -140,10 +140,13 @@ namespace Terminals
                 ApplyTheme();
 
                 this.terminalsControler = new TerminalTabsSelectionControler(this, this.tcTerminals);
-                this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
+this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
                     this.favoritesSeparator, this.tscConnectTo, this.serverToolStripMenuItem_Click,
                     this.favoriteToolBar, this.toolStripMenuItemShowHideFavoriteToolbar,
                     this.QuickContextMenu, this.QuickContextMenu_ItemClicked);
+
+                // Update the old treeview theme to the new theme from Win Vista and up
+                Native.Methods.SetWindowTheme(this.menuStrip.Handle, "Explorer", null);
 
                 this.LoadFavorites();
                 this.LoadGroups();
@@ -190,7 +193,7 @@ namespace Terminals
                 ToolStripManager.Renderer = new ToolStripProfessionalRenderer();
 
             // Update the old treeview theme to the new theme from Win Vista and up
-            NativeApi.SetWindowTheme(this.menuStrip.Handle, "Explorer", null);
+            Native.Methods.SetWindowTheme(this.menuStrip.Handle, "Explorer", null);
         }
 
         private void ShowWizardAndReloadSpecialCommands()
@@ -451,8 +454,9 @@ namespace Terminals
             {
                 this.Show();
                 if (WindowState == FormWindowState.Minimized)
-                    NativeApi.ShowWindow(new HandleRef(this, this.Handle), 9);
-                NativeApi.SetForegroundWindow(new HandleRef(this, this.Handle));
+                    Native.Methods.ShowWindow(new HandleRef(this, this.Handle), 9);
+
+                Native.Methods.SetForegroundWindow(new HandleRef(this, this.Handle));
             }
 
             CreateTerminalTab(favorite);
@@ -1321,8 +1325,9 @@ namespace Terminals
         private void SingleInstanceApplication_NewInstanceMessage(object sender, object message)
         {
             if (this.WindowState == FormWindowState.Minimized)
-                NativeApi.ShowWindow(new HandleRef(this, this.Handle), 9);
-            NativeApi.SetForegroundWindow(new HandleRef(this, this.Handle));
+                Native.Methods.ShowWindow(new HandleRef(this, this.Handle), 9);
+
+            Native.Methods.SetForegroundWindow(new HandleRef(this, this.Handle));
             this.Activate();
         }
 

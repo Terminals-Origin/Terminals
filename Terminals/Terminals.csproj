@@ -142,6 +142,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Design" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
@@ -313,11 +314,26 @@
     <Compile Include="Forms\Controls\FavoritesTreeView.Designer.cs">
       <DependentUpon>FavoritesTreeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Controls\FavoriteTreeNode.cs" />
-    <Compile Include="Forms\Controls\TagTreeNode.cs" />
-    <Compile Include="Forms\SplitButton.cs">
+    <Compile Include="Forms\FavoriteTreeNode.cs" />
+    <Compile Include="Forms\Controls\IPAddressControl\FieldChangedEventArgs.cs" />
+    <Compile Include="Forms\Controls\IPAddressControl\IPAddressControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\Controls\IPAddressControl\IPAddressControlDesigner.cs" />
+    <Compile Include="Forms\Controls\IPAddressControl\IPAddressDotControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\IPAddressControl\IPAddressFieldControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\SplitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\Render\Office2007BlackColorTable.cs" />
+    <Compile Include="Forms\Render\Office2007BlueColorTable.cs" />
+    <Compile Include="Forms\Render\Office2007Helpers.cs" />
+    <Compile Include="Forms\Render\Office2007Renderer.cs" />
+    <Compile Include="Forms\TagTreeNode.cs" />
     <Compile Include="Data\History\HistoryController.cs" />
     <Compile Include="Data\History\HistoryByFavorite.cs" />
     <Compile Include="Data\History\HistoryItem.cs" />
@@ -337,6 +353,9 @@
     <Compile Include="ManageToolStrip.Designer.cs">
       <DependentUpon>ManageToolStrip.cs</DependentUpon>
     </Compile>
+    <Compile Include="Native\Enums.cs" />
+    <Compile Include="Native\Methods.cs" />
+    <Compile Include="Native\Structs.cs" />
     <Compile Include="Network\AD\ActiveDirectoryClient.cs" />
     <Compile Include="Network\AD\ActiveDirectoryComputer.cs" />
     <Compile Include="Network\DNS\Adapter.cs" />
@@ -347,6 +366,7 @@
     <Compile Include="Network\AD\ImportFromAD.Designer.cs">
       <DependentUpon>ImportFromAD.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\IPAddressExtensions.cs" />
     <Compile Include="Network\MagicPaket.cs" />
     <Compile Include="Network\Pcap\PacketCapture.cs">
       <SubType>UserControl</SubType>
@@ -361,8 +381,15 @@
     <Compile Include="Network\PortScanner.Designer.cs">
       <DependentUpon>PortScanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="Network\PortScanner1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Network\PortScanner1.Designer.cs">
+      <DependentUpon>PortScanner1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\PortScanner\ConnectionState.cs" />
     <Compile Include="Network\PortScanner\NetworkScanResult.cs" />
+    <Compile Include="Network\SubnetMask.cs" />
     <Compile Include="Network\TraceRoute\RouteHopFoundEventArgs.cs" />
     <Compile Include="Network\TraceRoute\TraceRoute.cs">
       <SubType>Component</SubType>
@@ -387,10 +414,6 @@
     <Compile Include="Network\WMI\WMIServerCredentials.Designer.cs">
       <DependentUpon>WMIServerCredentials.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms.Rendering\Office2007BlackColorTable.cs" />
-    <Compile Include="Forms.Rendering\Office2007BlueColorTable.cs" />
-    <Compile Include="Forms.Rendering\Office2007Helpers.cs" />
-    <Compile Include="Forms.Rendering\Office2007Renderer.cs" />
     <Compile Include="Forms\AmazonOptionPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -541,7 +564,6 @@
     <Compile Include="ExportImport\Import\ImportRDP.cs" />
     <Compile Include="ExportImport\Import\IImport.cs" />
     <Compile Include="ExportImport\Import\ImportMuRD.cs" />
-    <Compile Include="NativeApi.cs" />
     <Compile Include="Network\PortScanner\NetworkScanner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -728,6 +750,9 @@
     <EmbeddedResource Include="Forms\Controls\FavoritesTreeView.resx">
       <DependentUpon>FavoritesTreeView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Network\PortScanner1.resx">
+      <DependentUpon>PortScanner1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkScanner.cs</DependentUpon>
@@ -837,7 +862,6 @@
       <DependentUpon>RequestPassword.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings\Settings.cs" />
-    <Compile Include="SHApi.cs" />
     <Compile Include="SHFileOperationWrapper.cs" />
     <Compile Include="SingleInstanceApplication.cs" />
     <Compile Include="TerminalServices\Client.cs" />

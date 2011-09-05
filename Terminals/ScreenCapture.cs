@@ -1,71 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 using System.IO;
-using System.Runtime.InteropServices;
 using Terminals.Configuration;
 
 namespace Terminals
 {
     public delegate Bitmap CaptureHandleDelegateHandler(IntPtr handle);
-
-    [System.Security.SuppressUnmanagedCodeSecurity()]
-    [System.Runtime.InteropServices.ComVisible(false)]
-    internal sealed class NativeMethods
-    {
-        private NativeMethods()
-        {
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        internal struct RECT
-        {
-            public int left;
-            public int top;
-            public int right;
-            public int bottom;
-
-            public RECT(int left, int top, int right, int bottom)
-            {
-                this.left = left;
-                this.top = top;
-                this.right = right;
-                this.bottom = bottom;
-            }
-
-            public Rectangle Rect
-            {
-                get { return new Rectangle(this.left, this.top, this.right - this.left, this.bottom - this.top); }
-            }
-
-            public static RECT FromXYWH(int x, int y, int width, int height)
-            {
-                return new RECT(x, y, x + width, y + height);
-            }
-
-            public static RECT FromRectangle(Rectangle rect)
-            {
-                return new RECT(rect.Left, rect.Top, rect.Right, rect.Bottom);
-            }
-        }
-
-        [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-        public static extern bool GetWindowRect(IntPtr hwnd, out RECT rect);
-
-        [DllImport("user32.dll", ExactSpelling = true, CharSet = CharSet.Auto)]
-        public static extern bool BringWindowToTop(IntPtr hWnd);
-
-        public static Rectangle GetWindowRect(IntPtr hwnd)
-        {
-            RECT rect = new RECT();
-            GetWindowRect(hwnd, out rect);
-            return rect.Rect;
-        }
-    }
 
     public class ImageFormatHandler
     {
@@ -431,7 +374,7 @@ namespace Terminals
 
         public virtual Bitmap Capture(IntPtr handle)
         {
-            NativeMethods.BringWindowToTop(handle);
+            Native.Methods.BringWindowToTop(handle);
             CaptureHandleDelegateHandler dlg = new CaptureHandleDelegateHandler(this.CaptureHandle);
             IAsyncResult result = dlg.BeginInvoke(handle, null, null);
             return dlg.EndInvoke(result);
@@ -445,7 +388,7 @@ namespace Terminals
             {
                 using (Graphics graphics = Graphics.FromHwnd(handle))
                 {
-                    Rectangle rc = NativeMethods.GetWindowRect(handle);
+                    Rectangle rc = Native.Methods.GetWindowRect(handle);
 
                     if ((int)graphics.VisibleClipBounds.Width > 0 && (int)graphics.VisibleClipBounds.Height > 0)
                     {

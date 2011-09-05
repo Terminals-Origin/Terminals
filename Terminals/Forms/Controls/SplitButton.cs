@@ -9,10 +9,10 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
-namespace Terminals.Forms
+namespace Terminals.Forms.Controls
 {
     [DebuggerNonUserCode()]
-    public class SplitButton : Button
+    internal class SplitButton : Button
     {
         PushButtonState _state;
 

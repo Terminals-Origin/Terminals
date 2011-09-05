@@ -27,11 +27,13 @@ namespace Terminals
             this._historyInvoker = new MethodInvoker(UpdateHistory);
 
             // Update the old treeview theme to the new theme from Win Vista and up
-            NativeApi.SetWindowTheme(this.favsTree.Handle, "Explorer", null);
-            NativeApi.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
+            Native.Methods.SetWindowTheme(this.favsTree.Handle, "Explorer", null);
+            Native.Methods.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
             this.favsTree.Load();
         }
 
+        #region Private methods
+        
         private MainForm GetMainForm()
         {
             if (this._mainForm == null)
@@ -46,7 +48,7 @@ namespace Terminals
             this._dirtyHistory = true;
         }
 
-        #region private
+        
         private void UpdateHistory()
         {
             lock (this._historyLock)
@@ -106,6 +108,36 @@ namespace Terminals
             }
         }
 
+        private void Connect(TreeNode SelectedNode, bool AllChildren, bool Console, bool NewWindow)
+        {
+            if (AllChildren)
+            {
+                foreach (TreeNode node in SelectedNode.Nodes)
+                {
+                    FavoriteConfigurationElement fav = (node.Tag as FavoriteConfigurationElement);
+                    if (fav != null)
+                    {
+                        this.GetMainForm().Connect(fav.Name, Console, NewWindow);
+                    }
+                }
+            }
+            else
+            {
+                FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+                if (fav != null)
+                {
+                    this.GetMainForm().Connect(fav.Name, Console, NewWindow);
+                }
+            }
+
+            this.contextMenuStrip1.Close();
+            this.contextMenuStrip2.Close();
+        }
+
+        #endregion
+
+        #region Private event handler methods
+
         private void HistoryTreeView_DoubleClick(object sender, EventArgs e)
         {
             this.StartConnection(this.historyTreeView);
@@ -122,24 +154,6 @@ namespace Terminals
             this.favsTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.FavsTree_NodeMouseClick);
             this._historyController.OnHistoryLoaded += new HistoryController.HistoryLoaded(this.History_OnHistoryLoaded);
             this._historyController.LazyLoadHistory();
-        }
-
-        private void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right)
-            {
-                this.consoleToolStripMenuItem.Checked = false;
-                this.newWindowToolStripMenuItem.Checked = false;
-                this.consoleAllToolStripMenuItem.Checked = false;
-                this.newWindowAllToolStripMenuItem.Checked = false;
-
-                this.favsTree.SelectedNode = e.Node;
-
-                if (this.favsTree.SelectedFavorite != null)
-                    this.favsTree.ContextMenuStrip = this.contextMenuStrip1;
-                else
-                    this.favsTree.ContextMenuStrip = this.contextMenuStrip2;
-            }
         }
 
         private void pingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -175,11 +189,6 @@ namespace Terminals
             FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().ShowManageTerminalForm(fav);
-        }
-
-        private void FavsTree_DoubleClick(object sender, EventArgs e)
-        {
-            this.StartConnection(favsTree);
         }
 
         private void ShutdownToolStripMenuItem_Click(object sender, EventArgs e)
@@ -278,32 +287,6 @@ namespace Terminals
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Connect(this.favsTree.SelectedNode, false, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked);
-        }
-
-        private void Connect(TreeNode SelectedNode, bool AllChildren, bool Console, bool NewWindow)
-        {
-            if (AllChildren)
-            {
-                foreach (TreeNode node in SelectedNode.Nodes)
-                {
-                    FavoriteConfigurationElement fav = (node.Tag as FavoriteConfigurationElement);
-                    if (fav != null)
-                    {
-                        this.GetMainForm().Connect(fav.Name, Console, NewWindow);
-                    }
-                }
-            }
-            else
-            {
-                FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
-                if (fav != null)
-                {
-                    this.GetMainForm().Connect(fav.Name, Console, NewWindow);
-                }
-            }
-
-            this.contextMenuStrip1.Close();
-            this.contextMenuStrip2.Close();
         }
 
         private void normallyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -497,6 +480,29 @@ namespace Terminals
             }
         }
 
+        private void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                this.consoleToolStripMenuItem.Checked = false;
+                this.newWindowToolStripMenuItem.Checked = false;
+                this.consoleAllToolStripMenuItem.Checked = false;
+                this.newWindowAllToolStripMenuItem.Checked = false;
+
+                this.favsTree.SelectedNode = e.Node;
+
+                if (this.favsTree.SelectedFavorite != null)
+                    this.favsTree.ContextMenuStrip = this.contextMenuStrip1;
+                else
+                    this.favsTree.ContextMenuStrip = this.contextMenuStrip2;
+            }
+        }
+
+        private void FavsTree_DoubleClick(object sender, EventArgs e)
+        {
+            this.StartConnection(favsTree);
+        }
+
         private void favsTree_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
@@ -529,8 +535,6 @@ namespace Terminals
                 mainForm.Connect(tv.SelectedNode.Text, false, false);
             }
         }
-
-        #endregion
 
         private void historyTreeView_KeyUp(object sender, KeyEventArgs e)
         {
@@ -585,5 +589,7 @@ namespace Terminals
         {
             this.contextMenuStrip2.Show();
         }
+
+        #endregion
     }
 }

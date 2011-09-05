@@ -146,7 +146,7 @@ namespace Terminals.Connections
             bool wasSelected = tabPage.Selected;
             this.ParentForm.RemoveTabPage(tabPage);
             if (wasSelected)
-                NativeApi.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+                Native.Methods.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
 
             this.ParentForm.UpdateControls();
         }

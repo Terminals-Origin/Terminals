@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Terminals.Forms.Controls
+namespace Terminals.Forms
 {
     /// <summary>
     /// Tree node for tags, this simulates lazy loading using dummy node,

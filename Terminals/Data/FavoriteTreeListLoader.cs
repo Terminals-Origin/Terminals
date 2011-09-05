@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
-using Terminals.Forms.Controls;
+using Terminals.Forms;
 
 namespace Terminals
 {

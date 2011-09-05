@@ -1,20 +1,23 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
 
 namespace Terminals.Forms.Controls
 {
     /// <summary>
-    /// Treview in main window to present favorites organized by Tags
+    /// Treeview in main window to present favorites organized by Tags
     /// </summary>
     internal partial class FavoritesTreeView : TreeView
     {
+        private FavoriteTreeListLoader loader;
+
         public FavoritesTreeView()
         {
             InitializeComponent();
 
             loader = new FavoriteTreeListLoader(this);
         }
-
-        private FavoriteTreeListLoader loader;
 
         internal FavoriteConfigurationElement SelectedFavorite
         {
