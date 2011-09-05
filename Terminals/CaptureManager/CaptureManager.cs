@@ -40,7 +40,7 @@ namespace Terminals.CaptureManager
             string filename = DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss");
             string tempFile = Path.Combine(CaptureRoot, string.Format("{0}.png", filename));
             ScreenCapture sc = new ScreenCapture();
-            Bitmap bmp = sc.CaptureControl(tab, tempFile, ImageFormatHandler.ImageFormatTypes.imgPNG);
+            Bitmap bmp = sc.CaptureControl(tab, tempFile, ImageFormatTypes.imgPNG);
 
             if (Settings.EnableCaptureToClipboard)
                 Clipboard.SetImage(bmp);

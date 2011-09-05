@@ -185,6 +185,9 @@
       <DependentUpon>CaptureManagerLayout.cs</DependentUpon>
     </Compile>
     <Compile Include="CaptureManager\Captures.cs" />
+    <Compile Include="CaptureManager\CaptureType.cs" />
+    <Compile Include="CaptureManager\ImageFormatHandler.cs" />
+    <Compile Include="CaptureManager\ImageFormatTypes.cs" />
     <Compile Include="CommandLine\TerminalsCA.cs" />
     <Compile Include="Configuration\Colors.cs" />
     <Compile Include="Configuration\DesktopSize.cs" />
@@ -257,10 +260,10 @@
     <Compile Include="Connections\VNCConnection.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="ConsolePreferences.cs">
+    <Compile Include="Forms\Controls\ConsolePreferences.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ConsolePreferences.Designer.cs">
+    <Compile Include="Forms\Controls\ConsolePreferences.Designer.cs">
       <DependentUpon>ConsolePreferences.cs</DependentUpon>
     </Compile>
     <Compile Include="Converters\ColorParser.cs" />
@@ -285,7 +288,7 @@
     </Compile>
     <Compile Include="Data\DataDispatcher.cs" />
     <Compile Include="Data\FavoritesChangedEventArgs.cs" />
-    <Compile Include="Data\FavoritesMenuLoader.cs" />
+    <Compile Include="Forms\Controls\FavoritesMenuLoader.cs" />
     <Compile Include="Data\ListStringHelper.cs" />
     <Compile Include="Data\TagsChangedArgs.cs" />
     <Compile Include="DiskDrivesForm.cs">
@@ -301,7 +304,7 @@
       <DependentUpon>ExportFrom.cs</DependentUpon>
     </Compile>
     <Compile Include="ExportImport\ExportImport.cs" />
-    <Compile Include="Data\FavoriteTreeListLoader.cs" />
+    <Compile Include="Forms\Controls\FavoriteTreeListLoader.cs" />
     <Compile Include="FavsList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -314,7 +317,7 @@
     <Compile Include="Forms\Controls\FavoritesTreeView.Designer.cs">
       <DependentUpon>FavoritesTreeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FavoriteTreeNode.cs" />
+    <Compile Include="Forms\Controls\FavoriteTreeNode.cs" />
     <Compile Include="Forms\Controls\IPAddressControl\FieldChangedEventArgs.cs" />
     <Compile Include="Forms\Controls\IPAddressControl\IPAddressControl.cs">
       <SubType>Component</SubType>
@@ -333,7 +336,7 @@
     <Compile Include="Forms\Render\Office2007BlueColorTable.cs" />
     <Compile Include="Forms\Render\Office2007Helpers.cs" />
     <Compile Include="Forms\Render\Office2007Renderer.cs" />
-    <Compile Include="Forms\TagTreeNode.cs" />
+    <Compile Include="Forms\Controls\TagTreeNode.cs" />
     <Compile Include="Data\History\HistoryController.cs" />
     <Compile Include="Data\History\HistoryByFavorite.cs" />
     <Compile Include="Data\History\HistoryItem.cs" />
@@ -466,19 +469,19 @@
     <Compile Include="Settings\ToolStripSetting.cs" />
     <Compile Include="Settings\ToolStripSettings.cs" />
     <Compile Include="Data\SortableList.cs" />
-    <Compile Include="SortableUnboundGrid.cs">
+    <Compile Include="Forms\Controls\SortableUnboundGrid.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SortableUnboundGrid.Designer.cs">
+    <Compile Include="Forms\Controls\SortableUnboundGrid.Designer.cs">
       <DependentUpon>SortableUnboundGrid.cs</DependentUpon>
     </Compile>
-    <Compile Include="TcpProtocol.cs" />
-    <Compile Include="TelnetProtocol.cs" />
-    <Compile Include="TelnetStream.cs" />
-    <Compile Include="TerminalTabControlItem.cs">
+    <Compile Include="Connections\TcpProtocol.cs" />
+    <Compile Include="Connections\TelnetProtocol.cs" />
+    <Compile Include="Connections\TelnetStream.cs" />
+    <Compile Include="Forms\Controls\TerminalTabControlItem.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="TerminalTabsSelectionControler.cs" />
+    <Compile Include="Forms\Controls\TerminalTabsSelectionControler.cs" />
     <Compile Include="Updates\HTTP.cs" />
     <Compile Include="Updates\RSS\Collections\ExceptionCollection.cs" />
     <Compile Include="Updates\RSS\Collections\RssCategoryCollection.cs" />
@@ -838,7 +841,7 @@
     <Compile Include="Network\PortScanner\NetworkScanManager.cs" />
     <Compile Include="Network\PortScanner\ScanItemEventArgs.cs" />
     <Compile Include="Data\Serialization\Serialize.cs" />
-    <Compile Include="ScreenCapture.cs" />
+    <Compile Include="CaptureManager\ScreenCapture.cs" />
     <Compile Include="ProtocolHandler.cs" />
     <Compile Include="Security\Decryptor.cs" />
     <Compile Include="Security\DecryptTransformer.cs" />
@@ -853,7 +856,7 @@
       <DependentUpon>RequestPassword.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings\Settings.cs" />
-    <Compile Include="SHFileOperationWrapper.cs" />
+    <Compile Include="Connections\SHFileOperationWrapper.cs" />
     <Compile Include="SingleInstanceApplication.cs" />
     <Compile Include="TerminalServices\Client.cs" />
     <Compile Include="TerminalServices\ConnectionStates.cs" />
@@ -952,7 +955,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>HTTPConnection.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConsolePreferences.resx">
+    <EmbeddedResource Include="Forms\Controls\ConsolePreferences.resx">
       <DependentUpon>ConsolePreferences.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Credentials\CredentialManager.resx">
@@ -1013,7 +1016,7 @@
       <DependentUpon>PopupTerminal.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SortableUnboundGrid.resx">
+    <EmbeddedResource Include="Forms\Controls\SortableUnboundGrid.resx">
       <DependentUpon>SortableUnboundGrid.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Wizard\CommonOptions.resx">
