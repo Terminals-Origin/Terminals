@@ -160,6 +160,9 @@ namespace Terminals.Forms.Controls
         {
             this.unTaggedNode = this.CreateAndAddTagNode(Settings.UNTAGGED_NODENAME);
 
+            if(Settings.Tags == null) // because of designer
+                return;
+            
             foreach (string tagName in Settings.Tags)
             {
                 this.CreateAndAddTagNode(tagName);

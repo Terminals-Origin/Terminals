@@ -1,51 +1,23 @@
 ﻿using System;
-using System.Text;
 
 namespace Terminals
 {
+    /// <summary>
+    /// One tool strip configuration. Used to backup and restore the window layout.
+    /// </summary>
     public class ToolStripSetting
     {
-        private string _name;
-        private string _dock;
-        private int _left;
-        private int _top;
-        private bool _visible;
-        private int _row;
+        public String Name { get; set; }
+        public Boolean Visible { get; set; }
+        public Int32 Row { get; set; }
+        public String Dock { get; set; }
+        public Int32 Left { get; set; }
+        public Int32 Top { get; set; }
 
-        public string Name
+        public override String ToString()
         {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-        public bool Visible
-        {
-            get { return _visible; }
-            set { _visible = value; }
-        }
-
-        public int Row
-        {
-            get { return _row; }
-            set { _row = value; }
-        }
-
-        public string Dock
-        {
-            get { return _dock; }
-            set { _dock = value; }
-        }
-
-        public int Left
-        {
-            get { return _left; }
-            set { _left = value; }
-        }
-
-        public int Top
-        {
-            get { return _top; }
-            set { _top = value; }
+            return String.Format("ToolStripSetting:Name={0},Visible={1},Row={2},Position=[{3},{4}],Dock={5}",
+                                    this.Name, this.Visible, this.Row, this.Left, this.Top, this.Dock);
         }
     }
 }

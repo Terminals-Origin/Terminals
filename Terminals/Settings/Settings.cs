@@ -11,7 +11,6 @@ namespace Terminals.Configuration
     internal static partial class Settings
     {
         private static SysConfig.Configuration _config = null;
-        private static string ToolStripSettingsFile = "ToolStrip.settings.config";
         private static TerminalsConfigurationSection _terminalsConfigurationSection;
         private static string keyMaterial = string.Empty;
 
@@ -930,7 +929,7 @@ namespace Terminals.Configuration
             set
             {
                 SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ShowFavoritePanel = value;
+                GetSection().ShowFavoritePanel = value;
                 if (!DelayConfigurationSave)
                     configuration.Save();
             }
@@ -940,19 +939,11 @@ namespace Terminals.Configuration
         {
             get
             {
-                ToolStripSettings settings = null;
-                if (File.Exists(ToolStripSettingsFile))
-                {
-                    string s = File.ReadAllText(ToolStripSettingsFile);
-                    settings = ToolStripSettings.LoadFromString(s);
-                }
-
-                return settings;
+                return ToolStripSettings.Load();
             }
-
             set
             {
-                File.WriteAllText(ToolStripSettingsFile, value.ToString());
+                value.Save();
             }
         }
 
@@ -1500,7 +1491,9 @@ namespace Terminals.Configuration
                 catch (Exception importException)
                 {
                     Logging.Log.Info("Trying to import connections failed", importException);
+#if !DEBUG
                     MessageBox.Show(string.Format("Terminals was NOT able to automatically upgrade your existing connections.\r\nError:{0}", importException.Message));
+#endif
                 }
             }
 

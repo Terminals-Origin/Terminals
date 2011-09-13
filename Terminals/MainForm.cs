@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -38,24 +37,16 @@ namespace Terminals
         private static MainForm _mainForm = null;
 
         private MethodInvoker _specialCommandsMIV;
-        private MethodInvoker _resetMethodInvoker;
         private MethodInvoker _releaseMIV;
-        private Point _lastLocation;
-        private Size _lastSize;
-        private FormWindowState _lastState;
         private FormSettings _formSettings;
-        private Int32 _currentToolBarCount = 0;
         private FormWindowState _originalFormWindowState;
         private TabControlItem _currentToolTipItem = null;
         private ToolTip _currentToolTip = null;
-        private Boolean _fullScreen;
         private Boolean _allScreens = false;
-        private Boolean _stdToolbarState = true;
-        private Boolean _specialToolbarState = true;
-        private Boolean _favToolbarState = true;
         private TerminalTabsSelectionControler terminalsControler;
         private Int32 MouseBreakThreshold = 200;
         private FavoritesMenuLoader menuLoader;
+        private MainFormFullScreenSwitch fullScreenSwitch;
 
         #endregion
 
@@ -127,13 +118,12 @@ namespace Terminals
                 _mainForm = this;
 
                 _specialCommandsMIV = new MethodInvoker(LoadSpecialCommands);
-                _resetMethodInvoker = new MethodInvoker(LoadWindowState);
 
                 ShowWizardAndReloadSpecialCommands();
 
                 // Set default font type by Windows theme to use for all controls on form
                 this.Font = SystemFonts.IconTitleFont;
-                _formSettings = new FormSettings(this);
+                this._formSettings = new FormSettings(this);
                 
                 InitializeComponent(); // main designer procedure
 
@@ -141,10 +131,12 @@ namespace Terminals
                 ApplyTheme();
 
                 this.terminalsControler = new TerminalTabsSelectionControler(this, this.tcTerminals);
-this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
+                this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
                     this.tscConnectTo, this.serverToolStripMenuItem_Click,
                     this.favoriteToolBar,this.QuickContextMenu, this.QuickContextMenu_ItemClicked);
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
+                fullScreenSwitch = new MainFormFullScreenSwitch(this);
+                AssignToolStripsToContainer();
 
                 // Update the old treeview theme to the new theme from Win Vista and up
                 Native.Methods.SetWindowTheme(this.menuStrip.Handle, "Explorer", null);
@@ -212,6 +204,22 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
             }
         }
 
+        /// <summary>
+        /// Assignes toolbars and menu items to toolstrip container.
+        /// They arent moved to the container because of designer
+        /// </summary>
+        private void AssignToolStripsToContainer()
+        {
+            this.toolStripContainer.toolbarStd = this.toolbarStd;
+            this.toolStripContainer.standardToolbarToolStripMenuItem = this.standardToolbarToolStripMenuItem;
+            this.toolStripContainer.favoriteToolBar = this.favoriteToolBar;
+            this.toolStripContainer.toolStripMenuItemShowHideFavoriteToolbar = this.toolStripMenuItemShowHideFavoriteToolbar;
+            this.toolStripContainer.SpecialCommandsToolStrip = this.SpecialCommandsToolStrip;
+            this.toolStripContainer.shortcutsToolStripMenuItem = this.shortcutsToolStripMenuItem;
+            this.toolStripContainer.menuStrip = this.menuStrip;
+            this.toolStripContainer.tsRemoteToolbar = this.tsRemoteToolbar;
+        }
+
         #endregion
 
         #region Properties
@@ -229,27 +237,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
             set
             {
                 _commandLineArgs = value;
-            }
-        }
-
-        public bool FullScreen
-        {
-            get
-            {
-                return this._fullScreen;
-            }
-            set
-            {
-                if (value)
-                    SaveWindowState(); //Save windows state before we do a fullscreen so we can restore it
-
-                if (_fullScreen != value)
-                    this.SetFullScreen(value);
-
-                if (!_fullScreen)
-                    this.ResetToolbars();
-
-                menuLoader.UpdateSwitchFullScreenMenuItemsVisibility(value);
             }
         }
 
@@ -308,75 +295,8 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
         private void LoadWindowState()
         {
             this.Text = Program.Info.AboutText.ToString();
-
             HideShowFavoritesPanel(Settings.ShowFavoritePanel);
-
-            ToolStripSettings newSettings = Settings.ToolbarSettings;
-            if (newSettings != null && newSettings.Count > 0)
-            {
-                ToolStripMenuItem menuItem = null;
-                foreach (int rowIndex in newSettings.Keys)
-                {
-                    ToolStripSetting setting = newSettings[rowIndex];
-                    menuItem = null;
-                    ToolStrip strip = null;
-                    if (setting.Name == toolbarStd.Name)
-                    {
-                        strip = toolbarStd;
-                        menuItem = standardToolbarToolStripMenuItem;
-                    }
-                    else if (setting.Name == favoriteToolBar.Name)
-                    {
-                        strip = favoriteToolBar;
-                        menuItem = toolStripMenuItemShowHideFavoriteToolbar;
-                    }
-                    else if (setting.Name == SpecialCommandsToolStrip.Name)
-                    {
-                        strip = SpecialCommandsToolStrip;
-                        menuItem = shortcutsToolStripMenuItem;
-                    }
-                    else if (setting.Name == menuStrip.Name)
-                    {
-                        strip = menuStrip;
-                    }
-                    else if (setting.Name == tsRemoteToolbar.Name)
-                    {
-                        strip = tsRemoteToolbar;
-                    }
-
-                    if (menuItem != null)
-                    {
-                        menuItem.Checked = setting.Visible;
-                    }
-
-                    if (strip != null)
-                    {
-                        Point p = new Point(setting.Left, setting.Top);
-                        switch (setting.Dock)
-                        {
-                            case "Top":
-                                this.toolStripContainer.TopToolStripPanel.Join(strip, p);
-                                break;
-                            case "Left":
-                                this.toolStripContainer.LeftToolStripPanel.Join(strip, p);
-                                break;
-                            case "Right":
-                                this.toolStripContainer.RightToolStripPanel.Join(strip, p);
-                                break;
-                            case "Bottom":
-                                this.toolStripContainer.BottomToolStripPanel.Join(strip, p);
-                                break;
-                        }
-
-                        strip.Location = p;
-                        strip.Visible = setting.Visible;
-                        if (Settings.ToolbarsLocked)
-                            strip.GripStyle = ToolStripGripStyle.Hidden;
-                        else
-                            strip.GripStyle = ToolStripGripStyle.Visible;
-                    }
-                }
-            }
+            this.toolStripContainer.LoadToolStripsState();
         }
 
         internal void UpdateControls()
@@ -551,7 +471,7 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
         {
             this.Text = Program.Info.AboutText;
             if (this.tcTerminals.Items.Count == 0)
-                this.FullScreen = false;
+                this.fullScreenSwitch.FullScreen = false;
         }
 
         internal void RemoveTabPage(TabControlItem tabControlToRemove)
@@ -601,7 +521,7 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
                 (conn as Control).Update();
                 this.UpdateControls();
                 if (favorite.DesktopSize == DesktopSize.FullScreen)
-                    this.FullScreen = true;
+                    this.fullScreenSwitch.FullScreen = true;
 
                 Connection b = (conn as Connection);
                 //b.OnTerminalServerStateDiscovery += new Connection.TerminalServerStateDiscovery(this.b_OnTerminalServerStateDiscovery);
@@ -743,6 +663,7 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
             mgr.ShowDialog();
         }
 
+        // todo assign missing action for OpenSavedConnections
         private void OpenSavedConnections()
         {
             foreach (string name in Settings.SavedConnections)
@@ -751,46 +672,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
             }
 
             Settings.ClearSavedConnectionsList();
-        }
-
-        private void SaveToolStripPanel(ToolStripPanel Panel, string Position, ToolStripSettings newSettings)
-        {
-            Int32 rowIndex = 0;
-            foreach (ToolStripPanelRow row in Panel.Rows)
-            {
-                SaveToolStripRow(row, newSettings, Position, rowIndex);
-                rowIndex++;
-            }
-        }
-
-        private void SaveToolStripRow(ToolStripPanelRow Row, ToolStripSettings newSettings, string Position, int rowIndex)
-        {
-            foreach (ToolStrip strip in Row.Controls)
-            {
-                ToolStripSetting setting = new ToolStripSetting();
-                setting.Dock = Position;
-                setting.Row = rowIndex;
-                setting.Left = strip.Left;
-                setting.Top = strip.Top;
-                setting.Name = strip.Name;
-                setting.Visible = strip.Visible;
-                newSettings.Add(_currentToolBarCount, setting);
-                _currentToolBarCount++;
-            }
-        }
-
-        private void SaveWindowState()
-        {
-            _currentToolBarCount = 0;
-            if (!Settings.ToolbarsLocked)
-            {
-                ToolStripSettings newSettings = new ToolStripSettings();
-                SaveToolStripPanel(this.toolStripContainer.TopToolStripPanel, "Top", newSettings);
-                SaveToolStripPanel(this.toolStripContainer.LeftToolStripPanel, "Left", newSettings);
-                SaveToolStripPanel(this.toolStripContainer.RightToolStripPanel, "Right", newSettings);
-                SaveToolStripPanel(this.toolStripContainer.BottomToolStripPanel, "Bottom", newSettings);
-                Settings.ToolbarSettings = newSettings;
-            }
         }
 
         private void HideShowFavoritesPanel(bool Show)
@@ -825,16 +706,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
                 splitContainer1.Panel1MinSize = 0;
                 splitContainer1.SplitterDistance = 0;
             }
-        }
-
-        private void ResetToolbars()
-        {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(ToolbarResetThread));
-        }
-
-        private void ToolbarResetThread(object state)
-        {
-            this.Invoke(_resetMethodInvoker);
         }
 
         private void LoadGroups()
@@ -901,99 +772,6 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
             }
         }
 
-        private void HideToolBar(Boolean fullScreen)
-        {
-            if (!fullScreen)
-            {
-                this.toolbarStd.Visible = _stdToolbarState;
-                this.SpecialCommandsToolStrip.Visible = _specialToolbarState;
-                this.favoriteToolBar.Visible = _favToolbarState;
-            }
-            else
-            {
-                this.toolbarStd.Visible = false;
-                this.SpecialCommandsToolStrip.Visible = false;
-                this.favoriteToolBar.Visible = false;
-            }
-
-        }
-
-        private void SetFullScreen(Boolean fullScreen)
-        {
-            this.Visible = false;
-
-            if (fullScreen)
-            {
-                this._stdToolbarState = this.toolbarStd.Visible;
-                this._specialToolbarState = this.SpecialCommandsToolStrip.Visible;
-                this._favToolbarState = this.favoriteToolBar.Visible;
-            }
-
-            this.HideToolBar(fullScreen);
-
-            if (fullScreen)
-            {
-                this.menuStrip.Visible = false;
-                this._lastLocation = this.Location;
-                this._lastSize = this.RestoreBounds.Size;
-                
-                if (this.WindowState == FormWindowState.Minimized)
-                    this._lastState = FormWindowState.Normal;
-                else
-                    this._lastState = this.WindowState;
-                
-                this.FormBorderStyle = FormBorderStyle.None;
-                this.WindowState = FormWindowState.Normal;
-                if (this._allScreens)
-                {
-                    Screen[] screenArr = Screen.AllScreens;
-                    Int32 with = 0;
-                    if (this._allScreens)
-                    {
-                        foreach (Screen screen in screenArr)
-                        {
-                            with += screen.Bounds.Width;
-                        }
-                    }
-
-                    this.Width = with;
-                    this.Location = new Point(0,0);
-                }
-                else
-                {
-                    this.Width = Screen.FromControl(tcTerminals).Bounds.Width;
-                    this.Location = Screen.FromControl(tcTerminals).Bounds.Location;
-                }
-
-                this.Height = Screen.FromControl(tcTerminals).Bounds.Height;
-                this.SetGrabInput(true);
-                this.BringToFront();
-            }
-            else
-            {
-                this.TopMost = false;
-                this.FormBorderStyle = FormBorderStyle.Sizable;
-                this.WindowState = this._lastState;
-                if (this._lastState != FormWindowState.Minimized)
-                {
-                    if (_lastState == FormWindowState.Normal)
-                        this.Location = this._lastLocation;
-
-                    this.Size = this._lastSize;
-                }
-
-                this.menuStrip.Visible = true;
-            }
-            
-            this._fullScreen = fullScreen;
-
-            this.tcTerminals.ShowTabs = !fullScreen;
-            this.tcTerminals.ShowBorder = !fullScreen;
-
-            this.Visible = true;
-            this.PerformLayout();
-        }
-
         private void QuickConnect(String server, Int32 port, Boolean ConnectToConsole)
         {
             FavoriteConfigurationElement favorite = FavoritesFactory
@@ -1005,7 +783,7 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
         private void HandleCommandLineActions()
         {
             Boolean ConnectToConsole = _commandLineArgs.console;
-            this.FullScreen = _commandLineArgs.fullscreen;
+            this.fullScreenSwitch.FullScreen = _commandLineArgs.fullscreen;
             if (!String.IsNullOrEmpty(_commandLineArgs.url))
             {
                 String server; 
@@ -1120,14 +898,14 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
         {
             _formSettings.EnsureVisibleScreenArrea();
 
-            if (this.FullScreen)
+            if (this.fullScreenSwitch.FullScreen)
                 this.tcTerminals.ShowTabs = false;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (this.FullScreen)
-                this.FullScreen = false;
+            if (this.fullScreenSwitch.FullScreen)
+                this.fullScreenSwitch.FullScreen = false;
 
             this.MainWindowNotifyIcon.Visible = false;
 
@@ -1155,7 +933,7 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
                 }
             }
 
-            this.SaveWindowState();
+            this.toolStripContainer.SaveLayout();
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -1221,7 +999,7 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
                 clickedItem.Name == FavoritesMenuLoader.COMMAND_RESTORESCREEN ||
                 clickedItem.Name == FavoritesMenuLoader.COMMAND_FULLSCREEN)
             {
-                this.FullScreen = !this.FullScreen;
+                this.fullScreenSwitch.FullScreen = !this.fullScreenSwitch.FullScreen;
             }
             else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_CREDENTIALMANAGER)
             {
@@ -1558,7 +1336,7 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
         private void tcTerminals_MouseLeave(object sender, EventArgs e)
         {
             this.timerHover.Enabled = false;
-            if (this.FullScreen && this.tcTerminals.ShowTabs && !this.tcTerminals.MenuOpen)
+            if (this.fullScreenSwitch.FullScreen && this.tcTerminals.ShowTabs && !this.tcTerminals.MenuOpen)
                 this.tcTerminals.ShowTabs = false;
 
             if (this._currentToolTipItem != null)
@@ -1575,12 +1353,12 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
 
         private void tcTerminals_DoubleClick(object sender, EventArgs e)
         {
-            this.FullScreen = !this.FullScreen;
+            this.fullScreenSwitch.FullScreen = !this.fullScreenSwitch.FullScreen;
         }
 
         private void tsbFullScreen_Click(object sender, EventArgs e)
         {
-            this.FullScreen = !this.FullScreen;
+            this.fullScreenSwitch.FullScreen = !this.fullScreenSwitch.FullScreen;
             this.UpdateControls();
         }
 
@@ -1591,7 +1369,7 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
                 item.Image = Resources.smallterm;
             }
 
-            if (this.FullScreen)
+            if (this.fullScreenSwitch.FullScreen)
             {
                 ToolStripSeparator sep = new ToolStripSeparator();
                 this.tcTerminals.Menu.Items.Add(sep);
@@ -2053,25 +1831,10 @@ this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
 
         private void lockToolbarsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.SaveWindowState();
+            this.toolStripContainer.SaveLayout();
             this.lockToolbarsToolStripMenuItem.Checked = !this.lockToolbarsToolStripMenuItem.Checked;
             Settings.ToolbarsLocked = this.lockToolbarsToolStripMenuItem.Checked;
-
-            Boolean GripVisible = !Settings.ToolbarsLocked;
-            foreach (ToolStripPanelRow row in this.toolStripContainer.TopToolStripPanel.Rows)
-            {
-                foreach (Control c in row.Controls)
-                {
-                    ToolStrip item = (c as ToolStrip);
-                    if (item != null)
-                    {
-                        if (GripVisible)
-                            item.GripStyle = ToolStripGripStyle.Visible;
-                        else
-                            item.GripStyle = ToolStripGripStyle.Hidden;
-                    }
-                }
-            }
+            this.toolStripContainer.ChangeLockState();
         }
 
         private void MainForm_OnReleaseIsAvailable(FavoriteConfigurationElement ReleaseFavorite)

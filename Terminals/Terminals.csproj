@@ -330,7 +330,13 @@
     <Compile Include="Forms\Controls\IPAddressControl\IPAddressFieldControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MainFormFullScreenSwitch.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\Controls\SplitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\ToolStripContainer.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Render\Office2007BlackColorTable.cs" />
