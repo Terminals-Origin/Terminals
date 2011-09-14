@@ -2,12 +2,16 @@ using System;
 using System.Text;
 using System.Security.Cryptography;
 using Terminals.Configuration;
+using Unified.Encryption;
 
 namespace Terminals
 {
     internal static class Functions
     {
-        public static Unified.Encryption.EncryptionAlgorithm EncryptionAlgorithm = Unified.Encryption.EncryptionAlgorithm.Rijndael;
+        private static int keyLength = 24;
+        private static int ivLength = 16;
+        private static EncryptionAlgorithm EncryptionAlgorithm = EncryptionAlgorithm.Rijndael;
+        
         internal static string DecryptPassword(string encryptedPassword)
         {
             if (String.IsNullOrEmpty(encryptedPassword))
@@ -28,7 +32,7 @@ namespace Terminals
                     //string hashedPass = Settings.KeyMaterial.Substring(0, keyLength);
                     string password = "";
                     //System.Text.Encoding.Default.GetString(System.Convert.FromBase64String(encryptedPassword))
-                    Unified.Encryption.Decryptor dec = new Unified.Encryption.Decryptor(EncryptionAlgorithm);
+                    Decryptor dec = new Decryptor(EncryptionAlgorithm);
                     dec.IV = IV;
                     byte[] data = dec.Decrypt(Convert.FromBase64String(encryptedPassword), Encoding.Default.GetBytes(hashedPass));
                     if (data != null && data.Length > 0)
@@ -44,8 +48,7 @@ namespace Terminals
                 return "";
             }
         }
-        internal static int keyLength = 24;
-        internal static int ivLength = 16;
+        
         internal static string EncryptPassword(string decryptedPassword)
         {
             if (Settings.KeyMaterial == string.Empty)
@@ -62,7 +65,7 @@ namespace Terminals
                 {
                     string hashedPass = Settings.KeyMaterial.Substring(0, keyLength);
                     byte[] IV = Encoding.Default.GetBytes(Settings.KeyMaterial.Substring(Settings.KeyMaterial.Length - ivLength));
-                    Unified.Encryption.Encryptor enc = new Unified.Encryption.Encryptor(EncryptionAlgorithm);
+                    Encryptor enc = new Encryptor(EncryptionAlgorithm);
                     enc.IV = IV;
                     byte[] data = enc.Encrypt(Encoding.Default.GetBytes(decryptedPassword), Encoding.Default.GetBytes(hashedPass));
                     if (data != null && data.Length > 0)
@@ -75,8 +78,8 @@ namespace Terminals
                 {
                     Logging.Log.Error("Error Encrypting Password", ec);
                 }
-                return password;
 
+                return password;
             }
         }
 

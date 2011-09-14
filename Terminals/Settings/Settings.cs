@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unified.Encryption.Hash;
 using SysConfig = System.Configuration;
 using System.IO;
 using System.Reflection;
@@ -390,20 +391,39 @@ namespace Terminals.Configuration
                 SysConfig.Configuration configuration = Config;
                 GetSection(configuration).TerminalsPassword = value;
                 SaveImmediatelyIfRequested(configuration);
+                UpdateKeyMaterial(value);
             }
         }
 
-        public static string KeyMaterial
+        internal static string KeyMaterial
         {
             get
             {
                 return keyMaterial;
             }
 
-            set
+            private set
             {
                 keyMaterial = value;
             }
+        }
+
+        internal static Boolean ValidateMasterPassword(string passwordToCheck)
+        {
+            String hashToCheck = Hash.GetHash(passwordToCheck, Hash.HashType.SHA512);
+            if (TerminalsPassword == hashToCheck)
+            {
+                UpdateKeyMaterial(passwordToCheck);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void UpdateKeyMaterial(String password)
+        {
+            String hashToCheck = Hash.GetHash(password, Hash.HashType.SHA512);
+            KeyMaterial = Hash.GetHash(password + hashToCheck, Hash.HashType.SHA512);
         }
 
         public static string DefaultDomain

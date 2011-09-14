@@ -99,7 +99,6 @@ namespace Terminals.Security {
             this.MinimizeBox = false;
             this.Name = "RequestPassword";
             this.Text = "Terminals Password";
-            this.Load += new System.EventHandler(this.RequestPassword_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

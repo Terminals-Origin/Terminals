@@ -193,8 +193,6 @@ namespace Terminals
                 && this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text))
             {
                 Settings.TerminalsPassword = this.PasswordTextbox.Text;
-                string hashedPassword = Unified.Encryption.Hash.Hash.GetHash(this.PasswordTextbox.Text, Unified.Encryption.Hash.Hash.HashType.SHA512);
-                Settings.KeyMaterial = Unified.Encryption.Hash.Hash.GetHash(this.PasswordTextbox.Text + hashedPassword, Unified.Encryption.Hash.Hash.HashType.SHA512);
             }
 
             // Security - Default Password tab
@@ -329,8 +327,7 @@ namespace Terminals
         {
             if(System.Windows.Forms.MessageBox.Show("Are you sure you want to remove the master password?\r\n\r\n**Please be advised that this will render ALL saved passwords inactive!**", Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                Settings.TerminalsPassword = "";
-                Settings.KeyMaterial = string.Empty;
+                Settings.TerminalsPassword = String.Empty;
                 ClearMasterButton.Enabled = false;
 
                 PasswordProtectTerminalsCheckbox.Checked = false;

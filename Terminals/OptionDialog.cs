@@ -303,8 +303,6 @@ namespace Terminals.Forms
                 && this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text))
             {
                 Settings.TerminalsPassword = this.PasswordTextbox.Text;
-                String hashedPassword = Unified.Encryption.Hash.Hash.GetHash(this.PasswordTextbox.Text, Unified.Encryption.Hash.Hash.HashType.SHA512);
-                Settings.KeyMaterial = Unified.Encryption.Hash.Hash.GetHash(this.PasswordTextbox.Text + hashedPassword, Unified.Encryption.Hash.Hash.HashType.SHA512);
             }
 
             // Security - Default Password tab
@@ -452,7 +450,6 @@ namespace Terminals.Forms
                                Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 Settings.TerminalsPassword = String.Empty;
-                Settings.KeyMaterial = String.Empty;
                 this.ClearMasterButton.Enabled = false;
 
                 this.PasswordProtectTerminalsCheckbox.Checked = false;

@@ -1981,6 +1981,7 @@ namespace Terminals
             this.CredentialDropdown.Name = "CredentialDropdown";
             this.CredentialDropdown.Size = new System.Drawing.Size(334, 21);
             this.CredentialDropdown.TabIndex = 7;
+            this.CredentialDropdown.DisplayMember = "Name";
             this.CredentialDropdown.SelectedIndexChanged += new System.EventHandler(this.CredentialDropdown_SelectedIndexChanged);
             // 
             // CredentialsPanel
