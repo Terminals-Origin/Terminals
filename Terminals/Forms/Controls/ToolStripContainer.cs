@@ -36,14 +36,6 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        internal void ClearAllPanels()
-        {
-            this.RightToolStripPanel.Controls.Clear();
-            this.LeftToolStripPanel.Controls.Clear();
-            this.TopToolStripPanel.Controls.Clear(); 
-            this.BottomToolStripPanel.Controls.Clear();
-        }
-
         private static void SaveToolStripPanel(ToolStripPanel Panel, String Position, ToolStripSettings newSettings)
         {
             for (Int32 rowIndex = 0; rowIndex < Panel.Rows.Length; rowIndex++)
@@ -75,21 +67,50 @@ namespace Terminals.Forms.Controls
             {
                 this.SuspendLayout();
                 this.ClearAllPanels();
+                ReJoinAllPanels(newSettings);
+                
+                // paranoic, because the previous join can reset the position
+                // dont assign if already there. Because it can reorder the toolbars
+                // http://www.visualbasicask.com/visual-basic-language/toolstrips-controls-becoming-desorganized.shtml
+                AplyAllPanelPositions(newSettings);
+                this.ResumeLayout(true);
 
-                foreach (ToolStripSetting setting in newSettings.Values)
+                ChangeLockState();
+            }
+        }
+
+        private void ClearAllPanels()
+        {
+            this.RightToolStripPanel.Controls.Clear();
+            this.LeftToolStripPanel.Controls.Clear();
+            this.TopToolStripPanel.Controls.Clear();
+            this.BottomToolStripPanel.Controls.Clear();
+        }
+
+        private void AplyAllPanelPositions(ToolStripSettings newSettings)
+        {
+            foreach (ToolStripSetting setting in newSettings.Values)
+            {
+                ToolStrip strip = this.FindToolStripForSetting(setting);
+                strip.GripStyle = ToolStripGripStyle.Visible;
+                //ChangeToolStripLock(strip);
+                ApplyLastPosition(setting, strip);
+            }
+        }
+
+        private void ReJoinAllPanels(ToolStripSettings newSettings)
+        {
+            foreach (ToolStripSetting setting in newSettings.Values)
+            {
+                ToolStrip strip = this.FindToolStripForSetting(setting);
+                ToolStripMenuItem menuItem = this.FindMenuForSetting(setting);
+
+                if (menuItem != null)
                 {
-                    ToolStrip strip = FindToolStripForSetting(setting);
-                    ToolStripMenuItem menuItem = FindMenuForSetting(setting);
-
-                    if (menuItem != null)
-                    {
-                        menuItem.Checked = setting.Visible;
-                    }
-
-                    this.RestoreStripLayout(setting, strip);
+                    menuItem.Checked = setting.Visible;
                 }
 
-                this.ResumeLayout(true);
+                this.RestoreStripLayout(setting, strip);
             }
         }
 
@@ -99,7 +120,6 @@ namespace Terminals.Forms.Controls
             {
                 strip.Visible = setting.Visible;
                 this.JoinPanelOnLastPosition(strip, setting);
-                ChangeToolStripLock(strip);
             }
         }
 
@@ -140,9 +160,6 @@ namespace Terminals.Forms.Controls
         private void JoinPanelOnLastPosition(ToolStrip strip, ToolStripSetting setting)
         {
             ToolStripPanel toolStripPanel = GetToolStripPanelToJoin(setting);
-
-            // dont assign if already there. Because it can reorder the toolbars
-            // http://www.visualbasicask.com/visual-basic-language/toolstrips-controls-becoming-desorganized.shtml
             if (!toolStripPanel.Controls.Contains(strip))
             {
                 Point lastPosition = new Point(setting.Left, setting.Top);
@@ -150,9 +167,14 @@ namespace Terminals.Forms.Controls
             }
             else // set position only when comming from fullscreen
             {
-                strip.Left = setting.Left;
-                strip.Top = setting.Top;
+                ApplyLastPosition(setting, strip);
             }
+        }
+
+        private static void ApplyLastPosition(ToolStripSetting setting, ToolStrip strip)
+        {
+            strip.Left = setting.Left;
+            strip.Top = setting.Top;
         }
 
         private ToolStripPanel GetToolStripPanelToJoin(ToolStripSetting setting)
