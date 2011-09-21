@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Forms;
+using Terminals.Forms.Controls;
 using Terminals.Integration.Import;
 using Terminals.Network;
 
@@ -20,6 +21,14 @@ namespace Terminals
             this.dataGridFavorites.Columns["colName"].HeaderCell.SortGlyphDirection = SortOrder.Ascending;
 
             ImportOpenFileDialog.Filter = Importers.GetImportersDialogFilter();
+            UpdateCountLabels();
+        }
+
+        private void UpdateCountLabels()
+        {
+            Int32 selectedItems = this.dataGridFavorites.SelectedRows.Count;
+            this.lblSelectedCount.Text = String.Format("({0} selected)", selectedItems);
+            this.lblConnectionCount.Text = this.bsFavorites.Count.ToString();
         }
 
         private void EditFavorite(FavoriteConfigurationElement favorite)
@@ -137,6 +146,7 @@ namespace Terminals
                         newFav.Name = result.Text;
                         Settings.AddFavorite(newFav, Settings.HasToolbarButton(newFav.Name));
                         this.bsFavorites.Add(newFav);
+                        UpdateCountLabels();
                     }
                 }
             }
@@ -150,6 +160,7 @@ namespace Terminals
                 {
                     Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
                     this.bsFavorites.Add(frmNewTerminal.Favorite);
+                    UpdateCountLabels();
                 }
             }
         }
@@ -193,13 +204,13 @@ namespace Terminals
                 this.Focus();
                 this.Refresh();
                 this.Cursor = Cursors.WaitCursor;
+                List<FavoriteConfigurationElement> favoritesToImport = Importers.ImportFavorites(filenames);
 
-                List<FavoriteConfigurationElement> favorites = Importers.ImportFavorites(filenames);
-                Settings.AddFavorites(favorites, false);
-                AddFavoritesToBindingSource();
+                var managedImport = new ImportWithDialogs(this, false);
+                Boolean imported = managedImport.Import(favoritesToImport);
 
-                this.Cursor = Cursors.Default;
-                ShowImportResultMessage(favorites.Count);
+                if (imported)
+                    this.AddFavoritesToBindingSource();
             }
         }
 
@@ -207,14 +218,7 @@ namespace Terminals
         {
             this.bsFavorites.DataSource = Settings.GetFavorites().ToList();
             this.bsFavorites.ResetBindings(false);
-        }
-
-        internal static void ShowImportResultMessage(Int32 importedItemsCount)
-        {
-            String message = "1 item was added to your favorites.";
-            if(importedItemsCount > 1)
-                message = String.Format("{0} items were added to your favorites.", importedItemsCount);
-            MessageBox.Show(message, "Terminals import result", MessageBoxButtons.OK);
+            UpdateCountLabels();
         }
 
         private void dataGridFavorites_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -226,6 +230,11 @@ namespace Terminals
             var data = this.bsFavorites.DataSource as SortableList<FavoriteConfigurationElement>;
             this.bsFavorites.DataSource = data.SortByProperty(column.DataPropertyName, newSortDirection);
             column.HeaderCell.SortGlyphDirection = newSortDirection;
+        }
+
+        private void dataGridFavorites_SelectionChanged(object sender, EventArgs e)
+        {
+            UpdateCountLabels();
         }
     }
 }

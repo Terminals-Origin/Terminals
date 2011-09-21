@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Credentials;
 using Terminals.Forms;
+using Terminals.Forms.Controls;
 using Terminals.History;
 using Terminals.Integration.Import;
 
@@ -516,12 +517,9 @@ namespace Terminals
             String[] files = e.Data.GetData(DataFormats.FileDrop) as String[];
             if (files != null)
             {
-                this.Cursor = Cursors.WaitCursor;
                 List<FavoriteConfigurationElement> favoritesToImport = Importers.ImportFavorites(files);
-                Settings.AddFavorites(favoritesToImport, true);
-
-                this.Cursor = Cursors.Default;
-                OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
+                var managedImport = new ImportWithDialogs(this.ParentForm, false);
+                managedImport.Import(favoritesToImport);
             }
         }
 

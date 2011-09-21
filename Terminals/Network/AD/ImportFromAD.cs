@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Forms.Controls;
 
 namespace Terminals.Network
 {
@@ -115,9 +116,8 @@ namespace Terminals.Network
         {
             this.Cursor = Cursors.WaitCursor;
             List<FavoriteConfigurationElement> favoritesToImport = GetFavoritesFromBindingSource(this.domainTextbox.Text);
-            Settings.AddFavorites(favoritesToImport, false);
-            this.Cursor = Cursors.Default;
-            OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
+            var managedImport = new ImportWithDialogs(this, false);
+            managedImport.Import(favoritesToImport);
         }
 
         private List<FavoriteConfigurationElement> GetFavoritesFromBindingSource(String domain)

@@ -42,8 +42,6 @@ namespace Terminals
             this.ActiveDirectoryButton = new System.Windows.Forms.Button();
             this.ScanNetworkButton = new System.Windows.Forms.Button();
             this.btnExport = new System.Windows.Forms.Button();
-            this.dataGridFavorites = new Terminals.SortableUnboundGrid();
-            this.bsFavorites = new System.Windows.Forms.BindingSource(this.components);
             this.performanceFlagsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.telnetDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.telnetRowsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -148,6 +146,10 @@ namespace Terminals
             this.lockItemDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.elementInformationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.currentConfigurationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblConnectionCount = new System.Windows.Forms.Label();
+            this.lblSelectedCount = new System.Windows.Forms.Label();
+            this.dataGridFavorites = new Terminals.SortableUnboundGrid();
+            this.bsFavorites = new System.Windows.Forms.BindingSource(this.components);
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colComputer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colProtocol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -217,11 +219,11 @@ namespace Terminals
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(12, 7);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 13);
+            this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Co&nnections";
+            this.label1.Text = "Connections:";
             // 
             // btnNew
             // 
@@ -282,45 +284,6 @@ namespace Terminals
             this.btnExport.Text = "&Export...";
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
-            // 
-            // dataGridFavorites
-            // 
-            this.dataGridFavorites.AllowUserToAddRows = false;
-            this.dataGridFavorites.AllowUserToDeleteRows = false;
-            this.dataGridFavorites.AllowUserToOrderColumns = true;
-            this.dataGridFavorites.AllowUserToResizeRows = false;
-            this.dataGridFavorites.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridFavorites.AutoGenerateColumns = false;
-            this.dataGridFavorites.BackgroundColor = System.Drawing.SystemColors.Window;
-            this.dataGridFavorites.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dataGridFavorites.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridFavorites.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colName,
-            this.colComputer,
-            this.colProtocol,
-            this.colUserName,
-            this.colCredentials,
-            this.colTags,
-            this.colNotes});
-            this.dataGridFavorites.DataSource = this.bsFavorites;
-            this.dataGridFavorites.Location = new System.Drawing.Point(12, 25);
-            this.dataGridFavorites.Name = "dataGridFavorites";
-            this.dataGridFavorites.RowHeadersVisible = false;
-            this.dataGridFavorites.RowTemplate.Height = 20;
-            this.dataGridFavorites.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridFavorites.Size = new System.Drawing.Size(595, 324);
-            this.dataGridFavorites.TabIndex = 12;
-            this.dataGridFavorites.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridFavorites_CellBeginEdit);
-            this.dataGridFavorites.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridFavorites_CellEndEdit);
-            this.dataGridFavorites.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridFavorites_ColumnHeaderMouseClick);
-            this.dataGridFavorites.DoubleClick += new System.EventHandler(this.btnEdit_Click);
-            // 
-            // bsFavorites
-            // 
-            this.bsFavorites.DataSource = typeof(Terminals.FavoriteConfigurationElement);
-            this.bsFavorites.Sort = "";
             // 
             // performanceFlagsDataGridViewTextBoxColumn
             // 
@@ -953,6 +916,64 @@ namespace Terminals
             this.currentConfigurationDataGridViewTextBoxColumn.Name = "currentConfigurationDataGridViewTextBoxColumn";
             this.currentConfigurationDataGridViewTextBoxColumn.ReadOnly = true;
             // 
+            // lblConnectionCount
+            // 
+            this.lblConnectionCount.AutoSize = true;
+            this.lblConnectionCount.Location = new System.Drawing.Point(85, 7);
+            this.lblConnectionCount.Name = "lblConnectionCount";
+            this.lblConnectionCount.Size = new System.Drawing.Size(25, 13);
+            this.lblConnectionCount.TabIndex = 13;
+            this.lblConnectionCount.Text = "000";
+            // 
+            // lblSelectedCount
+            // 
+            this.lblSelectedCount.AutoSize = true;
+            this.lblSelectedCount.Location = new System.Drawing.Point(131, 7);
+            this.lblSelectedCount.Name = "lblSelectedCount";
+            this.lblSelectedCount.Size = new System.Drawing.Size(64, 13);
+            this.lblSelectedCount.TabIndex = 14;
+            this.lblSelectedCount.Text = "(0 selected)";
+            // 
+            // dataGridFavorites
+            // 
+            this.dataGridFavorites.AllowUserToAddRows = false;
+            this.dataGridFavorites.AllowUserToDeleteRows = false;
+            this.dataGridFavorites.AllowUserToOrderColumns = true;
+            this.dataGridFavorites.AllowUserToResizeRows = false;
+            this.dataGridFavorites.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridFavorites.AutoGenerateColumns = false;
+            this.dataGridFavorites.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dataGridFavorites.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridFavorites.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridFavorites.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colName,
+            this.colComputer,
+            this.colProtocol,
+            this.colUserName,
+            this.colCredentials,
+            this.colTags,
+            this.colNotes});
+            this.dataGridFavorites.DataSource = this.bsFavorites;
+            this.dataGridFavorites.Location = new System.Drawing.Point(12, 25);
+            this.dataGridFavorites.Name = "dataGridFavorites";
+            this.dataGridFavorites.RowHeadersVisible = false;
+            this.dataGridFavorites.RowTemplate.Height = 20;
+            this.dataGridFavorites.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridFavorites.Size = new System.Drawing.Size(595, 324);
+            this.dataGridFavorites.TabIndex = 12;
+            this.dataGridFavorites.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridFavorites_CellBeginEdit);
+            this.dataGridFavorites.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridFavorites_CellEndEdit);
+            this.dataGridFavorites.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridFavorites_ColumnHeaderMouseClick);
+            this.dataGridFavorites.SelectionChanged += new System.EventHandler(this.dataGridFavorites_SelectionChanged);
+            this.dataGridFavorites.DoubleClick += new System.EventHandler(this.btnEdit_Click);
+            // 
+            // bsFavorites
+            // 
+            this.bsFavorites.DataSource = typeof(Terminals.FavoriteConfigurationElement);
+            this.bsFavorites.Sort = "";
+            // 
             // colName
             // 
             this.colName.DataPropertyName = "Name";
@@ -1015,6 +1036,8 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(726, 361);
+            this.Controls.Add(this.lblSelectedCount);
+            this.Controls.Add(this.lblConnectionCount);
             this.Controls.Add(this.dataGridFavorites);
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.ScanNetworkButton);
@@ -1166,6 +1189,8 @@ namespace Terminals
         private System.Windows.Forms.DataGridViewCheckBoxColumn lockItemDataGridViewCheckBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn elementInformationDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn currentConfigurationDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Label lblConnectionCount;
+        private System.Windows.Forms.Label lblSelectedCount;
         private System.Windows.Forms.DataGridViewTextBoxColumn colName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colComputer;
         private System.Windows.Forms.DataGridViewTextBoxColumn colProtocol;

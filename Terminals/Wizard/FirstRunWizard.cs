@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Forms.Controls;
 using Terminals.Wizard;
 
 namespace Terminals
@@ -140,12 +141,14 @@ namespace Terminals
         {
             if (rdp.DiscoFavs != null && rdp.DiscoFavs.Count > 0)
             {
-                String message = String.Format("Automatic Discovery was able to find {0} connections.\r\nWould you like to add them to your connections list?",
+                String message = String.Format("Automatic Discovery was able to find {0} connections.\r\n" +
+                                               "Would you like to add them to your connections list?",
                                                 rdp.DiscoFavs.Count);
-                if (MessageBox.Show(message, "Terminals Confirmation", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                if (MessageBox.Show(message, "Terminals Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     List<FavoriteConfigurationElement> favoritesToImport = rdp.DiscoFavs.ToList();
-                    Settings.AddFavorites(favoritesToImport, false);
+                    var managedImport = new ImportWithDialogs(this, false);
+                    managedImport.Import(favoritesToImport);
                 }
             }
         }

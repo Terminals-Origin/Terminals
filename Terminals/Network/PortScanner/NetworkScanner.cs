@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Net.NetworkInformation;
 using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Forms.Controls;
 using Terminals.Network;
 using Terminals.Scanner;
 using Unified;
@@ -178,12 +179,10 @@ namespace Terminals
 
         private void AddAllButton_Click(object sender, EventArgs e)
         {
-            String tags = GetTagsToApply();
             this.Cursor = Cursors.WaitCursor;
+            String tags = GetTagsToApply();
             List<FavoriteConfigurationElement> favoritesToImport = GetFavoritesFromBindingSource(tags);
-            Settings.AddFavorites(favoritesToImport, false);
-            this.Cursor = Cursors.Default;
-            OrganizeFavoritesForm.ShowImportResultMessage(favoritesToImport.Count);
+            ImportSelectedItems(favoritesToImport);
         }
 
         private List<FavoriteConfigurationElement> GetFavoritesFromBindingSource(String tags)
@@ -236,12 +235,18 @@ namespace Terminals
             else
             {
                 ArrayList favorites = (ArrayList)Serialize.DeSerializeBinary(Response);
-                Int32 count = ImportSharedFavorites(favorites);
-                OrganizeFavoritesForm.ShowImportResultMessage(count);
+                SortableList<FavoriteConfigurationElement> favoritesToImport = GetReceivedFavorites(favorites);
+                ImportSelectedItems(favoritesToImport);
             }
         }
 
-        private Int32 ImportSharedFavorites(ArrayList favorites)
+        private void ImportSelectedItems(List<FavoriteConfigurationElement> favoritesToImport)
+        {
+            var managedImport = new ImportWithDialogs(this, false);
+            managedImport.Import(favoritesToImport);
+        }
+
+        private static SortableList<FavoriteConfigurationElement> GetReceivedFavorites(ArrayList favorites)
         {
             var importedFavorites = new SortableList<FavoriteConfigurationElement>();
             foreach (object item in favorites)
@@ -250,15 +255,12 @@ namespace Terminals
                 if (favorite != null)
                     importedFavorites.Add(ImportSharedFavorite(favorite));
             }
-
-            Settings.AddFavorites(importedFavorites, true);
-            return importedFavorites.Count;
+            return importedFavorites;
         }
 
         private static FavoriteConfigurationElement ImportSharedFavorite(SharedFavorite favorite)
         {
             FavoriteConfigurationElement newfav = SharedFavorite.ConvertFromFavorite(favorite);
-            newfav.Name = newfav.Name + "_new";
             newfav.UserName = Environment.UserName;
             newfav.DomainName = Environment.UserDomainName;
             return newfav;

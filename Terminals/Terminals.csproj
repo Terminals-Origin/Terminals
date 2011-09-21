@@ -319,6 +319,7 @@
       <DependentUpon>FavoritesTreeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\FavoriteTreeNode.cs" />
+    <Compile Include="Forms\Controls\ImportWithDialogs.cs" />
     <Compile Include="Forms\Controls\IPAddressControl\FieldChangedEventArgs.cs" />
     <Compile Include="Forms\Controls\IPAddressControl\IPAddressControl.cs">
       <SubType>Component</SubType>
