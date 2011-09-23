@@ -100,10 +100,7 @@ namespace Terminals.Forms.Controls
             foreach (String tag in favorite.TagList)
             {
                 TagTreeNode tagNode = this.treeList.Nodes[tag] as TagTreeNode;
-                if (tagNode != null && !tagNode.IsEmpty)
-                {
-                    this.AddNewFavoriteNodeToTagNode(favorite, tagNode);
-                }
+                this.AddNewFavoriteNodeToTagNode(favorite, tagNode);
             }
 
             if (String.IsNullOrEmpty(favorite.Tags))
@@ -120,8 +117,11 @@ namespace Terminals.Forms.Controls
 
         private void AddNewFavoriteNodeToTagNode(FavoriteConfigurationElement favorite, TagTreeNode tagNode)
         {
-            var favoriteTreeNode = new FavoriteTreeNode(favorite);
-            tagNode.Nodes.Add(favoriteTreeNode);
+            if (tagNode != null && !tagNode.IsEmpty) // add only to expanded nodes
+            {
+                var favoriteTreeNode = new FavoriteTreeNode(favorite);
+                tagNode.Nodes.Add(favoriteTreeNode);
+            }
         }
 
         private void OnTagsCollectionChanged(TagsChangedArgs args)
