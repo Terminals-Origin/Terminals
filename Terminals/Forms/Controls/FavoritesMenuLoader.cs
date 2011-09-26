@@ -112,7 +112,8 @@ namespace Terminals.Forms.Controls
 
             this.AddAlphabeticalContextMenu();
             this.quickContextMenu.Items.Add("-");
-            this.quickContextMenu.Items.Add(Program.Resources.GetString(COMMAND_EXIT));
+            ToolStripItem exitMenu = this.quickContextMenu.Items.Add(Program.Resources.GetString(COMMAND_EXIT));
+            exitMenu.Name = COMMAND_EXIT;
         }
 
         private void FillMainMenu()
