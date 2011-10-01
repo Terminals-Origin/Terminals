@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Windows.Forms;
 using System.Text;
@@ -24,7 +25,7 @@ namespace WalburySoftware
         private Boolean XOFF = false;
         private String OutBuff = String.Empty;
         private Int32 ScrollbackBufferSize;
-        private StringCollection ScrollbackBuffer;
+        private ScrollBackBuffer ScrollbackBuffer;
         private uc_Parser Parser = null;
         private uc_Keyboard Keyboard = null;
         private uc_TabStops TabStops = null;
@@ -43,7 +44,7 @@ namespace WalburySoftware
         private System.Collections.ArrayList SavedCarets;
         private Point DrawStringOffset;
         private Color BoldColor;
-        
+
         private uc_Chars G0;
         private uc_Chars G1;
         private uc_Chars G2;
@@ -55,7 +56,7 @@ namespace WalburySoftware
         public Color BlinkColor
         {
             get { return blinkColor; }
-            set 
+            set
             {
                 blinkColor = value;
                 UpdateCaret();
@@ -101,7 +102,7 @@ namespace WalburySoftware
         public TerminalEmulator()
         {
             this.ScrollbackBufferSize = 3000;
-            this.ScrollbackBuffer = new StringCollection();
+            this.ScrollbackBuffer = new ScrollBackBuffer();
 
             // set the display options
             this.SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer, true);
@@ -150,15 +151,7 @@ namespace WalburySoftware
             ////this.mnuPaste.Click += new System.EventHandler(this.mnuPaste_Click);
             ////this.mnuCopyPaste.Click += new System.EventHandler(this.mnuCopyPaste_Click);
 
-            // Create and initialize a VScrollBar.
-            this.VertScrollBar = new uc_VertScrollBar();
-            this.VertScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HandleScroll);
-
-            // Dock the scroll bar to the right side of the form.
-            this.VertScrollBar.Dock = System.Windows.Forms.DockStyle.Right;
-
-            // Add the scroll bar to the form.
-            Controls.Add(this.VertScrollBar);
+            InitializeVerticalScrollBar();
 
             // create the character grid (rows by columns). This is a shadow of what's displayed
             // Set the window size to match
@@ -181,22 +174,34 @@ namespace WalburySoftware
             this.Cursor = Cursors.IBeam;
         }
 
-      private  void OnFontChanged(object sender, EventArgs e)
-      {
-          System.Diagnostics.Debug.WriteLine(String.Format("Font changed to {0}", this.Font.ToString()));
-          GetFontInfo();
-      }
+        private void InitializeVerticalScrollBar()
+        {
+            this.VertScrollBar = new uc_VertScrollBar();
+            this.VertScrollBar.Scroll += new ScrollEventHandler(this.HandleScroll);
+            this.VertScrollBar.Cursor = Cursors.Default;
+            this.VertScrollBar.Dock = DockStyle.Right;
+            this.VertScrollBar.Enabled = false;
 
-      private void AssignDefaultColors()
-      {
-        //this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
-        this.ForeColor = Color.GreenYellow;
-        this.BackColor = Color.FromArgb(0, 0, 160);
-        this.BoldColor = Color.FromArgb(255, 255, 255);
-        this.BlinkColor = Color.Red;
-      }
+            // Add the scroll bar to the form.
+            this.Controls.Add(this.VertScrollBar);
+        }
 
-      #endregion
+        private void OnFontChanged(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine(String.Format("Font changed to {0}", this.Font.ToString()));
+            GetFontInfo();
+        }
+
+        private void AssignDefaultColors()
+        {
+            //this.FGColor      = System.Drawing.Color.FromArgb (200, 200, 200);
+            this.ForeColor = Color.GreenYellow;
+            this.BackColor = Color.FromArgb(0, 0, 160);
+            this.BoldColor = Color.FromArgb(255, 255, 255);
+            this.BlinkColor = Color.Red;
+        }
+
+        #endregion
 
         #region Public Properties
 
@@ -230,10 +235,10 @@ namespace WalburySoftware
 
         #region Public Methods
 
-        public void IndicateData (Byte[] data)
+        public void IndicateData(Byte[] data)
         {
             String sReceived = Encoding.Default.GetString(data, 0, data.Length);
-            this.Invoke(this.RxdTextEvent, new String[] {String.Copy (sReceived)});
+            this.Invoke(this.RxdTextEvent, new String[] { String.Copy(sReceived) });
             this.Invoke(this.RefreshEvent);
         }
 
@@ -241,7 +246,7 @@ namespace WalburySoftware
         {
             ////this.CharGrid[7][13] TODO what happened to this ?
             ////this.CharGrid[ROW][COL]
-            
+
             StringCollection ScrapedText = new StringCollection();
 
             String row = String.Empty;
@@ -258,11 +263,11 @@ namespace WalburySoftware
 
                 for (Int32 c = cStart; c <= cEnd; c++)
                 {
-                    Char val = this.CharGrid[r][c];;
+                    Char val = this.CharGrid[r][c]; ;
                     if (val == '\0')
                         break;
 
-                    row = row + val;                        
+                    row = row + val;
                 }
 
                 ScrapedText.Add(row);
@@ -278,27 +283,14 @@ namespace WalburySoftware
 
         #region Overrides
 
-        protected override void OnResize (System.EventArgs e)
+        protected override void OnResize(System.EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine(String.Format("Before: {0}x{1}, Console: {2}x{3}",
                 this.Width, this.Height, this.CharSize.Width, this.CharSize.Height));
             // reset scrollbar values);
             this.SetScrollBarValues();
+            this.TextAtCursor = CaptureTextAtCursor();
 
-            // capture text at cursor b/c it's not in the scrollback buffer yet
-            String TextAtCursor = String.Empty;
-            for (Int32 x = 0; x < this._cols; x++)
-            {
-                Char CurChar = this.CharGrid[this.Caret.Pos.Y][x];
-
-                if (CurChar == '\0')
-                {
-                    continue;
-                }
-
-                TextAtCursor = TextAtCursor + Convert.ToString(CurChar);
-            }
-            
             // calculate new rows and columns
             Int32 columns = this.ClientSize.Width / this.CharSize.Width - 1;
             Int32 rows = this.ClientSize.Height / this.CharSize.Height;
@@ -316,7 +308,7 @@ namespace WalburySoftware
                 columns = 5;
                 this.Width = this.CharSize.Width * columns;
             }
-            
+
             // make sure the bottom of this doesn't exceed bottom of parent client area
             // for some reason it was getting stuck like that
             if (this.Parent != null)
@@ -329,7 +321,7 @@ namespace WalburySoftware
             this.SetSize(rows, columns);
 
             ////Console.WriteLine(Convert.ToString(rows) + " rows. " + Convert.ToString(this.ScrollbackBuffer.Count + " buffer lines"));
-            
+
             // populate char grid from ScrollbackBuffer
             // parse through ScrollbackBuffer from the end
             // ScrollbackBuffer[0] is the "oldest" string
@@ -337,7 +329,7 @@ namespace WalburySoftware
             StringCollection visiblebuffer = new StringCollection();
             for (Int32 i = this.ScrollbackBuffer.Count - 1; i >= 0; i--)
             {
-                visiblebuffer.Insert(0, this.ScrollbackBuffer[i]);
+                visiblebuffer.Insert(0, this.ScrollbackBuffer.Characters[i]);
 
                 // don't parse more strings than our display can show
                 if (visiblebuffer.Count >= rows - 1) // rows -1 to leave line for cursor space
@@ -366,34 +358,34 @@ namespace WalburySoftware
                 if (column > TextAtCursor.Length - 1)
                     continue;
 
-                this.CharGrid[lastline+1][column] = TextAtCursor.ToCharArray()[column];
+                this.CharGrid[lastline + 1][column] = TextAtCursor.ToCharArray()[column];
             }
 
-            this.CaretToAbs(lastline+1, TextAtCursor.Length);
+            this.CaretToAbs(lastline + 1, TextAtCursor.Length);
             this.Refresh();
-            
+
             base.OnResize(e);
             System.Diagnostics.Debug.WriteLine(String.Format("After: {0}x{1}, Console: {2}x{3}",
                 this.Width, this.Height, this.CharSize.Width, this.CharSize.Height));
         }
-            
-        protected override void OnPaint (System.Windows.Forms.PaintEventArgs e)
+
+        protected override void OnPaint(System.Windows.Forms.PaintEventArgs e)
         {
-            e.Graphics.SmoothingMode     = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            e.Graphics.TextContrast      = 0;
-            e.Graphics.PixelOffsetMode   = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+            e.Graphics.TextContrast = 0;
+            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
 
-            this.WipeScreen (e.Graphics);
-            this.Redraw     (e.Graphics);
-            this.ShowCaret  (e.Graphics);
+            this.WipeScreen(e.Graphics);
+            this.Redraw(e.Graphics);
+            this.ShowCaret(e.Graphics);
         }
 
-        protected override void OnPaintBackground (System.Windows.Forms.PaintEventArgs e)
+        protected override void OnPaintBackground(System.Windows.Forms.PaintEventArgs e)
         {
         }
 
-        protected override void WndProc (ref System.Windows.Forms.Message m)
+        protected override void WndProc(ref System.Windows.Forms.Message m)
         {
             // Listen for operating system messages and handle the key events.
             switch (m.Msg)
@@ -404,18 +396,18 @@ namespace WalburySoftware
                 case WMCodes.WM_SYSKEYUP:
                 case WMCodes.WM_SYSCHAR:
                 case WMCodes.WM_CHAR:
-                    this.Keyboard.KeyDown (m);
+                    this.Keyboard.KeyDown(m);
                     break;
 
                 default:
                     // don't do any default handling for the aforementioned events
                     // this means things like keyboard shortcut events are ignored
-                    base.WndProc (ref m);
-                    break;               
+                    base.WndProc(ref m);
+                    break;
             }
         }
 
-        protected override void OnMouseMove (MouseEventArgs CurArgs)
+        protected override void OnMouseMove(MouseEventArgs CurArgs)
         {
             if (CurArgs.Button != MouseButtons.Left)
                 return;
@@ -450,8 +442,8 @@ namespace WalburySoftware
 
                         // on first row, make sure we start at begCol
                         if (curRow == begRow && curCol < endCol)
-                            continue;		
-                        
+                            continue;
+
                         // on last row, don't pass the end col
                         if (curRow == endRow && curCol == begCol)
                         {
@@ -483,14 +475,14 @@ namespace WalburySoftware
                     break;
 
                 for (Int32 curCol = 0; curCol < this._cols; curCol++)
-                {			
+                {
                     // don't select if nothing is there
                     if (this.CharGrid[curRow][curCol] == '\0')
                         continue;
 
                     // on first row, make sure we start at begCol
                     if (curRow == begRow && curCol < begCol)
-                        continue;		
+                        continue;
 
                     // on last row, don't pass the end col
                     if (curRow == endRow && curCol == endCol)
@@ -505,8 +497,8 @@ namespace WalburySoftware
 
             this.Refresh();
         }
-        
-        protected override void OnMouseUp (MouseEventArgs CurArgs)
+
+        protected override void OnMouseUp(MouseEventArgs CurArgs)
         {
             if (CurArgs.Button == System.Windows.Forms.MouseButtons.Left)
             {
@@ -522,22 +514,22 @@ namespace WalburySoftware
             }
         }
 
-        protected override void OnMouseDown (System.Windows.Forms.MouseEventArgs CurArgs)
+        protected override void OnMouseDown(System.Windows.Forms.MouseEventArgs CurArgs)
         {
             this.Focus();
-            
+
             //Font tmp      = new System.Drawing.Font(FontFamily.GenericMonospace, 8.5F);
             //Graphics g = this.CreateGraphics();
             //g.DrawString("the quick brown fox jumps over the lazy dog", this.Font,Brushes.GreenYellow, 0,0);
             //g.DrawString("*******************************************", tmp,Brushes.GreenYellow, 0,0);
             //g.DrawString("This system is private and may only be accessed if authorized.", this.Font,Brushes.GreenYellow, 0,0);
-            
+
             //
             //if (CurArgs.Button == System.Windows.Forms.MouseButtons.Right)
             //{
             //	// Get the clipboard text
             //	System.Windows.Forms.IDataObject CurDataObject = System.Windows.Forms.Clipboard.GetDataObject ();
-              
+
             //	if(CurDataObject.GetDataPresent (System.Windows.Forms.DataFormats.Text)) 
             //	{
             //		if (CurDataObject.GetData (System.Windows.Forms.DataFormats.Text) != null)
@@ -548,7 +540,7 @@ namespace WalburySoftware
             //		}
             //	}
             //}
- 
+
             if (CurArgs.Button == System.Windows.Forms.MouseButtons.Left)
             {
                 // begin select
@@ -559,8 +551,8 @@ namespace WalburySoftware
             {
                 DispatchMessage(this, Clipboard.GetText());
             }
-            
-            base.OnMouseDown (CurArgs);
+
+            base.OnMouseDown(CurArgs);
         }
 
         // Handle Keyboard Events:
@@ -608,11 +600,11 @@ namespace WalburySoftware
         ////#endregion
 
         #region Private Methods by developer
-        
+
         private void CopySelectedText()
         {
             Point start = new Point();
-            Point stop  = new Point();
+            Point stop = new Point();
             Boolean FoundStart = false;
             Boolean FoundStop = false;
 
@@ -631,8 +623,8 @@ namespace WalburySoftware
                     // this next check will first find the first non-inverse coord with a
                     // character in it. If it happens to be at the beginning of a line, 
                     // then we'll back up and stop at the last char in the prev line
-                    if (FoundStart == true && 
-                        FoundStop == false && 
+                    if (FoundStart == true &&
+                        FoundStop == false &&
                         this.AttribGrid[row][col].IsInverse == false &&
                         this.CharGrid[row][col] != '\0'
                         )
@@ -671,7 +663,7 @@ namespace WalburySoftware
 
                 // if we get to this point without finding a match, and we're on the last row
                 // we should include the last row and stop here
-                if (FoundStart == true && FoundStop == false && row == this._rows -1)
+                if (FoundStart == true && FoundStop == false && row == this._rows - 1)
                 {
                     for (Int32 col = 0; col < this._cols; col++) // parse the row
                     {
@@ -689,7 +681,7 @@ namespace WalburySoftware
             ////                 " stop.Y "  + Convert.ToString(stop.Y)  +
             ////                 " stop.X "  + Convert.ToString(stop.X));
 
-            StringCollection sc = this.ScreenScrape (start.Y, start.X, stop.Y, stop.X);
+            StringCollection sc = this.ScreenScrape(start.Y, start.X, stop.Y, stop.X);
 
             if (sc != null && sc.Count > 0)
             {
@@ -697,7 +689,7 @@ namespace WalburySoftware
                 sc.CopyTo(lines, 0);
                 try
                 {
-                    Clipboard.SetDataObject(string.Join("\n", lines),false,5,10);
+                    Clipboard.SetDataObject(string.Join("\n", lines), false, 5, 10);
                 }
                 catch (Exception)
                 {
@@ -737,113 +729,158 @@ namespace WalburySoftware
 
         private void HandleScroll(Object sender, ScrollEventArgs se)
         {
-            // capture text at cursor
-            if (this.Caret.IsOff)
-            {
-            }
-            else
-            {
-                this.TextAtCursor = String.Empty;
-                for (Int32 x = 0; x < this._cols; x++)
-                {
-                    char CurChar = this.CharGrid[this.Caret.Pos.Y][x];
-                    if (CurChar == '\0')
-                    {
-                        continue;
-                    }
+            // todo bug when calling clear at console clears console, but doesnt update the buffer
 
-                    this.TextAtCursor = this.TextAtCursor + Convert.ToString(CurChar);
-                }
-            }
-    
-            switch (se.Type)
-            {
-                case ScrollEventType.SmallIncrement: // down
-                    this.LastVisibleLine += 1;
-                    break;
+            if (!this.Caret.IsOff)
+                this.TextAtCursor = this.CaptureTextAtCursor();
 
-                case ScrollEventType.SmallDecrement: // up
-                    this.LastVisibleLine += -1;
-                    break;
+            if (!UpdateLastVisibleLine(se))
+                return;
 
-                default:
-                    return;
-            }
+            // lastline = 0: command line (latest output) is visible
+            // lastline = rows - buffer: scroll to oldest command stored in back buffer
+            //System.Diagnostics.Debug.WriteLine(String.Format("Line (rows {0}, buffer {1}): {2}",
+            //    this._rows, this.ScrollbackBuffer.Count, this.LastVisibleLine));
 
-            // make sure we don't set LastVisibleLine past the end of the StringCollection
-            // LastVisibleLine is relative to the last line in the StringCollection
-            // 0 is the Last element
-            if (this.LastVisibleLine > 0)
-            {
-                this.LastVisibleLine = 0;
-            }
-
-            if (this.LastVisibleLine < (0 - this.ScrollbackBuffer.Count) + (this._rows))
-            {
-                this.LastVisibleLine = (0 - this.ScrollbackBuffer.Count) + (this._rows)-1;
-            }
-
-            Int32 columns = this._cols;
-            Int32 rows = this._rows;
-            
-            this.SetSize(rows, columns);
-
-            StringCollection visiblebuffer = new StringCollection();
-            for (Int32 i = this.ScrollbackBuffer.Count - 1 + this.LastVisibleLine; i >= 0; i--)
-            {
-                visiblebuffer.Insert(0, this.ScrollbackBuffer[i]);
-
-                // don't parse more strings than our display can show
-                if (visiblebuffer.Count >= rows - 1) // rows -1 to leave line for cursor space
-                    break;
-            }
-
-            ////Int32 lastline = (0 - this.ScrollbackBuffer.Count) + (this.Rows);
-            ////Int32 lastline = this.LastVisibleLine;
-            for (Int32 i = 0; i < visiblebuffer.Count; i++)
-            {
-                // Console.WriteLine("Writing string to display: " + visiblebuffer[i]);
-                for (Int32 column = 0; column < columns; column++)
-                {
-                    // this.CharGrid[i][column] = '0';
-                    if (column > visiblebuffer[i].Length - 1)
-                        continue;
-
-                    this.CharGrid[i][column] = visiblebuffer[i].ToCharArray()[column];
-
-                }
-
-                // if we're displaying the last line in scrollbackbuffer, then
-                // replace the cursor and the text on the cursor line
-                // System.Console.WriteLine(Convert.ToString(lastline) + " " + Convert.ToString(this.ScrollbackBuffer.Count));
-                if (this.LastVisibleLine == 0)
-                {
-                    this.CaretOn();
-                    // this.CaretToAbs(0,0);
-                    for (Int32 column = 0; column < this._cols; column++)
-                    {
-                        if (column > this.TextAtCursor.Length - 1)
-                            continue;
-
-                        this.CharGrid[this._rows - 1][column] = this.TextAtCursor.ToCharArray()[column];
-                    }
-
-                    this.CaretToAbs(this._rows - 1, this.TextAtCursor.Length);
-                }
-                else
-                {
-                    this.CaretOff();
-                }
-            }
+            this.SetSize(this._rows, this._cols);
+            ScrollBackBuffer visiblebuffer = CreateVisiblebuffer();
+            UpdateCurrentCharsFromVisibleBuffer(visiblebuffer);
 
             this.Refresh();
         }
 
+        private void UpdateCurrentCharsFromVisibleBuffer(ScrollBackBuffer visiblebuffer)
+        {
+            for (Int32 visibleRowIndex = 0; visibleRowIndex < visiblebuffer.Count; visibleRowIndex++)
+            {
+                char[] lineChars = visiblebuffer.Characters[visibleRowIndex].ToCharArray();
+                for (Int32 column = 0; column < this._cols; column++)
+                {
+                    if (column > visiblebuffer.Characters[visibleRowIndex].Length - 1)
+                        continue;
+
+                    this.CharGrid[visibleRowIndex][column] = lineChars[column];
+                    this.AttribGrid[visibleRowIndex][column] = visiblebuffer.Attributes[visibleRowIndex][column];
+                }
+
+                this.UpdateCommandLineChars();
+            }
+        }
+
+        /// <summary>
+        /// if we're displaying the last line in scrollbackbuffer, then
+        /// replace the cursor and the text on the cursor line
+        /// </summary>
+        private void UpdateCommandLineChars()
+        {
+            if (this.LastVisibleLine == 0)
+            {
+                this.CaretOn();
+                for (Int32 column = 0; column < this._cols; column++)
+                {
+                    if (column > this.TextAtCursor.Length - 1)
+                        continue;
+
+                    this.CharGrid[this._rows - 1][column] = this.TextAtCursor.ToCharArray()[column];
+                }
+
+                this.CaretToAbs(this._rows - 1, this.TextAtCursor.Length);
+            }
+            else
+            {
+                this.CaretOff();
+            }
+        }
+
+        private ScrollBackBuffer CreateVisiblebuffer()
+        {
+            ScrollBackBuffer visibleBuffer = new ScrollBackBuffer();
+
+            int lastLineIndex = this.ScrollbackBuffer.Count - 1 + this.LastVisibleLine;
+            for (Int32 lineIndex = lastLineIndex; lineIndex >= 0; lineIndex--)
+            {
+                visibleBuffer.Insert(0, this.ScrollbackBuffer.Characters[lineIndex], this.ScrollbackBuffer.Attributes[lineIndex]);
+
+                // don't parse more strings than our display can show);
+                if (visibleBuffer.Count >= this._rows - 1) // rows -1 to leave line for cursor space
+                    break;
+            }
+
+            return visibleBuffer;
+        }
+
+        /// <summary>
+        /// Updates last visible line depending on scrollbar step in event arguments.
+        /// Returns true, if change is relevant; otherwise false.
+        /// </summary>
+        private bool UpdateLastVisibleLine(ScrollEventArgs arguments)
+        {
+            switch (arguments.Type) // calculate step relative increment
+            {
+                case ScrollEventType.SmallIncrement:
+                    UpdateLastVisibleLine(1);
+                    return true;
+                case ScrollEventType.SmallDecrement:
+                    UpdateLastVisibleLine(-1);
+                    return true;
+                case ScrollEventType.LargeIncrement:
+                    UpdateLastVisibleLine(this._rows);
+                    return true;
+                case ScrollEventType.LargeDecrement:
+                    UpdateLastVisibleLine(-this._rows);
+                    return true;
+                case ScrollEventType.ThumbTrack:
+                    UpdateLastVisibleLine(arguments.NewValue - arguments.OldValue);
+                    return true;
+                case ScrollEventType.First:
+                    UpdateLastVisibleLine(0 - this.VertScrollBar.Value);
+                    return true;
+                case ScrollEventType.Last:
+                    UpdateLastVisibleLine(this.VertScrollBar.Maximum - this.VertScrollBar.Value);
+                    return true;
+                default:
+                    return false; // unsuported step
+            }
+        }
+
+        /// <summary>
+        /// make sure we don't set LastVisibleLine past the end of the StringCollection
+        /// LastVisibleLine is relative to the last line in the StringCollection
+        /// 0 is the Last element
+        /// </summary>
+        private void UpdateLastVisibleLine(int increment)
+        {
+            this.LastVisibleLine += increment;
+
+            if (this.LastVisibleLine > 0)
+                this.LastVisibleLine = 0;
+
+            if (this.LastVisibleLine < this._rows - this.ScrollbackBuffer.Count)
+                this.LastVisibleLine = this._rows - this.ScrollbackBuffer.Count - 1;
+        }
+
+        /// <summary>
+        /// capture text at cursor because it's not in the scrollback buffer yet
+        /// </summary>
+        /// <returns>captured text</returns>
+        private string CaptureTextAtCursor()
+        {
+            StringBuilder textAtCursor = new StringBuilder();
+            int lineIndex = this.Caret.Pos.Y;
+            for (Int32 charIndex = 0; charIndex < this._cols; charIndex++)
+            {
+                char current = this.CharGrid[lineIndex][charIndex];
+                if (current != '\0')
+                {
+                    textAtCursor.Append(current);
+                }
+            }
+
+            return textAtCursor.ToString();
+        }
+
         private void SetScrollBarValues()
         {
-            // Set the Maximum, Minimum, LargeChange and SmallChange properties.
-            this.VertScrollBar.Minimum = 0;
-            
             // if the scrollbackbuffer is empty, there's nothing to scroll
             if (this.ScrollbackBuffer.Count == 0)
             {
@@ -851,35 +888,26 @@ namespace WalburySoftware
                 return;
             }
 
-            // If the offset does not make the Maximum less than zero, set its value.    
-            if ((this.ScrollbackBuffer.Count * this.CharSize.Height) - this.Height > 0)
+            if (this.ScrollbackBuffer.Count > this._rows)
             {
-                this.VertScrollBar.Maximum = this.ScrollbackBuffer.Count * this.CharSize.Height - this.Height;
+                this.VertScrollBar.Enabled = true;
+                this.VertScrollBar.Maximum = this.ScrollbackBuffer.Count;
+                this.VertScrollBar.Value = this.VertScrollBar.Maximum;
             }
 
-            // If the HScrollBar is visible, adjust the Maximum of the 
-            // VSCrollBar to account for the width of the HScrollBar.
-            ////if(this.hScrollBar1.Visible)
-            ////{
-            ////	this.vScrollBar1.Maximum += this.hScrollBar1.Height;
-            ////}
-            this.VertScrollBar.LargeChange = this.VertScrollBar.Maximum / this.CharSize.Height * 10;
-            this.VertScrollBar.SmallChange = this.VertScrollBar.Maximum / this.CharSize.Height;
-
-            // Adjust the Maximum value to make the raw Maximum value 
-            // attainable by user interaction.
-            this.VertScrollBar.Maximum += this.VertScrollBar.LargeChange;
+            this.VertScrollBar.LargeChange = this._rows;
+            this.VertScrollBar.SmallChange = 1;
         }
 
-        string keyboardBuffer = String.Empty;
-        System.Collections.Generic.List<string> history = new System.Collections.Generic.List<string>();
-        
-        private void SetSize (Int32 Rows, Int32 Columns)
+        private string keyboardBuffer = String.Empty;
+        private List<string> history = new List<string>();
+
+        private void SetSize(Int32 Rows, Int32 Columns)
         {
             this._rows = Rows;
             this._cols = Columns;
 
-            this.TopMargin    = 0;
+            this.TopMargin = 0;
             this.BottomMargin = Rows - 1;
 
             ////this.ClientSize = new System.Drawing.Size (
@@ -894,41 +922,41 @@ namespace WalburySoftware
 
             for (Int32 i = 0; i < this.CharGrid.Length; i++)
             {
-                this.CharGrid[i]   = new System.Char[Columns];
+                this.CharGrid[i] = new System.Char[Columns];
             }
 
             this.AttribGrid = new CharAttribStruct[Rows][];
 
             for (Int32 i = 0; i < this.AttribGrid.Length; i++)
             {
-                this.AttribGrid[i]   = new CharAttribStruct[Columns];
+                this.AttribGrid[i] = new CharAttribStruct[Columns];
             }
         }
 
-        private void GetFontInfo ()
+        private void GetFontInfo()
         {
-            Graphics tmpGraphics = this.CreateGraphics ();
+            Graphics tmpGraphics = this.CreateGraphics();
 
             // get the offset that the moron Graphics.Drawstring method adds by default
-            this.DrawStringOffset = this.GetDrawStringOffset (tmpGraphics, 0, 0, 'A');
+            this.DrawStringOffset = this.GetDrawStringOffset(tmpGraphics, 0, 0, 'A');
 
             // get the size of the character using the same type of method
-            System.Drawing.Point tmpPoint = this.GetCharSize (tmpGraphics);
+            System.Drawing.Point tmpPoint = this.GetCharSize(tmpGraphics);
 
-            this.CharSize.Width  = tmpPoint.X; // make a little breathing room
+            this.CharSize.Width = tmpPoint.X; // make a little breathing room
             this.CharSize.Height = tmpPoint.Y;
-            
+
             ////Graphics g = this.CreateGraphics();
             ////SizeF size = g.MeasureString("_", this.Font);
             ////this.CharSize.Width = (int) size.Width;
             ////this.CharSize.Height = (int) size.Height;
 
-            tmpGraphics.Dispose ();
+            tmpGraphics.Dispose();
             this.UnderlinePos = this.CharSize.Height - 2;
 
             UpdateCaret();
-            this.EraseBitmap     =  new Bitmap (this.CharSize.Width, this.CharSize.Height);
-            this.EraseBuffer     =  Graphics.FromImage (this.EraseBitmap);
+            this.EraseBitmap = new Bitmap(this.CharSize.Width, this.CharSize.Height);
+            this.EraseBuffer = Graphics.FromImage(this.EraseBitmap);
         }
 
         private void UpdateCaret()
@@ -941,24 +969,24 @@ namespace WalburySoftware
             }
         }
 
-        private void OnClickFont (Object Sender, EventArgs e)
+        private void OnClickFont(Object Sender, EventArgs e)
         {
-            FontDialog fontDialog = new FontDialog ();
+            FontDialog fontDialog = new FontDialog();
 
             fontDialog.FixedPitchOnly = true;
-            fontDialog.ShowEffects    = false;
-            fontDialog.Font           = this.Font;
+            fontDialog.ShowEffects = false;
+            fontDialog.Font = this.Font;
 
-            if (fontDialog.ShowDialog () != DialogResult.Cancel)
+            if (fontDialog.ShowDialog() != DialogResult.Cancel)
             {
                 // Change the font
                 this.Font = fontDialog.Font;
 
-                this.GetFontInfo ();
+                this.GetFontInfo();
 
-                this.ClientSize = new Size (
-                    Convert.ToInt32 (this.CharSize.Width  * this._cols + 2) + this.VertScrollBar.Width,
-                    Convert.ToInt32 (this.CharSize.Height * this._rows    + 2));
+                this.ClientSize = new Size(
+                    Convert.ToInt32(this.CharSize.Width * this._cols + 2) + this.VertScrollBar.Width,
+                    Convert.ToInt32(this.CharSize.Height * this._rows + 2));
             }
         }
 
@@ -966,11 +994,11 @@ namespace WalburySoftware
 
         #region Private Classes
 
-        private class uc_VertScrollBar : System.Windows.Forms.VScrollBar
+        private class uc_VertScrollBar : VScrollBar
         {
             public uc_VertScrollBar()
             {
-                this.SetStyle(System.Windows.Forms.ControlStyles.Selectable, false);
+                this.SetStyle(ControlStyles.Selectable, false);
                 this.Maximum = 0;
             }
         }

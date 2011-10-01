@@ -76,6 +76,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScrollBackBuffer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TerminalControl.Caret.cs">
       <SubType>Component</SubType>
     </Compile>

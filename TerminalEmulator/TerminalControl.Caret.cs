@@ -218,33 +218,7 @@ namespace WalburySoftware
 
         private void LineFeed()
         {
-            this.SetScrollBarValues();
-
-            // capture the new line into the scrollback buffer
-            if (this.ScrollbackBuffer.Count < this.ScrollbackBufferSize)
-            {
-            }
-            else
-            {
-                this.ScrollbackBuffer.RemoveAt(0);
-            }
-
-            String s = String.Empty;
-            for (Int32 x = 0; x < this._cols; x++)
-            {
-                Char CurChar = this.CharGrid[this.Caret.Pos.Y][x];
-
-                if (CurChar == '\0')
-                {
-                    continue;
-                }
-
-                s = s + Convert.ToString(CurChar);
-            }
-
-            this.ScrollbackBuffer.Add(s);
-            ////Console.WriteLine("there are " + Convert.ToString(this.ScrollbackBuffer.Count) + " lines in the scrollback buffer");
-            ////Console.WriteLine(s);
+            UpdateScrollBackBuffer();
 
             if (this.Caret.Pos.Y == this.BottomMargin || this.Caret.Pos.Y == this._rows - 1)
             {
@@ -257,11 +231,27 @@ namespace WalburySoftware
                     this.AttribGrid[i] = this.AttribGrid[i + 1];
                 }
 
-                this.CharGrid[i] = new Char[this._cols];
-                this.AttribGrid[i] = new CharAttribStruct[this._cols];
+                this.CharGrid[this.BottomMargin] = new Char[this._cols];
+                this.AttribGrid[this.BottomMargin] = new CharAttribStruct[this._cols];
             }
 
+            this.SetScrollBarValues();
             this.CaretDown();
+        }
+
+        /// <summary>
+        /// captures the new line into the scrollback buffer
+        /// </summary>
+        private void UpdateScrollBackBuffer()
+        {
+            if (this.ScrollbackBuffer.Count >= this.ScrollbackBufferSize)
+            {
+                this.ScrollbackBuffer.RemoveLast();
+            }
+
+            String textAtCursor = this.CaptureTextAtCursor();
+            CharAttribStruct[] textAtCursorAttributes = this.AttribGrid[this.Caret.Pos.Y];
+            this.ScrollbackBuffer.Add(textAtCursor, textAtCursorAttributes);
         }
 
         private void Index(Int32 Param)
