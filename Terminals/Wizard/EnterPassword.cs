@@ -19,7 +19,7 @@ namespace Terminals.Wizard
             EnableMasterPassword.Enabled = true;
             panel1.Enabled = true;
 
-            if(Settings.TerminalsPassword != "")
+            if(Settings.IsMasterPasswordDefined)
             {
                 EnableMasterPassword.Checked = true;
                 EnableMasterPassword.Enabled = false;

@@ -48,7 +48,7 @@ namespace Terminals
             
             // Security - Master Password tab
             ClearMasterButton.Enabled = false;
-            if (Settings.TerminalsPassword != string.Empty)
+            if (Settings.IsMasterPasswordDefined)
             {
                 this.PasswordProtectTerminalsCheckbox.Checked = true;
                 this.PasswordProtectTerminalsCheckbox.Enabled = false;
@@ -192,7 +192,7 @@ namespace Terminals
                 && !string.IsNullOrEmpty(this.ConfirmPasswordTextBox.Text)
                 && this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text))
             {
-                Settings.TerminalsPassword = this.PasswordTextbox.Text;
+                Settings.UpdateMasterPassword(this.PasswordTextbox.Text);
             }
 
             // Security - Default Password tab
@@ -327,7 +327,7 @@ namespace Terminals
         {
             if(System.Windows.Forms.MessageBox.Show("Are you sure you want to remove the master password?\r\n\r\n**Please be advised that this will render ALL saved passwords inactive!**", Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                Settings.TerminalsPassword = String.Empty;
+                Settings.UpdateMasterPassword(String.Empty);
                 ClearMasterButton.Enabled = false;
 
                 PasswordProtectTerminalsCheckbox.Checked = false;

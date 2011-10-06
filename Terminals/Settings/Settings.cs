@@ -376,23 +376,28 @@ namespace Terminals.Configuration
 
         #region Security tab settings
 
-        public static string TerminalsPassword
+        internal static bool IsMasterPasswordDefined
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.TerminalsPassword;
+                return !String.IsNullOrEmpty(GetMasterPasswordHash());
             }
+        }
 
-            set
-            {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).TerminalsPassword = value;
-                SaveImmediatelyIfRequested(configuration);
-                UpdateKeyMaterial(value);
-            }
+        private static string GetMasterPasswordHash()
+        {
+            _terminalsConfigurationSection = GetSection();
+            if (_terminalsConfigurationSection == null)
+                return string.Empty;
+            return _terminalsConfigurationSection.TerminalsPassword;
+        }
+
+        internal static void UpdateMasterPassword(string newPassword)
+        {
+            SysConfig.Configuration configuration = Config;
+            GetSection(configuration).TerminalsPassword = newPassword;
+            SaveImmediatelyIfRequested(configuration);
+            UpdateKeyMaterial(newPassword);
         }
 
         internal static string KeyMaterial
@@ -408,10 +413,10 @@ namespace Terminals.Configuration
             }
         }
 
-        internal static Boolean ValidateMasterPassword(string passwordToCheck)
+        internal static Boolean IsMasterPasswordValid(string passwordToCheck)
         {
             String hashToCheck = Hash.GetHash(passwordToCheck, Hash.HashType.SHA512);
-            if (TerminalsPassword == hashToCheck)
+            if (GetMasterPasswordHash() == hashToCheck)
             {
                 UpdateKeyMaterial(passwordToCheck);
                 return true;

@@ -52,7 +52,7 @@ namespace Terminals
             UpdateManager.CheckForUpdates();
 
             // Check for Terminals master password
-            if (Settings.TerminalsPassword != String.Empty)
+            if (Settings.IsMasterPasswordDefined)
             {
                 RequestPassword rp = new RequestPassword();
                 DialogResult result = rp.ShowDialog();

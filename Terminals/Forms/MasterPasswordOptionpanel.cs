@@ -149,7 +149,7 @@ namespace Terminals.Forms
         public override void Init()
         {
             ClearMasterButton.Enabled = false;
-            if (Settings.TerminalsPassword != string.Empty)
+            if (Settings.IsMasterPasswordDefined)
             {
                 this.chkPasswordProtectTerminals.Checked = true;
                 this.chkPasswordProtectTerminals.Enabled = false;
@@ -170,7 +170,7 @@ namespace Terminals.Forms
                     && !String.IsNullOrEmpty(this.ConfirmPasswordTextBox.Text)
                     && this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text))
                 {
-                    Settings.TerminalsPassword = this.PasswordTextbox.Text;
+                    Settings.UpdateMasterPassword(this.PasswordTextbox.Text);
                 }
 
                 return true;
@@ -186,7 +186,7 @@ namespace Terminals.Forms
         {
             if (MessageBox.Show("Are you sure you want to remove the master password?\r\n\r\n**Please be advised that this will render ALL saved passwords inactive!**", Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
-                Settings.TerminalsPassword = String.Empty;
+                Settings.UpdateMasterPassword(String.Empty);
                 this.ClearMasterButton.Enabled = false;
 
                 this.chkPasswordProtectTerminals.Checked = false;

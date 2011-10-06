@@ -53,7 +53,7 @@ namespace Terminals
             {
                 if (mp.StorePassword)
                 {
-                    Settings.TerminalsPassword = mp.Password;
+                    Settings.UpdateMasterPassword(mp.Password);
                     nextButton.Enabled = true;
                     this.panel1.Controls.Clear();
                     this.panel1.Controls.Add(dc);

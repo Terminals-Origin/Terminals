@@ -15,7 +15,7 @@ namespace Terminals.Security
         private void OkButton_Click(object sender, EventArgs e)
         {
             String newPass = this.PasswordTextBox.Text;
-            if (Settings.ValidateMasterPassword(newPass))
+            if (!Settings.IsMasterPasswordValid(newPass))
             {
                 this.PasswordTextBox.Focus();
                 this.PasswordTextBox.Text = "";
