@@ -1080,6 +1080,9 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested(configuration);
         }
 
+        /// <summary>
+        /// Gets alphabeticaly sorted array of tags resolved from Tags store
+        /// </summary>
         public static string[] Tags
         {
             get
@@ -1087,7 +1090,9 @@ namespace Terminals.Configuration
                 _terminalsConfigurationSection = GetSection();
                 if (_terminalsConfigurationSection == null)
                     return null;
-                return ReadList(_terminalsConfigurationSection.Tags).ToArray();
+                List<string> tags = ReadList(_terminalsConfigurationSection.Tags);
+                tags.Sort();
+                return tags.ToArray();
             }
         }
 

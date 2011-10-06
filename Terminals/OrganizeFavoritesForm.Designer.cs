@@ -967,7 +967,7 @@ namespace Terminals
             this.dataGridFavorites.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridFavorites_CellEndEdit);
             this.dataGridFavorites.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridFavorites_ColumnHeaderMouseClick);
             this.dataGridFavorites.SelectionChanged += new System.EventHandler(this.dataGridFavorites_SelectionChanged);
-            this.dataGridFavorites.DoubleClick += new System.EventHandler(this.btnEdit_Click);
+            this.dataGridFavorites.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridFavorites_DoubleClick);
             // 
             // bsFavorites
             // 

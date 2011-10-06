@@ -50,6 +50,14 @@ namespace Terminals
             return null;
         }
 
+        private void dataGridFavorites_DoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex > 0)
+            {
+                btnEdit_Click(sender, e);
+            }
+        }
+
         /// <summary>
         /// Start edit in data grid
         /// </summary>
@@ -57,6 +65,9 @@ namespace Terminals
         {
             if (e.KeyCode == Keys.F2)
                 btnRename.PerformClick();
+
+            if (e.KeyCode == Keys.Delete)
+                btnDelete_Click(sender, e);
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -84,11 +95,13 @@ namespace Terminals
         }
 
         private string editedFavoriteName = String.Empty;
+        private FavoriteConfigurationElement editedFavorite;
 
         private void dataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             // the only editable cell should be name
             this.editedFavoriteName = dataGridFavorites.CurrentCell.Value.ToString();
+            this.editedFavorite = this.dataGridFavorites.SelectedRows[0].DataBoundItem as FavoriteConfigurationElement;
         }
 
         /// <summary>
@@ -96,7 +109,6 @@ namespace Terminals
         /// </summary>
         private void dataGridFavorites_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            var editedFavorite = this.dataGridFavorites.SelectedRows[0].DataBoundItem as FavoriteConfigurationElement;
             if(editedFavorite.Name.Equals(this.editedFavoriteName, StringComparison.CurrentCultureIgnoreCase))
                 return;  // cancel or nothing changed
 
