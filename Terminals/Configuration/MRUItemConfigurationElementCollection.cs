@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
 
 namespace Terminals
 {
     public class MRUItemConfigurationElementCollection : ConfigurationElementCollection
     {
-        public MRUItemConfigurationElementCollection()
-        {
-        }
+        public MRUItemConfigurationElementCollection() { }
 
         public override ConfigurationElementCollectionType CollectionType
         {
@@ -23,7 +20,6 @@ namespace Terminals
         {
             return new MRUItemConfigurationElement();
         }
-
 
         protected override ConfigurationElement CreateNewElement(string elementName)
         {
@@ -139,6 +135,16 @@ namespace Terminals
         {
             BaseClear();
         }
-    }
 
+        internal List<string> ReadList()
+        {
+            List<string> list = new List<string>();
+            foreach (MRUItemConfigurationElement configurationElement in this)
+            {
+                list.Add(configurationElement.Name);
+            }
+
+            return list;
+        }
+    }
 }

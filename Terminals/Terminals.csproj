@@ -472,7 +472,10 @@
     <Compile Include="Data\SerializableDictionary.cs" />
     <Compile Include="Data\SerializableSortedDictionary.cs" />
     <Compile Include="Settings\FavoritesFactory.cs" />
+    <Compile Include="Settings\Settings_FavoriteButtons.cs" />
     <Compile Include="Settings\Settings_Favorites.cs" />
+    <Compile Include="Settings\Settings_Groups.cs" />
+    <Compile Include="Settings\Settings_Tags.cs" />
     <Compile Include="Settings\SortProperties.cs" />
     <Compile Include="Settings\StoredCredentials.cs" />
     <Compile Include="Settings\ToolStripSetting.cs" />

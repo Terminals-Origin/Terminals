@@ -990,17 +990,6 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string[] FavoritesToolbarButtons
-        {
-            get
-            {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return null;
-                return ReadList(_terminalsConfigurationSection.FavoritesButtons).ToArray();
-            }
-        }
-
         #endregion
 
         #region Startup settings
@@ -1061,60 +1050,9 @@ namespace Terminals.Configuration
 
         #endregion
 
-        #region Groups
-
-        public static GroupConfigurationElementCollection GetGroups()
-        {
-            _terminalsConfigurationSection = GetSection();
-            if (_terminalsConfigurationSection == null)
-                return null;
-            return _terminalsConfigurationSection.Groups;
-        }
-
-        public static void DeleteGroup(string name)
-        {
-            SysConfig.Configuration configuration = Config;
-            GetSection(configuration).Groups.Remove(name);
-            SaveImmediatelyIfRequested(configuration);
-        }
-
-        public static void AddGroup(GroupConfigurationElement group)
-        {
-            SysConfig.Configuration configuration = Config;
-            GetSection(configuration).Groups.Add(group);
-            SaveImmediatelyIfRequested(configuration);
-        }
-
-        /// <summary>
-        /// Gets alphabeticaly sorted array of tags resolved from Tags store
-        /// </summary>
-        public static string[] Tags
-        {
-            get
-            {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return null;
-                List<string> tags = ReadList(_terminalsConfigurationSection.Tags);
-                tags.Sort();
-                return tags.ToArray();
-            }
-        }
-
-        #endregion
-
         #region MRU lists
 
-        private static List<string> ReadList(MRUItemConfigurationElementCollection configurationElementCollection)
-        {
-            List<string> list = new List<string>();
-            foreach (MRUItemConfigurationElement configurationElement in configurationElementCollection)
-            {
-                list.Add(configurationElement.Name);
-            }
 
-            return list;
-        }
 
         public static string[] MRUServerNames
         {
@@ -1124,7 +1062,7 @@ namespace Terminals.Configuration
                 if (_terminalsConfigurationSection == null)
                     return null;
                 _terminalsConfigurationSection = GetSection();
-                return ReadList(_terminalsConfigurationSection.ServersMRU).ToArray();
+                return _terminalsConfigurationSection.ServersMRU.ReadList().ToArray();
             }
         }
 
@@ -1136,7 +1074,7 @@ namespace Terminals.Configuration
                 if (_terminalsConfigurationSection == null)
                     return null;
                 _terminalsConfigurationSection = GetSection();
-                return ReadList(_terminalsConfigurationSection.DomainsMRU).ToArray();
+                return _terminalsConfigurationSection.DomainsMRU.ReadList().ToArray();
             }
         }
 
@@ -1147,7 +1085,7 @@ namespace Terminals.Configuration
                 _terminalsConfigurationSection = GetSection();
                 if (_terminalsConfigurationSection == null)
                     return null;
-                return ReadList(_terminalsConfigurationSection.UsersMRU).ToArray();
+                return _terminalsConfigurationSection.UsersMRU.ReadList().ToArray();
             }
         }
 
@@ -1250,7 +1188,7 @@ namespace Terminals.Configuration
                 _terminalsConfigurationSection = GetSection();
                 if (_terminalsConfigurationSection == null)
                     return null;
-                return ReadList(_terminalsConfigurationSection.SavedConnections).ToArray();
+                return _terminalsConfigurationSection.SavedConnections.ReadList().ToArray();
             }
         }
 
