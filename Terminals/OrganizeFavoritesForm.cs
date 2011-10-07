@@ -36,10 +36,7 @@ namespace Terminals
             NewTerminalForm frmNewTerminal = new NewTerminalForm(favorite);
             if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
             {
-                // because the favorite instance is replaced
-                int dataSourceIndex = bsFavorites.IndexOf(favorite);
-                bsFavorites.RemoveAt(dataSourceIndex);
-                bsFavorites.Insert(dataSourceIndex, frmNewTerminal.Favorite);
+                UpdateFavoritesBindingSource();
             }
         }
 
@@ -59,14 +56,15 @@ namespace Terminals
         }
 
         /// <summary>
-        /// Start edit in data grid
+        /// Handles F2 and Delete key press in grid. Escape is handled as dialog cancel
         /// </summary>
         private void ConnectionManager_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2)
                 btnRename.PerformClick();
 
-            if (e.KeyCode == Keys.Delete)
+            // prevent delete whole favorite when editing its name directly in grid cell
+            if (e.KeyCode == Keys.Delete && !this.dataGridFavorites.IsCurrentCellInEditMode)
                 btnDelete_Click(sender, e);
         }
 
@@ -81,7 +79,7 @@ namespace Terminals
             }
 
             Settings.DeleteFavorites(selectedFavorites);
-            AddFavoritesToBindingSource();
+            this.UpdateFavoritesBindingSource();
             this.Cursor = Cursors.Default;
         }
 
@@ -109,8 +107,10 @@ namespace Terminals
         /// </summary>
         private void dataGridFavorites_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            if (String.IsNullOrEmpty(this.editedFavorite.Name)) // cancel or nothing changed
+                editedFavorite.Name = this.editedFavoriteName;
             if(editedFavorite.Name.Equals(this.editedFavoriteName, StringComparison.CurrentCultureIgnoreCase))
-                return;  // cancel or nothing changed
+                return;  
 
             var copy = editedFavorite.Clone() as FavoriteConfigurationElement;
             editedFavorite.Name = this.editedFavoriteName;
@@ -120,21 +120,19 @@ namespace Terminals
                 string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", copy.Name);
                 if (MessageBox.Show(this, message, "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    this.bsFavorites.Remove(oldFavorite);
-                    ReplaceFavoriteInBindingSource(copy, editedFavorite);
+                    ReplaceFavoriteInBindingSource(copy);
                 }
             }
             else
             {
-                ReplaceFavoriteInBindingSource(copy, editedFavorite);
+                ReplaceFavoriteInBindingSource(copy);
             }
         }
 
-        private void ReplaceFavoriteInBindingSource(FavoriteConfigurationElement copy, FavoriteConfigurationElement oldFavorite)
+        private void ReplaceFavoriteInBindingSource(FavoriteConfigurationElement copy)
         {
             Settings.EditFavorite(this.editedFavoriteName, copy, true);
-            this.bsFavorites.Remove(oldFavorite);
-            this.bsFavorites.Add(copy);
+            this.UpdateFavoritesBindingSource();
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -157,8 +155,7 @@ namespace Terminals
                     {
                         newFav.Name = result.Text;
                         Settings.AddFavorite(newFav, Settings.HasToolbarButton(newFav.Name));
-                        this.bsFavorites.Add(newFav);
-                        UpdateCountLabels();
+                        UpdateFavoritesBindingSource();
                     }
                 }
             }
@@ -171,8 +168,7 @@ namespace Terminals
                 if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
                 {
                     Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
-                    this.bsFavorites.Add(frmNewTerminal.Favorite);
-                    UpdateCountLabels();
+                    UpdateFavoritesBindingSource();
                 }
             }
         }
@@ -187,14 +183,14 @@ namespace Terminals
         {
             ImportFromAD activeDirectoryForm = new ImportFromAD();
             activeDirectoryForm.ShowDialog();
-            AddFavoritesToBindingSource();
+            this.UpdateFavoritesBindingSource();
         }
 
         private void networkDetectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NetworkScanner networkScanForm = new NetworkScanner();
             networkScanForm.ShowDialog();
-            AddFavoritesToBindingSource();
+            this.UpdateFavoritesBindingSource();
         }
 
         private void ImportButton_Click(object sender, EventArgs e)
@@ -222,17 +218,37 @@ namespace Terminals
                 Boolean imported = managedImport.Import(favoritesToImport);
 
                 if (imported)
-                    this.AddFavoritesToBindingSource();
+                    this.UpdateFavoritesBindingSource();
             }
         }
 
-        private void AddFavoritesToBindingSource()
+        /// <summary>
+        /// Replace the favorites in binding source doesnt affect performance
+        /// </summary>
+        private void UpdateFavoritesBindingSource()
         {
-            this.bsFavorites.DataSource = Settings.GetFavorites().ToList();
-            this.bsFavorites.ResetBindings(false);
+            var data = Settings.GetFavorites().ToList();
+
+            DataGridViewColumn lastSortedColumn = this.dataGridFavorites.FindLastSortedColumn();
+            if (lastSortedColumn != null) // keep last ordered column
+            {
+                var backupGliph = lastSortedColumn.HeaderCell.SortGlyphDirection;
+                this.bsFavorites.DataSource = data.SortByProperty(lastSortedColumn.DataPropertyName,
+                    lastSortedColumn.HeaderCell.SortGlyphDirection);
+
+                lastSortedColumn.HeaderCell.SortGlyphDirection = backupGliph;
+            }
+            else
+            {
+                this.bsFavorites.DataSource = data;
+            }
+
             UpdateCountLabels();
         }
 
+        /// <summary>
+        /// Sort columns
+        /// </summary>
         private void dataGridFavorites_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataGridViewColumn lastSortedColumn = this.dataGridFavorites.FindLastSortedColumn();

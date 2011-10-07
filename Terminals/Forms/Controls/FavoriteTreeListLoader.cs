@@ -67,10 +67,10 @@ namespace Terminals.Forms.Controls
                 foreach (String tag in favorite.TagList)
                 {
                     TagTreeNode tagNode = this.treeList.Nodes[tag] as TagTreeNode;
-                    this.RemoveFavoriteFromTagNode(tagNode, favorite.Name);
+                    RemoveFavoriteFromTagNode(tagNode, favorite.Name);
                 }
 
-                this.RemoveFavoriteFromTagNode(this.unTaggedNode, favorite.Name);  
+                RemoveFavoriteFromTagNode(this.unTaggedNode, favorite.Name);  
             }
         }
 
@@ -80,7 +80,7 @@ namespace Terminals.Forms.Controls
             {
                 foreach (TagTreeNode tagNode in this.treeList.Nodes)
                 {
-                    this.RemoveFavoriteFromTagNode(tagNode, updateArg.Key);  
+                    RemoveFavoriteFromTagNode(tagNode, updateArg.Key);  
                 }
 
                 this.AddFavoriteToAllItsTagNodes(updateArg.Value);
@@ -100,27 +100,28 @@ namespace Terminals.Forms.Controls
             foreach (String tag in favorite.TagList)
             {
                 TagTreeNode tagNode = this.treeList.Nodes[tag] as TagTreeNode;
-                this.AddNewFavoriteNodeToTagNode(favorite, tagNode);
+                AddNewFavoriteNodeToTagNode(favorite, tagNode);
             }
 
             if (String.IsNullOrEmpty(favorite.Tags))
             {
-                this.AddNewFavoriteNodeToTagNode(favorite, this.unTaggedNode);
+                AddNewFavoriteNodeToTagNode(favorite, this.unTaggedNode);
             }
         }
 
-        private void RemoveFavoriteFromTagNode(TagTreeNode tagNode, String favoriteName)
+        private static void RemoveFavoriteFromTagNode(TagTreeNode tagNode, String favoriteName)
         {
             if (tagNode != null && !tagNode.IsEmpty)
                 tagNode.Nodes.RemoveByKey(favoriteName);
         }
 
-        private void AddNewFavoriteNodeToTagNode(FavoriteConfigurationElement favorite, TagTreeNode tagNode)
+        private static void AddNewFavoriteNodeToTagNode(FavoriteConfigurationElement favorite, TagTreeNode tagNode)
         {
             if (tagNode != null && !tagNode.IsEmpty) // add only to expanded nodes
             {
                 var favoriteTreeNode = new FavoriteTreeNode(favorite);
-                tagNode.Nodes.Add(favoriteTreeNode);
+                int index = FindNodeInsertIndex(tagNode.Nodes, favorite.Name);
+                InsertNodePreservingOrder(tagNode.Nodes, index, favoriteTreeNode);
             }
         }
 
@@ -137,8 +138,32 @@ namespace Terminals.Forms.Controls
         {
             foreach (String newTag in newTags)
             {
-                this.CreateAndAddTagNode(newTag);
+                // Skips first Untagged node to keep it first.
+                int index = FindNodeInsertIndex(this.treeList.Nodes, newTag, 1);
+                this.CreateAndAddTagNode(newTag, index);
             }
+        }
+
+        /// <summary>
+        /// Finds the index for the node to insert in nodes collection
+        /// and skips nodes before the startIndex.
+        /// </summary>
+        /// <param name="nodes">The nodes collection to search in.</param>
+        /// <param name="newTag">The new tag to add.</param>
+        /// <param name="startIndex">The search start index.</param>
+        /// <returns>
+        /// -1, if the tag should be added to the end of tag nodes,
+        /// otherwise found index.
+        /// </returns>
+        private static int FindNodeInsertIndex(TreeNodeCollection nodes, string newTag, int startIndex = 0)
+        {
+            for (int index = startIndex; index < nodes.Count; index++)
+            {
+                if (nodes[index].Text.CompareTo(newTag) > 0)
+                    return index;
+            }
+
+            return -1;
         }
 
         private void RemoveUnusedTagNodes(List<String> removedTags)
@@ -149,11 +174,27 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        private TagTreeNode CreateAndAddTagNode(String tag)
+        /// <summary>
+        /// Creates the and add tag node in tree list on proper position defined by index.
+        /// This allowes the tag nodes to keep ordered by name.
+        /// </summary>
+        /// <param name="tag">The tag name to create.</param>
+        /// <param name="index">The index on which node would be inserted.
+        /// If negative number, than it is added to the end.</param>
+        /// <returns>Not null, newly creted node</returns>
+        private TagTreeNode CreateAndAddTagNode(String tag, int index = -1)
         {
             TagTreeNode tagNode = new TagTreeNode(tag);
-            treeList.Nodes.Add(tagNode);
+            InsertNodePreservingOrder(this.treeList.Nodes, index, tagNode);
             return tagNode;
+        }
+
+        private static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode tagNode)
+        {
+            if (index < 0)
+                nodes.Add(tagNode);
+            else
+                nodes.Insert(index, tagNode);
         }
 
         internal void LoadTags()
