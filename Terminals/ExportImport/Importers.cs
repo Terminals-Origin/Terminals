@@ -6,23 +6,21 @@ using System.Text;
 
 namespace Terminals.Integration.Import
 {
-    internal static class Importers
+    internal class Importers : Integration<IImport>
     {
-        private static Dictionary<string, IImport> importers = null;
-
-        internal static string GetImportersDialogFilter()
+        internal string GetProvidersDialogFilter()
         {
             // LoadImportersFromAssemblies();
-            LoadImporters();
+            LoadProviders();
 
             StringBuilder stringBuilder = new StringBuilder();
             // work with copy because it is modified
-            Dictionary<string, IImport> extraImporters = new Dictionary<string, IImport>(importers);
+            Dictionary<string, IImport> extraImporters = new Dictionary<string, IImport>(providers);
             AddTerminalsImporter(extraImporters, stringBuilder);
 
             foreach (KeyValuePair<string, IImport> importer in extraImporters)
             {
-                AddImporterFilter(stringBuilder, importer.Value);
+                AddProviderFilter(stringBuilder, importer.Value);
             }
 
             return stringBuilder.ToString();
@@ -31,37 +29,23 @@ namespace Terminals.Integration.Import
         /// <summary>
         /// Forces terminals importer to be on first place
         /// </summary>
-        private static void AddTerminalsImporter(Dictionary<string, IImport> extraImporters, StringBuilder stringBuilder)
+        private void AddTerminalsImporter(Dictionary<string, IImport> extraImporters, StringBuilder stringBuilder)
         {
             if (extraImporters.ContainsKey(ImportTerminals.TERMINALS_FILEEXTENSION))
             {
                 IImport terminalsImporter = extraImporters[ImportTerminals.TERMINALS_FILEEXTENSION];
-                AddImporterFilter(stringBuilder, terminalsImporter);
+                AddProviderFilter(stringBuilder, terminalsImporter);
                 extraImporters.Remove(ImportTerminals.TERMINALS_FILEEXTENSION); 
             }
-        }
-
-        private static void AddImporterFilter(StringBuilder stringBuilder, IImport importer)
-        {
-            if (stringBuilder.Length != 0)
-            {
-                stringBuilder.Append("|");
-            }
-
-            stringBuilder.Append(importer.Name);
-            stringBuilder.Append(" (*");
-            stringBuilder.Append(importer.KnownExtension);
-            stringBuilder.Append(")|*");
-            stringBuilder.Append(importer.KnownExtension); // already in lowercase
         }
 
         /// <summary>
         /// Loads a new collection of favorites from source file.
         /// The newly created favorites aren't imported into configuration.
         /// </summary>
-        internal static List<FavoriteConfigurationElement> ImportFavorites(String Filename)
+        internal List<FavoriteConfigurationElement> ImportFavorites(String Filename)
         {
-            IImport importer = FindImporter(Filename);
+            IImport importer = FindProvider(Filename);
 
             if (importer == null)
                 return new List<FavoriteConfigurationElement>();
@@ -69,7 +53,7 @@ namespace Terminals.Integration.Import
             return importer.ImportFavorites(Filename);
         }
 
-        internal static List<FavoriteConfigurationElement> ImportFavorites(String[] files)
+        internal List<FavoriteConfigurationElement> ImportFavorites(String[] files)
         {
             var favorites =  new List<FavoriteConfigurationElement>();
             foreach (string file in files)
@@ -79,34 +63,15 @@ namespace Terminals.Integration.Import
             return favorites;
         }
 
-        private static IImport FindImporter(string fileName)
+        protected override void LoadProviders()
         {
-            //LoadImportersFromAssemblies();
-            LoadImporters();
-
-            string extension = Path.GetExtension(fileName);
-            if (extension == null)
+            if (providers == null)
             {
-                return null;
-            }
-
-            string knownExtension = extension.ToLower();
-
-            if (importers.ContainsKey(knownExtension))
-                return importers[knownExtension];
-
-            return null;
-        }
-
-        private static void LoadImporters()
-        {
-            if (importers == null)
-            {
-                importers = new Dictionary<string, IImport>();
-                importers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ImportTerminals());
-                importers.Add(ImportRDP.FILE_EXTENSION, new ImportRDP());
-                importers.Add(ImportvRD.FILE_EXTENSION, new ImportvRD());
-                importers.Add(ImportMuRD.FILE_EXTENSION, new ImportMuRD());
+                providers = new Dictionary<string, IImport>();
+                providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ImportTerminals());
+                providers.Add(ImportRDP.FILE_EXTENSION, new ImportRDP());
+                providers.Add(ImportvRD.FILE_EXTENSION, new ImportvRD());
+                providers.Add(ImportMuRD.FILE_EXTENSION, new ImportMuRD());
             }
         }
 
@@ -114,11 +79,11 @@ namespace Terminals.Integration.Import
         /// Disabled because of performance, there is no need to search all libraries,
         /// because importers are implemented only in Terminals
         /// </summary>
-        private static void LoadImportersFromAssemblies()
+        private void LoadImportersFromAssemblies()
         {
-            if (importers == null)
+            if (providers == null)
             {
-                importers = new Dictionary<string, IImport>();
+                providers = new Dictionary<string, IImport>();
                 DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                 string[] patterns = new string[] { "*.dll", "*.exe" };
 
@@ -132,7 +97,7 @@ namespace Terminals.Integration.Import
             }
         }
 
-        private static void LoadAssemblyImporters(string assemblyFileFullName)
+        private void LoadAssemblyImporters(string assemblyFileFullName)
         {
             try
             {
@@ -148,7 +113,7 @@ namespace Terminals.Integration.Import
             }
         }
 
-        private static void LoadAssemblyImporters(Assembly assembly)
+        private void LoadAssemblyImporters(Assembly assembly)
         {
             foreach (Type type in assembly.GetTypes())
             {
@@ -156,7 +121,7 @@ namespace Terminals.Integration.Import
             }
         }
 
-        private static void LoadAssemblyImporter(Type type)
+        private void LoadAssemblyImporter(Type type)
         {
             try
             {
@@ -172,22 +137,22 @@ namespace Terminals.Integration.Import
             }
         }
 
-        private static void AddImporter(IImport importer)
+        private void AddImporter(IImport importer)
         {
             if (importer != null)
             {
                 string extension = importer.KnownExtension.ToLower();
                 if (ShouldAddImporterExtension(extension))
                 {
-                    importers.Add(extension, importer);
+                    providers.Add(extension, importer);
                 }
             }
         }
 
-        private static bool ShouldAddImporterExtension(string extension)
+        private bool ShouldAddImporterExtension(string extension)
         {
             return !String.IsNullOrEmpty(extension) &&
-                   !importers.ContainsKey(extension);
+                   !providers.ContainsKey(extension);
         }
     }
 }

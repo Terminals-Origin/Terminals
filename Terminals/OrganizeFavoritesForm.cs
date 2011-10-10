@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
+using Terminals.Integration;
 using Terminals.Integration.Import;
 using Terminals.Network;
 
@@ -20,7 +21,7 @@ namespace Terminals
                                                   .SortByProperty("Name",SortOrder.Ascending);
             this.dataGridFavorites.Columns["colName"].HeaderCell.SortGlyphDirection = SortOrder.Ascending;
 
-            ImportOpenFileDialog.Filter = Importers.GetImportersDialogFilter();
+            ImportOpenFileDialog.Filter = Integrations.Importers.GetProvidersDialogFilter();
             UpdateCountLabels();
         }
 
@@ -212,7 +213,7 @@ namespace Terminals
                 this.Focus();
                 this.Refresh();
                 this.Cursor = Cursors.WaitCursor;
-                List<FavoriteConfigurationElement> favoritesToImport = Importers.ImportFavorites(filenames);
+                List<FavoriteConfigurationElement> favoritesToImport = Integrations.Importers.ImportFavorites(filenames);
 
                 var managedImport = new ImportWithDialogs(this, false);
                 Boolean imported = managedImport.Import(favoritesToImport);

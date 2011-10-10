@@ -260,6 +260,12 @@
     <Compile Include="Connections\VNCConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ExportImport\Exporters.cs" />
+    <Compile Include="ExportImport\Export\IExport.cs" />
+    <Compile Include="ExportImport\Export\ExportTerminals.cs" />
+    <Compile Include="ExportImport\IIntegration.cs" />
+    <Compile Include="ExportImport\Integration.cs" />
+    <Compile Include="ExportImport\Integrations.cs" />
     <Compile Include="Forms\Controls\ConsolePreferences.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -304,7 +310,6 @@
     <Compile Include="ExportFrom.Designer.cs">
       <DependentUpon>ExportFrom.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExportImport\ExportImport.cs" />
     <Compile Include="Forms\Controls\FavoriteTreeListLoader.cs" />
     <Compile Include="FavsList.cs">
       <SubType>UserControl</SubType>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Terminals.Integration;
 
 namespace Terminals
 {
@@ -9,7 +10,9 @@ namespace Terminals
         public ExportFrom()
         {
             InitializeComponent();
+
             this.favsTree.Load();
+            this.saveFileDialog.Filter = Integrations.Exporters.GetProvidersDialogFilter();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -24,8 +27,9 @@ namespace Terminals
                 if (favsTree.SelectedNode != null)
                 {
                     List<FavoriteConfigurationElement> favorites = FindSelectedFavorites();
-                    ExportImport.ExportImport.ExportXML(saveFileDialog.FileName, favorites, checkBox1.Checked);
+                    Integrations.Exporters.Export(saveFileDialog.FileName, favorites, checkBox1.Checked);
                 }
+
                 MessageBox.Show("Done exporting, you can find your exported file at " + saveFileDialog.FileName,
                                 "Terminals export");
                 Close();

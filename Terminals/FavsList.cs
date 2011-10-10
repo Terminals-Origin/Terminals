@@ -6,6 +6,7 @@ using Terminals.Credentials;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.History;
+using Terminals.Integration;
 using Terminals.Integration.Import;
 
 namespace Terminals
@@ -517,7 +518,7 @@ namespace Terminals
             String[] files = e.Data.GetData(DataFormats.FileDrop) as String[];
             if (files != null)
             {
-                List<FavoriteConfigurationElement> favoritesToImport = Importers.ImportFavorites(files);
+                List<FavoriteConfigurationElement> favoritesToImport = Integrations.Importers.ImportFavorites(files);
                 var managedImport = new ImportWithDialogs(this.ParentForm, false);
                 managedImport.Import(favoritesToImport);
             }
