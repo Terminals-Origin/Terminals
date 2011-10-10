@@ -225,10 +225,7 @@ namespace Terminals.Integration.Import
             fav.RedirectPrinters = false;
             if (con.Printer == "true") fav.RedirectPrinters = true;
 
-            if (con.Audio == "0") fav.Sounds = RemoteSounds.Redirect;
-            if (con.Audio == "1") fav.Sounds = RemoteSounds.PlayOnServer;
-            if (con.Audio == "2") fav.Sounds = RemoteSounds.DontPlay;
-
+            fav.Sounds = ImportRDP.ConvertToSounds(con.Audio);
             fav.Name = con.Name;
 
             return fav;

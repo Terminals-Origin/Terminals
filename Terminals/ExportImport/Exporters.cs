@@ -14,6 +14,8 @@ namespace Terminals.Integration
             {
                 providers = new Dictionary<string, IExport>();
                 providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ExportTerminals());
+                providers.Add(ImportRDP.FILE_EXTENSION, new ExportRdp());
+                //providers.Add(ExtraLogicAndroidRd.EXTENSION, new ExtraLogicAndroidRd());
             }
         }
 

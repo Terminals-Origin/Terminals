@@ -134,9 +134,7 @@ namespace Terminals.Integration.Import
                                 case "KeyboardHookMode":
                                     break;
                                 case "AudioRedirectionMode":
-                                    if(pValue == "0") fav.Sounds = RemoteSounds.Redirect;
-                                    if(pValue == "1") fav.Sounds = RemoteSounds.PlayOnServer;
-                                    if(pValue == "2") fav.Sounds = RemoteSounds.DontPlay;
+                                    fav.Sounds = ImportRDP.ConvertToSounds(pValue);
                                     break;
                                 case "AlternateShell":
                                     break;

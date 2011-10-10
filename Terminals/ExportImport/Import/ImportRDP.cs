@@ -1,114 +1,42 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Terminals.Integration.Import
 {
     internal class ImportRDP : IImport
     {
         internal const string FILE_EXTENSION = ".rdp";
+        internal const string NAME = "Microsoft Remote Desktop";
+
         #region IImport Members
 
-        List<FavoriteConfigurationElement> IImport.ImportFavorites(string Filename)
+        List<FavoriteConfigurationElement> IImport.ImportFavorites(string filename)
         {
-            string name = System.IO.Path.GetFileName(Filename).Replace(System.IO.Path.GetExtension(Filename),"");
-            List<FavoriteConfigurationElement> coll = new List<FavoriteConfigurationElement>();
-            if(System.IO.File.Exists(Filename))
+            try
             {
-                FavoriteConfigurationElement fav = null;
-                string[] lines = System.IO.File.ReadAllLines(Filename);
-                fav = new FavoriteConfigurationElement();
-                fav.Name = name;
-                coll.Add(fav);
-                foreach(string line in lines)
+                List<FavoriteConfigurationElement> imported = new List<FavoriteConfigurationElement>();
+                string name = Path.GetFileName(filename).Replace(Path.GetExtension(filename), "");
+                if (File.Exists(filename))
                 {
-
-                    string propertyName = line.Substring(0, line.IndexOf(":"));
-                    string pValue = line.Substring(line.LastIndexOf(":") + 1);
-                    switch(propertyName)
-                    {
-                        case "full address":
-                            fav.ServerName = pValue;
-                            break;
-                        case "server port":
-                            int p = 3389;
-                            int.TryParse(pValue, out p);
-                            fav.Port = p;
-                            break;
-                        case "username":
-                            fav.UserName = pValue;
-                            break;
-                        case "domain":
-                            fav.DomainName = pValue;
-                            break;
-                        case "session bpp":
-                            switch(pValue)
-                            {
-                                case "8":
-                                    fav.Colors = Colors.Bits8;
-                                    break;
-                                case "16":
-                                    fav.Colors = Colors.Bit16;
-                                    break;
-                                case "24":
-                                    fav.Colors = Colors.Bits24;
-                                    break;
-                                case "32":
-                                    fav.Colors = Colors.Bits32;
-                                    break;
-                                default:
-                                    fav.Colors = Colors.Bit16;
-                                    break;
-                            }
-
-                            break;
-                        case "screen mode id":
-                            fav.DesktopSize = DesktopSize.AutoScale;
-                            if(pValue == "1") fav.DesktopSize = DesktopSize.FullScreen;
-                            break;
-                        case "connect to console":
-                            fav.ConnectToConsole = false;
-                            if(pValue == "1") fav.ConnectToConsole = true;
-                            break;
-                        case "disable wallpaper":
-                            fav.DisableWallPaper = false;
-                            if(pValue == "1") fav.DisableWallPaper = true;
-                            break;
-                        case "redirectsmartcards":
-                            fav.RedirectSmartCards = false;
-                            if(pValue == "1") fav.RedirectSmartCards = true;
-                            break;
-                        case "redirectcomports":
-                            fav.RedirectPorts = false;
-                            if(pValue == "1") fav.RedirectPorts = true;
-                            break;
-                        case "redirectprinters":
-                            fav.RedirectPrinters = false;
-                            if(pValue == "1") fav.RedirectPrinters = true;
-                            break;
-                        case "gatewayhostname":
-                            fav.TsgwHostname = pValue;
-                            break;
-                        case "gatewayusagemethod":
-                            int u = 0;
-                            int.TryParse(pValue, out u);
-                            fav.TsgwUsageMethod = u;
-                            break;
-                        case "audiomode":
-                            if(pValue == "0") fav.Sounds = RemoteSounds.Redirect;
-                            if(pValue == "1") fav.Sounds = RemoteSounds.PlayOnServer;
-                            if(pValue == "2") fav.Sounds = RemoteSounds.DontPlay;
-                            break;
-                        default:
-                            break;
-                    }
-
+                    string[] lines = File.ReadAllLines(filename);
+                    FavoriteConfigurationElement newFavorite = new FavoriteConfigurationElement();
+                    newFavorite.Name = name;
+                    ImportLines(newFavorite, lines);
+                    imported.Add(newFavorite);
                 }
+                return imported;
             }
-            return coll;
+            catch (Exception exception)
+            {
+                Logging.Log.Error("RDP import failed.", exception);
+                return new List<FavoriteConfigurationElement>();
+            }
         }
 
         public string Name
         {
-          get { return "Microsoft Remote Desktop"; }
+            get { return NAME; }
         }
 
         public string KnownExtension
@@ -117,5 +45,114 @@ namespace Terminals.Integration.Import
         }
 
         #endregion
+
+        private static void ImportLines(FavoriteConfigurationElement favorite, string[] lines)
+        {
+            foreach (string line in lines)
+            {
+                string propertyName = line.Substring(0, line.IndexOf(":"));
+                string propertyValue = line.Substring(line.LastIndexOf(":") + 1);
+                ImportProperty(propertyName, favorite, propertyValue);
+            }
+        }
+
+        private static void ImportProperty(string propertyName, FavoriteConfigurationElement favorite, string propertyValue)
+        {
+            switch (propertyName)
+            {
+                case "full address":
+                    favorite.ServerName = propertyValue;
+                    break;
+                case "server port":
+                    int port = 3389;
+                    int.TryParse(propertyValue, out port);
+                    favorite.Port = port;
+                    break;
+                case "username":
+                    favorite.UserName = propertyValue;
+                    break;
+                case "domain":
+                    favorite.DomainName = propertyValue;
+                    break;
+                case "session bpp":
+                    favorite.Colors = ConvertToColorBits(propertyValue);
+                    break;
+                case "screen mode id":
+                    favorite.DesktopSize = ConvertToDesktopSize(propertyValue);
+                    break;
+                case "connect to console":
+                    favorite.ConnectToConsole = ParseBoolean(propertyValue);
+                    break;
+                case "disable wallpaper":
+                    favorite.DisableWallPaper = ParseBoolean(propertyValue);
+                    break;
+                case "redirectsmartcards":
+                    favorite.RedirectSmartCards = ParseBoolean(propertyValue);
+                    break;
+                case "redirectcomports":
+                    favorite.RedirectPorts = ParseBoolean(propertyValue);
+                    break;
+                case "redirectprinters":
+                    favorite.RedirectPrinters = ParseBoolean(propertyValue);
+                    break;
+                case "gatewayhostname":
+                    favorite.TsgwHostname = propertyValue;
+                    break;
+                case "gatewayusagemethod":
+                    int tsgwUsageMethod = 0;
+                    int.TryParse(propertyValue, out tsgwUsageMethod);
+                    favorite.TsgwUsageMethod = tsgwUsageMethod;
+                    break;
+                case "audiomode":
+                    favorite.Sounds = ConvertToSounds(propertyValue);
+
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private static DesktopSize ConvertToDesktopSize(string propertyValue)
+        {
+            if (propertyValue == "1") 
+                return DesktopSize.FullScreen;
+
+            return DesktopSize.AutoScale;
+        }
+
+        private static bool ParseBoolean(string propertyValue)
+        {
+            if (propertyValue == "1")
+                return true;
+
+            return false;
+        }
+
+        internal static RemoteSounds ConvertToSounds(string value)
+        {
+            switch (value)
+            {
+                case "1": return RemoteSounds.PlayOnServer;
+                case "2": return RemoteSounds.DontPlay;
+                default: return RemoteSounds.Redirect;
+            }
+        }
+
+        private static Colors ConvertToColorBits(string value)
+        {
+            switch (value)
+            {
+                case "8":
+                    return Colors.Bits8;
+                case "16":
+                    return Colors.Bit16;
+                case "24":
+                    return Colors.Bits24;
+                case "32":
+                    return Colors.Bits32;
+                default:
+                    return Colors.Bit16;
+            }
+        }
     }
 }
