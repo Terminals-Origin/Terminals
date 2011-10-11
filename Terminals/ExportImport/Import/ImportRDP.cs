@@ -4,10 +4,49 @@ using System.IO;
 
 namespace Terminals.Integration.Import
 {
+    /// <summary>
+    /// Note, that passwords are no longer stored in rdp file since version protocol version 6,
+    /// so they couldnt be imported/exported
+    /// </summary>
     internal class ImportRDP : IImport
     {
         internal const string FILE_EXTENSION = ".rdp";
         internal const string NAME = "Microsoft Remote Desktop";
+
+        #region Property names
+
+        internal const string AUDIOMODE = "audiomode:i:";
+        internal const string BITMAPPERISTENCE = "bitmapcachepersistenable:i:";
+        internal const string CONNECTTOCONSOLE = "connect to console:i:";
+        internal const string COLORS = "session bpp:i:";
+        internal const string DISABLECURSORSETTING = "disable cursor setting:i:";
+        internal const string DISABLEFULLWINDOWDRAG = "disable full window drag:i:";
+        internal const string DISABLEWALLPAPER = "disable wallpaper:i:";
+        internal const string DISABLEMENUANIMATIONS = "disable menu anims:i:";
+        internal const string DISABLETHEMING = "disable themes:i:";
+        /// <summary>
+        /// 0 - On the local computer, 1 - On the remote computer, 2 - In fullscreen mode only
+        /// </summary>
+        internal const string DISABLEWINDOWSKEY = "keyboardhook:i:";
+        internal const string DISPLAYCONNECTIONBAR = "displayconnectionbar:i:";
+        internal const string DOMAIN = "domain:s:";
+        internal const string ENABLECOMPRESSION = "compression:i:";
+        internal const string ENABLEDESKTOPCOMPOSITION = "allow desktop composition:i:";
+        internal const string ENABLEFONTSMOOTHING = "allow font smoothing:i:";
+        internal const string FULLADDRES = "full address:s:";
+        internal const string REDIRECTCLIPBOARD = "redirectclipboard:i:";
+        internal const string REDIRECTDEVICES = "redirectposdevices:i:";
+        internal const string REDIRECTCOMPORTS = "redirectcomports:i:";
+        internal const string REDIRECTPRINTERS = "redirectprinters:i:";
+        internal const string REDIRECTSMARTCARDS = "redirectsmartcards:i:";
+        internal const string SCREENMODE = "screen mode id:i:";
+        internal const string SERVERPORT = "server port:i:";
+        internal const string TSGWCREDSSOURCE = "gatewaycredentialssource:i:";
+        internal const string TSGHOSTNAME = "gatewayhostname:s:";
+        internal const string TSGUSAGEMETHOD = "gatewayusagemethod:i:";
+        internal const string USERNAME = "username:s:";
+
+        #endregion
 
         #region IImport Members
 
@@ -50,64 +89,104 @@ namespace Terminals.Integration.Import
         {
             foreach (string line in lines)
             {
-                string propertyName = line.Substring(0, line.IndexOf(":"));
-                string propertyValue = line.Substring(line.LastIndexOf(":") + 1);
-                ImportProperty(propertyName, favorite, propertyValue);
+                int valueStartIndex = line.LastIndexOf(":") + 1;
+                string propertyName = line.Substring(0, valueStartIndex);
+                string propertyValue = line.Substring(valueStartIndex);
+                ImportProperty(favorite, propertyName, propertyValue);
             }
         }
 
-        private static void ImportProperty(string propertyName, FavoriteConfigurationElement favorite, string propertyValue)
+        private static void ImportProperty(FavoriteConfigurationElement favorite, string propertyName, string propertyValue)
         {
             switch (propertyName)
             {
-                case "full address":
+                case FULLADDRES:
                     favorite.ServerName = propertyValue;
                     break;
-                case "server port":
+                case SERVERPORT:
                     int port = 3389;
                     int.TryParse(propertyValue, out port);
                     favorite.Port = port;
                     break;
-                case "username":
+                case USERNAME:
                     favorite.UserName = propertyValue;
                     break;
-                case "domain":
+                case DOMAIN:
                     favorite.DomainName = propertyValue;
                     break;
-                case "session bpp":
+                case COLORS:
                     favorite.Colors = ConvertToColorBits(propertyValue);
                     break;
-                case "screen mode id":
+                case SCREENMODE:
                     favorite.DesktopSize = ConvertToDesktopSize(propertyValue);
                     break;
-                case "connect to console":
+                case CONNECTTOCONSOLE:
                     favorite.ConnectToConsole = ParseBoolean(propertyValue);
                     break;
-                case "disable wallpaper":
+                case DISABLEWALLPAPER:
                     favorite.DisableWallPaper = ParseBoolean(propertyValue);
                     break;
-                case "redirectsmartcards":
+                case REDIRECTSMARTCARDS:
                     favorite.RedirectSmartCards = ParseBoolean(propertyValue);
                     break;
-                case "redirectcomports":
+                case REDIRECTCOMPORTS:
                     favorite.RedirectPorts = ParseBoolean(propertyValue);
                     break;
-                case "redirectprinters":
+                case REDIRECTPRINTERS:
                     favorite.RedirectPrinters = ParseBoolean(propertyValue);
                     break;
-                case "gatewayhostname":
+                case TSGHOSTNAME:
                     favorite.TsgwHostname = propertyValue;
                     break;
-                case "gatewayusagemethod":
+                case TSGUSAGEMETHOD:
                     int tsgwUsageMethod = 0;
                     int.TryParse(propertyValue, out tsgwUsageMethod);
                     favorite.TsgwUsageMethod = tsgwUsageMethod;
                     break;
-                case "audiomode":
+                case AUDIOMODE:
                     favorite.Sounds = ConvertToSounds(propertyValue);
-
                     break;
-                default:
+                case ENABLECOMPRESSION:
+                    favorite.EnableCompression = ParseBoolean(propertyValue);
+                    break;
+                case ENABLEFONTSMOOTHING:
+                    favorite.EnableFontSmoothing = ParseBoolean(propertyValue);
+                    break;
+                case REDIRECTCLIPBOARD:
+                    favorite.RedirectClipboard = ParseBoolean(propertyValue);
+                    break;
+                case DISABLEWINDOWSKEY:
+                    favorite.DisableWindowsKey = ParseBoolean(propertyValue);
+                    break;
+                case DISPLAYCONNECTIONBAR:
+                    favorite.DisplayConnectionBar = ParseBoolean(propertyValue);
+                    break;
+                case DISABLEMENUANIMATIONS:
+                    favorite.DisableMenuAnimations = ParseBoolean(propertyValue);
+                    break;
+                case DISABLETHEMING:
+                    favorite.DisableTheming = ParseBoolean(propertyValue);
+                    break;
+                case DISABLEFULLWINDOWDRAG:
+                    favorite.DisableFullWindowDrag = ParseBoolean(propertyValue);
+                    break;
+                case ENABLEDESKTOPCOMPOSITION:
+                    favorite.EnableDesktopComposition = ParseBoolean(propertyValue);
+                    break;
+                case DISABLECURSORSETTING:
+                    favorite.DisableCursorBlinking = ParseBoolean(propertyValue);
+                    favorite.DisableCursorShadow = favorite.DisableCursorBlinking;
+                    break;
+                case BITMAPPERISTENCE:
+                    favorite.BitmapPeristence = ParseBoolean(propertyValue);
+                    break;
+                case REDIRECTDEVICES:
+                    favorite.RedirectDevices = ParseBoolean(propertyValue);
+                    break;
+                case TSGWCREDSSOURCE:
+                    int tsgwCredsSource = 0;
+                    int.TryParse(propertyValue, out tsgwCredsSource);
+                    favorite.TsgwCredsSource = tsgwCredsSource;
                     break;
             }
         }

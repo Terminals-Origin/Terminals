@@ -63,21 +63,34 @@ namespace Terminals.Integration.Export
         {
             StringBuilder fileContent = new StringBuilder();
 
-            AppendPropertyLine(fileContent, "full address:s:", favorite.ServerName);
-            AppendPropertyLine(fileContent, "server port:i:", favorite.Port.ToString());
-            AppendPropertyLine(fileContent, "username:s:", favorite.UserName);
-            AppendPropertyLine(fileContent, "domain:s:", favorite.DomainName);
-            AppendPropertyLine(fileContent, "session bpp:i:", ConvertToColorBits(favorite.Colors).ToString());
-            AppendPropertyLine(fileContent, "screen mode id:i:", ConvertDesktopSize(favorite.DesktopSize));
-            AppendPropertyLine(fileContent, "connect to console:i:", ConvertToString(favorite.ConnectToConsole));
-            AppendPropertyLine(fileContent, "disable wallpaper:i:", ConvertToString(favorite.DisableWallPaper));
-            AppendPropertyLine(fileContent, "redirectsmartcards:i:", ConvertToString(favorite.RedirectSmartCards));
-            AppendPropertyLine(fileContent, "redirectcomports:i:", ConvertToString(favorite.RedirectPorts));
-            AppendPropertyLine(fileContent, "redirectprinters:i:", ConvertToString(favorite.RedirectPrinters));
-            AppendPropertyLine(fileContent, "gatewayhostname:s:", favorite.TsgwHostname);
-            AppendPropertyLine(fileContent, "gatewayusagemethod:i:", favorite.TsgwUsageMethod.ToString());
-            AppendPropertyLine(fileContent, "audiomode:i:", ConvertFromSounds(favorite.Sounds).ToString());
-            // todo Add rest of the properties in RDP import/export
+            AppendPropertyLine(fileContent, ImportRDP.FULLADDRES, favorite.ServerName);
+            AppendPropertyLine(fileContent, ImportRDP.SERVERPORT, favorite.Port.ToString());
+            AppendPropertyLine(fileContent, ImportRDP.USERNAME, favorite.UserName);
+            AppendPropertyLine(fileContent, ImportRDP.DOMAIN, favorite.DomainName);
+            AppendPropertyLine(fileContent, ImportRDP.COLORS, ConvertToColorBits(favorite.Colors).ToString());
+            AppendPropertyLine(fileContent, ImportRDP.SCREENMODE, ConvertDesktopSize(favorite.DesktopSize));
+            AppendPropertyLine(fileContent, ImportRDP.CONNECTTOCONSOLE, ConvertToString(favorite.ConnectToConsole));
+            AppendPropertyLine(fileContent, ImportRDP.DISABLEWALLPAPER, ConvertToString(favorite.DisableWallPaper));
+            AppendPropertyLine(fileContent, ImportRDP.REDIRECTSMARTCARDS, ConvertToString(favorite.RedirectSmartCards));
+            AppendPropertyLine(fileContent, ImportRDP.REDIRECTCOMPORTS, ConvertToString(favorite.RedirectPorts));
+            AppendPropertyLine(fileContent, ImportRDP.REDIRECTPRINTERS, ConvertToString(favorite.RedirectPrinters));
+            AppendPropertyLine(fileContent, ImportRDP.TSGHOSTNAME, favorite.TsgwHostname);
+            AppendPropertyLine(fileContent, ImportRDP.TSGUSAGEMETHOD, favorite.TsgwUsageMethod.ToString());
+            AppendPropertyLine(fileContent, ImportRDP.AUDIOMODE, ConvertFromSounds(favorite.Sounds).ToString());
+            AppendPropertyLine(fileContent, ImportRDP.ENABLECOMPRESSION, ConvertToString(favorite.EnableCompression));
+            AppendPropertyLine(fileContent, ImportRDP.ENABLEFONTSMOOTHING, ConvertToString(favorite.EnableFontSmoothing));
+            AppendPropertyLine(fileContent, ImportRDP.REDIRECTCLIPBOARD, ConvertToString(favorite.RedirectClipboard));
+            AppendPropertyLine(fileContent, ImportRDP.DISABLEWINDOWSKEY, ConvertToString(favorite.DisableWindowsKey));
+            AppendPropertyLine(fileContent, ImportRDP.DISPLAYCONNECTIONBAR, ConvertToString(favorite.DisplayConnectionBar));
+            AppendPropertyLine(fileContent, ImportRDP.DISABLEMENUANIMATIONS, ConvertToString(favorite.DisableMenuAnimations));
+            AppendPropertyLine(fileContent, ImportRDP.DISABLETHEMING, ConvertToString(favorite.DisableTheming));
+            AppendPropertyLine(fileContent, ImportRDP.DISABLEFULLWINDOWDRAG, ConvertToString(favorite.DisableFullWindowDrag));
+            AppendPropertyLine(fileContent, ImportRDP.ENABLEDESKTOPCOMPOSITION, ConvertToString(favorite.EnableDesktopComposition));
+            bool disablecursorsettings = favorite.DisableCursorBlinking && favorite.DisableCursorShadow;
+            AppendPropertyLine(fileContent, ImportRDP.DISABLECURSORSETTING, ConvertToString(disablecursorsettings));
+            AppendPropertyLine(fileContent, ImportRDP.BITMAPPERISTENCE, ConvertToString(favorite.BitmapPeristence));
+            AppendPropertyLine(fileContent, ImportRDP.REDIRECTDEVICES, ConvertToString(favorite.RedirectDevices));
+            AppendPropertyLine(fileContent, ImportRDP.TSGWCREDSSOURCE, favorite.TsgwCredsSource.ToString());
 
             return fileContent.ToString();
         }
