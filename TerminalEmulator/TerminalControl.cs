@@ -164,6 +164,7 @@ namespace WalburySoftware
             this.CaretOnEvent += new CaretOnEventHandler(this.CaretOn);
             this.RxdTextEvent += new RxdTextEventHandler(this.Parser.ParseString);
             this.FontChanged += new EventHandler(OnFontChanged);
+            this.MouseWheel += new MouseEventHandler(this.OnMouseWheel);
 
             this.BeginDrag = new Point();
             this.EndDrag = new Point();
@@ -172,6 +173,34 @@ namespace WalburySoftware
             this.Modes.Flags = this.Modes.Flags | uc_Mode.AutoWrap;
 
             this.Cursor = Cursors.IBeam;
+        }
+
+        private void OnMouseWheel(object sender, MouseEventArgs e)
+        {
+            int newValue = CalculateNewScrollBarValue(e);
+            if (newValue != this.VertScrollBar.Value &&
+                this.VertScrollBar.Minimum <= newValue && newValue <= this.VertScrollBar.Maximum)
+            {
+                ScrollEventType increment = IdentifySrollDirection(e);
+                this.VertScrollBar.Value = newValue;
+                var scrollEventArgs = new ScrollEventArgs(increment, this.VertScrollBar.Value, newValue);
+                this.HandleScroll(sender, scrollEventArgs);
+            }
+        }
+
+        private static ScrollEventType IdentifySrollDirection(MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+                return ScrollEventType.SmallIncrement;
+            return ScrollEventType.SmallDecrement;
+        }
+
+        private int CalculateNewScrollBarValue(MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+                return this.VertScrollBar.Value + 1;
+
+            return this.VertScrollBar.Value - 1;
         }
 
         private void InitializeVerticalScrollBar()
