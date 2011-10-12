@@ -21,5 +21,15 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal FavoriteConfigurationElement Favorite { get; private set; }
 
+        /// <summary>
+        /// Returns text compareto method values selecting property to compare
+        /// depending on Settings default sort property value
+        /// </summary>
+        /// <param name="target">not null favorite to compare with</param>
+        /// <returns>result of CompareTo method</returns>
+        internal int CompareByDefaultFavoriteSorting(FavoriteConfigurationElement target)
+        {
+            return this.Favorite.CompareByDefaultSorting(target);
+        }
     }
 }

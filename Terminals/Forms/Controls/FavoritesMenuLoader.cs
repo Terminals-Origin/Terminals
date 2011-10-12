@@ -177,7 +177,7 @@ namespace Terminals.Forms.Controls
             ToolStripMenuItem tagMenu = sender as ToolStripMenuItem;
             if (!tagMenu.HasDropDownItems)
             {
-                List<FavoriteConfigurationElement> tagFavorites = Settings.GetFavoritesByTag(tagMenu.Text);
+                List<FavoriteConfigurationElement> tagFavorites = Settings.GetSortedFavoritesByTag(tagMenu.Text);
                 foreach (FavoriteConfigurationElement favorite in tagFavorites)
                 {
                     ToolStripMenuItem item = this.CreateToolStripItemByFavorite(favorite);
@@ -272,7 +272,7 @@ namespace Terminals.Forms.Controls
             ToolStripMenuItem tagMenu = sender as ToolStripMenuItem;
             if (!tagMenu.HasDropDownItems)
             {
-                List<FavoriteConfigurationElement> tagFavorites = Settings.GetFavoritesByTag(tagMenu.Text);
+                List<FavoriteConfigurationElement> tagFavorites = Settings.GetSortedFavoritesByTag(tagMenu.Text);
                 foreach (FavoriteConfigurationElement favorite in tagFavorites)
                 {
                     ToolStripMenuItem item = CreateFavoriteMenuItem(favorite);

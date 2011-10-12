@@ -5,7 +5,6 @@ using Terminals.Configuration;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Integration;
-using Terminals.Integration.Import;
 using Terminals.Network;
 
 namespace Terminals
@@ -16,13 +15,18 @@ namespace Terminals
         {
             InitializeComponent();
 
-            this.dataGridFavorites.AutoGenerateColumns = false;
-            this.bsFavorites.DataSource = Settings.GetFavorites().ToList()
-                                                  .SortByProperty("Name",SortOrder.Ascending);
-            this.dataGridFavorites.Columns["colName"].HeaderCell.SortGlyphDirection = SortOrder.Ascending;
-
+            InitializeDataGrid();
             ImportOpenFileDialog.Filter = Integrations.Importers.GetProvidersDialogFilter();
             UpdateCountLabels();
+        }
+
+        private void InitializeDataGrid()
+        {
+            this.dataGridFavorites.AutoGenerateColumns = false;
+            this.bsFavorites.DataSource = Settings.GetFavorites().ToListOrderedByDefaultSorting();
+            string sortingProperty = FavoriteConfigurationElement.GetDefaultSortPropertyName();
+            DataGridViewColumn sortedColumn = this.dataGridFavorites.FindColumnByPropertyName(sortingProperty);
+            sortedColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
         }
 
         private void UpdateCountLabels()

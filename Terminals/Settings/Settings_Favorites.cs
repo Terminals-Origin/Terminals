@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using SysConfig = System.Configuration;
 using System.Linq;
 using Terminals.Data;
@@ -176,10 +177,10 @@ namespace Terminals.Configuration
         }
 
         /// <summary>
-        /// Gets all favorites, which contain required tag. If, the tag is empty,
-        /// than returns "Untagged" favorites.
+        /// Gets all favorites, which contain required tag in not sorted collection.
+        /// If, the tag is empty, than returns "Untagged" favorites.
         /// </summary>
-        internal static List<FavoriteConfigurationElement> GetFavoritesByTag(String tag)
+        private static List<FavoriteConfigurationElement> GetFavoritesByTag(String tag)
         {
             if (String.IsNullOrEmpty(tag) || tag == UNTAGGED_NODENAME)
             {
@@ -191,6 +192,16 @@ namespace Terminals.Configuration
             return GetFavorites().ToList()
                 .Where(favorite => favorite.TagList.Contains(tag, StringComparer.CurrentCultureIgnoreCase))
                 .ToList();
+        }
+
+        /// <summary>
+        /// Gets all favorites, which contain required tag in collection sorted by default sort property.
+        /// If, the tag is empty, than returns "Untagged" favorites.
+        /// </summary>
+        internal static SortableList<FavoriteConfigurationElement> GetSortedFavoritesByTag(string  tag)
+        {
+            var tagFavorites = GetFavoritesByTag(tag);
+            return FavoriteConfigurationElementCollection.OrderByDefaultSorting(tagFavorites);
         }
 
         public static FavoriteConfigurationElement GetOneFavorite(string connectionName)

@@ -1111,7 +1111,8 @@ namespace Terminals
         private void groupToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-            GroupConfigurationElement serversGroup = Settings.GetGroups()[((ToolStripItem)(sender)).Text];
+            string groupName = ((ToolStripItem)sender).Text;
+            GroupConfigurationElement serversGroup = Settings.GetGroups()[groupName];
             foreach (FavoriteAliasConfigurationElement favoriteAlias in serversGroup.FavoriteAliases)
             {
                 FavoriteConfigurationElement favorite = favorites[favoriteAlias.Name];
@@ -1121,7 +1122,8 @@ namespace Terminals
 
         private void serverToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement favorite = Settings.GetFavorites()[((ToolStripItem)(sender)).Text];
+            string connectionName = ((ToolStripItem)sender).Text;
+            FavoriteConfigurationElement favorite = Settings.GetOneFavorite(connectionName);
             this.CreateTerminalTab(favorite);
         }
 

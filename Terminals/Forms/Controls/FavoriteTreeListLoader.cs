@@ -120,9 +120,21 @@ namespace Terminals.Forms.Controls
             if (tagNode != null && !tagNode.IsEmpty) // add only to expanded nodes
             {
                 var favoriteTreeNode = new FavoriteTreeNode(favorite);
-                int index = FindNodeInsertIndex(tagNode.Nodes, favorite.Name);
+                int index = FindFavoriteNodeInsertIndex(tagNode.Nodes, favorite);
                 InsertNodePreservingOrder(tagNode.Nodes, index, favoriteTreeNode);
             }
+        }
+
+        private static int FindFavoriteNodeInsertIndex(TreeNodeCollection nodes, FavoriteConfigurationElement favorite)
+        {
+            for (int index = 0; index < nodes.Count; index++)
+            {
+                var comparedNode = nodes[index] as FavoriteTreeNode;
+                if (comparedNode.CompareByDefaultFavoriteSorting(favorite) > 0)
+                    return index;
+            }
+
+            return -1;  
         }
 
         private void OnTagsCollectionChanged(TagsChangedArgs args)
@@ -138,8 +150,7 @@ namespace Terminals.Forms.Controls
         {
             foreach (String newTag in newTags)
             {
-                // Skips first Untagged node to keep it first.
-                int index = FindNodeInsertIndex(this.treeList.Nodes, newTag, 1);
+                int index = FindTagNodeInsertIndex(this.treeList.Nodes, newTag);
                 this.CreateAndAddTagNode(newTag, index);
             }
         }
@@ -155,9 +166,10 @@ namespace Terminals.Forms.Controls
         /// -1, if the tag should be added to the end of tag nodes,
         /// otherwise found index.
         /// </returns>
-        private static int FindNodeInsertIndex(TreeNodeCollection nodes, string newTag, int startIndex = 0)
+        private static int FindTagNodeInsertIndex(TreeNodeCollection nodes, string newTag)
         {
-            for (int index = startIndex; index < nodes.Count; index++)
+            // Skips first "Untagged" node to keep it first.
+            for (int index = 1; index < nodes.Count; index++)
             {
                 if (nodes[index].Text.CompareTo(newTag) > 0)
                     return index;
@@ -221,7 +233,8 @@ namespace Terminals.Forms.Controls
 
         private static void AddFavoriteNodes(TagTreeNode tagNode)
         {
-            List<FavoriteConfigurationElement> tagFavorites = Settings.GetFavoritesByTag(tagNode.Text);
+            List<FavoriteConfigurationElement> tagFavorites = Settings.GetSortedFavoritesByTag(tagNode.Text);
+
             foreach (var favorite in tagFavorites)
             {
                 var favoriteTreeNode = new FavoriteTreeNode(favorite);

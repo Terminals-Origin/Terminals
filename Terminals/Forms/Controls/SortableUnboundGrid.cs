@@ -36,5 +36,16 @@ namespace Terminals
             }
             return null;
         }
+
+        internal DataGridViewColumn FindColumnByPropertyName(string propertyName)
+        {
+            foreach (DataGridViewColumn column in this.Columns)
+            {
+                if (column.DataPropertyName == propertyName)
+                    return column;
+            }
+
+            return this.Columns[0];
+        }
     }
 }

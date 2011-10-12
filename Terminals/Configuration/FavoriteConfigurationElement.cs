@@ -25,7 +25,44 @@ namespace Terminals
             if(!String.IsNullOrEmpty(this.DomainName))
                 domain = this.DomainName + "\\";
 
-            return String.Format(@"Favorite:{0}({1})={2}{3}:{4}", this.Name, this.Protocol, domain, this.ServerName, this.Port);
+            return String.Format(@"Favorite:{0}({1})={2}{3}:{4}",
+                this.Name, this.Protocol, domain, this.ServerName, this.Port);
+        }
+
+        /// <summary>
+        /// Returns text compareto method values selecting property to compare
+        /// depending on Settings default sort property value
+        /// </summary>
+        /// <param name="target">not null favorite to compare with</param>
+        /// <returns>result of String CompareTo method</returns>
+        internal int CompareByDefaultSorting(FavoriteConfigurationElement target)
+        {
+            switch (Settings.DefaultSortProperty)
+            {
+                case SortProperties.ServerName:
+                    return this.ServerName.CompareTo(target.ServerName);
+                case SortProperties.Protocol:
+                    return this.Protocol.CompareTo(target.Protocol);
+                case SortProperties.ConnectionName:
+                    return this.Name.CompareTo(target.Name);
+                default:
+                    return -1;
+            }
+        }
+
+        internal static string GetDefaultSortPropertyName()
+        {
+            switch (Settings.DefaultSortProperty)
+            {
+                case SortProperties.ServerName:
+                    return "ServerName";
+                case SortProperties.Protocol:
+                    return "Protocol";
+                case SortProperties.ConnectionName:
+                    return "Name";
+                default:
+                    return String.Empty;
+            }
         }
 
         /// <summary>
@@ -55,14 +92,14 @@ namespace Terminals
             {
                 Int32 result = 0;
 
-                if (DisableCursorShadow) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSOR_SHADOW;
-                if (DisableCursorBlinking) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_CURSORSETTINGS;
-                if (DisableFullWindowDrag) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_FULLWINDOWDRAG;
-                if (DisableMenuAnimations) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_MENUANIMATIONS;
-                if (DisableTheming) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_THEMING;
-                if (DisableWallPaper) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_DISABLE_WALLPAPER;
-                if (EnableDesktopComposition) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_ENABLE_DESKTOP_COMPOSITION;
-                if (EnableFontSmoothing) result += (Int32)Terminals.PerfomanceOptions.TS_PERF_ENABLE_FONT_SMOOTHING;
+                if (DisableCursorShadow) result += (Int32)PerfomanceOptions.TS_PERF_DISABLE_CURSOR_SHADOW;
+                if (DisableCursorBlinking) result += (Int32)PerfomanceOptions.TS_PERF_DISABLE_CURSORSETTINGS;
+                if (DisableFullWindowDrag) result += (Int32)PerfomanceOptions.TS_PERF_DISABLE_FULLWINDOWDRAG;
+                if (DisableMenuAnimations) result += (Int32)PerfomanceOptions.TS_PERF_DISABLE_MENUANIMATIONS;
+                if (DisableTheming) result += (Int32)PerfomanceOptions.TS_PERF_DISABLE_THEMING;
+                if (DisableWallPaper) result += (Int32)PerfomanceOptions.TS_PERF_DISABLE_WALLPAPER;
+                if (EnableDesktopComposition) result += (Int32)PerfomanceOptions.TS_PERF_ENABLE_DESKTOP_COMPOSITION;
+                if (EnableFontSmoothing) result += (Int32)PerfomanceOptions.TS_PERF_ENABLE_FONT_SMOOTHING;
 
                 return result;
             }
