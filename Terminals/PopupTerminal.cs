@@ -28,6 +28,12 @@ namespace Terminals
       this.Text = TabControlItem.Connection.Favorite.Name;
     }
 
+    internal void UpdateTitle(string newTitle)
+    {
+        this.tabControl1.Items[0].Title = newTitle;
+        this.Text = newTitle;
+    }
+
     private void timerHover_Tick(object sender, EventArgs e)
     {
       if (timerHover.Enabled)

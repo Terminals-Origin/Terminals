@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Converters;
 
 namespace Terminals
@@ -107,10 +108,11 @@ namespace Terminals
 
         internal String GetToolTipText()
         {
-            String toolTip = String.Empty;
+            string serverName = this.Protocol == ConnectionManager.HTTP || this.Protocol == ConnectionManager.HTTPS ?
+                                this.Url : this.ServerName;
 
-            toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
-                Environment.NewLine, this.ServerName, this.Port, Functions.UserDisplayName(this.DomainName, this.UserName));
+            String toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
+                Environment.NewLine, serverName, this.Port, Functions.UserDisplayName(this.DomainName, this.UserName));
 
             if (Settings.ShowFullInformationToolTips)
             {

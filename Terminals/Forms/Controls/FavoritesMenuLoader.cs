@@ -174,9 +174,10 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private void OnTagMenuDropDownOpening(object sender, EventArgs e)
         {
-            ToolStripMenuItem tagMenu = sender as ToolStripMenuItem;
-            if (!tagMenu.HasDropDownItems)
+            TagMenuItem tagMenu = sender as TagMenuItem;
+            if (tagMenu.IsEmpty)
             {
+                tagMenu.DropDown.Items.Clear();
                 List<FavoriteConfigurationElement> tagFavorites = Settings.GetSortedFavoritesByTag(tagMenu.Text);
                 foreach (FavoriteConfigurationElement favorite in tagFavorites)
                 {
@@ -269,9 +270,10 @@ namespace Terminals.Forms.Controls
 
         private void OnTagTrayMenuItemDropDownOpening(object sender, EventArgs e)
         {
-            ToolStripMenuItem tagMenu = sender as ToolStripMenuItem;
-            if (!tagMenu.HasDropDownItems)
+            TagMenuItem tagMenu = sender as TagMenuItem;
+            if (tagMenu.IsEmpty)
             {
+                tagMenu.DropDown.Items.Clear();
                 List<FavoriteConfigurationElement> tagFavorites = Settings.GetSortedFavoritesByTag(tagMenu.Text);
                 foreach (FavoriteConfigurationElement favorite in tagFavorites)
                 {
@@ -334,7 +336,7 @@ namespace Terminals.Forms.Controls
 
         private static ToolStripMenuItem CreateTagMenuItem(String tag)
         {
-            ToolStripMenuItem tagMenuItem = new ToolStripMenuItem();
+            TagMenuItem tagMenuItem = new TagMenuItem();
             tagMenuItem.Tag = TAG;
             tagMenuItem.Text = tag;
             return tagMenuItem;

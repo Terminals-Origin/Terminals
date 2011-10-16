@@ -26,11 +26,11 @@ namespace Terminals.Updates
             if (Program.Info.Version == new Version(2, 0, 0, 0))
             {
                 // Change the Terminals URL to the correct URL used for Terminals News as of version 2.0 RC1
-                FavoriteConfigurationElement fav = Settings.GetOneFavorite(Program.Resources.GetString("TerminalsNews"));
-                if (fav != null)
+                FavoriteConfigurationElement newsFavorite = Settings.GetOneFavorite(FavoritesFactory.TerminalsReleasesFavoriteName);
+                if (newsFavorite != null)
                 {
-                    fav.Url = Program.Resources.GetString("TerminalsURL");
-                    Settings.SaveDefaultFavorite(fav);
+                    newsFavorite.Url = Program.Resources.GetString("TerminalsURL");
+                    Settings.SaveDefaultFavorite(newsFavorite);
                 }
             }
         }
