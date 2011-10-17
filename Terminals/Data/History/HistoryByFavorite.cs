@@ -1,84 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Terminals.History
 {
     public class HistoryByFavorite : SerializableSortedDictionary<string, List<HistoryItem>>
     {
-        SerializableDictionary<string, List<History.HistoryItem>> groupedByDate;
-        public SerializableDictionary<string, List<HistoryItem>> GroupedByDate
+        private const string TODAY = "Today";
+        private const string YESTERDAY = "Yesterday";
+        private const string WEEK = "Less than 1 Week";
+        private const string TWOWEEKS = "Less than 2 Weeks";
+        private const string MONTH = "Less than 1 Month";
+        private const string OVERONEMONTH = "Over 1 Month";
+        private const string HALFYEAR = "Over 6 Months";
+        private const string YEAR = "Over 1 Year";
+
+        internal SerializableDictionary<string, List<HistoryItem>> GroupByDate()
         {
-            get
+            SerializableDictionary<string, List<HistoryItem>> groupedByDate = InitializeGroups();
+
+            foreach (string name in this.Keys)  //name is the favorite name
             {
-                if (groupedByDate != null) return groupedByDate;
-                groupedByDate = new SerializableDictionary<string, List<History.HistoryItem>>();
-
-                //add these, in order for rendering later
-                groupedByDate.Add("Today", new List<History.HistoryItem>());
-                groupedByDate.Add("Yesterday", new List<History.HistoryItem>());
-                groupedByDate.Add("Less than 1 Week", new List<History.HistoryItem>());
-                groupedByDate.Add("Less than 2 Weeks", new List<History.HistoryItem>());
-                groupedByDate.Add("Less than 1 Month", new List<History.HistoryItem>());
-                groupedByDate.Add("Over 1 Month", new List<History.HistoryItem>());
-                groupedByDate.Add("Over 6 Months", new List<History.HistoryItem>());
-                groupedByDate.Add("Over 1 Year", new List<History.HistoryItem>());
-                
-                
-                foreach (string name in this.Keys)  //name is the favorite name
+                foreach (HistoryItem item in this[name])  //each history item per favorite
                 {
-                    string timeKey = "Really Old";
+                    string timeKey = GetTimeKey(item.Date.Date);
 
-                    foreach (HistoryItem item in this[name])  //each history item per favorite
-                    {
-                        List<HistoryItem> lst = null; //this will contain each name in each bin of grouped by time
-                        if (item.Date.Date <= DateTime.Now.AddMonths(-1).Date)
-                        {
-                            timeKey = "Over 1 Month";
-                        }
-                        if (item.Date.Date <= DateTime.Now.AddMonths(-6).Date)
-                        {
-                            timeKey = "Over 6 Months";
-                        }
-
-                        if (item.Date.Date <= DateTime.Now.AddDays(-365).Date)
-                        {
-                            timeKey = "Over 1 Year";
-                        }
-                        
-                        if (item.Date.Date >= DateTime.Now.AddMonths(-1).Date)
-                        {
-                            timeKey = "Less than 1 Month";
-                        }
-                        if (item.Date.Date >= DateTime.Now.AddDays(-14).Date)
-                        {
-                            timeKey = "Less than 2 Weeks";
-                        }
-                        if (item.Date.Date >= DateTime.Now.AddDays(-7).Date)
-                        {
-                            timeKey = "Less than 1 Week";
-                        }
-                        if (item.Date.Date == DateTime.Now.AddDays(-1).Date)
-                        {
-                            timeKey = "Yesterday";
-                        }
-                        if (item.Date.Date >= DateTime.Now.Date)
-                        {
-                            timeKey = "Today";
-                        }
-                        if (groupedByDate.ContainsKey(timeKey)) lst = groupedByDate[timeKey];
-                        if (lst == null)
-                        {
-                            lst = new List<History.HistoryItem>();
-                            groupedByDate.Add(timeKey, lst);
-                        }
-                        if (!lst.Contains(item)) lst.Add(item);                        
-                    }
-
+                    List<HistoryItem> timeIntervalItems = GetTimeIntervalItems(timeKey, groupedByDate);
+                    if (!timeIntervalItems.Contains(item))
+                        timeIntervalItems.Add(item);
                 }
 
-                return groupedByDate;
             }
+            return groupedByDate;
+        }
+
+        private string GetTimeKey(DateTime itemDate)
+        {
+            if (itemDate >= DateTime.Now.Date)
+                return TODAY;
+
+            if (itemDate >= DateTime.Now.AddDays(-1).Date)
+                return YESTERDAY;
+            
+            if (itemDate >= DateTime.Now.AddDays(-7).Date)
+                return WEEK;
+            
+            if (itemDate >= DateTime.Now.AddDays(-14).Date)
+                return TWOWEEKS;
+
+            if (itemDate >= DateTime.Now.AddMonths(-1).Date)
+                return MONTH;
+
+            if (itemDate >= DateTime.Now.AddMonths(-6).Date)
+                return OVERONEMONTH;
+
+            if (itemDate >= DateTime.Now.AddYears(-1).Date)
+                return YEAR;
+
+            return YEAR;
+        }
+
+        private SerializableDictionary<string, List<HistoryItem>> InitializeGroups()
+        {
+            var groupedByDate = new SerializableDictionary<string, List<HistoryItem>>();
+            groupedByDate.Add(TODAY, new List<HistoryItem>());
+            groupedByDate.Add(YESTERDAY, new List<HistoryItem>());
+            groupedByDate.Add(WEEK, new List<HistoryItem>());
+            groupedByDate.Add(TWOWEEKS, new List<HistoryItem>());
+            groupedByDate.Add(MONTH, new List<HistoryItem>());
+            groupedByDate.Add(OVERONEMONTH, new List<HistoryItem>());
+            groupedByDate.Add(HALFYEAR, new List<HistoryItem>());
+            groupedByDate.Add(YEAR, new List<HistoryItem>());
+            return groupedByDate;
+        }
+
+        /// <summary>
+        /// this will contain each name in each bin of grouped by time.
+        /// Returns not null list of items.
+        /// </summary>
+        private List<HistoryItem> GetTimeIntervalItems(string timeKey, 
+            SerializableDictionary<string, List<HistoryItem>> groupedByDate)
+        {
+            List<HistoryItem> timeIntervalItems = null; 
+            if (groupedByDate.ContainsKey(timeKey))
+                timeIntervalItems = groupedByDate[timeKey];
+            if (timeIntervalItems == null)
+            {
+                timeIntervalItems = new List<HistoryItem>();
+                groupedByDate.Add(timeKey, timeIntervalItems);
+            }
+            return timeIntervalItems;
         }
     }
 }

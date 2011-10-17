@@ -74,7 +74,7 @@ namespace Terminals
 
                     historyTreeView.Nodes.Clear();
                     Dictionary<String, List<String>> uniqueFavsPerGroup = new Dictionary<String, List<String>>();
-                    SerializableDictionary<String, List<HistoryItem>> GroupedByDate = this._historyByFavorite.GroupedByDate;
+                    SerializableDictionary<String, List<HistoryItem>> GroupedByDate = this._historyByFavorite.GroupByDate();
                     foreach (String name in GroupedByDate.Keys)
                     {
                         List<String> uniqueList = null;
@@ -154,7 +154,7 @@ namespace Terminals
         private void FavsList_Load(object sender, EventArgs e)
         {
             this.favsTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.FavsTree_NodeMouseClick);
-            this._historyController.OnHistoryLoaded += new HistoryController.HistoryLoaded(this.History_OnHistoryLoaded);
+            this._historyController.OnHistoryLoaded += new HistoryLoaded(this.History_OnHistoryLoaded);
             this._historyController.LazyLoadHistory();
         }
 
