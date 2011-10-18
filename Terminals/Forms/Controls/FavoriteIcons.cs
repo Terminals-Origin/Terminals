@@ -12,26 +12,26 @@ namespace Terminals.Forms.Controls
     internal static class FavoriteIcons
     {
         /// <summary>
-        /// Gets the icon indexes by icons defined in FavoritesTreeView imageListIcons
+        /// Gets the icon file name by icons defined in FavoritesTreeView imageListIcons
         /// </summary>
-        internal static Int32 GetTreeviewImageListIndex(FavoriteConfigurationElement favorite)
+        internal static string GetTreeviewImageListKey(FavoriteConfigurationElement favorite)
         {
             switch (favorite.Protocol)
             {
                 case ConnectionManager.RDP:
-                    return 2;
+                    return "treeIcon_rdp.png";
                 case ConnectionManager.HTTP:
                 case ConnectionManager.HTTPS:
-                    return 3;
+                    return "treeIcon_http.png";
                 case ConnectionManager.VNC:
-                    return 4;
+                    return "treeIcon_vnc.png";
                 case ConnectionManager.TELNET:
-                    return 5;
+                    return "treeIcon_telnet.png";
                 case ConnectionManager.SSH:
-                    return 6;
+                    return "treeIcon_ssh.png";
                 case ConnectionManager.VMRC:
                 default:
-                    return 7;
+                    return "terminalsicon.ico";
             }
         }
 

@@ -55,7 +55,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.FavoritesTabPage = new System.Windows.Forms.TabPage();
             this.HistoryTabPage = new System.Windows.Forms.TabPage();
-            this.historyTreeView = new System.Windows.Forms.TreeView();
+            this.historyTreeView = new Terminals.Forms.Controls.HistoryTreeView();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.connectToAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,10 +81,12 @@
             this.favsTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favsTree.HideSelection = false;
             this.favsTree.HotTracking = true;
-            this.favsTree.Location = new System.Drawing.Point(4, 4);
-            this.favsTree.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.favsTree.ImageIndex = 0;
+            this.favsTree.Location = new System.Drawing.Point(3, 3);
             this.favsTree.Name = "favsTree";
-            this.favsTree.Size = new System.Drawing.Size(184, 148);
+            this.favsTree.SelectedImageIndex = 0;
+            this.favsTree.ShowNodeToolTips = true;
+            this.favsTree.Size = new System.Drawing.Size(136, 118);
             this.favsTree.TabIndex = 0;
             this.favsTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.favsTree_DragDrop);
             this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.favsTree_DragEnter);
@@ -129,7 +131,7 @@
             // 
             this.consoleToolStripMenuItem.CheckOnClick = true;
             this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
-            this.consoleToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
+            this.consoleToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.consoleToolStripMenuItem.Text = "Console";
             this.consoleToolStripMenuItem.Click += new System.EventHandler(this.displayWindow_Click);
             // 
@@ -137,28 +139,28 @@
             // 
             this.newWindowToolStripMenuItem.CheckOnClick = true;
             this.newWindowToolStripMenuItem.Name = "newWindowToolStripMenuItem";
-            this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
+            this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.newWindowToolStripMenuItem.Text = "New Window";
             this.newWindowToolStripMenuItem.Click += new System.EventHandler(this.displayWindow_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(164, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(144, 6);
             // 
             // connectAsToolStripMenuItem
             // 
             this.connectAsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.userConnectToolStripMenuItem});
             this.connectAsToolStripMenuItem.Name = "connectAsToolStripMenuItem";
-            this.connectAsToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
+            this.connectAsToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.connectAsToolStripMenuItem.Text = "Connect As";
             this.connectAsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.connectAsToolStripMenuItem_DropDownOpening);
             // 
             // userConnectToolStripMenuItem
             // 
             this.userConnectToolStripMenuItem.Name = "userConnectToolStripMenuItem";
-            this.userConnectToolStripMenuItem.Size = new System.Drawing.Size(116, 24);
+            this.userConnectToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.userConnectToolStripMenuItem.Text = "User...";
             this.userConnectToolStripMenuItem.Click += new System.EventHandler(this.userConnectToolStripMenuItem_Click);
             // 
@@ -266,21 +268,18 @@
             this.tabControl1.Controls.Add(this.HistoryTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(200, 185);
+            this.tabControl1.Size = new System.Drawing.Size(150, 150);
             this.tabControl1.TabIndex = 1;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // FavoritesTabPage
             // 
             this.FavoritesTabPage.Controls.Add(this.favsTree);
-            this.FavoritesTabPage.Location = new System.Drawing.Point(4, 25);
-            this.FavoritesTabPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.FavoritesTabPage.Location = new System.Drawing.Point(4, 22);
             this.FavoritesTabPage.Name = "FavoritesTabPage";
-            this.FavoritesTabPage.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.FavoritesTabPage.Size = new System.Drawing.Size(192, 156);
+            this.FavoritesTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.FavoritesTabPage.Size = new System.Drawing.Size(142, 124);
             this.FavoritesTabPage.TabIndex = 0;
             this.FavoritesTabPage.Text = "Favorites";
             this.FavoritesTabPage.UseVisualStyleBackColor = true;
@@ -288,11 +287,10 @@
             // HistoryTabPage
             // 
             this.HistoryTabPage.Controls.Add(this.historyTreeView);
-            this.HistoryTabPage.Location = new System.Drawing.Point(4, 25);
-            this.HistoryTabPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HistoryTabPage.Location = new System.Drawing.Point(4, 22);
             this.HistoryTabPage.Name = "HistoryTabPage";
-            this.HistoryTabPage.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.HistoryTabPage.Size = new System.Drawing.Size(192, 156);
+            this.HistoryTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.HistoryTabPage.Size = new System.Drawing.Size(142, 124);
             this.HistoryTabPage.TabIndex = 1;
             this.HistoryTabPage.Text = "History";
             this.HistoryTabPage.UseVisualStyleBackColor = true;
@@ -301,10 +299,11 @@
             // 
             this.historyTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.historyTreeView.HotTracking = true;
-            this.historyTreeView.Location = new System.Drawing.Point(4, 4);
-            this.historyTreeView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.historyTreeView.ImageIndex = 0;
+            this.historyTreeView.Location = new System.Drawing.Point(3, 3);
             this.historyTreeView.Name = "historyTreeView";
-            this.historyTreeView.Size = new System.Drawing.Size(180, 144);
+            this.historyTreeView.SelectedImageIndex = 0;
+            this.historyTreeView.Size = new System.Drawing.Size(136, 118);
             this.historyTreeView.TabIndex = 0;
             this.historyTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.historyTreeView_KeyUp);
             // 
@@ -336,7 +335,7 @@
             // 
             this.consoleAllToolStripMenuItem.CheckOnClick = true;
             this.consoleAllToolStripMenuItem.Name = "consoleAllToolStripMenuItem";
-            this.consoleAllToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
+            this.consoleAllToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.consoleAllToolStripMenuItem.Text = "Console";
             this.consoleAllToolStripMenuItem.Click += new System.EventHandler(this.displayAllWindow_Click);
             // 
@@ -344,7 +343,7 @@
             // 
             this.newWindowAllToolStripMenuItem.CheckOnClick = true;
             this.newWindowAllToolStripMenuItem.Name = "newWindowAllToolStripMenuItem";
-            this.newWindowAllToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
+            this.newWindowAllToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.newWindowAllToolStripMenuItem.Text = "New Window";
             this.newWindowAllToolStripMenuItem.Click += new System.EventHandler(this.displayAllWindow_Click);
             // 
@@ -390,12 +389,10 @@
             // 
             // FavsList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FavsList";
-            this.Size = new System.Drawing.Size(200, 185);
             this.Load += new System.EventHandler(this.FavsList_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
@@ -430,7 +427,7 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage FavoritesTabPage;
         private System.Windows.Forms.TabPage HistoryTabPage;
-        private System.Windows.Forms.TreeView historyTreeView;
+        private Terminals.Forms.Controls.HistoryTreeView historyTreeView;
         private System.Windows.Forms.ToolStripMenuItem removeSelectedToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
         private System.Windows.Forms.ToolStripMenuItem connectToAllToolStripMenuItem;

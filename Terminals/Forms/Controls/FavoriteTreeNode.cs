@@ -11,8 +11,8 @@ namespace Terminals.Forms.Controls
             this.Favorite = favorite;
             this.Tag = favorite; // temporar solution, for backwarad compatibility only
 
-            this.ImageIndex = FavoriteIcons.GetTreeviewImageListIndex(favorite);
-            this.SelectedImageIndex = this.ImageIndex;
+            this.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite);
+            this.SelectedImageKey = this.ImageKey;
             this.ToolTipText = favorite.GetToolTipText();
         }
 

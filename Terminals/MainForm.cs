@@ -16,6 +16,7 @@ using Terminals.CommandLine;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
+using Terminals.History;
 using Terminals.Properties;
 using Unified.Rss;
 using Settings = Terminals.Configuration.Settings;
@@ -370,7 +371,7 @@ namespace Terminals
             if (favorite == null)
                 return;
             
-            this.favsList1.RecordHistoryItem(connectionName);
+            ConnectionHistory.Instance.RecordHistoryItem(connectionName);
             if (!this.Visible)
             {
                 this.Show();

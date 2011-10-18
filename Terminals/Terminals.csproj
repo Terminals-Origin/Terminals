@@ -261,6 +261,7 @@
     <Compile Include="Connections\VNCConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Data\History\HistoryRecordedEventArgs.cs" />
     <Compile Include="ExportImport\Exporters.cs" />
     <Compile Include="ExportImport\Export\ExportRdp.cs" />
     <Compile Include="ExportImport\Export\ExtraLogicAndroidRd.cs" />
@@ -327,6 +328,12 @@
       <DependentUpon>FavoritesTreeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\FavoriteTreeNode.cs" />
+    <Compile Include="Forms\Controls\HistoryTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\HistoryTreeView.Designer.cs">
+      <DependentUpon>HistoryTreeView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Controls\ImportWithDialogs.cs" />
     <Compile Include="Forms\Controls\IPAddressControl\FieldChangedEventArgs.cs" />
     <Compile Include="Forms\Controls\IPAddressControl\IPAddressControl.cs">
@@ -356,7 +363,7 @@
     <Compile Include="Forms\Render\Office2007Helpers.cs" />
     <Compile Include="Forms\Render\Office2007Renderer.cs" />
     <Compile Include="Forms\Controls\TagTreeNode.cs" />
-    <Compile Include="Data\History\HistoryController.cs" />
+    <Compile Include="Data\History\ConnectionHistory.cs" />
     <Compile Include="Data\History\HistoryByFavorite.cs" />
     <Compile Include="Data\History\HistoryItem.cs" />
     <Compile Include="ExportImport\Importers.cs" />
@@ -769,6 +776,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\FavoritesTreeView.resx">
       <DependentUpon>FavoritesTreeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Controls\HistoryTreeView.resx">
+      <DependentUpon>HistoryTreeView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>

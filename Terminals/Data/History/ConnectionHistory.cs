@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.IO;
+using Terminals.Configuration;
 using Unified;
 
 namespace Terminals.History
 {
-    internal delegate void HistoryLoaded(HistoryByFavorite History);
-    
-    internal class HistoryController
+    internal delegate void HistoryRecorded(ConnectionHistory sender, HistoryRecordedEventArgs args);
+
+    internal sealed class ConnectionHistory
     {
         /// <summary>
         ///So, how to store history..that is the question. Should it be per computer or per terminals install (portable)? Maybe both?
@@ -20,7 +21,10 @@ namespace Terminals.History
         private bool _loadingHistory = false;
 
         private HistoryByFavorite _currentHistory = null;
-        public HistoryByFavorite CurrentHistory
+        /// <summary>
+        /// Gets or sets the private field encapsulating the lazy loading
+        /// </summary>
+        private HistoryByFavorite CurrentHistory
         {
             get
             {
@@ -28,17 +32,54 @@ namespace Terminals.History
                     LoadHistory(null);
                 return _currentHistory;
             }
-            set
-            {
-                _currentHistory = value;
-            }
         }
         
-        public event HistoryLoaded OnHistoryLoaded;
+        internal event EventHandler OnHistoryLoaded;
+        internal event HistoryRecorded OnHistoryRecorded;
 
-        public HistoryController()
+        /// <summary>
+        /// Gets the singleton instance of history provider
+        /// </summary>
+        public static ConnectionHistory Instance
         {
-            CurrentHistory = new HistoryByFavorite();
+            get
+            {
+                return Nested.instance;
+            }
+        }
+
+        private ConnectionHistory() { }
+
+        private static class Nested
+        {
+            internal static readonly ConnectionHistory instance = new ConnectionHistory();
+        }
+
+        internal SortableList<FavoriteConfigurationElement> GetDateItems(string historyDateKey)
+        {
+            var historyGroupItems = GetGroupedByDate()[historyDateKey];
+            var groupFavorites = SelectFavoritesFromHistoryItems(historyGroupItems);
+            return FavoriteConfigurationElementCollection.OrderByDefaultSorting(groupFavorites);
+        }
+
+        private static SortableList<FavoriteConfigurationElement> SelectFavoritesFromHistoryItems(
+            SortableList<HistoryItem> groupedByDate)
+        {
+            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            var selection = new SortableList<FavoriteConfigurationElement>();
+            foreach (HistoryItem favoriteTouch in groupedByDate)
+            {
+                FavoriteConfigurationElement favorite = favorites[favoriteTouch.Name];
+                if (favorite != null && !selection.Contains(favorite))
+                    selection.Add(favorite);
+            }
+
+            return selection;
+        }
+
+        private SerializableDictionary<string, SortableList<HistoryItem>> GetGroupedByDate()
+        {
+            return this.CurrentHistory.GroupByDate();
         }
 
         /// <summary>
@@ -68,7 +109,7 @@ namespace Terminals.History
             }
 
             if (_currentHistory != null && OnHistoryLoaded != null)
-                OnHistoryLoaded(_currentHistory);
+                OnHistoryLoaded(this, new EventArgs());
         }
 
         private void TryLoadHistory()
@@ -132,18 +173,24 @@ namespace Terminals.History
             }
         }
         
-        public void RecordHistoryItem(string favoriteName, bool save)
+        public void RecordHistoryItem(string favoriteName)
         {
             if (_currentHistory == null)
                 return;
 
             List<HistoryItem> favoriteHistoryList = GetFavoriteHistoryList(favoriteName);
             favoriteHistoryList.Add(new HistoryItem(favoriteName));
+            this.SaveHistory();
+            this.FireOnHistoryRecorded(favoriteName);
+        }
 
-            if (save)
-                this.SaveHistory();
-
-            this.LazyLoadHistory();
+        private void FireOnHistoryRecorded(string favoriteName)
+        {
+            var args = new HistoryRecordedEventArgs {ConnectionName = favoriteName};
+            if (this.OnHistoryRecorded != null)
+            {
+                this.OnHistoryRecorded(this, args);
+            }
         }
 
         private List<HistoryItem> GetFavoriteHistoryList(string favoriteName)
@@ -157,7 +204,7 @@ namespace Terminals.History
         /// <summary>
         /// Capture the OnHistoryLoaded Event
         /// </summary>
-        public void LazyLoadHistory()
+        public void LoadHistoryAsync()
         {
             ThreadPool.QueueUserWorkItem(new WaitCallback(LoadHistory), null);
         }

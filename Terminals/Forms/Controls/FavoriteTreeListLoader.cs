@@ -111,13 +111,13 @@ namespace Terminals.Forms.Controls
 
         private static void RemoveFavoriteFromTagNode(TagTreeNode tagNode, String favoriteName)
         {
-            if (tagNode != null && !tagNode.IsEmpty)
+            if (tagNode != null && !tagNode.NotLoadedYet)
                 tagNode.Nodes.RemoveByKey(favoriteName);
         }
 
         private static void AddNewFavoriteNodeToTagNode(FavoriteConfigurationElement favorite, TagTreeNode tagNode)
         {
-            if (tagNode != null && !tagNode.IsEmpty) // add only to expanded nodes
+            if (tagNode != null && !tagNode.NotLoadedYet) // add only to expanded nodes
             {
                 var favoriteTreeNode = new FavoriteTreeNode(favorite);
                 int index = FindFavoriteNodeInsertIndex(tagNode.Nodes, favorite);
@@ -125,7 +125,15 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        private static int FindFavoriteNodeInsertIndex(TreeNodeCollection nodes, FavoriteConfigurationElement favorite)
+        /// <summary>
+        /// Identify favorite index position in nodes collection by default sorting order.
+        /// </summary>
+        /// <param name="nodes">Not null nodes collection of FavoriteTreeNodes to search in.</param>
+        /// <param name="favorite">Not null favorite to identify in nodes collection.</param>
+        /// <returns>
+        /// -1, if the tag should be added to the end of tag nodes, otherwise found index.
+        /// </returns>
+        internal static int FindFavoriteNodeInsertIndex(TreeNodeCollection nodes, FavoriteConfigurationElement favorite)
         {
             for (int index = 0; index < nodes.Count; index++)
             {
@@ -159,12 +167,10 @@ namespace Terminals.Forms.Controls
         /// Finds the index for the node to insert in nodes collection
         /// and skips nodes before the startIndex.
         /// </summary>
-        /// <param name="nodes">The nodes collection to search in.</param>
-        /// <param name="newTag">The new tag to add.</param>
-        /// <param name="startIndex">The search start index.</param>
+        /// <param name="nodes">Not null nodes collection to search in.</param>
+        /// <param name="newTag">Not empty new tag to add.</param>
         /// <returns>
-        /// -1, if the tag should be added to the end of tag nodes,
-        /// otherwise found index.
+        /// -1, if the tag should be added to the end of tag nodes, otherwise found index.
         /// </returns>
         private static int FindTagNodeInsertIndex(TreeNodeCollection nodes, string newTag)
         {
@@ -224,7 +230,7 @@ namespace Terminals.Forms.Controls
 
         internal void LoadFavorites(TagTreeNode tagNode)
         {
-            if (tagNode.IsEmpty)
+            if (tagNode.NotLoadedYet)
             {
                 tagNode.Nodes.Clear();
                 AddFavoriteNodes(tagNode);

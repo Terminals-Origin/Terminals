@@ -1,36 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Credentials;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
-using Terminals.History;
 using Terminals.Integration;
-using Terminals.Integration.Import;
 
 namespace Terminals
 {
     internal partial class FavsList : UserControl
     {
-        private MethodInvoker _historyInvoker;
-        private Boolean _eventDone = false;
-        private Object _historyLock = new Object();
-        private Boolean _dirtyHistory = false;
-        private HistoryByFavorite _historyByFavorite = null;
-        private HistoryController _historyController = new HistoryController();
-        private List<String> _nodeTextListHistory;
         private MainForm _mainForm;
         public static CredentialSet credSet = new CredentialSet();
 
         public FavsList()
         {
             InitializeComponent();
-            this._historyInvoker = new MethodInvoker(UpdateHistory);
 
             // Update the old treeview theme to the new theme from Win Vista and up
             Native.Methods.SetWindowTheme(this.favsTree.Handle, "Explorer", null);
             Native.Methods.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
+
+            this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
             this.favsTree.Load();
         }
 
@@ -42,72 +36,6 @@ namespace Terminals
                 this._mainForm = MainForm.GetMainForm();
 
             return this._mainForm;
-        }
-
-        public void RecordHistoryItem(String Name)
-        {
-            this._historyController.RecordHistoryItem(Name, true);
-            this._dirtyHistory = true;
-        }
-
-        
-        private void UpdateHistory()
-        {
-            lock (this._historyLock)
-            {
-                this._nodeTextListHistory = new List<String>();
-                foreach (TreeNode node in historyTreeView.Nodes)
-                {
-                    if (node.IsExpanded)
-                        this._nodeTextListHistory.Add(node.Text);
-                }
-
-                this._dirtyHistory = true;
-                if (tabControl1.SelectedTab == this.HistoryTabPage)
-                {
-                    //update history now!
-                    if (!this._eventDone)
-                    {
-                        this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
-                        this._eventDone = true;
-                    }
-
-                    historyTreeView.Nodes.Clear();
-                    Dictionary<String, List<String>> uniqueFavsPerGroup = new Dictionary<String, List<String>>();
-                    SerializableDictionary<String, List<HistoryItem>> GroupedByDate = this._historyByFavorite.GroupByDate();
-                    foreach (String name in GroupedByDate.Keys)
-                    {
-                        List<String> uniqueList = null;
-                        if (uniqueFavsPerGroup.ContainsKey(name))
-                            uniqueList = uniqueFavsPerGroup[name];
-
-                        if (uniqueList == null)
-                        {
-                            uniqueList = new List<String>();
-                            uniqueFavsPerGroup.Add(name, uniqueList);
-                        }
-
-                        TreeNode NameNode = historyTreeView.Nodes.Add(name);
-                        foreach (HistoryItem fav in GroupedByDate[name])
-                        {
-                            if (!uniqueList.Contains(fav.Name))
-                            {
-                                TreeNode FavNode = NameNode.Nodes.Add(fav.Name);
-                                FavNode.Tag = fav.ID;
-                                uniqueList.Add(fav.Name);
-                            }
-                        }
-                    }
-
-                    this._dirtyHistory = false;
-                }
-
-                foreach (TreeNode node in this.historyTreeView.Nodes)
-                {
-                    if (this._nodeTextListHistory.Contains(node.Text))
-                        node.Expand();
-                }
-            }
         }
 
         private void Connect(TreeNode SelectedNode, bool AllChildren, bool Console, bool NewWindow)
@@ -140,22 +68,14 @@ namespace Terminals
 
         #region Private event handler methods
 
-        private void HistoryTreeView_DoubleClick(object sender, EventArgs e)
-        {
-            this.StartConnection(this.historyTreeView);
-        }
-
-        private void History_OnHistoryLoaded(HistoryByFavorite History)
-        {
-            this._historyByFavorite = History;
-            this.Invoke(this._historyInvoker);
-        }
-
         private void FavsList_Load(object sender, EventArgs e)
         {
             this.favsTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.FavsTree_NodeMouseClick);
-            this._historyController.OnHistoryLoaded += new HistoryLoaded(this.History_OnHistoryLoaded);
-            this._historyController.LazyLoadHistory();
+        }
+
+        private void HistoryTreeView_DoubleClick(object sender, EventArgs e)
+        {
+            this.StartConnection(this.historyTreeView);
         }
 
         private void pingToolStripMenuItem_Click(object sender, EventArgs e)
@@ -291,12 +211,6 @@ namespace Terminals
             this.Connect(this.favsTree.SelectedNode, false, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked);
         }
 
-        // todo assign normallyToolStripMenuItem_Click
-        private void normallyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.connectToolStripMenuItem_Click(null, null);
-        }
-
         private void connectToAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Connect(this.favsTree.SelectedNode, true, this.consoleAllToolStripMenuItem.Checked, this.newWindowAllToolStripMenuItem.Checked);
@@ -307,7 +221,7 @@ namespace Terminals
             FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
-                System.Diagnostics.Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + fav.ServerName);
+                Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + fav.ServerName);
             }
 
         }
@@ -320,9 +234,9 @@ namespace Terminals
                 String programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
                 //if(programFiles.Contains("(x86)")) programFiles = programFiles.Replace(" (x86)","");
                 String path = String.Format(@"{0}\common files\Microsoft Shared\MSInfo\msinfo32.exe", programFiles);
-                if (System.IO.File.Exists(path))
+                if (File.Exists(path))
                 {
-                    System.Diagnostics.Process.Start(String.Format("\"{0}\"", path), String.Format("/computer {0}", fav.ServerName));
+                    Process.Start(String.Format("\"{0}\"", path), String.Format("/computer {0}", fav.ServerName));
                 }
             }
         }
@@ -463,14 +377,6 @@ namespace Terminals
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");
-            }
-        }
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.tabControl1.SelectedTab == this.HistoryTabPage && this._dirtyHistory)
-            {
-                this.Invoke(this._historyInvoker);
             }
         }
 
