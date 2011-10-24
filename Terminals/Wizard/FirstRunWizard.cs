@@ -44,79 +44,104 @@ namespace Terminals
         {
             if (SelectedForm == WizardForms.Intro)
             {
-                nextButton.Enabled = true;
-                this.panel1.Controls.Clear();
-                this.panel1.Controls.Add(mp);
-                this.SelectedForm = WizardForms.MasterPassword;
+                SwitchToMasterPassword();
             }
             else if (SelectedForm == WizardForms.MasterPassword)
             {
                 if (mp.StorePassword)
                 {
-                    Settings.UpdateMasterPassword(mp.Password);
-                    nextButton.Enabled = true;
-                    this.panel1.Controls.Clear();
-                    this.panel1.Controls.Add(dc);
-                    this.SelectedForm = WizardForms.DefaultCredentials;
+                    SwitchToDefaultCredentials();
                 }
                 else
                 {
-                    nextButton.Enabled = true;
-                    this.panel1.Controls.Clear();
-                    this.panel1.Controls.Add(co);
-                    this.SelectedForm = WizardForms.Options;
+                    SwitchToOptions();
                 }
             }
             else if (SelectedForm == WizardForms.DefaultCredentials)
             {
-                Settings.DefaultDomain = dc.DefaultDomain;
-                Settings.DefaultPassword = dc.DefaultPassword;
-                Settings.DefaultUsername = dc.DefaultUsername;
-
-                nextButton.Enabled = true;
-                this.panel1.Controls.Clear();
-                this.panel1.Controls.Add(co);
-                this.SelectedForm = WizardForms.Options;                
+                SwitchToOptionsFromCredentials();
             }
             else if (SelectedForm == WizardForms.Options)
             {
-                Settings.MinimizeToTray = co.MinimizeToTray;
-                Settings.SingleInstance = co.AllowOnlySingleInstance;
-                Settings.ShowConfirmDialog = co.WarnOnDisconnect;
-                Settings.EnableCaptureToClipboard = co.EnableCaptureToClipboard;
-                Settings.EnableCaptureToFolder = co.EnableCaptureToFolder;
-                Settings.AutoSwitchOnCapture = co.AutoSwitchOnCapture;
-
-                try
-                {
-                    if (co.LoadDefaultShortcuts)
-                        Settings.SpecialCommands = SpecialCommandsWizard.LoadSpecialCommands();                   
-                }
-                catch(Exception exc)
-                {
-                    Logging.Log.Error("Loading default shortcuts in the wizard.", exc);
-                }
-
-                if (co.ImportRDPConnections)
-                {
-                    nextButton.Enabled = false;
-                    nextButton.Text = "Finished!";
-                    this.panel1.Controls.Clear();
-                    rdp.Dock = DockStyle.Fill;
-                    this.panel1.Controls.Add(rdp);
-                    rdp.StartImport();
-                    this.SelectedForm = WizardForms.Scanner;
-                }
-                else
-                {
-                    rdp.CancelDiscovery();
-                    this.Hide();
-                }
+                FinishOptions();
             }
             else if (SelectedForm == WizardForms.Scanner)
             {
                 this.Hide();
             }
+        }
+
+        private void FinishOptions()
+        {
+            Settings.MinimizeToTray = this.co.MinimizeToTray;
+            Settings.SingleInstance = this.co.AllowOnlySingleInstance;
+            Settings.ShowConfirmDialog = this.co.WarnOnDisconnect;
+            Settings.EnableCaptureToClipboard = this.co.EnableCaptureToClipboard;
+            Settings.EnableCaptureToFolder = this.co.EnableCaptureToFolder;
+            Settings.AutoSwitchOnCapture = this.co.AutoSwitchOnCapture;
+
+            try
+            {
+                if (this.co.LoadDefaultShortcuts)
+                    Settings.SpecialCommands = SpecialCommandsWizard.LoadSpecialCommands();                   
+            }
+            catch(Exception exc)
+            {
+                Logging.Log.Error("Loading default shortcuts in the wizard.", exc);
+            }
+
+            if (this.co.ImportRDPConnections)
+            {
+                this.nextButton.Enabled = false;
+                this.nextButton.Text = "Finished!";
+                this.panel1.Controls.Clear();
+                this.rdp.Dock = DockStyle.Fill;
+                this.panel1.Controls.Add(this.rdp);
+                this.rdp.StartImport();
+                this.SelectedForm = WizardForms.Scanner;
+            }
+            else
+            {
+                this.rdp.CancelDiscovery();
+                this.Hide();
+            }
+        }
+
+        private void SwitchToOptionsFromCredentials()
+        {
+            Settings.DefaultDomain = this.dc.DefaultDomain;
+            Settings.DefaultPassword = this.dc.DefaultPassword;
+            Settings.DefaultUsername = this.dc.DefaultUsername;
+
+            this.nextButton.Enabled = true;
+            this.panel1.Controls.Clear();
+            this.panel1.Controls.Add(this.co);
+            this.SelectedForm = WizardForms.Options;
+        }
+
+        private void SwitchToOptions()
+        {
+            this.nextButton.Enabled = true;
+            this.panel1.Controls.Clear();
+            this.panel1.Controls.Add(this.co);
+            this.SelectedForm = WizardForms.Options;
+        }
+
+        private void SwitchToDefaultCredentials()
+        {
+            Settings.UpdateMasterPassword(this.mp.Password);
+            this.nextButton.Enabled = true;
+            this.panel1.Controls.Clear();
+            this.panel1.Controls.Add(this.dc);
+            this.SelectedForm = WizardForms.DefaultCredentials;
+        }
+
+        private void SwitchToMasterPassword()
+        {
+            this.nextButton.Enabled = true;
+            this.panel1.Controls.Clear();
+            this.panel1.Controls.Add(this.mp);
+            this.SelectedForm = WizardForms.MasterPassword;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -139,14 +164,14 @@ namespace Terminals
 
         private void FirstRunWizard_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (rdp.DiscoFavs != null && rdp.DiscoFavs.Count > 0)
+            if (rdp.DiscoveredConnections.Count > 0)
             {
                 String message = String.Format("Automatic Discovery was able to find {0} connections.\r\n" +
                                                "Would you like to add them to your connections list?",
-                                                rdp.DiscoFavs.Count);
+                                                rdp.DiscoveredConnections.Count);
                 if (MessageBox.Show(message, "Terminals Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    List<FavoriteConfigurationElement> favoritesToImport = rdp.DiscoFavs.ToList();
+                    List<FavoriteConfigurationElement> favoritesToImport = rdp.DiscoveredConnections.ToList();
                     var managedImport = new ImportWithDialogs(this, false);
                     managedImport.Import(favoritesToImport);
                 }

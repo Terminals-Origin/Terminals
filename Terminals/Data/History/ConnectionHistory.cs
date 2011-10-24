@@ -30,6 +30,10 @@ namespace Terminals.History
             {
                 if (_currentHistory == null)
                     LoadHistory(null);
+
+                if (_currentHistory == null)
+                    _currentHistory = new HistoryByFavorite();
+
                 return _currentHistory;
             }
         }
@@ -95,6 +99,7 @@ namespace Terminals.History
                 Stopwatch sw = Stopwatch.StartNew();
                 try
                 {
+                    this._loadingHistory = true;
                     TryLoadHistory();
                 }
                 catch (Exception exc)
@@ -104,6 +109,7 @@ namespace Terminals.History
                 }
                 finally
                 {
+                    this._loadingHistory = false;
                     Logging.Log.Info(string.Format("Load History Duration:{0}ms", sw.ElapsedMilliseconds));
                 }
             }
@@ -115,7 +121,6 @@ namespace Terminals.History
         private void TryLoadHistory()
         {
             Logging.Log.Info("Loading History from: " + (_historyLocation == null ? String.Empty : _historyLocation));
-            this._loadingHistory = true;
 
             if (!string.IsNullOrEmpty(_historyLocation))
             {
@@ -123,10 +128,9 @@ namespace Terminals.History
 
                 if (!File.Exists(_historyLocation))
                     this.SaveHistory();//the file doesnt exist.  lets save it out for the first time
-
-                this._currentHistory = Serialize.DeserializeXMLFromDisk(_historyLocation, typeof(HistoryByFavorite)) as HistoryByFavorite;
+                else
+                    this._currentHistory = Serialize.DeserializeXMLFromDisk(_historyLocation, typeof(HistoryByFavorite)) as HistoryByFavorite;
             }
-            this._loadingHistory = false;
 
             Logging.Log.Info("Done Loading History");
         }

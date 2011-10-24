@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Terminals.Configuration;
 using Terminals.Connections;
 
@@ -11,6 +12,8 @@ namespace Terminals
     /// </summary>
     internal static class FavoritesFactory
     {
+        private const string DISCOVERED_CONNECTIONS = "Discovered Connections";
+
         internal static readonly String TerminalsReleasesFavoriteName = Program.Resources.GetString("TerminalsNews");
 
         internal static FavoriteConfigurationElement GetOrCreateReleaseFavorite()
@@ -76,6 +79,52 @@ namespace Terminals
                 favorite.EncryptedPassword = credential.Password;
             }
             return favorite;
+        }
+
+        internal static FavoriteConfigurationElement CreateNewFavorite(string favoriteName, string server, int port,
+            string domain, string userName)
+        {
+            FavoriteConfigurationElement newFavorite = new FavoriteConfigurationElement();
+            newFavorite.Name = favoriteName;
+            newFavorite.ServerName = server;
+            newFavorite.UserName = userName;
+            newFavorite.DomainName = domain;
+            newFavorite.Tags = DISCOVERED_CONNECTIONS;
+            newFavorite.Port = port;
+            newFavorite.Protocol = ConnectionManager.GetPortName(port, true);
+            return newFavorite;
+        }
+
+        internal static FavoriteConfigurationElement CreateNewFavorite(string favoriteName, string server, int port)
+        {
+            string name = GetHostName(server, favoriteName, port);
+            string domainName = GetCurrentDomainName(server);
+            return CreateNewFavorite(name, server, port, domainName, Environment.UserName);
+        }
+
+        private static string GetCurrentDomainName(string server)
+        {
+            if (Environment.UserDomainName != Environment.MachineName)
+                return Environment.UserDomainName;
+
+            return server;
+        }
+
+        private static string GetHostName(string server, string name, int port)
+        {
+            try
+            {
+                IPAddress address;
+                if (IPAddress.TryParse(server, out address))
+                    name = Dns.GetHostEntry(address).HostName;
+
+                string portName = ConnectionManager.GetPortName(port, true);
+                return string.Format("{0}_{1}", name, portName);
+            }
+            catch //lets not log dns lookups!
+            {
+                return name;
+            }
         }
     }
 }
