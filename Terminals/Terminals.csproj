@@ -353,6 +353,7 @@
     <Compile Include="Forms\Controls\TagMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Forms\TerminalFormDialogResult.cs" />
     <Compile Include="MainFormFullScreenSwitch.cs">
       <SubType>Form</SubType>
     </Compile>

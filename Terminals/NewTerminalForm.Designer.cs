@@ -558,6 +558,7 @@ namespace Terminals
         " shortcuts tree.");
             this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
             this.lvConnectionTags.View = System.Windows.Forms.View.List;
+            this.lvConnectionTags.DoubleClick += new System.EventHandler(this.lvConnectionTags_DoubleClick);
             // 
             // widthUpDown
             // 
@@ -2034,7 +2035,6 @@ namespace Terminals
             this.chkSavePassword.TabIndex = 6;
             this.chkSavePassword.Text = "S&ave password";
             this.chkSavePassword.UseVisualStyleBackColor = true;
-            this.chkSavePassword.CheckedChanged += new System.EventHandler(this.chkSavePassword_CheckedChanged);
             // 
             // NotesTextbox
             // 

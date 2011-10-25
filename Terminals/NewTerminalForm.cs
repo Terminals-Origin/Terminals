@@ -2,24 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-
 using FalafelSoftware.TransPort;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Forms;
 using Terminals.Network.Servers;
 
 namespace Terminals
 {
-    enum TerminalFormDialogResult
-    {
-        Cancel = 0,
-        SaveAndClose,
-        SaveAndConnect
-    }
-
     internal partial class NewTerminalForm : Form
     {
         private TerminalServerManager _terminalServerManager = new TerminalServerManager();
@@ -31,7 +24,6 @@ namespace Terminals
         private String _oldName;
         private List<String> oldTags = new List<string>();
         private const String HIDDEN_PASSWORD = "****************";
-        private const Int32 RDPPORT = 3389;
         private String favoritePassword = string.Empty;
         internal List<String> _redirectedDrives = new List<String>();
         internal Boolean _redirectDevices = false;
@@ -103,8 +95,8 @@ namespace Terminals
                 }
 
                 String server = serverName;
-                Int32 port = RDPPORT;
-                this.GetServerAndPort(serverName, out server, out port);
+                Int32 port;
+                GetServerAndPort(serverName, out server, out port);
                 this.cmbServers.Text = server;
                 this.txtPort.Text = port.ToString();
             }
@@ -113,7 +105,7 @@ namespace Terminals
                 this._oldName = favorite.Name;
                 this.oldTags = favorite.TagList;
                 this.Text = "Edit Connection";
-                this.FillControls(favorite);                
+                this.FillControls(favorite);
             }
         }
 
@@ -266,14 +258,7 @@ namespace Terminals
             this.txtInitialDirectory.Text = favorite.ExecuteBeforeConnectInitialDirectory;
             this.chkWaitForExit.Checked = favorite.ExecuteBeforeConnectWaitForExit;
 
-            String[] tagsArray = favorite.Tags.Split(',');
-            if (!((tagsArray.Length == 1) && (String.IsNullOrEmpty(tagsArray[0]))))
-            {
-                foreach (String tag in tagsArray)
-                {
-                    this.lvConnectionTags.Items.Add(tag, tag, -1);
-                }
-            }
+            ReloadTagsListViewItems(favorite);
 
             if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
             {
@@ -295,12 +280,12 @@ namespace Terminals
             this.DisableWindowsKeyCheckbox.Checked = favorite.DisableWindowsKey;
             this.DetectDoubleClicksCheckbox.Checked = favorite.DoubleClickDetect;
             this.DisplayConnectionBarCheckbox.Checked = favorite.DisplayConnectionBar;
-            this.DisableControlAltDeleteCheckbox.Checked= favorite.DisableControlAltDelete;
+            this.DisableControlAltDeleteCheckbox.Checked = favorite.DisableControlAltDelete;
             this.AcceleratorPassthroughCheckBox.Checked = favorite.AcceleratorPassthrough;
             this.EnableCompressionCheckbox.Checked = favorite.EnableCompression;
             this.EnableBitmapPersistanceCheckbox.Checked = favorite.BitmapPeristence;
             this.EnableTLSAuthenticationCheckbox.Checked = favorite.EnableTLSAuthentication;
-            this.EnableNLAAuthenticationCheckbox.Checked = favorite.EnableNLAAuthentication; 
+            this.EnableNLAAuthenticationCheckbox.Checked = favorite.EnableNLAAuthentication;
             this.AllowBackgroundInputCheckBox.Checked = favorite.AllowBackgroundInput;
 
             this.chkDisableCursorShadow.Checked = false;
@@ -340,6 +325,16 @@ namespace Terminals
             this.FillCredentials(favorite.Credential);
         }
 
+        private void ReloadTagsListViewItems(FavoriteConfigurationElement favorite)
+        {
+            List<string> tagsArray = favorite.TagList;
+            this.lvConnectionTags.Items.Clear();
+            foreach (String tag in tagsArray)
+            {
+                this.lvConnectionTags.Items.Add(tag, tag, -1);
+            }
+        }
+
         private Boolean FillFavorite(Boolean defaultFav)
         {
             try
@@ -349,9 +344,6 @@ namespace Terminals
 
                 this.consolePreferences.FillFavorite(_favorite);
 
-                //if (defaultFav)
-                //    _favorite.Name = "default";
-                //else
                 this._favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
 
                 this._favorite.VMRCAdministratorMode = this.VMRCAdminModeCheckbox.Checked;
@@ -364,6 +356,8 @@ namespace Terminals
                 this._favorite.NewWindow = this.NewWindowCheckbox.Checked;
 
                 this._favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
+                this._favorite.Port = this.ValidatePort();
+
                 if (!defaultFav)
                     this._favorite.ServerName = ValidateServer(this.cmbServers.Text);
 
@@ -425,7 +419,6 @@ namespace Terminals
                 this._favorite.TsgwSeparateLogin = this.chkTSGWlogin.Checked;
                 this._favorite.TsgwCredsSource = this.cmbTSGWLogonMethod.SelectedIndex;
 
-                this._favorite.Port = this.ValidatePort();
                 this._favorite.DesktopShare = this.txtDesktopShare.Text;
                 this._favorite.ExecuteBeforeConnect = this.chkExecuteBeforeConnect.Checked;
                 this._favorite.ExecuteBeforeConnectCommand = this.txtCommand.Text;
@@ -553,7 +546,7 @@ namespace Terminals
         /// Confirms changes into the favorite tags and returns collection of newly assigned tags.
         /// </summary>
         private List<String> UpdateFavoriteTags()
-        {   
+        {
             List<String> updatedTags = new List<String>();
             foreach (ListViewItem listViewItem in this.lvConnectionTags.Items)
                 updatedTags.Add(listViewItem.Text);
@@ -572,10 +565,10 @@ namespace Terminals
             }
             else
             {
-                if (String.IsNullOrEmpty(serverName)) 
+                if (String.IsNullOrEmpty(serverName))
                     throw new ArgumentException("Server name was not specified.");
 
-                if (serverName.Length < 0) 
+                if (serverName.Length < 0)
                     throw new ArgumentException("Server name was not specified.");
             }
 
@@ -584,16 +577,16 @@ namespace Terminals
 
         private Int32 ValidatePort()
         {
-            if (this.txtPort.Text.Trim() != String.Empty)
-            {
-                Int32 result;
-                if (Int32.TryParse(this.txtPort.Text, out result) && result < 65536 && result > 0)
-                    return result;
+            Int32 result;
+            if (Int32.TryParse(this.txtPort.Text, out result) && result < 65536 && result > 0)
+                return result;
 
-                throw new ArgumentException("Port must be a number between 0 and 65535");
-            }
-            
-            return RDPPORT;
+            //string protocol = this.ProtocolComboBox.SelectedItem.ToString();
+            //result = ConnectionManager.GetPort(protocol);
+            //this.txtPort.Text = result.ToString();
+
+            // todo replace Exceptions usage in case, where it isnt relevant
+            throw new ArgumentException("Port must be a number between 0 and 65535");
         }
 
         private void SetOkButtonState()
@@ -601,15 +594,15 @@ namespace Terminals
             this.btnSave.Enabled = this.cmbServers.Text != String.Empty;
         }
 
-        private void GetServerAndPort(String Connection, out String Server, out Int32 Port)
+        private static void GetServerAndPort(String Connection, out String Server, out Int32 Port)
         {
             Server = Connection;
-            Port = RDPPORT;
+            Port = ConnectionManager.RDPPort;
             if (Connection != null && Connection.Trim() != String.Empty && Connection.Contains(":"))
             {
                 String server = Connection.Substring(0, Connection.IndexOf(":"));
                 String rawPort = Connection.Substring(Connection.IndexOf(":") + 1);
-                Int32 port = RDPPORT;
+                Int32 port = ConnectionManager.RDPPort;
                 if (rawPort != null && rawPort.Trim() != String.Empty)
                 {
                     rawPort = rawPort.Trim();
@@ -703,8 +696,9 @@ namespace Terminals
             this.SaveMRUs();
             if (this.FillFavorite(false))
             {
-                FavoriteConfigurationElement favorite = new FavoriteConfigurationElement();
-                this.Init(favorite, String.Empty);
+                this._favorite = null;
+                this._oldName = String.Empty;
+                this.Init(null, String.Empty);
                 this.cmbServers.Focus();
             }
         }
@@ -717,9 +711,10 @@ namespace Terminals
             this.SaveMRUs();
             if (this.FillFavorite(false))
             {
-                FavoriteConfigurationElement favorite = new FavoriteConfigurationElement();
+                this.txtName.Text = this._favorite.Name + "_(copy)";
+                this._favorite = null;
+                this._oldName = String.Empty;
                 this.cmbServers.Text = String.Empty;
-                this.txtName.Text = String.Empty;
                 this.cmbServers.Focus();
             }
         }
@@ -727,11 +722,6 @@ namespace Terminals
         private void control_TextChanged(object sender, EventArgs e)
         {
             this.SetOkButtonState();
-        }
-
-        private void chkSavePassword_CheckedChanged(object sender, EventArgs e)
-        {
-            //this.txtPassword.ReadOnly = !this.chkSavePassword.Checked;
         }
 
         private void txtPassword_TextChanged(object sender, EventArgs e)
@@ -756,8 +746,8 @@ namespace Terminals
                 if (this.cmbServers.Text.Contains(":"))
                 {
                     String server = String.Empty;
-                    int port = RDPPORT;
-                    this.GetServerAndPort(this.cmbServers.Text, out server, out port);
+                    int port;
+                    GetServerAndPort(this.cmbServers.Text, out server, out port);
                     this.cmbServers.Text = server;
                     this.txtPort.Text = port.ToString();
                     this.cmbServers.Text = server;
@@ -789,6 +779,11 @@ namespace Terminals
             this.DeleteTag();
         }
 
+        private void lvConnectionTags_DoubleClick(object sender, EventArgs e)
+        {
+            this.DeleteTag();
+        }
+
         private void btnSaveDefault_Click(object sender, EventArgs e)
         {
             this.contextMenuStripDefaults.Show(this.btnSaveDefault, 0, this.btnSaveDefault.Height);
@@ -806,7 +801,7 @@ namespace Terminals
 
         private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            String defaultPort = Connections.ConnectionManager.VNCVMRCPort.ToString();
+            String defaultPort = ConnectionManager.VNCVMRCPort.ToString();
 
             this.cmbServers.Enabled = true;
             this.txtPort.Enabled = true;
@@ -829,7 +824,7 @@ namespace Terminals
 
             if (this.ProtocolComboBox.Text == "RDP")
             {
-                defaultPort = Connections.ConnectionManager.RDPPort.ToString();
+                defaultPort = ConnectionManager.RDPPort.ToString();
                 this.groupBox1.Enabled = true;
                 this.chkConnectToConsole.Enabled = true;
                 this.LocalResourceGroupBox.Enabled = true;
@@ -856,17 +851,17 @@ namespace Terminals
             }
             else if (this.ProtocolComboBox.Text == "Telnet")
             {
-                defaultPort = Connections.ConnectionManager.TelnetPort.ToString();
+                defaultPort = ConnectionManager.TelnetPort.ToString();
             }
             else if (this.ProtocolComboBox.Text == "SSH")
             {
-                defaultPort = Connections.ConnectionManager.SSHPort.ToString();
+                defaultPort = ConnectionManager.SSHPort.ToString();
             }
             else if (this.ProtocolComboBox.Text == "ICA Citrix")
             {
                 this.ICAApplicationNameTextBox.Enabled = true;
                 this.ICAApplicationPath.Enabled = true;
-                defaultPort = Connections.ConnectionManager.ICAPort.ToString();
+                defaultPort = ConnectionManager.ICAPort.ToString();
             }
             else if (ProtocolComboBox.Text == "HTTP")
             {
@@ -874,7 +869,7 @@ namespace Terminals
                 this.txtPort.Enabled = false;
                 this.txtPort.Text = "80";
                 this.httpUrlTextBox.Enabled = true;
-                defaultPort = Connections.ConnectionManager.HTTPPort.ToString();
+                defaultPort = ConnectionManager.HTTPPort.ToString();
                 this.tabControl1.SelectTab(HTTPTabPage);
             }
             else if (this.ProtocolComboBox.Text == "HTTPS")
@@ -883,7 +878,7 @@ namespace Terminals
                 this.txtPort.Text = "443";
                 this.txtPort.Enabled = false;
                 this.httpUrlTextBox.Enabled = true;
-                defaultPort = Connections.ConnectionManager.HTTPSPort.ToString();
+                defaultPort = ConnectionManager.HTTPSPort.ToString();
                 this.tabControl1.SelectTab(HTTPTabPage);
             }
 
@@ -931,15 +926,15 @@ namespace Terminals
                 {
                     Image image = Image.FromFile(filename);
                     if (image != null)
-                    {                        
+                    {
                         this.pictureBox2.Image = image;
                         String newFile = Path.Combine(thumbsFolder, Path.GetFileName(filename));
-                        if (newFile != filename && !File.Exists(newFile)) 
+                        if (newFile != filename && !File.Exists(newFile))
                             File.Copy(filename, newFile);
                         this._currentToolBarFileName = newFile;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Logging.Log.Info("Set Terminal Image Failed", ex);
                     this._currentToolBarFileName = String.Empty;
@@ -971,7 +966,7 @@ namespace Terminals
         }
 
         private void cmbResolution_SelectedIndexChanged(object sender, EventArgs e)
-        { 
+        {
             if (this.cmbResolution.Text == "Custom" || this.cmbResolution.Text == "Auto Scale")
                 this.customSizePanel.Visible = true;
             else
@@ -988,7 +983,7 @@ namespace Terminals
             this.ICAEncryptionLevelCombobox.Enabled = this.ICAEnableEncryptionCheckbox.Checked;
         }
 
-        private void httpUrlTextBox_TextChanged(object sender, EventArgs e) 
+        private void httpUrlTextBox_TextChanged(object sender, EventArgs e)
         {
             if (this.ProtocolComboBox.Text == "HTTP" | this.ProtocolComboBox.Text == "HTTPS")
             {
@@ -1016,7 +1011,7 @@ namespace Terminals
             String cred = String.Empty;
             if (this.CredentialDropdown.SelectedItem.GetType() != typeof(string))
                 cred = ((CredentialSet)this.CredentialDropdown.SelectedItem).Name;
-            
+
             Credentials.CredentialManager mgr = new Credentials.CredentialManager();
             mgr.ShowDialog();
             this.FillCredentials(cred);
