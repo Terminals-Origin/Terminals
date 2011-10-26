@@ -935,7 +935,7 @@ namespace Terminals
         /// <summary>
         /// Gets or sets the password String in not ecrypted form
         /// </summary>
-        public String Password
+        internal String Password
         {
             get
             {

@@ -57,8 +57,10 @@ namespace Terminals.Configuration
       }
       set
       {
-        if (!string.IsNullOrEmpty(value))
-          this.Password = Functions.EncryptPassword(value);
+          if (string.IsNullOrEmpty(value))
+              this.Password = String.Empty;
+          else
+              this.Password = Functions.EncryptPassword(value);
       }
     }
 

@@ -22,7 +22,7 @@ namespace Terminals
         private List<String> oldTags = new List<string>();
 
         private String favoritePassword = string.Empty;
-        private const String HIDDEN_PASSWORD = "****************";
+        internal const String HIDDEN_PASSWORD = "****************";
 
         #region Constructors
 

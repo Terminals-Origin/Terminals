@@ -17,7 +17,8 @@ namespace Terminals.Credentials
                 NameTextbox.Text = editedCredential.Name;
                 DomainTextbox.Text = editedCredential.Domain;
                 UsernameTextbox.Text = editedCredential.Username;
-
+                if(!string.IsNullOrEmpty(editedCredential.Password))
+                    this.PasswordTextbox.Text = NewTerminalForm.HIDDEN_PASSWORD;
                 this.editedCredentialName = editedCredential.Name;
             }
         }
@@ -88,8 +89,9 @@ namespace Terminals.Credentials
         {
             toUpdate.Domain = this.DomainTextbox.Text;
             toUpdate.Name = this.NameTextbox.Text;
-            toUpdate.SecretKey = this.PasswordTextbox.Text;
             toUpdate.Username = this.UsernameTextbox.Text;
+            if(this.PasswordTextbox.Text != NewTerminalForm.HIDDEN_PASSWORD)
+                toUpdate.SecretKey = this.PasswordTextbox.Text;
         }
 
         private CredentialSet CreateNewCredential()
