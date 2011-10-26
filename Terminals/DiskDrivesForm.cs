@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-
-using MSTSC = MSTSCLib;
-using AxMSTSCLib;
 using System.IO;
 
 namespace Terminals
@@ -28,10 +21,10 @@ namespace Terminals
         {
             try
             {
-                treeView1.Nodes["NodeDevices"].Checked = _parentForm._redirectDevices;
+                treeView1.Nodes["NodeDevices"].Checked = this._parentForm.RedirectDevices;
 
                 DriveInfo[] drives = DriveInfo.GetDrives();
-                List<string> _redirectedDrives = _parentForm._redirectedDrives;
+                List<string> _redirectedDrives = this._parentForm.RedirectedDrives;
 
                 foreach (DriveInfo drive in drives)
                 {
@@ -76,8 +69,8 @@ namespace Terminals
                     if (tn.Checked)
                         _redirectedDrives.Add(tn.Name);
             }
-            _parentForm._redirectedDrives = _redirectedDrives;
-            _parentForm._redirectDevices = treeView1.Nodes["NodeDevices"].Checked;
+            this._parentForm.RedirectedDrives = _redirectedDrives;
+            this._parentForm.RedirectDevices = treeView1.Nodes["NodeDevices"].Checked;
         }
 
         private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
