@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using Terminals.Integration.Import;
@@ -11,17 +10,17 @@ namespace Terminals.Integration.Export
     /// </summary>
     internal class ExportTerminals : IExport
     {
-        public void Export(string fileName, List<FavoriteConfigurationElement> favorites, bool includePassword)
+        public void Export(ExportOptions options)
         {
             try
             {
-                using (XmlTextWriter w = new XmlTextWriter(fileName, Encoding.UTF8))
+                using (XmlTextWriter w = new XmlTextWriter(options.FileName, Encoding.UTF8))
                 {
                     w.WriteStartDocument();
                     w.WriteStartElement("favorites");
-                    foreach (FavoriteConfigurationElement favorite in favorites)
+                    foreach (FavoriteConfigurationElement favorite in options.Favorites)
                     {
-                        WriteFavorite(w, includePassword, favorite);
+                        WriteFavorite(w, options.IncludePasswords, favorite);
                     }
                     w.WriteEndElement();
                     w.WriteEndDocument();

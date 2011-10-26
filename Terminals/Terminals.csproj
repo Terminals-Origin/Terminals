@@ -266,8 +266,9 @@
     </Compile>
     <Compile Include="Data\History\HistoryRecordedEventArgs.cs" />
     <Compile Include="ExportImport\Exporters.cs" />
+    <Compile Include="ExportImport\Export\ExportOptions.cs" />
     <Compile Include="ExportImport\Export\ExportRdp.cs" />
-    <Compile Include="ExportImport\Export\ExtraLogicAndroidRd.cs" />
+    <Compile Include="ExportImport\Export\ExportExtraLogicAndroidRd.cs" />
     <Compile Include="ExportImport\Export\IExport.cs" />
     <Compile Include="ExportImport\Export\ExportTerminals.cs" />
     <Compile Include="ExportImport\IIntegration.cs" />

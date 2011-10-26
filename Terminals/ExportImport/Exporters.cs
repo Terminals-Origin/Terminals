@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using Terminals.Integration.Export;
 using Terminals.Integration.Import;
@@ -15,8 +14,17 @@ namespace Terminals.Integration
                 providers = new Dictionary<string, IExport>();
                 providers.Add(ImportTerminals.TERMINALS_FILEEXTENSION, new ExportTerminals());
                 providers.Add(ImportRDP.FILE_EXTENSION, new ExportRdp());
-                //providers.Add(ExtraLogicAndroidRd.EXTENSION, new ExtraLogicAndroidRd());
+                //providers.Add(GetExtraAndroidProviderKey(), new ExportExtraLogicAndroidRd());
             }
+        }
+
+        /// <summary>
+        /// Replaces XML file extension duplicity as key in providers.
+        /// </summary>
+        /// <returns></returns>
+        private static string GetExtraAndroidProviderKey()
+        {
+            return ExportExtraLogicAndroidRd.EXTENSION + ExportExtraLogicAndroidRd.EXTENSION;
         }
 
         internal string GetProvidersDialogFilter()
@@ -32,12 +40,15 @@ namespace Terminals.Integration
             return filters.ToString();
         }
 
-        public void Export(string fileName, List<FavoriteConfigurationElement> favorites, bool includePassword)
+        public void Export(ExportOptions options)
         {
-            IExport exporter = FindProvider(fileName);
+            IExport exporter = FindProvider(options.FileName);
+            
+            if (options.ProviderFilter.Contains(ExportExtraLogicAndroidRd.PROVIDER_NAME))
+                exporter = this.providers[GetExtraAndroidProviderKey()];
 
             if (exporter != null)
-                exporter.Export(fileName, favorites, includePassword);
+                exporter.Export(options);
         }
     }
 }

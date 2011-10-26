@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Terminals.Connections;
-using Terminals.Integration.Import;
 
 namespace Terminals.Integration.Export
 {
     /// <summary>
     /// http://www.xtralogic.com/rdc_help.shtml
     /// </summary>
-    internal class ExtraLogicAndroidRd : IExport
+    internal class ExportExtraLogicAndroidRd : IExport
     {
-        internal const string EXTENSION = ".extrard";
+        internal const string EXTENSION = ".xml";
+        internal const string PROVIDER_NAME = "Xtralogic Remote Desktop Client for Android";
 
         public string Name
         {
-            get { return "Xtralogic Remote Desktop Client for Android"; }
+            get { return PROVIDER_NAME; }
         }
 
         public string KnownExtension
@@ -23,13 +23,13 @@ namespace Terminals.Integration.Export
             get { return EXTENSION; }
         }
 
-        public void Export(string fileName, List<FavoriteConfigurationElement> favorites, bool includePassword)
+        public void Export(ExportOptions options)
         {
             try
             {
                 XDocument doc = new XDocument(new XElement("servers"));
-                ExportFavorites(doc, favorites);
-                doc.Save(fileName);
+                ExportFavorites(doc, options.Favorites);
+                doc.Save(options.FileName);
             }
             catch (Exception exception)
             {

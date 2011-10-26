@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Integration;
+using Terminals.Integration.Export;
 
 namespace Terminals
 {
@@ -26,14 +27,29 @@ namespace Terminals
             {
                 if (favsTree.SelectedNode != null)
                 {
-                    List<FavoriteConfigurationElement> favorites = FindSelectedFavorites();
-                    Integrations.Exporters.Export(saveFileDialog.FileName, favorites, checkBox1.Checked);
+                    RunExport();
                 }
 
                 MessageBox.Show("Done exporting, you can find your exported file at " + saveFileDialog.FileName,
                                 "Terminals export");
                 Close();
             }
+        }
+
+        private void RunExport() 
+        {
+            List<FavoriteConfigurationElement> favorites = this.FindSelectedFavorites();
+            // filter index is 1 based
+            int filterSplitIndex = (this.saveFileDialog.FilterIndex - 1) * 2;
+            string providerFilter = this.saveFileDialog.Filter.Split('|')[filterSplitIndex];
+            ExportOptions options = new ExportOptions
+                {
+                    ProviderFilter = providerFilter,
+                    Favorites = favorites,
+                    FileName = this.saveFileDialog.FileName,
+                    IncludePasswords = this.checkBox1.Checked
+                };
+            Integrations.Exporters.Export(options);
         }
 
         private List<FavoriteConfigurationElement> FindSelectedFavorites()

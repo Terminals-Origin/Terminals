@@ -20,17 +20,17 @@ namespace Terminals.Integration.Export
             get { return ImportRDP.FILE_EXTENSION; }
         }
         
-        public void Export(string fileName, List<FavoriteConfigurationElement> favorites, bool includePassword)
+        public void Export(ExportOptions options)
         {
-            foreach (FavoriteConfigurationElement favorite in favorites)
+            foreach (FavoriteConfigurationElement favorite in options.Favorites)
             {
-                if (favorites.Count > 1)
+                if (options.Favorites.Count > 1)
                 {
-                    string fileNameWithSuffix = AddFileNameSuffix(favorite.Name, fileName);
+                    string fileNameWithSuffix = AddFileNameSuffix(favorite.Name, options.FileName);
                     ExportFavorite(fileNameWithSuffix, favorite);
                 }
                 else
-                   ExportFavorite(fileName, favorite);
+                   ExportFavorite(options.FileName, favorite);
             }
         }
 
