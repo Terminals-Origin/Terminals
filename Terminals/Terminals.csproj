@@ -275,6 +275,21 @@
     <Compile Include="ExportImport\Import\ImportRdpRegistry.cs" />
     <Compile Include="ExportImport\Integration.cs" />
     <Compile Include="ExportImport\Integrations.cs" />
+    <Compile Include="Forms\OptionPanels\AmazonOptionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\AmazonOptionPanel.Designer.cs">
+      <DependentUpon>AmazonOptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\CaptureOptionPanel.Designer.cs">
+      <DependentUpon>CaptureOptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\ConnectCommandOptionPanel.Designer.cs">
+      <DependentUpon>ConnectCommandOptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\ConnectionsOptionPanel.Designer.cs">
+      <DependentUpon>ConnectionsOptionPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Controls\ConsolePreferences.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -353,6 +368,27 @@
     </Compile>
     <Compile Include="Forms\Controls\TagMenuItem.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\DefaultPasswordOptionPanel.Designer.cs">
+      <DependentUpon>DefaultPasswordOptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\FavoritesOptionPanel.Designer.cs">
+      <DependentUpon>FavoritesOptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\FlickrOptionPanel.Designer.cs">
+      <DependentUpon>FlickrOptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\InterfaceOptionPanel.Designer.cs">
+      <DependentUpon>InterfaceOptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\MasterPasswordOptionPanel.Designer.cs">
+      <DependentUpon>MasterPasswordOptionpanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\ProxyOptionPanel.Designer.cs">
+      <DependentUpon>ProxyOptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\StartShutdownOptionPanel.Designer.cs">
+      <DependentUpon>StartShutdownOptionPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\TerminalFormDialogResult.cs" />
     <Compile Include="MainFormFullScreenSwitch.cs">
@@ -443,41 +479,36 @@
     <Compile Include="Network\WMI\WMIServerCredentials.Designer.cs">
       <DependentUpon>WMIServerCredentials.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\AmazonOptionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Forms\OptionPanels\CaptureOptionPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\CaptureOptionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Forms\OptionPanels\ConnectCommandOptionPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\ConnectCommandOptionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Forms\OptionPanels\ConnectionsOptionPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\ConnectionsOptionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Forms\OptionPanels\DefaultPasswordOptionPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\DefaultPasswordOptionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Forms\OptionPanels\FavoritesOptionPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\FavoritesOptionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Forms\OptionPanels\FlickrOptionPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\FlickrOptionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Forms\OptionPanels\InterfaceOptionPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\InterfaceOptionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Forms\OptionPanels\MasterPasswordOptionpanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\MasterPasswordOptionpanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Forms\OptionPanels\IOptionPanel.cs" />
+    <Compile Include="Forms\OptionPanels\ProxyOptionPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Forms\OptionPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\ProxyOptionPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Forms\StartShutdownOptionPanel.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Forms\OptionPanels\StartShutdownOptionPanel.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="OptionDialog.cs">
       <SubType>Form</SubType>
@@ -704,12 +735,6 @@
     <Compile Include="NewGroupForm.Designer.cs">
       <DependentUpon>NewGroupForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OptionsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="OptionsForm.Designer.cs">
-      <DependentUpon>OptionsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="OrganizeFavoritesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -780,11 +805,17 @@
       <SubType>Designer</SubType>
       <DependentUpon>TabbedTools.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OptionPanels\AmazonOptionPanel.resx">
+      <DependentUpon>AmazonOptionPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\FavoritesTreeView.resx">
       <DependentUpon>FavoritesTreeView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Controls\HistoryTreeView.resx">
       <DependentUpon>HistoryTreeView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OptionPanels\ProxyOptionPanel.resx">
+      <DependentUpon>ProxyOptionPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>
@@ -805,10 +836,6 @@
     <EmbeddedResource Include="NewGroupForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NewGroupForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="OptionsForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>OptionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OptionDialog.resx">
       <DependentUpon>OptionDialog.cs</DependentUpon>

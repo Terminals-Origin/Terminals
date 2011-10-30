@@ -1,28 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using Terminals.Configuration;
 
 namespace Terminals.Forms
 {
-    internal class CaptureOptionPanel : OptionDialogCategoryPanel
+    partial class CaptureOptionPanel
     {
-        private Panel panel1;
-        private GroupBox groupBox8;
-        private CheckBox chkAutoSwitchToCaptureCheckbox;
-        private CheckBox chkEnableCaptureToFolder;
-        private CheckBox chkEnableCaptureToClipboard;
-        private Button ButtonBrowseCaptureFolder;
-        private Label label23;
-        private TextBox txtScreenCaptureFolder;
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-        public CaptureOptionPanel()
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
-        #region InitializeComponent
-        
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
@@ -134,68 +140,13 @@ namespace Terminals.Forms
 
         #endregion
 
-        public override void Init()
-        {
-            this.chkAutoSwitchToCaptureCheckbox.Enabled = this.chkEnableCaptureToFolder.Checked;
-            this.chkEnableCaptureToClipboard.Checked = Settings.EnableCaptureToClipboard;
-            this.chkEnableCaptureToFolder.Checked = Settings.EnableCaptureToFolder;
-
-            this.txtScreenCaptureFolder.Text = Settings.CaptureRoot;
-            this.txtScreenCaptureFolder.SelectionStart = this.txtScreenCaptureFolder.Text.Length;
-            this.txtScreenCaptureFolder.Enabled = this.chkEnableCaptureToFolder.Checked;
-            this.ButtonBrowseCaptureFolder.Enabled = this.chkEnableCaptureToFolder.Checked;
-        }
-
-        public override Boolean Save()
-        {
-            try
-            {
-                Settings.DelayConfigurationSave = true;
-
-                Settings.AutoSwitchOnCapture = this.chkAutoSwitchToCaptureCheckbox.Checked;
-                Settings.EnableCaptureToClipboard = this.chkEnableCaptureToClipboard.Checked;
-                Settings.EnableCaptureToFolder = this.chkEnableCaptureToFolder.Checked;
-                Settings.CaptureRoot = this.txtScreenCaptureFolder.Text;
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Terminals.Logging.Log.Error(ex);
-                return false;
-            }
-        }
-
-        private void ButtonBrowseCaptureFolder_Click(object sender, EventArgs e)
-        {
-            using (FolderBrowserDialog dlg = new FolderBrowserDialog())
-            {
-                dlg.Description = "Select the screen capture folder";
-                dlg.RootFolder = Environment.SpecialFolder.MyComputer;
-                String currentFld = this.txtScreenCaptureFolder.Text;
-                if (!currentFld.Equals(String.Empty))
-                    currentFld = (currentFld.EndsWith("\\")) ? currentFld : currentFld + "\\";
-
-                dlg.SelectedPath = (currentFld.Equals(String.Empty)) ?
-                    Environment.GetFolderPath(dlg.RootFolder) : System.IO.Path.GetDirectoryName(currentFld);
-
-                if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    String selectedFld = dlg.SelectedPath;
-                    if (!selectedFld.Equals(String.Empty))
-                        selectedFld = (selectedFld.EndsWith("\\")) ? selectedFld : selectedFld + "\\";
-
-                    this.txtScreenCaptureFolder.Text = selectedFld;
-                    this.txtScreenCaptureFolder.SelectionStart = this.txtScreenCaptureFolder.Text.Length;
-                }
-            }
-        }
-
-        private void chkEnableCaptureToFolder_CheckedChanged(object sender, EventArgs e)
-        {
-            this.chkAutoSwitchToCaptureCheckbox.Enabled = this.chkEnableCaptureToFolder.Checked;
-            this.txtScreenCaptureFolder.Enabled = this.chkEnableCaptureToFolder.Checked;
-            this.ButtonBrowseCaptureFolder.Enabled = this.chkEnableCaptureToFolder.Checked;
-        }
+        private Panel panel1;
+        private GroupBox groupBox8;
+        private CheckBox chkAutoSwitchToCaptureCheckbox;
+        private CheckBox chkEnableCaptureToFolder;
+        private CheckBox chkEnableCaptureToClipboard;
+        private Button ButtonBrowseCaptureFolder;
+        private Label label23;
+        private TextBox txtScreenCaptureFolder;
     }
 }

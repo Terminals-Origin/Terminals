@@ -1,29 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Terminals.Configuration;
+﻿using System.Windows.Forms;
 
 namespace Terminals.Forms
 {
-    internal class DefaultPasswordOptionPanel : OptionDialogCategoryPanel
+    partial class DefaultPasswordOptionPanel
     {
-        private Panel panel1;
-        private GroupBox groupBox2;
-        private Label lblText;
-        private TextBox passwordTextBox;
-        private Label lblPassword;
-        private TextBox usernameTextbox;
-        private Label lblUsername;
-        private TextBox domainTextbox;
-        private Label lblDomain;
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-        public DefaultPasswordOptionPanel()
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
-        #region InitializeComponent
-        
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DefaultPasswordOptionPanel));
@@ -135,31 +139,14 @@ namespace Terminals.Forms
 
         #endregion
 
-        public override void Init()
-        {
-            this.domainTextbox.Text = Settings.DefaultDomain;
-            this.usernameTextbox.Text = Settings.DefaultUsername;
-            this.passwordTextBox.Text = Settings.DefaultPassword;
-        }
-
-        public override bool Save()
-        {
-            try
-            {
-                Settings.DelayConfigurationSave = true;
-
-                Settings.DefaultDomain = this.domainTextbox.Text;
-                Settings.DefaultUsername = this.usernameTextbox.Text;
-                if (!String.IsNullOrEmpty(this.passwordTextBox.Text))
-                    Settings.DefaultPassword = this.passwordTextBox.Text;
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Terminals.Logging.Log.Error(ex);
-                return false;
-            }
-        }
+        private Panel panel1;
+        private GroupBox groupBox2;
+        private Label lblText;
+        private TextBox passwordTextBox;
+        private Label lblPassword;
+        private TextBox usernameTextbox;
+        private Label lblUsername;
+        private TextBox domainTextbox;
+        private Label lblDomain;
     }
 }

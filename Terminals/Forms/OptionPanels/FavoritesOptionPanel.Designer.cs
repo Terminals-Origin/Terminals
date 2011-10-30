@@ -1,30 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Terminals.Configuration;
+﻿using System.Windows.Forms;
 
 namespace Terminals.Forms
 {
-    internal class FavoritesOptionPanel : OptionDialogCategoryPanel
+    partial class FavoritesOptionPanel
     {
-        private Panel panel1;
-        private GroupBox FavSortGroupBox;
-        private RadioButton NoneRadioButton;
-        private RadioButton ProtocolRadionButton;
-        private RadioButton ConnectionNameRadioButton;
-        private RadioButton ServerNameRadio;
-        private GroupBox groupBox11;
-        private CheckBox chkAutoCaseTags;
-        private CheckBox chkAutoExapandTagsPanel;
-        private CheckBox chkEnableFavoritesPanel;
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-        public FavoritesOptionPanel()
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
-        #region InitializeComponent
-        
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
@@ -168,55 +171,15 @@ namespace Terminals.Forms
 
         #endregion
 
-        public override void Init()
-        {
-            this.chkAutoCaseTags.Checked = Settings.AutoCaseTags;
-            this.chkAutoExapandTagsPanel.Checked = Settings.AutoExapandTagsPanel;
-            this.chkEnableFavoritesPanel.Checked = Settings.EnableFavoritesPanel;
-
-            switch (Settings.DefaultSortProperty)
-            {
-                case SortProperties.ServerName:
-                    this.ServerNameRadio.Checked = true;
-                    break;
-                case SortProperties.ConnectionName:
-                    this.ConnectionNameRadioButton.Checked = true;
-                    break;
-                case SortProperties.Protocol:
-                    this.ProtocolRadionButton.Checked = true;
-                    break;
-                case SortProperties.None:
-                    this.NoneRadioButton.Checked = true;
-                    break;
-            }
-        }
-
-        public override Boolean Save()
-        {
-            try
-            {
-                Settings.DelayConfigurationSave = true;
-
-                Settings.AutoCaseTags = this.chkAutoCaseTags.Checked;
-                Settings.AutoExapandTagsPanel = this.chkAutoExapandTagsPanel.Checked;
-                Settings.EnableFavoritesPanel = this.chkEnableFavoritesPanel.Checked;
-
-                if (this.ServerNameRadio.Checked)
-                    Settings.DefaultSortProperty = SortProperties.ServerName;
-                else if (this.NoneRadioButton.Checked)
-                    Settings.DefaultSortProperty = SortProperties.None;
-                else if (this.ConnectionNameRadioButton.Checked)
-                    Settings.DefaultSortProperty = SortProperties.ConnectionName;
-                else
-                    Settings.DefaultSortProperty = SortProperties.Protocol;
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.Error(ex);
-                return false;
-            }
-        }
+        private Panel panel1;
+        private GroupBox FavSortGroupBox;
+        private RadioButton NoneRadioButton;
+        private RadioButton ProtocolRadionButton;
+        private RadioButton ConnectionNameRadioButton;
+        private RadioButton ServerNameRadio;
+        private GroupBox groupBox11;
+        private CheckBox chkAutoCaseTags;
+        private CheckBox chkAutoExapandTagsPanel;
+        private CheckBox chkEnableFavoritesPanel;
     }
 }

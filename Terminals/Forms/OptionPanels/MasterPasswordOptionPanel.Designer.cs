@@ -1,30 +1,35 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Terminals.Configuration;
-using Unified.Encryption.Hash;
 
 namespace Terminals.Forms
 {
-    internal class MasterPasswordOptionpanel : OptionDialogCategoryPanel
+    partial class MasterPasswordOptionPanel
     {
-        private Panel panel1;
-        private GroupBox groupBox3;
-        private Label lblPasswordsMatch;
-        private CheckBox chkPasswordProtectTerminals;
-        private Button ClearMasterButton;
-        private Label lblPassword;
-        private TextBox PasswordTextbox;
-        private Label lblConfirm;
-        private TextBox ConfirmPasswordTextBox;
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-        public MasterPasswordOptionpanel()
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
-        #region InitializeComponent
-        
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             this.panel1 = new Panel();
@@ -146,91 +151,14 @@ namespace Terminals.Forms
 
         #endregion
 
-        public override void Init()
-        {
-            ClearMasterButton.Enabled = false;
-            if (Settings.IsMasterPasswordDefined)
-            {
-                this.chkPasswordProtectTerminals.Checked = true;
-                this.chkPasswordProtectTerminals.Enabled = false;
-                this.PasswordTextbox.Enabled = false;
-                this.ConfirmPasswordTextBox.Enabled = false;
-                this.ClearMasterButton.Enabled = true;
-            }
-        }
-
-        public override Boolean Save()
-        {
-            try
-            {
-                Settings.DelayConfigurationSave = true;
-
-                if (this.chkPasswordProtectTerminals.Checked
-                    && !String.IsNullOrEmpty(this.PasswordTextbox.Text)
-                    && !String.IsNullOrEmpty(this.ConfirmPasswordTextBox.Text)
-                    && this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text))
-                {
-                    Settings.UpdateMasterPassword(this.PasswordTextbox.Text);
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.Error(ex);
-                return false;
-            }
-        }
-
-        private void ClearMasterButton_Click(object sender, EventArgs e)
-        {
-            if (MessageBox.Show("Are you sure you want to remove the master password?\r\n\r\n**Please be advised that this will render ALL saved passwords inactive!**", Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                Settings.UpdateMasterPassword(String.Empty);
-                this.ClearMasterButton.Enabled = false;
-
-                this.chkPasswordProtectTerminals.Checked = false;
-                this.chkPasswordProtectTerminals.Enabled = true;
-                this.PasswordTextbox.Enabled = true;
-                this.ConfirmPasswordTextBox.Enabled = true;
-                this.PasswordTextbox.Text = String.Empty;
-                this.ConfirmPasswordTextBox.Text = String.Empty;
-            }
-        }
-
-        private void chkPasswordProtectTerminals_CheckedChanged(object sender, EventArgs e)
-        {
-            this.PasswordTextbox.Enabled = this.chkPasswordProtectTerminals.Checked;
-            this.ConfirmPasswordTextBox.Enabled = this.chkPasswordProtectTerminals.Checked;
-            this.lblPasswordsMatch.Visible = this.chkPasswordProtectTerminals.Checked;
-            this.lblPasswordsMatch.Text = String.Empty;
-        }
-
-        private void PasswordTextbox_TextChanged(object sender, EventArgs e)
-        {
-            this.CheckPasswords();
-        }
-
-        private void ConfirmPasswordTextBox_TextChanged(object sender, EventArgs e)
-        {
-            this.CheckPasswords();
-        }
-
-        private void CheckPasswords()
-        {
-            if (!this.PasswordTextbox.Text.Equals(String.Empty) && !this.ConfirmPasswordTextBox.Text.Equals(String.Empty))
-            {
-                if (this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text))
-                {
-                    this.lblPasswordsMatch.Text = "Passwords match";
-                    this.lblPasswordsMatch.ForeColor = SystemColors.ControlText;
-                }
-                else
-                {
-                    this.lblPasswordsMatch.Text = "Passwords do not match";
-                    this.lblPasswordsMatch.ForeColor = Color.Red;
-                }
-            }
-        }
+        private Panel panel1;
+        private GroupBox groupBox3;
+        private Label lblPasswordsMatch;
+        private CheckBox chkPasswordProtectTerminals;
+        private Button ClearMasterButton;
+        private Label lblPassword;
+        private TextBox PasswordTextbox;
+        private Label lblConfirm;
+        private TextBox ConfirmPasswordTextBox;
     }
 }

@@ -1,30 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using Terminals.Configuration;
 
 namespace Terminals.Forms
 {
-    internal class ConnectCommandOptionPanel : OptionDialogCategoryPanel
+    partial class ConnectCommandOptionPanel
     {
-        private Panel panel1;
-        private GroupBox groupBox5;
-        private TextBox txtInitialDirectory;
-        private TextBox txtArguments;
-        private TextBox txtCommand;
-        private Label lblInitialDirectory;
-        private CheckBox chkExecuteBeforeConnect;
-        private Label lblArguments;
-        private CheckBox chkWaitForExit;
-        private Label lblCommand;
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-        public ConnectCommandOptionPanel()
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
-        #region InitializeComponent
+        #region Component Designer generated code
 
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
@@ -148,47 +152,15 @@ namespace Terminals.Forms
 
         #endregion
 
-        public override void Init()
-        {
-            this.chkExecuteBeforeConnect.Checked = Settings.ExecuteBeforeConnect;
-            this.txtCommand.Text = Settings.ExecuteBeforeConnectCommand;
-            this.txtArguments.Text = Settings.ExecuteBeforeConnectArgs;
-            this.txtInitialDirectory.Text = Settings.ExecuteBeforeConnectInitialDirectory;
-            this.chkWaitForExit.Checked = Settings.ExecuteBeforeConnectWaitForExit;
-            this.txtCommand.Enabled = this.chkExecuteBeforeConnect.Checked;
-            this.txtArguments.Enabled = this.chkExecuteBeforeConnect.Checked;
-            this.txtInitialDirectory.Enabled = this.chkExecuteBeforeConnect.Checked;
-            this.chkWaitForExit.Enabled = this.chkExecuteBeforeConnect.Checked;
-        }
-
-        public override Boolean Save()
-        {
-            try
-            {
-                Settings.DelayConfigurationSave = true;
-
-                Settings.ExecuteBeforeConnect = this.chkExecuteBeforeConnect.Checked;
-                Settings.ExecuteBeforeConnectCommand = this.txtCommand.Text;
-                Settings.ExecuteBeforeConnectArgs = this.txtArguments.Text;
-                Settings.ExecuteBeforeConnectInitialDirectory = this.txtInitialDirectory.Text;
-                Settings.ExecuteBeforeConnectWaitForExit = this.chkWaitForExit.Checked;
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Terminals.Logging.Log.Error(ex);
-                return false;
-            }
-        }
-
-        private void chkExecuteBeforeConnect_CheckedChanged(object sender, EventArgs e)
-        {
-            Boolean enabled = this.chkExecuteBeforeConnect.Checked;
-            this.txtCommand.Enabled = enabled;
-            this.txtArguments.Enabled = enabled;
-            this.txtInitialDirectory.Enabled = enabled;
-            this.chkWaitForExit.Enabled = enabled;
-        }
+        private Panel panel1;
+        private GroupBox groupBox5;
+        private TextBox txtInitialDirectory;
+        private TextBox txtArguments;
+        private TextBox txtCommand;
+        private Label lblInitialDirectory;
+        private CheckBox chkExecuteBeforeConnect;
+        private Label lblArguments;
+        private CheckBox chkWaitForExit;
+        private Label lblCommand;
     }
 }

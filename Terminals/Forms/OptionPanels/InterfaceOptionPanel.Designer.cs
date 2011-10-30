@@ -1,33 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using Terminals.Configuration;
 
 namespace Terminals.Forms
 {
-    internal class InterfaceOptionPanel : OptionDialogCategoryPanel
+    partial class InterfaceOptionPanel
     {
-        private Panel panel1;
-        private GroupBox groupBox10;
-        private CheckBox chkEnableGroupsMenu;
-        private GroupBox groupBox1;
-        private RadioButton RenderBlackRadio;
-        private RadioButton RenderBlueRadio;
-        private RadioButton RenderNormalRadio;
-        private GroupBox groupBox7;
-        private CheckBox chkMinimizeToTrayCheckbox;
-        private GroupBox groupBoxInformation;
-        private CheckBox chkShowUserNameInTitle;
-        private CheckBox chkShowInformationToolTips;
-        private CheckBox chkShowFullInfo;
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-        public InterfaceOptionPanel()
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
-        #region InitializeComponent
-        
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
@@ -217,58 +218,18 @@ namespace Terminals.Forms
 
         #endregion
 
-        public override void Init()
-        {
-            this.chkEnableGroupsMenu.Checked = Settings.EnableGroupsMenu;
-            this.chkMinimizeToTrayCheckbox.Checked = Settings.MinimizeToTray;
-            this.chkShowUserNameInTitle.Checked = Settings.ShowUserNameInTitle;
-            this.chkShowInformationToolTips.Checked = Settings.ShowInformationToolTips;
-            this.chkShowFullInfo.Checked = Settings.ShowFullInformationToolTips;
-
-            if (Settings.Office2007BlueFeel)
-                this.RenderBlueRadio.Checked = true;
-            else if (Settings.Office2007BlackFeel)
-                this.RenderBlackRadio.Checked = true;
-            else
-                this.RenderNormalRadio.Checked = true;
-        }
-
-        public override Boolean Save()
-        {
-            try
-            {
-                Settings.DelayConfigurationSave = true;
-
-                Settings.EnableGroupsMenu = this.chkEnableGroupsMenu.Checked;
-                Settings.MinimizeToTray = this.chkMinimizeToTrayCheckbox.Checked;
-                Settings.ShowUserNameInTitle = this.chkShowUserNameInTitle.Checked;
-                Settings.ShowInformationToolTips = this.chkShowInformationToolTips.Checked;
-                Settings.ShowFullInformationToolTips = this.chkShowFullInfo.Checked;
-
-                Settings.Office2007BlackFeel = false;
-                Settings.Office2007BlueFeel = false;
-
-                if (this.RenderBlueRadio.Checked)
-                    Settings.Office2007BlueFeel = true;
-                else if (this.RenderBlackRadio.Checked)
-                    Settings.Office2007BlackFeel = true;
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Terminals.Logging.Log.Error(ex);
-                return false;
-            }
-        }
-
-        private void chkShowInformationToolTips_CheckedChanged(object sender, EventArgs e)
-        {
-            this.chkShowFullInfo.Enabled = this.chkShowInformationToolTips.Checked;
-            if (!this.chkShowInformationToolTips.Checked)
-            {
-                this.chkShowFullInfo.Checked = false;
-            }
-        }
+        private Panel panel1;
+        private GroupBox groupBox10;
+        private CheckBox chkEnableGroupsMenu;
+        private GroupBox groupBox1;
+        private RadioButton RenderBlackRadio;
+        private RadioButton RenderBlueRadio;
+        private RadioButton RenderNormalRadio;
+        private GroupBox groupBox7;
+        private CheckBox chkMinimizeToTrayCheckbox;
+        private GroupBox groupBoxInformation;
+        private CheckBox chkShowUserNameInTitle;
+        private CheckBox chkShowInformationToolTips;
+        private CheckBox chkShowFullInfo;
     }
 }

@@ -1,38 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using AxMSTSCLib;
-using Terminals.Configuration;
 
 namespace Terminals.Forms
 {
-    internal class ConnectionsOptionPanel : OptionDialogCategoryPanel
+    partial class ConnectionsOptionPanel
     {
-        private Panel panel1;
-        private GroupBox groupBox12;
-        private Label EvaluatedDesktopShareLabel;
-        private TextBox PortscanTimeoutTextBox;
-        private Label lblDefaultDesktopShare;
-        private TextBox txtDefaultDesktopShare;
-        private Label lblEvaluatedDesktopShare;
-        private Label lblSeconds;
-        private Label lblPortScannerTimeout;
-        private GroupBox groupBoxConnections;
-        private CheckBox validateServerNamesCheckbox;
-        private CheckBox warnDisconnectCheckBox;
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-        private AxMsRdpClient6 currentTerminal;
-        private Int32 timeout = 5;
-
-        public ConnectionsOptionPanel(AxMsRdpClient6 terminal)
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
-
-            this.currentTerminal = terminal;
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
-        #region InitializeComponent
-        
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
@@ -188,54 +184,17 @@ namespace Terminals.Forms
 
         #endregion
 
-        public override void Init()
-        {
-            this.validateServerNamesCheckbox.Checked = Settings.ForceComputerNamesAsURI;
-            this.warnDisconnectCheckBox.Checked = Settings.WarnOnConnectionClose;
-            this.txtDefaultDesktopShare.Text = Settings.DefaultDesktopShare;
-            this.PortscanTimeoutTextBox.Text = Settings.PortScanTimeoutSeconds.ToString();
-        }
-
-        public override Boolean Save()
-        {
-            try
-            {
-                Settings.DelayConfigurationSave = true;
-
-                Settings.ForceComputerNamesAsURI = this.validateServerNamesCheckbox.Checked;
-                Settings.WarnOnConnectionClose = this.warnDisconnectCheckBox.Checked;
-                Settings.DefaultDesktopShare = this.txtDefaultDesktopShare.Text;
-
-                Int32.TryParse(this.PortscanTimeoutTextBox.Text, out timeout);
-                if (Settings.PortScanTimeoutSeconds <= 0 || Settings.PortScanTimeoutSeconds >= 60)
-                    timeout = 5;
-                Settings.PortScanTimeoutSeconds = timeout;
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Terminals.Logging.Log.Error(ex);
-                return false;
-            }
-        }
-
-        private void txtDefaultDesktopShare_TextChanged(object sender, EventArgs e)
-        {
-            this.EvaluateDesktopShare();
-        }
-
-        private void EvaluateDesktopShare()
-        {
-            if (this.currentTerminal != null)
-            {
-                this.EvaluatedDesktopShareLabel.Text =
-                    this.txtDefaultDesktopShare.Text.Replace("%SERVER%", this.currentTerminal.Server).Replace("%USER%", this.currentTerminal.UserName);
-            }
-            else
-            {
-                this.EvaluatedDesktopShareLabel.Text = String.Empty;
-            }
-        }
+        private Panel panel1;
+        private GroupBox groupBox12;
+        private Label EvaluatedDesktopShareLabel;
+        private TextBox PortscanTimeoutTextBox;
+        private Label lblDefaultDesktopShare;
+        private TextBox txtDefaultDesktopShare;
+        private Label lblEvaluatedDesktopShare;
+        private Label lblSeconds;
+        private Label lblPortScannerTimeout;
+        private GroupBox groupBoxConnections;
+        private CheckBox validateServerNamesCheckbox;
+        private CheckBox warnDisconnectCheckBox;
     }
 }

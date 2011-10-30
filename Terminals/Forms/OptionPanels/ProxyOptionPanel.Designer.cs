@@ -1,28 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Terminals.Configuration;
+﻿using System.Windows.Forms;
 
 namespace Terminals.Forms
 {
-    internal class ProxyOptionPanel : OptionDialogCategoryPanel
+    partial class ProxyOptionPanel
     {
-        private Panel panel1;
-        private GroupBox groupBox6;
-        private Label lblport;
-        private TextBox ProxyPortTextbox;
-        private TextBox ProxyAddressTextbox;
-        private Label lblAddress;
-        private RadioButton AutoProxyRadioButton;
-        private RadioButton ProxyRadionButton;
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-        public ProxyOptionPanel()
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
-        #region InitializeComponent
-        
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
@@ -60,11 +65,11 @@ namespace Terminals.Forms
             this.groupBox6.TabIndex = 5;
             this.groupBox6.TabStop = false;
             // 
-            // lblPort
+            // lblport
             // 
             this.lblport.AutoSize = true;
             this.lblport.Location = new System.Drawing.Point(258, 70);
-            this.lblport.Name = "label15";
+            this.lblport.Name = "lblport";
             this.lblport.Size = new System.Drawing.Size(29, 13);
             this.lblport.TabIndex = 9;
             this.lblport.Text = "Port:";
@@ -88,7 +93,7 @@ namespace Terminals.Forms
             // 
             this.lblAddress.AutoSize = true;
             this.lblAddress.Location = new System.Drawing.Point(3, 70);
-            this.lblAddress.Name = "label14";
+            this.lblAddress.Name = "lblAddress";
             this.lblAddress.Size = new System.Drawing.Size(48, 13);
             this.lblAddress.TabIndex = 6;
             this.lblAddress.Text = "Address:";
@@ -114,6 +119,7 @@ namespace Terminals.Forms
             this.ProxyRadionButton.TabStop = true;
             this.ProxyRadionButton.Text = "Use the following Proxy Server:";
             this.ProxyRadionButton.UseVisualStyleBackColor = true;
+            this.ProxyRadionButton.CheckedChanged += new System.EventHandler(this.ProxyRadioButton_CheckedChanged);
             // 
             // ProxyOptionPanel
             // 
@@ -124,37 +130,18 @@ namespace Terminals.Forms
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion
 
-        public override void Init()
-        {
-            this.AutoProxyRadioButton.Checked = !Settings.UseProxy;
-            this.ProxyRadionButton.Checked = Settings.UseProxy;
-            this.ProxyAddressTextbox.Text = Settings.ProxyAddress;
-            this.ProxyPortTextbox.Text = (Settings.ProxyPort.ToString().Equals("0")) ? "80" : Settings.ProxyPort.ToString();
-            this.ProxyAddressTextbox.Enabled = Settings.UseProxy;
-            this.ProxyPortTextbox.Enabled = Settings.UseProxy;
-        }
-
-        public override bool Save()
-        {
-            try
-            {
-                Settings.DelayConfigurationSave = true;
-
-                Settings.UseProxy = this.ProxyRadionButton.Checked;
-                Settings.ProxyAddress = this.ProxyAddressTextbox.Text;
-                Settings.ProxyPort = Convert.ToInt32(this.ProxyPortTextbox.Text);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.Error(ex);
-                return false;
-            }
-        }
+        private Panel panel1;
+        private GroupBox groupBox6;
+        private Label lblport;
+        private TextBox ProxyPortTextbox;
+        private TextBox ProxyAddressTextbox;
+        private Label lblAddress;
+        private RadioButton AutoProxyRadioButton;
+        private RadioButton ProxyRadionButton;
     }
 }

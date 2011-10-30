@@ -1,25 +1,28 @@
-﻿using System;
-using System.Windows.Forms;
-using Terminals.Configuration;
+﻿using System.Windows.Forms;
 
 namespace Terminals.Forms
 {
-    internal class StartShutdownOptionPanel : OptionDialogCategoryPanel
+    partial class StartShutdownOptionPanel
     {
-        private Panel panel1;
-        private GroupBox groupBoxShutdown;
-        private CheckBox chkSaveConnections;
-        private CheckBox chkShowConfirmDialog;
-        private GroupBox groupBoxStartup;
-        private CheckBox chkNeverShowTerminalsCheckbox;
-        private CheckBox chkSingleInstance;
+        /// <summary> 
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-        public StartShutdownOptionPanel()
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            InitializeComponent();
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
         }
 
-        #region InitializeComponent
+        #region Component Designer generated code
 
         /// <summary> 
         /// Required method for Designer support - do not modify 
@@ -134,31 +137,12 @@ namespace Terminals.Forms
 
         #endregion
 
-        public override void Init()
-        {
-            this.chkSingleInstance.Checked = Settings.SingleInstance;
-            this.chkNeverShowTerminalsCheckbox.Checked = Settings.NeverShowTerminalsWindow;
-            this.chkShowConfirmDialog.Checked = Settings.ShowConfirmDialog;
-            this.chkSaveConnections.Checked = Settings.SaveConnectionsOnClose;
-        }
-
-        public override Boolean Save()
-        {
-            try
-            {
-                Settings.DelayConfigurationSave = true;
-                Settings.SingleInstance = this.chkSingleInstance.Checked;
-                Settings.NeverShowTerminalsWindow = this.chkNeverShowTerminalsCheckbox.Checked;
-                Settings.ShowConfirmDialog = this.chkShowConfirmDialog.Checked;
-                Settings.SaveConnectionsOnClose = this.chkSaveConnections.Checked;
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.Error(ex);
-                return false;
-            }
-        }
+        private Panel panel1;
+        private GroupBox groupBoxShutdown;
+        private CheckBox chkSaveConnections;
+        private CheckBox chkShowConfirmDialog;
+        private GroupBox groupBoxStartup;
+        private CheckBox chkNeverShowTerminalsCheckbox;
+        private CheckBox chkSingleInstance;
     }
 }
