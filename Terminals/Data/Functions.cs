@@ -11,76 +11,96 @@ namespace Terminals
         private static int keyLength = 24;
         private static int ivLength = 16;
         private static EncryptionAlgorithm EncryptionAlgorithm = EncryptionAlgorithm.Rijndael;
-        
+
         internal static string DecryptPassword(string encryptedPassword)
         {
-            if (String.IsNullOrEmpty(encryptedPassword))
-                return encryptedPassword;
+           return DecryptPassword(encryptedPassword, Settings.KeyMaterial);
+        }
+
+        internal static string DecryptPassword(string encryptedPassword, string keyMaterial)
+        {
             try
             {
-                if (Settings.KeyMaterial == string.Empty)
-                {
-                    byte[] cyphertext = Convert.FromBase64String(encryptedPassword);
-                    byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
-                    byte[] plaintext = ProtectedData.Unprotect(cyphertext, b_entropy, DataProtectionScope.CurrentUser);
-                    return Encoding.UTF8.GetString(plaintext);
-                }
-                else
-                {
-                    string hashedPass = Settings.KeyMaterial.Substring(0, keyLength);
-                    byte[] IV = Encoding.Default.GetBytes(Settings.KeyMaterial.Substring(Settings.KeyMaterial.Length - ivLength));
-                    //string hashedPass = Settings.KeyMaterial.Substring(0, keyLength);
-                    string password = "";
-                    //System.Text.Encoding.Default.GetString(System.Convert.FromBase64String(encryptedPassword))
-                    Decryptor dec = new Decryptor(EncryptionAlgorithm);
-                    dec.IV = IV;
-                    byte[] data = dec.Decrypt(Convert.FromBase64String(encryptedPassword), Encoding.Default.GetBytes(hashedPass));
-                    if (data != null && data.Length > 0)
-                    {
-                        password = Encoding.Default.GetString(data);
-                    }
-                    return password;
-                }
+                if (String.IsNullOrEmpty(encryptedPassword))
+                    return encryptedPassword;
+
+                if (keyMaterial == string.Empty)
+                    return DecryptByEmptyKey(encryptedPassword);
+
+                return DecryptByKey(encryptedPassword, keyMaterial);
             }
             catch (Exception e)
             {
                 Logging.Log.Error("Error Decrypting Password", e);
-                return "";
+                return string.Empty;
             }
         }
-        
+
+        private static string DecryptByKey(string encryptedPassword, string keyMaterial)
+        {
+            string hashedPass = keyMaterial.Substring(0, keyLength);
+            byte[] IV = Encoding.Default.GetBytes(keyMaterial.Substring(keyMaterial.Length - ivLength));
+            string password = "";
+            Decryptor dec = new Decryptor(EncryptionAlgorithm);
+            dec.IV = IV;
+            byte[] data = dec.Decrypt(Convert.FromBase64String(encryptedPassword), Encoding.Default.GetBytes(hashedPass));
+            if (data != null && data.Length > 0)
+            {
+                password = Encoding.Default.GetString(data);
+            }
+            return password;
+        }
+
+        private static string DecryptByEmptyKey(string encryptedPassword)
+        {
+            byte[] cyphertext = Convert.FromBase64String(encryptedPassword);
+            byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
+            byte[] plaintext = ProtectedData.Unprotect(cyphertext, b_entropy, DataProtectionScope.CurrentUser);
+            return Encoding.UTF8.GetString(plaintext);
+        }
+
         internal static string EncryptPassword(string decryptedPassword)
         {
-            if (Settings.KeyMaterial == string.Empty)
-            {
-                byte[] plaintext = Encoding.UTF8.GetBytes(decryptedPassword);
-                byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
-                byte[] cyphertext = ProtectedData.Protect(plaintext, b_entropy, DataProtectionScope.CurrentUser);
-                return Convert.ToBase64String(cyphertext);
-            }
-            else
-            {
-                string password = "";
-                try
-                {
-                    string hashedPass = Settings.KeyMaterial.Substring(0, keyLength);
-                    byte[] IV = Encoding.Default.GetBytes(Settings.KeyMaterial.Substring(Settings.KeyMaterial.Length - ivLength));
-                    Encryptor enc = new Encryptor(EncryptionAlgorithm);
-                    enc.IV = IV;
-                    byte[] data = enc.Encrypt(Encoding.Default.GetBytes(decryptedPassword), Encoding.Default.GetBytes(hashedPass));
-                    if (data != null && data.Length > 0)
-                    {
-                        password = Convert.ToBase64String(data);
-                        //password = System.Text.Encoding.Default.GetString(data);
-                    }
-                }
-                catch (Exception ec)
-                {
-                    Logging.Log.Error("Error Encrypting Password", ec);
-                }
+            return EncryptPassword(decryptedPassword, Settings.KeyMaterial);
+        }
 
-                return password;
+        internal static string EncryptPassword(string decryptedPassword, string keyMaterial)
+        {
+            try
+            {
+                if (keyMaterial == string.Empty)
+                    return EncryptByEmptyKey(decryptedPassword);
+
+                return EncryptByKey(decryptedPassword, keyMaterial);
             }
+            catch (Exception ec)
+            {
+                Logging.Log.Error("Error Encrypting Password", ec);
+                return string.Empty;
+            }
+        }
+
+        private static string EncryptByKey(string decryptedPassword, string keyMaterial)
+        {
+            string hashedPass = keyMaterial.Substring(0, keyLength);
+            byte[] IV = Encoding.Default.GetBytes(keyMaterial.Substring(keyMaterial.Length - ivLength));
+            Encryptor enc = new Encryptor(EncryptionAlgorithm);
+            enc.IV = IV;
+            byte[] data = enc.Encrypt(Encoding.Default.GetBytes(decryptedPassword), Encoding.Default.GetBytes(hashedPass));
+            if (data != null && data.Length > 0)
+            {
+                return Convert.ToBase64String(data);
+            }
+
+            return string.Empty;
+        }
+
+        private static string EncryptByEmptyKey(string decryptedPassword)
+        {
+            byte[] plaintext = Encoding.UTF8.GetBytes(decryptedPassword);
+            byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
+            byte[] cyphertext = ProtectedData.Protect(plaintext, b_entropy, DataProtectionScope.CurrentUser);
+            return Convert.ToBase64String(cyphertext);
         }
 
         internal static string UserDisplayName(string domain, string user)

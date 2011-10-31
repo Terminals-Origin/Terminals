@@ -2,15 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
+using Unified.Encryption.Hash;
 
 namespace Terminals
 {
 
     public class TerminalsConfigurationSection : ConfigurationSection
     {
-        public TerminalsConfigurationSection()
-        {
+        public TerminalsConfigurationSection() { }
 
+        internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
+        {
+            EncryptedDefaultPassword = Functions.EncryptPassword(DefaultPassword, newKeyMaterial);
+            EncryptedAmazonAccessKey = Functions.EncryptPassword(AmazonAccessKey, newKeyMaterial);
+            EncryptedAmazonSecretKey = Functions.EncryptPassword(AmazonSecretKey, newKeyMaterial);
         }
 
         #region Terminals Version
@@ -297,12 +302,10 @@ namespace Terminals
             }
             set
             {
-                this["terminalsPassword"] = "";
-                //hash the password
-                if (value != string.Empty)
-                {
-                    this["terminalsPassword"] = Unified.Encryption.Hash.Hash.GetHash(value, Unified.Encryption.Hash.Hash.HashType.SHA512);
-                }
+                if (string.IsNullOrEmpty(value))
+                    this["terminalsPassword"] = string.Empty;
+                else  //hash the password
+                    this["terminalsPassword"] = Hash.GetHash(value, Hash.HashType.SHA512);
             }
         }
 
@@ -345,7 +348,7 @@ namespace Terminals
             }
         }
 
-        public string DefaultPassword
+        internal string DefaultPassword
         {
             get
             {
@@ -383,7 +386,7 @@ namespace Terminals
             }
         }
 
-        public string AmazonAccessKey
+        internal string AmazonAccessKey
         {
             get
             {
@@ -408,7 +411,7 @@ namespace Terminals
             }
         }
 
-        public string AmazonSecretKey
+        internal string AmazonSecretKey
         {
             get
             {

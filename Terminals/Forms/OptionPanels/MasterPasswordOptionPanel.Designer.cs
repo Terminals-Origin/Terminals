@@ -32,15 +32,14 @@ namespace Terminals.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new Panel();
-            this.groupBox3 = new GroupBox();
-            this.lblPasswordsMatch = new Label();
-            this.chkPasswordProtectTerminals = new CheckBox();
-            this.ClearMasterButton = new Button();
-            this.lblPassword = new Label();
-            this.PasswordTextbox = new TextBox();
-            this.lblConfirm = new Label();
-            this.ConfirmPasswordTextBox = new TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.lblPasswordsMatch = new System.Windows.Forms.Label();
+            this.chkPasswordProtectTerminals = new System.Windows.Forms.CheckBox();
+            this.lblPassword = new System.Windows.Forms.Label();
+            this.PasswordTextbox = new System.Windows.Forms.TextBox();
+            this.lblConfirm = new System.Windows.Forms.Label();
+            this.ConfirmPasswordTextBox = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
@@ -48,105 +47,95 @@ namespace Terminals.Forms
             // panel1
             // 
             this.panel1.Controls.Add(this.groupBox3);
-            this.panel1.Dock = DockStyle.Fill;
-            this.panel1.Location = new Point(0, 0);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new Size(511, 332);
+            this.panel1.Size = new System.Drawing.Size(511, 332);
             this.panel1.TabIndex = 2;
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.lblPasswordsMatch);
             this.groupBox3.Controls.Add(this.chkPasswordProtectTerminals);
-            this.groupBox3.Controls.Add(this.ClearMasterButton);
             this.groupBox3.Controls.Add(this.lblPassword);
             this.groupBox3.Controls.Add(this.PasswordTextbox);
             this.groupBox3.Controls.Add(this.lblConfirm);
             this.groupBox3.Controls.Add(this.ConfirmPasswordTextBox);
-            this.groupBox3.Location = new Point(6, 3);
+            this.groupBox3.Location = new System.Drawing.Point(6, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new Size(500, 133);
+            this.groupBox3.Size = new System.Drawing.Size(500, 112);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             // 
-            // PasswordsMatchLabel
+            // lblPasswordsMatch
             // 
             this.lblPasswordsMatch.AutoSize = true;
-            this.lblPasswordsMatch.ForeColor = SystemColors.ControlText;
-            this.lblPasswordsMatch.Location = new Point(223, 73);
-            this.lblPasswordsMatch.Name = "PasswordsMatchLabel";
-            this.lblPasswordsMatch.Size = new Size(115, 13);
+            this.lblPasswordsMatch.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblPasswordsMatch.Location = new System.Drawing.Point(230, 73);
+            this.lblPasswordsMatch.Name = "lblPasswordsMatch";
+            this.lblPasswordsMatch.Size = new System.Drawing.Size(115, 13);
             this.lblPasswordsMatch.TabIndex = 6;
             this.lblPasswordsMatch.Text = "Password Match Label";
             // 
-            // PasswordProtectTerminalsCheckbox
+            // chkPasswordProtectTerminals
             // 
             this.chkPasswordProtectTerminals.AutoSize = true;
-            this.chkPasswordProtectTerminals.Location = new Point(6, 20);
-            this.chkPasswordProtectTerminals.Name = "PasswordProtectTerminalsCheckbox";
-            this.chkPasswordProtectTerminals.Size = new Size(109, 17);
+            this.chkPasswordProtectTerminals.Location = new System.Drawing.Point(13, 20);
+            this.chkPasswordProtectTerminals.Name = "chkPasswordProtectTerminals";
+            this.chkPasswordProtectTerminals.Size = new System.Drawing.Size(109, 17);
             this.chkPasswordProtectTerminals.TabIndex = 0;
             this.chkPasswordProtectTerminals.Text = "Password Protect";
             this.chkPasswordProtectTerminals.UseVisualStyleBackColor = true;
-            this.chkPasswordProtectTerminals.CheckedChanged += new EventHandler(chkPasswordProtectTerminals_CheckedChanged);
+            this.chkPasswordProtectTerminals.CheckedChanged += new System.EventHandler(this.chkPasswordProtectTerminals_CheckedChanged);
             // 
-            // ClearMasterButton
-            // 
-            this.ClearMasterButton.Location = new Point(79, 101);
-            this.ClearMasterButton.Name = "ClearMasterButton";
-            this.ClearMasterButton.Size = new Size(138, 23);
-            this.ClearMasterButton.TabIndex = 6;
-            this.ClearMasterButton.Text = "Clear Master Password";
-            this.ClearMasterButton.UseVisualStyleBackColor = true;
-            this.ClearMasterButton.Click += new EventHandler(ClearMasterButton_Click);
-            // 
-            // label6
+            // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new Point(6, 45);
-            this.lblPassword.Name = "label6";
-            this.lblPassword.Size = new Size(56, 13);
+            this.lblPassword.Location = new System.Drawing.Point(13, 45);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(56, 13);
             this.lblPassword.TabIndex = 3;
             this.lblPassword.Text = "Password:";
             // 
             // PasswordTextbox
             // 
             this.PasswordTextbox.Enabled = false;
-            this.PasswordTextbox.Location = new Point(70, 42);
+            this.PasswordTextbox.Location = new System.Drawing.Point(77, 42);
             this.PasswordTextbox.Name = "PasswordTextbox";
             this.PasswordTextbox.PasswordChar = '*';
-            this.PasswordTextbox.Size = new Size(147, 20);
+            this.PasswordTextbox.Size = new System.Drawing.Size(147, 20);
             this.PasswordTextbox.TabIndex = 1;
-            this.PasswordTextbox.TextChanged += new EventHandler(PasswordTextbox_TextChanged);
+            this.PasswordTextbox.TextChanged += new System.EventHandler(this.PasswordTextbox_TextChanged);
             // 
-            // label7
+            // lblConfirm
             // 
             this.lblConfirm.AutoSize = true;
-            this.lblConfirm.Location = new Point(6, 73);
-            this.lblConfirm.Name = "label7";
-            this.lblConfirm.Size = new Size(45, 13);
+            this.lblConfirm.Location = new System.Drawing.Point(13, 73);
+            this.lblConfirm.Name = "lblConfirm";
+            this.lblConfirm.Size = new System.Drawing.Size(45, 13);
             this.lblConfirm.TabIndex = 4;
             this.lblConfirm.Text = "Confirm:";
             // 
             // ConfirmPasswordTextBox
             // 
             this.ConfirmPasswordTextBox.Enabled = false;
-            this.ConfirmPasswordTextBox.Location = new Point(70, 70);
+            this.ConfirmPasswordTextBox.Location = new System.Drawing.Point(77, 70);
             this.ConfirmPasswordTextBox.Name = "ConfirmPasswordTextBox";
             this.ConfirmPasswordTextBox.PasswordChar = '*';
-            this.ConfirmPasswordTextBox.Size = new Size(147, 20);
+            this.ConfirmPasswordTextBox.Size = new System.Drawing.Size(147, 20);
             this.ConfirmPasswordTextBox.TabIndex = 2;
-            this.ConfirmPasswordTextBox.TextChanged += new EventHandler(ConfirmPasswordTextBox_TextChanged);
+            this.ConfirmPasswordTextBox.TextChanged += new System.EventHandler(this.ConfirmPasswordTextBox_TextChanged);
             // 
-            // MasterPasswordOptionpanel
+            // MasterPasswordOptionPanel
             // 
             this.Controls.Add(this.panel1);
-            this.Name = "MasterPasswordOptionpanel";
-            this.Size = new Size(511, 332);
+            this.Name = "MasterPasswordOptionPanel";
+            this.Size = new System.Drawing.Size(511, 332);
             this.panel1.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion
@@ -155,7 +144,6 @@ namespace Terminals.Forms
         private GroupBox groupBox3;
         private Label lblPasswordsMatch;
         private CheckBox chkPasswordProtectTerminals;
-        private Button ClearMasterButton;
         private Label lblPassword;
         private TextBox PasswordTextbox;
         private Label lblConfirm;

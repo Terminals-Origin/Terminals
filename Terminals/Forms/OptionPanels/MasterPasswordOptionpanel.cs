@@ -10,46 +10,58 @@ namespace Terminals.Forms
         public MasterPasswordOptionPanel()
         {
             InitializeComponent();
+
+            this.lblPasswordsMatch.Text = string.Empty;
         }
 
         public void LoadSettings()
         {
-            this.ClearMasterButton.Enabled = false;
-            if (Settings.IsMasterPasswordDefined)
+            this.chkPasswordProtectTerminals.Checked = Settings.IsMasterPasswordDefined;
+            this.PasswordTextbox.Enabled = Settings.IsMasterPasswordDefined;
+            this.ConfirmPasswordTextBox.Enabled = Settings.IsMasterPasswordDefined;
+            this.FillTextBoxesByMasterPassword(Settings.IsMasterPasswordDefined);
+        }
+
+        private void FillTextBoxesByMasterPassword(bool isMasterPasswordDefined)
+        {
+            if (isMasterPasswordDefined)
             {
-                this.chkPasswordProtectTerminals.Checked = true;
-                this.chkPasswordProtectTerminals.Enabled = false;
-                this.PasswordTextbox.Enabled = false;
-                this.ConfirmPasswordTextBox.Enabled = false;
-                this.ClearMasterButton.Enabled = true;
+                this.PasswordTextbox.Text = NewTerminalForm.HIDDEN_PASSWORD;
+                this.ConfirmPasswordTextBox.Text = this.PasswordTextbox.Text;
+            }
+            else
+            {
+               this.PasswordTextbox.Text = String.Empty;
+               this.ConfirmPasswordTextBox.Text = String.Empty;
             }
         }
 
         public void SaveSettings()
         {
-            if (this.chkPasswordProtectTerminals.Checked &&
-                !String.IsNullOrEmpty(this.PasswordTextbox.Text) &&
-                !String.IsNullOrEmpty(this.ConfirmPasswordTextBox.Text) &&
-                this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text))
+            if (!this.chkPasswordProtectTerminals.Checked && Settings.IsMasterPasswordDefined)
             {
-                Settings.UpdateMasterPassword(this.PasswordTextbox.Text);
+                Settings.UpdateMasterPassword(string.Empty);
+            }
+            else
+            {
+                if (this.PasswordsMatch && this.PasswordTextbox.Text != NewTerminalForm.HIDDEN_PASSWORD)
+                {
+                    Settings.UpdateMasterPassword(this.PasswordTextbox.Text);
+                }
             }
         }
 
-        private void ClearMasterButton_Click(object sender, EventArgs e)
+        private bool PasswordsMatch
         {
-            if (MessageBox.Show("Are you sure you want to remove the master password?\r\n\r\n**Please be advised that this will render ALL saved passwords inactive!**",
-                Program.Resources.GetString("Confirmation"), MessageBoxButtons.OKCancel) == DialogResult.OK)
-            {
-                Settings.UpdateMasterPassword(String.Empty);
-                this.ClearMasterButton.Enabled = false;
+            get { return this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text); }
+        }
 
-                this.chkPasswordProtectTerminals.Checked = false;
-                this.chkPasswordProtectTerminals.Enabled = true;
-                this.PasswordTextbox.Enabled = true;
-                this.ConfirmPasswordTextBox.Enabled = true;
-                this.PasswordTextbox.Text = String.Empty;
-                this.ConfirmPasswordTextBox.Text = String.Empty;
+        private bool PasswordsAreEntered
+        {
+            get
+            {
+                return !String.IsNullOrEmpty(this.PasswordTextbox.Text) &&
+                       !String.IsNullOrEmpty(this.ConfirmPasswordTextBox.Text);
             }
         }
 
@@ -73,9 +85,9 @@ namespace Terminals.Forms
 
         private void CheckPasswords()
         {
-            if (!this.PasswordTextbox.Text.Equals(String.Empty) && !this.ConfirmPasswordTextBox.Text.Equals(String.Empty))
+            if (this.PasswordsAreEntered)
             {
-                if (this.PasswordTextbox.Text.Equals(this.ConfirmPasswordTextBox.Text))
+                if (this.PasswordsMatch)
                 {
                     this.lblPasswordsMatch.Text = "Passwords match";
                     this.lblPasswordsMatch.ForeColor = SystemColors.ControlText;

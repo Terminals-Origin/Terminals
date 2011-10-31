@@ -168,7 +168,7 @@ namespace Terminals.Forms
         {
             foreach (IOptionPanel optionPanel in FindOptionPanels())
             {
-                optionPanel.LoadSettings();
+                optionPanel.SaveSettings();
             }
         }
 

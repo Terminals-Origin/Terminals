@@ -395,9 +395,37 @@ namespace Terminals.Configuration
         internal static void UpdateMasterPassword(string newPassword)
         {
             SysConfig.Configuration configuration = Config;
-            GetSection(configuration).TerminalsPassword = newPassword;
+            TerminalsConfigurationSection configSection = GetSection(configuration);
+            
+            UpdateAllFavoritesPasswords(configSection, newPassword);
+            // start of not secured transaction. Old key is still present,
+            // but passwords are already encrypted by newKey
+            configSection.TerminalsPassword = newPassword;
             SaveImmediatelyIfRequested(configuration);
-            UpdateKeyMaterial(newPassword);
+
+            // finish transaction, the passwords now reflect the new key
+            UpdateKeyMaterial(newPassword); 
+        }
+
+        /// <summary>
+        /// During this procedure, the old master key material should be still present.
+        /// This finds all stored passwords and updates them to reflect new key material.
+        /// </summary>
+        private static void UpdateAllFavoritesPasswords(TerminalsConfigurationSection configSection,
+            string newMasterPassword)
+        {
+            string newKeyMaterial = GetKeyMaterial(newMasterPassword);
+            configSection.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
+
+            foreach (FavoriteConfigurationElement favorite in GetFavorites())
+            {
+                favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
+            }
+
+            foreach (CredentialSet credentials in StoredCredentials.Instance.Items)
+            {
+                credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+            }
         }
 
         internal static string KeyMaterial
@@ -427,8 +455,13 @@ namespace Terminals.Configuration
 
         private static void UpdateKeyMaterial(String password)
         {
+            KeyMaterial = GetKeyMaterial(password);
+        }
+
+        private static string GetKeyMaterial(string password)
+        {
             String hashToCheck = Hash.GetHash(password, Hash.HashType.SHA512);
-            KeyMaterial = Hash.GetHash(password + hashToCheck, Hash.HashType.SHA512);
+            return Hash.GetHash(password + hashToCheck, Hash.HashType.SHA512);
         }
 
         public static string DefaultDomain

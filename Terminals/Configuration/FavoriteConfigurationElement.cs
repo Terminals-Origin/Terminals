@@ -123,6 +123,12 @@ namespace Terminals
             return toolTip;
         }
 
+        internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
+        {
+            EncryptedPassword = Functions.EncryptPassword(Password, newKeyMaterial);
+            TsgwEncryptedPassword = Functions.EncryptPassword(TsgwPassword, newKeyMaterial);
+        }
+
         #region ICloneable Members
 
         public object Clone()
@@ -1313,7 +1319,7 @@ namespace Terminals
             }
         }
 
-        public String TsgwPassword
+        internal String TsgwPassword
         {
             get
             {
