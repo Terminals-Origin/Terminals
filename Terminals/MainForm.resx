@@ -117,12 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="ShortcutsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ShortcutsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>763, 17</value>
-  </metadata>
-  <metadata name="ilTagConnections.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  </data>
+  <data name="ilTagConnections.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>940, 17</value>
-  </metadata>
+  </data>
   <data name="ilTagConnections.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
@@ -155,9 +156,9 @@
         AcABfwYAAeBXAAH4BwAB/AcAAf8HAAs=
 </value>
   </data>
-  <metadata name="ilTags.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="ilTags.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>17, 56</value>
-  </metadata>
+  </data>
   <data name="ilTags.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
@@ -174,185 +175,64 @@
         AYMGAAHhAYcGAAHxAY8GAAH7Af8GAAL/BgAC/wYAAv8GAAL/BgAL
 </value>
   </data>
-  <metadata name="timerHover.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="timerHover.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>100, 56</value>
-  </metadata>
-  <metadata name="MainWindowNotifyIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  </data>
+  <data name="MainWindowNotifyIcon.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>321, 56</value>
-  </metadata>
-  <metadata name="QuickContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  </data>
+  <data name="QuickContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>606, 17</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  </data>
   <data name="MainWindowNotifyIcon.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        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
+        AAABAAEAGBgAAAEAIACICQAAFgAAACgAAAAYAAAAMAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPwAEQAAAAAA/wAQAv8AEAr/ABACAAAAAAAA
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        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
+        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
-        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
+        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
-        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
-        AAAAAAAAAAAAAAAAAAAAAAAA+vj4aseUk/bZwMD/8PHy//H18//q7u7/5+rq/+fn5//j5eX/4OLi/97d
-        3f/d2dn/3tbX/9vU1f/l4uT/yrCx/7SDgv/Irq3/uLa2/5KBgf+OY2L/nWhm/7uMi//dtrb/6cDB/+ix
-        sv/aoJ//lXh46zE0NYQIDw8UAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA3sTE4s6pqf7x8vL/8vX1/+3w7//s7e3/6+zs/+nq
-        6v/o6en/4+Xl/9/h4f/c3Nz/3tnY/9zY2P/l5eb/upOV/8Wdnf/s5+f/wcbH/5ONj/+Thof/knV2/5Rm
-        Zf+2iIf/3ra2/+m9vP/hp6f/y5OU/4d4d8opMTFGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADe2toTy6Ch9+Pd3v/w8/P/7vDw/+/w
-        8P/v8PD/7/Dw/+7v7//t7e3/6Onp/+Tl5f/d4N//29rb/9/f4P/g3Nz/toyM/9Ctrf/p5OT/uLCw/5eF
-        hv+fioz/noiJ/5p9fv+1j5D/2LCw/+S4uf/hqKv/36Gj/7CSkes4ODh0AAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADfz9FYw5aZ9+fo
-        6P/t8vL/8PHx//P09P/z9vb/9PX1//T19f/w8fH/6uvr/+bn5//h5OP/3Nze/+Po6v/Yz8//touL/9e2
-        uP/j1dX/tZyd/51/f/+jhIT/o4OE/6OChP+7mJj/17Gx/960tf/cqKr/4aeo/7OTkvI4NjWNAAAAEgAA
-        AAEAAAAKAAAAGQAAAB8AAAAfAAAAHAAAABQAAAAJAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AADv4eNnvpCT9+bo5v/t8vL/8fT0//T29v/5+/v//f39//z+/v/4+fn/8PHx/+nr6v/j5ef/3+Di/+fv
-        7//Ovr3/t4yM/97Bw//bx8j/rouN/6N5e/+qgIH/qXt8/6t7e//Al5f/17Oz/9qxs//YpKX/36Wk/7GS
-        kvQ0OTi0CREQgUlISZxgXl61aWdnx19dXcZNTEy8KiwspwEGBnsAAABSAAAAOQAAAB8AAAAIAAAAAAAA
-        AAAAAAAAAAAAAAAAAAD16+wYxpmc+d3Y1//v9vb/8/X1//f6+v/9///////////////8/v7/8vX2/+vt
-        7v/k6er/4ebm/+fx8P/GrK3/v5KS/+HGxv/RtbT/rYB+/6p3d/+vfH3/rXV1/7B3dv/EmJf/1rW0/9my
-        s//Xn6L/zZGR/7GOjvyLeHnxjnJy7rKVlfu+n5//w6Cg/7+dnf+2k5P/oH5++39mZ+xnW1zdOjo5xQAA
-        AIAAAABLAAAAIgAAAAEAAAAAAAAAAAAAAAAAAAAA6NTUms6vsPvq7e3/9/7+//r+/v/+////////////
-        ////////9Pj6/+3x8f/l6uv/4+7t/+Hp6P/Bn5//y56e/97Bwv/Gnp3/rnZ1/7B1df+1eXn/s29v/7Vw
-        cP/Gk5T/1ra1/9uys//NkpT/tH9//8Osq//k2Nn/6dbY/+nW1//o0dH/583N/+rNzv/u09T/89TV/+/J
-        yf/ctbT/r4mJ/XNeXuc4OjrFAAAAcwAAADkAAAAMAAAAAAAAAAAAAAAA8+rqFuDExGLVtbb45uLh//7/
-        ///t4OD/0p6h/9Wipf/q2t3/9fz8//D////l8fT/5vb4/9TNzP/BlZX/0aur/9WvsP+/hIT/t21t/7tw
-        cf+9c3P/vGho/75qbP/Llpj/2Le3/8aVlP+sfXz/wLOy/+Lo5//s7ez/6+bo/+nj4//p4N//6t3e/+va
-        3f/dwMH/yZyZ/9ytrP/yysv/98vM/+W2tf+xiov9VkxL2gABAZUAAABGAAAADAAAAAAAAAAAAAAAAAAA
-        AADlystj5MzP9erc3v/Sq6z/u3B1/65VY/+1YG7/zZyi/97W2//k+vz/5v///8u4uv/ElZb/1LKy/86c
-        nf+/cnT/v2pq/8Jtbf/EbW3/w2Fh/8ZoaP/Kiov/xpWW/72Skv/EuLj/3+rq/+jx8f/h5eT/4ODg/+Dc
-        3P/g29r/4tna/9a/wP+8k5P/q4iH/6B+f/+ygYL/1aen//LFxP/vubr/y52d/lxRUeEAAACOAAAANgAA
-        AAAAAAAAAAAAAAAAAAAAAAAA58nNTebS1eHKmJn/unJ6/8iIgv/Vo7H/v3qW/7Zmev/EkZz/z7e9/8ej
-        pv/JnKD/z5yf/8h+gP/DaGr/xmho/8hqaf/JaGj/zF1e/8peX//EgID/ybCv/9ra2v/p8/P/7PT0/+ns
-        7P/k6Oj/4ePj/9/e3v/h3d7/3tnX/8qvrv/FpKP/ysrK/4+Gh/+PcnP/oXd4/8ufnv/0yMb/7rKz/8GT
-        k/5VV1jWAAAAWwAAAAkAAAAAAAAAAAAAAAAAAAAAAAAAANzP03vNn6Xts3KH/+eRSP//x1f/7smd/9eq
-        uf/GhKn/t2iE/7dldP/BbnX/yGtt/8piZf/LYmT/zWRm/85lZ//PY2X/0FZW/8leX//KoKH/4uzs//T/
-        ///1/v7/9fr6//L29v/t8fH/5+np/+Hi5P/g4eL/2dLR/8iqqf/Rs7T/08/R/5WBgP+eh4b/oH+B/76U
-        lf/rwMD/7be4/+Opqf+ijYzvAAAAYwAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAODW24XPprPwtXaQ/+yG
-        F///mwD//7kv//7OaP/yyJL/4bCu/9OVsv/FcpH/xFdp/8VRV//DVFf/xlld/8tcXv/KV1n/w0dK/8Ff
-        YP/Tu7z/7v////j////7/v7///////z+/v/1+fj/6+/v/+Pp6v/g5+j/1MjI/8iio//TsrX/xqyv/55v
-        cP+rf3//sIOC/8qhoP/nwMH/6LW4/+qwsv+ulJTsAAAARQAAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAOrb
-        4MrPpbv/vHiB/+2UHP//ogD//50A//+jAP//thf//8dI//nNev/5x6T/yJ2d/4xsfv+QVGf/s09Z/79N
-        Uf+3Q0f/qisv/7RXWvvRwML36fb3/fr8/P/////////////////5/f3/7fL0/+Xt8P/g6ev/z7++/8me
-        nv/WsbH/vY6O/6lqa/+zdnb/uHp5/8+en//ox8b/6bW2/+etsP6+u7rZAAAAEAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAOHL0NXJnr//xX5y//GcFf//qgX//6wP//+pD///pgf//6kA//+6CP//xDX/gptw/zt7
-        gf+Gg4j/xYGS/8Rje/+zPk//tDA3/5JDRet7fH/Qxs3R6v/9/v/6+vv/8eDj//Pn6P/6////8/7+/+j5
-        +v/d5ef/y7O0/8qbnP/Tqan/t3d3/7Rqa/+8cXH/wXZ0/9eio//rycn/4qyt/7ecnPVLUE5LAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAA5+/yK92+w97Clr3/zoRk//SkFv//rxH//68d//+vIf//siP//7ce//+s
-        Cv+niiD/EmZi/y5sV/+5nET/9bxz/+irnf/PgJf/xl16/6hPYvR4V1/WlJOW1dng5PHm297/yI6X/8F/
-        kf/RrLz/4djb/+f6+//c5un/yaqu/8qcn//MmJv/umdp/8FqbP/GbGz/zXFx/96fnv/tx8f+2ba245uT
-        kV0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7Ovvd925we28jrP/2Y1W//mtG///tBz//7Qm//+0
-        Kv//uin//7Qf/6uKMf8jeHv/AG6Z/1NxS//glAv//78c///PT//2x3n/5aiM/+KRm//IdY/6pGF468GV
-        pO7WsLr7wX56/st9av/TlJj/xZCw/8WeuP/FobD/xJCW/8mJjf/HdXj/xWBj/81oa//UZ2f/3XZ3/9yn
-        qPbQvr6389rZSgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA7eXprt68x/i1hKb/5phJ//6z
-        IP//uCX//7kv//+8Mf//uSX/t40w/yhzcP8AjbD/AH2d/2R3Sv/qmSD//7cg///BHf//xyP//8pA//i+
-        Xv/som//4IN6/9V7jv7IeJv9znR5/vKlVP/9zFz/4617/9GRlf/Ef53/u2+N/71cbv/GUVj/zlte/9Fg
-        Yv/XXmD/2nZ5/aSWmMhUV1cwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA6tvg2uG/
-        zf+xgJz/7aM///+3Jf//vC3//78y//+8K//Bji3/KnVu/wCTsP8Arc3/AIOW/3x0Of/wkxf//6oj//+u
-        Kf//rCP//60X//+zFP//uiX//bVA//CfVf/bfmT/0WVu/+FwRv/6ngP//8QR//3GUv/wuXf/3qGT/9OE
-        l//JaYb/yVdp/8VGTP+6QEL/u2Jl+3d+gLEAAAAWAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AADq7u8S3cbL3tm4zf+4hIz/7646//++Lf//vzb//8Ey/8qRLf8veXD/AKG8/wO80v8AvNX/D4GI/2Re
-        MP+kbBz/q3cl/6t4Jf+xeSP/u30h/8eCG//VhxD/5pEH//WfC//3pCD/4IVC/89hT//pgiD//6sA//+q
-        AP//vAv//8tC//zMdP/mtY7/voWD/49LX/+hMkT/rlZg/IGHiMsAAABPAAAAIgAAABAAAAAEAAAAAAAA
-        AAAAAAAAAAAAAAAAAADq6u1i4cPI7Mmpxv/FjHb/87k5///GOP//xzv/1Zgx/zKCdv8At9L/B9Tr/w7T
-        5P8JzuD/CKey/xWLi/8biof/F4iH/xqFgP8kgHb/MXts/z55Y/9Mdlb/XnFE/3VvLv+TcxX/pmcY/65U
-        LP/ZcxX//50B//qfE//9pxD//7AH///BDv/4zDP/pahn/zJqff+lZWT/v2t6/qyAku1MNEG4KikxmwAA
-        AGIAAAA7AAAAHQAAAAUAAAAAAAAAAAAAAADv6uyz5sfN+L2du//TlWr/+MA9///OPf/br0L/SpB+/xTL
-        5f8l6v//KuTz/yzg7v8v5O//KuXy/yHn+f8a6P3/F+P5/xLe9f8N1e7/Ccnk/wPB3f8AttP/AKjA/wCb
-        rv8FjZT/HXR2/z5cWP9pXTD/m2oR/8V4D//qjxb/+qEh//+wIP/ysR//f5BK/wJueP+QiE3/6ZJW//SY
-        hv/8qqv/vYWP/WNHVdNLRUi2DQ4QbAAAABcAAAAAAAAAAAAAAADr4eXp7NDZ/7KQrf/hoWL//MRE///U
-        Q/+JjUn/M8/d/1Xz//9c6vj/V+Tw/13k7v9l5u//a+jx/2zq8v9s6/P/auz2/2Xr9/9e7Pj/Ve35/0vs
-        +v8/7fv/Me79/yHv//8R6f3/CNLq/wK0y/8Ama3/FIGD/0lvUf+AaCv/uHQa//CQGv/snyz/aJlz/wCM
-        rP9dfkj/95oP//+8Qf//uVX//7Nl//7Dm//lpK39QEBGowAAAB0AAAAAAAAAAAAAAADYxsvn7tTg/6qH
-        of/rr1v//8lK///RTv/erkP/TMCz/2Pn+P+B8P3/gez2/4br8/+O7PP/ke30/5Du9f+R7vb/k+73/5Du
-        9/+L7Pb/hO32/3vs9v9x6vX/Zujz/13o8/9U6PT/Tez5/0Pw/f8u8v//E+P6/wK62P8DkaT/L3xt/4Ju
-        M/+lbiL/TJiD/wDH8P8wkob/wnkX//60J///0zD//94x//69P//gcXr2P0NMmgAAABIAAAAAAAAAAObq
-        7S7Xw8bs4svZ/6uGlf/uulf//81R///OVv//1VH/dqhu/1LP1v+G8f//mvP8/5zv9/+l8PX/r/P4/7L0
-        +v+x9Pz/svT+/7H0/v+u9P3/qPT9/6Pz+/+f8fr/l+/4/43v9/+C7/f/d+32/2vr9P9f6fT/Vev2/0bx
-        /P8n8f//CtTw/xSapv8ub2H/H5iU/wPu//8hrrT/f2Up//inL///xkL//9NC//27Wv/MfI/uBA0ScAAA
-        AAkAAAAAAAAAAOPi5YXdyMz11sHU/7GKiP/vvln//9BZ///RX///2WX/6LZO/027p/9r5PP/o/X//6rz
-        +/+s8fn/lvH6/4bu+v+F7Pj/guv4/4Hq+f+E7Pz/jvD//5n0//+c9v//nfb//6T3//+o9///pfX8/5vz
-        +f+N8fn/duz2/1/p8v9V5/P/VO36/z/v/P8Vy+D/D73N/yvy//8mw9X/PnRd/+eTKf/9wUb//9RM//20
-        a//Ad5HqAAAAWgAAAAQAAAAAAAAAAN/Y273l0Nb7xrDK/7uSf//yyFv//9Rg///RaP//1G3//+Fo/4uz
-        cf9ezs//kPL//736//+J7vn/PszQ/zq+s/9Sx7L/Vsuz/07Jtv9Pyrz/YtDF/3TWzf901dD/cdPU/3ja
-        3v9+5+7/hvT9/5f7//+h+f//nPP+/4zv+f9z6vT/YObw/1zm8P9d7Pb/VO74/1Dp+f8x3/X/HqOk/7N3
-        Jf/6vUf//9RU//2udf68f5noAAAATAAAAAEAAAAAAAAAAODZ3PHx3OT/sZy4/8ieef/20V7//9Zo///U
-        cf//1nT//994//nIYf9ixrH/beX1/8X///9Y5PD/WKSJ/9GgUv//xWT//9dx///UcP/8ymv/7MFk/9m5
-        Xv/Cr1z/o6hf/36wb/9NtJX/LrO//0zF0f9x2Nv/d+Tw/3/w//+D8P7/gO34/3rq9P9u6fL/aOjy/2Tq
-        9/9S7v7/MsLK/3hvOv/8u0f//9Jb//qifP63i6LlAAAAPwAAAAAAAAAA////Dc2/wu757PP/pJCq/9Wq
-        cv/60mb//9pw///Zd///2Xz//9yB///pff+Nwon/ZtTX/6r///9f1tv/eaeD/+e8bP//34P//+mO///m
-        iv//44X//+GB///ffP//3Xb//+Jt///lYf/4sFb/x1xU/51rVf+GpmX/R7yd/zvOzf9X0dn/Ytvp/27r
-        +f9/7fj/f+v1/3Xs+P9z8P//V9fh/1OXdf//uUb//9Fk//CXgv6uj6TkAAAANAAAAAAAAAAA+Pj4Xs/A
-        xPTy5fH/nYmg/+W4bf/+12z//9p1///cfP//3YT//+CK///ojv/60nn/bMu4/4L4//9lztL/gaN//+XC
-        eP//5JL//+ua///olf//5JH//+KO///gif//3YP//+N7///mc//rpmn/zmJo/+ugc///7nb//99v/+W+
-        a/+GpnL/O7Cd/y7Lzv9g3Of/ifD9/4vw/P9/8///VOHs/1mxjv//ylT//dNv/+KKhP6gjp7fAAAAKwAA
-        AAAAAAAA3NfcktrM0ffn2+r/m4aV/+3Ebf//3HD//918///eg///4Ir//+KR///llf//9JT/lMyX/2Hi
-        6v9OyNL/jquG/+rLhf//6Z3//++j///soP//55z//+WW///kkP//4Ir//+mF///pff/foHD/vmFt/+Os
-        fv//8of//+eH///rjf//847//OOB/7atcP9Crav/dfn//7H3//9s6PX/PLW0/66hWv//6nf/+NF4/9R+
-        g/2Mg47PAAAAIwAAAAAAAAAA2tfa2O3j5v3Pxtj/qZCJ//DQb///4Hj//+CC///giv//5JH//+ma///r
-        n///9aT//+aV/1LQxv8btb3/obuU//jbmf//8Kv///Ot///wqf//7KT//+mg///nmv//5JP//++O//vn
-        hP/TlXT/uGRx/+W9h////JP//+uT///tmv//8Z3/+/Ka/8fTlf99y8P/nP3//5bu9P9BsrX/jplj///s
-        gv//8Yf/982A/8Rzg/lxbHS5AAAAGAAAAADT09QDw7y+9//+//+xqb//waJ+//fdcP//5Xz//+aI///o
-        j///6Zn//+6i///wp///86v///+3/5PFn/9Vo5X/uc+l//zysv//+bn///e5///zs///8K3//+2n///r
-        ov//6Zv///SV//ffif/LiHb/u294/+vPj////5z///Og///2qP//+q7/9Pes/6narv921tj/rvn9/1G8
-        v/97oXX//+iN///2lv//84//9sOJ/7pxhvRTUlqfAAAAEAAAAADU1NQtv7a69f////+fmKj/zat8//Te
-        df/853///+uM///vk///8p3///Wn///4rf//+rT///+8/+ryuv/L4LT/4+y7//39xP///8P///y////3
-        uP//87H///Cs///upv//7aD///ea//LYiv/DgHb/wYOC//Pim////6X///6v////uf///7//8f3A/5Lu
-        0v9B4vP/cNXa/3S2k///7Jv///mm///6oP//8pj/9rmR/7B4juwpMDWAAAAACgAAAADR0dGDxcDD+f/9
-        //+bkZj/no2E/7mghP/PsYf/6cmN//Hakv/165z/+veq//78tP///7z////E////yf///8/////R////
-        z////83////I///7v///97j///Ox///yqf//8qL///yd/+/UiP+8eXT/uICK/+POnf/z7KH/9vSy//r4
-        v////cn/7fvL/3Dgz/8Bw9X/htm9///xqP///7f///2u///+pf/+75z/8bKT/q5/leYFDhFmAAAABQAA
-        AADPz8/O0NDQ/fj1+f+VjZH/hXyG/4B3iv+Bdon/hniJ/5B9iP+njov/xa+W/+DLof/x57L/9/S///n3
-        y//7+tb//v7Z////2f///9j////R////x////r7///m1///1rP//96b///+h/+/OiP+9eHb/oXKO/5SE
-        lf+QfYX/q5KM/8atl//lzan/xdK0/16yp/92u6j////J////yv///77///+y///+qf/765//56qT/qyE
-        lOIAAABSAAAAAgAAAAC/wMD8yMnI//v8+//Lxcj/rqms/6GZnf+YjpP/j4OL/418h/+KdIP/hm6B/4du
-        fv+Rcnz/o4KF/7ebk//MuKP/5Nm1//Puw//49M//+vfU//37zf///sP///+6///8sf///av///+l/+nC
-        hv+6dnj/wJis/8bAyf+roKr/nISQ/5Nwf/+RZ3X/hG54/4Z9gP+ukIn/066Z/+vXrf/267D/9/Ou//r2
-        qv/1453/3KCU/quIld8AAABFAAAAAAAAAADX2NieoaKi7M3Nzfbq6Ov+/fr9//34+v/u6Or/4Nnb/8/F
-        xv+5qa//ppOV/5qEiP+TeH//j3B5/4xqdf+NZ3P/kGh0/5dud/+mgYP/v6KW/9vGp//w47H/+fS0//v4
-        sf/9/a3///qj/+a7hv+6d3r/xaSy/eTj5/jp5On36tvf/OPO0v/WvMD/xqaq/7iPlf+ldoH/mGdz/5Zj
-        bv+fa3L/soB9/82ihv/drYz/zpGR/qGIjd0AAAA7AAAAAAAAAAAAAAAA2tvbI8XFxXLMzc3LtrW16baz
-        tevEwsPw08/Q9drS1Pvu4+X/9Ons/+rd4P/eztD/zrm9/7ykpv+sj5L/o4GG/5t4fP+Va3T/k2Jx/5Rj
-        cv+YaHX/pXV7/7mLg//Ur43/6ciS/9mkhf+4d3//mXuG446Sk43Dxslx+PX5seng5OTdz9Ht4c3P7tzG
-        yPTXvsD61LW5/8mlq/+8k5z/sIGO/6t0g/+vcoD/vYaL/ouHiNcAAAAmAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAADh4eEzxsTFZtPQ0KnIwsPkvrO08si7vPXSxcX418jK++PT1v7v3d7/6tXX/9/G
-        yv/UuLv/waGl/66Jjf+leX//oG94/5llcv+YYXD/o2p1/7h3fv+7gob/WUhKzjpBQj8AAAAAAAAAAAAA
-        AAAAAAAA6N7gFO7t7l7n4uSj4tja29bBxPXUur302Li8+NextfvOn6L/vo2P/J+io7QAAAADAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOTh4ibUz9BixLq7msvC
-        wtzHubn5w7Gz+su3uvvVvb/93cPD/ubJy//kxcn/2bm7/82rrv/DnKD/uImP/7+Ch/+zgYL/V09PuQIO
-        DzEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADez9IS8e/wWePY2J326uzp+ezu28LH
-        xTsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAA3NPTCe/v8EvY0NJ/y72/uc28vfDJs7T8zLGx+tK0tPzau7783ba5/tOd
-        n/+zhofvV1FRfRIeHgkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADZy8sG8u/uM+HZ
-        2GXRwMCY2sPF3ujLzf/z5ebXipCQQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/wAD///8AAP4AAD///wAA+AAAD///
-        AADwAAAH//8AAOAAAAP//wAAwAAAAf//AACAAAAB//8AAIAAAAH//wAAAAAAAf//AAAAAAAAAP8AAAAA
-        AAAAHwAAAAAAAAAHAACAAAAAAAMAAIAAAAAAAQAA4AAAAAABAADwAAAAAAAAAPgAAAAAAAAA+AAAAAAA
-        AAD4AAAAAAEAAPgAAAAAAwAA8AAAAAAHAADwAAAAAA8AAPAAAAAAHwAA8AAAAAAfAADgAAAAAAMAAOAA
-        AAAAAAAA4AAAAAAAAADgAAAAAAAAAOAAAAAAAAAAwAAAAAAAAADAAAAAAAAAAMAAAAAAAAAAwAAAAAAB
-        AACAAAAAAAEAAIAAAAAAAQAAgAAAAAABAACAAAAAAAEAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAEAAAAA
-        AAAAAQAAAAAAAAADAAAAAAAAAAMAAIAAAAAAAwAA/AAAA8ADAAD/4AAD/gcAAP//AAP//wAA///4B///
-        AAA=
+        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8A////AP+B/wD+AH8A+AA/APAADwDwAA8A4AAHAOAA
+        AwDAAAMAwAADAMAAAwDAAAMAwAAHAMAABwDAAAcA4AAHAPAABwDwAB8A+AA/AP4A/wD/wP8A////AP//
+        /wA=
 </value>
   </data>
-  <metadata name="menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>213, 56</value>
-  </metadata>
+  </data>
   <data name="toolStripMenuItemCaptureManager.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACgAAAAhCAYAAACr8emlAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -434,12 +314,12 @@
         RK5CYII=
 </value>
   </data>
-  <metadata name="favoriteToolBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="favoriteToolBar.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>472, 17</value>
-  </metadata>
-  <metadata name="tsRemoteToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  </data>
+  <data name="tsRemoteToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>327, 17</value>
-  </metadata>
+  </data>
   <data name="toolStripButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -455,9 +335,9 @@
         s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
 </value>
   </data>
-  <metadata name="toolbarStd.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="toolbarStd.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>218, 17</value>
-  </metadata>
+  </data>
   <data name="CredentialManagementToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -659,12 +539,13 @@
         Q7qXD5kw2oSogKyPjew/wmvGsJrx9GIAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="SpecialCommandsToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <data name="SpecialCommandsToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing">
     <value>17, 17</value>
-  </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="$this.TrayHeight" type="System.Int32, mscorlib">
     <value>105</value>
-  </metadata>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAGBgAAAEAIACICQAAFgAAACgAAAAYAAAAMAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
