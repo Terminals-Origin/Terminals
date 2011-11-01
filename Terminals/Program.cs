@@ -11,7 +11,7 @@ namespace Terminals
 {
     static partial class Program
     {
-        private static string TerminalsVersion = "2.0 RC2";
+        private static string TerminalsVersion = "2.0 Alpha";
         
         public static Mutex mtx;
 
