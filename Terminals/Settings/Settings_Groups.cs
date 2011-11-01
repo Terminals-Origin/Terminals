@@ -6,24 +6,19 @@ namespace Terminals.Configuration
     {
         public static GroupConfigurationElementCollection GetGroups()
         {
-            _terminalsConfigurationSection = GetSection();
-            if (_terminalsConfigurationSection == null)
-                return null;
-            return _terminalsConfigurationSection.Groups;
+            return GetSection().Groups;
         }
 
         public static void DeleteGroup(string name)
         {
-            SysConfig.Configuration configuration = Config;
-            GetSection(configuration).Groups.Remove(name);
-            SaveImmediatelyIfRequested(configuration);
+            GetSection().Groups.Remove(name);
+            SaveImmediatelyIfRequested();
         }
 
         public static void AddGroup(GroupConfigurationElement group)
         {
-            SysConfig.Configuration configuration = Config;
-            GetSection(configuration).Groups.Add(group);
-            SaveImmediatelyIfRequested(configuration);
+            GetSection().Groups.Add(group);
+            SaveImmediatelyIfRequested();
         }
     }
 }

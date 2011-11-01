@@ -9,39 +9,32 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return null;
-                return (_terminalsConfigurationSection.FavoritesButtons).ReadList().ToArray();
+                return GetSection().FavoritesButtons.ReadList().ToArray();
             }
         }
 
         public static void AddFavoriteButton(string name)
         {
-            SysConfig.Configuration configuration = Config;
-            AddMRUItemConfigurationElement(GetSection(configuration).FavoritesButtons, name);
-            SaveImmediatelyIfRequested(configuration);
+            AddMRUItemConfigurationElement(GetSection().FavoritesButtons, name);
+            SaveImmediatelyIfRequested();
         }
 
         public static void DeleteFavoriteButton(string name)
         {
-            SysConfig.Configuration configuration = Config;
-            DeleteMRUItemConfigurationElement(GetSection(configuration).FavoritesButtons, name);
-            SaveImmediatelyIfRequested(configuration);
+            DeleteMRUItemConfigurationElement(GetSection().FavoritesButtons, name);
+            SaveImmediatelyIfRequested();
         }
 
         public static void EditFavoriteButton(string oldName, string newName)
         {
-            SysConfig.Configuration configuration = Config;
-            EditMRUItemConfigurationElement(GetSection(configuration).FavoritesButtons, oldName, newName);
-            SaveImmediatelyIfRequested(configuration);
+            EditMRUItemConfigurationElement(GetSection().FavoritesButtons, oldName, newName);
+            SaveImmediatelyIfRequested();
         }
 
         public static void CreateFavoritesToolbarButtonsList(String[] names)
         {
-            SysConfig.Configuration configuration = Config;
-            GetSection(configuration).FavoritesButtons.Clear();
-            SaveImmediatelyIfRequested(configuration);
+            GetSection().FavoritesButtons.Clear();
+            SaveImmediatelyIfRequested();
             foreach (string name in names)
             {
                 AddFavoriteButton(name);

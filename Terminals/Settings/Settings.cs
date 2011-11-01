@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using Unified.Encryption.Hash;
 using SysConfig = System.Configuration;
 using System.IO;
-using System.Reflection;
-using System.Windows.Forms;
-using System.Xml;
 
 namespace Terminals.Configuration
 {
     internal static partial class Settings
     {
-        private static SysConfig.Configuration _config = null;
-        private static TerminalsConfigurationSection _terminalsConfigurationSection;
         private static string keyMaterial = string.Empty;
 
         #region Terminals Version
@@ -21,20 +16,17 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return null;
-                if (_terminalsConfigurationSection.ConfigVersion != String.Empty)
-                    return new Version(_terminalsConfigurationSection.ConfigVersion);
+                string configVersion = GetSection().ConfigVersion;
+                if (configVersion != String.Empty)
+                    return new Version(configVersion);
 
                 return null;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ConfigVersion = value.ToString();
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ConfigVersion = value.ToString();
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -46,36 +38,27 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.NeverShowTerminalsWindow;
+                return GetSection().NeverShowTerminalsWindow;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).NeverShowTerminalsWindow = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().NeverShowTerminalsWindow = value;
+                SaveImmediatelyIfRequested();
             }
         }
-
 
         public static bool ShowUserNameInTitle
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.ShowUserNameInTitle;
+                return GetSection().ShowUserNameInTitle;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ShowUserNameInTitle = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ShowUserNameInTitle = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -83,17 +66,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.ShowInformationToolTips;
+                return GetSection().ShowInformationToolTips;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ShowInformationToolTips = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ShowInformationToolTips = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -101,17 +80,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.ShowFullInformationToolTips;
+                return GetSection().ShowFullInformationToolTips;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ShowFullInformationToolTips = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ShowFullInformationToolTips = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -119,17 +94,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.SingleInstance;
+                return GetSection().SingleInstance;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).SingleInstance = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().SingleInstance = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -137,17 +108,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.ShowConfirmDialog;
+                return GetSection().ShowConfirmDialog;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ShowConfirmDialog = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ShowConfirmDialog = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -155,17 +122,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.SaveConnectionsOnClose;
+                return GetSection().SaveConnectionsOnClose;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).SaveConnectionsOnClose = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().SaveConnectionsOnClose = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -173,17 +136,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.MinimizeToTray;
+                return GetSection().MinimizeToTray;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).MinimizeToTray = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().MinimizeToTray = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -192,17 +151,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.ForceComputerNamesAsURI;
+                return GetSection().ForceComputerNamesAsURI;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ForceComputerNamesAsURI = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ForceComputerNamesAsURI = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -210,17 +165,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.WarnOnConnectionClose;
+                return GetSection().WarnOnConnectionClose;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).WarnOnConnectionClose = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().WarnOnConnectionClose = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -228,17 +179,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.AutoCaseTags;
+                return GetSection().AutoCaseTags;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).AutoCaseTags = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().AutoCaseTags = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -246,17 +193,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.DefaultDesktopShare;
+                return GetSection().DefaultDesktopShare;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).DefaultDesktopShare = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().DefaultDesktopShare = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -264,17 +207,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return 0;
-                return _terminalsConfigurationSection.PortScanTimeoutSeconds;
+                return GetSection().PortScanTimeoutSeconds;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).PortScanTimeoutSeconds = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().PortScanTimeoutSeconds = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -286,17 +225,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.ExecuteBeforeConnect;
+                return GetSection().ExecuteBeforeConnect;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ExecuteBeforeConnect = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ExecuteBeforeConnect = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -304,17 +239,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.ExecuteBeforeConnectCommand;
+                return GetSection().ExecuteBeforeConnectCommand;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ExecuteBeforeConnectCommand = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ExecuteBeforeConnectCommand = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -322,17 +253,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.ExecuteBeforeConnectArgs;
+                return GetSection().ExecuteBeforeConnectArgs;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ExecuteBeforeConnectArgs = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ExecuteBeforeConnectArgs = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -340,17 +267,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.ExecuteBeforeConnectInitialDirectory;
+                return GetSection().ExecuteBeforeConnectInitialDirectory;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ExecuteBeforeConnectInitialDirectory = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ExecuteBeforeConnectInitialDirectory = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -358,17 +281,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.ExecuteBeforeConnectWaitForExit;
+                return GetSection().ExecuteBeforeConnectWaitForExit;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ExecuteBeforeConnectWaitForExit = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ExecuteBeforeConnectWaitForExit = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -386,25 +305,21 @@ namespace Terminals.Configuration
 
         private static string GetMasterPasswordHash()
         {
-            _terminalsConfigurationSection = GetSection();
-            if (_terminalsConfigurationSection == null)
-                return string.Empty;
-            return _terminalsConfigurationSection.TerminalsPassword;
+            return GetSection().TerminalsPassword;
         }
 
         internal static void UpdateMasterPassword(string newPassword)
         {
-            SysConfig.Configuration configuration = Config;
-            TerminalsConfigurationSection configSection = GetSection(configuration);
-            
+            TerminalsConfigurationSection configSection = GetSection();
+
             UpdateAllFavoritesPasswords(configSection, newPassword);
             // start of not secured transaction. Old key is still present,
             // but passwords are already encrypted by newKey
             configSection.TerminalsPassword = newPassword;
-            SaveImmediatelyIfRequested(configuration);
+            SaveImmediatelyIfRequested();
 
             // finish transaction, the passwords now reflect the new key
-            UpdateKeyMaterial(newPassword); 
+            UpdateKeyMaterial(newPassword);
         }
 
         /// <summary>
@@ -460,17 +375,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.DefaultDomain;
+                return GetSection().DefaultDomain;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).DefaultDomain = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().DefaultDomain = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -478,17 +389,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.DefaultUsername;
+                return GetSection().DefaultUsername;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).DefaultUsername = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().DefaultUsername = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -496,17 +403,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.DefaultPassword;
+                return GetSection().DefaultPassword;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).DefaultPassword = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().DefaultPassword = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -514,17 +417,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.UseAmazon;
+                return GetSection().UseAmazon;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).UseAmazon = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().UseAmazon = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -532,17 +431,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.AmazonAccessKey;
+                return GetSection().AmazonAccessKey;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).AmazonAccessKey = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().AmazonAccessKey = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -550,17 +445,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.AmazonSecretKey;
+                return GetSection().AmazonSecretKey;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).AmazonSecretKey = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().AmazonSecretKey = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -568,17 +459,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.AmazonBucketName;
+                return GetSection().AmazonBucketName;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).AmazonBucketName = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().AmazonBucketName = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -590,17 +477,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.FlickrToken;
+                return GetSection().FlickrToken;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).FlickrToken = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().FlickrToken = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -612,17 +495,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.UseProxy;
+                return GetSection().UseProxy;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).UseProxy = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().UseProxy = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -630,17 +509,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.ProxyAddress;
+                return GetSection().ProxyAddress;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ProxyAddress = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ProxyAddress = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -648,17 +523,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return 0;
-                return _terminalsConfigurationSection.ProxyPort;
+                return GetSection().ProxyPort;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ProxyPort = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ProxyPort = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -670,17 +541,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.EnableCaptureToClipboard;
+                return GetSection().EnableCaptureToClipboard;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).EnableCaptureToClipboard = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().EnableCaptureToClipboard = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -688,40 +555,32 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.EnableCaptureToFolder;
+                return GetSection().EnableCaptureToFolder;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).EnableCaptureToFolder = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().EnableCaptureToFolder = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
         internal static bool EnabledCaptureToFolderAndClipBoard
         {
-          get { return EnableCaptureToClipboard && EnableCaptureToFolder; }
+            get { return EnableCaptureToClipboard && EnableCaptureToFolder; }
         }
 
         public static bool AutoSwitchOnCapture
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.AutoSwitchOnCapture;
+                return GetSection().AutoSwitchOnCapture;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).AutoSwitchOnCapture = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().AutoSwitchOnCapture = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -730,9 +589,9 @@ namespace Terminals.Configuration
             get
             {
                 string root;
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection != null && !string.IsNullOrEmpty(_terminalsConfigurationSection.CaptureRoot))
-                    root = _terminalsConfigurationSection.CaptureRoot;
+                TerminalsConfigurationSection configurationSection = GetSection();
+                if (configurationSection != null && !string.IsNullOrEmpty(configurationSection.CaptureRoot))
+                    root = configurationSection.CaptureRoot;
                 else
                     root = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures), "Terminals Captures");
 
@@ -766,9 +625,8 @@ namespace Terminals.Configuration
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).CaptureRoot = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().CaptureRoot = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -780,17 +638,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.EnableFavoritesPanel;
+                return GetSection().EnableFavoritesPanel;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).EnableFavoritesPanel = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().EnableFavoritesPanel = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -798,17 +652,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.EnableGroupsMenu;
+                return GetSection().EnableGroupsMenu;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).EnableGroupsMenu = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().EnableGroupsMenu = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -816,17 +666,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.AutoExapandTagsPanel;
+                return GetSection().AutoExapandTagsPanel;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).AutoExapandTagsPanel = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().AutoExapandTagsPanel = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -847,9 +693,8 @@ namespace Terminals.Configuration
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).DefaultSortProperty = value.ToString();
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().DefaultSortProperty = value.ToString();
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -857,17 +702,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.Office2007BlackFeel;
+                return GetSection().Office2007BlackFeel;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).Office2007BlackFeel = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().Office2007BlackFeel = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -875,17 +716,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.Office2007BlueFeel;
+                return GetSection().Office2007BlueFeel;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).Office2007BlueFeel = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().Office2007BlueFeel = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -897,17 +734,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.VncAutoScale;
+                return GetSection().VncAutoScale;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).VncAutoScale = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().VncAutoScale = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -915,17 +748,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.VncViewOnly;
+                return GetSection().VncViewOnly;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).VncViewOnly = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().VncViewOnly = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -933,17 +762,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return 0;
-                return _terminalsConfigurationSection.VncDisplayNumber;
+                return GetSection().VncDisplayNumber;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).VncDisplayNumber = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().VncDisplayNumber = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -955,17 +780,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return 0;
-                return _terminalsConfigurationSection.FavoritePanelWidth;
+                return GetSection().FavoritePanelWidth;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).FavoritePanelWidth = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().FavoritePanelWidth = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -978,10 +799,8 @@ namespace Terminals.Configuration
 
             set
             {
-                SysConfig.Configuration configuration = Config;
                 GetSection().ShowFavoritePanel = value;
-                if (!DelayConfigurationSave)
-                    configuration.Save();
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -1001,17 +820,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.ToolbarsLocked;
+                return GetSection().ToolbarsLocked;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ToolbarsLocked = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ToolbarsLocked = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -1023,17 +838,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.UpdateSource;
+                return GetSection().UpdateSource;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).UpdateSource = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().UpdateSource = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -1041,17 +852,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return false;
-                return _terminalsConfigurationSection.ShowWizard;
+                return GetSection().ShowWizard;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).ShowWizard = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().ShowWizard = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -1059,17 +866,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return string.Empty;
-                return _terminalsConfigurationSection.PsexecLocation;
+                return GetSection().PsexecLocation;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).PsexecLocation = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().PsexecLocation = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
@@ -1083,11 +886,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return null;
-                _terminalsConfigurationSection = GetSection();
-                return _terminalsConfigurationSection.ServersMRU.ReadList().ToArray();
+                return GetSection().ServersMRU.ReadList().ToArray();
             }
         }
 
@@ -1095,11 +894,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return null;
-                _terminalsConfigurationSection = GetSection();
-                return _terminalsConfigurationSection.DomainsMRU.ReadList().ToArray();
+                return GetSection().DomainsMRU.ReadList().ToArray();
             }
         }
 
@@ -1107,37 +902,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return null;
-                return _terminalsConfigurationSection.UsersMRU.ReadList().ToArray();
+                return GetSection().UsersMRU.ReadList().ToArray();
             }
         }
 
         #endregion
 
         #region Public
-
-        public static bool DelayConfigurationSave { get; set; }
-
-        public static void Save()
-        {
-            SysConfig.Configuration configuration = Config;
-            configuration.Save();
-        }
-
-        private static void SaveImmediatelyIfRequested(SysConfig.Configuration configuration)
-        {
-            if (!DelayConfigurationSave)
-                configuration.Save();
-        }
-
-        private static void SaveAs(String fileName, SysConfig.ConfigurationSaveMode saveMode = SysConfig.ConfigurationSaveMode.Modified,
-                                  Boolean forceSaveAll = false)
-        {
-            SysConfig.Configuration configuration = Config;
-            configuration.SaveAs(fileName, saveMode, forceSaveAll);
-        }
 
         public static string ToTitleCase(String Name)
         {
@@ -1146,53 +917,46 @@ namespace Terminals.Configuration
 
         public static void AddServerMRUItem(string name)
         {
-            SysConfig.Configuration configuration = Config;
-            AddMRUItemConfigurationElement(GetSection(configuration).ServersMRU, name);
-            SaveImmediatelyIfRequested(configuration);
+            AddMRUItemConfigurationElement(GetSection().ServersMRU, name);
+            SaveImmediatelyIfRequested();
         }
 
         public static void AddDomainMRUItem(String name)
         {
-            SysConfig.Configuration configuration = Config;
-            AddMRUItemConfigurationElement(GetSection(configuration).DomainsMRU, name);
-            SaveImmediatelyIfRequested(configuration);
+            AddMRUItemConfigurationElement(GetSection().DomainsMRU, name);
+            SaveImmediatelyIfRequested();
         }
 
         public static void AddUserMRUItem(string name)
         {
-            SysConfig.Configuration configuration = Config;
-            AddMRUItemConfigurationElement(GetSection(configuration).UsersMRU, name);
-            SaveImmediatelyIfRequested(configuration);
+            AddMRUItemConfigurationElement(GetSection().UsersMRU, name);
+            SaveImmediatelyIfRequested();
         }
 
         public static void AddConnection(string name)
         {
-            SysConfig.Configuration configuration = Config;
-            AddMRUItemConfigurationElement(GetSection(configuration).SavedConnections, name);
-            SaveImmediatelyIfRequested(configuration);
+            AddMRUItemConfigurationElement(GetSection().SavedConnections, name);
+            SaveImmediatelyIfRequested();
         }
 
         public static SpecialCommandConfigurationElementCollection SpecialCommands
         {
             get
             {
-                SysConfig.Configuration configuration = Config;
-                return GetSection(configuration).SpecialCommands;
+                return GetSection().SpecialCommands;
             }
 
             set
             {
-                SysConfig.Configuration configuration = Config;
-                GetSection(configuration).SpecialCommands = value;
-                SaveImmediatelyIfRequested(configuration);
+                GetSection().SpecialCommands = value;
+                SaveImmediatelyIfRequested();
             }
         }
 
         public static void CreateSavedConnectionsList(string[] names)
         {
-            SysConfig.Configuration configuration = Config;
-            GetSection(configuration).SavedConnections.Clear();
-            SaveImmediatelyIfRequested(configuration);
+            GetSection().SavedConnections.Clear();
+            SaveImmediatelyIfRequested();
             foreach (string name in names)
             {
                 AddConnection(name);
@@ -1201,19 +965,15 @@ namespace Terminals.Configuration
 
         public static void ClearSavedConnectionsList()
         {
-            SysConfig.Configuration configuration = Config;
-            GetSection(configuration).SavedConnections.Clear();
-            SaveImmediatelyIfRequested(configuration);
+            GetSection().SavedConnections.Clear();
+            SaveImmediatelyIfRequested();
         }
 
         public static string[] SavedConnections
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return null;
-                return _terminalsConfigurationSection.SavedConnections.ReadList().ToArray();
+                return GetSection().SavedConnections.ReadList().ToArray();
             }
         }
 
@@ -1226,7 +986,7 @@ namespace Terminals.Configuration
                 {
                     // The section wasn't found, so add it.
                     keys = new SSHClient.KeysSection();
-                    _config.Sections.Add("SSH", keys);
+                    Config.Sections.Add("SSH", keys);
                 }
 
                 return keys;
@@ -1247,256 +1007,9 @@ namespace Terminals.Configuration
             return buttons.IndexOf(name) > -1;
         }
 
-        internal static SysConfig.Configuration Config
-        {
-            get
-            {
-                if (_config == null)
-                    _config = GetConfiguration();
-                return _config;
-            }
-        }
-
-        internal static void ForceReload()
-        {
-            _config = GetConfiguration();
-        }
-
         #endregion
 
-        #region Private
-
-        private static SysConfig.Configuration GetConfiguration()
-        {
-            string configFile = Program.ConfigurationFileLocation;
-
-            if (!File.Exists(configFile))
-            {
-                string templateConfigFile = Properties.Resources.Terminals;
-                using (StreamWriter sr = new StreamWriter(configFile))
-                {
-                    sr.Write(templateConfigFile);
-                }
-            }
-
-            SysConfig.ExeConfigurationFileMap configFileMap = new SysConfig.ExeConfigurationFileMap();
-            configFileMap.ExeConfigFilename = configFile;
-            SysConfig.Configuration config = null;
-
-            try
-            {
-                config = SysConfig.ConfigurationManager.OpenMappedExeConfiguration(configFileMap, SysConfig.ConfigurationUserLevel.None);
-            }
-            catch (Exception exc)
-            {
-                Logging.Log.Error("Get Configuration", exc);
-                if (File.Exists(configFile))
-                {
-                    string newGUID = Guid.NewGuid().ToString();
-                    string folder = Path.GetDirectoryName(configFile);
-
-                    // back it up before we do anything
-                    File.Copy(configFile, Path.Combine(folder, string.Format("Terminals-{1}-{0}.config", newGUID, DateTime.Now.ToFileTime())));
-
-                    // now delete it
-                    File.Delete(configFile);
-                }
-
-                string templateConfigFile = Properties.Resources.Terminals;
-                using (StreamWriter sr = new StreamWriter(configFile))
-                {
-                    sr.Write(templateConfigFile);
-                }
-
-                config = SysConfig.ConfigurationManager.OpenMappedExeConfiguration(configFileMap, SysConfig.ConfigurationUserLevel.None);
-            }
-
-            return config;
-        }
-
-        private static void MoveAndDeleteFile(string fileName, string tempFileName)
-        {
-            // delete the zerobyte file which is created by default
-            if (File.Exists(tempFileName))
-                File.Delete(tempFileName);
-
-            // move the error file to the temp file
-            File.Move(fileName, tempFileName);
-
-            // if its still hanging around, kill it
-            if (File.Exists(fileName))
-                File.Delete(fileName);
-        }
-
-        private static SysConfig.Configuration ImportConfiguration(string filename)
-        {
-            // get a temp filename to hold the current settings which are failing
-            string tempFile = Path.GetTempFileName();
-
-            MoveAndDeleteFile(filename, tempFile);
-                        
-            // write out the template to work from
-            using (StreamWriter sr = new StreamWriter(filename))
-            {
-                sr.Write(Properties.Resources.Terminals);
-            }
-            
-            // load up the templated config file
-            SysConfig.ExeConfigurationFileMap configFileMap = new SysConfig.ExeConfigurationFileMap();
-            configFileMap.ExeConfigFilename = filename;
-            SysConfig.Configuration c = SysConfig.ConfigurationManager.OpenMappedExeConfiguration(configFileMap, SysConfig.ConfigurationUserLevel.None);
-
-            // get a list of the properties on the Settings object (static props)
-            PropertyInfo[] propList = typeof(Settings).GetProperties();
-
-            // read all the xml from the erroring file
-            XmlDocument doc = new XmlDocument();
-            doc.LoadXml(File.ReadAllText(tempFile));
-            
-            // get the settings root
-            XmlNode root = doc.SelectSingleNode("/configuration/settings");
-            try
-            {
-                // for each setting's attribute
-                foreach (XmlAttribute att in root.Attributes)
-                {
-                    // scan for the related property if any
-                    try
-                    {
-                        foreach (PropertyInfo info in propList)
-                        {
-                            try
-                            {
-                                if (info.Name.ToLower() == att.Name.ToLower())
-                                {
-                                    // found a matching property, try to set it
-                                    string val = att.Value;
-                                    info.SetValue(null, System.Convert.ChangeType(val, info.PropertyType), null);
-                                    break;
-                                }
-                            }
-                            catch (Exception exc)
-                            { // ignore the error
-                                Terminals.Logging.Log.Error("Remapping Settings Inner", exc);
-                            }
-                        }
-                    }
-                    catch (Exception exc)
-                    { // ignore the error
-                        Terminals.Logging.Log.Error("Remapping Settings Outer", exc);
-                    }
-                }
-            }
-            catch (Exception exc)
-            { // ignore the error
-                Terminals.Logging.Log.Error("Remapping Settings Outer Try", exc);
-            }
-
-            XmlNodeList favs = doc.SelectNodes("/configuration/settings/favorites/add");
-            try
-            {
-                foreach (XmlNode fav in favs)
-                {
-                    try
-                    {
-                        FavoriteConfigurationElement newFav = new FavoriteConfigurationElement();
-                        foreach (XmlAttribute att in fav.Attributes)
-                        {
-                            try
-                            {
-                                foreach (PropertyInfo info in newFav.GetType().GetProperties())
-                                {
-                                    try
-                                    {
-                                        if (info.Name.ToLower() == att.Name.ToLower())
-                                        {
-                                            // found a matching property, try to set it
-                                            string val = att.Value;
-                                            if (info.PropertyType.IsEnum)
-                                            {
-                                                info.SetValue(newFav, System.Enum.Parse(info.PropertyType, val), null);
-                                            }
-                                            else
-                                            {
-                                                info.SetValue(newFav, System.Convert.ChangeType(val, info.PropertyType), null);
-                                            }
-
-                                            break;
-                                        }
-                                    }
-                                    catch (Exception exc)
-                                    { // ignore the error
-                                        Terminals.Logging.Log.Error("Remapping Favorites 1", exc);
-                                    }
-                                }
-                            }
-                            catch (Exception exc)
-                            { // ignore the error
-                                Terminals.Logging.Log.Error("Remapping Favorites 2", exc);
-                            }
-                        }
-
-                        Settings.AddFavorite(newFav, false);
-                    }
-                    catch (Exception exc)
-                    { // ignore the error
-                        Terminals.Logging.Log.Error("Remapping Favorites 3", exc);
-                    }
-                }
-            }
-            catch (Exception exc)
-            { // ignore the error
-                Terminals.Logging.Log.Error("Remapping Favorites 4", exc);
-            }
-
-            return c;
-        }
-
-        internal static TerminalsConfigurationSection GetSection()
-        {
-            SysConfig.Configuration configuration = Config;
-            TerminalsConfigurationSection c = null;
-            try
-            {
-                c = (TerminalsConfigurationSection)configuration.GetSection("settings");
-            }
-            catch (Exception exc)
-            {
-                if (exc.Message.Contains("telnet"))
-                {
-                    MessageBox.Show("You need to replace telnetrows, telnetcols, telnetfont, telnetbackcolor, "
-                    + "telnettextcolor, telnetcursorcolor with consolerows, consolecols, consolefont, consolebackcolor, "
-                    + "consoletextcolor, consolecursorcolor");
-                    return null;
-                }
-
-                Logging.Log.Info("Telnet Section Failed", exc);
-                
-                try
-                {
-                    // kick into the import routine
-                    configuration = ImportConfiguration(Program.ConfigurationFileLocation);
-                    configuration = GetConfiguration();
-                    c = (TerminalsConfigurationSection)configuration.GetSection("settings");
-                    if (configuration != null)
-                        MessageBox.Show("Terminals was able to automatically upgrade your existing connections.");
-                }
-                catch (Exception importException)
-                {
-                    Logging.Log.Info("Trying to import connections failed", importException);
-#if !DEBUG
-                    MessageBox.Show(string.Format("Terminals was NOT able to automatically upgrade your existing connections.\r\nError:{0}", importException.Message));
-#endif
-                }
-            }
-
-            return c;
-        }
-
-        private static TerminalsConfigurationSection GetSection(SysConfig.Configuration configuration)
-        {
-            return (TerminalsConfigurationSection)configuration.GetSection("settings");
-        }
+        #region MRU
 
         private static void AddMRUItemConfigurationElement(MRUItemConfigurationElementCollection configurationElementCollection, string name)
         {

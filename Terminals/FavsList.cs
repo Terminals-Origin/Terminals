@@ -266,7 +266,7 @@ namespace Terminals
                     }
                 }
                 Settings.DelayConfigurationSave = false;
-                Settings.Config.Save();
+                Settings.Save();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Credential by Tag Complete.");
@@ -293,7 +293,7 @@ namespace Terminals
                 }
 
                 Settings.DelayConfigurationSave = false;
-                Settings.Config.Save();
+                Settings.Save();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Password by Tag Complete.");
@@ -320,7 +320,7 @@ namespace Terminals
                 }
 
                 Settings.DelayConfigurationSave = false;
-                Settings.Config.Save();
+                Settings.Save();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Domain by Tag Complete.");
@@ -347,7 +347,7 @@ namespace Terminals
                 }
 
                 Settings.DelayConfigurationSave = false;
-                Settings.Config.Save();
+                Settings.Save();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Username by Tag Complete.");
@@ -373,7 +373,7 @@ namespace Terminals
                 }
 
                 Settings.DelayConfigurationSave = false;
-                Settings.Config.Save();
+                Settings.Save();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");

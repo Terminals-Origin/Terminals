@@ -15,10 +15,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                _terminalsConfigurationSection = GetSection();
-                if (_terminalsConfigurationSection == null)
-                    return null;
-                List<string> tags = _terminalsConfigurationSection.Tags.ReadList();
+                List<string> tags = GetSection().Tags.ReadList();
                 tags.Sort();
                 return tags.ToArray();
             }
@@ -56,9 +53,8 @@ namespace Terminals.Configuration
             if (Tags.Contains(tag))
                 return String.Empty;
 
-            SysConfig.Configuration configuration = Config;
-            AddMRUItemConfigurationElement(GetSection(configuration).Tags, tag);
-            SaveImmediatelyIfRequested(configuration);
+            AddMRUItemConfigurationElement(GetSection().Tags, tag);
+            SaveImmediatelyIfRequested();
             return tag;
         }
 
@@ -88,9 +84,8 @@ namespace Terminals.Configuration
         {
             if (AutoCaseTags)
                 tagToDelete = ToTitleCase(tagToDelete);
-            SysConfig.Configuration configuration = Config;
-            DeleteMRUItemConfigurationElement(GetSection(configuration).Tags, tagToDelete);
-            SaveImmediatelyIfRequested(configuration);
+            DeleteMRUItemConfigurationElement(GetSection().Tags, tagToDelete);
+            SaveImmediatelyIfRequested();
             return tagToDelete;
         }
 

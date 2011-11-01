@@ -50,10 +50,9 @@ namespace Terminals.Configuration
 
         private static void EditFavoriteInSettings(FavoriteConfigurationElement favorite, string oldName)
         {
-            SysConfig.Configuration configuration = Config;
-            TerminalsConfigurationSection section = GetSection(configuration);
-            section.Favorites[oldName] = (FavoriteConfigurationElement)favorite.Clone();
-            SaveImmediatelyIfRequested(configuration);
+            TerminalsConfigurationSection section = GetSection();
+            section.Favorites[oldName] = favorite.Clone() as FavoriteConfigurationElement;
+            SaveImmediatelyIfRequested();
         }
 
         public static void DeleteFavorite(string name)
@@ -67,9 +66,8 @@ namespace Terminals.Configuration
 
         private static void DeleteFavoriteFromSettings(string name)
         {
-            SysConfig.Configuration configuration = Config;
-            GetSection(configuration).Favorites.Remove(name);
-            SaveImmediatelyIfRequested(configuration);
+            GetSection().Favorites.Remove(name);
+            SaveImmediatelyIfRequested();
             DeleteFavoriteButton(name);
         }
 
@@ -88,7 +86,7 @@ namespace Terminals.Configuration
             }
 
             DelayConfigurationSave = false;
-            SaveImmediatelyIfRequested(Config);
+            SaveImmediatelyIfRequested();
             DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
             DataDispatcher.Instance.ReportFavoritesDeleted(favorites);
         }
@@ -106,9 +104,8 @@ namespace Terminals.Configuration
         /// </summary>
         private static void AddFavoriteToSettings(FavoriteConfigurationElement favorite, bool showOnToolbar)
         {
-            SysConfig.Configuration configuration = Config;
-            GetSection(configuration).Favorites.Add(favorite);
-            SaveImmediatelyIfRequested(configuration);
+            GetSection().Favorites.Add(favorite);
+            SaveImmediatelyIfRequested();
 
             if (showOnToolbar)
                 AddFavoriteButton(favorite.Name);
@@ -137,7 +134,7 @@ namespace Terminals.Configuration
 
             List<String> addedTags = AddTagsToSettings(tagsToAdd);
             DelayConfigurationSave = false;
-            SaveImmediatelyIfRequested(Config);
+            SaveImmediatelyIfRequested();
 
             DataDispatcher.Instance.ReportTagsAdded(addedTags);
             DataDispatcher.Instance.ReportFavoritesAdded(favorites);
@@ -153,19 +150,17 @@ namespace Terminals.Configuration
 
         public static void SaveDefaultFavorite(FavoriteConfigurationElement favorite)
         {
-            SysConfig.Configuration configuration = Config;
-            FavoriteConfigurationElementCollection defaultFav = GetSection(configuration).DefaultFavorite;
+            FavoriteConfigurationElementCollection defaultFav = GetSection().DefaultFavorite;
             defaultFav.Clear();
             defaultFav.Add(favorite);
-            SaveImmediatelyIfRequested(configuration);
+            SaveImmediatelyIfRequested();
         }
 
         public static void RemoveDefaultFavorite()
         {
-            SysConfig.Configuration configuration = Config;
-            FavoriteConfigurationElementCollection defaultFav = GetSection(configuration).DefaultFavorite;
+            FavoriteConfigurationElementCollection defaultFav = GetSection().DefaultFavorite;
             defaultFav.Clear();
-            SaveImmediatelyIfRequested(configuration);
+            SaveImmediatelyIfRequested();
         }
 
         public static FavoriteConfigurationElementCollection GetFavorites()

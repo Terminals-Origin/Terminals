@@ -89,8 +89,7 @@ namespace Terminals.Configuration
                 //UpgradeFileLocationFromPreviousVersion();
                 fileLocation = CONFIG_FILE; // GetFullFilePath();
                 Settings.GetSection().SavedCredentialsLocation = fileLocation;
-                System.Configuration.Configuration configuration = Settings.Config;
-                configuration.Save();       
+                Settings.Save();       
             }
 
             return fileLocation;

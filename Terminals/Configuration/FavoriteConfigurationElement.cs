@@ -1625,7 +1625,7 @@ namespace Terminals
             }
             set
             {
-                if (((TerminalsConfigurationSection)Settings.Config.GetSection("settings")).AutoCaseTags)
+                if (Settings.AutoCaseTags)
                 {
                     this["tags"] = Settings.ToTitleCase(value);
                 }
