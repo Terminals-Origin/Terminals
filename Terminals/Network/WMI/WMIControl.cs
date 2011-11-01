@@ -513,7 +513,7 @@ namespace WMITestClient
         }
 
         private void QueryButton_Click(object sender, System.EventArgs e)
-        {            
+        {
             AddToHistory();
             this.StilRunning = true;
             this.QueryButton.Enabled = false;
@@ -527,7 +527,9 @@ namespace WMITestClient
                     System.Management.ManagementObjectSearcher searcher;
                     System.Management.ObjectQuery query = new System.Management.ObjectQuery(qry);
 
-                    if (Username != string.Empty && Password != string.Empty && Computer != string.Empty && !Computer.StartsWith(@"\\localhost"))
+
+
+                    if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password) && !string.IsNullOrEmpty(Computer) && !Computer.StartsWith(@"\\localhost"))
                     {
                         System.Management.ConnectionOptions oConn = new System.Management.ConnectionOptions();
                         oConn.Username = Username;
