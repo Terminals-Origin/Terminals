@@ -416,16 +416,8 @@ namespace Terminals.Configuration
         {
             string newKeyMaterial = GetKeyMaterial(newMasterPassword);
             configSection.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
-
-            foreach (FavoriteConfigurationElement favorite in GetFavorites())
-            {
-                favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
-            }
-
-            foreach (CredentialSet credentials in StoredCredentials.Instance.Items)
-            {
-                credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
-            }
+            UpdateFavoritePasswordsByNewKeyMaterial(newKeyMaterial);
+            StoredCredentials.Instance.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
         }
 
         internal static string KeyMaterial

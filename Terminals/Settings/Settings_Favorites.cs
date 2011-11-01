@@ -208,5 +208,13 @@ namespace Terminals.Configuration
         {
             return GetFavorites()[connectionName];
         }
+
+        private static void UpdateFavoritePasswordsByNewKeyMaterial(string newKeyMaterial)
+        {
+            foreach (FavoriteConfigurationElement favorite in GetFavorites())
+            {
+                favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
+            }
+        }
     }
 }

@@ -168,5 +168,15 @@ namespace Terminals.Configuration
 
             cache.Add(toAdd);
         }
+
+        internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
+        {
+          foreach (CredentialSet credentials in cache)
+          {
+            credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+          }
+
+          Save();
+        }
     }
 }
