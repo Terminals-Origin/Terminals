@@ -32,8 +32,19 @@ namespace Terminals
 
             mtx = new Mutex(false, "TerminalsMutex");
 
-            Logging.Log.Info(String.Format("{0} started", Info.TitleVersion));
+            Logging.Log.Info(String.Format("-------------------------------{0} started-------------------------------", Info.TitleVersion));
+
+            //dump out commong/useful debugging data at app start
+            Logging.Log.Info(String.Format("CommandLine:{0}", System.Environment.CommandLine));
+            Logging.Log.Info(String.Format("CurrentDirectory:{0}", System.Environment.CurrentDirectory));
+            Logging.Log.Info(String.Format("MachineName:{0}", System.Environment.MachineName));
+            Logging.Log.Info(String.Format("OSVersion:{0}", System.Environment.OSVersion));
+            Logging.Log.Info(String.Format("ProcessorCount:{0}", System.Environment.ProcessorCount));
+            Logging.Log.Info(String.Format("UserInteractive:{0}", System.Environment.UserInteractive));
+            Logging.Log.Info(String.Format("Version:{0}", System.Environment.Version));
+            Logging.Log.Info(String.Format("WorkingSet:{0}", System.Environment.WorkingSet));
             
+
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -70,6 +81,8 @@ namespace Terminals
             {
                 try
                 {
+
+
                     Application.Run(new MainForm());
                 }
                 catch (Exception exc)
@@ -79,7 +92,7 @@ namespace Terminals
             }
 
             SingleInstanceApplication.Close();
-            Logging.Log.Info(String.Format("{0} stopped", Info.TitleVersion));
+            Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------", Info.TitleVersion));
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
