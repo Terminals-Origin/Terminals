@@ -55,5 +55,10 @@ namespace Terminals
             lblVersion.Text = Program.Info.AboutText;
             this.textBox1.Text = this.textBox1.Text + "\r\nConfig File:\r\n" + Program.ConfigurationFileLocation;
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -75,6 +75,7 @@ namespace Terminals
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "OK";
             this.btnClose.UseVisualStyleBackColor = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // label3
             // 
@@ -98,12 +99,11 @@ namespace Terminals
             // 
             // lblVersion
             // 
-            this.lblVersion.AutoSize = true;
             this.lblVersion.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblVersion.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.lblVersion.Location = new System.Drawing.Point(0, 143);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(358, 13);
+            this.lblVersion.Size = new System.Drawing.Size(451, 13);
             this.lblVersion.TabIndex = 9;
             this.lblVersion.Text = "Terminals (RDP, VNC, VMRC, RAS, ICA Citrix, Telnet and SSH Supported)";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
