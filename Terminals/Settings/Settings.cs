@@ -876,6 +876,20 @@ namespace Terminals.Configuration
             }
         }
 
+        public static string SavedCredentialsLocation
+        {
+            get
+            {
+                return GetSection().SavedCredentialsLocation;
+            }
+
+            set
+            {
+                GetSection().SavedCredentialsLocation = value;
+                SaveImmediatelyIfRequested();
+            }
+        }
+
         #endregion
 
         #region MRU lists

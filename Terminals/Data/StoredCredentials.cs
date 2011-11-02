@@ -83,13 +83,12 @@ namespace Terminals.Configuration
         private static string GetEnsuredCredentialsFileLocation()
         {
             // TODO not configurable location of credentials file (Jiri Pokorny, 08.07.2011)
-            string fileLocation = Settings.GetSection().SavedCredentialsLocation;
+            string fileLocation = Settings.SavedCredentialsLocation;
             if (string.IsNullOrEmpty(fileLocation))
             {
                 //UpgradeFileLocationFromPreviousVersion();
                 fileLocation = CONFIG_FILE; // GetFullFilePath();
-                Settings.GetSection().SavedCredentialsLocation = fileLocation;
-                Settings.Save();       
+                Settings.SavedCredentialsLocation = fileLocation;
             }
 
             return fileLocation;

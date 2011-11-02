@@ -19,7 +19,7 @@ namespace Terminals.Configuration
             if (favorite == null)
                 return;
 
-            DelayConfigurationSave = true;
+            StartDelayedUpdate();
             EditFavoriteInSettings(favorite, oldName);
             bool shownOnToolbar = HasToolbarButton(oldName);
             if (shownOnToolbar && !showOnToolbar)
@@ -29,8 +29,7 @@ namespace Terminals.Configuration
             else if (!shownOnToolbar && showOnToolbar)
                 AddFavoriteButton(favorite.Name);
 
-            DelayConfigurationSave = false;
-            Save();
+            SaveAndFinishDelayedUpdate();
             DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
         }
 
@@ -77,7 +76,7 @@ namespace Terminals.Configuration
                 return;
 
             List<String> deletedTags = new List<string>();
-            DelayConfigurationSave = true;
+            StartDelayedUpdate();
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
                 DeleteFavoriteFromSettings(favorite.Name);
@@ -85,8 +84,7 @@ namespace Terminals.Configuration
                 deletedTags.AddRange(difference);
             }
 
-            DelayConfigurationSave = false;
-            SaveImmediatelyIfRequested();
+            SaveAndFinishDelayedUpdate();
             DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
             DataDispatcher.Instance.ReportFavoritesDeleted(favorites);
         }
@@ -123,7 +121,7 @@ namespace Terminals.Configuration
             if (favorites == null || favorites.Count == 0)
                 return;
 
-            DelayConfigurationSave = true;
+            StartDelayedUpdate();
             List<String> tagsToAdd = new List<string>();
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
@@ -133,8 +131,7 @@ namespace Terminals.Configuration
             }
 
             List<String> addedTags = AddTagsToSettings(tagsToAdd);
-            DelayConfigurationSave = false;
-            SaveImmediatelyIfRequested();
+            SaveAndFinishDelayedUpdate();
 
             DataDispatcher.Instance.ReportTagsAdded(addedTags);
             DataDispatcher.Instance.ReportFavoritesAdded(favorites);

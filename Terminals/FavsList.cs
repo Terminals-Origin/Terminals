@@ -255,21 +255,25 @@ namespace Terminals
 
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Settings.DelayConfigurationSave = true;
-                foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
-                {
-                    FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
-                    if (fav != null)
-                    {
-                        fav.Credential = result.Text;
-                        Settings.EditFavorite(fav.Name, fav);
-                    }
-                }
-                Settings.DelayConfigurationSave = false;
-                Settings.Save();
+                Settings.StartDelayedUpdate();
+                ApplyCredentialsForAllSelectedFavorites(result.Text);
+                Settings.SaveAndFinishDelayedUpdate();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Credential by Tag Complete.");
+            }
+        }
+
+        private void ApplyCredentialsForAllSelectedFavorites(string credentialName)
+        {
+            foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
+            {
+                FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
+                if (fav != null)
+                {
+                    fav.Credential = credentialName;
+                    Settings.EditFavorite(fav.Name, fav);
+                }
             }
         }
 
@@ -281,22 +285,25 @@ namespace Terminals
             {
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Settings.DelayConfigurationSave = true;
-                foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
-                {
-                    FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
-                    if (fav != null)
-                    {
-                        fav.Password = result.Text;
-                        Settings.EditFavorite(fav.Name, fav);
-                    }
-                }
-
-                Settings.DelayConfigurationSave = false;
-                Settings.Save();
+                Settings.StartDelayedUpdate();
+                SetPasswordToAllSelectedFavorites(result.Text);
+                Settings.SaveAndFinishDelayedUpdate();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Password by Tag Complete.");
+            }
+        }
+
+        private void SetPasswordToAllSelectedFavorites(string newPassword)
+        {
+            foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
+            {
+                FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
+                if (fav != null)
+                {
+                    fav.Password = newPassword;
+                    Settings.EditFavorite(fav.Name, fav);
+                }
             }
         }
 
@@ -308,22 +315,25 @@ namespace Terminals
             {
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Settings.DelayConfigurationSave = true;
-                foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
-                {
-                    FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
-                    if (fav != null)
-                    {
-                        fav.DomainName = result.Text;
-                        Settings.EditFavorite(fav.Name, fav);
-                    }
-                }
-
-                Settings.DelayConfigurationSave = false;
-                Settings.Save();
+                Settings.StartDelayedUpdate();
+                ApplyDomainNameToAllSelectedFavorites(result.Text);
+                Settings.SaveAndFinishDelayedUpdate();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Domain by Tag Complete.");
+            }
+        }
+
+        private void ApplyDomainNameToAllSelectedFavorites(string newDomainName)
+        {
+            foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
+            {
+                FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
+                if (fav != null)
+                {
+                    fav.DomainName = newDomainName;
+                    Settings.EditFavorite(fav.Name, fav);
+                }
             }
         }
 
@@ -335,22 +345,25 @@ namespace Terminals
             {
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Settings.DelayConfigurationSave = true;
-                foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
-                {
-                    FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
-                    if (fav != null)
-                    {
-                        fav.UserName = result.Text;
-                        Settings.EditFavorite(fav.Name, fav);
-                    }
-                }
-
-                Settings.DelayConfigurationSave = false;
-                Settings.Save();
+                Settings.StartDelayedUpdate();
+                ApplyUserNameToAllSelectedFavorites(result.Text);
+                Settings.SaveAndFinishDelayedUpdate();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Username by Tag Complete.");
+            }
+        }
+
+        private void ApplyUserNameToAllSelectedFavorites(string newUserName)
+        {
+            foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
+            {
+                FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
+                if (fav != null)
+                {
+                    fav.UserName = newUserName;
+                    Settings.EditFavorite(fav.Name, fav);
+                }
             }
         }
 
@@ -362,21 +375,24 @@ namespace Terminals
             {
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Settings.DelayConfigurationSave = true;
-                foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
-                {
-                    FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
-                    if (fav != null)
-                    {
-                        Settings.DeleteFavorite(fav.Name);
-                    }
-                }
-
-                Settings.DelayConfigurationSave = false;
-                Settings.Save();
+                Settings.StartDelayedUpdate();
+                DeleteAllSelectedFavorites();
+                Settings.SaveAndFinishDelayedUpdate();
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");
+            }
+        }
+
+        private void DeleteAllSelectedFavorites()
+        {
+            foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
+            {
+                FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
+                if (fav != null)
+                {
+                    Settings.DeleteFavorite(fav.Name);
+                }
             }
         }
 

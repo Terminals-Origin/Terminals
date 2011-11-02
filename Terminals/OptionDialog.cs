@@ -149,9 +149,8 @@ namespace Terminals.Forms
         {
             try
             {
-                Settings.DelayConfigurationSave = true;
+                Settings.StartDelayedUpdate();
                 SaveAllPanels();
-                Settings.Save();
             }
             catch (Exception exception)
             {
@@ -160,7 +159,7 @@ namespace Terminals.Forms
             }
             finally
             {
-                Settings.DelayConfigurationSave = false;
+                Settings.SaveAndFinishDelayedUpdate();
             }
         }
 

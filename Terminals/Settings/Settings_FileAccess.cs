@@ -10,7 +10,12 @@ namespace Terminals.Configuration
     internal static partial class Settings
     {
         private static SysConfig.Configuration _config = null;
-        internal static bool DelayConfigurationSave { get; set; }
+
+        /// <summary>
+        /// Flag informing, that configuration shouldnt be saved imediately, but after explicit call
+        /// This increases performance for 
+        /// </summary>
+        internal static bool delayConfigurationSave;
 
         private static SysConfig.Configuration Config
         {
@@ -32,9 +37,28 @@ namespace Terminals.Configuration
             Config.Save();
         }
 
+        /// <summary>
+        /// Prevents save configuration after each change. After this call, no settings are saved
+        /// into config file, until you call SaveAndFinishDelayedUpdate.
+        /// This dramatically increases performance. Use this method for batch updates.
+        /// </summary>
+        internal static void StartDelayedUpdate()
+        {
+            delayConfigurationSave = true;
+        }
+
+        /// <summary>
+        /// Stops prevent write changes into config file and immediately writes last state.
+        /// </summary>
+        internal static void SaveAndFinishDelayedUpdate()
+        {
+            delayConfigurationSave = false;
+            SaveImmediatelyIfRequested();
+        }
+
         private static void SaveImmediatelyIfRequested()
         {
-            if (!DelayConfigurationSave)
+            if (!delayConfigurationSave)
                 Config.Save();
         }
 
@@ -129,11 +153,7 @@ namespace Terminals.Configuration
 
             MoveAndDeleteFile(ConfigFile, tempFile);
             SaveDefaultConfigFile();
-
-            // load up the templated config file
-            SysConfig.ExeConfigurationFileMap configFileMap = new SysConfig.ExeConfigurationFileMap();
-            configFileMap.ExeConfigFilename = ConfigFile;
-            SysConfig.Configuration c = SysConfig.ConfigurationManager.OpenMappedExeConfiguration(configFileMap, SysConfig.ConfigurationUserLevel.None);
+            SysConfig.Configuration c = OpenConfiguration();
 
             // get a list of the properties on the Settings object (static props)
             PropertyInfo[] propList = typeof(Settings).GetProperties();
@@ -241,7 +261,7 @@ namespace Terminals.Configuration
             return c;
         }
 
-        internal static TerminalsConfigurationSection GetSection()
+        private static TerminalsConfigurationSection GetSection()
         {
             try
             {
