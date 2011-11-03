@@ -5,6 +5,7 @@ using Terminals.Configuration;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Integration;
+using Terminals.Integration.Import;
 using Terminals.Network;
 
 namespace Terminals
@@ -209,6 +210,9 @@ namespace Terminals
             exportFrom.Show();
         }
 
+        /// <summary>
+        /// Opens file dialog to import favorites and imports them from selected files.
+        /// </summary>
         internal void CallImport()
         {
             if (ImportOpenFileDialog.ShowDialog() == DialogResult.OK)
@@ -217,14 +221,18 @@ namespace Terminals
                 this.Focus();
                 this.Refresh();
                 this.Cursor = Cursors.WaitCursor;
+
                 List<FavoriteConfigurationElement> favoritesToImport = Integrations.Importers.ImportFavorites(filenames);
-
-                var managedImport = new ImportWithDialogs(this, false);
-                Boolean imported = managedImport.Import(favoritesToImport);
-
-                if (imported)
-                    this.UpdateFavoritesBindingSource();
+                ImportFavoritesWithManagerImport(favoritesToImport);
             }
+        }
+
+        private void ImportFavoritesWithManagerImport(List<FavoriteConfigurationElement> favoritesToImport)
+        {
+            var managedImport = new ImportWithDialogs(this, false);
+            bool imported = managedImport.Import(favoritesToImport);
+            if (imported)
+                    this.UpdateFavoritesBindingSource();
         }
 
         /// <summary>
@@ -268,6 +276,12 @@ namespace Terminals
         private void dataGridFavorites_SelectionChanged(object sender, EventArgs e)
         {
             UpdateCountLabels();
+        }
+
+        private void btnRegistryImport_Click(object sender, EventArgs e)
+        {
+            List<FavoriteConfigurationElement> favoritesToImport = ImportRdpRegistry.Import();
+            ImportFavoritesWithManagerImport(favoritesToImport);
         }
     }
 }

@@ -150,6 +150,8 @@ namespace Terminals
             this.lblSelectedCount = new System.Windows.Forms.Label();
             this.dataGridFavorites = new Terminals.SortableUnboundGrid();
             this.bsFavorites = new System.Windows.Forms.BindingSource(this.components);
+            this.btnRegistryImport = new System.Windows.Forms.Button();
+            this.toolTips = new System.Windows.Forms.ToolTip(this.components);
             this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colComputer = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colProtocol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -168,7 +170,7 @@ namespace Terminals
             this.btnClose.Location = new System.Drawing.Point(613, 324);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(106, 25);
-            this.btnClose.TabIndex = 11;
+            this.btnClose.TabIndex = 12;
             this.btnClose.Text = "Clo&se";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
@@ -239,11 +241,13 @@ namespace Terminals
             // ImportButton
             // 
             this.ImportButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ImportButton.Location = new System.Drawing.Point(613, 234);
+            this.ImportButton.Location = new System.Drawing.Point(613, 263);
             this.ImportButton.Name = "ImportButton";
             this.ImportButton.Size = new System.Drawing.Size(105, 23);
-            this.ImportButton.TabIndex = 9;
+            this.ImportButton.TabIndex = 10;
             this.ImportButton.Text = "&Import...";
+            this.toolTips.SetToolTip(this.ImportButton, "Opens file dialog and allows you to import connections from file created by anoth" +
+        "er tool.");
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
@@ -260,6 +264,8 @@ namespace Terminals
             this.ActiveDirectoryButton.Size = new System.Drawing.Size(105, 23);
             this.ActiveDirectoryButton.TabIndex = 7;
             this.ActiveDirectoryButton.Text = "Scan &AD";
+            this.toolTips.SetToolTip(this.ActiveDirectoryButton, "Opens dialog, where you can search and import favorites\r\nfrom your active directo" +
+        "ry domain.");
             this.ActiveDirectoryButton.UseVisualStyleBackColor = true;
             this.ActiveDirectoryButton.Click += new System.EventHandler(this.activeDirectoryToolStripMenuItem_Click);
             // 
@@ -271,17 +277,20 @@ namespace Terminals
             this.ScanNetworkButton.Size = new System.Drawing.Size(105, 23);
             this.ScanNetworkButton.TabIndex = 8;
             this.ScanNetworkButton.Text = "Scan &Network";
+            this.toolTips.SetToolTip(this.ScanNetworkButton, "Opens dialog, where you can search your network\r\nin defined IP address range for " +
+        "selected services \r\nand import found favorites.");
             this.ScanNetworkButton.UseVisualStyleBackColor = true;
             this.ScanNetworkButton.Click += new System.EventHandler(this.networkDetectionToolStripMenuItem_Click);
             // 
             // btnExport
             // 
             this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExport.Location = new System.Drawing.Point(613, 264);
+            this.btnExport.Location = new System.Drawing.Point(613, 292);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(105, 23);
-            this.btnExport.TabIndex = 10;
+            this.btnExport.TabIndex = 11;
             this.btnExport.Text = "&Export...";
+            this.toolTips.SetToolTip(this.btnExport, "Opens file dialog and allows you to export  connections in file.");
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
@@ -964,15 +973,26 @@ namespace Terminals
             this.dataGridFavorites.Size = new System.Drawing.Size(595, 324);
             this.dataGridFavorites.TabIndex = 12;
             this.dataGridFavorites.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridFavorites_CellBeginEdit);
+            this.dataGridFavorites.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridFavorites_DoubleClick);
             this.dataGridFavorites.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridFavorites_CellEndEdit);
             this.dataGridFavorites.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridFavorites_ColumnHeaderMouseClick);
             this.dataGridFavorites.SelectionChanged += new System.EventHandler(this.dataGridFavorites_SelectionChanged);
-            this.dataGridFavorites.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridFavorites_DoubleClick);
             // 
             // bsFavorites
             // 
             this.bsFavorites.DataSource = typeof(Terminals.FavoriteConfigurationElement);
             this.bsFavorites.Sort = "";
+            // 
+            // btnRegistryImport
+            // 
+            this.btnRegistryImport.Location = new System.Drawing.Point(613, 234);
+            this.btnRegistryImport.Name = "btnRegistryImport";
+            this.btnRegistryImport.Size = new System.Drawing.Size(105, 23);
+            this.btnRegistryImport.TabIndex = 9;
+            this.btnRegistryImport.Text = "Scan RDP registry";
+            this.toolTips.SetToolTip(this.btnRegistryImport, resources.GetString("btnRegistryImport.ToolTip"));
+            this.btnRegistryImport.UseVisualStyleBackColor = true;
+            this.btnRegistryImport.Click += new System.EventHandler(this.btnRegistryImport_Click);
             // 
             // colName
             // 
@@ -1036,6 +1056,7 @@ namespace Terminals
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(726, 361);
+            this.Controls.Add(this.btnRegistryImport);
             this.Controls.Add(this.lblSelectedCount);
             this.Controls.Add(this.lblConnectionCount);
             this.Controls.Add(this.dataGridFavorites);
@@ -1191,6 +1212,8 @@ namespace Terminals
         private System.Windows.Forms.DataGridViewTextBoxColumn currentConfigurationDataGridViewTextBoxColumn;
         private System.Windows.Forms.Label lblConnectionCount;
         private System.Windows.Forms.Label lblSelectedCount;
+        private System.Windows.Forms.Button btnRegistryImport;
+        private System.Windows.Forms.ToolTip toolTips;
         private System.Windows.Forms.DataGridViewTextBoxColumn colName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colComputer;
         private System.Windows.Forms.DataGridViewTextBoxColumn colProtocol;
