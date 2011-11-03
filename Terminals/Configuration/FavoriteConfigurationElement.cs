@@ -913,9 +913,12 @@ namespace Terminals
         {
             get
             {
-                CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
-                if (cred != null)
-                    return cred.Username;
+                if (!string.IsNullOrEmpty(Credential))
+                {
+                    CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
+                    if (cred != null)
+                        return cred.Username;
+                }
 
                 return (String)this["userName"];
             }

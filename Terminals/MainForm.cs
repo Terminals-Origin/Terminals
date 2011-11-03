@@ -26,7 +26,7 @@ namespace Terminals
     internal partial class MainForm : Form
     {
         #region Declarations
-        
+
         public delegate void ReleaseIsAvailable(FavoriteConfigurationElement ReleaseFavorite);
         public static event ReleaseIsAvailable OnReleaseIsAvailable;
 
@@ -117,11 +117,11 @@ namespace Terminals
             try
             {
                 _mainForm = this;
-
                 _specialCommandsMIV = new MethodInvoker(LoadSpecialCommands);
 
                 ShowWizardAndReloadSpecialCommands();
-
+                Settings.StartDelayedUpdate();
+                
                 // Set default font type by Windows theme to use for all controls on form
                 this.Font = SystemFonts.IconTitleFont;
                 this._formSettings = new FormSettings(this);
@@ -196,8 +196,6 @@ namespace Terminals
                 //settings file doesnt exist, wizard!
                 using (FirstRunWizard wzrd = new FirstRunWizard())
                     wzrd.ShowDialog(this);
-
-                Settings.ShowWizard = false;
             }
             else
             {
@@ -856,6 +854,7 @@ namespace Terminals
             }
 
             this.rebuildShortcutsToolStripMenuItem_Click(null, null);
+            Settings.SaveAndFinishDelayedUpdate();
         }
 
         #endregion

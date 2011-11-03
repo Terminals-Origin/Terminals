@@ -8,12 +8,12 @@ using Terminals.Wizard;
 
 namespace Terminals
 {
-    internal enum WizardForms 
-    { 
-        Intro, 
-        MasterPassword, 
-        DefaultCredentials, 
-        Options, 
+    internal enum WizardForms
+    {
+        Intro,
+        MasterPassword,
+        DefaultCredentials,
+        Options,
         Scanner
     }
 
@@ -38,6 +38,7 @@ namespace Terminals
             IntroForm frm = new IntroForm();
             frm.Dock = DockStyle.Fill;
             this.panel1.Controls.Add(frm);
+            Settings.StartDelayedUpdate();
         }
 
         private void nextButton_Click(object sender, EventArgs e)
@@ -73,23 +74,19 @@ namespace Terminals
 
         private void FinishOptions()
         {
-            Settings.MinimizeToTray = this.co.MinimizeToTray;
-            Settings.SingleInstance = this.co.AllowOnlySingleInstance;
-            Settings.ShowConfirmDialog = this.co.WarnOnDisconnect;
-            Settings.EnableCaptureToClipboard = this.co.EnableCaptureToClipboard;
-            Settings.EnableCaptureToFolder = this.co.EnableCaptureToFolder;
-            Settings.AutoSwitchOnCapture = this.co.AutoSwitchOnCapture;
-
             try
             {
-                if (this.co.LoadDefaultShortcuts)
-                    Settings.SpecialCommands = SpecialCommandsWizard.LoadSpecialCommands();                   
+                ApplySettings();
+                StartImportIfRequested();
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
-                Logging.Log.Error("Loading default shortcuts in the wizard.", exc);
+                Logging.Log.Error("Apply settings in the first run wizard failed.", exc);
             }
+        }
 
+        private void StartImportIfRequested()
+        {
             if (this.co.ImportRDPConnections)
             {
                 this.nextButton.Enabled = false;
@@ -105,6 +102,19 @@ namespace Terminals
                 this.rdp.CancelDiscovery();
                 this.Hide();
             }
+        }
+
+        private void ApplySettings()
+        {
+            Settings.MinimizeToTray = this.co.MinimizeToTray;
+            Settings.SingleInstance = this.co.AllowOnlySingleInstance;
+            Settings.ShowConfirmDialog = this.co.WarnOnDisconnect;
+            Settings.EnableCaptureToClipboard = this.co.EnableCaptureToClipboard;
+            Settings.EnableCaptureToFolder = this.co.EnableCaptureToFolder;
+            Settings.AutoSwitchOnCapture = this.co.AutoSwitchOnCapture;
+
+            if (this.co.LoadDefaultShortcuts)
+                Settings.SpecialCommands = SpecialCommandsWizard.LoadSpecialCommands();
         }
 
         private void SwitchToOptionsFromCredentials()
@@ -164,14 +174,21 @@ namespace Terminals
 
         private void FirstRunWizard_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (rdp.DiscoveredConnections.Count > 0)
+            Settings.ShowWizard = false;
+            Settings.SaveAndFinishDelayedUpdate();
+            ImportDiscoveredFavorites();
+        }
+
+        private void ImportDiscoveredFavorites()
+        {
+            if (this.rdp.DiscoveredConnections.Count > 0)
             {
                 String message = String.Format("Automatic Discovery was able to find {0} connections.\r\n" +
-                                               "Would you like to add them to your connections list?",
-                                                rdp.DiscoveredConnections.Count);
+                  "Would you like to add them to your connections list?",
+                  this.rdp.DiscoveredConnections.Count);
                 if (MessageBox.Show(message, "Terminals Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    List<FavoriteConfigurationElement> favoritesToImport = rdp.DiscoveredConnections.ToList();
+                    List<FavoriteConfigurationElement> favoritesToImport = this.rdp.DiscoveredConnections.ToList();
                     var managedImport = new ImportWithDialogs(this, false);
                     managedImport.Import(favoritesToImport);
                 }

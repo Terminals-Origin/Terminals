@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using SysConfig = System.Configuration;
 using System.Reflection;
 using System.Windows.Forms;
@@ -10,6 +12,12 @@ namespace Terminals.Configuration
     internal static partial class Settings
     {
         private static SysConfig.Configuration _config = null;
+        private static FileSystemWatcher fileWatcher;
+
+        /// <summary>
+        /// Prevent concurent updates on config file by another program
+        /// </summary>
+        private static Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Settings");
 
         /// <summary>
         /// Flag informing, that configuration shouldnt be saved imediately, but after explicit call
@@ -17,12 +25,33 @@ namespace Terminals.Configuration
         /// </summary>
         internal static bool delayConfigurationSave;
 
+        private static void InitializeFileWatcher()
+        {
+            fileWatcher = new FileSystemWatcher();
+            fileWatcher.Path = Path.GetDirectoryName(ConfigFile);
+            fileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName |
+                                       NotifyFilters.CreationTime | NotifyFilters.Size;
+            fileWatcher.Filter = "Terminals.config";
+            fileWatcher.Changed += new FileSystemEventHandler(ConfigFileChanged);
+            fileWatcher.EnableRaisingEvents = true;
+        }
+
+        private static void ConfigFileChanged(object sender, FileSystemEventArgs e)
+        {
+            // todo merge changes from reloaded file
+            Logging.Log.Debug("Config file change by another application (or Terminals instance) detected!");
+        }
+
         private static SysConfig.Configuration Config
         {
             get
             {
                 if (_config == null)
+                {
+                    InitializeFileWatcher();
                     _config = GetConfiguration();
+                }
+
                 return _config;
             }
         }
@@ -30,11 +59,6 @@ namespace Terminals.Configuration
         internal static void ForceReload()
         {
             _config = GetConfiguration();
-        }
-
-        internal static void Save()
-        {
-            Config.Save();
         }
 
         /// <summary>
@@ -49,6 +73,7 @@ namespace Terminals.Configuration
 
         /// <summary>
         /// Stops prevent write changes into config file and immediately writes last state.
+        /// Usually the changes are saved immediately
         /// </summary>
         internal static void SaveAndFinishDelayedUpdate()
         {
@@ -59,7 +84,29 @@ namespace Terminals.Configuration
         private static void SaveImmediatelyIfRequested()
         {
             if (!delayConfigurationSave)
-                Config.Save();
+            {
+                try
+                {
+                    fileLock.WaitOne();  // lock the file for changes by other application instance
+                    Save();
+                }
+                catch (Exception exception)
+                {
+                    Logging.Log.Error("Config file access failed by save.", exception);
+                }
+                finally
+                {
+                    fileLock.ReleaseMutex();
+                }
+            }
+        }
+
+        private static void Save()
+        {
+            fileWatcher.EnableRaisingEvents = false; // dont lisen on my own change
+            Config.Save();
+            fileWatcher.EnableRaisingEvents = true;
+            Debug.WriteLine(string.Format("Termianls.config file saved."));
         }
 
         private static SysConfig.Configuration GetConfiguration()
@@ -94,7 +141,10 @@ namespace Terminals.Configuration
         private static SysConfig.Configuration OpenConfiguration()
         {
             SysConfig.ExeConfigurationFileMap configFileMap = CreateConfigFileMap();
-            return SysConfig.ConfigurationManager.OpenMappedExeConfiguration(configFileMap, SysConfig.ConfigurationUserLevel.None);
+            fileLock.WaitOne();
+            SysConfig.Configuration config = SysConfig.ConfigurationManager.OpenMappedExeConfiguration(configFileMap, SysConfig.ConfigurationUserLevel.None);
+            fileLock.ReleaseMutex();
+            return config;
         }
 
         private static string ConfigFile
@@ -128,7 +178,9 @@ namespace Terminals.Configuration
             string templateConfigFile = Properties.Resources.Terminals;
             using (StreamWriter sr = new StreamWriter(ConfigFile))
             {
+                fileLock.WaitOne();
                 sr.Write(templateConfigFile);
+                fileLock.ReleaseMutex();
             }
         }
 
