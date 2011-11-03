@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+using Terminals.Configuration;
 
 namespace Terminals
 {
@@ -53,7 +54,8 @@ namespace Terminals
         private void AboutForm_Load(object sender, EventArgs e)
         {
             lblVersion.Text = Program.Info.AboutText;
-            this.textBox1.Text = this.textBox1.Text + "\r\nConfig File:\r\n" + Program.ConfigurationFileLocation;
+            this.textBox1.Text = string.Format("{0}\r\nConfig File:\r\n{1}",
+                this.textBox1.Text, Settings.ConfigurationFileLocation); 
         }
 
         private void btnClose_Click(object sender, EventArgs e)

@@ -7,6 +7,8 @@ namespace Terminals.CaptureManager
 {
     public class Capture
     {
+        internal static string FlickrAPIKey = "9362619635c6f6c20e7c14fe4b67c2a0";
+        internal static string FlickrSharedSecretKey = "ac8f3c60be0812b6";
         private System.Drawing.Image image;
         private string comments;
         private string filepath;
@@ -28,11 +30,16 @@ namespace Terminals.CaptureManager
             }
         }
 
+        internal static Flickr CreateFlickerInstance()
+        {
+            return new Flickr(FlickrAPIKey, FlickrSharedSecretKey);
+        }
+
         public void PostToFlickr()
         {
             if (Settings.FlickrToken != string.Empty)
             {
-                Flickr flckr = new Flickr(Program.FlickrAPIKey, Program.FlickrSharedSecretKey);
+                Flickr flckr = CreateFlickerInstance();
                 flckr.AuthToken = Settings.FlickrToken;
                 string c = this.Comments;
                 if (c == null) c = string.Empty;

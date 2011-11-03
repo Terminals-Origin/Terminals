@@ -27,8 +27,7 @@ namespace Terminals.Forms
 
         private void AuthorizeFlickrButton_Click(object sender, EventArgs e)
         {
-            // Create Flickr instance    
-            Flickr flickr = new Flickr(Program.FlickrAPIKey, Program.FlickrSharedSecretKey);
+            Flickr flickr = CaptureManager.Capture.CreateFlickerInstance();
             // Get Frob        
             this.tempFrob = flickr.AuthGetFrob();
             // Calculate the URL at Flickr to redirect the user to    
@@ -40,8 +39,7 @@ namespace Terminals.Forms
 
         private void CompleteAuthButton_Click(object sender, EventArgs e)
         {
-            // Create Flickr instance
-            Flickr flickr = new Flickr(Program.FlickrAPIKey, Program.FlickrSharedSecretKey);
+            Flickr flickr = CaptureManager.Capture.CreateFlickerInstance();
             try
             {
                 // use the temporary Frob to get the authentication

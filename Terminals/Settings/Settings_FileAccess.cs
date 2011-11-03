@@ -11,6 +11,25 @@ namespace Terminals.Configuration
 {
     internal static partial class Settings
     {
+        internal const String CONFIG_FILE_NAME = "Terminals.config";
+
+        private static string configurationFileLocation;
+        internal static string ConfigurationFileLocation
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(configurationFileLocation))
+                {
+                    string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+                    string assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
+                    configurationFileLocation = Path.Combine(assemblyDirectory, CONFIG_FILE_NAME);
+                }
+                
+                return configurationFileLocation;
+            }
+            set { configurationFileLocation = value; }
+        }
+
         private static SysConfig.Configuration _config = null;
         private static FileSystemWatcher fileWatcher;
 
@@ -28,10 +47,10 @@ namespace Terminals.Configuration
         private static void InitializeFileWatcher()
         {
             fileWatcher = new FileSystemWatcher();
-            fileWatcher.Path = Path.GetDirectoryName(ConfigFile);
+            fileWatcher.Path = Path.GetDirectoryName(ConfigurationFileLocation);
             fileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName |
                                        NotifyFilters.CreationTime | NotifyFilters.Size;
-            fileWatcher.Filter = "Terminals.config";
+            fileWatcher.Filter = CONFIG_FILE_NAME;
             fileWatcher.Changed += new FileSystemEventHandler(ConfigFileChanged);
             fileWatcher.EnableRaisingEvents = true;
         }
@@ -127,14 +146,14 @@ namespace Terminals.Configuration
 
         private static void CreateConfigFileIfNotExist()
         {
-            if (!File.Exists(ConfigFile))
+            if (!File.Exists(ConfigurationFileLocation))
                 SaveDefaultConfigFile();
         }
 
         private static SysConfig.ExeConfigurationFileMap CreateConfigFileMap()
         {
             SysConfig.ExeConfigurationFileMap configFileMap = new SysConfig.ExeConfigurationFileMap();
-            configFileMap.ExeConfigFilename = ConfigFile;
+            configFileMap.ExeConfigFilename = ConfigurationFileLocation;
             return configFileMap;
         }
 
@@ -147,27 +166,22 @@ namespace Terminals.Configuration
             return config;
         }
 
-        private static string ConfigFile
-        {
-            get { return Program.ConfigurationFileLocation; }
-        }
-
         private static void BackUpConfigFile()
         {
-            if (File.Exists(ConfigFile))
+            if (File.Exists(ConfigurationFileLocation))
             {
                 string backupFileName = GetBackupFileName();
                 // back it up before we do anything
-                File.Copy(ConfigFile, backupFileName);
+                File.Copy(ConfigurationFileLocation, backupFileName);
                 // now delete it
-                File.Delete(ConfigFile);
+                File.Delete(ConfigurationFileLocation);
             }
         }
 
         private static string GetBackupFileName()
         {
             string newGUID = Guid.NewGuid().ToString();
-            string folder = Path.GetDirectoryName(ConfigFile);
+            string folder = Path.GetDirectoryName(ConfigurationFileLocation);
             long fileDate = DateTime.Now.ToFileTime();
             string backupFile = string.Format("Terminals-{1}-{0}.config", newGUID, fileDate);
             return Path.Combine(folder, backupFile);
@@ -176,7 +190,7 @@ namespace Terminals.Configuration
         private static void SaveDefaultConfigFile()
         {
             string templateConfigFile = Properties.Resources.Terminals;
-            using (StreamWriter sr = new StreamWriter(ConfigFile))
+            using (StreamWriter sr = new StreamWriter(ConfigurationFileLocation))
             {
                 fileLock.WaitOne();
                 sr.Write(templateConfigFile);
@@ -203,7 +217,7 @@ namespace Terminals.Configuration
             // get a temp filename to hold the current settings which are failing
             string tempFile = Path.GetTempFileName();
 
-            MoveAndDeleteFile(ConfigFile, tempFile);
+            MoveAndDeleteFile(ConfigurationFileLocation, tempFile);
             SaveDefaultConfigFile();
             SysConfig.Configuration c = OpenConfiguration();
 

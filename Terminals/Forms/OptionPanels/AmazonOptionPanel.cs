@@ -11,7 +11,6 @@ namespace Terminals.Forms
 {
     internal partial class AmazonOptionPanel : UserControl, IOptionPanel
     {
-        private const String AMAZON_FILE = "Terminals.config";
         private const String AMAZON_MESSAGETITLE = "Amazon S3 Backup";
 
         /// <summary>
@@ -169,8 +168,8 @@ namespace Terminals.Forms
             try
             {
                 PutObjectRequest request = new PutObjectRequest();
-                request.WithBucketName(this.BucketName).WithKey(AMAZON_FILE)
-                    .WithFilePath(Program.ConfigurationFileLocation);
+                request.WithBucketName(this.BucketName).WithKey(Settings.CONFIG_FILE_NAME)
+                    .WithFilePath(Settings.ConfigurationFileLocation);
 
                 client.PutObject(request);
 
@@ -190,11 +189,11 @@ namespace Terminals.Forms
             {
                 GetObjectRequest request = new GetObjectRequest()
                     .WithBucketName(this.BucketName)
-                    .WithKey(AMAZON_FILE);
+                    .WithKey(Settings.CONFIG_FILE_NAME);
 
                 using (GetObjectResponse response = client.GetObject(request))
                 {
-                    response.WriteResponseStreamToFile(Program.ConfigurationFileLocation);
+                    response.WriteResponseStreamToFile(Settings.ConfigurationFileLocation);
                     Settings.ForceReload();
                 }
 

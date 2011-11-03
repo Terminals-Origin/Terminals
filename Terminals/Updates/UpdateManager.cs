@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Security;
 using System.Security.Cryptography;
 using Terminals.Configuration;
 
@@ -164,7 +162,7 @@ namespace Terminals.Updates
                                                     finalFolder = parent.FullName;
                                                 }
 
-                                                File.Copy("Terminals.config", Path.Combine(finalFolder, "Terminals.config"), true);
+                                                File.Copy(Settings.CONFIG_FILE_NAME, Path.Combine(finalFolder, Settings.CONFIG_FILE_NAME), true);
                                                 //System.IO.File.Copy(Settings.ToolStripSettingsFile, System.IO.Path.Combine(finalFolder, Settings.ToolStripSettingsFile), true);
                                                 File.Copy("Terminals.log4net.config", Path.Combine(finalFolder, "Terminals.log4net.config"), true);
 

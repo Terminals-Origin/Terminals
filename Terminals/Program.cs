@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Resources;
 using System.Threading;
@@ -9,16 +11,11 @@ using Terminals.Updates;
 
 namespace Terminals
 {
-    static partial class Program
+    internal static partial class Program
     {
         private static string TerminalsVersion = "2.0 Beta";
         
         public static Mutex mtx;
-
-        public static string FlickrAPIKey = "9362619635c6f6c20e7c14fe4b67c2a0";
-        public static string FlickrSharedSecretKey = "ac8f3c60be0812b6";
-        public static string ConfigurationFileLocation = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), @"Terminals.config");
-
         public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", typeof(MainForm).Assembly);
 
         /// <summary>
@@ -26,29 +23,16 @@ namespace Terminals
         /// </summary>
         [STAThread]
         [ComVisible(true)]
-        static void Main()
+        internal static void Main()
         {
             Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
-
             mtx = new Mutex(false, "TerminalsMutex");
 
-            Logging.Log.Info(String.Format("-------------------------------{0} started-------------------------------", Info.TitleVersion));
+            Logging.Log.Info(String.Format("-------------------------------{0} started-------------------------------", 
+                Info.TitleVersion));
 
-            //dump out commong/useful debugging data at app start
-            Logging.Log.Info(String.Format("CommandLine:{0}", System.Environment.CommandLine));
-            Logging.Log.Info(String.Format("CurrentDirectory:{0}", System.Environment.CurrentDirectory));
-            Logging.Log.Info(String.Format("MachineName:{0}", System.Environment.MachineName));
-            Logging.Log.Info(String.Format("OSVersion:{0}", System.Environment.OSVersion));
-            Logging.Log.Info(String.Format("ProcessorCount:{0}", System.Environment.ProcessorCount));
-            Logging.Log.Info(String.Format("UserInteractive:{0}", System.Environment.UserInteractive));
-            Logging.Log.Info(String.Format("Version:{0}", System.Environment.Version));
-            Logging.Log.Info(String.Format("WorkingSet:{0}", System.Environment.WorkingSet));
-            
-
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            
+            LogGeneralProperties();
+            SetApplicationProperties();
             ParseCommandline();
 
             if (ReuseExistingInstance() && SingleInstanceApplication.NotifyExistingInstance(Environment.GetCommandLineArgs()))
@@ -62,37 +46,63 @@ namespace Terminals
             // Check for available application updates
             UpdateManager.CheckForUpdates();
 
-            // Check for Terminals master password
+            StartMainForm();
+
+            SingleInstanceApplication.Close();
+            Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
+                Info.TitleVersion));
+        }
+
+        private static void StartMainForm()
+        {
             if (Settings.IsMasterPasswordDefined)
             {
-                RequestPassword rp = new RequestPassword();
-                DialogResult result = rp.ShowDialog();
-                if (result == DialogResult.Cancel)
+                using (RequestPassword requestPassword = new RequestPassword())
                 {
-                    Application.Exit();
-                }
-                else
-                {
-                    rp.Dispose();
-                    Application.Run(new MainForm());
+                    if (requestPassword.ShowDialog() == DialogResult.Cancel)
+                        Application.Exit();
+                    else
+                        RunMainForm();
                 }
             }
             else
             {
-                try
-                {
-
-
-                    Application.Run(new MainForm());
-                }
-                catch (Exception exc)
-                {
-                    Logging.Log.Fatal("Main Form Execption", exc);
-                }
+                RunMainForm();
             }
+        }
 
-            SingleInstanceApplication.Close();
-            Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------", Info.TitleVersion));
+        private static void RunMainForm()
+        {
+            try
+            {
+                Application.Run(new MainForm());
+            }
+            catch (Exception exc)
+            {
+                Logging.Log.Fatal("Main Form Execption", exc);
+            }
+        }
+
+        /// <summary>
+        /// dump out commong/useful debugging data at app start
+        /// </summary>
+        private static void LogGeneralProperties() 
+        {
+            Logging.Log.Info(String.Format("CommandLine:{0}", Environment.CommandLine));
+            Logging.Log.Info(String.Format("CurrentDirectory:{0}", Environment.CurrentDirectory));
+            Logging.Log.Info(String.Format("MachineName:{0}", Environment.MachineName));
+            Logging.Log.Info(String.Format("OSVersion:{0}", Environment.OSVersion));
+            Logging.Log.Info(String.Format("ProcessorCount:{0}", Environment.ProcessorCount));
+            Logging.Log.Info(String.Format("UserInteractive:{0}", Environment.UserInteractive));
+            Logging.Log.Info(String.Format("Version:{0}", Environment.Version));
+            Logging.Log.Info(String.Format("WorkingSet:{0}", Environment.WorkingSet));
+        }
+
+        private static void SetApplicationProperties()
+        {
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
         }
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
@@ -120,7 +130,7 @@ namespace Terminals
             CommandLine.Parser.ParseArguments(cmdLineArgs, MainForm.CommandLineArgs);
             if (MainForm.CommandLineArgs.config != null && MainForm.CommandLineArgs.config != String.Empty)
             {
-                ConfigurationFileLocation = MainForm.CommandLineArgs.config;
+                Settings.ConfigurationFileLocation = MainForm.CommandLineArgs.config;
             }
         }
     }
