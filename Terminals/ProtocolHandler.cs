@@ -1,42 +1,56 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Win32;
 using System.Windows.Forms;
 
 namespace Terminals
 {
-    class ProtocolHandler
+    internal class ProtocolHandler
     {
-        public static void Register()
+        private const string TRM_REGISTRY = "TRM";
+
+        internal static void Register()
         {
             try
             {
-                RegistryKey trmKey = Registry.ClassesRoot.OpenSubKey("TRM");
-                if (trmKey != null)
-                {
-                    trmKey.Close();
-                    return;
-                }
-                using (trmKey = Registry.ClassesRoot.CreateSubKey("TRM"))
-                {
-                    trmKey.SetValue(null, "URL:Terminals Protocol");
-                    trmKey.SetValue("URL Protocol", "");
-                    using (RegistryKey shellKey = trmKey.CreateSubKey("shell"))
-                    {
-                        shellKey.SetValue(null, "open");
-                        using (RegistryKey commandKey = shellKey.CreateSubKey("open\\command"))
-                        {
-                            commandKey.SetValue(null, Application.ExecutablePath + " /reuse /url:\"%1\"");
-                        }
-                    }
-                }
+                if(IsTrmKeyRegistred())
+                  return;
+
+                CreateTrmRegistrySubKey();
             }
             catch(Exception ex)
             {
                 //ignore any security errors and such
-                Terminals.Logging.Log.Error("Error accessing registry", ex);
+                Logging.Log.Error("Error accessing registry", ex);
             }
+        }
+
+        private static void CreateTrmRegistrySubKey()
+        {
+            using (RegistryKey trmKey = Registry.ClassesRoot.CreateSubKey(TRM_REGISTRY))
+            {
+                trmKey.SetValue(null, "URL:Terminals Protocol");
+                trmKey.SetValue("URL Protocol", "");
+                using (RegistryKey shellKey = trmKey.CreateSubKey("shell"))
+                {
+                    shellKey.SetValue(null, "open");
+                    using (RegistryKey commandKey = shellKey.CreateSubKey("open\\command"))
+                    {
+                        commandKey.SetValue(null, Application.ExecutablePath + " /reuse /url:\"%1\"");
+                    }
+                }
+            }
+        }
+
+        private static bool IsTrmKeyRegistred()
+        {
+            RegistryKey trmKey = Registry.ClassesRoot.OpenSubKey(TRM_REGISTRY);
+            if (trmKey != null)
+            {
+                trmKey.Close();
+                return true;
+            }
+
+            return false;
         }
 
         public static void Parse(string url, out string server, out int port)

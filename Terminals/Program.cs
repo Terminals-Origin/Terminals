@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -35,6 +36,9 @@ namespace Terminals
             SetApplicationProperties();
             ParseCommandline();
 
+            if(UserAccountControlNotSatisfied())
+                return;
+
             if (ReuseExistingInstance() && SingleInstanceApplication.NotifyExistingInstance(Environment.GetCommandLineArgs()))
                 return;
 
@@ -51,6 +55,37 @@ namespace Terminals
             SingleInstanceApplication.Close();
             Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
+        }
+
+        private static bool UserAccountControlNotSatisfied()
+        {
+            try 
+            {
+                LogNonAdministrator();
+                string directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string testFile = Path.Combine(directory, "WriteAccessCheck.txt");
+                
+                // Test to make sure that the current user has write access to the current directory.
+                using (StreamWriter sw = File.AppendText(testFile)) { }
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.FatalFormat("Access Denied {0}" , ex.Message);
+                string message = String.Format("{0}\r\n\r\nWrite Access is denied\r\n\r\nPlease make sure you are running as administrator", ex.Message);
+                MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Application.Exit();
+                return true;
+            }
+            return false;
+        }
+
+        private static void LogNonAdministrator()
+        {
+            if (!Permissions.IsRunningAsAdministrator())
+            {
+                Debug.WriteLine("Terminals is running in non-admin mode");
+                Logging.Log.Info("Terminals is running in non-admin mode");
+            }
         }
 
         private static void StartMainForm()
