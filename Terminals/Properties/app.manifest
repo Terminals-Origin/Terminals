@@ -14,8 +14,9 @@
         <PermissionSet class="System.Security.PermissionSet" version="1" Unrestricted="true" ID="Custom" SameSite="site" />
       </applicationRequestMinimum>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
-        <requestedExecutionLevel level="requireAdministrator" />
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
         <!--
+        <requestedExecutionLevel level="requireAdministrator" />
           UAC Manifest Options
           If you want to change the Windows User Account Control level replace the 
           requestedExecutionLevel node with one of the following.
