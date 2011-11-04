@@ -147,11 +147,11 @@ namespace Terminals.Forms.Controls
 
         private void OnTagsCollectionChanged(TagsChangedArgs args)
         {
-            if (IsOrphan())
+            if (this.IsOrphan())
                 return;
 
-            RemoveUnusedTagNodes(args.Removed);
-            AddMissingTagNodes(args.Added);
+            this.RemoveUnusedTagNodes(args.Removed);
+            this.AddMissingTagNodes(args.Added);
         }
 
         private void AddMissingTagNodes(List<String> newTags)

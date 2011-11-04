@@ -155,6 +155,7 @@ namespace Terminals
 
                 ProtocolHandler.Register();
                 SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
+                Settings.AssignSynchronizationObject(this);
             }
             catch (Exception exc)
             {

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Terminals.Configuration;
 
 namespace Terminals.Data
 {
@@ -22,7 +25,49 @@ namespace Terminals.Data
     {
         #region Thread safe singleton with lazy loading
 
-        private DataDispatcher() { }
+        private DataDispatcher()
+        {
+            Settings.ConfigFileReloaded += new ConfigFileReloadedHandler(OnConfigFileReloaded);
+        }
+
+        private void OnConfigFileReloaded(ConfigFileChangedEventArgs args)
+        {
+            MergeTags(args);
+            MergeFavorites(args);
+            // 3. Report settings change
+        }
+
+        private void MergeTags(ConfigFileChangedEventArgs args)
+        {
+            List<string> oldTags = args.Old.Tags.ReadList();
+            List<string> newTags = args.New.Tags.ReadList();
+            List<string> deletedTags = ListStringHelper.GetMissingSourcesInTarget(oldTags, newTags);
+            List<string> addedTags = ListStringHelper.GetMissingSourcesInTarget(newTags, oldTags);
+            var tagsArgs = new TagsChangedArgs(addedTags, deletedTags);
+            FireTagsChanged(tagsArgs);
+        }
+
+        private void MergeFavorites(ConfigFileChangedEventArgs args)
+        {
+            var oldFavorites = args.Old.Favorites.ToList();
+            var newFavorites = args.New.Favorites.ToList();
+            List<FavoriteConfigurationElement> missingFavorites = GetMissingFavorites(newFavorites, oldFavorites);
+            List<FavoriteConfigurationElement> redundantFavorites = GetMissingFavorites(oldFavorites, newFavorites);
+
+            var favoriteArgs = new FavoritesChangedEventArgs();
+            favoriteArgs.Added.AddRange(missingFavorites);
+            favoriteArgs.Removed.AddRange(redundantFavorites);
+            FireFavoriteChanges(favoriteArgs);
+        }
+
+        private List<FavoriteConfigurationElement> GetMissingFavorites(
+            SortableList<FavoriteConfigurationElement> newFavorites,
+            SortableList<FavoriteConfigurationElement> oldFavorites)
+        {
+            return newFavorites.Where(
+                newFavorite => oldFavorites.FirstOrDefault(oldFavorite => oldFavorite.Name == newFavorite.Name) == null)
+                .ToList();
+        }
 
         /// <summary>
         /// Gets the thread safe singleton instance of the dispatcher
@@ -43,7 +88,6 @@ namespace Terminals.Data
         #endregion
 
         internal event TagsChangedEventHandler TagsChanged;
-
         internal event FavoritesChangedEventHandler FavoritesChanged;
 
         internal void ReportFavoriteAdded(FavoriteConfigurationElement addedFavorite)
@@ -83,7 +127,7 @@ namespace Terminals.Data
 
         private void FireFavoriteChanges(FavoritesChangedEventArgs args)
         {
-            System.Diagnostics.Debug.WriteLine(args.ToString());
+            Debug.WriteLine(args.ToString());
             if (this.FavoritesChanged != null && !args.IsEmpty)
             {
                 this.FavoritesChanged(args);
@@ -112,7 +156,7 @@ namespace Terminals.Data
 
         private void FireTagsChanged(TagsChangedArgs args)
         {
-            System.Diagnostics.Debug.WriteLine(args.ToString());
+            Debug.WriteLine(args.ToString());
             if (this.TagsChanged != null && !args.IsEmpty)
             {
                 this.TagsChanged(args);

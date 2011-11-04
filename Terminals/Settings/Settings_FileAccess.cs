@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using Terminals.Data;
 using SysConfig = System.Configuration;
 using System.Reflection;
 using System.Windows.Forms;
@@ -9,6 +11,8 @@ using System.Xml;
 
 namespace Terminals.Configuration
 {
+    internal delegate void ConfigFileReloadedHandler(ConfigFileChangedEventArgs args);
+
     internal static partial class Settings
     {
         internal const String CONFIG_FILE_NAME = "Terminals.config";
@@ -19,19 +23,20 @@ namespace Terminals.Configuration
             get
             {
                 if (string.IsNullOrEmpty(configurationFileLocation))
-                {
-                    string assemblyLocation = Assembly.GetExecutingAssembly().Location;
-                    string assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
-                    configurationFileLocation = Path.Combine(assemblyDirectory, CONFIG_FILE_NAME);
-                }
-                
+                    SetDefaultConfigurationFileLocation();
+
                 return configurationFileLocation;
             }
-            set { configurationFileLocation = value; }
+            set
+            {
+                configurationFileLocation = value;
+                if (fileWatcher != null)
+                    fileWatcher.FullFileName = value;
+            }
         }
 
         private static SysConfig.Configuration _config = null;
-        private static FileSystemWatcher fileWatcher;
+        private static DataFileWatcher fileWatcher;
 
         /// <summary>
         /// Prevent concurent updates on config file by another program
@@ -42,23 +47,30 @@ namespace Terminals.Configuration
         /// Flag informing, that configuration shouldnt be saved imediately, but after explicit call
         /// This increases performance for 
         /// </summary>
-        internal static bool delayConfigurationSave;
+        private static bool delayConfigurationSave;
 
-        private static void InitializeFileWatcher()
+        /// <summary>
+        /// Informs lisseners, that configuration file was changed by another application
+        /// or another Terminals instance. In this case all cached not saved data are lost.
+        /// </summary>
+        internal static event ConfigFileReloadedHandler ConfigFileReloaded;
+
+        private static void SetDefaultConfigurationFileLocation()
         {
-            fileWatcher = new FileSystemWatcher();
-            fileWatcher.Path = Path.GetDirectoryName(ConfigurationFileLocation);
-            fileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName |
-                                       NotifyFilters.CreationTime | NotifyFilters.Size;
-            fileWatcher.Filter = CONFIG_FILE_NAME;
-            fileWatcher.Changed += new FileSystemEventHandler(ConfigFileChanged);
-            fileWatcher.EnableRaisingEvents = true;
+            string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+            string assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
+            configurationFileLocation = Path.Combine(assemblyDirectory, CONFIG_FILE_NAME);
         }
 
-        private static void ConfigFileChanged(object sender, FileSystemEventArgs e)
+        private static void ConfigFileChanged(object sender, EventArgs e)
         {
-            // todo merge changes from reloaded file
-            Logging.Log.Debug("Config file change by another application (or Terminals instance) detected!");
+            TerminalsConfigurationSection old = GetSection();
+            ForceReload();
+            if (ConfigFileReloaded != null)
+            {
+                var args = new ConfigFileChangedEventArgs(old, GetSection());
+                ConfigFileReloaded(args);
+            }
         }
 
         private static SysConfig.Configuration Config
@@ -73,6 +85,24 @@ namespace Terminals.Configuration
 
                 return _config;
             }
+        }
+
+        private static void InitializeFileWatcher()
+        {
+            if (fileWatcher != null)
+                return;
+
+            fileWatcher = new DataFileWatcher(ConfigurationFileLocation);
+            fileWatcher.FileChanged += new EventHandler(ConfigFileChanged);
+        }
+
+        /// <summary>
+        /// Because filewatcher is created before the main form in GUI thread.
+        /// This lets to fire the file system watcher events in GUI thread. 
+        /// </summary>
+        internal static void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
+        {
+           fileWatcher.AssignSynchronizer(synchronizer); 
         }
 
         internal static void ForceReload()
@@ -122,9 +152,9 @@ namespace Terminals.Configuration
 
         private static void Save()
         {
-            fileWatcher.EnableRaisingEvents = false; // dont lisen on my own change
+            fileWatcher.StopObservation();
             Config.Save();
-            fileWatcher.EnableRaisingEvents = true;
+            fileWatcher.StartObservation();
             Debug.WriteLine(string.Format("Termianls.config file saved."));
         }
 
@@ -192,9 +222,7 @@ namespace Terminals.Configuration
             string templateConfigFile = Properties.Resources.Terminals;
             using (StreamWriter sr = new StreamWriter(ConfigurationFileLocation))
             {
-                fileLock.WaitOne();
                 sr.Write(templateConfigFile);
-                fileLock.ReleaseMutex();
             }
         }
 
@@ -217,8 +245,10 @@ namespace Terminals.Configuration
             // get a temp filename to hold the current settings which are failing
             string tempFile = Path.GetTempFileName();
 
+            fileWatcher.StopObservation();
             MoveAndDeleteFile(ConfigurationFileLocation, tempFile);
             SaveDefaultConfigFile();
+            fileWatcher.StartObservation();
             SysConfig.Configuration c = OpenConfiguration();
 
             // get a list of the properties on the Settings object (static props)
@@ -257,13 +287,13 @@ namespace Terminals.Configuration
                         }
                     }
                     catch (Exception exc) // ignore the error
-                    { 
+                    {
                         Logging.Log.Error("Remapping Settings Outer", exc);
                     }
                 }
             }
             catch (Exception exc) // ignore the error
-            { 
+            {
                 Logging.Log.Error("Remapping Settings Outer Try", exc);
             }
 
@@ -300,13 +330,13 @@ namespace Terminals.Configuration
                                         }
                                     }
                                     catch (Exception exc) // ignore the error
-                                    { 
+                                    {
                                         Logging.Log.Error("Remapping Favorites 1", exc);
                                     }
                                 }
                             }
                             catch (Exception exc) // ignore the error
-                            { 
+                            {
                                 Logging.Log.Error("Remapping Favorites 2", exc);
                             }
                         }
@@ -314,13 +344,13 @@ namespace Terminals.Configuration
                         AddFavorite(newFav, false);
                     }
                     catch (Exception exc) // ignore the error
-                    { 
+                    {
                         Logging.Log.Error("Remapping Favorites 3", exc);
                     }
                 }
             }
             catch (Exception exc) // ignore the error
-            { 
+            {
                 Logging.Log.Error("Remapping Favorites 4", exc);
             }
 
@@ -352,7 +382,7 @@ namespace Terminals.Configuration
                     configuration = GetConfiguration();
                     if (configuration == null)
                         MessageBox.Show("Terminals was able to automatically upgrade your existing connections.");
-                    return configuration.GetSection("settings") as TerminalsConfigurationSection; 
+                    return configuration.GetSection("settings") as TerminalsConfigurationSection;
                 }
                 catch (Exception importException)
                 {

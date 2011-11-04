@@ -25,5 +25,11 @@ namespace Terminals.Forms.Controls
                 String.IsNullOrEmpty(this.DropDown.Items[0].Name);
             }
         }
+
+        internal void ClearDropDownsToEmpty()
+        {
+            this.DropDown.Items.Clear();
+            this.DropDown.Items.Add(TagTreeNode.DUMMY_NODE);
+        }
     }
 }

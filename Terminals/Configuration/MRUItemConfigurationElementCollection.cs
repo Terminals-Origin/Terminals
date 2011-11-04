@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace Terminals
 {
@@ -138,13 +139,9 @@ namespace Terminals
 
         internal List<string> ReadList()
         {
-            List<string> list = new List<string>();
-            foreach (MRUItemConfigurationElement configurationElement in this)
-            {
-                list.Add(configurationElement.Name);
-            }
-
-            return list;
+            return this.Cast<MRUItemConfigurationElement>()
+                .Select(configurationElement => configurationElement.Name)
+                .ToList();
         }
     }
 }

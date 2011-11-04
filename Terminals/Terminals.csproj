@@ -264,6 +264,7 @@
     <Compile Include="Connections\VNCConnection.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Data\DataFileWatcher.cs" />
     <Compile Include="Data\History\HistoryRecordedEventArgs.cs" />
     <Compile Include="ExportImport\Exporters.cs" />
     <Compile Include="ExportImport\Export\ExportOptions.cs" />
@@ -522,10 +523,12 @@
     <Compile Include="PopupTerminal.Designer.cs">
       <DependentUpon>PopupTerminal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Permissions.cs" />
     <Compile Include="ProgramInfo.cs" />
     <Compile Include="Data\Serialization\StreamHelper.cs" />
     <Compile Include="Data\SerializableDictionary.cs" />
     <Compile Include="Data\SerializableSortedDictionary.cs" />
+    <Compile Include="Settings\ConfigFileChangedEventArgs.cs" />
     <Compile Include="Settings\FavoritesFactory.cs" />
     <Compile Include="Settings\Settings_FavoriteButtons.cs" />
     <Compile Include="Settings\Settings_Favorites.cs" />
