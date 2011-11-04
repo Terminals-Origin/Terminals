@@ -9,12 +9,13 @@ using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Security;
 using Terminals.Updates;
+using System.Security.Principal;
 
 namespace Terminals
 {
     internal static partial class Program
     {
-        private static string TerminalsVersion = "2.0 Beta";
+        private static string TerminalsVersion = "2.0 Beta 3";
         
         public static Mutex mtx;
         public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", typeof(MainForm).Assembly);
@@ -81,8 +82,9 @@ namespace Terminals
 
         private static void LogNonAdministrator()
         {
-            if (!Permissions.IsRunningAsAdministrator())
+            if (!(new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)))
             {
+
                 Debug.WriteLine("Terminals is running in non-admin mode");
                 Logging.Log.Info("Terminals is running in non-admin mode");
             }
