@@ -53,10 +53,9 @@
             this.CredentialsListView.GridLines = true;
             this.CredentialsListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.CredentialsListView.Location = new System.Drawing.Point(0, 0);
-            this.CredentialsListView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CredentialsListView.MultiSelect = false;
             this.CredentialsListView.Name = "CredentialsListView";
-            this.CredentialsListView.Size = new System.Drawing.Size(467, 261);
+            this.CredentialsListView.Size = new System.Drawing.Size(350, 212);
             this.CredentialsListView.TabIndex = 0;
             this.CredentialsListView.UseCompatibleStateImageBehavior = false;
             this.CredentialsListView.View = System.Windows.Forms.View.Details;
@@ -79,10 +78,9 @@
             // 
             // AddButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(16, 15);
-            this.AddButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.AddButton.Location = new System.Drawing.Point(12, 12);
             this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(100, 28);
+            this.AddButton.Size = new System.Drawing.Size(75, 23);
             this.AddButton.TabIndex = 1;
             this.AddButton.Text = "Add";
             this.AddButton.UseVisualStyleBackColor = true;
@@ -90,10 +88,9 @@
             // 
             // EditButton
             // 
-            this.EditButton.Location = new System.Drawing.Point(16, 50);
-            this.EditButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.EditButton.Location = new System.Drawing.Point(12, 41);
             this.EditButton.Name = "EditButton";
-            this.EditButton.Size = new System.Drawing.Size(100, 28);
+            this.EditButton.Size = new System.Drawing.Size(75, 23);
             this.EditButton.TabIndex = 2;
             this.EditButton.Text = "Edit";
             this.EditButton.UseVisualStyleBackColor = true;
@@ -101,10 +98,9 @@
             // 
             // DeleteButton
             // 
-            this.DeleteButton.Location = new System.Drawing.Point(16, 86);
-            this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DeleteButton.Location = new System.Drawing.Point(12, 70);
             this.DeleteButton.Name = "DeleteButton";
-            this.DeleteButton.Size = new System.Drawing.Size(100, 28);
+            this.DeleteButton.Size = new System.Drawing.Size(75, 23);
             this.DeleteButton.TabIndex = 3;
             this.DeleteButton.Text = "Delete";
             this.DeleteButton.UseVisualStyleBackColor = true;
@@ -117,20 +113,18 @@
             this.panel1.Controls.Add(this.DeleteButton);
             this.panel1.Controls.Add(this.EditButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(467, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Location = new System.Drawing.Point(350, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(133, 261);
+            this.panel1.Size = new System.Drawing.Size(100, 212);
             this.panel1.TabIndex = 4;
             // 
             // DoneButton
             // 
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.DoneButton.Location = new System.Drawing.Point(16, 220);
-            this.DoneButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DoneButton.Location = new System.Drawing.Point(12, 179);
             this.DoneButton.Name = "DoneButton";
-            this.DoneButton.Size = new System.Drawing.Size(100, 28);
+            this.DoneButton.Size = new System.Drawing.Size(75, 23);
             this.DoneButton.TabIndex = 4;
             this.DoneButton.Text = "Close";
             this.DoneButton.UseVisualStyleBackColor = true;
@@ -139,20 +133,20 @@
             // CredentialManager
             // 
             this.AcceptButton = this.DoneButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.DoneButton;
-            this.ClientSize = new System.Drawing.Size(600, 261);
+            this.ClientSize = new System.Drawing.Size(450, 212);
             this.Controls.Add(this.CredentialsListView);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "CredentialManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Terminals - Credential Manager";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CredentialManager_FormClosed);
             this.Load += new System.EventHandler(this.CredentialManager_Load);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -10,6 +10,12 @@ namespace Terminals.Credentials
         internal CredentialManager()
         {
             InitializeComponent();
+            StoredCredentials.Instance.CredentialsChanged += new EventHandler(this.CredentialsChanged);
+        }
+
+        private void CredentialsChanged(object sender, EventArgs e)
+        {
+            BindList();
         }
 
         private void BindList()
@@ -81,6 +87,11 @@ namespace Terminals.Credentials
                     BindList();
                 }
             }
+        }
+
+        private void CredentialManager_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            StoredCredentials.Instance.CredentialsChanged -= CredentialsChanged;
         }
     }
 }

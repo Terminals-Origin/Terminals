@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading;
 using System.Windows.Forms;
+using Terminals.Data;
 using SysConfig = System.Configuration;
 using System.IO;
 using System.Linq;
@@ -8,7 +11,7 @@ using Unified;
 
 namespace Terminals.Configuration
 {
-    internal class StoredCredentials
+    internal sealed class StoredCredentials
     {
         /// <summary>
         /// Gets default name of the credentials file.
@@ -16,41 +19,6 @@ namespace Terminals.Configuration
         private const string CONFIG_FILE = "Credentials.xml";
 
         private List<CredentialSet> cache;
-
-        /// <summary>
-        /// Prevents creating from other class
-        /// </summary>
-        private StoredCredentials()
-        {
-            this.cache = new List<CredentialSet>();
-            string configFileName = GetEnsuredCredentialsFileLocation();
-
-            if (File.Exists(configFileName))
-            {
-                LoadStoredCredentials(configFileName);
-            }
-            else
-            {
-                Save();
-            }
-        }
-
-        private static StoredCredentials instance;
-        /// <summary>
-        /// Gets the singleton instance with cached credentials
-        /// </summary>
-        internal static StoredCredentials Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new StoredCredentials();
-                }
-                return instance;
-            }
-        }
-
         /// <summary>
         /// Gets the not null collection containing stored credentials
         /// </summary>
@@ -63,10 +31,68 @@ namespace Terminals.Configuration
             }
         }
 
+        private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Credentials");
+        private DataFileWatcher fileWatcher;
+        internal event EventHandler CredentialsChanged;
+
+        #region Thread safe singleton
+
+        /// <summary>
+        /// Gets the singleton instance with cached credentials
+        /// </summary>
+        public static StoredCredentials Instance
+        {
+            get
+            {
+                return Nested.instance;
+            }
+        }
+
+        private static class Nested
+        {
+            internal static readonly StoredCredentials instance = new StoredCredentials();
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Prevents creating from other class
+        /// </summary>
+        private StoredCredentials()
+        {
+            this.cache = new List<CredentialSet>();
+            string configFileName = GetEnsuredCredentialsFileLocation();
+            InitializeFileWatch();
+
+            if (File.Exists(configFileName))
+                LoadStoredCredentials(configFileName);
+            else
+                Save();
+        }
+
+        private void InitializeFileWatch()
+        {
+            string fileName = Path.Combine(Settings.GetAssemblyDirectory(), CONFIG_FILE);
+            fileWatcher = new DataFileWatcher(fileName);
+            fileWatcher.FileChanged += new EventHandler(CredentialsFileChanged);
+            fileWatcher.StartObservation();
+        }
+
+        private void CredentialsFileChanged(object sender, EventArgs e)
+        {
+            LoadStoredCredentials(GetEnsuredCredentialsFileLocation());
+            if (CredentialsChanged != null)
+                CredentialsChanged(this, new EventArgs());
+        }
+
+        internal void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
+        {
+            fileWatcher.AssignSynchronizer(synchronizer);
+        }
+
         private void LoadStoredCredentials(string configFileName)
         {
-            object loadedObj = Serialize.DeserializeXMLFromDisk(configFileName, typeof(List<CredentialSet>));
-            List<CredentialSet> loaded = loadedObj as List<CredentialSet>;
+            List<CredentialSet> loaded = LoadFile(configFileName);
             if (loaded != null)
             {
                 this.cache.Clear();
@@ -74,10 +100,46 @@ namespace Terminals.Configuration
             }
         }
 
+        private List<CredentialSet> LoadFile(string configFileName)
+        {
+            try
+            {
+                fileLock.WaitOne();
+                object loadedObj = Serialize.DeserializeXMLFromDisk(configFileName, typeof(List<CredentialSet>));
+                return loadedObj as List<CredentialSet>;
+            }
+            catch (Exception exception)
+            {
+                string errorMessage = String.Format("Load credentials from {0} failed.", configFileName);
+                Logging.Log.Error(errorMessage, exception);
+                return new List<CredentialSet>();
+            }
+            finally
+            {
+                fileLock.ReleaseMutex();
+            }
+        }
+
         internal void Save()
         {
-            string fileName = GetEnsuredCredentialsFileLocation();
-            Serialize.SerializeXMLToDisk(cache, fileName);
+            try
+            {
+                fileLock.WaitOne();
+                fileWatcher.StopObservation();
+                string fileName = GetEnsuredCredentialsFileLocation();
+                Serialize.SerializeXMLToDisk(cache, fileName);
+            }
+            catch (Exception exception)
+            {
+                string errorMessage = string.Format("Save credentials to {0} failed.", 
+                    GetEnsuredCredentialsFileLocation());
+                Logging.Log.Error(errorMessage, exception);
+            }
+            finally
+            {
+                fileWatcher.StartObservation();
+                fileLock.ReleaseMutex();
+            }
         }
 
         private static string GetEnsuredCredentialsFileLocation()

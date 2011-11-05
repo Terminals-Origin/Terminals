@@ -32,15 +32,6 @@ namespace Terminals.Data
             Settings.ConfigFileReloaded += new ConfigFileReloadedHandler(OnConfigFileReloaded);
         }
 
-        internal static List<FavoriteConfigurationElement> GetMissingFavorites(
-            List<FavoriteConfigurationElement> newFavorites,
-            List<FavoriteConfigurationElement> oldFavorites)
-        {
-            return newFavorites.Where(
-                newFavorite => oldFavorites.FirstOrDefault(oldFavorite => oldFavorite.Name == newFavorite.Name) == null)
-                .ToList();
-        }
-
         /// <summary>
         /// Gets the thread safe singleton instance of the dispatcher
         /// </summary>
@@ -61,7 +52,7 @@ namespace Terminals.Data
 
         internal event TagsChangedEventHandler TagsChanged;
         internal event FavoritesChangedEventHandler FavoritesChanged;
-        
+
         /// <summary>
         /// Because filewatcher is created before the main form in GUI thread.
         /// This lets to fire the file system watcher events in GUI thread. 
@@ -70,6 +61,7 @@ namespace Terminals.Data
         {
             Settings.AssignSynchronizationObject(synchronizer);
             ConnectionHistory.Instance.AssignSynchronizationObject(synchronizer);
+            StoredCredentials.Instance.AssignSynchronizationObject(synchronizer);
         }
 
         private void OnConfigFileReloaded(ConfigFileChangedEventArgs args)
@@ -100,6 +92,15 @@ namespace Terminals.Data
             favoriteArgs.Added.AddRange(missingFavorites);
             favoriteArgs.Removed.AddRange(redundantFavorites);
             FireFavoriteChanges(favoriteArgs);
+        }
+
+        internal static List<FavoriteConfigurationElement> GetMissingFavorites(
+            List<FavoriteConfigurationElement> newFavorites,
+            List<FavoriteConfigurationElement> oldFavorites)
+        {
+            return newFavorites.Where(
+                newFavorite => oldFavorites.FirstOrDefault(oldFavorite => oldFavorite.Name == newFavorite.Name) == null)
+                .ToList();
         }
 
         internal void ReportFavoriteAdded(FavoriteConfigurationElement addedFavorite)

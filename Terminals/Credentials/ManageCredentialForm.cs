@@ -12,11 +12,16 @@ namespace Terminals.Credentials
         {
             InitializeComponent();
 
+            FillControlsFromCredential(editedCredential);
+        }
+
+        private void FillControlsFromCredential(CredentialSet editedCredential)
+        {
             if (editedCredential != null)
             {
-                NameTextbox.Text = editedCredential.Name;
-                DomainTextbox.Text = editedCredential.Domain;
-                UsernameTextbox.Text = editedCredential.Username;
+                this.NameTextbox.Text = editedCredential.Name;
+                this.DomainTextbox.Text = editedCredential.Domain;
+                this.UsernameTextbox.Text = editedCredential.Username;
                 if(!string.IsNullOrEmpty(editedCredential.Password))
                     this.PasswordTextbox.Text = NewTerminalForm.HIDDEN_PASSWORD;
                 this.editedCredentialName = editedCredential.Name;

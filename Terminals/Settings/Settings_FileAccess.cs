@@ -57,9 +57,17 @@ namespace Terminals.Configuration
 
         private static void SetDefaultConfigurationFileLocation()
         {
-            string assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            string assemblyDirectory = Path.GetDirectoryName(assemblyLocation);
+            string assemblyDirectory = GetAssemblyDirectory();
             configurationFileLocation = Path.Combine(assemblyDirectory, CONFIG_FILE_NAME);
+        }
+
+        /// <summary>
+        /// Gets the executing assembly directory full path without last basckslash.
+        /// </summary>
+        internal static string GetAssemblyDirectory()
+        {
+            string assemblyLocation = Assembly.GetExecutingAssembly().Location;
+            return Path.GetDirectoryName(assemblyLocation);
         }
 
         private static void ConfigFileChanged(object sender, EventArgs e)
