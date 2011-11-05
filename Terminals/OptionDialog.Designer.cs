@@ -190,7 +190,7 @@ namespace Terminals.Forms
             this.OptionsTreeView.TabIndex = 6;
             this.OptionsTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OptionsTreeView_AfterSelect);
             // 
-            // tabControl3
+            // tabCtrlOptionPanels
             // 
             this.tabCtrlOptionPanels.Alignment = System.Windows.Forms.TabAlignment.Right;
             this.tabCtrlOptionPanels.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -451,6 +451,7 @@ namespace Terminals.Forms
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Options";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OptionDialog_FormClosed);
             this.tabCtrlOptionPanels.ResumeLayout(false);
             this.tabPageStartupShutdown.ResumeLayout(false);
             this.tabPageInterface.ResumeLayout(false);

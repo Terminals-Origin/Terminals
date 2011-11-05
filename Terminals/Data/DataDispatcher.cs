@@ -68,7 +68,6 @@ namespace Terminals.Data
         {
             MergeTags(args);
             MergeFavorites(args);
-            // 3. Report settings change
         }
 
         private void MergeTags(ConfigFileChangedEventArgs args)

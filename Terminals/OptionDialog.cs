@@ -19,10 +19,16 @@ namespace Terminals.Forms
             InitializeComponent();
 
             MovePanelsFromTabsIntoControls();
+            Settings.ConfigFileReloaded += new ConfigFileReloadedHandler(this.SettingsConfigFileReloaded);
             LoadSettings();
             
             this.SetFormSize();
             UpdateLookAndFeel(terminal);
+        }
+
+        private void SettingsConfigFileReloaded(ConfigFileChangedEventArgs args)
+        {
+            LoadSettings();
         }
 
         private void UpdateLookAndFeel(AxMsRdpClient6 terminal)
@@ -185,6 +191,11 @@ namespace Terminals.Forms
                 .Cast<Control>()
                 .Where(control => control is IOptionPanel)
                 .Cast<IOptionPanel>();
+        }
+
+        private void OptionDialog_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Settings.ConfigFileReloaded -= SettingsConfigFileReloaded;
         }
     }
 }
