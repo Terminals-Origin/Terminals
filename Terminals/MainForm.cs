@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 using AxMSTSCLib;
 using TabControl;
+using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Forms.Rendering;
@@ -155,7 +156,7 @@ namespace Terminals
 
                 ProtocolHandler.Register();
                 SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
-                Settings.AssignSynchronizationObject(this);
+                DataDispatcher.AssignSynchronizationObject(this);
             }
             catch (Exception exc)
             {

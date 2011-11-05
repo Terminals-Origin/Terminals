@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Terminals.Configuration;
+using Terminals.History;
 
 namespace Terminals.Data
 {
@@ -28,6 +30,46 @@ namespace Terminals.Data
         private DataDispatcher()
         {
             Settings.ConfigFileReloaded += new ConfigFileReloadedHandler(OnConfigFileReloaded);
+        }
+
+        internal static List<FavoriteConfigurationElement> GetMissingFavorites(
+            List<FavoriteConfigurationElement> newFavorites,
+            List<FavoriteConfigurationElement> oldFavorites)
+        {
+            return newFavorites.Where(
+                newFavorite => oldFavorites.FirstOrDefault(oldFavorite => oldFavorite.Name == newFavorite.Name) == null)
+                .ToList();
+        }
+
+        /// <summary>
+        /// Gets the thread safe singleton instance of the dispatcher
+        /// </summary>
+        public static DataDispatcher Instance
+        {
+            get
+            {
+                return Nested.instance;
+            }
+        }
+
+        private static class Nested
+        {
+            internal static readonly DataDispatcher instance = new DataDispatcher();
+        }
+
+        #endregion
+
+        internal event TagsChangedEventHandler TagsChanged;
+        internal event FavoritesChangedEventHandler FavoritesChanged;
+        
+        /// <summary>
+        /// Because filewatcher is created before the main form in GUI thread.
+        /// This lets to fire the file system watcher events in GUI thread. 
+        /// </summary>
+        internal static void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
+        {
+            Settings.AssignSynchronizationObject(synchronizer);
+            ConnectionHistory.Instance.AssignSynchronizationObject(synchronizer);
         }
 
         private void OnConfigFileReloaded(ConfigFileChangedEventArgs args)
@@ -59,36 +101,6 @@ namespace Terminals.Data
             favoriteArgs.Removed.AddRange(redundantFavorites);
             FireFavoriteChanges(favoriteArgs);
         }
-
-        private List<FavoriteConfigurationElement> GetMissingFavorites(
-            SortableList<FavoriteConfigurationElement> newFavorites,
-            SortableList<FavoriteConfigurationElement> oldFavorites)
-        {
-            return newFavorites.Where(
-                newFavorite => oldFavorites.FirstOrDefault(oldFavorite => oldFavorite.Name == newFavorite.Name) == null)
-                .ToList();
-        }
-
-        /// <summary>
-        /// Gets the thread safe singleton instance of the dispatcher
-        /// </summary>
-        public static DataDispatcher Instance
-        {
-            get
-            {
-                return Nested.instance;
-            }
-        }
-
-        private static class Nested
-        {
-            internal static readonly DataDispatcher instance = new DataDispatcher();
-        }
-
-        #endregion
-
-        internal event TagsChangedEventHandler TagsChanged;
-        internal event FavoritesChangedEventHandler FavoritesChanged;
 
         internal void ReportFavoriteAdded(FavoriteConfigurationElement addedFavorite)
         {
