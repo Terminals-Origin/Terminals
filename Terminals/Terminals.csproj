@@ -523,7 +523,6 @@
     <Compile Include="PopupTerminal.Designer.cs">
       <DependentUpon>PopupTerminal.cs</DependentUpon>
     </Compile>
-    <Compile Include="Permissions.cs" />
     <Compile Include="ProgramInfo.cs" />
     <Compile Include="Data\Serialization\StreamHelper.cs" />
     <Compile Include="Data\SerializableDictionary.cs" />
