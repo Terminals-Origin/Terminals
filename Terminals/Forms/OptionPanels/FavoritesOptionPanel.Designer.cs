@@ -140,7 +140,7 @@ namespace Terminals.Forms
             this.chkAutoExapandTagsPanel.Name = "AutoExapandTagsPanelCheckBox";
             this.chkAutoExapandTagsPanel.Size = new System.Drawing.Size(133, 17);
             this.chkAutoExapandTagsPanel.TabIndex = 27;
-            this.chkAutoExapandTagsPanel.Text = "Auto Expand Favorites";
+            this.chkAutoExapandTagsPanel.Text = "Auto Expand (show) Favorites Panel, when hidden";
             this.chkAutoExapandTagsPanel.UseVisualStyleBackColor = true;
             // 
             // EnableFavoritesPanel
