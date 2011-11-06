@@ -1025,13 +1025,6 @@ namespace Terminals.Configuration
             ////}
         }
 
-        public static bool HasToolbarButton(string name)
-        {
-            List<string> buttons = new List<string>();
-            buttons.AddRange(FavoritesToolbarButtons);
-            return buttons.IndexOf(name) > -1;
-        }
-
         #endregion
 
         #region MRU

@@ -487,30 +487,9 @@ namespace Terminals
                 List<String> updatedTags = UpdateFavoriteTags();
 
                 if (defaultFav)
-                {
-                    this.Favorite.Name = String.Empty;
-                    this.Favorite.ServerName = String.Empty;
-                    this.Favorite.DomainName = String.Empty;
-                    this.Favorite.UserName = String.Empty;
-                    this.Favorite.Password = String.Empty;
-                    this.Favorite.Notes = String.Empty;
-                    this.Favorite.EnableSecuritySettings = false;
-                    this.Favorite.SecurityWorkingFolder = String.Empty;
-                    this.Favorite.SecurityStartProgram = String.Empty;
-                    this.Favorite.SecurityFullScreen = false;
-                    this.Favorite.Url = String.Empty;
-                    Settings.SaveDefaultFavorite(this.Favorite);
-                }
+                    SaveDefaultFavorite();
                 else
-                {
-                    if (String.IsNullOrEmpty(this._oldName))
-                        Settings.AddFavorite(this.Favorite, this.ShowOnToolbar);
-                    else
-                    {
-                        Settings.EditFavorite(this._oldName, this.Favorite, this.ShowOnToolbar);
-                        UpdateTags(updatedTags);
-                    }
-                }
+                    CommitChangesToSettings(updatedTags);
 
                 return true;
             }
@@ -520,6 +499,40 @@ namespace Terminals
                 ShowErrorMessageBox(e.Message);
                 return false;
             }
+        }
+
+        private void SaveDefaultFavorite() 
+        {
+            this.Favorite.Name = String.Empty;
+            this.Favorite.ServerName = String.Empty;
+            this.Favorite.DomainName = String.Empty;
+            this.Favorite.UserName = String.Empty;
+            this.Favorite.Password = String.Empty;
+            this.Favorite.Notes = String.Empty;
+            this.Favorite.EnableSecuritySettings = false;
+            this.Favorite.SecurityWorkingFolder = String.Empty;
+            this.Favorite.SecurityStartProgram = String.Empty;
+            this.Favorite.SecurityFullScreen = false;
+            this.Favorite.Url = String.Empty;
+            Settings.SaveDefaultFavorite(this.Favorite);
+        }
+
+        private void CommitChangesToSettings(List<string> updatedTags)
+        {
+            Settings.StartDelayedUpdate();
+            if (String.IsNullOrEmpty(this._oldName))
+            {
+                Settings.AddFavorite(this.Favorite);
+                if (this.ShowOnToolbar)
+                    Settings.AddFavoriteButton(this.Favorite.Name);
+            }
+            else
+            {
+                Settings.EditFavorite(this._oldName, this.Favorite);
+                Settings.EditFavoriteButton(this._oldName, this.Favorite.Name, this.ShowOnToolbar);
+                this.UpdateTags(updatedTags);
+            }
+            Settings.SaveAndFinishDelayedUpdate();
         }
 
         private void ShowErrorMessageBox(string message)

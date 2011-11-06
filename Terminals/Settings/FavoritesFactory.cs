@@ -28,7 +28,7 @@ namespace Terminals
                 release.Url = "http://terminals.codeplex.com";
                 release.Tags = Program.Resources.GetString("Terminals");
                 release.Protocol = ConnectionManager.HTTP;
-                Settings.AddFavorite(release, false);
+                Settings.AddFavorite(release);
             }
             return release;
         }

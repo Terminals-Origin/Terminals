@@ -116,7 +116,7 @@ namespace Terminals.Network
         {
             this.Cursor = Cursors.WaitCursor;
             List<FavoriteConfigurationElement> favoritesToImport = GetFavoritesFromBindingSource(this.domainTextbox.Text);
-            var managedImport = new ImportWithDialogs(this, false);
+            var managedImport = new ImportWithDialogs(this);
             managedImport.Import(favoritesToImport);
         }
 

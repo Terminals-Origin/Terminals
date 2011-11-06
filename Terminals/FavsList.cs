@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Credentials;
@@ -255,26 +256,21 @@ namespace Terminals
 
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Settings.StartDelayedUpdate();
-                ApplyCredentialsForAllSelectedFavorites(result.Text);
-                Settings.SaveAndFinishDelayedUpdate();
+
+                var selectedFavorites  = GetSelectedFavorites();
+                Settings.ApplyCredentialsForAllSelectedFavorites(selectedFavorites, result.Text);
+
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Credential by Tag Complete.");
             }
         }
 
-        private void ApplyCredentialsForAllSelectedFavorites(string credentialName)
+        private List<FavoriteConfigurationElement> GetSelectedFavorites()
         {
-            foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
-            {
-                FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
-                if (fav != null)
-                {
-                    fav.Credential = credentialName;
-                    Settings.EditFavorite(fav.Name, fav);
-                }
-            }
+            return this.favsTree.SelectedNode.Nodes.Cast<TreeNode>()
+                .Select(node => node.Tag as FavoriteConfigurationElement)
+                .ToList();
         }
 
         private void setPasswordByTagToolStripMenuItem_Click(object sender, EventArgs e)
@@ -285,25 +281,13 @@ namespace Terminals
             {
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Settings.StartDelayedUpdate();
-                SetPasswordToAllSelectedFavorites(result.Text);
-                Settings.SaveAndFinishDelayedUpdate();
+
+                var selectedFavorites = GetSelectedFavorites();
+                Settings.SetPasswordToAllSelectedFavorites(selectedFavorites, result.Text);
+
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Password by Tag Complete.");
-            }
-        }
-
-        private void SetPasswordToAllSelectedFavorites(string newPassword)
-        {
-            foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
-            {
-                FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
-                if (fav != null)
-                {
-                    fav.Password = newPassword;
-                    Settings.EditFavorite(fav.Name, fav);
-                }
             }
         }
 
@@ -315,25 +299,13 @@ namespace Terminals
             {
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Settings.StartDelayedUpdate();
-                ApplyDomainNameToAllSelectedFavorites(result.Text);
-                Settings.SaveAndFinishDelayedUpdate();
+
+                var selectedFavorites = GetSelectedFavorites();
+                Settings.ApplyDomainNameToAllSelectedFavorites(selectedFavorites, result.Text);
+
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Domain by Tag Complete.");
-            }
-        }
-
-        private void ApplyDomainNameToAllSelectedFavorites(string newDomainName)
-        {
-            foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
-            {
-                FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
-                if (fav != null)
-                {
-                    fav.DomainName = newDomainName;
-                    Settings.EditFavorite(fav.Name, fav);
-                }
             }
         }
 
@@ -345,25 +317,13 @@ namespace Terminals
             {
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Settings.StartDelayedUpdate();
-                ApplyUserNameToAllSelectedFavorites(result.Text);
-                Settings.SaveAndFinishDelayedUpdate();
+
+                var selectedFavorites = GetSelectedFavorites();
+                Settings.ApplyUserNameToAllSelectedFavorites(selectedFavorites, result.Text);
+
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Set Username by Tag Complete.");
-            }
-        }
-
-        private void ApplyUserNameToAllSelectedFavorites(string newUserName)
-        {
-            foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
-            {
-                FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
-                if (fav != null)
-                {
-                    fav.UserName = newUserName;
-                    Settings.EditFavorite(fav.Name, fav);
-                }
             }
         }
 
@@ -375,24 +335,13 @@ namespace Terminals
             {
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
-                Settings.StartDelayedUpdate();
-                DeleteAllSelectedFavorites();
-                Settings.SaveAndFinishDelayedUpdate();
+
+                var selectedFavorites = GetSelectedFavorites();
+                Settings.DeleteAllSelectedFavorites(selectedFavorites);
+                
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");
-            }
-        }
-
-        private void DeleteAllSelectedFavorites()
-        {
-            foreach (TreeNode favNode in this.favsTree.SelectedNode.Nodes)
-            {
-                FavoriteConfigurationElement fav = (favNode.Tag as FavoriteConfigurationElement);
-                if (fav != null)
-                {
-                    Settings.DeleteFavorite(fav.Name);
-                }
             }
         }
 
@@ -441,7 +390,7 @@ namespace Terminals
             if (files != null)
             {
                 List<FavoriteConfigurationElement> favoritesToImport = Integrations.Importers.ImportFavorites(files);
-                var managedImport = new ImportWithDialogs(this.ParentForm, false);
+                var managedImport = new ImportWithDialogs(this.ParentForm);
                 managedImport.Import(favoritesToImport);
             }
         }

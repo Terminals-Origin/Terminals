@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using SysConfig = System.Configuration;
 
 namespace Terminals.Configuration
@@ -25,9 +26,9 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested();
         }
 
-        public static void EditFavoriteButton(string oldName, string newName)
+        public static void EditFavoriteButton(string oldFavoriteName, string newFavoriteName)
         {
-            EditMRUItemConfigurationElement(GetSection().FavoritesButtons, oldName, newName);
+            EditMRUItemConfigurationElement(GetSection().FavoritesButtons, oldFavoriteName, newFavoriteName);
             SaveImmediatelyIfRequested();
         }
 
@@ -39,6 +40,22 @@ namespace Terminals.Configuration
             {
                 AddFavoriteButton(name);
             }
+        }
+
+        internal static void EditFavoriteButton(string oldFavoriteName, string newFavoriteName, bool showOnToolbar)
+        {
+            bool shownOnToolbar = HasToolbarButton(oldFavoriteName);
+            if (shownOnToolbar && !showOnToolbar)
+                DeleteFavoriteButton(oldFavoriteName);
+            else if (shownOnToolbar && (oldFavoriteName != newFavoriteName))
+                EditFavoriteButton(oldFavoriteName, newFavoriteName);
+            else if (!shownOnToolbar && showOnToolbar)
+                AddFavoriteButton(newFavoriteName);
+        }
+
+        internal static bool HasToolbarButton(string favoriteName)
+        {
+            return FavoritesToolbarButtons.Contains(favoriteName);
         }
     }
 }

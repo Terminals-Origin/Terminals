@@ -137,7 +137,7 @@ namespace Terminals
 
         private void ReplaceFavoriteInBindingSource(FavoriteConfigurationElement copy)
         {
-            Settings.EditFavorite(this.editedFavoriteName, copy, true);
+            Settings.EditFavorite(this.editedFavoriteName, copy);
             this.UpdateFavoritesBindingSource();
         }
 
@@ -160,7 +160,9 @@ namespace Terminals
                     if (newFav != null)
                     {
                         newFav.Name = result.Text;
-                        Settings.AddFavorite(newFav, Settings.HasToolbarButton(newFav.Name));
+                        Settings.AddFavorite(newFav);
+                        if (Settings.HasToolbarButton(favorite.Name))
+                            Settings.AddFavoriteButton(newFav.Name);
                         UpdateFavoritesBindingSource();
                     }
                 }
@@ -173,7 +175,6 @@ namespace Terminals
             {
                 if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
                 {
-                    Settings.AddFavorite(frmNewTerminal.Favorite, frmNewTerminal.ShowOnToolbar);
                     UpdateFavoritesBindingSource();
                 }
             }
@@ -229,7 +230,7 @@ namespace Terminals
 
         private void ImportFavoritesWithManagerImport(List<FavoriteConfigurationElement> favoritesToImport)
         {
-            var managedImport = new ImportWithDialogs(this, false);
+            var managedImport = new ImportWithDialogs(this);
             bool imported = managedImport.Import(favoritesToImport);
             if (imported)
                     this.UpdateFavoritesBindingSource();

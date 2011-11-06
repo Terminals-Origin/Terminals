@@ -14,23 +14,75 @@ namespace Terminals.Configuration
         /// </summary>
         internal const String UNTAGGED_NODENAME = "Untagged";
 
-        public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite, bool showOnToolbar)
+        public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite)
         {
             if (favorite == null)
                 return;
 
             StartDelayedUpdate();
             EditFavoriteInSettings(favorite, oldName);
-            bool shownOnToolbar = HasToolbarButton(oldName);
-            if (shownOnToolbar && !showOnToolbar)
-                DeleteFavoriteButton(oldName);
-            else if (shownOnToolbar && (oldName != favorite.Name))
-                EditFavoriteButton(oldName, favorite.Name);
-            else if (!shownOnToolbar && showOnToolbar)
-                AddFavoriteButton(favorite.Name);
 
             SaveAndFinishDelayedUpdate();
             DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
+        }
+
+        internal static void ApplyCredentialsForAllSelectedFavorites(
+            List<FavoriteConfigurationElement> selectedFavorites, string credentialName)
+        {
+            StartDelayedUpdate();
+            foreach (var favorite in selectedFavorites)
+            {
+                favorite.Credential = credentialName;
+                UpdateFavorite(favorite.Name, favorite);
+            }
+            SaveAndFinishDelayedUpdate();
+        }
+
+
+        internal static void SetPasswordToAllSelectedFavorites(
+            List<FavoriteConfigurationElement> selectedFavorites, string newPassword)
+        {
+            StartDelayedUpdate();
+            foreach (FavoriteConfigurationElement favorite in selectedFavorites)
+            {
+                favorite.Password = newPassword;
+                UpdateFavorite(favorite.Name, favorite);
+            }
+            SaveAndFinishDelayedUpdate();
+        }
+
+        internal static void ApplyDomainNameToAllSelectedFavorites(
+            List<FavoriteConfigurationElement> selectedFavorites, string newDomainName)
+        {
+            StartDelayedUpdate();
+            foreach (FavoriteConfigurationElement favorite in selectedFavorites)
+            {
+                favorite.DomainName = newDomainName;
+                UpdateFavorite(favorite.Name, favorite);
+            }
+            SaveAndFinishDelayedUpdate();
+        }
+
+        internal static void ApplyUserNameToAllSelectedFavorites(
+          List<FavoriteConfigurationElement> selectedFavorites, string newUserName)
+        {
+            StartDelayedUpdate();
+            foreach (FavoriteConfigurationElement favorite in selectedFavorites)
+            {
+                favorite.UserName = newUserName;
+                UpdateFavorite(favorite.Name, favorite);
+            }
+            SaveAndFinishDelayedUpdate();
+        }
+
+        internal static void DeleteAllSelectedFavorites(List<FavoriteConfigurationElement> selectedFavorites)
+        {
+            StartDelayedUpdate();
+            foreach (FavoriteConfigurationElement favorite in selectedFavorites)
+            {
+                DeleteFavorite(favorite.Name);
+            }
+            SaveAndFinishDelayedUpdate();
         }
 
         /// <summary>
@@ -38,11 +90,8 @@ namespace Terminals.Configuration
         /// </summary>
         /// <param name="oldName">favorite.Name value, before the favorite was changed</param>
         /// <param name="favorite">Not null updated connection favorite</param>
-        public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite)
+        private static void UpdateFavorite(string oldName, FavoriteConfigurationElement favorite)
         {
-            if (favorite == null)
-                return;
-
             EditFavoriteInSettings(favorite, oldName);
             DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
         }
@@ -89,9 +138,9 @@ namespace Terminals.Configuration
             DataDispatcher.Instance.ReportFavoritesDeleted(favorites);
         }
 
-        public static void AddFavorite(FavoriteConfigurationElement favorite, bool showOnToolbar)
+        public static void AddFavorite(FavoriteConfigurationElement favorite)
         {
-            AddFavoriteToSettings(favorite, showOnToolbar);
+            AddFavoriteToSettings(favorite);
             List<String> addedTags = AddTagsToSettings(favorite.TagList);
             DataDispatcher.Instance.ReportTagsAdded(addedTags);
             DataDispatcher.Instance.ReportFavoriteAdded(favorite);
@@ -100,23 +149,17 @@ namespace Terminals.Configuration
         /// <summary>
         /// Adds favorite to the database, but doesnt fire the changed event
         /// </summary>
-        private static void AddFavoriteToSettings(FavoriteConfigurationElement favorite, bool showOnToolbar)
+        private static void AddFavoriteToSettings(FavoriteConfigurationElement favorite)
         {
             GetSection().Favorites.Add(favorite);
             SaveImmediatelyIfRequested();
-
-            if (showOnToolbar)
-                AddFavoriteButton(favorite.Name);
-            else
-                DeleteFavoriteButton(favorite.Name);
         }
 
         /// <summary>
         /// Adds all favorites as new in the configuration as a batch and saves configuration after all are imported.
         /// </summary>
         /// <param name="favorites">Not null collection of favorites to import</param>
-        /// <param name="showOnToolbar">Flag informing, if the favorite should show its command in menu</param>
-        internal static void AddFavorites(List<FavoriteConfigurationElement> favorites, bool showOnToolbar)
+        internal static void AddFavorites(List<FavoriteConfigurationElement> favorites)
         {
             if (favorites == null || favorites.Count == 0)
                 return;
@@ -125,7 +168,7 @@ namespace Terminals.Configuration
             List<String> tagsToAdd = new List<string>();
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
-                AddFavoriteToSettings(favorite, showOnToolbar);
+                AddFavoriteToSettings(favorite);
                 List<String> difference = ListStringHelper.GetMissingSourcesInTarget(favorite.TagList, tagsToAdd);
                 tagsToAdd.AddRange(difference);
             }

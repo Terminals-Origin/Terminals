@@ -13,12 +13,10 @@ namespace Terminals.Forms.Controls
     {
         private const String importSuffix = "_(imported)";
         private Form sourceForm;
-        private Boolean addToToolBar;
 
-        internal ImportWithDialogs(Form sourceForm, Boolean addToToolBar)
+        internal ImportWithDialogs(Form sourceForm)
         {
             this.sourceForm = sourceForm;
-            this.addToToolBar = addToToolBar;
         }
 
         internal Boolean Import(List<FavoriteConfigurationElement> favoritesToImport)
@@ -55,7 +53,7 @@ namespace Terminals.Forms.Controls
 
             if (renameAnswer != DialogResult.Cancel)
             {
-                Settings.AddFavorites(favoritesToImport, this.addToToolBar);
+                Settings.AddFavorites(favoritesToImport);
                 return true;
             }
 

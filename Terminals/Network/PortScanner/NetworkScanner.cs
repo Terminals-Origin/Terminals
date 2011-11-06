@@ -242,7 +242,7 @@ namespace Terminals
 
         private void ImportSelectedItems(List<FavoriteConfigurationElement> favoritesToImport)
         {
-            var managedImport = new ImportWithDialogs(this, false);
+            var managedImport = new ImportWithDialogs(this);
             managedImport.Import(favoritesToImport);
         }
 

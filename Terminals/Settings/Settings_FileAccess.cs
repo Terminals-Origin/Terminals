@@ -349,7 +349,7 @@ namespace Terminals.Configuration
                             }
                         }
 
-                        AddFavorite(newFav, false);
+                        AddFavorite(newFav);
                     }
                     catch (Exception exc) // ignore the error
                     {
