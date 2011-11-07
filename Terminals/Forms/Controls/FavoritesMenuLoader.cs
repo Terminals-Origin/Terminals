@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Properties;
 using Settings = Terminals.Configuration.Settings;
@@ -79,11 +80,17 @@ namespace Terminals.Forms.Controls
 
             DataDispatcher.Instance.TagsChanged += new TagsChangedEventHandler(this.OnDataChanged);
             DataDispatcher.Instance.FavoritesChanged += new FavoritesChangedEventHandler(this.OnDataChanged);
+            Settings.ConfigurationChanged += new ConfigurationChangedHandler(this.OnSettingsConfigurationChanged);
         }
 
         private void OnDataChanged(EventArgs args)
         {
             UpdateMenuAndContextMenu();
+        }
+        
+        private void OnSettingsConfigurationChanged(ConfigurationChangedEventArgs args)
+        {
+            LoadFavoritesToolbar();
         }
 
         /// <summary>
@@ -215,24 +222,33 @@ namespace Terminals.Forms.Controls
         {
             try
             {
+                favoriteToolBar.SuspendLayout();
                 favoriteToolBar.Items.Clear();
-                if (Settings.FavoritesToolbarButtons != null)
-                {
-                    FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-                    foreach (String favoriteButton in Settings.FavoritesToolbarButtons)
-                    {
-                        FavoriteConfigurationElement favorite = favorites[favoriteButton];
-                        if (favorite != null)
-                        {
-                            ToolStripButton favoriteBtn = CreateFavoriteButton(favorite);
-                            favoriteToolBar.Items.Add(favoriteBtn);
-                        }
-                    }
-                }
+                CreateFavoriteButtons();
+                favoriteToolBar.ResumeLayout();
             }
             catch (Exception exc)
             {
                 Logging.Log.Error("Error Loading Favorites Toolbar", exc);
+            }
+        }
+
+        private void CreateFavoriteButtons()
+        {
+            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            foreach (String favoriteName in Settings.FavoritesToolbarButtons)
+            {
+                this.CreateFavoriteButton(favorites, favoriteName);
+            }
+        }
+
+        private void CreateFavoriteButton(FavoriteConfigurationElementCollection favorites, string favoriteName)
+        {
+            FavoriteConfigurationElement favorite = favorites[favoriteName];
+            if (favorite != null)
+            {
+                ToolStripButton favoriteBtn = this.CreateFavoriteButton(favorite);
+                this.favoriteToolBar.Items.Add(favoriteBtn);
             }
         }
 

@@ -11,7 +11,7 @@ using System.Xml;
 
 namespace Terminals.Configuration
 {
-    internal delegate void ConfigFileReloadedHandler(ConfigFileChangedEventArgs args);
+    internal delegate void ConfigurationChangedHandler(ConfigurationChangedEventArgs args);
 
     internal static partial class Settings
     {
@@ -53,7 +53,7 @@ namespace Terminals.Configuration
         /// Informs lisseners, that configuration file was changed by another application
         /// or another Terminals instance. In this case all cached not saved data are lost.
         /// </summary>
-        internal static event ConfigFileReloadedHandler ConfigFileReloaded;
+        internal static event ConfigurationChangedHandler ConfigurationChanged;
 
         private static void SetDefaultConfigurationFileLocation()
         {
@@ -74,10 +74,15 @@ namespace Terminals.Configuration
         {
             TerminalsConfigurationSection old = GetSection();
             ForceReload();
-            if (ConfigFileReloaded != null)
+            var args = ConfigurationChangedEventArgs.CreateFromSettings(old, GetSection());
+            FireConfigurationChanged(args);
+        }
+
+        private static void FireConfigurationChanged(ConfigurationChangedEventArgs args)
+        {
+            if (ConfigurationChanged != null)
             {
-                var args = new ConfigFileChangedEventArgs(old, GetSection());
-                ConfigFileReloaded(args);
+                ConfigurationChanged(args);
             }
         }
 

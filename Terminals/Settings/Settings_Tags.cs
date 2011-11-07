@@ -15,7 +15,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                List<string> tags = GetSection().Tags.ReadList();
+                List<string> tags = GetSection().Tags.ToList();
                 tags.Sort();
                 return tags.ToArray();
             }
@@ -53,7 +53,7 @@ namespace Terminals.Configuration
             if (Tags.Contains(tag))
                 return String.Empty;
 
-            AddMRUItemConfigurationElement(GetSection().Tags, tag);
+            GetSection().Tags.AddByName(tag);
             SaveImmediatelyIfRequested();
             return tag;
         }
@@ -84,7 +84,7 @@ namespace Terminals.Configuration
         {
             if (AutoCaseTags)
                 tagToDelete = ToTitleCase(tagToDelete);
-            DeleteMRUItemConfigurationElement(GetSection().Tags, tagToDelete);
+            GetSection().Tags.DeleteByName(tagToDelete);
             SaveImmediatelyIfRequested();
             return tagToDelete;
         }

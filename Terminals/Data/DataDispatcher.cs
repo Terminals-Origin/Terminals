@@ -29,7 +29,7 @@ namespace Terminals.Data
 
         private DataDispatcher()
         {
-            Settings.ConfigFileReloaded += new ConfigFileReloadedHandler(OnConfigFileReloaded);
+            Settings.ConfigurationChanged += new ConfigurationChangedHandler(OnConfigFileReloaded);
         }
 
         /// <summary>
@@ -64,26 +64,26 @@ namespace Terminals.Data
             StoredCredentials.Instance.AssignSynchronizationObject(synchronizer);
         }
 
-        private void OnConfigFileReloaded(ConfigFileChangedEventArgs args)
+        private void OnConfigFileReloaded(ConfigurationChangedEventArgs args)
         {
             MergeTags(args);
             MergeFavorites(args);
         }
 
-        private void MergeTags(ConfigFileChangedEventArgs args)
+        private void MergeTags(ConfigurationChangedEventArgs args)
         {
-            List<string> oldTags = args.Old.Tags.ReadList();
-            List<string> newTags = args.New.Tags.ReadList();
+            List<string> oldTags = args.OldTags;
+            List<string> newTags = args.NewTags;
             List<string> deletedTags = ListStringHelper.GetMissingSourcesInTarget(oldTags, newTags);
             List<string> addedTags = ListStringHelper.GetMissingSourcesInTarget(newTags, oldTags);
             var tagsArgs = new TagsChangedArgs(addedTags, deletedTags);
             FireTagsChanged(tagsArgs);
         }
 
-        private void MergeFavorites(ConfigFileChangedEventArgs args)
+        private void MergeFavorites(ConfigurationChangedEventArgs args)
         {
-            var oldFavorites = args.Old.Favorites.ToList();
-            var newFavorites = args.New.Favorites.ToList();
+            var oldFavorites = args.OldFavorites;
+            var newFavorites = args.NewFavorites;
             List<FavoriteConfigurationElement> missingFavorites = GetMissingFavorites(newFavorites, oldFavorites);
             List<FavoriteConfigurationElement> redundantFavorites = GetMissingFavorites(oldFavorites, newFavorites);
 

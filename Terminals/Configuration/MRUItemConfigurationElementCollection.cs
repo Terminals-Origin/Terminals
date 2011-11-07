@@ -137,11 +137,38 @@ namespace Terminals
             BaseClear();
         }
 
-        internal List<string> ReadList()
+        internal List<string> ToList()
         {
             return this.Cast<MRUItemConfigurationElement>()
                 .Select(configurationElement => configurationElement.Name)
                 .ToList();
+        }
+
+        internal void AddByName(string name)
+        {
+            MRUItemConfigurationElement configurationElement = this.ItemByName(name);
+            if (configurationElement == null)
+            {
+                this.Add(new MRUItemConfigurationElement(name));
+            }
+        }
+
+        internal void DeleteByName(string name)
+        {
+            MRUItemConfigurationElement configurationElement = this.ItemByName(name);
+            if (configurationElement != null)
+            {
+                this.Remove(name);
+            }
+        }
+
+        internal void EditByName(string oldName, string newName)
+        {
+            MRUItemConfigurationElement configurationElement = this.ItemByName(oldName);
+            if (configurationElement != null)
+            {
+                this[oldName].Name = newName;
+            }
         }
     }
 }

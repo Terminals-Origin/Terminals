@@ -732,6 +732,9 @@ namespace Terminals
             }
         }
 
+        /// <summary>
+        /// Gets or set ordered collection of favorite names to show in GUI as toolstrip buttons
+        /// </summary>
         [ConfigurationProperty("favoritesButtonsList")]
         [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]
         public MRUItemConfigurationElementCollection FavoritesButtons

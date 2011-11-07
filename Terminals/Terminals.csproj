@@ -527,7 +527,7 @@
     <Compile Include="Data\Serialization\StreamHelper.cs" />
     <Compile Include="Data\SerializableDictionary.cs" />
     <Compile Include="Data\SerializableSortedDictionary.cs" />
-    <Compile Include="Settings\ConfigFileChangedEventArgs.cs" />
+    <Compile Include="Settings\ConfigurationChangedEventArgs.cs" />
     <Compile Include="Settings\FavoritesFactory.cs" />
     <Compile Include="Settings\Settings_FavoriteButtons.cs" />
     <Compile Include="Settings\Settings_Favorites.cs" />

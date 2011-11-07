@@ -19,14 +19,14 @@ namespace Terminals.Forms
             InitializeComponent();
 
             MovePanelsFromTabsIntoControls();
-            Settings.ConfigFileReloaded += new ConfigFileReloadedHandler(this.SettingsConfigFileReloaded);
+            Settings.ConfigurationChanged += new ConfigurationChangedHandler(this.SettingsConfigFileReloaded);
             LoadSettings();
             
             this.SetFormSize();
             UpdateLookAndFeel(terminal);
         }
 
-        private void SettingsConfigFileReloaded(ConfigFileChangedEventArgs args)
+        private void SettingsConfigFileReloaded(ConfigurationChangedEventArgs args)
         {
             LoadSettings();
         }
@@ -195,7 +195,7 @@ namespace Terminals.Forms
 
         private void OptionDialog_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Settings.ConfigFileReloaded -= SettingsConfigFileReloaded;
+            Settings.ConfigurationChanged -= SettingsConfigFileReloaded;
         }
     }
 }

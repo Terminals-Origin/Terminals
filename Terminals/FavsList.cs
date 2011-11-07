@@ -351,7 +351,6 @@ namespace Terminals
             if (fav != null)
             {
                 Settings.DeleteFavorite(fav.Name);
-                Settings.DeleteFavoriteButton(fav.Name);
             }
         }
 

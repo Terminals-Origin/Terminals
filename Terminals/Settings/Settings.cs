@@ -911,7 +911,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                return GetSection().ServersMRU.ReadList().ToArray();
+                return GetSection().ServersMRU.ToList().ToArray();
             }
         }
 
@@ -919,7 +919,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                return GetSection().DomainsMRU.ReadList().ToArray();
+                return GetSection().DomainsMRU.ToList().ToArray();
             }
         }
 
@@ -927,7 +927,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                return GetSection().UsersMRU.ReadList().ToArray();
+                return GetSection().UsersMRU.ToList().ToArray();
             }
         }
 
@@ -935,32 +935,32 @@ namespace Terminals.Configuration
 
         #region Public
 
-        public static string ToTitleCase(String Name)
+        public static string ToTitleCase(string name)
         {
-            return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(Name.ToLower());
+            return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
         }
 
         public static void AddServerMRUItem(string name)
         {
-            AddMRUItemConfigurationElement(GetSection().ServersMRU, name);
+            GetSection().ServersMRU.AddByName(name);
             SaveImmediatelyIfRequested();
         }
 
-        public static void AddDomainMRUItem(String name)
+        public static void AddDomainMRUItem(string name)
         {
-            AddMRUItemConfigurationElement(GetSection().DomainsMRU, name);
+            GetSection().DomainsMRU.AddByName(name);
             SaveImmediatelyIfRequested();
         }
 
         public static void AddUserMRUItem(string name)
         {
-            AddMRUItemConfigurationElement(GetSection().UsersMRU, name);
+            GetSection().UsersMRU.AddByName(name);
             SaveImmediatelyIfRequested();
         }
 
         public static void AddConnection(string name)
         {
-            AddMRUItemConfigurationElement(GetSection().SavedConnections, name);
+            GetSection().SavedConnections.AddByName(name);
             SaveImmediatelyIfRequested();
         }
 
@@ -998,7 +998,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                return GetSection().SavedConnections.ReadList().ToArray();
+                return GetSection().SavedConnections.ToList().ToArray();
             }
         }
 
@@ -1023,37 +1023,6 @@ namespace Terminals.Configuration
             ////    configuration.Sections["SSH"] = value;
             ////    if(!DelayConfigurationSave) configuration.Save();
             ////}
-        }
-
-        #endregion
-
-        #region MRU
-
-        private static void AddMRUItemConfigurationElement(MRUItemConfigurationElementCollection configurationElementCollection, string name)
-        {
-            MRUItemConfigurationElement configurationElement = configurationElementCollection.ItemByName(name);
-            if (configurationElement == null)
-            {
-                configurationElementCollection.Add(new MRUItemConfigurationElement(name));
-            }
-        }
-
-        private static void DeleteMRUItemConfigurationElement(MRUItemConfigurationElementCollection configurationElementCollection, string name)
-        {
-            MRUItemConfigurationElement configurationElement = configurationElementCollection.ItemByName(name);
-            if (configurationElement != null)
-            {
-                configurationElementCollection.Remove(name);
-            }
-        }
-
-        private static void EditMRUItemConfigurationElement(MRUItemConfigurationElementCollection configurationElementCollection, string oldName, string newName)
-        {
-            MRUItemConfigurationElement configurationElement = configurationElementCollection.ItemByName(oldName);
-            if (configurationElement != null)
-            {
-                configurationElementCollection[oldName].Name = newName;
-            }
         }
 
         #endregion

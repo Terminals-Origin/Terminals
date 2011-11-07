@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SysConfig = System.Configuration;
 
@@ -10,36 +10,55 @@ namespace Terminals.Configuration
         {
             get
             {
-                return GetSection().FavoritesButtons.ReadList().ToArray();
+                return GetSection().FavoritesButtons.ToList().ToArray();
             }
+        }
+
+        private static MRUItemConfigurationElementCollection ButtonsCollection
+        {
+            get { return GetSection().FavoritesButtons; }
         }
 
         public static void AddFavoriteButton(string name)
         {
-            AddMRUItemConfigurationElement(GetSection().FavoritesButtons, name);
+            List<string> oldButtons = ButtonsCollection.ToList();
+            AddButtonToInternCollection(name);
+            FireButtonsChangedEvent(oldButtons);
+        }
+
+        private static void AddButtonToInternCollection(string name)
+        {
+            ButtonsCollection.AddByName(name);
             SaveImmediatelyIfRequested();
         }
 
         public static void DeleteFavoriteButton(string name)
         {
-            DeleteMRUItemConfigurationElement(GetSection().FavoritesButtons, name);
+            List<string> oldButtons = ButtonsCollection.ToList();
+            ButtonsCollection.DeleteByName(name);
             SaveImmediatelyIfRequested();
+            FireButtonsChangedEvent(oldButtons);
         }
 
         public static void EditFavoriteButton(string oldFavoriteName, string newFavoriteName)
         {
-            EditMRUItemConfigurationElement(GetSection().FavoritesButtons, oldFavoriteName, newFavoriteName);
+            List<string> oldButtons = ButtonsCollection.ToList();
+            ButtonsCollection.EditByName(oldFavoriteName, newFavoriteName);
             SaveImmediatelyIfRequested();
+            FireButtonsChangedEvent(oldButtons);
         }
 
-        public static void CreateFavoritesToolbarButtonsList(String[] names)
+        public static void UpdateFavoritesToolbarButtons(List<string> newFavoriteNames)
         {
-            GetSection().FavoritesButtons.Clear();
-            SaveImmediatelyIfRequested();
-            foreach (string name in names)
+            StartDelayedUpdate();
+            List<string> oldButtons = ButtonsCollection.ToList();
+            ButtonsCollection.Clear();
+            foreach (string favoriteName in newFavoriteNames)
             {
-                AddFavoriteButton(name);
+                AddButtonToInternCollection(favoriteName);
             }
+            SaveAndFinishDelayedUpdate();
+            FireButtonsChangedEvent(oldButtons);
         }
 
         internal static void EditFavoriteButton(string oldFavoriteName, string newFavoriteName, bool showOnToolbar)
@@ -56,6 +75,13 @@ namespace Terminals.Configuration
         internal static bool HasToolbarButton(string favoriteName)
         {
             return FavoritesToolbarButtons.Contains(favoriteName);
+        }
+
+        private static void FireButtonsChangedEvent(List<string> oldButtons)
+        {
+          List<string> newButtons = ButtonsCollection.ToList(); 
+          var args = ConfigurationChangedEventArgs.CreateFromButtons(oldButtons, newButtons);
+          FireConfigurationChanged(args);
         }
     }
 }

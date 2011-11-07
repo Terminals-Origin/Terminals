@@ -71,7 +71,7 @@ namespace Terminals
             {
                 names.Add(item.Text);
             }
-            Settings.CreateFavoritesToolbarButtonsList(names.ToArray());
+            Settings.UpdateFavoritesToolbarButtons(names);
         }
     }
 }
