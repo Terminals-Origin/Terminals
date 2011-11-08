@@ -149,7 +149,9 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
@@ -192,7 +194,9 @@
     <Compile Include="CaptureManager\CaptureType.cs" />
     <Compile Include="CaptureManager\ImageFormatHandler.cs" />
     <Compile Include="CaptureManager\ImageFormatTypes.cs" />
-    <Compile Include="CommandLine\TerminalsCA.cs" />
+    <Compile Include="Network\Services\CommandLineServer.cs" />
+    <Compile Include="Network\Services\CommandLineService.cs" />
+    <Compile Include="CommandLine\CommandLineArgs.cs" />
     <Compile Include="Configuration\Colors.cs" />
     <Compile Include="Configuration\DesktopSize.cs" />
     <Compile Include="Configuration\RemoteSounds.cs" />
@@ -392,6 +396,7 @@
       <DependentUpon>StartShutdownOptionPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\TerminalFormDialogResult.cs" />
+    <Compile Include="Network\Services\ICommandLineService.cs" />
     <Compile Include="MainFormFullScreenSwitch.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -455,6 +460,7 @@
     </Compile>
     <Compile Include="Network\PortScanner\ConnectionState.cs" />
     <Compile Include="Network\PortScanner\NetworkScanResult.cs" />
+    <Compile Include="Network\Services\ShareFavoritesEventArgs.cs" />
     <Compile Include="Network\SubnetMask.cs" />
     <Compile Include="Network\TraceRoute\RouteHopFoundEventArgs.cs" />
     <Compile Include="Network\TraceRoute\TraceRoute.cs">
@@ -637,7 +643,7 @@
     <Compile Include="Network\PortScanner\NetworkScanner.Designer.cs">
       <DependentUpon>NetworkScanner.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\Services\Client.cs" />
     <Compile Include="Network\DNSLookup.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -711,14 +717,14 @@
     <Compile Include="Network\WMI\NetworkShares.Designer.cs">
       <DependentUpon>NetworkShares.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\Server.cs" />
+    <Compile Include="Network\Services\Server.cs" />
     <Compile Include="Network\ShareConnectionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Network\ShareConnectionsForm.Designer.cs">
       <DependentUpon>ShareConnectionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\SharedFavorite.cs" />
+    <Compile Include="Network\Services\SharedFavorite.cs" />
     <Compile Include="Network\WhoIs\WhoIs.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1347,7 +1353,9 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

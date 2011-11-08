@@ -1,23 +1,29 @@
 using System;
+using System.Reflection;
 using System.Text;
 using System.IO;
 using System.Security.Cryptography;
+using System.Threading;
+using System.Windows.Forms;
+using ICSharpCode.SharpZipLib.Zip;
+using Terminals.CommandLine;
 using Terminals.Configuration;
+using Unified;
+using Unified.Rss;
 
 namespace Terminals.Updates
 {
     public class UpdateManager
     {
-        public static void CheckForUpdates()
+        public static void CheckForUpdates(CommandLineArgs commandLine)
         {
-            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(PerformCheck), null);
-            //PerformCheck(null);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(PerformCheck), commandLine);
         }
 
         public static string GetMD5HashFromFile(string file_name)
         {
             String tmpFile = file_name + ".tmp";
-            System.IO.File.Copy(file_name, tmpFile, true);
+            File.Copy(file_name, tmpFile, true);
             Byte[] retVal = null;
 
             using (FileStream file = new FileStream(tmpFile, FileMode.Open))
@@ -37,10 +43,8 @@ namespace Terminals.Updates
 
                 return s.ToString();
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         /// <summary>
@@ -52,13 +56,13 @@ namespace Terminals.Updates
             String releaseFile = "LastUpdateCheck.txt";
             if (File.Exists(releaseFile))
             {
-                String text = System.IO.File.ReadAllText(releaseFile).Trim();
+                String text = File.ReadAllText(releaseFile).Trim();
                 if (text != String.Empty)
                 {
                     DateTime lastUpdate = DateTime.MinValue;
                     if (DateTime.TryParse(text, out lastUpdate))
-                    {
-                        if(lastUpdate.Date >= DateTime.Now.Date) //dont run the update if the file is today or later..if we have checked today or not
+                    {   //dont run the update if the file is today or later..if we have checked today or not
+                        if(lastUpdate.Date >= DateTime.Now.Date) 
                         {
                             checkForUpdate = false;
                         }
@@ -68,15 +72,17 @@ namespace Terminals.Updates
 
             if (checkForUpdate)
             {
-                Unified.Rss.RssFeed feed = Unified.Rss.RssFeed.Read(String.Format("{0}/project/feeds/rss?ProjectRSSFeed=codeplex%3A%2F%2Frelease%2FTerminals&ProjectName=terminals", Program.Resources.GetString("TerminalsURL")));
+                RssFeed feed = RssFeed.Read(String.Format("{0}/project/feeds/rss?ProjectRSSFeed=codeplex%3A%2F%2Frelease%2FTerminals&ProjectName=terminals", Program.Resources.GetString("TerminalsURL")));
                 if (feed != null)
                 {
                     Boolean needsUpdate = false;
-                    foreach (Unified.Rss.RssChannel chan in feed.Channels)
+                    foreach (RssChannel chan in feed.Channels)
                     {
-                        foreach (Unified.Rss.RssItem item in chan.Items)
+                        foreach (RssItem item in chan.Items)
                         {
-                            if (item.PubDate > Program.Info.BuildDate)  //check the date the item was published.  is it after the currently executing application BuildDate? if so, then its probably a new build!
+                            //check the date the item was published.  
+                            //Is it after the currently executing application BuildDate? if so, then its probably a new build!
+                            if (item.PubDate > Program.Info.BuildDate)  
                             {
                                 MainForm.ReleaseAvailable = true;
                                 MainForm.ReleaseDescription = item;
@@ -107,18 +113,16 @@ namespace Terminals.Updates
 
             try
             {
-                String autoUpdate = MainForm.CommandLineArgs.AutomaticallyUpdate;
-                if (autoUpdate != null)
+                bool autoUpdate = (state as CommandLineArgs).AutomaticallyUpdate;
+                if (autoUpdate)
                 {
-                    Boolean update = false;
-                    if (Boolean.TryParse(autoUpdate, out update) && update == true)
                     {
                         String url = Settings.UpdateSource;
                         String contents = Download(url);
 
                         if (!String.IsNullOrEmpty(contents))
                         {
-                            TerminalsUpdates updates = (TerminalsUpdates)Unified.Serialize.DeSerializeXML(contents, typeof(TerminalsUpdates));
+                            TerminalsUpdates updates = (TerminalsUpdates)Serialize.DeSerializeXML(contents, typeof(TerminalsUpdates));
                             if (updates != null)
                             {
                                 String currentMD5 = GetMD5HashFromFile("Terminals.exe");
@@ -147,23 +151,18 @@ namespace Terminals.Updates
                                         if (downloaded && File.Exists(filename))
                                         {
                                             //ICSharpCode.SharpZipLib.Zip.FastZipEvents evts = new ICSharpCode.SharpZipLib.Zip.FastZipEvents();
-                                            ICSharpCode.SharpZipLib.Zip.FastZip fz = new ICSharpCode.SharpZipLib.Zip.FastZip();
+                                            FastZip fz = new FastZip();
                                             fz.ExtractZip(filename, finalFolder, null);
 
-                                            if (System.Windows.Forms.MessageBox.Show("A new build is available, would you like to install it now", "New Build", System.Windows.Forms.MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK) {
+                                            if (MessageBox.Show("A new build is available, would you like to install it now", "New Build", MessageBoxButtons.OKCancel) == DialogResult.OK) {
 
                                                 DirectoryInfo parent = FindFileInFolder(new DirectoryInfo(finalFolder), "Terminals.exe");
                                                 if (parent == null)
-                                                {
                                                     return;
-                                                }
-                                                else
-                                                {
-                                                    finalFolder = parent.FullName;
-                                                }
+
+                                                finalFolder = parent.FullName;
 
                                                 File.Copy(Settings.CONFIG_FILE_NAME, Path.Combine(finalFolder, Settings.CONFIG_FILE_NAME), true);
-                                                //System.IO.File.Copy(Settings.ToolStripSettingsFile, System.IO.Path.Combine(finalFolder, Settings.ToolStripSettingsFile), true);
                                                 File.Copy("Terminals.log4net.config", Path.Combine(finalFolder, "Terminals.log4net.config"), true);
 
                                                 String temp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -177,9 +176,9 @@ namespace Terminals.Updates
                                                 if (File.Exists(updaterExe))
                                                 {
                                                     //String args = "\"" + finalFolder + "\" \"" + Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\"";
-                                                    String args = String.Format("\"{0}\" \"{1}\"", finalFolder, Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
+                                                    String args = String.Format("\"{0}\" \"{1}\"", finalFolder, Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
                                                     System.Diagnostics.Process.Start(updaterExe, args);
-                                                    System.Windows.Forms.Application.Exit();
+                                                    Application.Exit();
                                                 }
                                             }
                                         }

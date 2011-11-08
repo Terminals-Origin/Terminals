@@ -29,8 +29,7 @@ namespace Terminals
             InitScanManager();
             this.gridScanResults.AutoGenerateColumns = false;
 
-            Server.OnClientConnection += new Server.ClientConnection(Server_OnClientConnection);
-            Client.OnServerConnection += new Client.ServerConnection(Client_OnServerConnection);
+            Client.OnServerConnection += new ServerConnectionHandler(Client_OnServerConnection);
             
             this.bsScanResults.DataSource = new SortableList<NetworkScanResult>();
         }
@@ -226,80 +225,15 @@ namespace Terminals
             }
         }
 
-        private void Client_OnServerConnection(MemoryStream Response)
-        {
-            if (Response.Length == 0)
-            {
-                MessageBox.Show("The server has nothing to share with you.");
-            }
-            else
-            {
-                ArrayList favorites = (ArrayList)Serialize.DeSerializeBinary(Response);
-                SortableList<FavoriteConfigurationElement> favoritesToImport = GetReceivedFavorites(favorites);
-                ImportSelectedItems(favoritesToImport);
-            }
-        }
-
         private void ImportSelectedItems(List<FavoriteConfigurationElement> favoritesToImport)
         {
             var managedImport = new ImportWithDialogs(this);
             managedImport.Import(favoritesToImport);
         }
 
-        private static SortableList<FavoriteConfigurationElement> GetReceivedFavorites(ArrayList favorites)
+        private void Client_OnServerConnection(ShareFavoritesEventArgs args)
         {
-            var importedFavorites = new SortableList<FavoriteConfigurationElement>();
-            foreach (object item in favorites)
-            {
-                SharedFavorite favorite = item as SharedFavorite;
-                if (favorite != null)
-                    importedFavorites.Add(ImportSharedFavorite(favorite));
-            }
-            return importedFavorites;
-        }
-
-        private static FavoriteConfigurationElement ImportSharedFavorite(SharedFavorite favorite)
-        {
-            FavoriteConfigurationElement newfav = SharedFavorite.ConvertFromFavorite(favorite);
-            newfav.UserName = Environment.UserName;
-            newfav.DomainName = Environment.UserDomainName;
-            return newfav;
-        }
-
-        private void Server_OnClientConnection(String Username, Socket Socket)
-        {
-            ArrayList list = FavoritesToSharedList();
-            Byte[] data = SharedListToBinaryData(list);
-            Socket.Send(data);
-            Server.FinishDisconnect(Socket);
-        }
-
-        private static Byte[] SharedListToBinaryData(ArrayList list)
-        {
-            MemoryStream favs = Serialize.SerializeBinary(list);
-
-            if (favs != null && favs.Length > 0)
-            {
-                if (favs.CanRead && favs.Position > 0) 
-                    favs.Position = 0;
-                Byte[] data = favs.ToArray();
-                favs.Close();
-                favs.Dispose();
-                return data;
-            }
-
-            return new byte[0];
-        }
-
-        private static ArrayList FavoritesToSharedList()
-        {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
-            ArrayList list = new ArrayList();
-            foreach (FavoriteConfigurationElement elem in favorites)
-            {
-                list.Add(SharedFavorite.ConvertFromFavorite(elem));
-            }
-            return list;
+            ImportSelectedItems(args.Favorites);
         }
 
         private void button2_Click(object sender, EventArgs e)

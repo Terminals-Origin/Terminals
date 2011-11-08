@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -9,79 +7,74 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Terminals
 {
-    public delegate void NewInstanceMessageEventHandler(object sender, object message);
+    internal delegate void NewInstanceMessageEventHandler(object sender, object message);
 
-    public class SingleInstanceApplication
+    internal class SingleInstanceApplication
     {
-        //win32 translation of some needed APIs
-        private class NativeMethods
+        public static event NewInstanceMessageEventHandler NewInstanceMessage;
+
+        private static SingleInstanceApplication _theInstance = new SingleInstanceApplication();
+
+        public static bool AlreadyExists
         {
-            [DllImport("user32.dll")]
-            public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-            [DllImport("user32.dll")]
-            public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
-
-            public const short WM_COPYDATA = 74;
-
-            public struct COPYDATASTRUCT
+            get
             {
-                public IntPtr dwData;
-                public int cbData;
-                public IntPtr lpData;
+                return _theInstance.Exists;
             }
         }
 
-        //a utility window to communicate between application instances
-        private class SIANativeWindow : NativeWindow
-        {
-            public SIANativeWindow()
-            {
-                CreateParams cp = new CreateParams();
-                cp.Caption = _theInstance._id;
-                CreateHandle(cp);
-            }
+        /// <summary>
+        /// this is a uniqe id used to identify the application
+        /// </summary>
+        private string _id;
 
-            protected override void WndProc(ref Message m)
+        /// <summary>
+        /// This is a global counter for the # currently active of instances of the application.
+        /// when the last application is shutdown the semaphore will be released automatically
+        /// </summary>
+        private Semaphore _instanceCounter;
+
+        /// <summary>
+        /// Is this the first instance?
+        /// </summary>
+        private bool _firstInstance;
+
+        private SIANativeWindow _notifcationWindow;
+
+        private bool Exists
+        {
+            get
             {
-                if (m.Msg == NativeMethods.WM_COPYDATA)
-                {
-                    NativeMethods.COPYDATASTRUCT data = (NativeMethods.COPYDATASTRUCT)Marshal.PtrToStructure(m.LParam, typeof(NativeMethods.COPYDATASTRUCT));
-                    object obj = null;
-                    if (data.cbData > 0 && data.lpData != IntPtr.Zero)
-                    {
-                        byte[] buffer = new byte[data.cbData];
-                        Marshal.Copy(data.lpData, buffer, 0, buffer.Length);
-                        obj = Deserialize(ref buffer);
-                    }
-                    _theInstance.OnNewInstanceMessage(obj);
-                }
-                else
-                    base.WndProc(ref m);
+                return !_firstInstance;
             }
         }
 
-        static SingleInstanceApplication _theInstance = new SingleInstanceApplication();
+        private SingleInstanceApplication()
+        {
+            _id = "SIA_" + GetAppId();
+            _instanceCounter = new Semaphore(0, Int32.MaxValue, _id, out _firstInstance);
+        }
 
-        //this is a uniqe id used to identify the application
-        string _id;
-        //This is a global counter for the # currently active of instances of the application.
-        //when the last application is shutdown the semaphore will be releaed automatically
-        Semaphore _instanceCounter;
-        //Is this the first instance?
-        bool _firstInstance;
+        public static void Initialize()
+        {
+            _theInstance.Init();
+        }
+        
+        private void Init()
+        {
+            _notifcationWindow = new SIANativeWindow();
+        }
 
-        SIANativeWindow _notifcationWindow;
-
+        public static void Close()
+        {
+            _theInstance.Dispose();
+        }
+        
         private void Dispose()
         {
             _instanceCounter.Close();
             if (_notifcationWindow != null)
                 _notifcationWindow.DestroyHandle();
-        }
-
-        private void Init()
-        {
-            _notifcationWindow = new SIANativeWindow();
         }
 
         private static string GetAppId()
@@ -94,24 +87,24 @@ namespace Terminals
             if (NewInstanceMessage != null)
                 NewInstanceMessage(this, message);
         }
-
-        private SingleInstanceApplication()
+        
+        public static bool NotifyExistingInstance()
         {
-            _id = "SIA_" + GetAppId();
-            _instanceCounter = new Semaphore(0, Int32.MaxValue, _id, out _firstInstance);
+            return NotifyExistingInstance(null);
         }
 
-        private bool Exists
+        public static bool NotifyExistingInstance(object message)
         {
-            get
+            if (_theInstance.Exists)
             {
-                return !_firstInstance;
+                return _theInstance.NotifyPreviousInstance(message);
             }
+            return false;
         }
 
         private bool NotifyPreviousInstance(object message)
         {
-            Terminals.Logging.Log.Info("NotifyPreviousInstance", null);
+            Logging.Log.Info("NotifyPreviousInstance", null);
             IntPtr handle = NativeMethods.FindWindow(null, _id);
             if (handle != IntPtr.Zero)
             {
@@ -149,7 +142,9 @@ namespace Terminals
             return false;
         }
 
-        //utility method for serialization\deserialization
+        /// <summary>
+        /// utility method for serialization\deserialization
+        /// </summary>
         private static object Deserialize(ref byte[] buffer)
         {
             using (MemoryStream stream = new MemoryStream(buffer))
@@ -167,38 +162,55 @@ namespace Terminals
             }
         }
 
-        public static bool AlreadyExists
+        /// <summary>
+        /// win32 translation of some needed APIs
+        /// </summary>
+        private class NativeMethods
         {
-            get
+            [DllImport("user32.dll")]
+            public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+            [DllImport("user32.dll")]
+            public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+
+            public const short WM_COPYDATA = 74;
+
+            public struct COPYDATASTRUCT
             {
-                return _theInstance.Exists;
+                public IntPtr dwData;
+                public int cbData;
+                public IntPtr lpData;
             }
         }
 
-        public static bool NotifyExistingInstance(object message)
+        /// <summary>
+        /// a utility window to communicate between application instances
+        /// </summary>
+        private class SIANativeWindow : NativeWindow
         {
-            if (_theInstance.Exists)
+            public SIANativeWindow()
             {
-                return _theInstance.NotifyPreviousInstance(message);
+                CreateParams cp = new CreateParams();
+                cp.Caption = _theInstance._id;
+                CreateHandle(cp);
             }
-            return false;
-        }
 
-        public static bool NotifyExistingInstance()
-        {
-            return NotifyExistingInstance(null);
+            protected override void WndProc(ref Message m)
+            {
+                if (m.Msg == NativeMethods.WM_COPYDATA)
+                {
+                    NativeMethods.COPYDATASTRUCT data = (NativeMethods.COPYDATASTRUCT)Marshal.PtrToStructure(m.LParam, typeof(NativeMethods.COPYDATASTRUCT));
+                    object obj = null;
+                    if (data.cbData > 0 && data.lpData != IntPtr.Zero)
+                    {
+                        byte[] buffer = new byte[data.cbData];
+                        Marshal.Copy(data.lpData, buffer, 0, buffer.Length);
+                        obj = Deserialize(ref buffer);
+                    }
+                    _theInstance.OnNewInstanceMessage(obj);
+                }
+                else
+                    base.WndProc(ref m);
+            }
         }
-
-        public static void Initialize()
-        {
-            _theInstance.Init();
-        }
-
-        public static void Close()
-        {
-            _theInstance.Dispose();
-        }
-
-        public static event NewInstanceMessageEventHandler NewInstanceMessage;
     }
 }

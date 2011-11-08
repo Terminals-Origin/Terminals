@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
+using Terminals.CommandLine;
 using Terminals.Configuration;
 using Terminals.Security;
 using Terminals.Updates;
@@ -16,9 +17,8 @@ namespace Terminals
     internal static partial class Program
     {
         private static string TerminalsVersion = "2.0 Beta 3";
-        
-        public static Mutex mtx;
-        public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", typeof(MainForm).Assembly);
+        public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", 
+            typeof(MainForm).Assembly);
 
         /// <summary>
         /// The main entry point for the application.
@@ -28,19 +28,19 @@ namespace Terminals
         internal static void Main()
         {
             Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
-            mtx = new Mutex(false, "TerminalsMutex");
 
             Logging.Log.Info(String.Format("-------------------------------{0} started-------------------------------", 
                 Info.TitleVersion));
 
             LogGeneralProperties();
             SetApplicationProperties();
-            ParseCommandline();
+            CommandLineArgs commandLine = ParseCommandline();
 
             if(UserAccountControlNotSatisfied())
                 return;
 
-            if (ReuseExistingInstance() && SingleInstanceApplication.NotifyExistingInstance(Environment.GetCommandLineArgs()))
+            if (commandLine.SingleInstance &&
+                SingleInstanceApplication.NotifyExistingInstance(Environment.GetCommandLineArgs()))
                 return;
 
             SingleInstanceApplication.Initialize();
@@ -49,9 +49,9 @@ namespace Terminals
             UpdateConfig.CheckConfigVersionUpdate();
 
             // Check for available application updates
-            UpdateManager.CheckForUpdates();
+            UpdateManager.CheckForUpdates(commandLine);
 
-            StartMainForm();
+            StartMainForm(commandLine);
 
             SingleInstanceApplication.Close();
             Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
@@ -90,7 +90,7 @@ namespace Terminals
             }
         }
 
-        private static void StartMainForm()
+        private static void StartMainForm(CommandLineArgs commandLine)
         {
             if (Settings.IsMasterPasswordDefined)
             {
@@ -99,20 +99,22 @@ namespace Terminals
                     if (requestPassword.ShowDialog() == DialogResult.Cancel)
                         Application.Exit();
                     else
-                        RunMainForm();
+                        RunMainForm(commandLine);
                 }
             }
             else
             {
-                RunMainForm();
+                RunMainForm(commandLine);
             }
         }
 
-        private static void RunMainForm()
+        private static void RunMainForm(CommandLineArgs commandLine)
         {
             try
             {
-                Application.Run(new MainForm());
+                var mainForm = new MainForm();
+                mainForm.HandleCommandLineActions(commandLine);
+                Application.Run(mainForm);
             }
             catch (Exception exc)
             {
@@ -147,28 +149,14 @@ namespace Terminals
             Logging.Log.Fatal("Application Exception", e.Exception);
         }
 
-        private static Boolean ReuseExistingInstance()
+        private static CommandLineArgs ParseCommandline()
         {
-            if (Settings.SingleInstance)
-                return true;
-
+            var commandline = new CommandLineArgs();
             String[] cmdLineArgs = Environment.GetCommandLineArgs();
-            return (cmdLineArgs.Length > 1 && cmdLineArgs[1] == "/reuse");
-        }
-
-        private static void ParseCommandline()
-        {
-            String[] cmdLineArgs = Environment.GetCommandLineArgs();
-            ParseCommandline(cmdLineArgs);
-        }
-
-        private static void ParseCommandline(String[] cmdLineArgs)
-        {
-            CommandLine.Parser.ParseArguments(cmdLineArgs, MainForm.CommandLineArgs);
-            if (MainForm.CommandLineArgs.config != null && MainForm.CommandLineArgs.config != String.Empty)
-            {
-                Settings.ConfigurationFileLocation = MainForm.CommandLineArgs.config;
-            }
+            Parser.ParseArguments(cmdLineArgs, commandline);
+            if (!string.IsNullOrEmpty(commandline.config))
+                Settings.ConfigurationFileLocation = commandline.config;
+            return commandline;
         }
     }
 }

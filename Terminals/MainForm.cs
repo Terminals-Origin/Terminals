@@ -33,8 +33,7 @@ namespace Terminals
 
         public const Int32 WM_LEAVING_FULLSCREEN = 0x4ff;
         private const String FULLSCREEN_ERROR_MSG = "Screen properties not available for RDP";
-        
-        private static TerminalsCA _commandLineArgs = new TerminalsCA();
+
         private static Boolean _releaseAvailable = false;
         private static MainForm _mainForm = null;
 
@@ -227,19 +226,6 @@ namespace Terminals
         
         private Boolean IsMouseDown { get; set; }
         private Point MouseDownLocation { get; set; }
-
-        public static TerminalsCA CommandLineArgs
-        {
-            get
-            {
-                return _commandLineArgs;
-            }
-
-            set
-            {
-                _commandLineArgs = value;
-            }
-        }
 
         public IConnection CurrentConnection
         {
@@ -781,52 +767,26 @@ namespace Terminals
             this.CreateTerminalTab(favorite);
         }
 
-        private void HandleCommandLineActions()
+        internal void HandleCommandLineActions(CommandLineArgs commandLineArgs)
         {
-            Boolean ConnectToConsole = _commandLineArgs.console;
-            this.fullScreenSwitch.FullScreen = _commandLineArgs.fullscreen;
-            if (!String.IsNullOrEmpty(_commandLineArgs.url))
-            {
-                String server; 
-                Int32 port;
-                ProtocolHandler.Parse(_commandLineArgs.url, out server, out port);
-                QuickConnect(server, port, ConnectToConsole);
-            }
+            Boolean connectToConsole = commandLineArgs.console;
+            this.fullScreenSwitch.FullScreen = commandLineArgs.fullscreen;
+            if (commandLineArgs.HasUrlDefined)
+                QuickConnect(commandLineArgs.UrlServer, commandLineArgs.UrlPort, connectToConsole);
 
-            if (!String.IsNullOrEmpty(_commandLineArgs.machine))
-            {
-                String server = String.Empty;
-                Int32 port = 3389;
+            if (commandLineArgs.HasMachineDefined)
+                QuickConnect(commandLineArgs.MachineName, commandLineArgs.Port, connectToConsole);
 
-                server = _commandLineArgs.machine;
-                Int32 index = _commandLineArgs.machine.IndexOf(":");
-                if (index > 0)
-                {
-                    server = _commandLineArgs.machine.Substring(0, index);
-                    String p = _commandLineArgs.machine.Substring(index + 1);
-                    if (!Int32.TryParse(p, out port))
-                    {
-                        port = 3389;
-                    }
-                }
+            ConnectToFavorites(commandLineArgs, connectToConsole);
+        }
 
-                QuickConnect(server, port, ConnectToConsole);
-            } 
-            
-            if (!String.IsNullOrEmpty(_commandLineArgs.favs))
+        private void ConnectToFavorites(CommandLineArgs commandLineArgs, bool connectToConsole)
+        {
+            if (commandLineArgs.Favorites.Length > 0)
             {
-                String favs = _commandLineArgs.favs;
-                if (favs.Contains(","))
+                foreach (String favoriteName in commandLineArgs.Favorites)
                 {
-                    String[] favlist = favs.Split(',');
-                    foreach (String fav in favlist)
-                    {
-                        this.Connect(fav, false, false);
-                    }
-                }
-                else
-                {
-                    this.Connect(favs, false, false);
+                    this.Connect(favoriteName, connectToConsole, false);
                 }
             }
         }
@@ -868,11 +828,6 @@ namespace Terminals
             this._releaseMIV = new MethodInvoker(this.OpenReleasePage);
             this.Text = Program.Info.AboutText;
             OnReleaseIsAvailable += new ReleaseIsAvailable(this.MainForm_OnReleaseIsAvailable);
-        }
-
-        private void MainForm_Shown(object sender, EventArgs e)
-        {
-            this.HandleCommandLineActions();
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
