@@ -8,8 +8,6 @@ namespace Terminals.Configuration
 {
     internal static partial class Settings
     {
-        private static string keyMaterial = string.Empty;
-
         #region Terminals Version
 
         public static Version ConfigVersion
@@ -335,6 +333,7 @@ namespace Terminals.Configuration
             StoredCredentials.Instance.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
         }
 
+        private static string keyMaterial = string.Empty;
         internal static string KeyMaterial
         {
             get
@@ -350,7 +349,7 @@ namespace Terminals.Configuration
 
         internal static Boolean IsMasterPasswordValid(string passwordToCheck)
         {
-            String hashToCheck = Hash.GetHash(passwordToCheck, Hash.HashType.SHA512);
+            String hashToCheck = Functions.ComputeMasterPasswordHash(passwordToCheck);
             if (GetMasterPasswordHash() == hashToCheck)
             {
                 UpdateKeyMaterial(passwordToCheck);
@@ -367,8 +366,10 @@ namespace Terminals.Configuration
 
         private static string GetKeyMaterial(string password)
         {
-            String hashToCheck = Hash.GetHash(password, Hash.HashType.SHA512);
-            return Hash.GetHash(password + hashToCheck, Hash.HashType.SHA512);
+            if (string.IsNullOrEmpty(password))
+                return string.Empty;
+            String hashToCheck = Functions.ComputeMasterPasswordHash(password);
+            return Functions.ComputeMasterPasswordHash(password + hashToCheck);
         }
 
         public static string DefaultDomain

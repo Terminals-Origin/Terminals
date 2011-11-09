@@ -305,7 +305,7 @@ namespace Terminals
                 if (string.IsNullOrEmpty(value))
                     this["terminalsPassword"] = string.Empty;
                 else  //hash the password
-                    this["terminalsPassword"] = Hash.GetHash(value, Hash.HashType.SHA512);
+                  this["terminalsPassword"] = Functions.ComputeMasterPasswordHash(value);
             }
         }
 

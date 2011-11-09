@@ -3,6 +3,7 @@ using System.Text;
 using System.Security.Cryptography;
 using Terminals.Configuration;
 using Unified.Encryption;
+using Unified.Encryption.Hash;
 
 namespace Terminals
 {
@@ -11,6 +12,11 @@ namespace Terminals
         private static int keyLength = 24;
         private static int ivLength = 16;
         private static EncryptionAlgorithm EncryptionAlgorithm = EncryptionAlgorithm.Rijndael;
+
+        internal static string ComputeMasterPasswordHash(string password)
+        {
+          return Hash.GetHash(password, Hash.HashType.SHA512);
+        }
 
         internal static string DecryptPassword(string encryptedPassword)
         {
@@ -68,6 +74,9 @@ namespace Terminals
         {
             try
             {
+                if (String.IsNullOrEmpty(decryptedPassword))
+                    return decryptedPassword;
+
                 if (keyMaterial == string.Empty)
                     return EncryptByEmptyKey(decryptedPassword);
 

@@ -40,11 +40,13 @@ namespace Terminals.Forms
         {
             if (!this.chkPasswordProtectTerminals.Checked && Settings.IsMasterPasswordDefined)
             {
-                Settings.UpdateMasterPassword(string.Empty);
+                Settings.UpdateMasterPassword(string.Empty); // remove password
             }
-            else
+            else // new password is defined
             {
-                if (this.PasswordsMatch && this.PasswordTextbox.Text != NewTerminalForm.HIDDEN_PASSWORD)
+                if (this.PasswordsMatch &&
+                    !string.IsNullOrEmpty(this.PasswordTextbox.Text) &&
+                    this.PasswordTextbox.Text != NewTerminalForm.HIDDEN_PASSWORD)
                 {
                     Settings.UpdateMasterPassword(this.PasswordTextbox.Text);
                 }
