@@ -695,7 +695,7 @@ namespace Terminals
             // 
             // cmbUsers
             // 
-            this.cmbUsers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.cmbUsers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;        
             this.cmbUsers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.cmbUsers.Location = new System.Drawing.Point(100, 30);
             this.cmbUsers.Name = "cmbUsers";
