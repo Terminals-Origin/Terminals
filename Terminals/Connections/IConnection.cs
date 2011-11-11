@@ -2,7 +2,7 @@ using Terminals.TerminalServices;
 
 namespace Terminals.Connections
 {
-    internal interface IConnection
+    public interface IConnection
     {
         TerminalTabControlItem TerminalTabPage { get; set; }
         FavoriteConfigurationElement Favorite { get; set; }

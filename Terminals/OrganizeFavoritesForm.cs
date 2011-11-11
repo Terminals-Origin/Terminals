@@ -12,6 +12,7 @@ namespace Terminals
 {
     public partial class OrganizeFavoritesForm : Form
     {
+        public MainForm MainForm { get; set; }
         public OrganizeFavoritesForm()
         {
             InitializeComponent();
@@ -283,6 +284,90 @@ namespace Terminals
         {
             List<FavoriteConfigurationElement> favoritesToImport = ImportRdpRegistry.Import();
             ImportFavoritesWithManagerImport(favoritesToImport);
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnNew_Click(sender, e);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void editConnectinoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnEdit_Click(sender, e);
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnDelete_Click(sender, e);
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnCopy_Click(sender, e);
+        }
+
+        private void renameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+             btnRename_Click(sender, e);
+        }
+
+        private void scanActiveDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeDirectoryToolStripMenuItem_Click(sender, e);
+        }
+
+        private void scanNetworkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            networkDetectionToolStripMenuItem_Click(sender, e);
+        }
+
+        private void scanRegistryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnRegistryImport_Click(sender, e);
+        }
+
+        private void importFromFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ImportButton_Click(sender, e);
+        }
+
+        private void exportToAFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnExport_Click(sender, e);
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void importFromFileToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            ImportButton_Click(sender, e);
+        }
+
+        private void exportToAFileToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            btnExport_Click(sender, e);
+        }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MainForm != null)
+            {
+                FavoriteConfigurationElement favorite = GetSelectedFavorite();
+                MainForm.Connect(favorite.Name, favorite.ConnectToConsole, favorite.NewWindow);
+            }
         }
     }
 }

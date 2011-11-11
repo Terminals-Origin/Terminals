@@ -24,7 +24,7 @@ using Settings = Terminals.Configuration.Settings;
 
 namespace Terminals
 {
-    internal partial class MainForm : Form
+    public partial class MainForm : Form
     {
         #region Declarations
 
@@ -1340,6 +1340,7 @@ namespace Terminals
         private void manageConnectionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OrganizeFavoritesForm conMgr = new OrganizeFavoritesForm();
+            conMgr.MainForm = this;
             conMgr.ShowDialog();
         }
 
@@ -1876,6 +1877,7 @@ namespace Terminals
         private void toolStripMenuItemImport_Click(object sender, EventArgs e)
         {
             OrganizeFavoritesForm conMgr = new OrganizeFavoritesForm();
+            conMgr.MainForm = this;
             conMgr.CallImport();
             conMgr.ShowDialog();
         }
