@@ -117,13 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="ShortcutsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="ShortcutsContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>763, 17</value>
-  </data>
-  <data name="ilTagConnections.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  </metadata>
+  <metadata name="ilTagConnections.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>940, 17</value>
-  </data>
+  </metadata>
   <data name="ilTagConnections.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
@@ -148,17 +147,17 @@
         Af8BsAKBAf8BsQKBAf8BsQKBAf8BsgKBAf8BswKBAf8BtAKBAf8BtQKBAf8BpwKBAf8B3AHYAdcB/wOY
         Af8DjQH/A4oB/wHZAdUB1AH/A4sB/8AAA9MB/wHxAu8B/wHiAt8B/wHiAt8B/wHhAd8B3gH/AeEB3gHd
         Af8B4AHdAdwB/wHfAdwB2wH/Ad4C2wH/Ad4B2wHZAf8B7QHsAesB/wOeAf8BxQG/Ab4B/wHDAb0BuwH/
-        AdoB1gHVAf8DkQH/wAABawJiAfkD0wH/A9AB/wPMAf8DyAH/A8MB/wO/Af8DugH/A7UB/wOwAf8DqgH/
+        AdoB1gHVAf8DkQH/wAABawJjAfkD0wH/A9AB/wPMAf8DyAH/A8MB/wO/Af8DugH/A7UB/wOwAf8DqgH/
         A6UB/wGUApMB/wGSApEB/wHbAdcB1gH/A5gB/9QAAy8BSANkAeQD3wH/A+oB/wHPAcoByQH/AcsBxgHF
         Af8BygHEAcMB/wHIAcMBwQH/AccCwQH/AdwB2QHYAf8DngH/2AADDQEPAVcCVQGrA9wB/wHmAuMB/wHh
-        Ad4B3AH/Ad8C3AH/Ad8B3AHbAf8B3gLbAf8B7gLsAf8DpQH/4AADUgGfAWACTgH7A8QB/wPAAf8DuwH/
+        Ad4B3AH/Ad8C3AH/Ad8B3AHbAf8B3gLbAf8B7gLsAf8DpQH/4AADUgGfAWACTwH7A8QB/wPAAf8DuwH/
         A7YB/wOwAf8DVAGnwAABQgFNAT4HAAE+AwABKAMAAUADAAEQAwABAQEAAQEFAAGAFwAD/wEAAcABfwYA
         AcABfwYAAeBXAAH4BwAB/AcAAf8HAAs=
 </value>
   </data>
-  <data name="ilTags.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="ilTags.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 56</value>
-  </data>
+  </metadata>
   <data name="ilTags.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
@@ -167,23 +166,24 @@
         AgAAAk1TRnQBSQFMAwEBAAEsAQEBLAEBARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
         ARADAAEBAQABIAYAARD/AP8A/wD/ACYAAw0BDwNcAcYDXwHwCAADXwHwA1wBxgMNAQ/cAAMPARIDXAHG
         AeUBowGBAf8DYQHeCAADYQHeAecBqAGBAf8DXAHGAw8BEtQAAzcBWANwAfcB6AGqAYEB/wNhAd4DFQEb
-        CAADFQEbA2EB3gHoAaoBgQH/A3AB9wM3AVjMAAQGA2YB8QHsAbgBgQH/AWACTgH7AyQBMxAAAyQBMwFg
-        Ak4B+wHpAbIBgQH/A2YB8QQGzAADNwFYA3AB9wHqAbUBgQH/A2EB3gMVARsIAAMVARsDYQHeAeoBtQGB
+        CAADFQEbA2EB3gHoAaoBgQH/A3AB9wM3AVjMAAQGA2YB8QHsAbgBgQH/AWACTwH7AyQBMxAAAyQBMwFg
+        Ak8B+wHpAbIBgQH/A2YB8QQGzAADNwFYA3AB9wHqAbUBgQH/A2EB3gMVARsIAAMVARsDYQHeAeoBtQGB
         Af8DcAH3AzcBWNQAAw8BEgNcAcYB6wG2AYEB/wNhAd4IAANhAd4B7AG7AYEB/wNcAcYDDwES3AADDQEP
         A1wBxgNfAfAIAANfAfADXAHGAw0BD+QAAw0BD/8A/wD/AP8A7AABQgFNAT4HAAE+AwABKAMAAUADAAEQ
         AwABAQEAAQEFAAGAFwAD/wEAAv8GAAL/BgAC/wYAAv8GAAHxAY8GAAHhAYcGAAHBAYMGAAGDAcEGAAHB
         AYMGAAHhAYcGAAHxAY8GAAH7Af8GAAL/BgAC/wYAAv8GAAL/BgAL
 </value>
   </data>
-  <data name="timerHover.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="timerHover.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>100, 56</value>
-  </data>
-  <data name="MainWindowNotifyIcon.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  </metadata>
+  <metadata name="MainWindowNotifyIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>321, 56</value>
-  </data>
-  <data name="QuickContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  </metadata>
+  <metadata name="QuickContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>606, 17</value>
-  </data>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="MainWindowNotifyIcon.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAGBgAAAEAIACICQAAFgAAACgAAAAYAAAAMAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -230,9 +230,9 @@
         /wA=
 </value>
   </data>
-  <data name="menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="menuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>213, 56</value>
-  </data>
+  </metadata>
   <data name="toolStripMenuItemCaptureManager.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACgAAAAhCAYAAACr8emlAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -314,12 +314,12 @@
         RK5CYII=
 </value>
   </data>
-  <data name="favoriteToolBar.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="favoriteToolBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>472, 17</value>
-  </data>
-  <data name="tsRemoteToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  </metadata>
+  <metadata name="tsRemoteToolbar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>327, 17</value>
-  </data>
+  </metadata>
   <data name="toolStripButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -335,8 +335,14 @@
         s1c0gHPmbrPTpHNJKOCo2G1mZs20zcwUJ5yp1AB5+8/zEwgF5GMVDxh4AAAAAElFTkSuQmCC
 </value>
   </data>
-  <data name="toolbarStd.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="toolbarStd.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>218, 17</value>
+  </metadata>
+  <data name="tscConnectTo.ToolTipText" xml:space="preserve">
+    <value>Type here the stored connection favorite name and press Enter to quickly connect to
+or type server name or IP address and press Enter to create new Favorite
+or press Tab and then Enter to immediately connect to.
+Short cut key  (F4)</value>
   </data>
   <data name="CredentialManagementToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -539,13 +545,12 @@
         Q7qXD5kw2oSogKyPjew/wmvGsJrx9GIAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="SpecialCommandsToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing">
+  <metadata name="SpecialCommandsToolStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="$this.TrayHeight" type="System.Int32, mscorlib">
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>105</value>
-  </data>
+  </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAGBgAAAEAIACICQAAFgAAACgAAAAYAAAAMAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA

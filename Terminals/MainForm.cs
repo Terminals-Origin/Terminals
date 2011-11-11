@@ -352,21 +352,27 @@ namespace Terminals
         {
             FavoriteConfigurationElement favorite = FavoritesFactory.GetFavoriteUpdatedCopy(connectionName, 
                 forceConsole, forceNewWindow, credential);
-            
-            if (favorite == null)
-                return;
-            
-            ConnectionHistory.Instance.RecordHistoryItem(connectionName);
+
+            if (favorite != null)
+            {
+                ConnectionHistory.Instance.RecordHistoryItem(connectionName);
+                SendNativeMessageToFocus();
+                CreateTerminalTab(favorite);
+            }
+            else
+                CreateNewTerminal(connectionName);
+        }
+
+        private void SendNativeMessageToFocus()
+        {
             if (!this.Visible)
             {
                 this.Show();
-                if (WindowState == FormWindowState.Minimized)
+                if (this.WindowState == FormWindowState.Minimized)
                     Native.Methods.ShowWindow(new HandleRef(this, this.Handle), 9);
 
                 Native.Methods.SetForegroundWindow(new HandleRef(this, this.Handle));
             }
-
-            CreateTerminalTab(favorite);
         }
 
         public void ToggleGrabInput()

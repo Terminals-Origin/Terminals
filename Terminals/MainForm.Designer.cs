@@ -864,7 +864,7 @@ namespace Terminals
             this.tscConnectTo.Name = "tscConnectTo";
             this.tscConnectTo.Size = new System.Drawing.Size(199, 25);
             this.tscConnectTo.Sorted = true;
-            this.tscConnectTo.ToolTipText = "Type here the stored connection favorite name to quickly connect to (F4)";
+            this.tscConnectTo.ToolTipText = resources.GetString("tscConnectTo.ToolTipText");
             this.tscConnectTo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tscConnectTo_KeyDown);
             this.tscConnectTo.TextChanged += new System.EventHandler(this.tscConnectTo_TextChanged);
             // 
