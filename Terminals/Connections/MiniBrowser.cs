@@ -13,6 +13,7 @@ namespace Terminals.Connections
         public MiniBrowser()
         {
             InitializeComponent();
+            this.webBrowser1.ScriptErrorsSuppressed = true;
         }
         public WebBrowser Browser
         {
