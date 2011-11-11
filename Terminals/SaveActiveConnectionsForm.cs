@@ -24,5 +24,15 @@ namespace Terminals
                 Height = 160;
             }
         }
+
+        internal bool PromptNextTime
+        {
+            get { return !this.chkDontShowDialog.Checked; }
+        }
+
+        internal bool OpenConnectionsNextTime
+        {
+            get { return this.chkOpenOnNextTime.Checked; }
+        }
     }
 }

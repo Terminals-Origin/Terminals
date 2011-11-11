@@ -1,7 +1,9 @@
-﻿using Terminals.CommandLine;
+﻿using System.ServiceModel;
+using Terminals.CommandLine;
 
 namespace Terminals.Network
 {
+    [ServiceBehaviorAttribute(InstanceContextMode = InstanceContextMode.Single)]
     internal class CommandLineService : ICommandLineService
     {
         private MainForm mainForm;
@@ -11,9 +13,11 @@ namespace Terminals.Network
            this.mainForm = mainForm;
         }
 
-        public void ForwardCommand(CommandLineArgs commandArguments)
+        public void ForwardCommand(CommandLineArgs args)
         {
-            //this.mainForm.
+            this.mainForm.HandleCommandLineActions(args);
+            this.mainForm.BringToFront();
+            this.mainForm.Focus();
         }
     }
 }

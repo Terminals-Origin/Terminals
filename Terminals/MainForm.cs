@@ -154,7 +154,6 @@ namespace Terminals
                 this.QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
 
                 ProtocolHandler.Register();
-                SingleInstanceApplication.NewInstanceMessage += new NewInstanceMessageEventHandler(SingleInstanceApplication_NewInstanceMessage);
                 DataDispatcher.AssignSynchronizationObject(this);
             }
             catch (Exception exc)
@@ -861,36 +860,38 @@ namespace Terminals
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            SingleInstanceApplication.Instance.Close();
             if (this.fullScreenSwitch.FullScreen)
                 this.fullScreenSwitch.FullScreen = false;
 
             this.MainWindowNotifyIcon.Visible = false;
+            CloseOpenedConnections(e);
+            this.toolStripContainer.SaveLayout();
+        }
 
+        private void CloseOpenedConnections(FormClosingEventArgs args)
+        {
             if (this.tcTerminals.Items.Count > 0)
             {
                 if (Settings.ShowConfirmDialog)
-                {
-                    SaveActiveConnectionsForm frmSaveActiveConnections = new SaveActiveConnectionsForm();
-                    if (frmSaveActiveConnections.ShowDialog() == DialogResult.OK)
-                    {
-                        Settings.ShowConfirmDialog = !frmSaveActiveConnections.chkDontShowDialog.Checked;
-                        if (frmSaveActiveConnections.chkOpenOnNextTime.Checked)
-                            this.SaveActiveConnections();
+                    SaveConnectonsIfRequested(args);
 
-                        e.Cancel = false;
-                    }
-                    else
-                    {
-                        e.Cancel = true;
-                    }
-                }
-                else if (Settings.SaveConnectionsOnClose)
-                {
+                if (Settings.SaveConnectionsOnClose)
                     this.SaveActiveConnections();
-                }
             }
+        }
 
-            this.toolStripContainer.SaveLayout();
+        private void SaveConnectonsIfRequested(FormClosingEventArgs args)
+        {
+            var frmSaveActiveConnections = new SaveActiveConnectionsForm();
+            if (frmSaveActiveConnections.ShowDialog() == DialogResult.OK)
+            {
+                Settings.ShowConfirmDialog = frmSaveActiveConnections.PromptNextTime;
+                if (frmSaveActiveConnections.OpenConnectionsNextTime)
+                    this.SaveActiveConnections();
+            }
+            else
+                args.Cancel = true;
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
@@ -1040,15 +1041,6 @@ namespace Terminals
             String message = String.Format(localizedMessageFormat, parent.DropDownItems.Count);
             String confirmatioTitle = Program.Resources.GetString(Program.Resources.GetString("Confirmation"));
             return MessageBox.Show(message, confirmatioTitle, MessageBoxButtons.OKCancel);
-        }
-
-        private void SingleInstanceApplication_NewInstanceMessage(object sender, object message)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
-                Native.Methods.ShowWindow(new HandleRef(this, this.Handle), 9);
-
-            Native.Methods.SetForegroundWindow(new HandleRef(this, this.Handle));
-            this.Activate();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)

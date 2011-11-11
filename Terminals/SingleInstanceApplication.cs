@@ -1,215 +1,109 @@
-using System;
 using System.Threading;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using Terminals.CommandLine;
+using Terminals.Network;
 
 namespace Terminals
 {
-    internal delegate void NewInstanceMessageEventHandler(object sender, object message);
-
     internal class SingleInstanceApplication
     {
-        public static event NewInstanceMessageEventHandler NewInstanceMessage;
-
-        private static SingleInstanceApplication _theInstance = new SingleInstanceApplication();
-
-        public static bool AlreadyExists
+        #region Thread safe singleton
+        
+        private static class Nested
         {
-            get
-            {
-                return _theInstance.Exists;
-            }
+            internal static SingleInstanceApplication instance = new SingleInstanceApplication();
         }
 
-        /// <summary>
-        /// this is a uniqe id used to identify the application
-        /// </summary>
-        private string _id;
-
-        /// <summary>
-        /// This is a global counter for the # currently active of instances of the application.
-        /// when the last application is shutdown the semaphore will be released automatically
-        /// </summary>
-        private Semaphore _instanceCounter;
-
-        /// <summary>
-        /// Is this the first instance?
-        /// </summary>
-        private bool _firstInstance;
-
-        private SIANativeWindow _notifcationWindow;
-
-        private bool Exists
+        internal static SingleInstanceApplication Instance
         {
-            get
-            {
-                return !_firstInstance;
-            }
+            get { return Nested.instance; }
         }
 
         private SingleInstanceApplication()
         {
-            _id = "SIA_" + GetAppId();
-            _instanceCounter = new Semaphore(0, Int32.MaxValue, _id, out _firstInstance);
+            this.instanceLock = new Mutex(true, INSTANCELOCK_NAME, out this.firstInstance);
+            // we are sure, that we own the previous one, so loct the applicatin startup immediately
+            this.startupLock = new Mutex(this.firstInstance, STARTUPLOCK_NAME);
         }
 
-        public static void Initialize()
-        {
-            _theInstance.Init();
-        }
-        
-        private void Init()
-        {
-            _notifcationWindow = new SIANativeWindow();
-        }
+        #endregion
 
-        public static void Close()
-        {
-            _theInstance.Dispose();
-        }
-        
-        private void Dispose()
-        {
-            _instanceCounter.Close();
-            if (_notifcationWindow != null)
-                _notifcationWindow.DestroyHandle();
-        }
+        private const string INSTANCELOCK_NAME = "Terminals.codeplex.com.SingleInstance";
+        private const string STARTUPLOCK_NAME = "Terminals.codeplex.com.CommandServerStartUp";
 
-        private static string GetAppId()
-        {
-            return Path.GetFileName(Environment.GetCommandLineArgs()[0]);
-        }
+        /// <summary>
+        /// This is a machine wide application instances counter.
+        /// when the last application is shutdown the mutex will be released automatically
+        /// </summary>
+        private Mutex instanceLock;
 
-        private void OnNewInstanceMessage(object message)
-        {
-            if (NewInstanceMessage != null)
-                NewInstanceMessage(this, message);
-        }
-        
-        public static bool NotifyExistingInstance()
-        {
-            return NotifyExistingInstance(null);
-        }
+        /// <summary>
+        /// Prevent asking for window notifications, when the server is in startup or shutdown procedure
+        /// </summary>
+        private Mutex startupLock;
 
-        public static bool NotifyExistingInstance(object message)
+        private bool firstInstance;
+        private CommandLineServer server;
+
+        internal void Start(MainForm mainForm)
         {
-            if (_theInstance.Exists)
-            {
-                return _theInstance.NotifyPreviousInstance(message);
-            }
-            return false;
-        }
-
-        private bool NotifyPreviousInstance(object message)
-        {
-            Logging.Log.Info("NotifyPreviousInstance", null);
-            IntPtr handle = NativeMethods.FindWindow(null, _id);
-            if (handle != IntPtr.Zero)
-            {
-                GCHandle bufferHandle = new GCHandle();
-                try
-                {
-                    NativeMethods.COPYDATASTRUCT data = new NativeMethods.COPYDATASTRUCT();
-                    if (message != null)
-                    {
-                        byte[] buffer = Serialize(message);
-                        bufferHandle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-
-                        data.dwData = IntPtr.Zero;
-                        data.cbData = buffer.Length;
-                        data.lpData = bufferHandle.AddrOfPinnedObject();
-                    }
-
-                    GCHandle dataHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
-                    try
-                    {
-                        NativeMethods.SendMessage(handle, NativeMethods.WM_COPYDATA, IntPtr.Zero, dataHandle.AddrOfPinnedObject());
-                        return true;
-                    }
-                    finally
-                    {
-                        dataHandle.Free();
-                    }
-                }
-                finally
-                {
-                    if (bufferHandle.IsAllocated)
-                        bufferHandle.Free();
-                }
-            }
-            return false;
+            if (!this.firstInstance)
+                return;
+            
+            this.server = new CommandLineServer(mainForm);
+            this.server.Open();
+            // startupLock obtained in constructor, the server is now available to notifications
+            this.startupLock.ReleaseMutex();
         }
 
         /// <summary>
-        /// utility method for serialization\deserialization
+        /// close the server as soon as, when closing the main form,
+        /// because othewise the form can be already dead and it cant process notification requests
         /// </summary>
-        private static object Deserialize(ref byte[] buffer)
+        internal void Close()
         {
-            using (MemoryStream stream = new MemoryStream(buffer))
+            if (!this.firstInstance)
+                return;
+            try
             {
-                return new BinaryFormatter().Deserialize(stream);
+                this.startupLock.WaitOne();
+                this.server.Close();
             }
-        }
-
-        private static byte[] Serialize(Object obj)
-        {
-            using (MemoryStream stream = new MemoryStream())
+            finally
             {
-                new BinaryFormatter().Serialize(stream, obj);
-                return stream.ToArray();
+                this.startupLock.Close();
+                this.instanceLock.Close();
             }
         }
 
         /// <summary>
-        /// win32 translation of some needed APIs
+        /// If other instance is runing, then forwards the command line to it and returns true;
+        /// otherwise returns false.
         /// </summary>
-        private class NativeMethods
+        internal bool NotifyExisting(CommandLineArgs args)
         {
-            [DllImport("user32.dll")]
-            public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-            [DllImport("user32.dll")]
-            public static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
+            if (this.firstInstance)
+               return false;
 
-            public const short WM_COPYDATA = 74;
-
-            public struct COPYDATASTRUCT
-            {
-                public IntPtr dwData;
-                public int cbData;
-                public IntPtr lpData;
-            }
+            return ForwardCommand(args);
         }
 
-        /// <summary>
-        /// a utility window to communicate between application instances
-        /// </summary>
-        private class SIANativeWindow : NativeWindow
+        private bool ForwardCommand(CommandLineArgs args)
         {
-            public SIANativeWindow()
+            try
             {
-                CreateParams cp = new CreateParams();
-                cp.Caption = _theInstance._id;
-                CreateHandle(cp);
+                // wait until the main instance startup/shutdown ends
+                this.startupLock.WaitOne();
+                ICommandLineService client = CommandLineServer.CreateClient();
+                client.ForwardCommand(args);
+                return true;
             }
-
-            protected override void WndProc(ref Message m)
+            catch
             {
-                if (m.Msg == NativeMethods.WM_COPYDATA)
-                {
-                    NativeMethods.COPYDATASTRUCT data = (NativeMethods.COPYDATASTRUCT)Marshal.PtrToStructure(m.LParam, typeof(NativeMethods.COPYDATASTRUCT));
-                    object obj = null;
-                    if (data.cbData > 0 && data.lpData != IntPtr.Zero)
-                    {
-                        byte[] buffer = new byte[data.cbData];
-                        Marshal.Copy(data.lpData, buffer, 0, buffer.Length);
-                        obj = Deserialize(ref buffer);
-                    }
-                    _theInstance.OnNewInstanceMessage(obj);
-                }
-                else
-                    base.WndProc(ref m);
+                return false;
+            }
+            finally
+            {
+                this.startupLock.ReleaseMutex();
             }
         }
     }

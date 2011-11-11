@@ -3,39 +3,21 @@ using System.ServiceModel;
 
 namespace Terminals.Network
 {
-    internal class CommandLineServer
+    internal class CommandLineServer : ServiceHost
     {
         private const string BASE_ADDRESS = "net.pipe://localhost/Terminals.Codeplex.com/CommandLineService";
-        private ServiceHost serviceHost;
 
-        #region Thread safe singleton
-
-        private CommandLineServer(){}
-
-        internal static CommandLineServer Instance
+        internal CommandLineServer(MainForm mainForm)
+            : base(new CommandLineService(mainForm), new Uri(BASE_ADDRESS))
+        
         {
-            get { return Nested.instance; }
-        }
-
-        private static class Nested
-        {
-            internal static readonly CommandLineServer instance = new CommandLineServer();
-        }
-
-        #endregion
-
-        internal void StartServer(MainForm mainForm)
-        {
-            var service = new CommandLineService(mainForm);
-            serviceHost = new ServiceHost(service, new Uri(BASE_ADDRESS));
-            serviceHost.AddServiceEndpoint(typeof(ICommandLineService), new NetNamedPipeBinding(), BASE_ADDRESS);
-            serviceHost.Open();
+            AddServiceEndpoint(typeof(ICommandLineService), new NetNamedPipeBinding(), BASE_ADDRESS);
         }
 
         internal static ICommandLineService CreateClient()
         {
             var factory = new ChannelFactory<ICommandLineService>(new NetNamedPipeBinding(),
-              new EndpointAddress(BASE_ADDRESS));
+                new EndpointAddress(BASE_ADDRESS));
             return factory.CreateChannel();
         }
     }

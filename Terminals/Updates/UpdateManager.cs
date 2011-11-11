@@ -13,14 +13,17 @@ using Unified.Rss;
 
 namespace Terminals.Updates
 {
-    public class UpdateManager
+    internal class UpdateManager
     {
-        public static void CheckForUpdates(CommandLineArgs commandLine)
+        /// <summary>
+        /// Check for available application updates
+        /// </summary>
+        internal static void CheckForUpdates(CommandLineArgs commandLine)
         {
             ThreadPool.QueueUserWorkItem(new WaitCallback(PerformCheck), commandLine);
         }
 
-        public static string GetMD5HashFromFile(string file_name)
+        private static string GetMD5HashFromFile(string file_name)
         {
             String tmpFile = file_name + ".tmp";
             File.Copy(file_name, tmpFile, true);

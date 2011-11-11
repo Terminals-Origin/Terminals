@@ -39,21 +39,13 @@ namespace Terminals
             if(UserAccountControlNotSatisfied())
                 return;
 
-            if (commandLine.SingleInstance &&
-                SingleInstanceApplication.NotifyExistingInstance(Environment.GetCommandLineArgs()))
+            if (commandLine.SingleInstance && SingleInstanceApplication.Instance.NotifyExisting(commandLine))
                 return;
 
-            SingleInstanceApplication.Initialize();
-
-            // Check if update changes have to be made
             UpdateConfig.CheckConfigVersionUpdate();
-
-            // Check for available application updates
             UpdateManager.CheckForUpdates(commandLine);
-
             StartMainForm(commandLine);
 
-            SingleInstanceApplication.Close();
             Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
         }
@@ -84,7 +76,6 @@ namespace Terminals
         {
             if (!(new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)))
             {
-
                 Debug.WriteLine("Terminals is running in non-admin mode");
                 Logging.Log.Info("Terminals is running in non-admin mode");
             }
@@ -103,9 +94,7 @@ namespace Terminals
                 }
             }
             else
-            {
                 RunMainForm(commandLine);
-            }
         }
 
         private static void RunMainForm(CommandLineArgs commandLine)
@@ -113,6 +102,7 @@ namespace Terminals
             try
             {
                 var mainForm = new MainForm();
+                SingleInstanceApplication.Instance.Start(mainForm);
                 mainForm.HandleCommandLineActions(commandLine);
                 Application.Run(mainForm);
             }

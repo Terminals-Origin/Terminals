@@ -189,8 +189,8 @@ namespace Terminals
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Panel pnlOptions;
         private System.Windows.Forms.PictureBox pictureBox1;
-        internal System.Windows.Forms.CheckBox chkOpenOnNextTime;
-        internal System.Windows.Forms.CheckBox chkDontShowDialog;
+        private System.Windows.Forms.CheckBox chkOpenOnNextTime;
+        private System.Windows.Forms.CheckBox chkDontShowDialog;
         private System.Windows.Forms.Button MoreButton;
     }
 }

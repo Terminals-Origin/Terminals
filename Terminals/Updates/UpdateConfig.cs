@@ -6,9 +6,12 @@ namespace Terminals.Updates
     /// <summary>
     /// Class containing methods to update config files after an update. 
     /// </summary>
-    public static class UpdateConfig
+    internal static class UpdateConfig
     {
-        public static void CheckConfigVersionUpdate()
+        /// <summary>
+        /// Updates config file to current version, if it isnt up to date
+        /// </summary>
+        internal static void CheckConfigVersionUpdate()
         {
             // If the Terminals version is not in the config or the version number in the config
             // is lower then the current assembly version, check for config updates
@@ -21,7 +24,7 @@ namespace Terminals.Updates
             }
         }
 
-        public static void UpdateToVersion20()
+        private static void UpdateToVersion20()
         {
             if (Program.Info.Version == new Version(2, 0, 0, 0))
             {
