@@ -37,8 +37,15 @@ namespace Terminals.CaptureManager
 
         public static Capture PerformScreenCapture(TabControl.TabControl tab)
         {
+
+            TerminalTabControlItem activeTab = tab.SelectedItem as TerminalTabControlItem;
+            string name = "";
+            if (activeTab != null && activeTab.Favorite!=null && !string.IsNullOrEmpty(activeTab.Favorite.Name))
+            {
+                name = activeTab.Favorite.Name + "-";
+            }
             string filename = DateTime.Now.ToString("yyyy_MM_dd_hh_mm_ss");
-            string tempFile = Path.Combine(CaptureRoot, string.Format("{0}.png", filename));
+            string tempFile = Path.Combine(CaptureRoot, string.Format("{0}{1}.png", name, filename));
             ScreenCapture sc = new ScreenCapture();
             Bitmap bmp = sc.CaptureControl(tab, tempFile, ImageFormatTypes.imgPNG);
 
