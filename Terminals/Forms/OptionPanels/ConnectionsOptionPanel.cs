@@ -46,7 +46,10 @@ namespace Terminals.Forms
             {
                 this.EvaluatedDesktopShareLabel.Text =
                     this.txtDefaultDesktopShare.Text.Replace("%SERVER%", this.CurrentTerminal.Server)
-                                                    .Replace("%USER%", this.CurrentTerminal.UserName);
+                                                    .Replace("%USER%", this.CurrentTerminal.UserName)
+                                                    .Replace("%server%", this.CurrentTerminal.Server)
+                                                    .Replace("%user%", this.CurrentTerminal.UserName);
+
             }
             else
             {

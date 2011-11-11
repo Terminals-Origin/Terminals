@@ -342,7 +342,9 @@ namespace Terminals
             if (String.IsNullOrEmpty(desktopShare))
             {
                 desktopShare = Settings.DefaultDesktopShare.Replace("%SERVER%", CurrentTerminal.Server)
-                                                                    .Replace("%USER%", CurrentTerminal.UserName);
+                                                                    .Replace("%USER%", CurrentTerminal.UserName)
+                                                                    .Replace("%server%", CurrentTerminal.Server)
+                                                                    .Replace("%user%", CurrentTerminal.UserName);
             }
 
             return desktopShare;
