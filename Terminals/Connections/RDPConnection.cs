@@ -310,6 +310,7 @@ namespace Terminals.Connections
                     _axMsRdpClient.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(axMsTscAx_OnDisconnected);
                     _axMsRdpClient.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(axMsRdpClient2_OnWarning);
                     _axMsRdpClient.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(axMsRdpClient2_OnFatalError);
+                    _axMsRdpClient.OnLogonError += new IMsTscAxEvents_OnLogonErrorEventHandler(_axMsRdpClient_OnLogonError);
 
                     Text = "Connecting to RDP Server...";
                     _axMsRdpClient.FullScreen = true;
@@ -326,7 +327,8 @@ namespace Terminals.Connections
                 Logging.Log.Fatal("Connecting to RDP", exc);
                 return false;
             }
-        }        
+        }
+
         public override void Disconnect()
         {
             try
@@ -412,14 +414,125 @@ namespace Terminals.Connections
         }
         private void axMsRdpClient2_OnFatalError(object sender, IMsTscAxEvents_OnFatalErrorEvent e)
         {
-            //throw new Exception("The method or operation is not implemented.");
+            string msg = "";
 
+            switch (e.errorCode)
+            {
+                case 0:
+                    msg = "An unknown error has occurred.";
+                    break;
+                case 1:
+                    msg = "Internal error code 1.";
+                    break;
+                case 2:
+                    msg = "An out-of-memory error has occurred.";
+                    break;
+                case 3:
+                    msg = "A window-creation error has occurred.";
+                    break;
+                case 4:
+                    msg = "Internal error code 2.";
+                    break;
+                case 5:
+                    msg = "Internal error code 3. This is not a valid state.";
+                    break;
+                case 6:
+                    msg = "Internal error code 4.";
+                    break;
+                case 7:
+                    msg = "An unrecoverable error has occurred during client connection.";
+                    break;
+                case 100:
+                    msg = "Winsock initialization error.";
+                    break;
+                default:
+                    msg = "An unknown error.";
+                    break;
+            }
+
+            string finalMsg = string.Format("There was a fatal error returned from the RDP Connection, details:\n\nError Code:{0}\n\nError Description:", e.errorCode, msg);
+            System.Windows.Forms.MessageBox.Show(finalMsg);
+            Logging.Log.Error(finalMsg);
         }
 
         private void axMsRdpClient2_OnWarning(object sender, IMsTscAxEvents_OnWarningEvent e)
         {
-            //throw new Exception("The method or operation is not implemented.");
+            string msg = "";
+
+            switch (e.warningCode)
+            {
+                case 1:
+                    msg = "Bitmap cache is corrupt.";
+                    break;
+                default:
+                    msg = "An unknown warning";
+                    break;
+            }
+
+            string finalMsg = string.Format("There was a warning returned from the RDP Connection, details:\n\nWarning Code:{0}\n\nWarning Description:", e.warningCode, msg);
+            System.Windows.Forms.MessageBox.Show(finalMsg);
+            Logging.Log.Error(finalMsg);
         }
+
+        void _axMsRdpClient_OnLogonError(object sender, IMsTscAxEvents_OnLogonErrorEvent e)
+        {
+            string msg = "";
+
+            switch (e.lError)
+            {
+                case -5:
+                    msg = "Winlogon is displaying the Session Contention dialog box.";
+                    break;
+                case -2:
+                    msg = "Winlogon is continuing with the logon process.";
+                    break;
+                case -3:
+                    msg = "Winlogon is ending silently.";
+                    break;
+                case -6:
+                    msg = "Winlogon is displaying the No Permissions dialog box.";
+                    break;
+                case -7:
+                    msg = "Winlogon is displaying the Disconnect Refused dialog box.";
+                    break;
+                case -4:
+                    msg = "Winlogon is displaying the Reconnect dialog box.";
+                    break;
+                case -1:
+                    msg = "The user was denied access.";
+                    break;
+                case 0:
+                    msg = "The logon failed because the logon credentials are not valid.";
+                    break;
+                case 2:
+                    msg = "Another logon or post-logon error occurred. The Remote Desktop client displays a logon screen to the user.";
+                    break;
+                case 1:
+                    msg = "The password is expired. The user must update their password to continue logging on.";
+                    break;
+                case 3:
+                    msg = "The Remote Desktop client displays a dialog box that contains important information for the user.";
+                    break;
+                case -1073741714:
+                    msg = "The user name and authentication information are valid, but authentication was blocked due to restrictions on the user account, such as time-of-day restrictions.";
+                    break;
+                case -1073741715:
+                    msg = "The attempted logon is not valid. This is due to either an incorrect user name or incorrect authentication information.";
+                    break;
+                case -1073741276:
+                    msg = "The password is expired. The user must update their password to continue logging on.";
+                    break;
+                default:
+                    msg = "An unknown error.";
+                    break;
+            }
+
+            string finalMsg = string.Format("There was a logon error returned from the RDP Connection, details:\n\nLogon Code:{0}\n\nLogon Description:", e.lError, msg);
+            System.Windows.Forms.MessageBox.Show(finalMsg);
+            Logging.Log.Error(finalMsg);
+        }        
+
+
         #endregion        
     }
 }
