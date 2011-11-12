@@ -306,6 +306,11 @@ namespace Terminals
             this.ICAEnableEncryptionCheckbox.Checked = favorite.IcaEnableEncryption;
             this.ICAEncryptionLevelCombobox.Enabled = ICAEnableEncryptionCheckbox.Checked;
 
+            this.ICAApplicationNameTextBox.Text = favorite.ICAApplicationName;
+            this.ICAApplicationPath.Text = favorite.ICAApplicationPath;
+            this.ICAWorkingFolder.Text = favorite.ICAApplicationWorkingFolder;
+
+
             this.NotesTextbox.Text = favorite.Notes;
 
             this.SSHPreferences.AuthMethod = favorite.AuthMethod;
@@ -479,6 +484,11 @@ namespace Terminals
                 this.Favorite.IcaServerINI = this.ICAServerINI.Text;
                 this.Favorite.IcaEncryptionLevel = this.ICAEncryptionLevelCombobox.Text;
                 this.Favorite.IcaEnableEncryption = this.ICAEnableEncryptionCheckbox.Checked;
+                this.Favorite.ICAApplicationName = this.ICAApplicationNameTextBox.Text;
+                this.Favorite.ICAApplicationPath = this.ICAApplicationPath.Text;
+                this.Favorite.ICAApplicationWorkingFolder = this.ICAWorkingFolder.Text;
+
+
 
                 this.Favorite.Notes = this.NotesTextbox.Text;
 
@@ -826,8 +836,18 @@ namespace Terminals
             this.VMRCAdminModeCheckbox.Enabled = false;
             this.RASGroupBox.Enabled = false;
 
+
+            this.ICAClientINI.Enabled = false;
+            this.ICAServerINI.Enabled = false;
+            this.ICAEncryptionLevelCombobox.Enabled = false;
+            this.ICAEnableEncryptionCheckbox.Enabled = false;
             this.ICAApplicationNameTextBox.Enabled = false;
             this.ICAApplicationPath.Enabled = false;
+            this.ICAWorkingFolder.Enabled = false;
+
+
+
+
             this.httpUrlTextBox.Enabled = false;
             this.txtPort.Enabled = true;
 
@@ -868,9 +888,16 @@ namespace Terminals
             }
             else if (this.ProtocolComboBox.Text == "ICA Citrix")
             {
+                this.ICAClientINI.Enabled = true;
+                this.ICAServerINI.Enabled = true;
+                this.ICAEncryptionLevelCombobox.Enabled = false;
+                this.ICAEnableEncryptionCheckbox.Enabled = true;
                 this.ICAApplicationNameTextBox.Enabled = true;
                 this.ICAApplicationPath.Enabled = true;
+                this.ICAWorkingFolder.Enabled = true;
                 defaultPort = ConnectionManager.ICAPort.ToString();
+
+            
             }
             else if (ProtocolComboBox.Text == "HTTP")
             {
