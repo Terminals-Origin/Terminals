@@ -26,13 +26,15 @@ namespace Terminals
 
         #region Constructors
 
-        public NewTerminalForm(String serverName) : this()
+        public NewTerminalForm(String serverName)
+            : this()
         {
             this.InitializeComponent();
             this.Init(null, serverName);
         }
 
-        public NewTerminalForm(FavoriteConfigurationElement favorite) : this()
+        public NewTerminalForm(FavoriteConfigurationElement favorite)
+            : this()
         {
             this.InitializeComponent();
             this.Init(favorite, String.Empty);
@@ -501,7 +503,7 @@ namespace Terminals
             }
         }
 
-        private void SaveDefaultFavorite() 
+        private void SaveDefaultFavorite()
         {
             this.Favorite.Name = String.Empty;
             this.Favorite.ServerName = String.Empty;
@@ -1053,6 +1055,58 @@ namespace Terminals
         {
             DiskDrivesForm drivesForm = new DiskDrivesForm(this);
             drivesForm.ShowDialog(this);
+        }
+
+        private void appPathBrowseButton_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog d = new FolderBrowserDialog();
+
+            DialogResult result = d.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                ICAApplicationPath.Text = d.SelectedPath;
+            }
+
+
+        }
+
+        private void AppWorkingFolderBrowseButton_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog d = new FolderBrowserDialog();
+
+            DialogResult result = d.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                ICAWorkingFolder.Text = d.SelectedPath;
+            }
+
+        }
+
+        private void ServerINIBrowseButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog d = new OpenFileDialog();
+            d.DefaultExt = "*.ini";
+            d.CheckFileExists = true;
+            DialogResult result = d.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                ICAServerINI.Text = d.FileName;
+            }
+
+        }
+
+        private void ClientINIBrowseButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog d = new OpenFileDialog();
+            d.DefaultExt = "*.ini";
+            d.CheckFileExists = true;
+
+            DialogResult result = d.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                ICAClientINI.Text = d.FileName;
+            }
+
         }
     }
 }
