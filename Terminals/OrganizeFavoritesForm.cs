@@ -10,10 +10,13 @@ using Terminals.Network;
 
 namespace Terminals
 {
-    public partial class OrganizeFavoritesForm : Form
+    internal partial class OrganizeFavoritesForm : Form
     {
-        public MainForm MainForm { get; set; }
-        public OrganizeFavoritesForm()
+        private string editedFavoriteName = String.Empty;
+        private FavoriteConfigurationElement editedFavorite;
+        internal MainForm MainForm { get; set; }
+
+        internal OrganizeFavoritesForm()
         {
             InitializeComponent();
 
@@ -29,6 +32,7 @@ namespace Terminals
             string sortingProperty = FavoriteConfigurationElement.GetDefaultSortPropertyName();
             DataGridViewColumn sortedColumn = this.dataGridFavorites.FindColumnByPropertyName(sortingProperty);
             sortedColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
+            this.dataGridFavorites.DataSource = this.bsFavorites;
         }
 
         private void UpdateCountLabels()
@@ -58,7 +62,7 @@ namespace Terminals
         {
             if (e.RowIndex > 0)
             {
-                btnEdit_Click(sender, e);
+              deleteToolStripMenuItem_Click(sender, e);
             }
         }
 
@@ -67,40 +71,10 @@ namespace Terminals
         /// </summary>
         private void ConnectionManager_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F2)
-                btnRename.PerformClick();
-
             // prevent delete whole favorite when editing its name directly in grid cell
             if (e.KeyCode == Keys.Delete && !this.dataGridFavorites.IsCurrentCellInEditMode)
-                btnDelete_Click(sender, e);
+              deleteToolStripMenuItem_Click(sender, e);
         }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            this.Cursor = Cursors.WaitCursor;
-            var selectedFavorites = new List<FavoriteConfigurationElement>();
-            foreach (DataGridViewRow selectedRow in this.dataGridFavorites.SelectedRows)
-            {
-                var selectedFavorite = selectedRow.DataBoundItem as FavoriteConfigurationElement;
-                selectedFavorites.Add(selectedFavorite);
-            }
-
-            Settings.DeleteFavorites(selectedFavorites);
-            this.UpdateFavoritesBindingSource();
-            this.Cursor = Cursors.Default;
-        }
-
-        private void btnRename_Click(object sender, EventArgs e)
-        {
-            if (this.dataGridFavorites.SelectedRows.Count > 0)
-            {
-                dataGridFavorites.CurrentCell = this.dataGridFavorites.SelectedRows[0].Cells["colName"];
-                this.dataGridFavorites.BeginEdit(true);
-            }
-        }
-
-        private string editedFavoriteName = String.Empty;
-        private FavoriteConfigurationElement editedFavorite;
 
         private void dataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
@@ -142,74 +116,10 @@ namespace Terminals
             this.UpdateFavoritesBindingSource();
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
-        {
-            FavoriteConfigurationElement favorite = GetSelectedFavorite();
-            if (favorite != null)
-                EditFavorite(favorite);
-        }
-
-        private void btnCopy_Click(object sender, EventArgs e)
-        {
-            FavoriteConfigurationElement favorite = GetSelectedFavorite();
-            if (favorite != null)
-            {
-                InputBoxResult result = InputBox.Show("New Connection Name");
-                if (result.ReturnCode == DialogResult.OK && !string.IsNullOrEmpty(result.Text))
-                {
-                    FavoriteConfigurationElement newFav = favorite.Clone() as FavoriteConfigurationElement;
-                    if (newFav != null)
-                    {
-                        newFav.Name = result.Text;
-                        Settings.AddFavorite(newFav);
-                        if (Settings.HasToolbarButton(favorite.Name))
-                            Settings.AddFavoriteButton(newFav.Name);
-                        UpdateFavoritesBindingSource();
-                    }
-                }
-            }
-        }
-
-        private void btnNew_Click(object sender, EventArgs e)
-        {
-            using (NewTerminalForm frmNewTerminal = new NewTerminalForm(String.Empty))
-            {
-                if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
-                {
-                    UpdateFavoritesBindingSource();
-                }
-            }
-        }
-
         private void OrganizeFavoritesForm_Shown(object sender, EventArgs e)
         {
             if (this.dataGridFavorites.RowCount > 0)
                 dataGridFavorites.Rows[0].Selected = true;
-        }
-
-        private void activeDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ImportFromAD activeDirectoryForm = new ImportFromAD();
-            activeDirectoryForm.ShowDialog();
-            this.UpdateFavoritesBindingSource();
-        }
-
-        private void networkDetectionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            NetworkScanner networkScanForm = new NetworkScanner();
-            networkScanForm.ShowDialog();
-            this.UpdateFavoritesBindingSource();
-        }
-
-        private void ImportButton_Click(object sender, EventArgs e)
-        {
-            CallImport();
-        }
-
-        private void btnExport_Click(object sender, EventArgs e)
-        {
-            ExportFrom exportFrom = new ExportFrom();
-            exportFrom.Show();
         }
 
         /// <summary>
@@ -280,70 +190,87 @@ namespace Terminals
             UpdateCountLabels();
         }
 
-        private void btnRegistryImport_Click(object sender, EventArgs e)
-        {
-            List<FavoriteConfigurationElement> favoritesToImport = ImportRdpRegistry.Import();
-            ImportFavoritesWithManagerImport(favoritesToImport);
-        }
-
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            btnNew_Click(sender, e);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
+          using (NewTerminalForm frmNewTerminal = new NewTerminalForm(String.Empty))
+          {
+            if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
+            {
+              UpdateFavoritesBindingSource();
+            }
+          }
         }
 
         private void editConnectinoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            btnEdit_Click(sender, e);
+          FavoriteConfigurationElement favorite = GetSelectedFavorite();
+          if (favorite != null)
+            EditFavorite(favorite);
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            btnDelete_Click(sender, e);
+          this.Cursor = Cursors.WaitCursor;
+          var selectedFavorites = new List<FavoriteConfigurationElement>();
+          foreach (DataGridViewRow selectedRow in this.dataGridFavorites.SelectedRows)
+          {
+            var selectedFavorite = selectedRow.DataBoundItem as FavoriteConfigurationElement;
+            selectedFavorites.Add(selectedFavorite);
+          }
+
+          Settings.DeleteFavorites(selectedFavorites);
+          this.UpdateFavoritesBindingSource();
+          this.Cursor = Cursors.Default;
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            btnCopy_Click(sender, e);
+          FavoriteConfigurationElement favorite = GetSelectedFavorite();
+          if (favorite != null)
+          {
+            InputBoxResult result = InputBox.Show("New Connection Name");
+            if (result.ReturnCode == DialogResult.OK && !string.IsNullOrEmpty(result.Text))
+            {
+              FavoriteConfigurationElement newFav = favorite.Clone() as FavoriteConfigurationElement;
+              if (newFav != null)
+              {
+                newFav.Name = result.Text;
+                Settings.AddFavorite(newFav);
+                if (Settings.HasToolbarButton(favorite.Name))
+                  Settings.AddFavoriteButton(newFav.Name);
+                UpdateFavoritesBindingSource();
+              }
+            }
+          }
         }
 
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-             btnRename_Click(sender, e);
+          if (this.dataGridFavorites.SelectedRows.Count > 0)
+          {
+            dataGridFavorites.CurrentCell = this.dataGridFavorites.SelectedRows[0].Cells["colName"];
+            this.dataGridFavorites.BeginEdit(true);
+          }
         }
 
         private void scanActiveDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeDirectoryToolStripMenuItem_Click(sender, e);
+          ImportFromAD activeDirectoryForm = new ImportFromAD();
+          activeDirectoryForm.ShowDialog();
+          this.UpdateFavoritesBindingSource();
         }
 
         private void scanNetworkToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            networkDetectionToolStripMenuItem_Click(sender, e);
+          NetworkScanner networkScanForm = new NetworkScanner();
+          networkScanForm.ShowDialog();
+          this.UpdateFavoritesBindingSource();
         }
 
         private void scanRegistryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            btnRegistryImport_Click(sender, e);
-        }
-
-        private void importFromFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ImportButton_Click(sender, e);
-        }
-
-        private void exportToAFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            btnExport_Click(sender, e);
-        }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-
+          List<FavoriteConfigurationElement> favoritesToImport = ImportRdpRegistry.Import();
+          ImportFavoritesWithManagerImport(favoritesToImport);
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -353,12 +280,13 @@ namespace Terminals
 
         private void importFromFileToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            ImportButton_Click(sender, e);
+          CallImport();
         }
 
         private void exportToAFileToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            btnExport_Click(sender, e);
+          ExportFrom exportFrom = new ExportFrom();
+          exportFrom.Show();
         }
 
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
