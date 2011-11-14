@@ -144,6 +144,13 @@ namespace Terminals
                 .ToList();
         }
 
+        internal string[] ToSortedArray()
+        {
+            List<string> domainNames = ToList();
+            domainNames.Sort();
+            return domainNames.ToArray();
+        }
+
         internal void AddByName(string name)
         {
             MRUItemConfigurationElement configurationElement = this.ItemByName(name);

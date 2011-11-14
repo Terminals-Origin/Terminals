@@ -666,6 +666,7 @@ namespace Terminals
             "HTTP",
             "HTTPS"});
             this.ProtocolComboBox.Location = new System.Drawing.Point(117, 6);
+            this.ProtocolComboBox.MaxDropDownItems = 10;
             this.ProtocolComboBox.Name = "ProtocolComboBox";
             this.ProtocolComboBox.Size = new System.Drawing.Size(334, 21);
             this.ProtocolComboBox.TabIndex = 12;

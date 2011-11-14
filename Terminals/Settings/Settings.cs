@@ -906,13 +906,11 @@ namespace Terminals.Configuration
 
         #region MRU lists
 
-
-
         public static string[] MRUServerNames
         {
             get
             {
-                return GetSection().ServersMRU.ToList().ToArray();
+                return GetSection().ServersMRU.ToSortedArray();
             }
         }
 
@@ -920,7 +918,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                return GetSection().DomainsMRU.ToList().ToArray();
+                return GetSection().DomainsMRU.ToSortedArray();
             }
         }
 
@@ -928,7 +926,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                return GetSection().UsersMRU.ToList().ToArray();
+                return GetSection().UsersMRU.ToSortedArray();
             }
         }
 
