@@ -149,7 +149,7 @@ namespace Terminals
         /// </summary>
         private void UpdateFavoritesBindingSource()
         {
-            var data = Settings.GetFavorites().ToList();
+            var data = Settings.GetFavorites().ToListOrderedByDefaultSorting();
 
             DataGridViewColumn lastSortedColumn = this.dataGridFavorites.FindLastSortedColumn();
             if (lastSortedColumn != null) // keep last ordered column
