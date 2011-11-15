@@ -67,8 +67,11 @@ namespace Terminals
         /// <summary>
         /// Delete key press in grid.
         /// </summary>
-        private void ConnectionManager_KeyDown(object sender, KeyEventArgs e)
+        private void dataGridFavorites_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Control && e.KeyCode == Keys.C)
+                CopySelectedFavorite();
+
             if (e.KeyCode == Keys.Delete)
                 DeleteSelectedFavorites();
         }

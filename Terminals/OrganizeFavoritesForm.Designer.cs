@@ -944,7 +944,7 @@ namespace Terminals
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.copyToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+C";
             this.copyToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.copyToolStripMenuItem.Text = "&Copy";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
@@ -952,7 +952,7 @@ namespace Terminals
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+            this.deleteToolStripMenuItem.ShortcutKeyDisplayString = "Del";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.deleteToolStripMenuItem.Text = "&Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
@@ -1036,7 +1036,6 @@ namespace Terminals
             this.dataGridFavorites.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridFavorites_CellEndEdit);
             this.dataGridFavorites.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridFavorites_ColumnHeaderMouseClick);
             this.dataGridFavorites.SelectionChanged += new System.EventHandler(this.dataGridFavorites_SelectionChanged);
-            this.dataGridFavorites.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ConnectionManager_KeyDown);
             // 
             // colName
             // 
@@ -1130,6 +1129,7 @@ namespace Terminals
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Terminals - Organize Favorites";
             this.Shown += new System.EventHandler(this.OrganizeFavoritesForm_Shown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridFavorites_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
