@@ -217,6 +217,7 @@ namespace Terminals
             this.toolStripContainer.shortcutsToolStripMenuItem = this.shortcutsToolStripMenuItem;
             this.toolStripContainer.menuStrip = this.menuStrip;
             this.toolStripContainer.tsRemoteToolbar = this.tsRemoteToolbar;
+            this.toolStripContainer.AssignToolStripsLocationChangedEventHandler();
         }
 
         #endregion

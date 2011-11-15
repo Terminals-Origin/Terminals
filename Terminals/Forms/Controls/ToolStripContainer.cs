@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using Terminals.Configuration;
@@ -22,6 +23,19 @@ namespace Terminals.Forms.Controls
         internal ToolStrip tsRemoteToolbar { get; set; }
 
         #endregion
+
+        internal void AssignToolStripsLocationChangedEventHandler()
+        {
+            toolbarStd.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
+            favoriteToolBar.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
+            menuStrip.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
+            tsRemoteToolbar.EndDrag += new EventHandler(this.OnToolStripLocationChanged);
+        }
+
+        private void OnToolStripLocationChanged(object sender, EventArgs e)
+        {
+            SaveLayout();
+        }
 
         internal void SaveLayout()
         {

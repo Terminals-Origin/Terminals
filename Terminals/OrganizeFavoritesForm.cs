@@ -60,7 +60,7 @@ namespace Terminals
 
         private void dataGridFavorites_DoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex > 0) // dont allow double click on column row
+            if (e.RowIndex >= 0) // dont allow double click on column row
                 EditFavorite();
         }
 
