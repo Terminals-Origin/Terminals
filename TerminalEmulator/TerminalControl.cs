@@ -178,14 +178,8 @@ namespace WalburySoftware
         private void OnMouseWheel(object sender, MouseEventArgs e)
         {
             int newValue = CalculateNewScrollBarValue(e);
-            if (newValue != this.VertScrollBar.Value &&
-                this.VertScrollBar.Minimum <= newValue && newValue <= this.VertScrollBar.Maximum)
-            {
-                ScrollEventType increment = IdentifySrollDirection(e);
-                this.VertScrollBar.Value = newValue;
-                var scrollEventArgs = new ScrollEventArgs(increment, this.VertScrollBar.Value, newValue);
-                this.HandleScroll(sender, scrollEventArgs);
-            }
+            ScrollEventType increment = IdentifySrollDirection(e);
+            ScroolToPosition(increment, newValue);
         }
 
         private static ScrollEventType IdentifySrollDirection(MouseEventArgs e)
@@ -425,6 +419,7 @@ namespace WalburySoftware
                 case WMCodes.WM_SYSKEYUP:
                 case WMCodes.WM_SYSCHAR:
                 case WMCodes.WM_CHAR:
+                    ScrollBackToCrate();
                     this.Keyboard.KeyDown(m);
                     break;
 
@@ -434,6 +429,24 @@ namespace WalburySoftware
                     base.WndProc(ref m);
                     break;
             }
+        }
+
+        private void ScrollBackToCrate()
+        {
+            int cratePos = this.ScrollbackBuffer.Count - this._rows + 1;
+            if (cratePos > 0)
+                ScroolToPosition(ScrollEventType.Last, cratePos);
+        }
+
+        private void ScroolToPosition(ScrollEventType scrollEventType, int newValue)
+        {
+            if (newValue == this.VertScrollBar.Value ||
+                newValue <= this.VertScrollBar.Minimum || this.VertScrollBar.Maximum <= newValue)
+                return;
+
+            this.VertScrollBar.Value = newValue;
+            var scrollEventArgs = new ScrollEventArgs(scrollEventType, this.VertScrollBar.Value, newValue);
+            this.HandleScroll(this, scrollEventArgs);
         }
 
         protected override void OnMouseMove(MouseEventArgs CurArgs)
@@ -758,20 +771,13 @@ namespace WalburySoftware
 
         private void HandleScroll(Object sender, ScrollEventArgs se)
         {
-            // todo bug when calling clear at console clears console, but doesnt update the buffer
-
             if (!this.Caret.IsOff)
                 this.TextAtCursor = this.CaptureTextAtCursor();
 
             if (!UpdateLastVisibleLine(se))
                 return;
 
-            // lastline = 0: command line (latest output) is visible
-            // lastline = rows - buffer: scroll to oldest command stored in back buffer
-            //System.Diagnostics.Debug.WriteLine(String.Format("Line (rows {0}, buffer {1}): {2}",
-            //    this._rows, this.ScrollbackBuffer.Count, this.LastVisibleLine));
-
-            this.SetSize(this._rows, this._cols);
+            ClearScreenChars();
             ScrollBackBuffer visiblebuffer = CreateVisiblebuffer();
             UpdateCurrentCharsFromVisibleBuffer(visiblebuffer);
 
@@ -921,7 +927,7 @@ namespace WalburySoftware
             {
                 this.VertScrollBar.Enabled = true;
                 this.VertScrollBar.Maximum = this.ScrollbackBuffer.Count;
-                this.VertScrollBar.Value = this.VertScrollBar.Maximum;
+                this.VertScrollBar.Value = this.ScrollbackBuffer.Count - this._rows + 1;
             }
 
             this.VertScrollBar.LargeChange = this._rows;
@@ -935,30 +941,27 @@ namespace WalburySoftware
         {
             this._rows = Rows;
             this._cols = Columns;
-
             this.TopMargin = 0;
             this.BottomMargin = Rows - 1;
-
-            ////this.ClientSize = new System.Drawing.Size (
-            ////	System.Convert.ToInt32 (this.CharSize.Width  * this.Columns + 2) + this.VertScrollBar.Width,
-            ////	System.Convert.ToInt32 (this.CharSize.Height * this.Rows    + 2));
-
-            // create the character grid (rows by columns) this is a shadow of what's displayed
-            this.CharGrid = new System.Char[Rows][];
-
             this.Caret.Pos.X = 0;
             this.Caret.Pos.Y = 0;
 
-            for (Int32 i = 0; i < this.CharGrid.Length; i++)
-            {
-                this.CharGrid[i] = new System.Char[Columns];
-            }
+            
+            ClearScreenChars();
+        }
 
+        /// <summary>
+        /// empty the character grid (rows by columns) this is a shadow of what's displayed
+        /// </summary>
+        private void ClearScreenChars()
+        {
+            this.CharGrid = new Char[Rows][];
             this.AttribGrid = new CharAttribStruct[Rows][];
 
-            for (Int32 i = 0; i < this.AttribGrid.Length; i++)
+            for (Int32 rowIndex = 0; rowIndex < this.CharGrid.Length; rowIndex++)
             {
-                this.AttribGrid[i] = new CharAttribStruct[Columns];
+                this.CharGrid[rowIndex] = new Char[Columns];
+                this.AttribGrid[rowIndex] = new CharAttribStruct[Columns];
             }
         }
 

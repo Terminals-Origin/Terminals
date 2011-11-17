@@ -40,6 +40,12 @@ namespace WalburySoftware
                 this.Characters.Insert(index, line);
                 this.Attributes.Insert(index, lineAttributes);
             }
+
+            internal void ReplaceValues(int rowIndex, string newChars, CharAttribStruct[] newAttributes)
+            {
+                this.Characters[rowIndex] = newChars;
+                this.Attributes[rowIndex] = newAttributes;
+            }
         }
     }
 }

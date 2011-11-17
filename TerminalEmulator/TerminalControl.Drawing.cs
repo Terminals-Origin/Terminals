@@ -181,10 +181,10 @@ namespace WalburySoftware
             }
 
             CurGraphics.DrawString(
-                CurChar.ToString(), 
-                this.Font, 
+                CurChar.ToString(),
+                this.Font,
                 new SolidBrush(CurFGColor),
-                X - this.DrawStringOffset.X, 
+                X - this.DrawStringOffset.X,
                 Y - this.DrawStringOffset.Y);
         }
 
@@ -330,73 +330,77 @@ namespace WalburySoftware
 
         private void ClearDown(Int32 Param)
         {
-            Int32 X = this.Caret.Pos.X;
-            Int32 Y = this.Caret.Pos.Y;
+            Int32 caretCharIndex = this.Caret.Pos.X;
+            Int32 caretRowIndex = this.Caret.Pos.Y;
 
             switch (Param)
             {
                 case 0: // from cursor to bottom inclusive
-
-                    Array.Clear(this.CharGrid[Y], X, this.CharGrid[Y].Length - X);
-                    Array.Clear(this.AttribGrid[Y], X, this.AttribGrid[Y].Length - X);
-
-                    for (Int32 i = Y + 1; i < this._rows; i++)
-                    {
-                        Array.Clear(this.CharGrid[i], 0, this.CharGrid[i].Length);
-                        Array.Clear(this.AttribGrid[i], 0, this.AttribGrid[i].Length);
-                    }
-
+                    int charCount = this.CharGrid[caretRowIndex].Length - caretCharIndex;
+                    ClearRowChars(caretRowIndex, caretCharIndex, charCount);
+                    ClearRows(caretRowIndex + 1, this._rows);
                     break;
 
                 case 1: // from top to cursor inclusive
-
-                    Array.Clear(this.CharGrid[Y], 0, X + 1);
-                    Array.Clear(this.AttribGrid[Y], 0, X + 1);
-
-                    for (Int32 i = 0; i < Y; i++)
-                    {
-                        Array.Clear(this.CharGrid[i], 0, this.CharGrid[i].Length);
-                        Array.Clear(this.AttribGrid[i], 0, this.AttribGrid[i].Length);
-                    }
-
+                    ClearRowChars(caretRowIndex, 0, caretCharIndex + 1);
+                    ClearRows(0, caretRowIndex);
                     break;
 
                 case 2: // entire screen
-
-                    for (Int32 i = 0; i < this._rows; i++)
-                    {
-                        Array.Clear(this.CharGrid[i], 0, this.CharGrid[i].Length);
-                        Array.Clear(this.AttribGrid[i], 0, this.AttribGrid[i].Length);
-                    }
-
-                    break;
-
-                default:
+                    ClearRows(0, this._rows);
                     break;
             }
         }
 
+        private void ClearRows(int startRowIndex, int endRowIndex)
+        {
+            try
+            {
+                for (Int32 rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++)
+                {
+                    ClearRow(rowIndex);
+                    //int scrollBufferRow = this._rows + rowIndex;
+                    if (this.ScrollbackBuffer.Count > startRowIndex)
+                    {
+                        this.ScrollbackBuffer.Characters[startRowIndex] = "";
+                        this.ScrollbackBuffer.Attributes[startRowIndex] = new CharAttribStruct[0];
+                    }
+                }
+            }
+            catch(Exception exc)
+            { 
+            }
+        }
+
+        private void ClearRow(int rowIndex)
+        {
+            ClearRowChars(rowIndex, 0, this.CharGrid[rowIndex].Length);
+        }
+
+        private void ClearRowChars(int rowIndex, int startCharIndex, int charsCount)
+        {
+            Array.Clear(this.CharGrid[rowIndex], startCharIndex, charsCount);
+            Array.Clear(this.AttribGrid[rowIndex], startCharIndex, charsCount);
+        }
+
         private void ClearRight(Int32 Param)
         {
-            Int32 X = this.Caret.Pos.X;
-            Int32 Y = this.Caret.Pos.Y;
+            Int32 caretCharIndex = this.Caret.Pos.X;
+            Int32 caretRowIndex = this.Caret.Pos.Y;
 
             switch (Param)
             {
                 case 0: // from cursor to end of line inclusive
-
-                    Array.Clear(this.CharGrid[Y], X, this.CharGrid[Y].Length - X);
-                    Array.Clear(this.AttribGrid[Y], X, this.AttribGrid[Y].Length - X);
+                    int charsCount = this.CharGrid[caretRowIndex].Length - caretCharIndex;
+                    ClearRowChars(caretRowIndex, caretCharIndex, charsCount);
                     break;
 
                 case 1: // from beginning to cursor inclusive
-                    Array.Clear(this.CharGrid[Y], 0, X + 1);
-                    Array.Clear(this.AttribGrid[Y], 0, X + 1);
+                    ClearRowChars(caretRowIndex, 0, caretCharIndex + 1);
                     break;
 
                 case 2: // entire line
-                    Array.Clear(this.CharGrid[Y], 0, this.CharGrid[Y].Length);
-                    Array.Clear(this.AttribGrid[Y], 0, this.AttribGrid[Y].Length);
+                    ClearRowChars(caretRowIndex, 0, this.CharGrid[caretRowIndex].Length);
                     break;
 
                 default:

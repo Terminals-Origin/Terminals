@@ -224,11 +224,10 @@ namespace WalburySoftware
             {
                 // we need to add a new line so shift all the rows up in the array and
                 // insert a new row at the bottom
-                Int32 i;
-                for (i = this.TopMargin; i < this.BottomMargin; i++)
+                for (int index = this.TopMargin; index < this.BottomMargin; index++)
                 {
-                    this.CharGrid[i] = this.CharGrid[i + 1];
-                    this.AttribGrid[i] = this.AttribGrid[i + 1];
+                    this.CharGrid[index] = this.CharGrid[index + 1];
+                    this.AttribGrid[index] = this.AttribGrid[index + 1];
                 }
 
                 this.CharGrid[this.BottomMargin] = new Char[this._cols];
@@ -245,13 +244,16 @@ namespace WalburySoftware
         private void UpdateScrollBackBuffer()
         {
             if (this.ScrollbackBuffer.Count >= this.ScrollbackBufferSize)
-            {
                 this.ScrollbackBuffer.RemoveLast();
-            }
 
+            int caretRowIndex = this.Caret.Pos.Y;
             String textAtCursor = this.CaptureTextAtCursor();
-            CharAttribStruct[] textAtCursorAttributes = this.AttribGrid[this.Caret.Pos.Y];
-            this.ScrollbackBuffer.Add(textAtCursor, textAtCursorAttributes);
+            CharAttribStruct[] textAtCursorAttributes = this.AttribGrid[caretRowIndex];
+
+            if (caretRowIndex != this._rows - 1 && this.ScrollbackBuffer.Count >= this._rows)
+                this.ScrollbackBuffer.ReplaceValues(caretRowIndex, textAtCursor, textAtCursorAttributes);
+            else
+                this.ScrollbackBuffer.Add(textAtCursor, textAtCursorAttributes);
         }
 
         private void Index(Int32 Param)
