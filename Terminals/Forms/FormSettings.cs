@@ -155,19 +155,57 @@ namespace Terminals.Forms
         }
 
         /// <summary>
-        /// Restores form position to primary screen, if it is out of visible bounds
+        /// Restores form position to primary screen, if both of its check points 
+        /// in window caption is out of visible bounds
         /// </summary>
         internal void EnsureVisibleScreenArrea()
         {
-            // Height - 10 = means to see atleast part of the window title
-            Screen lastScreen = Screen.AllScreens.
-                FirstOrDefault(candidate => candidate.Bounds.X <= _form.Location.X &&
-                               _form.Location.X < candidate.Bounds.X + candidate.Bounds.Width - 10 &&
-                               candidate.Bounds.Y <= _form.Location.Y &&
-                               _form.Location.Y < candidate.Bounds.Y + candidate.Bounds.Height - 10);
+            Screen lastScreen = LastScreenOfCaptionPoint(GetLeftCaptionPoint());
 
             if (lastScreen == null)
-                _form.Location = new Point(100, 100);
+                lastScreen = LastScreenOfCaptionPoint(GetRightCaptionPoint());
+
+            System.Diagnostics.Debug.WriteLine(String.Format("Screen restored: {0}", lastScreen == null));
+            //if (lastScreen == null)
+            //    _form.Location = new Point(100, 100);
+        }
+
+        /// <summary>
+        /// Gets the screen location of point in midle of form caption height,
+        /// five buttons left from right side
+        /// </summary>
+        private Point GetRightCaptionPoint()
+        {
+            int captionButtonsWidth = SystemInformation.CaptionButtonSize.Width * 5;
+            return new Point(this._form.Location.X + this._form.Width - captionButtonsWidth,
+                             this._form.Location.Y + GetCaptionHeightMidle());
+        }
+
+        /// <summary>
+        /// Gets the screen location of point in midle of form caption height,
+        ///  five buttons left from side
+        /// </summary>
+        private Point GetLeftCaptionPoint()
+        {
+            return new Point(this._form.Location.X + GetCaptionHeightMidle(),
+                             this._form.Location.Y + GetCaptionHeightMidle());
+        }
+
+        private static int GetCaptionHeightMidle()
+        {
+            return SystemInformation.CaptionHeight / 2;
+        }
+
+        /// <summary>
+        /// Finds first screen on which checked point appears; or null if doesnt belong to any screen
+        /// </summary>
+        private static Screen LastScreenOfCaptionPoint(Point captionPoint)
+        {
+            return Screen.AllScreens.
+                FirstOrDefault(candidate => candidate.Bounds.X <= captionPoint.X &&
+                               captionPoint.X < candidate.Bounds.X + candidate.Bounds.Width &&
+                               candidate.Bounds.Y <= captionPoint.Y &&
+                               captionPoint.Y < candidate.Bounds.Y + candidate.Bounds.Height);
         }
     }
 }
