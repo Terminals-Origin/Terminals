@@ -354,21 +354,11 @@ namespace WalburySoftware
 
         private void ClearRows(int startRowIndex, int endRowIndex)
         {
-            try
+            for (Int32 rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++)
             {
-                for (Int32 rowIndex = startRowIndex; rowIndex < endRowIndex; rowIndex++)
-                {
-                    ClearRow(rowIndex);
-                    //int scrollBufferRow = this._rows + rowIndex;
-                    if (this.ScrollbackBuffer.Count > startRowIndex)
-                    {
-                        this.ScrollbackBuffer.Characters[startRowIndex] = "";
-                        this.ScrollbackBuffer.Attributes[startRowIndex] = new CharAttribStruct[0];
-                    }
-                }
-            }
-            catch(Exception exc)
-            { 
+                ClearRow(rowIndex);
+                if (this.ScrollbackBuffer.Count > startRowIndex)
+                    this.ScrollbackBuffer.ClearLine(startRowIndex);
             }
         }
 

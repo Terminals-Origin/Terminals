@@ -16,9 +16,11 @@ namespace WalburySoftware
             {
                 get { return this.Characters.Count; }
             }
+            internal int MaximumCount { get; set; }
 
             internal ScrollBackBuffer()
             {
+                this.MaximumCount = 3000;
                 this.Characters = new StringCollection();
                 this.Attributes = new List<CharAttribStruct[]>();
             }
@@ -39,6 +41,11 @@ namespace WalburySoftware
             {
                 this.Characters.Insert(index, line);
                 this.Attributes.Insert(index, lineAttributes);
+            }
+
+            internal void ClearLine(int rowIndex)
+            {
+                ReplaceValues(rowIndex, string.Empty, new CharAttribStruct[0]);
             }
 
             internal void ReplaceValues(int rowIndex, string newChars, CharAttribStruct[] newAttributes)

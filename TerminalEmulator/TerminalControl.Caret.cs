@@ -243,7 +243,7 @@ namespace WalburySoftware
         /// </summary>
         private void UpdateScrollBackBuffer()
         {
-            if (this.ScrollbackBuffer.Count >= this.ScrollbackBufferSize)
+            if (this.ScrollbackBuffer.Count >= this.ScrollbackBuffer.MaximumCount)
                 this.ScrollbackBuffer.RemoveLast();
 
             int caretRowIndex = this.Caret.Pos.Y;

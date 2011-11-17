@@ -24,7 +24,6 @@ namespace WalburySoftware
         private Int32 LastVisibleLine; // used for scrolling
         private Boolean XOFF = false;
         private String OutBuff = String.Empty;
-        private Int32 ScrollbackBufferSize;
         private ScrollBackBuffer ScrollbackBuffer;
         private uc_Parser Parser = null;
         private uc_Keyboard Keyboard = null;
@@ -101,7 +100,6 @@ namespace WalburySoftware
 
         public TerminalEmulator()
         {
-            this.ScrollbackBufferSize = 3000;
             this.ScrollbackBuffer = new ScrollBackBuffer();
 
             // set the display options
