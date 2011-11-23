@@ -62,7 +62,7 @@ namespace Terminals.Forms.Controls
             get { return this.quickContextMenu.Items.IndexOf(this.alphabeticalMenu); }
         }
 
-        private FavoriteGroups PersistedGroups
+        private Groups PersistedGroups
         {
             get { return Persistance.Instance.Groups; }
         }
@@ -87,9 +87,10 @@ namespace Terminals.Forms.Controls
             CreateUntaggedItem();
             CreateTrayMenuItems();
             UpdateMenuAndContextMenu();
-
-            DataDispatcher.Instance.TagsChanged += new TagsChangedEventHandler(this.OnDataChanged);
-            DataDispatcher.Instance.FavoritesChanged += new FavoritesChangedEventHandler(this.OnDataChanged);
+            
+            DataDispatcher dispatcher = Persistance.Instance.Dispatcher;
+            dispatcher.TagsChanged += new TagsChangedEventHandler(this.OnDataChanged);
+            dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnDataChanged);
             Settings.ConfigurationChanged += new ConfigurationChangedHandler(this.OnSettingsConfigurationChanged);
         }
 

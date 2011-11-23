@@ -18,16 +18,22 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private TagTreeNode unTaggedNode;
 
-        private FavoriteGroups PersistedGroups
+        private Groups PersistedGroups
         {
             get { return Persistance.Instance.Groups; }
+        }
+
+        private DataDispatcher Dispatcher
+        {
+            get { return Persistance.Instance.Dispatcher; }
         }
 
         internal FavoriteTreeListLoader(TreeView treeListToFill)
         {
             this.treeList = treeListToFill;
-            DataDispatcher.Instance.TagsChanged += new TagsChangedEventHandler(this.OnTagsCollectionChanged);
-            DataDispatcher.Instance.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
+
+            this.Dispatcher.TagsChanged += new TagsChangedEventHandler(this.OnTagsCollectionChanged);
+            this.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
         }
 
         /// <summary>
@@ -36,8 +42,8 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal void UnregisterEvents()
         {
-            DataDispatcher.Instance.TagsChanged -= new TagsChangedEventHandler(this.OnTagsCollectionChanged);
-            DataDispatcher.Instance.FavoritesChanged -= new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
+            this.Dispatcher.TagsChanged -= new TagsChangedEventHandler(this.OnTagsCollectionChanged);
+            this.Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
         }
 
         private void OnFavoritesCollectionChanged(FavoritesChangedEventArgs args)

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using Terminals.Configuration;
 
 namespace Terminals.Data
@@ -6,18 +8,22 @@ namespace Terminals.Data
     internal class Favorites
     {
         private DataDispatcher dispatcher;
+        internal Dictionary<Guid, Favorite> Cache { get; private set; }
 
-        internal Favorites(DataDispatcher dispatcher)
+        internal Favorites(DataDispatcher dispatcher, List<Favorite> favoritesSource)
         {
             this.dispatcher = dispatcher;
+            this.Cache = favoritesSource.ToDictionary(favorite => favorite.Id);
         }
+
+        public Favorites() {}
 
         public FavoriteConfigurationElementCollection GetFavorites()
         {
             return Settings.GetFavorites();
         }
 
-        public SortableList<FavoriteConfigurationElement> GetSortedFavoritesByTag(string tag)
+        internal SortableList<FavoriteConfigurationElement> GetSortedFavoritesByTag(string tag)
         {
             return Settings.GetSortedFavoritesByTag(tag);
         }

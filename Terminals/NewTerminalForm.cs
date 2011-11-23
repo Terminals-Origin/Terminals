@@ -24,7 +24,7 @@ namespace Terminals
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
 
-        private FavoriteGroups PersistedGroups
+        private Groups PersistedGroups
         {
             get { return Persistance.Instance.Groups; }
         }

@@ -191,10 +191,13 @@
     <Compile Include="CaptureManager\CaptureType.cs" />
     <Compile Include="CaptureManager\ImageFormatHandler.cs" />
     <Compile Include="CaptureManager\ImageFormatTypes.cs" />
+    <Compile Include="Data\Favorites\Favorite.cs" />
+    <Compile Include="Data\Favorites\FavoritesFile.cs" />
+    <Compile Include="Data\Favorites\Group.cs" />
     <Compile Include="Data\FilePersistance.cs" />
     <Compile Include="Data\Persistance.cs" />
-    <Compile Include="Data\FavoriteGroups.cs" />
-    <Compile Include="Data\Favorites.cs" />
+    <Compile Include="Data\Favorites\Groups.cs" />
+    <Compile Include="Data\Favorites\Favorites.cs" />
     <Compile Include="Network\Services\CommandLineServer.cs" />
     <Compile Include="Network\Services\CommandLineService.cs" />
     <Compile Include="CommandLine\CommandLineArgs.cs" />

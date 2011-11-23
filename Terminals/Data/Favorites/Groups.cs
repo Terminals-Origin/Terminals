@@ -8,13 +8,15 @@ namespace Terminals.Data
     /// In previous versions Groups and Tags.
     /// Now both features are solved here.
     /// </summary>
-    internal class FavoriteGroups
+    internal class Groups
     {
         private DataDispatcher dispatcher;
+        internal List<Group> Cache { get; private set; }
 
-        internal FavoriteGroups(DataDispatcher dispatcher)
+        internal Groups(DataDispatcher dispatcher, List<Group> groups)
         {
             this.dispatcher = dispatcher;
+            this.Cache = groups;
         }
 
         public string[] Tags
