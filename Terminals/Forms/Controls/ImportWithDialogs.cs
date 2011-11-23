@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Forms.Controls
 {
@@ -13,6 +14,11 @@ namespace Terminals.Forms.Controls
     {
         private const String importSuffix = "_(imported)";
         private Form sourceForm;
+
+        private static Favorites PersistedFavorites
+        {
+            get { return Persistance.Instance.Favorites; }
+        }
 
         internal ImportWithDialogs(Form sourceForm)
         {
@@ -53,7 +59,7 @@ namespace Terminals.Forms.Controls
 
             if (renameAnswer != DialogResult.Cancel)
             {
-                Settings.AddFavorites(favoritesToImport);
+                PersistedFavorites.AddFavorites(favoritesToImport);
                 return true;
             }
 
@@ -62,7 +68,7 @@ namespace Terminals.Forms.Controls
 
         private void RenameConflictingFavorites(List<FavoriteConfigurationElement> conflictingFavorites)
         {
-            FavoriteConfigurationElementCollection savedFavorites = Settings.GetFavorites();
+            FavoriteConfigurationElementCollection savedFavorites = PersistedFavorites.GetFavorites();
             foreach (FavoriteConfigurationElement favoriteToRename in conflictingFavorites)
             {
                 this.AddImportSuffixToFavorite(favoriteToRename, savedFavorites);
@@ -101,7 +107,7 @@ namespace Terminals.Forms.Controls
         private static List<FavoriteConfigurationElement> GetConflictingFavorites(List<FavoriteConfigurationElement> favorites)
         {
             var conflictingFavorites = new List<FavoriteConfigurationElement>();
-            FavoriteConfigurationElementCollection savedFavorites = Settings.GetFavorites();
+            FavoriteConfigurationElementCollection savedFavorites = PersistedFavorites.GetFavorites();
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
                 if (savedFavorites[favorite.Name] != null)

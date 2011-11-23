@@ -62,6 +62,16 @@ namespace Terminals.Forms.Controls
             get { return this.quickContextMenu.Items.IndexOf(this.alphabeticalMenu); }
         }
 
+        private FavoriteGroups PersistedGroups
+        {
+            get { return Persistance.Instance.Groups; }
+        }
+
+        private static Favorites PersistedFavorites
+        {
+            get { return Persistance.Instance.Favorites; }
+        }
+
         internal FavoritesMenuLoader(ToolStripMenuItem favoritesToolStripMenuItem,
             ToolStripComboBox tscConnectTo, EventHandler serverToolStripMenuItem_Click, ToolStrip favoriteToolBar,
             ContextMenuStrip quickContextMenu, ToolStripItemClickedEventHandler quickContextMenu_ItemClicked)
@@ -147,7 +157,7 @@ namespace Terminals.Forms.Controls
         private void ReFreshConnectionsComboBox()
         {
             this.tscConnectTo.Items.Clear();
-            String[] connectionNames = Settings.GetFavorites()
+            String[] connectionNames = PersistedFavorites.GetFavorites()
                 .ToList()
                 .Select(favorite => favorite.Name).ToArray();
             this.tscConnectTo.Items.AddRange(connectionNames);
@@ -181,7 +191,7 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private void CreateTagsToolStripMenuItems()
         {
-            foreach (String tag in Settings.Tags)
+            foreach (String tag in PersistedGroups.Tags)
             {
                 ToolStripMenuItem tagMenu = CreateTagMenuItem(tag);
                 tagMenu.DropDownOpening += new EventHandler(this.OnTagMenuDropDownOpening);
@@ -198,7 +208,7 @@ namespace Terminals.Forms.Controls
             if (tagMenu.IsEmpty)
             {
                 tagMenu.DropDown.Items.Clear();
-                List<FavoriteConfigurationElement> tagFavorites = Settings.GetSortedFavoritesByTag(tagMenu.Text);
+                List<FavoriteConfigurationElement> tagFavorites = PersistedFavorites.GetSortedFavoritesByTag(tagMenu.Text);
                 foreach (FavoriteConfigurationElement favorite in tagFavorites)
                 {
                     ToolStripMenuItem item = this.CreateToolStripItemByFavorite(favorite);
@@ -235,7 +245,7 @@ namespace Terminals.Forms.Controls
 
         private void CreateFavoriteButtons()
         {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            FavoriteConfigurationElementCollection favorites = PersistedFavorites.GetFavorites();
             foreach (String favoriteName in Settings.FavoritesToolbarButtons)
             {
                 this.CreateFavoriteButton(favorites, favoriteName);
@@ -289,7 +299,7 @@ namespace Terminals.Forms.Controls
 
         private void AddTagTrayMenuItems()
         {
-            foreach (String tag in Settings.Tags)
+            foreach (String tag in PersistedGroups.Tags)
             {
                 ToolStripMenuItem tagMenuItem = CreateTagMenuItem(tag);
                 tagMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
@@ -304,7 +314,7 @@ namespace Terminals.Forms.Controls
             if (tagMenu.IsEmpty)
             {
                 tagMenu.DropDown.Items.Clear();
-                List<FavoriteConfigurationElement> tagFavorites = Settings.GetSortedFavoritesByTag(tagMenu.Text);
+                List<FavoriteConfigurationElement> tagFavorites = PersistedFavorites.GetSortedFavoritesByTag(tagMenu.Text);
                 foreach (FavoriteConfigurationElement favorite in tagFavorites)
                 {
                     ToolStripMenuItem item = CreateFavoriteMenuItem(favorite);
@@ -395,7 +405,7 @@ namespace Terminals.Forms.Controls
         {
             if (!this.alphabeticalMenu.HasDropDownItems)
             {
-                List<FavoriteConfigurationElement> favorites = Settings.GetFavorites()
+                List<FavoriteConfigurationElement> favorites = PersistedFavorites.GetFavorites()
                     .ToList().SortByProperty("Name", SortOrder.Ascending);
 
                 CreateAlphabeticalFavoriteMenuItems(favorites);

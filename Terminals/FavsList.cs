@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Credentials;
+using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Integration;
@@ -16,6 +17,11 @@ namespace Terminals
     {
         private MainForm _mainForm;
         public static CredentialSet credSet = new CredentialSet();
+
+        private Favorites PersistedFavorites
+        {
+            get { return Persistance.Instance.Favorites; }
+        }
 
         public FavsList()
         {
@@ -258,7 +264,7 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites  = GetSelectedFavorites();
-                Settings.ApplyCredentialsForAllSelectedFavorites(selectedFavorites, result.Text);
+                PersistedFavorites.ApplyCredentialsForAllSelectedFavorites(selectedFavorites, result.Text);
 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -283,7 +289,7 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites = GetSelectedFavorites();
-                Settings.SetPasswordToAllSelectedFavorites(selectedFavorites, result.Text);
+                PersistedFavorites.SetPasswordToAllSelectedFavorites(selectedFavorites, result.Text);
 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -301,7 +307,7 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites = GetSelectedFavorites();
-                Settings.ApplyDomainNameToAllSelectedFavorites(selectedFavorites, result.Text);
+                PersistedFavorites.ApplyDomainNameToAllSelectedFavorites(selectedFavorites, result.Text);
 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -319,7 +325,7 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites = GetSelectedFavorites();
-                Settings.ApplyUserNameToAllSelectedFavorites(selectedFavorites, result.Text);
+                PersistedFavorites.ApplyUserNameToAllSelectedFavorites(selectedFavorites, result.Text);
 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -337,7 +343,7 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites = GetSelectedFavorites();
-                Settings.DeleteAllSelectedFavorites(selectedFavorites);
+                PersistedFavorites.DeleteFavorites(selectedFavorites);
                 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -350,7 +356,7 @@ namespace Terminals
             FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
-                Settings.DeleteFavorite(fav.Name);
+                PersistedFavorites.DeleteFavorite(fav.Name);
             }
         }
 

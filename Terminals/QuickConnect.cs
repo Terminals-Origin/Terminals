@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals {
     public partial class QuickConnect : Form {
@@ -11,7 +12,7 @@ namespace Terminals {
         }
 
         private void LoadFavorites() {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            FavoriteConfigurationElementCollection favorites = Persistance.Instance.Favorites.GetFavorites();
             cmbServerList.Items.Clear();
             foreach(FavoriteConfigurationElement favorite in favorites) {
                 cmbServerList.Items.Add(favorite.Name);

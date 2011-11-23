@@ -24,6 +24,16 @@ namespace Terminals
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
 
+        private FavoriteGroups PersistedGroups
+        {
+            get { return Persistance.Instance.Groups; }
+        }
+
+        private Favorites PersistedFavorites
+        {
+            get { return Persistance.Instance.Favorites; }
+        }
+
         #region Constructors
 
         public NewTerminalForm(String serverName)
@@ -71,7 +81,7 @@ namespace Terminals
             {
                 this.FillCredentials(null);
 
-                FavoriteConfigurationElement defaultFav = Settings.GetDefaultFavorite();
+                FavoriteConfigurationElement defaultFav = PersistedFavorites.GetDefaultFavorite();
                 if (defaultFav != null)
                 {
                     this.FillControls(defaultFav);
@@ -129,7 +139,7 @@ namespace Terminals
             this._terminalServerManager.TabIndex = 0;
             this.tabPage10.Controls.Add(_terminalServerManager);
 
-            foreach (String tag in Settings.Tags)
+            foreach (String tag in this.PersistedGroups.Tags)
             {
                 ListViewItem lvi = new ListViewItem(tag);
                 this.AllTagsListView.Items.Add(lvi);
@@ -159,7 +169,7 @@ namespace Terminals
             this.cmbServers.Items.AddRange(Settings.MRUServerNames);
             this.cmbDomains.Items.AddRange(Settings.MRUDomainNames);
             this.cmbUsers.Items.AddRange(Settings.MRUUserNames);
-            this.txtTag.AutoCompleteCustomSource.AddRange(Settings.Tags);
+            this.txtTag.AutoCompleteCustomSource.AddRange(this.PersistedGroups.Tags);
         }
 
         private void SaveMRUs()
@@ -526,7 +536,7 @@ namespace Terminals
             this.Favorite.SecurityStartProgram = String.Empty;
             this.Favorite.SecurityFullScreen = false;
             this.Favorite.Url = String.Empty;
-            Settings.SaveDefaultFavorite(this.Favorite);
+            PersistedFavorites.SaveDefaultFavorite(this.Favorite);
         }
 
         private void CommitChangesToSettings(List<string> updatedTags)
@@ -534,13 +544,13 @@ namespace Terminals
             Settings.StartDelayedUpdate();
             if (String.IsNullOrEmpty(this._oldName))
             {
-                Settings.AddFavorite(this.Favorite);
+                PersistedFavorites.AddFavorite(this.Favorite);
                 if (this.ShowOnToolbar)
                     Settings.AddFavoriteButton(this.Favorite.Name);
             }
             else
             {
-                Settings.EditFavorite(this._oldName, this.Favorite);
+                PersistedFavorites.EditFavorite(this._oldName, this.Favorite);
                 Settings.EditFavoriteButton(this._oldName, this.Favorite.Name, this.ShowOnToolbar);
                 this.UpdateTags(updatedTags);
             }
@@ -559,8 +569,8 @@ namespace Terminals
         {
             List<String> tagsToRemove = ListStringHelper.GetMissingSourcesInTarget(this.oldTags, updatedTags);
             List<String> tagsToAdd = ListStringHelper.GetMissingSourcesInTarget(updatedTags, this.oldTags);
-            Settings.AddTags(tagsToAdd);
-            Settings.DeleteTags(tagsToRemove);
+            PersistedGroups.AddTags(tagsToAdd);
+            PersistedGroups.DeleteTags(tagsToRemove);
         }
 
         /// <summary>
@@ -815,7 +825,7 @@ namespace Terminals
 
         private void removeSavedDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Settings.RemoveDefaultFavorite();
+            PersistedFavorites.RemoveDefaultFavorite();
         }
 
         private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)

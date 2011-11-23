@@ -1,5 +1,6 @@
 ﻿using System;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Updates
 {
@@ -28,12 +29,13 @@ namespace Terminals.Updates
         {
             if (Program.Info.Version == new Version(2, 0, 0, 0))
             {
+                var favorites = Persistance.Instance.Favorites;
                 // Change the Terminals URL to the correct URL used for Terminals News as of version 2.0 RC1
-                FavoriteConfigurationElement newsFavorite = Settings.GetOneFavorite(FavoritesFactory.TerminalsReleasesFavoriteName);
+                FavoriteConfigurationElement newsFavorite = favorites.GetOneFavorite(FavoritesFactory.TerminalsReleasesFavoriteName);
                 if (newsFavorite != null)
                 {
                     newsFavorite.Url = Program.Resources.GetString("TerminalsURL");
-                    Settings.SaveDefaultFavorite(newsFavorite);
+                    favorites.SaveDefaultFavorite(newsFavorite);
                 }
             }
         }

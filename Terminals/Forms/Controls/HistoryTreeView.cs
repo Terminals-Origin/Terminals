@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.History;
 
 namespace Terminals.Forms.Controls
@@ -89,7 +90,7 @@ namespace Terminals.Forms.Controls
 
         private static void InsertRecordedNode(TagTreeNode todayGroup, HistoryRecordedEventArgs args)
         {
-            FavoriteConfigurationElement favorite = Settings.GetOneFavorite(args.ConnectionName);
+            FavoriteConfigurationElement favorite = Persistance.Instance.Favorites.GetOneFavorite(args.ConnectionName);
             if (favorite != null) // shouldnt happen, because the favorite was actualy processed
             {
                 int insertIndex = FavoriteTreeListLoader.FindFavoriteNodeInsertIndex(todayGroup.Nodes, favorite);

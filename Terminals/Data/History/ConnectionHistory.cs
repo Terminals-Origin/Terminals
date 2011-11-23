@@ -125,7 +125,7 @@ namespace Terminals.History
         private static SortableList<FavoriteConfigurationElement> SelectFavoritesFromHistoryItems(
             SortableList<HistoryItem> groupedByDate)
         {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            FavoriteConfigurationElementCollection favorites = Persistance.Instance.Favorites.GetFavorites();
             var selection = new SortableList<FavoriteConfigurationElement>();
             foreach (HistoryItem favoriteTouch in groupedByDate)
             {

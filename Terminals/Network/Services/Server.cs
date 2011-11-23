@@ -6,6 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Terminals.Configuration;
+using Terminals.Data;
 using Unified;
 
 namespace Terminals.Network
@@ -63,7 +64,7 @@ namespace Terminals.Network
 
         private static ArrayList FavoritesToSharedList()
         {
-            var favoritesToShare = Settings.GetFavorites();
+            var favoritesToShare = Persistance.Instance.Favorites.GetFavorites();
             ArrayList list = new ArrayList();
             foreach (FavoriteConfigurationElement elem in favoritesToShare)
             {

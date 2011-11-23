@@ -49,6 +49,11 @@ namespace Terminals
         private FavoritesMenuLoader menuLoader;
         private MainFormFullScreenSwitch fullScreenSwitch;
 
+        private Favorites PersistedFavorites
+        {
+            get { return Persistance.Instance.Favorites; }
+        }
+
         #endregion
 
         #region Protected overrides
@@ -572,7 +577,7 @@ namespace Terminals
         private void DeleteFavorite(string name)
         {
             tscConnectTo.Items.Remove(name);
-            Settings.DeleteFavorite(name);
+            PersistedFavorites.DeleteFavorite(name);
             favoritesToolStripMenuItem.DropDownItems.RemoveByKey(name);
         }
 
@@ -1068,7 +1073,7 @@ namespace Terminals
 
         private void groupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            FavoriteConfigurationElementCollection favorites = PersistedFavorites.GetFavorites();
             string groupName = ((ToolStripItem)sender).Text;
             GroupConfigurationElement serversGroup = Settings.GetGroups()[groupName];
             foreach (FavoriteAliasConfigurationElement favoriteAlias in serversGroup.FavoriteAliases)
@@ -1081,7 +1086,7 @@ namespace Terminals
         private void serverToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string connectionName = ((ToolStripItem)sender).Text;
-            FavoriteConfigurationElement favorite = Settings.GetOneFavorite(connectionName);
+            FavoriteConfigurationElement favorite = PersistedFavorites.GetOneFavorite(connectionName);
             this.CreateTerminalTab(favorite);
         }
 
@@ -1825,7 +1830,7 @@ namespace Terminals
 
         private void rebuildTagsIndexToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Settings.RebuildTagIndex();
+            Persistance.Instance.Groups.RebuildTagIndex();
             this.LoadGroups();
             this.UpdateControls();
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Integration;
@@ -16,6 +17,11 @@ namespace Terminals
         private FavoriteConfigurationElement editedFavorite;
         internal MainForm MainForm { get; set; }
 
+        private Favorites PersistedFavorites
+        {
+            get { return Persistance.Instance.Favorites; }
+        }
+
         internal OrganizeFavoritesForm()
         {
             InitializeComponent();
@@ -28,7 +34,7 @@ namespace Terminals
         private void InitializeDataGrid()
         {
             this.dataGridFavorites.AutoGenerateColumns = false;
-            this.bsFavorites.DataSource = Settings.GetFavorites().ToListOrderedByDefaultSorting();
+            this.bsFavorites.DataSource = PersistedFavorites.GetFavorites().ToListOrderedByDefaultSorting();
             string sortingProperty = FavoriteConfigurationElement.GetDefaultSortPropertyName();
             DataGridViewColumn sortedColumn = this.dataGridFavorites.FindColumnByPropertyName(sortingProperty);
             sortedColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
@@ -95,7 +101,7 @@ namespace Terminals
 
             var copy = editedFavorite.Clone() as FavoriteConfigurationElement;
             editedFavorite.Name = this.editedFavoriteName;
-            var oldFavorite = Settings.GetOneFavorite(copy.Name);
+            var oldFavorite = PersistedFavorites.GetOneFavorite(copy.Name);
             if (oldFavorite != null)
             {
                 string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", copy.Name);
@@ -112,7 +118,7 @@ namespace Terminals
 
         private void ReplaceFavoriteInBindingSource(FavoriteConfigurationElement copy)
         {
-            Settings.EditFavorite(this.editedFavoriteName, copy);
+            PersistedFavorites.EditFavorite(this.editedFavoriteName, copy);
             this.UpdateFavoritesBindingSource();
         }
 
@@ -152,7 +158,7 @@ namespace Terminals
         /// </summary>
         private void UpdateFavoritesBindingSource()
         {
-            var data = Settings.GetFavorites().ToListOrderedByDefaultSorting();
+            var data = PersistedFavorites.GetFavorites().ToListOrderedByDefaultSorting();
 
             DataGridViewColumn lastSortedColumn = this.dataGridFavorites.FindLastSortedColumn();
             if (lastSortedColumn != null) // keep last ordered column
@@ -226,7 +232,7 @@ namespace Terminals
 
             this.Cursor = Cursors.WaitCursor;
             List<FavoriteConfigurationElement> selectedFavorites = GetSelectedFavorites();
-            Settings.DeleteFavorites(selectedFavorites);
+            PersistedFavorites.DeleteFavorites(selectedFavorites);
             this.UpdateFavoritesBindingSource();
             this.Cursor = Cursors.Default;
         }
@@ -267,7 +273,7 @@ namespace Terminals
             if (newFav != null)
             {
                 newFav.Name = newName;
-                Settings.AddFavorite(newFav);
+                PersistedFavorites.AddFavorite(newFav);
                 if (Settings.HasToolbarButton(favorite.Name))
                     Settings.AddFavoriteButton(newFav.Name);
                 this.UpdateFavoritesBindingSource();

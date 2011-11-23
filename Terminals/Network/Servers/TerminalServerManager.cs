@@ -2,6 +2,7 @@ using System;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Data;
 using Terminals.Forms;
 
 namespace Terminals.Network.Servers
@@ -73,8 +74,11 @@ namespace Terminals.Network.Servers
         private void TerminalServerManager_Load(object sender, EventArgs e)
         {
             ServerNameComboBox.Items.Clear();
-            if(Settings.GetFavorites()!=null) {
-                foreach(FavoriteConfigurationElement elm in Settings.GetFavorites()) {
+            var favorites = Persistance.Instance.Favorites.GetFavorites();
+            if (favorites != null)
+            {
+                foreach (FavoriteConfigurationElement elm in favorites)
+                {
                     if (elm.Protocol == ConnectionManager.RDP)
                     {
                         this.ServerNameComboBox.Items.Add(elm.ServerName);

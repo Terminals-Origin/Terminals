@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Data;
 
 namespace Terminals
 {
@@ -16,9 +17,14 @@ namespace Terminals
 
         internal static readonly String TerminalsReleasesFavoriteName = Program.Resources.GetString("TerminalsNews");
 
+        private static Favorites PersistedFavorites
+        {
+            get { return Persistance.Instance.Favorites; }
+        }
+
         internal static FavoriteConfigurationElement GetOrCreateReleaseFavorite()
         {
-            List<FavoriteConfigurationElement> favorites = Settings.GetFavorites().ToList();
+            List<FavoriteConfigurationElement> favorites = PersistedFavorites.GetFavorites().ToList();
             FavoriteConfigurationElement release = favorites
                 .FirstOrDefault(candidate => candidate.Name == TerminalsReleasesFavoriteName);
 
@@ -28,7 +34,7 @@ namespace Terminals
                 release.Url = "http://terminals.codeplex.com";
                 release.Tags = Program.Resources.GetString("Terminals");
                 release.Protocol = ConnectionManager.HTTP;
-                Settings.AddFavorite(release);
+                PersistedFavorites.AddFavorite(release);
             }
             return release;
         }
@@ -36,7 +42,7 @@ namespace Terminals
         internal static FavoriteConfigurationElement GetOrCreateQuickConnectFavorite(String server,
             Boolean ConnectToConsole, Int32 port)
         {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            FavoriteConfigurationElementCollection favorites = PersistedFavorites.GetFavorites();
             FavoriteConfigurationElement favorite = favorites[server];
             if (favorite != null)
             {
@@ -58,7 +64,7 @@ namespace Terminals
         internal static FavoriteConfigurationElement GetFavoriteUpdatedCopy(String connectionName,
             Boolean forceConsole, Boolean forceNewWindow, CredentialSet credential)
         {
-            FavoriteConfigurationElementCollection favorites = Settings.GetFavorites();
+            FavoriteConfigurationElementCollection favorites = PersistedFavorites.GetFavorites();
             FavoriteConfigurationElement favorite = favorites[connectionName];
             if (favorite == null)
                 return null;

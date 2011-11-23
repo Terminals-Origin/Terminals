@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using SysConfig = System.Configuration;
 using System.Linq;
 using Terminals.Data;
@@ -14,6 +13,7 @@ namespace Terminals.Configuration
         /// </summary>
         internal const String UNTAGGED_NODENAME = "Untagged";
 
+        [Obsolete("Use new persistance instead.")]
         public static void EditFavorite(string oldName, FavoriteConfigurationElement favorite)
         {
             if (favorite == null)
@@ -26,6 +26,7 @@ namespace Terminals.Configuration
             DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
         }
 
+        [Obsolete("Use new persistance instead.")]
         internal static void ApplyCredentialsForAllSelectedFavorites(
             List<FavoriteConfigurationElement> selectedFavorites, string credentialName)
         {
@@ -38,7 +39,7 @@ namespace Terminals.Configuration
             SaveAndFinishDelayedUpdate();
         }
 
-
+        [Obsolete("Use new persistance instead.")]
         internal static void SetPasswordToAllSelectedFavorites(
             List<FavoriteConfigurationElement> selectedFavorites, string newPassword)
         {
@@ -51,6 +52,7 @@ namespace Terminals.Configuration
             SaveAndFinishDelayedUpdate();
         }
 
+        [Obsolete("Use new persistance instead.")]
         internal static void ApplyDomainNameToAllSelectedFavorites(
             List<FavoriteConfigurationElement> selectedFavorites, string newDomainName)
         {
@@ -63,6 +65,7 @@ namespace Terminals.Configuration
             SaveAndFinishDelayedUpdate();
         }
 
+        [Obsolete("Use new persistance instead.")]
         internal static void ApplyUserNameToAllSelectedFavorites(
           List<FavoriteConfigurationElement> selectedFavorites, string newUserName)
         {
@@ -71,16 +74,6 @@ namespace Terminals.Configuration
             {
                 favorite.UserName = newUserName;
                 UpdateFavorite(favorite.Name, favorite);
-            }
-            SaveAndFinishDelayedUpdate();
-        }
-
-        internal static void DeleteAllSelectedFavorites(List<FavoriteConfigurationElement> selectedFavorites)
-        {
-            StartDelayedUpdate();
-            foreach (FavoriteConfigurationElement favorite in selectedFavorites)
-            {
-                DeleteFavorite(favorite.Name);
             }
             SaveAndFinishDelayedUpdate();
         }
@@ -103,6 +96,7 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested();
         }
 
+        [Obsolete("Use new persistance instead.")]
         public static void DeleteFavorite(string name)
         {
             FavoriteConfigurationElement favoriteToDelete = GetOneFavorite(name);
@@ -119,6 +113,7 @@ namespace Terminals.Configuration
             DeleteFavoriteButton(name);
         }
 
+        [Obsolete("Use new persistance instead.")]
         internal static void DeleteFavorites(List<FavoriteConfigurationElement> favorites)
         {
             if (favorites == null || favorites.Count == 0)
@@ -138,6 +133,7 @@ namespace Terminals.Configuration
             DataDispatcher.Instance.ReportFavoritesDeleted(favorites);
         }
 
+        [Obsolete("Use new persistance instead.")]
         public static void AddFavorite(FavoriteConfigurationElement favorite)
         {
             AddFavoriteToSettings(favorite);
@@ -159,6 +155,7 @@ namespace Terminals.Configuration
         /// Adds all favorites as new in the configuration as a batch and saves configuration after all are imported.
         /// </summary>
         /// <param name="favorites">Not null collection of favorites to import</param>
+        [Obsolete("Use new persistance instead.")]
         internal static void AddFavorites(List<FavoriteConfigurationElement> favorites)
         {
             if (favorites == null || favorites.Count == 0)
@@ -180,6 +177,7 @@ namespace Terminals.Configuration
             DataDispatcher.Instance.ReportFavoritesAdded(favorites);
         }
 
+        [Obsolete("Use new persistance instead.")]
         public static FavoriteConfigurationElement GetDefaultFavorite()
         {
             TerminalsConfigurationSection section = GetSection();
@@ -188,6 +186,7 @@ namespace Terminals.Configuration
             return null;
         }
 
+        [Obsolete("Use new persistance instead.")]
         public static void SaveDefaultFavorite(FavoriteConfigurationElement favorite)
         {
             FavoriteConfigurationElementCollection defaultFav = GetSection().DefaultFavorite;
@@ -196,6 +195,7 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested();
         }
 
+        [Obsolete("Use new persistance instead.")]
         public static void RemoveDefaultFavorite()
         {
             FavoriteConfigurationElementCollection defaultFav = GetSection().DefaultFavorite;
@@ -203,6 +203,7 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested();
         }
 
+        [Obsolete("Use new persistance instead.")]
         public static FavoriteConfigurationElementCollection GetFavorites()
         {
             TerminalsConfigurationSection section = GetSection();
@@ -233,12 +234,14 @@ namespace Terminals.Configuration
         /// Gets all favorites, which contain required tag in collection sorted by default sort property.
         /// If, the tag is empty, than returns "Untagged" favorites.
         /// </summary>
+        [Obsolete("Use new persistance instead.")]
         internal static SortableList<FavoriteConfigurationElement> GetSortedFavoritesByTag(string  tag)
         {
             var tagFavorites = GetFavoritesByTag(tag);
             return FavoriteConfigurationElementCollection.OrderByDefaultSorting(tagFavorites);
         }
 
+        [Obsolete("Use new persistance instead.")]
         public static FavoriteConfigurationElement GetOneFavorite(string connectionName)
         {
             return GetFavorites()[connectionName];

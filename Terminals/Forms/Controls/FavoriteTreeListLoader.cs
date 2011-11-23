@@ -18,6 +18,11 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private TagTreeNode unTaggedNode;
 
+        private FavoriteGroups PersistedGroups
+        {
+            get { return Persistance.Instance.Groups; }
+        }
+
         internal FavoriteTreeListLoader(TreeView treeListToFill)
         {
             this.treeList = treeListToFill;
@@ -219,10 +224,10 @@ namespace Terminals.Forms.Controls
         {
             this.unTaggedNode = this.CreateAndAddTagNode(Settings.UNTAGGED_NODENAME);
 
-            if(Settings.Tags == null) // because of designer
+            if (PersistedGroups.Tags == null) // because of designer
                 return;
-            
-            foreach (string tagName in Settings.Tags)
+
+            foreach (string tagName in PersistedGroups.Tags)
             {
                 this.CreateAndAddTagNode(tagName);
             }
@@ -239,7 +244,8 @@ namespace Terminals.Forms.Controls
 
         private static void AddFavoriteNodes(TagTreeNode tagNode)
         {
-            List<FavoriteConfigurationElement> tagFavorites = Settings.GetSortedFavoritesByTag(tagNode.Text);
+            List<FavoriteConfigurationElement> tagFavorites = Persistance.Instance.Favorites
+                .GetSortedFavoritesByTag(tagNode.Text);
 
             foreach (var favorite in tagFavorites)
             {
