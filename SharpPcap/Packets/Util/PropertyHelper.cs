@@ -97,7 +97,7 @@ namespace Tamir.IPLib.Packets.Util
 			{
 				c = System.Drawing.Color.FromArgb(System.Int32.Parse(st.NextToken()), System.Int32.Parse(st.NextToken()), System.Int32.Parse(st.NextToken()));
 			}
-			catch (System.ArgumentOutOfRangeException e)
+			catch (System.ArgumentOutOfRangeException)
 			{
 				c = System.Drawing.Color.White;
 				System.Console.Error.WriteLine("WARN: invalid color spec '" + string_Renamed + "' in property file");
@@ -133,7 +133,7 @@ namespace Tamir.IPLib.Packets.Util
 			{
 				address = System.Int32.Parse(st.NextToken()) << 24 | System.Int32.Parse(st.NextToken()) << 16 | System.Int32.Parse(st.NextToken()) << 8 | System.Int32.Parse(st.NextToken());
 			}
-			catch (System.ArgumentOutOfRangeException e)
+			catch (System.ArgumentOutOfRangeException)
 			{
 				address = 0;
 				System.Console.Error.WriteLine("WARN: invalid color spec '" + string_Renamed + "' in property file");
@@ -180,7 +180,7 @@ namespace Tamir.IPLib.Packets.Util
 			//UPGRADE_TODO: Format of property file may need to be changed. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1089'"
 			System.Collections.Specialized.NameValueCollection properties = new System.Collections.Specialized.NameValueCollection();
 			//UPGRADE_TODO: Method 'java.util.Properties.load' was converted to 'System.Collections.Specialized.NameValueCollection' which has a different behavior. "ms-help://MS.VSCC.v80/dv_commoner/local/redirect.htm?index='!DefaultContextWindowIndex'&keyword='jlca1073_javautilPropertiesload_javaioInputStream'"
-			properties = new System.Collections.Specialized.NameValueCollection(System.Configuration.ConfigurationSettings.AppSettings);
+			properties = new System.Collections.Specialized.NameValueCollection(System.Configuration.ConfigurationManager.AppSettings);
 			
 			return properties;
 		}

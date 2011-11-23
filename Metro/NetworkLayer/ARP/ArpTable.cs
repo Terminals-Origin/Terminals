@@ -600,7 +600,7 @@ namespace Metro.NetworkLayer.ARP
 		///	</returns>
 		public bool CreateProxyArpEntry (IPAddress address, IPAddress mask, int adapterIndex)
 		{
-			return CreateProxyArpEntry((int)address.Address, (int)mask.Address, adapterIndex) == 0;
+            return CreateProxyArpEntry((int)BitConverter.ToInt32(address.GetAddressBytes(), 0), (int)BitConverter.ToInt32(mask.GetAddressBytes(), 0), adapterIndex) == 0;
 		}
 	
 		
@@ -623,7 +623,7 @@ namespace Metro.NetworkLayer.ARP
 		///	</returns>
 		public bool DeleteProxyArpEntry (IPAddress address, IPAddress mask, int adapterIndex)
 		{
-			return DeleteProxyArpEntry((int)address.Address, (int)mask.Address, adapterIndex) == 0;
+            return DeleteProxyArpEntry((int)BitConverter.ToInt32(address.GetAddressBytes(), 0), (int)BitConverter.ToInt32(mask.GetAddressBytes(), 0), adapterIndex) == 0;
 		}
 		
 		

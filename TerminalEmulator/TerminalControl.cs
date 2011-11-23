@@ -14,10 +14,10 @@ namespace WalburySoftware
         public String TerminalType = "vt220";
         //private State						receiveState;
 
-        private ContextMenu contextMenu1;    // rightclick menu
-        private MenuItem mnuCopy;
-        private MenuItem mnuPaste;
-        private MenuItem mnuCopyPaste;
+        //private ContextMenu contextMenu1;    // rightclick menu
+       // private MenuItem mnuCopy;
+       // private MenuItem mnuPaste;
+        //private MenuItem mnuCopyPaste;
         private Point BeginDrag;       // used in Mouse Selecting Text
         private Point EndDrag;         // used in mouse selecting text
         private String TextAtCursor;    // used to store Cursortext while scrolling

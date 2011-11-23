@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("2.0.0.0")]
 [assembly: AssemblyFileVersion("2.0.0.0")]
 
-[assembly: log4net.Config.DOMConfigurator(
+[assembly: log4net.Config.XmlConfigurator(
 ConfigFile = "TerminalsLauncher.log4net.config", Watch = true)]

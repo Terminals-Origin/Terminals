@@ -143,7 +143,7 @@ namespace TabControl
                 {
                     try {
                         OnDrawTabPage(e.Graphics, selectedTabItem);
-                    } catch(Exception exc) {
+                    } catch(Exception) {
                         //black hole this for now
                     }
                 }
@@ -331,7 +331,7 @@ namespace TabControl
                 }
                 base.OnMouseUp(e);
                 downItem = null;
-            } catch(Exception exc) { }
+            } catch(Exception) { }
         }
         protected override void OnMouseDown(MouseEventArgs e)
         {
@@ -665,7 +665,7 @@ namespace TabControl
                     } else {
                         brush = new LinearGradientBrush(buttonRect, SystemColors.ControlLightLight, SystemColors.Control, LinearGradientMode.Vertical);
                     }
-                }catch(Exception ex) {
+                }catch(Exception) {
                     
                 }
                 g.FillPath(brush, path);
