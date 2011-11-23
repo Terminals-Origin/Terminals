@@ -440,7 +440,7 @@ namespace Metro
                     m_state.SocketObject.IOControl(RecieveAll,
                                                     BitConverter.GetBytes(inBuff),
                                                     BitConverter.GetBytes(outBuff));
-                } catch(Exception exc) {
+                } catch(Exception) {
                     //maybe a wireless card?
                     m_state.SocketObject.IOControl(ra,
                                     BitConverter.GetBytes(inBuff),
@@ -453,7 +453,7 @@ namespace Metro
                     m_state.SocketObject.IOControl(ra,
                                     BitConverter.GetBytes(inBuff),
                                     BitConverter.GetBytes(outBuff));
-                } catch(Exception exc) {
+                } catch(Exception) {
                     m_state.SocketObject.IOControl(RecieveAll,
                                                     BitConverter.GetBytes(inBuff),
                                                     BitConverter.GetBytes(outBuff));
@@ -558,7 +558,7 @@ namespace Metro
 				}
 				
 			}
-			catch (Exception exc)
+			catch (Exception)
 			{	
 				// if the object is disposed it has been closed because StopListen has been called
                 

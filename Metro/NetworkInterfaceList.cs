@@ -498,7 +498,7 @@ namespace Metro
                         }
                     }
                 }
-                catch(Exception exc)
+                catch (Exception)
                 {
                     
                     //System.Diagnostics.Debug.Fail(exc.Message);

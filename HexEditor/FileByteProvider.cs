@@ -207,6 +207,7 @@ namespace Be.Windows.Forms
 				_writes.Add(index, value);
 
 			OnChanged(EventArgs.Empty);
+            if (LengthChanged != null) LengthChanged(this, EventArgs.Empty);
 		}
 
 		/// <summary>

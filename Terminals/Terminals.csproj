@@ -118,9 +118,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\Citrix\AxWFICALib.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Data.v10.2, Version=10.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.Utils.v10.2, Version=10.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DevExpress.XtraEditors.v10.2, Version=10.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="FlickrNet, Version=2.1.5.19851, Culture=neutral, PublicKeyToken=2491df59efa5d132">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Resources\FlickrNet.dll</HintPath>
