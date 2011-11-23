@@ -160,14 +160,17 @@ namespace Terminals.Forms
         /// </summary>
         internal void EnsureVisibleScreenArrea()
         {
+            // because when comming back from minimalized state, this method is called firs yet with this state
+            if (this._form.WindowState == FormWindowState.Minimized)
+                return;
+
             Screen lastScreen = LastScreenOfCaptionPoint(GetLeftCaptionPoint());
 
             if (lastScreen == null)
                 lastScreen = LastScreenOfCaptionPoint(GetRightCaptionPoint());
 
-            System.Diagnostics.Debug.WriteLine(String.Format("Screen restored: {0}", lastScreen == null));
-            //if (lastScreen == null)
-            //    _form.Location = new Point(100, 100);
+            if (lastScreen == null)
+                _form.Location = new Point(100, 100);
         }
 
         /// <summary>
