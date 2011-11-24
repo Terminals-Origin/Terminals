@@ -1,21 +1,18 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
-using Unified.Encryption.Hash;
+using Terminals.Security;
 
 namespace Terminals
 {
-
     public class TerminalsConfigurationSection : ConfigurationSection
     {
         public TerminalsConfigurationSection() { }
 
         internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            EncryptedDefaultPassword = Functions.EncryptPassword(DefaultPassword, newKeyMaterial);
-            EncryptedAmazonAccessKey = Functions.EncryptPassword(AmazonAccessKey, newKeyMaterial);
-            EncryptedAmazonSecretKey = Functions.EncryptPassword(AmazonSecretKey, newKeyMaterial);
+            EncryptedDefaultPassword = PasswordFunctions.EncryptPassword(DefaultPassword, newKeyMaterial);
+            EncryptedAmazonAccessKey = PasswordFunctions.EncryptPassword(AmazonAccessKey, newKeyMaterial);
+            EncryptedAmazonSecretKey = PasswordFunctions.EncryptPassword(AmazonSecretKey, newKeyMaterial);
         }
 
         #region Terminals Version
@@ -305,7 +302,7 @@ namespace Terminals
                 if (string.IsNullOrEmpty(value))
                     this["terminalsPassword"] = string.Empty;
                 else  //hash the password
-                  this["terminalsPassword"] = Functions.ComputeMasterPasswordHash(value);
+                    this["terminalsPassword"] = PasswordFunctions.ComputeMasterPasswordHash(value);
             }
         }
 
@@ -352,11 +349,11 @@ namespace Terminals
         {
             get
             {
-                return Functions.DecryptPassword(EncryptedDefaultPassword);
+                return PasswordFunctions.DecryptPassword(EncryptedDefaultPassword);
             }
             set
             {
-                EncryptedDefaultPassword = Functions.EncryptPassword(value);
+                EncryptedDefaultPassword = PasswordFunctions.EncryptPassword(value);
             }
         }
 
@@ -390,11 +387,11 @@ namespace Terminals
         {
             get
             {
-                return Functions.DecryptPassword(EncryptedAmazonAccessKey);
+                return PasswordFunctions.DecryptPassword(EncryptedAmazonAccessKey);
             }
             set
             {
-                EncryptedAmazonAccessKey = Functions.EncryptPassword(value);
+                EncryptedAmazonAccessKey = PasswordFunctions.EncryptPassword(value);
             }
         }
 
@@ -415,11 +412,11 @@ namespace Terminals
         {
             get
             {
-                return Functions.DecryptPassword(EncryptedAmazonSecretKey);
+                return PasswordFunctions.DecryptPassword(EncryptedAmazonSecretKey);
             }
             set
             {
-                EncryptedAmazonSecretKey = Functions.EncryptPassword(value);
+                EncryptedAmazonSecretKey = PasswordFunctions.EncryptPassword(value);
             }
         }
 

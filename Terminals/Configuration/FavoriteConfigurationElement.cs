@@ -4,6 +4,8 @@ using System.Configuration;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Converters;
+using Terminals.Network;
+using Terminals.Security;
 
 namespace Terminals
 {
@@ -112,7 +114,7 @@ namespace Terminals
                                 this.Url : this.ServerName;
 
             String toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
-                Environment.NewLine, serverName, this.Port, Functions.UserDisplayName(this.DomainName, this.UserName));
+                Environment.NewLine, serverName, this.Port, HelperFunctions.UserDisplayName(this.DomainName, this.UserName));
 
             if (Settings.ShowFullInformationToolTips)
             {
@@ -125,8 +127,8 @@ namespace Terminals
 
         internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            EncryptedPassword = Functions.EncryptPassword(Password, newKeyMaterial);
-            TsgwEncryptedPassword = Functions.EncryptPassword(TsgwPassword, newKeyMaterial);
+            EncryptedPassword = PasswordFunctions.EncryptPassword(Password, newKeyMaterial);
+            TsgwEncryptedPassword = PasswordFunctions.EncryptPassword(TsgwPassword, newKeyMaterial);
         }
 
         #region ICloneable Members
@@ -951,12 +953,12 @@ namespace Terminals
                 CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
                 if (cred != null)
                     return cred.SecretKey;
-                
-                return Functions.DecryptPassword(EncryptedPassword);
+
+                return PasswordFunctions.DecryptPassword(EncryptedPassword);
             }
             set
             {
-                EncryptedPassword = Functions.EncryptPassword(value);
+                EncryptedPassword = PasswordFunctions.EncryptPassword(value);
             }
         }
 
@@ -1326,11 +1328,11 @@ namespace Terminals
         {
             get
             {
-                return Functions.DecryptPassword(TsgwEncryptedPassword);
+                return PasswordFunctions.DecryptPassword(TsgwEncryptedPassword);
             }
             set
             {
-                TsgwEncryptedPassword = Functions.EncryptPassword(value);
+                TsgwEncryptedPassword = PasswordFunctions.EncryptPassword(value);
             }
         }
 

@@ -18,6 +18,7 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.History;
+using Terminals.Network;
 using Terminals.Properties;
 using Unified.Rss;
 using Settings = Terminals.Configuration.Settings;
@@ -540,7 +541,7 @@ namespace Terminals
             String terminalTabTitle = favorite.Name;
             if (Settings.ShowUserNameInTitle)
             {
-                terminalTabTitle += String.Format(" ({0})", Functions.UserDisplayName(favorite.DomainName, favorite.UserName));
+                terminalTabTitle += String.Format(" ({0})", HelperFunctions.UserDisplayName(favorite.DomainName, favorite.UserName));
             }
 
             return new TerminalTabControlItem(terminalTabTitle);

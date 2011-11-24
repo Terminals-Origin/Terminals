@@ -5,12 +5,12 @@ using Terminals.Configuration;
 using Unified.Encryption;
 using Unified.Encryption.Hash;
 
-namespace Terminals
+namespace Terminals.Security
 {
-    internal static class Functions
+    internal static class PasswordFunctions
     {
-        private static int keyLength = 24;
-        private static int ivLength = 16;
+        private const int KEY_LENGTH = 24;
+        private const int IV_LENGTH = 16;
         private static EncryptionAlgorithm EncryptionAlgorithm = EncryptionAlgorithm.Rijndael;
 
         internal static string ComputeMasterPasswordHash(string password)
@@ -44,8 +44,8 @@ namespace Terminals
 
         private static string DecryptByKey(string encryptedPassword, string keyMaterial)
         {
-            string hashedPass = keyMaterial.Substring(0, keyLength);
-            byte[] IV = Encoding.Default.GetBytes(keyMaterial.Substring(keyMaterial.Length - ivLength));
+            string hashedPass = keyMaterial.Substring(0, KEY_LENGTH);
+            byte[] IV = Encoding.Default.GetBytes(keyMaterial.Substring(keyMaterial.Length - IV_LENGTH));
             string password = "";
             Decryptor dec = new Decryptor(EncryptionAlgorithm);
             dec.IV = IV;
@@ -91,8 +91,8 @@ namespace Terminals
 
         private static string EncryptByKey(string decryptedPassword, string keyMaterial)
         {
-            string hashedPass = keyMaterial.Substring(0, keyLength);
-            byte[] IV = Encoding.Default.GetBytes(keyMaterial.Substring(keyMaterial.Length - ivLength));
+            string hashedPass = keyMaterial.Substring(0, KEY_LENGTH);
+            byte[] IV = Encoding.Default.GetBytes(keyMaterial.Substring(keyMaterial.Length - IV_LENGTH));
             Encryptor enc = new Encryptor(EncryptionAlgorithm);
             enc.IV = IV;
             byte[] data = enc.Encrypt(Encoding.Default.GetBytes(decryptedPassword), Encoding.Default.GetBytes(hashedPass));
@@ -110,47 +110,6 @@ namespace Terminals
             byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
             byte[] cyphertext = ProtectedData.Protect(plaintext, b_entropy, DataProtectionScope.CurrentUser);
             return Convert.ToBase64String(cyphertext);
-        }
-
-        internal static string UserDisplayName(string domain, string user)
-        {
-            return String.IsNullOrEmpty(domain) ? (user) : (domain + "\\" + user);
-        }
-
-        internal static string GetErrorMessage(int code)
-        {
-            //error messages from: http://msdn2.microsoft.com/en-us/aa382170.aspx
-            switch (code)
-            {
-                case 260: return "DNS name lookup failure";
-                case 262: return "Out of memory";
-                case 264: return "Connection timed out";
-                case 516: return "WinSock socket connect failure";
-                case 518: return "Out of memory";
-                case 520: return "Host not found error";
-                case 772: return "WinSock send call failure";
-                case 774: return "Out of memory";
-                case 776: return "Invalid IP address specified";
-                case 1028: return "WinSock recv call failure";
-                case 1030: return "Invalid security data";
-                case 1032: return "Internal error";
-                case 1286: return "Invalid encryption method specified";
-                case 1288: return "DNS lookup failed";
-                case 1540: return "GetHostByName call failed";
-                case 1542: return "Invalid server security data";
-                case 1544: return "Internal timer error";
-                case 1796: return "Time-out occurred";
-                case 1798: return "Failed to unpack server certificate";
-                case 2052: return "Bad IP address specified";
-                case 2056: return "Internal security error";
-                case 2308: return "Socket closed";
-                case 2310: return "Internal security error";
-                case 2312: return "Licensing time-out";
-                case 2566: return "Internal security error";
-                case 2822: return "Encryption error";
-                case 3078: return "Decryption error";
-            }
-            return null;
         }
     }
 }

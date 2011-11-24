@@ -198,6 +198,7 @@
     <Compile Include="Data\Persistance.cs" />
     <Compile Include="Data\Favorites\Groups.cs" />
     <Compile Include="Data\Favorites\Favorites.cs" />
+    <Compile Include="Network\HelperFunctions.cs" />
     <Compile Include="Network\Services\CommandLineServer.cs" />
     <Compile Include="Network\Services\CommandLineService.cs" />
     <Compile Include="CommandLine\CommandLineArgs.cs" />
@@ -318,7 +319,7 @@
     <Compile Include="Credentials\CredentialManager.Designer.cs">
       <DependentUpon>CredentialManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="Credentials\CredentialSet.cs" />
+    <Compile Include="Data\Credentials\CredentialSet.cs" />
     <Compile Include="Credentials\UserSelectForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -545,7 +546,7 @@
     <Compile Include="Settings\Settings_Groups.cs" />
     <Compile Include="Settings\Settings_Tags.cs" />
     <Compile Include="Settings\SortProperties.cs" />
-    <Compile Include="Data\StoredCredentials.cs" />
+    <Compile Include="Data\Credentials\StoredCredentials.cs" />
     <Compile Include="Settings\ToolStripSetting.cs" />
     <Compile Include="Settings\ToolStripSettings.cs" />
     <Compile Include="Data\SortableList.cs" />
@@ -754,7 +755,7 @@
     <Compile Include="OrganizeFavoritesForm.Designer.cs">
       <DependentUpon>OrganizeFavoritesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Data\Functions.cs" />
+    <Compile Include="Security\PasswordFunctions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

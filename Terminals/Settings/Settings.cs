@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using Unified.Encryption.Hash;
-using SysConfig = System.Configuration;
+using Terminals.Security;
 using System.IO;
 
 namespace Terminals.Configuration
@@ -349,7 +347,7 @@ namespace Terminals.Configuration
 
         internal static Boolean IsMasterPasswordValid(string passwordToCheck)
         {
-            String hashToCheck = Functions.ComputeMasterPasswordHash(passwordToCheck);
+            String hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(passwordToCheck);
             if (GetMasterPasswordHash() == hashToCheck)
             {
                 UpdateKeyMaterial(passwordToCheck);
@@ -368,8 +366,8 @@ namespace Terminals.Configuration
         {
             if (string.IsNullOrEmpty(password))
                 return string.Empty;
-            String hashToCheck = Functions.ComputeMasterPasswordHash(password);
-            return Functions.ComputeMasterPasswordHash(password + hashToCheck);
+            String hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(password);
+            return PasswordFunctions.ComputeMasterPasswordHash(password + hashToCheck);
         }
 
         public static string DefaultDomain

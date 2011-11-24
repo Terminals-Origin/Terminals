@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
+using Terminals.Security;
 
 namespace Terminals.Configuration
 {
@@ -51,7 +52,7 @@ namespace Terminals.Configuration
             get
             {
                 if (!string.IsNullOrEmpty(this.Password))
-                    return Functions.DecryptPassword(this.Password);
+                    return PasswordFunctions.DecryptPassword(this.Password);
 
                 return String.Empty;
             }
@@ -60,14 +61,14 @@ namespace Terminals.Configuration
                 if (string.IsNullOrEmpty(value))
                     this.Password = String.Empty;
                 else
-                    this.Password = Functions.EncryptPassword(value);
+                    this.Password = PasswordFunctions.EncryptPassword(value);
             }
         }
 
         internal void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
         {
             if (!string.IsNullOrEmpty(this.SecretKey))
-              this.Password = Functions.EncryptPassword(this.SecretKey, newKeymaterial); 
+                this.Password = PasswordFunctions.EncryptPassword(this.SecretKey, newKeymaterial); 
         }
 
         public override string ToString()
