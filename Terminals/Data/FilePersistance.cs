@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terminals.Connections;
 using Unified;
 
 namespace Terminals.Data
@@ -22,7 +23,9 @@ namespace Terminals.Data
 
         private static string GetDataFileLocation()
         {
-            return String.Format(@"\Data\", FILENAME);
+            string root = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
+            System.IO.Directory.CreateDirectory(root + @"\Data\");
+            return String.Format(@"{0}\Data\{1}",root , FILENAME);
         }
 
         internal void Save()

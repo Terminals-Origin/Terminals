@@ -8,6 +8,7 @@
         {
             this.persistance = new FilePersistance(DataDispatcher.Instance);
             // todo choose and initialize persistance type defined by settings
+            //persistance.Save();
         }
 
         /// <summary>
