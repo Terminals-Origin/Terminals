@@ -29,8 +29,8 @@ namespace Terminals
         {
             Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 
-            Logging.Log.Info(String.Format("-------------------------------{0} started-------------------------------", 
-                Info.TitleVersion));
+            Logging.Log.Info(String.Format("-------------------------------Title: {0} started Version:{1} Date:{2}-------------------------------", 
+                Info.TitleVersion, Info.DLLVersion, Info.BuildDate));
 
             LogGeneralProperties();
             SetApplicationProperties();

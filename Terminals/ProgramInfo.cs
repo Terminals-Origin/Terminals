@@ -14,6 +14,13 @@ namespace Terminals
         {
             private static Assembly aAssembly = Assembly.GetExecutingAssembly();
 
+            public static string DLLVersion
+            {
+                get
+                {
+                    return aAssembly.GetName().Version.ToString(); ;
+                }
+            }
             public static string AboutText
             {
                 get
