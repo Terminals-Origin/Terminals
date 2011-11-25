@@ -475,12 +475,23 @@ namespace Terminals
             {
                 if (n.IsExpanded) expanded.Add(n.Text);
             }
-            Settings.ExpandedNodes = string.Join("%%", expanded.ToArray());
+            Settings.ExpandedFavoriteNodes = string.Join("%%", expanded.ToArray());
+
+            List<string> expandedHistory = new List<string>();
+            foreach (TreeNode n in this.historyTreeView.Nodes)
+            {
+                if (n.IsExpanded) expandedHistory.Add(n.Text);
+            }
+            Settings.ExpandedHistoryNodes = string.Join("%%", expandedHistory.ToArray());
+
+
+            
+            
         }
         public void LoadState()
         {
             List<string> expanded = new List<string>();
-            string nodes = Settings.ExpandedNodes;
+            string nodes = Settings.ExpandedFavoriteNodes;
             if (!string.IsNullOrEmpty(nodes))
             {
                 expanded.AddRange(System.Text.RegularExpressions.Regex.Split(nodes, "%%"));
@@ -490,6 +501,20 @@ namespace Terminals
                 foreach (TreeNode n in this.favsTree.Nodes)
                 {
                     if (expanded.Contains(n.Text)) n.Expand();
+                }
+            }
+
+            List<string> expandedHistory = new List<string>();
+            string historyNodes = Settings.ExpandedHistoryNodes;
+            if (!string.IsNullOrEmpty(historyNodes))
+            {
+                expandedHistory.AddRange(System.Text.RegularExpressions.Regex.Split(historyNodes, "%%"));
+            }
+            if (expandedHistory != null && expandedHistory.Count > 0)
+            {
+                foreach (TreeNode n in this.historyTreeView.Nodes)
+                {
+                    if (expandedHistory.Contains(n.Text)) n.Expand();
                 }
             }
         }

@@ -797,23 +797,40 @@ namespace Terminals
 
         #region Favorites & groups section
 
-        [ConfigurationProperty("expandedNodes", IsRequired = false)]
-        public string ExpandedNodes
+        [ConfigurationProperty("expandedFavoriteNodes", IsRequired = false)]
+        public string ExpandedFavoriteNodes
         {
             get
             {
-                if (this["expandedNodes"] == null || (this["expandedNodes"] as string) == "")
+                if (this["expandedFavoriteNodes"] == null || (this["expandedFavoriteNodes"] as string) == "")
                 {
-                    this["expandedNodes"] = @"Untagged";
+                    this["expandedFavoriteNodes"] = @"Untagged";
                 }
-                return (string)this["expandedNodes"];
+                return (string)this["expandedFavoriteNodes"];
             }
             set
             {
-                this["expandedNodes"] = value;
+                this["expandedFavoriteNodes"] = value;
             }
         }
 
+
+        [ConfigurationProperty("expandedHistoryNodes", IsRequired = false)]
+        public string ExpandedHistoryNodes
+        {
+            get
+            {
+                if (this["expandedHistoryNodes"] == null || (this["expandedHistoryNodes"] as string) == "")
+                {
+                    this["expandedHistoryNodes"] = @"Today";
+                }
+                return (string)this["expandedHistoryNodes"];
+            }
+            set
+            {
+                this["expandedHistoryNodes"] = value;
+            }
+        }
 
         [ConfigurationProperty("favorites")]
         [ConfigurationCollection(typeof(FavoriteConfigurationElementCollection))]

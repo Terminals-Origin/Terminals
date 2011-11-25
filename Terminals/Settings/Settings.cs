@@ -931,17 +931,30 @@ namespace Terminals.Configuration
         #endregion
 
         #region Tags/Favorite lists Settings
-
-        public static string ExpandedNodes
+        
+        public static string ExpandedFavoriteNodes
         {
             get
             {
-                return GetSection().ExpandedNodes;
+                return GetSection().ExpandedFavoriteNodes;
             }
 
             set
             {
-                GetSection().ExpandedNodes = value;
+                GetSection().ExpandedFavoriteNodes = value;
+                SaveImmediatelyIfRequested();
+            }
+        }
+        public static string ExpandedHistoryNodes
+        {
+            get
+            {
+                return GetSection().ExpandedHistoryNodes;
+            }
+
+            set
+            {
+                GetSection().ExpandedHistoryNodes = value;
                 SaveImmediatelyIfRequested();
             }
         }
