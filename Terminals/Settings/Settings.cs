@@ -930,6 +930,24 @@ namespace Terminals.Configuration
 
         #endregion
 
+        #region Tags/Favorite lists Settings
+
+        public static string ExpandedNodes
+        {
+            get
+            {
+                return GetSection().ExpandedNodes;
+            }
+
+            set
+            {
+                GetSection().ExpandedNodes = value;
+                SaveImmediatelyIfRequested();
+            }
+        }
+        #endregion
+
+
         #region Public
 
         public static string ToTitleCase(string name)

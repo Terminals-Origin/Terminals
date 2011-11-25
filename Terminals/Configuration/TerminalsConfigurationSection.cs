@@ -797,6 +797,24 @@ namespace Terminals
 
         #region Favorites & groups section
 
+        [ConfigurationProperty("expandedNodes", IsRequired = false)]
+        public string ExpandedNodes
+        {
+            get
+            {
+                if (this["expandedNodes"] == null || (this["expandedNodes"] as string) == "")
+                {
+                    this["expandedNodes"] = @"Untagged";
+                }
+                return (string)this["expandedNodes"];
+            }
+            set
+            {
+                this["expandedNodes"] = value;
+            }
+        }
+
+
         [ConfigurationProperty("favorites")]
         [ConfigurationCollection(typeof(FavoriteConfigurationElementCollection))]
         public FavoriteConfigurationElementCollection Favorites
@@ -900,6 +918,8 @@ namespace Terminals
         }
 
         #endregion
+
+
 
         [ConfigurationProperty("specialCommands")]
         [ConfigurationCollection(typeof(SpecialCommandConfigurationElement))]

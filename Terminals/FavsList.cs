@@ -33,6 +33,7 @@ namespace Terminals
 
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
             this.favsTree.Load();
+            LoadState();
         }
 
         #region Private methods
@@ -465,5 +466,32 @@ namespace Terminals
         }
 
         #endregion
+
+
+        public void SaveState()
+        {
+            List<string> expanded = new List<string>();
+            foreach (TreeNode n in this.favsTree.Nodes)
+            {
+                if (n.IsExpanded) expanded.Add(n.Text);
+            }
+            Settings.ExpandedNodes = string.Join("%%", expanded.ToArray());
+        }
+        public void LoadState()
+        {
+            List<string> expanded = new List<string>();
+            string nodes = Settings.ExpandedNodes;
+            if (!string.IsNullOrEmpty(nodes))
+            {
+                expanded.AddRange(System.Text.RegularExpressions.Regex.Split(nodes, "%%"));
+            }
+            if (expanded != null && expanded.Count > 0)
+            {
+                foreach (TreeNode n in this.favsTree.Nodes)
+                {
+                    if (expanded.Contains(n.Text)) n.Expand();
+                }
+            }
+        }
     }
 }

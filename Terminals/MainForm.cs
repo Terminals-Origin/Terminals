@@ -875,6 +875,8 @@ namespace Terminals
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            favsList1.SaveState();
+
             SingleInstanceApplication.Instance.Close();
             if (this.fullScreenSwitch.FullScreen)
                 this.fullScreenSwitch.FullScreen = false;
