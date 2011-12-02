@@ -12,7 +12,10 @@ namespace Terminals.Wizard
         /// </summary>
         private const string THUMBS_FILENAME = @"Thumbs\{0}.jpg";
 
-        private const string THUMBS_DIRECTORY = "Thumbs";
+        /// <summary>
+        /// Gets directory name of the commands thumb images location
+        /// </summary>
+        internal const string THUMBS_DIRECTORY = "Thumbs";
 
         /// <summary>
         /// Because it isn't easy to obtain the name of an applet.

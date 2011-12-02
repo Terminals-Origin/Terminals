@@ -15,6 +15,15 @@ namespace Terminals.Configuration
 
     internal static partial class Settings
     {
+        /// <summary>
+        /// Gets the directory name of data directory,
+        /// where all files changed by user should be stored
+        /// </summary>
+        private const string DATA_DIRECTORY = "Data";
+
+        /// <summary>
+        /// Gets the name of custom user options configuration file
+        /// </summary>
         internal const String CONFIG_FILE_NAME = "Terminals.config";
 
         private static string configurationFileLocation;
@@ -54,6 +63,12 @@ namespace Terminals.Configuration
         /// or another Terminals instance. In this case all cached not saved data are lost.
         /// </summary>
         internal static event ConfigurationChangedHandler ConfigurationChanged;
+
+        internal static string GetDataRootDirectoryFullPath()
+        {
+            string root = GetAssemblyDirectory();
+            return Path.Combine(root, DATA_DIRECTORY);
+        }
 
         private static void SetDefaultConfigurationFileLocation()
         {

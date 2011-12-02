@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.IO;
-using Terminals.Configuration;
 using Terminals.Data;
 using Unified;
 
@@ -16,10 +15,9 @@ namespace Terminals.History
     internal sealed class ConnectionHistory
     {
         /// <summary>
-        ///So, how to store history..that is the question. Should it be per computer or per terminals install (portable)? Maybe both?
-        ///I think for now lets stick with the portable option.  history should follow the user around. KISS (KeepItSimpleStupid)
+        /// Gets the file name of stored history values
         /// </summary>
-        private const string _historyLocation = "History.xml";
+        internal const string FILENAME = "History.xml";
         private object _threadLock = new object();
         private bool _loadingHistory = false;
         private DataFileWatcher fileWatcher;
@@ -66,7 +64,7 @@ namespace Terminals.History
         private ConnectionHistory()
         {
             string directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string fullHistoryFullName = Path.Combine(directory, _historyLocation);
+            string fullHistoryFullName = Path.Combine(directory, FILENAME);
             fileWatcher = new DataFileWatcher(fullHistoryFullName);
             fileWatcher.FileChanged += new EventHandler(this.OnFileChanged);
             fileWatcher.StartObservation();
@@ -176,10 +174,10 @@ namespace Terminals.History
 
         private void TryLoadHistory()
         {
-            if (!string.IsNullOrEmpty(_historyLocation))
+            if (!string.IsNullOrEmpty(FILENAME))
             {
-                Logging.Log.InfoFormat("Loading History from: {0}", _historyLocation);
-                if (!File.Exists(_historyLocation))
+                Logging.Log.InfoFormat("Loading History from: {0}", FILENAME);
+                if (!File.Exists(FILENAME))
                     this.SaveHistory();//the file doesnt exist. Lets save it out for the first time
                 else
                     LoadFile();
@@ -189,7 +187,7 @@ namespace Terminals.History
         private void LoadFile()
         {
             fileLock.WaitOne();
-            this._currentHistory = Serialize.DeserializeXMLFromDisk(_historyLocation, typeof(HistoryByFavorite)) as HistoryByFavorite;
+            this._currentHistory = Serialize.DeserializeXMLFromDisk(FILENAME, typeof(HistoryByFavorite)) as HistoryByFavorite;
             fileLock.ReleaseMutex();
         }
 
@@ -200,9 +198,9 @@ namespace Terminals.History
                 string backupFile = GetBackupFileName();
                 fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
-                File.Copy(_historyLocation, backupFile);
-                if (File.Exists(_historyLocation))
-                    File.Delete(_historyLocation);
+                File.Copy(FILENAME, backupFile);
+                if (File.Exists(FILENAME))
+                    File.Delete(FILENAME);
 
                 Logging.Log.InfoFormat("History file recovered, backup in {0}", backupFile);
                 this._currentHistory = new HistoryByFavorite();
@@ -221,7 +219,7 @@ namespace Terminals.History
         private static string GetBackupFileName()
         {
             string fileDate = DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss");
-            return String.Format("{0}{1}.bak", fileDate, _historyLocation);
+            return String.Format("{0}{1}.bak", fileDate, FILENAME);
         }
 
         private void SaveHistory()
@@ -231,7 +229,7 @@ namespace Terminals.History
                 Stopwatch sw = Stopwatch.StartNew();
                 fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
-                Serialize.SerializeXMLToDisk(CurrentHistory, _historyLocation);
+                Serialize.SerializeXMLToDisk(CurrentHistory, FILENAME);
 
                 sw.Stop();
                 Logging.Log.Info(string.Format("History saved. Duration:{0} ms", sw.ElapsedMilliseconds));

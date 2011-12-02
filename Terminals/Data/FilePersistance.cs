@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Terminals.Connections;
+using System.Windows.Forms;
 using Unified;
 
 namespace Terminals.Data
@@ -23,21 +24,16 @@ namespace Terminals.Data
 
         private static string GetDataFileLocation()
         {
-            string root = System.IO.Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath);
-            System.IO.Directory.CreateDirectory(root + @"\Data\");
-            return String.Format(@"{0}\Data\{1}",root , FILENAME);
+            string root = Path.GetDirectoryName(Application.ExecutablePath);
+            Directory.CreateDirectory(root + @"\Data\");
+            return String.Format(@"{0}\Data\{1}", root, FILENAME);
         }
 
         internal void Save()
         {
             try
             {
-                FavoritesFile persistanceFile = new FavoritesFile
-                    {
-                        Favorites = this.Favorites.Cache.Values.ToList(),
-                        Groups = this.Groups.Cache
-                    };
-
+                FavoritesFile persistanceFile = CreatePersistanceFileFromCache();
                 string fileLocation = GetDataFileLocation();
                 Serialize.SerializeXMLToDisk(persistanceFile, fileLocation);
             }
@@ -45,6 +41,15 @@ namespace Terminals.Data
             {
                 Logging.Log.Error("File peristance was unable to save Favorites.xml", exception);
             }
+        }
+
+        private FavoritesFile CreatePersistanceFileFromCache()
+        {
+            return new FavoritesFile
+              {
+                  Favorites = this.Favorites.Cache.Values.ToList(),
+                  Groups = this.Groups.Cache
+              };
         }
 
         private FavoritesFile Load()
@@ -57,7 +62,7 @@ namespace Terminals.Data
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("File peristance was unable to save Favorites.xml", exception);
+                Logging.Log.Error("File peristance was unable to load Favorites.xml", exception);
                 return new FavoritesFile();
             }
         }
