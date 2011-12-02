@@ -174,7 +174,7 @@ namespace Terminals.Configuration
             fileWatcher.StopObservation();
             Config.Save();
             fileWatcher.StartObservation();
-            Debug.WriteLine(string.Format("Termianls.config file saved."));
+            Debug.WriteLine(string.Format("Terminals.config file saved."));
         }
 
         private static SysConfig.Configuration GetConfiguration()
