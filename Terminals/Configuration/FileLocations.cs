@@ -23,7 +23,7 @@ namespace Terminals.Configuration
             return Path.Combine(root, relativePath);
         }
 
-        internal static string GetDataRootDirectoryFullPath()
+        private static string GetDataRootDirectoryFullPath()
         {
             string root = Path.Combine(Program.Info.Location, DATA_DIRECTORY);
             EnsureDataDirectory(root);
