@@ -952,7 +952,7 @@ namespace Terminals
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            String appFolder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            String appFolder = Program.Info.Location;
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.CheckFileExists = true;
             openFileDialog.InitialDirectory = appFolder;

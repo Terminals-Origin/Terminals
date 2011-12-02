@@ -79,8 +79,7 @@ namespace Terminals.Updates
 
         private static string GetOldDataFullPath(string relativePath)
         {
-            string root = Path.GetDirectoryName(Application.ExecutablePath);
-            return Path.Combine(root, relativePath);
+            return Path.Combine(Program.Info.Location, relativePath);
         }
 
         /// <summary>

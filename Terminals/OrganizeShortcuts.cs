@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
+using System.IO;
 using System.Windows.Forms;
 using Terminals.Configuration;
 
@@ -62,13 +59,10 @@ namespace Terminals
                 shortcut.Executable = executableTextBox.Text;
                 shortcut.WorkingFolder = workingFolderTextBox.Text;
                 shortcut.Arguments = argumentsTextBox.Text;
-                string imageName = System.IO.Path.GetFileName(shortcut.Executable) + ".ico";
-                string exeFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+                string imageName = Path.GetFileName(shortcut.Executable) + ".ico";
+                string exeFolder = Program.Info.Location;
 
-                string imageFullName = System.IO.Path.Combine(
-                        System.IO.Path.Combine(exeFolder, "Thumbs")
-                        , imageName
-                        );
+                string imageFullName = Path.Combine(Path.Combine(exeFolder, "Thumbs"), imageName);
                 if(this.iconPicturebox.Image != null)
                 {
                     try
@@ -77,7 +71,7 @@ namespace Terminals
                     }
                     catch(Exception exc)
                     {
-                        Terminals.Logging.Log.Error("Saving icon picture box failed", exc);
+                        Logging.Log.Error("Saving icon picture box failed", exc);
                         imageFullName = "";
                     }
                 }
@@ -150,7 +144,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Error("LoadIconsFromExe", exc);
+                Logging.Log.Error("LoadIconsFromExe", exc);
             }
         }
         

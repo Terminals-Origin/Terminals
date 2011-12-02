@@ -179,7 +179,7 @@ namespace Terminals.Updates
                                                 if (File.Exists(updaterExe))
                                                 {
                                                     //String args = "\"" + finalFolder + "\" \"" + Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\"";
-                                                    String args = String.Format("\"{0}\" \"{1}\"", finalFolder, Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                                                    String args = String.Format("\"{0}\" \"{1}\"", finalFolder, Program.Info.Location);
                                                     System.Diagnostics.Process.Start(updaterExe, args);
                                                     Application.Exit();
                                                 }

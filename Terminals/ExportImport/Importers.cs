@@ -84,7 +84,7 @@ namespace Terminals.Integration.Import
             if (providers == null)
             {
                 providers = new Dictionary<string, IImport>();
-                DirectoryInfo dir = new DirectoryInfo(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+                DirectoryInfo dir = new DirectoryInfo(Program.Info.Location);
                 string[] patterns = new string[] { "*.dll", "*.exe" };
 
                 foreach (string pattern in patterns)

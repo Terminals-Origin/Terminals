@@ -24,7 +24,7 @@ namespace Terminals.Data
 
         private static string GetDataFileLocation()
         {
-            string root = Path.GetDirectoryName(Application.ExecutablePath);
+            string root = Program.Info.Location;
             Directory.CreateDirectory(root + @"\Data\");
             return String.Format(@"{0}\Data\{1}", root, FILENAME);
         }

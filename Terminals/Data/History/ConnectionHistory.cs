@@ -63,8 +63,7 @@ namespace Terminals.History
 
         private ConnectionHistory()
         {
-            string directory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            string fullHistoryFullName = Path.Combine(directory, FILENAME);
+            string fullHistoryFullName = Path.Combine(Program.Info.Location, FILENAME);
             fileWatcher = new DataFileWatcher(fullHistoryFullName);
             fileWatcher.FileChanged += new EventHandler(this.OnFileChanged);
             fileWatcher.StartObservation();

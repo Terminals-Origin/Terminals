@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
-using System.Text;
 
 namespace Terminals
 {
@@ -13,6 +12,14 @@ namespace Terminals
         public static class Info
         {
             private static Assembly aAssembly = Assembly.GetExecutingAssembly();
+
+            /// <summary>
+            /// Gets full path to the exucting assembly location without last backslash
+            /// </summary>
+            internal static string Location
+            {
+                get { return Path.GetDirectoryName(aAssembly.Location); }
+            }
 
             public static string DLLVersion
             {
@@ -75,7 +82,7 @@ namespace Terminals
             {
                 get
                 {
-                    return Assembly.GetExecutingAssembly().GetName().Version;
+                    return aAssembly.GetName().Version;
                 }
             }
 
@@ -86,15 +93,15 @@ namespace Terminals
             /// <returns></returns>
             private static DateTime RetrieveLinkerTimestamp()
             {
-                string filePath = System.Reflection.Assembly.GetCallingAssembly().Location;
+                string filePath = aAssembly.Location;
                 const int c_PeHeaderOffset = 60;
                 const int c_LinkerTimestampOffset = 8;
                 byte[] b = new byte[2048];
-                System.IO.Stream s = null;
+                Stream s = null;
 
                 try
                 {
-                    s = new System.IO.FileStream(filePath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+                    s = new FileStream(filePath, FileMode.Open, FileAccess.Read);
                     s.Read(b, 0, 2048);
                 }
                 finally
@@ -103,8 +110,8 @@ namespace Terminals
                         s.Close();
                 }
 
-                int i = System.BitConverter.ToInt32(b, c_PeHeaderOffset);
-                int secondsSince1970 = System.BitConverter.ToInt32(b, i + c_LinkerTimestampOffset);
+                int i = BitConverter.ToInt32(b, c_PeHeaderOffset);
+                int secondsSince1970 = BitConverter.ToInt32(b, i + c_LinkerTimestampOffset);
                 DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0);
                 dt = dt.AddSeconds(secondsSince1970);
                 dt = dt.AddHours(TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours);

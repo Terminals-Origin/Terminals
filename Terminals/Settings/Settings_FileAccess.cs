@@ -66,23 +66,14 @@ namespace Terminals.Configuration
 
         internal static string GetDataRootDirectoryFullPath()
         {
-            string root = GetAssemblyDirectory();
+            string root = Program.Info.Location;
             return Path.Combine(root, DATA_DIRECTORY);
         }
 
         private static void SetDefaultConfigurationFileLocation()
         {
-            string assemblyDirectory = GetAssemblyDirectory();
+            string assemblyDirectory = Program.Info.Location;
             configurationFileLocation = Path.Combine(assemblyDirectory, CONFIG_FILE_NAME);
-        }
-
-        /// <summary>
-        /// Gets the executing assembly directory full path without last basckslash.
-        /// </summary>
-        internal static string GetAssemblyDirectory()
-        {
-            string assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            return Path.GetDirectoryName(assemblyLocation);
         }
 
         private static void ConfigFileChanged(object sender, EventArgs e)

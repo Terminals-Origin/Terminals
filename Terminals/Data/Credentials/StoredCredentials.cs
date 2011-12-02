@@ -72,7 +72,7 @@ namespace Terminals.Configuration
 
         private void InitializeFileWatch()
         {
-            string fileName = Path.Combine(Settings.GetAssemblyDirectory(), CONFIG_FILE);
+            string fileName = Path.Combine(Program.Info.Location, CONFIG_FILE);
             fileWatcher = new DataFileWatcher(fileName);
             fileWatcher.FileChanged += new EventHandler(CredentialsFileChanged);
             fileWatcher.StartObservation();
@@ -164,9 +164,7 @@ namespace Terminals.Configuration
 
         private static string GetEnsuredConfigDirectory()
         {
-            SysConfig.Configuration config = SysConfig.ConfigurationManager.OpenExeConfiguration(
-              SysConfig.ConfigurationUserLevel.PerUserRoamingAndLocal);
-            string directory = Path.GetDirectoryName(config.FilePath);
+            string directory = Program.Info.Location;
 
             try
             {
