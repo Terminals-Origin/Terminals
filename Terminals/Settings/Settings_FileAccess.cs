@@ -16,12 +16,6 @@ namespace Terminals.Configuration
     internal static partial class Settings
     {
         /// <summary>
-        /// Gets the directory name of data directory,
-        /// where all files changed by user should be stored
-        /// </summary>
-        private const string DATA_DIRECTORY = "Data";
-
-        /// <summary>
         /// Gets the name of custom user options configuration file
         /// </summary>
         internal const String CONFIG_FILE_NAME = "Terminals.config";
@@ -32,7 +26,7 @@ namespace Terminals.Configuration
             get
             {
                 if (string.IsNullOrEmpty(configurationFileLocation))
-                    SetDefaultConfigurationFileLocation();
+                    configurationFileLocation = FileLocations.GetFullPath(CONFIG_FILE_NAME);
 
                 return configurationFileLocation;
             }
@@ -63,18 +57,6 @@ namespace Terminals.Configuration
         /// or another Terminals instance. In this case all cached not saved data are lost.
         /// </summary>
         internal static event ConfigurationChangedHandler ConfigurationChanged;
-
-        internal static string GetDataRootDirectoryFullPath()
-        {
-            string root = Program.Info.Location;
-            return Path.Combine(root, DATA_DIRECTORY);
-        }
-
-        private static void SetDefaultConfigurationFileLocation()
-        {
-            string assemblyDirectory = Program.Info.Location;
-            configurationFileLocation = Path.Combine(assemblyDirectory, CONFIG_FILE_NAME);
-        }
 
         private static void ConfigFileChanged(object sender, EventArgs e)
         {
@@ -230,10 +212,9 @@ namespace Terminals.Configuration
         private static string GetBackupFileName()
         {
             string newGUID = Guid.NewGuid().ToString();
-            string folder = Path.GetDirectoryName(ConfigurationFileLocation);
             long fileDate = DateTime.Now.ToFileTime();
             string backupFile = string.Format("Terminals-{1}-{0}.config", newGUID, fileDate);
-            return Path.Combine(folder, backupFile);
+            return FileLocations.GetFullPath(backupFile);
         }
 
         private static void SaveDefaultConfigFile()

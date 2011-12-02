@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using System.Text;
 using System.IO;
 using System.Security.Cryptography;
@@ -56,7 +55,7 @@ namespace Terminals.Updates
         private static void CheckForCodeplexRelease()
         {
             Boolean checkForUpdate = true;
-            String releaseFile = "LastUpdateCheck.txt";
+            String releaseFile = FileLocations.GetFullPath("LastUpdateCheck.txt");
             if (File.Exists(releaseFile))
             {
                 String text = File.ReadAllText(releaseFile).Trim();

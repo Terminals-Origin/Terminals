@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using Terminals.Configuration;
 
 namespace Terminals.Wizard
 {
@@ -10,7 +11,7 @@ namespace Terminals.Wizard
         /// <summary>
         /// Gets format string for jpg images under Thumbs directory.
         /// </summary>
-        private const string THUMBS_FILENAME = @"Thumbs\{0}.jpg";
+        private const string THUMBS_PATHFORMAT = @"{0}\{1}\{2}.jpg";
 
         /// <summary>
         /// Gets directory name of the commands thumb images location
@@ -68,10 +69,14 @@ namespace Terminals.Wizard
             }
         }
 
+        private static string FormatThumFileName(string fileName)
+        {
+            return string.Format(THUMBS_PATHFORMAT, FileLocations.DATA_DIRECTORY, THUMBS_DIRECTORY, fileName);
+        }
+
         internal static SpecialCommandConfigurationElementCollection LoadSpecialCommands()
         {
             SpecialCommandConfigurationElementCollection cmdList = new SpecialCommandConfigurationElementCollection();
-
             AddCmdCommand(cmdList);
             AddRegEditCommand(cmdList);
             AddMmcCommands(cmdList);
@@ -82,7 +87,7 @@ namespace Terminals.Wizard
 
         private static void AddControlPanelApplets(SpecialCommandConfigurationElementCollection cmdList)
         {
-            string cpThumb = @"Thumbs\ControlPanel.png";
+            string cpThumb = Path.Combine(FileLocations.DATA_DIRECTORY, @"Thumbs\ControlPanel.png");
             if (!File.Exists(cpThumb))
             {
                 Properties.Resources.ControlPanel.Save(cpThumb);
@@ -90,19 +95,16 @@ namespace Terminals.Wizard
             foreach (FileInfo file in SystemRoot.GetFiles("*.cpl"))
             {
                 SpecialCommandConfigurationElement elm1 = new SpecialCommandConfigurationElement(file.Name);
-
                 elm1.Thumbnail = cpThumb;
+                string thumbName = FormatThumFileName(file.Name);
 
                 Icon[] fileIcons = IconHandler.IconHandler.IconsFromFile(file.FullName, IconHandler.IconSize.Small);
                 if (fileIcons != null && fileIcons.Length > 0)
                 {
-                    string thumbnailIco = string.Format(THUMBS_FILENAME, file.Name);
-                    if (!File.Exists(thumbnailIco))
-                        fileIcons[0].ToBitmap().Save(thumbnailIco);
-                    elm1.Thumbnail = thumbnailIco;
+                    if (!File.Exists(thumbName))
+                        fileIcons[0].ToBitmap().Save(thumbName);
                 }
-
-                string thumbName = string.Format(THUMBS_FILENAME, file.Name);
+                
                 if (File.Exists(thumbName))
                     elm1.Thumbnail = thumbName;
 
@@ -125,19 +127,16 @@ namespace Terminals.Wizard
             Icon[] IconsList = IconHandler.IconHandler.IconsFromFile(Path.Combine(SystemRoot.FullName, "mmc.exe"),
                 IconHandler.IconSize.Small);
             Random rnd = new Random();
-
             EnsureImagesDirectory();
 
             foreach (FileInfo file in SystemRoot.GetFiles("*.msc"))
             {
                 MMC.MMCFile fileMMC = new MMC.MMCFile(file);
-                
                 SpecialCommandConfigurationElement elm1 = new SpecialCommandConfigurationElement(file.Name);
 
                 if (IconsList != null && IconsList.Length > 0)
                 {
-
-                    string thumbName = string.Format(THUMBS_FILENAME, file.Name);
+                    string thumbName = FormatThumFileName(file.Name);
                     elm1.Thumbnail = thumbName;
 
                     if (!File.Exists(thumbName))
@@ -168,14 +167,15 @@ namespace Terminals.Wizard
 
         private static void AddRegEditCommand(SpecialCommandConfigurationElementCollection cmdList)
         {
-            string regEditFile = Path.Combine(SystemRoot.FullName, "regedt32.exe");
+            string regEditExe = "regedt32.exe";
+            string regEditFile = Path.Combine(SystemRoot.FullName, regEditExe);
             Icon[] regeditIcons = IconHandler.IconHandler.IconsFromFile(regEditFile, IconHandler.IconSize.Small);
             SpecialCommandConfigurationElement regEditElm = new SpecialCommandConfigurationElement("Registry Editor");
             if (regeditIcons != null && regeditIcons.Length > 0)
             {
                 EnsureImagesDirectory();
 
-                string thumbName = string.Format(@"Thumbs\regedt32.exe.jpg", regEditFile);
+                string thumbName = FormatThumFileName(regEditExe);
                 if (!File.Exists(thumbName))
                     regeditIcons[0].ToBitmap().Save(thumbName);
                 regEditElm.Thumbnail = thumbName;
@@ -187,8 +187,9 @@ namespace Terminals.Wizard
 
         private static void EnsureImagesDirectory()
         {
-            if (!Directory.Exists(THUMBS_DIRECTORY))
-                Directory.CreateDirectory(THUMBS_DIRECTORY);
+            string thumbsDirectory = FileLocations.GetFullPath(THUMBS_DIRECTORY);
+            if (!Directory.Exists(thumbsDirectory))
+                Directory.CreateDirectory(thumbsDirectory);
         }
 
         private static void AddCmdCommand(SpecialCommandConfigurationElementCollection cmdList)

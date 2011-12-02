@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.IO;
+using Terminals.Configuration;
 using Terminals.Data;
 using Unified;
 
@@ -17,7 +18,12 @@ namespace Terminals.History
         /// <summary>
         /// Gets the file name of stored history values
         /// </summary>
-        internal const string FILENAME = "History.xml";
+        internal const string FILE_NAME = "History.xml";
+        private static string FullFileName
+        {
+            get { return FileLocations.GetFullPath(FILE_NAME); }
+        }
+
         private object _threadLock = new object();
         private bool _loadingHistory = false;
         private DataFileWatcher fileWatcher;
@@ -63,8 +69,7 @@ namespace Terminals.History
 
         private ConnectionHistory()
         {
-            string fullHistoryFullName = Path.Combine(Program.Info.Location, FILENAME);
-            fileWatcher = new DataFileWatcher(fullHistoryFullName);
+            fileWatcher = new DataFileWatcher(FullFileName);
             fileWatcher.FileChanged += new EventHandler(this.OnFileChanged);
             fileWatcher.StartObservation();
         }
@@ -173,10 +178,11 @@ namespace Terminals.History
 
         private void TryLoadHistory()
         {
-            if (!string.IsNullOrEmpty(FILENAME))
+            string fileName = FullFileName;
+            if (!string.IsNullOrEmpty(fileName))
             {
-                Logging.Log.InfoFormat("Loading History from: {0}", FILENAME);
-                if (!File.Exists(FILENAME))
+                Logging.Log.InfoFormat("Loading History from: {0}", fileName);
+                if (!File.Exists(fileName))
                     this.SaveHistory();//the file doesnt exist. Lets save it out for the first time
                 else
                     LoadFile();
@@ -186,7 +192,7 @@ namespace Terminals.History
         private void LoadFile()
         {
             fileLock.WaitOne();
-            this._currentHistory = Serialize.DeserializeXMLFromDisk(FILENAME, typeof(HistoryByFavorite)) as HistoryByFavorite;
+            this._currentHistory = Serialize.DeserializeXMLFromDisk(FullFileName, typeof(HistoryByFavorite)) as HistoryByFavorite;
             fileLock.ReleaseMutex();
         }
 
@@ -194,12 +200,13 @@ namespace Terminals.History
         {
             try
             {
+                string fileName = FullFileName;
                 string backupFile = GetBackupFileName();
                 fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
-                File.Copy(FILENAME, backupFile);
-                if (File.Exists(FILENAME))
-                    File.Delete(FILENAME);
+                File.Copy(fileName, backupFile);
+                if (File.Exists(fileName))
+                    File.Delete(fileName);
 
                 Logging.Log.InfoFormat("History file recovered, backup in {0}", backupFile);
                 this._currentHistory = new HistoryByFavorite();
@@ -218,7 +225,7 @@ namespace Terminals.History
         private static string GetBackupFileName()
         {
             string fileDate = DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss");
-            return String.Format("{0}{1}.bak", fileDate, FILENAME);
+            return String.Format("{0}{1}.bak", fileDate, FILE_NAME);
         }
 
         private void SaveHistory()
@@ -228,7 +235,7 @@ namespace Terminals.History
                 Stopwatch sw = Stopwatch.StartNew();
                 fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
-                Serialize.SerializeXMLToDisk(CurrentHistory, FILENAME);
+                Serialize.SerializeXMLToDisk(CurrentHistory, FullFileName);
 
                 sw.Stop();
                 Logging.Log.Info(string.Format("History saved. Duration:{0} ms", sw.ElapsedMilliseconds));

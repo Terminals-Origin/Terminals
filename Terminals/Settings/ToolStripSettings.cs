@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Terminals.Configuration;
 using Unified;
 
 namespace Terminals
@@ -13,12 +14,16 @@ namespace Terminals
         /// Gets the file name of xml config file, where toolbar positions are stored
         /// </summary>
         internal const string FLE_NAME = "ToolStrip.settings.config";
+        private static string FullFileName
+        {
+            get { return FileLocations.GetFullPath(FLE_NAME); }
+        }
 
         internal static ToolStripSettings Load()
         {
-            if (File.Exists(FLE_NAME))
+            if (File.Exists(FullFileName))
             {
-                String xmlContent = File.ReadAllText(FLE_NAME);
+                String xmlContent = File.ReadAllText(FullFileName);
                 return LoadFromXmlString(xmlContent);
             }
             return null;
@@ -26,12 +31,12 @@ namespace Terminals
 
         internal void Save()
         {
-            File.WriteAllText(FLE_NAME, this.ToXmlString());
+            File.WriteAllText(FullFileName, this.ToXmlString());
         }
 
         private static ToolStripSettings LoadFromXmlString(String xmlContent)
         {
-            return (ToolStripSettings)Serialize.DeSerializeXML(xmlContent, typeof(ToolStripSettings), false);
+            return Serialize.DeSerializeXML(xmlContent, typeof(ToolStripSettings), false) as ToolStripSettings;
         }
 
         private string ToXmlString()

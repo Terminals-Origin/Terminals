@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using System.Windows.Forms;
 using Terminals.Data;
 using SysConfig = System.Configuration;
 using System.IO;
@@ -16,7 +15,15 @@ namespace Terminals.Configuration
         /// <summary>
         /// Gets default name of the credentials file.
         /// </summary>
-        private const string CONFIG_FILE = "Credentials.xml";
+        internal const string FILE_NAME = "Credentials.xml";
+
+        private static string FullFileName
+        {
+            get
+            {
+                return FileLocations.GetFullPath(FILE_NAME);
+            }
+        }
 
         private List<CredentialSet> cache;
         /// <summary>
@@ -72,8 +79,7 @@ namespace Terminals.Configuration
 
         private void InitializeFileWatch()
         {
-            string fileName = Path.Combine(Program.Info.Location, CONFIG_FILE);
-            fileWatcher = new DataFileWatcher(fileName);
+            fileWatcher = new DataFileWatcher(FullFileName);
             fileWatcher.FileChanged += new EventHandler(CredentialsFileChanged);
             fileWatcher.StartObservation();
         }
@@ -148,56 +154,10 @@ namespace Terminals.Configuration
             string fileLocation = Settings.SavedCredentialsLocation;
             if (string.IsNullOrEmpty(fileLocation))
             {
-                //UpgradeFileLocationFromPreviousVersion();
-                fileLocation = CONFIG_FILE; // GetFullFilePath();
-                Settings.SavedCredentialsLocation = fileLocation;
+                Settings.SavedCredentialsLocation = FullFileName;
             }
 
             return fileLocation;
-        }
-
-        private static string GetFullFilePath()
-        {
-            string directory = GetEnsuredConfigDirectory();
-            return directory + CONFIG_FILE;
-        }
-
-        private static string GetEnsuredConfigDirectory()
-        {
-            string directory = Program.Info.Location;
-
-            try
-            {
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-            }
-            catch
-            {
-                Logging.Log.Error("Couldn't create directory for credentials configuration file.");
-            }
-            return directory + "\\";
-        }
-
-        /// <summary>
-        /// Moves credentials file from application directory to the user directory
-        /// </summary>
-        private static void UpgradeFileLocationFromPreviousVersion()
-        {
-            try
-            {
-                string fromPath = Application.StartupPath + "\\" + CONFIG_FILE;
-                string toPath = GetFullFilePath();
-                if (File.Exists(fromPath) && !File.Exists(toPath)) // dont overwrite file, if it is already there
-                {
-                    File.Move(fromPath, toPath);
-                }
-            }
-            catch(Exception exception)
-            {
-               Logging.Log.Error("Couldnt move credentials file from application directory to the user directory.", exception);
-            }
         }
 
         /// <summary>

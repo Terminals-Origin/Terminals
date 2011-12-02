@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.History;
@@ -34,47 +33,84 @@ namespace Terminals.Updates
         {
             if (Program.Info.Version >= new Version(2, 0, 0, 0))
             {
-                // todo MoveFilesToVersion2Location();
+                MoveFilesToVersion2Location();
                 UpdateDefaultFavoriteUrl();
             }
         }
 
         private static void MoveFilesToVersion2Location()
         {
-            // dont need to refresh the file location, because if the files were changed are are
-            // already in use, they will be reloaded
-            string root = Settings.GetDataRootDirectoryFullPath();
-            if (!Directory.Exists(root))
-                Directory.CreateDirectory(root);
+            // dont need to refresh the file location, because if the files were changed
+            // are already in use, they will be reloaded
             MoveThumbsDirectory();
-            MoveDataFile(ConnectionHistory.FILENAME);
+            MoveDataFile(ConnectionHistory.FILE_NAME);
             MoveDataFile(ToolStripSettings.FLE_NAME);
+            MoveDataFile(StoredCredentials.FILE_NAME);
+            UpgradeConfigFile();
+        }
+
+        private static void UpgradeConfigFile() 
+        {
             // only this is already in use if started with default location
             MoveDataFile(Settings.CONFIG_FILE_NAME);
-
-            // and then extract favorites and Tags from old config
+            Settings.ForceReload();
+            // todo and then extract favorites and Tags from old config
         }
 
         private static void MoveThumbsDirectory()
         {
-            string oldPath = GetOldDataFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
-            string newPath = GetNewDataFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
-            if(Directory.Exists(oldPath))
-                Directory.Move(oldPath, newPath);
+            try
+            {
+                TryToMoveThumbsDirectory();
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Upgrade of Thumbs directory failed", exception);
+            }
         }
 
-        private static void MoveDataFile(string relativePath) 
+        private static void TryToMoveThumbsDirectory()
+        {
+            string oldPath = GetOldDataFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
+            string newPath = FileLocations.GetFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
+
+            if (Directory.Exists(oldPath))
+            {
+                if(Directory.Exists(newPath))
+                    Directory.Delete(newPath, true);
+
+                Directory.Move(oldPath, newPath);
+            }
+        }
+
+        private static void MoveDataFile(string relativePath)
+        {
+            try
+            {
+                TryToMoveDataFile(relativePath);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Upgrade of data file failed", exception);
+            }
+        }
+
+        private static void TryToMoveDataFile(string relativePath)
         {
             string oldPath = GetOldDataFullPath(relativePath);
-            string newPath = GetNewDataFullPath(relativePath);
-            if(File.Exists(oldPath))
-                File.Move(oldPath, newPath);
-        }
-
-        private static string GetNewDataFullPath(string relativePath)
-        {
-            string dataRoot = Settings.GetDataRootDirectoryFullPath();
-            return Path.Combine(dataRoot, relativePath);
+            string newPath = FileLocations.GetFullPath(relativePath);
+            if (File.Exists(oldPath))
+            {
+                if (!File.Exists(newPath))
+                {
+                    File.Move(oldPath, newPath);
+                }
+                else
+                {
+                    File.Copy(oldPath, newPath, true);
+                    File.Delete(oldPath);
+                }
+            }
         }
 
         private static string GetOldDataFullPath(string relativePath)
