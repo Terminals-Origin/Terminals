@@ -528,7 +528,7 @@ namespace Terminals.Connections
             }
 
             string finalMsg = string.Format("There was a logon error returned from the RDP Connection, details:\n\nLogon Code:{0}\n\nLogon Description:", e.lError, msg);
-            System.Windows.Forms.MessageBox.Show(finalMsg);
+            //System.Windows.Forms.MessageBox.Show(finalMsg);
             Logging.Log.Error(finalMsg);
         }        
 
