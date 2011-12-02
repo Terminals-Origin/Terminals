@@ -11,7 +11,7 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal class FavoriteTreeListLoader
     {
-        private TreeView treeList;
+        private FavoritesTreeView treeList;
 
         /// <summary>
         /// gets or sets virtual tree node for favorites, which have no tag defined
@@ -28,7 +28,7 @@ namespace Terminals.Forms.Controls
             get { return Persistance.Instance.Dispatcher; }
         }
 
-        internal FavoriteTreeListLoader(TreeView treeListToFill)
+        internal FavoriteTreeListLoader(FavoritesTreeView treeListToFill)
         {
             this.treeList = treeListToFill;
 
@@ -51,9 +51,13 @@ namespace Terminals.Forms.Controls
             if(IsOrphan())
               return;
 
+            string selectedTagName = this.treeList.FindSelectedTagNodeName();
+            string selectedFavorite = this.treeList.GetSelectedFavoriteNodeName();
             RemoveFavorites(args.Removed);
             UpdateFavorites(args.Updated);
             AddNewFavorites(args.Added);
+            selectedFavorite = args.GetUpdatedFavoriteName(selectedFavorite);
+            this.treeList.RestoreSelectedFavorite(selectedTagName, selectedFavorite);
         }
 
         /// <summary>

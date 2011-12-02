@@ -50,5 +50,13 @@ namespace Terminals.Data
             return String.Format("FavoritesChangedEventArgs:Added={0};Removed={1};Changed={2}",
                                  this.Added.Count, this.Removed.Count, this.Updated.Count);
         }
+
+        internal string GetUpdatedFavoriteName(string oldName)
+        {
+            if (this.Updated.ContainsKey(oldName))
+                return this.Updated[oldName].Name;
+
+            return oldName;
+        }
     }
 }
