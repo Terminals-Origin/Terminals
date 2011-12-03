@@ -28,7 +28,10 @@ namespace Terminals.Connections
         
         public AxMsRdpClient6 AxMsRdpClient
         {
-            get { return _axMsRdpClient; }
+            get
+            {
+                return _axMsRdpClient;
+            }
         }
 
         private void SHCopyFiles(string[] sourceFiles, string destinationFolder)
@@ -47,22 +50,32 @@ namespace Terminals.Connections
             fo.DestFiles = destinationFiles.ToArray();
             fo.DoOperation();
         }
+
         #region IConnection Members
-        public override void ChangeDesktopSize(DesktopSize Size)
+
+        public override bool Connected
+        {
+            get
+            {
+                return Convert.ToBoolean(_axMsRdpClient.Connected);
+            }
+        }
+
+        public override void ChangeDesktopSize(DesktopSize desktopSize)
         {
             Size size = ConnectionManager.GetSize(this, Favorite);
 
             try
             {
-                switch (Size)
+                switch (desktopSize)
                 {
-                  case DesktopSize.AutoScale:
-                  case DesktopSize.FitToWindow:
-                    this._axMsRdpClient.AdvancedSettings3.SmartSizing = true;
-                    break;
-                  case DesktopSize.FullScreen:
-                    _axMsRdpClient.FullScreen = true;
-                    break;
+                    case DesktopSize.AutoScale:
+                    case DesktopSize.FitToWindow:
+                        this._axMsRdpClient.AdvancedSettings3.SmartSizing = true;
+                        break;
+                    case DesktopSize.FullScreen:
+                        _axMsRdpClient.FullScreen = true;
+                        break;
                 }
 
                 _axMsRdpClient.DesktopWidth = size.Width;
@@ -82,8 +95,9 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Log.Info("Please Update your RDP client to at least version 6.", exc);
-                MessageBox.Show("Please Update your RDP client to at least version 6.");
+                String msg = "Please update your RDP client to at least version 6.";
+                Logging.Log.Info(msg, exc);
+                MessageBox.Show(msg);
                 return false;
             }
 
@@ -187,7 +201,8 @@ namespace Terminals.Connections
 
                     _axMsRdpClient.AdvancedSettings2.MinutesToIdleTimeout = Favorite.IdleTimeout;
 
-                    try {
+                    try 
+                    {
                         int timeout = Favorite.OverallTimeout;
                         if(timeout > 600) timeout = 10;
                         if(timeout <= 0) timeout = 10;
@@ -208,7 +223,9 @@ namespace Terminals.Connections
                         //axMsRdpClient2.AdvancedSettings2.TransportType;
                         //axMsRdpClient2.AdvancedSettings2.WinceFixedPalette;
                         //axMsRdpClient2.AdvancedSettings3.CanAutoReconnect = Favorite.CanAutoReconnect;
-                    } catch(Exception exc) {
+                    }
+                    catch(Exception exc) 
+                    {
                         Logging.Log.Error("Error when trying to set timeout values.", exc);
                     }
 
@@ -287,12 +304,16 @@ namespace Terminals.Connections
 
                     _axMsRdpClient.UserName = userName;
                     _axMsRdpClient.Domain = domainName;
-                    try {
-                        if(!String.IsNullOrEmpty(pass)) {
+                    try 
+                    {
+                        if(!String.IsNullOrEmpty(pass)) 
+                        {
                             if(_nonScriptable != null)
                                 _nonScriptable.ClearTextPassword = pass;
                         }
-                    } catch(Exception exc) {
+                    } 
+                    catch(Exception exc) 
+                    {
                         Logging.Log.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
                     }
 
@@ -341,25 +362,30 @@ namespace Terminals.Connections
                 Logging.Log.Info("Error on Disconnect RDP", e);
             }
         }
-        public override bool Connected { get { return Convert.ToBoolean(_axMsRdpClient.Connected); } }
+
         private void axMsRdpClient2_OnConnected(object sender, EventArgs e)
         {
             if (OnConnected != null) OnConnected(this);
         }
+
         #endregion
-        #region private event
+
+        #region Private event
+
         private void axMsRdpClient2_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             string desktopShare = ParentForm.GetDesktopShare();
-            if(String.IsNullOrEmpty(desktopShare))
+            if (String.IsNullOrEmpty(desktopShare))
             {
                 MessageBox.Show(this, "A Desktop Share was not defined for this connection.\n" +
                     "Please define a share in the connection properties window (under the Local Resources tab)."
                     , "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
             else
+            {
                 SHCopyFiles(files, desktopShare);
+            }
         }
 
         private void axMsRdpClient2_DragEnter(object sender, DragEventArgs e)
@@ -408,10 +434,13 @@ namespace Terminals.Connections
                 this.Invoke(d, new object[] { client.Parent });
             }
             else
+            {
                 CloseTabPage(client.Parent);
+            }
 
             if(OnDisconnected != null) OnDisconnected(this);
         }
+
         private void axMsRdpClient2_OnFatalError(object sender, IMsTscAxEvents_OnFatalErrorEvent e)
         {
             string msg = "";
@@ -450,7 +479,7 @@ namespace Terminals.Connections
                     break;
             }
 
-            string finalMsg = string.Format("There was a fatal error returned from the RDP Connection, details:\n\nError Code:{0}\n\nError Description:", e.errorCode, msg);
+            string finalMsg = string.Format("There was a fatal error returned from the RDP Connection, details:\n\nError Code:{0}\n\nError Description:{1}", e.errorCode, msg);
             System.Windows.Forms.MessageBox.Show(finalMsg);
             Logging.Log.Error(finalMsg);
         }
@@ -469,12 +498,12 @@ namespace Terminals.Connections
                     break;
             }
 
-            string finalMsg = string.Format("There was a warning returned from the RDP Connection, details:\n\nWarning Code:{0}\n\nWarning Description:", e.warningCode, msg);
+            string finalMsg = string.Format("There was a warning returned from the RDP Connection, details:\n\nWarning Code:{0}\n\nWarning Description:{1}", e.warningCode, msg);
             System.Windows.Forms.MessageBox.Show(finalMsg);
             Logging.Log.Error(finalMsg);
         }
 
-        void _axMsRdpClient_OnLogonError(object sender, IMsTscAxEvents_OnLogonErrorEvent e)
+        private void _axMsRdpClient_OnLogonError(object sender, IMsTscAxEvents_OnLogonErrorEvent e)
         {
             string msg = "";
 
@@ -527,7 +556,7 @@ namespace Terminals.Connections
                     break;
             }
 
-            string finalMsg = string.Format("There was a logon error returned from the RDP Connection, details:\n\nLogon Code:{0}\n\nLogon Description:", e.lError, msg);
+            string finalMsg = string.Format("There was a logon error returned from the RDP Connection, details:\n\nLogon Code:{0}\n\nLogon Description:{1}", e.lError, msg);
             //System.Windows.Forms.MessageBox.Show(finalMsg);
             Logging.Log.Error(finalMsg);
         }        
