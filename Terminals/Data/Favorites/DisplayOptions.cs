@@ -6,7 +6,7 @@ namespace Terminals.Data
     public class DisplayOptions
     {
         public Int32 Height { get; set; }
-        public Int32 DesktopSizeWidth { get; set; }
+        public Int32 Width { get; set; }
 
         private DesktopSize desktopSize = DesktopSize.FitToWindow;
         public DesktopSize DesktopSize

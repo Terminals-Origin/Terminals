@@ -111,24 +111,32 @@ namespace Terminals.Data
             set { protocolProperties = value; }
         }
 
+        /// <summary>
+        /// Explicit call of update properties container depending on selected protocol.
+        /// </summary>
         internal void UpdateProtocolPropertiesByProtocol()
         {
-            switch (this.protocol)
+            switch (this.protocol) // Dont call this in property setter, because of serializer
             {
                 case ConnectionManager.VNC:
-                    this.protocolProperties = new VncOptions();
+                    if (!(this.protocolProperties is VncOptions)) // prevent to reset proeprties
+                        this.protocolProperties = new VncOptions();
                     break;
                 case ConnectionManager.VMRC:
-                    this.protocolProperties = new VMRCOptions();
+                    if (!(this.protocolProperties is VMRCOptions))
+                        this.protocolProperties = new VMRCOptions();
                     break;
                 case ConnectionManager.TELNET:
-                    this.protocolProperties = new ConsoleOptions();
+                    if (!(this.protocolProperties is ConsoleOptions))
+                        this.protocolProperties = new ConsoleOptions();
                     break;
                 case ConnectionManager.RDP:
-                    this.protocolProperties = new RdpOptions();
+                    if (!(this.protocolProperties is RdpOptions))   
+                        this.protocolProperties = new RdpOptions();
                     break;
                 case ConnectionManager.ICA_CITRIX:
-                    this.protocolProperties = new ICAOptions();
+                    if(!(this.protocolProperties is ICAOptions))
+                        this.protocolProperties = new ICAOptions();
                     break;
                 case ConnectionManager.HTTP:
                 case ConnectionManager.HTTPS:

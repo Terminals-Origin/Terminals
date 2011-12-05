@@ -192,6 +192,8 @@
     <Compile Include="CaptureManager\ImageFormatHandler.cs" />
     <Compile Include="CaptureManager\ImageFormatTypes.cs" />
     <Compile Include="Configuration\FileLocations.cs" />
+    <Compile Include="Data\FavoriteModelConverterV1ToV2.cs" />
+    <Compile Include="Data\FavoriteModelConverterV2ToV1.cs" />
     <Compile Include="Data\Favorites\ConsoleOptions.cs" />
     <Compile Include="Data\Favorites\DisplayOptions.cs" />
     <Compile Include="Data\Favorites\BeforeConnectExecuteOptions.cs" />

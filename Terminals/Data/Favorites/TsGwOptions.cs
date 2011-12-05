@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Xml.Serialization;
-using Terminals.Security;
 
 namespace Terminals.Data
 {
@@ -34,56 +32,11 @@ namespace Terminals.Data
             set { hostName = value; }
         }
 
-        private string domain;
-        public String Domain
+        private SecurityOptions security = new SecurityOptions();
+        public SecurityOptions Security
         {
-            get
-            {
-                return domain;
-            }
-            set
-            {
-                domain = value;
-            }
-        }
-        
-        private string userName;
-        public String UserName
-        {
-            get
-            {
-                return userName;
-            }
-            set
-            {
-                userName = value;
-            }
-        }
-
-        private string encryptedPassword;
-        public String EncryptedPassword
-        {
-            get
-            {
-                return encryptedPassword;
-            }
-            set
-            {
-                encryptedPassword = value;
-            }
-        }
-
-        [XmlIgnore]
-        internal String Password
-        {
-            get
-            {
-                return PasswordFunctions.DecryptPassword(EncryptedPassword);
-            }
-            set
-            {
-                EncryptedPassword = PasswordFunctions.EncryptPassword(value);
-            }
+            get { return security; }
+            set { security = value; }
         }
     }
 }
