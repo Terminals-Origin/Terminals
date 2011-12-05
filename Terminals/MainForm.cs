@@ -1860,7 +1860,7 @@ namespace Terminals
 
         private void openLogFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(FileLocations.GetFullPath("Logs"));
+            Process.Start(FileLocations.GetFullPath(FileLocations.LOG_DIRECTORY));
         }
 
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)

@@ -43,6 +43,7 @@ namespace Terminals.Updates
             // dont need to refresh the file location, because if the files were changed
             // are already in use, they will be reloaded
             MoveThumbsDirectory();
+            // dont move the logs directory, because it is in use by Log4net library.
             MoveDataFile(ConnectionHistory.FILE_NAME);
             MoveDataFile(ToolStripSettings.FLE_NAME);
             MoveDataFile(StoredCredentials.FILE_NAME);

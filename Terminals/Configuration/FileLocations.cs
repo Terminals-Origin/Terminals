@@ -12,6 +12,11 @@ namespace Terminals.Configuration
         /// where all files changed by user should be stored
         /// </summary>
         internal const string DATA_DIRECTORY = "Data";
+        
+        /// <summary>
+        /// Gets the name of the directory, where log files are stored
+        /// </summary>
+        internal const string LOG_DIRECTORY = "Logs";
 
         /// <summary>
         /// Gets the full file path to the required file or directory in application data directory.
