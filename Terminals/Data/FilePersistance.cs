@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using Terminals.Configuration;
 using Unified;
 
@@ -11,12 +13,37 @@ namespace Terminals.Data
         internal Favorites Favorites { get; private set; }
         internal Groups Groups { get; private set; }
         internal DataDispatcher Dispatcher { get; private set; }
+
+        private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistance");
+        private DataFileWatcher fileWatcher;
         private const string FILENAME = "Favorites.xml";
 
         internal FilePersistance(DataDispatcher dispatcher)
         {
             this.Dispatcher = dispatcher;
+            InitializeFileWatch();
             Load();
+        }
+
+        private void InitializeFileWatch()
+        {
+            fileWatcher = new DataFileWatcher(GetDataFileLocation());
+            fileWatcher.FileChanged += new EventHandler(FavoritesFileChanged);
+            fileWatcher.StartObservation();
+        }
+
+        private void FavoritesFileChanged(object sender, EventArgs e)
+        {
+            // todo merge the situation and call dispatcher to fire data events
+        }
+
+        /// <summary>
+        /// Because filewatcher is created before the main form in GUI thread.
+        /// This lets to fire the file system watcher events in GUI thread. 
+        /// </summary>
+        internal void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
+        {
+            fileWatcher.AssignSynchronizer(synchronizer);
         }
 
         private void Load()
@@ -27,10 +54,11 @@ namespace Terminals.Data
             this.UpdateFavoritesInGroups(file.FavoritesInGroups);
         }
 
-        private static FavoritesFile LoadFile()
+        private FavoritesFile LoadFile()
         {
             try
             {
+                fileLock.WaitOne();
                 string fileLocation = GetDataFileLocation();
                 object file = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile));
                 return file as FavoritesFile;
@@ -39,6 +67,10 @@ namespace Terminals.Data
             {
                 Logging.Log.Error("File peristance was unable to load Favorites.xml", exception);
                 return new FavoritesFile();
+            }
+            finally
+            {
+                fileLock.ReleaseMutex();
             }
         }
 
@@ -75,6 +107,8 @@ namespace Terminals.Data
         {
             try
             {
+                fileLock.WaitOne();
+                fileWatcher.StopObservation();
                 FavoritesFile persistanceFile = CreatePersistanceFileFromCache();
                 string fileLocation = GetDataFileLocation();
                 Serialize.SerializeXMLToDisk(persistanceFile, fileLocation);
@@ -82,6 +116,11 @@ namespace Terminals.Data
             catch (Exception exception)
             {
                 Logging.Log.Error("File peristance was unable to save Favorites.xml", exception);
+            }
+            finally
+            {
+                fileWatcher.StartObservation();
+                fileLock.WaitOne();
             }
         }
 

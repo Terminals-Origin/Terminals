@@ -62,6 +62,7 @@ namespace Terminals.Data
             Settings.AssignSynchronizationObject(synchronizer);
             ConnectionHistory.Instance.AssignSynchronizationObject(synchronizer);
             StoredCredentials.Instance.AssignSynchronizationObject(synchronizer);
+            Persistance.Instance.AssignSynchronizationObject(synchronizer);
         }
 
         private void OnConfigFileReloaded(ConfigurationChangedEventArgs args)
