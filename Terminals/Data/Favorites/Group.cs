@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml.Serialization;
 using Terminals.Configuration;
 
 namespace Terminals.Data
@@ -6,6 +9,7 @@ namespace Terminals.Data
     [Serializable]
     public class Group
     {
+        [XmlAttribute("id")]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -27,6 +31,16 @@ namespace Terminals.Data
             }
         }
 
+        private Dictionary<Guid, Favorite> favorites = new Dictionary<Guid, Favorite>();
+        [XmlIgnore]
+        public List<Favorite> Favorites
+        {
+            get
+            {
+                return favorites.Values.ToList();
+            }
+        }
+
         public Group()
         {
             this.Parent = Guid.Empty;
@@ -39,7 +53,29 @@ namespace Terminals.Data
             if (this.Parent != Guid.Empty)
                 parent = this.Parent.ToString();
 
-            return String.Format("Group:Name={0},Id={1},Parent={2}", this.name, this.Id, parent);
+            return String.Format("Group:Name={0},Id={1},Parent={2},Favorites={3}",
+                this.name, this.Id, parent, this.Favorites.Count);
+        }
+
+        public void AddFavorite(Favorite favorite)
+        {
+            if (favorite == null)
+                return;
+
+            if (!this.favorites.ContainsKey(favorite.Id))
+                this.favorites.Add(favorite.Id, favorite);
+            else
+                this.favorites[favorite.Id] = favorite;
+        }
+
+        internal FavoritesInGroup GetGroupReferences()
+        {
+            Guid[] favoriteIds = this.Favorites.Select(favorite => favorite.Id).ToArray();
+            return new FavoritesInGroup
+            {
+                GroupId = this.Id,
+                Favorites = favoriteIds
+            };
         }
     }
 }

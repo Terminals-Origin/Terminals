@@ -25,10 +25,17 @@ namespace Terminals.Data
         
         public string Name { get; set; }
 
-        private List<Guid> groups = new List<Guid>();
-        public List<Guid> Groups
+        /// <summary>
+        /// Only to identify groups containing this favorite. Manipulating this property 
+        /// has no efect in persistance layer
+        /// </summary>
+        [XmlIgnore]
+        public List<Group> Groups
         {
-            get { return groups; }
+            get
+            {
+                return Persistance.Instance.Groups.GetGroupsContainingFavorite(this.Id);
+            }
         }
 
         private string protocol = ConnectionManager.RDP;

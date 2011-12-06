@@ -55,7 +55,44 @@ namespace Terminals.Updates
             // only this is already in use if started with default location
             MoveDataFile(Settings.CONFIG_FILE_NAME);
             Settings.ForceReload();
-            // todo and then extract favorites and Tags from old config
+            //Settings.RebuildTagIndex(); // to ensure data consistency before import
+            //ImportTagsFromConfigFile();
+            //MoveFavoritesFromConfigFile();
+            // this will also remove all not needed tags
+            //Settings.DeleteFavorites(Settings.GetFavorites().ToList());
+            //Persistance.Instance.Save();
+        }
+
+        private static void ImportTagsFromConfigFile()
+        {
+            Groups groups = Persistance.Instance.Groups;
+            foreach (var tag in Settings.Tags)
+            {
+                var group = new Group{Name = tag};
+                groups.Add(group);
+            }
+        }
+
+        private static void MoveFavoritesFromConfigFile()
+        {
+            Favorites favorites = Persistance.Instance.Favorites;
+            foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
+            {
+                var favorite = FavoriteModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement);
+                UpgradeFavoriteGroups(favorite, favoriteConfigElement);
+                favorites.Add(favorite);
+            }
+        }
+
+        private static void UpgradeFavoriteGroups(Favorite favorite, FavoriteConfigurationElement favoriteConfigElement)
+        {
+            Groups groups = Persistance.Instance.Groups;
+            foreach (var tag in favoriteConfigElement.TagList)
+            {
+                Group group = groups[tag];
+                if(group != null)
+                    group.AddFavorite(favorite);
+            }
         }
 
         private static void MoveThumbsDirectory()

@@ -1,22 +1,55 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using Terminals.Configuration;
 
 namespace Terminals.Data
 {
-    internal class Favorites
+    internal class Favorites : IEnumerable<Favorite>
     {
         private DataDispatcher dispatcher;
-        internal Dictionary<Guid, Favorite> Cache { get; private set; }
+        private Dictionary<Guid, Favorite> cache;
 
-        internal Favorites(DataDispatcher dispatcher, List<Favorite> favoritesSource)
+        internal Favorites(DataDispatcher dispatcher, Favorite[] favoritesSource)
         {
             this.dispatcher = dispatcher;
-            this.Cache = favoritesSource.ToDictionary(favorite => favorite.Id);
+            this.cache = favoritesSource.ToDictionary(favorite => favorite.Id);
         }
 
         public Favorites() {}
+
+        public Favorite this[Guid favoriteId]
+        {
+            get
+            {
+                if (this.cache.ContainsKey(favoriteId))
+                    return this.cache[favoriteId];
+                return null;
+            }
+        }
+
+        public void Add(Favorite favorite)
+        {
+            if (!this.cache.ContainsKey(favorite.Id))
+                this.cache.Add(favorite.Id, favorite);
+        }
+
+        #region IEnumerable members
+
+        public IEnumerator<Favorite> GetEnumerator()
+        {
+            return this.cache.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        #endregion
+
+        #region Obsolete
 
         public FavoriteConfigurationElementCollection GetFavorites()
         {
@@ -96,5 +129,7 @@ namespace Terminals.Data
         {
             Settings.ApplyUserNameToAllSelectedFavorites(selectedFavorites, newUserName);
         }
+
+        #endregion
     }
 }

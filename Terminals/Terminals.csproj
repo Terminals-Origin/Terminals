@@ -199,6 +199,7 @@
     <Compile Include="Data\Favorites\BeforeConnectExecuteOptions.cs" />
     <Compile Include="Data\Favorites\Favorite.cs" />
     <Compile Include="Data\Favorites\FavoritesFile.cs" />
+    <Compile Include="Data\Favorites\FavoritesInGroup.cs" />
     <Compile Include="Data\Favorites\Group.cs" />
     <Compile Include="Data\Favorites\ICAOptions.cs" />
     <Compile Include="Data\Favorites\RdpOptions.cs" />
