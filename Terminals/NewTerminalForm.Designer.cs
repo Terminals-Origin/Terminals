@@ -265,7 +265,7 @@ namespace Terminals
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(433, 42);
+            this.btnCancel.Location = new System.Drawing.Point(426, 42);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(72, 24);
             this.btnCancel.TabIndex = 2;
@@ -721,7 +721,7 @@ namespace Terminals
             this.pictureBox1.Image = global::Terminals.Properties.Resources.terminalsbanner1;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(515, 67);
+            this.pictureBox1.Size = new System.Drawing.Size(508, 80);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
@@ -786,7 +786,7 @@ namespace Terminals
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(507, 328);
+            this.tabPage4.Size = new System.Drawing.Size(500, 362);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Execute";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -867,7 +867,7 @@ namespace Terminals
             this.TagsTabPage.Location = new System.Drawing.Point(4, 22);
             this.TagsTabPage.Name = "TagsTabPage";
             this.TagsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.TagsTabPage.Size = new System.Drawing.Size(507, 328);
+            this.TagsTabPage.Size = new System.Drawing.Size(500, 362);
             this.TagsTabPage.TabIndex = 4;
             this.TagsTabPage.Text = "Tags";
             this.TagsTabPage.UseVisualStyleBackColor = true;
@@ -964,7 +964,7 @@ namespace Terminals
             this.HTTPTabPage.Location = new System.Drawing.Point(4, 22);
             this.HTTPTabPage.Name = "HTTPTabPage";
             this.HTTPTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.HTTPTabPage.Size = new System.Drawing.Size(507, 328);
+            this.HTTPTabPage.Size = new System.Drawing.Size(500, 362);
             this.HTTPTabPage.TabIndex = 11;
             this.HTTPTabPage.Text = "HTTP";
             this.HTTPTabPage.UseVisualStyleBackColor = true;
@@ -992,7 +992,7 @@ namespace Terminals
             this.RAStabPage.Controls.Add(this.RASGroupBox);
             this.RAStabPage.Location = new System.Drawing.Point(4, 22);
             this.RAStabPage.Name = "RAStabPage";
-            this.RAStabPage.Size = new System.Drawing.Size(507, 328);
+            this.RAStabPage.Size = new System.Drawing.Size(500, 362);
             this.RAStabPage.TabIndex = 9;
             this.RAStabPage.Text = "RAS";
             this.RAStabPage.UseVisualStyleBackColor = true;
@@ -1036,7 +1036,7 @@ namespace Terminals
             this.ICAtabPage.Controls.Add(this.label21);
             this.ICAtabPage.Location = new System.Drawing.Point(4, 22);
             this.ICAtabPage.Name = "ICAtabPage";
-            this.ICAtabPage.Size = new System.Drawing.Size(507, 328);
+            this.ICAtabPage.Size = new System.Drawing.Size(500, 362);
             this.ICAtabPage.TabIndex = 10;
             this.ICAtabPage.Text = "Citrix";
             this.ICAtabPage.UseVisualStyleBackColor = true;
@@ -1197,7 +1197,7 @@ namespace Terminals
             this.VMRCtabPage.Controls.Add(this.VMRCAdminModeCheckbox);
             this.VMRCtabPage.Location = new System.Drawing.Point(4, 22);
             this.VMRCtabPage.Name = "VMRCtabPage";
-            this.VMRCtabPage.Size = new System.Drawing.Size(507, 328);
+            this.VMRCtabPage.Size = new System.Drawing.Size(500, 362);
             this.VMRCtabPage.TabIndex = 7;
             this.VMRCtabPage.Text = "VMRC";
             this.VMRCtabPage.UseVisualStyleBackColor = true;
@@ -1228,7 +1228,7 @@ namespace Terminals
             this.SSHTabPage.Location = new System.Drawing.Point(4, 22);
             this.SSHTabPage.Name = "SSHTabPage";
             this.SSHTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SSHTabPage.Size = new System.Drawing.Size(507, 328);
+            this.SSHTabPage.Size = new System.Drawing.Size(500, 362);
             this.SSHTabPage.TabIndex = 13;
             this.SSHTabPage.Text = "SSH";
             this.SSHTabPage.UseVisualStyleBackColor = true;
@@ -1250,7 +1250,7 @@ namespace Terminals
             this.ConsoleTabPage.Location = new System.Drawing.Point(4, 22);
             this.ConsoleTabPage.Name = "ConsoleTabPage";
             this.ConsoleTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ConsoleTabPage.Size = new System.Drawing.Size(507, 328);
+            this.ConsoleTabPage.Size = new System.Drawing.Size(500, 362);
             this.ConsoleTabPage.TabIndex = 14;
             this.ConsoleTabPage.Text = "Console";
             this.ConsoleTabPage.UseVisualStyleBackColor = true;
@@ -1281,7 +1281,7 @@ namespace Terminals
             this.VNCTabPage.Controls.Add(this.vncAutoScaleCheckbox);
             this.VNCTabPage.Location = new System.Drawing.Point(4, 22);
             this.VNCTabPage.Name = "VNCTabPage";
-            this.VNCTabPage.Size = new System.Drawing.Size(507, 328);
+            this.VNCTabPage.Size = new System.Drawing.Size(500, 362);
             this.VNCTabPage.TabIndex = 12;
             this.VNCTabPage.Text = "VNC";
             this.VNCTabPage.UseVisualStyleBackColor = true;
@@ -1309,7 +1309,7 @@ namespace Terminals
             this.RDPTabPage.Location = new System.Drawing.Point(4, 22);
             this.RDPTabPage.Name = "RDPTabPage";
             this.RDPTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.RDPTabPage.Size = new System.Drawing.Size(507, 328);
+            this.RDPTabPage.Size = new System.Drawing.Size(500, 362);
             this.RDPTabPage.TabIndex = 1;
             this.RDPTabPage.Text = "RDP";
             this.RDPTabPage.UseVisualStyleBackColor = true;
@@ -1326,7 +1326,7 @@ namespace Terminals
             this.RDPSubTabPage.Location = new System.Drawing.Point(3, 3);
             this.RDPSubTabPage.Name = "RDPSubTabPage";
             this.RDPSubTabPage.SelectedIndex = 0;
-            this.RDPSubTabPage.Size = new System.Drawing.Size(501, 322);
+            this.RDPSubTabPage.Size = new System.Drawing.Size(494, 356);
             this.RDPSubTabPage.TabIndex = 0;
             this.RDPSubTabPage.SelectedIndexChanged += new System.EventHandler(this.RDPSubTabPage_SelectedIndexChanged);
             // 
@@ -1337,7 +1337,7 @@ namespace Terminals
             this.RDPDisplayTabPage.Location = new System.Drawing.Point(4, 22);
             this.RDPDisplayTabPage.Name = "RDPDisplayTabPage";
             this.RDPDisplayTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.RDPDisplayTabPage.Size = new System.Drawing.Size(493, 296);
+            this.RDPDisplayTabPage.Size = new System.Drawing.Size(486, 330);
             this.RDPDisplayTabPage.TabIndex = 0;
             this.RDPDisplayTabPage.Text = "Display Settings";
             this.RDPDisplayTabPage.UseVisualStyleBackColor = true;
@@ -1511,7 +1511,7 @@ namespace Terminals
             this.chkConnectToConsole.AutoSize = true;
             this.chkConnectToConsole.Location = new System.Drawing.Point(6, 216);
             this.chkConnectToConsole.Name = "chkConnectToConsole";
-            this.chkConnectToConsole.Size = new System.Drawing.Size(119, 17);
+            this.chkConnectToConsole.Size = new System.Drawing.Size(120, 17);
             this.chkConnectToConsole.TabIndex = 3;
             this.chkConnectToConsole.Text = "Co&nnect to Console";
             this.chkConnectToConsole.UseVisualStyleBackColor = true;
@@ -2015,7 +2015,7 @@ namespace Terminals
             this.GeneralTabPage.Location = new System.Drawing.Point(4, 22);
             this.GeneralTabPage.Name = "GeneralTabPage";
             this.GeneralTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.GeneralTabPage.Size = new System.Drawing.Size(507, 328);
+            this.GeneralTabPage.Size = new System.Drawing.Size(500, 362);
             this.GeneralTabPage.TabIndex = 0;
             this.GeneralTabPage.Text = "General";
             this.GeneralTabPage.UseVisualStyleBackColor = true;
@@ -2158,10 +2158,10 @@ namespace Terminals
             this.tabControl1.Controls.Add(this.TagsTabPage);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 67);
+            this.tabControl1.Location = new System.Drawing.Point(0, 80);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(515, 354);
+            this.tabControl1.Size = new System.Drawing.Size(508, 388);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -2195,7 +2195,7 @@ namespace Terminals
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.AutoSize = true;
             this.btnSave.ContextMenuStrip = this.contextMenuStripSave;
-            this.btnSave.Location = new System.Drawing.Point(307, 41);
+            this.btnSave.Location = new System.Drawing.Point(300, 41);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(120, 27);
             this.btnSave.SplitMenuStrip = this.contextMenuStripSave;
@@ -2246,9 +2246,9 @@ namespace Terminals
             this.groupBox7.Controls.Add(this.chkAddtoToolbar);
             this.groupBox7.Controls.Add(this.NewWindowCheckbox);
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox7.Location = new System.Drawing.Point(0, 421);
+            this.groupBox7.Location = new System.Drawing.Point(0, 468);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(515, 78);
+            this.groupBox7.Size = new System.Drawing.Size(508, 78);
             this.groupBox7.TabIndex = 10;
             this.groupBox7.TabStop = false;
             // 
@@ -2257,7 +2257,7 @@ namespace Terminals
             this.btnSaveDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveDefault.AutoSize = true;
             this.btnSaveDefault.ContextMenuStrip = this.contextMenuStripDefaults;
-            this.btnSaveDefault.Location = new System.Drawing.Point(213, 41);
+            this.btnSaveDefault.Location = new System.Drawing.Point(206, 41);
             this.btnSaveDefault.Name = "btnSaveDefault";
             this.btnSaveDefault.Size = new System.Drawing.Size(88, 27);
             this.btnSaveDefault.SplitMenuStrip = this.contextMenuStripDefaults;
@@ -2271,7 +2271,7 @@ namespace Terminals
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(515, 499);
+            this.ClientSize = new System.Drawing.Size(508, 546);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox7);

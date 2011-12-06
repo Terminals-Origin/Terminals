@@ -57,9 +57,8 @@ namespace Terminals
             this.panel2.Controls.Add(this.toolStrip1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 0);
-            this.panel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(224, 384);
+            this.panel2.Size = new System.Drawing.Size(168, 312);
             this.panel2.TabIndex = 3;
             // 
             // lvGroups
@@ -69,9 +68,8 @@ namespace Terminals
             this.lvGroups.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvGroups.LabelEdit = true;
             this.lvGroups.Location = new System.Drawing.Point(0, 25);
-            this.lvGroups.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lvGroups.Name = "lvGroups";
-            this.lvGroups.Size = new System.Drawing.Size(224, 359);
+            this.lvGroups.Size = new System.Drawing.Size(168, 287);
             this.lvGroups.TabIndex = 2;
             this.lvGroups.UseCompatibleStateImageBehavior = false;
             this.lvGroups.View = System.Windows.Forms.View.Details;
@@ -89,7 +87,7 @@ namespace Terminals
             this.tsbDeleteGroup});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(224, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(168, 25);
             this.toolStrip1.TabIndex = 3;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -118,10 +116,9 @@ namespace Terminals
             this.panel1.Controls.Add(this.lvConnections);
             this.panel1.Controls.Add(this.toolStrip2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(224, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Location = new System.Drawing.Point(168, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(295, 384);
+            this.panel1.Size = new System.Drawing.Size(221, 312);
             this.panel1.TabIndex = 4;
             // 
             // lvConnections
@@ -130,9 +127,8 @@ namespace Terminals
             this.chConnectionName});
             this.lvConnections.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lvConnections.Location = new System.Drawing.Point(0, 25);
-            this.lvConnections.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.lvConnections.Name = "lvConnections";
-            this.lvConnections.Size = new System.Drawing.Size(295, 359);
+            this.lvConnections.Size = new System.Drawing.Size(221, 287);
             this.lvConnections.TabIndex = 3;
             this.lvConnections.UseCompatibleStateImageBehavior = false;
             this.lvConnections.View = System.Windows.Forms.View.Details;
@@ -149,7 +145,7 @@ namespace Terminals
             this.tsbDeleteConnection});
             this.toolStrip2.Location = new System.Drawing.Point(0, 0);
             this.toolStrip2.Name = "toolStrip2";
-            this.toolStrip2.Size = new System.Drawing.Size(295, 25);
+            this.toolStrip2.Size = new System.Drawing.Size(221, 25);
             this.toolStrip2.TabIndex = 4;
             this.toolStrip2.Text = "toolStrip2";
             // 
@@ -177,45 +173,41 @@ namespace Terminals
             // 
             this.panel3.Controls.Add(this.btnClose);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 384);
-            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel3.Location = new System.Drawing.Point(0, 312);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(519, 46);
+            this.panel3.Size = new System.Drawing.Size(389, 37);
             this.panel3.TabIndex = 5;
             // 
             // btnClose
             // 
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(405, 10);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnClose.Location = new System.Drawing.Point(304, 8);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(100, 28);
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 0;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
             // splitter1
             // 
-            this.splitter1.Location = new System.Drawing.Point(224, 0);
-            this.splitter1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitter1.Location = new System.Drawing.Point(168, 0);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(4, 384);
+            this.splitter1.Size = new System.Drawing.Size(3, 312);
             this.splitter1.TabIndex = 6;
             this.splitter1.TabStop = false;
             // 
             // OrganizeGroupsForm
             // 
             this.AcceptButton = this.btnClose;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(519, 430);
+            this.ClientSize = new System.Drawing.Size(389, 349);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel3);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "OrganizeGroupsForm";

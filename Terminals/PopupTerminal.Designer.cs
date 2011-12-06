@@ -36,10 +36,10 @@
             // 
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Font = new System.Drawing.Font("Tahoma", 8.25F);
-            this.tabControl1.Location = new System.Drawing.Point(0, 27);
+            this.tabControl1.Location = new System.Drawing.Point(0, 25);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.ShowToolTipOnTitle = false;
-            this.tabControl1.Size = new System.Drawing.Size(593, 300);
+            this.tabControl1.Size = new System.Drawing.Size(445, 241);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.TabControlItemClosing += new TabControl.TabControlItemClosingHandler(this.tabControl1_TabControlItemClosing);
             this.tabControl1.DoubleClick += new System.EventHandler(this.tabControl1_DoubleClick);
@@ -53,7 +53,7 @@
             this.CaptureToolStripButton});
             this.mainToolStrip.Location = new System.Drawing.Point(0, 0);
             this.mainToolStrip.Name = "mainToolStrip";
-            this.mainToolStrip.Size = new System.Drawing.Size(593, 27);
+            this.mainToolStrip.Size = new System.Drawing.Size(445, 25);
             this.mainToolStrip.TabIndex = 1;
             this.mainToolStrip.Text = "toolStrip1";
             // 
@@ -63,7 +63,7 @@
             this.AttachToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("AttachToolStripButton.Image")));
             this.AttachToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AttachToolStripButton.Name = "AttachToolStripButton";
-            this.AttachToolStripButton.Size = new System.Drawing.Size(167, 24);
+            this.AttachToolStripButton.Size = new System.Drawing.Size(135, 22);
             this.AttachToolStripButton.Text = "Attach to main window";
             this.AttachToolStripButton.Click += new System.EventHandler(this.attachToTerminalsToolStripMenuItem_Click);
             // 
@@ -72,7 +72,7 @@
             this.CaptureToolStripButton.Image = global::Terminals.Properties.Resources.camera;
             this.CaptureToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CaptureToolStripButton.Name = "CaptureToolStripButton";
-            this.CaptureToolStripButton.Size = new System.Drawing.Size(127, 24);
+            this.CaptureToolStripButton.Size = new System.Drawing.Size(106, 22);
             this.CaptureToolStripButton.Text = "Capture screen";
             this.CaptureToolStripButton.ToolTipText = "Capture Terminal Screen. This feature has to be enabled in application options fi" +
     "rst. (Ctrl+F12)";
@@ -80,14 +80,13 @@
             // 
             // PopupTerminal
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(593, 327);
+            this.ClientSize = new System.Drawing.Size(445, 266);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.mainToolStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "PopupTerminal";
             this.Text = "Terminal Window";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PopupTerminal_FormClosing);

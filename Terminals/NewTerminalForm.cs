@@ -197,17 +197,29 @@ namespace Terminals
             this.cmbServers.Text = favorite.ServerName;
             this.cmbDomains.Text = favorite.DomainName;
             this.cmbUsers.Text = favorite.UserName;
-            if (favorite.Password != String.Empty)
+            favoritePassword = favorite.Password;
+
+            if (string.IsNullOrEmpty(favoritePassword) && !string.IsNullOrEmpty(favorite.EncryptedPassword))
+            {
+                System.Windows.Forms.MessageBox.Show("There was an issue with decrypting your password.\n\nPlease provide a new password and save the favorite.");
+                this.txtPassword.Text = "";
+                favoritePassword = "";
+                this.txtPassword.Focus();
+                favorite.Password = "";
+                
+            }
+
+            if (!string.IsNullOrEmpty(favoritePassword))
             {
                 this.txtPassword.Text = HIDDEN_PASSWORD;
-                this.favoritePassword = favorite.Password;
+                this.chkSavePassword.Checked = true;
             }
             else
             {
                 this.txtPassword.Text = String.Empty;
+                this.chkSavePassword.Checked = false;
             }
 
-            this.chkSavePassword.Checked = favorite.Password != String.Empty;
             this.cmbResolution.SelectedIndex = (Int32)favorite.DesktopSize;
             this.cmbColors.SelectedIndex = (Int32)favorite.Colors;
             this.chkConnectToConsole.Checked = favorite.ConnectToConsole;

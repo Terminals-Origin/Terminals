@@ -852,6 +852,9 @@
     <EmbeddedResource Include="Forms\OptionPanels\ProxyOptionPanel.resx">
       <DependentUpon>ProxyOptionPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkScanner.cs</DependentUpon>
@@ -878,10 +881,6 @@
     <EmbeddedResource Include="OrganizeFavoritesForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OrganizeFavoritesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewTerminalForm.resx">
       <SubType>Designer</SubType>
@@ -1012,6 +1011,7 @@
     <None Include="Resources\treeIcon_vnc.png" />
     <None Include="Resources\treeIcon_http.png" />
     <None Include="Resources\treeIcon_rdp.png" />
+    <Content Include="Resources\terminalsicon.ico" />
     <Content Include="terminalsicon.ico" />
     <Content Include="Data\ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
