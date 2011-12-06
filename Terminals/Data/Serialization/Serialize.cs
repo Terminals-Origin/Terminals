@@ -147,8 +147,16 @@ namespace Unified
 
         public static object DeserializeXMLFromDisk(string Filename, Type type)
         {
-            string contents = System.IO.File.ReadAllText(Filename);
-            return DeSerializeXML(contents, type);
+            if (System.IO.File.Exists(Filename))
+            {
+                string contents = System.IO.File.ReadAllText(Filename);
+                return DeSerializeXML(contents, type);
+            }
+            else
+            {
+                return Activator.CreateInstance(type);
+            }
+            return null;
         }
 
         public static object DeSerializeXML(string envelope, Type type, bool ThrowException)
