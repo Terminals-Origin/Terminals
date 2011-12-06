@@ -481,7 +481,7 @@ namespace Terminals.Connections
 
             string finalMsg = string.Format("There was a fatal error returned from the RDP Connection, details:\n\nError Code:{0}\n\nError Description:{1}", e.errorCode, msg);
             System.Windows.Forms.MessageBox.Show(finalMsg);
-            Logging.Log.Error(finalMsg);
+            Logging.Log.Fatal(finalMsg);
         }
 
         private void axMsRdpClient2_OnWarning(object sender, IMsTscAxEvents_OnWarningEvent e)
@@ -499,8 +499,8 @@ namespace Terminals.Connections
             }
 
             string finalMsg = string.Format("There was a warning returned from the RDP Connection, details:\n\nWarning Code:{0}\n\nWarning Description:{1}", e.warningCode, msg);
-            System.Windows.Forms.MessageBox.Show(finalMsg);
-            Logging.Log.Error(finalMsg);
+            //System.Windows.Forms.MessageBox.Show(finalMsg);
+            Logging.Log.Warn(finalMsg);
         }
 
         private void _axMsRdpClient_OnLogonError(object sender, IMsTscAxEvents_OnLogonErrorEvent e)
