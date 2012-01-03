@@ -842,6 +842,7 @@ namespace Terminals
             this._releaseMIV = new MethodInvoker(this.OpenReleasePage);
             this.Text = Program.Info.AboutText;
             OnReleaseIsAvailable += new ReleaseIsAvailable(this.MainForm_OnReleaseIsAvailable);
+            OpenSavedConnections();
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
@@ -876,14 +877,16 @@ namespace Terminals
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             favsList1.SaveState();
-
-            SingleInstanceApplication.Instance.Close();
+            
             if (this.fullScreenSwitch.FullScreen)
                 this.fullScreenSwitch.FullScreen = false;
 
             this.MainWindowNotifyIcon.Visible = false;
             CloseOpenedConnections(e);
             this.toolStripContainer.SaveLayout();
+
+            if(!e.Cancel)
+                SingleInstanceApplication.Instance.Close();
         }
 
         private void CloseOpenedConnections(FormClosingEventArgs args)
@@ -1924,5 +1927,6 @@ namespace Terminals
         }
 
         #endregion
+
     }
 }
