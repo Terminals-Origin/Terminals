@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Credentials;
@@ -15,10 +16,10 @@ namespace Terminals
 {
     internal partial class FavsList : UserControl
     {
-        private MainForm _mainForm;
+        private MainForm mainForm;
         public static CredentialSet credSet = new CredentialSet();
 
-        private Favorites PersistedFavorites
+        private static Favorites PersistedFavorites
         {
             get { return Persistance.Instance.Favorites; }
         }
@@ -37,13 +38,13 @@ namespace Terminals
         }
 
         #region Private methods
-        
+
         private MainForm GetMainForm()
         {
-            if (this._mainForm == null)
-                this._mainForm = MainForm.GetMainForm();
+            if (this.mainForm == null)
+                this.mainForm = MainForm.GetMainForm();
 
-            return this._mainForm;
+            return this.mainForm;
         }
 
         private void Connect(TreeNode SelectedNode, bool AllChildren, bool Console, bool NewWindow)
@@ -264,7 +265,7 @@ namespace Terminals
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
 
-                var selectedFavorites  = GetSelectedFavorites();
+                var selectedFavorites = GetSelectedFavorites();
                 PersistedFavorites.ApplyCredentialsForAllSelectedFavorites(selectedFavorites, result.Text);
 
                 this.GetMainForm().Cursor = Cursors.Default;
@@ -345,7 +346,7 @@ namespace Terminals
 
                 var selectedFavorites = GetSelectedFavorites();
                 PersistedFavorites.DeleteFavorites(selectedFavorites);
-                
+
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");
@@ -470,51 +471,41 @@ namespace Terminals
 
         public void SaveState()
         {
-            List<string> expanded = new List<string>();
-            foreach (TreeNode n in this.favsTree.Nodes)
-            {
-                if (n.IsExpanded) expanded.Add(n.Text);
-            }
-            Settings.ExpandedFavoriteNodes = string.Join("%%", expanded.ToArray());
-
-            List<string> expandedHistory = new List<string>();
-            foreach (TreeNode n in this.historyTreeView.Nodes)
-            {
-                if (n.IsExpanded) expandedHistory.Add(n.Text);
-            }
-            Settings.ExpandedHistoryNodes = string.Join("%%", expandedHistory.ToArray());
-
-
-            
-            
+            Settings.StartDelayedUpdate();
+            Settings.ExpandedFavoriteNodes = GetExpandedFavoriteNodes(this.favsTree);
+            Settings.ExpandedHistoryNodes = GetExpandedFavoriteNodes(this.historyTreeView);
+            Settings.SaveAndFinishDelayedUpdate();
         }
+
+        private static string GetExpandedFavoriteNodes(TreeView treeView)
+        {
+            List<string> expandedNodes = new List<string>();
+            foreach (TreeNode treeNode in treeView.Nodes)
+            {
+                if (treeNode.IsExpanded)
+                    expandedNodes.Add(treeNode.Text);
+            }
+            return string.Join("%%", expandedNodes.ToArray());
+        }
+
         public void LoadState()
         {
-            List<string> expanded = new List<string>();
-            string nodes = Settings.ExpandedFavoriteNodes;
-            if (!string.IsNullOrEmpty(nodes))
-            {
-                expanded.AddRange(System.Text.RegularExpressions.Regex.Split(nodes, "%%"));
-            }
-            if (expanded != null && expanded.Count > 0)
-            {
-                foreach (TreeNode n in this.favsTree.Nodes)
-                {
-                    if (expanded.Contains(n.Text)) n.Expand();
-                }
-            }
+            ExpandTreeView(Settings.ExpandedFavoriteNodes, this.favsTree);
+            ExpandTreeView(Settings.ExpandedHistoryNodes, this.historyTreeView);
+        }
 
-            List<string> expandedHistory = new List<string>();
-            string historyNodes = Settings.ExpandedHistoryNodes;
-            if (!string.IsNullOrEmpty(historyNodes))
+        private static void ExpandTreeView(string savedNodesToExpand, TreeView treeView)
+        {
+            List<string> nodesToExpand = new List<string>();
+            if (!string.IsNullOrEmpty(savedNodesToExpand))
+                nodesToExpand.AddRange(Regex.Split(savedNodesToExpand, "%%"));
+
+            if (nodesToExpand != null && nodesToExpand.Count > 0)
             {
-                expandedHistory.AddRange(System.Text.RegularExpressions.Regex.Split(historyNodes, "%%"));
-            }
-            if (expandedHistory != null && expandedHistory.Count > 0)
-            {
-                foreach (TreeNode n in this.historyTreeView.Nodes)
+                foreach (TreeNode treeNode in treeView.Nodes)
                 {
-                    if (expandedHistory.Contains(n.Text)) n.Expand();
+                    if (nodesToExpand.Contains(treeNode.Text))
+                        treeNode.Expand();
                 }
             }
         }
