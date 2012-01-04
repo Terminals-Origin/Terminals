@@ -104,6 +104,9 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private void UpdateMenuAndContextMenu()
         {
+            // first update untagged virtual menu item groups to reflect favorite changes
+            this.untaggedToolStripMenuItem.Group = FavoriteTreeListLoader.CreateUntagedVirtualGroup();
+            this.unTaggedQuickMenuItem.Group = FavoriteTreeListLoader.CreateUntagedVirtualGroup();
             this.FillMainMenu();
             this.FillTrayContextMenu();
         }

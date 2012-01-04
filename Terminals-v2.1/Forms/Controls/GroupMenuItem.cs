@@ -14,7 +14,10 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal const String TAG = "tag";
 
-        internal IGroup Group { get; private set; }
+        /// <summary>
+        /// Gets or sets associated favorites group
+        /// </summary>
+        internal IGroup Group { get; set; }
 
         internal GroupMenuItem(IGroup group)
         {
