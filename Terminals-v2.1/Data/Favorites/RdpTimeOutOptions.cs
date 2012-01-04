@@ -79,5 +79,16 @@ namespace Terminals.Data
 
             return value;
         }
+
+        internal RdpTimeOutOptions Copy()
+        {
+            return new RdpTimeOutOptions
+                {
+                    IdleTimeout = this.IdleTimeout,
+                    ConnectionTimeout = this.ConnectionTimeout,
+                    OverallTimeout = this.OverallTimeout,
+                    ShutdownTimeout = this.ShutdownTimeout
+                };
+        }
     }
 }

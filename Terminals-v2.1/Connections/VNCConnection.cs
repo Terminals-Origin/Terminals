@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Connections
 {
@@ -26,20 +27,7 @@ namespace Terminals.Connections
                 rd = new VncSharp.RemoteDesktop();
                 Controls.Add(rd);
 
-                string pass = null;
-                if (!string.IsNullOrEmpty(Favorite.Credential))
-                {
-                    CredentialSet set = StoredCredentials.Instance.GetByName(Favorite.Credential);
-                    if (set != null)
-                        pass = set.SecretKey;
-                }
-                else
-                {
-                    pass = Favorite.Password;
-                }
-
-                if (string.IsNullOrEmpty(pass))
-                    pass = Settings.DefaultPassword;
+                string pass = this.Favorite.Security.GetResolvedCredentials().Password;
                 this.vncPassword = pass;
 
                 if (string.IsNullOrEmpty(vncPassword)) return false;
@@ -54,7 +42,9 @@ namespace Terminals.Connections
                 rd.ConnectionLost += new EventHandler(rd_ConnectionLost);
                 rd.GetPassword = VNCPassword;
                 Text = "Connecting to VNC Server...";
-                rd.Connect(Favorite.ServerName, Favorite.VncDisplayNumber, Favorite.VncViewOnly, Favorite.VncAutoScale);
+
+                VncOptions options = this.Favorite.ProtocolProperties as VncOptions;
+                rd.Connect(Favorite.ServerName, options.DisplayNumber, options.ViewOnly, options.AutoScale);
 
                 rd.BringToFront();
                 return true;

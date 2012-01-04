@@ -1,16 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Credentials
 {
     internal partial class CredentialManager : Form
     {
+        private static StoredCredentials Credentials
+        {
+            get { return Persistance.Instance.Credentials; }
+        }
+
         internal CredentialManager()
         {
             InitializeComponent();
-            StoredCredentials.Instance.CredentialsChanged += new EventHandler(this.CredentialsChanged);
+            Credentials.CredentialsChanged += new EventHandler(this.CredentialsChanged);
         }
 
         private void CredentialsChanged(object sender, EventArgs e)
@@ -21,9 +26,8 @@ namespace Terminals.Credentials
         private void BindList()
         {
             CredentialsListView.Items.Clear();
-            List<CredentialSet> credentials = StoredCredentials.Instance.Items;
 
-            foreach (CredentialSet credential in credentials)
+            foreach (CredentialSet credential in Credentials.Items)
             {
                 ListViewItem item = new ListViewItem(credential.Name);
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, credential.Username));
@@ -52,7 +56,7 @@ namespace Terminals.Credentials
             if (CredentialsListView.SelectedItems != null && CredentialsListView.SelectedItems.Count > 0)
             {
                 string name = CredentialsListView.SelectedItems[0].Text;
-                return StoredCredentials.Instance.GetByName(name);
+                return Credentials.GetByName(name);
             }
 
             return null;
@@ -82,8 +86,8 @@ namespace Terminals.Credentials
                 if (MessageBox.Show("Are you sure you want to delete credential " + toRemove.Name + "?",
                                     "Credential manager", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    StoredCredentials.Instance.Remove(toRemove);
-                    StoredCredentials.Instance.Save();
+                    Credentials.Remove(toRemove);
+                    Credentials.Save();
                     BindList();
                 }
             }
@@ -91,7 +95,7 @@ namespace Terminals.Credentials
 
         private void CredentialManager_FormClosed(object sender, FormClosedEventArgs e)
         {
-            StoredCredentials.Instance.CredentialsChanged -= CredentialsChanged;
+            Credentials.CredentialsChanged -= CredentialsChanged;
         }
     }
 }

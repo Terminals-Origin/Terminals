@@ -38,5 +38,17 @@ namespace Terminals.Data
             get { return security; }
             set { security = value; }
         }
+
+        internal TsGwOptions Copy()
+        {
+            return new TsGwOptions
+                {
+                    UsageMethod = this.UsageMethod,
+                    CredentialSource = this.CredentialSource,
+                    SeparateLogin = this.SeparateLogin,
+                    HostName = this.HostName,
+                    Security = this.Security.Copy()
+                };
+        }
     }
 }

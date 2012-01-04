@@ -1,13 +1,14 @@
 ﻿using AxMSTSCLib;
 using TabControl;
+using Terminals.Data;
 
 namespace Terminals
 {
-    public class TerminalTabControlItem : TabControlItem
+    internal class TerminalTabControlItem : TabControlItem
     {
         private Connections.IConnection _connection;
         private AxMsRdpClient6 _terminalControl;
-        private FavoriteConfigurationElement _favorite;
+        private IFavorite _favorite;
 
         public TerminalTabControlItem(string caption) : base(caption, null)
         {
@@ -37,7 +38,7 @@ namespace Terminals
             }
         }
 
-        public FavoriteConfigurationElement Favorite
+        public IFavorite Favorite
         {
             get
             {

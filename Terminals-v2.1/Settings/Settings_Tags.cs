@@ -26,7 +26,7 @@ namespace Terminals.Configuration
         public static void AddTags(List<String> tags)
         {
             List<String> addedTags = AddTagsToSettings(tags);
-            DataDispatcher.Instance.ReportTagsAdded(addedTags);
+            //DataDispatcher.Instance.ReportTagsAdded(addedTags);
         }
 
         private static List<string> AddTagsToSettings(List<String> tags)
@@ -64,7 +64,7 @@ namespace Terminals.Configuration
         public static void DeleteTags(List<String> tagsToDelete)
         {
             List<String> deletedTags = DeleteTagsFromSettings(tagsToDelete);
-            DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
+            //DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
         }
 
         private static List<String> DeleteTagsFromSettings(List<String> tagsToDelete)
@@ -105,7 +105,7 @@ namespace Terminals.Configuration
             String[] oldTags = Tags;
             ClearTags();
             ReCreateAllTags();
-            DataDispatcher.Instance.ReportTagsRecreated(Tags.ToList(), oldTags.ToList());
+            //DataDispatcher.Instance.ReportTagsRecreated(Tags.ToList(), oldTags.ToList());
         }
 
         private static void ReCreateAllTags()

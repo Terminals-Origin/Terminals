@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals
@@ -11,8 +10,8 @@ namespace Terminals
         public AddConnectionForm()
         {
             InitializeComponent();
-            FavoriteConfigurationElementCollection favorites = Persistance.Instance.Favorites.GetFavorites();
-            foreach (FavoriteConfigurationElement favorite in favorites)
+
+            foreach (Favorite favorite in Persistance.Instance.Favorites)
             {
                 lvFavorites.Items.Add(favorite.Name);
             }

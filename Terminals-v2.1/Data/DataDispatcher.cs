@@ -12,7 +12,7 @@ namespace Terminals.Data
     /// Infroms about changes in Tags collection
     /// </summary>
     /// <param name="args">Not null container reporting removed and added Tags</param>
-    internal delegate void TagsChangedEventHandler(TagsChangedArgs args);
+    internal delegate void GroupsChangedEventHandler(GroupsChangedArgs args);
 
     /// <summary>
     /// Informs about changes in favorites collection.
@@ -25,113 +25,53 @@ namespace Terminals.Data
     /// </summary>
     internal sealed class DataDispatcher
     {
-        #region Thread safe singleton with lazy loading
-
-        private DataDispatcher()
-        {
-            Settings.ConfigurationChanged += new ConfigurationChangedHandler(OnConfigFileReloaded);
-        }
-
-        /// <summary>
-        /// Gets the thread safe singleton instance of the dispatcher
-        /// </summary>
-        public static DataDispatcher Instance
-        {
-            get
-            {
-                return Nested.instance;
-            }
-        }
-
-        private static class Nested
-        {
-            internal static readonly DataDispatcher instance = new DataDispatcher();
-        }
-
-        #endregion
-
-        internal event TagsChangedEventHandler TagsChanged;
+        internal event GroupsChangedEventHandler GroupsChanged;
         internal event FavoritesChangedEventHandler FavoritesChanged;
+        internal DataDispatcher() { }
 
-        /// <summary>
-        /// Because filewatcher is created before the main form in GUI thread.
-        /// This lets to fire the file system watcher events in GUI thread. 
-        /// </summary>
-        internal static void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
-        {
-            Settings.AssignSynchronizationObject(synchronizer);
-            ConnectionHistory.Instance.AssignSynchronizationObject(synchronizer);
-            StoredCredentials.Instance.AssignSynchronizationObject(synchronizer);
-            Persistance.Instance.AssignSynchronizationObject(synchronizer);
-        }
-
-        private void OnConfigFileReloaded(ConfigurationChangedEventArgs args)
-        {
-            MergeTags(args);
-            MergeFavorites(args);
-        }
-
-        private void MergeTags(ConfigurationChangedEventArgs args)
-        {
-            List<string> oldTags = args.OldTags;
-            List<string> newTags = args.NewTags;
-            List<string> deletedTags = ListStringHelper.GetMissingSourcesInTarget(oldTags, newTags);
-            List<string> addedTags = ListStringHelper.GetMissingSourcesInTarget(newTags, oldTags);
-            var tagsArgs = new TagsChangedArgs(addedTags, deletedTags);
-            FireTagsChanged(tagsArgs);
-        }
-
-        private void MergeFavorites(ConfigurationChangedEventArgs args)
-        {
-            var oldFavorites = args.OldFavorites;
-            var newFavorites = args.NewFavorites;
-            List<FavoriteConfigurationElement> missingFavorites = GetMissingFavorites(newFavorites, oldFavorites);
-            List<FavoriteConfigurationElement> redundantFavorites = GetMissingFavorites(oldFavorites, newFavorites);
-
-            var favoriteArgs = new FavoritesChangedEventArgs();
-            favoriteArgs.Added.AddRange(missingFavorites);
-            favoriteArgs.Removed.AddRange(redundantFavorites);
-            FireFavoriteChanges(favoriteArgs);
-        }
-
-        internal static List<FavoriteConfigurationElement> GetMissingFavorites(
-            List<FavoriteConfigurationElement> newFavorites,
-            List<FavoriteConfigurationElement> oldFavorites)
+        internal static List<IFavorite> GetMissingFavorites(List<IFavorite> newFavorites, List<IFavorite> oldFavorites)
         {
             return newFavorites.Where(
                 newFavorite => oldFavorites.FirstOrDefault(oldFavorite => oldFavorite.Name == newFavorite.Name) == null)
                 .ToList();
         }
 
-        internal void ReportFavoriteAdded(FavoriteConfigurationElement addedFavorite)
+        internal void ReportFavoriteAdded(IFavorite addedFavorite)
         {
             var args = new FavoritesChangedEventArgs();
             args.Added.Add(addedFavorite);
             FireFavoriteChanges(args);
         }
 
-        internal void ReportFavoritesAdded(List<FavoriteConfigurationElement> addedFavorites)
+        internal void ReportFavoritesAdded(List<IFavorite> addedFavorites)
         {
             var args = new FavoritesChangedEventArgs();
             args.Added.AddRange(addedFavorites);
             FireFavoriteChanges(args);
         }
 
-        internal void ReportFavoriteUpdated(string oldName, FavoriteConfigurationElement changedFavorite)
+        internal void ReportFavoriteUpdated(IFavorite changedFavorite)
         {
             var args = new FavoritesChangedEventArgs();
-            args.Updated.Add(oldName, changedFavorite);
+            args.Updated.Add(changedFavorite);
             FireFavoriteChanges(args);
         }
 
-        internal void ReportFavoriteDeleted(FavoriteConfigurationElement deletedFavorite)
+        internal void ReportFavoritesUpdated(List<IFavorite> changedFavorites)
+        {
+            var args = new FavoritesChangedEventArgs();
+            args.Updated.AddRange(changedFavorites);
+            FireFavoriteChanges(args);
+        }
+
+        internal void ReportFavoriteDeleted(IFavorite deletedFavorite)
         {
             var args = new FavoritesChangedEventArgs();
             args.Removed.Add(deletedFavorite);
             FireFavoriteChanges(args);
         }
 
-        internal void ReportFavoritesDeleted(List<FavoriteConfigurationElement> deletedFavorites)
+        internal void ReportFavoritesDeleted(List<IFavorite> deletedFavorites)
         {
             var args = new FavoritesChangedEventArgs();
             args.Removed.AddRange(deletedFavorites);
@@ -147,32 +87,32 @@ namespace Terminals.Data
             }
         }
 
-        internal void ReportTagsAdded(List<String> addedsTag)
+        internal void ReportGroupsAdded(List<IGroup> addedIGroups)
         {
-            var args = new TagsChangedArgs();
-            args.Added.AddRange(addedsTag);
-            FireTagsChanged(args);
+            var args = new GroupsChangedArgs();
+            args.Added.AddRange(addedIGroups);
+            this.FireGroupsChanged(args);
         }
 
-        internal void ReportTagsDeleted(List<String> deletedTags)
+        internal void ReportGroupsDeleted(List<IGroup> deletedIGroups)
         {
-            var args = new TagsChangedArgs();
-            args.Removed.AddRange(deletedTags);
-            FireTagsChanged(args);
+            var args = new GroupsChangedArgs();
+            args.Removed.AddRange(deletedIGroups);
+            this.FireGroupsChanged(args);
         }
 
-        internal void ReportTagsRecreated(List<String> addedTags, List<String> deletedTags)
+        internal void ReportGroupsRecreated(List<IGroup> addedIGroups, List<IGroup> deletedIGroups)
         {
-            var args = new TagsChangedArgs(addedTags, deletedTags);
-            FireTagsChanged(args);
+            var args = new GroupsChangedArgs(addedIGroups, deletedIGroups);
+            this.FireGroupsChanged(args);
         }
 
-        private void FireTagsChanged(TagsChangedArgs args)
+        private void FireGroupsChanged(GroupsChangedArgs args)
         {
             Debug.WriteLine(args.ToString());
-            if (this.TagsChanged != null && !args.IsEmpty)
+            if (this.GroupsChanged != null && !args.IsEmpty)
             {
-                this.TagsChanged(args);
+                this.GroupsChanged(args);
             }
         }
     }

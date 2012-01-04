@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.IO;
 using AxWFICALib;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Connections
 {
@@ -33,16 +34,8 @@ namespace Terminals.Connections
 
                 Controls.Add(iIcaClient);
 
-                string domainName = Favorite.DomainName;
-                string pass = Favorite.Password;
-                string userName = Favorite.UserName;
-
-                if (string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
-                if (string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
-                if (string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
-
-                icaPassword = pass;
-
+                SecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+                icaPassword = security.Password;
 
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
                 iIcaClient.Parent = base.TerminalTabPage;
@@ -50,7 +43,7 @@ namespace Terminals.Connections
                 iIcaClient.Dock = DockStyle.Fill;
 
                 iIcaClient.Address = Favorite.ServerName;
-                switch (Favorite.Colors)
+                switch (Favorite.Display.Colors)
                 {
                     case Colors.Bit16:
                         iIcaClient.SetProp("DesiredColor", "16");
@@ -74,11 +67,12 @@ namespace Terminals.Connections
                 // Remote Desktop Users group or another group that has these permissions, or if the Remote Desktop User group
                 // does not have these permissions, you must be granted these permissions manually."
 
-                iIcaClient.AppsrvIni = Favorite.IcaServerINI;
-                iIcaClient.WfclientIni = Favorite.IcaClientINI;
-                iIcaClient.Encrypt = Favorite.IcaEnableEncryption;
+                ICAOptions icaOptions = this.Favorite.ProtocolProperties as ICAOptions;
+                iIcaClient.AppsrvIni = icaOptions.ServerINI;
+                iIcaClient.WfclientIni = icaOptions.ClientINI;
+                iIcaClient.Encrypt = icaOptions.EnableEncryption;
                 string encryptLevel = "Encrypt";
-                string specifiedLevel = Favorite.IcaEncryptionLevel.Trim();
+                string specifiedLevel = icaOptions.EncryptionLevel.Trim();
                 if (specifiedLevel.Contains(" "))
                 {
                     encryptLevel = specifiedLevel.Substring(0, specifiedLevel.IndexOf(" ")).Trim();
@@ -88,17 +82,16 @@ namespace Terminals.Connections
 
 
 
-                iIcaClient.Domain = domainName;
+                iIcaClient.Domain = security.DomainName;
                 iIcaClient.Address = Favorite.ServerName;
-                iIcaClient.Username = userName;
-                iIcaClient.SetProp("ClearPassword", pass);
-                if (Favorite.ICAApplicationName != "")
+                iIcaClient.Username = security.UserName;
+                iIcaClient.SetProp("ClearPassword", security.Password);
+                if (icaOptions.ApplicationName != "")
                 {
-                    iIcaClient.ConnectionEntry = Favorite.ICAApplicationName;
-                    //iIcaClient.Application = favorite.applicationName;
-                    iIcaClient.InitialProgram = Favorite.ICAApplicationName;
-                    iIcaClient.Application = Favorite.ICAApplicationPath;
-                    iIcaClient.WorkDirectory = Favorite.ICAApplicationWorkingFolder;
+                    iIcaClient.ConnectionEntry = icaOptions.ApplicationName;
+                    iIcaClient.InitialProgram = icaOptions.ApplicationName;
+                    iIcaClient.Application = icaOptions.ApplicationPath;
+                    iIcaClient.WorkDirectory = icaOptions.ApplicationWorkingFolder;
                 }
 
 

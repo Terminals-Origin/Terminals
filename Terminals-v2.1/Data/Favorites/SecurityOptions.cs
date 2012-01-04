@@ -8,43 +8,9 @@ namespace Terminals.Data
     [Serializable]
     public class SecurityOptions
     {
-        private string domainName;
-        public String DomainName
-        {
-            get
-            {
-                CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
-                if (cred != null)
-                    return cred.Domain;
-
-                return domainName;
-            }
-            set
-            {
-                domainName = value;
-            }
-        }
-
-        private string userName;
-        public String UserName
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(Credential))
-                {
-                    CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
-                    if (cred != null)
-                        return cred.Username;
-                }
-
-                return userName;
-            }
-            set
-            {
-                userName = value;
-            }
-        }
-
+        public String Credential { get; set; }
+        public string DomainName { get; set; }
+        public string UserName { get; set; }
         public String EncryptedPassword { get; set; }
 
         /// <summary>
@@ -55,10 +21,6 @@ namespace Terminals.Data
         {
             get
             {
-                CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
-                if (cred != null)
-                    return cred.SecretKey;
-
                 return PasswordFunctions.DecryptPassword(EncryptedPassword);
             }
             set
@@ -67,6 +29,50 @@ namespace Terminals.Data
             }
         }
 
-        public String Credential { get; set; }
+        internal SecurityOptions Copy()
+        {
+            return new SecurityOptions
+                {
+                    Credential = this.Credential,
+                    DomainName = this.DomainName,
+                    Password = this.Password,
+                    UserName = this.UserName
+                };
+        }
+
+        /// <summary>
+        /// Gets this credentails replaced first by Stored credential and then by default
+        /// stored credentials for each value, if the value is empty
+        /// </summary>
+        internal SecurityOptions GetResolvedCredentials()
+        {
+            var result = new SecurityOptions();
+            ResolveFromCredential(result);
+            ResolveDefaultValues(result);
+            return result;
+        }
+
+        private void ResolveFromCredential(SecurityOptions result)
+        {
+            CredentialSet storedCredential = Persistance.Instance.Credentials.GetByName(this.Credential);
+            if (storedCredential !=  null)
+            {
+                result.DomainName = storedCredential.Domain;
+                result.UserName = storedCredential.Username;
+                result.EncryptedPassword = storedCredential.SecretKey;
+            }
+        }
+
+        private static void ResolveDefaultValues(SecurityOptions result)
+        {
+            if (string.IsNullOrEmpty(result.DomainName))
+                result.DomainName = Settings.DefaultDomain;
+
+            if (string.IsNullOrEmpty(result.UserName))
+                result.UserName = Settings.DefaultUsername;
+
+            if (string.IsNullOrEmpty(result.Password))
+                result.Password = Settings.DefaultPassword;
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using Terminals.Data;
 using Terminals.Security;
 using System.IO;
 
@@ -328,7 +329,7 @@ namespace Terminals.Configuration
             string newKeyMaterial = GetKeyMaterial(newMasterPassword);
             configSection.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
             UpdateFavoritePasswordsByNewKeyMaterial(newKeyMaterial);
-            StoredCredentials.Instance.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
+            Persistance.Instance.Credentials.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
         }
 
         private static string keyMaterial = string.Empty;

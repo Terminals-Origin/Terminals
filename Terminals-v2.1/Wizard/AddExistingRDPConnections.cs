@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Metro;
 using Metro.Scanning;
 using Terminals.Connections;
+using Terminals.Data;
 using Terminals.Integration.Import;
 
 namespace Terminals.Wizard
@@ -199,7 +200,7 @@ namespace Terminals.Wizard
                 string serverName = endPoint.Address.ToString();
                 string connectionName = String.Format("{0}_{1}", serverName, protocol);
                 FavoriteConfigurationElement newFavorite =
-                    FavoritesFactory.CreateNewFavorite(connectionName, serverName, endPoint.Port);
+                    ConfigFavoritesFactory.CreateNewFavorite(connectionName, serverName, endPoint.Port);
 
                 AddFavoriteToDiscovered(newFavorite);
             }

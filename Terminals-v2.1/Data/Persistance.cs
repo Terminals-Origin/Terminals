@@ -6,15 +6,14 @@
 
         private Persistance()
         {
-            this.persistance = new FilePersistance(DataDispatcher.Instance);
-            // todo choose and initialize persistance type defined by settings
-            //persistance.Save();
+            this.persistance = new FilePersistance();
+            // todo REFACTORING choose and initialize persistance type defined by settings
         }
 
         /// <summary>
         /// Gets the thread safe singleton instance of the persistance layer
         /// </summary>
-        public static FilePersistance Instance
+        public static IPersistance Instance
         {
             get
             {
@@ -29,6 +28,6 @@
 
         #endregion
 
-        private FilePersistance persistance;
+        private IPersistance persistance;
     }
 }

@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Credentials
 {
     internal partial class ManageCredentialForm : Form
     {
         private string editedCredentialName = "";
+
+        private StoredCredentials Credentials
+        {
+            get { return Persistance.Instance.Credentials; }
+        }
 
         internal ManageCredentialForm(CredentialSet editedCredential)
         {
@@ -40,7 +46,7 @@ namespace Terminals.Credentials
 
             if (UpdateCredential())
             {
-                StoredCredentials.Instance.Save();
+                Credentials.Save();
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -48,8 +54,8 @@ namespace Terminals.Credentials
 
         private bool UpdateCredential()
         {
-            CredentialSet conflicting = StoredCredentials.Instance.GetByName(this.NameTextbox.Text);
-            CredentialSet oldItem = StoredCredentials.Instance.GetByName(this.editedCredentialName);
+            CredentialSet conflicting = Credentials.GetByName(this.NameTextbox.Text);
+            CredentialSet oldItem = Credentials.GetByName(this.editedCredentialName);
 
             if (conflicting != null && this.editedCredentialName != this.NameTextbox.Text)
             {
@@ -65,7 +71,7 @@ namespace Terminals.Credentials
             if (oldItem == null || this.editedCredentialName != this.NameTextbox.Text)
             {
                 CredentialSet newCredential = this.CreateNewCredential();
-                StoredCredentials.Instance.Add(newCredential);
+                Credentials.Add(newCredential);
             }
             else
             {
@@ -83,7 +89,7 @@ namespace Terminals.Credentials
 
             if (oldItem != null)
             {
-                StoredCredentials.Instance.Remove(oldItem);
+                Credentials.Remove(oldItem);
             }
 
             this.UpdateFromControls(conflicting);

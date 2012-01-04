@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.History;
 
@@ -17,9 +16,10 @@ namespace Terminals.Forms.Controls
             InitializeTimeLineTreeNodes();
             // consider remove next line to perform full lazy loading without loading the history data
             // directly after application start
-            ConnectionHistory.Instance.LoadHistoryAsync();
+            var connectionHistory = Persistance.Instance.ConnectionHistory;
+            connectionHistory.LoadHistoryAsync();
             // dont apply OnHistoryLoaded event handler to do the lazy loading
-            ConnectionHistory.Instance.OnHistoryRecorded += new HistoryRecorded(this.OnHistoryRecorded);
+            connectionHistory.OnHistoryRecorded += new HistoryRecorded(this.OnHistoryRecorded);
         }
 
         /// <summary>
@@ -46,7 +46,8 @@ namespace Terminals.Forms.Controls
 
         private void AddNewHistoryGroupNode(string name, string imageKey)
         {
-            var groupNode = new TagTreeNode(name, imageKey);
+            IGroup virtualGroup = Persistance.Instance.Factory.CreateGroup(name);
+            var groupNode = new GroupTreeNode(virtualGroup, imageKey);
             this.Nodes.Add(groupNode);
         }
 
@@ -69,8 +70,8 @@ namespace Terminals.Forms.Controls
 
         private void RefreshAllExpanded()
         {
-            var expandedNodes = this.Nodes.Cast<TagTreeNode>().Where(groupNode => !groupNode.NotLoadedYet);
-            foreach (TagTreeNode groupNode in expandedNodes)
+            var expandedNodes = this.Nodes.Cast<GroupTreeNode>().Where(groupNode => !groupNode.NotLoadedYet);
+            foreach (GroupTreeNode groupNode in expandedNodes)
             {
                 RefreshGroupNodes(groupNode);
             }
@@ -80,7 +81,7 @@ namespace Terminals.Forms.Controls
 
         private void InsertRecordedNode(HistoryRecordedEventArgs args)
         {
-            TagTreeNode todayGroup = this.Nodes[HistoryByFavorite.TODAY] as TagTreeNode;
+            GroupTreeNode todayGroup = this.Nodes[HistoryByFavorite.TODAY] as GroupTreeNode;
             if (todayGroup.NotLoadedYet)
                 return;
 
@@ -88,9 +89,9 @@ namespace Terminals.Forms.Controls
                  InsertRecordedNode(todayGroup, args);
         }
 
-        private static void InsertRecordedNode(TagTreeNode todayGroup, HistoryRecordedEventArgs args)
+        private static void InsertRecordedNode(GroupTreeNode todayGroup, HistoryRecordedEventArgs args)
         {
-            FavoriteConfigurationElement favorite = Persistance.Instance.Favorites.GetOneFavorite(args.ConnectionName);
+            IFavorite favorite = Persistance.Instance.Favorites[args.ConnectionName];
             if (favorite != null) // shouldnt happen, because the favorite was actualy processed
             {
                 int insertIndex = FavoriteTreeListLoader.FindFavoriteNodeInsertIndex(todayGroup.Nodes, favorite);
@@ -101,11 +102,11 @@ namespace Terminals.Forms.Controls
 
         private void OnTreeViewExpand(object sender, TreeViewEventArgs e)
         {
-            TagTreeNode groupNode = e.Node as TagTreeNode;
+            GroupTreeNode groupNode = e.Node as GroupTreeNode;
             ExpandDateGroupNode(groupNode);
         }
 
-        private void ExpandDateGroupNode(TagTreeNode groupNode)
+        private void ExpandDateGroupNode(GroupTreeNode groupNode)
         {
             this.Cursor = Cursors.WaitCursor;
             if (groupNode.NotLoadedYet)
@@ -115,17 +116,17 @@ namespace Terminals.Forms.Controls
             this.Cursor = Cursors.Default;
         }
 
-        private static void RefreshGroupNodes(TagTreeNode groupNode)
+        private static void RefreshGroupNodes(GroupTreeNode groupNode)
         {
             groupNode.Nodes.Clear();
-            var groupFavorites = ConnectionHistory.Instance.GetDateItems(groupNode.Name);
+            var groupFavorites = Persistance.Instance.ConnectionHistory.GetDateItems(groupNode.Name);
             CreateGroupNodes(groupNode, groupFavorites);
         }
 
-        private static void CreateGroupNodes(TagTreeNode groupNode,
-            SortableList<FavoriteConfigurationElement> groupFavorites)
+        private static void CreateGroupNodes(GroupTreeNode groupNode,
+            SortableList<IFavorite> groupFavorites)
         {
-            foreach (FavoriteConfigurationElement favorite in groupFavorites)
+            foreach (IFavorite favorite in groupFavorites)
             {
                 var favoriteNode = new FavoriteTreeNode(favorite);
                 groupNode.Nodes.Add(favoriteNode);

@@ -5,7 +5,7 @@ using Screen = System.Windows.Forms.Screen;
 
 namespace Terminals
 {
-    public partial class MainForm
+    internal partial class MainForm
     {
         internal class MainFormFullScreenSwitch
         {

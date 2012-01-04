@@ -3,6 +3,7 @@ using System.Threading;
 using System.Windows.Forms;
 using TabControl;
 using System.Runtime.InteropServices;
+using Terminals.Data;
 
 namespace Terminals.Connections
 {
@@ -12,7 +13,7 @@ namespace Terminals.Connections
 
         private TerminalServices.TerminalServer server;
         private bool isTerminalServer = false;
-        private FavoriteConfigurationElement favorite;
+        private IFavorite favorite;
         private TerminalTabControlItem terminalTabPage;
         private MainForm parentForm;
         
@@ -80,11 +81,11 @@ namespace Terminals.Connections
                 this.OnTerminalServerStateDiscovery(host, this.isTerminalServer, this.server);
         }
 
-        public void CheckForTerminalServer(FavoriteConfigurationElement Fav)
+        public void CheckForTerminalServer(IFavorite favorite)
         {
-            if (Fav.Protocol == ConnectionManager.RDP)
+            if (favorite.Protocol == ConnectionManager.RDP)
             {
-                ThreadPool.QueueUserWorkItem(new WaitCallback(this.CheckForTS), Fav);
+                ThreadPool.QueueUserWorkItem(new WaitCallback(this.CheckForTS), favorite);
             }
 
             this.isTerminalServer = false;
@@ -97,8 +98,8 @@ namespace Terminals.Connections
         }
         
         public abstract void ChangeDesktopSize(DesktopSize Size);
-        
-        public FavoriteConfigurationElement Favorite 
+
+        public IFavorite Favorite 
         {
             get
             {

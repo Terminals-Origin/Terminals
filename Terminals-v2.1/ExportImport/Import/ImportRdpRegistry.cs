@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Win32;
 using Terminals.Connections;
+using Terminals.Data;
 
 namespace Terminals.Integration.Import
 {
@@ -57,7 +58,7 @@ namespace Terminals.Integration.Import
             int slashIndex = userKey.LastIndexOf('\\');
             string domainName = userKey.Substring(0, slashIndex);
             string userName = userKey.Substring(slashIndex + 1, userKey.Length - slashIndex - 1);
-            return FavoritesFactory.CreateNewFavorite(favoriteName, favoriteName,
+            return ConfigFavoritesFactory.CreateNewFavorite(favoriteName, favoriteName,
                 ConnectionManager.RDPPort, domainName, userName);
         }
     }

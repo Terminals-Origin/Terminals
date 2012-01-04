@@ -3,7 +3,7 @@
 namespace Terminals.Data
 {
     [Serializable]
-    public class RdpOptions
+    public class RdpOptions : ICloneable
     {
         public Boolean ConnectToConsole { get; set; }
         public Boolean GrabFocusOnConnect { get; set; }
@@ -42,6 +42,21 @@ namespace Terminals.Data
         {
             get { return this.tsGateway; }
             set { this.tsGateway = value; }
+        }
+
+        public object Clone()
+        {
+            return new RdpOptions
+                {
+                    ConnectToConsole = this.ConnectToConsole,
+                    GrabFocusOnConnect = this.GrabFocusOnConnect,
+                    FullScreen = this.FullScreen,
+                    UserInterface = this.UserInterface.Copy(),
+                    Security = this.Security.Copy(),
+                    TimeOuts = this.TimeOuts.Copy(),
+                    Redirect = this.Redirect.Copy(),
+                    TsGateway = this.TsGateway.Copy()
+                };
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using FalafelSoftware.TransPort;
+using Terminals.Data;
 
 namespace Terminals.Connections
 {
@@ -90,7 +91,7 @@ namespace Terminals.Connections
             }
         }
 
-        public FavoriteConfigurationElement Favorite
+        public IFavorite Favorite
         {
             get
             {

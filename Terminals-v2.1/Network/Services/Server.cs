@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using Terminals.Configuration;
 using Terminals.Data;
 using Unified;
 
@@ -64,11 +63,12 @@ namespace Terminals.Network
 
         private static ArrayList FavoritesToSharedList()
         {
-            var favoritesToShare = Persistance.Instance.Favorites.GetFavorites();
+            var favoritesToShare = Persistance.Instance.Favorites;
             ArrayList list = new ArrayList();
-            foreach (FavoriteConfigurationElement elem in favoritesToShare)
+            foreach (Favorite favorite in favoritesToShare)
             {
-                list.Add(SharedFavorite.ConvertFromFavorite(elem));
+                FavoriteConfigurationElement configFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite);
+                list.Add(SharedFavorite.ConvertFromFavorite(configFavorite));
             }
             return list;
         }

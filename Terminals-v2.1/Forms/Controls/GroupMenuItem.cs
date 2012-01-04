@@ -1,16 +1,27 @@
 ﻿using System;
 using System.Windows.Forms;
+using Terminals.Data;
 
 namespace Terminals.Forms.Controls
 {
     /// <summary>
     /// Custom toolstrip menu item with lazy loading
     /// </summary>
-    internal class TagMenuItem : ToolStripMenuItem
+    internal class GroupMenuItem : ToolStripMenuItem
     {
-        internal TagMenuItem()
+        /// <summary>
+        /// Stored in context menu Tag to identify virtual context menu groups by tag
+        /// </summary>
+        internal const String TAG = "tag";
+
+        internal IGroup Group { get; private set; }
+
+        internal GroupMenuItem(IGroup group)
         {
-            this.DropDown.Items.Add(TagTreeNode.DUMMY_NODE);
+            this.Group = group;
+            this.Text = group.Name;
+            this.Tag = TAG;
+            this.DropDown.Items.Add(GroupTreeNode.DUMMY_NODE);
         }
 
         /// <summary>
@@ -29,7 +40,7 @@ namespace Terminals.Forms.Controls
         internal void ClearDropDownsToEmpty()
         {
             this.DropDown.Items.Clear();
-            this.DropDown.Items.Add(TagTreeNode.DUMMY_NODE);
+            this.DropDown.Items.Add(GroupTreeNode.DUMMY_NODE);
         }
     }
 }

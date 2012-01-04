@@ -1,6 +1,7 @@
 using System;
 using System.Text;
-using Terminals.Configuration;
+using System.Windows.Forms;
+using Terminals.Data;
 
 namespace Terminals.Connections
 {
@@ -19,38 +20,28 @@ namespace Terminals.Connections
         {
             try
             {
-                this.Dock = System.Windows.Forms.DockStyle.Fill;
-
-
-                string domainName = Favorite.DomainName;
-                string pass = Favorite.Password;
-                string userName = Favorite.UserName;
-
-                if (string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
-                if (string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
-                if (string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
-
-
+                this.Dock = DockStyle.Fill;
                 this.browser.Home = Favorite.Url;
+                SecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
 
-                if (!String.IsNullOrEmpty(Favorite.UserName) && !String.IsNullOrEmpty(Favorite.Password))
+                if (!String.IsNullOrEmpty(security.UserName) && !String.IsNullOrEmpty(security.Password))
                 {
-                    string hdr = "Authorization: Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(userName + ":" + pass)) + Environment.NewLine;
-                    this.browser.Browser.Navigate(Favorite.Url, null, null, hdr);
+                    string securityValues = string.Format("{0}: {1}", security.UserName, security.Password);
+                    string securityHeader = Convert.ToBase64String(Encoding.ASCII.GetBytes(securityValues));
+                    string additionalHeaders = string.Format("Authorization: Basic {0}{1}", securityHeader, Environment.NewLine);
+                    this.browser.Browser.Navigate(Favorite.Url, null, null, additionalHeaders);
                 }
                 else
                 {
                     this.browser.Browser.Navigate(Favorite.Url);
                 }
 
-
                 this.Controls.Add(this.browser);
-                this.browser.Dock = System.Windows.Forms.DockStyle.Fill;
+                this.browser.Dock = DockStyle.Fill;
                 this.browser.Parent = this;
                 this.Parent = TerminalTabPage;
                 this.BringToFront();
                 this.browser.BringToFront();
-
             }
             catch (Exception exc)
             {

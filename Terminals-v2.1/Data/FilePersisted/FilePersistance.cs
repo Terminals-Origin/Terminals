@@ -4,25 +4,54 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using Terminals.Configuration;
+using Terminals.History;
 using Unified;
 
 namespace Terminals.Data
 {
-    internal class FilePersistance
+    internal class FilePersistance : IPersistance
     {
-        internal Favorites Favorites { get; private set; }
-        internal Groups Groups { get; private set; }
-        internal DataDispatcher Dispatcher { get; private set; }
+        private Favorites favorites;
+        public IFavorites Favorites
+        {
+            get
+            {
+                return this.favorites;
+            }
+        }
+
+        private Groups groups;
+        public IGroups Groups
+        {
+            get
+            {
+                return this.groups;
+            }
+        }
+
+        private FavoritesFactory factory;
+        public IFactory Factory
+        {
+            get { return this.factory; }
+        }
+
+        public ConnectionHistory ConnectionHistory { get; private set; }
+        public StoredCredentials Credentials { get; private set; }
+        public DataDispatcher Dispatcher { get; private set; }
 
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistance");
         private DataFileWatcher fileWatcher;
         private const string FILENAME = "Favorites.xml";
+        private bool delaySave = false;
 
-        internal FilePersistance(DataDispatcher dispatcher)
+        internal FilePersistance()
         {
-            this.Dispatcher = dispatcher;
+            this.Dispatcher = new DataDispatcher();
+            this.ConnectionHistory = new ConnectionHistory();
+            this.Credentials = new StoredCredentials();
             InitializeFileWatch();
             Load();
+            this.factory = new FavoritesFactory(this.groups, this.favorites);
         }
 
         private void InitializeFileWatch()
@@ -34,23 +63,48 @@ namespace Terminals.Data
 
         private void FavoritesFileChanged(object sender, EventArgs e)
         {
-            // todo merge the situation and call dispatcher to fire data events
+            FavoritesFile file = LoadFile();
+            this.groups.Merge(file.Groups.Cast<IGroup>().ToList());
+            this.favorites.Merge(file.Favorites.Cast<IFavorite>().ToList());
+            // first update also present groups assignment,
+            // than send the favorite update also for present favorites
+            this.UpdateFavoritesInGroups(file.FavoritesInGroups);
+            // Simple update without ensuring, if the favorite was changes or not - possible porformance issue
+            this.Dispatcher.ReportFavoritesUpdated(this.favorites.ToList());
         }
 
-        /// <summary>
-        /// Because filewatcher is created before the main form in GUI thread.
-        /// This lets to fire the file system watcher events in GUI thread. 
-        /// </summary>
-        internal void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
+        public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
         {
-            fileWatcher.AssignSynchronizer(synchronizer);
+            Settings.AssignSynchronizationObject(synchronizer);
+            this.ConnectionHistory.AssignSynchronizationObject(synchronizer);
+            this.Credentials.AssignSynchronizationObject(synchronizer);
+            this.fileWatcher.AssignSynchronizer(synchronizer);
+        }
+
+        public void StartDelayedUpdate()
+        {
+            delaySave = true;
+        }
+
+        public void SaveAndFinishDelayedUpdate()
+        {
+            delaySave = false;
+            SaveImmediatelyIfRequested();
+        }
+
+        internal void SaveImmediatelyIfRequested()
+        {
+            if (!delaySave)
+            {
+                Save();
+            }
         }
 
         private void Load()
         {
             FavoritesFile file = LoadFile();
-            this.Favorites = new Favorites(this.Dispatcher, file.Favorites);
-            this.Groups = new Groups(this.Dispatcher, file.Groups);
+            this.favorites = new Favorites(this, file.Favorites);
+            this.groups = new Groups(this, file.Groups);
             this.UpdateFavoritesInGroups(file.FavoritesInGroups);
         }
 
@@ -78,24 +132,25 @@ namespace Terminals.Data
         {
             foreach (FavoritesInGroup favoritesInGroup in favoritesInGroups)
             {
-                var group = this.Groups[favoritesInGroup.GroupId];
-                if (group != null)
-                {
-                    this.AddFavoritesToGroup(favoritesInGroup, group);
-                }
+                var group = this.Groups[favoritesInGroup.GroupId] as Group;
+                this.UpdateFavoritesInGroup(group, favoritesInGroup.Favorites);
             }
         }
 
-        private void AddFavoritesToGroup(FavoritesInGroup favoritesInGroup, Group group)
+        private void UpdateFavoritesInGroup(Group group, Guid[] favoritesInGroup)
         {
-            foreach (Guid favoriteId in favoritesInGroup.Favorites)
+            if (group != null)
             {
-                var favorite = this.Favorites[favoriteId];
-                if (favorite != null)
-                {
-                    group.AddFavorite(favorite);
-                }
+                List<IFavorite> newFavorites = GetFavoritesInGroup(favoritesInGroup);
+                group.UpdateFavorites(newFavorites);
             }
+        }
+
+        private List<IFavorite> GetFavoritesInGroup(Guid[] favoritesInGroup)
+        {
+            return this.Favorites
+                .Where(favorite => favoritesInGroup.Contains(favorite.Id))
+                .ToList();
         }
 
         private static string GetDataFileLocation()
@@ -103,7 +158,7 @@ namespace Terminals.Data
             return FileLocations.GetFullPath(FILENAME);
         }
 
-        internal void Save()
+        private void Save()
         {
             try
             {
@@ -128,8 +183,8 @@ namespace Terminals.Data
         {
             return new FavoritesFile
               {
-                  Favorites = this.Favorites.ToArray(),
-                  Groups = this.Groups.ToArray(),
+                  Favorites = this.Favorites.Cast<Favorite>().ToArray(),
+                  Groups = this.Groups.Cast<Group>().ToArray(),
                   FavoritesInGroups = GetFavoriteInGroups()
               };
         }

@@ -4,6 +4,7 @@ using System.Configuration;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Converters;
+using Terminals.Data;
 using Terminals.Network;
 using Terminals.Security;
 
@@ -872,7 +873,7 @@ namespace Terminals
         {
             get
             {
-                CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
+                CredentialSet cred = Persistance.Instance.Credentials.GetByName(Credential);
                 if (cred != null)
                     return cred.Domain;
 
@@ -917,7 +918,7 @@ namespace Terminals
             {
                 if (!string.IsNullOrEmpty(Credential))
                 {
-                    CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
+                    CredentialSet cred = Persistance.Instance.Credentials.GetByName(Credential);
                     if (cred != null)
                         return cred.Username;
                 }
@@ -950,7 +951,7 @@ namespace Terminals
         {
             get
             {
-                CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
+                CredentialSet cred = Persistance.Instance.Credentials.GetByName(Credential);
                 if (cred != null)
                     return cred.SecretKey;
 
@@ -1621,6 +1622,9 @@ namespace Terminals
             }
         }
 
+        /// <summary>
+        /// Gets or sets comma delimeted names of groups
+        /// </summary>
         [ConfigurationProperty("tags")]
         public String Tags
         {

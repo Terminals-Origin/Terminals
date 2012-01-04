@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System.Linq;
+using System.Windows.Forms;
+using Terminals.Data;
 
 namespace Terminals.Forms.Controls
 {
@@ -16,7 +18,7 @@ namespace Terminals.Forms.Controls
             loader = new FavoriteTreeListLoader(this);
         }
 
-        internal FavoriteConfigurationElement SelectedFavorite
+        internal IFavorite SelectedFavorite
         {
             get
             {
@@ -33,7 +35,7 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal void Load()
         {
-            this.loader.LoadTags();            
+            this.loader.LoadGroups();            
         }
 
         internal void UnregisterEvents()
@@ -43,83 +45,53 @@ namespace Terminals.Forms.Controls
 
         private void OnTreeViewExpand(object sender, TreeViewEventArgs e)
         {
-            TagTreeNode tagNode = e.Node as TagTreeNode;
-            if (tagNode != null)
+            GroupTreeNode groupNode = e.Node as GroupTreeNode;
+            if (groupNode != null)
             {
-                loader.LoadFavorites(tagNode);
+                loader.LoadFavorites(groupNode);
             }
         }
 
-        internal string FindSelectedTagNodeName()
+        internal GroupTreeNode FindSelectedGroupNode()
         {
             if (this.SelectedNode == null || this.SelectedNode.Parent == null)
-                return string.Empty;
-
-            var tagNode = this.SelectedNode.Parent;
-            return tagNode.Text;
-        }
-
-        internal string GetSelectedFavoriteNodeName()
-        {
-            FavoriteConfigurationElement selectedFavorite = this.SelectedFavorite;
-            if (selectedFavorite != null)
-                return selectedFavorite.Name;
-
-            return string.Empty;
-        }
-        
-        internal void RestoreSelectedFavorite(string tagNodeName, string favoriteName)
-        {
-            if (string.IsNullOrEmpty(tagNodeName) || string.IsNullOrEmpty(favoriteName))
-                return;
-
-            TreeNode tagNode = GetTagNodeByName(tagNodeName);
-            TreeNode favoriteNode = FindFavoriteNodeByName(tagNode, favoriteName);
-            if (tagNode == null || favoriteNode == null) // tag node was removed, try find another one
-                tagNode = FindFirstTagNodeContainingFavorite(favoriteName);
-
-            this.SelectedNode = FindFavoriteNodeByName(tagNode, favoriteName);
-        }
-
-        private TreeNode GetTagNodeByName(string tagName)
-        {
-            foreach (TreeNode tagNode in this.Nodes)
-            {
-                if (tagNode.Name == tagName)
-                {
-                    return tagNode;
-                }
-            }
-
-            return null;
-        }
-
-        private TreeNode FindFirstTagNodeContainingFavorite(string favoriteName)
-        {
-            foreach (TreeNode tagNode in this.Nodes)
-            {
-                var favoriteNode = FindFavoriteNodeByName(tagNode, favoriteName);
-                if (favoriteNode != null)
-                    return tagNode;
-            }
-
-            return null;
-        }
-
-        private static FavoriteTreeNode FindFavoriteNodeByName(TreeNode tagNode, string favoriteName)
-        {
-            if (tagNode == null)
                 return null;
 
-            foreach (FavoriteTreeNode favoriteNode in tagNode.Nodes)
+            var groupNode = this.SelectedNode.Parent as GroupTreeNode; // because first level nodes are Groups
+            return groupNode;
+        }
+
+        internal void RestoreSelectedFavorite(TreeNode groupNode, IFavorite favorite)
+        {
+            if (groupNode != null || favorite == null)
+                return;
+
+            TreeNode favoriteNode = FindFavoriteNodeByName(groupNode, favorite);
+            if (favoriteNode == null) // tag node was removed, try find another one
+                groupNode = this.FindFirstGroupNodeContainingFavorite(favorite);
+
+            this.SelectedNode = FindFavoriteNodeByName(groupNode, favorite);
+        }
+
+        private TreeNode FindFirstGroupNodeContainingFavorite(IFavorite favorite)
+        {
+            foreach (TreeNode groupNode in this.Nodes)
             {
-                if (favoriteNode.Favorite.Name.Equals(favoriteName))
-                {
-                    return favoriteNode;
-                }
+                var favoriteNode = FindFavoriteNodeByName(groupNode, favorite);
+                if (favoriteNode != null)
+                    return groupNode;
             }
 
             return null;
+        }
+
+        private static FavoriteTreeNode FindFavoriteNodeByName(TreeNode groupNode, IFavorite favorite)
+        {
+            if (groupNode == null)
+                return null;
+
+            return groupNode.Nodes.Cast<FavoriteTreeNode>()
+                .FirstOrDefault(favoriteNode => favoriteNode.Favorite.Equals(favorite));
         }
     }
 }

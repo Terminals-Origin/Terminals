@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Terminals.Converters;
+using Terminals.Data;
 
 namespace Terminals
 {
@@ -11,24 +12,30 @@ namespace Terminals
             InitializeComponent();
         }
 
-        public void FillControls(FavoriteConfigurationElement favorite)
+        public void FillControls(IFavorite favorite)
         {
-            BackColorTextBox.Text = favorite.ConsoleBackColor;
-            FontTextbox.Text = favorite.ConsoleFont;
-            CursorColorTextBox.Text = favorite.ConsoleCursorColor;
-            TextColorTextBox.Text = favorite.ConsoleTextColor;
-            ColumnsTextBox.Text = favorite.ConsoleCols.ToString();
-            RowsTextBox.Text = favorite.ConsoleRows.ToString();
+            var consoleOptions = favorite.ProtocolProperties as ConsoleOptions;
+            if (consoleOptions == null)
+                return;
+            BackColorTextBox.Text = consoleOptions.BackColor;
+            FontTextbox.Text = consoleOptions.Font;
+            CursorColorTextBox.Text = consoleOptions.CursorColor;
+            TextColorTextBox.Text = consoleOptions.TextColor;
+            ColumnsTextBox.Text = consoleOptions.Columns.ToString();
+            RowsTextBox.Text = consoleOptions.Rows.ToString();
         }
 
-        public void FillFavorite(FavoriteConfigurationElement favorite)
+        public void FillFavorite(IFavorite favorite)
         {
-            favorite.ConsoleBackColor = BackColorTextBox.Text;
-            favorite.ConsoleFont = FontTextbox.Text;
-            favorite.ConsoleCursorColor = CursorColorTextBox.Text;
-            favorite.ConsoleTextColor = TextColorTextBox.Text;
-            favorite.ConsoleCols = Convert.ToInt32(ColumnsTextBox.Text);
-            favorite.ConsoleRows = Convert.ToInt32(RowsTextBox.Text);
+            var consoleOptions = favorite.ProtocolProperties as ConsoleOptions;
+            if (consoleOptions == null)
+                return;
+            consoleOptions.BackColor = BackColorTextBox.Text;
+            consoleOptions.Font = FontTextbox.Text;
+            consoleOptions.CursorColor = CursorColorTextBox.Text;
+            consoleOptions.TextColor = TextColorTextBox.Text;
+            consoleOptions.Columns = Convert.ToInt32(ColumnsTextBox.Text);
+            consoleOptions.Rows = Convert.ToInt32(RowsTextBox.Text);
         }
 
         private void FontButton_Click(object sender, EventArgs e)

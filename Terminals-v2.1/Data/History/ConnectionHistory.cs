@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading;
 using System.IO;
 using Terminals.Configuration;
@@ -54,20 +53,7 @@ namespace Terminals.History
         /// </summary>
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.History");
 
-        #region Thread safe Singleton
-
-        /// <summary>
-        /// Gets the singleton instance of history provider
-        /// </summary>
-        public static ConnectionHistory Instance
-        {
-            get
-            {
-                return Nested.instance;
-            }
-        }
-
-        private ConnectionHistory()
+        internal ConnectionHistory()
         {
             fileWatcher = new DataFileWatcher(FullFileName);
             fileWatcher.FileChanged += new EventHandler(this.OnFileChanged);
@@ -76,37 +62,30 @@ namespace Terminals.History
 
         private void OnFileChanged(object sender, EventArgs e)
         {
-            SortableList<FavoriteConfigurationElement> oldTodays = GetOldTodaysHistory();
+            SortableList<IFavorite> oldTodays = GetOldTodaysHistory();
             LoadHistory(null);
-            List<FavoriteConfigurationElement> newTodays = MergeWithNewTodays(oldTodays);
-            foreach (FavoriteConfigurationElement favorite in newTodays)
+            List<IFavorite> newTodays = MergeWithNewTodays(oldTodays);
+            foreach (IFavorite favorite in newTodays)
             {
                 FireOnHistoryRecorded(favorite.Name);
             }
         }
 
-        private List<FavoriteConfigurationElement> MergeWithNewTodays(SortableList<FavoriteConfigurationElement> oldTodays)
+        private List<IFavorite> MergeWithNewTodays(SortableList<IFavorite> oldTodays)
         {
-            List<FavoriteConfigurationElement> newTodays = this.GetDateItems(HistoryByFavorite.TODAY);
+            List<IFavorite> newTodays = this.GetDateItems(HistoryByFavorite.TODAY);
             if (oldTodays != null)
                 newTodays = DataDispatcher.GetMissingFavorites(newTodays, oldTodays);
             return newTodays;
         }
 
-        private SortableList<FavoriteConfigurationElement> GetOldTodaysHistory()
+        private SortableList<IFavorite> GetOldTodaysHistory()
         {
-            SortableList<FavoriteConfigurationElement> oldTodays = null;
+            SortableList<IFavorite> oldTodays = null;
             if (this._currentHistory != null)
                 oldTodays = this.GetDateItems(HistoryByFavorite.TODAY);
             return oldTodays;
         }
-
-        private static class Nested
-        {
-            internal static readonly ConnectionHistory instance = new ConnectionHistory();
-        }
-
-        #endregion
 
         /// <summary>
         /// Because filewatcher is created before the main form in GUI thread.
@@ -117,21 +96,21 @@ namespace Terminals.History
             fileWatcher.AssignSynchronizer(synchronizer);
         }
 
-        internal SortableList<FavoriteConfigurationElement> GetDateItems(string historyDateKey)
+        internal SortableList<IFavorite> GetDateItems(string historyDateKey)
         {
             var historyGroupItems = GetGroupedByDate()[historyDateKey];
             var groupFavorites = SelectFavoritesFromHistoryItems(historyGroupItems);
-            return FavoriteConfigurationElementCollection.OrderByDefaultSorting(groupFavorites);
+            return Favorites.OrderByDefaultSorting(groupFavorites);
         }
 
-        private static SortableList<FavoriteConfigurationElement> SelectFavoritesFromHistoryItems(
+        private static SortableList<IFavorite> SelectFavoritesFromHistoryItems(
             SortableList<HistoryItem> groupedByDate)
         {
-            FavoriteConfigurationElementCollection favorites = Persistance.Instance.Favorites.GetFavorites();
-            var selection = new SortableList<FavoriteConfigurationElement>();
+            IFavorites favorites = Persistance.Instance.Favorites;
+            var selection = new SortableList<IFavorite>();
             foreach (HistoryItem favoriteTouch in groupedByDate)
             {
-                FavoriteConfigurationElement favorite = favorites[favoriteTouch.Name];
+                IFavorite favorite = favorites[favoriteTouch.Name];
                 if (favorite != null && !selection.Contains(favorite))
                     selection.Add(favorite);
             }

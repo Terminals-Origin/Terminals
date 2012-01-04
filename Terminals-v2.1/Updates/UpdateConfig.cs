@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.History;
@@ -55,43 +57,55 @@ namespace Terminals.Updates
             // only this is already in use if started with default location
             MoveDataFile(Settings.CONFIG_FILE_NAME);
             Settings.ForceReload();
-            //Settings.RebuildTagIndex(); // to ensure data consistency before import
-            //ImportTagsFromConfigFile();
-            //MoveFavoritesFromConfigFile();
-            // this will also remove all not needed tags
-            //Settings.DeleteFavorites(Settings.GetFavorites().ToList());
-            //Persistance.Instance.Save();
+            Settings.StartDelayedUpdate();
+            ImportTagsFromConfigFile();
+            MoveFavoritesFromConfigFile();
+            Settings.DeleteFavorites(Settings.GetFavorites().ToList());
+            Settings.DeleteTags(Settings.Tags.ToList());
+            ReplaceFavoriteButtonNamesByIds();
+            Settings.SaveAndFinishDelayedUpdate();
+            Persistance.Instance.Groups.Rebuild();
+            Persistance.Instance.SaveAndFinishDelayedUpdate();
+        }
+
+        private static void ReplaceFavoriteButtonNamesByIds()
+        {
+            string[] favoriteNames = Settings.FavoriteNamesToolbarButtons;
+            List<Guid> favoritesWithButton = Persistance.Instance.Favorites
+                .Where(favorite => favoriteNames.Contains(favorite.Name))
+                .Select(candidate => candidate.Id).ToList();
+
+            Settings.UpdateFavoritesToolbarButtons(favoritesWithButton);
         }
 
         private static void ImportTagsFromConfigFile()
         {
-            Groups groups = Persistance.Instance.Groups;
+            IGroups groups = Persistance.Instance.Groups;
             foreach (var tag in Settings.Tags)
             {
-                var group = new Group{Name = tag};
+                var group = Persistance.Instance.Factory.CreateGroup(tag);
                 groups.Add(group);
             }
         }
 
         private static void MoveFavoritesFromConfigFile()
         {
-            Favorites favorites = Persistance.Instance.Favorites;
+            IFavorites favorites = Persistance.Instance.Favorites;
             foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
             {
-                var favorite = FavoriteModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement);
+                var favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement);
                 UpgradeFavoriteGroups(favorite, favoriteConfigElement);
                 favorites.Add(favorite);
             }
         }
 
-        private static void UpgradeFavoriteGroups(Favorite favorite, FavoriteConfigurationElement favoriteConfigElement)
+        private static void UpgradeFavoriteGroups(IFavorite favorite, FavoriteConfigurationElement favoriteConfigElement)
         {
-            Groups groups = Persistance.Instance.Groups;
-            foreach (var tag in favoriteConfigElement.TagList)
+            IGroups groups = Persistance.Instance.Groups;
+            foreach (var groupName in favoriteConfigElement.TagList)
             {
-                Group group = groups[tag];
-                if(group != null)
-                    group.AddFavorite(favorite);
+                IGroup group = Persistance.Instance.Factory.GetOrCreateGroup(groupName);
+                group.AddFavorite(favorite);
             }
         }
 
@@ -162,11 +176,11 @@ namespace Terminals.Updates
         private static void UpdateDefaultFavoriteUrl()
         {
             var favorites = Persistance.Instance.Favorites;
-            FavoriteConfigurationElement newsFavorite = favorites.GetOneFavorite(FavoritesFactory.TerminalsReleasesFavoriteName);
+            IFavorite newsFavorite = favorites[FavoritesFactory.TerminalsReleasesFavoriteName];
             if (newsFavorite != null)
             {
                 newsFavorite.Url = Program.Resources.GetString("TerminalsURL");
-                favorites.SaveDefaultFavorite(newsFavorite);
+                Persistance.Instance.SaveAndFinishDelayedUpdate();
             }
         }
     }

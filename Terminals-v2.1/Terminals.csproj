@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Terminals</RootNamespace>
     <AssemblyName>Terminals</AssemblyName>
-    <SccProjectName>%24/Terminals/Terminals</SccProjectName>
+    <SccProjectName>%24/Terminals/Terminals-v2.1</SccProjectName>
     <SccLocalPath>.</SccLocalPath>
     <SccAuxPath>https://tfs.codeplex.com/tfs/TFS01</SccAuxPath>
     <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
@@ -192,14 +192,18 @@
     <Compile Include="CaptureManager\ImageFormatHandler.cs" />
     <Compile Include="CaptureManager\ImageFormatTypes.cs" />
     <Compile Include="Configuration\FileLocations.cs" />
-    <Compile Include="Data\FavoriteModelConverterV1ToV2.cs" />
-    <Compile Include="Data\FavoriteModelConverterV2ToV1.cs" />
+    <Compile Include="Data\FilePersisted\ConfigFavoritesFactory.cs" />
+    <Compile Include="Data\Interfaces\IFactory.cs" />
+    <Compile Include="Data\Interfaces\IFavorite.cs" />
+    <Compile Include="Data\Interfaces\IGroup.cs" />
+    <Compile Include="Data\ModelConverterV1ToV2.cs" />
+    <Compile Include="Data\ModelConverterV2ToV1.cs" />
     <Compile Include="Data\Favorites\ConsoleOptions.cs" />
     <Compile Include="Data\Favorites\DisplayOptions.cs" />
     <Compile Include="Data\Favorites\BeforeConnectExecuteOptions.cs" />
     <Compile Include="Data\Favorites\Favorite.cs" />
-    <Compile Include="Data\Favorites\FavoritesFile.cs" />
-    <Compile Include="Data\Favorites\FavoritesInGroup.cs" />
+    <Compile Include="Data\FilePersisted\FavoritesFile.cs" />
+    <Compile Include="Data\FilePersisted\FavoritesInGroup.cs" />
     <Compile Include="Data\Favorites\Group.cs" />
     <Compile Include="Data\Favorites\ICAOptions.cs" />
     <Compile Include="Data\Favorites\RdpOptions.cs" />
@@ -212,10 +216,14 @@
     <Compile Include="Data\Favorites\SshOptions.cs" />
     <Compile Include="Data\Favorites\VMRCOptions.cs" />
     <Compile Include="Data\Favorites\VncOptions.cs" />
-    <Compile Include="Data\FilePersistance.cs" />
+    <Compile Include="Data\FilePersisted\FilePersistance.cs" />
+    <Compile Include="Data\Interfaces\IFavorites.cs" />
+    <Compile Include="Data\Interfaces\IGroups.cs" />
+    <Compile Include="Data\Interfaces\IPersistance.cs" />
     <Compile Include="Data\Persistance.cs" />
-    <Compile Include="Data\Favorites\Groups.cs" />
-    <Compile Include="Data\Favorites\Favorites.cs" />
+    <Compile Include="Data\FilePersisted\Groups.cs" />
+    <Compile Include="Data\FilePersisted\Favorites.cs" />
+    <Compile Include="Forms\Controls\GroupListViewItem.cs" />
     <Compile Include="Network\HelperFunctions.cs" />
     <Compile Include="Network\Services\CommandLineServer.cs" />
     <Compile Include="Network\Services\CommandLineService.cs" />
@@ -348,8 +356,8 @@
     <Compile Include="Data\FavoritesChangedEventArgs.cs" />
     <Compile Include="Forms\Controls\FavoriteIcons.cs" />
     <Compile Include="Forms\Controls\FavoritesMenuLoader.cs" />
-    <Compile Include="Data\ListStringHelper.cs" />
-    <Compile Include="Data\TagsChangedArgs.cs" />
+    <Compile Include="Data\ListsHelper.cs" />
+    <Compile Include="Data\GroupsChangedArgs.cs" />
     <Compile Include="DiskDrivesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -394,7 +402,7 @@
     <Compile Include="Forms\Controls\IPAddressControl\IPAddressFieldControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\Controls\TagMenuItem.cs">
+    <Compile Include="Forms\Controls\GroupMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\OptionPanels\DefaultPasswordOptionPanel.Designer.cs">
@@ -433,7 +441,7 @@
     <Compile Include="Forms\Render\Office2007BlueColorTable.cs" />
     <Compile Include="Forms\Render\Office2007Helpers.cs" />
     <Compile Include="Forms\Render\Office2007Renderer.cs" />
-    <Compile Include="Forms\Controls\TagTreeNode.cs" />
+    <Compile Include="Forms\Controls\GroupTreeNode.cs" />
     <Compile Include="Data\History\ConnectionHistory.cs" />
     <Compile Include="Data\History\HistoryByFavorite.cs" />
     <Compile Include="Data\History\HistoryItem.cs" />
@@ -557,7 +565,7 @@
     <Compile Include="Data\SerializableDictionary.cs" />
     <Compile Include="Data\SerializableSortedDictionary.cs" />
     <Compile Include="Settings\ConfigurationChangedEventArgs.cs" />
-    <Compile Include="Settings\FavoritesFactory.cs" />
+    <Compile Include="Data\FilePersisted\FavoritesFactory.cs" />
     <Compile Include="Settings\Settings_FavoriteButtons.cs" />
     <Compile Include="Settings\Settings_Favorites.cs" />
     <Compile Include="Settings\Settings_FileAccess.cs" />
@@ -1379,6 +1387,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

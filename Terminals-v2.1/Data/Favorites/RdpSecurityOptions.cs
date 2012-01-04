@@ -5,7 +5,7 @@ namespace Terminals.Data
     [Serializable]
     public class RdpSecurityOptions
     {
-        public Boolean EnableSecuritySettings { get; set; }
+        public Boolean Enabled { get; set; }
         public Boolean EnableEncryption { get; set; }
         
         public Boolean EnableTLSAuthentication { get; set; }
@@ -35,6 +35,19 @@ namespace Terminals.Data
             {
                 this.startProgram = value;
             }
+        }
+
+        internal RdpSecurityOptions Copy()
+        {
+            return new RdpSecurityOptions
+                {
+                    Enabled = this.Enabled,
+                    EnableEncryption = this.EnableEncryption,
+                    EnableNLAAuthentication = this.EnableNLAAuthentication,
+                    EnableTLSAuthentication = this.EnableTLSAuthentication,
+                    WorkingFolder = this.WorkingFolder,
+                    StartProgram = this.StartProgram
+                };
         }
     }
 }

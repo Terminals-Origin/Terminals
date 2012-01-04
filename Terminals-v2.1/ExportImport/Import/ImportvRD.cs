@@ -8,6 +8,7 @@ using System.Security.Principal;
 using System.IO;
 using System.Xml.Serialization;
 using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Forms;
 using vRdImport;
 
@@ -105,21 +106,22 @@ namespace Terminals.Integration.Import
 
         private void SaveCredentials(Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials)
         {
+            StoredCredentials storedCredentials = Persistance.Instance.Credentials;
             foreach (string guid in credentials.Keys)
             {
                 vRDConfigurationFileCredentialsFolderCredentials toImport = credentials[guid];
                 //will store the last one if the same credential name 
-                CredentialSet destination = StoredCredentials.Instance.GetByName(toImport.Name);
+                CredentialSet destination = storedCredentials.GetByName(toImport.Name);
                 if (destination == null)
                 {
                   destination = new CredentialSet();
-                  StoredCredentials.Instance.Add(destination);
+                  storedCredentials.Add(destination);
                 }
 
                 UpdateFromvrDCredentials(toImport, destination);
             }
 
-            StoredCredentials.Instance.Save();
+            storedCredentials.Save();
         }
 
       private static void UpdateFromvrDCredentials(vRDConfigurationFileCredentialsFolderCredentials source,

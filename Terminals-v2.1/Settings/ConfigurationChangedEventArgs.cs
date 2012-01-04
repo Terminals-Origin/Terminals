@@ -16,9 +16,6 @@ namespace Terminals.Configuration
         internal List<String> OldTags { get; private set; }
         internal List<String> NewTags { get; private set; }
 
-        internal List<String> OldFavoriteButtons { get; private set; }
-        internal List<String> NewFavoriteButtons { get; private set; }
-
         internal static ConfigurationChangedEventArgs CreateFromSettings(
           TerminalsConfigurationSection oldSettings,
           TerminalsConfigurationSection newSettings)
@@ -29,14 +26,11 @@ namespace Terminals.Configuration
           args.NewFavorites = newSettings.Favorites.ToList();
           args.OldTags = oldSettings.Tags.ToList();
           args.NewTags = newSettings.Tags.ToList();
-          args.OldFavoriteButtons = oldSettings.FavoritesButtons.ToList();
-          args.NewFavoriteButtons = newSettings.FavoritesButtons.ToList();
 
           return args;
         }
 
-        internal static ConfigurationChangedEventArgs CreateFromButtons(
-          List<string> oldFavoriteButtons, List<string> newFavoriteButtons)
+        internal static ConfigurationChangedEventArgs CreateFromButtons()
         {
             var args = new ConfigurationChangedEventArgs();
 
@@ -44,8 +38,6 @@ namespace Terminals.Configuration
             args.NewFavorites = new List<FavoriteConfigurationElement>();
             args.OldTags = new List<string>();
             args.NewTags = new List<string>();
-            args.OldFavoriteButtons = oldFavoriteButtons;
-            args.NewFavoriteButtons = newFavoriteButtons;
 
             return args;
         }

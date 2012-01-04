@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Forms.Controls
@@ -15,9 +14,14 @@ namespace Terminals.Forms.Controls
         private const String importSuffix = "_(imported)";
         private Form sourceForm;
 
-        private static Favorites PersistedFavorites
+        private static IFavorites PersistedFavorites
         {
             get { return Persistance.Instance.Favorites; }
+        }
+
+        private static IGroups PersistedGroups
+        {
+            get { return Persistance.Instance.Groups; }
         }
 
         internal ImportWithDialogs(Form sourceForm)
@@ -48,39 +52,62 @@ namespace Terminals.Forms.Controls
         {
             List<FavoriteConfigurationElement> conflictingFavorites = GetConflictingFavorites(favoritesToImport);
             DialogResult renameAnswer = AskIfOverwriteOrRename(conflictingFavorites.Count);
-            return this.PerformImport(favoritesToImport, conflictingFavorites, renameAnswer);
-        }
-
-        private Boolean PerformImport(List<FavoriteConfigurationElement> favoritesToImport,
-            List<FavoriteConfigurationElement> conflictingFavorites, DialogResult renameAnswer)
-        {
             if (renameAnswer == DialogResult.Yes)
                 RenameConflictingFavorites(conflictingFavorites);
-
+                  
             if (renameAnswer != DialogResult.Cancel)
             {
-                PersistedFavorites.AddFavorites(favoritesToImport);
+                PerformImport(favoritesToImport);
                 return true;
             }
 
             return false;
         }
 
-        private void RenameConflictingFavorites(List<FavoriteConfigurationElement> conflictingFavorites)
+        private static void PerformImport(List<FavoriteConfigurationElement> configFavoritesToImport)
         {
-            FavoriteConfigurationElementCollection savedFavorites = PersistedFavorites.GetFavorites();
-            foreach (FavoriteConfigurationElement favoriteToRename in conflictingFavorites)
+            var favorites = new List<IFavorite>();
+            foreach (FavoriteConfigurationElement configFavorite in configFavoritesToImport)
             {
-                this.AddImportSuffixToFavorite(favoriteToRename, savedFavorites);
+                IFavorite favorite = PrepareFavoriteToImport(configFavorite);
+                favorites.Add(favorite);
+                AddFavoriteIntoGroups(configFavorite, favorite);
+            }
+
+            PersistedFavorites.Add(favorites);
+        }
+
+        private static void AddFavoriteIntoGroups(FavoriteConfigurationElement configFavorite, IFavorite favorite)
+        {
+            foreach (string groupName in configFavorite.TagList)
+            {
+                IGroup group = Persistance.Instance.Factory.GetOrCreateGroup(groupName);
+                group.AddFavorite(favorite);
             }
         }
 
-        private void AddImportSuffixToFavorite(FavoriteConfigurationElement favoriteToRename,
-                                    FavoriteConfigurationElementCollection savedFavorites)
+        private static IFavorite PrepareFavoriteToImport(FavoriteConfigurationElement configFavorite)
+        {
+            var favorite = ModelConverterV1ToV2.ConvertToFavorite(configFavorite);
+            var oldFavorite = PersistedFavorites[favorite.Name];
+            if (oldFavorite != null) // force to override old favorite
+                favorite.Id = oldFavorite.Id;
+            return favorite;
+        }
+
+        private void RenameConflictingFavorites(List<FavoriteConfigurationElement> conflictingFavorites)
+        {
+            foreach (FavoriteConfigurationElement favoriteToRename in conflictingFavorites)
+            {
+                this.AddImportSuffixToFavorite(favoriteToRename);
+            }
+        }
+
+        private void AddImportSuffixToFavorite(FavoriteConfigurationElement favoriteToRename)
         {
             favoriteToRename.Name += importSuffix;
-            if (savedFavorites[favoriteToRename.Name] != null)
-                this.AddImportSuffixToFavorite(favoriteToRename, savedFavorites);
+            if (PersistedFavorites[favoriteToRename.Name] != null)
+                this.AddImportSuffixToFavorite(favoriteToRename);
         }
 
         private static DialogResult AskIfOverwriteOrRename(Int32 conflictingFavoritesCount)
@@ -107,10 +134,10 @@ namespace Terminals.Forms.Controls
         private static List<FavoriteConfigurationElement> GetConflictingFavorites(List<FavoriteConfigurationElement> favorites)
         {
             var conflictingFavorites = new List<FavoriteConfigurationElement>();
-            FavoriteConfigurationElementCollection savedFavorites = PersistedFavorites.GetFavorites();
+
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
-                if (savedFavorites[favorite.Name] != null)
+                if (PersistedFavorites[favorite.Name] != null)
                 {
                     conflictingFavorites.Add(favorite);
                 }

@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Terminals.Data;
 
 namespace Terminals.Connections
 {
@@ -27,12 +28,12 @@ namespace Terminals.Connections
         private const int MAX_WIDTH = 4096;
         private const int MAX_HEIGHT = 2048;
 
-        public static Size GetSize(Connection Connection, FavoriteConfigurationElement favorite)
+        public static Size GetSize(Connection Connection, IFavorite favorite)
         {
-            int height = favorite.DesktopSizeHeight;
-            int width = favorite.DesktopSizeWidth;
+            int height = favorite.Display.Height;
+            int width = favorite.Display.Width;
 
-            switch (favorite.DesktopSize)
+            switch (favorite.Display.DesktopSize)
             {
                 case DesktopSize.x640:
                     return new Size(640, 480);
@@ -65,18 +66,18 @@ namespace Terminals.Connections
             return new Size(width, height);
         }
 
-        internal static IConnection CreateConnection(FavoriteConfigurationElement Favorite,
+        internal static IConnection CreateConnection(IFavorite favorite,
           TerminalTabControlItem TerminalTabPage, MainForm parentForm)
         {
-            IConnection conn = CreateConnection(Favorite);
-            conn.Favorite = Favorite;
+            IConnection conn = CreateConnection(favorite);
+            conn.Favorite = favorite;
             TerminalTabPage.Connection = conn;
             conn.TerminalTabPage = TerminalTabPage;
             conn.ParentForm = parentForm;
             return conn;
         }
 
-        private static IConnection CreateConnection(FavoriteConfigurationElement Favorite)
+        private static IConnection CreateConnection(IFavorite Favorite)
         {
             switch (Favorite.Protocol)
             {

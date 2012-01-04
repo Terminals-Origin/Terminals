@@ -8,22 +8,25 @@ namespace Terminals.Data
     /// Temoporary used also to suport imports and export using old data model, 
     /// before they will be updated.
     /// </summary>
-    internal static class FavoriteModelConverterV1ToV2
+    internal static class ModelConverterV1ToV2
     {
-        internal static Favorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite)
+        /// <summary>
+        /// Doesnt convert Tags to groups, it has to be handled manualy, 
+        /// when adding Favorite into Persistance
+        /// </summary>
+        internal static IFavorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite)
         {
-            var result = new Favorite();
+            var result = Persistance.Instance.Factory.CreateFavorite();
             ConvertGeneralProperties(result, sourceFavorite);
             ConvertSecurity(result, sourceFavorite);
             ConvertBeforeConnetExecute(result, sourceFavorite);
             ConvertDisplay(result, sourceFavorite);
             ConvertProtocolOptions(result, sourceFavorite);
 
-            // todo convert groups/Tags
             return result;
         }
 
-        private static void ConvertGeneralProperties(Favorite result, FavoriteConfigurationElement sourceFavorite)
+        private static void ConvertGeneralProperties(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             result.Name = sourceFavorite.Name;
             result.Protocol = sourceFavorite.Protocol;
@@ -34,8 +37,8 @@ namespace Terminals.Data
             result.DesktopShare = sourceFavorite.DesktopShare;
             result.Notes = sourceFavorite.Notes;
         }
-        
-        private static void ConvertSecurity(Favorite result, FavoriteConfigurationElement sourceFavorite)
+
+        private static void ConvertSecurity(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             SecurityOptions security = result.Security;
             security.DomainName = sourceFavorite.DomainName;
@@ -44,17 +47,17 @@ namespace Terminals.Data
             security.Credential = sourceFavorite.Credential;
         }
 
-        private static void ConvertBeforeConnetExecute(Favorite result, FavoriteConfigurationElement sourceFavorite)
+        private static void ConvertBeforeConnetExecute(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
-            BeforeConnectExecuteOptions executeOptions = result.BeforeConnectExecute;
+            BeforeConnectExecuteOptions executeOptions = result.ExecuteBeforeConnect;
             executeOptions.Execute = sourceFavorite.ExecuteBeforeConnect;
             executeOptions.Command = sourceFavorite.ExecuteBeforeConnectCommand;
-            executeOptions.ExecuteBeforeConnectArgs = sourceFavorite.ExecuteBeforeConnectArgs;
+            executeOptions.CommandArguments = sourceFavorite.ExecuteBeforeConnectArgs;
             executeOptions.InitialDirectory = sourceFavorite.ExecuteBeforeConnectInitialDirectory;
             executeOptions.WaitForExit = sourceFavorite.ExecuteBeforeConnectWaitForExit;
         }
 
-        private static void ConvertDisplay(Favorite result, FavoriteConfigurationElement sourceFavorite)
+        private static void ConvertDisplay(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             DisplayOptions display = result.Display;
             display.Colors = sourceFavorite.Colors;
@@ -63,9 +66,8 @@ namespace Terminals.Data
             display.Height = sourceFavorite.DesktopSizeHeight;
         }
 
-        private static void ConvertProtocolOptions(Favorite result, FavoriteConfigurationElement sourceFavorite)
+        private static void ConvertProtocolOptions(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
-            result.UpdateProtocolPropertiesByProtocol();
             switch (result.Protocol)
             {
                 case ConnectionManager.VNC:
@@ -90,22 +92,22 @@ namespace Terminals.Data
             }
         }
 
-        private static void ConvertVncOptions(Favorite result, FavoriteConfigurationElement sourceFavorite)
+        private static void ConvertVncOptions(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             var options = result.ProtocolProperties as VncOptions;
             options.AutoScale = sourceFavorite.VncAutoScale;
             options.DisplayNumber = sourceFavorite.VncDisplayNumber;
             options.ViewOnly = sourceFavorite.VncViewOnly;
         }
-        
-        private static void ConvertVMRCOptions(Favorite result, FavoriteConfigurationElement sourceFavorite)
+
+        private static void ConvertVMRCOptions(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             var options = result.ProtocolProperties as VMRCOptions;
             options.AdministratorMode = sourceFavorite.VMRCAdministratorMode;
             options.ReducedColorsMode = sourceFavorite.VMRCReducedColorsMode;
         }
 
-        private static void ConvertConsoleOptions(Favorite result, FavoriteConfigurationElement sourceFavorite)
+        private static void ConvertConsoleOptions(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             var options = result.ProtocolProperties as ConsoleOptions;
             options.BackColor = sourceFavorite.ConsoleBackColor;
@@ -116,7 +118,7 @@ namespace Terminals.Data
             options.Font = sourceFavorite.ConsoleFont;
         }
 
-        private static void ConvertICAOptions(Favorite result, FavoriteConfigurationElement sourceFavorite)
+        private static void ConvertICAOptions(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             var options = result.ProtocolProperties as ICAOptions;
             options.ApplicationName = sourceFavorite.ICAApplicationName;
@@ -127,8 +129,8 @@ namespace Terminals.Data
             options.EnableEncryption = sourceFavorite.IcaEnableEncryption;
             options.EncryptionLevel = sourceFavorite.IcaEncryptionLevel;
         }
-      
-        private static void ConvertRdpOptions(Favorite result, FavoriteConfigurationElement sourceFavorite)
+
+        private static void ConvertRdpOptions(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             var options = result.ProtocolProperties as RdpOptions;
             options.ConnectToConsole = sourceFavorite.ConnectToConsole;
@@ -146,7 +148,7 @@ namespace Terminals.Data
         {
             resultSecurity.EnableEncryption = sourceFavorite.EnableEncryption;
             resultSecurity.EnableNLAAuthentication = sourceFavorite.EnableNLAAuthentication;
-            resultSecurity.EnableSecuritySettings = sourceFavorite.EnableSecuritySettings;
+            resultSecurity.Enabled = sourceFavorite.EnableSecuritySettings;
             resultSecurity.EnableTLSAuthentication = sourceFavorite.EnableTLSAuthentication;
             resultSecurity.StartProgram = sourceFavorite.SecurityStartProgram;
             resultSecurity.WorkingFolder = sourceFavorite.SecurityWorkingFolder;

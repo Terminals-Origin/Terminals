@@ -42,30 +42,10 @@ namespace Terminals.Configuration
         private DataFileWatcher fileWatcher;
         internal event EventHandler CredentialsChanged;
 
-        #region Thread safe singleton
-
-        /// <summary>
-        /// Gets the singleton instance with cached credentials
-        /// </summary>
-        public static StoredCredentials Instance
-        {
-            get
-            {
-                return Nested.instance;
-            }
-        }
-
-        private static class Nested
-        {
-            internal static readonly StoredCredentials instance = new StoredCredentials();
-        }
-
-        #endregion
-
         /// <summary>
         /// Prevents creating from other class
         /// </summary>
-        private StoredCredentials()
+        internal StoredCredentials()
         {
             this.cache = new List<CredentialSet>();
             string configFileName = GetEnsuredCredentialsFileLocation();
@@ -150,7 +130,7 @@ namespace Terminals.Configuration
 
         private static string GetEnsuredCredentialsFileLocation()
         {
-            // TODO not configurable location of credentials file (Jiri Pokorny, 08.07.2011)
+            // TODO REFACTORING not configurable location of credentials file (Jiri Pokorny, 08.07.2011)
             string fileLocation = Settings.SavedCredentialsLocation;
             if (string.IsNullOrEmpty(fileLocation))
             {

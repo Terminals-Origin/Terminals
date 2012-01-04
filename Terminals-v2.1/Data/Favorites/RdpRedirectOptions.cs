@@ -58,16 +58,30 @@ namespace Terminals.Data
             }
             set
             {
-                String drives = String.Empty;
+                String newdrives = String.Empty;
                 for (Int32 i = 0; i < value.Count; i++)
                 {
-                    drives += value[i];
+                    newdrives += value[i];
                     if (i < value.Count - 1)
-                        drives += ";";
+                        newdrives += ";";
                 }
 
-                drives = drives;
+                drives = newdrives;
             }
+        }
+
+        internal RdpRedirectOptions Copy()
+        {
+            return new RdpRedirectOptions
+                {
+                    Ports = this.Ports,
+                    Printers = this.Printers,
+                    SmartCards = this.SmartCards,
+                    Devices = this.Devices,
+                    Sounds = this.Sounds,
+                    Clipboard = this.Clipboard,
+                    drives = this.drives
+                };
         }
     }
 }

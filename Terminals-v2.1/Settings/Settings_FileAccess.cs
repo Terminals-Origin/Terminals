@@ -150,7 +150,7 @@ namespace Terminals.Configuration
                 }
             }
         }
-
+        
         private static void Save()
         {
             fileWatcher.StopObservation();

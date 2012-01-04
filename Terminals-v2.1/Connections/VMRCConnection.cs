@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using AxVMRCClientControlLib;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Connections
 {
@@ -26,24 +27,16 @@ namespace Terminals.Connections
                 vmrc.Parent = TerminalTabPage;
                 this.Parent = TerminalTabPage;
 
-                //vmrc.CtlAutoSize = true;
-
-                string domainName = Favorite.DomainName;
-                string pass = Favorite.Password;
-                string userName = Favorite.UserName;
-
-                if (string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
-                if (string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
-                if (string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
-
-                // vmrc.Dock = DockStyle.Fill;
-                vmrc.UserName = userName;
                 vmrc.ServerAddress = Favorite.ServerName;
                 vmrc.ServerPort = Favorite.Port;
-                vmrc.UserDomain = domainName;
-                vmrc.UserPassword = pass;
-                vmrc.AdministratorMode = Favorite.VMRCAdministratorMode;
-                vmrc.ReducedColorsMode = Favorite.VMRCReducedColorsMode;
+                SecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+                vmrc.UserName = security.UserName;
+                vmrc.UserDomain = security.DomainName;
+                vmrc.UserPassword = security.Password;
+
+                var options = this.Favorite.ProtocolProperties as VMRCOptions;
+                vmrc.AdministratorMode = options.AdministratorMode;
+                vmrc.ReducedColorsMode = options.ReducedColorsMode;
 
                 Size size = ConnectionManager.GetSize(this, Favorite);
                 //vmrc.ServerDisplayHeight = size.Height;

@@ -2,6 +2,7 @@ using System;
 using System.Net.Sockets;
 using Terminals.Configuration;
 using Terminals.Converters;
+using Terminals.Data;
 using WalburySoftware;
 
 namespace Terminals.Connections
@@ -47,29 +48,27 @@ namespace Terminals.Connections
                 this.Parent = TerminalTabPage;
                 term.Dock = System.Windows.Forms.DockStyle.Fill;
 
-                AssignTerminalCollors();
-                term.Font = FontParser.FromString(Favorite.ConsoleFont);
-
-                term.Rows = Favorite.ConsoleRows;
-                term.Columns = Favorite.ConsoleCols;
+                ConsoleOptions consoleOptions = GetConsoleOptions();
+                AssignTerminalCollors(consoleOptions);
+                term.Font = FontParser.FromString(consoleOptions.Font);
+                term.Rows = consoleOptions.Rows;
+                term.Columns = consoleOptions.Columns;
 
                 this.client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 this.client.Connect(Favorite.ServerName, Favorite.Port);
 
-                String password = String.IsNullOrEmpty(Favorite.Password) ? Settings.DefaultPassword : Favorite.Password;
-                String userName = String.IsNullOrEmpty(Favorite.UserName) ? Settings.DefaultUsername : Favorite.UserName;
-
+                SecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
                 switch (Favorite.Protocol)
                 {
                     case ConnectionManager.TELNET:
                         {
-                           protocol = ConfigureTelnetConnection(userName, password);
+                           protocol = ConfigureTelnetConnection(security);
                         }
                         break;
 
                     case ConnectionManager.SSH:
                         {
-                            protocol = ConfigureSshConnection(userName, password);
+                            protocol = ConfigureSshConnection(security);
                         }
                         break;
                 }
@@ -84,15 +83,24 @@ namespace Terminals.Connections
             }
         }
 
-        private string ConfigureTelnetConnection(string userName, string password)
+        private ConsoleOptions GetConsoleOptions()
+        {
+            var consoleOptions = this.Favorite.ProtocolProperties as ConsoleOptions;
+            if (consoleOptions != null)
+                return consoleOptions;
+
+            return (this.Favorite.ProtocolProperties as SshOptions).Console;
+        }
+
+        private string ConfigureTelnetConnection(SecurityOptions security)
         {
             TcpProtocol tcpProtocol = new TcpProtocol(new NetworkStream(this.client));
             TelnetProtocol p = new TelnetProtocol();
             tcpProtocol.OnDataIndicated += p.IndicateData;
             tcpProtocol.OnDisconnect += this.OnDisconnected;
             p.TerminalType = this.term.TerminalType;
-            p.Username = userName;
-            p.Password = password;
+            p.Username = security.UserName;
+            p.Password = security.Password;
             p.OnDataIndicated += this.term.IndicateData;
             p.OnDataRequested += tcpProtocol.RequestData;
             this.term.OnDataRequested += p.RequestData;
@@ -101,7 +109,7 @@ namespace Terminals.Connections
             return ConnectionManager.TELNET;
         }
 
-        private string ConfigureSshConnection(string userName, string password)
+        private string ConfigureSshConnection(SecurityOptions security)
         {
             this.sshProtocol = new SSHClient.Protocol();
             this.sshProtocol.setTerminalParams(term.TerminalType, term.Rows, term.Columns);
@@ -110,23 +118,24 @@ namespace Terminals.Connections
             term.OnDataRequested += this.sshProtocol.RequestData;
 
             String key = String.Empty;
-            SSHClient.KeyConfigElement keyConfigElement = Settings.SSHKeys.Keys[Favorite.KeyTag];
+            var options = this.Favorite.ProtocolProperties as SshOptions;
+            SSHClient.KeyConfigElement keyConfigElement = Settings.SSHKeys.Keys[options.CertificateKey];
 
             if (keyConfigElement != null)
                 key = keyConfigElement.Key;
 
-            this.sshProtocol.setProtocolParams(Favorite.AuthMethod, userName, password, key, Favorite.SSH1);
+            this.sshProtocol.setProtocolParams(options.AuthMethod, security.UserName, security.Password, key, options.SSH1);
 
             this.sshProtocol.Connect(client);
             this.connected = true; // SSH will throw if fails
-            return (Favorite.SSH1) ? "SSH1" : "SSH2";
+            return (options.SSH1) ? "SSH1" : "SSH2";
         }
 
-        private void AssignTerminalCollors()
+        private void AssignTerminalCollors(ConsoleOptions consoleOptions)
         {
-            this.term.BackColor = ColorParser.FromString(this.Favorite.ConsoleBackColor);
-            this.term.ForeColor = ColorParser.FromString(this.Favorite.ConsoleTextColor);
-            this.term.BlinkColor = ColorParser.FromString(this.Favorite.ConsoleCursorColor);
+            this.term.BackColor = ColorParser.FromString(consoleOptions.BackColor);
+            this.term.ForeColor = ColorParser.FromString(consoleOptions.TextColor);
+            this.term.BlinkColor = ColorParser.FromString(consoleOptions.CursorColor);
         }
 
         private void OnDisconnected()

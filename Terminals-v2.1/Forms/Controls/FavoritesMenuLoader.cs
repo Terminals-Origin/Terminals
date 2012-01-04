@@ -16,7 +16,7 @@ namespace Terminals.Forms.Controls
     internal class FavoritesMenuLoader
     {
         private ToolStripMenuItem favoritesToolStripMenuItem;
-        private TagMenuItem untaggedToolStripMenuItem;
+        private GroupMenuItem untaggedToolStripMenuItem;
         private ToolStripComboBox tscConnectTo;
         private EventHandler serverToolStripMenuItem_Click;
         private ToolStrip favoriteToolBar;
@@ -42,15 +42,10 @@ namespace Terminals.Forms.Controls
         private ToolStripMenuItem mgmt;
         private ToolStripMenuItem cpl;
         private ToolStripMenuItem other;
-        private TagMenuItem unTaggedQuickMenuItem;
+        private GroupMenuItem unTaggedQuickMenuItem;
         private ToolStripMenuItem alphabeticalMenu;
         private ToolStripItem restoreScreenMenuItem;
         private ToolStripItem fullScreenMenuItem;
-
-        /// <summary>
-        /// Stored in context menu Tag to identify virtual context menu groups by tag
-        /// </summary>
-        internal const String TAG = "tag";
 
         /// <summary>
         /// Stored in context menu Tag to identify favorite context menu items
@@ -62,12 +57,12 @@ namespace Terminals.Forms.Controls
             get { return this.quickContextMenu.Items.IndexOf(this.alphabeticalMenu); }
         }
 
-        private Groups PersistedGroups
+        private static IGroups PersistedGroups
         {
             get { return Persistance.Instance.Groups; }
         }
 
-        private static Favorites PersistedFavorites
+        private static IFavorites PersistedFavorites
         {
             get { return Persistance.Instance.Favorites; }
         }
@@ -89,7 +84,7 @@ namespace Terminals.Forms.Controls
             UpdateMenuAndContextMenu();
             
             DataDispatcher dispatcher = Persistance.Instance.Dispatcher;
-            dispatcher.TagsChanged += new TagsChangedEventHandler(this.OnDataChanged);
+            dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.OnDataChanged);
             dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnDataChanged);
             Settings.ConfigurationChanged += new ConfigurationChangedHandler(this.OnSettingsConfigurationChanged);
         }
@@ -115,7 +110,7 @@ namespace Terminals.Forms.Controls
 
         private void CreateUntaggedItem()
         {
-            this.untaggedToolStripMenuItem = CreateTagMenuItem(Settings.UNTAGGED_NODENAME);
+            this.untaggedToolStripMenuItem = CreateUntaggedGroupMenuItem();
             this.untaggedToolStripMenuItem.DropDownOpening += new EventHandler(this.OnTagMenuDropDownOpening);
             this.favoritesToolStripMenuItem.DropDownItems.Add(this.untaggedToolStripMenuItem);
         }
@@ -140,7 +135,7 @@ namespace Terminals.Forms.Controls
 
         private void AddUntaggedQuickContextMenu()
         {
-            this.unTaggedQuickMenuItem = CreateTagMenuItem(Settings.UNTAGGED_NODENAME);
+            this.unTaggedQuickMenuItem = CreateUntaggedGroupMenuItem();
             unTaggedQuickMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
             unTaggedQuickMenuItem.DropDownOpening += new EventHandler(OnTagTrayMenuItemDropDownOpening);
             this.quickContextMenu.Items.Add(unTaggedQuickMenuItem);
@@ -158,9 +153,7 @@ namespace Terminals.Forms.Controls
         private void ReFreshConnectionsComboBox()
         {
             this.tscConnectTo.Items.Clear();
-            String[] connectionNames = PersistedFavorites.GetFavorites()
-                .ToList()
-                .Select(favorite => favorite.Name).ToArray();
+            String[] connectionNames = PersistedFavorites.Select(favorite => favorite.Name).ToArray();
             this.tscConnectTo.Items.AddRange(connectionNames);
         }
 
@@ -192,9 +185,9 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private void CreateTagsToolStripMenuItems()
         {
-            foreach (String tag in PersistedGroups.Tags)
+            foreach (Group group in PersistedGroups)
             {
-                ToolStripMenuItem tagMenu = CreateTagMenuItem(tag);
+                ToolStripMenuItem tagMenu = new GroupMenuItem(group);
                 tagMenu.DropDownOpening += new EventHandler(this.OnTagMenuDropDownOpening);
                 this.favoritesToolStripMenuItem.DropDownItems.Add(tagMenu);
             }
@@ -205,20 +198,20 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private void OnTagMenuDropDownOpening(object sender, EventArgs e)
         {
-            TagMenuItem tagMenu = sender as TagMenuItem;
-            if (tagMenu.IsEmpty)
+            GroupMenuItem groupMenu = sender as GroupMenuItem;
+            if (groupMenu.IsEmpty)
             {
-                tagMenu.DropDown.Items.Clear();
-                List<FavoriteConfigurationElement> tagFavorites = PersistedFavorites.GetSortedFavoritesByTag(tagMenu.Text);
-                foreach (FavoriteConfigurationElement favorite in tagFavorites)
+                groupMenu.DropDown.Items.Clear();
+                List<IFavorite> tagFavorites = Favorites.OrderByDefaultSorting(groupMenu.Group.Favorites);
+                foreach (Favorite favorite in tagFavorites)
                 {
                     ToolStripMenuItem item = this.CreateToolStripItemByFavorite(favorite);
-                    tagMenu.DropDown.Items.Add(item);
+                    groupMenu.DropDown.Items.Add(item);
                 }
             }
         }
 
-        private ToolStripMenuItem CreateToolStripItemByFavorite(FavoriteConfigurationElement favorite)
+        private ToolStripMenuItem CreateToolStripItemByFavorite(Favorite favorite)
         {
             ToolStripMenuItem item = CreateFavoriteMenuItem(favorite);
             item.Click += this.serverToolStripMenuItem_Click;
@@ -246,16 +239,15 @@ namespace Terminals.Forms.Controls
 
         private void CreateFavoriteButtons()
         {
-            FavoriteConfigurationElementCollection favorites = PersistedFavorites.GetFavorites();
-            foreach (String favoriteName in Settings.FavoritesToolbarButtons)
+            foreach (Guid favoriteId in Settings.FavoritesToolbarButtons)
             {
-                this.CreateFavoriteButton(favorites, favoriteName);
+                this.CreateFavoriteButton(favoriteId);
             }
         }
 
-        private void CreateFavoriteButton(FavoriteConfigurationElementCollection favorites, string favoriteName)
+        private void CreateFavoriteButton(Guid favoriteId)
         {
-            FavoriteConfigurationElement favorite = favorites[favoriteName];
+            IFavorite favorite = PersistedFavorites[favoriteId];
             if (favorite != null)
             {
                 ToolStripButton favoriteBtn = this.CreateFavoriteButton(favorite);
@@ -263,7 +255,7 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        private ToolStripButton CreateFavoriteButton(FavoriteConfigurationElement favorite)
+        private ToolStripButton CreateFavoriteButton(IFavorite favorite)
         {
             Image buttonImage = FavoriteIcons.GetFavoriteIcon(favorite);
             ToolStripButton favoriteBtn = new ToolStripButton(favorite.Name, buttonImage, this.serverToolStripMenuItem_Click);
@@ -300,9 +292,9 @@ namespace Terminals.Forms.Controls
 
         private void AddTagTrayMenuItems()
         {
-            foreach (String tag in PersistedGroups.Tags)
+            foreach (Group group in PersistedGroups)
             {
-                ToolStripMenuItem tagMenuItem = CreateTagMenuItem(tag);
+                ToolStripMenuItem tagMenuItem = new GroupMenuItem(group);
                 tagMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
                 tagMenuItem.DropDownOpening += new EventHandler(OnTagTrayMenuItemDropDownOpening);
                 this.quickContextMenu.Items.Insert(this.AlphabeticalMenuItemIndex, tagMenuItem);
@@ -311,15 +303,15 @@ namespace Terminals.Forms.Controls
 
         private static void OnTagTrayMenuItemDropDownOpening(object sender, EventArgs e)
         {
-            TagMenuItem tagMenu = sender as TagMenuItem;
-            if (tagMenu.IsEmpty)
+            GroupMenuItem groupMenu = sender as GroupMenuItem;
+            if (groupMenu.IsEmpty)
             {
-                tagMenu.DropDown.Items.Clear();
-                List<FavoriteConfigurationElement> tagFavorites = PersistedFavorites.GetSortedFavoritesByTag(tagMenu.Text);
-                foreach (FavoriteConfigurationElement favorite in tagFavorites)
+                groupMenu.DropDown.Items.Clear();
+                List<IFavorite> tagFavorites = Favorites.OrderByDefaultSorting(groupMenu.Group.Favorites);
+                foreach (Favorite favorite in tagFavorites)
                 {
                     ToolStripMenuItem item = CreateFavoriteMenuItem(favorite);
-                    tagMenu.DropDown.Items.Add(item);
+                    groupMenu.DropDown.Items.Add(item);
                 }
             }
         }
@@ -375,15 +367,15 @@ namespace Terminals.Forms.Controls
             elm.Launch();
         }
 
-        private static TagMenuItem CreateTagMenuItem(String tag)
+        private static GroupMenuItem CreateUntaggedGroupMenuItem()
         {
-            TagMenuItem tagMenuItem = new TagMenuItem();
-            tagMenuItem.Tag = TAG;
-            tagMenuItem.Text = tag;
-            return tagMenuItem;
+            // this prevents to identify the group in existing groups
+            IGroup group = FavoriteTreeListLoader.CreateUntagedVirtualGroup();
+            GroupMenuItem groupMenuItem = new GroupMenuItem(group);
+            return groupMenuItem;
         }
 
-        private static ToolStripMenuItem CreateFavoriteMenuItem(FavoriteConfigurationElement favorite)
+        private static ToolStripMenuItem CreateFavoriteMenuItem(IFavorite favorite)
         {
             ToolStripMenuItem item = new ToolStripMenuItem(favorite.Name);
             item.Tag = FAVORITE;
@@ -406,18 +398,16 @@ namespace Terminals.Forms.Controls
         {
             if (!this.alphabeticalMenu.HasDropDownItems)
             {
-                List<FavoriteConfigurationElement> favorites = PersistedFavorites.GetFavorites()
-                    .ToList().SortByProperty("Name", SortOrder.Ascending);
-
+                List<IFavorite> favorites = PersistedFavorites.ToList().SortByProperty("Name", SortOrder.Ascending);
                 CreateAlphabeticalFavoriteMenuItems(favorites);
                 Boolean alphaMenuVisible = this.alphabeticalMenu.DropDownItems.Count > 0;
                 this.alphabeticalMenu.Visible = alphaMenuVisible;
             }
         }
 
-        private void CreateAlphabeticalFavoriteMenuItems(List<FavoriteConfigurationElement> favorites)
+        private void CreateAlphabeticalFavoriteMenuItems(List<IFavorite> favorites)
         {
-            foreach (FavoriteConfigurationElement favorite in favorites)
+            foreach (IFavorite favorite in favorites)
             {
                 ToolStripMenuItem sortedItem = CreateFavoriteMenuItem(favorite);
                 this.alphabeticalMenu.DropDownItems.Add(sortedItem);

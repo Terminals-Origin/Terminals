@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Terminals.Data;
+using Terminals.Forms.Controls;
 using Terminals.Integration;
 using Terminals.Integration.Export;
 
@@ -55,12 +57,15 @@ namespace Terminals
         private List<FavoriteConfigurationElement> FindSelectedFavorites()
         {
             List<FavoriteConfigurationElement> favorites = new List<FavoriteConfigurationElement>();
-            foreach (TreeNode tn in this.favsTree.Nodes)
+            foreach (GroupTreeNode groupNode in this.favsTree.Nodes)
             {
-                foreach (TreeNode node in tn.Nodes)
+                foreach (FavoriteTreeNode favoriteNode in groupNode.Nodes)
                 {
-                    if (node.Checked)
-                        favorites.Add(node.Tag as FavoriteConfigurationElement);
+                    if (favoriteNode.Checked)
+                    {
+                        FavoriteConfigurationElement favoriteConfig = ModelConverterV2ToV1.ConvertToFavorite(favoriteNode.Favorite);
+                        favorites.Add(favoriteConfig);
+                    }
                 }
             }
 

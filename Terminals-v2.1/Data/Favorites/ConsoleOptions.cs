@@ -7,7 +7,7 @@ namespace Terminals.Data
     /// Telnet and ssh protocol console options
     /// </summary>
     [Serializable]
-    public class ConsoleOptions
+    public class ConsoleOptions : ICloneable
     {
         private int rows = 33;
         public int Rows
@@ -82,6 +82,24 @@ namespace Terminals.Data
         {
             get { return this.cursorColor; }
             set { this.cursorColor  = value; }
+        }
+
+        internal ConsoleOptions Copy()
+        {
+            return new ConsoleOptions
+                {
+                    CursorColor = this.CursorColor,
+                    BackColor = this.BackColor,
+                    TextColor = this.TextColor,
+                    Columns = this.Columns,
+                    Rows = this.Rows,
+                    Font = this.Font
+                };
+        }
+
+        public object Clone()
+        {
+            return Copy();
         }
     }
 }
