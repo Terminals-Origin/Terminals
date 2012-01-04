@@ -42,7 +42,6 @@ namespace Terminals.Data
         /// </summary>
         String Url { get; set; }
 
-        // todo REFACTORING move toolbaricon to the toolbarsettings?
         /// <summary>
         /// Gets or sets the absolute path to the tool bar icon file.
         /// </summary>

@@ -340,7 +340,7 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites = GetSelectedFavorites();
-                OrganizeFavoritesForm.DeleteFavoritesFromPersistance(selectedFavorites);
+                Persistance.Instance.Favorites.Delete(selectedFavorites);
                 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();

@@ -31,34 +31,34 @@ namespace Terminals.Data
             return true;
         }
 
-        private void Add(List<IGroup> groups)
+        internal List<IGroup> Add(List<IGroup> groups)
         {
-            if (groups == null)
-                return;
-
             var added = new List<IGroup>();
+            if (groups == null)
+                return added;
+            
             foreach (Group group in groups)
             {
                 if (AddToCache(group))
                     added.Add(group);
             }
 
-            this.dispatcher.ReportGroupsAdded(added);
+            return added;
         }
 
-        private void Delete(List<IGroup> groups)
+        private List<IGroup> Delete(List<IGroup> groups)
         {
-            if (groups == null)
-                return;
-
             var deleted = new List<IGroup>();
+            if (groups == null)
+                return deleted;
+            
             foreach (Group group in groups)
             {
                 if (DeleteFromCache(group))
                     deleted.Add(group);
             }
 
-            this.dispatcher.ReportGroupsDeleted(deleted);
+            return deleted;
         }
 
         private bool DeleteFromCache(IGroup group)
@@ -70,28 +70,11 @@ namespace Terminals.Data
             return true;
         }
 
-        internal void Merge(List<IGroup> newGroups)
+        internal List<IGroup> DeleteEmptyGroupsFromCache()
         {
-            List<IGroup> oldGroups = this.ToList();
-            List<IGroup> addedGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, oldGroups);
-            List<IGroup> deletedTags = ListsHelper.GetMissingSourcesInTarget(oldGroups, newGroups);
-            Add(addedGroups);
-            Delete(deletedTags);
-        }
-
-        private static void UpdateFavoriteGroup(List<IGroup> groups, IGroup group, IFavorite favorite)
-        {
-            bool newGroupsContainGroup = groups.Contains(group);
-            bool containsFavorite = group.Favorites.Contains(favorite);
-            if (newGroupsContainGroup && !containsFavorite)
-            {
-                group.AddFavorite(favorite);
-            }
-
-            if (!newGroupsContainGroup && containsFavorite)
-            {
-                group.RemoveFavorite(favorite);
-            }
+            List<IGroup> emptyGroups = this.GetEmptyGroups();
+            Delete(emptyGroups);
+            return emptyGroups;
         }
 
         private List<IGroup> GetEmptyGroups()
@@ -99,6 +82,44 @@ namespace Terminals.Data
             return this.cache.Values
                 .Where(group => group.Favorites.Count == 0)
                 .ToList();
+        }
+
+        internal void Merge(List<IGroup> newGroups)
+        {
+            List<IGroup> oldGroups = this.ToList();
+            List<IGroup> addedGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, oldGroups);
+            List<IGroup> deletedGroups = ListsHelper.GetMissingSourcesInTarget(oldGroups, newGroups);
+            addedGroups = Add(addedGroups);
+            this.dispatcher.ReportGroupsAdded(addedGroups);
+            deletedGroups = Delete(deletedGroups);
+            this.dispatcher.ReportGroupsDeleted(deletedGroups);
+        }
+
+        /// <summary>
+        /// Deletes all favorites from all groups and removes empty groups after that.
+        /// Also fires removed groups event.
+        /// </summary>
+        internal void DeleteFavoritesFromAllGroups(List<IFavorite> favoritesToRemove)
+        {
+            if (favoritesToRemove == null)
+                return;
+
+            RemoveFavoritesFromGroups(favoritesToRemove, this);
+            DeleteEmptyGroups();
+        }
+
+        internal static void RemoveFavoritesFromGroups(List<IFavorite> favoritesToRemove, IEnumerable<IGroup> groups)
+        {
+            foreach (IGroup group in groups)
+            {
+                group.RemoveFavorites(favoritesToRemove);
+            }
+        }
+
+        private void DeleteEmptyGroups()
+        {
+            var emptyGroups = this.DeleteEmptyGroupsFromCache();
+            this.dispatcher.ReportGroupsDeleted(emptyGroups);
         }
 
         #region IGroups members
@@ -154,30 +175,9 @@ namespace Terminals.Data
                 .ToList();
         }
 
-        public void UpdateFavoriteInGroups(IFavorite favorite, List<IGroup> groups)
-        {
-            // First create new groups, which arent in persistance yet
-            this.Add(groups);
-
-            foreach (IGroup group in this)
-            {
-                UpdateFavoriteGroup(groups, group, favorite);
-            }
-
-            Rebuild();
-            this.dispatcher.ReportFavoriteUpdated(favorite);
-            this.persistance.SaveImmediatelyIfRequested();
-        }
-
         public void Rebuild()
         {
-            List<IGroup> emptyGroups = this.GetEmptyGroups();
-            foreach (Group emptyGroup in emptyGroups)
-            {
-                this.cache.Remove(emptyGroup.Id);
-            }
-
-            this.dispatcher.ReportGroupsDeleted(emptyGroups);
+            DeleteEmptyGroups();
             this.persistance.SaveImmediatelyIfRequested();
         }
 

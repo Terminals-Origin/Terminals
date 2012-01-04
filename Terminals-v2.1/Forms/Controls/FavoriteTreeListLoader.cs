@@ -209,7 +209,8 @@ namespace Terminals.Forms.Controls
         private void RemoveUnusedTagNodes(List<IGroup> removedGroups)
         {
             var affectedNodes = this.treeList.Nodes.Cast<GroupTreeNode>()
-                .Where(candidate => removedGroups.Contains(candidate.Group));
+                .Where(candidate => removedGroups.Contains(candidate.Group))
+                .ToList();
 
             foreach (GroupTreeNode groupNode in affectedNodes)
             {
@@ -257,11 +258,10 @@ namespace Terminals.Forms.Controls
         internal static IGroup CreateUntagedVirtualGroup()
         {
             var unttagedVirtualGroup = Persistance.Instance.Factory.CreateGroup(Settings.UNTAGGED_NODENAME);
-            var untagedFavorites = Persistance.Instance.Favorites.Where(candidate => candidate.Groups.Count == 0);
-            foreach (Favorite untagedFavorite in untagedFavorites)
-            {
-                unttagedVirtualGroup.AddFavorite(untagedFavorite);
-            }
+            var untagedFavorites = Persistance.Instance.Favorites
+                .Where(candidate => candidate.Groups.Count == 0)
+                .ToList();
+            unttagedVirtualGroup.AddFavorites(untagedFavorites);
             return unttagedVirtualGroup;
         }
 

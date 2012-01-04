@@ -21,6 +21,11 @@ namespace Terminals.Data
         }
 
         private Groups groups;
+        internal Groups GroupsStore
+        {
+            get { return this.groups; }
+        }
+
         public IGroups Groups
         {
             get
@@ -103,8 +108,8 @@ namespace Terminals.Data
         private void Load()
         {
             FavoritesFile file = LoadFile();
-            this.favorites = new Favorites(this, file.Favorites);
             this.groups = new Groups(this, file.Groups);
+            this.favorites = new Favorites(this, file.Favorites);
             this.UpdateFavoritesInGroups(file.FavoritesInGroups);
         }
 

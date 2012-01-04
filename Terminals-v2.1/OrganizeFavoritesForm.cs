@@ -132,11 +132,11 @@ namespace Terminals
                 IFavorites persistedFavorites = Persistance.Instance.Favorites;
                 Persistance.Instance.StartDelayedUpdate();
                 var groups = editedFavorite.Groups;
-                persistedFavorites.Delete(editedFavorite);
+                persistedFavorites.Delete(editedFavorite); // todo REFACTORING check what happens to edited favorite
                 editedFavorite.Id = oldFavorite.Id;
                 editedFavorite.Name = newName;
                 persistedFavorites.Update(editedFavorite);
-                Persistance.Instance.Groups.UpdateFavoriteInGroups(editedFavorite, groups);
+                persistedFavorites.UpdateFavorite(editedFavorite, groups);
                 Persistance.Instance.SaveAndFinishDelayedUpdate();
             }
         }
@@ -257,23 +257,10 @@ namespace Terminals
 
             this.Cursor = Cursors.WaitCursor;
             List<IFavorite> selectedFavorites = GetSelectedFavorites();
-            DeleteFavoritesFromPersistance(selectedFavorites);
+            PersistedFavorites.Delete(selectedFavorites);
 
             this.UpdateFavoritesBindingSource();
             this.Cursor = Cursors.Default;
-        }
-
-        internal static void DeleteFavoritesFromPersistance(List<IFavorite> selectedFavorites)
-        {
-            Persistance.Instance.StartDelayedUpdate();
-            var emtpyGroups = new List<IGroup>();
-            foreach (Favorite favorite in selectedFavorites) // remove favorite from all groups
-            {
-                Persistance.Instance.Groups.UpdateFavoriteInGroups(favorite, emtpyGroups); 
-            }
-            // todo REFACTORING performance problem
-            Persistance.Instance.Favorites.Delete(selectedFavorites);
-            Persistance.Instance.SaveAndFinishDelayedUpdate();
         }
 
         private List<IFavorite> GetSelectedFavorites()
@@ -311,7 +298,7 @@ namespace Terminals
             IFavorite copy = favorite.Copy();
             copy.Name = newName;
             PersistedFavorites.Add(copy);
-            Persistance.Instance.Groups.UpdateFavoriteInGroups(copy, favorite.Groups);
+            PersistedFavorites.UpdateFavorite(copy, favorite.Groups);
             
             if (Settings.HasToolbarButton(favorite.Id))
                 Settings.AddFavoriteButton(copy.Id);

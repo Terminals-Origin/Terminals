@@ -736,7 +736,7 @@ namespace Terminals
             }
 
             List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
-            PersistedGroups.UpdateFavoriteInGroups(this.Favorite, updatedGroups);
+            PersistedFavorites.UpdateFavorite(this.Favorite, updatedGroups);
             Settings.SaveAndFinishDelayedUpdate();
         }
 

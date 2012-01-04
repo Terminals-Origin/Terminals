@@ -87,23 +87,23 @@ namespace Terminals.Data
             }
         }
 
-        internal void ReportGroupsAdded(List<IGroup> addedIGroups)
+        internal void ReportGroupsAdded(List<IGroup> addedGroups)
         {
             var args = new GroupsChangedArgs();
-            args.Added.AddRange(addedIGroups);
+            args.Added.AddRange(addedGroups);
             this.FireGroupsChanged(args);
         }
 
-        internal void ReportGroupsDeleted(List<IGroup> deletedIGroups)
+        internal void ReportGroupsDeleted(List<IGroup> deletedGroups)
         {
             var args = new GroupsChangedArgs();
-            args.Removed.AddRange(deletedIGroups);
+            args.Removed.AddRange(deletedGroups);
             this.FireGroupsChanged(args);
         }
 
-        internal void ReportGroupsRecreated(List<IGroup> addedIGroups, List<IGroup> deletedIGroups)
+        internal void ReportGroupsRecreated(List<IGroup> addedGroups, List<IGroup> deletedGroups)
         {
-            var args = new GroupsChangedArgs(addedIGroups, deletedIGroups);
+            var args = new GroupsChangedArgs(addedGroups, deletedGroups);
             this.FireGroupsChanged(args);
         }
 

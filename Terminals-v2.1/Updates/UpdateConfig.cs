@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Terminals.Configuration;
 using Terminals.Data;
+using Terminals.Forms.Controls;
 using Terminals.History;
 using Terminals.Wizard;
 
@@ -94,18 +95,8 @@ namespace Terminals.Updates
             foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
             {
                 var favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement);
-                UpgradeFavoriteGroups(favorite, favoriteConfigElement);
+                ImportWithDialogs.AddFavoriteIntoGroups(favoriteConfigElement, favorite);
                 favorites.Add(favorite);
-            }
-        }
-
-        private static void UpgradeFavoriteGroups(IFavorite favorite, FavoriteConfigurationElement favoriteConfigElement)
-        {
-            IGroups groups = Persistance.Instance.Groups;
-            foreach (var groupName in favoriteConfigElement.TagList)
-            {
-                IGroup group = Persistance.Instance.Factory.GetOrCreateGroup(groupName);
-                group.AddFavorite(favorite);
             }
         }
 

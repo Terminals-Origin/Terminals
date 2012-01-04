@@ -37,17 +37,30 @@ namespace Terminals.Data
         /// <summary>
         /// Replace favorite with the present identifier in persistance with the one send as parameter.
         /// Saves changes, if delayed save isnt required.
+        /// This expects, that user didnt change favorite groups.
         /// </summary>
         void Update(IFavorite favorite);
 
         /// <summary>
+        /// Updates favorite and also updates it in all groups defined by groups collection.
+        /// If favorite is present in group not listed in groupNames it will be removed,
+        /// if it isnt present, but is listed in groupNames, then it will be add to the group.
+        /// Saves changes, if delayed save isnt required.
+        /// </summary>
+        /// <param name="favorite">Not null item to update, which holds old groups yet.</param>
+        /// <param name="groups">New collection of groups in which the favorite should be listed.</param>
+        void UpdateFavorite(IFavorite favorite, List<IGroup> groups);
+
+        /// <summary>
         /// Removes the favorite from persistance, if it is present.
+        /// and remove it also from all its groups.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void Delete(IFavorite favorite);
 
         /// <summary>
         /// Removes all required favorites from persistance, if they are present.
+        /// And remove them from all their groups.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void Delete(List<IFavorite> favorites);

@@ -37,16 +37,6 @@ namespace Terminals.Data
         List<IGroup> GetGroupsContainingFavorite(Guid favoriteId);
 
         /// <summary>
-        /// Updates favorite in all groups defined by groupNames collection.
-        /// If favorite is present in group not listed in groupNames it will be removed,
-        /// if it isnt present, but is listed in groupNames, then it will be add to the group.
-        /// Saves changes, if delayed save isnt required.
-        /// </summary>
-        /// <param name="favorite">Not null item to update.</param>
-        /// <param name="groups">New collection of groups in which the favorite should be listed.</param>
-        void UpdateFavoriteInGroups(IFavorite favorite, List<IGroup> groups);
-
-        /// <summary>
         /// Removes all empty groups from persistance.
         /// Saves changes, if delayed save isnt required.
         /// </summary>

@@ -68,10 +68,26 @@ namespace Terminals.Data
                 this.favorites[favorite.Id] = favorite;
         }
 
+        void IGroup.AddFavorites(List<IFavorite> favoritesToAdd)
+        {
+            foreach (Favorite favorite in favoritesToAdd)
+            {
+                ((IGroup)this).AddFavorite(favorite);
+            }
+        }
+
         void IGroup.RemoveFavorite(IFavorite favorite)
         {
             if (this.favorites.ContainsKey(favorite.Id))
                 this.favorites.Remove(favorite.Id);
+        }
+
+        void IGroup.RemoveFavorites(List<IFavorite> favoritesToRemove)
+        {
+            foreach (Favorite favorite in favoritesToRemove)
+            {
+                ((IGroup)this).RemoveFavorite(favorite);
+            }
         }
 
         internal FavoritesInGroup GetGroupReferences()
@@ -94,19 +110,13 @@ namespace Terminals.Data
         private void AddMissingFavorites(List<IFavorite> current, List<IFavorite> newFavorites)
         {
             var favoritesToAdd = ListsHelper.GetMissingSourcesInTarget(newFavorites, current);
-            foreach (Favorite favorite in favoritesToAdd)
-            {
-                ((IGroup)this).AddFavorite(favorite);
-            }
+            ((IGroup)this).AddFavorites(favoritesToAdd);
         }
 
         private void RemoveRedundantFavorites(List<IFavorite> current, List<IFavorite> newFavorites)
         {
             var favoritesToRemove = ListsHelper.GetMissingSourcesInTarget(current, newFavorites);
-            foreach (Favorite favorite in favoritesToRemove)
-            {
-                ((IGroup)this).AddFavorite(favorite);
-            }
+            ((IGroup)this).RemoveFavorites(favoritesToRemove);
         }
 
         public override bool Equals(object group)
