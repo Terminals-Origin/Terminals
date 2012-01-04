@@ -68,14 +68,14 @@ namespace Terminals.Data
                 this.favorites[favorite.Id] = favorite;
         }
 
-        internal FavoritesInGroup GetGroupReferences()
-        {
-            Guid[] favoriteIds = this.Favorites.Select(favorite => favorite.Id).ToArray();
-            return new FavoritesInGroup
-            {
-                GroupId = this.Id,
-                Favorites = favoriteIds
-            };
-        }
+        //internal FavoritesInGroup GetGroupReferences()
+        //{
+        //    Guid[] favoriteIds = this.Favorites.Select(favorite => favorite.Id).ToArray();
+        //    return new FavoritesInGroup
+        //    {
+        //        GroupId = this.Id,
+        //        Favorites = favoriteIds
+        //    };
+        //}
     }
 }

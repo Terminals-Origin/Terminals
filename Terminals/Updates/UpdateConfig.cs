@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.History;
@@ -33,122 +34,47 @@ namespace Terminals.Updates
         {
             if (Program.Info.Version >= new Version(2, 0, 0, 0))
             {
-                MoveFilesToVersion2Location();
+                // todo MoveFilesToVersion2Location();
                 UpdateDefaultFavoriteUrl();
             }
         }
 
         private static void MoveFilesToVersion2Location()
         {
-            // dont need to refresh the file location, because if the files were changed
-            // are already in use, they will be reloaded
+            // dont need to refresh the file location, because if the files were changed are are
+            // already in use, they will be reloaded
+            string root = Settings.GetDataRootDirectoryFullPath();
+            if (!Directory.Exists(root))
+                Directory.CreateDirectory(root);
             MoveThumbsDirectory();
-            // dont move the logs directory, because it is in use by Log4net library.
-            MoveDataFile(ConnectionHistory.FILE_NAME);
+            MoveDataFile(ConnectionHistory.FILENAME);
             MoveDataFile(ToolStripSettings.FLE_NAME);
-            MoveDataFile(StoredCredentials.FILE_NAME);
-            UpgradeConfigFile();
-        }
-
-        private static void UpgradeConfigFile() 
-        {
             // only this is already in use if started with default location
             MoveDataFile(Settings.CONFIG_FILE_NAME);
-            Settings.ForceReload();
-            //Settings.RebuildTagIndex(); // to ensure data consistency before import
-            //ImportTagsFromConfigFile();
-            //MoveFavoritesFromConfigFile();
-            // this will also remove all not needed tags
-            //Settings.DeleteFavorites(Settings.GetFavorites().ToList());
-            //Persistance.Instance.Save();
-        }
 
-        private static void ImportTagsFromConfigFile()
-        {
-            Groups groups = Persistance.Instance.Groups;
-            foreach (var tag in Settings.Tags)
-            {
-                var group = new Group{Name = tag};
-                groups.Add(group);
-            }
-        }
-
-        private static void MoveFavoritesFromConfigFile()
-        {
-            Favorites favorites = Persistance.Instance.Favorites;
-            foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
-            {
-                var favorite = FavoriteModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement);
-                UpgradeFavoriteGroups(favorite, favoriteConfigElement);
-                favorites.Add(favorite);
-            }
-        }
-
-        private static void UpgradeFavoriteGroups(Favorite favorite, FavoriteConfigurationElement favoriteConfigElement)
-        {
-            Groups groups = Persistance.Instance.Groups;
-            foreach (var tag in favoriteConfigElement.TagList)
-            {
-                Group group = groups[tag];
-                if(group != null)
-                    group.AddFavorite(favorite);
-            }
+            // and then extract favorites and Tags from old config
         }
 
         private static void MoveThumbsDirectory()
         {
-            try
-            {
-                TryToMoveThumbsDirectory();
-            }
-            catch (Exception exception)
-            {
-                Logging.Log.Error("Upgrade of Thumbs directory failed", exception);
-            }
-        }
-
-        private static void TryToMoveThumbsDirectory()
-        {
             string oldPath = GetOldDataFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
-            string newPath = FileLocations.GetFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
-
-            if (Directory.Exists(oldPath))
-            {
-                if(Directory.Exists(newPath))
-                    Directory.Delete(newPath, true);
-
+            string newPath = GetNewDataFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
+            if(Directory.Exists(oldPath))
                 Directory.Move(oldPath, newPath);
-            }
         }
 
-        private static void MoveDataFile(string relativePath)
-        {
-            try
-            {
-                TryToMoveDataFile(relativePath);
-            }
-            catch (Exception exception)
-            {
-                Logging.Log.Error("Upgrade of data file failed", exception);
-            }
-        }
-
-        private static void TryToMoveDataFile(string relativePath)
+        private static void MoveDataFile(string relativePath) 
         {
             string oldPath = GetOldDataFullPath(relativePath);
-            string newPath = FileLocations.GetFullPath(relativePath);
-            if (File.Exists(oldPath))
-            {
-                if (!File.Exists(newPath))
-                {
-                    File.Move(oldPath, newPath);
-                }
-                else
-                {
-                    File.Copy(oldPath, newPath, true);
-                    File.Delete(oldPath);
-                }
-            }
+            string newPath = GetNewDataFullPath(relativePath);
+            if(File.Exists(oldPath))
+                File.Move(oldPath, newPath);
+        }
+
+        private static string GetNewDataFullPath(string relativePath)
+        {
+            string dataRoot = Settings.GetDataRootDirectoryFullPath();
+            return Path.Combine(dataRoot, relativePath);
         }
 
         private static string GetOldDataFullPath(string relativePath)

@@ -55,7 +55,8 @@ namespace Terminals
             try 
             {
                 LogNonAdministrator();
-                string testFile = FileLocations.GetFullPath("WriteAccessCheck.txt");
+                string directory = Info.Location;
+                string testFile = Path.Combine(directory, "WriteAccessCheck.txt");
                 
                 // Test to make sure that the current user has write access to the current directory.
                 using (StreamWriter sw = File.AppendText(testFile)) { }

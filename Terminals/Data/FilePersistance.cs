@@ -51,7 +51,7 @@ namespace Terminals.Data
             FavoritesFile file = LoadFile();
             this.Favorites = new Favorites(this.Dispatcher, file.Favorites);
             this.Groups = new Groups(this.Dispatcher, file.Groups);
-            this.UpdateFavoritesInGroups(file.FavoritesInGroups);
+            // this.UpdateFavoritesInGroups(file.FavoritesInGroups);
         }
 
         private FavoritesFile LoadFile()
@@ -74,29 +74,29 @@ namespace Terminals.Data
             }
         }
 
-        private void UpdateFavoritesInGroups(FavoritesInGroup[] favoritesInGroups)
-        {
-            foreach (FavoritesInGroup favoritesInGroup in favoritesInGroups)
-            {
-                var group = this.Groups[favoritesInGroup.GroupId];
-                if (group != null)
-                {
-                    this.AddFavoritesToGroup(favoritesInGroup, group);
-                }
-            }
-        }
+        //private void UpdateFavoritesInGroups(FavoritesInGroup[] favoritesInGroups)
+        //{
+        //    foreach (FavoritesInGroup favoritesInGroup in favoritesInGroups)
+        //    {
+        //        var group = this.Groups[favoritesInGroup.GroupId];
+        //        if (group != null)
+        //        {
+        //            this.AddFavoritesToGroup(favoritesInGroup, group);
+        //        }
+        //    }
+        //}
 
-        private void AddFavoritesToGroup(FavoritesInGroup favoritesInGroup, Group group)
-        {
-            foreach (Guid favoriteId in favoritesInGroup.Favorites)
-            {
-                var favorite = this.Favorites[favoriteId];
-                if (favorite != null)
-                {
-                    group.AddFavorite(favorite);
-                }
-            }
-        }
+        //private void AddFavoritesToGroup(FavoritesInGroup favoritesInGroup, Group group)
+        //{
+        //    foreach (Guid favoriteId in favoritesInGroup.Favorites)
+        //    {
+        //        var favorite = this.Favorites[favoriteId];
+        //        if (favorite != null)
+        //        {
+        //            group.AddFavorite(favorite);
+        //        }
+        //    }
+        //}
 
         private static string GetDataFileLocation()
         {
@@ -130,20 +130,20 @@ namespace Terminals.Data
               {
                   Favorites = this.Favorites.ToArray(),
                   Groups = this.Groups.ToArray(),
-                  FavoritesInGroups = GetFavoriteInGroups()
+                  // FavoritesInGroups = GetFavoriteInGroups()
               };
         }
 
-        private FavoritesInGroup[] GetFavoriteInGroups()
-        {
-            List<FavoritesInGroup> references = new List<FavoritesInGroup>();
-            foreach (Group group in this.Groups)
-            {
-                FavoritesInGroup groupReferences = group.GetGroupReferences();
-                references.Add(groupReferences);
-            }
+        //private FavoritesInGroup[] GetFavoriteInGroups()
+        //{
+        //    List<FavoritesInGroup> references = new List<FavoritesInGroup>();
+        //    foreach (Group group in this.Groups)
+        //    {
+        //        FavoritesInGroup groupReferences = group.GetGroupReferences();
+        //        references.Add(groupReferences);
+        //    }
 
-            return references.ToArray();
-        }
+        //    return references.ToArray();
+        //}
     }
 }
