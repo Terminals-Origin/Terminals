@@ -136,7 +136,7 @@ namespace Terminals
                 IFavorites persistedFavorites = Persistance.Instance.Favorites;
                 Persistance.Instance.StartDelayedUpdate();
                 var groups = editedFavorite.Groups;
-                persistedFavorites.Delete(editedFavorite); // todo REFACTORING check what happens to edited favorite
+                persistedFavorites.Delete(editedFavorite);
                 editedFavorite.Id = oldFavorite.Id;
                 editedFavorite.Name = newName;
                 persistedFavorites.Update(editedFavorite);
