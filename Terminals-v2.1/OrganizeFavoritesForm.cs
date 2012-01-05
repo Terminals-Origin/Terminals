@@ -86,6 +86,7 @@ namespace Terminals
         private void dataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             this.editedFavorite = this.dataGridFavorites.SelectedRows[0].DataBoundItem as Favorite;
+            this.editedFavoriteName = this.editedFavorite.Name;
         }
 
         /// <summary>
@@ -96,7 +97,10 @@ namespace Terminals
             if (String.IsNullOrEmpty(this.editedFavorite.Name)) // cancel or nothing changed
                 editedFavorite.Name = this.editedFavoriteName;
             if (editedFavorite.Name.Equals(this.editedFavoriteName, StringComparison.CurrentCultureIgnoreCase))
+            {
+                editedFavorite.Name = this.editedFavoriteName;
                 return;
+            }
 
             UpdateFavoritePreservingDuplicitNames(this.editedFavoriteName, editedFavorite.Name, this.editedFavorite);
             this.UpdateFavoritesBindingSource();
@@ -127,7 +131,7 @@ namespace Terminals
 
         private static void OverwriteByConflictingName(string newName, IFavorite oldFavorite, IFavorite editedFavorite)
         {
-            if (AskUserIfWantsToOverwrite(editedFavorite))
+            if (AskUserIfWantsToOverwrite(newName))
             {
                 IFavorites persistedFavorites = Persistance.Instance.Favorites;
                 Persistance.Instance.StartDelayedUpdate();
@@ -141,9 +145,9 @@ namespace Terminals
             }
         }
 
-        private static bool AskUserIfWantsToOverwrite(IFavorite editedFavorite)
+        private static bool AskUserIfWantsToOverwrite(string newName)
         {
-            string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", editedFavorite.Name);
+            string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", newName);
             return MessageBox.Show(message, "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 

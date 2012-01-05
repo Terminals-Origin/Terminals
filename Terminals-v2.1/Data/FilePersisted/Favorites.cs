@@ -158,7 +158,8 @@ namespace Terminals.Data
             get
             {
                 return this.cache.Values
-                    .FirstOrDefault(favorite => favorite.Name == favoriteName);
+                    .FirstOrDefault(favorite => favorite.Name
+                        .Equals(favoriteName, StringComparison.CurrentCultureIgnoreCase));
             }
         }
 
