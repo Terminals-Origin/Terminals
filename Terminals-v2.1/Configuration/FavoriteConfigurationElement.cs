@@ -873,7 +873,7 @@ namespace Terminals
         {
             get
             {
-                CredentialSet cred = Persistance.Instance.Credentials.GetByName(Credential);
+                ICredentialSet cred = Persistance.Instance.Credentials.GetByName(Credential);
                 if (cred != null)
                     return cred.Domain;
 
@@ -918,7 +918,7 @@ namespace Terminals
             {
                 if (!string.IsNullOrEmpty(Credential))
                 {
-                    CredentialSet cred = Persistance.Instance.Credentials.GetByName(Credential);
+                    ICredentialSet cred = Persistance.Instance.Credentials.GetByName(Credential);
                     if (cred != null)
                         return cred.Username;
                 }
@@ -951,7 +951,7 @@ namespace Terminals
         {
             get
             {
-                CredentialSet cred = Persistance.Instance.Credentials.GetByName(Credential);
+                ICredentialSet cred = Persistance.Instance.Credentials.GetByName(Credential);
                 if (cred != null)
                     return cred.SecretKey;
 

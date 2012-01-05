@@ -54,7 +54,7 @@ namespace Terminals.Data
 
         private void ResolveFromCredential(SecurityOptions result)
         {
-            CredentialSet storedCredential = Persistance.Instance.Credentials.GetByName(this.Credential);
+            ICredentialSet storedCredential = Persistance.Instance.Credentials.GetByName(this.Credential);
             if (storedCredential !=  null)
             {
                 result.DomainName = storedCredential.Domain;
@@ -63,16 +63,22 @@ namespace Terminals.Data
             }
         }
 
-        private static void ResolveDefaultValues(SecurityOptions result)
+        private void ResolveDefaultValues(SecurityOptions result)
         {
-            if (string.IsNullOrEmpty(result.DomainName))
+            if (string.IsNullOrEmpty(this.DomainName))
                 result.DomainName = Settings.DefaultDomain;
+            else
+                result.DomainName = this.DomainName;
 
-            if (string.IsNullOrEmpty(result.UserName))
+            if (string.IsNullOrEmpty(this.UserName))
                 result.UserName = Settings.DefaultUsername;
+            else
+                result.UserName = this.UserName;
 
-            if (string.IsNullOrEmpty(result.Password))
+            if (string.IsNullOrEmpty(this.Password))
                 result.Password = Settings.DefaultPassword;
+            else
+                result.Password = this.Password;
         }
     }
 }

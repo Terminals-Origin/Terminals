@@ -71,7 +71,7 @@ namespace Terminals.Data
             set { serverName = value; }
         }
 
-        // todo remove redundant url property
+        // todo REFACTORING remove redundant url property
         private string url = "http://terminals.codeplex.com";
         public String Url
         {
@@ -145,6 +145,10 @@ namespace Terminals.Data
                 case ConnectionManager.TELNET:
                     if (!(this.protocolProperties is ConsoleOptions))
                         this.protocolProperties = new ConsoleOptions();
+                    break;
+                case ConnectionManager.SSH:
+                    if (!(this.protocolProperties is SshOptions))
+                        this.protocolProperties = new SshOptions();
                     break;
                 case ConnectionManager.RDP:
                     if (!(this.protocolProperties is RdpOptions))   

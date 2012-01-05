@@ -21,7 +21,7 @@ namespace Terminals
         private IFavorites favorites;
         private IGroups groups;
 
-        internal FavoritesFactory( Groups groups, Favorites favorites)
+        internal FavoritesFactory(Groups groups, Favorites favorites)
         {
             this.groups = groups;
             this.favorites = favorites;

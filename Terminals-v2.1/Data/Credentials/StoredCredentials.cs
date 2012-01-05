@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using Terminals.Data;
+using Terminals.Configuration;
 using SysConfig = System.Configuration;
 using System.IO;
 using System.Linq;
 using Unified;
 
-namespace Terminals.Configuration
+namespace Terminals.Data
 {
+    //todo REFACTORING Provide Interface for stored credentials
     internal sealed class StoredCredentials
     {
         /// <summary>
@@ -25,11 +26,11 @@ namespace Terminals.Configuration
             }
         }
 
-        private List<CredentialSet> cache;
+        private List<ICredentialSet> cache;
         /// <summary>
         /// Gets the not null collection containing stored credentials
         /// </summary>
-        internal List<CredentialSet> Items
+        internal List<ICredentialSet> Items
         {
             get
             {
@@ -47,7 +48,7 @@ namespace Terminals.Configuration
         /// </summary>
         internal StoredCredentials()
         {
-            this.cache = new List<CredentialSet>();
+            this.cache = new List<ICredentialSet>();
             string configFileName = GetEnsuredCredentialsFileLocation();
             InitializeFileWatch();
 
@@ -78,7 +79,7 @@ namespace Terminals.Configuration
 
         private void LoadStoredCredentials(string configFileName)
         {
-            List<CredentialSet> loaded = LoadFile(configFileName);
+            List<ICredentialSet> loaded = LoadFile(configFileName);
             if (loaded != null)
             {
                 this.cache.Clear();
@@ -86,19 +87,20 @@ namespace Terminals.Configuration
             }
         }
 
-        private List<CredentialSet> LoadFile(string configFileName)
+        private List<ICredentialSet> LoadFile(string configFileName)
         {
             try
             {
                 fileLock.WaitOne();
                 object loadedObj = Serialize.DeserializeXMLFromDisk(configFileName, typeof(List<CredentialSet>));
-                return loadedObj as List<CredentialSet>;
+                return (loadedObj as List<CredentialSet>)
+                    .Cast<ICredentialSet>().ToList();
             }
             catch (Exception exception)
             {
                 string errorMessage = String.Format("Load credentials from {0} failed.", configFileName);
                 Logging.Log.Error(errorMessage, exception);
-                return new List<CredentialSet>();
+                return new List<ICredentialSet>();
             }
             finally
             {
@@ -113,11 +115,12 @@ namespace Terminals.Configuration
                 fileLock.WaitOne();
                 fileWatcher.StopObservation();
                 string fileName = GetEnsuredCredentialsFileLocation();
-                Serialize.SerializeXMLToDisk(cache, fileName);
+                List<CredentialSet> fileContent = cache.Cast<CredentialSet>().ToList();
+                Serialize.SerializeXMLToDisk(fileContent, fileName);
             }
             catch (Exception exception)
             {
-                string errorMessage = string.Format("Save credentials to {0} failed.", 
+                string errorMessage = string.Format("Save credentials to {0} failed.",
                     GetEnsuredCredentialsFileLocation());
                 Logging.Log.Error(errorMessage, exception);
             }
@@ -145,7 +148,7 @@ namespace Terminals.Configuration
         /// This method isnt case sensitive. If no item matches, returns null.
         /// </summary>
         /// <param name="name">name of an item to search</param>
-        internal CredentialSet GetByName(string name)
+        internal ICredentialSet GetByName(string name)
         {
             if (string.IsNullOrEmpty(name))
                 return null;
@@ -154,12 +157,12 @@ namespace Terminals.Configuration
             return this.Items.FirstOrDefault(candidate => candidate.Name.ToLower() == name);
         }
 
-        internal void Remove(CredentialSet toRemove)
+        internal void Remove(ICredentialSet toRemove)
         {
             cache.Remove(toRemove);
         }
 
-        internal void Add(CredentialSet toAdd)
+        internal void Add(ICredentialSet toAdd)
         {
             if (String.IsNullOrEmpty(toAdd.Name))
                 return;
@@ -169,12 +172,17 @@ namespace Terminals.Configuration
 
         internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-          foreach (CredentialSet credentials in cache)
-          {
-            credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
-          }
+            foreach (ICredentialSet credentials in cache)
+            {
+                credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+            }
 
-          Save();
+            Save();
+        }
+
+        internal ICredentialSet CreateCredentialSet()
+        {
+            return new CredentialSet();
         }
     }
 }

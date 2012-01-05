@@ -14,14 +14,14 @@ namespace Terminals.Credentials
             get { return Persistance.Instance.Credentials; }
         }
 
-        internal ManageCredentialForm(CredentialSet editedCredential)
+        internal ManageCredentialForm(ICredentialSet editedCredential)
         {
             InitializeComponent();
 
             FillControlsFromCredential(editedCredential);
         }
 
-        private void FillControlsFromCredential(CredentialSet editedCredential)
+        private void FillControlsFromCredential(ICredentialSet editedCredential)
         {
             if (editedCredential != null)
             {
@@ -54,8 +54,8 @@ namespace Terminals.Credentials
 
         private bool UpdateCredential()
         {
-            CredentialSet conflicting = Credentials.GetByName(this.NameTextbox.Text);
-            CredentialSet oldItem = Credentials.GetByName(this.editedCredentialName);
+            ICredentialSet conflicting = Credentials.GetByName(this.NameTextbox.Text);
+            ICredentialSet oldItem = Credentials.GetByName(this.editedCredentialName);
 
             if (conflicting != null && this.editedCredentialName != this.NameTextbox.Text)
             {
@@ -66,11 +66,11 @@ namespace Terminals.Credentials
             return true;
         }
 
-        private void UpdateOldOrCreateNew(CredentialSet oldItem)
+        private void UpdateOldOrCreateNew(ICredentialSet oldItem)
         {
             if (oldItem == null || this.editedCredentialName != this.NameTextbox.Text)
             {
-                CredentialSet newCredential = this.CreateNewCredential();
+                ICredentialSet newCredential = this.CreateNewCredential();
                 Credentials.Add(newCredential);
             }
             else
@@ -79,7 +79,7 @@ namespace Terminals.Credentials
             }
         }
 
-        private bool UpdateConflicting(CredentialSet conflicting, CredentialSet oldItem)
+        private bool UpdateConflicting(ICredentialSet conflicting, ICredentialSet oldItem)
         {
             DialogResult result = MessageBox.Show("The Credential Name you entered already exists.\r\n" +
                                                   "Do you want to overwrite it?", "Credential manager",
@@ -96,7 +96,7 @@ namespace Terminals.Credentials
             return true;
         }
 
-        private void UpdateFromControls(CredentialSet toUpdate)
+        private void UpdateFromControls(ICredentialSet toUpdate)
         {
             toUpdate.Domain = this.DomainTextbox.Text;
             toUpdate.Name = this.NameTextbox.Text;
@@ -105,9 +105,9 @@ namespace Terminals.Credentials
                 toUpdate.SecretKey = this.PasswordTextbox.Text;
         }
 
-        private CredentialSet CreateNewCredential()
+        private ICredentialSet CreateNewCredential()
         {
-            CredentialSet newItem = new CredentialSet();
+            var newItem = Credentials.CreateCredentialSet();
             UpdateFromControls(newItem);
             return newItem;
         }

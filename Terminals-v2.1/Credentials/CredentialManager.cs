@@ -27,7 +27,7 @@ namespace Terminals.Credentials
         {
             CredentialsListView.Items.Clear();
 
-            foreach (CredentialSet credential in Credentials.Items)
+            foreach (ICredentialSet credential in Credentials.Items)
             {
                 ListViewItem item = new ListViewItem(credential.Name);
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, credential.Username));
@@ -51,7 +51,7 @@ namespace Terminals.Credentials
             EditCredential(null);
         }
 
-        private CredentialSet GetSelectedItemCredentials()
+        private ICredentialSet GetSelectedItemCredentials()
         {
             if (CredentialsListView.SelectedItems != null && CredentialsListView.SelectedItems.Count > 0)
             {
@@ -64,14 +64,14 @@ namespace Terminals.Credentials
 
         private void EditButton_Click(object sender, EventArgs e)
         {
-            CredentialSet selected = GetSelectedItemCredentials();
+            ICredentialSet selected = GetSelectedItemCredentials();
             if (selected != null)
             {
                 EditCredential(selected);
             }
         }
 
-        private void EditCredential(CredentialSet selected)
+        private void EditCredential(ICredentialSet selected)
         {
             ManageCredentialForm mgr = new ManageCredentialForm(selected);
             if (mgr.ShowDialog() == DialogResult.OK)
@@ -80,7 +80,7 @@ namespace Terminals.Credentials
 
         private void DeleteButton_Click(object sender, EventArgs e)
         {
-            CredentialSet toRemove = GetSelectedItemCredentials();
+            ICredentialSet toRemove = GetSelectedItemCredentials();
             if (toRemove != null)
             {
                 if (MessageBox.Show("Are you sure you want to delete credential " + toRemove.Name + "?",

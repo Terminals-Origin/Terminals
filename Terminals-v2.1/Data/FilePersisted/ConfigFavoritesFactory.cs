@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using Terminals.Configuration;
 using Terminals.Connections;
 
 namespace Terminals.Data
@@ -15,7 +14,7 @@ namespace Terminals.Data
         }
 
         internal static IFavorite GetFavoriteUpdatedCopy(String connectionName,
-            Boolean forceConsole, Boolean forceNewWindow, CredentialSet credential)
+            Boolean forceConsole, Boolean forceNewWindow, ICredentialSet credential)
         {
             IFavorite favorite = PersistedFavorites[connectionName];
             if (favorite == null)

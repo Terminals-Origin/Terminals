@@ -215,7 +215,7 @@ namespace Terminals
             DataGridViewColumn column = this.dataGridFavorites.Columns[e.ColumnIndex];
 
             SortOrder newSortDirection = SortableUnboundGrid.GetNewSortDirection(lastSortedColumn, column);
-            var data = this.bsFavorites.DataSource as SortableList<Favorite>;
+            var data = this.bsFavorites.DataSource as SortableList<IFavorite>;
             this.bsFavorites.DataSource = data.SortByProperty(column.DataPropertyName, newSortDirection);
             column.HeaderCell.SortGlyphDirection = newSortDirection;
         }

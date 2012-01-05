@@ -2,14 +2,28 @@
 using System.Xml.Serialization;
 using Terminals.Security;
 
-namespace Terminals.Configuration
+namespace Terminals.Data
 {
     /// <summary>
     /// Container of stored user authentication.
     /// </summary>
     [Serializable]
-    public class CredentialSet
+    public class CredentialSet : ICredentialSet
     {
+        private Guid id = Guid.NewGuid();
+        [XmlAttribute("id")]
+        public Guid Id
+        {
+            get
+            {
+                return id;
+            }
+            set
+            {
+                id = value;
+            }
+        }
+
         private string name;
         public string Name
         {
@@ -37,17 +51,13 @@ namespace Terminals.Configuration
         }
 
         public string Domain { get; set; }
-
-        /// <summary>
-        /// Gets or sets the encrypted password hash.
-        /// </summary>
         public string Password { get; set; }
 
         /// <summary>
         /// Gets or sets the password in not encrypted form.
         /// </summary>
         [XmlIgnore]
-        internal string SecretKey
+        string ICredentialSet.SecretKey
         {
             get
             {
@@ -65,10 +75,11 @@ namespace Terminals.Configuration
             }
         }
 
-        internal void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
+        void ICredentialSet.UpdatePasswordByNewKeyMaterial(string newKeymaterial)
         {
-            if (!string.IsNullOrEmpty(this.SecretKey))
-                this.Password = PasswordFunctions.EncryptPassword(this.SecretKey, newKeymaterial); 
+            string secret = ((ICredentialSet)this).SecretKey;
+            if (!string.IsNullOrEmpty(secret))
+                this.Password = PasswordFunctions.EncryptPassword(secret, newKeymaterial); 
         }
 
         public override string ToString()

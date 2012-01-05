@@ -19,7 +19,6 @@ namespace Terminals
     internal partial class FavsList : UserControl
     {
         private MainForm _mainForm;
-        public static CredentialSet credSet = new CredentialSet();
 
         private IFavorites PersistedFavorites
         {
@@ -418,9 +417,8 @@ namespace Terminals
             this.connectAsToolStripMenuItem.DropDownItems.Clear();
             this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
 
-            List<CredentialSet> list = Persistance.Instance.Credentials.Items;
-
-            foreach (CredentialSet s in list)
+            List<ICredentialSet> list = Persistance.Instance.Credentials.Items;
+            foreach (ICredentialSet s in list)
             {
                 this.connectAsToolStripMenuItem.DropDownItems.Add(s.Name, null, new EventHandler(this.connectAsCred_Click));
             }
@@ -439,14 +437,14 @@ namespace Terminals
 
         private void userConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form usrForm = new UserSelectForm();
-            usrForm.ShowDialog(this.GetMainForm());
-            if (credSet != null)
+            var usrForm = new UserSelectForm();
+            if (usrForm.ShowDialog() == DialogResult.OK)
             {
-                IFavorite fav = this.favsTree.SelectedFavorite;
-                if (fav != null)
+                IFavorite selectedFavorite = this.favsTree.SelectedFavorite;
+                if (selectedFavorite != null)
                 {
-                    this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked, credSet);
+                    this.GetMainForm().Connect(selectedFavorite.Name, this.consoleToolStripMenuItem.Checked,
+                        this.newWindowToolStripMenuItem.Checked, usrForm.Credentials);
                 }
             }
         }

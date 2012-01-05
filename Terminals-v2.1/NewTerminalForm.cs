@@ -80,7 +80,7 @@ namespace Terminals
 
             if (favorite == null)
             {
-                this.FillCredentials(null);
+                this.FillCredentialsCombobox(null);
 
                 var defaultSavedFavorite = Settings.GetDefaultFavorite();
                 if (defaultSavedFavorite != null)
@@ -111,16 +111,16 @@ namespace Terminals
             }
         }
 
-        private void FillCredentials(String credentialName)
+        private void FillCredentialsCombobox(String credentialName)
         {
             this.CredentialDropdown.Items.Clear();
-            List<CredentialSet> creds = Persistance.Instance.Credentials.Items;
+            List<ICredentialSet> creds = Persistance.Instance.Credentials.Items;
             this.CredentialDropdown.Items.Add("(custom)");
 
             Int32 selIndex = 0;
             if (creds != null)
             {
-                foreach (CredentialSet item in creds)
+                foreach (ICredentialSet item in creds)
                 {
                     Int32 index = this.CredentialDropdown.Items.Add(item);
                     if (!String.IsNullOrEmpty(credentialName) && credentialName == item.Name)
@@ -186,7 +186,7 @@ namespace Terminals
             FillGeneralPropertiesControls(favorite);
             FillDescriptionPropertiesControls(favorite);
             FillSecurityControls(favorite);
-            FillCredentials(favorite.Security.Credential);
+            this.FillCredentialsCombobox(favorite.Security.Credential);
             FillDisplayControls(favorite);
             FillExecuteBeforeControls(favorite);
             this.consolePreferences.FillControls(favorite);
@@ -659,7 +659,7 @@ namespace Terminals
 
         private void FillFavoriteSecurity()
         {
-            CredentialSet set = this.CredentialDropdown.SelectedItem as CredentialSet;
+            ICredentialSet set = this.CredentialDropdown.SelectedItem as ICredentialSet;
             this.Favorite.Security.Credential = set == null ? String.Empty : set.Name;
 
             this.Favorite.Security.DomainName = this.cmbDomains.Text;
@@ -1235,17 +1235,17 @@ namespace Terminals
         {
             String cred = String.Empty;
             if (this.CredentialDropdown.SelectedItem.GetType() != typeof(string))
-                cred = ((CredentialSet)this.CredentialDropdown.SelectedItem).Name;
+                cred = ((ICredentialSet)this.CredentialDropdown.SelectedItem).Name;
 
             Credentials.CredentialManager mgr = new Credentials.CredentialManager();
             mgr.ShowDialog();
-            this.FillCredentials(cred);
+            this.FillCredentialsCombobox(cred);
         }
 
         private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.CredentialsPanel.Enabled = true;
-            CredentialSet set = (this.CredentialDropdown.SelectedItem as CredentialSet);
+            ICredentialSet set = (this.CredentialDropdown.SelectedItem as ICredentialSet);
 
             if (set != null)
             {

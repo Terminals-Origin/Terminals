@@ -80,7 +80,10 @@ namespace Terminals.Data
                     ConvertVMRCOptions(result, sourceFavorite);
                     break;
                 case ConnectionManager.TELNET:
-                    ConvertConsoleOptions(result, sourceFavorite);
+                    ConvertTelnetOptions(result, sourceFavorite);
+                    break;
+                case ConnectionManager.SSH:
+                    ConvertSshOptions(result, sourceFavorite);
                     break;
                 case ConnectionManager.RDP:
                     ConvertRdpOptions(result, sourceFavorite);
@@ -110,9 +113,23 @@ namespace Terminals.Data
             result.VMRCReducedColorsMode = options.ReducedColorsMode;
         }
 
-        private static void ConvertConsoleOptions(FavoriteConfigurationElement result, IFavorite sourceFavorite)
+        private static void ConvertTelnetOptions(FavoriteConfigurationElement result, IFavorite sourceFavorite)
         {
             var options = sourceFavorite.ProtocolProperties as ConsoleOptions;
+            ConvertConsoleOptions(result, options);
+        }
+
+        private static void ConvertSshOptions(FavoriteConfigurationElement result, IFavorite sourceFavorite)
+        {
+            var options = sourceFavorite.ProtocolProperties as SshOptions;
+            result.SSH1 = options.SSH1;
+            result.AuthMethod = options.AuthMethod;
+            result.KeyTag = options.CertificateKey;
+            ConvertConsoleOptions(result, options.Console);
+        }
+
+        private static void ConvertConsoleOptions(FavoriteConfigurationElement result, ConsoleOptions options)
+        {
             result.ConsoleBackColor = options.BackColor;
             result.ConsoleTextColor = options.TextColor;
             result.ConsoleCursorColor = options.CursorColor;

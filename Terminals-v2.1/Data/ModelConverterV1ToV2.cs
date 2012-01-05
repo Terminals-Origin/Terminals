@@ -77,7 +77,10 @@ namespace Terminals.Data
                     ConvertVMRCOptions(result, sourceFavorite);
                     break;
                 case ConnectionManager.TELNET:
-                    ConvertConsoleOptions(result, sourceFavorite);
+                    ConvertTelnetOptions(result, sourceFavorite);
+                    break;
+                case ConnectionManager.SSH:
+                    ConvertSshOptions(result, sourceFavorite);
                     break;
                 case ConnectionManager.RDP:
                     ConvertRdpOptions(result, sourceFavorite);
@@ -107,9 +110,22 @@ namespace Terminals.Data
             options.ReducedColorsMode = sourceFavorite.VMRCReducedColorsMode;
         }
 
-        private static void ConvertConsoleOptions(IFavorite result, FavoriteConfigurationElement sourceFavorite)
+        private static void ConvertTelnetOptions(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             var options = result.ProtocolProperties as ConsoleOptions;
+            ConvertConsoleOptions(options, sourceFavorite);
+        }
+
+        private static void ConvertSshOptions(IFavorite result, FavoriteConfigurationElement sourceFavorite)
+        {
+            var options = result.ProtocolProperties as SshOptions;
+            options.SSH1 = sourceFavorite.SSH1;
+            options.AuthMethod = sourceFavorite.AuthMethod;
+            options.CertificateKey = sourceFavorite.KeyTag;
+            ConvertConsoleOptions(options.Console, sourceFavorite);
+        }
+        private static void ConvertConsoleOptions(ConsoleOptions options, FavoriteConfigurationElement sourceFavorite)
+        {
             options.BackColor = sourceFavorite.ConsoleBackColor;
             options.TextColor = sourceFavorite.ConsoleTextColor;
             options.CursorColor = sourceFavorite.ConsoleCursorColor;
@@ -180,7 +196,7 @@ namespace Terminals.Data
             resultTsGw.HostName = sourceFavorite.TsgwHostname;
             resultTsGw.SeparateLogin = sourceFavorite.TsgwSeparateLogin;
             resultTsGw.UsageMethod = sourceFavorite.TsgwUsageMethod;
-            
+
             resultTsGw.Security.DomainName = sourceFavorite.TsgwDomain;
             resultTsGw.Security.EncryptedPassword = sourceFavorite.TsgwEncryptedPassword;
             resultTsGw.Security.UserName = sourceFavorite.TsgwUsername;
