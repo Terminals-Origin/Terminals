@@ -40,7 +40,7 @@ namespace Terminals
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(8, 8);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(90, 17);
+            this.label1.Size = new System.Drawing.Size(70, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Group Name:";
             // 
@@ -48,7 +48,7 @@ namespace Terminals
             // 
             this.txtGroupName.Location = new System.Drawing.Point(80, 8);
             this.txtGroupName.Name = "txtGroupName";
-            this.txtGroupName.Size = new System.Drawing.Size(328, 24);
+            this.txtGroupName.Size = new System.Drawing.Size(328, 21);
             this.txtGroupName.TabIndex = 1;
             this.txtGroupName.TextChanged += new System.EventHandler(this.txtGroupName_TextChanged);
             // 
@@ -78,7 +78,7 @@ namespace Terminals
             // NewGroupForm
             // 
             this.AcceptButton = this.btnOk;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(417, 73);

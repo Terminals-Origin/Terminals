@@ -998,17 +998,16 @@
     <Content Include="Resources\red.png" />
     <None Include="Resources\XPfolder_Open.bmp" />
     <None Include="Resources\XPfolder_closed.bmp" />
-    <None Include="Resources\terminalsbanner.png" />
-    <None Include="Resources\terminalsbanner-left.png" />
-    <None Include="Resources\terminalsbanner-mini.png" />
-    <None Include="Resources\terminalsicon.png" />
-    <None Include="Resources\terminalsbanner-small.png" />
-    <None Include="Resources\terminalsbanner1.png" />
     <None Include="Resources\treeIcon_ssh.png" />
     <None Include="Resources\treeIcon_telnet.png" />
     <None Include="Resources\treeIcon_vnc.png" />
     <None Include="Resources\treeIcon_http.png" />
     <None Include="Resources\treeIcon_rdp.png" />
+    <Content Include="Resources\RotatedHeaderForWizard.png" />
+    <Content Include="Resources\terminalsbanner-left.png" />
+    <Content Include="Resources\terminalsbanner-small.png" />
+    <Content Include="Resources\terminalsbanner.png" />
+    <Content Include="Resources\terminalsicon.png" />
     <Content Include="terminalsicon.ico" />
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1207,8 +1206,6 @@
     <Content Include="Resources\lightning_go.png" />
     <Content Include="Resources\options.png" />
     <Content Include="Resources\polarized-glasses.jpg" />
-    <Content Include="Resources\rdp.png" />
-    <None Include="Resources\RotatedHeaderForWizard.bmp" />
     <EmbeddedResource Include="Resources\screen-capture-box.gif" />
     <EmbeddedResource Include="Resources\Refresh.gif" />
     <Content Include="Resources\red.jpg" />

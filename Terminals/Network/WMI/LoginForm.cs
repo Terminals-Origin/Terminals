@@ -55,6 +55,7 @@ namespace WMITestClient
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoginForm));
             this.ButtonCancel = new System.Windows.Forms.Button();
             this.MachineNameTextBox = new System.Windows.Forms.TextBox();
             this.UsernameTextBox = new System.Windows.Forms.TextBox();
@@ -65,11 +66,11 @@ namespace WMITestClient
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // CancelButton
+            // ButtonCancel
             // 
             this.ButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.ButtonCancel.Location = new System.Drawing.Point(112, 120);
-            this.ButtonCancel.Name = "CancelButton";
+            this.ButtonCancel.Name = "ButtonCancel";
             this.ButtonCancel.Size = new System.Drawing.Size(75, 23);
             this.ButtonCancel.TabIndex = 0;
             this.ButtonCancel.Text = "&Cancel";
@@ -98,10 +99,10 @@ namespace WMITestClient
             this.PasswordTextBox.Size = new System.Drawing.Size(162, 20);
             this.PasswordTextBox.TabIndex = 3;
             // 
-            // LoginButton
+            // ButtonLogin
             // 
             this.ButtonLogin.Location = new System.Drawing.Point(200, 120);
-            this.ButtonLogin.Name = "LoginButton";
+            this.ButtonLogin.Name = "ButtonLogin";
             this.ButtonLogin.Size = new System.Drawing.Size(75, 23);
             this.ButtonLogin.TabIndex = 4;
             this.ButtonLogin.Text = "&Login";
@@ -148,6 +149,7 @@ namespace WMITestClient
             this.Controls.Add(this.MachineNameTextBox);
             this.Controls.Add(this.ButtonCancel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoginForm";
             this.Text = "Login...";
             this.Load += new System.EventHandler(this.LoginForm_Load);

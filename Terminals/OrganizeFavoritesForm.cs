@@ -330,7 +330,10 @@ namespace Terminals
             if (MainForm != null)
             {
                 FavoriteConfigurationElement favorite = GetSelectedFavorite();
-                MainForm.Connect(favorite.Name, favorite.ConnectToConsole, favorite.NewWindow);
+                if (favorite != null)
+                {
+                    MainForm.Connect(favorite.Name, favorite.ConnectToConsole, favorite.NewWindow);
+                }
             }
         }
     }
