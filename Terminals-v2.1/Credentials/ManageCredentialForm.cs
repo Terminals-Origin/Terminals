@@ -7,8 +7,9 @@ namespace Terminals.Credentials
     internal partial class ManageCredentialForm : Form
     {
         private string editedCredentialName = "";
+        private ICredentialSet editedCredential;
 
-        private static IStoredCredentials Credentials
+        private static ICredentials Credentials
         {
             get { return Persistance.Instance.Credentials; }
         }
@@ -17,12 +18,13 @@ namespace Terminals.Credentials
         {
             InitializeComponent();
 
-            FillControlsFromCredential(editedCredential);
+            this.editedCredential = editedCredential;
+            FillControlsFromCredential();
         }
 
-        private void FillControlsFromCredential(ICredentialSet editedCredential)
+        private void FillControlsFromCredential()
         {
-            if (editedCredential != null)
+            if (this.editedCredential != null)
             {
                 this.NameTextbox.Text = editedCredential.Name;
                 this.DomainTextbox.Text = editedCredential.Domain;
@@ -53,29 +55,35 @@ namespace Terminals.Credentials
 
         private bool UpdateCredential()
         {
-            ICredentialSet conflicting = Credentials.GetByName(this.NameTextbox.Text);
-            ICredentialSet oldItem = Credentials.GetByName(this.editedCredentialName);
-
-            if (conflicting != null && this.editedCredentialName != this.NameTextbox.Text)
+            ICredentialSet conflicting = Credentials[this.NameTextbox.Text];
+            if (conflicting != null && !conflicting.Equals(this.editedCredential) &&
+                EditedNameHasChanged())
             {
-                return UpdateConflicting(conflicting, oldItem);
+                return UpdateConflicting(conflicting, this.editedCredential);
             }
 
-            UpdateOldOrCreateNew(oldItem);
+            UpdateOldOrCreateNew();
             return true;
         }
 
-        private void UpdateOldOrCreateNew(ICredentialSet oldItem)
+        private void UpdateOldOrCreateNew()
         {
-            if (oldItem == null || this.editedCredentialName != this.NameTextbox.Text)
+            bool nameChanded = EditedNameHasChanged();
+            if (this.editedCredential == null || nameChanded)
             {
                 ICredentialSet newCredential = this.CreateNewCredential();
                 Credentials.Add(newCredential);
             }
             else
             {
-                this.UpdateFromControls(oldItem);
+                this.UpdateFromControls(this.editedCredential);
             }
+        }
+
+        private bool EditedNameHasChanged()
+        {
+            return !string.Equals(this.editedCredentialName, this.NameTextbox.Text,
+                StringComparison.CurrentCultureIgnoreCase);
         }
 
         private bool UpdateConflicting(ICredentialSet conflicting, ICredentialSet oldItem)

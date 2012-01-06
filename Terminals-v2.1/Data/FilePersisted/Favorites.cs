@@ -235,11 +235,11 @@ namespace Terminals.Data
             return OrderByDefaultSorting(source);
         }
 
-        public void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, string credentialName)
+        public void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential)
         {
             foreach (Favorite favorite in selectedFavorites)
             {
-                favorite.Security.Credential = credentialName;
+                favorite.Security.Credential = credential.Id;
                 this.dispatcher.ReportFavoriteUpdated(favorite);
             }
 

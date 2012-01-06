@@ -32,15 +32,7 @@ namespace Terminals.Data
             if (forceNewWindow)
                 favorite.NewWindow = true;
 
-            if (credential != null)
-            {
-                var security = favorite.Security;
-                security.Credential = credential.Name;
-                security.UserName = credential.Username;
-                security.DomainName = credential.Domain;
-                security.EncryptedPassword = credential.Password;
-            }
-
+            favorite.Security.UpdateFromCredential(credential);
             return favorite;
         }
 

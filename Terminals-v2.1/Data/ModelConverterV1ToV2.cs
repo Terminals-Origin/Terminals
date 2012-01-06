@@ -44,7 +44,9 @@ namespace Terminals.Data
             security.DomainName = sourceFavorite.DomainName;
             security.UserName = sourceFavorite.UserName;
             security.EncryptedPassword = sourceFavorite.EncryptedPassword;
-            security.Credential = sourceFavorite.Credential;
+            ICredentialSet credential = Persistance.Instance.Credentials[sourceFavorite.Credential];
+            if (credential != null)
+                security.Credential = credential.Id;
         }
 
         private static void ConvertBeforeConnetExecute(IFavorite result, FavoriteConfigurationElement sourceFavorite)

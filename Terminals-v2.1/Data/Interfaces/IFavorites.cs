@@ -77,7 +77,7 @@ namespace Terminals.Data
         /// updating their credential property by credentailName value.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
-        void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, string credentialName);
+        void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential);
 
         /// <summary>
         /// updates all required favorites in persistance, if they are present,

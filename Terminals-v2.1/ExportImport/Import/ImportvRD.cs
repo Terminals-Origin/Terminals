@@ -106,12 +106,12 @@ namespace Terminals.Integration.Import
 
         private void SaveCredentials(Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials)
         {
-            IStoredCredentials storedCredentials = Persistance.Instance.Credentials;
+            ICredentials storedCredentials = Persistance.Instance.Credentials;
             foreach (string guid in credentials.Keys)
             {
                 vRDConfigurationFileCredentialsFolderCredentials toImport = credentials[guid];
                 //will store the last one if the same credential name 
-                ICredentialSet destination = storedCredentials.GetByName(toImport.Name);
+                ICredentialSet destination = storedCredentials[toImport.Name];
                 if (destination == null)
                 {
                     destination = Persistance.Instance.Credentials.CreateCredentialSet();

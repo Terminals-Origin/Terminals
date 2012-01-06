@@ -8,7 +8,7 @@ namespace Terminals.Data
     [Serializable]
     public class SecurityOptions
     {
-        public String Credential { get; set; }
+        public Guid Credential { get; set; }
         public string DomainName { get; set; }
         public string UserName { get; set; }
         public String EncryptedPassword { get; set; }
@@ -29,6 +29,11 @@ namespace Terminals.Data
             }
         }
 
+        public SecurityOptions()
+        {
+            this.Credential = Guid.Empty;
+        }
+
         internal SecurityOptions Copy()
         {
             return new SecurityOptions
@@ -47,38 +52,39 @@ namespace Terminals.Data
         internal SecurityOptions GetResolvedCredentials()
         {
             var result = new SecurityOptions();
-            ResolveFromCredential(result);
-            ResolveDefaultValues(result);
+            var source = Persistance.Instance.Credentials[this.Credential];
+            result.UpdateFromCredential(source);
+            result.UpdateFromDefaultValues();
             return result;
         }
 
-        private void ResolveFromCredential(SecurityOptions result)
+        internal void UpdateFromCredential(ICredentialSet source)
         {
-            ICredentialSet storedCredential = Persistance.Instance.Credentials.GetByName(this.Credential);
-            if (storedCredential !=  null)
+            if (source != null)
             {
-                result.DomainName = storedCredential.Domain;
-                result.UserName = storedCredential.Username;
-                result.EncryptedPassword = storedCredential.SecretKey;
+                this.Credential = source.Id;
+                this.DomainName = source.Domain;
+                this.UserName = source.Username;
+                this.EncryptedPassword = source.SecretKey;
             }
         }
 
-        private void ResolveDefaultValues(SecurityOptions result)
+        private void UpdateFromDefaultValues()
         {
             if (string.IsNullOrEmpty(this.DomainName))
-                result.DomainName = Settings.DefaultDomain;
+                this.DomainName = Settings.DefaultDomain;
             else
-                result.DomainName = this.DomainName;
+                this.DomainName = this.DomainName;
 
             if (string.IsNullOrEmpty(this.UserName))
-                result.UserName = Settings.DefaultUsername;
+                this.UserName = Settings.DefaultUsername;
             else
-                result.UserName = this.UserName;
+                this.UserName = this.UserName;
 
             if (string.IsNullOrEmpty(this.Password))
-                result.Password = Settings.DefaultPassword;
+                this.Password = Settings.DefaultPassword;
             else
-                result.Password = this.Password;
+                this.Password = this.Password;
         }
     }
 }

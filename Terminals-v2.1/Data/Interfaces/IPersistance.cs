@@ -18,7 +18,7 @@ namespace Terminals.Data
         
         ConnectionHistory ConnectionHistory { get; }
 
-        IStoredCredentials Credentials { get; }
+        ICredentials Credentials { get; }
         
         DataDispatcher Dispatcher { get; }
 

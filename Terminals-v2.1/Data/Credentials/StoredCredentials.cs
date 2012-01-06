@@ -12,7 +12,7 @@ using Unified;
 
 namespace Terminals.Data
 {
-    internal sealed class StoredCredentials: IStoredCredentials
+    internal sealed class StoredCredentials: ICredentials
     {
         /// <summary>
         /// Gets default name of the credentials file.
@@ -31,7 +31,6 @@ namespace Terminals.Data
 
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Credentials");
         private DataFileWatcher fileWatcher;
-        public event EventHandler CredentialsChanged;
 
         /// <summary>
         /// Prevents creating from other class
@@ -99,30 +98,6 @@ namespace Terminals.Data
             }
         }
 
-        public void Save()
-        {
-            try
-            {
-                fileLock.WaitOne();
-                fileWatcher.StopObservation();
-                string fileName = GetEnsuredCredentialsFileLocation();
-                List<CredentialSet> fileContent = cache.Cast<CredentialSet>().ToList();
-                Serialize.SerializeXMLToDisk(fileContent, fileName);
-                Debug.WriteLine("Credentials file saved.");
-            }
-            catch (Exception exception)
-            {
-                string errorMessage = string.Format("Save credentials to {0} failed.",
-                    GetEnsuredCredentialsFileLocation());
-                Logging.Log.Error(errorMessage, exception);
-            }
-            finally
-            {
-                fileWatcher.StartObservation();
-                fileLock.ReleaseMutex();
-            }
-        }
-
         private static string GetEnsuredCredentialsFileLocation()
         {
             // TODO REFACTORING not configurable location of credentials file (Jiri Pokorny, 08.07.2011)
@@ -135,23 +110,33 @@ namespace Terminals.Data
             return fileLocation;
         }
 
+        #region ICredentials
+
+        public event EventHandler CredentialsChanged;
+
+        public ICredentialSet this[Guid id]
+        {
+            get
+            {
+                return this.cache.FirstOrDefault(candidate => candidate.Id.Equals(id));
+            }
+        }
+
         /// <summary>
         /// Gets a credential by its name from cached credentials.
         /// This method isnt case sensitive. If no item matches, returns null.
         /// </summary>
         /// <param name="name">name of an item to search</param>
-        public ICredentialSet GetByName(string name)
+        public ICredentialSet this[string name]
         {
-            if (string.IsNullOrEmpty(name))
-                return null;
+            get
+            {
+                if (string.IsNullOrEmpty(name))
+                    return null;
 
-            name = name.ToLower();
-            return this.cache.FirstOrDefault(candidate => candidate.Name.ToLower() == name);
-        }
-
-        public void Remove(ICredentialSet toRemove)
-        {
-            cache.Remove(toRemove);
+                name = name.ToLower();
+                return this.cache.FirstOrDefault(candidate => candidate.Name.ToLower() == name);
+            }
         }
 
         public void Add(ICredentialSet toAdd)
@@ -159,7 +144,12 @@ namespace Terminals.Data
             if (String.IsNullOrEmpty(toAdd.Name))
                 return;
 
-            cache.Add(toAdd);
+            this.cache.Add(toAdd);
+        }
+
+        public void Remove(ICredentialSet toRemove)
+        {
+            cache.Remove(toRemove);
         }
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
@@ -176,6 +166,32 @@ namespace Terminals.Data
         {
             return new CredentialSet();
         }
+
+        public void Save()
+        {
+            try
+            {
+                this.fileLock.WaitOne();
+                this.fileWatcher.StopObservation();
+                string fileName = GetEnsuredCredentialsFileLocation();
+                List<CredentialSet> fileContent = this.cache.Cast<CredentialSet>().ToList();
+                Serialize.SerializeXMLToDisk(fileContent, fileName);
+                Debug.WriteLine("Credentials file saved.");
+            }
+            catch (Exception exception)
+            {
+                string errorMessage = string.Format("Save credentials to {0} failed.",
+                    GetEnsuredCredentialsFileLocation());
+                Logging.Log.Error(errorMessage, exception);
+            }
+            finally
+            {
+                this.fileWatcher.StartObservation();
+                this.fileLock.ReleaseMutex();
+            }
+        }
+
+        #endregion
 
         #region IEnumerable members
 

@@ -41,7 +41,7 @@ namespace Terminals.Data
         }
 
         private StoredCredentials storedCredentials;
-        public IStoredCredentials Credentials
+        public ICredentials Credentials
         {
             get { return this.storedCredentials; }
         }

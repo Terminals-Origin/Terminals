@@ -250,7 +250,8 @@ namespace Terminals
             InputBoxResult result = InputBox.Show("Set Credential by Tag\r\n\r\nThis will replace the credential used for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Credential" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-                if (Persistance.Instance.Credentials.GetByName(result.Text) == null)
+                ICredentialSet credential = Persistance.Instance.Credentials[result.Text];
+                if (credential == null)
                 {
                     MessageBox.Show("The credential you specified does not exist.");
                     return;
@@ -260,7 +261,7 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites  = GetSelectedFavorites();
-                PersistedFavorites.ApplyCredentialsToAllFavorites(selectedFavorites, result.Text);
+                PersistedFavorites.ApplyCredentialsToAllFavorites(selectedFavorites, credential);
 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -418,19 +419,22 @@ namespace Terminals
             this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
 
             IEnumerable<ICredentialSet> credentials = Persistance.Instance.Credentials;
-            foreach (ICredentialSet s in credentials)
+            foreach (ICredentialSet credential in credentials)
             {
-                this.connectAsToolStripMenuItem.DropDownItems.Add(s.Name, null, new EventHandler(this.connectAsCred_Click));
+                var menuItem = new ToolStripMenuItem(credential.Name, null, new EventHandler(this.connectAsCred_Click));
+                menuItem.Tag = credential.Id;
+                this.connectAsToolStripMenuItem.DropDownItems.Add(menuItem);
             }
         }
 
         private void connectAsCred_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
-            if (fav != null)
+            IFavorite favorite = this.favsTree.SelectedFavorite;
+            if (favorite != null)
             {
-                var credential = Persistance.Instance.Credentials.GetByName(sender.ToString());
-                this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked,
+                var menuItem = sender as ToolStripItem;
+                var credential = Persistance.Instance.Credentials[(Guid)menuItem.Tag];
+                this.GetMainForm().Connect(favorite.Name, this.consoleToolStripMenuItem.Checked,
                                            this.newWindowToolStripMenuItem.Checked, credential);
             }
         }

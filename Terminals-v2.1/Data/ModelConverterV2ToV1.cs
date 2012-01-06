@@ -47,7 +47,10 @@ namespace Terminals.Data
             result.DomainName = security.DomainName;
             result.UserName = security.UserName;
             result.EncryptedPassword = security.EncryptedPassword;
-            result.Credential = security.Credential;
+            
+            ICredentialSet credential = Persistance.Instance.Credentials[security.Credential];
+            if(credential != null)
+                result.Credential = credential.Name;
         }
 
         private static void ConvertBeforeConnetExecute(FavoriteConfigurationElement result, IFavorite sourceFavorite)

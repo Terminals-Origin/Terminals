@@ -192,7 +192,7 @@
     <Compile Include="CaptureManager\ImageFormatHandler.cs" />
     <Compile Include="CaptureManager\ImageFormatTypes.cs" />
     <Compile Include="Configuration\FileLocations.cs" />
-    <Compile Include="Data\Interfaces\IStoredCredentials.cs" />
+    <Compile Include="Data\Interfaces\ICredentials.cs" />
     <Compile Include="Data\Interfaces\ICredentialSet.cs" />
     <Compile Include="Data\FilePersisted\ConfigFavoritesFactory.cs" />
     <Compile Include="Data\Interfaces\IFactory.cs" />
