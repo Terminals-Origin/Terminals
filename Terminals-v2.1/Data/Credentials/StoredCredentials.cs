@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 using Terminals.Configuration;
 using SysConfig = System.Configuration;
@@ -10,8 +12,7 @@ using Unified;
 
 namespace Terminals.Data
 {
-    //todo REFACTORING Provide Interface for stored credentials
-    internal sealed class StoredCredentials
+    internal sealed class StoredCredentials: IStoredCredentials
     {
         /// <summary>
         /// Gets default name of the credentials file.
@@ -27,21 +28,10 @@ namespace Terminals.Data
         }
 
         private List<ICredentialSet> cache;
-        /// <summary>
-        /// Gets the not null collection containing stored credentials
-        /// </summary>
-        internal List<ICredentialSet> Items
-        {
-            get
-            {
-                // prevent manipulation directly with this list
-                return cache.ToList();
-            }
-        }
 
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Credentials");
         private DataFileWatcher fileWatcher;
-        internal event EventHandler CredentialsChanged;
+        public event EventHandler CredentialsChanged;
 
         /// <summary>
         /// Prevents creating from other class
@@ -105,10 +95,11 @@ namespace Terminals.Data
             finally
             {
                 fileLock.ReleaseMutex();
+                Debug.WriteLine("Credentials file Loaded.");
             }
         }
 
-        internal void Save()
+        public void Save()
         {
             try
             {
@@ -117,6 +108,7 @@ namespace Terminals.Data
                 string fileName = GetEnsuredCredentialsFileLocation();
                 List<CredentialSet> fileContent = cache.Cast<CredentialSet>().ToList();
                 Serialize.SerializeXMLToDisk(fileContent, fileName);
+                Debug.WriteLine("Credentials file saved.");
             }
             catch (Exception exception)
             {
@@ -148,21 +140,21 @@ namespace Terminals.Data
         /// This method isnt case sensitive. If no item matches, returns null.
         /// </summary>
         /// <param name="name">name of an item to search</param>
-        internal ICredentialSet GetByName(string name)
+        public ICredentialSet GetByName(string name)
         {
             if (string.IsNullOrEmpty(name))
                 return null;
 
             name = name.ToLower();
-            return this.Items.FirstOrDefault(candidate => candidate.Name.ToLower() == name);
+            return this.cache.FirstOrDefault(candidate => candidate.Name.ToLower() == name);
         }
 
-        internal void Remove(ICredentialSet toRemove)
+        public void Remove(ICredentialSet toRemove)
         {
             cache.Remove(toRemove);
         }
 
-        internal void Add(ICredentialSet toAdd)
+        public void Add(ICredentialSet toAdd)
         {
             if (String.IsNullOrEmpty(toAdd.Name))
                 return;
@@ -170,7 +162,7 @@ namespace Terminals.Data
             cache.Add(toAdd);
         }
 
-        internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
+        public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
             foreach (ICredentialSet credentials in cache)
             {
@@ -180,9 +172,23 @@ namespace Terminals.Data
             Save();
         }
 
-        internal ICredentialSet CreateCredentialSet()
+        public ICredentialSet CreateCredentialSet()
         {
             return new CredentialSet();
         }
+
+        #region IEnumerable members
+
+        public IEnumerator<ICredentialSet> GetEnumerator()
+        {
+            return this.cache.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        #endregion
     }
 }

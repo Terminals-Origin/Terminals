@@ -417,8 +417,8 @@ namespace Terminals
             this.connectAsToolStripMenuItem.DropDownItems.Clear();
             this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
 
-            List<ICredentialSet> list = Persistance.Instance.Credentials.Items;
-            foreach (ICredentialSet s in list)
+            IEnumerable<ICredentialSet> credentials = Persistance.Instance.Credentials;
+            foreach (ICredentialSet s in credentials)
             {
                 this.connectAsToolStripMenuItem.DropDownItems.Add(s.Name, null, new EventHandler(this.connectAsCred_Click));
             }

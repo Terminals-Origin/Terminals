@@ -114,13 +114,13 @@ namespace Terminals
         private void FillCredentialsCombobox(String credentialName)
         {
             this.CredentialDropdown.Items.Clear();
-            List<ICredentialSet> creds = Persistance.Instance.Credentials.Items;
             this.CredentialDropdown.Items.Add("(custom)");
-
             Int32 selIndex = 0;
-            if (creds != null)
+            
+            IEnumerable<ICredentialSet> credentials = Persistance.Instance.Credentials;
+            if (credentials != null)
             {
-                foreach (ICredentialSet item in creds)
+                foreach (ICredentialSet item in credentials)
                 {
                     Int32 index = this.CredentialDropdown.Items.Add(item);
                     if (!String.IsNullOrEmpty(credentialName) && credentialName == item.Name)

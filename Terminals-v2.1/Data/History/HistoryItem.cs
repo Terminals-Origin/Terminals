@@ -16,6 +16,7 @@ namespace Terminals.History
             ID = Guid.NewGuid().ToString();
         }
 
+        // todo remove not necessary proerties
         public string ID { get; set; }
         public string Name { get; set; }
         public DateTime Date { get; set; }

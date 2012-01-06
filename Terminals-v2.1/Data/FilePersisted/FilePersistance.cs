@@ -40,8 +40,14 @@ namespace Terminals.Data
             get { return this.factory; }
         }
 
+        private StoredCredentials storedCredentials;
+        public IStoredCredentials Credentials
+        {
+            get { return this.storedCredentials; }
+        }
+
         public ConnectionHistory ConnectionHistory { get; private set; }
-        public StoredCredentials Credentials { get; private set; }
+
         public DataDispatcher Dispatcher { get; private set; }
 
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistance");
@@ -53,7 +59,7 @@ namespace Terminals.Data
         {
             this.Dispatcher = new DataDispatcher();
             this.ConnectionHistory = new ConnectionHistory();
-            this.Credentials = new StoredCredentials();
+            this.storedCredentials = new StoredCredentials();
             InitializeFileWatch();
             Load();
             this.factory = new FavoritesFactory(this.groups, this.favorites);
@@ -82,7 +88,7 @@ namespace Terminals.Data
         {
             Settings.AssignSynchronizationObject(synchronizer);
             this.ConnectionHistory.AssignSynchronizationObject(synchronizer);
-            this.Credentials.AssignSynchronizationObject(synchronizer);
+            this.storedCredentials.AssignSynchronizationObject(synchronizer);
             this.fileWatcher.AssignSynchronizer(synchronizer);
         }
 

@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Credentials
 {
     internal partial class CredentialManager : Form
     {
-        private static StoredCredentials Credentials
+        private static IStoredCredentials Credentials
         {
             get { return Persistance.Instance.Credentials; }
         }
@@ -27,7 +26,7 @@ namespace Terminals.Credentials
         {
             CredentialsListView.Items.Clear();
 
-            foreach (ICredentialSet credential in Credentials.Items)
+            foreach (ICredentialSet credential in Credentials)
             {
                 ListViewItem item = new ListViewItem(credential.Name);
                 item.SubItems.Add(new ListViewItem.ListViewSubItem(item, credential.Username));

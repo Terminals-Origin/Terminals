@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Credentials
@@ -9,7 +8,7 @@ namespace Terminals.Credentials
     {
         private string editedCredentialName = "";
 
-        private StoredCredentials Credentials
+        private static IStoredCredentials Credentials
         {
             get { return Persistance.Instance.Credentials; }
         }

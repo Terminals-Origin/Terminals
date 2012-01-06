@@ -260,8 +260,10 @@ namespace Terminals.Data
             copy.ServerName = this.ServerName;
             copy.ToolBarIcon = this.ToolBarIcon;
             copy.Url = this.Url;
-            
-            copy.ProtocolProperties = (this.ProtocolProperties as ICloneable).Clone();
+
+            var properties = this.ProtocolProperties as ICloneable; // http doesnt have
+            if (properties != null)
+                copy.ProtocolProperties = properties.Clone();
 
             return copy;
         }

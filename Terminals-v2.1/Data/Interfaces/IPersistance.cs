@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Terminals.Configuration;
 using Terminals.History;
 
 namespace Terminals.Data
@@ -18,8 +17,8 @@ namespace Terminals.Data
         IFactory Factory { get; }
         
         ConnectionHistory ConnectionHistory { get; }
-        
-        StoredCredentials Credentials { get; }
+
+        IStoredCredentials Credentials { get; }
         
         DataDispatcher Dispatcher { get; }
 
