@@ -62,7 +62,6 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DiskDrivesForm";
-            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Redirect Devices";

@@ -63,7 +63,7 @@
             this.AttachToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("AttachToolStripButton.Image")));
             this.AttachToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AttachToolStripButton.Name = "AttachToolStripButton";
-            this.AttachToolStripButton.Size = new System.Drawing.Size(135, 22);
+            this.AttachToolStripButton.Size = new System.Drawing.Size(120, 22);
             this.AttachToolStripButton.Text = "Attach to main window";
             this.AttachToolStripButton.Click += new System.EventHandler(this.attachToTerminalsToolStripMenuItem_Click);
             // 
@@ -72,7 +72,7 @@
             this.CaptureToolStripButton.Image = global::Terminals.Properties.Resources.camera;
             this.CaptureToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.CaptureToolStripButton.Name = "CaptureToolStripButton";
-            this.CaptureToolStripButton.Size = new System.Drawing.Size(106, 22);
+            this.CaptureToolStripButton.Size = new System.Drawing.Size(101, 22);
             this.CaptureToolStripButton.Text = "Capture screen";
             this.CaptureToolStripButton.ToolTipText = "Capture Terminal Screen. This feature has to be enabled in application options fi" +
     "rst. (Ctrl+F12)";
