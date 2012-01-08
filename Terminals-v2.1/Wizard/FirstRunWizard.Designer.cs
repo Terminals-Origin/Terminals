@@ -40,11 +40,13 @@ namespace Terminals
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pictureBox1.Image = global::Terminals.Properties.Resources.terminalsbanner_left;
+            this.pictureBox1.Image = global::Terminals.Properties.Resources.RotatedHeaderForWizard;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(69, 283);
+            this.pictureBox1.Size = new System.Drawing.Size(60, 279);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -53,24 +55,25 @@ namespace Terminals
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(69, 0);
+            this.panel1.Location = new System.Drawing.Point(60, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(371, 283);
+            this.panel1.Size = new System.Drawing.Size(385, 279);
             this.panel1.TabIndex = 1;
             // 
             // panel2
             // 
+            this.panel2.BackColor = System.Drawing.SystemColors.Control;
             this.panel2.Controls.Add(this.nextButton);
             this.panel2.Controls.Add(this.cancelButton);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel2.Location = new System.Drawing.Point(0, 283);
+            this.panel2.Location = new System.Drawing.Point(0, 279);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(440, 40);
+            this.panel2.Size = new System.Drawing.Size(445, 40);
             this.panel2.TabIndex = 2;
             // 
             // nextButton
             // 
-            this.nextButton.Location = new System.Drawing.Point(272, 6);
+            this.nextButton.Location = new System.Drawing.Point(350, 6);
             this.nextButton.Name = "nextButton";
             this.nextButton.Size = new System.Drawing.Size(75, 23);
             this.nextButton.TabIndex = 1;
@@ -80,7 +83,8 @@ namespace Terminals
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(353, 6);
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Location = new System.Drawing.Point(12, 6);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 0;
@@ -90,9 +94,12 @@ namespace Terminals
             // 
             // FirstRunWizard
             // 
+            this.AcceptButton = this.nextButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(440, 323);
+            this.BackColor = System.Drawing.Color.White;
+            this.CancelButton = this.cancelButton;
+            this.ClientSize = new System.Drawing.Size(445, 319);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.panel2);

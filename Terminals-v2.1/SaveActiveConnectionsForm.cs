@@ -34,5 +34,10 @@ namespace Terminals
         {
             get { return this.chkOpenOnNextTime.Checked; }
         }
+
+        private void SaveActiveConnectionsForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

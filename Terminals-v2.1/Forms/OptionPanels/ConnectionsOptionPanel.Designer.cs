@@ -166,7 +166,7 @@ namespace Terminals.Forms
             this.warnDisconnectCheckBox.Name = "warnDisconnectCheckBox";
             this.warnDisconnectCheckBox.Size = new System.Drawing.Size(122, 17);
             this.warnDisconnectCheckBox.TabIndex = 19;
-            this.warnDisconnectCheckBox.Text = "Warn on disconnect";
+            this.warnDisconnectCheckBox.Text = "Show confirm dialog on close or warn on disconnect";
             this.warnDisconnectCheckBox.UseVisualStyleBackColor = true;
             // 
             // ConnectionsOptionPanel

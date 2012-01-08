@@ -44,9 +44,9 @@ namespace Terminals
             // label1
             // 
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(0, 117);
+            this.label1.Location = new System.Drawing.Point(0, 147);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(486, 42);
+            this.label1.Size = new System.Drawing.Size(486, 30);
             this.label1.TabIndex = 0;
             this.label1.Text = "Terminals is a multi tab terminal services/remote desktop client.";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -55,9 +55,9 @@ namespace Terminals
             // 
             this.lblTerminals.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblTerminals.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.lblTerminals.Location = new System.Drawing.Point(0, 234);
+            this.lblTerminals.Location = new System.Drawing.Point(0, 241);
             this.lblTerminals.Name = "lblTerminals";
-            this.lblTerminals.Size = new System.Drawing.Size(486, 32);
+            this.lblTerminals.Size = new System.Drawing.Size(486, 27);
             this.lblTerminals.TabIndex = 1;
             this.lblTerminals.TabStop = true;
             this.lblTerminals.Text = "Terminals Home Page at CodePlex";
@@ -80,7 +80,7 @@ namespace Terminals
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 268);
+            this.label3.Location = new System.Drawing.Point(10, 280);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(134, 13);
             this.label3.TabIndex = 4;
@@ -90,10 +90,10 @@ namespace Terminals
             // pictureBox1
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pictureBox1.Image = global::Terminals.Properties.Resources.terminalsbanner_mini;
+            this.pictureBox1.Image = global::Terminals.Properties.Resources.terminalsbanner;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(486, 117);
+            this.pictureBox1.Size = new System.Drawing.Size(486, 147);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 6;
             this.pictureBox1.TabStop = false;
@@ -102,7 +102,7 @@ namespace Terminals
             // 
             this.lblVersion.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblVersion.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.lblVersion.Location = new System.Drawing.Point(0, 159);
+            this.lblVersion.Location = new System.Drawing.Point(0, 177);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(486, 13);
             this.lblVersion.TabIndex = 9;
@@ -113,7 +113,7 @@ namespace Terminals
             // 
             this.linkLabel4.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.linkLabel4.LinkColor = System.Drawing.Color.Blue;
-            this.linkLabel4.Location = new System.Drawing.Point(200, 266);
+            this.linkLabel4.Location = new System.Drawing.Point(201, 278);
             this.linkLabel4.Name = "linkLabel4";
             this.linkLabel4.Size = new System.Drawing.Size(85, 17);
             this.linkLabel4.TabIndex = 10;
@@ -125,21 +125,21 @@ namespace Terminals
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(15, 286);
+            this.textBox1.Location = new System.Drawing.Point(12, 298);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(462, 309);
+            this.textBox1.Size = new System.Drawing.Size(462, 297);
             this.textBox1.TabIndex = 11;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
             // label2
             // 
             this.label2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label2.Location = new System.Drawing.Point(0, 172);
+            this.label2.Location = new System.Drawing.Point(0, 190);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(486, 62);
+            this.label2.Size = new System.Drawing.Size(486, 51);
             this.label2.TabIndex = 12;
             this.label2.Text = "Terminals also handles a variety of networking operations such as: Ping, Trace Ro" +
     "ute, WMI Explorer, TCP Connections, Network Interfaces, Whois, DNS Lookups, Shar" +

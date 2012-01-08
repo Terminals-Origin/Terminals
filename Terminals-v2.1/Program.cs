@@ -16,7 +16,7 @@ namespace Terminals
 {
     internal static partial class Program
     {
-        private static string TerminalsVersion = "2.0 Beta 4";
+        private static string TerminalsVersion = "2.0 Release Candidate 1 ";
         public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", 
             typeof(MainForm).Assembly);
 
@@ -55,7 +55,8 @@ namespace Terminals
             try 
             {
                 LogNonAdministrator();
-                string testFile = FileLocations.GetFullPath("WriteAccessCheck.txt");
+                string directory = Info.Location;
+                string testFile = Path.Combine(directory, "WriteAccessCheck.txt");
                 
                 // Test to make sure that the current user has write access to the current directory.
                 using (StreamWriter sw = File.AppendText(testFile)) { }

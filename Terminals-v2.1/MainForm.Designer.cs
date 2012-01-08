@@ -98,6 +98,7 @@ namespace Terminals
             this.tsRemoteToolbar = new System.Windows.Forms.ToolStrip();
             this.tsbCMD = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.SpecialCommandsToolStrip = new System.Windows.Forms.ToolStrip();
             this.toolbarStd = new System.Windows.Forms.ToolStrip();
             this.tsbNewTerminal = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -130,7 +131,6 @@ namespace Terminals
             this.sentCTRLALTDELETEKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TerminalServerMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.SpecialCommandsToolStrip = new System.Windows.Forms.ToolStrip();
             this.ShortcutsContextMenu.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -232,8 +232,8 @@ namespace Terminals
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.menuStrip);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.favoriteToolBar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.tsRemoteToolbar);
-            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.toolbarStd);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.SpecialCommandsToolStrip);
+            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.toolbarStd);
             // 
             // splitContainer1
             // 
@@ -815,6 +815,16 @@ namespace Terminals
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
+            // SpecialCommandsToolStrip
+            // 
+            this.SpecialCommandsToolStrip.ContextMenuStrip = this.ShortcutsContextMenu;
+            this.SpecialCommandsToolStrip.Dock = System.Windows.Forms.DockStyle.None;
+            this.SpecialCommandsToolStrip.Location = new System.Drawing.Point(3, 49);
+            this.SpecialCommandsToolStrip.Name = "SpecialCommandsToolStrip";
+            this.SpecialCommandsToolStrip.Size = new System.Drawing.Size(111, 25);
+            this.SpecialCommandsToolStrip.TabIndex = 6;
+            this.SpecialCommandsToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.SpecialCommandsToolStrip_ItemClicked_1);
+            // 
             // toolbarStd
             // 
             this.toolbarStd.AllowItemReorder = true;
@@ -1134,16 +1144,6 @@ namespace Terminals
             this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton5.Text = "Computer Management (MMC)";
             this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
-            // 
-            // SpecialCommandsToolStrip
-            // 
-            this.SpecialCommandsToolStrip.ContextMenuStrip = this.ShortcutsContextMenu;
-            this.SpecialCommandsToolStrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.SpecialCommandsToolStrip.Location = new System.Drawing.Point(3, 49);
-            this.SpecialCommandsToolStrip.Name = "SpecialCommandsToolStrip";
-            this.SpecialCommandsToolStrip.Size = new System.Drawing.Size(111, 25);
-            this.SpecialCommandsToolStrip.TabIndex = 6;
-            this.SpecialCommandsToolStrip.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.SpecialCommandsToolStrip_ItemClicked_1);
             // 
             // MainForm
             // 

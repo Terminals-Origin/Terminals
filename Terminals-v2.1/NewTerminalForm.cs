@@ -1251,9 +1251,10 @@ namespace Terminals
 
         private Uri GetFullUrlFromHttpTextBox()
         {
-            string newUrlText = this.httpUrlTextBox.Text;
+            string newUrlText = this.httpUrlTextBox.Text.ToLower();
             string protocolPrefix = this.ProtocolComboBox.Text.ToLower();
-            if (!newUrlText.StartsWith(ConnectionManager.HTTP) || !newUrlText.StartsWith(ConnectionManager.HTTPS))
+            if (!newUrlText.StartsWith(ConnectionManager.HTTP.ToLower()) &&
+                !newUrlText.StartsWith(ConnectionManager.HTTPS.ToLower()))
                 newUrlText = String.Format("{0}://{1}", protocolPrefix, newUrlText);
             return WebOptions.TryParseUrl(newUrlText);
         }

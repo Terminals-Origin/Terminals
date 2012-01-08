@@ -53,6 +53,12 @@ namespace Terminals {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.gridScanResults = new Terminals.SortableUnboundGrid();
+            this.Computer = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HostName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ServiceName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.iPAddressDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.hostNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.serviceNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bsScanResults = new System.Windows.Forms.BindingSource(this.components);
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -66,9 +72,6 @@ namespace Terminals {
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
-            this.Computer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HostName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ServiceName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupAddressRange.SuspendLayout();
@@ -387,7 +390,10 @@ namespace Terminals {
             this.gridScanResults.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Computer,
             this.HostName,
-            this.ServiceName});
+            this.ServiceName,
+            this.iPAddressDataGridViewTextBoxColumn,
+            this.hostNameDataGridViewTextBoxColumn,
+            this.serviceNameDataGridViewTextBoxColumn});
             this.gridScanResults.DataSource = this.bsScanResults;
             this.gridScanResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridScanResults.Location = new System.Drawing.Point(3, 90);
@@ -397,6 +403,49 @@ namespace Terminals {
             this.gridScanResults.Size = new System.Drawing.Size(475, 221);
             this.gridScanResults.TabIndex = 13;
             this.gridScanResults.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridScanResults_ColumnHeaderMouseClick);
+            // 
+            // Computer
+            // 
+            this.Computer.DataPropertyName = "IPAddress";
+            this.Computer.HeaderText = "IP address";
+            this.Computer.Name = "Computer";
+            this.Computer.ReadOnly = true;
+            this.Computer.Width = 150;
+            // 
+            // HostName
+            // 
+            this.HostName.DataPropertyName = "HostName";
+            this.HostName.HeaderText = "Host name";
+            this.HostName.Name = "HostName";
+            this.HostName.ReadOnly = true;
+            this.HostName.Width = 200;
+            // 
+            // ServiceName
+            // 
+            this.ServiceName.DataPropertyName = "ServiceName";
+            this.ServiceName.HeaderText = "Service";
+            this.ServiceName.Name = "ServiceName";
+            this.ServiceName.ReadOnly = true;
+            this.ServiceName.Width = 50;
+            // 
+            // iPAddressDataGridViewTextBoxColumn
+            // 
+            this.iPAddressDataGridViewTextBoxColumn.DataPropertyName = "IPAddress";
+            this.iPAddressDataGridViewTextBoxColumn.HeaderText = "IPAddress";
+            this.iPAddressDataGridViewTextBoxColumn.Name = "iPAddressDataGridViewTextBoxColumn";
+            // 
+            // hostNameDataGridViewTextBoxColumn
+            // 
+            this.hostNameDataGridViewTextBoxColumn.DataPropertyName = "HostName";
+            this.hostNameDataGridViewTextBoxColumn.HeaderText = "HostName";
+            this.hostNameDataGridViewTextBoxColumn.Name = "hostNameDataGridViewTextBoxColumn";
+            // 
+            // serviceNameDataGridViewTextBoxColumn
+            // 
+            this.serviceNameDataGridViewTextBoxColumn.DataPropertyName = "ServiceName";
+            this.serviceNameDataGridViewTextBoxColumn.HeaderText = "ServiceName";
+            this.serviceNameDataGridViewTextBoxColumn.Name = "serviceNameDataGridViewTextBoxColumn";
+            this.serviceNameDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // bsScanResults
             // 
@@ -524,30 +573,6 @@ namespace Terminals {
             this.label6.TabIndex = 19;
             this.label6.Text = "Optional Tags:";
             // 
-            // Computer
-            // 
-            this.Computer.DataPropertyName = "IPAddress";
-            this.Computer.HeaderText = "IP address";
-            this.Computer.Name = "Computer";
-            this.Computer.ReadOnly = true;
-            this.Computer.Width = 150;
-            // 
-            // HostName
-            // 
-            this.HostName.DataPropertyName = "HostName";
-            this.HostName.HeaderText = "Host name";
-            this.HostName.Name = "HostName";
-            this.HostName.ReadOnly = true;
-            this.HostName.Width = 200;
-            // 
-            // ServiceName
-            // 
-            this.ServiceName.DataPropertyName = "ServiceName";
-            this.ServiceName.HeaderText = "Service";
-            this.ServiceName.Name = "ServiceName";
-            this.ServiceName.ReadOnly = true;
-            this.ServiceName.Width = 50;
-            // 
             // NetworkScanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -631,5 +656,8 @@ namespace Terminals {
         private System.Windows.Forms.DataGridViewTextBoxColumn Computer;
         private System.Windows.Forms.DataGridViewTextBoxColumn HostName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ServiceName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn iPAddressDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn hostNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn serviceNameDataGridViewTextBoxColumn;
     }
 }

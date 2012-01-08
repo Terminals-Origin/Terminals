@@ -30,9 +30,10 @@ namespace Terminals.Configuration
 
         private static string GetDataRootDirectoryFullPath()
         {
-            string root = Path.Combine(Program.Info.Location, DATA_DIRECTORY);
-            EnsureDataDirectory(root);
-            return root;
+            //string root = Path.Combine(Program.Info.Location, DATA_DIRECTORY);
+            //EnsureDataDirectory(root);
+            //return root;
+            return Program.Info.Location;
         }
 
         private static void EnsureDataDirectory(string root)

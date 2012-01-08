@@ -112,6 +112,8 @@ namespace Terminals.Connections
                     return VNCVMRCPort;
                 case TELNET:
                     return TelnetPort;
+                case SSH:
+                    return SSHPort;
                 case RDP:
                     return RDPPort;
                 case ICA_CITRIX:

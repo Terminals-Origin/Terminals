@@ -865,9 +865,6 @@
     <EmbeddedResource Include="Forms\OptionPanels\ProxyOptionPanel.resx">
       <DependentUpon>ProxyOptionPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NetworkScanner.cs</DependentUpon>
@@ -894,6 +891,10 @@
     <EmbeddedResource Include="OrganizeFavoritesForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OrganizeFavoritesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewTerminalForm.resx">
       <SubType>Designer</SubType>
@@ -1013,20 +1014,20 @@
     <Content Include="Resources\red.png" />
     <None Include="Resources\XPfolder_Open.bmp" />
     <None Include="Resources\XPfolder_closed.bmp" />
-    <None Include="Resources\terminalsbanner.png" />
-    <None Include="Resources\terminalsbanner-left.png" />
-    <None Include="Resources\terminalsbanner-mini.png" />
-    <None Include="Resources\terminalsicon.png" />
-    <None Include="Resources\terminalsbanner-small.png" />
-    <None Include="Resources\terminalsbanner1.png" />
     <None Include="Resources\treeIcon_ssh.png" />
     <None Include="Resources\treeIcon_telnet.png" />
     <None Include="Resources\treeIcon_vnc.png" />
     <None Include="Resources\treeIcon_http.png" />
     <None Include="Resources\treeIcon_rdp.png" />
-    <Content Include="Resources\terminalsicon.ico" />
-    <Content Include="terminalsicon.ico" />
-    <Content Include="Data\ToolStrip.settings.config">
+    <Content Include="Resources\RotatedHeaderForWizard.png" />
+    <Content Include="Resources\terminalsbanner-left.png" />
+    <Content Include="Resources\terminalsbanner-small.png" />
+    <Content Include="Resources\terminalsbanner.png" />
+    <Content Include="Resources\terminalsicon.png" />
+    <Content Include="terminalsicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="WTSApi32.cs" />
@@ -1223,71 +1224,69 @@
     <Content Include="Resources\lightning_go.png" />
     <Content Include="Resources\options.png" />
     <Content Include="Resources\polarized-glasses.jpg" />
-    <Content Include="Resources\rdp.png" />
-    <None Include="Resources\RotatedHeaderForWizard.bmp" />
     <EmbeddedResource Include="Resources\screen-capture-box.gif" />
     <EmbeddedResource Include="Resources\Refresh.gif" />
     <Content Include="Resources\red.jpg" />
     <Content Include="Resources\server-administrator-icon.png" />
     <Content Include="Resources\server_network.gif" />
-    <Content Include="Data\Thumbs\certmgr.msc.jpg">
+    <Content Include="Thumbs\certmgr.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\ciadv.msc.jpg">
+    <Content Include="Thumbs\ciadv.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\comexp.msc.jpg">
+    <Content Include="Thumbs\comexp.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\compmgmt.msc.jpg">
+    <Content Include="Thumbs\compmgmt.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\devmgmt.msc.jpg">
+    <Content Include="Thumbs\devmgmt.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\dfrg.msc.jpg">
+    <Content Include="Thumbs\dfrg.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\diskmgmt.msc.jpg">
+    <Content Include="Thumbs\diskmgmt.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\eventvwr.msc.jpg">
+    <Content Include="Thumbs\eventvwr.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\faxserv.msc.jpg">
+    <Content Include="Thumbs\faxserv.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\fsmgmt.msc.jpg">
+    <Content Include="Thumbs\fsmgmt.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\gpedit.msc.jpg">
+    <Content Include="Thumbs\gpedit.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\ias.msc.jpg">
+    <Content Include="Thumbs\ias.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\lusrmgr.msc.jpg">
+    <Content Include="Thumbs\lusrmgr.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\ntmsmgr.msc.jpg">
+    <Content Include="Thumbs\ntmsmgr.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\ntmsoprq.msc.jpg">
+    <Content Include="Thumbs\ntmsoprq.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\perfmon.msc.jpg">
+    <Content Include="Thumbs\perfmon.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\secpol.msc.jpg">
+    <Content Include="Thumbs\secpol.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\services.msc.jpg">
+    <Content Include="Thumbs\services.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\timedate.cpl.jpg">
+    <Content Include="Thumbs\timedate.cpl.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Data\Thumbs\wmimgmt.msc.jpg">
+    <Content Include="Thumbs\wmimgmt.msc.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Updates\RSS\bin\Debug\Unified.RSS.dll" />
@@ -1307,7 +1306,7 @@
     <None Include="Resources\tag.png" />
     <None Include="Resources\smallterm.png" />
     <None Include="Resources\Terminals.config" />
-    <None Include="Data\Terminals.config">
+    <None Include="Terminals.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Terminals.log4net.config">
