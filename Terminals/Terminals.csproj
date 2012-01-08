@@ -1008,7 +1008,9 @@
     <Content Include="Resources\terminalsbanner-small.png" />
     <Content Include="Resources\terminalsbanner.png" />
     <Content Include="Resources\terminalsicon.png" />
-    <Content Include="terminalsicon.ico" />
+    <Content Include="terminalsicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
