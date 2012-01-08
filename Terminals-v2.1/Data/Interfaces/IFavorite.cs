@@ -77,7 +77,7 @@ namespace Terminals.Data
         /// Because default protocol is RDP, also this properties are RdpOptions by default.
         /// This property should be always updated by changing Protocol property value
         /// </summary>
-        object ProtocolProperties { get; set; }
+        ProtocolOptions ProtocolProperties { get; set; }
 
         /// <summary>
         /// Creates new deep copy of this instance. The only property which isnt copied is Id.

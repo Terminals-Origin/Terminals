@@ -110,18 +110,20 @@ namespace Terminals.Data
             set { this.display = value; }
         }
 
-        private object protocolProperties = new RdpOptions();
+        private ProtocolOptions protocolProperties = new RdpOptions();
         /// <summary>
         /// Depending on selected protocol, this should contian the protocol detailed options.
         /// Because default protocol is RDP, also this properties are RdpOptions by default.
+        /// This property should be never null, use EmptyProperties to provide in not necesary case.
         /// </summary>
         [XmlElement(typeof(RdpOptions))]
-        [XmlElement(typeof(ConsoleOptions))]
         [XmlElement(typeof(VncOptions))]
         [XmlElement(typeof(VMRCOptions))]
         [XmlElement(typeof(SshOptions))]
+        [XmlElement(typeof(ConsoleOptions))]
         [XmlElement(typeof(ICAOptions))]
-        public object ProtocolProperties
+        [XmlElement(typeof(EmptyOptions))]
+        public ProtocolOptions ProtocolProperties
         {
             get { return protocolProperties; }
             set { protocolProperties = value; }
@@ -161,7 +163,7 @@ namespace Terminals.Data
                 case ConnectionManager.HTTP:
                 case ConnectionManager.HTTPS:
                 default:
-                    this.protocolProperties = null;
+                    this.protocolProperties = new EmptyOptions();
                     break;
             }
         }
@@ -261,9 +263,7 @@ namespace Terminals.Data
             copy.ToolBarIcon = this.ToolBarIcon;
             copy.Url = this.Url;
 
-            var properties = this.ProtocolProperties as ICloneable; // http doesnt have
-            if (properties != null)
-                copy.ProtocolProperties = properties.Clone();
+            copy.ProtocolProperties = this.ProtocolProperties.Copy();
 
             return copy;
         }

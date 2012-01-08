@@ -83,5 +83,27 @@ namespace Terminals.Data
                     drives = this.drives
                 };
         }
+
+        internal void FromConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            this.Clipboard = favorite.RedirectClipboard;
+            this.Devices = favorite.RedirectDevices;
+            this.drives = favorite.redirectedDrives;
+            this.Ports = favorite.RedirectPorts;
+            this.Printers = favorite.RedirectPrinters;
+            this.SmartCards = favorite.RedirectSmartCards;
+            this.Sounds = favorite.Sounds;
+        }
+
+        internal void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            favorite.RedirectClipboard = this.Clipboard;
+            favorite.RedirectDevices = this.Devices;
+            favorite.redirectedDrives = this.drives;
+            favorite.RedirectPorts = this.Ports;
+            favorite.RedirectPrinters = this.Printers;
+            favorite.RedirectSmartCards = this.SmartCards;
+            favorite.Sounds = this.Sounds;
+        }
     }
 }

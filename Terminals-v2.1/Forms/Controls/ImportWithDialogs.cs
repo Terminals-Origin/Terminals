@@ -67,6 +67,7 @@ namespace Terminals.Forms.Controls
         private static void PerformImport(List<FavoriteConfigurationElement> configFavoritesToImport)
         {
             var favorites = new List<IFavorite>();
+            Persistance.Instance.StartDelayedUpdate();
             foreach (FavoriteConfigurationElement configFavorite in configFavoritesToImport)
             {
                 IFavorite favorite = PrepareFavoriteToImport(configFavorite);
@@ -75,6 +76,7 @@ namespace Terminals.Forms.Controls
             }
 
             PersistedFavorites.Add(favorites);
+            Persistance.Instance.SaveAndFinishDelayedUpdate();
         }
 
         internal static void AddFavoriteIntoGroups(FavoriteConfigurationElement configFavorite, IFavorite favorite)

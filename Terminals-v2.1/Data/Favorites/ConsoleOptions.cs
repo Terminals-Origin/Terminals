@@ -7,7 +7,7 @@ namespace Terminals.Data
     /// Telnet and ssh protocol console options
     /// </summary>
     [Serializable]
-    public class ConsoleOptions : ICloneable
+    public class ConsoleOptions : ProtocolOptions
     {
         private int rows = 33;
         public int Rows
@@ -84,22 +84,42 @@ namespace Terminals.Data
             set { this.cursorColor  = value; }
         }
 
-        internal ConsoleOptions Copy()
+        internal override ProtocolOptions Copy()
         {
-            return new ConsoleOptions
-                {
-                    CursorColor = this.CursorColor,
-                    BackColor = this.BackColor,
-                    TextColor = this.TextColor,
-                    Columns = this.Columns,
-                    Rows = this.Rows,
-                    Font = this.Font
-                };
+            return Copy2();
         }
 
-        public object Clone()
+        internal ConsoleOptions Copy2()
         {
-            return Copy();
+            return new ConsoleOptions
+            {
+                CursorColor = this.CursorColor,
+                BackColor = this.BackColor,
+                TextColor = this.TextColor,
+                Columns = this.Columns,
+                Rows = this.Rows,
+                Font = this.Font
+            };
+        }
+
+        internal override void FromCofigFavorite(FavoriteConfigurationElement favorite)
+        {
+            this.BackColor = favorite.ConsoleBackColor;
+            this.TextColor = favorite.ConsoleTextColor;
+            this.CursorColor = favorite.ConsoleCursorColor;
+            this.Columns = favorite.ConsoleCols;
+            this.Rows = favorite.ConsoleRows;
+            this.Font = favorite.ConsoleFont;
+        }
+
+        internal override void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            favorite.ConsoleBackColor = this.BackColor;
+            favorite.ConsoleTextColor = this.TextColor;
+            favorite.ConsoleCursorColor = this.CursorColor;
+            favorite.ConsoleCols = this.Columns;
+            favorite.ConsoleRows = this.Rows;
+            favorite.ConsoleFont = this.Font;
         }
     }
 }

@@ -4,7 +4,7 @@ using SSHClient;
 namespace Terminals.Data
 {
     [Serializable]
-    public class SshOptions : ICloneable
+    public class SshOptions : ProtocolOptions
     {
         /// <summary>
         /// Gets or sets flag, if the SSH version 1 should be used, instead of ssh version 2
@@ -41,15 +41,29 @@ namespace Terminals.Data
             set { this.console = value; }
         }
 
-        public object Clone()
+        internal override ProtocolOptions Copy()
         {
             return new SshOptions
                 {
                     AuthMethod = this.AuthMethod,
                     CertificateKey = this.CertificateKey,
                     SSH1 = this.SSH1,
-                    Console = this.Console.Copy()
+                    Console = this.Console.Copy2()
                 };
+        }
+
+        internal override void FromCofigFavorite(FavoriteConfigurationElement favorite)
+        {
+            this.SSH1 = favorite.SSH1;
+            this.AuthMethod = favorite.AuthMethod;
+            this.CertificateKey = favorite.KeyTag;
+        }
+
+        internal override void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            favorite.SSH1 = this.SSH1;
+            favorite.AuthMethod = this.AuthMethod;
+            favorite.KeyTag = this.CertificateKey;
         }
     }
 }

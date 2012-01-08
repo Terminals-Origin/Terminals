@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Terminals.Connections;
 using Terminals.Converters;
 using Terminals.Data;
 
@@ -14,7 +15,8 @@ namespace Terminals
 
         public void FillControls(IFavorite favorite)
         {
-            var consoleOptions = favorite.ProtocolProperties as ConsoleOptions;
+            // replace with shared method
+            var consoleOptions = TerminalConnection.GetConsoleOptions(favorite);
             if (consoleOptions == null)
                 return;
             BackColorTextBox.Text = consoleOptions.BackColor;
@@ -27,7 +29,7 @@ namespace Terminals
 
         public void FillFavorite(IFavorite favorite)
         {
-            var consoleOptions = favorite.ProtocolProperties as ConsoleOptions;
+            var consoleOptions = TerminalConnection.GetConsoleOptions(favorite);
             if (consoleOptions == null)
                 return;
             consoleOptions.BackColor = BackColorTextBox.Text;

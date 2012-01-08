@@ -3,7 +3,7 @@
 namespace Terminals.Data
 {
     [Serializable]
-    public class RdpOptions : ICloneable
+    public class RdpOptions : ProtocolOptions
     {
         public Boolean ConnectToConsole { get; set; }
         public Boolean GrabFocusOnConnect { get; set; }
@@ -44,7 +44,7 @@ namespace Terminals.Data
             set { this.tsGateway = value; }
         }
 
-        public object Clone()
+        internal override ProtocolOptions Copy()
         {
             return new RdpOptions
                 {
@@ -57,6 +57,32 @@ namespace Terminals.Data
                     Redirect = this.Redirect.Copy(),
                     TsGateway = this.TsGateway.Copy()
                 };
+        }
+
+        internal override void FromCofigFavorite(FavoriteConfigurationElement favorite)
+        {
+            this.ConnectToConsole = favorite.ConnectToConsole;
+            this.FullScreen = favorite.SecurityFullScreen;
+            this.GrabFocusOnConnect = favorite.GrabFocusOnConnect;
+
+            this.Security.FromConfigFavorite(favorite);
+            this.Redirect.FromConfigFavorite(favorite);
+            this.TimeOuts.FromConfigFavorite(favorite);
+            this.TsGateway.FromConfigFavorite(favorite);
+            this.UserInterface.FromConfigFavorite(favorite);
+        }
+
+        internal override void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            favorite.ConnectToConsole = this.ConnectToConsole;
+            favorite.SecurityFullScreen = this.FullScreen;
+            favorite.GrabFocusOnConnect = this.GrabFocusOnConnect;
+
+            this.Security.ToConfigFavorite(favorite);
+            this.Redirect.ToConfigFavorite(favorite);
+            this.TimeOuts.ToConfigFavorite(favorite);
+            this.TsGateway.FoConfigFavorite(favorite);
+            this.UserInterface.ToConfigFavorite(favorite);
         }
     }
 }

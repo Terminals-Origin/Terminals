@@ -90,5 +90,21 @@ namespace Terminals.Data
                     ShutdownTimeout = this.ShutdownTimeout
                 };
         }
+
+        internal void FromConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            this.IdleTimeout = favorite.IdleTimeout;
+            this.ConnectionTimeout = favorite.ConnectionTimeout;
+            this.OverallTimeout = favorite.OverallTimeout;
+            this.ShutdownTimeout = favorite.ShutdownTimeout;
+        }
+
+        internal void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            favorite.IdleTimeout = this.IdleTimeout;
+            favorite.ConnectionTimeout = this.ConnectionTimeout;
+            favorite.OverallTimeout = this.OverallTimeout;
+            favorite.ShutdownTimeout = this.ShutdownTimeout;
+        }
     }
 }

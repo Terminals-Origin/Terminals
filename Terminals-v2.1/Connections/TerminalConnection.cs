@@ -19,7 +19,7 @@ namespace Terminals.Connections
         #endregion
 
         #region Connection Members
-        
+
         public override Boolean Connected
         {
             get
@@ -31,7 +31,7 @@ namespace Terminals.Connections
         public override void ChangeDesktopSize(DesktopSize Size)
         {
         }
-                
+
         public override Boolean Connect()
         {
             String protocol = "unknown";
@@ -48,7 +48,7 @@ namespace Terminals.Connections
                 this.Parent = TerminalTabPage;
                 term.Dock = System.Windows.Forms.DockStyle.Fill;
 
-                ConsoleOptions consoleOptions = GetConsoleOptions();
+                ConsoleOptions consoleOptions = this.GetConsoleOptionsFromFavorite();
                 AssignTerminalCollors(consoleOptions);
                 term.Font = FontParser.FromString(consoleOptions.Font);
                 term.Rows = consoleOptions.Rows;
@@ -62,7 +62,7 @@ namespace Terminals.Connections
                 {
                     case ConnectionManager.TELNET:
                         {
-                           protocol = ConfigureTelnetConnection(security);
+                            protocol = ConfigureTelnetConnection(security);
                         }
                         break;
 
@@ -83,13 +83,18 @@ namespace Terminals.Connections
             }
         }
 
-        private ConsoleOptions GetConsoleOptions()
+        private ConsoleOptions GetConsoleOptionsFromFavorite()
         {
-            var consoleOptions = this.Favorite.ProtocolProperties as ConsoleOptions;
+            return GetConsoleOptions(this.Favorite);
+        }
+
+        internal static ConsoleOptions GetConsoleOptions(IFavorite favorite)
+        {
+            var consoleOptions = favorite.ProtocolProperties as ConsoleOptions;
             if (consoleOptions != null)
                 return consoleOptions;
 
-            return (this.Favorite.ProtocolProperties as SshOptions).Console;
+            return (favorite.ProtocolProperties as SshOptions).Console;
         }
 
         private string ConfigureTelnetConnection(SecurityOptions security)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Terminals.Configuration;
@@ -124,9 +125,7 @@ namespace Terminals.Data
             try
             {
                 fileLock.WaitOne();
-                string fileLocation = GetDataFileLocation();
-                object file = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile));
-                return file as FavoritesFile;
+                return LoadFileContent();
             }
             catch (Exception exception)
             {
@@ -136,7 +135,18 @@ namespace Terminals.Data
             finally
             {
                 fileLock.ReleaseMutex();
+                Debug.WriteLine("Favorite file was loaded.");
             }
+        }
+
+        private static FavoritesFile LoadFileContent()
+        {
+            string fileLocation = GetDataFileLocation();
+            object fileContent = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile));
+            var file = fileContent as FavoritesFile;
+            if (file == null)
+                file = new FavoritesFile();
+            return file;
         }
 
         private void UpdateFavoritesInGroups(FavoritesInGroup[] favoritesInGroups)
@@ -187,6 +197,7 @@ namespace Terminals.Data
             {
                 fileWatcher.StartObservation();
                 fileLock.WaitOne();
+                Debug.WriteLine("Favorite file was saved.");
             }
         }
 

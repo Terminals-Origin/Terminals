@@ -3,7 +3,7 @@
 namespace Terminals.Data
 {
     [Serializable]
-    public class ICAOptions : ICloneable
+    public class ICAOptions : ProtocolOptions
     {
         public string ApplicationName { get; set; }
         public string ApplicationWorkingFolder { get; set; }
@@ -13,7 +13,7 @@ namespace Terminals.Data
         public bool EnableEncryption { get; set; }
         public string EncryptionLevel { get; set; }
 
-        public object Clone()
+        internal override ProtocolOptions Copy()
         {
             return new ICAOptions
                 {
@@ -25,6 +25,28 @@ namespace Terminals.Data
                     EnableEncryption = this.EnableEncryption,
                     EncryptionLevel = this.EncryptionLevel
                 };
+        }
+
+        internal override void FromCofigFavorite(FavoriteConfigurationElement favorite)
+        {
+            this.ApplicationName = favorite.ICAApplicationName;
+            this.ApplicationPath = favorite.ICAApplicationPath;
+            this.ApplicationWorkingFolder = favorite.ICAApplicationWorkingFolder;
+            this.ClientINI = favorite.IcaClientINI;
+            this.ServerINI = favorite.IcaServerINI;
+            this.EnableEncryption = favorite.IcaEnableEncryption;
+            this.EncryptionLevel = favorite.IcaEncryptionLevel;
+        }
+
+        internal override void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            favorite.ICAApplicationName = this.ApplicationName;
+            favorite.ICAApplicationPath = this.ApplicationPath;
+            favorite.ICAApplicationWorkingFolder = this.ApplicationWorkingFolder;
+            favorite.IcaClientINI = this.ClientINI;
+            favorite.IcaServerINI = this.ServerINI;
+            favorite.IcaEnableEncryption = this.EnableEncryption;
+            favorite.IcaEncryptionLevel = this.EncryptionLevel;
         }
     }
 }
