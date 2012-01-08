@@ -94,7 +94,11 @@ namespace Terminals.Connections
             if (consoleOptions != null)
                 return consoleOptions;
 
-            return (favorite.ProtocolProperties as SshOptions).Console;
+            var sshOptions = favorite.ProtocolProperties as SshOptions;
+            if (sshOptions != null)
+                return sshOptions.Console;
+
+            return null;
         }
 
         private string ConfigureTelnetConnection(SecurityOptions security)
