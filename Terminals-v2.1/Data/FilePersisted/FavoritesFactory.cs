@@ -36,7 +36,7 @@ namespace Terminals
             {
                 release = CreateFavorite();
                 release.Name = TerminalsReleasesFavoriteName;
-                release.Url = "http://terminals.codeplex.com";
+                release.ServerName = "terminals.codeplex.com";
                 release.Protocol = ConnectionManager.HTTP;
                 this.favorites.Add(release);
 

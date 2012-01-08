@@ -102,24 +102,24 @@ namespace Terminals.Data
             };
         }
 
-        internal override void FromCofigFavorite(FavoriteConfigurationElement favorite)
+        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            this.BackColor = favorite.ConsoleBackColor;
-            this.TextColor = favorite.ConsoleTextColor;
-            this.CursorColor = favorite.ConsoleCursorColor;
-            this.Columns = favorite.ConsoleCols;
-            this.Rows = favorite.ConsoleRows;
-            this.Font = favorite.ConsoleFont;
+            this.BackColor = source.ConsoleBackColor;
+            this.TextColor = source.ConsoleTextColor;
+            this.CursorColor = source.ConsoleCursorColor;
+            this.Columns = source.ConsoleCols;
+            this.Rows = source.ConsoleRows;
+            this.Font = source.ConsoleFont;
         }
 
-        internal override void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            favorite.ConsoleBackColor = this.BackColor;
-            favorite.ConsoleTextColor = this.TextColor;
-            favorite.ConsoleCursorColor = this.CursorColor;
-            favorite.ConsoleCols = this.Columns;
-            favorite.ConsoleRows = this.Rows;
-            favorite.ConsoleFont = this.Font;
+            destination.ConsoleBackColor = this.BackColor;
+            destination.ConsoleTextColor = this.TextColor;
+            destination.ConsoleCursorColor = this.CursorColor;
+            destination.ConsoleCols = this.Columns;
+            destination.ConsoleRows = this.Rows;
+            destination.ConsoleFont = this.Font;
         }
     }
 }

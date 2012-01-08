@@ -19,7 +19,7 @@ namespace Terminals
 
         private void lblTerminals_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(Program.Resources.GetString("TerminalsURL"));
+            Process.Start("http://" + Program.Resources.GetString("TerminalsURL"));
         }
 
         private void lblEyal_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

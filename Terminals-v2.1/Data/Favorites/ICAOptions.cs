@@ -27,26 +27,26 @@ namespace Terminals.Data
                 };
         }
 
-        internal override void FromCofigFavorite(FavoriteConfigurationElement favorite)
+        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            this.ApplicationName = favorite.ICAApplicationName;
-            this.ApplicationPath = favorite.ICAApplicationPath;
-            this.ApplicationWorkingFolder = favorite.ICAApplicationWorkingFolder;
-            this.ClientINI = favorite.IcaClientINI;
-            this.ServerINI = favorite.IcaServerINI;
-            this.EnableEncryption = favorite.IcaEnableEncryption;
-            this.EncryptionLevel = favorite.IcaEncryptionLevel;
+            this.ApplicationName = source.ICAApplicationName;
+            this.ApplicationPath = source.ICAApplicationPath;
+            this.ApplicationWorkingFolder = source.ICAApplicationWorkingFolder;
+            this.ClientINI = source.IcaClientINI;
+            this.ServerINI = source.IcaServerINI;
+            this.EnableEncryption = source.IcaEnableEncryption;
+            this.EncryptionLevel = source.IcaEncryptionLevel;
         }
 
-        internal override void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            favorite.ICAApplicationName = this.ApplicationName;
-            favorite.ICAApplicationPath = this.ApplicationPath;
-            favorite.ICAApplicationWorkingFolder = this.ApplicationWorkingFolder;
-            favorite.IcaClientINI = this.ClientINI;
-            favorite.IcaServerINI = this.ServerINI;
-            favorite.IcaEnableEncryption = this.EnableEncryption;
-            favorite.IcaEncryptionLevel = this.EncryptionLevel;
+            destination.ICAApplicationName = this.ApplicationName;
+            destination.ICAApplicationPath = this.ApplicationPath;
+            destination.ICAApplicationWorkingFolder = this.ApplicationWorkingFolder;
+            destination.IcaClientINI = this.ClientINI;
+            destination.IcaServerINI = this.ServerINI;
+            destination.IcaEnableEncryption = this.EnableEncryption;
+            destination.IcaEncryptionLevel = this.EncryptionLevel;
         }
     }
 }

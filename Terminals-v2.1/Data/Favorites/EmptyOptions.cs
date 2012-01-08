@@ -13,12 +13,12 @@ namespace Terminals.Data
             return new EmptyOptions();
         }
 
-        internal override void FromCofigFavorite(FavoriteConfigurationElement favorite)
+        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
             // nothing to do
         }
 
-        internal override void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
             // nothing to do
         }

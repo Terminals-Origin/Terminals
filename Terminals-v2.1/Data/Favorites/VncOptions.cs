@@ -19,18 +19,18 @@ namespace Terminals.Data
                 };
         }
 
-        internal override void FromCofigFavorite(FavoriteConfigurationElement favorite)
+        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            this.AutoScale = favorite.VncAutoScale;
-            this.DisplayNumber = favorite.VncDisplayNumber;
-            this.ViewOnly = favorite.VncViewOnly;
+            this.AutoScale = source.VncAutoScale;
+            this.DisplayNumber = source.VncDisplayNumber;
+            this.ViewOnly = source.VncViewOnly;
         }
 
-        internal override void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            favorite.VncAutoScale = this.AutoScale;
-            favorite.VncDisplayNumber = this.DisplayNumber;
-            favorite.VncViewOnly = this.ViewOnly;
+            destination.VncAutoScale = this.AutoScale;
+            destination.VncDisplayNumber = this.DisplayNumber;
+            destination.VncViewOnly = this.ViewOnly;
         }
     }
 }

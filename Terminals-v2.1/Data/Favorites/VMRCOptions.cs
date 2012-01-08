@@ -17,16 +17,16 @@ namespace Terminals.Data
                 };
         }
 
-        internal override void FromCofigFavorite(FavoriteConfigurationElement favorite)
+        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            this.AdministratorMode = favorite.VMRCAdministratorMode;
-            this.ReducedColorsMode = favorite.VMRCReducedColorsMode;
+            this.AdministratorMode = source.VMRCAdministratorMode;
+            this.ReducedColorsMode = source.VMRCReducedColorsMode;
         }
 
-        internal override void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            favorite.VMRCAdministratorMode = this.AdministratorMode;
-            favorite.VMRCReducedColorsMode = this.ReducedColorsMode;
+            destination.VMRCAdministratorMode = this.AdministratorMode;
+            destination.VMRCReducedColorsMode = this.ReducedColorsMode;
         }
     }
 }

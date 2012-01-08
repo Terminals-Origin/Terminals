@@ -170,7 +170,7 @@ namespace Terminals.Updates
             IFavorite newsFavorite = favorites[FavoritesFactory.TerminalsReleasesFavoriteName];
             if (newsFavorite != null)
             {
-                newsFavorite.Url = Program.Resources.GetString("TerminalsURL");
+                newsFavorite.ServerName = Program.Resources.GetString("TerminalsURL");
                 Persistance.Instance.SaveAndFinishDelayedUpdate();
             }
         }

@@ -37,12 +37,6 @@ namespace Terminals.Data
         String ServerName { get; set; }
 
         /// <summary>
-        /// Gets or sets the server http or https address.
-        /// This property is obsolte and will be replaced by ServerName.
-        /// </summary>
-        String Url { get; set; }
-
-        /// <summary>
         /// Gets or sets the absolute path to the tool bar icon file.
         /// </summary>
         String ToolBarIcon { get; set; }

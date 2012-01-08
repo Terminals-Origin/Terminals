@@ -1,4 +1,7 @@
-﻿namespace Terminals.Data
+﻿using System;
+using Terminals.Connections;
+
+namespace Terminals.Data
 {
     /// <summary>
     /// Converts favorites from data model used in version 1.X (FavoriteConfigurationElement)
@@ -19,15 +22,15 @@
             ConvertSecurity(result, sourceFavorite);
             ConvertBeforeConnetExecute(result, sourceFavorite);
             ConvertDisplay(result, sourceFavorite);
-            result.ProtocolProperties.FromCofigFavorite(sourceFavorite);
+            result.ProtocolProperties.FromCofigFavorite(result, sourceFavorite);
 
             return result;
         }
 
         private static void ConvertGeneralProperties(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
-            result.Name = sourceFavorite.Name;
             result.Protocol = sourceFavorite.Protocol;
+            result.Name = sourceFavorite.Name;
             result.Port = sourceFavorite.Port;
             result.ServerName = sourceFavorite.ServerName;
             result.ToolBarIcon = sourceFavorite.ToolBarIcon;

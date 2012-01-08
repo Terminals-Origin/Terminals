@@ -21,7 +21,7 @@ namespace Terminals.Connections
             try
             {
                 this.Dock = DockStyle.Fill;
-                this.browser.Home = Favorite.Url;
+                this.browser.Home = WebOptions.ExtractAbsoluteUrl(this.Favorite);
                 SecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
 
                 if (!String.IsNullOrEmpty(security.UserName) && !String.IsNullOrEmpty(security.Password))
@@ -29,11 +29,11 @@ namespace Terminals.Connections
                     string securityValues = string.Format("{0}: {1}", security.UserName, security.Password);
                     string securityHeader = Convert.ToBase64String(Encoding.ASCII.GetBytes(securityValues));
                     string additionalHeaders = string.Format("Authorization: Basic {0}{1}", securityHeader, Environment.NewLine);
-                    this.browser.Browser.Navigate(Favorite.Url, null, null, additionalHeaders);
+                    this.browser.Browser.Navigate(this.browser.Home, null, null, additionalHeaders);
                 }
                 else
                 {
-                    this.browser.Browser.Navigate(Favorite.Url);
+                    this.browser.Browser.Navigate(this.browser.Home);
                 }
 
                 this.Controls.Add(this.browser);

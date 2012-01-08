@@ -25,7 +25,7 @@ namespace Terminals.Data
                 id = value;
             }
         }
-        
+
         public string Name { get; set; }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Terminals.Data
             set
             {
                 protocol = value;
-                UpdateProtocolPropertiesByProtocol();   
+                UpdateProtocolPropertiesByProtocol();
             }
         }
 
@@ -71,21 +71,13 @@ namespace Terminals.Data
             set { serverName = value; }
         }
 
-        // todo REFACTORING remove redundant url property
-        private string url = "http://terminals.codeplex.com";
-        public String Url
-        {
-            get { return url; }
-            set { url = value; }
-        }
-
         private SecurityOptions security = new SecurityOptions();
         public SecurityOptions Security
         {
             get { return this.security; }
             set { this.security = value; }
         }
-        
+
         private string toolBarIcon;
         public String ToolBarIcon
         {
@@ -122,6 +114,7 @@ namespace Terminals.Data
         [XmlElement(typeof(SshOptions))]
         [XmlElement(typeof(ConsoleOptions))]
         [XmlElement(typeof(ICAOptions))]
+        [XmlElement(typeof(WebOptions))]
         [XmlElement(typeof(EmptyOptions))]
         public ProtocolOptions ProtocolProperties
         {
@@ -153,15 +146,18 @@ namespace Terminals.Data
                         this.protocolProperties = new SshOptions();
                     break;
                 case ConnectionManager.RDP:
-                    if (!(this.protocolProperties is RdpOptions))   
+                    if (!(this.protocolProperties is RdpOptions))
                         this.protocolProperties = new RdpOptions();
                     break;
                 case ConnectionManager.ICA_CITRIX:
-                    if(!(this.protocolProperties is ICAOptions))
+                    if (!(this.protocolProperties is ICAOptions))
                         this.protocolProperties = new ICAOptions();
                     break;
                 case ConnectionManager.HTTP:
                 case ConnectionManager.HTTPS:
+                    if (!(this.protocolProperties is WebOptions))
+                        this.protocolProperties = new WebOptions();
+                    break;
                 default:
                     this.protocolProperties = new EmptyOptions();
                     break;
@@ -184,13 +180,13 @@ namespace Terminals.Data
         [XmlIgnore]
         public string GroupNames
         {
-            get 
+            get
             {
                 var groupNames = GetGroups().Select(group => group.Name).ToArray();
                 return string.Join(",", groupNames);
             }
         }
-        
+
         private static String EncodeTo64(String toEncode)
         {
             if (toEncode == null)
@@ -203,7 +199,7 @@ namespace Terminals.Data
 
         private static String DecodeFrom64(String encodedData)
         {
-            if(encodedData == null)
+            if (encodedData == null)
                 return null;
 
             Byte[] encodedDataAsBytes = Convert.FromBase64String(encodedData);
@@ -223,19 +219,16 @@ namespace Terminals.Data
 
         public String GetToolTipText()
         {
-            string serverName = this.Protocol == ConnectionManager.HTTP || this.Protocol == ConnectionManager.HTTPS ?
-                                this.Url : this.ServerName;
-
             string userDisplayName = HelperFunctions.UserDisplayName(this.Security.DomainName, this.Security.UserName);
             String toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
-                Environment.NewLine, serverName, this.Port, userDisplayName);
+                Environment.NewLine, this.ServerName, this.Port, userDisplayName);
 
             if (Settings.ShowFullInformationToolTips)
             {
                 var rdp = this.ProtocolProperties as RdpOptions;
                 bool console = false;
-                if(rdp != null)
-                   console = rdp.ConnectToConsole;
+                if (rdp != null)
+                    console = rdp.ConnectToConsole;
 
                 toolTip += String.Format("Groups: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
                     Environment.NewLine, GetGroups(), console, this.Notes);
@@ -261,7 +254,6 @@ namespace Terminals.Data
             copy.Security = this.Security.Copy();
             copy.ServerName = this.ServerName;
             copy.ToolBarIcon = this.ToolBarIcon;
-            copy.Url = this.Url;
 
             copy.ProtocolProperties = this.ProtocolProperties.Copy();
 

@@ -10,8 +10,8 @@ namespace Terminals.Data
     {
         internal abstract ProtocolOptions Copy();
 
-        internal abstract void FromCofigFavorite(FavoriteConfigurationElement favorite);
+        internal abstract void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source);
 
-        internal abstract void ToConfigFavorite(FavoriteConfigurationElement favorite);
+        internal abstract void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination);
     }
 }

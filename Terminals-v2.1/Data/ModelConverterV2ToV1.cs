@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Terminals.Connections;
 
 namespace Terminals.Data
@@ -18,7 +19,7 @@ namespace Terminals.Data
             ConvertSecurity(result, sourceFavorite);
             ConvertBeforeConnetExecute(result, sourceFavorite);
             ConvertDisplay(result, sourceFavorite);
-            sourceFavorite.ProtocolProperties.ToConfigFavorite(result);
+            sourceFavorite.ProtocolProperties.ToConfigFavorite(sourceFavorite, result);
             ConvertGroups(result, sourceFavorite);
             return result;
         }
@@ -35,6 +36,8 @@ namespace Terminals.Data
             result.Protocol = sourceFavorite.Protocol;
             result.Port = sourceFavorite.Port;
             result.ServerName = sourceFavorite.ServerName;
+            result.Url = WebOptions.ExtractAbsoluteUrl(sourceFavorite);
+
             result.ToolBarIcon = sourceFavorite.ToolBarIcon;
             result.NewWindow = sourceFavorite.NewWindow;
             result.DesktopShare = sourceFavorite.DesktopShare;

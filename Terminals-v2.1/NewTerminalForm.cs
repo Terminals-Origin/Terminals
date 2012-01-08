@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -26,12 +27,12 @@ namespace Terminals
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
 
-        private IGroups PersistedGroups
+        private static IGroups PersistedGroups
         {
             get { return Persistance.Instance.Groups; }
         }
 
-        private IFavorites PersistedFavorites
+        private static IFavorites PersistedFavorites
         {
             get { return Persistance.Instance.Favorites; }
         }
@@ -136,7 +137,7 @@ namespace Terminals
         {
             this.SuspendLayout();
             this.LoadCustomControlsState();
-            BindGroupsToListView(this.AllTagsListView, this.PersistedGroups);
+            BindGroupsToListView(this.AllTagsListView, PersistedGroups);
             this.ResumeLayout(true);
         }
 
@@ -171,7 +172,7 @@ namespace Terminals
             this.cmbServers.Items.AddRange(Settings.MRUServerNames);
             this.cmbDomains.Items.AddRange(Settings.MRUDomainNames);
             this.cmbUsers.Items.AddRange(Settings.MRUUserNames);
-            string[] groupNames = this.PersistedGroups.Select(group => group.Name).ToArray();
+            string[] groupNames = PersistedGroups.Select(group => group.Name).ToArray();
             this.txtTag.AutoCompleteCustomSource.AddRange(groupNames);
         }
 
@@ -245,9 +246,9 @@ namespace Terminals
         {
             this.txtName.Text = favorite.Name;
             this.cmbServers.Text = favorite.ServerName;
-            this.httpUrlTextBox.Text = favorite.Url;
             this.ProtocolComboBox.SelectedItem = favorite.Protocol;
             this.txtPort.Text = favorite.Port.ToString();
+            this.httpUrlTextBox.Text = WebOptions.ExtractAbsoluteUrl(favorite);
         }
 
         private void FillExecuteBeforeControls(IFavorite favorite)
@@ -268,7 +269,7 @@ namespace Terminals
             FillRdpSecurityControls(rdpOptions);
             FillRdpUserInterfaceControls(rdpOptions);
             FillRdpDisplayControls(rdpOptions);
-            FillRdpRedirectControls(rdpOptions);          
+            FillRdpRedirectControls(rdpOptions);
             FillTsGatewayControls(rdpOptions);
             FillRdpTimeOutControls(rdpOptions);
         }
@@ -355,7 +356,7 @@ namespace Terminals
             this.EnableBitmapPersistanceCheckbox.Checked = userInterface.BitmapPeristence;
             this.AllowBackgroundInputCheckBox.Checked = userInterface.AllowBackgroundInput;
             this.AllowFontSmoothingCheckbox.Checked = userInterface.EnableFontSmoothing;
-            this.AllowDesktopCompositionCheckbox.Checked = userInterface.EnableDesktopComposition ;
+            this.AllowDesktopCompositionCheckbox.Checked = userInterface.EnableDesktopComposition;
         }
 
         private void FillRdpTimeOutControls(RdpOptions rdpOptions)
@@ -475,7 +476,7 @@ namespace Terminals
         {
             this.Favorite = null; // force favorite property reset
             if (!this.editedId.Equals(Guid.Empty))
-                this.Favorite = this.PersistedFavorites[this.editedId];
+                this.Favorite = PersistedFavorites[this.editedId];
             if (this.Favorite == null)
                 this.Favorite = Persistance.Instance.Factory.CreateFavorite();
         }
@@ -493,9 +494,14 @@ namespace Terminals
         {
             this.Favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
             this.Favorite.ServerName = this.cmbServers.Text;
-            this.Favorite.Url = this.httpUrlTextBox.Text;
             this.Favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
             this.Favorite.Port = Int32.Parse(this.txtPort.Text);
+            this.FillWebProperties();
+        }
+
+        private void FillWebProperties()
+        {
+            WebOptions.UpdateFavoriteUrl(this.Favorite, this.httpUrlTextBox.Text);
         }
 
         private void FillFavoriteDisplayOptions()
@@ -627,7 +633,7 @@ namespace Terminals
             var rdpOptions = this.Favorite.ProtocolProperties as RdpOptions;
             if (rdpOptions == null)
                 return;
-            
+
             FillFavoriteRdpSecurity(rdpOptions);
             FillFavoriteRdpInterfaceOptions(rdpOptions);
             FillFavoriteRdpDisplayOptions(rdpOptions);
@@ -716,7 +722,7 @@ namespace Terminals
                 rdpOptions.Security.StartProgram = String.Empty;
                 rdpOptions.FullScreen = false;
             }
-            this.Favorite.Url = String.Empty;
+
             var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(this.Favorite);
             Settings.SaveDefaultFavorite(defaultFavorite);
         }
@@ -751,9 +757,9 @@ namespace Terminals
         /// </summary>
         private List<IGroup> GetNewlySelectedGroups()
         {
-           return this.lvConnectionTags.Items.Cast<GroupListViewItem>()
-                .Select(candidate => candidate.FavoritesGroup)
-                .ToList();
+            return this.lvConnectionTags.Items.Cast<GroupListViewItem>()
+                 .Select(candidate => candidate.FavoritesGroup)
+                 .ToList();
         }
 
         private bool IsServerNameValid()
@@ -794,7 +800,15 @@ namespace Terminals
 
         private void SetOkButtonState()
         {
-            this.btnSave.Enabled = this.cmbServers.Text != String.Empty;
+            if (this.httpUrlTextBox.Visible)
+            {
+                Uri testUri = GetFullUrlFromHttpTextBox();
+                this.btnSave.Enabled = testUri != null;
+            }
+            else
+            {
+                this.btnSave.Enabled = this.cmbServers.Text != String.Empty;
+            }
         }
 
         private static void GetServerAndPort(String Connection, out String Server, out Int32 Port)
@@ -821,7 +835,7 @@ namespace Terminals
         {
             if (!String.IsNullOrEmpty(this.txtTag.Text))
             {
-                IGroup candidate = this.PersistedGroups[this.txtTag.Text];
+                IGroup candidate = PersistedGroups[this.txtTag.Text];
                 if (candidate == null)
                     candidate = Persistance.Instance.Factory.CreateGroup(this.txtTag.Text);
 
@@ -1010,8 +1024,91 @@ namespace Terminals
 
         private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            String defaultPort = ConnectionManager.VNCVMRCPort.ToString();
+            SetControlsProtocolIndependent();
 
+            if (this.ProtocolComboBox.Text == ConnectionManager.RDP)
+            {
+                SetControlsForRDP();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.VMRC)
+            {
+                SetControlsForCMRC();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.RAS)
+            {
+                SetControlsForRAS();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.VNC)
+            {
+                SetControlsForVNC();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.ICA_CITRIX)
+            {
+                SetControlsForICA();
+            }
+            else if (ProtocolComboBox.Text == ConnectionManager.HTTP ||
+                     this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
+            {
+                SetControlsForWeb();
+            }
+
+            int defaultPort = ConnectionManager.GetPort(this.ProtocolComboBox.Text);
+            this.txtPort.Text = defaultPort.ToString();
+            SetOkButtonState();
+        }
+
+        private void SetControlsForWeb()
+        {
+            this.lblServerName.Text = "Url:";
+            this.cmbServers.Enabled = false;
+            this.txtPort.Enabled = false;
+            this.httpUrlTextBox.Enabled = true;
+            this.httpUrlTextBox.Visible = true;
+        }
+
+        private void SetControlsForICA()
+        {
+            this.ICAClientINI.Enabled = true;
+            this.ICAServerINI.Enabled = true;
+            this.ICAEncryptionLevelCombobox.Enabled = false;
+            this.ICAEnableEncryptionCheckbox.Enabled = true;
+            this.ICAApplicationNameTextBox.Enabled = true;
+            this.ICAApplicationPath.Enabled = true;
+            this.ICAWorkingFolder.Enabled = true;
+        }
+
+        private void SetControlsForVNC()
+        {
+            this.vncAutoScaleCheckbox.Enabled = true;
+            this.vncDisplayNumberInput.Enabled = true;
+            this.VncViewOnlyCheckbox.Enabled = true;
+        }
+
+        private void SetControlsForRAS()
+        {
+            this.cmbServers.Items.Clear();
+            this.LoadDialupConnections();
+            this.RASGroupBox.Enabled = true;
+            this.txtPort.Enabled = false;
+            this.RASDetailsListBox.Items.Clear();
+        }
+
+        private void SetControlsForCMRC()
+        {
+            this.VMRCReducedColorsCheckbox.Enabled = true;
+            this.VMRCAdminModeCheckbox.Enabled = true;
+        }
+
+        private void SetControlsForRDP()
+        {
+            this.groupBox1.Enabled = true;
+            this.chkConnectToConsole.Enabled = true;
+            this.LocalResourceGroupBox.Enabled = true;
+        }
+
+        private void SetControlsProtocolIndependent()
+        {
+            this.lblServerName.Text = "Computer:";
             this.cmbServers.Enabled = true;
             this.txtPort.Enabled = true;
 
@@ -1026,7 +1123,6 @@ namespace Terminals
             this.VMRCAdminModeCheckbox.Enabled = false;
             this.RASGroupBox.Enabled = false;
 
-
             this.ICAClientINI.Enabled = false;
             this.ICAServerINI.Enabled = false;
             this.ICAEncryptionLevelCombobox.Enabled = false;
@@ -1035,80 +1131,9 @@ namespace Terminals
             this.ICAApplicationPath.Enabled = false;
             this.ICAWorkingFolder.Enabled = false;
 
-
-
-
             this.httpUrlTextBox.Enabled = false;
+            this.httpUrlTextBox.Visible = false;
             this.txtPort.Enabled = true;
-
-            if (this.ProtocolComboBox.Text == "RDP")
-            {
-                defaultPort = ConnectionManager.RDPPort.ToString();
-                this.groupBox1.Enabled = true;
-                this.chkConnectToConsole.Enabled = true;
-                this.LocalResourceGroupBox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == "VMRC")
-            {
-                this.VMRCReducedColorsCheckbox.Enabled = true;
-                this.VMRCAdminModeCheckbox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == "RAS")
-            {
-                this.cmbServers.Items.Clear();
-                this.LoadDialupConnections();
-                this.RASGroupBox.Enabled = true;
-                this.txtPort.Enabled = false;
-                this.RASDetailsListBox.Items.Clear();
-            }
-            else if (this.ProtocolComboBox.Text == "VNC")
-            {
-                //vnc settings
-                this.vncAutoScaleCheckbox.Enabled = true;
-                this.vncDisplayNumberInput.Enabled = true;
-                this.VncViewOnlyCheckbox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == "Telnet")
-            {
-                defaultPort = ConnectionManager.TelnetPort.ToString();
-            }
-            else if (this.ProtocolComboBox.Text == "SSH")
-            {
-                defaultPort = ConnectionManager.SSHPort.ToString();
-            }
-            else if (this.ProtocolComboBox.Text == "ICA Citrix")
-            {
-                this.ICAClientINI.Enabled = true;
-                this.ICAServerINI.Enabled = true;
-                this.ICAEncryptionLevelCombobox.Enabled = false;
-                this.ICAEnableEncryptionCheckbox.Enabled = true;
-                this.ICAApplicationNameTextBox.Enabled = true;
-                this.ICAApplicationPath.Enabled = true;
-                this.ICAWorkingFolder.Enabled = true;
-                defaultPort = ConnectionManager.ICAPort.ToString();
-
-
-            }
-            else if (ProtocolComboBox.Text == "HTTP")
-            {
-                this.cmbServers.Enabled = false;
-                this.txtPort.Enabled = false;
-                this.txtPort.Text = "80";
-                this.httpUrlTextBox.Enabled = true;
-                defaultPort = ConnectionManager.HTTPPort.ToString();
-                this.tabControl1.SelectTab(HTTPTabPage);
-            }
-            else if (this.ProtocolComboBox.Text == "HTTPS")
-            {
-                this.cmbServers.Enabled = false;
-                this.txtPort.Text = "443";
-                this.txtPort.Enabled = false;
-                this.httpUrlTextBox.Enabled = true;
-                defaultPort = ConnectionManager.HTTPSPort.ToString();
-                this.tabControl1.SelectTab(HTTPTabPage);
-            }
-
-            this.txtPort.Text = defaultPort;
         }
 
         private void cmbServers_SelectedIndexChanged(object sender, EventArgs e)
@@ -1211,20 +1236,26 @@ namespace Terminals
 
         private void httpUrlTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (this.ProtocolComboBox.Text == "HTTP" | this.ProtocolComboBox.Text == "HTTPS")
+            if (this.ProtocolComboBox.Text == ConnectionManager.HTTP ||
+                this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
             {
-                String url = this.httpUrlTextBox.Text;
-                try
+                Uri newUrl = GetFullUrlFromHttpTextBox();
+                if (newUrl != null)
                 {
-                    Uri u = new Uri(url);
-                    this.cmbServers.Text = u.Host;
-                    this.txtPort.Text = u.Port.ToString();
+                    this.cmbServers.Text = newUrl.Host;
+                    this.txtPort.Text = newUrl.Port.ToString();
                 }
-                catch (Exception ex)
-                {
-                    Logging.Log.Error("Http URL Parse Failed", ex);
-                }
+                SetOkButtonState();
             }
+        }
+
+        private Uri GetFullUrlFromHttpTextBox()
+        {
+            string newUrlText = this.httpUrlTextBox.Text;
+            string protocolPrefix = this.ProtocolComboBox.Text.ToLower();
+            if (!newUrlText.StartsWith(ConnectionManager.HTTP) || !newUrlText.StartsWith(ConnectionManager.HTTPS))
+                newUrlText = String.Format("{0}://{1}", protocolPrefix, newUrlText);
+            return WebOptions.TryParseUrl(newUrlText);
         }
 
         private void AllTagsListView_DoubleClick(object sender, EventArgs e)
@@ -1236,7 +1267,7 @@ namespace Terminals
         {
             Guid selectedCredentialId = Guid.Empty;
             var selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
-            if(selectedCredential != null)
+            if (selectedCredential != null)
                 selectedCredentialId = selectedCredential.Id;
 
             CredentialManager mgr = new CredentialManager();
@@ -1247,7 +1278,7 @@ namespace Terminals
         private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.CredentialsPanel.Enabled = true;
-            ICredentialSet set = (this.CredentialDropdown.SelectedItem as ICredentialSet);
+            ICredentialSet set = this.CredentialDropdown.SelectedItem as ICredentialSet;
 
             if (set != null)
             {
@@ -1284,8 +1315,6 @@ namespace Terminals
             {
                 ICAApplicationPath.Text = d.SelectedPath;
             }
-
-
         }
 
         private void AppWorkingFolderBrowseButton_Click(object sender, EventArgs e)
@@ -1297,7 +1326,6 @@ namespace Terminals
             {
                 ICAWorkingFolder.Text = d.SelectedPath;
             }
-
         }
 
         private void ServerINIBrowseButton_Click(object sender, EventArgs e)
@@ -1310,7 +1338,6 @@ namespace Terminals
             {
                 ICAServerINI.Text = d.FileName;
             }
-
         }
 
         private void ClientINIBrowseButton_Click(object sender, EventArgs e)
@@ -1324,7 +1351,6 @@ namespace Terminals
             {
                 ICAClientINI.Text = d.FileName;
             }
-
         }
     }
 }

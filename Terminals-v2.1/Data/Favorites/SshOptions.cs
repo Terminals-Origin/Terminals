@@ -52,18 +52,18 @@ namespace Terminals.Data
                 };
         }
 
-        internal override void FromCofigFavorite(FavoriteConfigurationElement favorite)
+        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
         {
-            this.SSH1 = favorite.SSH1;
-            this.AuthMethod = favorite.AuthMethod;
-            this.CertificateKey = favorite.KeyTag;
+            this.SSH1 = source.SSH1;
+            this.AuthMethod = source.AuthMethod;
+            this.CertificateKey = source.KeyTag;
         }
 
-        internal override void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
         {
-            favorite.SSH1 = this.SSH1;
-            favorite.AuthMethod = this.AuthMethod;
-            favorite.KeyTag = this.CertificateKey;
+            destination.SSH1 = this.SSH1;
+            destination.AuthMethod = this.AuthMethod;
+            destination.KeyTag = this.CertificateKey;
         }
     }
 }
