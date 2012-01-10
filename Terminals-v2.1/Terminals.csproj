@@ -195,6 +195,7 @@
     <Compile Include="Data\Favorites\EmptyOptions.cs" />
     <Compile Include="Data\Favorites\ProtocolOptions.cs" />
     <Compile Include="Data\Favorites\WebOptions.cs" />
+    <Compile Include="Data\Interfaces\IHistoryItem.cs" />
     <Compile Include="Data\Interfaces\ICredentials.cs" />
     <Compile Include="Data\Interfaces\ICredentialSet.cs" />
     <Compile Include="Data\FilePersisted\ConfigFavoritesFactory.cs" />

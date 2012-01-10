@@ -85,13 +85,13 @@ namespace Terminals.Forms.Controls
             if (todayGroup.NotLoadedYet)
                 return;
 
-            if (!todayGroup.ContainsFavoriteNode(args.ConnectionName))
+            if (!todayGroup.ContainsFavoriteNode(args.Favorite.Id))
                  InsertRecordedNode(todayGroup, args);
         }
 
         private static void InsertRecordedNode(GroupTreeNode todayGroup, HistoryRecordedEventArgs args)
         {
-            IFavorite favorite = Persistance.Instance.Favorites[args.ConnectionName];
+            IFavorite favorite = Persistance.Instance.Favorites[args.Favorite.Id];
             if (favorite != null) // shouldnt happen, because the favorite was actualy processed
             {
                 int insertIndex = FavoriteTreeListLoader.FindFavoriteNodeInsertIndex(todayGroup.Nodes, favorite);

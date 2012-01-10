@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -359,12 +358,13 @@ namespace Terminals
 
         public void Connect(String connectionName, Boolean forceConsole, Boolean forceNewWindow, ICredentialSet credential = null)
         {
+            IFavorite existingFavorite = PersistedFavorites[connectionName];
             IFavorite favorite = ConfigFavoritesFactory.GetFavoriteUpdatedCopy(connectionName, 
                 forceConsole, forceNewWindow, credential);
 
             if (favorite != null)
             {
-                Persistance.Instance.ConnectionHistory.RecordHistoryItem(connectionName);
+                Persistance.Instance.ConnectionHistory.RecordHistoryItem(existingFavorite);
                 SendNativeMessageToFocus();
                 CreateTerminalTab(favorite);
             }

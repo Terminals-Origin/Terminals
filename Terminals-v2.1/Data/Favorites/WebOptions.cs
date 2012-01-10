@@ -42,8 +42,8 @@ namespace Terminals.Data
                 relativeUrl = webOptions.RelativeUrl;
 
             string protocol = source.Protocol.ToLower();
-            return string.Format("{0}://{1}:{2}/{3}",
-                protocol, source.ServerName, source.Port, relativeUrl);
+            var uriBuilder = new UriBuilder(protocol, source.ServerName, source.Port, relativeUrl);
+            return uriBuilder.ToString();
         }
 
         internal static void UpdateFavoriteUrl(IFavorite destination, string newAbsoluteUrl)

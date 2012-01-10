@@ -67,7 +67,7 @@ namespace Terminals.History
             List<IFavorite> newTodays = MergeWithNewTodays(oldTodays);
             foreach (IFavorite favorite in newTodays)
             {
-                FireOnHistoryRecorded(favorite.Name);
+                FireOnHistoryRecorded(favorite);
             }
         }
 
@@ -104,21 +104,20 @@ namespace Terminals.History
         }
 
         private static SortableList<IFavorite> SelectFavoritesFromHistoryItems(
-            SortableList<HistoryItem> groupedByDate)
+            SortableList<IHistoryItem> groupedByDate)
         {
-            IFavorites favorites = Persistance.Instance.Favorites;
             var selection = new SortableList<IFavorite>();
-            foreach (HistoryItem favoriteTouch in groupedByDate)
+            foreach (IHistoryItem favoriteTouch in groupedByDate)
             {
-                IFavorite favorite = favorites[favoriteTouch.Name];
-                if (favorite != null && !selection.Contains(favorite))
+                IFavorite favorite = favoriteTouch.Favorite;
+                if (favorite != null && !selection.Contains(favorite)) // add each favorite only once
                     selection.Add(favorite);
             }
 
             return selection;
         }
 
-        private SerializableDictionary<string, SortableList<HistoryItem>> GetGroupedByDate()
+        private SerializableDictionary<string, SortableList<IHistoryItem>> GetGroupedByDate()
         {
             return this.CurrentHistory.GroupByDate();
         }
@@ -230,32 +229,32 @@ namespace Terminals.History
             }
         }
 
-        public void RecordHistoryItem(string favoriteName)
+        public void RecordHistoryItem(IFavorite favorite)
         {
-            if (_currentHistory == null)
+            if (_currentHistory == null || favorite == null)
                 return;
 
-            List<HistoryItem> favoriteHistoryList = GetFavoriteHistoryList(favoriteName);
-            favoriteHistoryList.Add(new HistoryItem(favoriteName));
+            List<HistoryItem> favoriteHistoryList = GetFavoriteHistoryList(favorite.Id);
+            favoriteHistoryList.Add(new HistoryItem());
             this.SaveHistory();
-            this.FireOnHistoryRecorded(favoriteName);
+            this.FireOnHistoryRecorded(favorite);
         }
 
-        private void FireOnHistoryRecorded(string favoriteName)
+        private void FireOnHistoryRecorded(IFavorite favorite)
         {
-            var args = new HistoryRecordedEventArgs { ConnectionName = favoriteName };
+            var args = new HistoryRecordedEventArgs(favorite);
             if (this.OnHistoryRecorded != null)
             {
                 this.OnHistoryRecorded(this, args);
             }
         }
 
-        private List<HistoryItem> GetFavoriteHistoryList(string favoriteName)
+        private List<HistoryItem> GetFavoriteHistoryList(Guid favoriteId)
         {
-            if (!this._currentHistory.ContainsKey(favoriteName))
-                this._currentHistory.Add(favoriteName, new List<HistoryItem>());
+            if (!this._currentHistory.ContainsKey(favoriteId))
+                this._currentHistory.Add(favoriteId, new List<HistoryItem>());
 
-            return this._currentHistory[favoriteName];
+            return this._currentHistory[favoriteId];
         }
 
         /// <summary>

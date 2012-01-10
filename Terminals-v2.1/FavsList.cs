@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using Terminals.Configuration;
@@ -465,54 +466,45 @@ namespace Terminals
 
         #endregion
 
-
         public void SaveState()
         {
-            List<string> expanded = new List<string>();
-            foreach (TreeNode n in this.favsTree.Nodes)
-            {
-                if (n.IsExpanded) expanded.Add(n.Text);
-            }
-            Settings.ExpandedFavoriteNodes = string.Join("%%", expanded.ToArray());
-
-            List<string> expandedHistory = new List<string>();
-            foreach (TreeNode n in this.historyTreeView.Nodes)
-            {
-                if (n.IsExpanded) expandedHistory.Add(n.Text);
-            }
-            Settings.ExpandedHistoryNodes = string.Join("%%", expandedHistory.ToArray());
-
-
-            
-            
+            Settings.StartDelayedUpdate();
+            Settings.ExpandedFavoriteNodes = GetExpandedFavoriteNodes(this.favsTree);
+            Settings.ExpandedHistoryNodes = GetExpandedFavoriteNodes(this.historyTreeView);
+            Settings.SaveAndFinishDelayedUpdate();
         }
+
+        private static string GetExpandedFavoriteNodes(TreeView treeView)
+        {
+            List<string> expandedNodes = new List<string>();
+            foreach (TreeNode treeNode in treeView.Nodes)
+            {
+                if (treeNode.IsExpanded)
+                    expandedNodes.Add(treeNode.Text);
+            }
+            return string.Join("%%", expandedNodes.ToArray());
+        }
+
         public void LoadState()
         {
-            List<string> expanded = new List<string>();
-            string nodes = Settings.ExpandedFavoriteNodes;
-            if (!string.IsNullOrEmpty(nodes))
-            {
-                expanded.AddRange(System.Text.RegularExpressions.Regex.Split(nodes, "%%"));
-            }
-            if (expanded != null && expanded.Count > 0)
-            {
-                foreach (TreeNode n in this.favsTree.Nodes)
-                {
-                    if (expanded.Contains(n.Text)) n.Expand();
-                }
-            }
+            ExpandTreeView(Settings.ExpandedFavoriteNodes, this.favsTree);
 
-            List<string> expandedHistory = new List<string>();
-            string historyNodes = Settings.ExpandedHistoryNodes;
-            if (!string.IsNullOrEmpty(historyNodes))
+            // todo load tree after history was loaded, otherwise the container is empty
+            //ExpandTreeView(Settings.ExpandedHistoryNodes, this.historyTreeView);
+        }
+
+        private static void ExpandTreeView(string savedNodesToExpand, TreeView treeView)
+        {
+            List<string> nodesToExpand = new List<string>();
+            if (!string.IsNullOrEmpty(savedNodesToExpand))
+                nodesToExpand.AddRange(Regex.Split(savedNodesToExpand, "%%"));
+
+            if (nodesToExpand != null && nodesToExpand.Count > 0)
             {
-                expandedHistory.AddRange(System.Text.RegularExpressions.Regex.Split(historyNodes, "%%"));
-            }
-            if (expandedHistory != null && expandedHistory.Count > 0)
-            {
-                foreach (TreeNode n in this.historyTreeView.Nodes)
+                foreach (TreeNode treeNode in treeView.Nodes)
                 {
-                    if (expandedHistory.Contains(n.Text)) n.Expand();
+                    if (nodesToExpand.Contains(treeNode.Text))
+                        treeNode.Expand();
                 }
             }
         }

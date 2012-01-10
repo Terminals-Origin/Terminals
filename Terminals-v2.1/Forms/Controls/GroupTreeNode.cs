@@ -42,10 +42,10 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        internal bool ContainsFavoriteNode(string favoriteName)
+        internal bool ContainsFavoriteNode(Guid favoriteId)
         {
             return this.Nodes.Cast<FavoriteTreeNode>()
-                .Any(treeNode => treeNode.Favorite.Name == favoriteName);
+                .Any(treeNode => treeNode.Favorite.Id == favoriteId);
         }
     }
 }
