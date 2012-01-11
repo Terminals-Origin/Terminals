@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Terminals.Configuration;
 using Unified;
 
 namespace Terminals
@@ -14,11 +15,17 @@ namespace Terminals
         /// </summary>
         internal const string FLE_NAME = "ToolStrip.settings.config";
 
+        private static string GetFullFileName()
+        {
+            return FileLocations.GetFullPath(FLE_NAME);
+        }
+
         internal static ToolStripSettings Load()
         {
-            if (File.Exists(FLE_NAME))
+            string fullFileName = GetFullFileName();
+            if (File.Exists(fullFileName))
             {
-                String xmlContent = File.ReadAllText(FLE_NAME);
+                String xmlContent = File.ReadAllText(fullFileName);
                 return LoadFromXmlString(xmlContent);
             }
             return null;
@@ -26,7 +33,8 @@ namespace Terminals
 
         internal void Save()
         {
-            File.WriteAllText(FLE_NAME, this.ToXmlString());
+            string fullFileName = GetFullFileName();
+            File.WriteAllText(fullFileName, this.ToXmlString());
         }
 
         private static ToolStripSettings LoadFromXmlString(String xmlContent)

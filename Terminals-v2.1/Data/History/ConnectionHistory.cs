@@ -134,6 +134,9 @@ namespace Terminals.History
                 Logging.Log.InfoFormat("Loading History from: {0}", fileName);
                 if (File.Exists(fileName))
                     LoadFile();
+
+                if (this.currentHistory == null)
+                    this.currentHistory = new HistoryByFavorite();
             }
         }
 
@@ -143,8 +146,6 @@ namespace Terminals.History
             {
                 fileLock.WaitOne();
                 this.currentHistory = Serialize.DeserializeXMLFromDisk(FullFileName, typeof(HistoryByFavorite)) as HistoryByFavorite;
-                if (this.currentHistory == null)
-                    this.currentHistory = new HistoryByFavorite();
             }
             finally 
             {

@@ -61,6 +61,7 @@ namespace Terminals.Updates
             Settings.StartDelayedUpdate();
             ImportTagsFromConfigFile();
             MoveFavoritesFromConfigFile();
+            // TODO move also old groups into new groups (Jiri Pokorny, 11.1.2012)
             Settings.DeleteFavorites(Settings.GetFavorites().ToList());
             Settings.DeleteTags(Settings.Tags.ToList());
             ReplaceFavoriteButtonNamesByIds();
