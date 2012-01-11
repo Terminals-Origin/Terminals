@@ -56,7 +56,7 @@ namespace Terminals.Updates
         private static void CheckForCodeplexRelease()
         {
             Boolean checkForUpdate = true;
-            String releaseFile = "LastUpdateCheck.txt";
+            String releaseFile = FileLocations.GetFullPath("LastUpdateCheck.txt");
             if (File.Exists(releaseFile))
             {
                 String text = File.ReadAllText(releaseFile).Trim();

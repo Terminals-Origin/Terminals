@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Resources;
 using System.Threading;
@@ -55,8 +54,7 @@ namespace Terminals
             try 
             {
                 LogNonAdministrator();
-                string directory = Info.Location;
-                string testFile = Path.Combine(directory, "WriteAccessCheck.txt");
+                string testFile = FileLocations.GetFullPath("WriteAccessCheck.txt");
                 
                 // Test to make sure that the current user has write access to the current directory.
                 using (StreamWriter sw = File.AppendText(testFile)) { }
