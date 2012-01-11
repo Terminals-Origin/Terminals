@@ -10,9 +10,9 @@ using Unified;
 
 namespace Terminals.History
 {
-    internal delegate void HistoryRecorded(ConnectionHistory sender, HistoryRecordedEventArgs args);
+    internal delegate void HistoryRecorded(HistoryRecordedEventArgs args);
 
-    internal sealed class ConnectionHistory
+    internal sealed class ConnectionHistory : IConnectionHistory
     {
         /// <summary>
         /// Gets the file name of stored history values
@@ -26,7 +26,7 @@ namespace Terminals.History
         private ManualResetEvent loadingGate = new ManualResetEvent(false);
         private DataFileWatcher fileWatcher;
         private HistoryByFavorite currentHistory = null;
-        internal event HistoryRecorded OnHistoryRecorded;
+        public event HistoryRecorded OnHistoryRecorded;
 
         /// <summary>
         /// Prevent concurent updates on History file by another program
@@ -78,7 +78,7 @@ namespace Terminals.History
             fileWatcher.AssignSynchronizer(synchronizer);
         }
 
-        internal SortableList<IFavorite> GetDateItems(string historyDateKey)
+        public SortableList<IFavorite> GetDateItems(string historyDateKey)
         {
             this.loadingGate.WaitOne();
             var historyGroupItems = GetGroupedByDate()[historyDateKey];
@@ -173,7 +173,7 @@ namespace Terminals.History
             }
         }
 
-        internal void RecordHistoryItem(IFavorite favorite)
+        public void RecordHistoryItem(IFavorite favorite)
         {
             this.loadingGate.WaitOne();
             if (this.currentHistory == null || favorite == null)
@@ -190,7 +190,7 @@ namespace Terminals.History
             if (this.OnHistoryRecorded != null)
             {
                 var args = new HistoryRecordedEventArgs(favorite);
-                this.OnHistoryRecorded(this, args);
+                this.OnHistoryRecorded(args);
             }
         }
 

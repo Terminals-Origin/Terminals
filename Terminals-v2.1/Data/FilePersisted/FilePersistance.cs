@@ -47,7 +47,11 @@ namespace Terminals.Data
             get { return this.storedCredentials; }
         }
 
-        public ConnectionHistory ConnectionHistory { get; private set; }
+        private ConnectionHistory connectionHistory;
+        public IConnectionHistory ConnectionHistory
+        {
+            get { return this.connectionHistory; }
+        }
 
         public DataDispatcher Dispatcher { get; private set; }
 
@@ -59,7 +63,7 @@ namespace Terminals.Data
         internal FilePersistance()
         {
             this.Dispatcher = new DataDispatcher();
-            this.ConnectionHistory = new ConnectionHistory();
+            this.connectionHistory = new ConnectionHistory();
             this.storedCredentials = new StoredCredentials();
             InitializeFileWatch();
             Load();
@@ -88,7 +92,7 @@ namespace Terminals.Data
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
         {
             Settings.AssignSynchronizationObject(synchronizer);
-            this.ConnectionHistory.AssignSynchronizationObject(synchronizer);
+            this.connectionHistory.AssignSynchronizationObject(synchronizer);
             this.storedCredentials.AssignSynchronizationObject(synchronizer);
             this.fileWatcher.AssignSynchronizer(synchronizer);
         }

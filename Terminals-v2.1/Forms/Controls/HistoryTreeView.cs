@@ -52,7 +52,7 @@ namespace Terminals.Forms.Controls
         /// add new history item in todays list and/or perform full refresh,
         /// if day has changed since last refresh
         /// </summary>
-        private void OnHistoryRecorded(ConnectionHistory sender, HistoryRecordedEventArgs args)
+        private void OnHistoryRecorded(HistoryRecordedEventArgs args)
         {
             if (IsDayGone())
                 RefreshAllExpanded();

@@ -15,8 +15,8 @@ namespace Terminals.Data
         IGroups Groups { get; }
 
         IFactory Factory { get; }
-        
-        ConnectionHistory ConnectionHistory { get; }
+
+        IConnectionHistory ConnectionHistory { get; }
 
         ICredentials Credentials { get; }
         
