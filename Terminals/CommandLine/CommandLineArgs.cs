@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.Serialization;
 using Terminals.Configuration;
 using Terminals.Connections;
 
@@ -7,31 +8,40 @@ namespace Terminals.CommandLine
     /// <summary>
     /// Container for parsed command line arguments for whole application
     /// </summary>
+    [DataContract]
     public class CommandLineArgs
     {
+        [DataMember]
         [Argument(ArgumentType.AtMostOnce, HelpText = "URL to quick connect to.")]
         public string url;
 
+        [DataMember]
         [Argument(ArgumentType.AtMostOnce, LongName = "favs", HelpText = "Favorite list to quick connect to.")]
         public string favs;
 
+        [DataMember]
         [Argument(ArgumentType.AtMostOnce,
             HelpText = "Local path the the config file to use.  Defaults to the standard Terminals.config")]
         public string config;
 
+        [DataMember]
         [Argument(ArgumentType.AtMostOnce, LongName = "AutomaticallyUpdate", ShortName = "au", HelpText = "Enable Automatic Updates")]
         public bool AutomaticallyUpdate;
 
+        [DataMember]
         [Argument(ArgumentType.AtMostOnce, LongName="console", ShortName="c", HelpText = "Connect to the console")]
         public bool console;
 
+        [DataMember]
         [Argument(ArgumentType.AtMostOnce, ShortName="v", HelpText = "Quick connect machine to match mstsc.exe's parameter")]
         public string machine;
 
+        [DataMember]
         [Argument(ArgumentType.AtMostOnce, LongName = "fullscreen", ShortName = "f",
             HelpText = "Run terminals in Full Screen mode at startup")]
         public bool fullscreen;
 
+        [DataMember]
         [Argument(ArgumentType.AtMostOnce, LongName = "reuse", ShortName = "r", 
             HelpText = "Enforces start application in single instance mode. If defined, overrides the application option")]
         public bool reuse;
