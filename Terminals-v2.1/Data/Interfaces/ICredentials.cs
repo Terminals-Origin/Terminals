@@ -50,12 +50,6 @@ namespace Terminals.Data
         void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial);
 
         /// <summary>
-        /// Creates new empty credentials item.
-        /// </summary>
-        /// <returns>Not null newly created instance</returns>
-        ICredentialSet CreateCredentialSet();
-
-        /// <summary>
         /// Commits changes to the persistance.
         /// </summary>
         void Save();

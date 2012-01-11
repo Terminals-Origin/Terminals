@@ -15,7 +15,7 @@ namespace Terminals.Credentials
 
         private void okButton_Click(object sender, EventArgs e)
         {
-            this.Credentials = Persistance.Instance.Credentials.CreateCredentialSet();
+            this.Credentials = Persistance.Instance.Factory.CreateCredentialSet();
             this.Credentials.Name = string.Empty;
             this.Credentials.Username = userTextBox.Text;
             this.Credentials.SecretKey = passwordTextBox.Text;

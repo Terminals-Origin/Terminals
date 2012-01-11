@@ -114,7 +114,7 @@ namespace Terminals.Integration.Import
                 ICredentialSet destination = storedCredentials[toImport.Name];
                 if (destination == null)
                 {
-                    destination = Persistance.Instance.Credentials.CreateCredentialSet();
+                    destination = Persistance.Instance.Factory.CreateCredentialSet();
                     storedCredentials.Add(destination);
                 }
 

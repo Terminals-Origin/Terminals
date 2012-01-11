@@ -44,5 +44,11 @@ namespace Terminals.Data
         /// <param name="port">Number of port, which RDP service is lisening on server "server"</param>
         /// <returns></returns>
         IFavorite GetOrCreateQuickConnectFavorite(String server, Boolean connectToConsole, Int32 port);
+
+        /// <summary>
+        /// Creates new empty credentials item.
+        /// </summary>
+        /// <returns>Not null newly created instance</returns>
+        ICredentialSet CreateCredentialSet();
     }
 }

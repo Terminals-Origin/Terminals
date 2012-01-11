@@ -114,7 +114,7 @@ namespace Terminals.Credentials
 
         private ICredentialSet CreateNewCredential()
         {
-            var newItem = Credentials.CreateCredentialSet();
+            var newItem = Persistance.Instance.Factory.CreateCredentialSet();
             UpdateFromControls(newItem);
             return newItem;
         }

@@ -89,5 +89,10 @@ namespace Terminals
 
             return favorite;
         }
+
+        public ICredentialSet CreateCredentialSet()
+        {
+            return new CredentialSet();
+        }
     }
 }

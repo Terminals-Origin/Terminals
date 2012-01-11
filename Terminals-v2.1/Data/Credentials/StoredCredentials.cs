@@ -162,11 +162,6 @@ namespace Terminals.Data
             Save();
         }
 
-        public ICredentialSet CreateCredentialSet()
-        {
-            return new CredentialSet();
-        }
-
         public void Save()
         {
             try
