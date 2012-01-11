@@ -21,7 +21,7 @@ namespace Terminals
     {
         private MainForm _mainForm;
 
-        private IFavorites PersistedFavorites
+        private static IFavorites PersistedFavorites
         {
             get { return Persistance.Instance.Favorites; }
         }
@@ -184,8 +184,8 @@ namespace Terminals
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
-                Microsoft.Win32.RegistryKey reg = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, fav.ServerName);
-                Microsoft.Win32.RegistryKey ts = reg.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Terminal Server", true);
+                RegistryKey reg = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, fav.ServerName);
+                RegistryKey ts = reg.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Terminal Server", true);
                 Object deny = ts.GetValue("fDenyTSConnections");
                 if (deny != null)
                 {
@@ -488,9 +488,7 @@ namespace Terminals
         public void LoadState()
         {
             ExpandTreeView(Settings.ExpandedFavoriteNodes, this.favsTree);
-
-            // todo load tree after history was loaded, otherwise the container is empty
-            //ExpandTreeView(Settings.ExpandedHistoryNodes, this.historyTreeView);
+            ExpandTreeView(Settings.ExpandedHistoryNodes, this.historyTreeView);
         }
 
         private static void ExpandTreeView(string savedNodesToExpand, TreeView treeView)

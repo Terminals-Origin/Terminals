@@ -16,7 +16,6 @@ using Terminals.CommandLine;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
-using Terminals.History;
 using Terminals.Network;
 using Terminals.Properties;
 using Unified.Rss;
@@ -661,7 +660,6 @@ namespace Terminals
             mgr.ShowDialog();
         }
 
-        // todo assign missing action for OpenSavedConnections
         private void OpenSavedConnections()
         {
             foreach (string name in Settings.SavedConnections)

@@ -14,11 +14,8 @@ namespace Terminals.Forms.Controls
 
             // init groups before loading the history to prevent to run the callback earlier
             InitializeTimeLineTreeNodes();
-            // consider remove next line to perform full lazy loading without loading the history data
-            // directly after application start
+
             var connectionHistory = Persistance.Instance.ConnectionHistory;
-            connectionHistory.LoadHistoryAsync();
-            // dont apply OnHistoryLoaded event handler to do the lazy loading
             connectionHistory.OnHistoryRecorded += new HistoryRecorded(this.OnHistoryRecorded);
         }
 
@@ -32,14 +29,14 @@ namespace Terminals.Forms.Controls
         {
             this.SuspendLayout();
             // keep chronological order
-            this.AddNewHistoryGroupNode(HistoryByFavorite.TODAY, "history_icon_today.png"); 
-            this.AddNewHistoryGroupNode(HistoryByFavorite.YESTERDAY, "history_icon_yesterday.png"); 
+            this.AddNewHistoryGroupNode(HistoryByFavorite.TODAY, "history_icon_today.png");
+            this.AddNewHistoryGroupNode(HistoryByFavorite.YESTERDAY, "history_icon_yesterday.png");
             this.AddNewHistoryGroupNode(HistoryByFavorite.WEEK, "history_icon_week.png");
-            this.AddNewHistoryGroupNode(HistoryByFavorite.TWOWEEKS, "history_icon_twoweeks.png"); 
-            this.AddNewHistoryGroupNode(HistoryByFavorite.MONTH, "history_icon_month.png"); 
-            this.AddNewHistoryGroupNode(HistoryByFavorite.OVERONEMONTH, "history_icon_overmonth.png"); 
-            this.AddNewHistoryGroupNode(HistoryByFavorite.HALFYEAR, "history_icon_halfyear.png"); 
-            this.AddNewHistoryGroupNode(HistoryByFavorite.YEAR, "history_icon_year.png"); 
+            this.AddNewHistoryGroupNode(HistoryByFavorite.TWOWEEKS, "history_icon_twoweeks.png");
+            this.AddNewHistoryGroupNode(HistoryByFavorite.MONTH, "history_icon_month.png");
+            this.AddNewHistoryGroupNode(HistoryByFavorite.OVERONEMONTH, "history_icon_overmonth.png");
+            this.AddNewHistoryGroupNode(HistoryByFavorite.HALFYEAR, "history_icon_halfyear.png");
+            this.AddNewHistoryGroupNode(HistoryByFavorite.YEAR, "history_icon_year.png");
 
             this.ResumeLayout();
         }
@@ -86,7 +83,7 @@ namespace Terminals.Forms.Controls
                 return;
 
             if (!todayGroup.ContainsFavoriteNode(args.Favorite.Id))
-                 InsertRecordedNode(todayGroup, args);
+                InsertRecordedNode(todayGroup, args);
         }
 
         private static void InsertRecordedNode(GroupTreeNode todayGroup, HistoryRecordedEventArgs args)
