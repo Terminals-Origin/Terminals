@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using TabControl;
 using System.Runtime.InteropServices;
 using Terminals.Data;
+using Terminals.TerminalServices;
 
 namespace Terminals.Connections
 {
@@ -11,7 +12,7 @@ namespace Terminals.Connections
     {
         #region IConnection Members
 
-        private TerminalServices.TerminalServer server;
+        private TerminalServer server;
         private bool isTerminalServer = false;
         private IFavorite favorite;
         private TerminalTabControlItem terminalTabPage;
@@ -19,11 +20,11 @@ namespace Terminals.Connections
         
         internal delegate void InvokeCloseTabPage(TabControlItem tabPage);
         
-        public delegate void TerminalServerStateDiscovery(FavoriteConfigurationElement Favorite, bool IsTerminalServer, TerminalServices.TerminalServer Server);
+        public delegate void TerminalServerStateDiscovery(IFavorite favorite, bool isTerminalServer, TerminalServer server);
         
         public event TerminalServerStateDiscovery OnTerminalServerStateDiscovery;
 
-        public delegate void LogHandler(string Entry);
+        public delegate void LogHandler(string entry);
 
         public event LogHandler OnLog;
 
@@ -36,7 +37,7 @@ namespace Terminals.Connections
             get;
         }
 
-        public TerminalServices.TerminalServer Server
+        public TerminalServer Server
         {
             get
             {
@@ -65,20 +66,21 @@ namespace Terminals.Connections
         private void CheckForTS(object state)
         {
             this.isTerminalServer = false;
-            FavoriteConfigurationElement host = (FavoriteConfigurationElement)state;
+            IFavorite favorite = state as IFavorite;
             try
             {
                 Thread.Sleep(3000);
-                this.server = TerminalServices.TerminalServer.LoadServer(host.ServerName);
+                this.server = TerminalServer.LoadServer(favorite.ServerName);
                 this.isTerminalServer = this.server.IsATerminalServer;
             }
             catch (Exception)
             {
-                Logging.Log.Error(string.Format("Checked to see if {0} is a terminal server.  {0} is not a terminal server", host.ServerName));
+                Logging.Log.Error(string.Format("Checked to see if {0} is a terminal server. {0} is not a terminal server",
+                  favorite.ServerName));
             }
 
             if (this.OnTerminalServerStateDiscovery != null)
-                this.OnTerminalServerStateDiscovery(host, this.isTerminalServer, this.server);
+                this.OnTerminalServerStateDiscovery(favorite, this.isTerminalServer, this.server);
         }
 
         public void CheckForTerminalServer(IFavorite favorite)
@@ -91,13 +93,13 @@ namespace Terminals.Connections
             this.isTerminalServer = false;
         }
 
-        protected void Log(string Text)
+        protected void Log(string text)
         {
             if (this.OnLog != null)
-                this.OnLog(Text);
+                this.OnLog(text);
         }
         
-        public abstract void ChangeDesktopSize(DesktopSize Size);
+        public abstract void ChangeDesktopSize(DesktopSize size);
 
         public IFavorite Favorite 
         {
@@ -153,17 +155,5 @@ namespace Terminals.Connections
         }
         
         #endregion
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            
-            this.ControlAdded += new ControlEventHandler(this.Connection_ControlAdded);
-            this.ResumeLayout(false);
-        }
-
-        private void Connection_ControlAdded(object sender, ControlEventArgs e)
-        {
-        }
     }
 }

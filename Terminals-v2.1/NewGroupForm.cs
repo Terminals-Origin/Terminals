@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Terminals
@@ -17,7 +12,7 @@ namespace Terminals
 
         private void txtGroupName_TextChanged(object sender, EventArgs e)
         {
-            btnOk.Enabled = txtGroupName.Text != String.Empty;
+            btnOk.Enabled = !string.IsNullOrEmpty(txtGroupName.Text);
         }
     }
 }
