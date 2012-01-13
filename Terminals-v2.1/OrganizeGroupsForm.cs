@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals
 {
@@ -14,118 +12,37 @@ namespace Terminals
         internal OrganizeGroupsForm()
         {
             InitializeComponent();
+
+            this.gridGroups.AutoGenerateColumns = false;
+            this.gridGroupFavorites.AutoGenerateColumns = false;
             LoadGroups();
         }
 
         private void LoadGroups()
         {
-            lvGroups.BeginUpdate();
-            try
-            {
-                lvGroups.Items.Clear();
-                GroupConfigurationElementCollection groups = Settings.GetGroups();
-                foreach (GroupConfigurationElement group in groups)
-                {
-                    ListViewItem item = lvGroups.Items.Add(group.Name);
-                    item.Name = group.Name;
-                    item.Tag = group;
-                }
-                if (lvGroups.Items.Count > 0)
-                {
-                    lvGroups.Items[0].Focused = true;
-                    lvGroups.Items[0].Selected = true;
-                }
-            }
-            finally
-            {
-                lvGroups.EndUpdate();
-            }
+            var groups = Persistance.Instance.Groups.ToList();
+            this.gridGroups.DataSource = groups;
         }
 
-        private void LoadConnections(GroupConfigurationElement group)
+        private IGroup GetSelectedGroup()
         {
-            lvConnections.BeginUpdate();
-            try
-            {
-                lvConnections.Items.Clear();
-                foreach (FavoriteAliasConfigurationElement favorite in group.FavoriteAliases)
-                {
-                    ListViewItem item = lvConnections.Items.Add(favorite.Name);
-                    item.Name = favorite.Name;
-                }
-                if (lvConnections.Items.Count > 0)
-                {
-                    lvConnections.Items[0].Focused = true;
-                    lvConnections.Items[0].Selected = true;
-                }
-            }
-            finally
-            {
-                lvConnections.EndUpdate();
-            }
-        }
-
-        private GroupConfigurationElement GetSelectedGroup()
-        {
-            if (lvGroups.SelectedItems.Count > 0)
-                return (GroupConfigurationElement)lvGroups.SelectedItems[0].Tag;
+            if (gridGroups.SelectedRows.Count > 0)
+                return gridGroups.SelectedRows[0].DataBoundItem as IGroup;
             return null;
         }
 
-        private void tsbDeleteGroup_Click(object sender, EventArgs e)
+        private void LoadSelectedGroupFavorites()
         {
-            GroupConfigurationElement group = GetSelectedGroup();
-            if (group != null)
+            IGroup selectedGroup = GetSelectedGroup();
+            if (selectedGroup != null)
             {
-                Settings.DeleteGroup(group.Name);
-                LoadGroups();
+                this.gridGroupFavorites.DataSource = selectedGroup.Favorites;
             }
         }
 
-        private void lvGroups_SelectedIndexChanged(object sender, EventArgs e)
+        private void gridGroups_SelectedRowChanged(object sender, EventArgs e)
         {
-            GroupConfigurationElement group = GetSelectedGroup();
-            if (group != null)
-            {
-                LoadConnections(group);
-            }
-        }
-
-        private void tsbAddConnection_Click(object sender, EventArgs e)
-        {
-            GroupConfigurationElement group = GetSelectedGroup();
-            if (group != null)
-            {
-                AddConnectionForm frmAddConnection = new AddConnectionForm();
-                if (frmAddConnection.ShowDialog() == DialogResult.OK)
-                {
-                    foreach (string connection in frmAddConnection.Connections)
-                    {
-                        group.FavoriteAliases.Add(new FavoriteAliasConfigurationElement(connection));
-                        lvConnections.Items.Add(connection);
-                    }
-                    Settings.DeleteGroup(group.Name);
-                    Settings.AddGroup(group);
-                }
-            }
-        }
-
-        private void tsbDeleteConnection_Click(object sender, EventArgs e)
-        {
-            GroupConfigurationElement group = GetSelectedGroup();
-            if (group != null)
-            {
-                if (lvConnections.SelectedItems.Count > 0)
-                {
-                    foreach (ListViewItem item in lvConnections.SelectedItems)
-                    {
-                        group.FavoriteAliases.Remove(item.Text);
-                        Settings.DeleteGroup(group.Name);
-                        Settings.AddGroup(group);
-                        item.Remove();
-                    }
-                }
-            }
+            LoadSelectedGroupFavorites();
         }
 
         private void tsbAddGroup_Click(object sender, EventArgs e)
@@ -134,13 +51,70 @@ namespace Terminals
             {
                 if (frmNewGroup.ShowDialog() == DialogResult.OK)
                 {
-                    GroupConfigurationElement serversGroup = new GroupConfigurationElement();
-                    serversGroup.Name = frmNewGroup.txtGroupName.Text;
-                    serversGroup.FavoriteAliases = new FavoriteAliasConfigurationElementCollection();
-                    Settings.AddGroup(serversGroup);
-                    LoadGroups();
+                    this.CreateNewGroupIfDoesntExist(frmNewGroup);
                 }
             }
+        }
+
+        private void CreateNewGroupIfDoesntExist(NewGroupForm frmNewGroup)
+        {
+            string newGroupName = frmNewGroup.txtGroupName.Text;
+            IGroup newGroup = Persistance.Instance.Groups[newGroupName];
+            if(newGroup == null)
+            {
+                IFactory factory = Persistance.Instance.Factory;
+                newGroup = factory.CreateGroup(newGroupName);
+                Persistance.Instance.Groups.Add(newGroup);
+                this.LoadGroups();
+            }
+        }
+
+        private void tsbDeleteGroup_Click(object sender, EventArgs e)
+        {
+            IGroup group = GetSelectedGroup();
+            if (group != null)
+            {
+                Persistance.Instance.Groups.Delete(group);
+                LoadGroups();
+            }
+        }
+
+        private void tsbAddConnection_Click(object sender, EventArgs e)
+        {
+            IGroup group = GetSelectedGroup();
+            if (group != null)
+            {
+                AddConnectionForm frmAddConnection = new AddConnectionForm();
+                if (frmAddConnection.ShowDialog() == DialogResult.OK)
+                {
+                    group.AddFavorites(frmAddConnection.SelectedFavorites);
+                    this.LoadSelectedGroupFavorites();
+                    Persistance.Instance.SaveAndFinishDelayedUpdate();
+                }
+            }
+        }
+
+        private void tsbDeleteConnection_Click(object sender, EventArgs e)
+        {
+            IGroup group = GetSelectedGroup();
+            if (group != null)
+            {
+                if (this.gridGroupFavorites.SelectedRows.Count > 0)
+                {
+                    List<IFavorite> selectedFavorites = GetSelectedFavorites();
+                    group.RemoveFavorites(selectedFavorites);
+                    LoadSelectedGroupFavorites();
+                    // TODO send group changed event to refresh tree (Jiri Pokorny, 14.1.2012)
+                    Persistance.Instance.SaveAndFinishDelayedUpdate();
+                }
+            }
+        }
+
+        private List<IFavorite> GetSelectedFavorites()
+        {
+            var selectedRows = this.gridGroupFavorites.SelectedRows.Cast<DataGridViewRow>();
+            return selectedRows.Select(row => row.DataBoundItem as IFavorite)
+                .ToList();
         }
     }
 }

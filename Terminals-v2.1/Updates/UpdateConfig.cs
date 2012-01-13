@@ -59,15 +59,38 @@ namespace Terminals.Updates
             MoveDataFile(Settings.CONFIG_FILE_NAME);
             Settings.ForceReload();
             Settings.StartDelayedUpdate();
+            Persistance.Instance.StartDelayedUpdate();
             ImportTagsFromConfigFile();
             MoveFavoritesFromConfigFile();
-            // TODO move also old groups into new groups (Jiri Pokorny, 11.1.2012)
+            MoveGroupsFromConfigFile();
             Settings.DeleteFavorites(Settings.GetFavorites().ToList());
             Settings.DeleteTags(Settings.Tags.ToList());
             ReplaceFavoriteButtonNamesByIds();
             Settings.SaveAndFinishDelayedUpdate();
             Persistance.Instance.Groups.Rebuild();
             Persistance.Instance.SaveAndFinishDelayedUpdate();
+        }
+
+        private static void MoveGroupsFromConfigFile()
+        {
+            var configGroups = Settings.GetGroups();
+            foreach (GroupConfigurationElement configGroup in configGroups)
+            {
+                MoveFavoriteAliasesGroup(configGroup);
+            }
+            
+            configGroups.Clear();
+        }
+
+        private static void MoveFavoriteAliasesGroup(GroupConfigurationElement configGroup) 
+        {
+            IFactory factory = Persistance.Instance.Factory;
+            IGroup group = factory.GetOrCreateGroup(configGroup.Name);
+            List<string> favoriteNames = configGroup.FavoriteAliases.GetFavoriteNames();
+            IFavorites favorites = Persistance.Instance.Favorites;
+            List<IFavorite> groupFavorites = favoriteNames.Select(favoriteName => favorites[favoriteName])
+                .Where(favorite => favorite != null).ToList();
+            group.AddFavorites(groupFavorites);
         }
 
         private static void ReplaceFavoriteButtonNamesByIds()

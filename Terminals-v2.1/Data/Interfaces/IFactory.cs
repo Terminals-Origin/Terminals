@@ -8,21 +8,21 @@ namespace Terminals.Data
     internal interface IFactory
     {
         /// <summary>
-        /// Gets group with required groupName or creates new group which isnt added to persistance yet.
+        /// Gets group with required groupName or creates new group which is immediately added to the persistance.
         /// </summary>
         /// <param name="groupName">Name of the group to search in persistance.</param>
         /// <returns>Not null value of Group obtained from persistance or newly created group</returns>
         IGroup GetOrCreateGroup(string groupName);
 
         /// <summary>
-        /// Creates new empty, not configured group.
+        /// Creates new empty, not configured group. Does not add it to the persistance.
         /// </summary>
         /// <param name="groupName">New name to assign</param>
         /// <returns>Not null, newly created group</returns>
         IGroup CreateGroup(string groupName);
 
         /// <summary>
-        /// Creates new, not configured instance of connection favorite.
+        /// Creates new, not configured instance of connection favorite. Does not add it to the persistance.
         /// </summary>
         /// <returns>Not null newly created instance</returns>
         IFavorite CreateFavorite();
@@ -46,7 +46,7 @@ namespace Terminals.Data
         IFavorite GetOrCreateQuickConnectFavorite(String server, Boolean connectToConsole, Int32 port);
 
         /// <summary>
-        /// Creates new empty credentials item.
+        /// Creates new empty credentials item. Does not add it to the persistance.
         /// </summary>
         /// <returns>Not null newly created instance</returns>
         ICredentialSet CreateCredentialSet();
