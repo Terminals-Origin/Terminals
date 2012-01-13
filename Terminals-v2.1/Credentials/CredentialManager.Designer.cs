@@ -79,16 +79,16 @@
             this.panel1.Controls.Add(this.DeleteButton);
             this.panel1.Controls.Add(this.EditButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panel1.Location = new System.Drawing.Point(350, 0);
+            this.panel1.Location = new System.Drawing.Point(352, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(100, 212);
+            this.panel1.Size = new System.Drawing.Size(100, 213);
             this.panel1.TabIndex = 4;
             // 
             // DoneButton
             // 
             this.DoneButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.DoneButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.DoneButton.Location = new System.Drawing.Point(12, 179);
+            this.DoneButton.Location = new System.Drawing.Point(12, 180);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(75, 23);
             this.DoneButton.TabIndex = 4;
@@ -113,7 +113,7 @@
             this.gridCredentials.Name = "gridCredentials";
             this.gridCredentials.RowHeadersVisible = false;
             this.gridCredentials.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridCredentials.Size = new System.Drawing.Size(350, 212);
+            this.gridCredentials.Size = new System.Drawing.Size(352, 213);
             this.gridCredentials.TabIndex = 5;
             this.gridCredentials.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridCredentials_CellDoubleClick);
             this.gridCredentials.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridCredentials_ColumnHeaderMouseClick);
@@ -145,12 +145,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.DoneButton;
-            this.ClientSize = new System.Drawing.Size(450, 212);
+            this.ClientSize = new System.Drawing.Size(452, 213);
             this.Controls.Add(this.gridCredentials);
             this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(460, 240);
             this.Name = "CredentialManager";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Terminals - Credential Manager";
