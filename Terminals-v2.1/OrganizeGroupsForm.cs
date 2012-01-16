@@ -104,7 +104,6 @@ namespace Terminals
                     List<IFavorite> selectedFavorites = GetSelectedFavorites();
                     group.RemoveFavorites(selectedFavorites);
                     LoadSelectedGroupFavorites();
-                    // TODO send group changed event to refresh tree (Jiri Pokorny, 14.1.2012)
                     Persistance.Instance.SaveAndFinishDelayedUpdate();
                 }
             }
