@@ -136,9 +136,8 @@ namespace Terminals
                 ApplyTheme();
 
                 this.terminalsControler = new TerminalTabsSelectionControler(this, this.tcTerminals);
-                this.menuLoader = new FavoritesMenuLoader(this.favoritesToolStripMenuItem,
-                    this.tscConnectTo, this.serverToolStripMenuItem_Click,
-                    this.favoriteToolBar,this.QuickContextMenu, this.QuickContextMenu_ItemClicked);
+                this.menuLoader = new FavoritesMenuLoader(this);
+
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
                 fullScreenSwitch = new MainFormFullScreenSwitch(this);
                 AssignToolStripsToContainer();
@@ -146,7 +145,7 @@ namespace Terminals
                 // Update the old treeview theme to the new theme from Win Vista and up
                 Native.Methods.SetWindowTheme(this.menuStrip.Handle, "Explorer", null);
 
-                this.LoadGroups();
+                this.menuLoader.LoadGroups();
                 this.UpdateControls();
                 this.LoadWindowState();
                 this.UpdateCaptureButtonEnabled();
@@ -704,37 +703,6 @@ namespace Terminals
             }
         }
 
-        private void LoadGroups()
-        {
-            GroupConfigurationElementCollection serversGroups = Settings.GetGroups();
-            Int32 seperatorIndex = groupsToolStripMenuItem.DropDownItems.IndexOf(groupsSeparator);
-            for (Int32 i = groupsToolStripMenuItem.DropDownItems.Count - 1; i > seperatorIndex; i--)
-            {
-                groupsToolStripMenuItem.DropDownItems.RemoveAt(i);
-            }
-
-            addTerminalToGroupToolStripMenuItem.DropDownItems.Clear();
-            foreach (GroupConfigurationElement serversGroup in serversGroups)
-            {
-                AddGroup(serversGroup);
-            }
-
-            addTerminalToGroupToolStripMenuItem.Enabled = false;
-            saveTerminalsAsGroupToolStripMenuItem.Enabled = false;
-        }
-
-        private void AddGroup(GroupConfigurationElement group)
-        {
-            ToolStripMenuItem groupToolStripMenuItem = new ToolStripMenuItem(group.Name);
-            groupToolStripMenuItem.Name = group.Name;
-            groupToolStripMenuItem.Click += new EventHandler(groupToolStripMenuItem_Click);
-            groupsToolStripMenuItem.DropDownItems.Add(groupToolStripMenuItem);
-            ToolStripMenuItem groupAddToolStripMenuItem = new ToolStripMenuItem(group.Name);
-            groupAddToolStripMenuItem.Name = group.Name;
-            groupAddToolStripMenuItem.Click += new EventHandler(groupAddToolStripMenuItem_Click);
-            addTerminalToGroupToolStripMenuItem.DropDownItems.Add(groupAddToolStripMenuItem);
-        }
-
         private void SetGrabInput(Boolean grab)
         {
             if (CurrentTerminal != null)
@@ -1064,20 +1032,16 @@ namespace Terminals
 
         private void groupAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GroupConfigurationElement group = Settings.GetGroups()[((ToolStripMenuItem)sender).Text];
-            String selectedTitle = this.terminalsControler.Selected.Title;
-            group.FavoriteAliases.Add(new FavoriteAliasConfigurationElement(selectedTitle));
-            Settings.DeleteGroup(group.Name);
-            Settings.AddGroup(group);
+            IGroup group = (sender as GroupMenuItem).Group;
+            IFavorite selectedFavorite = this.terminalsControler.Selected.Favorite;
+            group.AddFavorite(selectedFavorite);
         }
 
         private void groupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string groupName = ((ToolStripItem)sender).Text;
-            GroupConfigurationElement serversGroup = Settings.GetGroups()[groupName];
-            foreach (FavoriteAliasConfigurationElement favoriteAlias in serversGroup.FavoriteAliases)
+            IGroup group = (sender as GroupMenuItem).Group;
+            foreach (IFavorite favorite in group.Favorites)
             {
-                IFavorite favorite = this.PersistedFavorites[favoriteAlias.Name];
                 this.CreateTerminalTab(favorite);
             }
         }
@@ -1365,15 +1329,14 @@ namespace Terminals
             {
                 if (frmNewGroup.ShowDialog() == DialogResult.OK)
                 {
-                    GroupConfigurationElement serversGroup = new GroupConfigurationElement();
-                    serversGroup.Name = frmNewGroup.txtGroupName.Text;
-                    foreach (TabControlItem tabControlItem in this.tcTerminals.Items)
+                    string newGroupName = frmNewGroup.txtGroupName.Text;
+                    IGroup group = Persistance.Instance.Factory.GetOrCreateGroup(newGroupName);
+                    foreach (TerminalTabControlItem tabControlItem in this.tcTerminals.Items)
                     {
-                        serversGroup.FavoriteAliases.Add(new FavoriteAliasConfigurationElement(tabControlItem.Title));
+                        group.AddFavorite(tabControlItem.Favorite);
                     }
-
-                    Settings.AddGroup(serversGroup);
-                    this.LoadGroups();
+                    
+                    this.menuLoader.LoadGroups();
                 }
             }
         }
@@ -1383,7 +1346,7 @@ namespace Terminals
             using (OrganizeGroupsForm frmOrganizeGroups = new OrganizeGroupsForm())
             {
                 frmOrganizeGroups.ShowDialog();
-                this.LoadGroups();
+                this.menuLoader.LoadGroups();
             }
         }
 
@@ -1839,7 +1802,7 @@ namespace Terminals
         private void rebuildTagsIndexToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Persistance.Instance.Groups.Rebuild();
-            this.LoadGroups();
+            this.menuLoader.LoadGroups();
             this.UpdateControls();
         }
 

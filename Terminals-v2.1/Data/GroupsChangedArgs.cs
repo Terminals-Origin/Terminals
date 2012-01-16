@@ -13,6 +13,8 @@ namespace Terminals.Data
         /// </summary>
         internal List<IGroup> Added { get; private set; }
 
+        internal List<IGroup> Updated { get; private set; }
+
         /// <summary>
         /// All IGroups actualy no longer used by any favorite
         /// </summary>
@@ -23,33 +25,40 @@ namespace Terminals.Data
         /// </summary>
         internal Boolean IsEmpty
         {
-            get { return this.Added.Count == 0 && this.Removed.Count == 0; }
+            get
+            {
+                return this.Added.Count == 0 &&
+                       this.Removed.Count == 0 &&
+                       this.Updated.Count == 0; 
+            }
         }
 
         internal GroupsChangedArgs()
         {
             this.Added = new List<IGroup>();
+            this.Updated = new List<IGroup>();
             this.Removed = new List<IGroup>();
         }
 
-        internal GroupsChangedArgs(List<IGroup> addedIGroups, List<IGroup> deletedIGroups)
+        internal GroupsChangedArgs(List<IGroup> addedGroups, List<IGroup> deletedGroups)
+            : this()
         {
             // merge collections to report only differences
-            MergeChangeLists(addedIGroups, deletedIGroups);
-            this.Added = addedIGroups;
-            this.Removed = deletedIGroups;
+            MergeChangeLists(addedGroups, deletedGroups);
+            this.Added.AddRange(addedGroups);
+            this.Removed.AddRange(deletedGroups);
         }
 
-        private static void MergeChangeLists(List<IGroup> addedIGroups, List<IGroup> deletedIGroups)
+        private static void MergeChangeLists(List<IGroup> addedGroups, List<IGroup> deletedGroups)
         {
             int index = 0;
-            while (index < deletedIGroups.Count)
+            while (index < deletedGroups.Count)
             {
-                IGroup deletedIGroup = deletedIGroups[index];
-                if (addedIGroups.Contains(deletedIGroup))
+                IGroup deletedIGroup = deletedGroups[index];
+                if (addedGroups.Contains(deletedIGroup))
                 {   
-                    addedIGroups.Remove(deletedIGroup);
-                    deletedIGroups.Remove(deletedIGroup);
+                    addedGroups.Remove(deletedIGroup);
+                    deletedGroups.Remove(deletedIGroup);
                 }
                 else
                     index++;
@@ -58,8 +67,8 @@ namespace Terminals.Data
 
         public override String ToString()
         {
-            return String.Format("TagsChangedArgs:Added={0};Removed={1}",
-                this.Added.Count, this.Removed.Count);
+            return String.Format("GroupsChangedArgs:Added={0};Updated {1};Removed={2}",
+                this.Added.Count, this.Updated.Count, this.Removed.Count);
         }
     }
 }

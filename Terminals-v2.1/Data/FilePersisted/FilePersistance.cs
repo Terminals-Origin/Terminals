@@ -84,8 +84,9 @@ namespace Terminals.Data
             this.favorites.Merge(file.Favorites.Cast<IFavorite>().ToList());
             // first update also present groups assignment,
             // than send the favorite update also for present favorites
-            this.UpdateFavoritesInGroups(file.FavoritesInGroups);
-            // Simple update without ensuring, if the favorite was changes or not - possible porformance issue
+            IList<IGroup> updated = this.UpdateFavoritesInGroups(file.FavoritesInGroups);
+            this.Dispatcher.ReportGroupsUpdated(updated);
+            // Simple update without ensuring, if the favorite was changes or not - possible porformance issue);
             this.Dispatcher.ReportFavoritesUpdated(this.favorites.ToList());
         }
 
@@ -153,22 +154,30 @@ namespace Terminals.Data
             return file;
         }
 
-        private void UpdateFavoritesInGroups(FavoritesInGroup[] favoritesInGroups)
+        private List<IGroup> UpdateFavoritesInGroups(FavoritesInGroup[] favoritesInGroups)
         {
+            List<IGroup> updatedGroups = new List<IGroup>();
+
             foreach (FavoritesInGroup favoritesInGroup in favoritesInGroups)
             {
                 var group = this.Groups[favoritesInGroup.GroupId] as Group;
-                this.UpdateFavoritesInGroup(group, favoritesInGroup.Favorites);
+                bool groupUpdated = this.UpdateFavoritesInGroup(group, favoritesInGroup.Favorites);
+                if (groupUpdated)
+                    updatedGroups.Add(group);
             }
+
+            return updatedGroups;
         }
 
-        private void UpdateFavoritesInGroup(Group group, Guid[] favoritesInGroup)
+        private bool UpdateFavoritesInGroup(Group group, Guid[] favoritesInGroup)
         {
             if (group != null)
             {
                 List<IFavorite> newFavorites = GetFavoritesInGroup(favoritesInGroup);
-                group.UpdateFavorites(newFavorites);
+                return group.UpdateFavorites(newFavorites);
             }
+
+            return false;
         }
 
         private List<IFavorite> GetFavoritesInGroup(Guid[] favoritesInGroup)

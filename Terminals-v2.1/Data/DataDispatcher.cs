@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Terminals.Configuration;
-using Terminals.History;
 
 namespace Terminals.Data
 {
@@ -92,6 +88,13 @@ namespace Terminals.Data
             var args = new GroupsChangedArgs();
             args.Added.AddRange(addedGroups);
             this.FireGroupsChanged(args);
+        }
+
+        internal void ReportGroupsUpdated(IList<IGroup> updatedGroups)
+        {
+            var args = new GroupsChangedArgs();
+            args.Updated.AddRange(updatedGroups);
+            this.FireGroupsChanged(args); 
         }
 
         internal void ReportGroupsDeleted(List<IGroup> deletedGroups)

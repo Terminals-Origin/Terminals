@@ -1,7 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
 
@@ -64,9 +63,12 @@ namespace Terminals
             return group;
         }
 
-        public IGroup CreateGroup(string groupName)
+        public IGroup CreateGroup(string groupName, List<IFavorite> favorites = null)
         {
-            return new Group { Name = groupName };
+            if (favorites == null)
+                return new Group(groupName, new List<IFavorite>());
+
+            return new Group(groupName, favorites);
         }
 
         public IFavorite GetOrCreateQuickConnectFavorite(String server,

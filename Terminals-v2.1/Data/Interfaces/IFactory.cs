@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Terminals.Data
 {
@@ -18,8 +19,11 @@ namespace Terminals.Data
         /// Creates new empty, not configured group. Does not add it to the persistance.
         /// </summary>
         /// <param name="groupName">New name to assign</param>
-        /// <returns>Not null, newly created group</returns>
-        IGroup CreateGroup(string groupName);
+        /// <param name="favorites">The favorites collection to be assigned to the group.</param>
+        /// <returns>
+        /// Not null, newly created group
+        /// </returns>
+        IGroup CreateGroup(string groupName, List<IFavorite> favorites = null);
 
         /// <summary>
         /// Creates new, not configured instance of connection favorite. Does not add it to the persistance.

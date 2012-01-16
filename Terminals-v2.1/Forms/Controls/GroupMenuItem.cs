@@ -19,12 +19,14 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal IGroup Group { get; set; }
 
-        internal GroupMenuItem(IGroup group)
+        internal GroupMenuItem(IGroup group, bool createDummyItem = true)
         {
             this.Group = group;
             this.Text = group.Name;
             this.Tag = TAG;
-            this.DropDown.Items.Add(GroupTreeNode.DUMMY_NODE);
+
+            if (createDummyItem)
+                this.DropDown.Items.Add(GroupTreeNode.DUMMY_NODE);
         }
 
         /// <summary>

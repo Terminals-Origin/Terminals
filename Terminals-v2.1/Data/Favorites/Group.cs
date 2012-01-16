@@ -31,7 +31,7 @@ namespace Terminals.Data
             }
         }
 
-        private Dictionary<Guid, IFavorite> favorites = new Dictionary<Guid, IFavorite>();
+        private Dictionary<Guid, IFavorite> favorites;
         [XmlIgnore]
         List<IFavorite> IGroup.Favorites
         {
@@ -42,22 +42,47 @@ namespace Terminals.Data
         }
 
         public Group()
+            : this(new Dictionary<Guid, IFavorite>())
+        { }
+
+        internal Group(string name, List<IFavorite> favorites) 
+            : this(favorites.ToDictionary(favorite => favorite.Id))
+        {
+            this.Name = name;
+        }
+
+        private Group(Dictionary<Guid, IFavorite> favorites)
         {
             this.Parent = Guid.Empty;
             this.Id = Guid.NewGuid();
-        }
-
-        public override string ToString()
-        {
-            string parent = "Root";
-            if (this.Parent != Guid.Empty)
-                parent = this.Parent.ToString();
-
-            return String.Format("Group:Name={0},Id={1},Parent={2},Favorites={3}",
-                this.name, this.Id, parent, this.favorites.Count);
+            this.favorites = favorites;
         }
 
         void IGroup.AddFavorite(IFavorite favorite)
+        {
+            AddFavoriteToCache(favorite);
+            ReportThisGroupChanged();
+        }
+
+        void IGroup.AddFavorites(List<IFavorite> favoritesToAdd)
+        {
+            AddFavoritesToCache(favoritesToAdd);
+            ReportThisGroupChanged();
+        }
+
+        void IGroup.RemoveFavorites(List<IFavorite> favoritesToRemove)
+        {
+            RemoveFavoritesFromCache(favoritesToRemove);
+            this.ReportThisGroupChanged();
+        }
+
+        void IGroup.RemoveFavorite(IFavorite favorite)
+        {
+            this.RemoveFavoriteFromCache(favorite);
+            this.ReportThisGroupChanged();
+        }
+
+        private void AddFavoriteToCache(IFavorite favorite)
         {
             if (favorite == null)
                 return;
@@ -68,31 +93,37 @@ namespace Terminals.Data
                 this.favorites[favorite.Id] = favorite;
         }
 
-        void IGroup.AddFavorites(List<IFavorite> favoritesToAdd)
+        private void AddFavoritesToCache(List<IFavorite> favoritesToAdd)
         {
             foreach (Favorite favorite in favoritesToAdd)
             {
-                ((IGroup)this).AddFavorite(favorite);
+                this.AddFavoriteToCache(favorite);
             }
         }
 
-        void IGroup.RemoveFavorite(IFavorite favorite)
+        private void RemoveFavoriteFromCache(IFavorite favorite)
         {
             if (this.favorites.ContainsKey(favorite.Id))
                 this.favorites.Remove(favorite.Id);
         }
 
-        void IGroup.RemoveFavorites(List<IFavorite> favoritesToRemove)
+        private void RemoveFavoritesFromCache(List<IFavorite> favoritesToRemove)
         {
             foreach (Favorite favorite in favoritesToRemove)
             {
-                ((IGroup)this).RemoveFavorite(favorite);
+                this.RemoveFavoriteFromCache(favorite);
             }
+        }
+
+        private void ReportThisGroupChanged()
+        {
+            var dispatcher = Persistance.Instance.Dispatcher;
+            dispatcher.ReportGroupsUpdated(new List<IGroup> { this });
         }
 
         internal FavoritesInGroup GetGroupReferences()
         {
-            Guid[] favoriteIds = ((IGroup)this).Favorites.Select(favorite => favorite.Id).ToArray();
+            Guid[] favoriteIds = this.favorites.Keys.ToArray();
             return new FavoritesInGroup
             {
                 GroupId = this.Id,
@@ -100,23 +131,26 @@ namespace Terminals.Data
             };
         }
 
-        internal void UpdateFavorites(List<IFavorite> newFavorites)
+        internal bool UpdateFavorites(List<IFavorite> newFavorites)
         {
-            List<IFavorite> current = ((IGroup)this).Favorites;
-            this.RemoveRedundantFavorites(current, newFavorites);
-            this.AddMissingFavorites(current, newFavorites);
+            List<IFavorite> current = this.favorites.Values.ToList();
+            bool someRemoved = this.RemoveRedundantFavorites(current, newFavorites);
+            bool someAdded = this.AddMissingFavorites(current, newFavorites);
+            return someAdded || someRemoved;
         }
 
-        private void AddMissingFavorites(List<IFavorite> current, List<IFavorite> newFavorites)
+        private bool AddMissingFavorites(List<IFavorite> current, List<IFavorite> newFavorites)
         {
             var favoritesToAdd = ListsHelper.GetMissingSourcesInTarget(newFavorites, current);
-            ((IGroup)this).AddFavorites(favoritesToAdd);
+            AddFavoritesToCache(favoritesToAdd);
+            return favoritesToAdd.Count > 0;
         }
 
-        private void RemoveRedundantFavorites(List<IFavorite> current, List<IFavorite> newFavorites)
+        private bool RemoveRedundantFavorites(List<IFavorite> current, List<IFavorite> newFavorites)
         {
             var favoritesToRemove = ListsHelper.GetMissingSourcesInTarget(current, newFavorites);
-            ((IGroup)this).RemoveFavorites(favoritesToRemove);
+            RemoveFavoritesFromCache(favoritesToRemove);
+            return favoritesToRemove.Count > 0;
         }
 
         public override bool Equals(object group)
@@ -131,6 +165,16 @@ namespace Terminals.Data
         public override int GetHashCode()
         {
             return this.Id.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            string parent = "Root";
+            if (this.Parent != Guid.Empty)
+                parent = this.Parent.ToString();
+
+            return String.Format("Group:Name={0},Id={1},Parent={2},Favorites={3}",
+                this.name, this.Id, parent, this.favorites.Count);
         }
     }
 }

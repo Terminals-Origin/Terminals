@@ -172,6 +172,7 @@ namespace Terminals.Forms.Controls
                 return;
 
             this.RemoveUnusedGroupNodes(args.Removed);
+            this.UpdateGroups(args.Updated);
             this.AddMissingGroupNodes(args.Added);
         }
 
@@ -205,16 +206,38 @@ namespace Terminals.Forms.Controls
             return -1;
         }
 
+        private void UpdateGroups(List<IGroup> updatedGroups)
+        {
+            List<GroupTreeNode> affectedNodes = GetAffectedNodes(updatedGroups);
+            foreach (var groupNode in affectedNodes)
+            {
+                groupNode.Text = groupNode.Group.Name;
+                UpdateGroupNodeChilds(groupNode);
+            }
+        }
+
+        private static void UpdateGroupNodeChilds(GroupTreeNode groupNode)
+        {
+            if (groupNode.IsExpanded)
+            {
+                ReLoadFavoriteNodes(groupNode);
+            }
+        }
+
         private void RemoveUnusedGroupNodes(List<IGroup> removedGroups)
         {
-            var affectedNodes = this.treeList.Nodes.Cast<GroupTreeNode>()
-                .Where(candidate => removedGroups.Contains(candidate.Group))
-                .ToList();
-
+            List<GroupTreeNode> affectedNodes = GetAffectedNodes(removedGroups);
             foreach (GroupTreeNode groupNode in affectedNodes)
             {
                 this.treeList.Nodes.Remove(groupNode);
             }
+        }
+
+        private List<GroupTreeNode> GetAffectedNodes(List<IGroup> requiredGroups)
+        {
+            return this.treeList.Nodes.Cast<GroupTreeNode>()
+                .Where(candidate => requiredGroups.Contains(candidate.Group))
+                .ToList();
         }
 
         /// <summary>
@@ -232,21 +255,21 @@ namespace Terminals.Forms.Controls
             return groupNode;
         }
 
-        private static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode GroupNode)
+        private static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode groupNode)
         {
             if (index < 0)
-                nodes.Add(GroupNode);
+                nodes.Add(groupNode);
             else
-                nodes.Insert(index, GroupNode);
+                nodes.Insert(index, groupNode);
         }
 
         internal void LoadGroups()
         {
-            IGroup untagedVirtualGroup = CreateUntagedVirtualGroup();
-            this.unTaggedNode = this.CreateAndAddGroupNode(untagedVirtualGroup);
-
             if (PersistedGroups == null) // because of designer
                 return;
+
+            IGroup untagedVirtualGroup = CreateUntagedVirtualGroup();
+            this.unTaggedNode = this.CreateAndAddGroupNode(untagedVirtualGroup);
 
             foreach (IGroup group in PersistedGroups)
             {
@@ -256,21 +279,26 @@ namespace Terminals.Forms.Controls
 
         internal static IGroup CreateUntagedVirtualGroup()
         {
-            var unttagedVirtualGroup = Persistance.Instance.Factory.CreateGroup(Settings.UNTAGGED_NODENAME);
             var untagedFavorites = Persistance.Instance.Favorites
                 .Where(candidate => candidate.Groups.Count == 0)
                 .ToList();
-            unttagedVirtualGroup.AddFavorites(untagedFavorites);
-            return unttagedVirtualGroup;
+
+            var factory = Persistance.Instance.Factory;
+            return factory.CreateGroup(Settings.UNTAGGED_NODENAME, untagedFavorites);
         }
 
         internal void LoadFavorites(GroupTreeNode groupNode)
         {
             if (groupNode.NotLoadedYet)
             {
-                groupNode.Nodes.Clear();
-                AddFavoriteNodes(groupNode);
+                ReLoadFavoriteNodes(groupNode);
             }
+        }
+
+        private static void ReLoadFavoriteNodes(GroupTreeNode groupNode) 
+        {
+            groupNode.Nodes.Clear();
+            AddFavoriteNodes(groupNode);
         }
 
         private static void AddFavoriteNodes(GroupTreeNode groupNode)
