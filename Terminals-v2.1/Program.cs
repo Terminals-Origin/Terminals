@@ -142,7 +142,8 @@ namespace Terminals
             var commandline = new CommandLineArgs();
             String[] cmdLineArgs = Environment.GetCommandLineArgs();
             Parser.ParseArguments(cmdLineArgs, commandline);
-            Settings.FileLocations.AssignCustomFileLocations(commandline.config, string.Empty, string.Empty);
+            Settings.FileLocations.AssignCustomFileLocations(commandline.configFile,
+                commandline.favoritesFile, commandline.credentialsFile);
             return commandline;
         }
     }

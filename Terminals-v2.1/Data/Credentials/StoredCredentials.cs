@@ -25,7 +25,7 @@ namespace Terminals.Data
         internal StoredCredentials()
         {
             this.cache = new List<ICredentialSet>();
-            string configFileName = GetEnsuredCredentialsFileLocation();
+            string configFileName = Settings.FileLocations.Credentials;
             InitializeFileWatch();
 
             if (File.Exists(configFileName))
@@ -43,7 +43,7 @@ namespace Terminals.Data
 
         private void CredentialsFileChanged(object sender, EventArgs e)
         {
-            LoadStoredCredentials(GetEnsuredCredentialsFileLocation());
+            LoadStoredCredentials(Settings.FileLocations.Credentials);
             if (CredentialsChanged != null)
                 CredentialsChanged(this, new EventArgs());
         }
@@ -83,18 +83,6 @@ namespace Terminals.Data
                 fileLock.ReleaseMutex();
                 Debug.WriteLine("Credentials file Loaded.");
             }
-        }
-
-        private static string GetEnsuredCredentialsFileLocation()
-        {
-            // TODO REFACTORING not configurable location of credentials file (Jiri Pokorny, 08.07.2011)
-            string fileLocation = Settings.SavedCredentialsLocation;
-            if (string.IsNullOrEmpty(fileLocation))
-            {
-                Settings.SavedCredentialsLocation = Settings.FileLocations.Credentials;
-            }
-
-            return fileLocation;
         }
 
         #region ICredentials
@@ -155,7 +143,7 @@ namespace Terminals.Data
             {
                 this.fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
-                string fileName = GetEnsuredCredentialsFileLocation();
+                string fileName = Settings.FileLocations.Credentials;
                 List<CredentialSet> fileContent = this.cache.Cast<CredentialSet>().ToList();
                 Serialize.SerializeXMLToDisk(fileContent, fileName);
                 Debug.WriteLine("Credentials file saved.");
@@ -163,7 +151,7 @@ namespace Terminals.Data
             catch (Exception exception)
             {
                 string errorMessage = string.Format("Save credentials to {0} failed.",
-                    GetEnsuredCredentialsFileLocation());
+                    Settings.FileLocations.Credentials);
                 Logging.Log.Error(errorMessage, exception);
             }
             finally
