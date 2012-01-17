@@ -901,6 +901,20 @@ namespace Terminals.Configuration
             }
         }
 
+        public static string SavedFavoritesFileLocation
+        {
+            get
+            {
+                return GetSection().SavedFavoritesFileLocation;
+            }
+
+            set
+            {
+                GetSection().SavedFavoritesFileLocation = value;
+                SaveImmediatelyIfRequested();
+            }
+        }
+
         #endregion
 
         #region MRU lists

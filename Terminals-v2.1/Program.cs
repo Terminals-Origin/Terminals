@@ -54,7 +54,7 @@ namespace Terminals
             try 
             {
                 LogNonAdministrator();
-                string testFile = FileLocations.GetFullPath("WriteAccessCheck.txt");
+                string testFile = FileLocations.WriteAccessLock;
                 
                 // Test to make sure that the current user has write access to the current directory.
                 using (StreamWriter sw = File.AppendText(testFile)) { }
@@ -142,8 +142,7 @@ namespace Terminals
             var commandline = new CommandLineArgs();
             String[] cmdLineArgs = Environment.GetCommandLineArgs();
             Parser.ParseArguments(cmdLineArgs, commandline);
-            if (!string.IsNullOrEmpty(commandline.config))
-                Settings.ConfigurationFileLocation = commandline.config;
+            Settings.FileLocations.AssignCustomFileLocations(commandline.config, string.Empty, string.Empty);
             return commandline;
         }
     }

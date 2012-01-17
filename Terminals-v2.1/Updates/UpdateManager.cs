@@ -56,7 +56,7 @@ namespace Terminals.Updates
         private static void CheckForCodeplexRelease()
         {
             Boolean checkForUpdate = true;
-            String releaseFile = FileLocations.GetFullPath("LastUpdateCheck.txt");
+            String releaseFile = FileLocations.LastUpdateCheck;
             if (File.Exists(releaseFile))
             {
                 String text = File.ReadAllText(releaseFile).Trim();
@@ -165,7 +165,7 @@ namespace Terminals.Updates
 
                                                 finalFolder = parent.FullName;
 
-                                                File.Copy(Settings.CONFIG_FILE_NAME, Path.Combine(finalFolder, Settings.CONFIG_FILE_NAME), true);
+                                                File.Copy(FileLocations.CONFIG_FILENAME, Path.Combine(finalFolder, FileLocations.CONFIG_FILENAME), true);
                                                 File.Copy("Terminals.log4net.config", Path.Combine(finalFolder, "Terminals.log4net.config"), true);
 
                                                 String temp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

@@ -57,7 +57,6 @@ namespace Terminals.Data
 
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistance");
         private DataFileWatcher fileWatcher;
-        private const string FILENAME = "Favorites.xml";
         private bool delaySave = false;
 
         internal FilePersistance()
@@ -72,7 +71,7 @@ namespace Terminals.Data
 
         private void InitializeFileWatch()
         {
-            fileWatcher = new DataFileWatcher(GetDataFileLocation());
+            fileWatcher = new DataFileWatcher(Settings.FileLocations.Favorites);
             fileWatcher.FileChanged += new EventHandler(FavoritesFileChanged);
             fileWatcher.StartObservation();
         }
@@ -146,7 +145,7 @@ namespace Terminals.Data
 
         private static FavoritesFile LoadFileContent()
         {
-            string fileLocation = GetDataFileLocation();
+            string fileLocation = Settings.FileLocations.Favorites;
             object fileContent = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile));
             var file = fileContent as FavoritesFile;
             if (file == null)
@@ -187,11 +186,6 @@ namespace Terminals.Data
                 .ToList();
         }
 
-        private static string GetDataFileLocation()
-        {
-            return FileLocations.GetFullPath(FILENAME);
-        }
-
         private void Save()
         {
             try
@@ -199,7 +193,7 @@ namespace Terminals.Data
                 fileLock.WaitOne();
                 fileWatcher.StopObservation();
                 FavoritesFile persistanceFile = CreatePersistanceFileFromCache();
-                string fileLocation = GetDataFileLocation();
+                string fileLocation = Settings.FileLocations.Favorites;
                 Serialize.SerializeXMLToDisk(persistanceFile, fileLocation);
             }
             catch (Exception exception)

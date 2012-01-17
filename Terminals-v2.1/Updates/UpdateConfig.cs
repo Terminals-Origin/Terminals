@@ -47,16 +47,16 @@ namespace Terminals.Updates
             // are already in use, they will be reloaded
             MoveThumbsDirectory();
             // dont move the logs directory, because it is in use by Log4net library.
-            MoveDataFile(ConnectionHistory.FILE_NAME);
-            MoveDataFile(ToolStripSettings.FLE_NAME);
-            MoveDataFile(StoredCredentials.FILE_NAME);
+            MoveDataFile(FileLocations.HISTORY_FILENAME);
+            MoveDataFile(FileLocations.TOOLSTRIPS_FILENAME);
+            MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
             UpgradeConfigFile();
         }
 
         private static void UpgradeConfigFile() 
         {
             // only this is already in use if started with default location
-            MoveDataFile(Settings.CONFIG_FILE_NAME);
+            MoveDataFile(FileLocations.CONFIG_FILENAME);
             Settings.ForceReload();
             Settings.StartDelayedUpdate();
             Persistance.Instance.StartDelayedUpdate();
@@ -138,8 +138,8 @@ namespace Terminals.Updates
 
         private static void TryToMoveThumbsDirectory()
         {
-            string oldPath = GetOldDataFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
-            string newPath = FileLocations.GetFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
+            string oldPath = GetOldDataFullPath(FileLocations.THUMBS_DIRECTORY);
+            string newPath = FileLocations.ThumbsDirectoryFullPath;
 
             if (Directory.Exists(oldPath))
             {

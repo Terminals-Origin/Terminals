@@ -14,19 +14,6 @@ namespace Terminals.Data
 {
     internal sealed class StoredCredentials: ICredentials
     {
-        /// <summary>
-        /// Gets default name of the credentials file.
-        /// </summary>
-        internal const string FILE_NAME = "Credentials.xml";
-
-        private static string FullFileName
-        {
-            get
-            {
-                return FileLocations.GetFullPath(FILE_NAME);
-            }
-        }
-
         private List<ICredentialSet> cache;
 
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Credentials");
@@ -49,7 +36,7 @@ namespace Terminals.Data
 
         private void InitializeFileWatch()
         {
-            fileWatcher = new DataFileWatcher(FullFileName);
+            fileWatcher = new DataFileWatcher(Settings.FileLocations.Credentials);
             fileWatcher.FileChanged += new EventHandler(CredentialsFileChanged);
             fileWatcher.StartObservation();
         }
@@ -104,7 +91,7 @@ namespace Terminals.Data
             string fileLocation = Settings.SavedCredentialsLocation;
             if (string.IsNullOrEmpty(fileLocation))
             {
-                Settings.SavedCredentialsLocation = FullFileName;
+                Settings.SavedCredentialsLocation = Settings.FileLocations.Credentials;
             }
 
             return fileLocation;

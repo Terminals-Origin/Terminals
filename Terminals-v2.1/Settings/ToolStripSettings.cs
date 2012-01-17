@@ -10,19 +10,9 @@ namespace Terminals
     /// </summary>
     public class ToolStripSettings : SerializableSortedDictionary<int, ToolStripSetting>
     {
-        /// <summary>
-        /// Gets the file name of xml config file, where toolbar positions are stored
-        /// </summary>
-        internal const string FLE_NAME = "ToolStrip.settings.config";
-
-        private static string GetFullFileName()
-        {
-            return FileLocations.GetFullPath(FLE_NAME);
-        }
-
         internal static ToolStripSettings Load()
         {
-            string fullFileName = GetFullFileName();
+            string fullFileName = FileLocations.ToolStripsFullFileName;
             if (File.Exists(fullFileName))
             {
                 String xmlContent = File.ReadAllText(fullFileName);
@@ -33,8 +23,7 @@ namespace Terminals
 
         internal void Save()
         {
-            string fullFileName = GetFullFileName();
-            File.WriteAllText(fullFileName, this.ToXmlString());
+            File.WriteAllText(FileLocations.ToolStripsFullFileName, this.ToXmlString());
         }
 
         private static ToolStripSettings LoadFromXmlString(String xmlContent)

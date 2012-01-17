@@ -14,15 +14,6 @@ namespace Terminals.History
 
     internal sealed class ConnectionHistory : IConnectionHistory
     {
-        /// <summary>
-        /// Gets the file name of stored history values
-        /// </summary>
-        internal const string FILE_NAME = "History.xml";
-        private static string FullFileName
-        {
-            get { return FileLocations.GetFullPath(FILE_NAME); }
-        }
-
         private ManualResetEvent loadingGate = new ManualResetEvent(false);
         private DataFileWatcher fileWatcher;
         private HistoryByFavorite currentHistory = null;
@@ -35,7 +26,7 @@ namespace Terminals.History
 
         internal ConnectionHistory()
         {
-            fileWatcher = new DataFileWatcher(FullFileName);
+            fileWatcher = new DataFileWatcher(FileLocations.HistoryFullFileName);
             fileWatcher.FileChanged += new EventHandler(this.OnFileChanged);
             fileWatcher.StartObservation();
             ThreadPool.QueueUserWorkItem(new WaitCallback(LoadHistory));
@@ -128,7 +119,7 @@ namespace Terminals.History
 
         private void TryLoadFile()
         {
-            string fileName = FullFileName;
+            string fileName = FileLocations.HistoryFullFileName;
             if (!string.IsNullOrEmpty(fileName))
             {
                 Logging.Log.InfoFormat("Loading History from: {0}", fileName);
@@ -145,7 +136,7 @@ namespace Terminals.History
             try
             {
                 fileLock.WaitOne();
-                this.currentHistory = Serialize.DeserializeXMLFromDisk(FullFileName, typeof(HistoryByFavorite)) as HistoryByFavorite;
+                this.currentHistory = Serialize.DeserializeXMLFromDisk(FileLocations.HistoryFullFileName, typeof(HistoryByFavorite)) as HistoryByFavorite;
             }
             finally 
             {
@@ -160,7 +151,7 @@ namespace Terminals.History
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
-                Serialize.SerializeXMLToDisk(this.currentHistory, FullFileName);
+                Serialize.SerializeXMLToDisk(this.currentHistory, FileLocations.HistoryFullFileName);
                 Logging.Log.Info(string.Format("History saved. Duration:{0} ms", stopwatch.ElapsedMilliseconds));
             }
             catch (Exception exc)

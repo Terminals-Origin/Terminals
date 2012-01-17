@@ -168,8 +168,8 @@ namespace Terminals.Forms
             try
             {
                 PutObjectRequest request = new PutObjectRequest();
-                request.WithBucketName(this.BucketName).WithKey(Settings.CONFIG_FILE_NAME)
-                    .WithFilePath(Settings.ConfigurationFileLocation);
+                request.WithBucketName(this.BucketName).WithKey(FileLocations.CONFIG_FILENAME)
+                    .WithFilePath(Settings.FileLocations.Configuration);
 
                 client.PutObject(request);
 
@@ -189,11 +189,11 @@ namespace Terminals.Forms
             {
                 GetObjectRequest request = new GetObjectRequest()
                     .WithBucketName(this.BucketName)
-                    .WithKey(Settings.CONFIG_FILE_NAME);
+                    .WithKey(FileLocations.CONFIG_FILENAME);
 
                 using (GetObjectResponse response = client.GetObject(request))
                 {
-                    response.WriteResponseStreamToFile(Settings.ConfigurationFileLocation);
+                    response.WriteResponseStreamToFile(Settings.FileLocations.Configuration);
                     Settings.ForceReload();
                 }
 

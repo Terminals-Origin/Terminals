@@ -978,5 +978,18 @@ namespace Terminals
                 this["savedCredentials"] = value;
             }
         }
+
+        [ConfigurationProperty("favoritesFile", DefaultValue = "")]
+        public string SavedFavoritesFileLocation
+        {
+            get
+            {
+                return (string)this["favoritesFile"];
+            }
+            set
+            {
+                this["favoritesFile"] = value;
+            }
+        }
     }
 }
