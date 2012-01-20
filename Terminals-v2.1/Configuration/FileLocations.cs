@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Terminals.Configuration
 {
@@ -7,16 +10,16 @@ namespace Terminals.Configuration
     /// </summary>
     internal sealed class FileLocations
     {
+        private static readonly string PROFILE_DATA_DIRECTORY = 
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+        private const string PROFILE_PATH = @"Robert_Chartier\Terminals\";
+
         /// <summary>
         /// Gets the directory name of data directory,
         /// where all files changed by user should be stored
         /// </summary>
         private const string DATA_DIRECTORY = "Data";
-
-        /// <summary>
-        /// Gets the name of the directory, where log files are stored
-        /// </summary>
-        private const string LOG_DIRECTORY = "Logs";
 
         /// <summary>
         /// Gets directory name of the commands thumb images location
@@ -65,7 +68,21 @@ namespace Terminals.Configuration
 
         internal static string LogDirectory
         {
-            get { return GetFullPath(LOG_DIRECTORY); }
+            get
+            {
+                // dont take if from other paths, because it can be changed by some one else.
+                string log4NetFilePath = "Terminals.log4net.config";
+                XDocument configFile = XDocument.Load(log4NetFilePath);
+                XAttribute fileAttribute = SelectFileElement(configFile);
+                return Path.GetDirectoryName(fileAttribute.Value);
+            }
+        }
+
+        private static XAttribute SelectFileElement(XDocument configFile)
+        {
+          return configFile.Descendants("file")
+              .Attributes("value")
+              .FirstOrDefault();
         }
 
         internal static string ThumbsDirectoryFullPath
@@ -154,8 +171,18 @@ namespace Terminals.Configuration
         private static string GetDataRootDirectoryFullPath()
         {
             string root = Path.Combine(Program.Info.Location, DATA_DIRECTORY);
+            bool localInstallation = !Properties.Settings.Default.Portable;
+            if (localInstallation)
+                root = GetProfileDataDirectoryPath();
+
             EnsureDataDirectory(root);
             return root;
+        }
+
+        private static string GetProfileDataDirectoryPath()
+        {
+            string relativeDataPath = PROFILE_PATH + DATA_DIRECTORY;
+            return Path.Combine(PROFILE_DATA_DIRECTORY, relativeDataPath);
         }
 
         private static void EnsureDataDirectory(string root)
