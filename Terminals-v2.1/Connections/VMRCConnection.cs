@@ -29,9 +29,9 @@ namespace Terminals.Connections
 
                 vmrc.ServerAddress = Favorite.ServerName;
                 vmrc.ServerPort = Favorite.Port;
-                SecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+                ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
                 vmrc.UserName = security.UserName;
-                vmrc.UserDomain = security.DomainName;
+                vmrc.UserDomain = security.Domain;
                 vmrc.UserPassword = security.Password;
 
                 var options = this.Favorite.ProtocolProperties as VMRCOptions;

@@ -71,8 +71,8 @@ namespace Terminals.Data
             set { serverName = value; }
         }
 
-        private SecurityOptions security = new SecurityOptions();
-        public SecurityOptions Security
+        private ISecurityOptions security = new SecurityOptions();
+        ISecurityOptions IFavorite.Security
         {
             get { return this.security; }
             set { this.security = value; }
@@ -192,7 +192,7 @@ namespace Terminals.Data
             if (toEncode == null)
                 return null;
 
-            Byte[] toEncodeAsBytes = ASCIIEncoding.ASCII.GetBytes(toEncode);
+            Byte[] toEncodeAsBytes = Encoding.ASCII.GetBytes(toEncode);
             String returnValue = Convert.ToBase64String(toEncodeAsBytes);
             return returnValue;
         }
@@ -209,7 +209,7 @@ namespace Terminals.Data
 
         public override String ToString()
         {
-            string domain = this.Security.DomainName;
+            string domain = this.security.Domain;
             if (!String.IsNullOrEmpty(domain))
                 domain += "\\";
 
@@ -219,7 +219,7 @@ namespace Terminals.Data
 
         public String GetToolTipText()
         {
-            string userDisplayName = HelperFunctions.UserDisplayName(this.Security.DomainName, this.Security.UserName);
+            string userDisplayName = HelperFunctions.UserDisplayName(this.security.Domain, this.security.UserName);
             String toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
                 Environment.NewLine, this.ServerName, this.Port, userDisplayName);
 
@@ -251,7 +251,7 @@ namespace Terminals.Data
             copy.Notes = this.Notes;
             copy.Port = this.Port;
             copy.Protocol = this.Protocol;
-            copy.Security = this.Security.Copy();
+            copy.security = this.security.Copy();
             copy.ServerName = this.ServerName;
             copy.ToolBarIcon = this.ToolBarIcon;
 
@@ -278,6 +278,17 @@ namespace Terminals.Data
                     return this.Name.CompareTo(target.Name);
                 default:
                     return -1;
+            }
+        }
+
+        void IFavorite.UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
+        {
+            this.security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+            RdpOptions rdpOptions = this.ProtocolProperties as RdpOptions;
+            if (rdpOptions != null)
+            {
+                SecurityOptions tsGatewaySecurity = rdpOptions.TsGateway.Security;
+                tsGatewaySecurity.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
         }
 

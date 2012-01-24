@@ -41,14 +41,14 @@ namespace Terminals.Connections
                 ras.ConnectionChanged += new ConnectionChangedEventHandler(ras_ConnectionChanged);
                 ras.EntryName = Favorite.ServerName;
 
-                SecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+                ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
                 RasError error;
                 if (!string.IsNullOrEmpty(security.UserName) && !string.IsNullOrEmpty(security.Password))
                 {
                     Log("Using Terminals Credentials, Dialing...");
                     ras.UserName = security.UserName;
                     ras.Password = security.Password;
-                    ras.Domain = security.DomainName;
+                    ras.Domain = security.Domain;
                     error = ras.Dial();
                 }
                 else

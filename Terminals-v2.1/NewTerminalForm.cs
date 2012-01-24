@@ -203,7 +203,7 @@ namespace Terminals
 
         private void FillSecurityControls(IFavorite favorite)
         {
-            this.cmbDomains.Text = favorite.Security.DomainName;
+            this.cmbDomains.Text = favorite.Security.Domain;
             this.cmbUsers.Text = favorite.Security.UserName;
             this.favoritePassword = favorite.Security.Password;
 
@@ -391,7 +391,7 @@ namespace Terminals
             }
 
             this.txtTSGWServer.Text = tsGateway.HostName;
-            this.txtTSGWDomain.Text = tsGateway.Security.DomainName;
+            this.txtTSGWDomain.Text = tsGateway.Security.Domain;
             this.txtTSGWUserName.Text = tsGateway.Security.UserName;
             this.txtTSGWPassword.Text = tsGateway.Security.Password;
             this.chkTSGWlogin.Checked = tsGateway.SeparateLogin;
@@ -606,7 +606,7 @@ namespace Terminals
         {
             TsGwOptions tsgwOptions = rdpOptions.TsGateway;
             tsgwOptions.HostName = this.txtTSGWServer.Text;
-            tsgwOptions.Security.DomainName = this.txtTSGWDomain.Text;
+            tsgwOptions.Security.Domain = this.txtTSGWDomain.Text;
             tsgwOptions.Security.UserName = this.txtTSGWUserName.Text;
             tsgwOptions.Security.Password = this.txtTSGWPassword.Text;
             tsgwOptions.SeparateLogin = this.chkTSGWlogin.Checked;
@@ -669,7 +669,7 @@ namespace Terminals
             ICredentialSet selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
             this.Favorite.Security.Credential = selectedCredential == null ? Guid.Empty : selectedCredential.Id;
 
-            this.Favorite.Security.DomainName = this.cmbDomains.Text;
+            this.Favorite.Security.Domain = this.cmbDomains.Text;
             this.Favorite.Security.UserName = this.cmbUsers.Text;
             if (this.chkSavePassword.Checked)
             {
@@ -710,7 +710,7 @@ namespace Terminals
             this.Favorite.Name = String.Empty;
             this.Favorite.ServerName = String.Empty;
             this.Favorite.Notes = String.Empty;
-            this.Favorite.Security.DomainName = String.Empty;
+            this.Favorite.Security.Domain = String.Empty;
             this.Favorite.Security.UserName = String.Empty;
             this.Favorite.Security.Password = String.Empty;
 
@@ -1285,8 +1285,8 @@ namespace Terminals
             {
                 this.CredentialsPanel.Enabled = false;
                 this.cmbDomains.Text = set.Domain;
-                this.cmbUsers.Text = set.Username;
-                this.txtPassword.Text = set.SecretKey;
+                this.cmbUsers.Text = set.UserName;
+                this.txtPassword.Text = set.Password;
                 this.chkSavePassword.Checked = true;
             }
         }

@@ -541,7 +541,7 @@ namespace Terminals
             if (Settings.ShowUserNameInTitle)
             {
                 var security = favorite.Security;
-                string title = HelperFunctions.UserDisplayName(security.DomainName, security.UserName);
+                string title = HelperFunctions.UserDisplayName(security.Domain, security.UserName);
                 terminalTabTitle += String.Format(" ({0})", title);
             }
 

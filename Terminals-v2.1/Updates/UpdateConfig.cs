@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms.Controls;
-using Terminals.History;
-using Terminals.Wizard;
 
 namespace Terminals.Updates
 {
@@ -49,8 +48,21 @@ namespace Terminals.Updates
             // dont move the logs directory, because it is in use by Log4net library.
             MoveDataFile(FileLocations.HISTORY_FILENAME);
             MoveDataFile(FileLocations.TOOLSTRIPS_FILENAME);
-            MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
+            UpgradeCredentialsFile();
             UpgradeConfigFile();
+        }
+
+        private static void UpgradeCredentialsFile()
+        {
+            MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
+            string credentialsFile = Settings.FileLocations.Credentials;
+            string credentialsXml = File.ReadAllText(credentialsFile);
+            StringBuilder credentialsText = new StringBuilder(credentialsXml);
+            credentialsText.Replace("<Password>", "<EncryptedPassword>");
+            credentialsText.Replace("</Password>", "</EncryptedPassword>");
+            credentialsText.Replace("<Username>", "<UserName>");
+            credentialsText.Replace("</Username>", "</UserName>");
+            File.WriteAllText(credentialsFile, credentialsText.ToString());
         }
 
         private static void UpgradeConfigFile() 

@@ -32,6 +32,7 @@
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -46,7 +47,6 @@
     <ApplicationVersion>1.8.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -142,6 +142,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Design" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
@@ -192,10 +193,13 @@
     <Compile Include="CaptureManager\ImageFormatHandler.cs" />
     <Compile Include="CaptureManager\ImageFormatTypes.cs" />
     <Compile Include="Configuration\FileLocations.cs" />
+    <Compile Include="Data\Credentials\CredentialBase.cs" />
     <Compile Include="Data\Favorites\EmptyOptions.cs" />
+    <Compile Include="Data\Interfaces\ISecurityOptions.cs" />
     <Compile Include="Data\Favorites\ProtocolOptions.cs" />
     <Compile Include="Data\Favorites\WebOptions.cs" />
     <Compile Include="Data\Interfaces\IConnectionHistory.cs" />
+    <Compile Include="Data\Interfaces\ICredentialBase.cs" />
     <Compile Include="Data\Interfaces\IHistoryItem.cs" />
     <Compile Include="Data\Interfaces\ICredentials.cs" />
     <Compile Include="Data\Interfaces\ICredentialSet.cs" />
@@ -231,6 +235,11 @@
     <Compile Include="Data\FilePersisted\Groups.cs" />
     <Compile Include="Data\FilePersisted\Favorites.cs" />
     <Compile Include="Forms\Controls\GroupListViewItem.cs" />
+    <Compile Include="Data\DB\SQLPersistance.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SQLPersistance.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Network\HelperFunctions.cs" />
     <Compile Include="Network\Services\CommandLineServer.cs" />
     <Compile Include="Network\Services\CommandLineService.cs" />
@@ -362,7 +371,9 @@
     <Compile Include="Data\DataDispatcher.cs" />
     <Compile Include="Data\FavoritesChangedEventArgs.cs" />
     <Compile Include="Forms\Controls\FavoriteIcons.cs" />
-    <Compile Include="Forms\Controls\FavoritesMenuLoader.cs" />
+    <Compile Include="Forms\Controls\FavoritesMenuLoader.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Data\ListsHelper.cs" />
     <Compile Include="Data\GroupsChangedArgs.cs" />
     <Compile Include="DiskDrivesForm.cs">
@@ -999,8 +1010,16 @@
     <Compile Include="Wizard\SpecialCommandsWizard.cs" />
     <None Include="app.config" />
     <None Include="Migrated rules for Terminals.ruleset" />
+    <None Include="Data\DB\Terminals.mdf" />
+    <Content Include="Data\DB\Terminals_log.LDF">
+      <DependentUpon>Terminals.mdf</DependentUpon>
+    </Content>
     <Content Include="Resources\amber.png" />
     <Content Include="Resources\back.png" />
+    <EntityDeploy Include="Data\DB\SQLPersistance.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SQLPersistance.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="Properties\DataSources\FavoriteConfigurationElement.datasource" />
     <None Include="Properties\DataSources\Terminals.Network.ActiveDirectoryComputer.datasource" />
     <None Include="Properties\DataSources\Terminals.Scanner.NetworkScanResult.datasource" />
@@ -1388,6 +1407,21 @@
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5 SP2</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Sql.Server.Express.10.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server 2008 Express</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>

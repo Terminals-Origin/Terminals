@@ -46,8 +46,8 @@ namespace Terminals.Data
 
         private static void ConvertSecurity(FavoriteConfigurationElement result, IFavorite sourceFavorite)
         {
-            SecurityOptions security = sourceFavorite.Security;
-            result.DomainName = security.DomainName;
+            ISecurityOptions security = sourceFavorite.Security;
+            result.DomainName = security.Domain;
             result.UserName = security.UserName;
             result.EncryptedPassword = security.EncryptedPassword;
             

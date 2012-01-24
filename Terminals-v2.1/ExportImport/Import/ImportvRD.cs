@@ -129,8 +129,8 @@ namespace Terminals.Integration.Import
         {
             target.Domain = source.Domain;
             target.Name = source.Name;
-            target.SecretKey = source.Password;
-            target.Username = source.UserName;
+            target.Password = source.Password;
+            target.UserName = source.UserName;
         }
 
         private List<FavoriteConfigurationElement> ConvertVRDConnectionCollectionToLocal(Connection[] connections, vRDConfigurationFileConnectionsFolder[] folders,

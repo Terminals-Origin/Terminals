@@ -17,8 +17,8 @@ namespace Terminals.Credentials
         {
             this.Credentials = Persistance.Instance.Factory.CreateCredentialSet();
             this.Credentials.Name = string.Empty;
-            this.Credentials.Username = userTextBox.Text;
-            this.Credentials.SecretKey = passwordTextBox.Text;
+            this.Credentials.UserName = userTextBox.Text;
+            this.Credentials.Password = passwordTextBox.Text;
             this.Credentials.Domain = domainTextBox.Text;
             Close();
         }

@@ -271,7 +271,7 @@ namespace Terminals.Connections
                     _axMsRdpClient.TransportSettings.GatewayUsageMethod = (uint)rdpOptions.TsGateway.UsageMethod;
                     _axMsRdpClient.TransportSettings.GatewayCredsSource = (uint)rdpOptions.TsGateway.CredentialSource;
                     _axMsRdpClient.TransportSettings.GatewayHostname = rdpOptions.TsGateway.HostName;
-                    _axMsRdpClient.TransportSettings2.GatewayDomain = rdpOptions.TsGateway.Security.DomainName;
+                    _axMsRdpClient.TransportSettings2.GatewayDomain = rdpOptions.TsGateway.Security.Domain;
                     _axMsRdpClient.TransportSettings2.GatewayProfileUsageMethod = 1;
                     if (rdpOptions.TsGateway.SeparateLogin)
                     {
@@ -291,10 +291,10 @@ namespace Terminals.Connections
 
                     _axMsRdpClient.SecuredSettings2.AudioRedirectionMode = (int)rdpOptions.Redirect.Sounds;
 
-                    SecurityOptions security = Favorite.Security.GetResolvedCredentials();
+                    ISecurityOptions security = Favorite.Security.GetResolvedCredentials();
 
                     _axMsRdpClient.UserName = security.UserName;
-                    _axMsRdpClient.Domain = security.DomainName;
+                    _axMsRdpClient.Domain = security.Domain;
                     try 
                     {
                         if(!String.IsNullOrEmpty(security.Password)) 

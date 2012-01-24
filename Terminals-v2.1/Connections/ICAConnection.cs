@@ -34,7 +34,7 @@ namespace Terminals.Connections
 
                 Controls.Add(iIcaClient);
 
-                SecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+                ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
                 icaPassword = security.Password;
 
                 //rd.SendSpecialKeys(VncSharp.SpecialKeys);            
@@ -82,7 +82,7 @@ namespace Terminals.Connections
 
 
 
-                iIcaClient.Domain = security.DomainName;
+                iIcaClient.Domain = security.Domain;
                 iIcaClient.Address = Favorite.ServerName;
                 iIcaClient.Username = security.UserName;
                 iIcaClient.SetProp("ClearPassword", security.Password);

@@ -150,8 +150,8 @@ namespace Terminals
 
                 if (MessageBox.Show(msg, Program.Resources.GetString("Confirmation"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    SecurityOptions security = fav.Security.GetResolvedCredentials();
-                    NetworkCredential credentials = new NetworkCredential(security.UserName, security.Password, security.DomainName);
+                    ISecurityOptions security = fav.Security.GetResolvedCredentials();
+                    NetworkCredential credentials = new NetworkCredential(security.UserName, security.Password, security.Domain);
 
                     try
                     {

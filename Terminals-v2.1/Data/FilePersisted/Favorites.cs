@@ -237,7 +237,7 @@ namespace Terminals.Data
 
         public void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential)
         {
-            foreach (Favorite favorite in selectedFavorites)
+            foreach (IFavorite favorite in selectedFavorites)
             {
                 favorite.Security.Credential = credential.Id;
                 this.dispatcher.ReportFavoriteUpdated(favorite);
@@ -248,7 +248,7 @@ namespace Terminals.Data
 
         public void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword)
         {
-            foreach (Favorite favorite in selectedFavorites)
+            foreach (IFavorite favorite in selectedFavorites)
             {
                 favorite.Security.Password = newPassword;
                 this.dispatcher.ReportFavoriteUpdated(favorite);
@@ -259,9 +259,9 @@ namespace Terminals.Data
 
         public void ApplyDomainNameToAllFavorites(List<IFavorite> selectedFavorites, string newDomainName)
         {
-            foreach (Favorite favorite in selectedFavorites)
+            foreach (IFavorite favorite in selectedFavorites)
             {
-                favorite.Security.DomainName = newDomainName;
+                favorite.Security.Domain = newDomainName;
                 this.dispatcher.ReportFavoriteUpdated(favorite);
             }
 
@@ -270,9 +270,9 @@ namespace Terminals.Data
 
         public void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName)
         {
-            foreach (Favorite favorite in selectedFavorites)
+            foreach (IFavorite favorite in selectedFavorites)
             {
-                favorite.Security.DomainName = newUserName;
+                favorite.Security.Domain = newUserName;
                 this.dispatcher.ReportFavoriteUpdated(favorite);
             }
 

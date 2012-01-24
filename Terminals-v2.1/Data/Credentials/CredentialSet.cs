@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Xml.Serialization;
-using Terminals.Security;
 
 namespace Terminals.Data
 {
@@ -8,7 +7,7 @@ namespace Terminals.Data
     /// Container of stored user authentication.
     /// </summary>
     [Serializable]
-    public class CredentialSet : ICredentialSet
+    public class CredentialSet : CredentialBase, ICredentialSet
     {
         private Guid id = Guid.NewGuid();
         [XmlAttribute("id")]
@@ -37,54 +36,9 @@ namespace Terminals.Data
             }
         }
 
-        private string userName;
-        public string Username
-        {
-            get { return userName; }
-            set
-            {
-                if (String.IsNullOrEmpty(value))
-                    return;
-
-                this.userName = value;
-            }
-        }
-
-        public string Domain { get; set; }
-        public string Password { get; set; }
-
-        /// <summary>
-        /// Gets or sets the password in not encrypted form.
-        /// </summary>
-        [XmlIgnore]
-        string ICredentialSet.SecretKey
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(this.Password))
-                    return PasswordFunctions.DecryptPassword(this.Password);
-
-                return String.Empty;
-            }
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                    this.Password = String.Empty;
-                else
-                    this.Password = PasswordFunctions.EncryptPassword(value);
-            }
-        }
-
-        void ICredentialSet.UpdatePasswordByNewKeyMaterial(string newKeymaterial)
-        {
-            string secret = ((ICredentialSet)this).SecretKey;
-            if (!string.IsNullOrEmpty(secret))
-                this.Password = PasswordFunctions.EncryptPassword(secret, newKeymaterial); 
-        }
-
         public override string ToString()
         {
-            return String.Format(@"{0}:{1}\{2}", Name, Domain, Username);
+            return String.Format(@"{0}:{1}\{2}", Name, Domain, this.UserName);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Terminals.Connections
             {
                 this.Dock = DockStyle.Fill;
                 this.browser.Home = WebOptions.ExtractAbsoluteUrl(this.Favorite);
-                SecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+                ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
 
                 if (!String.IsNullOrEmpty(security.UserName) && !String.IsNullOrEmpty(security.Password))
                 {

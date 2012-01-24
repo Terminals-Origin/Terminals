@@ -41,8 +41,8 @@ namespace Terminals.Data
 
         private static void ConvertSecurity(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
-            SecurityOptions security = result.Security;
-            security.DomainName = sourceFavorite.DomainName;
+            ISecurityOptions security = result.Security;
+            security.Domain = sourceFavorite.DomainName;
             security.UserName = sourceFavorite.UserName;
             security.EncryptedPassword = sourceFavorite.EncryptedPassword;
             ICredentialSet credential = Persistance.Instance.Credentials[sourceFavorite.Credential];

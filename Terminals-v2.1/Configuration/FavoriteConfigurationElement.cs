@@ -920,7 +920,7 @@ namespace Terminals
                 {
                     ICredentialSet cred = Persistance.Instance.Credentials[Credential];
                     if (cred != null)
-                        return cred.Username;
+                        return cred.UserName;
                 }
 
                 return (String)this["userName"];
@@ -953,7 +953,7 @@ namespace Terminals
             {
                 ICredentialSet cred = Persistance.Instance.Credentials[Credential];
                 if (cred != null)
-                    return cred.SecretKey;
+                    return cred.Password;
 
                 return PasswordFunctions.DecryptPassword(EncryptedPassword);
             }

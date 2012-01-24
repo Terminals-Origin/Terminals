@@ -249,7 +249,7 @@ namespace Terminals.Configuration
 
         private static void UpdateFavoritePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            foreach (FavoriteConfigurationElement favorite in GetFavorites())
+            foreach (IFavorite favorite in Persistance.Instance.Favorites)
             {
                 favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
             }

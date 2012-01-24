@@ -63,7 +63,7 @@ namespace Terminals.Data
         string GroupNames { get; }
 
         DisplayOptions Display { get; set; }
-        SecurityOptions Security { get; set; }
+        ISecurityOptions Security { get; set; }
         BeforeConnectExecuteOptions ExecuteBeforeConnect { get; set; }
 
         /// <summary>
@@ -91,5 +91,7 @@ namespace Terminals.Data
         /// <param name="target">not null favorite to compare with</param>
         /// <returns>result of String CompareTo method</returns>
         int CompareByDefaultSorting(IFavorite target);
+
+        void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial);
     }
 }
