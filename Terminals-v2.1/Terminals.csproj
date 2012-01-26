@@ -195,6 +195,8 @@
     <Compile Include="Configuration\FileLocations.cs" />
     <Compile Include="Data\Credentials\CredentialBase.cs" />
     <Compile Include="Data\Favorites\EmptyOptions.cs" />
+    <Compile Include="Data\Interfaces\IBeforeConnectExecuteOptions.cs" />
+    <Compile Include="Data\Interfaces\IDisplayOptions.cs" />
     <Compile Include="Data\Interfaces\ISecurityOptions.cs" />
     <Compile Include="Data\Favorites\ProtocolOptions.cs" />
     <Compile Include="Data\Favorites\WebOptions.cs" />

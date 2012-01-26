@@ -72,10 +72,19 @@ namespace Terminals.Data
         }
 
         private ISecurityOptions security = new SecurityOptions();
+        /// <summary>
+        /// Gets or sets the user credits. Only for serialization puroposes.
+        /// General access is done by interface property
+        /// </summary>
+        public SecurityOptions Security
+        {
+            get { return this.security as SecurityOptions; }
+            set { this.security = value; }
+        }
+
         ISecurityOptions IFavorite.Security
         {
             get { return this.security; }
-            set { this.security = value; }
         }
 
         private string toolBarIcon;
@@ -88,18 +97,34 @@ namespace Terminals.Data
         public Boolean NewWindow { get; set; }
         public String DesktopShare { get; set; }
 
-        private BeforeConnectExecuteOptions executeBeforeConnect = new BeforeConnectExecuteOptions();
+        private IBeforeConnectExecuteOptions executeBeforeConnect = new BeforeConnectExecuteOptions();
+        /// <summary>
+        /// Only for serialization
+        /// </summary>
         public BeforeConnectExecuteOptions ExecuteBeforeConnect
         {
-            get { return this.executeBeforeConnect; }
+            get { return this.executeBeforeConnect as BeforeConnectExecuteOptions; }
             set { this.executeBeforeConnect = value; }
         }
 
-        private DisplayOptions display = new DisplayOptions();
+        IBeforeConnectExecuteOptions IFavorite.ExecuteBeforeConnect
+        {
+            get { return this.executeBeforeConnect; }
+        }
+
+        private IDisplayOptions display = new DisplayOptions();
+        /// <summary>
+        /// Only for serialization.
+        /// </summary>
         public DisplayOptions Display
         {
-            get { return this.display; }
+            get { return this.display as DisplayOptions; }
             set { this.display = value; }
+        }
+
+        IDisplayOptions IFavorite.Display
+        {
+            get { return this.display; }
         }
 
         private ProtocolOptions protocolProperties = new RdpOptions();
@@ -130,38 +155,38 @@ namespace Terminals.Data
             switch (this.protocol) // Dont call this in property setter, because of serializer
             {
                 case ConnectionManager.VNC:
-                    if (!(this.protocolProperties is VncOptions)) // prevent to reset proeprties
-                        this.protocolProperties = new VncOptions();
+                    SwitchPropertiesIfNotTheSameType<VncOptions>();
                     break;
                 case ConnectionManager.VMRC:
-                    if (!(this.protocolProperties is VMRCOptions))
-                        this.protocolProperties = new VMRCOptions();
+                    SwitchPropertiesIfNotTheSameType<VMRCOptions>();
                     break;
                 case ConnectionManager.TELNET:
-                    if (!(this.protocolProperties is ConsoleOptions))
-                        this.protocolProperties = new ConsoleOptions();
+                    SwitchPropertiesIfNotTheSameType<ConsoleOptions>();
                     break;
                 case ConnectionManager.SSH:
-                    if (!(this.protocolProperties is SshOptions))
-                        this.protocolProperties = new SshOptions();
+                    SwitchPropertiesIfNotTheSameType<SshOptions>();
                     break;
                 case ConnectionManager.RDP:
-                    if (!(this.protocolProperties is RdpOptions))
-                        this.protocolProperties = new RdpOptions();
+                    SwitchPropertiesIfNotTheSameType<RdpOptions>();
                     break;
                 case ConnectionManager.ICA_CITRIX:
-                    if (!(this.protocolProperties is ICAOptions))
-                        this.protocolProperties = new ICAOptions();
+                    SwitchPropertiesIfNotTheSameType<ICAOptions>();
                     break;
                 case ConnectionManager.HTTP:
                 case ConnectionManager.HTTPS:
-                    if (!(this.protocolProperties is WebOptions))
-                        this.protocolProperties = new WebOptions();
+                    SwitchPropertiesIfNotTheSameType<WebOptions>();
                     break;
                 default:
                     this.protocolProperties = new EmptyOptions();
                     break;
             }
+        }
+
+        private void SwitchPropertiesIfNotTheSameType<TOptions>()
+            where TOptions: ProtocolOptions
+        {
+            if (!(this.protocolProperties is TOptions)) // prevent to reset proeprties
+                this.protocolProperties = Activator.CreateInstance<TOptions>();
         }
 
         private string notes;

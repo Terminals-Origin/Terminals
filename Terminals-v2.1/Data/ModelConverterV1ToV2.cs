@@ -52,7 +52,7 @@ namespace Terminals.Data
 
         private static void ConvertBeforeConnetExecute(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
-            BeforeConnectExecuteOptions executeOptions = result.ExecuteBeforeConnect;
+            IBeforeConnectExecuteOptions executeOptions = result.ExecuteBeforeConnect;
             executeOptions.Execute = sourceFavorite.ExecuteBeforeConnect;
             executeOptions.Command = sourceFavorite.ExecuteBeforeConnectCommand;
             executeOptions.CommandArguments = sourceFavorite.ExecuteBeforeConnectArgs;
@@ -62,7 +62,7 @@ namespace Terminals.Data
 
         private static void ConvertDisplay(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
-            DisplayOptions display = result.Display;
+            IDisplayOptions display = result.Display;
             display.Colors = sourceFavorite.Colors;
             display.DesktopSize = sourceFavorite.DesktopSize;
             display.Width = sourceFavorite.DesktopSizeWidth;

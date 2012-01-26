@@ -3,7 +3,7 @@
 namespace Terminals.Data
 {
     [Serializable]
-    public class DisplayOptions
+    public class DisplayOptions : IDisplayOptions
     {
         public Int32 Height { get; set; }
         public Int32 Width { get; set; }

@@ -6,11 +6,34 @@ namespace Terminals.Data
     [Serializable]
     public class SecurityOptions : CredentialBase, ISecurityOptions
     {
-        public Guid Credential { get; set; }
+        private Guid credential = Guid.Empty;
+        /// <summary>
+        /// Gets or sets the credential unique identifier in text form.
+        /// Only for serialization to prevent serialization of empty ids.
+        /// </summary>
+        public string Credential
+        {
+            get
+            {
+                if (this.credential == Guid.Empty)
+                    return null;
+
+                return this.credential.ToString();
+            }
+            set
+            {
+                this.credential = new Guid(value);
+            }
+        }
+
+        Guid ISecurityOptions.Credential
+        {
+            get { return this.credential; }
+            set { this.credential = value; }
+        }
 
         public SecurityOptions()
         {
-            this.Credential = Guid.Empty;
         }
 
         ISecurityOptions ISecurityOptions.Copy()
@@ -46,7 +69,7 @@ namespace Terminals.Data
         {
             if (source != null)
             {
-                this.Credential = source.Id;
+                this.credential = source.Id;
                 this.Domain = source.Domain;
                 this.UserName = source.UserName;
                 this.EncryptedPassword = source.EncryptedPassword;

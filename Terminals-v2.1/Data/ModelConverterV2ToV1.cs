@@ -58,7 +58,7 @@ namespace Terminals.Data
 
         private static void ConvertBeforeConnetExecute(FavoriteConfigurationElement result, IFavorite sourceFavorite)
         {
-            BeforeConnectExecuteOptions executeOptions = sourceFavorite.ExecuteBeforeConnect;
+            IBeforeConnectExecuteOptions executeOptions = sourceFavorite.ExecuteBeforeConnect;
             result.ExecuteBeforeConnect = executeOptions.Execute;
             result.ExecuteBeforeConnectCommand = executeOptions.Command;
             result.ExecuteBeforeConnectArgs = executeOptions.CommandArguments;
@@ -68,7 +68,7 @@ namespace Terminals.Data
 
         private static void ConvertDisplay(FavoriteConfigurationElement result, IFavorite sourceFavorite)
         {
-            DisplayOptions display = sourceFavorite.Display;
+            IDisplayOptions display = sourceFavorite.Display;
             result.Colors = display.Colors;
             result.DesktopSize = display.DesktopSize;
             result.DesktopSizeWidth = display.Width;

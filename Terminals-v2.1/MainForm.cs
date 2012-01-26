@@ -550,7 +550,7 @@ namespace Terminals
 
         private void CallExecuteFeforeConnectedFromFavorite(IFavorite favorite)
         {
-            BeforeConnectExecuteOptions executeOptions = favorite.ExecuteBeforeConnect;
+            IBeforeConnectExecuteOptions executeOptions = favorite.ExecuteBeforeConnect;
             if (executeOptions.Execute && !string.IsNullOrEmpty(executeOptions.Command))
             {
                 var processStartInfo = new ProcessStartInfo(executeOptions.Command, executeOptions.CommandArguments);

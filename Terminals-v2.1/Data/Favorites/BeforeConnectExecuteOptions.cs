@@ -3,7 +3,7 @@
 namespace Terminals.Data
 {
     [Serializable]
-    public class BeforeConnectExecuteOptions
+    public class BeforeConnectExecuteOptions : IBeforeConnectExecuteOptions
     {
         public Boolean Execute { get; set; }
         public String Command { get; set; }
@@ -14,13 +14,13 @@ namespace Terminals.Data
         internal BeforeConnectExecuteOptions Copy()
         {
             return new BeforeConnectExecuteOptions
-                {
-                    Execute = this.Execute,
-                    Command = this.Command,
-                    CommandArguments = this.CommandArguments,
-                    InitialDirectory = this.InitialDirectory,
-                    WaitForExit = this.WaitForExit
-                };
+                        {
+                            Execute = this.Execute,
+                            Command = this.Command,
+                            CommandArguments = this.CommandArguments,
+                            InitialDirectory = this.InitialDirectory,
+                            WaitForExit = this.WaitForExit
+                        };
         }
     }
 }

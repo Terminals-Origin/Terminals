@@ -39,7 +39,7 @@ namespace Terminals.Data
         /// <summary>
         /// Gets or sets the absolute path to the tool bar icon file.
         /// </summary>
-        String ToolBarIcon { get; set; }
+        String ToolBarIcon { get; set; } // todo move TollBarIcon to configuration
 
         /// <summary>
         /// Gets or sets the flag identifiyng, if the connection should be opened in new window or in TabControl.
@@ -62,9 +62,9 @@ namespace Terminals.Data
         /// </summary>
         string GroupNames { get; }
 
-        DisplayOptions Display { get; set; }
-        ISecurityOptions Security { get; set; }
-        BeforeConnectExecuteOptions ExecuteBeforeConnect { get; set; }
+        IDisplayOptions Display { get; }
+        ISecurityOptions Security { get; }
+        IBeforeConnectExecuteOptions ExecuteBeforeConnect { get; }
 
         /// <summary>
         /// Depending on selected protocol, this should contian the protocol detailed options.
