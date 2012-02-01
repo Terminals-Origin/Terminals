@@ -75,7 +75,7 @@ namespace Terminals.Updates
 
             if (checkForUpdate)
             {
-                RssFeed feed = RssFeed.Read(String.Format("{0}/project/feeds/rss?ProjectRSSFeed=codeplex%3A%2F%2Frelease%2FTerminals&ProjectName=terminals", Program.Resources.GetString("TerminalsURL")));
+                RssFeed feed = RssFeed.Read("http://terminals.codeplex.com/project/feeds/rss?ProjectRSSFeed=codeplex%3A%2F%2Frelease%2FTerminals&ProjectName=terminals");
                 if (feed != null)
                 {
                     Boolean needsUpdate = false;

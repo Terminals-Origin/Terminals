@@ -1043,6 +1043,9 @@
     <None Include="Resources\treeIcon_http.png" />
     <None Include="Resources\treeIcon_rdp.png" />
     <Content Include="Resources\RotatedHeaderForWizard.png" />
+    <Content Include="Resources\terminalsbanner-install.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\terminalsbanner-left.png" />
     <Content Include="Resources\terminalsbanner-small.png" />
     <Content Include="Resources\terminalsbanner.png" />

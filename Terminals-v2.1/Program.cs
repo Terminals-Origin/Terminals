@@ -15,7 +15,7 @@ namespace Terminals
 {
     internal static partial class Program
     {
-        private static string TerminalsVersion = "2.0 Release Candidate 1 ";
+        private static string TerminalsVersion = "2.0";
         public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", 
             typeof(MainForm).Assembly);
 
@@ -35,15 +35,37 @@ namespace Terminals
             SetApplicationProperties();
             CommandLineArgs commandLine = ParseCommandline();
 
+            Logging.Log.Info("Stage 1 Complete");
+
             if(UserAccountControlNotSatisfied())
                 return;
+            
+            Logging.Log.Info("Stage 2 Complete");
 
             if (commandLine.SingleInstance && SingleInstanceApplication.Instance.NotifyExisting(commandLine))
                 return;
 
-            UpdateConfig.CheckConfigVersionUpdate();
+            Logging.Log.Info("Stage 3 Complete");
+
+            try
+            {
+                UpdateConfig.CheckConfigVersionUpdate();
+            }
+            catch (Exception exc)
+            {
+
+                Logging.Log.Error("CheckConfigVersionUpdate failed", exc);
+            }
+
+            Logging.Log.Info("Stage 4 Complete");
+
             UpdateManager.CheckForUpdates(commandLine);
+
+            Logging.Log.Info("Stage 5 Complete");
+
             StartMainForm(commandLine);
+
+            Logging.Log.Info("Stage 6 Complete");
 
             Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));

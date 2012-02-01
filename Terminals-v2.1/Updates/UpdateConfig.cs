@@ -56,13 +56,16 @@ namespace Terminals.Updates
         {
             MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
             string credentialsFile = Settings.FileLocations.Credentials;
-            string credentialsXml = File.ReadAllText(credentialsFile);
-            StringBuilder credentialsText = new StringBuilder(credentialsXml);
-            credentialsText.Replace("<Password>", "<EncryptedPassword>");
-            credentialsText.Replace("</Password>", "</EncryptedPassword>");
-            credentialsText.Replace("<Username>", "<UserName>");
-            credentialsText.Replace("</Username>", "</UserName>");
-            File.WriteAllText(credentialsFile, credentialsText.ToString());
+            if (System.IO.File.Exists(credentialsFile))
+            {
+                string credentialsXml = File.ReadAllText(credentialsFile);
+                StringBuilder credentialsText = new StringBuilder(credentialsXml);
+                credentialsText.Replace("<Password>", "<EncryptedPassword>");
+                credentialsText.Replace("</Password>", "</EncryptedPassword>");
+                credentialsText.Replace("<Username>", "<UserName>");
+                credentialsText.Replace("</Username>", "</UserName>");
+                File.WriteAllText(credentialsFile, credentialsText.ToString());
+            }
         }
 
         private static void UpgradeConfigFile() 
