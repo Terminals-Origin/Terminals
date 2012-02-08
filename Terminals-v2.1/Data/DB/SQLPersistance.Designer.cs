@@ -20,7 +20,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.SQLPersistance", "FavoritesInGroup", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Favorite), "Groups", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
 
 // Original file name:
-// Generation date: 1.2.2012 22:46:37
+// Generation date: 8.2.2012 20:54:04
 namespace Terminals.Data.DB
 {
     
@@ -58,7 +58,7 @@ namespace Terminals.Data.DB
         /// There are no comments for BeforeConnectExecute in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<BeforeConnectExecute> BeforeConnectExecute
+        internal global::System.Data.Objects.ObjectQuery<BeforeConnectExecute> BeforeConnectExecute
         {
             get
             {
@@ -75,7 +75,7 @@ namespace Terminals.Data.DB
         /// There are no comments for CredentialBase in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<CredentialBase> CredentialBase
+        internal global::System.Data.Objects.ObjectQuery<CredentialBase> CredentialBase
         {
             get
             {
@@ -92,7 +92,7 @@ namespace Terminals.Data.DB
         /// There are no comments for Credentials in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<CredentialSet> Credentials
+        internal global::System.Data.Objects.ObjectQuery<CredentialSet> Credentials
         {
             get
             {
@@ -109,7 +109,7 @@ namespace Terminals.Data.DB
         /// There are no comments for DisplayOptions in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<DisplayOptions> DisplayOptions
+        internal global::System.Data.Objects.ObjectQuery<DisplayOptions> DisplayOptions
         {
             get
             {
@@ -126,7 +126,7 @@ namespace Terminals.Data.DB
         /// There are no comments for Favorites in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<Favorite> Favorites
+        internal global::System.Data.Objects.ObjectQuery<Favorite> Favorites
         {
             get
             {
@@ -140,10 +140,27 @@ namespace Terminals.Data.DB
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         private global::System.Data.Objects.ObjectQuery<Favorite> _Favorites;
         /// <summary>
+        /// There are no comments for Groups in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        internal global::System.Data.Objects.ObjectQuery<Group> Groups
+        {
+            get
+            {
+                if ((this._Groups == null))
+                {
+                    this._Groups = base.CreateQuery<Group>("[Groups]");
+                }
+                return this._Groups;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Data.Objects.ObjectQuery<Group> _Groups;
+        /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<HistoryItem> History
+        internal global::System.Data.Objects.ObjectQuery<HistoryItem> History
         {
             get
             {
@@ -160,7 +177,7 @@ namespace Terminals.Data.DB
         /// There are no comments for Security in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<Security> Security
+        internal global::System.Data.Objects.ObjectQuery<Security> Security
         {
             get
             {
@@ -174,27 +191,10 @@ namespace Terminals.Data.DB
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         private global::System.Data.Objects.ObjectQuery<Security> _Security;
         /// <summary>
-        /// There are no comments for Groups in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<Group> Groups
-        {
-            get
-            {
-                if ((this._Groups == null))
-                {
-                    this._Groups = base.CreateQuery<Group>("[Groups]");
-                }
-                return this._Groups;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Data.Objects.ObjectQuery<Group> _Groups;
-        /// <summary>
         /// There are no comments for BeforeConnectExecute in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddToBeforeConnectExecute(BeforeConnectExecute beforeConnectExecute)
+        internal void AddToBeforeConnectExecute(BeforeConnectExecute beforeConnectExecute)
         {
             base.AddObject("BeforeConnectExecute", beforeConnectExecute);
         }
@@ -202,7 +202,7 @@ namespace Terminals.Data.DB
         /// There are no comments for CredentialBase in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddToCredentialBase(CredentialBase credentialBase)
+        internal void AddToCredentialBase(CredentialBase credentialBase)
         {
             base.AddObject("CredentialBase", credentialBase);
         }
@@ -210,7 +210,7 @@ namespace Terminals.Data.DB
         /// There are no comments for Credentials in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddToCredentials(CredentialSet credentialSet)
+        internal void AddToCredentials(CredentialSet credentialSet)
         {
             base.AddObject("Credentials", credentialSet);
         }
@@ -218,7 +218,7 @@ namespace Terminals.Data.DB
         /// There are no comments for DisplayOptions in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddToDisplayOptions(DisplayOptions displayOptions)
+        internal void AddToDisplayOptions(DisplayOptions displayOptions)
         {
             base.AddObject("DisplayOptions", displayOptions);
         }
@@ -226,15 +226,23 @@ namespace Terminals.Data.DB
         /// There are no comments for Favorites in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddToFavorites(Favorite favorite)
+        internal void AddToFavorites(Favorite favorite)
         {
             base.AddObject("Favorites", favorite);
+        }
+        /// <summary>
+        /// There are no comments for Groups in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        internal void AddToGroups(Group group)
+        {
+            base.AddObject("Groups", group);
         }
         /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddToHistory(HistoryItem historyItem)
+        internal void AddToHistory(HistoryItem historyItem)
         {
             base.AddObject("History", historyItem);
         }
@@ -242,17 +250,9 @@ namespace Terminals.Data.DB
         /// There are no comments for Security in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddToSecurity(Security security)
+        internal void AddToSecurity(Security security)
         {
             base.AddObject("Security", security);
-        }
-        /// <summary>
-        /// There are no comments for Groups in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddToGroups(Group group)
-        {
-            base.AddObject("Groups", group);
         }
     }
     /// <summary>
@@ -264,7 +264,7 @@ namespace Terminals.Data.DB
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="BeforeConnectExecute")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class BeforeConnectExecute : global::System.Data.Objects.DataClasses.EntityObject
+    internal partial class BeforeConnectExecute : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
         /// Create a new BeforeConnectExecute object.
@@ -444,14 +444,14 @@ namespace Terminals.Data.DB
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnWaitForExitChanged();
         /// <summary>
-        /// There are no comments for Favorites in the schema.
+        /// There are no comments for Favorite in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Favorite Favorites
+        public Favorite Favorite
         {
             get
             {
@@ -463,12 +463,12 @@ namespace Terminals.Data.DB
             }
         }
         /// <summary>
-        /// There are no comments for Favorites in the schema.
+        /// There are no comments for Favorite in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Favorite> FavoritesReference
+        public global::System.Data.Objects.DataClasses.EntityReference<Favorite> FavoriteReference
         {
             get
             {
@@ -492,7 +492,7 @@ namespace Terminals.Data.DB
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="CredentialBase")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class CredentialBase : global::System.Data.Objects.DataClasses.EntityObject
+    internal partial class CredentialBase : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
         /// Create a new CredentialBase object.
@@ -614,14 +614,14 @@ namespace Terminals.Data.DB
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnEncryptedPasswordChanged();
         /// <summary>
-        /// There are no comments for Credentials in the schema.
+        /// There are no comments for CredentialSet in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Credentials_CredentialBase", "Credentials")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<CredentialSet> Credentials
+        public global::System.Data.Objects.DataClasses.EntityCollection<CredentialSet> CredentialSet
         {
             get
             {
@@ -667,7 +667,7 @@ namespace Terminals.Data.DB
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="CredentialSet")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class CredentialSet : global::System.Data.Objects.DataClasses.EntityObject
+    internal partial class CredentialSet : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
         /// Create a new CredentialSet object.
@@ -675,7 +675,7 @@ namespace Terminals.Data.DB
         /// <param name="id">Initial value of Id.</param>
         /// <param name="name">Initial value of Name.</param>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public static CredentialSet CreateCredentialSet(global::System.Guid id, string name)
+        public static CredentialSet CreateCredentialSet(int id, string name)
         {
             CredentialSet credentialSet = new CredentialSet();
             credentialSet.Id = id;
@@ -688,7 +688,7 @@ namespace Terminals.Data.DB
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Guid Id
+        public int Id
         {
             get
             {
@@ -704,9 +704,9 @@ namespace Terminals.Data.DB
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Guid _Id;
+        private int _Id;
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanging(int value);
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnIdChanged();
         /// <summary>
@@ -807,7 +807,7 @@ namespace Terminals.Data.DB
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="DisplayOptions")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class DisplayOptions : global::System.Data.Objects.DataClasses.EntityObject
+    internal partial class DisplayOptions : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
         /// Create a new DisplayOptions object.
@@ -956,14 +956,14 @@ namespace Terminals.Data.DB
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnColorsChanged();
         /// <summary>
-        /// There are no comments for Favorites in the schema.
+        /// There are no comments for Favorite in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_DisplayOptions_Favorites", "Favorites")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Favorite Favorites
+        public Favorite Favorite
         {
             get
             {
@@ -975,12 +975,12 @@ namespace Terminals.Data.DB
             }
         }
         /// <summary>
-        /// There are no comments for Favorites in the schema.
+        /// There are no comments for Favorite in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Favorite> FavoritesReference
+        public global::System.Data.Objects.DataClasses.EntityReference<Favorite> FavoriteReference
         {
             get
             {
@@ -999,18 +999,17 @@ namespace Terminals.Data.DB
     /// There are no comments for Terminals.Data.SQLPersistance.Favorite in the schema.
     /// </summary>
     /// <KeyProperties>
-    /// FavoriteId
+    /// Id
     /// </KeyProperties>
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="Favorite")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class Favorite : global::System.Data.Objects.DataClasses.EntityObject
+    internal partial class Favorite : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
         /// Create a new Favorite object.
         /// </summary>
         /// <param name="id">Initial value of Id.</param>
-        /// <param name="favoriteId">Initial value of FavoriteId.</param>
         /// <param name="name">Initial value of Name.</param>
         /// <param name="protocol">Initial value of Protocol.</param>
         /// <param name="port">Initial value of Port.</param>
@@ -1018,11 +1017,10 @@ namespace Terminals.Data.DB
         /// <param name="newWindow">Initial value of NewWindow.</param>
         /// <param name="protocolProperties">Initial value of ProtocolProperties.</param>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public static Favorite CreateFavorite(global::System.Guid id, int favoriteId, string name, string protocol, int port, string serverName, bool newWindow, string protocolProperties)
+        public static Favorite CreateFavorite(int id, string name, string protocol, int port, string serverName, bool newWindow, string protocolProperties)
         {
             Favorite favorite = new Favorite();
             favorite.Id = id;
-            favorite.FavoriteId = favoriteId;
             favorite.Name = name;
             favorite.Protocol = protocol;
             favorite.Port = port;
@@ -1034,10 +1032,10 @@ namespace Terminals.Data.DB
         /// <summary>
         /// There are no comments for property Id in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Guid Id
+        public int Id
         {
             get
             {
@@ -1053,38 +1051,11 @@ namespace Terminals.Data.DB
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Guid _Id;
+        private int _Id;
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanging(int value);
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnIdChanged();
-        /// <summary>
-        /// There are no comments for property FavoriteId in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public int FavoriteId
-        {
-            get
-            {
-                return this._FavoriteId;
-            }
-            set
-            {
-                this.OnFavoriteIdChanging(value);
-                this.ReportPropertyChanging("FavoriteId");
-                this._FavoriteId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("FavoriteId");
-                this.OnFavoriteIdChanged();
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private int _FavoriteId;
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnFavoriteIdChanging(int value);
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnFavoriteIdChanged();
         /// <summary>
         /// There are no comments for property Name in the schema.
         /// </summary>
@@ -1464,6 +1435,168 @@ namespace Terminals.Data.DB
         }
     }
     /// <summary>
+    /// There are no comments for Terminals.Data.SQLPersistance.Group in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// Id
+    /// </KeyProperties>
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="Group")]
+    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
+    [global::System.Serializable()]
+    internal partial class Group : global::System.Data.Objects.DataClasses.EntityObject
+    {
+        /// <summary>
+        /// Create a new Group object.
+        /// </summary>
+        /// <param name="id">Initial value of Id.</param>
+        /// <param name="name">Initial value of Name.</param>
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public static Group CreateGroup(int id, string name)
+        {
+            Group group = new Group();
+            group.Id = id;
+            group.Name = name;
+            return group;
+        }
+        /// <summary>
+        /// There are no comments for property Id in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public int Id
+        {
+            get
+            {
+                return this._Id;
+            }
+            set
+            {
+                this.OnIdChanging(value);
+                this.ReportPropertyChanging("Id");
+                this._Id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Id");
+                this.OnIdChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private int _Id;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnIdChanging(int value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnIdChanged();
+        /// <summary>
+        /// There are no comments for property Name in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public string Name
+        {
+            get
+            {
+                return this._Name;
+            }
+            set
+            {
+                this.OnNameChanging(value);
+                this.ReportPropertyChanging("Name");
+                this._Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
+                this.ReportPropertyChanged("Name");
+                this.OnNameChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private string _Name;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnNameChanging(string value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnNameChanged();
+        /// <summary>
+        /// There are no comments for ChildGroups in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Groups_Groups", "Groups1")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Group> ChildGroups
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups1");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups1", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for ParentGroup in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Groups_Groups", "Groups")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public Group ParentGroup
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for ParentGroup in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<Group> ParentGroupReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for Favorites in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FavoritesInGroup", "Favorites")]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<Favorite> Favorites
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Favorite>("Terminals.Data.SQLPersistance.FavoritesInGroup", "Favorites");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Favorite>("Terminals.Data.SQLPersistance.FavoritesInGroup", "Favorites", value);
+                }
+            }
+        }
+    }
+    /// <summary>
     /// There are no comments for Terminals.Data.SQLPersistance.HistoryItem in the schema.
     /// </summary>
     /// <KeyProperties>
@@ -1473,7 +1606,7 @@ namespace Terminals.Data.DB
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="HistoryItem")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class HistoryItem : global::System.Data.Objects.DataClasses.EntityObject
+    internal partial class HistoryItem : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
         /// Create a new HistoryItem object.
@@ -1570,14 +1703,14 @@ namespace Terminals.Data.DB
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnUserNameChanged();
         /// <summary>
-        /// There are no comments for Favorites in the schema.
+        /// There are no comments for Favorite in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_History_Favorites", "Favorites")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Favorite Favorites
+        public Favorite Favorite
         {
             get
             {
@@ -1589,12 +1722,12 @@ namespace Terminals.Data.DB
             }
         }
         /// <summary>
-        /// There are no comments for Favorites in the schema.
+        /// There are no comments for Favorite in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Favorite> FavoritesReference
+        public global::System.Data.Objects.DataClasses.EntityReference<Favorite> FavoriteReference
         {
             get
             {
@@ -1618,7 +1751,7 @@ namespace Terminals.Data.DB
     [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="Security")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class Security : global::System.Data.Objects.DataClasses.EntityObject
+    internal partial class Security : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
         /// Create a new Security object.
@@ -1698,14 +1831,14 @@ namespace Terminals.Data.DB
             }
         }
         /// <summary>
-        /// There are no comments for Credentials in the schema.
+        /// There are no comments for CredentialSet in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Security_Credentials", "Credentials")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public CredentialSet Credentials
+        public CredentialSet CredentialSet
         {
             get
             {
@@ -1717,12 +1850,12 @@ namespace Terminals.Data.DB
             }
         }
         /// <summary>
-        /// There are no comments for Credentials in the schema.
+        /// There are no comments for CredentialSet in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<CredentialSet> CredentialsReference
+        public global::System.Data.Objects.DataClasses.EntityReference<CredentialSet> CredentialSetReference
         {
             get
             {
@@ -1737,14 +1870,14 @@ namespace Terminals.Data.DB
             }
         }
         /// <summary>
-        /// There are no comments for Favorites in the schema.
+        /// There are no comments for Favorite in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Security_Favorites", "Favorites")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Favorite Favorites
+        public Favorite Favorite
         {
             get
             {
@@ -1756,12 +1889,12 @@ namespace Terminals.Data.DB
             }
         }
         /// <summary>
-        /// There are no comments for Favorites in the schema.
+        /// There are no comments for Favorite in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Favorite> FavoritesReference
+        public global::System.Data.Objects.DataClasses.EntityReference<Favorite> FavoriteReference
         {
             get
             {
@@ -1772,197 +1905,6 @@ namespace Terminals.Data.DB
                 if ((value != null))
                 {
                     ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_Security_Favorites", "Favorites", value);
-                }
-            }
-        }
-    }
-    /// <summary>
-    /// There are no comments for Terminals.Data.SQLPersistance.Group in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// GroupId
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="Group")]
-    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
-    [global::System.Serializable()]
-    public partial class Group : global::System.Data.Objects.DataClasses.EntityObject
-    {
-        /// <summary>
-        /// Create a new Group object.
-        /// </summary>
-        /// <param name="id">Initial value of Id.</param>
-        /// <param name="groupId">Initial value of GroupId.</param>
-        /// <param name="name">Initial value of Name.</param>
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public static Group CreateGroup(global::System.Guid id, int groupId, string name)
-        {
-            Group group = new Group();
-            group.Id = id;
-            group.GroupId = groupId;
-            group.Name = name;
-            return group;
-        }
-        /// <summary>
-        /// There are no comments for property Id in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Guid Id
-        {
-            get
-            {
-                return this._Id;
-            }
-            set
-            {
-                this.OnIdChanging(value);
-                this.ReportPropertyChanging("Id");
-                this._Id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("Id");
-                this.OnIdChanged();
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Guid _Id;
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnIdChanging(global::System.Guid value);
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnIdChanged();
-        /// <summary>
-        /// There are no comments for property GroupId in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public int GroupId
-        {
-            get
-            {
-                return this._GroupId;
-            }
-            set
-            {
-                this.OnGroupIdChanging(value);
-                this.ReportPropertyChanging("GroupId");
-                this._GroupId = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("GroupId");
-                this.OnGroupIdChanged();
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private int _GroupId;
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnGroupIdChanging(int value);
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnGroupIdChanged();
-        /// <summary>
-        /// There are no comments for property Name in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this.ReportPropertyChanging("Name");
-                this._Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, false);
-                this.ReportPropertyChanged("Name");
-                this.OnNameChanged();
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private string _Name;
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnNameChanging(string value);
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnNameChanged();
-        /// <summary>
-        /// There are no comments for ChildGroups in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Groups_Groups", "Groups1")]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Group> ChildGroups
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups1");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups1", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Parent in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Groups_Groups", "Groups")]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public Group Parent
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for Parent in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<Group> ParentReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for Favorites in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FavoritesInGroup", "Favorites")]
-        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<Favorite> Favorites
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Favorite>("Terminals.Data.SQLPersistance.FavoritesInGroup", "Favorites");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Favorite>("Terminals.Data.SQLPersistance.FavoritesInGroup", "Favorites", value);
                 }
             }
         }
