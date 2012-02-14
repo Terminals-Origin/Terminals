@@ -35,12 +35,12 @@ namespace Terminals.Data
         [XmlIgnore]
         List<IGroup> IFavorite.Groups
         {
-            get { return GetGroups(); }
+            get { return GetGroups(this); }
         }
 
-        private List<IGroup> GetGroups()
+        private static List<IGroup> GetGroups(IFavorite selected)
         {
-            return Persistance.Instance.Groups.GetGroupsContainingFavorite(this.Id);
+            return Persistance.Instance.Groups.GetGroupsContainingFavorite(selected.Id);
         }
 
         private string protocol = ConnectionManager.RDP;
@@ -71,14 +71,14 @@ namespace Terminals.Data
             set { serverName = value; }
         }
 
-        private ISecurityOptions security = new SecurityOptions();
+        private SecurityOptions security = new SecurityOptions();
         /// <summary>
         /// Gets or sets the user credits. Only for serialization puroposes.
         /// General access is done by interface property
         /// </summary>
         public SecurityOptions Security
         {
-            get { return this.security as SecurityOptions; }
+            get { return this.security; }
             set { this.security = value; }
         }
 
@@ -207,7 +207,7 @@ namespace Terminals.Data
         {
             get
             {
-                var groupNames = GetGroups().Select(group => group.Name).ToArray();
+                var groupNames = GetGroups(this).Select(group => group.Name).ToArray();
                 return string.Join(",", groupNames);
             }
         }
@@ -244,19 +244,25 @@ namespace Terminals.Data
 
         public String GetToolTipText()
         {
-            string userDisplayName = HelperFunctions.UserDisplayName(this.security.Domain, this.security.UserName);
+            return GetToolTipText(this);
+        }
+
+        internal static String GetToolTipText(IFavorite selected)
+        {
+            string userDisplayName = HelperFunctions.UserDisplayName(selected.Security.Domain, selected.Security.UserName);
             String toolTip = String.Format("Computer: {1}{0}Port: {2}{0}User: {3}{0}",
-                Environment.NewLine, this.ServerName, this.Port, userDisplayName);
+                Environment.NewLine, selected.ServerName, selected.Port, userDisplayName);
 
             if (Settings.ShowFullInformationToolTips)
             {
-                var rdp = this.ProtocolProperties as RdpOptions;
+                var rdp = selected.ProtocolProperties as RdpOptions;
                 bool console = false;
                 if (rdp != null)
                     console = rdp.ConnectToConsole;
 
+                List<IGroup> groups = GetGroups(selected);
                 toolTip += String.Format("Groups: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
-                    Environment.NewLine, GetGroups(), console, this.Notes);
+                    Environment.NewLine, groups, console, selected.Notes);
             }
 
             return toolTip;

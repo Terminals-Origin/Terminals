@@ -43,8 +43,8 @@ namespace Terminals.Data
         /// Adds all required favorites into this set. It would be added only, 
         /// if there is no favorite with the same id yet.
         /// </summary>
-        /// <param name="favorite">Not null already persisted instance to add.</param>
-        void AddFavorites(List<IFavorite> favorite);
+        /// <param name="favorites">Not null already persisted instance to add.</param>
+        void AddFavorites(List<IFavorite> favorites);
 
         /// <summary>
         /// Removes required favorite from set of favorites. If there is no favorite with the same Id,
@@ -57,7 +57,7 @@ namespace Terminals.Data
         /// Removes all required favorites from set of favorites. If there is no favorite with the same Id,
         /// than nothing happens.
         /// </summary>
-        /// <param name="favorite">Not null instance to remove. This instance doesnt have to be peristed</param>
-        void RemoveFavorites(List<IFavorite> favorite);
+        /// <param name="favorites">Not null instance to remove. This instance doesnt have to be peristed</param>
+        void RemoveFavorites(List<IFavorite> favorites);
     }
 }

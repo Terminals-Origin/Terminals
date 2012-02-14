@@ -64,15 +64,15 @@ namespace Terminals.Data
             ReportThisGroupChanged();
         }
 
-        void IGroup.AddFavorites(List<IFavorite> favoritesToAdd)
+        void IGroup.AddFavorites(List<IFavorite> favorites)
         {
-            AddFavoritesToCache(favoritesToAdd);
+            AddFavoritesToCache(favorites);
             ReportThisGroupChanged();
         }
 
-        void IGroup.RemoveFavorites(List<IFavorite> favoritesToRemove)
+        void IGroup.RemoveFavorites(List<IFavorite> favorites)
         {
-            RemoveFavoritesFromCache(favoritesToRemove);
+            RemoveFavoritesFromCache(favorites);
             this.ReportThisGroupChanged();
         }
 

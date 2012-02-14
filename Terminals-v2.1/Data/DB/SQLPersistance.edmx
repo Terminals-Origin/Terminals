@@ -409,49 +409,49 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2006/04/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Terminals.Data.SQLPersistance" Alias="Self" >
+      <Schema xmlns="http://schemas.microsoft.com/ado/2006/04/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Terminals.Data.DB" Alias="Self" >
         <EntityContainer Name="DataBase" >
-          <EntitySet Name="BeforeConnectExecute" EntityType="Terminals.Data.SQLPersistance.BeforeConnectExecute" cg:GetterAccess="Internal" />
-          <EntitySet Name="CredentialBase" EntityType="Terminals.Data.SQLPersistance.CredentialBase" cg:GetterAccess="Internal" />
-          <EntitySet Name="Credentials" EntityType="Terminals.Data.SQLPersistance.CredentialSet" cg:GetterAccess="Internal" />
-          <EntitySet Name="DisplayOptions" EntityType="Terminals.Data.SQLPersistance.DisplayOptions" cg:GetterAccess="Internal" />
-          <EntitySet Name="Favorites" EntityType="Terminals.Data.SQLPersistance.Favorite" cg:GetterAccess="Internal" />
-          <EntitySet Name="Groups" EntityType="Terminals.Data.SQLPersistance.Group" cg:GetterAccess="Internal" />
-          <EntitySet Name="History" EntityType="Terminals.Data.SQLPersistance.HistoryItem" cg:GetterAccess="Internal" />
-          <EntitySet Name="Security" EntityType="Terminals.Data.SQLPersistance.Security" cg:GetterAccess="Internal" />
-          <AssociationSet Name="FK_BeforeConnectExecute_BeforeConnectExecute" Association="Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute">
+          <EntitySet Name="BeforeConnectExecute" EntityType="Terminals.Data.DB.BeforeConnectExecute" cg:GetterAccess="Internal" />
+          <EntitySet Name="CredentialBase" EntityType="Terminals.Data.DB.CredentialBase" cg:GetterAccess="Internal" />
+          <EntitySet Name="Credentials" EntityType="Terminals.Data.DB.CredentialSet" cg:GetterAccess="Internal" />
+          <EntitySet Name="DisplayOptions" EntityType="Terminals.Data.DB.DisplayOptions" cg:GetterAccess="Internal" />
+          <EntitySet Name="Favorites" EntityType="Terminals.Data.DB.Favorite" cg:GetterAccess="Internal" />
+          <EntitySet Name="Groups" EntityType="Terminals.Data.DB.Group" cg:GetterAccess="Internal" />
+          <EntitySet Name="History" EntityType="Terminals.Data.DB.HistoryItem" cg:GetterAccess="Internal" />
+          <EntitySet Name="Security" EntityType="Terminals.Data.DB.Security" cg:GetterAccess="Internal" />
+          <AssociationSet Name="FK_BeforeConnectExecute_BeforeConnectExecute" Association="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute">
             <End Role="Favorites" EntitySet="Favorites" />
             <End Role="BeforeConnectExecute" EntitySet="BeforeConnectExecute" />
           </AssociationSet>
-          <AssociationSet Name="FK_Credentials_CredentialBase" Association="Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase">
+          <AssociationSet Name="FK_Credentials_CredentialBase" Association="Terminals.Data.DB.FK_Credentials_CredentialBase">
             <End Role="CredentialBase" EntitySet="CredentialBase" />
             <End Role="Credentials" EntitySet="Credentials" />
           </AssociationSet>
-          <AssociationSet Name="FK_Security_CredentialBase" Association="Terminals.Data.SQLPersistance.FK_Security_CredentialBase">
+          <AssociationSet Name="FK_Security_CredentialBase" Association="Terminals.Data.DB.FK_Security_CredentialBase">
             <End Role="CredentialBase" EntitySet="CredentialBase" />
             <End Role="Security" EntitySet="Security" />
           </AssociationSet>
-          <AssociationSet Name="FK_Security_Credentials" Association="Terminals.Data.SQLPersistance.FK_Security_Credentials">
+          <AssociationSet Name="FK_Security_Credentials" Association="Terminals.Data.DB.FK_Security_Credentials">
             <End Role="Credentials" EntitySet="Credentials" />
             <End Role="Security" EntitySet="Security" />
           </AssociationSet>
-          <AssociationSet Name="FK_DisplayOptions_Favorites" Association="Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites">
+          <AssociationSet Name="FK_DisplayOptions_Favorites" Association="Terminals.Data.DB.FK_DisplayOptions_Favorites">
             <End Role="Favorites" EntitySet="Favorites" />
             <End Role="DisplayOptions" EntitySet="DisplayOptions" />
           </AssociationSet>
-          <AssociationSet Name="FK_History_Favorites" Association="Terminals.Data.SQLPersistance.FK_History_Favorites">
+          <AssociationSet Name="FK_History_Favorites" Association="Terminals.Data.DB.FK_History_Favorites">
             <End Role="Favorites" EntitySet="Favorites" />
             <End Role="History" EntitySet="History" />
           </AssociationSet>
-          <AssociationSet Name="FK_Security_Favorites" Association="Terminals.Data.SQLPersistance.FK_Security_Favorites">
+          <AssociationSet Name="FK_Security_Favorites" Association="Terminals.Data.DB.FK_Security_Favorites">
             <End Role="Favorites" EntitySet="Favorites" />
             <End Role="Security" EntitySet="Security" />
           </AssociationSet>
-          <AssociationSet Name="FK_Groups_Groups" Association="Terminals.Data.SQLPersistance.FK_Groups_Groups">
+          <AssociationSet Name="FK_Groups_Groups" Association="Terminals.Data.DB.FK_Groups_Groups">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Groups1" EntitySet="Groups" />
           </AssociationSet>
-          <AssociationSet Name="FavoritesInGroup" Association="Terminals.Data.SQLPersistance.FavoritesInGroup">
+          <AssociationSet Name="FavoritesInGroup" Association="Terminals.Data.DB.FavoritesInGroup">
             <End Role="Favorites" EntitySet="Favorites" />
             <End Role="Groups" EntitySet="Groups" />
           </AssociationSet>
@@ -461,12 +461,12 @@
             <PropertyRef Name="FavoriteId" />
           </Key>
           <Property Type="Int32" Name="FavoriteId" Nullable="false" />
-          <Property Type="Boolean" Name="Enabled" Nullable="false" />
+          <Property Type="Boolean" Name="Execute" Nullable="false" />
           <Property Type="String" Name="Command" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="CommandArguments" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="InitialDirectory" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="WaitForExit" Nullable="false" />
-          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute" FromRole="BeforeConnectExecute" ToRole="Favorites" />
+          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute" FromRole="BeforeConnectExecute" ToRole="Favorites" />
         </EntityType>
         <EntityType Name="CredentialBase" cg:TypeAccess="Internal">
           <Key>
@@ -476,8 +476,8 @@
           <Property Type="String" Name="UserName" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Domain" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="EncryptedPassword" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CredentialSet" Relationship="Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase" FromRole="CredentialBase" ToRole="Credentials" />
-          <NavigationProperty Name="Security" Relationship="Terminals.Data.SQLPersistance.FK_Security_CredentialBase" FromRole="CredentialBase" ToRole="Security" />
+          <NavigationProperty Name="CredentialSet" Relationship="Terminals.Data.DB.FK_Credentials_CredentialBase" FromRole="CredentialBase" ToRole="Credentials" />
+          <NavigationProperty Name="Security" Relationship="Terminals.Data.DB.FK_Security_CredentialBase" FromRole="CredentialBase" ToRole="Security" />
         </EntityType>
         <EntityType Name="CredentialSet" cg:TypeAccess="Internal">
           <Key>
@@ -485,8 +485,8 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CredentialBase" Relationship="Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase" FromRole="Credentials" ToRole="CredentialBase" />
-          <NavigationProperty Name="Security" Relationship="Terminals.Data.SQLPersistance.FK_Security_Credentials" FromRole="Credentials" ToRole="Security" />
+          <NavigationProperty Name="CredentialBase" Relationship="Terminals.Data.DB.FK_Credentials_CredentialBase" FromRole="Credentials" ToRole="CredentialBase" />
+          <NavigationProperty Name="Security" Relationship="Terminals.Data.DB.FK_Security_Credentials" FromRole="Credentials" ToRole="Security" />
         </EntityType>
         <EntityType Name="DisplayOptions" cg:TypeAccess="Internal">
           <Key>
@@ -497,7 +497,7 @@
           <Property Type="Int32" Name="Width" />
           <Property Type="Byte" Name="Size" />
           <Property Type="Byte" Name="Colors" />
-          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites" FromRole="DisplayOptions" ToRole="Favorites" />
+          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.DB.FK_DisplayOptions_Favorites" FromRole="DisplayOptions" ToRole="Favorites" />
         </EntityType>
         <EntityType Name="Favorite" cg:TypeAccess="Internal">
           <Key>
@@ -512,11 +512,11 @@
           <Property Type="String" Name="DesktopShare" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Notes" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="ProtocolProperties" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BeforeConnectExecute" Relationship="Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute" FromRole="Favorites" ToRole="BeforeConnectExecute" />
-          <NavigationProperty Name="DisplayOptions" Relationship="Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites" FromRole="Favorites" ToRole="DisplayOptions" />
-          <NavigationProperty Name="History" Relationship="Terminals.Data.SQLPersistance.FK_History_Favorites" FromRole="Favorites" ToRole="History" />
-          <NavigationProperty Name="Security" Relationship="Terminals.Data.SQLPersistance.FK_Security_Favorites" FromRole="Favorites" ToRole="Security" />
-          <NavigationProperty Name="Groups" Relationship="Terminals.Data.SQLPersistance.FavoritesInGroup" FromRole="Favorites" ToRole="Groups" />
+          <NavigationProperty Name="ExecuteBeforeConnect" Relationship="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute" FromRole="Favorites" ToRole="BeforeConnectExecute" />
+          <NavigationProperty Name="Display" Relationship="Terminals.Data.DB.FK_DisplayOptions_Favorites" FromRole="Favorites" ToRole="DisplayOptions" />
+          <NavigationProperty Name="History" Relationship="Terminals.Data.DB.FK_History_Favorites" FromRole="Favorites" ToRole="History" />
+          <NavigationProperty Name="Security" Relationship="Terminals.Data.DB.FK_Security_Favorites" FromRole="Favorites" ToRole="Security" />
+          <NavigationProperty Name="Groups" Relationship="Terminals.Data.DB.FavoritesInGroup" FromRole="Favorites" ToRole="Groups" />
         </EntityType>
         <EntityType Name="Group" cg:TypeAccess="Internal">
           <Key>
@@ -524,9 +524,9 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ChildGroups" Relationship="Terminals.Data.SQLPersistance.FK_Groups_Groups" FromRole="Groups" ToRole="Groups1" />
-          <NavigationProperty Name="ParentGroup" Relationship="Terminals.Data.SQLPersistance.FK_Groups_Groups" FromRole="Groups1" ToRole="Groups" />
-          <NavigationProperty Name="Favorites" Relationship="Terminals.Data.SQLPersistance.FavoritesInGroup" FromRole="Groups" ToRole="Favorites" />
+          <NavigationProperty Name="ChildGroups" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Groups" ToRole="Groups1" />
+          <NavigationProperty Name="ParentGroup" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Groups1" ToRole="Groups" />
+          <NavigationProperty Name="Favorites" Relationship="Terminals.Data.DB.FavoritesInGroup" FromRole="Groups" ToRole="Favorites" />
         </EntityType>
         <EntityType Name="HistoryItem" cg:TypeAccess="Internal">
           <Key>
@@ -536,20 +536,20 @@
           <Property Type="Int32" Name="FavoriteId" Nullable="false" />
           <Property Type="DateTime" Name="Date" Nullable="false" />
           <Property Type="String" Name="UserName" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.SQLPersistance.FK_History_Favorites" FromRole="History" ToRole="Favorites" />
+          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.DB.FK_History_Favorites" FromRole="History" ToRole="Favorites" />
         </EntityType>
         <EntityType Name="Security" cg:TypeAccess="Internal">
           <Key>
             <PropertyRef Name="FavoriteId" />
           </Key>
           <Property Type="Int32" Name="FavoriteId" Nullable="false" />
-          <NavigationProperty Name="CredentialBase" Relationship="Terminals.Data.SQLPersistance.FK_Security_CredentialBase" FromRole="Security" ToRole="CredentialBase" />
-          <NavigationProperty Name="CredentialSet" Relationship="Terminals.Data.SQLPersistance.FK_Security_Credentials" FromRole="Security" ToRole="Credentials" />
-          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.SQLPersistance.FK_Security_Favorites" FromRole="Security" ToRole="Favorites" />
+          <NavigationProperty Name="CredentialBase" Relationship="Terminals.Data.DB.FK_Security_CredentialBase" FromRole="Security" ToRole="CredentialBase" />
+          <NavigationProperty Name="CredentialSet" Relationship="Terminals.Data.DB.FK_Security_Credentials" FromRole="Security" ToRole="Credentials" />
+          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.DB.FK_Security_Favorites" FromRole="Security" ToRole="Favorites" />
         </EntityType>
         <Association Name="FK_BeforeConnectExecute_BeforeConnectExecute">
-          <End Type="Terminals.Data.SQLPersistance.Favorite" Role="Favorites" Multiplicity="1" />
-          <End Type="Terminals.Data.SQLPersistance.BeforeConnectExecute" Role="BeforeConnectExecute" Multiplicity="0..1" />
+          <End Type="Terminals.Data.DB.Favorite" Role="Favorites" Multiplicity="1" />
+          <End Type="Terminals.Data.DB.BeforeConnectExecute" Role="BeforeConnectExecute" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Favorites">
               <PropertyRef Name="Id" />
@@ -561,20 +561,20 @@
           
         </Association>
         <Association Name="FK_Credentials_CredentialBase">
-          <End Type="Terminals.Data.SQLPersistance.CredentialBase" Role="CredentialBase" Multiplicity="1" />
-          <End Type="Terminals.Data.SQLPersistance.CredentialSet" Role="Credentials" Multiplicity="*" />
+          <End Type="Terminals.Data.DB.CredentialBase" Role="CredentialBase" Multiplicity="1" />
+          <End Type="Terminals.Data.DB.CredentialSet" Role="Credentials" Multiplicity="0..1" />
         </Association>
         <Association Name="FK_Security_CredentialBase">
-          <End Type="Terminals.Data.SQLPersistance.CredentialBase" Role="CredentialBase" Multiplicity="0..1" />
-          <End Type="Terminals.Data.SQLPersistance.Security" Role="Security" Multiplicity="*" />
+          <End Type="Terminals.Data.DB.CredentialBase" Role="CredentialBase" Multiplicity="0..1" />
+          <End Type="Terminals.Data.DB.Security" Role="Security" Multiplicity="*" />
         </Association>
         <Association Name="FK_Security_Credentials">
-          <End Type="Terminals.Data.SQLPersistance.CredentialSet" Role="Credentials" Multiplicity="0..1" />
-          <End Type="Terminals.Data.SQLPersistance.Security" Role="Security" Multiplicity="*" />
+          <End Type="Terminals.Data.DB.CredentialSet" Role="Credentials" Multiplicity="0..1" />
+          <End Type="Terminals.Data.DB.Security" Role="Security" Multiplicity="*" />
         </Association>
         <Association Name="FK_DisplayOptions_Favorites">
-          <End Type="Terminals.Data.SQLPersistance.Favorite" Role="Favorites" Multiplicity="1" />
-          <End Type="Terminals.Data.SQLPersistance.DisplayOptions" Role="DisplayOptions" Multiplicity="0..1" />
+          <End Type="Terminals.Data.DB.Favorite" Role="Favorites" Multiplicity="1" />
+          <End Type="Terminals.Data.DB.DisplayOptions" Role="DisplayOptions" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Favorites">
               <PropertyRef Name="Id" />
@@ -586,8 +586,8 @@
           
         </Association>
         <Association Name="FK_History_Favorites">
-          <End Type="Terminals.Data.SQLPersistance.Favorite" Role="Favorites" Multiplicity="1" />
-          <End Type="Terminals.Data.SQLPersistance.HistoryItem" Role="History" Multiplicity="*" />
+          <End Type="Terminals.Data.DB.Favorite" Role="Favorites" Multiplicity="1" />
+          <End Type="Terminals.Data.DB.HistoryItem" Role="History" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Favorites">
               <PropertyRef Name="Id" />
@@ -599,8 +599,8 @@
           
         </Association>
         <Association Name="FK_Security_Favorites">
-          <End Type="Terminals.Data.SQLPersistance.Favorite" Role="Favorites" Multiplicity="1" />
-          <End Type="Terminals.Data.SQLPersistance.Security" Role="Security" Multiplicity="0..1" />
+          <End Type="Terminals.Data.DB.Favorite" Role="Favorites" Multiplicity="1" />
+          <End Type="Terminals.Data.DB.Security" Role="Security" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Favorites">
               <PropertyRef Name="Id" />
@@ -612,12 +612,12 @@
           
         </Association>
         <Association Name="FK_Groups_Groups">
-          <End Type="Terminals.Data.SQLPersistance.Group" Role="Groups" Multiplicity="0..1" />
-          <End Type="Terminals.Data.SQLPersistance.Group" Role="Groups1" Multiplicity="*" />
+          <End Type="Terminals.Data.DB.Group" Role="Groups" Multiplicity="0..1" />
+          <End Type="Terminals.Data.DB.Group" Role="Groups1" Multiplicity="*" />
         </Association>
         <Association Name="FavoritesInGroup">
-          <End Type="Terminals.Data.SQLPersistance.Favorite" Role="Favorites" Multiplicity="*" />
-          <End Type="Terminals.Data.SQLPersistance.Group" Role="Groups" Multiplicity="*" />
+          <End Type="Terminals.Data.DB.Favorite" Role="Favorites" Multiplicity="*" />
+          <End Type="Terminals.Data.DB.Group" Role="Groups" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -628,24 +628,24 @@
         <Alias Key="Target" Value="Model1.Store" />
         <EntityContainerMapping CdmEntityContainer="DataBase" StorageEntityContainer="Model1StoreContainer">
           <EntitySetMapping Name="BeforeConnectExecute">
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.BeforeConnectExecute">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.BeforeConnectExecute">
               <MappingFragment StoreEntitySet="BeforeConnectExecute">
                 <ScalarProperty Name="WaitForExit" ColumnName="WaitForExit" />
                 <ScalarProperty Name="InitialDirectory" ColumnName="InitialDirectory" />
                 <ScalarProperty Name="CommandArguments" ColumnName="CommandArguments" />
                 <ScalarProperty Name="Command" ColumnName="Command" />
-                <ScalarProperty Name="Enabled" ColumnName="Enabled" />
+                <ScalarProperty Name="Execute" ColumnName="Enabled" />
                 <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
               </MappingFragment>
             </EntityTypeMapping>
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.BeforeConnectExecute">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.BeforeConnectExecute">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertBeforeConnectExecute">
                   <ScalarProperty Name="WaitForExit" ParameterName="WaitForExit" />
                   <ScalarProperty Name="InitialDirectory" ParameterName="InitialDirectory" />
                   <ScalarProperty Name="CommandArguments" ParameterName="CommandArguments" />
                   <ScalarProperty Name="Command" ParameterName="Command" />
-                  <ScalarProperty Name="Enabled" ParameterName="Enabled" />
+                  <ScalarProperty Name="Execute" ParameterName="Enabled" />
                   <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" />
                 </InsertFunction>
                 <UpdateFunction FunctionName="Model1.Store.UpdateBeforeConnectExecute">
@@ -653,7 +653,7 @@
                   <ScalarProperty Name="InitialDirectory" ParameterName="InitialDirectory" Version="Current" />
                   <ScalarProperty Name="CommandArguments" ParameterName="CommandArguments" Version="Current" />
                   <ScalarProperty Name="Command" ParameterName="Command" Version="Current" />
-                  <ScalarProperty Name="Enabled" ParameterName="Enabled" Version="Current" />
+                  <ScalarProperty Name="Execute" ParameterName="Enabled" Version="Current" />
                   <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" Version="Current" />
                 </UpdateFunction>
                 <DeleteFunction FunctionName="Model1.Store.DeleteBeforeConnectExecute">
@@ -663,7 +663,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CredentialBase">
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.CredentialBase">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.CredentialBase">
               <MappingFragment StoreEntitySet="CredentialBase">
                 <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
                 <ScalarProperty Name="Domain" ColumnName="Domain" />
@@ -671,7 +671,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.CredentialBase">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.CredentialBase">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertCredentialBase">
                   <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" />
@@ -692,13 +692,13 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Credentials">
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.CredentialSet">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.CredentialSet">
               <MappingFragment StoreEntitySet="Credentials">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.CredentialSet">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.CredentialSet">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertCredentials">
                   <AssociationEnd AssociationSet="FK_Credentials_CredentialBase" From="Credentials" To="CredentialBase">
@@ -724,7 +724,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DisplayOptions">
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.DisplayOptions">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DisplayOptions">
               <MappingFragment StoreEntitySet="DisplayOptions">
                 <ScalarProperty Name="Colors" ColumnName="Colors" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
@@ -733,7 +733,7 @@
                 <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
               </MappingFragment>
             </EntityTypeMapping>
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.DisplayOptions">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.DisplayOptions">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertDisplayOptions">
                   <ScalarProperty Name="Colors" ParameterName="Colors" />
@@ -756,7 +756,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Favorites">
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.Favorite">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.Favorite">
               <MappingFragment StoreEntitySet="Favorites">
                 <ScalarProperty Name="ProtocolProperties" ColumnName="ProtocolProperties" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
@@ -769,7 +769,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.Favorite">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.Favorite">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertFavorite">
                   <ScalarProperty Name="ProtocolProperties" ParameterName="ProtocolProperties" />
@@ -800,13 +800,13 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Groups">
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.Group">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.Group">
               <MappingFragment StoreEntitySet="Groups">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.Group">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.Group">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertGroup">
                   <AssociationEnd AssociationSet="FK_Groups_Groups" From="Groups1" To="Groups">
@@ -832,14 +832,14 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="History">
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.HistoryItem">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.HistoryItem">
               <MappingFragment StoreEntitySet="History">
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="Date" ColumnName="Date" />
                 <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
               </MappingFragment>
             </EntityTypeMapping>
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.HistoryItem">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.HistoryItem">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertHistory">
                   <ScalarProperty Name="UserName" ParameterName="UserName" />
@@ -859,12 +859,12 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Security">
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.Security">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.Security">
               <MappingFragment StoreEntitySet="Security">
                 <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
               </MappingFragment>
             </EntityTypeMapping>
-            <EntityTypeMapping TypeName="Terminals.Data.SQLPersistance.Security">
+            <EntityTypeMapping TypeName="Terminals.Data.DB.Security">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertSecurity">
                   <AssociationEnd AssociationSet="FK_Security_CredentialBase" From="Security" To="CredentialBase">
@@ -896,7 +896,7 @@
               </ModificationFunctionMapping>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="FK_BeforeConnectExecute_BeforeConnectExecute" TypeName="Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute" StoreEntitySet="BeforeConnectExecute">
+          <AssociationSetMapping Name="FK_BeforeConnectExecute_BeforeConnectExecute" TypeName="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute" StoreEntitySet="BeforeConnectExecute">
             <EndProperty Name="BeforeConnectExecute">
               <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
             </EndProperty>
@@ -904,15 +904,16 @@
               <ScalarProperty Name="Id" ColumnName="FavoriteId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Credentials_CredentialBase" TypeName="Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase" StoreEntitySet="Credentials">
+          <AssociationSetMapping Name="FK_Credentials_CredentialBase" TypeName="Terminals.Data.DB.FK_Credentials_CredentialBase" StoreEntitySet="Credentials">
             <EndProperty Name="Credentials">
               <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
             <EndProperty Name="CredentialBase">
               <ScalarProperty Name="Id" ColumnName="CredentialsBaseId" />
             </EndProperty>
+            <Condition ColumnName="CredentialsBaseId" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Security_CredentialBase" TypeName="Terminals.Data.SQLPersistance.FK_Security_CredentialBase" StoreEntitySet="Security">
+          <AssociationSetMapping Name="FK_Security_CredentialBase" TypeName="Terminals.Data.DB.FK_Security_CredentialBase" StoreEntitySet="Security">
             <EndProperty Name="Security">
               <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
             </EndProperty>
@@ -921,7 +922,7 @@
             </EndProperty>
             <Condition ColumnName="CredentialBaseId" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Security_Credentials" TypeName="Terminals.Data.SQLPersistance.FK_Security_Credentials" StoreEntitySet="Security">
+          <AssociationSetMapping Name="FK_Security_Credentials" TypeName="Terminals.Data.DB.FK_Security_Credentials" StoreEntitySet="Security">
             <EndProperty Name="Security">
               <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
             </EndProperty>
@@ -930,7 +931,7 @@
             </EndProperty>
             <Condition ColumnName="CredentialId" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_DisplayOptions_Favorites" TypeName="Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites" StoreEntitySet="DisplayOptions">
+          <AssociationSetMapping Name="FK_DisplayOptions_Favorites" TypeName="Terminals.Data.DB.FK_DisplayOptions_Favorites" StoreEntitySet="DisplayOptions">
             <EndProperty Name="DisplayOptions">
               <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
             </EndProperty>
@@ -938,7 +939,7 @@
               <ScalarProperty Name="Id" ColumnName="FavoriteId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_History_Favorites" TypeName="Terminals.Data.SQLPersistance.FK_History_Favorites" StoreEntitySet="History">
+          <AssociationSetMapping Name="FK_History_Favorites" TypeName="Terminals.Data.DB.FK_History_Favorites" StoreEntitySet="History">
             <EndProperty Name="History">
               <ScalarProperty Name="Date" ColumnName="Date" />
               <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
@@ -947,7 +948,7 @@
               <ScalarProperty Name="Id" ColumnName="FavoriteId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Security_Favorites" TypeName="Terminals.Data.SQLPersistance.FK_Security_Favorites" StoreEntitySet="Security">
+          <AssociationSetMapping Name="FK_Security_Favorites" TypeName="Terminals.Data.DB.FK_Security_Favorites" StoreEntitySet="Security">
             <EndProperty Name="Security">
               <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
             </EndProperty>
@@ -955,7 +956,7 @@
               <ScalarProperty Name="Id" ColumnName="FavoriteId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_Groups_Groups" TypeName="Terminals.Data.SQLPersistance.FK_Groups_Groups" StoreEntitySet="Groups">
+          <AssociationSetMapping Name="FK_Groups_Groups" TypeName="Terminals.Data.DB.FK_Groups_Groups" StoreEntitySet="Groups">
             <EndProperty Name="Groups1">
               <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
@@ -964,7 +965,7 @@
             </EndProperty>
             <Condition ColumnName="ParentId" IsNull="false" />
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FavoritesInGroup" TypeName="Terminals.Data.SQLPersistance.FavoritesInGroup" StoreEntitySet="FavoritesInGroup">
+          <AssociationSetMapping Name="FavoritesInGroup" TypeName="Terminals.Data.DB.FavoritesInGroup" StoreEntitySet="FavoritesInGroup">
             <EndProperty Name="Groups">
               <ScalarProperty Name="Id" ColumnName="GroupId" />
             </EndProperty>
@@ -993,51 +994,51 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="Model1" >
-        <EntityTypeShape EntityType="Terminals.Data.SQLPersistance.BeforeConnectExecute" Width="2" PointX="4.5" PointY="4.125" Height="2.0853483072916674" />
-        <EntityTypeShape EntityType="Terminals.Data.SQLPersistance.CredentialBase" Width="1.5" PointX="0.625" PointY="4" Height="1.9210009765624996" />
-        <EntityTypeShape EntityType="Terminals.Data.SQLPersistance.CredentialSet" Width="1.5" PointX="0.5" PointY="0.5" Height="1.9210009765625031" />
-        <EntityTypeShape EntityType="Terminals.Data.SQLPersistance.DisplayOptions" Width="1.5" PointX="6.875" PointY="4.125" Height="1.9210009765625031" />
-        <EntityTypeShape EntityType="Terminals.Data.SQLPersistance.Favorite" Width="1.75" PointX="4.625" PointY="0.5" Height="3.2357796223958388" />
-        <EntityTypeShape EntityType="Terminals.Data.SQLPersistance.Group" Width="1.5" PointX="6.875" PointY="0.5" Height="1.7566536458333388" />
-        <EntityTypeShape EntityType="Terminals.Data.SQLPersistance.HistoryItem" Width="1.5" PointX="2.625" PointY="0.5" Height="1.5923063151041674" />
-        <EntityTypeShape EntityType="Terminals.Data.SQLPersistance.Security" Width="1.5" PointX="2.625" PointY="4.125" Height="1.5923063151041674" />
-        <AssociationConnector Association="Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute" >
+        <EntityTypeShape EntityType="Terminals.Data.DB.BeforeConnectExecute" Width="2" PointX="4.5" PointY="4.125" Height="2.0853483072916674" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.CredentialBase" Width="1.5" PointX="0.625" PointY="4" Height="1.9210009765624996" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.CredentialSet" Width="1.5" PointX="0.5" PointY="0.5" Height="1.9210009765625031" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.DisplayOptions" Width="1.5" PointX="6.875" PointY="4.125" Height="1.9210009765625031" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.Favorite" Width="1.75" PointX="4.625" PointY="0.5" Height="3.2357796223958388" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.Group" Width="1.5" PointX="6.875" PointY="0.5" Height="1.7566536458333388" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.HistoryItem" Width="1.5" PointX="2.625" PointY="0.5" Height="1.5923063151041674" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.Security" Width="1.5" PointX="2.625" PointY="4.125" Height="1.5923063151041674" />
+        <AssociationConnector Association="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute" >
           <ConnectorPoint PointX="5.5" PointY="3.7357796223958388" />
           <ConnectorPoint PointX="5.5" PointY="4.125" />
         </AssociationConnector>
-        <AssociationConnector Association="Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase" >
+        <AssociationConnector Association="Terminals.Data.DB.FK_Credentials_CredentialBase" >
           <ConnectorPoint PointX="1.3125" PointY="4" />
           <ConnectorPoint PointX="1.3125" PointY="2.4210009765625031" />
         </AssociationConnector>
-        <AssociationConnector Association="Terminals.Data.SQLPersistance.FK_Security_CredentialBase" >
+        <AssociationConnector Association="Terminals.Data.DB.FK_Security_CredentialBase" >
           <ConnectorPoint PointX="2.125" PointY="4.9211531575520837" />
           <ConnectorPoint PointX="2.625" PointY="4.9211531575520837" />
         </AssociationConnector>
-        <AssociationConnector Association="Terminals.Data.SQLPersistance.FK_Security_Credentials" ManuallyRouted="true" >
+        <AssociationConnector Association="Terminals.Data.DB.FK_Security_Credentials" ManuallyRouted="true" >
           <ConnectorPoint PointX="2" PointY="2.082824015856878" />
           <ConnectorPoint PointX="2" PointY="3.2589729817708344" />
           <ConnectorPoint PointX="2.6906055530664337" PointY="3.2589729817708344" />
           <ConnectorPoint PointX="2.6906055530664337" PointY="4.125" />
         </AssociationConnector>
-        <AssociationConnector Association="Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites" >
+        <AssociationConnector Association="Terminals.Data.DB.FK_DisplayOptions_Favorites" >
           <ConnectorPoint PointX="6.375" PointY="3.7357796223958388" />
           <ConnectorPoint PointX="6.875" PointY="4.125" />
         </AssociationConnector>
-        <AssociationConnector Association="Terminals.Data.SQLPersistance.FK_History_Favorites" >
+        <AssociationConnector Association="Terminals.Data.DB.FK_History_Favorites" >
           <ConnectorPoint PointX="4.625" PointY="1.2961531575520837" />
           <ConnectorPoint PointX="4.125" PointY="1.2961531575520837" />
         </AssociationConnector>
-        <AssociationConnector Association="Terminals.Data.SQLPersistance.FK_Security_Favorites" >
+        <AssociationConnector Association="Terminals.Data.DB.FK_Security_Favorites" >
           <ConnectorPoint PointX="4.625" PointY="3.7357796223958388" />
           <ConnectorPoint PointX="4.125" PointY="4.125" />
         </AssociationConnector>
-        <AssociationConnector Association="Terminals.Data.SQLPersistance.FK_Groups_Groups" >
+        <AssociationConnector Association="Terminals.Data.DB.FK_Groups_Groups" >
           <ConnectorPoint PointX="7.4069230769230776" PointY="2.2566536458333388" />
           <ConnectorPoint PointX="7.4069230769230776" PointY="2.5066536458333388" />
           <ConnectorPoint PointX="7.8534615384615387" PointY="2.5066536458333388" />
           <ConnectorPoint PointX="7.8534615384615387" PointY="2.2566536458333388" />
         </AssociationConnector>
-        <AssociationConnector Association="Terminals.Data.SQLPersistance.FavoritesInGroup" >
+        <AssociationConnector Association="Terminals.Data.DB.FavoritesInGroup" >
           <ConnectorPoint PointX="6.375" PointY="1.3783268229166694" />
           <ConnectorPoint PointX="6.875" PointY="1.3783268229166694" />
         </AssociationConnector>

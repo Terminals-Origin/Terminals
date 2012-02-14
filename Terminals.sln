@@ -36,7 +36,7 @@ Global
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
 		SccProjectUniqueName1 = Terminals\\Terminals.csproj
-		SccProjectName1 = Terminals
+		SccProjectName1 = Terminals-v2.1
 		SccAuxPath1 = https://tfs.codeplex.com/tfs/TFS01
 		SccLocalPath1 = Terminals
 		SccProjectUniqueName2 = TabControl\\TabControl.csproj
@@ -72,7 +72,7 @@ Global
 		SccProjectName11 = SSHClient
 		SccLocalPath11 = SSHClient
 		SccProjectUniqueName12 = SetupTerminals\\SetupTerminals.vdproj
-		SccProjectName12 = SetupTerminals
+		SccProjectName12 = TerminalsSetup-v2.1
 		SccLocalPath12 = SetupTerminals
 		SccProjectUniqueName13 = TerminalsLauncher\\TerminalsLauncher.csproj
 		SccProjectName13 = TerminalsLauncher

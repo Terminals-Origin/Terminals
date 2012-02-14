@@ -36,11 +36,6 @@ namespace Terminals.Data
         {
         }
 
-        ISecurityOptions ISecurityOptions.Copy()
-        {
-            return Copy();
-        }
-
         internal SecurityOptions Copy()
         {
             return new SecurityOptions
@@ -59,33 +54,38 @@ namespace Terminals.Data
         ISecurityOptions ISecurityOptions.GetResolvedCredentials()
         {
             var result = new SecurityOptions();
-            var source = Persistance.Instance.Credentials[this.Credential];
+            var source = Persistance.Instance.Credentials[this.credential];
             ((ISecurityOptions)result).UpdateFromCredential(source);
-            result.UpdateFromDefaultValues();
+            UpdateFromDefaultValues(result);
             return result;
         }
 
         void ISecurityOptions.UpdateFromCredential(ICredentialSet source)
         {
+            UpdateFromCredential(source, this);
+        }
+
+        internal static void UpdateFromCredential(ICredentialSet source, ISecurityOptions target)
+        {
             if (source != null)
             {
-                this.credential = source.Id;
-                this.Domain = source.Domain;
-                this.UserName = source.UserName;
-                this.EncryptedPassword = source.EncryptedPassword;
+                target.Credential = source.Id;
+                target.Domain = source.Domain;
+                target.UserName = source.UserName;
+                target.EncryptedPassword = source.EncryptedPassword;
             }
         }
 
-        private void UpdateFromDefaultValues()
+        internal static void UpdateFromDefaultValues(ICredentialBase target)
         {
-            if (string.IsNullOrEmpty(this.Domain))
-                this.Domain = Settings.DefaultDomain;
+            if (string.IsNullOrEmpty(target.Domain))
+                target.Domain = Settings.DefaultDomain;
 
-            if (string.IsNullOrEmpty(this.UserName))
-                this.UserName = Settings.DefaultUsername;
+            if (string.IsNullOrEmpty(target.UserName))
+                target.UserName = Settings.DefaultUsername;
 
-            if (string.IsNullOrEmpty(this.Password))
-                this.Password = Settings.DefaultPassword;
+            if (string.IsNullOrEmpty(target.Password))
+                target.Password = Settings.DefaultPassword;
         }
     }
 }

@@ -194,6 +194,13 @@
     <Compile Include="CaptureManager\ImageFormatTypes.cs" />
     <Compile Include="Configuration\FileLocations.cs" />
     <Compile Include="Data\Credentials\CredentialBase.cs" />
+    <Compile Include="Data\DB\BeforeConnectExecute.cs" />
+    <Compile Include="Data\DB\Favorite.cs" />
+    <Compile Include="Data\DB\Favorites.cs" />
+    <Compile Include="Data\DB\DisplayOptions.cs" />
+    <Compile Include="Data\DB\Group.cs" />
+    <Compile Include="Data\DB\Security.cs" />
+    <Compile Include="Data\DB\SqlPersistance.cs" />
     <Compile Include="Data\Favorites\EmptyOptions.cs" />
     <Compile Include="Data\Interfaces\IBeforeConnectExecuteOptions.cs" />
     <Compile Include="Data\Interfaces\IDisplayOptions.cs" />

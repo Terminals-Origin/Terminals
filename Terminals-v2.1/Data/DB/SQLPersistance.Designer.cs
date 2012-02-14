@@ -9,18 +9,18 @@
 //------------------------------------------------------------------------------
 
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.SQLPersistance", "FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "BeforeConnectExecute", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.BeforeConnectExecute))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.SQLPersistance", "FK_Credentials_CredentialBase", "CredentialBase", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.CredentialBase), "Credentials", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.CredentialSet))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.SQLPersistance", "FK_Security_CredentialBase", "CredentialBase", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialBase), "Security", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Security))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.SQLPersistance", "FK_Security_Credentials", "Credentials", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialSet), "Security", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Security))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.SQLPersistance", "FK_DisplayOptions_Favorites", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "DisplayOptions", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.DisplayOptions))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.SQLPersistance", "FK_History_Favorites", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.HistoryItem))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.SQLPersistance", "FK_Security_Favorites", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "Security", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.Security))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.SQLPersistance", "FK_Groups_Groups", "Groups", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.Group), "Groups1", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.SQLPersistance", "FavoritesInGroup", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Favorite), "Groups", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.DB", "FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "BeforeConnectExecute", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.BeforeConnectExecute))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.DB", "FK_Credentials_CredentialBase", "CredentialBase", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.CredentialBase), "Credentials", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialSet))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "CredentialBase", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialBase), "Security", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Security))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_Credentials", "Credentials", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialSet), "Security", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Security))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.DB", "FK_DisplayOptions_Favorites", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "DisplayOptions", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.DisplayOptions))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.DB", "FK_History_Favorites", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "History", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.HistoryItem))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_Favorites", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "Security", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.Security))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Groups", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.Group), "Groups1", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("Terminals.Data.DB", "FavoritesInGroup", "Favorites", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Favorite), "Groups", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
 
 // Original file name:
-// Generation date: 8.2.2012 20:54:04
+// Generation date: 14.2.2012 0:31:26
 namespace Terminals.Data.DB
 {
     
@@ -256,12 +256,12 @@ namespace Terminals.Data.DB
         }
     }
     /// <summary>
-    /// There are no comments for Terminals.Data.SQLPersistance.BeforeConnectExecute in the schema.
+    /// There are no comments for Terminals.Data.DB.BeforeConnectExecute in the schema.
     /// </summary>
     /// <KeyProperties>
     /// FavoriteId
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="BeforeConnectExecute")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.DB", Name="BeforeConnectExecute")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
     internal partial class BeforeConnectExecute : global::System.Data.Objects.DataClasses.EntityObject
@@ -270,14 +270,14 @@ namespace Terminals.Data.DB
         /// Create a new BeforeConnectExecute object.
         /// </summary>
         /// <param name="favoriteId">Initial value of FavoriteId.</param>
-        /// <param name="enabled">Initial value of Enabled.</param>
+        /// <param name="execute">Initial value of Execute.</param>
         /// <param name="waitForExit">Initial value of WaitForExit.</param>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public static BeforeConnectExecute CreateBeforeConnectExecute(int favoriteId, bool enabled, bool waitForExit)
+        public static BeforeConnectExecute CreateBeforeConnectExecute(int favoriteId, bool execute, bool waitForExit)
         {
             BeforeConnectExecute beforeConnectExecute = new BeforeConnectExecute();
             beforeConnectExecute.FavoriteId = favoriteId;
-            beforeConnectExecute.Enabled = enabled;
+            beforeConnectExecute.Execute = execute;
             beforeConnectExecute.WaitForExit = waitForExit;
             return beforeConnectExecute;
         }
@@ -309,32 +309,32 @@ namespace Terminals.Data.DB
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnFavoriteIdChanged();
         /// <summary>
-        /// There are no comments for property Enabled in the schema.
+        /// There are no comments for property Execute in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(IsNullable=false)]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public bool Enabled
+        public bool Execute
         {
             get
             {
-                return this._Enabled;
+                return this._Execute;
             }
             set
             {
-                this.OnEnabledChanging(value);
-                this.ReportPropertyChanging("Enabled");
-                this._Enabled = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("Enabled");
-                this.OnEnabledChanged();
+                this.OnExecuteChanging(value);
+                this.ReportPropertyChanging("Execute");
+                this._Execute = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("Execute");
+                this.OnExecuteChanged();
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private bool _Enabled;
+        private bool _Execute;
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnEnabledChanging(bool value);
+        partial void OnExecuteChanging(bool value);
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnEnabledChanged();
+        partial void OnExecuteChanged();
         /// <summary>
         /// There are no comments for property Command in the schema.
         /// </summary>
@@ -446,7 +446,7 @@ namespace Terminals.Data.DB
         /// <summary>
         /// There are no comments for Favorite in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -455,11 +455,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites").Value = value;
             }
         }
         /// <summary>
@@ -472,24 +472,24 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites", value);
                 }
             }
         }
     }
     /// <summary>
-    /// There are no comments for Terminals.Data.SQLPersistance.CredentialBase in the schema.
+    /// There are no comments for Terminals.Data.DB.CredentialBase in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="CredentialBase")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.DB", Name="CredentialBase")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
     internal partial class CredentialBase : global::System.Data.Objects.DataClasses.EntityObject
@@ -616,29 +616,46 @@ namespace Terminals.Data.DB
         /// <summary>
         /// There are no comments for CredentialSet in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Credentials_CredentialBase", "Credentials")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Credentials_CredentialBase", "Credentials")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<CredentialSet> CredentialSet
+        public CredentialSet CredentialSet
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<CredentialSet>("Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase", "Credentials");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialSet>("Terminals.Data.DB.FK_Credentials_CredentialBase", "Credentials").Value;
+            }
+            set
+            {
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialSet>("Terminals.Data.DB.FK_Credentials_CredentialBase", "Credentials").Value = value;
+            }
+        }
+        /// <summary>
+        /// There are no comments for CredentialSet in the schema.
+        /// </summary>
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityReference<CredentialSet> CredentialSetReference
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialSet>("Terminals.Data.DB.FK_Credentials_CredentialBase", "Credentials");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<CredentialSet>("Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase", "Credentials", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CredentialSet>("Terminals.Data.DB.FK_Credentials_CredentialBase", "Credentials", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Security in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Security_CredentialBase", "Security")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "Security")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -647,24 +664,24 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Security>("Terminals.Data.SQLPersistance.FK_Security_CredentialBase", "Security");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Security>("Terminals.Data.DB.FK_Security_CredentialBase", "Security");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Security>("Terminals.Data.SQLPersistance.FK_Security_CredentialBase", "Security", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Security>("Terminals.Data.DB.FK_Security_CredentialBase", "Security", value);
                 }
             }
         }
     }
     /// <summary>
-    /// There are no comments for Terminals.Data.SQLPersistance.CredentialSet in the schema.
+    /// There are no comments for Terminals.Data.DB.CredentialSet in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="CredentialSet")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.DB", Name="CredentialSet")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
     internal partial class CredentialSet : global::System.Data.Objects.DataClasses.EntityObject
@@ -739,7 +756,7 @@ namespace Terminals.Data.DB
         /// <summary>
         /// There are no comments for CredentialBase in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Credentials_CredentialBase", "CredentialBase")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Credentials_CredentialBase", "CredentialBase")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -748,11 +765,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase", "CredentialBase").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Credentials_CredentialBase", "CredentialBase").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase", "CredentialBase").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Credentials_CredentialBase", "CredentialBase").Value = value;
             }
         }
         /// <summary>
@@ -765,20 +782,20 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase", "CredentialBase");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Credentials_CredentialBase", "CredentialBase");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CredentialBase>("Terminals.Data.SQLPersistance.FK_Credentials_CredentialBase", "CredentialBase", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Credentials_CredentialBase", "CredentialBase", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Security in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Security_Credentials", "Security")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_Credentials", "Security")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -787,24 +804,24 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Security>("Terminals.Data.SQLPersistance.FK_Security_Credentials", "Security");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Security>("Terminals.Data.DB.FK_Security_Credentials", "Security");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Security>("Terminals.Data.SQLPersistance.FK_Security_Credentials", "Security", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Security>("Terminals.Data.DB.FK_Security_Credentials", "Security", value);
                 }
             }
         }
     }
     /// <summary>
-    /// There are no comments for Terminals.Data.SQLPersistance.DisplayOptions in the schema.
+    /// There are no comments for Terminals.Data.DB.DisplayOptions in the schema.
     /// </summary>
     /// <KeyProperties>
     /// FavoriteId
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="DisplayOptions")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.DB", Name="DisplayOptions")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
     internal partial class DisplayOptions : global::System.Data.Objects.DataClasses.EntityObject
@@ -958,7 +975,7 @@ namespace Terminals.Data.DB
         /// <summary>
         /// There are no comments for Favorite in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_DisplayOptions_Favorites", "Favorites")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_DisplayOptions_Favorites", "Favorites")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -967,11 +984,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites", "Favorites").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_DisplayOptions_Favorites", "Favorites").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites", "Favorites").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_DisplayOptions_Favorites", "Favorites").Value = value;
             }
         }
         /// <summary>
@@ -984,24 +1001,24 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites", "Favorites");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_DisplayOptions_Favorites", "Favorites");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites", "Favorites", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.DB.FK_DisplayOptions_Favorites", "Favorites", value);
                 }
             }
         }
     }
     /// <summary>
-    /// There are no comments for Terminals.Data.SQLPersistance.Favorite in the schema.
+    /// There are no comments for Terminals.Data.DB.Favorite in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="Favorite")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.DB", Name="Favorite")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
     internal partial class Favorite : global::System.Data.Objects.DataClasses.EntityObject
@@ -1273,87 +1290,87 @@ namespace Terminals.Data.DB
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnProtocolPropertiesChanged();
         /// <summary>
-        /// There are no comments for BeforeConnectExecute in the schema.
+        /// There are no comments for ExecuteBeforeConnect in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_BeforeConnectExecute_BeforeConnectExecute", "BeforeConnectExecute")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_BeforeConnectExecute_BeforeConnectExecute", "BeforeConnectExecute")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public BeforeConnectExecute BeforeConnectExecute
+        public BeforeConnectExecute ExecuteBeforeConnect
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BeforeConnectExecute>("Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute", "BeforeConnectExecute").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BeforeConnectExecute>("Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute", "BeforeConnectExecute").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BeforeConnectExecute>("Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute", "BeforeConnectExecute").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BeforeConnectExecute>("Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute", "BeforeConnectExecute").Value = value;
             }
         }
         /// <summary>
-        /// There are no comments for BeforeConnectExecute in the schema.
+        /// There are no comments for ExecuteBeforeConnect in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<BeforeConnectExecute> BeforeConnectExecuteReference
+        public global::System.Data.Objects.DataClasses.EntityReference<BeforeConnectExecute> ExecuteBeforeConnectReference
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BeforeConnectExecute>("Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute", "BeforeConnectExecute");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<BeforeConnectExecute>("Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute", "BeforeConnectExecute");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<BeforeConnectExecute>("Terminals.Data.SQLPersistance.FK_BeforeConnectExecute_BeforeConnectExecute", "BeforeConnectExecute", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<BeforeConnectExecute>("Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute", "BeforeConnectExecute", value);
                 }
             }
         }
         /// <summary>
-        /// There are no comments for DisplayOptions in the schema.
+        /// There are no comments for Display in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_DisplayOptions_Favorites", "DisplayOptions")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_DisplayOptions_Favorites", "DisplayOptions")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public DisplayOptions DisplayOptions
+        public DisplayOptions Display
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<DisplayOptions>("Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites", "DisplayOptions").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<DisplayOptions>("Terminals.Data.DB.FK_DisplayOptions_Favorites", "DisplayOptions").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<DisplayOptions>("Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites", "DisplayOptions").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<DisplayOptions>("Terminals.Data.DB.FK_DisplayOptions_Favorites", "DisplayOptions").Value = value;
             }
         }
         /// <summary>
-        /// There are no comments for DisplayOptions in the schema.
+        /// There are no comments for Display in the schema.
         /// </summary>
         [global::System.ComponentModel.BrowsableAttribute(false)]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<DisplayOptions> DisplayOptionsReference
+        public global::System.Data.Objects.DataClasses.EntityReference<DisplayOptions> DisplayReference
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<DisplayOptions>("Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites", "DisplayOptions");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<DisplayOptions>("Terminals.Data.DB.FK_DisplayOptions_Favorites", "DisplayOptions");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<DisplayOptions>("Terminals.Data.SQLPersistance.FK_DisplayOptions_Favorites", "DisplayOptions", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<DisplayOptions>("Terminals.Data.DB.FK_DisplayOptions_Favorites", "DisplayOptions", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for History in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_History_Favorites", "History")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_History_Favorites", "History")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -1362,20 +1379,20 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<HistoryItem>("Terminals.Data.SQLPersistance.FK_History_Favorites", "History");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<HistoryItem>("Terminals.Data.DB.FK_History_Favorites", "History");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<HistoryItem>("Terminals.Data.SQLPersistance.FK_History_Favorites", "History", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<HistoryItem>("Terminals.Data.DB.FK_History_Favorites", "History", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Security in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Security_Favorites", "Security")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_Favorites", "Security")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -1384,11 +1401,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Security>("Terminals.Data.SQLPersistance.FK_Security_Favorites", "Security").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Security>("Terminals.Data.DB.FK_Security_Favorites", "Security").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Security>("Terminals.Data.SQLPersistance.FK_Security_Favorites", "Security").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Security>("Terminals.Data.DB.FK_Security_Favorites", "Security").Value = value;
             }
         }
         /// <summary>
@@ -1401,20 +1418,20 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Security>("Terminals.Data.SQLPersistance.FK_Security_Favorites", "Security");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Security>("Terminals.Data.DB.FK_Security_Favorites", "Security");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Security>("Terminals.Data.SQLPersistance.FK_Security_Favorites", "Security", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Security>("Terminals.Data.DB.FK_Security_Favorites", "Security", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Groups in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FavoritesInGroup", "Groups")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FavoritesInGroup", "Groups")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -1423,24 +1440,24 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Group>("Terminals.Data.SQLPersistance.FavoritesInGroup", "Groups");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Group>("Terminals.Data.DB.FavoritesInGroup", "Groups");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Group>("Terminals.Data.SQLPersistance.FavoritesInGroup", "Groups", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Group>("Terminals.Data.DB.FavoritesInGroup", "Groups", value);
                 }
             }
         }
     }
     /// <summary>
-    /// There are no comments for Terminals.Data.SQLPersistance.Group in the schema.
+    /// There are no comments for Terminals.Data.DB.Group in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="Group")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.DB", Name="Group")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
     internal partial class Group : global::System.Data.Objects.DataClasses.EntityObject
@@ -1515,7 +1532,7 @@ namespace Terminals.Data.DB
         /// <summary>
         /// There are no comments for ChildGroups in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Groups_Groups", "Groups1")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Groups1")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -1524,20 +1541,20 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups1");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups1");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups1", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups1", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for ParentGroup in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Groups_Groups", "Groups")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Groups")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -1546,11 +1563,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups").Value = value;
             }
         }
         /// <summary>
@@ -1563,20 +1580,20 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Group>("Terminals.Data.SQLPersistance.FK_Groups_Groups", "Groups", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Favorites in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FavoritesInGroup", "Favorites")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FavoritesInGroup", "Favorites")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -1585,25 +1602,25 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Favorite>("Terminals.Data.SQLPersistance.FavoritesInGroup", "Favorites");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<Favorite>("Terminals.Data.DB.FavoritesInGroup", "Favorites");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Favorite>("Terminals.Data.SQLPersistance.FavoritesInGroup", "Favorites", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<Favorite>("Terminals.Data.DB.FavoritesInGroup", "Favorites", value);
                 }
             }
         }
     }
     /// <summary>
-    /// There are no comments for Terminals.Data.SQLPersistance.HistoryItem in the schema.
+    /// There are no comments for Terminals.Data.DB.HistoryItem in the schema.
     /// </summary>
     /// <KeyProperties>
     /// FavoriteId
     /// Date
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="HistoryItem")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.DB", Name="HistoryItem")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
     internal partial class HistoryItem : global::System.Data.Objects.DataClasses.EntityObject
@@ -1705,7 +1722,7 @@ namespace Terminals.Data.DB
         /// <summary>
         /// There are no comments for Favorite in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_History_Favorites", "Favorites")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_History_Favorites", "Favorites")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -1714,11 +1731,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_History_Favorites", "Favorites").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_History_Favorites", "Favorites").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_History_Favorites", "Favorites").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_History_Favorites", "Favorites").Value = value;
             }
         }
         /// <summary>
@@ -1731,24 +1748,24 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_History_Favorites", "Favorites");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_History_Favorites", "Favorites");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_History_Favorites", "Favorites", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.DB.FK_History_Favorites", "Favorites", value);
                 }
             }
         }
     }
     /// <summary>
-    /// There are no comments for Terminals.Data.SQLPersistance.Security in the schema.
+    /// There are no comments for Terminals.Data.DB.Security in the schema.
     /// </summary>
     /// <KeyProperties>
     /// FavoriteId
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.SQLPersistance", Name="Security")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="Terminals.Data.DB", Name="Security")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
     internal partial class Security : global::System.Data.Objects.DataClasses.EntityObject
@@ -1794,7 +1811,7 @@ namespace Terminals.Data.DB
         /// <summary>
         /// There are no comments for CredentialBase in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Security_CredentialBase", "CredentialBase")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "CredentialBase")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -1803,11 +1820,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.SQLPersistance.FK_Security_CredentialBase", "CredentialBase").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.SQLPersistance.FK_Security_CredentialBase", "CredentialBase").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase").Value = value;
             }
         }
         /// <summary>
@@ -1820,20 +1837,20 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.SQLPersistance.FK_Security_CredentialBase", "CredentialBase");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CredentialBase>("Terminals.Data.SQLPersistance.FK_Security_CredentialBase", "CredentialBase", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for CredentialSet in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Security_Credentials", "Credentials")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_Credentials", "Credentials")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -1842,11 +1859,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialSet>("Terminals.Data.SQLPersistance.FK_Security_Credentials", "Credentials").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialSet>("Terminals.Data.DB.FK_Security_Credentials", "Credentials").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialSet>("Terminals.Data.SQLPersistance.FK_Security_Credentials", "Credentials").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialSet>("Terminals.Data.DB.FK_Security_Credentials", "Credentials").Value = value;
             }
         }
         /// <summary>
@@ -1859,20 +1876,20 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialSet>("Terminals.Data.SQLPersistance.FK_Security_Credentials", "Credentials");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<CredentialSet>("Terminals.Data.DB.FK_Security_Credentials", "Credentials");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CredentialSet>("Terminals.Data.SQLPersistance.FK_Security_Credentials", "Credentials", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<CredentialSet>("Terminals.Data.DB.FK_Security_Credentials", "Credentials", value);
                 }
             }
         }
         /// <summary>
         /// There are no comments for Favorite in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.SQLPersistance", "FK_Security_Favorites", "Favorites")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_Favorites", "Favorites")]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
@@ -1881,11 +1898,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_Security_Favorites", "Favorites").Value;
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_Security_Favorites", "Favorites").Value;
             }
             set
             {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_Security_Favorites", "Favorites").Value = value;
+                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_Security_Favorites", "Favorites").Value = value;
             }
         }
         /// <summary>
@@ -1898,13 +1915,13 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_Security_Favorites", "Favorites");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_Security_Favorites", "Favorites");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.SQLPersistance.FK_Security_Favorites", "Favorites", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.DB.FK_Security_Favorites", "Favorites", value);
                 }
             }
         }
