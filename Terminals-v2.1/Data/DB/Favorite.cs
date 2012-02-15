@@ -31,47 +31,58 @@ namespace Terminals.Data.DB
 
         List<IGroup> IFavorite.Groups
         {
-            get { return this.Groups.Cast<IGroup>().ToList(); }
+            get { return GetInvariantGroups(); }
+        }
+
+        private List<IGroup> GetInvariantGroups()
+        {
+            return this.Groups.Cast<IGroup>().ToList();
         }
 
         private ProtocolOptions protocolProperties;
-        ProtocolOptions IFavorite.ProtocolProperties
+        /// <summary>
+        /// Gets or sets the protocol specific container. This isnt a part of an entity,
+        /// because we are using lazy loading of this property and we dont want to cache
+        /// its xml persisted content.
+        /// </summary>
+        public ProtocolOptions ProtocolProperties
         {
             get
             {
-                DeserializeProperties();
+                if (this.protocolProperties == null) // expensive property lazy loading
+                    DeserializeProperties();
                 return this.protocolProperties;
             }
             set
             {
                 this.protocolProperties = value;
-                SerializeProperties(value);
+                SerializeProperties(value); // todo dont commit the protocol proerties immediately
             }
         }
 
         private void SerializeProperties(ProtocolOptions value)
         {
-            this.ProtocolProperties = Serialize.SerializeXMLAsString(value);
+            string serializedProperties = Serialize.SerializeXMLAsString(value);
+            var database = new DataBase();
+            //database.
         }
 
         private void DeserializeProperties()
         {
+            this.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(this.Protocol, new RdpOptions());
             try
             {
-                Type propertiesType = GetPropertiesTypeByProtocol();
-                if (this.protocolProperties == null)
-                    this.protocolProperties = Serialize.DeSerializeXML(this.ProtocolProperties, propertiesType) as ProtocolOptions;
-
+                using (var database = new DataBase())
+                {
+                    string serializedProperties = database.GetFavoriteProtocolProperties(this.Id).FirstOrDefault();
+                    this.protocolProperties =
+                        Serialize.DeSerializeXML(serializedProperties, this.protocolProperties.GetType()) as ProtocolOptions;
+                }
             }
-            catch
+            catch(Exception exception)
             {
-                this.protocolProperties = new RdpOptions();
+                Logging.Log.Error("Couldnt obtain protocol properties from database", exception);
             }
-        }
-
-        private Type GetPropertiesTypeByProtocol()
-        {
-            throw new NotImplementedException();
         }
 
         public string ToolBarIcon
@@ -82,7 +93,11 @@ namespace Terminals.Data.DB
 
         public string GroupNames
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                List<IGroup> groups = GetInvariantGroups();
+                return Data.Favorite.GroupsListToString(groups);
+            }
         }
 
         public IFavorite Copy()
@@ -100,24 +115,44 @@ namespace Terminals.Data.DB
             copy.ServerName = this.ServerName;
             copy.ToolBarIcon = this.ToolBarIcon;
 
-            copy.ProtocolProperties = this.ProtocolProperties;
+            copy.ProtocolProperties = this.ProtocolProperties.Copy();
 
             return copy; 
         }
 
+        public override String ToString()
+        {
+            return Data.Favorite.ToString(this);
+        }
+
         public string GetToolTipText()
         {
-           return Terminals.Data.Favorite.GetToolTipText(this);
+           return Data.Favorite.GetToolTipText(this);
         }
 
         public int CompareByDefaultSorting(IFavorite target)
         {
-            throw new NotImplementedException();
+            return Data.Favorite.CompareByDefaultSorting(this, target);
         }
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            throw new NotImplementedException();
+            this.Security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+            Data.Favorite.UpdatePasswordsInProtocolProperties(this.protocolProperties, newKeyMaterial);
+        }
+
+        public override bool Equals(object favorite)
+        {
+            Favorite oponent = favorite as Favorite;
+            if (oponent == null)
+                return false;
+
+            return this.Id.Equals(oponent.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
         }
     }
 }

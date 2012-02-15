@@ -50,7 +50,7 @@ namespace Terminals.Data
             set
             {
                 protocol = value;
-                UpdateProtocolPropertiesByProtocol();
+                this.protocolProperties = UpdateProtocolPropertiesByProtocol(this.protocol, this.protocolProperties);
             }
         }
 
@@ -150,43 +150,37 @@ namespace Terminals.Data
         /// <summary>
         /// Explicit call of update properties container depending on selected protocol.
         /// </summary>
-        private void UpdateProtocolPropertiesByProtocol()
+        internal static ProtocolOptions UpdateProtocolPropertiesByProtocol(string newProtocol, ProtocolOptions currentOptions)
         {
-            switch (this.protocol) // Dont call this in property setter, because of serializer
+            switch (newProtocol) // Dont call this in property setter, because of serializer
             {
                 case ConnectionManager.VNC:
-                    SwitchPropertiesIfNotTheSameType<VncOptions>();
-                    break;
+                    return SwitchPropertiesIfNotTheSameType<VncOptions>(currentOptions);
                 case ConnectionManager.VMRC:
-                    SwitchPropertiesIfNotTheSameType<VMRCOptions>();
-                    break;
+                    return SwitchPropertiesIfNotTheSameType<VMRCOptions>(currentOptions);
                 case ConnectionManager.TELNET:
-                    SwitchPropertiesIfNotTheSameType<ConsoleOptions>();
-                    break;
+                    return SwitchPropertiesIfNotTheSameType<ConsoleOptions>(currentOptions);
                 case ConnectionManager.SSH:
-                    SwitchPropertiesIfNotTheSameType<SshOptions>();
-                    break;
+                    return SwitchPropertiesIfNotTheSameType<SshOptions>(currentOptions);
                 case ConnectionManager.RDP:
-                    SwitchPropertiesIfNotTheSameType<RdpOptions>();
-                    break;
+                    return SwitchPropertiesIfNotTheSameType<RdpOptions>(currentOptions);
                 case ConnectionManager.ICA_CITRIX:
-                    SwitchPropertiesIfNotTheSameType<ICAOptions>();
-                    break;
+                    return SwitchPropertiesIfNotTheSameType<ICAOptions>(currentOptions);
                 case ConnectionManager.HTTP:
                 case ConnectionManager.HTTPS:
-                    SwitchPropertiesIfNotTheSameType<WebOptions>();
-                    break;
+                    return SwitchPropertiesIfNotTheSameType<WebOptions>(currentOptions);
                 default:
-                    this.protocolProperties = new EmptyOptions();
-                    break;
+                    return new EmptyOptions();
             }
         }
 
-        private void SwitchPropertiesIfNotTheSameType<TOptions>()
+        private static ProtocolOptions SwitchPropertiesIfNotTheSameType<TOptions>(ProtocolOptions currentOptions)
             where TOptions: ProtocolOptions
         {
-            if (!(this.protocolProperties is TOptions)) // prevent to reset proeprties
-                this.protocolProperties = Activator.CreateInstance<TOptions>();
+            if (!(currentOptions is TOptions)) // prevent to reset proeprties
+                return Activator.CreateInstance<TOptions>();
+
+            return currentOptions;
         }
 
         private string notes;
@@ -207,9 +201,15 @@ namespace Terminals.Data
         {
             get
             {
-                var groupNames = GetGroups(this).Select(group => group.Name).ToArray();
-                return string.Join(",", groupNames);
+                List<IGroup> groups = GetGroups(this);
+                return GroupsListToString(groups);
             }
+        }
+
+        internal static string GroupsListToString(List<IGroup> groups)
+        {
+            var groupNames = groups.Select(group => @group.Name).ToArray();
+            return string.Join(",", groupNames);
         }
 
         private static String EncodeTo64(String toEncode)
@@ -234,12 +234,17 @@ namespace Terminals.Data
 
         public override String ToString()
         {
-            string domain = this.security.Domain;
+            return ToString(this);
+        }
+
+        internal static string ToString(IFavorite favorite)
+        {
+            string domain = favorite.Security.Domain;
             if (!String.IsNullOrEmpty(domain))
                 domain += "\\";
 
             return String.Format(@"Favorite:{0}({1})={2}{3}:{4}",
-                this.Name, this.Protocol, domain, this.ServerName, this.Port);
+                                 favorite.Name, favorite.Protocol, domain, favorite.ServerName, favorite.Port);
         }
 
         public String GetToolTipText()
@@ -255,17 +260,24 @@ namespace Terminals.Data
 
             if (Settings.ShowFullInformationToolTips)
             {
-                var rdp = selected.ProtocolProperties as RdpOptions;
-                bool console = false;
-                if (rdp != null)
-                    console = rdp.ConnectToConsole;
-
-                List<IGroup> groups = GetGroups(selected);
-                toolTip += String.Format("Groups: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
-                    Environment.NewLine, groups, console, selected.Notes);
+                var extendedToolTip = CreateExtendedToolTip(selected);
+                toolTip += extendedToolTip;
             }
 
             return toolTip;
+        }
+
+        private static string CreateExtendedToolTip(IFavorite selected)
+        {
+            var rdp = selected.ProtocolProperties as RdpOptions;
+            bool console = false;
+            if (rdp != null)
+                console = rdp.ConnectToConsole;
+
+            List<IGroup> groups = GetGroups(selected);
+            string extendedToolTip = String.Format("Groups: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
+                                                   Environment.NewLine, groups, console, selected.Notes);
+            return extendedToolTip;
         }
 
         /// <summary>
@@ -299,14 +311,19 @@ namespace Terminals.Data
         /// <returns>result of String CompareTo method</returns>
         int IFavorite.CompareByDefaultSorting(IFavorite target)
         {
+            return CompareByDefaultSorting(this, target);
+        }
+
+        internal static int CompareByDefaultSorting(IFavorite source, IFavorite target)
+        {
             switch (Settings.DefaultSortProperty)
             {
                 case SortProperties.ServerName:
-                    return this.ServerName.CompareTo(target.ServerName);
+                    return source.ServerName.CompareTo(target.ServerName);
                 case SortProperties.Protocol:
-                    return this.Protocol.CompareTo(target.Protocol);
+                    return source.Protocol.CompareTo(target.Protocol);
                 case SortProperties.ConnectionName:
-                    return this.Name.CompareTo(target.Name);
+                    return source.Name.CompareTo(target.Name);
                 default:
                     return -1;
             }
@@ -315,7 +332,12 @@ namespace Terminals.Data
         void IFavorite.UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
             this.security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
-            RdpOptions rdpOptions = this.ProtocolProperties as RdpOptions;
+            UpdatePasswordsInProtocolProperties(this.protocolProperties, newKeyMaterial);
+        }
+
+        internal static void UpdatePasswordsInProtocolProperties(ProtocolOptions protocolProperties, string newKeyMaterial)
+        {
+            RdpOptions rdpOptions = protocolProperties as RdpOptions;
             if (rdpOptions != null)
             {
                 SecurityOptions tsGatewaySecurity = rdpOptions.TsGateway.Security;

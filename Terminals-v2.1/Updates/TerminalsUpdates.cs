@@ -9,6 +9,13 @@
 //------------------------------------------------------------------------------
 
 using System.Xml.Serialization;
+namespace Terminals.Updates
+{
+}
+
+namespace Terminals.Updates
+{
+}
 
 /// <remarks/>
 [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "2.0.50727.42")]
