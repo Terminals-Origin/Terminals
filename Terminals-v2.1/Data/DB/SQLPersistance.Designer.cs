@@ -277,7 +277,7 @@ namespace Terminals.Data.DB
         /// No Metadata Documentation available.
         /// </summary>
         /// <param name="favoriteId">No Metadata Documentation available.</param>
-        public ObjectResult<global::System.String> GetFavoriteProtocolProperties(Nullable<global::System.Int32> favoriteId)
+        public ObjectResult<string> GetFavoriteProtocolProperties(Nullable<int> favoriteId)
         {
             ObjectParameter favoriteIdParameter;
             if (favoriteId.HasValue)
@@ -286,10 +286,10 @@ namespace Terminals.Data.DB
             }
             else
             {
-                favoriteIdParameter = new ObjectParameter("FavoriteId", typeof(global::System.Int32));
+                favoriteIdParameter = new ObjectParameter("FavoriteId", typeof(Int32));
             }
     
-            return base.ExecuteFunction<global::System.String>("GetFavoriteProtocolProperties", favoriteIdParameter);
+            return base.ExecuteFunction<String>("GetFavoriteProtocolProperties", favoriteIdParameter);
         }
 
         #endregion

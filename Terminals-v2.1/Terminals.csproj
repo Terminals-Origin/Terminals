@@ -196,6 +196,7 @@
     <Compile Include="Configuration\FileLocations.cs" />
     <Compile Include="Data\Credentials\CredentialBase.cs" />
     <Compile Include="Data\DB\BeforeConnectExecute.cs" />
+    <Compile Include="Data\DB\DataBase.cs" />
     <Compile Include="Data\DB\Favorite.cs" />
     <Compile Include="Data\DB\Favorites.cs" />
     <Compile Include="Data\DB\DisplayOptions.cs" />

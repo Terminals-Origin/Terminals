@@ -14,6 +14,12 @@ namespace Terminals.Data.DB
             set { this.guid = value; }
         }
 
+        public Guid Guid
+        {
+            get { return this.guid; }
+            set { this.guid = value; }
+        }
+
         IBeforeConnectExecuteOptions IFavorite.ExecuteBeforeConnect
         {
             get { return this.ExecuteBeforeConnect; }
@@ -143,7 +149,7 @@ namespace Terminals.Data.DB
 
         public override bool Equals(object favorite)
         {
-            Favorite oponent = favorite as Favorite;
+            var oponent = favorite as Favorite;
             if (oponent == null)
                 return false;
 

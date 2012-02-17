@@ -188,8 +188,7 @@ namespace Terminals.Data
             if (!UpdateInCache(favorite))
                 return;
 
-            this.dispatcher.ReportFavoriteUpdated(favorite);
-            this.persistance.SaveImmediatelyIfRequested();
+            SaveAndReportFavoriteUpdate(favorite);
         }
 
         public void UpdateFavorite(IFavorite favorite, List<IGroup> newGroups)
@@ -198,6 +197,11 @@ namespace Terminals.Data
                 return;
 
             UpdateFavoriteInGroups(favorite, newGroups);
+            SaveAndReportFavoriteUpdate(favorite);
+        }
+
+        private void SaveAndReportFavoriteUpdate(IFavorite favorite)
+        {
             this.dispatcher.ReportFavoriteUpdated(favorite);
             this.persistance.SaveImmediatelyIfRequested();
         }
@@ -237,46 +241,64 @@ namespace Terminals.Data
 
         public void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential)
         {
+            ApplyCredentialsToFavorites(selectedFavorites, credential);
+            SaveAndReportFavoritesUpdate(selectedFavorites);
+        }
+
+        private void SaveAndReportFavoritesUpdate(List<IFavorite> selectedFavorites)
+        {
+            this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
+            this.persistance.SaveImmediatelyIfRequested();
+        }
+
+        internal static void ApplyCredentialsToFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential)
+        {
             foreach (IFavorite favorite in selectedFavorites)
             {
                 favorite.Security.Credential = credential.Id;
-                this.dispatcher.ReportFavoriteUpdated(favorite);
             }
-
-            this.persistance.SaveImmediatelyIfRequested();
         }
 
         public void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword)
         {
+            SetPasswordToFavorites(selectedFavorites, newPassword);
+            this.SaveAndReportFavoritesUpdate(selectedFavorites);
+        }
+
+        internal static void SetPasswordToFavorites(List<IFavorite> selectedFavorites, string newPassword)
+        {
             foreach (IFavorite favorite in selectedFavorites)
             {
                 favorite.Security.Password = newPassword;
-                this.dispatcher.ReportFavoriteUpdated(favorite);
             }
-
-            this.persistance.SaveImmediatelyIfRequested();
         }
 
         public void ApplyDomainNameToAllFavorites(List<IFavorite> selectedFavorites, string newDomainName)
         {
+            ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
+            this.SaveAndReportFavoritesUpdate(selectedFavorites);
+        }
+
+        internal static void ApplyDomainNameToFavorites(List<IFavorite> selectedFavorites, string newDomainName)
+        {
             foreach (IFavorite favorite in selectedFavorites)
             {
                 favorite.Security.Domain = newDomainName;
-                this.dispatcher.ReportFavoriteUpdated(favorite);
             }
-
-            this.persistance.SaveImmediatelyIfRequested();
         }
 
         public void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName)
         {
+            ApplyUserNameToFavorites(selectedFavorites, newUserName);
+            this.SaveAndReportFavoritesUpdate(selectedFavorites);
+        }
+
+        internal static void ApplyUserNameToFavorites(List<IFavorite> selectedFavorites, string newUserName)
+        {
             foreach (IFavorite favorite in selectedFavorites)
             {
-                favorite.Security.Domain = newUserName;
-                this.dispatcher.ReportFavoriteUpdated(favorite);
+                favorite.Security.UserName = newUserName;
             }
-
-            this.persistance.SaveImmediatelyIfRequested();
         }
 
         #endregion

@@ -12,8 +12,8 @@ namespace Terminals.Data
             try
             {
                 // todo REFACTORING choose and initialize persistance type defined by settings
-                this.persistance = new FilePersistance();
-                // this.persistance = new SqlPersistance();
+                // this.persistance = new FilePersistance();
+                this.persistance = new SqlPersistance();
             }
             catch (Exception exception)
             {

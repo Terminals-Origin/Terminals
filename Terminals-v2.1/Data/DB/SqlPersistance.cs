@@ -10,7 +10,7 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class SqlPersistance : IPersistance
     {
-        internal DataBase Database { get; private set; }
+      internal DataBase Database { get; private set; }
 
         public IFavorites Favorites
         {
@@ -41,25 +41,8 @@ namespace Terminals.Data.DB
 
         internal SqlPersistance()
         {
-            // TODO Assign custom connection string from settings (Jiri Pokorny, 13.02.2012)
-            string connectionString = BuildConnectionString();
-            this.Database = new DataBase(connectionString);
+            this.Database = DataBase.CreateDatabaseInstance();
             this.Dispatcher = new DataDispatcher();
-        }
-
-        private const string developmentConnectionString = @"Data Source=.\SQLEXPRESS;AttachDbFilename=.\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
-        private const string metadata = @"res://*/Data.DB.SQLPersistance.csdl|res://*/Data.DB.SQLPersistance.ssdl|res://*/Data.DB.SQLPersistance.msl";
-
-        private string BuildConnectionString()
-        {
-            var connectionBuilder = new EntityConnectionStringBuilder
-                                        {
-                                            Provider = "System.Data.SqlClient",
-                                            ProviderConnectionString = developmentConnectionString,
-                                            Metadata = metadata
-                                        };
-
-            return connectionBuilder.ToString();
         }
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
@@ -69,12 +52,12 @@ namespace Terminals.Data.DB
 
         public void StartDelayedUpdate()
         {
-            throw new NotImplementedException();
+            this.Database.StartDelayedUpdate();
         }
 
         public void SaveAndFinishDelayedUpdate()
         {
-            throw new NotImplementedException();
+            this.Database.SaveAndFinishDelayedUpdate();
         }
     }
 }
