@@ -1,4 +1,6 @@
-﻿using System.Data.EntityClient;
+﻿using System;
+using System.Data.EntityClient;
+using System.Linq;
 
 namespace Terminals.Data.DB
 {
@@ -46,6 +48,12 @@ namespace Terminals.Data.DB
                 // todo Add protection against concurent updates
                 this.SaveChanges();
             }
+        }
+
+        internal Favorite GetFavoriteByGuid(Guid favoriteId)
+        {
+            return this.Favorites
+                .FirstOrDefault(favorite => favorite.Guid == favoriteId);
         }
     }
 }

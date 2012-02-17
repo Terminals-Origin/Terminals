@@ -10,9 +10,9 @@ namespace Terminals.Data
     internal interface IGroup
     {
         /// <summary>
-        /// Gets or sets the unique identifier of the group.
+        /// Gets the unique identifier of the group.
         /// </summary>
-        Guid Id { get; set; }
+        Guid Id { get; }
 
         /// <summary>
         /// Gets or sets the unique identifier of group in which this group is listed.

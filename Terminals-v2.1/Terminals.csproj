@@ -201,6 +201,7 @@
     <Compile Include="Data\DB\Favorites.cs" />
     <Compile Include="Data\DB\DisplayOptions.cs" />
     <Compile Include="Data\DB\Group.cs" />
+    <Compile Include="Data\DB\Groups.cs" />
     <Compile Include="Data\DB\Security.cs" />
     <Compile Include="Data\DB\SqlPersistance.cs" />
     <Compile Include="Data\Favorites\EmptyOptions.cs" />

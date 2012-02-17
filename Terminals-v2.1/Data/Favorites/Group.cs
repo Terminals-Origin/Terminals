@@ -61,25 +61,25 @@ namespace Terminals.Data
         void IGroup.AddFavorite(IFavorite favorite)
         {
             AddFavoriteToCache(favorite);
-            ReportThisGroupChanged();
+            ReportGroupChanged(this);
         }
 
         void IGroup.AddFavorites(List<IFavorite> favorites)
         {
             AddFavoritesToCache(favorites);
-            ReportThisGroupChanged();
+            ReportGroupChanged(this);
         }
 
         void IGroup.RemoveFavorites(List<IFavorite> favorites)
         {
             RemoveFavoritesFromCache(favorites);
-            this.ReportThisGroupChanged();
+            ReportGroupChanged(this);
         }
 
         void IGroup.RemoveFavorite(IFavorite favorite)
         {
             this.RemoveFavoriteFromCache(favorite);
-            this.ReportThisGroupChanged();
+            ReportGroupChanged(this);
         }
 
         private void AddFavoriteToCache(IFavorite favorite)
@@ -115,10 +115,10 @@ namespace Terminals.Data
             }
         }
 
-        private void ReportThisGroupChanged()
+        internal static void ReportGroupChanged(IGroup group)
         {
             var dispatcher = Persistance.Instance.Dispatcher;
-            dispatcher.ReportGroupsUpdated(new List<IGroup> { this });
+            dispatcher.ReportGroupsUpdated(new List<IGroup> { group });
         }
 
         internal FavoritesInGroup GetGroupReferences()
@@ -169,12 +169,17 @@ namespace Terminals.Data
 
         public override string ToString()
         {
+            return ToString(this);
+        }
+
+        internal static string ToString(IGroup group)
+        {
             string parent = "Root";
-            if (this.Parent != Guid.Empty)
-                parent = this.Parent.ToString();
+            if (group.Parent != Guid.Empty)
+                parent = group.Parent.ToString();
 
             return String.Format("Group:Name={0},Id={1},Parent={2},Favorites={3}",
-                this.name, this.Id, parent, this.favorites.Count);
+                                 group.Name, group.Id, parent, group.Favorites.Count);
         }
     }
 }

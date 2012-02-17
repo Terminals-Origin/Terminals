@@ -7,10 +7,20 @@ namespace Terminals.Data.DB
     internal partial class Group : IGroup
     {
         private Guid guid = Guid.NewGuid();
+
+        /// <summary>
+        /// Gets the uniqeu identifier of this goup.
+        /// This property is redundant and used only for internal use to reduce interface type casting.
+        /// It isnt persisted. See database Id property.
+        /// </summary>
+        internal Guid Guid
+        {
+            get { return this.guid; }
+        }
+
         Guid IGroup.Id
         {
             get { return this.guid; }
-            set { this.guid = value; }
         }
 
         /// <summary>
@@ -19,7 +29,10 @@ namespace Terminals.Data.DB
         /// </summary>
         public Guid Parent
         {
-            get { return ((IGroup)this.ParentGroup).Id; }
+            get
+            {
+                return this.ParentGroup != null ? this.ParentGroup.Guid : Guid.Empty;
+            }
             set
             {
                 throw new NotImplementedException();
@@ -33,38 +46,71 @@ namespace Terminals.Data.DB
 
         public void AddFavorite(IFavorite favorite)
         {
-            AddFavoriteToCache(favorite);
+            AddFavoriteToDatabase(favorite);
+            Data.Group.ReportGroupChanged(this);
         }
 
-        private void AddFavoriteToCache(IFavorite favorite)
+        private void AddFavoriteToDatabase(IFavorite favorite)
         {
             this.Favorites.Add((Favorite)favorite);
         }
 
         public void AddFavorites(List<IFavorite> favorites)
         {
+            AddFavoritesToDatabase(favorites);
+            Data.Group.ReportGroupChanged(this);
+        }
+
+        private void AddFavoritesToDatabase(List<IFavorite> favorites)
+        {
             foreach (IFavorite favorite in favorites)
             {
-                AddFavoriteToCache(favorite);
+                AddFavoriteToDatabase(favorite);
             }
         }
 
         public void RemoveFavorite(IFavorite favorite)
         {
-            RemoveFavoriteFromCache(favorite);
+            RemoveFavoriteFromDatabase(favorite);
+            Data.Group.ReportGroupChanged(this);
         }
 
         public void RemoveFavorites(List<IFavorite> favorites)
         {
+            RemoveFavoritesFromDatabase(favorites);
+            Data.Group.ReportGroupChanged(this);
+        }
+
+        private void RemoveFavoritesFromDatabase(List<IFavorite> favorites)
+        {
             foreach (IFavorite favorite in favorites)
             {
-                RemoveFavoriteFromCache(favorite);
+                RemoveFavoriteFromDatabase(favorite);
             }
         }
 
-        private void RemoveFavoriteFromCache(IFavorite favorite)
+        private void RemoveFavoriteFromDatabase(IFavorite favorite)
         {
             this.Favorites.Remove((Favorite)favorite);
+        }
+
+        public override bool Equals(object group)
+        {
+            Group oponent = group as Group;
+            if (oponent == null)
+                return false;
+
+            return this.Id.Equals(oponent.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return Data.Group.ToString(this);
         }
     }
 }

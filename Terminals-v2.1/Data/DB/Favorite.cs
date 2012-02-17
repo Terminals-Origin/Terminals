@@ -40,7 +40,7 @@ namespace Terminals.Data.DB
             get { return GetInvariantGroups(); }
         }
 
-        private List<IGroup> GetInvariantGroups()
+        internal List<IGroup> GetInvariantGroups()
         {
             return this.Groups.Cast<IGroup>().ToList();
         }

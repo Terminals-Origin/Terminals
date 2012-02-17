@@ -26,11 +26,7 @@ namespace Terminals.Data.DB
 
         IFavorite IFavorites.this[Guid favoriteId]
         {
-            get 
-            {
-                return this.dataBase.Favorites
-                .FirstOrDefault(favorite => favorite.Guid == favoriteId);
-            }
+            get { return this.dataBase.GetFavoriteByGuid(favoriteId); }
         }
 
         IFavorite IFavorites.this[string favoriteName]
