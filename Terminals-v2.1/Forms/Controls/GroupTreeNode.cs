@@ -31,18 +31,6 @@ namespace Terminals.Forms.Controls
         internal const string DUMMY_NODE = "Dummy";
         internal IGroup Group { get; private set; }
 
-        private List<IFavorite> favorites;
-        internal List<IFavorite> Favorites
-        {
-            get
-            {
-                if (this.Group.Name == Settings.UNTAGGED_NODENAME)
-                    return favorites;
-
-                return this.Group.Favorites;
-            }
-        }
-
         /// <summary>
         /// Gets the value indicating lazy loading not performed yet,
         /// e.g. node contains only dummy node and contains no favorite nodes

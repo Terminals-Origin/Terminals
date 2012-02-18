@@ -1,6 +1,6 @@
-﻿using Terminals.Data;
+﻿using Terminals.History;
 
-namespace Terminals.History
+namespace Terminals.Data
 {
     /// <summary>
     /// Represents collection of visited favorite items and their time stamps.

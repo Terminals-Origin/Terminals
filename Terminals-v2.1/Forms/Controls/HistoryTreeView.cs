@@ -29,14 +29,14 @@ namespace Terminals.Forms.Controls
         {
             this.SuspendLayout();
             // keep chronological order
-            this.AddNewHistoryGroupNode(HistoryByFavorite.TODAY, "history_icon_today.png");
-            this.AddNewHistoryGroupNode(HistoryByFavorite.YESTERDAY, "history_icon_yesterday.png");
-            this.AddNewHistoryGroupNode(HistoryByFavorite.WEEK, "history_icon_week.png");
-            this.AddNewHistoryGroupNode(HistoryByFavorite.TWOWEEKS, "history_icon_twoweeks.png");
-            this.AddNewHistoryGroupNode(HistoryByFavorite.MONTH, "history_icon_month.png");
-            this.AddNewHistoryGroupNode(HistoryByFavorite.OVERONEMONTH, "history_icon_overmonth.png");
-            this.AddNewHistoryGroupNode(HistoryByFavorite.HALFYEAR, "history_icon_halfyear.png");
-            this.AddNewHistoryGroupNode(HistoryByFavorite.YEAR, "history_icon_year.png");
+            this.AddNewHistoryGroupNode(HistoryIntervals.TODAY, "history_icon_today.png");
+            this.AddNewHistoryGroupNode(HistoryIntervals.YESTERDAY, "history_icon_yesterday.png");
+            this.AddNewHistoryGroupNode(HistoryIntervals.WEEK, "history_icon_week.png");
+            this.AddNewHistoryGroupNode(HistoryIntervals.TWOWEEKS, "history_icon_twoweeks.png");
+            this.AddNewHistoryGroupNode(HistoryIntervals.MONTH, "history_icon_month.png");
+            this.AddNewHistoryGroupNode(HistoryIntervals.OVERONEMONTH, "history_icon_overmonth.png");
+            this.AddNewHistoryGroupNode(HistoryIntervals.HALFYEAR, "history_icon_halfyear.png");
+            this.AddNewHistoryGroupNode(HistoryIntervals.YEAR, "history_icon_year.png");
 
             this.ResumeLayout();
         }
@@ -78,7 +78,7 @@ namespace Terminals.Forms.Controls
 
         private void InsertRecordedNode(HistoryRecordedEventArgs args)
         {
-            GroupTreeNode todayGroup = this.Nodes[HistoryByFavorite.TODAY] as GroupTreeNode;
+            GroupTreeNode todayGroup = this.Nodes[HistoryIntervals.TODAY] as GroupTreeNode;
             if (todayGroup.NotLoadedYet)
                 return;
 
@@ -88,7 +88,7 @@ namespace Terminals.Forms.Controls
 
         private static void InsertRecordedNode(GroupTreeNode todayGroup, HistoryRecordedEventArgs args)
         {
-            IFavorite favorite = Persistance.Instance.Favorites[args.Favorite.Id];
+            IFavorite favorite = args.Favorite;
             if (favorite != null) // shouldnt happen, because the favorite was actualy processed
             {
                 int insertIndex = FavoriteTreeListLoader.FindFavoriteNodeInsertIndex(todayGroup.Nodes, favorite);

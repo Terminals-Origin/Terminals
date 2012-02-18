@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data.EntityClient;
-using Terminals.History;
 
 namespace Terminals.Data.DB
 {
@@ -10,29 +8,17 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class SqlPersistance : IPersistance
     {
-      internal DataBase Database { get; private set; }
-
-        public IFavorites Favorites
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IGroups Groups
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IFactory Factory
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public IConnectionHistory ConnectionHistory
-        {
-            get { throw new NotImplementedException(); }
-        }
+        private readonly DataBase database;
+        public IFavorites Favorites { get; private set; }
+        public IGroups Groups { get; private set; }
+        public IConnectionHistory ConnectionHistory { get; private set; }
 
         public ICredentials Credentials
+        {
+            get { throw new NotImplementedException(); }
+        }
+        
+        public IFactory Factory
         {
             get { throw new NotImplementedException(); }
         }
@@ -41,8 +27,11 @@ namespace Terminals.Data.DB
 
         internal SqlPersistance()
         {
-            this.Database = DataBase.CreateDatabaseInstance();
+            this.database = DataBase.CreateDatabaseInstance();
             this.Dispatcher = new DataDispatcher();
+            this.Favorites = new Favorites(this.database, this.Dispatcher);
+            this.Groups = new Groups(this.database, this.Dispatcher);
+            this.ConnectionHistory = new ConnectionHistory(this.database);
         }
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
@@ -52,12 +41,12 @@ namespace Terminals.Data.DB
 
         public void StartDelayedUpdate()
         {
-            this.Database.StartDelayedUpdate();
+            this.database.StartDelayedUpdate();
         }
 
         public void SaveAndFinishDelayedUpdate()
         {
-            this.Database.SaveAndFinishDelayedUpdate();
+            this.database.SaveAndFinishDelayedUpdate();
         }
     }
 }

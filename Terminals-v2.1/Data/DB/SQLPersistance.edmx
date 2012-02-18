@@ -13,7 +13,6 @@
           <EntitySet Name="Favorites" EntityType="Model1.Store.Favorites" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="FavoritesInGroup" EntityType="Model1.Store.FavoritesInGroup" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Groups" EntityType="Model1.Store.Groups" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="History" EntityType="Model1.Store.History" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Security" EntityType="Model1.Store.Security" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_BeforeConnectExecute_BeforeConnectExecute" Association="Model1.Store.FK_BeforeConnectExecute_BeforeConnectExecute">
             <End Role="Favorites" EntitySet="Favorites" />
@@ -38,10 +37,6 @@
           <AssociationSet Name="FK_Groups_Groups" Association="Model1.Store.FK_Groups_Groups">
             <End Role="Groups" EntitySet="Groups" />
             <End Role="Groups1" EntitySet="Groups" />
-          </AssociationSet>
-          <AssociationSet Name="FK_History_Favorites" Association="Model1.Store.FK_History_Favorites">
-            <End Role="Favorites" EntitySet="Favorites" />
-            <End Role="History" EntitySet="History" />
           </AssociationSet>
           <AssociationSet Name="FK_Security_CredentialBase" Association="Model1.Store.FK_Security_CredentialBase">
             <End Role="CredentialBase" EntitySet="CredentialBase" />
@@ -119,15 +114,6 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ParentId" Type="int" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
-        </EntityType>
-        <EntityType Name="History">
-          <Key>
-            <PropertyRef Name="FavoriteId" />
-            <PropertyRef Name="Date" />
-          </Key>
-          <Property Name="FavoriteId" Type="int" Nullable="false" />
-          <Property Name="Date" Type="datetime" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <EntityType Name="Security">
           <Key>
@@ -215,20 +201,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_History_Favorites">
-          <End Role="Favorites" Type="Model1.Store.Favorites" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="History" Type="Model1.Store.History" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Favorites">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="History">
-              <PropertyRef Name="FavoriteId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Security_CredentialBase">
           <End Role="CredentialBase" Type="Model1.Store.CredentialBase" Multiplicity="0..1" />
           <End Role="Security" Type="Model1.Store.Security" Multiplicity="*" />
@@ -279,10 +251,6 @@
           <Parameter Name="Id" Type="int" Mode="In" />
           <Parameter Name="ParentId" Type="int" Mode="In" />
         </Function>
-        <Function Name="DeleteHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="FavoriteId" Type="int" Mode="In" />
-          <Parameter Name="Date" Type="datetime" Mode="In" />
-        </Function>
         <Function Name="DeleteSecurity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
           <Parameter Name="Credential" Type="int" Mode="In" />
@@ -290,6 +258,10 @@
         </Function>
         <Function Name="GetFavoriteProtocolProperties" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetFavoritesHistoryByDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="From" Type="datetime" Mode="In" />
+          <Parameter Name="To" Type="datetime" Mode="In" />
         </Function>
         <Function Name="InsertBeforeConnectExecute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
@@ -335,7 +307,7 @@
         <Function Name="InsertHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
           <Parameter Name="Date" Type="datetime" Mode="In" />
-          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
+          <Parameter Name="UserSid" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="InsertSecurity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
@@ -387,11 +359,6 @@
           <Parameter Name="ParentId" Type="int" Mode="In" />
           <Parameter Name="Name" Type="nvarchar" Mode="In" />
         </Function>
-        <Function Name="UpdateHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="FavoriteId" Type="int" Mode="In" />
-          <Parameter Name="Date" Type="datetime" Mode="In" />
-          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
-        </Function>
         <Function Name="UpdateSecurity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
           <Parameter Name="CredentialId" Type="int" Mode="In" />
@@ -408,7 +375,6 @@
           <EntitySet Name="DisplayOptions" EntityType="Terminals.Data.DB.DisplayOptions" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <EntitySet Name="Favorites" EntityType="Terminals.Data.DB.Favorite" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <EntitySet Name="Groups" EntityType="Terminals.Data.DB.Group" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
-          <EntitySet Name="History" EntityType="Terminals.Data.DB.HistoryItem" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <EntitySet Name="Security" EntityType="Terminals.Data.DB.Security" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <AssociationSet Name="FK_BeforeConnectExecute_BeforeConnectExecute" Association="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute">
             <End Role="Favorites" EntitySet="Favorites" />
@@ -430,10 +396,6 @@
             <End Role="Favorites" EntitySet="Favorites" />
             <End Role="DisplayOptions" EntitySet="DisplayOptions" />
           </AssociationSet>
-          <AssociationSet Name="FK_History_Favorites" Association="Terminals.Data.DB.FK_History_Favorites">
-            <End Role="Favorites" EntitySet="Favorites" />
-            <End Role="History" EntitySet="History" />
-          </AssociationSet>
           <AssociationSet Name="FK_Security_Favorites" Association="Terminals.Data.DB.FK_Security_Favorites">
             <End Role="Favorites" EntitySet="Favorites" />
             <End Role="Security" EntitySet="Security" />
@@ -447,7 +409,16 @@
             <End Role="Groups" EntitySet="Groups" />
           </AssociationSet>
           <FunctionImport Name="GetFavoriteProtocolProperties" ReturnType="Collection(String)">
+          <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFavoritesHistoryByDate" ReturnType="Collection(Int32)">
+            <Parameter Name="From" Mode="In" Type="DateTime" />
+            <Parameter Name="To" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="InsertHistory">
             <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+            <Parameter Name="UserSid" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="BeforeConnectExecute" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
@@ -507,7 +478,6 @@
           <Property Type="String" Name="Notes" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ExecuteBeforeConnect" Relationship="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute" FromRole="Favorites" ToRole="BeforeConnectExecute" />
           <NavigationProperty Name="Display" Relationship="Terminals.Data.DB.FK_DisplayOptions_Favorites" FromRole="Favorites" ToRole="DisplayOptions" />
-          <NavigationProperty Name="History" Relationship="Terminals.Data.DB.FK_History_Favorites" FromRole="Favorites" ToRole="History" />
           <NavigationProperty Name="Security" Relationship="Terminals.Data.DB.FK_Security_Favorites" FromRole="Favorites" ToRole="Security" />
           <NavigationProperty Name="Groups" Relationship="Terminals.Data.DB.FavoritesInGroup" FromRole="Favorites" ToRole="Groups" />
         </EntityType>
@@ -520,16 +490,6 @@
           <NavigationProperty Name="ChildGroups" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Groups" ToRole="Groups1" />
           <NavigationProperty Name="ParentGroup" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Groups1" ToRole="Groups" />
           <NavigationProperty Name="Favorites" Relationship="Terminals.Data.DB.FavoritesInGroup" FromRole="Groups" ToRole="Favorites" />
-        </EntityType>
-        <EntityType Name="HistoryItem" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
-          <Key>
-            <PropertyRef Name="FavoriteId" />
-            <PropertyRef Name="Date" />
-          </Key>
-          <Property Type="Int32" Name="FavoriteId" Nullable="false" />
-          <Property Type="DateTime" Name="Date" Nullable="false" />
-          <Property Type="String" Name="UserName" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Favorite" Relationship="Terminals.Data.DB.FK_History_Favorites" FromRole="History" ToRole="Favorites" />
         </EntityType>
         <EntityType Name="Security" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
@@ -573,19 +533,6 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="DisplayOptions">
-              <PropertyRef Name="FavoriteId" />
-            </Dependent>
-          </ReferentialConstraint>
-          
-        </Association>
-        <Association Name="FK_History_Favorites">
-          <End Type="Terminals.Data.DB.Favorite" Role="Favorites" Multiplicity="1" />
-          <End Type="Terminals.Data.DB.HistoryItem" Role="History" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Favorites">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="History">
               <PropertyRef Name="FavoriteId" />
             </Dependent>
           </ReferentialConstraint>
@@ -821,33 +768,6 @@
               </ModificationFunctionMapping>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="History">
-            <EntityTypeMapping TypeName="Terminals.Data.DB.HistoryItem">
-              <MappingFragment StoreEntitySet="History">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-            <EntityTypeMapping TypeName="Terminals.Data.DB.HistoryItem">
-              <ModificationFunctionMapping>
-                <InsertFunction FunctionName="Model1.Store.InsertHistory">
-                  <ScalarProperty Name="UserName" ParameterName="UserName" />
-                  <ScalarProperty Name="Date" ParameterName="Date" />
-                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" />
-                </InsertFunction>
-                <UpdateFunction FunctionName="Model1.Store.UpdateHistory">
-                  <ScalarProperty Name="UserName" ParameterName="UserName" Version="Current" />
-                  <ScalarProperty Name="Date" ParameterName="Date" Version="Current" />
-                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" Version="Current" />
-                </UpdateFunction>
-                <DeleteFunction FunctionName="Model1.Store.DeleteHistory">
-                  <ScalarProperty Name="Date" ParameterName="Date" />
-                  <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" />
-                </DeleteFunction>
-              </ModificationFunctionMapping>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Security">
             <EntityTypeMapping TypeName="Terminals.Data.DB.Security">
               <MappingFragment StoreEntitySet="Security">
@@ -929,15 +849,6 @@
               <ScalarProperty Name="Id" ColumnName="FavoriteId" />
             </EndProperty>
           </AssociationSetMapping>
-          <AssociationSetMapping Name="FK_History_Favorites" TypeName="Terminals.Data.DB.FK_History_Favorites" StoreEntitySet="History">
-            <EndProperty Name="History">
-              <ScalarProperty Name="Date" ColumnName="Date" />
-              <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
-            </EndProperty>
-            <EndProperty Name="Favorites">
-              <ScalarProperty Name="Id" ColumnName="FavoriteId" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="FK_Security_Favorites" TypeName="Terminals.Data.DB.FK_Security_Favorites" StoreEntitySet="Security">
             <EndProperty Name="Security">
               <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
@@ -964,6 +875,8 @@
             </EndProperty>
           </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="GetFavoriteProtocolProperties" FunctionName="Model1.Store.GetFavoriteProtocolProperties" />
+          <FunctionImportMapping FunctionImportName="GetFavoritesHistoryByDate" FunctionName="Model1.Store.GetFavoritesHistoryByDate" />
+          <FunctionImportMapping FunctionImportName="InsertHistory" FunctionName="Model1.Store.InsertHistory" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -991,7 +904,6 @@
         <EntityTypeShape EntityType="Terminals.Data.DB.DisplayOptions" Width="1.5" PointX="6.875" PointY="4.125" Height="1.9210009765625031" />
         <EntityTypeShape EntityType="Terminals.Data.DB.Favorite" Width="1.75" PointX="4.625" PointY="0.5" Height="3.2357796223958331" />
         <EntityTypeShape EntityType="Terminals.Data.DB.Group" Width="1.5" PointX="6.875" PointY="0.5" Height="1.7566536458333388" />
-        <EntityTypeShape EntityType="Terminals.Data.DB.HistoryItem" Width="1.5" PointX="2.625" PointY="0.5" Height="1.5923063151041674" />
         <EntityTypeShape EntityType="Terminals.Data.DB.Security" Width="1.5" PointX="2.625" PointY="4.125" Height="1.5923063151041674" />
         <AssociationConnector Association="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute">
           <ConnectorPoint PointX="5.5" PointY="3.7357796223958331" />
@@ -1011,13 +923,10 @@
           <ConnectorPoint PointX="2.6906055530664337" PointY="3.2589729817708344" />
           <ConnectorPoint PointX="2.6906055530664337" PointY="4.125" />
         </AssociationConnector>
-        <AssociationConnector Association="Terminals.Data.DB.FK_DisplayOptions_Favorites">
-          <ConnectorPoint PointX="6.3749999999999991" PointY="3.7357796223958331" />
-          <ConnectorPoint PointX="6.875" PointY="4.125" />
-        </AssociationConnector>
-        <AssociationConnector Association="Terminals.Data.DB.FK_History_Favorites">
-          <ConnectorPoint PointX="4.625" PointY="1.2961531575520837" />
-          <ConnectorPoint PointX="4.125" PointY="1.2961531575520837" />
+        <AssociationConnector Association="Terminals.Data.DB.FK_DisplayOptions_Favorites" ManuallyRouted="true">
+          <ConnectorPoint PointX="6.375" PointY="3.3501610218394893" />
+          <ConnectorPoint PointX="7.1409615384615392" PointY="3.3501610218394893" />
+          <ConnectorPoint PointX="7.1409615384615392" PointY="4.125" />
         </AssociationConnector>
         <AssociationConnector Association="Terminals.Data.DB.FK_Security_Favorites">
           <ConnectorPoint PointX="4.625" PointY="3.7357796223958335" />

@@ -1,23 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Terminals.Data;
 
-namespace Terminals.History
+namespace Terminals.Data
 {
     /// <summary>
     /// Collection of favorites history touches grouped by favorite unique identifier
     /// </summary>
     public class HistoryByFavorite : SerializableSortedDictionary<Guid , List<HistoryItem>>
     {
-        internal const string TODAY = "Today";
-        internal const string YESTERDAY = "Yesterday";
-        internal const string WEEK = "Less than 1 Week";
-        internal const string TWOWEEKS = "Less than 2 Weeks";
-        internal const string MONTH = "Less than 1 Month";
-        internal const string OVERONEMONTH = "Over 1 Month";
-        internal const string HALFYEAR = "Over 6 Months";
-        internal const string YEAR = "Over 1 Year";
-
         internal SerializableDictionary<string, SortableList<IHistoryItem>> GroupByDate()
         {
             SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate = InitializeGroups();
@@ -41,14 +31,14 @@ namespace Terminals.History
         private SerializableDictionary<string, SortableList<IHistoryItem>> InitializeGroups()
         {
             var groupedByDate = new SerializableDictionary<string, SortableList<IHistoryItem>>();
-            groupedByDate.Add(TODAY, new SortableList<IHistoryItem>());
-            groupedByDate.Add(YESTERDAY, new SortableList<IHistoryItem>());
-            groupedByDate.Add(WEEK, new SortableList<IHistoryItem>());
-            groupedByDate.Add(TWOWEEKS, new SortableList<IHistoryItem>());
-            groupedByDate.Add(MONTH, new SortableList<IHistoryItem>());
-            groupedByDate.Add(OVERONEMONTH, new SortableList<IHistoryItem>());
-            groupedByDate.Add(HALFYEAR, new SortableList<IHistoryItem>());
-            groupedByDate.Add(YEAR, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.TODAY, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.YESTERDAY, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.WEEK, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.TWOWEEKS, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.MONTH, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.OVERONEMONTH, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.HALFYEAR, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.YEAR, new SortableList<IHistoryItem>());
             return groupedByDate;
         }
 

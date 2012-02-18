@@ -1,8 +1,7 @@
 using System;
 using System.Xml.Serialization;
-using Terminals.Data;
 
-namespace Terminals.History
+namespace Terminals.Data
 {
     /// <summary>
     /// Represents one favorite touch when trying connect to its server.

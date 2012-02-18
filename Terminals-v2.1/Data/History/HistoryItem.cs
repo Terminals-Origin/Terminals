@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Security.Principal;
 using System.Xml.Serialization;
-using Terminals.Data;
 
-namespace Terminals.History
+namespace Terminals.Data
 {
     /// <summary>
     /// Represents one favorite touch when trying connect to its server.
@@ -59,33 +58,7 @@ namespace Terminals.History
         [XmlIgnore]
         string IHistoryItem.DateGroup
         {
-            get { return GetDateGroup(this.Date.Date); }
-        }
-
-        private static string GetDateGroup(DateTime itemDate)
-        {
-            if (itemDate >= DateTime.Now.Date)
-                return HistoryByFavorite.TODAY;
-
-            if (itemDate >= DateTime.Now.AddDays(-1).Date)
-                return HistoryByFavorite.YESTERDAY;
-
-            if (itemDate >= DateTime.Now.AddDays(-7).Date)
-                return HistoryByFavorite.WEEK;
-
-            if (itemDate >= DateTime.Now.AddDays(-14).Date)
-                return HistoryByFavorite.TWOWEEKS;
-
-            if (itemDate >= DateTime.Now.AddMonths(-1).Date)
-                return HistoryByFavorite.MONTH;
-
-            if (itemDate >= DateTime.Now.AddMonths(-6).Date)
-                return HistoryByFavorite.OVERONEMONTH;
-
-            if (itemDate >= DateTime.Now.AddYears(-1).Date)
-                return HistoryByFavorite.YEAR;
-
-            return HistoryByFavorite.YEAR;
+            get { return HistoryIntervals.GetDateGroupName(this.Date.Date); }
         }
 
         /// <summary>
@@ -95,16 +68,21 @@ namespace Terminals.History
         /// </summary>
         void IHistoryItem.AssignCurentUser()
         {
+            this.UserSid = GetCurrentUserSid();
+        }
+
+        internal static string GetCurrentUserSid()
+        {
             try
             {
                 string fullLogin = Environment.UserDomainName + "\\" + Environment.UserName;
                 var account = new NTAccount(fullLogin);
-                IdentityReference sidReference = account.Translate(typeof(SecurityIdentifier));
-                this.UserSid = sidReference.ToString();
+                IdentityReference sidReference = account.Translate(typeof (SecurityIdentifier));
+                return sidReference.ToString();
             }
             catch
             {
-                this.UserSid = null;
+                return null;
             }
         }
     }

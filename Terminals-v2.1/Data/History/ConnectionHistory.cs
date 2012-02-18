@@ -46,7 +46,7 @@ namespace Terminals.History
 
         private List<IFavorite> MergeWithNewTodays(SortableList<IFavorite> oldTodays)
         {
-            List<IFavorite> newTodays = this.GetDateItems(HistoryByFavorite.TODAY);
+            List<IFavorite> newTodays = this.GetDateItems(HistoryIntervals.TODAY);
             if (oldTodays != null)
                 newTodays = DataDispatcher.GetMissingFavorites(newTodays, oldTodays);
             return newTodays;
@@ -56,7 +56,7 @@ namespace Terminals.History
         {
             SortableList<IFavorite> oldTodays = null;
             if (this.currentHistory != null)
-                oldTodays = this.GetDateItems(HistoryByFavorite.TODAY);
+                oldTodays = this.GetDateItems(HistoryIntervals.TODAY);
             return oldTodays;
         }
 

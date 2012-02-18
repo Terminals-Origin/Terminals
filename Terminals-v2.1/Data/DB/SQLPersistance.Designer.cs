@@ -23,7 +23,6 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "CredentialBase", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialBase), "Security", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Security))]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_Credentials", "Credentials", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialSet), "Security", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Security))]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_DisplayOptions_Favorites", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "DisplayOptions", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.DisplayOptions), true)]
-[assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_History_Favorites", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "History", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.HistoryItem), true)]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_Favorites", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "Security", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Security), true)]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Groups", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.Group), "Groups1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FavoritesInGroup", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Favorite), "Groups", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
@@ -174,22 +173,6 @@ namespace Terminals.Data.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        internal ObjectSet<HistoryItem> History
-        {
-            get
-            {
-                if ((_History == null))
-                {
-                    _History = base.CreateObjectSet<HistoryItem>("History");
-                }
-                return _History;
-            }
-        }
-        private ObjectSet<HistoryItem> _History;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         internal ObjectSet<Security> Security
         {
             get
@@ -255,14 +238,6 @@ namespace Terminals.Data.DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the History EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        internal void AddToHistory(HistoryItem historyItem)
-        {
-            base.AddObject("History", historyItem);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the Security EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         internal void AddToSecurity(Security security)
@@ -277,7 +252,7 @@ namespace Terminals.Data.DB
         /// No Metadata Documentation available.
         /// </summary>
         /// <param name="favoriteId">No Metadata Documentation available.</param>
-        public ObjectResult<string> GetFavoriteProtocolProperties(Nullable<int> favoriteId)
+        public ObjectResult<global::System.String> GetFavoriteProtocolProperties(Nullable<global::System.Int32> favoriteId)
         {
             ObjectParameter favoriteIdParameter;
             if (favoriteId.HasValue)
@@ -286,10 +261,81 @@ namespace Terminals.Data.DB
             }
             else
             {
-                favoriteIdParameter = new ObjectParameter("FavoriteId", typeof(Int32));
+                favoriteIdParameter = new ObjectParameter("FavoriteId", typeof(global::System.Int32));
             }
     
-            return base.ExecuteFunction<String>("GetFavoriteProtocolProperties", favoriteIdParameter);
+            return base.ExecuteFunction<global::System.String>("GetFavoriteProtocolProperties", favoriteIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="from">No Metadata Documentation available.</param>
+        /// <param name="to">No Metadata Documentation available.</param>
+        public ObjectResult<Nullable<global::System.Int32>> GetFavoritesHistoryByDate(Nullable<global::System.DateTime> from, Nullable<global::System.DateTime> to)
+        {
+            ObjectParameter fromParameter;
+            if (from.HasValue)
+            {
+                fromParameter = new ObjectParameter("From", from);
+            }
+            else
+            {
+                fromParameter = new ObjectParameter("From", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter toParameter;
+            if (to.HasValue)
+            {
+                toParameter = new ObjectParameter("To", to);
+            }
+            else
+            {
+                toParameter = new ObjectParameter("To", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<Nullable<global::System.Int32>>("GetFavoritesHistoryByDate", fromParameter, toParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="favoriteId">No Metadata Documentation available.</param>
+        /// <param name="date">No Metadata Documentation available.</param>
+        /// <param name="userSid">No Metadata Documentation available.</param>
+        public int InsertHistory(Nullable<global::System.Int32> favoriteId, Nullable<global::System.DateTime> date, global::System.String userSid)
+        {
+            ObjectParameter favoriteIdParameter;
+            if (favoriteId.HasValue)
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", favoriteId);
+            }
+            else
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter dateParameter;
+            if (date.HasValue)
+            {
+                dateParameter = new ObjectParameter("Date", date);
+            }
+            else
+            {
+                dateParameter = new ObjectParameter("Date", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter userSidParameter;
+            if (userSid != null)
+            {
+                userSidParameter = new ObjectParameter("UserSid", userSid);
+            }
+            else
+            {
+                userSidParameter = new ObjectParameter("UserSid", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction("InsertHistory", favoriteIdParameter, dateParameter, userSidParameter);
         }
 
         #endregion
@@ -1377,28 +1423,6 @@ namespace Terminals.Data.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_History_Favorites", "History")]
-        public EntityCollection<HistoryItem> History
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<HistoryItem>("Terminals.Data.DB.FK_History_Favorites", "History");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<HistoryItem>("Terminals.Data.DB.FK_History_Favorites", "History", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_Favorites", "Security")]
         public Security Security
         {
@@ -1615,155 +1639,6 @@ namespace Terminals.Data.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Favorite>("Terminals.Data.DB.FavoritesInGroup", "Favorites", value);
-                }
-            }
-        }
-
-        #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="Terminals.Data.DB", Name="HistoryItem")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    internal partial class HistoryItem : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new HistoryItem object.
-        /// </summary>
-        /// <param name="favoriteId">Initial value of the FavoriteId property.</param>
-        /// <param name="date">Initial value of the Date property.</param>
-        public static HistoryItem CreateHistoryItem(global::System.Int32 favoriteId, global::System.DateTime date)
-        {
-            HistoryItem historyItem = new HistoryItem();
-            historyItem.FavoriteId = favoriteId;
-            historyItem.Date = date;
-            return historyItem;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 FavoriteId
-        {
-            get
-            {
-                return _FavoriteId;
-            }
-            set
-            {
-                if (_FavoriteId != value)
-                {
-                    OnFavoriteIdChanging(value);
-                    ReportPropertyChanging("FavoriteId");
-                    _FavoriteId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("FavoriteId");
-                    OnFavoriteIdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _FavoriteId;
-        partial void OnFavoriteIdChanging(global::System.Int32 value);
-        partial void OnFavoriteIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime Date
-        {
-            get
-            {
-                return _Date;
-            }
-            set
-            {
-                if (_Date != value)
-                {
-                    OnDateChanging(value);
-                    ReportPropertyChanging("Date");
-                    _Date = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Date");
-                    OnDateChanged();
-                }
-            }
-        }
-        private global::System.DateTime _Date;
-        partial void OnDateChanging(global::System.DateTime value);
-        partial void OnDateChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String UserName
-        {
-            get
-            {
-                return _UserName;
-            }
-            set
-            {
-                OnUserNameChanging(value);
-                ReportPropertyChanging("UserName");
-                _UserName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("UserName");
-                OnUserNameChanged();
-            }
-        }
-        private global::System.String _UserName;
-        partial void OnUserNameChanging(global::System.String value);
-        partial void OnUserNameChanged();
-
-        #endregion
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_History_Favorites", "Favorites")]
-        public Favorite Favorite
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_History_Favorites", "Favorites").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_History_Favorites", "Favorites").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Favorite> FavoriteReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Favorite>("Terminals.Data.DB.FK_History_Favorites", "Favorites");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.DB.FK_History_Favorites", "Favorites", value);
                 }
             }
         }
