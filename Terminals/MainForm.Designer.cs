@@ -186,7 +186,6 @@ namespace Terminals
             this.MainWindowNotifyIcon.BalloonTipText = "Click to Show or Hide Terminals Main Window";
             this.MainWindowNotifyIcon.BalloonTipTitle = "Terminals";
             this.MainWindowNotifyIcon.ContextMenuStrip = this.QuickContextMenu;
-            this.MainWindowNotifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("MainWindowNotifyIcon.Icon")));
             this.MainWindowNotifyIcon.Text = "Click to Show or Hide Terminals Main Window";
             this.MainWindowNotifyIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(this.MainWindowNotifyIcon_MouseClick);
             // 
@@ -984,7 +983,7 @@ namespace Terminals
             this.toolStripButton4.Image = global::Terminals.Properties.Resources.Refresh;
             this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton4.Name = "toolStripButton4";
-            this.toolStripButton4.Size = new System.Drawing.Size(23, 24);
+            this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton4.Text = "toolStripButton4";
             this.toolStripButton4.Visible = false;
             this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
