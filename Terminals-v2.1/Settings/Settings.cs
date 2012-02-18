@@ -567,7 +567,7 @@ namespace Terminals.Configuration
 
         internal static bool EnabledCaptureToFolderAndClipBoard
         {
-            get { return EnableCaptureToClipboard && EnableCaptureToFolder; }
+            get { return EnableCaptureToClipboard || EnableCaptureToFolder; }
         }
 
         public static bool AutoSwitchOnCapture
