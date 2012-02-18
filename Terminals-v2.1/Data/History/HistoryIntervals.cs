@@ -36,7 +36,7 @@ namespace Terminals.Data
             return intervals.FirstOrDefault(candidate => candidate.Name == intervalName);
         }
 
-        internal static string GetDateGroupName(DateTime itemDate)
+        internal static string GetDateIntervalName(DateTime itemDate)
         {
             HistoryInterval interval = DateGroup(itemDate);
             return interval.Name;

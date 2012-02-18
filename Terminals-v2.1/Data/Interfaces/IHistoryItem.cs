@@ -27,12 +27,6 @@ namespace Terminals.Data
         IFavorite Favorite { get; set; }
 
         /// <summary>
-        /// Gets a time stamp category defined in Connection history to be shown in hitory tree
-        /// </summary>
-        [XmlIgnore]
-        string DateGroup { get; }
-
-        /// <summary>
         /// Assignes current user security id to it, if the user account is domain.
         /// For local user accaunt this value isnt set to preserver file persistance space,
         /// because all istory items than have the same value.

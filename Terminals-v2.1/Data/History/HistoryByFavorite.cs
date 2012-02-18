@@ -13,19 +13,24 @@ namespace Terminals.Data
             SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate = InitializeGroups();
             IFavorites favorites = Persistance.Instance.Favorites;
 
-            foreach (Guid favoriteId in this.Keys)  //key is the favorite unique identifier
+            foreach (Guid favoriteId in this.Keys)  // key is the favorite unique identifier
             {
                 IFavorite favorite = favorites[favoriteId];
-                foreach (IHistoryItem item in this[favoriteId])  //each history item per favorite
+                foreach (IHistoryItem item in this[favoriteId])  // each history item per favorite
                 {
-                    item.Favorite = favorite; // set navigation property
-                    SortableList<IHistoryItem> timeIntervalItems = GetTimeIntervalItems(item.DateGroup, groupedByDate);
-                    if (!timeIntervalItems.Contains(item)) // add each item only once
-                        timeIntervalItems.Add(item);
+                    item.Favorite = favorite; // assign navigation property value
+                    AddItemToGroup(groupedByDate, item);
                 }
-
             }
             return groupedByDate;
+        }
+
+        private void AddItemToGroup(SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate, IHistoryItem item)
+        {
+            string intervalName = HistoryIntervals.GetDateIntervalName(item.Date);
+            SortableList<IHistoryItem> timeIntervalItems = GetTimeIntervalItems(intervalName, groupedByDate);
+            if (!timeIntervalItems.Contains(item)) // add each item only once
+                timeIntervalItems.Add(item);
         }
 
         private SerializableDictionary<string, SortableList<IHistoryItem>> InitializeGroups()

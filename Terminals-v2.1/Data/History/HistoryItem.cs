@@ -55,12 +55,6 @@ namespace Terminals.Data
         [XmlIgnore]
         IFavorite IHistoryItem.Favorite { get; set; }
 
-        [XmlIgnore]
-        string IHistoryItem.DateGroup
-        {
-            get { return HistoryIntervals.GetDateGroupName(this.Date.Date); }
-        }
-
         /// <summary>
         /// Assignes current user security id to it, if the user account is domain.
         /// For local user accaunt this value isnt set to preserver file persistance space,
