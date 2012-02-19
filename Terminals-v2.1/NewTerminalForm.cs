@@ -98,7 +98,7 @@ namespace Terminals
                     this.ProtocolComboBox.SelectedIndex = 0;
                 }
 
-                String server = serverName;
+                String server;
                 Int32 port;
                 GetServerAndPort(serverName, out server, out port);
                 this.cmbServers.Text = server;
