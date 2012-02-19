@@ -100,7 +100,7 @@ namespace Terminals.Updates
         private static void MoveFavoriteAliasesGroup(GroupConfigurationElement configGroup) 
         {
             IFactory factory = Persistance.Instance.Factory;
-            IGroup group = factory.GetOrCreateGroup(configGroup.Name);
+            IGroup group = FavoritesFactory.GetOrCreateGroup(configGroup.Name);
             List<string> favoriteNames = configGroup.FavoriteAliases.GetFavoriteNames();
             IFavorites favorites = Persistance.Instance.Favorites;
             List<IFavorite> groupFavorites = favoriteNames.Select(favoriteName => favorites[favoriteName])

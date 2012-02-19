@@ -197,6 +197,7 @@
     <Compile Include="Data\Credentials\CredentialBase.cs" />
     <Compile Include="Data\DB\BeforeConnectExecute.cs" />
     <Compile Include="Data\DB\DataBase.cs" />
+    <Compile Include="Data\DB\Factory.cs" />
     <Compile Include="Data\DB\Favorite.cs" />
     <Compile Include="Data\DB\Favorites.cs" />
     <Compile Include="Data\DB\DisplayOptions.cs" />
@@ -220,7 +221,7 @@
     <Compile Include="Data\Interfaces\IHistoryItem.cs" />
     <Compile Include="Data\Interfaces\ICredentials.cs" />
     <Compile Include="Data\Interfaces\ICredentialSet.cs" />
-    <Compile Include="Data\FilePersisted\ConfigFavoritesFactory.cs" />
+    <Compile Include="Data\FilePersisted\FavoritesFactory.cs" />
     <Compile Include="Data\Interfaces\IFactory.cs" />
     <Compile Include="Data\Interfaces\IFavorite.cs" />
     <Compile Include="Data\Interfaces\IGroup.cs" />
@@ -600,7 +601,7 @@
     <Compile Include="Data\SerializableDictionary.cs" />
     <Compile Include="Data\SerializableSortedDictionary.cs" />
     <Compile Include="Settings\ConfigurationChangedEventArgs.cs" />
-    <Compile Include="Data\FilePersisted\FavoritesFactory.cs" />
+    <Compile Include="Data\FilePersisted\Factory.cs" />
     <Compile Include="Settings\Settings_FavoriteButtons.cs" />
     <Compile Include="Settings\Settings_Favorites.cs" />
     <Compile Include="Settings\Settings_FileAccess.cs" />

@@ -35,7 +35,7 @@ namespace Terminals.Data
             }
         }
 
-        private FavoritesFactory factory;
+        private Factory factory;
         public IFactory Factory
         {
             get { return this.factory; }
@@ -66,7 +66,7 @@ namespace Terminals.Data
             this.storedCredentials = new StoredCredentials();
             InitializeFileWatch();
             Load();
-            this.factory = new FavoritesFactory(this.groups, this.favorites);
+            this.factory = new Factory();
         }
 
         private void InitializeFileWatch()

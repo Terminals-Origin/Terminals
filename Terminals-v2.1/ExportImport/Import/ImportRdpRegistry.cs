@@ -58,7 +58,7 @@ namespace Terminals.Integration.Import
             int slashIndex = userKey.LastIndexOf('\\');
             string domainName = userKey.Substring(0, slashIndex);
             string userName = userKey.Substring(slashIndex + 1, userKey.Length - slashIndex - 1);
-            return ConfigFavoritesFactory.CreateNewFavorite(favoriteName, favoriteName,
+            return FavoritesFactory.CreateNewFavorite(favoriteName, favoriteName,
                 ConnectionManager.RDPPort, domainName, userName);
         }
     }

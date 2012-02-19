@@ -273,7 +273,7 @@ namespace Terminals
                 _releaseAvailable = value;
                 if (_releaseAvailable)
                 {
-                    IFavorite release = Persistance.Instance.Factory.GetOrCreateReleaseFavorite();
+                    IFavorite release = FavoritesFactory.GetOrCreateReleaseFavorite();
 
                     Thread.Sleep(5000);
                     if (OnReleaseIsAvailable != null)
@@ -363,7 +363,7 @@ namespace Terminals
         public void Connect(String connectionName, Boolean forceConsole, Boolean forceNewWindow, ICredentialSet credential = null)
         {
             IFavorite existingFavorite = PersistedFavorites[connectionName];
-            IFavorite favorite = ConfigFavoritesFactory.GetFavoriteUpdatedCopy(connectionName, 
+            IFavorite favorite = FavoritesFactory.GetFavoriteUpdatedCopy(connectionName, 
                 forceConsole, forceNewWindow, credential);
 
             if (favorite != null)
@@ -746,8 +746,7 @@ namespace Terminals
 
         private void QuickConnect(String server, Int32 port, Boolean connectToConsole)
         {
-            IFavorite favorite = Persistance.Instance.Factory
-                .GetOrCreateQuickConnectFavorite(server, connectToConsole, port);
+            IFavorite favorite = FavoritesFactory.GetOrCreateQuickConnectFavorite(server, connectToConsole, port);
             this.CreateTerminalTab(favorite);
         }
 
@@ -1335,7 +1334,7 @@ namespace Terminals
                 if (frmNewGroup.ShowDialog() == DialogResult.OK)
                 {
                     string newGroupName = frmNewGroup.txtGroupName.Text;
-                    IGroup group = Persistance.Instance.Factory.GetOrCreateGroup(newGroupName);
+                    IGroup group = FavoritesFactory.GetOrCreateGroup(newGroupName);
                     foreach (TerminalTabControlItem tabControlItem in this.tcTerminals.Items)
                     {
                         group.AddFavorite(tabControlItem.Favorite);

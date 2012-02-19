@@ -17,11 +17,8 @@ namespace Terminals.Data.DB
         {
             get { throw new NotImplementedException(); }
         }
-        
-        public IFactory Factory
-        {
-            get { throw new NotImplementedException(); }
-        }
+
+        public IFactory Factory { get; private set; }
 
         public DataDispatcher Dispatcher { get; private set; }
 
@@ -32,6 +29,7 @@ namespace Terminals.Data.DB
             this.Favorites = new Favorites(this.database, this.Dispatcher);
             this.Groups = new Groups(this.database, this.Dispatcher);
             this.ConnectionHistory = new ConnectionHistory(this.database);
+            this.Factory = new Factory();
         }
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)

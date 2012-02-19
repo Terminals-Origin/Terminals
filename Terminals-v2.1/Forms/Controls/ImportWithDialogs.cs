@@ -81,10 +81,9 @@ namespace Terminals.Forms.Controls
 
         internal static void AddFavoriteIntoGroups(FavoriteConfigurationElement configFavorite, IFavorite favorite)
         {
-            IFactory factory = Persistance.Instance.Factory;
             foreach (string groupName in configFavorite.TagList)
             {
-                IGroup group = factory.GetOrCreateGroup(groupName);
+                IGroup group = FavoritesFactory.GetOrCreateGroup(groupName);
                 group.AddFavorite(favorite);
             }
         }
