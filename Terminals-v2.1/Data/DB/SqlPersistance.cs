@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Terminals.Data.DB
 {
@@ -12,15 +11,10 @@ namespace Terminals.Data.DB
         public IFavorites Favorites { get; private set; }
         public IGroups Groups { get; private set; }
         public IConnectionHistory ConnectionHistory { get; private set; }
-
-        public ICredentials Credentials
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public IFactory Factory { get; private set; }
-
         public DataDispatcher Dispatcher { get; private set; }
+
+        public ICredentials Credentials { get; private set; }
 
         internal SqlPersistance()
         {
@@ -29,6 +23,7 @@ namespace Terminals.Data.DB
             this.Favorites = new Favorites(this.database, this.Dispatcher);
             this.Groups = new Groups(this.database, this.Dispatcher);
             this.ConnectionHistory = new ConnectionHistory(this.database);
+            this.Credentials = new StoredCredentials(this.database);
             this.Factory = new Factory();
         }
 

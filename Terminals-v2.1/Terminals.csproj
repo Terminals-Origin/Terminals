@@ -196,6 +196,8 @@
     <Compile Include="Configuration\FileLocations.cs" />
     <Compile Include="Data\Credentials\CredentialBase.cs" />
     <Compile Include="Data\DB\BeforeConnectExecute.cs" />
+    <Compile Include="Data\DB\CredentialBase.cs" />
+    <Compile Include="Data\DB\CredentialSet.cs" />
     <Compile Include="Data\DB\DataBase.cs" />
     <Compile Include="Data\DB\Factory.cs" />
     <Compile Include="Data\DB\Favorite.cs" />
@@ -205,7 +207,7 @@
     <Compile Include="Data\DB\Groups.cs" />
     <Compile Include="Data\DB\ConnectionHistory.cs" />
     <Compile Include="Data\DB\HistoryItem.cs" />
-    <Compile Include="Data\DB\Security.cs" />
+    <Compile Include="Data\DB\SecurityOptions.cs" />
     <Compile Include="Data\DB\SqlPersistance.cs" />
     <Compile Include="Data\DB\StoredCredentials.cs" />
     <Compile Include="Data\Favorites\EmptyOptions.cs" />

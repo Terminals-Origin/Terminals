@@ -1,24 +1,33 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Objects;
 using System.Linq;
-using System.Text;
 
 namespace Terminals.Data.DB
 {
     internal class StoredCredentials : ICredentials
     {
-        private DataBase dataBase;
+        private readonly DataBase dataBase;
         public event EventHandler CredentialsChanged;
 
         ICredentialSet ICredentials.this[Guid id]
         {
-            get { throw new NotImplementedException(); }
+            get 
+            {
+                var credentials = GetCredentials();
+                return credentials.FirstOrDefault(candidate => candidate.Guid == id);
+            }
         }
 
         ICredentialSet ICredentials.this[string name]
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                var credentials = GetCredentials();
+                return credentials.FirstOrDefault(candidate => candidate.Name
+                   .Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            }
         }
 
         internal StoredCredentials(DataBase dataBase)
@@ -38,19 +47,26 @@ namespace Terminals.Data.DB
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            throw new NotImplementedException();
+            foreach (CredentialBase credentialSet in this.dataBase.CredentialBase)
+            {
+                credentialSet.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+            }
+            
+            this.dataBase.SaveImmediatelyIfRequested();
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            this.dataBase.SaveImmediatelyIfRequested();
         }
 
         #region IEnumerable members
 
         public IEnumerator<ICredentialSet> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetCredentials()
+                .Cast<ICredentialSet>()
+                .GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -59,5 +75,10 @@ namespace Terminals.Data.DB
         }
 
         #endregion
+
+        private ObjectQuery<CredentialSet> GetCredentials()
+        {
+            return this.dataBase.CredentialBase.OfType<CredentialSet>();
+        }
     }
 }

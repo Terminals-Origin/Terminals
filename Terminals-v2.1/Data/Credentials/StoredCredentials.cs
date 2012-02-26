@@ -109,8 +109,8 @@ namespace Terminals.Data
                 if (string.IsNullOrEmpty(name))
                     return null;
 
-                name = name.ToLower();
-                return this.cache.FirstOrDefault(candidate => candidate.Name.ToLower() == name);
+                return this.cache.FirstOrDefault(candidate => candidate.Name
+                   .Equals(name, StringComparison.CurrentCultureIgnoreCase));
             }
         }
 

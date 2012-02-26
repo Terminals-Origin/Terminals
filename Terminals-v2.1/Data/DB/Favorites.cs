@@ -14,10 +14,6 @@ namespace Terminals.Data.DB
         private DataBase dataBase;
         private DataDispatcher dispatcher;
 
-        // TODO Add eventing (Jiri Pokorny, 13.02.2012)
-        // TODO Save changes to database (Jiri Pokorny, 13.02.2012)
-        // TODO Not all members are implemented (Jiri Pokorny, 13.02.2012)
-
         internal Favorites(DataBase dataBase, DataDispatcher dispatcher)
         {
             this.dataBase = dataBase;
@@ -77,6 +73,7 @@ namespace Terminals.Data.DB
 
         public void UpdateFavorite(IFavorite favorite, List<IGroup> groups)
         {
+            // todo add favorite to all groups
             SaveAndReportFavoriteUpdated(favorite);
         }
 
@@ -115,8 +112,13 @@ namespace Terminals.Data.DB
 
         public SortableList<IFavorite> ToList()
         {
-            IQueryable<IFavorite> favorites = this.dataBase.Favorites.Cast<IFavorite>();
+            IQueryable<IFavorite> favorites = GetFavorites();
             return new SortableList<IFavorite>(favorites);
+        }
+
+        private IQueryable<IFavorite> GetFavorites()
+        {
+            return this.dataBase.Favorites.Cast<IFavorite>();
         }
 
         public SortableList<IFavorite> ToListOrderedByDefaultSorting()
@@ -158,8 +160,7 @@ namespace Terminals.Data.DB
 
         public IEnumerator<IFavorite> GetEnumerator()
         {
-            return this.dataBase.Favorites
-              .Cast<IFavorite>()
+            return this.GetFavorites()
               .GetEnumerator();
         }
 

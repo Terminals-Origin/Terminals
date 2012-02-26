@@ -10,6 +10,8 @@ namespace Terminals.Data.DB
         private const string metadata = @"res://*/Data.DB.SQLPersistance.csdl|res://*/Data.DB.SQLPersistance.ssdl|res://*/Data.DB.SQLPersistance.msl";
 
         private bool delaySave = false;
+        // TODO Add eventing, if something is changed in database (Jiri Pokorny, 13.02.2012)
+        // TODO Add new table for database extra options, which couldnt be stored localy like masterpassword (Jiri Pokorny, 26.02.2012)
 
         private static string BuildConnectionString()
         {

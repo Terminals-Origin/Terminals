@@ -326,6 +326,7 @@ namespace Terminals.Configuration
         private static void UpdateAllFavoritesPasswords(TerminalsConfigurationSection configSection,
             string newMasterPassword)
         {
+            // todo move this method into the persistance
             string newKeyMaterial = GetKeyMaterial(newMasterPassword);
             configSection.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
             UpdateFavoritePasswordsByNewKeyMaterial(newKeyMaterial);

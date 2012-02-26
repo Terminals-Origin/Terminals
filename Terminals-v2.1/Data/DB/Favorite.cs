@@ -62,15 +62,16 @@ namespace Terminals.Data.DB
             set
             {
                 this.protocolProperties = value;
-                SerializeProperties(value); // todo dont commit the protocol proerties immediately
+                SerializeProperties(value); 
             }
         }
 
-        private void SerializeProperties(ProtocolOptions value)
+        private void SerializeProperties(ProtocolOptions protocolOptions)
         {
-            string serializedProperties = Serialize.SerializeXMLAsString(value);
+            string serializedProperties = Serialize.SerializeXMLAsString(protocolOptions);
             var database = new DataBase();
             //database.
+            // todo dont commit the protocol proerties immediately
         }
 
         private void DeserializeProperties()
