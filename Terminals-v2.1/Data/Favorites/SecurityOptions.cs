@@ -22,7 +22,10 @@ namespace Terminals.Data
             }
             set
             {
-                this.credential = new Guid(value);
+                if (string.IsNullOrEmpty(value))
+                    this.credential = Guid.Empty;
+                else
+                    this.credential = new Guid(value);
             }
         }
 
