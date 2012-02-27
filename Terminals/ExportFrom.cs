@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Terminals.Forms.Controls;
 using Terminals.Integration;
 using Terminals.Integration.Export;
 
@@ -54,23 +55,46 @@ namespace Terminals
 
         private List<FavoriteConfigurationElement> FindSelectedFavorites()
         {
-            List<FavoriteConfigurationElement> favorites = new List<FavoriteConfigurationElement>();
-            foreach (TreeNode tn in this.favsTree.Nodes)
+            var favorites = new List<FavoriteConfigurationElement>();
+            foreach (TagTreeNode groupNode in this.favsTree.Nodes)
             {
-                foreach (TreeNode node in tn.Nodes)
-                {
-                    if (node.Checked)
-                        favorites.Add(node.Tag as FavoriteConfigurationElement);
-                }
+                ExpandCheckedGroupNode(groupNode);
+                FindSelectedGroupFavorites(favorites, groupNode);
             }
 
             return favorites;
         }
 
+        private static void FindSelectedGroupFavorites(List<FavoriteConfigurationElement> favorites, TagTreeNode groupNode)
+        {
+            // dont expect only Favorite nodes, because dummy nodes arent
+            foreach (TreeNode childNode in groupNode.Nodes) 
+            {
+                if (childNode.Checked)
+                {
+                    var favoriteNode = childNode as FavoriteTreeNode;
+                    if (favoriteNode != null)
+                        favorites.Add(favoriteNode.Favorite);
+                }
+            }
+        }
+
+        /// <summary>
+        /// because of lazy loading, expand the node, it doesnt have be already loaded
+        /// </summary>
+        private static void ExpandCheckedGroupNode(TagTreeNode groupNode)
+        {
+            if (groupNode.Checked && groupNode.NotLoadedYet)
+            {
+                groupNode.ExpandAll();
+                CheckSubNodes(groupNode, true);
+            }
+        }
+
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            TreeNodeCollection tn = favsTree.Nodes;
-            foreach (TreeNode node in tn)
+            TreeNodeCollection rootNodes = favsTree.Nodes;
+            foreach (TreeNode node in rootNodes)
             {
                 node.Checked = true;
                 node.ExpandAll();
@@ -80,34 +104,27 @@ namespace Terminals
        
         private void favsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            TreeNode tn = e.Node;
-            if (tn.Checked)
-            {
-                CheckSubNodes(tn, true);
-            }
-            else
-            {
-                CheckSubNodes(tn, false);
-            }
+            TreeNode node = e.Node;
+            CheckSubNodes(node, node.Checked);
         }
 
-        private static void CheckSubNodes(TreeNode tn, Boolean check)
+        private static void CheckSubNodes(TreeNode nodeToCheck, Boolean check)
         {
-            foreach (TreeNode node in tn.Nodes)
+            foreach (TreeNode node in nodeToCheck.Nodes)
             {
                 node.Checked = check;
             }
         }
 
-        private static void CheckNode(TreeNode node)
+        private static void CheckNode(TreeNode nodeToCheck)
         {
-            TreeNodeCollection tn = node.Nodes;
-            foreach (TreeNode n in tn)
+            TreeNodeCollection childNodes = nodeToCheck.Nodes;
+            foreach (TreeNode childNode in childNodes)
             {
-                n.Checked = true;
-                n.ExpandAll();
-                if (n.GetNodeCount(true) != 0)
-                    CheckNode(n);
+                childNode.Checked = true;
+                childNode.ExpandAll();
+                if (childNode.GetNodeCount(true) != 0)
+                    CheckNode(childNode);
             }
         }
 
