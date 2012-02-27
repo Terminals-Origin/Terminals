@@ -260,6 +260,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SQLPersistance.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Forms\OptionPanels\PersistenceOptionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\PersistenceOptionPanel.Designer.cs">
+      <DependentUpon>PersistenceOptionPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\HelperFunctions.cs" />
     <Compile Include="Network\Services\CommandLineServer.cs" />
     <Compile Include="Network\Services\CommandLineService.cs" />
@@ -895,6 +901,9 @@
     <EmbeddedResource Include="Forms\OptionPanels\MasterPasswordOptionpanel.resx">
       <DependentUpon>MasterPasswordOptionpanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OptionPanels\PersistenceOptionPanel.resx">
+      <DependentUpon>PersistenceOptionPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\ProxyOptionPanel.resx">
       <DependentUpon>ProxyOptionPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -1028,7 +1037,9 @@
     <Compile Include="Wizard\MMC\MMCFile.cs" />
     <Compile Include="Wizard\PasswordStrength.cs" />
     <Compile Include="Wizard\SpecialCommandsWizard.cs" />
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Migrated rules for Terminals.ruleset" />
     <None Include="Data\DB\Terminals.mdf" />
     <Content Include="Data\DB\Terminals_log.LDF">

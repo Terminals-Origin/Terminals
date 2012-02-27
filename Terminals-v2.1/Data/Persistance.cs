@@ -1,4 +1,5 @@
 ﻿using System;
+using Terminals.Configuration;
 using Terminals.Data.DB;
 
 namespace Terminals.Data
@@ -11,9 +12,12 @@ namespace Terminals.Data
         {
             try
             {
-                // todo REFACTORING choose and initialize persistance type defined by settings
-                this.persistance = new FilePersistance();
-                //this.persistance = new SqlPersistance();
+                if (Settings.PersistenceType == 0)
+                    this.persistance = new FilePersistance();
+                else 
+                    // todo enable SqlPeristance to be created
+                    //this.persistance = new SqlPersistance();
+                    this.persistance = new FilePersistance(); 
             }
             catch (Exception exception)
             {

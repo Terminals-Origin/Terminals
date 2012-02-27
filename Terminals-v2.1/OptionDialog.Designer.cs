@@ -47,6 +47,7 @@ namespace Terminals.Forms
             System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Flickr");
             System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Screen Capture", new System.Windows.Forms.TreeNode[] {
             treeNode11});
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Data store");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OptionDialog));
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -76,6 +77,8 @@ namespace Terminals.Forms
             this.panelScreenCapture = new Terminals.Forms.CaptureOptionPanel();
             this.tabPageFlickr = new System.Windows.Forms.TabPage();
             this.panelFlickr = new Terminals.Forms.FlickrOptionPanel();
+            this.tabPagePersistence = new System.Windows.Forms.TabPage();
+            this.panelPersistence = new Terminals.Forms.PersistenceOptionPanel();
             this.OptionTitelLabel = new System.Windows.Forms.Label();
             this.tabCtrlOptionPanels.SuspendLayout();
             this.tabPageStartupShutdown.SuspendLayout();
@@ -89,6 +92,7 @@ namespace Terminals.Forms
             this.tabPageProxy.SuspendLayout();
             this.tabPageScreenCapture.SuspendLayout();
             this.tabPageFlickr.SuspendLayout();
+            this.tabPagePersistence.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOk
@@ -179,12 +183,16 @@ namespace Terminals.Forms
             treeNode12.Name = "Screen Capture";
             treeNode12.Tag = "ScreenCapture";
             treeNode12.Text = "Screen Capture";
+            treeNode13.Name = "Data store";
+            treeNode13.Tag = "Persistence";
+            treeNode13.Text = "Data store";
             this.OptionsTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode3,
             treeNode7,
             treeNode10,
-            treeNode12});
+            treeNode12,
+            treeNode13});
             this.OptionsTreeView.ShowLines = false;
             this.OptionsTreeView.Size = new System.Drawing.Size(192, 365);
             this.OptionsTreeView.TabIndex = 6;
@@ -207,6 +215,7 @@ namespace Terminals.Forms
             this.tabCtrlOptionPanels.Controls.Add(this.tabPageProxy);
             this.tabCtrlOptionPanels.Controls.Add(this.tabPageScreenCapture);
             this.tabCtrlOptionPanels.Controls.Add(this.tabPageFlickr);
+            this.tabCtrlOptionPanels.Controls.Add(this.tabPagePersistence);
             this.tabCtrlOptionPanels.ItemSize = new System.Drawing.Size(20, 20);
             this.tabCtrlOptionPanels.Location = new System.Drawing.Point(198, 8);
             this.tabCtrlOptionPanels.Multiline = true;
@@ -416,6 +425,24 @@ namespace Terminals.Forms
             this.panelFlickr.Size = new System.Drawing.Size(514, 328);
             this.panelFlickr.TabIndex = 0;
             // 
+            // tabPagePersistence
+            // 
+            this.tabPagePersistence.Controls.Add(this.panelPersistence);
+            this.tabPagePersistence.Location = new System.Drawing.Point(4, 4);
+            this.tabPagePersistence.Name = "tabPagePersistence";
+            this.tabPagePersistence.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPagePersistence.Size = new System.Drawing.Size(602, 357);
+            this.tabPagePersistence.TabIndex = 11;
+            this.tabPagePersistence.Text = "Data store";
+            this.tabPagePersistence.UseVisualStyleBackColor = true;
+            // 
+            // panelPersistence
+            // 
+            this.panelPersistence.Location = new System.Drawing.Point(8, 26);
+            this.panelPersistence.Name = "panelPersistence";
+            this.panelPersistence.Size = new System.Drawing.Size(512, 328);
+            this.panelPersistence.TabIndex = 0;
+            // 
             // OptionTitelLabel
             // 
             this.OptionTitelLabel.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -463,6 +490,7 @@ namespace Terminals.Forms
             this.tabPageProxy.ResumeLayout(false);
             this.tabPageScreenCapture.ResumeLayout(false);
             this.tabPageFlickr.ResumeLayout(false);
+            this.tabPagePersistence.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -498,5 +526,7 @@ namespace Terminals.Forms
         private ProxyOptionPanel panelProxy;
         private CaptureOptionPanel panelScreenCapture;
         private FlickrOptionPanel panelFlickr;
+        private System.Windows.Forms.TabPage tabPagePersistence;
+        private PersistenceOptionPanel panelPersistence;
     }
 }

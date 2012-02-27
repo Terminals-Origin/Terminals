@@ -976,6 +976,45 @@ namespace Terminals.Configuration
         }
         #endregion
 
+        #region Persistence File/Sql database
+
+        /// <summary>
+        /// Gets or sets encrypted entity framework connection string
+        /// </summary>
+        internal static string ConnectionString
+        {
+            get
+            {
+                string connectionString = GetSection().ConnectionString;
+                return PasswordFunctions.DecryptPassword(connectionString);
+            }
+
+            set
+            {
+                GetSection().ConnectionString = PasswordFunctions.EncryptPassword(value);
+                SaveImmediatelyIfRequested();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value identifing the persistance.
+        /// 0 byfault - file persisted data, 1 - SQL database
+        /// </summary>
+        internal static byte PersistenceType
+        {
+            get
+            {
+                return GetSection().PersistenceType;
+            }
+
+            set
+            {
+                GetSection().PersistenceType = value;
+                SaveImmediatelyIfRequested();
+            }
+        }
+
+        #endregion
 
         #region Public
 
