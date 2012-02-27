@@ -279,7 +279,11 @@ namespace TabControl
                 if(mouse.Button == MouseButtons.Middle)
                 {
                     TabControlItem item = GetTabItemByPoint(PointToClient(Cursor.Position));
-                    if(item!=null) CloseTab(item);
+                    if(item!=null)
+                    {
+                        this.SelectedItem = item;
+                        CloseTab(item);
+                    }
                 }
             }
             base.OnClick(e);
