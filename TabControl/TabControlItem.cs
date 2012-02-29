@@ -163,6 +163,13 @@ namespace TabControl
 
         #region Methods
 
+        internal bool LocationIsInTitle(Point mouseLocation)
+        {
+            bool inTitle = (this.StripRect.X + this.StripRect.Width - 1) > mouseLocation.X &&
+                            (this.StripRect.Y + this.StripRect.Height - 1) > mouseLocation.Y;
+            return inTitle;
+        }
+
         private void UpdateText(string caption, Control displayControl)
         {
             if (displayControl != null && displayControl is ICaptionSupport)
@@ -190,7 +197,7 @@ namespace TabControl
         /// <returns></returns>
         public override string ToString()
         {
-            return Caption;
+            return String.Format("TabControlItem:{0}", this.Title);
         }
 
         public void Assign(TabControlItem item)
