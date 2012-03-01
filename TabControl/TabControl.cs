@@ -288,12 +288,6 @@ namespace TabControl
             return mouse != null && mouse.Button == MouseButtons.Middle;
         }
 
-        protected override void OnDoubleClick(EventArgs e)
-        {
-            this.CloseTabAtCurrentCursor();
-            base.OnDoubleClick(e);
-        }
-
         private void CloseTabAtCurrentCursor()
         {
             TabControlItem selectedTab = this.GetTabItemByPoint(this.PointToClient(Cursor.Position));
