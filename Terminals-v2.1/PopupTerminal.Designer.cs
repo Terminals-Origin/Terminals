@@ -28,6 +28,7 @@
             this.mainToolStrip = new System.Windows.Forms.ToolStrip();
             this.AttachToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.CaptureToolStripButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonFullScreen = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.mainToolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -38,19 +39,17 @@
             this.tabControl1.Font = new System.Drawing.Font("Tahoma", 8.25F);
             this.tabControl1.Location = new System.Drawing.Point(0, 25);
             this.tabControl1.Name = "tabControl1";
+            this.tabControl1.ShowTabs = false;
             this.tabControl1.ShowToolTipOnTitle = false;
             this.tabControl1.Size = new System.Drawing.Size(445, 241);
             this.tabControl1.TabIndex = 0;
-            this.tabControl1.TabControlItemClosing += new TabControl.TabControlItemClosingHandler(this.tabControl1_TabControlItemClosing);
-            this.tabControl1.DoubleClick += new System.EventHandler(this.tabControl1_DoubleClick);
-            this.tabControl1.MouseLeave += new System.EventHandler(this.tcTerminals_MouseLeave);
-            this.tabControl1.MouseHover += new System.EventHandler(this.tcTerminals_MouseHover);
             // 
             // mainToolStrip
             // 
             this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AttachToolStripButton,
-            this.CaptureToolStripButton});
+            this.CaptureToolStripButton,
+            this.toolStripButtonFullScreen});
             this.mainToolStrip.Location = new System.Drawing.Point(0, 0);
             this.mainToolStrip.Name = "mainToolStrip";
             this.mainToolStrip.Size = new System.Drawing.Size(445, 25);
@@ -78,6 +77,15 @@
     "rst. (Ctrl+F12)";
             this.CaptureToolStripButton.Click += new System.EventHandler(this.CaptureToolStripButton_Click);
             // 
+            // toolStripButtonFullScreen
+            // 
+            this.toolStripButtonFullScreen.Image = global::Terminals.Properties.Resources.arrow_out;
+            this.toolStripButtonFullScreen.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonFullScreen.Name = "toolStripButtonFullScreen";
+            this.toolStripButtonFullScreen.Size = new System.Drawing.Size(78, 22);
+            this.toolStripButtonFullScreen.Text = "Full screen";
+            this.toolStripButtonFullScreen.Click += new System.EventHandler(this.toolStripButtonFullScreen_Click);
+            // 
             // PopupTerminal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -90,7 +98,6 @@
             this.Name = "PopupTerminal";
             this.Text = "Terminal Window";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PopupTerminal_FormClosing);
-            this.Load += new System.EventHandler(this.PopupTerminal_Load);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.PopupTerminal_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).EndInit();
             this.mainToolStrip.ResumeLayout(false);
@@ -106,5 +113,6 @@
         private System.Windows.Forms.ToolStrip mainToolStrip;
         private System.Windows.Forms.ToolStripButton AttachToolStripButton;
         private System.Windows.Forms.ToolStripButton CaptureToolStripButton;
+        private System.Windows.Forms.ToolStripButton toolStripButtonFullScreen;
     }
 }

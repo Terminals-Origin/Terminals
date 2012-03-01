@@ -149,9 +149,9 @@ namespace Terminals
                 this.LoadWindowState();
                 this.CheckForMultiMonitorUse();
 
-                this.tcTerminals.MouseDown += new MouseEventHandler(tcTerminals_MouseDown);
-                this.tcTerminals.MouseUp += new MouseEventHandler(tcTerminals_MouseUp);
+                this.tcTerminals.TabControlItemDetach += new TabControlItemChangedHandler(this.tcTerminals_TabDetach);
                 this.tcTerminals.MouseClick += new MouseEventHandler(tcTerminals_MouseClick);
+
                 this.QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
 
                 ProtocolHandler.Register();
@@ -233,9 +233,6 @@ namespace Terminals
 
         #region Properties
         
-        private Boolean IsMouseDown { get; set; }
-        private Point MouseDownLocation { get; set; }
-
         public IConnection CurrentConnection
         {
             get
@@ -898,30 +895,11 @@ namespace Terminals
         #endregion
 
         #region Private events
-        
-        private void tcTerminals_MouseUp(object sender, MouseEventArgs e)
+
+        private void tcTerminals_TabDetach(TabControlItemChangedEventArgs args)
         {
-            Cursor = Cursors.Default;
-            this.IsMouseDown = false;
-            Int32 mouseLeft = MousePosition.X;
-            Int32 downLeft = MouseDownLocation.X;
-
-            Int32 mouseTop = MousePosition.Y;
-            Int32 downTop = MouseDownLocation.Y;
-
-            if ((Math.Abs(mouseLeft - downLeft) >= MouseBreakThreshold) || (Math.Abs(mouseTop - downTop) >= MouseBreakThreshold))
-            {
-                this.terminalsControler.DetachTabToNewWindow();
-            }
-        }
-
-        private void tcTerminals_MouseDown(object sender, MouseEventArgs e)
-        {
-            MouseDownLocation = MousePosition;
-            // TODO: only show arrow when mousedown over connection tab and mouse is moving
-            // Maybe also use another cursor?
-            // Cursor = Cursors.UpArrow; 
-            this.IsMouseDown = true;
+            this.tcTerminals.SelectedItem = args.Item;
+            this.terminalsControler.DetachTabToNewWindow();
         }
 
         private void tcTerminals_MouseClick(object sender, MouseEventArgs e)
