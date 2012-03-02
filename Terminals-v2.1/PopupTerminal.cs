@@ -6,6 +6,7 @@ namespace Terminals
 {
     internal partial class PopupTerminal : Form
     {
+        private Timer closeTimer;
         private TerminalTabsSelectionControler mainTabsControler;
         private bool fullScreen = false;
 
@@ -39,6 +40,27 @@ namespace Terminals
         {
             this.Text = this.Favorite.Name;
             this.tabControl1.Items[0].Title = this.Text;
+        }
+
+        private void PopupTerminal_Load(object sender, EventArgs e)
+        {
+            closeTimer = new Timer();
+            closeTimer.Interval = 500;
+            closeTimer.Tick += new EventHandler(closeTimer_Tick);
+            closeTimer.Start();
+        }
+
+        /// <summary>
+        /// Check every 500 ms, to automaticaly close form, if connection is lost
+        /// </summary>
+        private void closeTimer_Tick(object sender, EventArgs e)
+        {
+            TerminalTabControlItem activeTab = this.tabControl1.SelectedItem as TerminalTabControlItem;
+            if (activeTab != null && !activeTab.Connection.Connected)
+            {
+                this.closeTimer.Stop();
+                this.Close();
+            }
         }
 
         private void attachToTerminalsToolStripMenuItem_Click(object sender, EventArgs e)
