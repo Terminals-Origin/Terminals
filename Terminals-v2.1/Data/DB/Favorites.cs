@@ -112,13 +112,14 @@ namespace Terminals.Data.DB
 
         public SortableList<IFavorite> ToList()
         {
-            IQueryable<IFavorite> favorites = GetFavorites();
+            IEnumerable<IFavorite> favorites = GetFavorites();
             return new SortableList<IFavorite>(favorites);
         }
 
-        private IQueryable<IFavorite> GetFavorites()
+        private IEnumerable<IFavorite> GetFavorites()
         {
-            return this.dataBase.Favorites.Cast<IFavorite>();
+            // to list because Linq to entities allowes only cast to primitive types
+            return this.dataBase.Favorites.ToList();
         }
 
         public SortableList<IFavorite> ToListOrderedByDefaultSorting()

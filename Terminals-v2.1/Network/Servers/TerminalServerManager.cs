@@ -77,7 +77,7 @@ namespace Terminals.Network.Servers
         private void TerminalServerManager_Load(object sender, EventArgs e)
         {
             ServerNameComboBox.Items.Clear();
-            foreach (Favorite favorite in Persistance.Instance.Favorites)
+            foreach (IFavorite favorite in Persistance.Instance.Favorites)
             {
                 if (favorite.Protocol == ConnectionManager.RDP)
                 {

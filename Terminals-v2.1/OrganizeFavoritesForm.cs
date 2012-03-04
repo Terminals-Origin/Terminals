@@ -15,7 +15,7 @@ namespace Terminals
     internal partial class OrganizeFavoritesForm : Form
     {
         private string editedFavoriteName = String.Empty;
-        private Favorite editedFavorite;
+        private IFavorite editedFavorite;
         internal MainForm MainForm { get; set; }
 
         private static IFavorites PersistedFavorites
@@ -49,7 +49,7 @@ namespace Terminals
             this.lblConnectionCount.Text = this.bsFavorites.Count.ToString();
         }
 
-        private void EditFavorite(Favorite favorite)
+        private void EditFavorite(IFavorite favorite)
         {
             NewTerminalForm frmNewTerminal = new NewTerminalForm(favorite);
             if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
@@ -58,10 +58,10 @@ namespace Terminals
             }
         }
 
-        private Favorite GetSelectedFavorite()
+        private IFavorite GetSelectedFavorite()
         {
             if (dataGridFavorites.SelectedRows.Count > 0)
-                return dataGridFavorites.SelectedRows[0].DataBoundItem as Favorite;
+                return dataGridFavorites.SelectedRows[0].DataBoundItem as IFavorite;
             return null;
         }
 
@@ -85,7 +85,7 @@ namespace Terminals
 
         private void dataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            this.editedFavorite = this.dataGridFavorites.SelectedRows[0].DataBoundItem as Favorite;
+            this.editedFavorite = this.dataGridFavorites.SelectedRows[0].DataBoundItem as IFavorite;
             this.editedFavoriteName = this.editedFavorite.Name;
         }
 
@@ -243,7 +243,7 @@ namespace Terminals
 
         private void EditFavorite()
         {
-            Favorite favorite = this.GetSelectedFavorite();
+            IFavorite favorite = this.GetSelectedFavorite();
             if (favorite != null)
                 this.EditFavorite(favorite);
         }
@@ -286,7 +286,7 @@ namespace Terminals
 
         private void CopySelectedFavorite()
         {
-            Favorite favorite = this.GetSelectedFavorite();
+            IFavorite favorite = this.GetSelectedFavorite();
             if (favorite != null)
             {
                 InputBoxResult result = InputBox.Show("New Connection Name");
@@ -358,7 +358,7 @@ namespace Terminals
         {
             if (MainForm != null)
             {
-                Favorite favorite = GetSelectedFavorite();
+                IFavorite favorite = GetSelectedFavorite();
                 bool console = false;
                 RdpOptions rdpOptions = favorite.ProtocolProperties as RdpOptions;
                 if (rdpOptions != null)

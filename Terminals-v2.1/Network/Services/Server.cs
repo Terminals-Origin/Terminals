@@ -65,7 +65,7 @@ namespace Terminals.Network
         {
             var favoritesToShare = Persistance.Instance.Favorites;
             ArrayList list = new ArrayList();
-            foreach (Favorite favorite in favoritesToShare)
+            foreach (IFavorite favorite in favoritesToShare)
             {
                 FavoriteConfigurationElement configFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite);
                 list.Add(SharedFavorite.ConvertFromFavorite(configFavorite));

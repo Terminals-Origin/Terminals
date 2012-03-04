@@ -9,7 +9,7 @@ namespace Terminals.Data.DB
     {
         private const string PROVIDER = "System.Data.SqlClient";       
         private const string METADATA = @"res://*/Data.DB.SQLPersistance.csdl|res://*/Data.DB.SQLPersistance.ssdl|res://*/Data.DB.SQLPersistance.msl";
-        private const string DEVELOPMENT_CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=.\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
+        internal const string DEVELOPMENT_CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=.\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
         
         private bool delaySave = false;
         // TODO Add eventing, if something is changed in database (Jiri Pokorny, 13.02.2012)

@@ -55,7 +55,7 @@ namespace Terminals
             {
                 foreach (TreeNode node in SelectedNode.Nodes)
                 {
-                    Favorite fav = node.Tag as Favorite;
+                    var fav = node.Tag as IFavorite;
                     if (fav != null)
                     {
                         this.GetMainForm().Connect(fav.Name, Console, NewWindow);

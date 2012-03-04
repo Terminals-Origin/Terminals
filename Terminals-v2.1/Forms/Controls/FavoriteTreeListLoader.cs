@@ -104,7 +104,7 @@ namespace Terminals.Forms.Controls
 
         private void AddNewFavorites(List<IFavorite> addedFavorites)
         {
-            foreach (Favorite favorite in addedFavorites)
+            foreach (IFavorite favorite in addedFavorites)
             {
                 this.AddFavoriteToAllItsGroupNodes(favorite);
             }

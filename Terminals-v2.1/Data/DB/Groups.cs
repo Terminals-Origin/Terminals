@@ -116,7 +116,7 @@ namespace Terminals.Data.DB
         public IEnumerator<IGroup> GetEnumerator()
         {
             return this.dataBase.Groups
-                .Cast<IGroup>()
+                .ToList()
                 .GetEnumerator();
         }
 

@@ -228,7 +228,7 @@ namespace Terminals
                 {
                     groupMenu.DropDown.Items.Clear();
                     List<IFavorite> tagFavorites = Favorites.OrderByDefaultSorting(groupMenu.Group.Favorites);
-                    foreach (Favorite favorite in tagFavorites)
+                    foreach (IFavorite favorite in tagFavorites)
                     {
                         ToolStripMenuItem item = this.CreateToolStripItemByFavorite(favorite);
                         groupMenu.DropDown.Items.Add(item);
@@ -236,7 +236,7 @@ namespace Terminals
                 }
             }
 
-            private ToolStripMenuItem CreateToolStripItemByFavorite(Favorite favorite)
+            private ToolStripMenuItem CreateToolStripItemByFavorite(IFavorite favorite)
             {
                 ToolStripMenuItem item = CreateFavoriteMenuItem(favorite);
                 item.Click += this.serverToolStripMenuItem_Click;
@@ -342,7 +342,7 @@ namespace Terminals
                 {
                     groupMenu.DropDown.Items.Clear();
                     List<IFavorite> tagFavorites = Favorites.OrderByDefaultSorting(groupMenu.Group.Favorites);
-                    foreach (Favorite favorite in tagFavorites)
+                    foreach (IFavorite favorite in tagFavorites)
                     {
                         ToolStripMenuItem item = CreateFavoriteMenuItem(favorite);
                         groupMenu.DropDown.Items.Add(item);

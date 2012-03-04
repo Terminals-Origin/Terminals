@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.Objects;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -37,12 +36,16 @@ namespace Terminals.Data.DB
 
         public void Add(ICredentialSet toAdd)
         {
-            throw new NotImplementedException();
+            var credentialToAdd = toAdd as CredentialSet;
+            this.dataBase.AddToCredentialBase(credentialToAdd);
+            this.Save();
         }
 
         public void Remove(ICredentialSet toRemove)
         {
-            throw new NotImplementedException();
+            var credentailToRemove = toRemove as CredentialSet;
+            this.dataBase.AddToCredentialBase(credentailToRemove);
+            this.Save();
         }
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
@@ -52,7 +55,7 @@ namespace Terminals.Data.DB
                 credentialSet.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
             
-            this.dataBase.SaveImmediatelyIfRequested();
+            this.Save();
         }
 
         public void Save()
@@ -65,7 +68,6 @@ namespace Terminals.Data.DB
         public IEnumerator<ICredentialSet> GetEnumerator()
         {
             return GetCredentials()
-                .Cast<ICredentialSet>()
                 .GetEnumerator();
         }
 
@@ -76,9 +78,11 @@ namespace Terminals.Data.DB
 
         #endregion
 
-        private ObjectQuery<CredentialSet> GetCredentials()
+        private IEnumerable<CredentialSet> GetCredentials()
         {
-            return this.dataBase.CredentialBase.OfType<CredentialSet>();
+            return this.dataBase.CredentialBase
+                .OfType<CredentialSet>()
+                .ToList();
         }
     }
 }

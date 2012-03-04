@@ -10,13 +10,20 @@ namespace Terminals.Data.DB
     {
         public IFavorite CreateFavorite()
         {
-            return  new Favorite();
+            var favorite = new Favorite();
+            favorite.Display = new DisplayOptions();
+            favorite.Security = new SecurityOptions();
+            favorite.ExecuteBeforeConnect = new BeforeConnectExecute();
+
+            return favorite;
         }
 
         public IGroup CreateGroup(string groupName, List<IFavorite> favorites = null)
         {
             var newGroup = new Group();
+            newGroup.Name = groupName;
             if (favorites != null)
+                // todo stack overflaw in case of Untagged group
                 newGroup.AddFavorites(favorites);
 
             return newGroup;

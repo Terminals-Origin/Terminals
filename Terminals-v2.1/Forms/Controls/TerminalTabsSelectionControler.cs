@@ -27,7 +27,7 @@ namespace Terminals
 
         private void OnFavoritesChanged(FavoritesChangedEventArgs args)
         {
-            foreach (Favorite updated in args.Updated)
+            foreach (IFavorite updated in args.Updated)
             {
                 // dont update the rest of properties, because it doesnt reflect opened session
                 UpdateDetachedWindowTitle(updated);
@@ -35,27 +35,27 @@ namespace Terminals
             }
         }
 
-        private void UpdateAttachedTabTitle(Favorite updated)
+        private void UpdateAttachedTabTitle(IFavorite updated)
         {
             TabControlItem attachedTab = this.FindAttachedTab(updated);
             if (attachedTab != null)
                 attachedTab.Title = updated.Name;
         }
 
-        private TabControlItem FindAttachedTab(Favorite updated)
+        private TabControlItem FindAttachedTab(IFavorite updated)
         {
             return this.mainTabControl.Items.Cast<TerminalTabControlItem>()
                 .FirstOrDefault(tab => tab.Favorite.Equals(updated));
         }
 
-        private void UpdateDetachedWindowTitle(Favorite updated)
+        private void UpdateDetachedWindowTitle(IFavorite updated)
         {
             PopupTerminal detached = this.FindDetachedWindowByFavorite(updated);
             if (detached != null)
                 detached.UpdateTitle();
         }
 
-        private PopupTerminal FindDetachedWindowByFavorite(Favorite updated)
+        private PopupTerminal FindDetachedWindowByFavorite(IFavorite updated)
         {
             return this.detachedWindows.FirstOrDefault(window => window.Favorite.Equals(updated));
         }

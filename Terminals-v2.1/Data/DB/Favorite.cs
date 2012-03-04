@@ -94,8 +94,15 @@ namespace Terminals.Data.DB
 
         public string ToolBarIcon
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get
+            {
+                return string.Empty;
+                // todo ToolBarIcon throw new NotImplementedException();
+            }
+            set
+            {
+                //throw new NotImplementedException();
+            }
         }
 
         public string GroupNames

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data.DB;
 
 namespace Terminals.Forms
 {
@@ -14,13 +15,17 @@ namespace Terminals.Forms
         public void LoadSettings()
         {
             this.rbtnFilePersistence.Checked = Settings.PersistenceType == 0;
-            this.txtConnectionString.Text = Settings.ConnectionString;
+            if (String.IsNullOrEmpty(Settings.ConnectionString))
+                this.txtConnectionString.Text = DataBase.DEVELOPMENT_CONNECTION_STRING;
+            else
+                this.txtConnectionString.Text = Settings.ConnectionString;
         }
 
         public void SaveSettings()
         {
-            Settings.PersistenceType = Convert.ToByte(this.rbtnFilePersistence.Checked); 
-            Settings.ConnectionString = this.txtConnectionString.Text;
+            Settings.PersistenceType = Convert.ToByte(this.rbtnSqlPersistence.Checked);
+            if (this.txtConnectionString.Enabled)
+                Settings.ConnectionString = this.txtConnectionString.Text;
         }
 
         private void OnRbtnFilePersistenceCheckedChanged(object sender, EventArgs e)

@@ -16,7 +16,7 @@ namespace Terminals
             var favoritesWithButton = Persistance.Instance.Favorites
                 .Where(candidate => Settings.FavoritesToolbarButtons.Contains(candidate.Id));
 
-            foreach (Favorite favoriteWithButton in favoritesWithButton)
+            foreach (IFavorite favoriteWithButton in favoritesWithButton)
             {
                 ListViewItem favoriteItem = new ListViewItem(favoriteWithButton.Name);
                 favoriteItem.Tag = favoriteWithButton.Id;
