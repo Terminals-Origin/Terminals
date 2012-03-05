@@ -312,6 +312,36 @@ namespace Terminals.Data.DB
     
             return base.ExecuteFunction("InsertHistory", favoriteIdParameter, dateParameter, userSidParameter);
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="favoriteId">No Metadata Documentation available.</param>
+        /// <param name="protocolProperties">No Metadata Documentation available.</param>
+        public int UpdateFavoriteProtocolProperties(Nullable<global::System.Int32> favoriteId, global::System.String protocolProperties)
+        {
+            ObjectParameter favoriteIdParameter;
+            if (favoriteId.HasValue)
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", favoriteId);
+            }
+            else
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter protocolPropertiesParameter;
+            if (protocolProperties != null)
+            {
+                protocolPropertiesParameter = new ObjectParameter("ProtocolProperties", protocolProperties);
+            }
+            else
+            {
+                protocolPropertiesParameter = new ObjectParameter("ProtocolProperties", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction("UpdateFavoriteProtocolProperties", favoriteIdParameter, protocolPropertiesParameter);
+        }
 
         #endregion
     }

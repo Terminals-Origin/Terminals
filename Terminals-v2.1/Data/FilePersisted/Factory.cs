@@ -19,6 +19,7 @@ namespace Terminals
 
         public IGroup CreateGroup(string groupName, List<IFavorite> favorites = null)
         {
+            // call this constructor doesnt fire the group changed event
             if (favorites == null)
                 return new Group(groupName, new List<IFavorite>());
 

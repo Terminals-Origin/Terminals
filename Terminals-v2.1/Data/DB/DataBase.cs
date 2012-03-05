@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.EntityClient;
+using System.Data.Objects;
 using System.Linq;
 using Terminals.Configuration;
 
@@ -57,6 +58,25 @@ namespace Terminals.Data.DB
         {
             return this.Favorites
                 .FirstOrDefault(favorite => favorite.Guid == favoriteId);
+        }
+
+        public override int SaveChanges(System.Data.Objects.SaveOptions options)
+        {
+            return base.SaveChanges(options);
+
+            // todo additionaly save changed favorite properties
+        }
+
+        partial void OnContextCreated()
+        {
+            this.ObjectMaterialized += new ObjectMaterializedEventHandler(this.OnDataBaseObjectMaterialized);  
+        }
+
+        private void OnDataBaseObjectMaterialized(object sender, ObjectMaterializedEventArgs e)
+        {
+            var entity = e.Entity as IEntityContext;
+            if(entity != null)
+               entity.Database = this;   
         }
     }
 }

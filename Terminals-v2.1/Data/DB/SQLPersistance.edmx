@@ -412,6 +412,10 @@
             <Parameter Name="Date" Mode="In" Type="DateTime" />
             <Parameter Name="UserSid" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="UpdateFavoriteProtocolProperties">
+            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+            <Parameter Name="ProtocolProperties" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="BeforeConnectExecute" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
@@ -838,6 +842,7 @@
             </EndProperty>
             <Condition ColumnName="CredentialId" IsNull="false" />
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="UpdateFavoriteProtocolProperties" FunctionName="Model1.Store.UpdateFavoriteProtocolProperties" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

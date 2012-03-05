@@ -20,13 +20,11 @@ namespace Terminals.Data.DB
 
         public IGroup CreateGroup(string groupName, List<IFavorite> favorites = null)
         {
-            var newGroup = new Group();
-            newGroup.Name = groupName;
-            if (favorites != null)
-                // todo stack overflaw in case of Untagged group
-                newGroup.AddFavorites(favorites);
+            // call this constructor doesnt fire the group changed event
+            if (favorites == null)
+                return new Group(groupName, new List<IFavorite>());
 
-            return newGroup;
+            return new Group(groupName, favorites);
         }
 
         public ICredentialSet CreateCredentialSet()

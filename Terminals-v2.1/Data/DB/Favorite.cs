@@ -1,22 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terminals.Connections;
 using Unified;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Favorite : IFavorite
+    internal partial class Favorite : IFavorite, IEntityContext
     {
+        public DataBase Database { get; set; }
+
+        private ProtocolOptions protocolProperties;
+
         private Guid guid = Guid.NewGuid();
-        Guid IFavorite.Id
+
+        internal Guid Guid
         {
             get { return this.guid; }
-            set { this.guid = value; }
         }
 
-        public Guid Guid
+        Guid IFavorite.Id
         {
-            get { return this.guid; }
+            get { return this.guid; } 
             set { this.guid = value; }
         }
 
@@ -40,12 +45,6 @@ namespace Terminals.Data.DB
             get { return GetInvariantGroups(); }
         }
 
-        internal List<IGroup> GetInvariantGroups()
-        {
-            return this.Groups.Cast<IGroup>().ToList();
-        }
-
-        private ProtocolOptions protocolProperties;
         /// <summary>
         /// Gets or sets the protocol specific container. This isnt a part of an entity,
         /// because we are using lazy loading of this property and we dont want to cache
@@ -55,40 +54,12 @@ namespace Terminals.Data.DB
         {
             get
             {
-                if (this.protocolProperties == null) // expensive property lazy loading
-                    DeserializeProperties();
+                this.LoadProtocolProperties();
                 return this.protocolProperties;
             }
             set
             {
                 this.protocolProperties = value;
-                SerializeProperties(value); 
-            }
-        }
-
-        private void SerializeProperties(ProtocolOptions protocolOptions)
-        {
-            string serializedProperties = Serialize.SerializeXMLAsString(protocolOptions);
-            var database = new DataBase();
-            //database.
-            // todo dont commit the protocol proerties immediately
-        }
-
-        private void DeserializeProperties()
-        {
-            this.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(this.Protocol, new RdpOptions());
-            try
-            {
-                using (var database = new DataBase())
-                {
-                    string serializedProperties = database.GetFavoriteProtocolProperties(this.Id).FirstOrDefault();
-                    this.protocolProperties =
-                        Serialize.DeSerializeXML(serializedProperties, this.protocolProperties.GetType()) as ProtocolOptions;
-                }
-            }
-            catch(Exception exception)
-            {
-                Logging.Log.Error("Couldnt obtain protocol properties from database", exception);
             }
         }
 
@@ -131,17 +102,12 @@ namespace Terminals.Data.DB
 
             copy.ProtocolProperties = this.ProtocolProperties.Copy();
 
-            return copy; 
-        }
-
-        public override String ToString()
-        {
-            return Data.Favorite.ToString(this);
+            return copy;
         }
 
         public string GetToolTipText()
         {
-           return Data.Favorite.GetToolTipText(this);
+            return Data.Favorite.GetToolTipText(this);
         }
 
         public int CompareByDefaultSorting(IFavorite target)
@@ -153,6 +119,73 @@ namespace Terminals.Data.DB
         {
             this.Security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             Data.Favorite.UpdatePasswordsInProtocolProperties(this.protocolProperties, newKeyMaterial);
+        }
+
+        /// <summary>
+        /// Initializes new instance of a favorite and sets its properties to default values,
+        /// which arent defined by database.
+        /// </summary>
+        public Favorite()
+        {
+            this.Protocol = ConnectionManager.RDP;
+            this.Port = ConnectionManager.RDPPort;
+            this.protocolProperties = new RdpOptions();
+        }
+
+        /// <summary>
+        /// Reflect the protocol change into the protocol properties
+        /// </summary>
+        partial void OnProtocolChanged()
+        {
+            this.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(this.Protocol, this.protocolProperties);
+        }
+
+        /// <summary>
+        /// Using given database context commits changes of protocol properties into the database
+        /// </summary>
+        internal void SaveProperties(DataBase database)
+        {
+            if (database != null)
+            {
+                try
+                {
+                    string serializedProperties = Serialize.SerializeXMLAsString(this.protocolProperties);
+                    database.UpdateFavoriteProtocolProperties(this.Id, serializedProperties);
+                }
+                catch (Exception exception)
+                {
+                    Logging.Log.Error("Couldnt save protocol properties to database", exception);
+                    // we dont have chance to 
+                }
+            }
+        }
+
+        /// <summary>
+        /// Realization of expensive property lazy loading
+        /// </summary>
+        private void LoadProtocolProperties()
+        {
+            try
+            {
+                if (this.Database != null)
+                {
+                    // todo WTF
+                    string serializedProperties = this.Database.GetFavoriteProtocolProperties(this.Id).FirstOrDefault();
+                    Type propertiesType = this.protocolProperties.GetType();
+                    this.protocolProperties =
+                        Serialize.DeSerializeXML(serializedProperties, propertiesType) as ProtocolOptions;
+                }
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Couldnt obtain protocol properties from database", exception);
+                this.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(this.Protocol, new RdpOptions());
+            }
+        }
+
+        internal List<IGroup> GetInvariantGroups()
+        {
+            return this.Groups.Cast<IGroup>().ToList();
         }
 
         public override bool Equals(object favorite)
@@ -167,6 +200,11 @@ namespace Terminals.Data.DB
         public override int GetHashCode()
         {
             return this.Id.GetHashCode();
+        }
+
+        public override String ToString()
+        {
+            return Data.Favorite.ToString(this);
         }
     }
 }
