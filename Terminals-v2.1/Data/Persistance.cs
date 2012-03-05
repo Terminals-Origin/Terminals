@@ -16,8 +16,8 @@ namespace Terminals.Data
                     this.persistance = new FilePersistance();
                 else 
                     // todo enable SqlPeristance to be created
-                    this.persistance = new SqlPersistance();
-                    //this.persistance = new FilePersistance(); 
+                    //this.persistance = new SqlPersistance();
+                    this.persistance = new FilePersistance(); 
             }
             catch (Exception exception)
             {
