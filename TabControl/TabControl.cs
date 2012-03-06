@@ -123,6 +123,8 @@ namespace TabControl
             if (showTabs)
             {
                 TabControlItem selectedTabItem = this.SelectedItem;
+
+                // todo bug 32353 - first calculate all, then identify ragne of tabs to draw, and finally paint them 
                 for (int i = 0; i < this.Items.Count; i++)
                 {
                     TabControlItem currentItem = Items[i];
