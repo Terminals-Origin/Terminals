@@ -27,17 +27,29 @@ namespace Terminals.Data.DB
 
         IBeforeConnectExecuteOptions IFavorite.ExecuteBeforeConnect
         {
-            get { return this.ExecuteBeforeConnect; }
+            get
+            {
+                this.ExecuteBeforeConnectReference.Load();
+                return this.ExecuteBeforeConnect; 
+            }
         }
 
         IDisplayOptions IFavorite.Display
         {
-            get { return this.Display; }
+            get
+            {
+                this.DisplayReference.Load();
+                return this.Display;
+            }
         }
 
         ISecurityOptions IFavorite.Security
         {
-            get { return this.Security; }
+            get 
+            {
+                this.SecurityReference.Load();
+                return this.Security; 
+            }
         }
 
         List<IGroup> IFavorite.Groups
@@ -127,8 +139,8 @@ namespace Terminals.Data.DB
         /// </summary>
         public Favorite()
         {
-            this.Protocol = ConnectionManager.RDP;
-            this.Port = ConnectionManager.RDPPort;
+            this._Protocol = ConnectionManager.RDP;
+            this._Port = ConnectionManager.RDPPort;
             this.protocolProperties = new RdpOptions();
         }
 
@@ -185,7 +197,7 @@ namespace Terminals.Data.DB
 
         internal List<IGroup> GetInvariantGroups()
         {
-            return this.Groups.Cast<IGroup>().ToList();
+            return this.Groups.ToList().Cast<IGroup>().ToList();
         }
 
         public override bool Equals(object favorite)

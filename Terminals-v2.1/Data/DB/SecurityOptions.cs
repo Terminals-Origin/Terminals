@@ -112,6 +112,9 @@ namespace Terminals.Data.DB
             }
         }
 
+        /// <summary>
+        /// LazyLoading of CredentialBase for favorites, where security isnt touched
+        /// </summary>
         private void EnsureCredentialBase()
         {
             if (this.CredentialBase == null)

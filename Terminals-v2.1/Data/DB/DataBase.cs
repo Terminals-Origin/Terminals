@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Linq;
@@ -56,15 +58,61 @@ namespace Terminals.Data.DB
 
         internal Favorite GetFavoriteByGuid(Guid favoriteId)
         {
-            return this.Favorites
+            // to list, because linq to entities doesnt support Guid search
+            return this.Favorites.ToList()
                 .FirstOrDefault(favorite => favorite.Guid == favoriteId);
         }
 
-        public override int SaveChanges(System.Data.Objects.SaveOptions options)
+        public override int SaveChanges(SaveOptions options)
         {
-            return base.SaveChanges(options);
+            this.DetachUntaggedGroups();
+            var changedFavorites = this.GetChangedOrAddedFavorites();
+            int returnValue = base.SaveChanges(options);
+            this.SaveFavoriteProtocolProperties(changedFavorites);
+            return returnValue;
+        }
 
-            // todo additionaly save changed favorite properties
+        /// <summary>
+        /// Preserve saving Untagged group which is virtual only
+        /// </summary>
+        private void DetachUntaggedGroups()
+        {
+            IEnumerable<ObjectStateEntry> added = this.ObjectStateManager.GetObjectStateEntries(EntityState.Added);
+            foreach (var change in added)
+            {
+                var group = change.Entity as Group;
+                if (group != null && group.Name == Settings.UNTAGGED_NODENAME)
+                {
+                    this.Detach(group);
+                }
+            }
+        }
+
+        private void SaveFavoriteProtocolProperties(IEnumerable<Favorite> changedFavorites)
+        {
+            foreach (var favorite in changedFavorites)
+            {
+                favorite.SaveProperties(this);
+            }
+        }
+
+        private IEnumerable<Favorite> GetChangedOrAddedFavorites()
+        {
+            var changes = this.GetChangedOrAddedEntitites();
+
+            IEnumerable<Favorite> affectedFavorites = changes.Where(candidate => candidate.Entity is Favorite)
+                .Select(change => change.Entity)
+                .Cast<Favorite>();
+
+            return affectedFavorites;
+        }
+
+        private List<ObjectStateEntry> GetChangedOrAddedEntitites()
+        {
+            IEnumerable<ObjectStateEntry> added = this.ObjectStateManager.GetObjectStateEntries(EntityState.Added);
+            List<ObjectStateEntry> changed = this.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).ToList();
+            changed.AddRange(added);
+            return changed;
         }
 
         partial void OnContextCreated()

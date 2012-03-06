@@ -29,8 +29,7 @@ namespace Terminals.Data.DB
 
         public ICredentialSet CreateCredentialSet()
         {
-            throw new NotImplementedException();
-            //return new Data.DB.CredentialSet();
+            return new CredentialSet();
         }
     }
 }

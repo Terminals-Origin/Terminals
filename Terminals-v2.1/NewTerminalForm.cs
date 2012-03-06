@@ -425,10 +425,13 @@ namespace Terminals
 
         private static void BindGroupsToListView(ListView listViewToFill, IEnumerable<IGroup> groups)
         {
-            foreach (Group group in groups)
+            foreach (IGroup group in groups)
             {
-                var groupItem = new GroupListViewItem(group);
-                listViewToFill.Items.Add(groupItem);
+                if (group.Name != Settings.UNTAGGED_NODENAME)
+                {
+                    var groupItem = new GroupListViewItem(group);
+                    listViewToFill.Items.Add(groupItem);
+                }
             }
         }
 
@@ -730,6 +733,7 @@ namespace Terminals
         private void CommitFavoriteChanges()
         {
             Settings.StartDelayedUpdate();
+            Persistance.Instance.StartDelayedUpdate();
             if (this.editedId == Guid.Empty)
             {
                 PersistedFavorites.Add(this.Favorite);
@@ -744,6 +748,7 @@ namespace Terminals
 
             List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
             PersistedFavorites.UpdateFavorite(this.Favorite, updatedGroups);
+            Persistance.Instance.SaveAndFinishDelayedUpdate();
             Settings.SaveAndFinishDelayedUpdate();
         }
 

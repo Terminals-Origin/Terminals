@@ -207,6 +207,7 @@
     <Compile Include="Data\DB\Groups.cs" />
     <Compile Include="Data\DB\ConnectionHistory.cs" />
     <Compile Include="Data\DB\HistoryItem.cs" />
+    <Compile Include="Data\DB\IEntityContext.cs" />
     <Compile Include="Data\DB\SecurityOptions.cs" />
     <Compile Include="Data\DB\SqlPersistance.cs" />
     <Compile Include="Data\DB\StoredCredentials.cs" />

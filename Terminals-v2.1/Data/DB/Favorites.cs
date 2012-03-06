@@ -67,13 +67,16 @@ namespace Terminals.Data.DB
             var candidate = favorite as Favorite;
             if(candidate.EntityState != EntityState.Modified)
                 return;
-            // todo check how to realy update an entity
+
             SaveAndReportFavoriteUpdated(favorite);
         }
 
         public void UpdateFavorite(IFavorite favorite, List<IGroup> groups)
         {
-            // todo add favorite to all groups
+            // todo merge favorite old and new groups
+            // somethink like Favorites.UpdateFavoriteInGroups(IFavorite favorite, List<IGroup> newGroups)
+            List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(groups, favorite.Groups);
+            List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, groups);
             SaveAndReportFavoriteUpdated(favorite);
         }
 

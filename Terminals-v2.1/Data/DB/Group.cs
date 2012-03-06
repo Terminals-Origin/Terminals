@@ -43,8 +43,7 @@ namespace Terminals.Data.DB
         {
             get
             {
-                // todo check, ic entity frameworks supports type cast to IFavorite
-                return this.Favorites.Cast<IFavorite>().ToList();
+                return this.Favorites.ToList().Cast<IFavorite>().ToList();
             }
         }
 

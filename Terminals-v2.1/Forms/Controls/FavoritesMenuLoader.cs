@@ -210,7 +210,7 @@ namespace Terminals
             /// </summary>
             private void CreateGroupsToolStripMenuItems()
             {
-                foreach (Group group in PersistedGroups)
+                foreach (IGroup group in PersistedGroups)
                 {
                     ToolStripMenuItem tagMenu = new GroupMenuItem(group);
                     tagMenu.DropDownOpening += new EventHandler(this.OnTagMenuDropDownOpening);
@@ -326,7 +326,7 @@ namespace Terminals
 
             private void AddTagTrayMenuItems()
             {
-                foreach (Group group in PersistedGroups)
+                foreach (IGroup group in PersistedGroups)
                 {
                     ToolStripMenuItem tagMenuItem = new GroupMenuItem(group);
                     tagMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
