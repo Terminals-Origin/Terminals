@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -1282,10 +1283,7 @@ namespace Terminals
 
         private void tcTerminals_MenuItemsLoaded(object sender, EventArgs e)
         {
-            foreach (ToolStripItem item in this.tcTerminals.Menu.Items)
-            {
-                item.Image = Resources.smallterm;
-            }
+            this.UpdateTabControlMenuItemIcons();
 
             if (this.fullScreenSwitch.FullScreen)
             {
@@ -1296,6 +1294,24 @@ namespace Terminals
                 item = new ToolStripMenuItem(Program.Resources.GetString("Minimize"), null, this.Minimize);
                 this.tcTerminals.Menu.Items.Add(item);
             }
+        }
+
+        private void UpdateTabControlMenuItemIcons()
+        {
+            foreach (ToolStripItem menuItem in this.tcTerminals.Menu.Items)
+            {
+                var tab = this.FindTabControlItemByTitle(menuItem);
+
+                if (tab != null)
+                    menuItem.Image = FavoriteIcons.GetFavoriteIcon(tab.Favorite);
+            }
+        }
+
+        private TerminalTabControlItem FindTabControlItemByTitle(ToolStripItem item)
+        {
+            return this.tcTerminals.Items.Cast<TabControlItem>()
+                   .FirstOrDefault(candidate => candidate is TerminalTabControlItem && candidate.Title == item.Text)
+                   as TerminalTabControlItem;
         }
 
         private void manageConnectionsToolStripMenuItem_Click(object sender, EventArgs e)
