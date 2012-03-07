@@ -1031,6 +1031,10 @@
     </None>
     <None Include="Migrated rules for Terminals.ruleset" />
     <None Include="Data\DB\Terminals.mdf" />
+    <None Include="..\..\Resources\Libraries\wpcap\wpcap.dll">
+      <Link>wpcap.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Data\DB\Terminals_log.LDF">
       <DependentUpon>Terminals.mdf</DependentUpon>
     </Content>
@@ -1340,9 +1344,6 @@
     <Content Include="Updates\RSS\obj\RSS.csproj.FileList.txt" />
     <Content Include="Updates\RSS\RSS.csproj" />
     <Content Include="Updates\TerminalsUpdates.xml" />
-    <None Include="wpcap.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="Resources\star.png" />
     <None Include="Resources\ShowPanel.PNG" />
     <None Include="Resources\tag_blue_delete.png" />
