@@ -162,16 +162,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutForm.cs">
+    <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutForm.Designer.cs">
+    <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddConnectionForm.cs">
+    <Compile Include="Forms\AddConnectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddConnectionForm.Designer.cs">
+    <Compile Include="Forms\AddConnectionForm.Designer.cs">
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CaptureManager\Capture.cs" />
@@ -396,23 +396,23 @@
     </Compile>
     <Compile Include="Data\ListsHelper.cs" />
     <Compile Include="Data\GroupsChangedArgs.cs" />
-    <Compile Include="DiskDrivesForm.cs">
+    <Compile Include="Forms\DiskDrivesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DiskDrivesForm.Designer.cs">
+    <Compile Include="Forms\DiskDrivesForm.Designer.cs">
       <DependentUpon>DiskDrivesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExportFrom.cs">
+    <Compile Include="Forms\ExportFrom.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ExportFrom.Designer.cs">
+    <Compile Include="Forms\ExportFrom.Designer.cs">
       <DependentUpon>ExportFrom.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\FavoriteTreeListLoader.cs" />
-    <Compile Include="FavsList.cs">
+    <Compile Include="Forms\Controls\FavsList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="FavsList.Designer.cs">
+    <Compile Include="Forms\Controls\FavsList.Designer.cs">
       <DependentUpon>FavsList.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\FavoritesTreeView.cs">
@@ -466,7 +466,7 @@
     </Compile>
     <Compile Include="Forms\TerminalFormDialogResult.cs" />
     <Compile Include="Network\Services\ICommandLineService.cs" />
-    <Compile Include="MainFormFullScreenSwitch.cs">
+    <Compile Include="Forms\MainFormFullScreenSwitch.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Controls\SplitButton.cs">
@@ -493,12 +493,6 @@
       <DependentUpon>LocalizedValues.resx</DependentUpon>
     </Compile>
     <Compile Include="Logging\Log.cs" />
-    <Compile Include="ManageToolStrip.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ManageToolStrip.Designer.cs">
-      <DependentUpon>ManageToolStrip.cs</DependentUpon>
-    </Compile>
     <Compile Include="Native\Enums.cs" />
     <Compile Include="Native\Methods.cs" />
     <Compile Include="Native\Structs.cs" />
@@ -586,16 +580,16 @@
     <Compile Include="Forms\OptionPanels\StartShutdownOptionPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="OptionDialog.cs">
+    <Compile Include="Forms\OptionDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OptionDialog.Designer.cs">
+    <Compile Include="Forms\OptionDialog.Designer.cs">
       <DependentUpon>OptionDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="PopupTerminal.cs">
+    <Compile Include="Forms\PopupTerminal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PopupTerminal.Designer.cs">
+    <Compile Include="Forms\PopupTerminal.Designer.cs">
       <DependentUpon>PopupTerminal.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramInfo.cs" />
@@ -808,56 +802,56 @@
     <Compile Include="Network\WMI\WMIControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="NewGroupForm.cs">
+    <Compile Include="Forms\NewGroupForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewGroupForm.Designer.cs">
+    <Compile Include="Forms\NewGroupForm.Designer.cs">
       <DependentUpon>NewGroupForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrganizeFavoritesForm.cs">
+    <Compile Include="Forms\OrganizeFavoritesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OrganizeFavoritesForm.Designer.cs">
+    <Compile Include="Forms\OrganizeFavoritesForm.Designer.cs">
       <DependentUpon>OrganizeFavoritesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Security\PasswordFunctions.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NewTerminalForm.cs">
+    <Compile Include="Forms\NewTerminalForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NewTerminalForm.Designer.cs">
+    <Compile Include="Forms\NewTerminalForm.Designer.cs">
       <DependentUpon>NewTerminalForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrganizeFavoritesToolbarForm.cs">
+    <Compile Include="Forms\OrganizeFavoritesToolbarForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OrganizeFavoritesToolbarForm.Designer.cs">
+    <Compile Include="Forms\OrganizeFavoritesToolbarForm.Designer.cs">
       <DependentUpon>OrganizeFavoritesToolbarForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrganizeGroupsForm.cs">
+    <Compile Include="Forms\OrganizeGroupsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OrganizeGroupsForm.Designer.cs">
+    <Compile Include="Forms\OrganizeGroupsForm.Designer.cs">
       <DependentUpon>OrganizeGroupsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrganizeShortcuts.cs">
+    <Compile Include="Forms\OrganizeShortcuts.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="OrganizeShortcuts.Designer.cs">
+    <Compile Include="Forms\OrganizeShortcuts.Designer.cs">
       <DependentUpon>OrganizeShortcuts.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AboutForm.resx">
+    <EmbeddedResource Include="Forms\AboutForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AddConnectionForm.resx">
+    <EmbeddedResource Include="Forms\AddConnectionForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>AddConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -918,34 +912,34 @@
       <DependentUpon>WMIControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewGroupForm.resx">
+    <EmbeddedResource Include="Forms\NewGroupForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NewGroupForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OptionDialog.resx">
+    <EmbeddedResource Include="Forms\OptionDialog.resx">
       <DependentUpon>OptionDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OrganizeFavoritesForm.resx">
+    <EmbeddedResource Include="Forms\OrganizeFavoritesForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OrganizeFavoritesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="NewTerminalForm.resx">
+    <EmbeddedResource Include="Forms\NewTerminalForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>NewTerminalForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OrganizeFavoritesToolbarForm.resx">
+    <EmbeddedResource Include="Forms\OrganizeFavoritesToolbarForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OrganizeFavoritesToolbarForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OrganizeGroupsForm.resx">
+    <EmbeddedResource Include="Forms\OrganizeGroupsForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OrganizeGroupsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OrganizeShortcuts.resx">
+    <EmbeddedResource Include="Forms\OrganizeShortcuts.resx">
       <SubType>Designer</SubType>
       <DependentUpon>OrganizeShortcuts.cs</DependentUpon>
     </EmbeddedResource>
@@ -953,11 +947,11 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="QuickConnect.resx">
+    <EmbeddedResource Include="Forms\QuickConnect.resx">
       <SubType>Designer</SubType>
       <DependentUpon>QuickConnect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SaveActiveConnectionsForm.resx">
+    <EmbeddedResource Include="Forms\SaveActiveConnectionsForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -970,16 +964,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="QuickConnect.cs">
+    <Compile Include="Forms\QuickConnect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="QuickConnect.Designer.cs">
+    <Compile Include="Forms\QuickConnect.Designer.cs">
       <DependentUpon>QuickConnect.cs</DependentUpon>
     </Compile>
-    <Compile Include="SaveActiveConnectionsForm.cs">
+    <Compile Include="Forms\SaveActiveConnectionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SaveActiveConnectionsForm.Designer.cs">
+    <Compile Include="Forms\SaveActiveConnectionsForm.Designer.cs">
       <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Network\PortScanner\NetworkScanItem.cs" />
@@ -987,7 +981,7 @@
     <Compile Include="Network\PortScanner\ScanItemEventArgs.cs" />
     <Compile Include="Data\Serialization\Serialize.cs" />
     <Compile Include="CaptureManager\ScreenCapture.cs" />
-    <Compile Include="ProtocolHandler.cs" />
+    <Compile Include="CommandLine\ProtocolHandler.cs" />
     <Compile Include="Security\Decryptor.cs" />
     <Compile Include="Security\DecryptTransformer.cs" />
     <Compile Include="Security\EncryptionAlgorithm.cs" />
@@ -1009,7 +1003,7 @@
     <Compile Include="TerminalServices\SessionProcess.cs" />
     <Compile Include="TerminalServices\TerminalServicesAPI.cs" />
     <Compile Include="TerminalServices\TerminalServer.cs" />
-    <Compile Include="TSManager.cs" />
+    <Compile Include="TerminalServices\TSManager.cs" />
     <Compile Include="CommandLine\CommandLineArguments.cs" />
     <Compile Include="Wizard\AddExistingRDPConnections.cs">
       <SubType>UserControl</SubType>
@@ -1078,7 +1072,7 @@
     <Content Include="ToolStrip.settings.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="WTSApi32.cs" />
+    <None Include="TerminalServices\WTSApi32.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\arrow_in.png" />
@@ -1136,14 +1130,14 @@
     <EmbeddedResource Include="Credentials\UserSelectForm.resx">
       <DependentUpon>UserSelectForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DiskDrivesForm.resx">
+    <EmbeddedResource Include="Forms\DiskDrivesForm.resx">
       <DependentUpon>DiskDrivesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ExportFrom.resx">
+    <EmbeddedResource Include="Forms\ExportFrom.resx">
       <DependentUpon>ExportFrom.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FavsList.resx">
+    <EmbeddedResource Include="Forms\Controls\FavsList.resx">
       <DependentUpon>FavsList.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1151,10 +1145,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>LocalizedValues.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ManageToolStrip.resx">
-      <DependentUpon>ManageToolStrip.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\AD\ImportFromAD.resx">
       <DependentUpon>ImportFromAD.cs</DependentUpon>
@@ -1180,7 +1170,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>WMIServerCredentials.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PopupTerminal.resx">
+    <EmbeddedResource Include="Forms\PopupTerminal.resx">
       <DependentUpon>PopupTerminal.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
