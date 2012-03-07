@@ -5,6 +5,7 @@ using Terminals.Data;
 
 namespace Terminals
 {
+    // todo add missing feature QuickConnect
     public partial class QuickConnect : Form
     {
         public QuickConnect()
