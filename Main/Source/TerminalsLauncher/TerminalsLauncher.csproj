@@ -91,15 +91,15 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Terminals\CommandLine\ProtocolHandler.cs">
+      <Link>ProtocolHandler.cs</Link>
+    </Compile>
     <Compile Include="..\Terminals\Logging\Log.cs">
       <Link>Logging\Log.cs</Link>
     </Compile>
-    <Compile Include="..\Terminals\ProtocolHandler.cs">
-      <Link>ProtocolHandler.cs</Link>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="..\Terminals\MainForm.resx">
+    <EmbeddedResource Include="..\Terminals\Forms\MainForm.resx">
       <Link>MainForm.resx</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
