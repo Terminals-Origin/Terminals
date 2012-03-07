@@ -538,7 +538,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:HexEditor, Version=1.3.0.31800, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:HexEditor, Version=1.3.0.41966, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_05EE7FE4793377BCB3F5813351C23B1E"
@@ -733,7 +733,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SSHClient, Version=1.0.4386.31753, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:SSHClient, Version=1.0.4448.41620, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_49C412B7EDAE2110AE176FE3FF0438FC"
@@ -1289,7 +1289,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:TerminalEmulator, Version=1.1.4385.1231, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:TerminalEmulator, Version=1.1.4415.35285, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_F93D07A5AA396CF2EA1A34A6F97F5222"
@@ -1373,11 +1373,11 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Terminals"
         "ProductCode" = "8:{90FDD134-DFFA-4DD2-B2C7-BCAC42DB297E}"
-        "PackageCode" = "8:{00BBA267-F556-4F46-8B8D-57FF4E5A7D4B}"
+        "PackageCode" = "8:{F41EBF81-5974-418B-B731-AAA553A0C7E4}"
         "UpgradeCode" = "8:{DD0D31A2-2E86-4F3F-98CE-6AED37FF24CD}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:TRUE"
+        "RemovePreviousVersions" = "11:FALSE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:2.0.0"
@@ -2010,7 +2010,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3161AAC887024CD69FD18FC7ED12824D"
             {
-            "SourcePath" = "8:..\\Terminals\\obj\\Release\\Terminals.exe"
+            "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E147B34F8EC64C4EAA693E7BB1969F43"
