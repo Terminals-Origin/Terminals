@@ -1,0 +1,34 @@
+
+
+Drawing:
+--------
+
+- There is a lot of corruption associated with doing CopyRect, especially when dragging windows.  It appears that the wrong source is being copied (i.e., somehow the location on the cached bitmap has gone out of synch with the remote desktop, so the new co-ordinates don't refer to the right thing).  The actual CopyRect algorithm is fine (i.e., copying (x1, y1, x2, y2) to (x3, y3, x4, y4) works fine).
+
+Mouse:
+------
+
+- Remote pointer flickers constantly even when client is not moving mouse.  OnMouseMove doesn't seem to be causing this.
+
+Keyboard:
+---------
+
+- How to handle case of CAPS LOCK on client side.  Currently, only the key value is sent (i.e., 'a' instead of 'A').
+- How to handle case of "Windows" key.  Currently this causes Start menu on local PC to be activated.  Also need to deal with CTRL+ESC.  What about WindowsKey + ?
+- Decide how to deal with key combos that overlap with client apps using RemoteDestkop.  Currently, if a client app has a menu, then ALT+F will open BOTH the client File menu AND the remote File Menu.  What should happen?
+
+Networking:
+-----------
+
+- Need to properly handle the case of the remote host disconnecting first.  Currently I am still trying to read updates, and get EOF then crash. All read/write operations need proper exception handling, and to raise events for connection lost.
+
+Efficiency:
+-----------
+
+- Replace all casts to use is/as keywords + null check
+- Replace #IF pragma for Win32 conditionals with [Conditional(Win32)] attribute.  Do the same with all assertions for nulls with bitmaps, vncclient objects, etc.
+- Replace constructor assignment of member variables with initializers (i.e., assign value when declaring), unless initializing to 0 or null, which are automatic
+- Add conditional logging using System.Diagnostics.Trace.WriteLineIf to allow monitoring in release builds when necessary
+- Replace & with && in all ifs that don't need to check both expressions.
+
+- Refactor RfbProtocol to be all Static methods.  Move all reference objects from RfbProtocol into VncClient and do Dispose checking there.  Also, consider doing stream-level IO in VncClient to check for DataAvailable.
