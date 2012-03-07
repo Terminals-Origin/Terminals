@@ -16,35 +16,32 @@ namespace Terminals.Configuration
     internal static partial class Settings
     {
         /// <summary>
-        /// Gets the directory name of data directory,
-        /// where all files changed by user should be stored
+        /// Informs lisseners, that configuration file was changed by another application
+        /// or another Terminals instance. In this case all cached not saved data are lost.
         /// </summary>
-        private const string DATA_DIRECTORY = "Data";
+        internal static event ConfigurationChangedHandler ConfigurationChanged;
 
-        /// <summary>
-        /// Gets the name of custom user options configuration file
-        /// </summary>
-        internal const String CONFIG_FILE_NAME = "Terminals.config";
-
-        private static string configurationFileLocation;
-        internal static string ConfigurationFileLocation
+        private static FileLocations fileLocations = new FileLocations();
+        internal static FileLocations FileLocations
         {
-            get
-            {
-                if (string.IsNullOrEmpty(configurationFileLocation))
-                    SetDefaultConfigurationFileLocation();
-
-                return configurationFileLocation;
-            }
-            set
-            {
-                configurationFileLocation = value;
-                if (fileWatcher != null)
-                    fileWatcher.FullFileName = value;
-            }
+            get { return fileLocations; }
         }
 
         private static SysConfig.Configuration _config = null;
+        private static SysConfig.Configuration Config
+        {
+            get
+            {
+                if (_config == null)
+                {
+                    InitializeFileWatcher();
+                    _config = GetConfiguration();
+                }
+
+                return _config;
+            }
+        }
+
         private static DataFileWatcher fileWatcher;
 
         /// <summary>
@@ -57,24 +54,6 @@ namespace Terminals.Configuration
         /// This increases performance for 
         /// </summary>
         private static bool delayConfigurationSave;
-
-        /// <summary>
-        /// Informs lisseners, that configuration file was changed by another application
-        /// or another Terminals instance. In this case all cached not saved data are lost.
-        /// </summary>
-        internal static event ConfigurationChangedHandler ConfigurationChanged;
-
-        internal static string GetDataRootDirectoryFullPath()
-        {
-            string root = Program.Info.Location;
-            return Path.Combine(root, DATA_DIRECTORY);
-        }
-
-        private static void SetDefaultConfigurationFileLocation()
-        {
-            string assemblyDirectory = Program.Info.Location;
-            configurationFileLocation = Path.Combine(assemblyDirectory, CONFIG_FILE_NAME);
-        }
 
         private static void ConfigFileChanged(object sender, EventArgs e)
         {
@@ -92,26 +71,12 @@ namespace Terminals.Configuration
             }
         }
 
-        private static SysConfig.Configuration Config
-        {
-            get
-            {
-                if (_config == null)
-                {
-                    InitializeFileWatcher();
-                    _config = GetConfiguration();
-                }
-
-                return _config;
-            }
-        }
-
         private static void InitializeFileWatcher()
         {
             if (fileWatcher != null)
                 return;
 
-            fileWatcher = new DataFileWatcher(ConfigurationFileLocation);
+            fileWatcher = new DataFileWatcher(fileLocations.Configuration);
             fileWatcher.FileChanged += new EventHandler(ConfigFileChanged);
         }
 
@@ -121,7 +86,7 @@ namespace Terminals.Configuration
         /// </summary>
         internal static void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
         {
-           fileWatcher.AssignSynchronizer(synchronizer); 
+            fileWatcher.AssignSynchronizer(synchronizer);
         }
 
         internal static void ForceReload()
@@ -195,14 +160,14 @@ namespace Terminals.Configuration
 
         private static void CreateConfigFileIfNotExist()
         {
-            if (!File.Exists(ConfigurationFileLocation))
+            if (!File.Exists(fileLocations.Configuration))
                 SaveDefaultConfigFile();
         }
 
         private static SysConfig.ExeConfigurationFileMap CreateConfigFileMap()
         {
             SysConfig.ExeConfigurationFileMap configFileMap = new SysConfig.ExeConfigurationFileMap();
-            configFileMap.ExeConfigFilename = ConfigurationFileLocation;
+            configFileMap.ExeConfigFilename = fileLocations.Configuration;
             return configFileMap;
         }
 
@@ -217,29 +182,28 @@ namespace Terminals.Configuration
 
         private static void BackUpConfigFile()
         {
-            if (File.Exists(ConfigurationFileLocation))
+            if (File.Exists(fileLocations.Configuration))
             {
                 string backupFileName = GetBackupFileName();
                 // back it up before we do anything
-                File.Copy(ConfigurationFileLocation, backupFileName);
+                File.Copy(fileLocations.Configuration, backupFileName);
                 // now delete it
-                File.Delete(ConfigurationFileLocation);
+                File.Delete(fileLocations.Configuration);
             }
         }
 
         private static string GetBackupFileName()
         {
             string newGUID = Guid.NewGuid().ToString();
-            string folder = Path.GetDirectoryName(ConfigurationFileLocation);
             long fileDate = DateTime.Now.ToFileTime();
             string backupFile = string.Format("Terminals-{1}-{0}.config", newGUID, fileDate);
-            return Path.Combine(folder, backupFile);
+            return FileLocations.GetFullPath(backupFile);
         }
 
         private static void SaveDefaultConfigFile()
         {
             string templateConfigFile = Properties.Resources.Terminals;
-            using (StreamWriter sr = new StreamWriter(ConfigurationFileLocation))
+            using (StreamWriter sr = new StreamWriter(fileLocations.Configuration))
             {
                 sr.Write(templateConfigFile);
             }
@@ -265,7 +229,7 @@ namespace Terminals.Configuration
             string tempFile = Path.GetTempFileName();
 
             fileWatcher.StopObservation();
-            MoveAndDeleteFile(ConfigurationFileLocation, tempFile);
+            MoveAndDeleteFile(fileLocations.Configuration, tempFile);
             SaveDefaultConfigFile();
             fileWatcher.StartObservation();
             SysConfig.Configuration c = OpenConfiguration();

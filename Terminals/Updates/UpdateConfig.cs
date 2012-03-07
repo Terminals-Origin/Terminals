@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Windows.Forms;
+using System.Linq;
+using System.Text;
 using Terminals.Configuration;
 using Terminals.Data;
-using Terminals.History;
-using Terminals.Wizard;
+using Terminals.Forms.Controls;
 
 namespace Terminals.Updates
 {
@@ -34,47 +35,164 @@ namespace Terminals.Updates
         {
             if (Program.Info.Version >= new Version(2, 0, 0, 0))
             {
-                // todo MoveFilesToVersion2Location();
+                MoveFilesToVersion2Location();
                 UpdateDefaultFavoriteUrl();
             }
         }
 
         private static void MoveFilesToVersion2Location()
         {
-            // dont need to refresh the file location, because if the files were changed are are
-            // already in use, they will be reloaded
-            string root = Settings.GetDataRootDirectoryFullPath();
-            if (!Directory.Exists(root))
-                Directory.CreateDirectory(root);
+            // dont need to refresh the file location, because if the files were changed
+            // are already in use, they will be reloaded
             MoveThumbsDirectory();
-            MoveDataFile(ConnectionHistory.FILENAME);
-            MoveDataFile(ToolStripSettings.FLE_NAME);
-            // only this is already in use if started with default location
-            MoveDataFile(Settings.CONFIG_FILE_NAME);
+            // dont move the logs directory, because it is in use by Log4net library.
+            MoveDataFile(FileLocations.HISTORY_FILENAME);
+            MoveDataFile(FileLocations.TOOLSTRIPS_FILENAME);
+            UpgradeCredentialsFile();
+            UpgradeConfigFile();
+        }
 
-            // and then extract favorites and Tags from old config
+        private static void UpgradeCredentialsFile()
+        {
+            MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
+            string credentialsFile = Settings.FileLocations.Credentials;
+            if (System.IO.File.Exists(credentialsFile))
+            {
+                string credentialsXml = File.ReadAllText(credentialsFile);
+                StringBuilder credentialsText = new StringBuilder(credentialsXml);
+                credentialsText.Replace("<Password>", "<EncryptedPassword>");
+                credentialsText.Replace("</Password>", "</EncryptedPassword>");
+                credentialsText.Replace("<Username>", "<UserName>");
+                credentialsText.Replace("</Username>", "</UserName>");
+                File.WriteAllText(credentialsFile, credentialsText.ToString());
+            }
+        }
+
+        private static void UpgradeConfigFile() 
+        {
+            // only this is already in use if started with default location
+            MoveDataFile(FileLocations.CONFIG_FILENAME);
+            Settings.ForceReload();
+            Settings.StartDelayedUpdate();
+            Persistance.Instance.StartDelayedUpdate();
+            ImportTagsFromConfigFile();
+            MoveFavoritesFromConfigFile();
+            MoveGroupsFromConfigFile();
+            Settings.DeleteFavorites(Settings.GetFavorites().ToList());
+            Settings.DeleteTags(Settings.Tags.ToList());
+            ReplaceFavoriteButtonNamesByIds();
+            Settings.SaveAndFinishDelayedUpdate();
+            Persistance.Instance.Groups.Rebuild();
+            Persistance.Instance.SaveAndFinishDelayedUpdate();
+        }
+
+        private static void MoveGroupsFromConfigFile()
+        {
+            var configGroups = Settings.GetGroups();
+            foreach (GroupConfigurationElement configGroup in configGroups)
+            {
+                MoveFavoriteAliasesGroup(configGroup);
+            }
+            
+            configGroups.Clear();
+        }
+
+        private static void MoveFavoriteAliasesGroup(GroupConfigurationElement configGroup) 
+        {
+            IFactory factory = Persistance.Instance.Factory;
+            IGroup group = FavoritesFactory.GetOrCreateGroup(configGroup.Name);
+            List<string> favoriteNames = configGroup.FavoriteAliases.GetFavoriteNames();
+            IFavorites favorites = Persistance.Instance.Favorites;
+            List<IFavorite> groupFavorites = favoriteNames.Select(favoriteName => favorites[favoriteName])
+                .Where(favorite => favorite != null).ToList();
+            group.AddFavorites(groupFavorites);
+        }
+
+        private static void ReplaceFavoriteButtonNamesByIds()
+        {
+            string[] favoriteNames = Settings.FavoriteNamesToolbarButtons;
+            List<Guid> favoritesWithButton = Persistance.Instance.Favorites
+                .Where(favorite => favoriteNames.Contains(favorite.Name))
+                .Select(candidate => candidate.Id).ToList();
+
+            Settings.UpdateFavoritesToolbarButtons(favoritesWithButton);
+        }
+
+        private static void ImportTagsFromConfigFile()
+        {
+            IGroups groups = Persistance.Instance.Groups;
+            foreach (var tag in Settings.Tags)
+            {
+                var group = Persistance.Instance.Factory.CreateGroup(tag);
+                groups.Add(group);
+            }
+        }
+
+        private static void MoveFavoritesFromConfigFile()
+        {
+            IFavorites favorites = Persistance.Instance.Favorites;
+            foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
+            {
+                var favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement);
+                ImportWithDialogs.AddFavoriteIntoGroups(favoriteConfigElement, favorite);
+                favorites.Add(favorite);
+            }
         }
 
         private static void MoveThumbsDirectory()
         {
-            string oldPath = GetOldDataFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
-            string newPath = GetNewDataFullPath(SpecialCommandsWizard.THUMBS_DIRECTORY);
-            if(Directory.Exists(oldPath))
-                Directory.Move(oldPath, newPath);
+            try
+            {
+                TryToMoveThumbsDirectory();
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Upgrade of Thumbs directory failed", exception);
+            }
         }
 
-        private static void MoveDataFile(string relativePath) 
+        private static void TryToMoveThumbsDirectory()
+        {
+            string oldPath = GetOldDataFullPath(FileLocations.THUMBS_DIRECTORY);
+            string newPath = FileLocations.ThumbsDirectoryFullPath;
+
+            if (Directory.Exists(oldPath))
+            {
+                if(Directory.Exists(newPath))
+                    Directory.Delete(newPath, true);
+
+                Directory.Move(oldPath, newPath);
+            }
+        }
+
+        private static void MoveDataFile(string relativePath)
+        {
+            try
+            {
+                TryToMoveDataFile(relativePath);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Upgrade of data file failed", exception);
+            }
+        }
+
+        private static void TryToMoveDataFile(string relativePath)
         {
             string oldPath = GetOldDataFullPath(relativePath);
-            string newPath = GetNewDataFullPath(relativePath);
-            if(File.Exists(oldPath))
-                File.Move(oldPath, newPath);
-        }
-
-        private static string GetNewDataFullPath(string relativePath)
-        {
-            string dataRoot = Settings.GetDataRootDirectoryFullPath();
-            return Path.Combine(dataRoot, relativePath);
+            string newPath = FileLocations.GetFullPath(relativePath);
+            if (File.Exists(oldPath))
+            {
+                if (!File.Exists(newPath))
+                {
+                    File.Move(oldPath, newPath);
+                }
+                else
+                {
+                    File.Copy(oldPath, newPath, true);
+                    File.Delete(oldPath);
+                }
+            }
         }
 
         private static string GetOldDataFullPath(string relativePath)
@@ -88,11 +206,11 @@ namespace Terminals.Updates
         private static void UpdateDefaultFavoriteUrl()
         {
             var favorites = Persistance.Instance.Favorites;
-            FavoriteConfigurationElement newsFavorite = favorites.GetOneFavorite(FavoritesFactory.TerminalsReleasesFavoriteName);
+            IFavorite newsFavorite = favorites[FavoritesFactory.TerminalsReleasesFavoriteName];
             if (newsFavorite != null)
             {
-                newsFavorite.Url = Program.Resources.GetString("TerminalsURL");
-                favorites.SaveDefaultFavorite(newsFavorite);
+                newsFavorite.ServerName = Program.Resources.GetString("TerminalsURL");
+                Persistance.Instance.SaveAndFinishDelayedUpdate();
             }
         }
     }

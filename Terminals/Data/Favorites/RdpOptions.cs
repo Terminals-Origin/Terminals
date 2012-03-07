@@ -3,7 +3,7 @@
 namespace Terminals.Data
 {
     [Serializable]
-    public class RdpOptions
+    public class RdpOptions : ProtocolOptions
     {
         public Boolean ConnectToConsole { get; set; }
         public Boolean GrabFocusOnConnect { get; set; }
@@ -42,6 +42,47 @@ namespace Terminals.Data
         {
             get { return this.tsGateway; }
             set { this.tsGateway = value; }
+        }
+
+        internal override ProtocolOptions Copy()
+        {
+            return new RdpOptions
+                {
+                    ConnectToConsole = this.ConnectToConsole,
+                    GrabFocusOnConnect = this.GrabFocusOnConnect,
+                    FullScreen = this.FullScreen,
+                    UserInterface = this.UserInterface.Copy(),
+                    Security = this.Security.Copy(),
+                    TimeOuts = this.TimeOuts.Copy(),
+                    Redirect = this.Redirect.Copy(),
+                    TsGateway = this.TsGateway.Copy()
+                };
+        }
+
+        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
+        {
+            this.ConnectToConsole = source.ConnectToConsole;
+            this.FullScreen = source.SecurityFullScreen;
+            this.GrabFocusOnConnect = source.GrabFocusOnConnect;
+
+            this.Security.FromConfigFavorite(source);
+            this.Redirect.FromConfigFavorite(source);
+            this.TimeOuts.FromConfigFavorite(source);
+            this.TsGateway.FromConfigFavorite(source);
+            this.UserInterface.FromConfigFavorite(source);
+        }
+
+        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
+        {
+            destination.ConnectToConsole = this.ConnectToConsole;
+            destination.SecurityFullScreen = this.FullScreen;
+            destination.GrabFocusOnConnect = this.GrabFocusOnConnect;
+
+            this.Security.ToConfigFavorite(destination);
+            this.Redirect.ToConfigFavorite(destination);
+            this.TimeOuts.ToConfigFavorite(destination);
+            this.TsGateway.FoConfigFavorite(destination);
+            this.UserInterface.ToConfigFavorite(destination);
         }
     }
 }

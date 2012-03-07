@@ -1,6 +1,7 @@
 using System;
 using FalafelSoftware.TransPort;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Connections
 {
@@ -40,23 +41,14 @@ namespace Terminals.Connections
                 ras.ConnectionChanged += new ConnectionChangedEventHandler(ras_ConnectionChanged);
                 ras.EntryName = Favorite.ServerName;
 
-                string domainName = Favorite.DomainName;
-                string pass = Favorite.Password;
-                string userName = Favorite.UserName;
-
-                if (string.IsNullOrEmpty(domainName)) domainName = Settings.DefaultDomain;
-                if (string.IsNullOrEmpty(pass)) pass = Settings.DefaultPassword;
-                if (string.IsNullOrEmpty(userName)) userName = Settings.DefaultUsername;
-
-
-
+                ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
                 RasError error;
-                if(!string.IsNullOrEmpty(userName) && !string.IsNullOrEmpty(pass))
+                if (!string.IsNullOrEmpty(security.UserName) && !string.IsNullOrEmpty(security.Password))
                 {
                     Log("Using Terminals Credentials, Dialing...");
-                    ras.UserName = userName;
-                    ras.Password = pass;
-                    ras.Domain = domainName;
+                    ras.UserName = security.UserName;
+                    ras.Password = security.Password;
+                    ras.Domain = security.Domain;
                     error = ras.Dial();
                 }
                 else

@@ -34,6 +34,7 @@ namespace Terminals
             this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnAddNewTag = new System.Windows.Forms.Button();
+            this.lvConnectionTags = new System.Windows.Forms.ListView();
             this.btnRemoveTag = new System.Windows.Forms.Button();
             this.AllTagsAddButton = new System.Windows.Forms.Button();
             this.vncAutoScaleCheckbox = new System.Windows.Forms.CheckBox();
@@ -53,27 +54,32 @@ namespace Terminals
             this.OverallTimeoutTextbox = new System.Windows.Forms.TextBox();
             this.ShutdownTimeoutTextBox = new System.Windows.Forms.TextBox();
             this.EnableTLSAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
+            this.EnableNLAAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.txtDesktopShare = new System.Windows.Forms.TextBox();
-            this.CredentialManagerPicturebox = new System.Windows.Forms.PictureBox();
-            this.EnableNLAAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
-            this.lvConnectionTags = new System.Windows.Forms.ListView();
-            this.widthUpDown = new System.Windows.Forms.NumericUpDown();
-            this.heightUpDown = new System.Windows.Forms.NumericUpDown();
             this.cmbResolution = new System.Windows.Forms.ComboBox();
-            this.txtPort = new System.Windows.Forms.TextBox();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.ProtocolComboBox = new System.Windows.Forms.ComboBox();
+            this.heightUpDown = new System.Windows.Forms.NumericUpDown();
+            this.widthUpDown = new System.Windows.Forms.NumericUpDown();
             this.cmbServers = new System.Windows.Forms.ComboBox();
-            this.txtPassword = new System.Windows.Forms.TextBox();
-            this.cmbUsers = new System.Windows.Forms.ComboBox();
-            this.cmbDomains = new System.Windows.Forms.ComboBox();
+            this.ProtocolComboBox = new System.Windows.Forms.ComboBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.txtPort = new System.Windows.Forms.TextBox();
+            this.CredentialManagerPicturebox = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ras1 = new FalafelSoftware.TransPort.Ras();
             this.NewWindowCheckbox = new System.Windows.Forms.CheckBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label43 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.contextMenuStripDefaults = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.saveCurrentSettingsAsDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeSavedDefaultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStripSave = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.saveConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveNewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveCopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.txtInitialDirectory = new System.Windows.Forms.TextBox();
             this.txtArguments = new System.Windows.Forms.TextBox();
@@ -92,9 +98,6 @@ namespace Terminals
             this.panel3 = new System.Windows.Forms.Panel();
             this.txtTag = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
-            this.HTTPTabPage = new System.Windows.Forms.TabPage();
-            this.httpUrlTextBox = new System.Windows.Forms.TextBox();
-            this.label33 = new System.Windows.Forms.Label();
             this.RAStabPage = new System.Windows.Forms.TabPage();
             this.RASGroupBox = new System.Windows.Forms.GroupBox();
             this.RASDetailsListBox = new System.Windows.Forms.ListBox();
@@ -122,7 +125,6 @@ namespace Terminals
             this.SSHPreferences = new SSHClient.Preferences();
             this.ConsoleTabPage = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.consolePreferences = new Terminals.ConsolePreferences();
             this.VNCTabPage = new System.Windows.Forms.TabPage();
             this.VncViewOnlyCheckbox = new System.Windows.Forms.CheckBox();
             this.vncDisplayNumberInput = new System.Windows.Forms.NumericUpDown();
@@ -157,6 +159,7 @@ namespace Terminals
             this.chkPrinters = new System.Windows.Forms.CheckBox();
             this.chkSerialPorts = new System.Windows.Forms.CheckBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
+            this.label30 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.label28 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
@@ -190,35 +193,35 @@ namespace Terminals
             this.txtTSGWServer = new System.Windows.Forms.TextBox();
             this.cmbTSGWLogonMethod = new System.Windows.Forms.ComboBox();
             this.GeneralTabPage = new System.Windows.Forms.TabPage();
+            this.httpUrlTextBox = new System.Windows.Forms.TextBox();
+            this.NotesTextbox = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.CredentialDropdown = new System.Windows.Forms.ComboBox();
             this.CredentialsPanel = new System.Windows.Forms.Panel();
+            this.cmbUsers = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.cmbDomains = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.txtPassword = new System.Windows.Forms.TextBox();
             this.chkSavePassword = new System.Windows.Forms.CheckBox();
-            this.NotesTextbox = new System.Windows.Forms.TextBox();
             this.label36 = new System.Windows.Forms.Label();
             this.lblPort = new System.Windows.Forms.Label();
             this.ProtocolLabel = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblServerName = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.contextMenuStripDefaults = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.saveCurrentSettingsAsDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeSavedDefaultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStripSave = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.saveConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveNewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveCopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.consolePreferences = new Terminals.ConsolePreferences();
             this.btnSaveDefault = new Terminals.Forms.Controls.SplitButton();
             this.btnSave = new Terminals.Forms.Controls.SplitButton();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.contextMenuStripDefaults.SuspendLayout();
+            this.contextMenuStripSave.SuspendLayout();
+            this.groupBox7.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.TagsTabPage.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -226,7 +229,6 @@ namespace Terminals
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.HTTPTabPage.SuspendLayout();
             this.RAStabPage.SuspendLayout();
             this.RASGroupBox.SuspendLayout();
             this.ICAtabPage.SuspendLayout();
@@ -254,17 +256,13 @@ namespace Terminals
             this.GeneralTabPage.SuspendLayout();
             this.CredentialsPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.contextMenuStripDefaults.SuspendLayout();
-            this.contextMenuStripSave.SuspendLayout();
-            this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(520, 42);
+            this.btnCancel.Location = new System.Drawing.Point(497, 42);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(72, 24);
             this.btnCancel.TabIndex = 2;
@@ -277,7 +275,7 @@ namespace Terminals
             this.chkAddtoToolbar.AutoSize = true;
             this.chkAddtoToolbar.Location = new System.Drawing.Point(21, 49);
             this.chkAddtoToolbar.Name = "chkAddtoToolbar";
-            this.chkAddtoToolbar.Size = new System.Drawing.Size(96, 17);
+            this.chkAddtoToolbar.Size = new System.Drawing.Size(97, 17);
             this.chkAddtoToolbar.TabIndex = 3;
             this.chkAddtoToolbar.Text = "Add to &Toolbar";
             this.chkAddtoToolbar.UseVisualStyleBackColor = true;
@@ -292,6 +290,22 @@ namespace Terminals
             this.toolTip1.SetToolTip(this.btnAddNewTag, "Add new Tag to Connection Tags list.\r\n");
             this.btnAddNewTag.UseVisualStyleBackColor = true;
             this.btnAddNewTag.Click += new System.EventHandler(this.btnAddNewTag_Click);
+            // 
+            // lvConnectionTags
+            // 
+            this.lvConnectionTags.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvConnectionTags.HideSelection = false;
+            this.lvConnectionTags.Location = new System.Drawing.Point(8, 24);
+            this.lvConnectionTags.Name = "lvConnectionTags";
+            this.lvConnectionTags.Size = new System.Drawing.Size(394, 66);
+            this.lvConnectionTags.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.lvConnectionTags, "Tags listed here define groups in which this connection will appear in connection" +
+        " shortcuts tree.");
+            this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
+            this.lvConnectionTags.View = System.Windows.Forms.View.List;
+            this.lvConnectionTags.DoubleClick += new System.EventHandler(this.lvConnectionTags_DoubleClick);
             // 
             // btnRemoveTag
             // 
@@ -320,7 +334,7 @@ namespace Terminals
             this.vncAutoScaleCheckbox.AutoSize = true;
             this.vncAutoScaleCheckbox.Location = new System.Drawing.Point(14, 12);
             this.vncAutoScaleCheckbox.Name = "vncAutoScaleCheckbox";
-            this.vncAutoScaleCheckbox.Size = new System.Drawing.Size(121, 17);
+            this.vncAutoScaleCheckbox.Size = new System.Drawing.Size(119, 17);
             this.vncAutoScaleCheckbox.TabIndex = 2;
             this.vncAutoScaleCheckbox.Text = "Auto Scale Desktop";
             this.toolTip1.SetToolTip(this.vncAutoScaleCheckbox, "Switch between clipped and scaled desktop.");
@@ -329,7 +343,7 @@ namespace Terminals
             // label37
             // 
             this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(14, 61);
+            this.label37.Location = new System.Drawing.Point(11, 249);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(85, 13);
             this.label37.TabIndex = 3;
@@ -353,7 +367,7 @@ namespace Terminals
             this.EnableBitmapPersistanceCheckbox.AutoSize = true;
             this.EnableBitmapPersistanceCheckbox.Location = new System.Drawing.Point(241, 53);
             this.EnableBitmapPersistanceCheckbox.Name = "EnableBitmapPersistanceCheckbox";
-            this.EnableBitmapPersistanceCheckbox.Size = new System.Drawing.Size(152, 17);
+            this.EnableBitmapPersistanceCheckbox.Size = new System.Drawing.Size(151, 17);
             this.EnableBitmapPersistanceCheckbox.TabIndex = 10;
             this.EnableBitmapPersistanceCheckbox.Text = "Enable Bitmap Persistance";
             this.toolTip1.SetToolTip(this.EnableBitmapPersistanceCheckbox, resources.GetString("EnableBitmapPersistanceCheckbox.ToolTip"));
@@ -376,7 +390,7 @@ namespace Terminals
             this.AcceleratorPassthroughCheckBox.AutoSize = true;
             this.AcceleratorPassthroughCheckBox.Location = new System.Drawing.Point(6, 53);
             this.AcceleratorPassthroughCheckBox.Name = "AcceleratorPassthroughCheckBox";
-            this.AcceleratorPassthroughCheckBox.Size = new System.Drawing.Size(229, 17);
+            this.AcceleratorPassthroughCheckBox.Size = new System.Drawing.Size(231, 17);
             this.AcceleratorPassthroughCheckBox.TabIndex = 2;
             this.AcceleratorPassthroughCheckBox.Text = "Enable Keyboard Accelerator Passthrough ";
             this.toolTip1.SetToolTip(this.AcceleratorPassthroughCheckBox, resources.GetString("AcceleratorPassthroughCheckBox.ToolTip"));
@@ -387,7 +401,7 @@ namespace Terminals
             this.DisableControlAltDeleteCheckbox.AutoSize = true;
             this.DisableControlAltDeleteCheckbox.Location = new System.Drawing.Point(6, 76);
             this.DisableControlAltDeleteCheckbox.Name = "DisableControlAltDeleteCheckbox";
-            this.DisableControlAltDeleteCheckbox.Size = new System.Drawing.Size(146, 17);
+            this.DisableControlAltDeleteCheckbox.Size = new System.Drawing.Size(148, 17);
             this.DisableControlAltDeleteCheckbox.TabIndex = 3;
             this.DisableControlAltDeleteCheckbox.Text = "Disable Control Alt Delete";
             this.toolTip1.SetToolTip(this.DisableControlAltDeleteCheckbox, "This method sets a value that indicates whether the initial prompt screen in Winl" +
@@ -410,7 +424,7 @@ namespace Terminals
             this.DetectDoubleClicksCheckbox.AutoSize = true;
             this.DetectDoubleClicksCheckbox.Location = new System.Drawing.Point(6, 122);
             this.DetectDoubleClicksCheckbox.Name = "DetectDoubleClicksCheckbox";
-            this.DetectDoubleClicksCheckbox.Size = new System.Drawing.Size(126, 17);
+            this.DetectDoubleClicksCheckbox.Size = new System.Drawing.Size(123, 17);
             this.DetectDoubleClicksCheckbox.TabIndex = 5;
             this.DetectDoubleClicksCheckbox.Text = "Detect Double Clicks";
             this.toolTip1.SetToolTip(this.DetectDoubleClicksCheckbox, "Specifies whether the client identifies double-clicks for the server.");
@@ -421,7 +435,7 @@ namespace Terminals
             this.DisableWindowsKeyCheckbox.AutoSize = true;
             this.DisableWindowsKeyCheckbox.Location = new System.Drawing.Point(6, 145);
             this.DisableWindowsKeyCheckbox.Name = "DisableWindowsKeyCheckbox";
-            this.DisableWindowsKeyCheckbox.Size = new System.Drawing.Size(129, 17);
+            this.DisableWindowsKeyCheckbox.Size = new System.Drawing.Size(127, 17);
             this.DisableWindowsKeyCheckbox.TabIndex = 6;
             this.DisableWindowsKeyCheckbox.Text = "Disable Windows Key";
             this.toolTip1.SetToolTip(this.DisableWindowsKeyCheckbox, "Specifies whether the Windows key can be used in the remote session.");
@@ -443,7 +457,7 @@ namespace Terminals
             this.GrabFocusOnConnectCheckbox.AutoSize = true;
             this.GrabFocusOnConnectCheckbox.Location = new System.Drawing.Point(6, 30);
             this.GrabFocusOnConnectCheckbox.Name = "GrabFocusOnConnectCheckbox";
-            this.GrabFocusOnConnectCheckbox.Size = new System.Drawing.Size(139, 17);
+            this.GrabFocusOnConnectCheckbox.Size = new System.Drawing.Size(138, 17);
             this.GrabFocusOnConnectCheckbox.TabIndex = 1;
             this.GrabFocusOnConnectCheckbox.Text = "Grab Focus on Connect";
             this.toolTip1.SetToolTip(this.GrabFocusOnConnectCheckbox, "Specifies whether the client control should have the focus while connecting.");
@@ -496,11 +510,22 @@ namespace Terminals
             this.EnableTLSAuthenticationCheckbox.AutoSize = true;
             this.EnableTLSAuthenticationCheckbox.Location = new System.Drawing.Point(241, 76);
             this.EnableTLSAuthenticationCheckbox.Name = "EnableTLSAuthenticationCheckbox";
-            this.EnableTLSAuthenticationCheckbox.Size = new System.Drawing.Size(153, 17);
+            this.EnableTLSAuthenticationCheckbox.Size = new System.Drawing.Size(151, 17);
             this.EnableTLSAuthenticationCheckbox.TabIndex = 11;
             this.EnableTLSAuthenticationCheckbox.Text = "Enable TLS Authentication";
             this.toolTip1.SetToolTip(this.EnableTLSAuthenticationCheckbox, "By default RDP encryption is used. This setting enables TLS Authentication.");
             this.EnableTLSAuthenticationCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // EnableNLAAuthenticationCheckbox
+            // 
+            this.EnableNLAAuthenticationCheckbox.AutoSize = true;
+            this.EnableNLAAuthenticationCheckbox.Location = new System.Drawing.Point(241, 99);
+            this.EnableNLAAuthenticationCheckbox.Name = "EnableNLAAuthenticationCheckbox";
+            this.EnableNLAAuthenticationCheckbox.Size = new System.Drawing.Size(153, 17);
+            this.EnableNLAAuthenticationCheckbox.TabIndex = 12;
+            this.EnableNLAAuthenticationCheckbox.Text = "Enable NLA Authentication";
+            this.toolTip1.SetToolTip(this.EnableNLAAuthenticationCheckbox, "This setting enables Network Level Authentication");
+            this.EnableNLAAuthenticationCheckbox.UseVisualStyleBackColor = true;
             // 
             // label10
             // 
@@ -521,81 +546,6 @@ namespace Terminals
             this.txtDesktopShare.TabIndex = 10;
             this.toolTip1.SetToolTip(this.txtDesktopShare, "Enter a share on the server where files will be copied\r\nto when draging files fro" +
         "m your computer to the\r\nterminal window.");
-            // 
-            // CredentialManagerPicturebox
-            // 
-            this.CredentialManagerPicturebox.Image = global::Terminals.Properties.Resources.computer_security;
-            this.CredentialManagerPicturebox.Location = new System.Drawing.Point(457, 88);
-            this.CredentialManagerPicturebox.Name = "CredentialManagerPicturebox";
-            this.CredentialManagerPicturebox.Size = new System.Drawing.Size(16, 16);
-            this.CredentialManagerPicturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.CredentialManagerPicturebox.TabIndex = 21;
-            this.CredentialManagerPicturebox.TabStop = false;
-            this.toolTip1.SetToolTip(this.CredentialManagerPicturebox, "Open the Credential Manager window to manage your stored passwords.");
-            this.CredentialManagerPicturebox.Click += new System.EventHandler(this.CredentialManagerPicturebox_Click);
-            // 
-            // EnableNLAAuthenticationCheckbox
-            // 
-            this.EnableNLAAuthenticationCheckbox.AutoSize = true;
-            this.EnableNLAAuthenticationCheckbox.Location = new System.Drawing.Point(241, 99);
-            this.EnableNLAAuthenticationCheckbox.Name = "EnableNLAAuthenticationCheckbox";
-            this.EnableNLAAuthenticationCheckbox.Size = new System.Drawing.Size(154, 17);
-            this.EnableNLAAuthenticationCheckbox.TabIndex = 12;
-            this.EnableNLAAuthenticationCheckbox.Text = "Enable NLA Authentication";
-            this.toolTip1.SetToolTip(this.EnableNLAAuthenticationCheckbox, "This setting enables Network Level Authentication");
-            this.EnableNLAAuthenticationCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // lvConnectionTags
-            // 
-            this.lvConnectionTags.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvConnectionTags.HideSelection = false;
-            this.lvConnectionTags.Location = new System.Drawing.Point(8, 24);
-            this.lvConnectionTags.Name = "lvConnectionTags";
-            this.lvConnectionTags.Size = new System.Drawing.Size(436, 66);
-            this.lvConnectionTags.TabIndex = 0;
-            this.toolTip1.SetToolTip(this.lvConnectionTags, "Tags listed here define groups in which this connection will appear in connection" +
-        " shortcuts tree.");
-            this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
-            this.lvConnectionTags.View = System.Windows.Forms.View.List;
-            this.lvConnectionTags.DoubleClick += new System.EventHandler(this.lvConnectionTags_DoubleClick);
-            // 
-            // widthUpDown
-            // 
-            this.widthUpDown.Location = new System.Drawing.Point(56, 12);
-            this.widthUpDown.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.widthUpDown.Name = "widthUpDown";
-            this.widthUpDown.Size = new System.Drawing.Size(72, 21);
-            this.widthUpDown.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.widthUpDown, "Maximum terminal window width");
-            this.widthUpDown.Value = new decimal(new int[] {
-            800,
-            0,
-            0,
-            0});
-            // 
-            // heightUpDown
-            // 
-            this.heightUpDown.Location = new System.Drawing.Point(56, 39);
-            this.heightUpDown.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.heightUpDown.Name = "heightUpDown";
-            this.heightUpDown.Size = new System.Drawing.Size(72, 21);
-            this.heightUpDown.TabIndex = 13;
-            this.toolTip1.SetToolTip(this.heightUpDown, "Maximum terminal window height");
-            this.heightUpDown.Value = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
             // 
             // cmbResolution
             // 
@@ -618,37 +568,54 @@ namespace Terminals
             this.toolTip1.SetToolTip(this.cmbResolution, resources.GetString("cmbResolution.ToolTip"));
             this.cmbResolution.SelectedIndexChanged += new System.EventHandler(this.cmbResolution_SelectedIndexChanged);
             // 
-            // txtPort
+            // heightUpDown
             // 
-            this.txtPort.Location = new System.Drawing.Point(427, 35);
-            this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(50, 21);
-            this.txtPort.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.txtPort, "Set the service port number.\r\nIf not defined, than selected service port number i" +
-        "s used.");
+            this.heightUpDown.Location = new System.Drawing.Point(56, 39);
+            this.heightUpDown.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.heightUpDown.Name = "heightUpDown";
+            this.heightUpDown.Size = new System.Drawing.Size(72, 21);
+            this.heightUpDown.TabIndex = 13;
+            this.toolTip1.SetToolTip(this.heightUpDown, "Maximum terminal window height");
+            this.heightUpDown.Value = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
             // 
-            // txtName
+            // widthUpDown
             // 
-            this.txtName.Location = new System.Drawing.Point(117, 62);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(334, 21);
-            this.txtName.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtName, "Name your connection visible in shortcuts tree.\r\nIf you define already saved valu" +
-        "e, the existing configuration will be overwritten.");
+            this.widthUpDown.Location = new System.Drawing.Point(56, 12);
+            this.widthUpDown.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.widthUpDown.Name = "widthUpDown";
+            this.widthUpDown.Size = new System.Drawing.Size(72, 21);
+            this.widthUpDown.TabIndex = 11;
+            this.toolTip1.SetToolTip(this.widthUpDown, "Maximum terminal window width");
+            this.widthUpDown.Value = new decimal(new int[] {
+            800,
+            0,
+            0,
+            0});
             // 
-            // pictureBox2
+            // cmbServers
             // 
-            this.pictureBox2.Image = global::Terminals.Properties.Resources.terminalsicon;
-            this.pictureBox2.InitialImage = global::Terminals.Properties.Resources.smallterm;
-            this.pictureBox2.Location = new System.Drawing.Point(457, 62);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(16, 16);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox2.TabIndex = 16;
-            this.pictureBox2.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox2, "Select your custom icon for this shortcut using custom image, \r\nwhich will be sho" +
-        "wn in the shortcuts menu.");
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.cmbServers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.cmbServers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbServers.Location = new System.Drawing.Point(117, 35);
+            this.cmbServers.Name = "cmbServers";
+            this.cmbServers.Size = new System.Drawing.Size(265, 21);
+            this.cmbServers.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.cmbServers, "Here you can define the IP address of the server or its host name.");
+            this.cmbServers.SelectedIndexChanged += new System.EventHandler(this.cmbServers_SelectedIndexChanged);
+            this.cmbServers.TextChanged += new System.EventHandler(this.cmbServers_TextChanged);
+            this.cmbServers.Leave += new System.EventHandler(this.cmbServers_Leave);
             // 
             // ProtocolComboBox
             // 
@@ -667,52 +634,67 @@ namespace Terminals
             this.ProtocolComboBox.Location = new System.Drawing.Point(117, 6);
             this.ProtocolComboBox.MaxDropDownItems = 10;
             this.ProtocolComboBox.Name = "ProtocolComboBox";
-            this.ProtocolComboBox.Size = new System.Drawing.Size(334, 21);
+            this.ProtocolComboBox.Size = new System.Drawing.Size(356, 21);
             this.ProtocolComboBox.TabIndex = 12;
             this.toolTip1.SetToolTip(this.ProtocolComboBox, "Selecting the service provider also enables/disables the configuration options av" +
         "ailable on other pages.");
             this.ProtocolComboBox.SelectedIndexChanged += new System.EventHandler(this.ProtocolComboBox_SelectedIndexChanged);
             // 
-            // cmbServers
+            // pictureBox2
             // 
-            this.cmbServers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.cmbServers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbServers.Location = new System.Drawing.Point(117, 35);
-            this.cmbServers.Name = "cmbServers";
-            this.cmbServers.Size = new System.Drawing.Size(265, 21);
-            this.cmbServers.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.cmbServers, "Here you can define the IP address of the server or its host name.");
-            this.cmbServers.SelectedIndexChanged += new System.EventHandler(this.cmbServers_SelectedIndexChanged);
-            this.cmbServers.TextChanged += new System.EventHandler(this.cmbServers_TextChanged);
-            this.cmbServers.Leave += new System.EventHandler(this.cmbServers_Leave);
+            this.pictureBox2.Image = global::Terminals.Properties.Resources.terminalsicon;
+            this.pictureBox2.InitialImage = global::Terminals.Properties.Resources.smallterm;
+            this.pictureBox2.Location = new System.Drawing.Point(457, 62);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(16, 16);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 16;
+            this.pictureBox2.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox2, "Select your custom icon for this shortcut using custom image, \r\nwhich will be sho" +
+        "wn in the shortcuts menu.");
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
-            // txtPassword
+            // txtName
             // 
-            this.txtPassword.Location = new System.Drawing.Point(100, 60);
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(334, 21);
-            this.txtPassword.TabIndex = 5;
-            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
+            this.txtName.Location = new System.Drawing.Point(117, 62);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(334, 21);
+            this.txtName.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.txtName, "Name your connection visible in shortcuts tree.\r\nIf you define already saved valu" +
+        "e, the existing configuration will be overwritten.");
             // 
-            // cmbUsers
+            // txtPort
             // 
-            this.cmbUsers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbUsers.Location = new System.Drawing.Point(100, 30);
-            this.cmbUsers.Name = "cmbUsers";
-            this.cmbUsers.Size = new System.Drawing.Size(334, 21);
-            this.cmbUsers.TabIndex = 3;
-            this.cmbUsers.TextChanged += new System.EventHandler(this.control_TextChanged);
+            this.txtPort.Location = new System.Drawing.Point(427, 35);
+            this.txtPort.Name = "txtPort";
+            this.txtPort.Size = new System.Drawing.Size(46, 21);
+            this.txtPort.TabIndex = 3;
+            this.toolTip1.SetToolTip(this.txtPort, "Set the service port number.\r\nIf not defined, than selected service port number i" +
+        "s used.");
             // 
-            // cmbDomains
+            // CredentialManagerPicturebox
             // 
-            this.cmbDomains.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.cmbDomains.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cmbDomains.Location = new System.Drawing.Point(100, 3);
-            this.cmbDomains.Name = "cmbDomains";
-            this.cmbDomains.Size = new System.Drawing.Size(334, 21);
-            this.cmbDomains.TabIndex = 1;
-            this.cmbDomains.TextChanged += new System.EventHandler(this.control_TextChanged);
+            this.CredentialManagerPicturebox.Image = global::Terminals.Properties.Resources.computer_security;
+            this.CredentialManagerPicturebox.Location = new System.Drawing.Point(457, 88);
+            this.CredentialManagerPicturebox.Name = "CredentialManagerPicturebox";
+            this.CredentialManagerPicturebox.Size = new System.Drawing.Size(16, 16);
+            this.CredentialManagerPicturebox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.CredentialManagerPicturebox.TabIndex = 21;
+            this.CredentialManagerPicturebox.TabStop = false;
+            this.toolTip1.SetToolTip(this.CredentialManagerPicturebox, "Open the Credential Manager window to manage your stored passwords.");
+            this.CredentialManagerPicturebox.Click += new System.EventHandler(this.CredentialManagerPicturebox_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.White;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBox1.Image = global::Terminals.Properties.Resources.terminalsbanner_left;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(84, 396);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
             // 
             // ras1
             // 
@@ -729,7 +711,7 @@ namespace Terminals
             this.NewWindowCheckbox.AutoSize = true;
             this.NewWindowCheckbox.Location = new System.Drawing.Point(21, 22);
             this.NewWindowCheckbox.Name = "NewWindowCheckbox";
-            this.NewWindowCheckbox.Size = new System.Drawing.Size(130, 17);
+            this.NewWindowCheckbox.Size = new System.Drawing.Size(128, 17);
             this.NewWindowCheckbox.TabIndex = 4;
             this.NewWindowCheckbox.Text = "&Open in New Window";
             this.NewWindowCheckbox.UseVisualStyleBackColor = true;
@@ -761,6 +743,78 @@ namespace Terminals
             this.button1.Text = "...";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // contextMenuStripDefaults
+            // 
+            this.contextMenuStripDefaults.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.contextMenuStripDefaults.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveCurrentSettingsAsDefaultToolStripMenuItem,
+            this.removeSavedDefaultsToolStripMenuItem});
+            this.contextMenuStripDefaults.Name = "contextMenuStripDefaults";
+            this.contextMenuStripDefaults.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.contextMenuStripDefaults.ShowImageMargin = false;
+            this.contextMenuStripDefaults.Size = new System.Drawing.Size(219, 48);
+            // 
+            // saveCurrentSettingsAsDefaultToolStripMenuItem
+            // 
+            this.saveCurrentSettingsAsDefaultToolStripMenuItem.Name = "saveCurrentSettingsAsDefaultToolStripMenuItem";
+            this.saveCurrentSettingsAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.saveCurrentSettingsAsDefaultToolStripMenuItem.Text = "Save Current Settings as Default";
+            this.saveCurrentSettingsAsDefaultToolStripMenuItem.Click += new System.EventHandler(this.saveCurrentSettingsAsDefaultToolStripMenuItem_Click);
+            // 
+            // removeSavedDefaultsToolStripMenuItem
+            // 
+            this.removeSavedDefaultsToolStripMenuItem.Name = "removeSavedDefaultsToolStripMenuItem";
+            this.removeSavedDefaultsToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.removeSavedDefaultsToolStripMenuItem.Text = "Remove Saved Defaults";
+            this.removeSavedDefaultsToolStripMenuItem.Click += new System.EventHandler(this.removeSavedDefaultsToolStripMenuItem_Click);
+            // 
+            // contextMenuStripSave
+            // 
+            this.contextMenuStripSave.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.contextMenuStripSave.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveConnectToolStripMenuItem,
+            this.saveNewToolStripMenuItem,
+            this.saveCopyToolStripMenuItem});
+            this.contextMenuStripSave.Name = "contextMenuStripSave";
+            this.contextMenuStripSave.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
+            this.contextMenuStripSave.Size = new System.Drawing.Size(163, 70);
+            // 
+            // saveConnectToolStripMenuItem
+            // 
+            this.saveConnectToolStripMenuItem.Name = "saveConnectToolStripMenuItem";
+            this.saveConnectToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.saveConnectToolStripMenuItem.Text = "Save && Connect";
+            this.saveConnectToolStripMenuItem.Click += new System.EventHandler(this.saveConnectToolStripMenuItem_Click);
+            // 
+            // saveNewToolStripMenuItem
+            // 
+            this.saveNewToolStripMenuItem.Name = "saveNewToolStripMenuItem";
+            this.saveNewToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.saveNewToolStripMenuItem.Text = "Save && New";
+            this.saveNewToolStripMenuItem.Click += new System.EventHandler(this.saveNewToolStripMenuItem_Click);
+            // 
+            // saveCopyToolStripMenuItem
+            // 
+            this.saveCopyToolStripMenuItem.Name = "saveCopyToolStripMenuItem";
+            this.saveCopyToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.saveCopyToolStripMenuItem.Text = "Save && Copy";
+            this.saveCopyToolStripMenuItem.Click += new System.EventHandler(this.saveCopyToolStripMenuItem_Click);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.BackColor = System.Drawing.Color.White;
+            this.groupBox7.Controls.Add(this.btnSaveDefault);
+            this.groupBox7.Controls.Add(this.btnSave);
+            this.groupBox7.Controls.Add(this.btnCancel);
+            this.groupBox7.Controls.Add(this.chkAddtoToolbar);
+            this.groupBox7.Controls.Add(this.NewWindowCheckbox);
+            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox7.Location = new System.Drawing.Point(0, 396);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(579, 78);
+            this.groupBox7.TabIndex = 10;
+            this.groupBox7.TabStop = false;
+            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.txtInitialDirectory);
@@ -774,7 +828,7 @@ namespace Terminals
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(518, 328);
+            this.tabPage4.Size = new System.Drawing.Size(487, 370);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Execute";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -814,7 +868,7 @@ namespace Terminals
             this.chkExecuteBeforeConnect.AutoSize = true;
             this.chkExecuteBeforeConnect.Location = new System.Drawing.Point(8, 8);
             this.chkExecuteBeforeConnect.Name = "chkExecuteBeforeConnect";
-            this.chkExecuteBeforeConnect.Size = new System.Drawing.Size(140, 17);
+            this.chkExecuteBeforeConnect.Size = new System.Drawing.Size(141, 17);
             this.chkExecuteBeforeConnect.TabIndex = 0;
             this.chkExecuteBeforeConnect.Text = "&Execute before connect";
             this.chkExecuteBeforeConnect.UseVisualStyleBackColor = true;
@@ -833,7 +887,7 @@ namespace Terminals
             this.chkWaitForExit.AutoSize = true;
             this.chkWaitForExit.Location = new System.Drawing.Point(8, 120);
             this.chkWaitForExit.Name = "chkWaitForExit";
-            this.chkWaitForExit.Size = new System.Drawing.Size(82, 17);
+            this.chkWaitForExit.Size = new System.Drawing.Size(86, 17);
             this.chkWaitForExit.TabIndex = 4;
             this.chkWaitForExit.Text = "&Wait for exit";
             this.chkWaitForExit.UseVisualStyleBackColor = true;
@@ -855,7 +909,7 @@ namespace Terminals
             this.TagsTabPage.Location = new System.Drawing.Point(4, 22);
             this.TagsTabPage.Name = "TagsTabPage";
             this.TagsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.TagsTabPage.Size = new System.Drawing.Size(518, 328);
+            this.TagsTabPage.Size = new System.Drawing.Size(487, 370);
             this.TagsTabPage.TabIndex = 4;
             this.TagsTabPage.Text = "Tags";
             this.TagsTabPage.UseVisualStyleBackColor = true;
@@ -866,7 +920,7 @@ namespace Terminals
             this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel4.Location = new System.Drawing.Point(3, 149);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(523, 176);
+            this.panel4.Size = new System.Drawing.Size(481, 218);
             this.panel4.TabIndex = 14;
             // 
             // groupBox4
@@ -876,7 +930,7 @@ namespace Terminals
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(523, 176);
+            this.groupBox4.Size = new System.Drawing.Size(481, 218);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "All Available Tags";
@@ -889,7 +943,7 @@ namespace Terminals
             this.AllTagsListView.HideSelection = false;
             this.AllTagsListView.Location = new System.Drawing.Point(8, 20);
             this.AllTagsListView.Name = "AllTagsListView";
-            this.AllTagsListView.Size = new System.Drawing.Size(436, 133);
+            this.AllTagsListView.Size = new System.Drawing.Size(394, 175);
             this.AllTagsListView.TabIndex = 0;
             this.AllTagsListView.UseCompatibleStateImageBehavior = false;
             this.AllTagsListView.View = System.Windows.Forms.View.List;
@@ -901,7 +955,7 @@ namespace Terminals
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(3, 53);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(523, 96);
+            this.panel1.Size = new System.Drawing.Size(481, 96);
             this.panel1.TabIndex = 0;
             // 
             // groupBox3
@@ -911,7 +965,7 @@ namespace Terminals
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(523, 96);
+            this.groupBox3.Size = new System.Drawing.Size(481, 96);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Connection Tags";
@@ -924,7 +978,7 @@ namespace Terminals
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(523, 50);
+            this.panel3.Size = new System.Drawing.Size(481, 50);
             this.panel3.TabIndex = 0;
             // 
             // txtTag
@@ -945,42 +999,12 @@ namespace Terminals
             this.label14.TabIndex = 0;
             this.label14.Text = "New Tag:";
             // 
-            // HTTPTabPage
-            // 
-            this.HTTPTabPage.Controls.Add(this.httpUrlTextBox);
-            this.HTTPTabPage.Controls.Add(this.label33);
-            this.HTTPTabPage.Location = new System.Drawing.Point(4, 22);
-            this.HTTPTabPage.Name = "HTTPTabPage";
-            this.HTTPTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.HTTPTabPage.Size = new System.Drawing.Size(518, 328);
-            this.HTTPTabPage.TabIndex = 11;
-            this.HTTPTabPage.Text = "HTTP";
-            this.HTTPTabPage.UseVisualStyleBackColor = true;
-            // 
-            // httpUrlTextBox
-            // 
-            this.httpUrlTextBox.Location = new System.Drawing.Point(52, 24);
-            this.httpUrlTextBox.Name = "httpUrlTextBox";
-            this.httpUrlTextBox.Size = new System.Drawing.Size(401, 21);
-            this.httpUrlTextBox.TabIndex = 4;
-            this.httpUrlTextBox.Text = "http://terminals.codeplex.com";
-            this.httpUrlTextBox.TextChanged += new System.EventHandler(this.httpUrlTextBox_TextChanged);
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(16, 27);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(30, 13);
-            this.label33.TabIndex = 3;
-            this.label33.Text = "URL:";
-            // 
             // RAStabPage
             // 
             this.RAStabPage.Controls.Add(this.RASGroupBox);
             this.RAStabPage.Location = new System.Drawing.Point(4, 22);
             this.RAStabPage.Name = "RAStabPage";
-            this.RAStabPage.Size = new System.Drawing.Size(518, 328);
+            this.RAStabPage.Size = new System.Drawing.Size(487, 370);
             this.RAStabPage.TabIndex = 9;
             this.RAStabPage.Text = "RAS";
             this.RAStabPage.UseVisualStyleBackColor = true;
@@ -991,7 +1015,7 @@ namespace Terminals
             this.RASGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RASGroupBox.Location = new System.Drawing.Point(0, 0);
             this.RASGroupBox.Name = "RASGroupBox";
-            this.RASGroupBox.Size = new System.Drawing.Size(529, 328);
+            this.RASGroupBox.Size = new System.Drawing.Size(487, 370);
             this.RASGroupBox.TabIndex = 0;
             this.RASGroupBox.TabStop = false;
             // 
@@ -1001,7 +1025,7 @@ namespace Terminals
             this.RASDetailsListBox.FormattingEnabled = true;
             this.RASDetailsListBox.Location = new System.Drawing.Point(3, 17);
             this.RASDetailsListBox.Name = "RASDetailsListBox";
-            this.RASDetailsListBox.Size = new System.Drawing.Size(523, 308);
+            this.RASDetailsListBox.Size = new System.Drawing.Size(481, 350);
             this.RASDetailsListBox.TabIndex = 0;
             // 
             // ICAtabPage
@@ -1024,7 +1048,7 @@ namespace Terminals
             this.ICAtabPage.Controls.Add(this.label21);
             this.ICAtabPage.Location = new System.Drawing.Point(4, 22);
             this.ICAtabPage.Name = "ICAtabPage";
-            this.ICAtabPage.Size = new System.Drawing.Size(518, 328);
+            this.ICAtabPage.Size = new System.Drawing.Size(487, 370);
             this.ICAtabPage.TabIndex = 10;
             this.ICAtabPage.Text = "Citrix";
             this.ICAtabPage.UseVisualStyleBackColor = true;
@@ -1185,7 +1209,7 @@ namespace Terminals
             this.VMRCtabPage.Controls.Add(this.VMRCAdminModeCheckbox);
             this.VMRCtabPage.Location = new System.Drawing.Point(4, 22);
             this.VMRCtabPage.Name = "VMRCtabPage";
-            this.VMRCtabPage.Size = new System.Drawing.Size(518, 328);
+            this.VMRCtabPage.Size = new System.Drawing.Size(487, 370);
             this.VMRCtabPage.TabIndex = 7;
             this.VMRCtabPage.Text = "VMRC";
             this.VMRCtabPage.UseVisualStyleBackColor = true;
@@ -1195,7 +1219,7 @@ namespace Terminals
             this.VMRCReducedColorsCheckbox.AutoSize = true;
             this.VMRCReducedColorsCheckbox.Location = new System.Drawing.Point(21, 40);
             this.VMRCReducedColorsCheckbox.Name = "VMRCReducedColorsCheckbox";
-            this.VMRCReducedColorsCheckbox.Size = new System.Drawing.Size(102, 17);
+            this.VMRCReducedColorsCheckbox.Size = new System.Drawing.Size(101, 17);
             this.VMRCReducedColorsCheckbox.TabIndex = 1;
             this.VMRCReducedColorsCheckbox.Text = "Reduced Colors";
             this.VMRCReducedColorsCheckbox.UseVisualStyleBackColor = true;
@@ -1205,7 +1229,7 @@ namespace Terminals
             this.VMRCAdminModeCheckbox.AutoSize = true;
             this.VMRCAdminModeCheckbox.Location = new System.Drawing.Point(21, 16);
             this.VMRCAdminModeCheckbox.Name = "VMRCAdminModeCheckbox";
-            this.VMRCAdminModeCheckbox.Size = new System.Drawing.Size(116, 17);
+            this.VMRCAdminModeCheckbox.Size = new System.Drawing.Size(119, 17);
             this.VMRCAdminModeCheckbox.TabIndex = 0;
             this.VMRCAdminModeCheckbox.Text = "Administrator Mode";
             this.VMRCAdminModeCheckbox.UseVisualStyleBackColor = true;
@@ -1216,7 +1240,7 @@ namespace Terminals
             this.SSHTabPage.Location = new System.Drawing.Point(4, 22);
             this.SSHTabPage.Name = "SSHTabPage";
             this.SSHTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.SSHTabPage.Size = new System.Drawing.Size(518, 328);
+            this.SSHTabPage.Size = new System.Drawing.Size(487, 370);
             this.SSHTabPage.TabIndex = 13;
             this.SSHTabPage.Text = "SSH";
             this.SSHTabPage.UseVisualStyleBackColor = true;
@@ -1238,7 +1262,7 @@ namespace Terminals
             this.ConsoleTabPage.Location = new System.Drawing.Point(4, 22);
             this.ConsoleTabPage.Name = "ConsoleTabPage";
             this.ConsoleTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.ConsoleTabPage.Size = new System.Drawing.Size(518, 328);
+            this.ConsoleTabPage.Size = new System.Drawing.Size(487, 370);
             this.ConsoleTabPage.TabIndex = 14;
             this.ConsoleTabPage.Text = "Console";
             this.ConsoleTabPage.UseVisualStyleBackColor = true;
@@ -1249,17 +1273,9 @@ namespace Terminals
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(3, 3);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(523, 322);
+            this.groupBox6.Size = new System.Drawing.Size(481, 364);
             this.groupBox6.TabIndex = 1;
             this.groupBox6.TabStop = false;
-            // 
-            // consolePreferences
-            // 
-            this.consolePreferences.Location = new System.Drawing.Point(7, 21);
-            this.consolePreferences.Margin = new System.Windows.Forms.Padding(4);
-            this.consolePreferences.Name = "consolePreferences";
-            this.consolePreferences.Size = new System.Drawing.Size(293, 228);
-            this.consolePreferences.TabIndex = 0;
             // 
             // VNCTabPage
             // 
@@ -1269,7 +1285,7 @@ namespace Terminals
             this.VNCTabPage.Controls.Add(this.vncAutoScaleCheckbox);
             this.VNCTabPage.Location = new System.Drawing.Point(4, 22);
             this.VNCTabPage.Name = "VNCTabPage";
-            this.VNCTabPage.Size = new System.Drawing.Size(518, 328);
+            this.VNCTabPage.Size = new System.Drawing.Size(487, 370);
             this.VNCTabPage.TabIndex = 12;
             this.VNCTabPage.Text = "VNC";
             this.VNCTabPage.UseVisualStyleBackColor = true;
@@ -1286,7 +1302,7 @@ namespace Terminals
             // 
             // vncDisplayNumberInput
             // 
-            this.vncDisplayNumberInput.Location = new System.Drawing.Point(105, 59);
+            this.vncDisplayNumberInput.Location = new System.Drawing.Point(102, 247);
             this.vncDisplayNumberInput.Name = "vncDisplayNumberInput";
             this.vncDisplayNumberInput.Size = new System.Drawing.Size(47, 21);
             this.vncDisplayNumberInput.TabIndex = 4;
@@ -1297,7 +1313,7 @@ namespace Terminals
             this.RDPTabPage.Location = new System.Drawing.Point(4, 22);
             this.RDPTabPage.Name = "RDPTabPage";
             this.RDPTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.RDPTabPage.Size = new System.Drawing.Size(518, 328);
+            this.RDPTabPage.Size = new System.Drawing.Size(487, 370);
             this.RDPTabPage.TabIndex = 1;
             this.RDPTabPage.Text = "RDP";
             this.RDPTabPage.UseVisualStyleBackColor = true;
@@ -1314,7 +1330,7 @@ namespace Terminals
             this.RDPSubTabPage.Location = new System.Drawing.Point(3, 3);
             this.RDPSubTabPage.Name = "RDPSubTabPage";
             this.RDPSubTabPage.SelectedIndex = 0;
-            this.RDPSubTabPage.Size = new System.Drawing.Size(512, 322);
+            this.RDPSubTabPage.Size = new System.Drawing.Size(481, 364);
             this.RDPSubTabPage.TabIndex = 0;
             this.RDPSubTabPage.SelectedIndexChanged += new System.EventHandler(this.RDPSubTabPage_SelectedIndexChanged);
             // 
@@ -1325,7 +1341,7 @@ namespace Terminals
             this.RDPDisplayTabPage.Location = new System.Drawing.Point(4, 22);
             this.RDPDisplayTabPage.Name = "RDPDisplayTabPage";
             this.RDPDisplayTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.RDPDisplayTabPage.Size = new System.Drawing.Size(504, 296);
+            this.RDPDisplayTabPage.Size = new System.Drawing.Size(473, 338);
             this.RDPDisplayTabPage.TabIndex = 0;
             this.RDPDisplayTabPage.Text = "Display Settings";
             this.RDPDisplayTabPage.UseVisualStyleBackColor = true;
@@ -1367,7 +1383,7 @@ namespace Terminals
             this.AllowFontSmoothingCheckbox.AutoSize = true;
             this.AllowFontSmoothingCheckbox.Location = new System.Drawing.Point(297, 157);
             this.AllowFontSmoothingCheckbox.Name = "AllowFontSmoothingCheckbox";
-            this.AllowFontSmoothingCheckbox.Size = new System.Drawing.Size(128, 17);
+            this.AllowFontSmoothingCheckbox.Size = new System.Drawing.Size(129, 17);
             this.AllowFontSmoothingCheckbox.TabIndex = 15;
             this.AllowFontSmoothingCheckbox.Text = "Allow Font Smoothing";
             this.AllowFontSmoothingCheckbox.UseVisualStyleBackColor = true;
@@ -1407,7 +1423,7 @@ namespace Terminals
             this.chkDisableWallpaper.AutoSize = true;
             this.chkDisableWallpaper.Location = new System.Drawing.Point(124, 177);
             this.chkDisableWallpaper.Name = "chkDisableWallpaper";
-            this.chkDisableWallpaper.Size = new System.Drawing.Size(155, 17);
+            this.chkDisableWallpaper.Size = new System.Drawing.Size(153, 17);
             this.chkDisableWallpaper.TabIndex = 9;
             this.chkDisableWallpaper.Text = "Disable Desktop Wallpaper";
             this.chkDisableWallpaper.UseVisualStyleBackColor = true;
@@ -1417,7 +1433,7 @@ namespace Terminals
             this.chkDisableThemes.AutoSize = true;
             this.chkDisableThemes.Location = new System.Drawing.Point(124, 157);
             this.chkDisableThemes.Name = "chkDisableThemes";
-            this.chkDisableThemes.Size = new System.Drawing.Size(105, 17);
+            this.chkDisableThemes.Size = new System.Drawing.Size(103, 17);
             this.chkDisableThemes.TabIndex = 8;
             this.chkDisableThemes.Text = "Disable Theming";
             this.chkDisableThemes.UseVisualStyleBackColor = true;
@@ -1427,7 +1443,7 @@ namespace Terminals
             this.chkDisableMenuAnimations.AutoSize = true;
             this.chkDisableMenuAnimations.Location = new System.Drawing.Point(124, 137);
             this.chkDisableMenuAnimations.Name = "chkDisableMenuAnimations";
-            this.chkDisableMenuAnimations.Size = new System.Drawing.Size(145, 17);
+            this.chkDisableMenuAnimations.Size = new System.Drawing.Size(144, 17);
             this.chkDisableMenuAnimations.TabIndex = 7;
             this.chkDisableMenuAnimations.Text = "Disable Menu Animations";
             this.chkDisableMenuAnimations.UseVisualStyleBackColor = true;
@@ -1447,7 +1463,7 @@ namespace Terminals
             this.chkDisableCursorBlinking.AutoSize = true;
             this.chkDisableCursorBlinking.Location = new System.Drawing.Point(124, 97);
             this.chkDisableCursorBlinking.Name = "chkDisableCursorBlinking";
-            this.chkDisableCursorBlinking.Size = new System.Drawing.Size(134, 17);
+            this.chkDisableCursorBlinking.Size = new System.Drawing.Size(133, 17);
             this.chkDisableCursorBlinking.TabIndex = 5;
             this.chkDisableCursorBlinking.Text = "Disable Cursor Blinking";
             this.chkDisableCursorBlinking.UseVisualStyleBackColor = true;
@@ -1499,7 +1515,7 @@ namespace Terminals
             this.chkConnectToConsole.AutoSize = true;
             this.chkConnectToConsole.Location = new System.Drawing.Point(6, 216);
             this.chkConnectToConsole.Name = "chkConnectToConsole";
-            this.chkConnectToConsole.Size = new System.Drawing.Size(119, 17);
+            this.chkConnectToConsole.Size = new System.Drawing.Size(120, 17);
             this.chkConnectToConsole.TabIndex = 3;
             this.chkConnectToConsole.Text = "Co&nnect to Console";
             this.chkConnectToConsole.UseVisualStyleBackColor = true;
@@ -1510,7 +1526,7 @@ namespace Terminals
             this.RDPLocalResourcesTabPage.Location = new System.Drawing.Point(4, 22);
             this.RDPLocalResourcesTabPage.Name = "RDPLocalResourcesTabPage";
             this.RDPLocalResourcesTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.RDPLocalResourcesTabPage.Size = new System.Drawing.Size(504, 296);
+            this.RDPLocalResourcesTabPage.Size = new System.Drawing.Size(473, 338);
             this.RDPLocalResourcesTabPage.TabIndex = 1;
             this.RDPLocalResourcesTabPage.Text = "Local Resources";
             this.RDPLocalResourcesTabPage.UseVisualStyleBackColor = true;
@@ -1562,7 +1578,7 @@ namespace Terminals
             this.chkRedirectSmartcards.AutoSize = true;
             this.chkRedirectSmartcards.Location = new System.Drawing.Point(216, 123);
             this.chkRedirectSmartcards.Name = "chkRedirectSmartcards";
-            this.chkRedirectSmartcards.Size = new System.Drawing.Size(125, 17);
+            this.chkRedirectSmartcards.Size = new System.Drawing.Size(126, 17);
             this.chkRedirectSmartcards.TabIndex = 8;
             this.chkRedirectSmartcards.Text = "Redirect Smart ca&rds";
             this.chkRedirectSmartcards.UseVisualStyleBackColor = true;
@@ -1583,7 +1599,7 @@ namespace Terminals
             this.chkRedirectClipboard.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkRedirectClipboard.Location = new System.Drawing.Point(216, 100);
             this.chkRedirectClipboard.Name = "chkRedirectClipboard";
-            this.chkRedirectClipboard.Size = new System.Drawing.Size(113, 17);
+            this.chkRedirectClipboard.Size = new System.Drawing.Size(114, 17);
             this.chkRedirectClipboard.TabIndex = 7;
             this.chkRedirectClipboard.Text = "Redirect &Clipboard";
             this.chkRedirectClipboard.UseVisualStyleBackColor = true;
@@ -1612,7 +1628,7 @@ namespace Terminals
             this.chkPrinters.AutoSize = true;
             this.chkPrinters.Location = new System.Drawing.Point(108, 100);
             this.chkPrinters.Name = "chkPrinters";
-            this.chkPrinters.Size = new System.Drawing.Size(61, 17);
+            this.chkPrinters.Size = new System.Drawing.Size(63, 17);
             this.chkPrinters.TabIndex = 4;
             this.chkPrinters.Text = "&Printers";
             this.chkPrinters.UseVisualStyleBackColor = true;
@@ -1622,7 +1638,7 @@ namespace Terminals
             this.chkSerialPorts.AutoSize = true;
             this.chkSerialPorts.Location = new System.Drawing.Point(108, 123);
             this.chkSerialPorts.Name = "chkSerialPorts";
-            this.chkSerialPorts.Size = new System.Drawing.Size(78, 17);
+            this.chkSerialPorts.Size = new System.Drawing.Size(80, 17);
             this.chkSerialPorts.TabIndex = 5;
             this.chkSerialPorts.Text = "Seria&l ports";
             this.chkSerialPorts.UseVisualStyleBackColor = true;
@@ -1631,6 +1647,7 @@ namespace Terminals
             // 
             this.tabPage8.Controls.Add(this.EnableNLAAuthenticationCheckbox);
             this.tabPage8.Controls.Add(this.EnableTLSAuthenticationCheckbox);
+            this.tabPage8.Controls.Add(this.label30);
             this.tabPage8.Controls.Add(this.label29);
             this.tabPage8.Controls.Add(this.ShutdownTimeoutTextBox);
             this.tabPage8.Controls.Add(this.label28);
@@ -1652,10 +1669,19 @@ namespace Terminals
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(504, 296);
+            this.tabPage8.Size = new System.Drawing.Size(473, 338);
             this.tabPage8.TabIndex = 2;
             this.tabPage8.Text = "Extended Settings";
             this.tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(3, 280);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(195, 13);
+            this.label30.TabIndex = 7;
+            this.label30.Text = "Note: These are experimental settings.";
             // 
             // label29
             // 
@@ -1700,7 +1726,7 @@ namespace Terminals
             this.tabPage9.Location = new System.Drawing.Point(4, 22);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(504, 296);
+            this.tabPage9.Size = new System.Drawing.Size(473, 338);
             this.tabPage9.TabIndex = 3;
             this.tabPage9.Text = "Security Settings";
             this.tabPage9.UseVisualStyleBackColor = true;
@@ -1723,7 +1749,7 @@ namespace Terminals
             this.SecurityStartFullScreenCheckbox.AutoSize = true;
             this.SecurityStartFullScreenCheckbox.Location = new System.Drawing.Point(6, 66);
             this.SecurityStartFullScreenCheckbox.Name = "SecurityStartFullScreenCheckbox";
-            this.SecurityStartFullScreenCheckbox.Size = new System.Drawing.Size(104, 17);
+            this.SecurityStartFullScreenCheckbox.Size = new System.Drawing.Size(105, 17);
             this.SecurityStartFullScreenCheckbox.TabIndex = 4;
             this.SecurityStartFullScreenCheckbox.Text = "Start Full Screen";
             this.SecurityStartFullScreenCheckbox.UseVisualStyleBackColor = true;
@@ -1765,7 +1791,7 @@ namespace Terminals
             this.SecuritySettingsEnabledCheckbox.AutoSize = true;
             this.SecuritySettingsEnabledCheckbox.Location = new System.Drawing.Point(7, 7);
             this.SecuritySettingsEnabledCheckbox.Name = "SecuritySettingsEnabledCheckbox";
-            this.SecuritySettingsEnabledCheckbox.Size = new System.Drawing.Size(65, 17);
+            this.SecuritySettingsEnabledCheckbox.Size = new System.Drawing.Size(64, 17);
             this.SecuritySettingsEnabledCheckbox.TabIndex = 0;
             this.SecuritySettingsEnabledCheckbox.Text = "Enabled";
             this.SecuritySettingsEnabledCheckbox.UseVisualStyleBackColor = true;
@@ -1776,7 +1802,7 @@ namespace Terminals
             this.tabPage10.Location = new System.Drawing.Point(4, 22);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(504, 296);
+            this.tabPage10.Size = new System.Drawing.Size(473, 338);
             this.tabPage10.TabIndex = 4;
             this.tabPage10.Text = "Sessions";
             this.tabPage10.UseVisualStyleBackColor = true;
@@ -1788,7 +1814,7 @@ namespace Terminals
             this.RdpTsgwTabPage.Location = new System.Drawing.Point(4, 22);
             this.RdpTsgwTabPage.Name = "RdpTsgwTabPage";
             this.RdpTsgwTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.RdpTsgwTabPage.Size = new System.Drawing.Size(504, 296);
+            this.RdpTsgwTabPage.Size = new System.Drawing.Size(473, 338);
             this.RdpTsgwTabPage.TabIndex = 5;
             this.RdpTsgwTabPage.Text = "TSGW";
             this.RdpTsgwTabPage.UseVisualStyleBackColor = true;
@@ -1872,7 +1898,7 @@ namespace Terminals
             this.chkTSGWlogin.AutoSize = true;
             this.chkTSGWlogin.Location = new System.Drawing.Point(7, 21);
             this.chkTSGWlogin.Name = "chkTSGWlogin";
-            this.chkTSGWlogin.Size = new System.Drawing.Size(175, 17);
+            this.chkTSGWlogin.Size = new System.Drawing.Size(176, 17);
             this.chkTSGWlogin.TabIndex = 0;
             this.chkTSGWlogin.Text = "Use Separate Login Credentials";
             this.chkTSGWlogin.UseVisualStyleBackColor = true;
@@ -1895,7 +1921,7 @@ namespace Terminals
             this.radTSGWenable.AutoSize = true;
             this.radTSGWenable.Location = new System.Drawing.Point(6, 43);
             this.radTSGWenable.Name = "radTSGWenable";
-            this.radTSGWenable.Size = new System.Drawing.Size(210, 17);
+            this.radTSGWenable.Size = new System.Drawing.Size(213, 17);
             this.radTSGWenable.TabIndex = 2;
             this.radTSGWenable.Text = "Use the following TS Gateway settings:";
             this.radTSGWenable.UseVisualStyleBackColor = true;
@@ -1907,7 +1933,7 @@ namespace Terminals
             this.radTSGWdisable.Checked = true;
             this.radTSGWdisable.Location = new System.Drawing.Point(6, 20);
             this.radTSGWdisable.Name = "radTSGWdisable";
-            this.radTSGWdisable.Size = new System.Drawing.Size(139, 17);
+            this.radTSGWdisable.Size = new System.Drawing.Size(138, 17);
             this.radTSGWdisable.TabIndex = 1;
             this.radTSGWdisable.TabStop = true;
             this.radTSGWdisable.Text = "Do not use TS Gateway";
@@ -1931,7 +1957,7 @@ namespace Terminals
             this.chkTSGWlocalBypass.AutoSize = true;
             this.chkTSGWlocalBypass.Location = new System.Drawing.Point(28, 59);
             this.chkTSGWlocalBypass.Name = "chkTSGWlocalBypass";
-            this.chkTSGWlocalBypass.Size = new System.Drawing.Size(213, 17);
+            this.chkTSGWlocalBypass.Size = new System.Drawing.Size(214, 17);
             this.chkTSGWlocalBypass.TabIndex = 7;
             this.chkTSGWlocalBypass.Text = "Bypass TS Gateway for local addresses";
             this.chkTSGWlocalBypass.UseVisualStyleBackColor = true;
@@ -1975,28 +2001,47 @@ namespace Terminals
             // 
             // GeneralTabPage
             // 
-            this.GeneralTabPage.Controls.Add(this.ProtocolComboBox);
+            this.GeneralTabPage.Controls.Add(this.httpUrlTextBox);
+            this.GeneralTabPage.Controls.Add(this.NotesTextbox);
+            this.GeneralTabPage.Controls.Add(this.txtPort);
+            this.GeneralTabPage.Controls.Add(this.txtName);
             this.GeneralTabPage.Controls.Add(this.label15);
             this.GeneralTabPage.Controls.Add(this.CredentialDropdown);
             this.GeneralTabPage.Controls.Add(this.CredentialManagerPicturebox);
             this.GeneralTabPage.Controls.Add(this.CredentialsPanel);
-            this.GeneralTabPage.Controls.Add(this.NotesTextbox);
-            this.GeneralTabPage.Controls.Add(this.txtPort);
-            this.GeneralTabPage.Controls.Add(this.txtName);
             this.GeneralTabPage.Controls.Add(this.label36);
             this.GeneralTabPage.Controls.Add(this.pictureBox2);
             this.GeneralTabPage.Controls.Add(this.lblPort);
+            this.GeneralTabPage.Controls.Add(this.ProtocolComboBox);
             this.GeneralTabPage.Controls.Add(this.ProtocolLabel);
             this.GeneralTabPage.Controls.Add(this.label5);
             this.GeneralTabPage.Controls.Add(this.cmbServers);
-            this.GeneralTabPage.Controls.Add(this.label2);
+            this.GeneralTabPage.Controls.Add(this.lblServerName);
             this.GeneralTabPage.Location = new System.Drawing.Point(4, 22);
             this.GeneralTabPage.Name = "GeneralTabPage";
             this.GeneralTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.GeneralTabPage.Size = new System.Drawing.Size(518, 328);
+            this.GeneralTabPage.Size = new System.Drawing.Size(487, 370);
             this.GeneralTabPage.TabIndex = 0;
             this.GeneralTabPage.Text = "General";
             this.GeneralTabPage.UseVisualStyleBackColor = true;
+            // 
+            // httpUrlTextBox
+            // 
+            this.httpUrlTextBox.Location = new System.Drawing.Point(117, 35);
+            this.httpUrlTextBox.Name = "httpUrlTextBox";
+            this.httpUrlTextBox.Size = new System.Drawing.Size(356, 21);
+            this.httpUrlTextBox.TabIndex = 22;
+            this.httpUrlTextBox.Text = "http://terminals.codeplex.com";
+            this.httpUrlTextBox.Visible = false;
+            this.httpUrlTextBox.TextChanged += new System.EventHandler(this.httpUrlTextBox_TextChanged);
+            // 
+            // NotesTextbox
+            // 
+            this.NotesTextbox.Location = new System.Drawing.Point(117, 225);
+            this.NotesTextbox.Multiline = true;
+            this.NotesTextbox.Name = "NotesTextbox";
+            this.NotesTextbox.Size = new System.Drawing.Size(356, 131);
+            this.NotesTextbox.TabIndex = 10;
             // 
             // label15
             // 
@@ -2032,6 +2077,15 @@ namespace Terminals
             this.CredentialsPanel.Size = new System.Drawing.Size(456, 106);
             this.CredentialsPanel.TabIndex = 8;
             // 
+            // cmbUsers
+            // 
+            this.cmbUsers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbUsers.Location = new System.Drawing.Point(100, 30);
+            this.cmbUsers.Name = "cmbUsers";
+            this.cmbUsers.Size = new System.Drawing.Size(334, 21);
+            this.cmbUsers.TabIndex = 3;
+            this.cmbUsers.TextChanged += new System.EventHandler(this.control_TextChanged);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -2040,6 +2094,16 @@ namespace Terminals
             this.label1.Size = new System.Drawing.Size(46, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "&Domain:";
+            // 
+            // cmbDomains
+            // 
+            this.cmbDomains.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.cmbDomains.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cmbDomains.Location = new System.Drawing.Point(100, 3);
+            this.cmbDomains.Name = "cmbDomains";
+            this.cmbDomains.Size = new System.Drawing.Size(334, 21);
+            this.cmbDomains.TabIndex = 1;
+            this.cmbDomains.TextChanged += new System.EventHandler(this.control_TextChanged);
             // 
             // label3
             // 
@@ -2059,6 +2123,15 @@ namespace Terminals
             this.label4.TabIndex = 4;
             this.label4.Text = "&Password:";
             // 
+            // txtPassword
+            // 
+            this.txtPassword.Location = new System.Drawing.Point(100, 60);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.PasswordChar = '*';
+            this.txtPassword.Size = new System.Drawing.Size(334, 21);
+            this.txtPassword.TabIndex = 5;
+            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
+            // 
             // chkSavePassword
             // 
             this.chkSavePassword.AutoSize = true;
@@ -2068,14 +2141,6 @@ namespace Terminals
             this.chkSavePassword.TabIndex = 6;
             this.chkSavePassword.Text = "S&ave password";
             this.chkSavePassword.UseVisualStyleBackColor = true;
-            // 
-            // NotesTextbox
-            // 
-            this.NotesTextbox.Location = new System.Drawing.Point(113, 225);
-            this.NotesTextbox.Multiline = true;
-            this.NotesTextbox.Name = "NotesTextbox";
-            this.NotesTextbox.Size = new System.Drawing.Size(356, 88);
-            this.NotesTextbox.TabIndex = 10;
             // 
             // label36
             // 
@@ -2113,14 +2178,14 @@ namespace Terminals
             this.label5.TabIndex = 4;
             this.label5.Text = "Connection na&me:";
             // 
-            // label2
+            // lblServerName
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 38);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "&Computer:";
+            this.lblServerName.AutoSize = true;
+            this.lblServerName.Location = new System.Drawing.Point(18, 38);
+            this.lblServerName.Name = "lblServerName";
+            this.lblServerName.Size = new System.Drawing.Size(58, 13);
+            this.lblServerName.TabIndex = 0;
+            this.lblServerName.Text = "&Computer:";
             // 
             // tabControl1
             // 
@@ -2132,95 +2197,30 @@ namespace Terminals
             this.tabControl1.Controls.Add(this.VMRCtabPage);
             this.tabControl1.Controls.Add(this.ICAtabPage);
             this.tabControl1.Controls.Add(this.RAStabPage);
-            this.tabControl1.Controls.Add(this.HTTPTabPage);
             this.tabControl1.Controls.Add(this.TagsTabPage);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(76, 0);
+            this.tabControl1.Location = new System.Drawing.Point(84, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(526, 354);
+            this.tabControl1.Size = new System.Drawing.Size(495, 396);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
-            // contextMenuStripDefaults
+            // consolePreferences
             // 
-            this.contextMenuStripDefaults.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.contextMenuStripDefaults.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveCurrentSettingsAsDefaultToolStripMenuItem,
-            this.removeSavedDefaultsToolStripMenuItem});
-            this.contextMenuStripDefaults.Name = "contextMenuStripDefaults";
-            this.contextMenuStripDefaults.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStripDefaults.ShowImageMargin = false;
-            this.contextMenuStripDefaults.Size = new System.Drawing.Size(208, 48);
-            // 
-            // saveCurrentSettingsAsDefaultToolStripMenuItem
-            // 
-            this.saveCurrentSettingsAsDefaultToolStripMenuItem.Name = "saveCurrentSettingsAsDefaultToolStripMenuItem";
-            this.saveCurrentSettingsAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.saveCurrentSettingsAsDefaultToolStripMenuItem.Text = "Save Current Settings as Default";
-            this.saveCurrentSettingsAsDefaultToolStripMenuItem.Click += new System.EventHandler(this.saveCurrentSettingsAsDefaultToolStripMenuItem_Click);
-            // 
-            // removeSavedDefaultsToolStripMenuItem
-            // 
-            this.removeSavedDefaultsToolStripMenuItem.Name = "removeSavedDefaultsToolStripMenuItem";
-            this.removeSavedDefaultsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.removeSavedDefaultsToolStripMenuItem.Text = "Remove Saved Defaults";
-            this.removeSavedDefaultsToolStripMenuItem.Click += new System.EventHandler(this.removeSavedDefaultsToolStripMenuItem_Click);
-            // 
-            // contextMenuStripSave
-            // 
-            this.contextMenuStripSave.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.contextMenuStripSave.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveConnectToolStripMenuItem,
-            this.saveNewToolStripMenuItem,
-            this.saveCopyToolStripMenuItem});
-            this.contextMenuStripSave.Name = "contextMenuStripSave";
-            this.contextMenuStripSave.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.contextMenuStripSave.Size = new System.Drawing.Size(152, 70);
-            // 
-            // saveConnectToolStripMenuItem
-            // 
-            this.saveConnectToolStripMenuItem.Name = "saveConnectToolStripMenuItem";
-            this.saveConnectToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
-            this.saveConnectToolStripMenuItem.Text = "Save && Connect";
-            this.saveConnectToolStripMenuItem.Click += new System.EventHandler(this.saveConnectToolStripMenuItem_Click);
-            // 
-            // saveNewToolStripMenuItem
-            // 
-            this.saveNewToolStripMenuItem.Name = "saveNewToolStripMenuItem";
-            this.saveNewToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
-            this.saveNewToolStripMenuItem.Text = "Save && New";
-            this.saveNewToolStripMenuItem.Click += new System.EventHandler(this.saveNewToolStripMenuItem_Click);
-            // 
-            // saveCopyToolStripMenuItem
-            // 
-            this.saveCopyToolStripMenuItem.Name = "saveCopyToolStripMenuItem";
-            this.saveCopyToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
-            this.saveCopyToolStripMenuItem.Text = "Save && Copy";
-            this.saveCopyToolStripMenuItem.Click += new System.EventHandler(this.saveCopyToolStripMenuItem_Click);
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.BackColor = System.Drawing.Color.White;
-            this.groupBox7.Controls.Add(this.btnSaveDefault);
-            this.groupBox7.Controls.Add(this.btnSave);
-            this.groupBox7.Controls.Add(this.btnCancel);
-            this.groupBox7.Controls.Add(this.chkAddtoToolbar);
-            this.groupBox7.Controls.Add(this.NewWindowCheckbox);
-            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox7.Location = new System.Drawing.Point(0, 354);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(602, 78);
-            this.groupBox7.TabIndex = 10;
-            this.groupBox7.TabStop = false;
+            this.consolePreferences.Location = new System.Drawing.Point(86, 20);
+            this.consolePreferences.Margin = new System.Windows.Forms.Padding(4);
+            this.consolePreferences.Name = "consolePreferences";
+            this.consolePreferences.Size = new System.Drawing.Size(285, 223);
+            this.consolePreferences.TabIndex = 0;
             // 
             // btnSaveDefault
             // 
             this.btnSaveDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveDefault.AutoSize = true;
             this.btnSaveDefault.ContextMenuStrip = this.contextMenuStripDefaults;
-            this.btnSaveDefault.Location = new System.Drawing.Point(300, 41);
+            this.btnSaveDefault.Location = new System.Drawing.Point(277, 41);
             this.btnSaveDefault.Name = "btnSaveDefault";
             this.btnSaveDefault.Size = new System.Drawing.Size(88, 27);
             this.btnSaveDefault.SplitMenuStrip = this.contextMenuStripDefaults;
@@ -2234,7 +2234,7 @@ namespace Terminals
             this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSave.AutoSize = true;
             this.btnSave.ContextMenuStrip = this.contextMenuStripSave;
-            this.btnSave.Location = new System.Drawing.Point(394, 41);
+            this.btnSave.Location = new System.Drawing.Point(371, 41);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(120, 27);
             this.btnSave.SplitMenuStrip = this.contextMenuStripSave;
@@ -2244,23 +2244,12 @@ namespace Terminals
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pictureBox1.Image = global::Terminals.Properties.Resources.RotatedHeaderForWizard;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(76, 354);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 11;
-            this.pictureBox1.TabStop = false;
-            // 
             // NewTerminalForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(602, 432);
+            this.ClientSize = new System.Drawing.Size(579, 474);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox7);
@@ -2276,10 +2265,15 @@ namespace Terminals
             this.Text = "New Connection";
             this.Load += new System.EventHandler(this.NewTerminalForm_Load);
             this.Shown += new System.EventHandler(this.NewTerminalForm_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.contextMenuStripDefaults.ResumeLayout(false);
+            this.contextMenuStripSave.ResumeLayout(false);
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.TagsTabPage.ResumeLayout(false);
@@ -2289,8 +2283,6 @@ namespace Terminals
             this.groupBox3.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
-            this.HTTPTabPage.ResumeLayout(false);
-            this.HTTPTabPage.PerformLayout();
             this.RAStabPage.ResumeLayout(false);
             this.RASGroupBox.ResumeLayout(false);
             this.ICAtabPage.ResumeLayout(false);
@@ -2334,11 +2326,6 @@ namespace Terminals
             this.CredentialsPanel.ResumeLayout(false);
             this.CredentialsPanel.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.contextMenuStripDefaults.ResumeLayout(false);
-            this.contextMenuStripSave.ResumeLayout(false);
-            this.groupBox7.ResumeLayout(false);
-            this.groupBox7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
     }
@@ -2346,6 +2333,7 @@ namespace Terminals
     #endregion
 
     private System.Windows.Forms.Button btnCancel;
+      private System.Windows.Forms.PictureBox pictureBox1;
       private System.Windows.Forms.CheckBox chkAddtoToolbar;
       private System.Windows.Forms.ToolTip toolTip1;
 
@@ -2356,6 +2344,16 @@ namespace Terminals
       private System.Windows.Forms.TextBox textBox3;
       private System.Windows.Forms.Label label43;
       private System.Windows.Forms.Button button1;
+      private Terminals.Forms.Controls.SplitButton btnSaveDefault;
+      private System.Windows.Forms.ContextMenuStrip contextMenuStripDefaults;
+      private System.Windows.Forms.ToolStripMenuItem saveCurrentSettingsAsDefaultToolStripMenuItem;
+      private System.Windows.Forms.ToolStripMenuItem removeSavedDefaultsToolStripMenuItem;
+      private Forms.Controls.SplitButton btnSave;
+      private System.Windows.Forms.ContextMenuStrip contextMenuStripSave;
+      private System.Windows.Forms.ToolStripMenuItem saveConnectToolStripMenuItem;
+      private System.Windows.Forms.ToolStripMenuItem saveNewToolStripMenuItem;
+      private System.Windows.Forms.ToolStripMenuItem saveCopyToolStripMenuItem;
+      private System.Windows.Forms.GroupBox groupBox7;
       private System.Windows.Forms.TabPage tabPage4;
       private System.Windows.Forms.TextBox txtInitialDirectory;
       private System.Windows.Forms.TextBox txtArguments;
@@ -2378,13 +2376,14 @@ namespace Terminals
       private System.Windows.Forms.TextBox txtTag;
       private System.Windows.Forms.Button btnAddNewTag;
       private System.Windows.Forms.Label label14;
-      private System.Windows.Forms.TabPage HTTPTabPage;
-      private System.Windows.Forms.TextBox httpUrlTextBox;
-      private System.Windows.Forms.Label label33;
       private System.Windows.Forms.TabPage RAStabPage;
       private System.Windows.Forms.GroupBox RASGroupBox;
       private System.Windows.Forms.ListBox RASDetailsListBox;
       private System.Windows.Forms.TabPage ICAtabPage;
+      private System.Windows.Forms.Button ClientINIBrowseButton;
+      private System.Windows.Forms.Button ServerINIBrowseButton;
+      private System.Windows.Forms.Button AppWorkingFolderBrowseButton;
+      private System.Windows.Forms.Button appPathBrowseButton;
       private System.Windows.Forms.ComboBox ICAEncryptionLevelCombobox;
       private System.Windows.Forms.CheckBox ICAEnableEncryptionCheckbox;
       private System.Windows.Forms.TextBox ICAClientINI;
@@ -2401,7 +2400,10 @@ namespace Terminals
       private System.Windows.Forms.CheckBox VMRCReducedColorsCheckbox;
       private System.Windows.Forms.CheckBox VMRCAdminModeCheckbox;
       private System.Windows.Forms.TabPage SSHTabPage;
+      private SSHClient.Preferences SSHPreferences;
       private System.Windows.Forms.TabPage ConsoleTabPage;
+      private System.Windows.Forms.GroupBox groupBox6;
+      private ConsolePreferences consolePreferences;
       private System.Windows.Forms.TabPage VNCTabPage;
       private System.Windows.Forms.CheckBox VncViewOnlyCheckbox;
       private System.Windows.Forms.NumericUpDown vncDisplayNumberInput;
@@ -2431,6 +2433,7 @@ namespace Terminals
       private System.Windows.Forms.CheckBox chkConnectToConsole;
       private System.Windows.Forms.TabPage RDPLocalResourcesTabPage;
       private System.Windows.Forms.GroupBox LocalResourceGroupBox;
+      private System.Windows.Forms.Button btnDrives;
       private System.Windows.Forms.ComboBox cmbSounds;
       private System.Windows.Forms.CheckBox chkRedirectSmartcards;
       private System.Windows.Forms.Label label8;
@@ -2442,7 +2445,9 @@ namespace Terminals
       private System.Windows.Forms.CheckBox chkSerialPorts;
       private System.Windows.Forms.Label label10;
       private System.Windows.Forms.TabPage tabPage8;
+      private System.Windows.Forms.CheckBox EnableNLAAuthenticationCheckbox;
       private System.Windows.Forms.CheckBox EnableTLSAuthenticationCheckbox;
+      private System.Windows.Forms.Label label30;
       private System.Windows.Forms.Label label29;
       private System.Windows.Forms.TextBox ShutdownTimeoutTextBox;
       private System.Windows.Forms.Label label28;
@@ -2470,38 +2475,8 @@ namespace Terminals
       private System.Windows.Forms.TextBox SecuriytStartProgramTextbox;
       private System.Windows.Forms.CheckBox SecuritySettingsEnabledCheckbox;
       private System.Windows.Forms.TabPage tabPage10;
-      private System.Windows.Forms.TabPage GeneralTabPage;
-      private System.Windows.Forms.TextBox NotesTextbox;
-      private System.Windows.Forms.TextBox txtPort;
-      private System.Windows.Forms.TextBox txtName;
-      private System.Windows.Forms.TextBox txtPassword;
-      private System.Windows.Forms.Label label36;
-      private System.Windows.Forms.PictureBox pictureBox2;
-      private System.Windows.Forms.Label lblPort;
-      private System.Windows.Forms.ComboBox ProtocolComboBox;
-      private System.Windows.Forms.Label ProtocolLabel;
-      private System.Windows.Forms.CheckBox chkSavePassword;
-      private System.Windows.Forms.Label label5;
-      private System.Windows.Forms.Label label4;
-      private System.Windows.Forms.ComboBox cmbUsers;
-      private System.Windows.Forms.Label label3;
-      private System.Windows.Forms.ComboBox cmbServers;
-      private System.Windows.Forms.Label label2;
-      private System.Windows.Forms.ComboBox cmbDomains;
-      private System.Windows.Forms.Label label1;
-      private System.Windows.Forms.TabControl tabControl1;
-      private System.Windows.Forms.GroupBox groupBox6;
-      private SSHClient.Preferences SSHPreferences;
-      private ConsolePreferences consolePreferences;
-      private System.Windows.Forms.PictureBox CredentialManagerPicturebox;
-      private System.Windows.Forms.ComboBox CredentialDropdown;
-      private System.Windows.Forms.Label label15;
-      private System.Windows.Forms.Panel CredentialsPanel;
-      private Terminals.Forms.Controls.SplitButton btnSaveDefault;
       private System.Windows.Forms.TabPage RdpTsgwTabPage;
       private System.Windows.Forms.GroupBox groupBox5;
-      private System.Windows.Forms.CheckBox chkTSGWlogin;
-      private System.Windows.Forms.GroupBox groupBox2;
       private System.Windows.Forms.Panel pnlTSGWlogon;
       private System.Windows.Forms.TextBox txtTSGWDomain;
       private System.Windows.Forms.TextBox txtTSGWPassword;
@@ -2509,29 +2484,40 @@ namespace Terminals
       private System.Windows.Forms.Label label19;
       private System.Windows.Forms.Label label16;
       private System.Windows.Forms.TextBox txtTSGWUserName;
-      private System.Windows.Forms.RadioButton radTSGWdisable;
+      private System.Windows.Forms.CheckBox chkTSGWlogin;
+      private System.Windows.Forms.GroupBox groupBox2;
       private System.Windows.Forms.RadioButton radTSGWenable;
-      private System.Windows.Forms.Label label17;
-      private System.Windows.Forms.ComboBox cmbTSGWLogonMethod;
-      private System.Windows.Forms.TextBox txtTSGWServer;
-      private System.Windows.Forms.Label label20;
-      private System.Windows.Forms.CheckBox chkTSGWlocalBypass;
+      private System.Windows.Forms.RadioButton radTSGWdisable;
       private System.Windows.Forms.Panel pnlTSGWsettings;
-      private System.Windows.Forms.Button btnDrives;
-      private System.Windows.Forms.CheckBox EnableNLAAuthenticationCheckbox;
-      private System.Windows.Forms.ContextMenuStrip contextMenuStripDefaults;
-      private System.Windows.Forms.ToolStripMenuItem saveCurrentSettingsAsDefaultToolStripMenuItem;
-      private System.Windows.Forms.ToolStripMenuItem removeSavedDefaultsToolStripMenuItem;
-      private Forms.Controls.SplitButton btnSave;
-      private System.Windows.Forms.ContextMenuStrip contextMenuStripSave;
-      private System.Windows.Forms.ToolStripMenuItem saveConnectToolStripMenuItem;
-      private System.Windows.Forms.ToolStripMenuItem saveNewToolStripMenuItem;
-      private System.Windows.Forms.ToolStripMenuItem saveCopyToolStripMenuItem;
-      private System.Windows.Forms.GroupBox groupBox7;
-      private System.Windows.Forms.Button ClientINIBrowseButton;
-      private System.Windows.Forms.Button ServerINIBrowseButton;
-      private System.Windows.Forms.Button AppWorkingFolderBrowseButton;
-      private System.Windows.Forms.Button appPathBrowseButton;
-      private System.Windows.Forms.PictureBox pictureBox1;
+      private System.Windows.Forms.CheckBox chkTSGWlocalBypass;
+      private System.Windows.Forms.Label label17;
+      private System.Windows.Forms.Label label20;
+      private System.Windows.Forms.TextBox txtTSGWServer;
+      private System.Windows.Forms.ComboBox cmbTSGWLogonMethod;
+      private System.Windows.Forms.TabPage GeneralTabPage;
+      private System.Windows.Forms.TextBox httpUrlTextBox;
+      private System.Windows.Forms.TextBox NotesTextbox;
+      private System.Windows.Forms.TextBox txtPort;
+      private System.Windows.Forms.TextBox txtName;
+      private System.Windows.Forms.Label label15;
+      private System.Windows.Forms.ComboBox CredentialDropdown;
+      private System.Windows.Forms.PictureBox CredentialManagerPicturebox;
+      private System.Windows.Forms.Panel CredentialsPanel;
+      private System.Windows.Forms.ComboBox cmbUsers;
+      private System.Windows.Forms.Label label1;
+      private System.Windows.Forms.ComboBox cmbDomains;
+      private System.Windows.Forms.Label label3;
+      private System.Windows.Forms.Label label4;
+      private System.Windows.Forms.TextBox txtPassword;
+      private System.Windows.Forms.CheckBox chkSavePassword;
+      private System.Windows.Forms.Label label36;
+      private System.Windows.Forms.PictureBox pictureBox2;
+      private System.Windows.Forms.Label lblPort;
+      private System.Windows.Forms.ComboBox ProtocolComboBox;
+      private System.Windows.Forms.Label ProtocolLabel;
+      private System.Windows.Forms.Label label5;
+      private System.Windows.Forms.ComboBox cmbServers;
+      private System.Windows.Forms.Label lblServerName;
+      private System.Windows.Forms.TabControl tabControl1;
   }
 }

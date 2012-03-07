@@ -978,5 +978,48 @@ namespace Terminals
                 this["savedCredentials"] = value;
             }
         }
+
+        [ConfigurationProperty("favoritesFile", DefaultValue = "")]
+        public string SavedFavoritesFileLocation
+        {
+            get
+            {
+                return (string)this["favoritesFile"];
+            }
+            set
+            {
+                this["favoritesFile"] = value;
+            }
+        }
+
+        #region 
+
+        [ConfigurationProperty("persistenceType", DefaultValue = (byte)0)]
+        public byte PersistenceType
+        {
+            get
+            {
+                return (byte)this["persistenceType"];
+            }
+            set
+            {
+                this["persistenceType"] = value;
+            }
+        }
+
+        [ConfigurationProperty("connectionString", DefaultValue = "")]
+        public string ConnectionString
+        {
+            get
+            {
+                return (string)this["connectionString"];
+            }
+            set
+            {
+                this["connectionString"] = value;
+            }
+        }
+
+        #endregion
     }
 }

@@ -1,14 +1,17 @@
 using System;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Forms;
+using Terminals.TerminalServices;
 
 namespace Terminals.Network.Servers
 {
     public partial class TerminalServerManager : UserControl
     {
+        private Session SelectedSession = null;
+        private TerminalServer server;
+
         public TerminalServerManager()
         {
             InitializeComponent();
@@ -19,7 +22,7 @@ namespace Terminals.Network.Servers
             this.ServerNameComboBox.Text = Host;
             this.button1_Click(null, null);
         }
-        TerminalServices.TerminalServer server;
+
         private void button1_Click(object sender, EventArgs e)
         {
             SelectedSession = null;
@@ -27,7 +30,7 @@ namespace Terminals.Network.Servers
             dataGridView2.DataSource = null;
             this.propertyGrid1.SelectedObject = null;
             Application.DoEvents();
-            server = TerminalServices.TerminalServer.LoadServer(this.ServerNameComboBox.Text);
+            server = TerminalServer.LoadServer(this.ServerNameComboBox.Text);
             if(server.IsATerminalServer)
             {
                 dataGridView1.DataSource = server.Sessions;
@@ -70,19 +73,15 @@ namespace Terminals.Network.Servers
                 Logging.Log.Error("Connection Failure.", exc);
             }
         }
-        TerminalServices.Session SelectedSession = null;
+        
         private void TerminalServerManager_Load(object sender, EventArgs e)
         {
             ServerNameComboBox.Items.Clear();
-            var favorites = Persistance.Instance.Favorites.GetFavorites();
-            if (favorites != null)
+            foreach (IFavorite favorite in Persistance.Instance.Favorites)
             {
-                foreach (FavoriteConfigurationElement elm in favorites)
+                if (favorite.Protocol == ConnectionManager.RDP)
                 {
-                    if (elm.Protocol == ConnectionManager.RDP)
-                    {
-                        this.ServerNameComboBox.Items.Add(elm.ServerName);
-                    }
+                    this.ServerNameComboBox.Items.Add(favorite.ServerName);
                 }
             }
         }
@@ -95,7 +94,7 @@ namespace Terminals.Network.Servers
                 InputBoxResult result = InputBox.Show("Please enter the message to send..");
                 if(result.ReturnCode == DialogResult.OK && result.Text.Trim() != null)
                 {
-                    TerminalServices.TerminalServicesAPI.SendMessage(SelectedSession, "Message from your Administrator", result.Text.Trim(), 0, 10, false);
+                    TerminalServicesAPI.SendMessage(SelectedSession, "Message from your Administrator", result.Text.Trim(), 0, 10, false);
                 }
             }
         }
@@ -106,7 +105,7 @@ namespace Terminals.Network.Servers
             {
                 if(MessageBox.Show("Are you sure you want to log off the selected session?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
                 {
-                    TerminalServices.TerminalServicesAPI.LogOffSession(SelectedSession, false);
+                    TerminalServicesAPI.LogOffSession(SelectedSession, false);
                 }
             }
         }
@@ -116,7 +115,7 @@ namespace Terminals.Network.Servers
             {
                 if(MessageBox.Show("Are you sure you want to reboot this server?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
                 {
-                    TerminalServices.TerminalServicesAPI.ShutdownSystem(this.server, true);
+                    TerminalServicesAPI.ShutdownSystem(this.server, true);
                 }
             }
         }
@@ -126,7 +125,7 @@ namespace Terminals.Network.Servers
             {
                 if(MessageBox.Show("Are you sure you want to shutdown this server?", "Confirmation Required", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
                 {
-                    TerminalServices.TerminalServicesAPI.ShutdownSystem(this.server, false);
+                    TerminalServicesAPI.ShutdownSystem(this.server, false);
                 }
             }
         }

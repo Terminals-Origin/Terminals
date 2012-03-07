@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using AxMSTSCLib;
 using System.IO;
 using System.Runtime.InteropServices;
-using Terminals.Configuration;
+using Terminals.Data;
 
 //http://msdn.microsoft.com/en-us/library/aa381172(v=vs.85).aspx
 //http://msdn.microsoft.com/en-us/library/aa380838(v=VS.85).aspx
@@ -116,14 +116,14 @@ namespace Terminals.Connections
                 _axMsRdpClient.Dock = DockStyle.Fill;
                 _nonScriptable = (_axMsRdpClient.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable4);
                     
-                ChangeDesktopSize(Favorite.DesktopSize);
+                ChangeDesktopSize(Favorite.Display.DesktopSize);
                 try
                 {
                     //if(Favorite.DesktopSize == DesktopSize.AutoScale) axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
                     //axMsRdpClient2.DesktopWidth = width;
                     //axMsRdpClient2.DesktopHeight = height;
 
-                    switch(Favorite.Colors)
+                    switch(Favorite.Display.Colors)
                     {
                         case Colors.Bits8:
                             _axMsRdpClient.ColorDepth = 8;
@@ -142,7 +142,8 @@ namespace Terminals.Connections
                     _axMsRdpClient.ConnectingText = "Connecting. Please wait...";
                     _axMsRdpClient.DisconnectedText = "Disconnecting...";
 
-                    if (Favorite.RedirectedDrives.Count > 0 && Favorite.RedirectedDrives[0].Equals("true"))
+                    var rdpOptions = this.Favorite.ProtocolProperties as RdpOptions;
+                    if (rdpOptions.Redirect.Drives.Count > 0 && rdpOptions.Redirect.Drives[0].Equals("true"))
                     {
                         _axMsRdpClient.AdvancedSettings2.RedirectDrives = true;
                     }
@@ -151,7 +152,7 @@ namespace Terminals.Connections
                         for (int i = 0; i < _nonScriptable.DriveCollection.DriveCount; i++)
                         {
                             MSTSCLib.IMsRdpDrive drive = _nonScriptable.DriveCollection.get_DriveByIndex((uint)i);
-                            foreach (string str in Favorite.RedirectedDrives)
+                            foreach (string str in rdpOptions.Redirect.Drives)
                                 if (drive.Name.IndexOf(str) > -1)
                                     drive.RedirectionState = true;
                         }
@@ -159,61 +160,61 @@ namespace Terminals.Connections
 
                     //advanced settings
                     //bool, 0 is false, other is true
-                    if(Favorite.AllowBackgroundInput) 
+                    if (rdpOptions.UserInterface.AllowBackgroundInput) 
                         _axMsRdpClient.AdvancedSettings.allowBackgroundInput = -1;
-                    
-                    if(Favorite.BitmapPeristence) 
+
+                    if (rdpOptions.UserInterface.BitmapPeristence) 
                         _axMsRdpClient.AdvancedSettings.BitmapPeristence = -1;
-                    
-                    if(Favorite.EnableCompression)
+
+                    if (rdpOptions.UserInterface.EnableCompression)
                         _axMsRdpClient.AdvancedSettings.Compress = -1;
 
-                    if(Favorite.AcceleratorPassthrough) 
+                    if (rdpOptions.UserInterface.AcceleratorPassthrough) 
                         _axMsRdpClient.AdvancedSettings2.AcceleratorPassthrough = -1;
 
-                    if(Favorite.DisableControlAltDelete) 
+                    if (rdpOptions.UserInterface.DisableControlAltDelete) 
                         _axMsRdpClient.AdvancedSettings2.DisableCtrlAltDel = -1;
 
-                    if(Favorite.DisplayConnectionBar) 
+                    if (rdpOptions.UserInterface.DisplayConnectionBar) 
                         _axMsRdpClient.AdvancedSettings2.DisplayConnectionBar = true;
 
-                    if(Favorite.DoubleClickDetect) 
+                    if (rdpOptions.UserInterface.DoubleClickDetect) 
                         _axMsRdpClient.AdvancedSettings2.DoubleClickDetect = -1;
 
-                    if(Favorite.DisableWindowsKey) 
+                    if (rdpOptions.UserInterface.DisableWindowsKey) 
                         _axMsRdpClient.AdvancedSettings2.EnableWindowsKey = -1;
-                    
-                    if(Favorite.EnableEncryption) 
+
+                    if (rdpOptions.Security.EnableEncryption) 
                         _axMsRdpClient.AdvancedSettings2.EncryptionEnabled = -1;
 
 
-                    if(Favorite.GrabFocusOnConnect) 
+                    if (rdpOptions.GrabFocusOnConnect) 
                         _axMsRdpClient.AdvancedSettings2.GrabFocusOnConnect = true;
 
-                        if(Favorite.EnableSecuritySettings)
+                    if (rdpOptions.Security.Enabled)
                         {
-                            if(Favorite.SecurityFullScreen) 
+                            if (rdpOptions.FullScreen) 
                                 _axMsRdpClient.SecuredSettings2.FullScreen = -1;
-                            
-                            _axMsRdpClient.SecuredSettings2.StartProgram = Favorite.SecurityStartProgram;
-                            _axMsRdpClient.SecuredSettings2.WorkDir = Favorite.SecurityWorkingFolder;
+
+                            _axMsRdpClient.SecuredSettings2.StartProgram = rdpOptions.Security.StartProgram;
+                            _axMsRdpClient.SecuredSettings2.WorkDir = rdpOptions.Security.WorkingFolder;
                         }
 
-                    _axMsRdpClient.AdvancedSettings2.MinutesToIdleTimeout = Favorite.IdleTimeout;
+                    _axMsRdpClient.AdvancedSettings2.MinutesToIdleTimeout = rdpOptions.TimeOuts.IdleTimeout;
 
                     try 
                     {
-                        int timeout = Favorite.OverallTimeout;
+                        int timeout = rdpOptions.TimeOuts.OverallTimeout;
                         if(timeout > 600) timeout = 10;
                         if(timeout <= 0) timeout = 10;
                         _axMsRdpClient.AdvancedSettings2.overallConnectionTimeout = timeout;
-                        timeout = Favorite.ConnectionTimeout;
+                        timeout = rdpOptions.TimeOuts.ConnectionTimeout;
                         if(timeout > 600) timeout = 10;
                         if(timeout <= 0) timeout = 10;
                         
                         _axMsRdpClient.AdvancedSettings2.singleConnectionTimeout = timeout;
 
-                        timeout = Favorite.ShutdownTimeout;
+                        timeout = rdpOptions.TimeOuts.ShutdownTimeout;
                         if(timeout > 600) timeout = 10;
                         if(timeout <= 0) timeout = 10;
                         _axMsRdpClient.AdvancedSettings2.shutdownTimeout = timeout;
@@ -229,10 +230,10 @@ namespace Terminals.Connections
                         Logging.Log.Error("Error when trying to set timeout values.", exc);
                     }
 
-                    _axMsRdpClient.AdvancedSettings3.RedirectPorts = Favorite.RedirectPorts;
-                    _axMsRdpClient.AdvancedSettings3.RedirectPrinters = Favorite.RedirectPrinters;
-                    _axMsRdpClient.AdvancedSettings3.RedirectSmartCards = Favorite.RedirectSmartCards;
-                    _axMsRdpClient.AdvancedSettings3.PerformanceFlags = Favorite.PerformanceFlags;
+                    _axMsRdpClient.AdvancedSettings3.RedirectPorts = rdpOptions.Redirect.Ports;
+                    _axMsRdpClient.AdvancedSettings3.RedirectPrinters = rdpOptions.Redirect.Printers;
+                    _axMsRdpClient.AdvancedSettings3.RedirectSmartCards = rdpOptions.Redirect.SmartCards;
+                    _axMsRdpClient.AdvancedSettings3.PerformanceFlags = rdpOptions.UserInterface.PerformanceFlags;
                         
                     /*
                     TS_PERF_DISABLE_CURSOR_SHADOW
@@ -260,56 +261,46 @@ namespace Terminals.Connections
                     TS_PERF_ENABLE_FONT_SMOOTHING 0x00000080
                     TS_PERF_ENABLE_DESKTOP_COMPOSITION 0x00000100
                     */
-                    _axMsRdpClient.AdvancedSettings6.RedirectClipboard = Favorite.RedirectClipboard;
-                    _axMsRdpClient.AdvancedSettings6.RedirectDevices = Favorite.RedirectDevices;
+                    _axMsRdpClient.AdvancedSettings6.RedirectClipboard = rdpOptions.Redirect.Clipboard;
+                    _axMsRdpClient.AdvancedSettings6.RedirectDevices = rdpOptions.Redirect.Devices;
                     _axMsRdpClient.AdvancedSettings6.ConnectionBarShowMinimizeButton = false;
                     _axMsRdpClient.AdvancedSettings6.ConnectionBarShowPinButton = false;
                     _axMsRdpClient.AdvancedSettings6.ConnectionBarShowRestoreButton = false;
 
                     // Terminal Server Gateway Settings
-                    _axMsRdpClient.TransportSettings.GatewayUsageMethod = (uint)Favorite.TsgwUsageMethod;
-                    _axMsRdpClient.TransportSettings.GatewayCredsSource = (uint)Favorite.TsgwCredsSource;
-                    _axMsRdpClient.TransportSettings.GatewayHostname = Favorite.TsgwHostname;
-                    _axMsRdpClient.TransportSettings2.GatewayDomain = Favorite.TsgwDomain;
+                    _axMsRdpClient.TransportSettings.GatewayUsageMethod = (uint)rdpOptions.TsGateway.UsageMethod;
+                    _axMsRdpClient.TransportSettings.GatewayCredsSource = (uint)rdpOptions.TsGateway.CredentialSource;
+                    _axMsRdpClient.TransportSettings.GatewayHostname = rdpOptions.TsGateway.HostName;
+                    _axMsRdpClient.TransportSettings2.GatewayDomain = rdpOptions.TsGateway.Security.Domain;
                     _axMsRdpClient.TransportSettings2.GatewayProfileUsageMethod = 1;
-                    if (Favorite.TsgwSeparateLogin)
+                    if (rdpOptions.TsGateway.SeparateLogin)
                     {
-                        _axMsRdpClient.TransportSettings2.GatewayUsername = Favorite.TsgwUsername;
-                        _axMsRdpClient.TransportSettings2.GatewayPassword = Favorite.TsgwPassword;
+                        _axMsRdpClient.TransportSettings2.GatewayUsername = rdpOptions.TsGateway.Security.UserName;
+                        _axMsRdpClient.TransportSettings2.GatewayPassword = rdpOptions.TsGateway.Security.Password;
                     }
                     else
                     {
-                        _axMsRdpClient.TransportSettings2.GatewayUsername = Favorite.UserName;
-                        _axMsRdpClient.TransportSettings2.GatewayPassword = Favorite.Password;
+                        _axMsRdpClient.TransportSettings2.GatewayUsername = Favorite.Security.UserName;
+                        _axMsRdpClient.TransportSettings2.GatewayPassword = Favorite.Security.Password;
                     }
 
-                    if (Favorite.EnableTLSAuthentication)
+                    if (rdpOptions.Security.EnableTLSAuthentication)
                         _axMsRdpClient.AdvancedSettings5.AuthenticationLevel = 2;
 
-                    _nonScriptable.EnableCredSspSupport = Favorite.EnableNLAAuthentication;
+                    _nonScriptable.EnableCredSspSupport = rdpOptions.Security.EnableNLAAuthentication;
 
-                    _axMsRdpClient.SecuredSettings2.AudioRedirectionMode = (int)Favorite.Sounds;
+                    _axMsRdpClient.SecuredSettings2.AudioRedirectionMode = (int)rdpOptions.Redirect.Sounds;
 
-                    string domainName = Favorite.DomainName;
-                    if(string.IsNullOrEmpty(domainName)) 
-                        domainName = Settings.DefaultDomain;
+                    ISecurityOptions security = Favorite.Security.GetResolvedCredentials();
 
-                    string pass = Favorite.Password;
-                    if (string.IsNullOrEmpty(pass))
-                        pass = Settings.DefaultPassword;
-
-                    string userName = Favorite.UserName;
-                    if (string.IsNullOrEmpty(userName))
-                        userName = Settings.DefaultUsername;
-
-                    _axMsRdpClient.UserName = userName;
-                    _axMsRdpClient.Domain = domainName;
+                    _axMsRdpClient.UserName = security.UserName;
+                    _axMsRdpClient.Domain = security.Domain;
                     try 
                     {
-                        if(!String.IsNullOrEmpty(pass)) 
+                        if(!String.IsNullOrEmpty(security.Password)) 
                         {
                             if(_nonScriptable != null)
-                                _nonScriptable.ClearTextPassword = pass;
+                                _nonScriptable.ClearTextPassword = security.Password;
                         }
                     } 
                     catch(Exception exc) 
@@ -320,11 +311,11 @@ namespace Terminals.Connections
                     _axMsRdpClient.Server = Favorite.ServerName;
                     _axMsRdpClient.AdvancedSettings3.RDPPort = Favorite.Port;
                     _axMsRdpClient.AdvancedSettings3.ContainerHandledFullScreen = -1;
-                    _axMsRdpClient.AdvancedSettings3.DisplayConnectionBar = Favorite.DisplayConnectionBar;
+                    _axMsRdpClient.AdvancedSettings3.DisplayConnectionBar = rdpOptions.UserInterface.DisplayConnectionBar;
 
                     // Use ConnectToServerConsole or ConnectToAdministerServer based on implementation
-                    _axMsRdpClient.AdvancedSettings7.ConnectToAdministerServer = Favorite.ConnectToConsole;
-                    _axMsRdpClient.AdvancedSettings3.ConnectToServerConsole = Favorite.ConnectToConsole;
+                    _axMsRdpClient.AdvancedSettings7.ConnectToAdministerServer = rdpOptions.ConnectToConsole;
+                    _axMsRdpClient.AdvancedSettings3.ConnectToServerConsole = rdpOptions.ConnectToConsole;
 
                     _axMsRdpClient.OnRequestGoFullScreen += new EventHandler(axMsTscAx_OnRequestGoFullScreen);
                     _axMsRdpClient.OnRequestLeaveFullScreen += new EventHandler(axMsTscAx_OnRequestLeaveFullScreen);

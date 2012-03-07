@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Terminals.Data;
 using Terminals.Forms.Controls;
 using Terminals.Integration;
 using Terminals.Integration.Export;
@@ -56,7 +57,7 @@ namespace Terminals
         private List<FavoriteConfigurationElement> FindSelectedFavorites()
         {
             var favorites = new List<FavoriteConfigurationElement>();
-            foreach (TagTreeNode groupNode in this.favsTree.Nodes)
+            foreach (GroupTreeNode groupNode in this.favsTree.Nodes)
             {
                 ExpandCheckedGroupNode(groupNode);
                 FindSelectedGroupFavorites(favorites, groupNode);
@@ -65,7 +66,7 @@ namespace Terminals
             return favorites;
         }
 
-        private static void FindSelectedGroupFavorites(List<FavoriteConfigurationElement> favorites, TagTreeNode groupNode)
+        private static void FindSelectedGroupFavorites(List<FavoriteConfigurationElement> favorites, GroupTreeNode groupNode)
         {
             // dont expect only Favorite nodes, because dummy nodes arent
             foreach (TreeNode childNode in groupNode.Nodes) 
@@ -74,7 +75,10 @@ namespace Terminals
                 {
                     var favoriteNode = childNode as FavoriteTreeNode;
                     if (favoriteNode != null)
-                        favorites.Add(favoriteNode.Favorite);
+                    {
+                        FavoriteConfigurationElement favoriteConfig = ModelConverterV2ToV1.ConvertToFavorite(favoriteNode.Favorite);
+                        favorites.Add(favoriteConfig);
+                    }  
                 }
             }
         }
@@ -82,7 +86,7 @@ namespace Terminals
         /// <summary>
         /// because of lazy loading, expand the node, it doesnt have be already loaded
         /// </summary>
-        private static void ExpandCheckedGroupNode(TagTreeNode groupNode)
+        private static void ExpandCheckedGroupNode(GroupTreeNode groupNode)
         {
             if (groupNode.Checked && groupNode.NotLoadedYet)
             {

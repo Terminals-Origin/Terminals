@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -14,16 +15,16 @@ namespace Terminals.Forms.Controls
         private FavoritesTreeView treeList;
 
         /// <summary>
-        /// gets or sets virtual tree node for favorites, which have no tag defined
+        /// gets or sets virtual tree node for favorites, which have no Group defined
         /// </summary>
-        private TagTreeNode unTaggedNode;
+        private GroupTreeNode unTaggedNode;
 
-        private Groups PersistedGroups
+        private static IGroups PersistedGroups
         {
             get { return Persistance.Instance.Groups; }
         }
 
-        private DataDispatcher Dispatcher
+        private static DataDispatcher Dispatcher
         {
             get { return Persistance.Instance.Dispatcher; }
         }
@@ -32,8 +33,8 @@ namespace Terminals.Forms.Controls
         {
             this.treeList = treeListToFill;
 
-            this.Dispatcher.TagsChanged += new TagsChangedEventHandler(this.OnTagsCollectionChanged);
-            this.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
+            Dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.OnGroupsCollectionChanged);
+            Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
         }
 
         /// <summary>
@@ -42,8 +43,8 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal void UnregisterEvents()
         {
-            this.Dispatcher.TagsChanged -= new TagsChangedEventHandler(this.OnTagsCollectionChanged);
-            this.Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
+            Dispatcher.GroupsChanged -= new GroupsChangedEventHandler(this.OnGroupsCollectionChanged);
+            Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
         }
 
         private void OnFavoritesCollectionChanged(FavoritesChangedEventArgs args)
@@ -51,13 +52,12 @@ namespace Terminals.Forms.Controls
             if(IsOrphan())
               return;
 
-            string selectedTagName = this.treeList.FindSelectedTagNodeName();
-            string selectedFavorite = this.treeList.GetSelectedFavoriteNodeName();
+            GroupTreeNode selectedGroup = this.treeList.FindSelectedGroupNode();
+            IFavorite selectedFavorite = this.treeList.SelectedFavorite;
             RemoveFavorites(args.Removed);
             UpdateFavorites(args.Updated);
             AddNewFavorites(args.Added);
-            selectedFavorite = args.GetUpdatedFavoriteName(selectedFavorite);
-            this.treeList.RestoreSelectedFavorite(selectedTagName, selectedFavorite);
+            this.treeList.RestoreSelectedFavorite(selectedGroup, selectedFavorite);
         }
 
         /// <summary>
@@ -75,68 +75,74 @@ namespace Terminals.Forms.Controls
             return false;
         }
 
-        private void RemoveFavorites(List<FavoriteConfigurationElement> removedFavorites)
+        private void RemoveFavorites(List<IFavorite> removedFavorites)
         {
-            foreach (FavoriteConfigurationElement favorite in removedFavorites)
+            foreach (IFavorite favorite in removedFavorites)
             {
-                foreach (String tag in favorite.TagList)
-                {
-                    TagTreeNode tagNode = this.treeList.Nodes[tag] as TagTreeNode;
-                    RemoveFavoriteFromTagNode(tagNode, favorite.Name);
-                }
-
-                RemoveFavoriteFromTagNode(this.unTaggedNode, favorite.Name);  
+                RemoveFavoriteFromAllGroups(favorite);
+                RemoveFavoriteFromGroupNode(this.unTaggedNode, favorite);  
             }
         }
 
-        private void UpdateFavorites(Dictionary<String, FavoriteConfigurationElement> updatedFavorites)
+        private void UpdateFavorites(List<IFavorite> updatedFavorites)
         {
-            foreach (var updateArg in updatedFavorites)
+            foreach (var favorite in updatedFavorites)
             {
-                foreach (TagTreeNode tagNode in this.treeList.Nodes)
-                {
-                    RemoveFavoriteFromTagNode(tagNode, updateArg.Key);  
-                }
-
-                this.AddFavoriteToAllItsTagNodes(updateArg.Value);
+                // remove and then insert instead of tree node update to keep default sorting
+                RemoveFavoriteFromAllGroups(favorite);
+                this.AddFavoriteToAllItsGroupNodes(favorite);
             }
         }
 
-        private void AddNewFavorites(List<FavoriteConfigurationElement> addedFavorites)
+        private void RemoveFavoriteFromAllGroups(IFavorite favorite)
         {
-            foreach (FavoriteConfigurationElement favorite in addedFavorites)
+            foreach (GroupTreeNode groupNode in this.treeList.Nodes)
             {
-                this.AddFavoriteToAllItsTagNodes(favorite);
+                RemoveFavoriteFromGroupNode(groupNode, favorite);  
             }
         }
 
-        private void AddFavoriteToAllItsTagNodes(FavoriteConfigurationElement favorite)
+        private void AddNewFavorites(List<IFavorite> addedFavorites)
         {
-            foreach (String tag in favorite.TagList)
+            foreach (IFavorite favorite in addedFavorites)
             {
-                TagTreeNode tagNode = this.treeList.Nodes[tag] as TagTreeNode;
-                AddNewFavoriteNodeToTagNode(favorite, tagNode);
-            }
-
-            if (String.IsNullOrEmpty(favorite.Tags))
-            {
-                AddNewFavoriteNodeToTagNode(favorite, this.unTaggedNode);
+                this.AddFavoriteToAllItsGroupNodes(favorite);
             }
         }
 
-        private static void RemoveFavoriteFromTagNode(TagTreeNode tagNode, String favoriteName)
+        private void AddFavoriteToAllItsGroupNodes(IFavorite favorite)
         {
-            if (tagNode != null && !tagNode.NotLoadedYet)
-                tagNode.Nodes.RemoveByKey(favoriteName);
+            foreach (IGroup group in favorite.Groups)
+            {
+                GroupTreeNode groupNode = this.treeList.Nodes[group.Name] as GroupTreeNode;
+                AddNewFavoriteNodeToGroupNode(favorite, groupNode);
+            }
+
+            if (favorite.Groups.Count == 0)
+            {
+                AddNewFavoriteNodeToGroupNode(favorite, this.unTaggedNode);
+            }
         }
 
-        private static void AddNewFavoriteNodeToTagNode(FavoriteConfigurationElement favorite, TagTreeNode tagNode)
+        private static void RemoveFavoriteFromGroupNode(GroupTreeNode groupNode, IFavorite favorite)
         {
-            if (tagNode != null && !tagNode.NotLoadedYet) // add only to expanded nodes
+            if (groupNode != null && !groupNode.NotLoadedYet)
+            {
+                var favoriteNode = groupNode.Nodes.Cast<FavoriteTreeNode>()
+                    .FirstOrDefault(candidate => candidate.Favorite.Equals(favorite));
+
+                if(favoriteNode != null)
+                    groupNode.Nodes.Remove(favoriteNode);
+            }
+        }
+
+        private static void AddNewFavoriteNodeToGroupNode(IFavorite favorite, GroupTreeNode groupNode)
+        {
+            if (groupNode != null && !groupNode.NotLoadedYet) // add only to expanded nodes
             {
                 var favoriteTreeNode = new FavoriteTreeNode(favorite);
-                int index = FindFavoriteNodeInsertIndex(tagNode.Nodes, favorite);
-                InsertNodePreservingOrder(tagNode.Nodes, index, favoriteTreeNode);
+                int index = FindFavoriteNodeInsertIndex(groupNode.Nodes, favorite);
+                InsertNodePreservingOrder(groupNode.Nodes, index, favoriteTreeNode);
             }
         }
 
@@ -146,9 +152,9 @@ namespace Terminals.Forms.Controls
         /// <param name="nodes">Not null nodes collection of FavoriteTreeNodes to search in.</param>
         /// <param name="favorite">Not null favorite to identify in nodes collection.</param>
         /// <returns>
-        /// -1, if the tag should be added to the end of tag nodes, otherwise found index.
+        /// -1, if the Group should be added to the end of Group nodes, otherwise found index.
         /// </returns>
-        internal static int FindFavoriteNodeInsertIndex(TreeNodeCollection nodes, FavoriteConfigurationElement favorite)
+        internal static int FindFavoriteNodeInsertIndex(TreeNodeCollection nodes, IFavorite favorite)
         {
             for (int index = 0; index < nodes.Count; index++)
             {
@@ -160,21 +166,22 @@ namespace Terminals.Forms.Controls
             return -1;  
         }
 
-        private void OnTagsCollectionChanged(TagsChangedArgs args)
+        private void OnGroupsCollectionChanged(GroupsChangedArgs args)
         {
             if (this.IsOrphan())
                 return;
 
-            this.RemoveUnusedTagNodes(args.Removed);
-            this.AddMissingTagNodes(args.Added);
+            this.RemoveUnusedGroupNodes(args.Removed);
+            this.UpdateGroups(args.Updated);
+            this.AddMissingGroupNodes(args.Added);
         }
 
-        private void AddMissingTagNodes(List<String> newTags)
+        private void AddMissingGroupNodes(List<IGroup> newGroups)
         {
-            foreach (String newTag in newTags)
+            foreach (IGroup newGroup in newGroups)
             {
-                int index = FindTagNodeInsertIndex(this.treeList.Nodes, newTag);
-                this.CreateAndAddTagNode(newTag, index);
+                int index = FindGroupNodeInsertIndex(this.treeList.Nodes, newGroup);
+                this.CreateAndAddGroupNode(newGroup, index);
             }
         }
 
@@ -183,84 +190,124 @@ namespace Terminals.Forms.Controls
         /// and skips nodes before the startIndex.
         /// </summary>
         /// <param name="nodes">Not null nodes collection to search in.</param>
-        /// <param name="newTag">Not empty new tag to add.</param>
+        /// <param name="newGroup">Not empty new Group to add.</param>
         /// <returns>
-        /// -1, if the tag should be added to the end of tag nodes, otherwise found index.
+        /// -1, if the Group should be added to the end of Group nodes, otherwise found index.
         /// </returns>
-        private static int FindTagNodeInsertIndex(TreeNodeCollection nodes, string newTag)
+        private static int FindGroupNodeInsertIndex(TreeNodeCollection nodes, IGroup newGroup)
         {
             // Skips first "Untagged" node to keep it first.
             for (int index = 1; index < nodes.Count; index++)
             {
-                if (nodes[index].Text.CompareTo(newTag) > 0)
+                if (nodes[index].Text.CompareTo(newGroup.Name) > 0)
                     return index;
             }
 
             return -1;
         }
 
-        private void RemoveUnusedTagNodes(List<String> removedTags)
+        private void UpdateGroups(List<IGroup> updatedGroups)
         {
-            foreach (String obsoletTag in removedTags)
+            List<GroupTreeNode> affectedNodes = GetAffectedNodes(updatedGroups);
+            foreach (var groupNode in affectedNodes)
             {
-                this.treeList.Nodes.RemoveByKey(obsoletTag);
+                groupNode.Text = groupNode.Group.Name;
+                UpdateGroupNodeChilds(groupNode);
             }
+        }
+
+        private static void UpdateGroupNodeChilds(GroupTreeNode groupNode)
+        {
+            if (groupNode.IsExpanded)
+            {
+                ReLoadFavoriteNodes(groupNode);
+            }
+        }
+
+        private void RemoveUnusedGroupNodes(List<IGroup> removedGroups)
+        {
+            List<GroupTreeNode> affectedNodes = GetAffectedNodes(removedGroups);
+            foreach (GroupTreeNode groupNode in affectedNodes)
+            {
+                this.treeList.Nodes.Remove(groupNode);
+            }
+        }
+
+        private List<GroupTreeNode> GetAffectedNodes(List<IGroup> requiredGroups)
+        {
+            return this.treeList.Nodes.Cast<GroupTreeNode>()
+                .Where(candidate => requiredGroups.Contains(candidate.Group))
+                .ToList();
         }
 
         /// <summary>
-        /// Creates the and add tag node in tree list on proper position defined by index.
-        /// This allowes the tag nodes to keep ordered by name.
+        /// Creates the and add Group node in tree list on proper position defined by index.
+        /// This allowes the Group nodes to keep ordered by name.
         /// </summary>
-        /// <param name="tag">The tag name to create.</param>
+        /// <param name="group">The group to create.</param>
         /// <param name="index">The index on which node would be inserted.
         /// If negative number, than it is added to the end.</param>
         /// <returns>Not null, newly creted node</returns>
-        private TagTreeNode CreateAndAddTagNode(String tag, int index = -1)
+        private GroupTreeNode CreateAndAddGroupNode(IGroup group, int index = -1)
         {
-            TagTreeNode tagNode = new TagTreeNode(tag);
-            InsertNodePreservingOrder(this.treeList.Nodes, index, tagNode);
-            return tagNode;
+            GroupTreeNode groupNode = new GroupTreeNode(group);
+            InsertNodePreservingOrder(this.treeList.Nodes, index, groupNode);
+            return groupNode;
         }
 
-        private static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode tagNode)
+        private static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode groupNode)
         {
             if (index < 0)
-                nodes.Add(tagNode);
+                nodes.Add(groupNode);
             else
-                nodes.Insert(index, tagNode);
+                nodes.Insert(index, groupNode);
         }
 
-        internal void LoadTags()
+        internal void LoadGroups()
         {
-            this.unTaggedNode = this.CreateAndAddTagNode(Settings.UNTAGGED_NODENAME);
-
-            if (PersistedGroups.Tags == null) // because of designer
+            if (PersistedGroups == null) // because of designer
                 return;
 
-            foreach (string tagName in PersistedGroups.Tags)
+            IGroup untagedVirtualGroup = CreateUntagedVirtualGroup();
+            this.unTaggedNode = this.CreateAndAddGroupNode(untagedVirtualGroup);
+
+            foreach (IGroup group in PersistedGroups)
             {
-                this.CreateAndAddTagNode(tagName);
+                this.CreateAndAddGroupNode(group);
             }
         }
 
-        internal void LoadFavorites(TagTreeNode tagNode)
+        internal static IGroup CreateUntagedVirtualGroup()
         {
-            if (tagNode.NotLoadedYet)
+            var untagedFavorites = Persistance.Instance.Favorites
+                .Where(candidate => candidate.Groups.Count == 0)
+                .ToList();
+
+            var factory = Persistance.Instance.Factory;
+            return factory.CreateGroup(Settings.UNTAGGED_NODENAME, untagedFavorites);
+        }
+
+        internal void LoadFavorites(GroupTreeNode groupNode)
+        {
+            if (groupNode.NotLoadedYet)
             {
-                tagNode.Nodes.Clear();
-                AddFavoriteNodes(tagNode);
+                ReLoadFavoriteNodes(groupNode);
             }
         }
 
-        private static void AddFavoriteNodes(TagTreeNode tagNode)
+        private static void ReLoadFavoriteNodes(GroupTreeNode groupNode) 
         {
-            List<FavoriteConfigurationElement> tagFavorites = Persistance.Instance.Favorites
-                .GetSortedFavoritesByTag(tagNode.Text);
+            groupNode.Nodes.Clear();
+            AddFavoriteNodes(groupNode);
+        }
 
-            foreach (var favorite in tagFavorites)
+        private static void AddFavoriteNodes(GroupTreeNode groupNode)
+        {
+            List<IFavorite> favorites = groupNode.Group.Favorites;
+            foreach (var favorite in favorites)
             {
                 var favoriteTreeNode = new FavoriteTreeNode(favorite);
-                tagNode.Nodes.Add(favoriteTreeNode);
+                groupNode.Nodes.Add(favoriteTreeNode);
             }
         }
     }

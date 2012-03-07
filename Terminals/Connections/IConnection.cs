@@ -1,11 +1,12 @@
+using Terminals.Data;
 using Terminals.TerminalServices;
 
 namespace Terminals.Connections
 {
-    public interface IConnection
+    internal interface IConnection
     {
         TerminalTabControlItem TerminalTabPage { get; set; }
-        FavoriteConfigurationElement Favorite { get; set; }
+        IFavorite Favorite { get; set; }
         MainForm ParentForm { get; set; }
         bool Connect();
         void Disconnect();

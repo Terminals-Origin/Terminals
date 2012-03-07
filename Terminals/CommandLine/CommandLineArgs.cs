@@ -20,9 +20,19 @@ namespace Terminals.CommandLine
         public string favs;
 
         [DataMember]
-        [Argument(ArgumentType.AtMostOnce,
-            HelpText = "Local path the the config file to use.  Defaults to the standard Terminals.config")]
-        public string config;
+        [Argument(ArgumentType.AtMostOnce, LongName = "config",
+            HelpText = "Path to the config file to use. Defaults to the standard Terminals.config")]
+        public string configFile;
+
+        [DataMember]
+        [Argument(ArgumentType.AtMostOnce, LongName = "cred",
+            HelpText = "Path to the credentials file to use. Defaults to the standard Credentials.xml")]
+        public string credentialsFile;
+
+        [DataMember]
+        [Argument(ArgumentType.AtMostOnce, LongName = "favsfile", ShortName = "ff",
+            HelpText = "Path to the favorites and groups file to use. Defaults to the standard favorites.xml")]
+        public string favoritesFile;
 
         [DataMember]
         [Argument(ArgumentType.AtMostOnce, LongName = "AutomaticallyUpdate", ShortName = "au", HelpText = "Enable Automatic Updates")]

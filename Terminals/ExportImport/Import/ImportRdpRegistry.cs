@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.Win32;
 using Terminals.Connections;
+using Terminals.Data;
 
 namespace Terminals.Integration.Import
 {

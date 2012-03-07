@@ -27,43 +27,37 @@ namespace Terminals
 
         private void OnFavoritesChanged(FavoritesChangedEventArgs args)
         {
-            foreach (KeyValuePair<string, FavoriteConfigurationElement> updated in args.Updated)
+            foreach (IFavorite updated in args.Updated)
             {
-                if (updated.Key == updated.Value.Name) // only renamed items
-                    continue;
                 // dont update the rest of properties, because it doesnt reflect opened session
                 UpdateDetachedWindowTitle(updated);
                 UpdateAttachedTabTitle(updated);
             }
         }
 
-        private void UpdateAttachedTabTitle(KeyValuePair<string, FavoriteConfigurationElement> updated)
+        private void UpdateAttachedTabTitle(IFavorite updated)
         {
             TabControlItem attachedTab = this.FindAttachedTab(updated);
             if (attachedTab != null)
-                attachedTab.Title = updated.Value.Name;
+                attachedTab.Title = updated.Name;
         }
 
-        private TabControlItem FindAttachedTab(KeyValuePair<string, FavoriteConfigurationElement> updated)
+        private TabControlItem FindAttachedTab(IFavorite updated)
         {
-            foreach (TerminalTabControlItem tab in this.mainTabControl.Items)
-            {
-                if (tab.Favorite.Name == updated.Key)
-                    return tab;
-            }
-            return null;
+            return this.mainTabControl.Items.Cast<TerminalTabControlItem>()
+                .FirstOrDefault(tab => tab.Favorite.Equals(updated));
         }
 
-        private void UpdateDetachedWindowTitle(KeyValuePair<string, FavoriteConfigurationElement> updated)
+        private void UpdateDetachedWindowTitle(IFavorite updated)
         {
-            PopupTerminal detached = this.FindDetachedWindowByTitle(updated.Key);
+            PopupTerminal detached = this.FindDetachedWindowByFavorite(updated);
             if (detached != null)
-                detached.UpdateTitle(updated.Value.Name);
+                detached.UpdateTitle();
         }
 
-        private PopupTerminal FindDetachedWindowByTitle(string oldName)
+        private PopupTerminal FindDetachedWindowByFavorite(IFavorite updated)
         {
-            return this.detachedWindows.FirstOrDefault(window => window.Text == oldName);
+            return this.detachedWindows.FirstOrDefault(window => window.Favorite.Equals(updated));
         }
 
         /// <summary>

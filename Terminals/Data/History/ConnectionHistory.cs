@@ -2,106 +2,63 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading;
 using System.IO;
+using Terminals.Configuration;
 using Terminals.Data;
 using Unified;
 
 namespace Terminals.History
 {
-    internal delegate void HistoryRecorded(ConnectionHistory sender, HistoryRecordedEventArgs args);
+    internal delegate void HistoryRecorded(HistoryRecordedEventArgs args);
 
-    internal sealed class ConnectionHistory
+    internal sealed class ConnectionHistory : IConnectionHistory
     {
-        /// <summary>
-        /// Gets the file name of stored history values
-        /// </summary>
-        internal const string FILENAME = "History.xml";
-        private object _threadLock = new object();
-        private bool _loadingHistory = false;
+        private ManualResetEvent loadingGate = new ManualResetEvent(false);
         private DataFileWatcher fileWatcher;
-
-        private HistoryByFavorite _currentHistory = null;
-        /// <summary>
-        /// Gets or sets the private field encapsulating the lazy loading
-        /// </summary>
-        private HistoryByFavorite CurrentHistory
-        {
-            get
-            {
-                if (_currentHistory == null)
-                    LoadHistory(null);
-
-                if (_currentHistory == null)
-                    _currentHistory = new HistoryByFavorite();
-
-                return _currentHistory;
-            }
-        }
-
-        internal event EventHandler OnHistoryLoaded;
-        internal event HistoryRecorded OnHistoryRecorded;
+        private HistoryByFavorite currentHistory = null;
+        public event HistoryRecorded OnHistoryRecorded;
 
         /// <summary>
         /// Prevent concurent updates on History file by another program
         /// </summary>
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.History");
 
-        #region Thread safe Singleton
-
-        /// <summary>
-        /// Gets the singleton instance of history provider
-        /// </summary>
-        public static ConnectionHistory Instance
+        internal ConnectionHistory()
         {
-            get
-            {
-                return Nested.instance;
-            }
-        }
-
-        private ConnectionHistory()
-        {
-            string fullHistoryFullName = Path.Combine(Program.Info.Location, FILENAME);
-            fileWatcher = new DataFileWatcher(fullHistoryFullName);
+            fileWatcher = new DataFileWatcher(FileLocations.HistoryFullFileName);
             fileWatcher.FileChanged += new EventHandler(this.OnFileChanged);
             fileWatcher.StartObservation();
+            ThreadPool.QueueUserWorkItem(new WaitCallback(LoadHistory));
         }
 
         private void OnFileChanged(object sender, EventArgs e)
         {
-            SortableList<FavoriteConfigurationElement> oldTodays = GetOldTodaysHistory();
+            // dont need locking here, because only today is updated adding new items
+            SortableList<IFavorite> oldTodays = GetOldTodaysHistory();
             LoadHistory(null);
-            List<FavoriteConfigurationElement> newTodays = MergeWithNewTodays(oldTodays);
-            foreach (FavoriteConfigurationElement favorite in newTodays)
+            List<IFavorite> newTodays = MergeWithNewTodays(oldTodays);
+            foreach (IFavorite favorite in newTodays)
             {
-                FireOnHistoryRecorded(favorite.Name);
+                FireOnHistoryRecorded(favorite);
             }
         }
 
-        private List<FavoriteConfigurationElement> MergeWithNewTodays(SortableList<FavoriteConfigurationElement> oldTodays)
+        private List<IFavorite> MergeWithNewTodays(SortableList<IFavorite> oldTodays)
         {
-            List<FavoriteConfigurationElement> newTodays = this.GetDateItems(HistoryByFavorite.TODAY);
+            List<IFavorite> newTodays = this.GetDateItems(HistoryIntervals.TODAY);
             if (oldTodays != null)
                 newTodays = DataDispatcher.GetMissingFavorites(newTodays, oldTodays);
             return newTodays;
         }
 
-        private SortableList<FavoriteConfigurationElement> GetOldTodaysHistory()
+        private SortableList<IFavorite> GetOldTodaysHistory()
         {
-            SortableList<FavoriteConfigurationElement> oldTodays = null;
-            if (this._currentHistory != null)
-                oldTodays = this.GetDateItems(HistoryByFavorite.TODAY);
+            SortableList<IFavorite> oldTodays = null;
+            if (this.currentHistory != null)
+                oldTodays = this.GetDateItems(HistoryIntervals.TODAY);
             return oldTodays;
         }
-
-        private static class Nested
-        {
-            internal static readonly ConnectionHistory instance = new ConnectionHistory();
-        }
-
-        #endregion
 
         /// <summary>
         /// Because filewatcher is created before the main form in GUI thread.
@@ -112,31 +69,31 @@ namespace Terminals.History
             fileWatcher.AssignSynchronizer(synchronizer);
         }
 
-        internal SortableList<FavoriteConfigurationElement> GetDateItems(string historyDateKey)
+        public SortableList<IFavorite> GetDateItems(string historyDateKey)
         {
+            this.loadingGate.WaitOne();
             var historyGroupItems = GetGroupedByDate()[historyDateKey];
             var groupFavorites = SelectFavoritesFromHistoryItems(historyGroupItems);
-            return FavoriteConfigurationElementCollection.OrderByDefaultSorting(groupFavorites);
+            return Favorites.OrderByDefaultSorting(groupFavorites);
         }
 
-        private static SortableList<FavoriteConfigurationElement> SelectFavoritesFromHistoryItems(
-            SortableList<HistoryItem> groupedByDate)
+        private static SortableList<IFavorite> SelectFavoritesFromHistoryItems(
+            SortableList<IHistoryItem> groupedByDate)
         {
-            FavoriteConfigurationElementCollection favorites = Persistance.Instance.Favorites.GetFavorites();
-            var selection = new SortableList<FavoriteConfigurationElement>();
-            foreach (HistoryItem favoriteTouch in groupedByDate)
+            var selection = new SortableList<IFavorite>();
+            foreach (IHistoryItem favoriteTouch in groupedByDate)
             {
-                FavoriteConfigurationElement favorite = favorites[favoriteTouch.Name];
-                if (favorite != null && !selection.Contains(favorite))
+                IFavorite favorite = favoriteTouch.Favorite;
+                if (favorite != null && !selection.Contains(favorite)) // add each favorite only once
                     selection.Add(favorite);
             }
 
             return selection;
         }
 
-        private SerializableDictionary<string, SortableList<HistoryItem>> GetGroupedByDate()
+        private SerializableDictionary<string, SortableList<IHistoryItem>> GetGroupedByDate()
         {
-            return this.CurrentHistory.GroupByDate();
+            return this.currentHistory.GroupByDate();
         }
 
         /// <summary>
@@ -144,94 +101,58 @@ namespace Terminals.History
         /// </summary>
         private void LoadHistory(object threadState)
         {
-            if (_loadingHistory)
-                return;
-
-            lock (_threadLock)
+            try
             {
-                Stopwatch sw = Stopwatch.StartNew();
-                try
-                {
-                    this._loadingHistory = true;
-                    TryLoadHistory();
-                }
-                catch (Exception exc)
-                {
-                    Logging.Log.Error("Error Loading History", exc);
-                    TryToRecoverHistoryFile();
-                }
-                finally
-                {
-                    this._loadingHistory = false;
-                    Logging.Log.Info(string.Format("Load History Duration:{0}ms", sw.ElapsedMilliseconds));
-                }
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                this.TryLoadFile();
+                Debug.WriteLine(string.Format("History Loaded. Duration:{0}ms", stopwatch.ElapsedMilliseconds));
             }
-
-            if (_currentHistory != null && OnHistoryLoaded != null)
-                OnHistoryLoaded(this, new EventArgs());
+            catch (Exception exc)
+            {
+                Logging.Log.Error("Error Loading History", exc);
+            }
+            finally
+            {
+                this.loadingGate.Set();
+            }
         }
 
-        private void TryLoadHistory()
+        private void TryLoadFile()
         {
-            if (!string.IsNullOrEmpty(FILENAME))
+            string fileName = FileLocations.HistoryFullFileName;
+            if (!string.IsNullOrEmpty(fileName))
             {
-                Logging.Log.InfoFormat("Loading History from: {0}", FILENAME);
-                if (!File.Exists(FILENAME))
-                    this.SaveHistory();//the file doesnt exist. Lets save it out for the first time
-                else
+                Logging.Log.InfoFormat("Loading History from: {0}", fileName);
+                if (File.Exists(fileName))
                     LoadFile();
+
+                if (this.currentHistory == null)
+                    this.currentHistory = new HistoryByFavorite();
             }
         }
 
         private void LoadFile()
         {
-            fileLock.WaitOne();
-            this._currentHistory = Serialize.DeserializeXMLFromDisk(FILENAME, typeof(HistoryByFavorite)) as HistoryByFavorite;
-            fileLock.ReleaseMutex();
-        }
-
-        private void TryToRecoverHistoryFile()
-        {
             try
             {
-                string backupFile = GetBackupFileName();
                 fileLock.WaitOne();
-                this.fileWatcher.StopObservation();
-                File.Copy(FILENAME, backupFile);
-                if (File.Exists(FILENAME))
-                    File.Delete(FILENAME);
-
-                Logging.Log.InfoFormat("History file recovered, backup in {0}", backupFile);
-                this._currentHistory = new HistoryByFavorite();
+                this.currentHistory = Serialize.DeserializeXMLFromDisk(FileLocations.HistoryFullFileName, typeof(HistoryByFavorite)) as HistoryByFavorite;
             }
-            catch (Exception ex1)
-            {
-                Logging.Log.Error("Try to recover History file failed.", ex1);
-            }
-            finally
+            finally 
             {
                 fileLock.ReleaseMutex();
-                this.fileWatcher.StartObservation();
             }
-        }
-
-        private static string GetBackupFileName()
-        {
-            string fileDate = DateTime.Now.ToString("yyyy-MM-dd hh-mm-ss");
-            return String.Format("{0}{1}.bak", fileDate, FILENAME);
         }
 
         private void SaveHistory()
         {
             try
             {
-                Stopwatch sw = Stopwatch.StartNew();
+                Stopwatch stopwatch = Stopwatch.StartNew();
                 fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
-                Serialize.SerializeXMLToDisk(CurrentHistory, FILENAME);
-
-                sw.Stop();
-                Logging.Log.Info(string.Format("History saved. Duration:{0} ms", sw.ElapsedMilliseconds));
+                Serialize.SerializeXMLToDisk(this.currentHistory, FileLocations.HistoryFullFileName);
+                Logging.Log.Info(string.Format("History saved. Duration:{0} ms", stopwatch.ElapsedMilliseconds));
             }
             catch (Exception exc)
             {
@@ -244,40 +165,33 @@ namespace Terminals.History
             }
         }
 
-        public void RecordHistoryItem(string favoriteName)
+        public void RecordHistoryItem(IFavorite favorite)
         {
-            if (_currentHistory == null)
+            this.loadingGate.WaitOne();
+            if (this.currentHistory == null || favorite == null)
                 return;
 
-            List<HistoryItem> favoriteHistoryList = GetFavoriteHistoryList(favoriteName);
-            favoriteHistoryList.Add(new HistoryItem(favoriteName));
+            List<HistoryItem> favoriteHistoryList = GetFavoriteHistoryList(favorite.Id);
+            favoriteHistoryList.Add(new HistoryItem());
             this.SaveHistory();
-            this.FireOnHistoryRecorded(favoriteName);
+            this.FireOnHistoryRecorded(favorite);
         }
 
-        private void FireOnHistoryRecorded(string favoriteName)
+        private void FireOnHistoryRecorded(IFavorite favorite)
         {
-            var args = new HistoryRecordedEventArgs { ConnectionName = favoriteName };
             if (this.OnHistoryRecorded != null)
             {
-                this.OnHistoryRecorded(this, args);
+                var args = new HistoryRecordedEventArgs(favorite);
+                this.OnHistoryRecorded(args);
             }
         }
 
-        private List<HistoryItem> GetFavoriteHistoryList(string favoriteName)
+        private List<HistoryItem> GetFavoriteHistoryList(Guid favoriteId)
         {
-            if (!this._currentHistory.ContainsKey(favoriteName))
-                this._currentHistory.Add(favoriteName, new List<HistoryItem>());
+            if (!this.currentHistory.ContainsKey(favoriteId))
+                this.currentHistory.Add(favoriteId, new List<HistoryItem>());
 
-            return this._currentHistory[favoriteName];
-        }
-
-        /// <summary>
-        /// Capture the OnHistoryLoaded Event
-        /// </summary>
-        public void LoadHistoryAsync()
-        {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(LoadHistory), null);
+            return this.currentHistory[favoriteId];
         }
     }
 }

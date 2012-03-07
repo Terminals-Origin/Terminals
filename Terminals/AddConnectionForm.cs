@@ -1,52 +1,38 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals
 {
-    public partial class AddConnectionForm : Form
+    internal partial class AddConnectionForm : Form
     {
         public AddConnectionForm()
         {
             InitializeComponent();
-            FavoriteConfigurationElementCollection favorites = Persistance.Instance.Favorites.GetFavorites();
-            foreach (FavoriteConfigurationElement favorite in favorites)
-            {
-                lvFavorites.Items.Add(favorite.Name);
-            }
+
+            this.gridFavorites.AutoGenerateColumns = false;
+            this.gridFavorites.DataSource = Persistance.Instance.Favorites.ToList();
         }
 
-        private List<string> connections;
-
-        public List<string> Connections
+        private List<IFavorite> selectedFavorites;
+        internal List<IFavorite> SelectedFavorites
         {
-            get { return connections; }
+            get { return this.selectedFavorites; }
         }
-
-        private void lvFavorites_ItemChecked(object sender, ItemCheckedEventArgs e)
+        
+        private void gridFavorites_SelectionChanged(object sender, EventArgs e)
         {
-            SetButtonOkState();
-        }
-
-        private void SetButtonOkState()
-        {
-            btnOk.Enabled = lvFavorites.CheckedItems.Count > 0;
-        }
-
-        private void txtServerName_TextChanged(object sender, EventArgs e)
-        {
-            SetButtonOkState();
+            btnOk.Enabled = this.gridFavorites.SelectedRows.Count > 0;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            connections = new List<string>();
-            foreach (ListViewItem item in lvFavorites.CheckedItems)
-            {
-                connections.Add(item.Text);
-            }
+            var selectedRows = this.gridFavorites.SelectedRows.Cast<DataGridViewRow>();
+            this.selectedFavorites = selectedRows.Select(row => row.DataBoundItem as IFavorite)
+                .ToList();
         }
+
     }
 }

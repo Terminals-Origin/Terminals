@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using Terminals.Connections;
+using Terminals.Data;
 using Terminals.Properties;
 
 namespace Terminals.Forms.Controls
@@ -14,7 +15,7 @@ namespace Terminals.Forms.Controls
         /// <summary>
         /// Gets the icon file name by icons defined in FavoritesTreeView imageListIcons
         /// </summary>
-        internal static string GetTreeviewImageListKey(FavoriteConfigurationElement favorite)
+        internal static string GetTreeviewImageListKey(IFavorite favorite)
         {
             switch (favorite.Protocol)
             {
@@ -38,7 +39,7 @@ namespace Terminals.Forms.Controls
         /// <summary>
         /// Gets the icon indexes by icons defined in FavoritesTreeView imageListIcons
         /// </summary>
-        private static Image GetProtocolImage(FavoriteConfigurationElement favorite)
+        private static Image GetProtocolImage(IFavorite favorite)
         {
             switch (favorite.Protocol)
             {
@@ -59,7 +60,7 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        internal static Image GetFavoriteIcon(FavoriteConfigurationElement favorite)
+        internal static Image GetFavoriteIcon(IFavorite favorite)
         {
             if (String.IsNullOrEmpty(favorite.ToolBarIcon))
             {

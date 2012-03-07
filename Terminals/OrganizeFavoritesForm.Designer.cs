@@ -1076,7 +1076,7 @@ namespace Terminals
             // 
             // colTags
             // 
-            this.colTags.DataPropertyName = "Tags";
+            this.colTags.DataPropertyName = "GroupNames";
             this.colTags.FillWeight = 200F;
             this.colTags.HeaderText = "Tags";
             this.colTags.Name = "colTags";

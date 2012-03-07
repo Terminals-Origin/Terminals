@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SysConfig = System.Configuration;
 
@@ -6,7 +7,20 @@ namespace Terminals.Configuration
 {
     internal static partial class Settings
     {
-        public static string[] FavoritesToolbarButtons
+        internal static Guid[] FavoritesToolbarButtons
+        {
+            get
+            {
+                return GetSection().FavoritesButtons.ToList()
+                    .Select(id => new Guid(id))
+                    .ToArray();
+            }
+        }
+
+        /// <summary>
+        /// For backward compatibility with older version than 2.0 for imports.
+        /// </summary>
+        public static string[] FavoriteNamesToolbarButtons
         {
             get
             {
@@ -19,68 +33,56 @@ namespace Terminals.Configuration
             get { return GetSection().FavoritesButtons; }
         }
 
-        public static void AddFavoriteButton(string name)
+        internal static void AddFavoriteButton(Guid favoriteId)
         {
-            List<string> oldButtons = ButtonsCollection.ToList();
-            AddButtonToInternCollection(name);
-            FireButtonsChangedEvent(oldButtons);
+            AddButtonToInternCollection(favoriteId);
+            FireButtonsChangedEvent();
         }
 
-        private static void AddButtonToInternCollection(string name)
+        private static void AddButtonToInternCollection(Guid favoriteId)
         {
-            ButtonsCollection.AddByName(name);
+            ButtonsCollection.AddByName(favoriteId.ToString());
             SaveImmediatelyIfRequested();
         }
 
-        public static void DeleteFavoriteButton(string name)
-        {
-            List<string> oldButtons = ButtonsCollection.ToList();
-            ButtonsCollection.DeleteByName(name);
-            SaveImmediatelyIfRequested();
-            FireButtonsChangedEvent(oldButtons);
-        }
-
-        public static void EditFavoriteButton(string oldFavoriteName, string newFavoriteName)
-        {
-            List<string> oldButtons = ButtonsCollection.ToList();
-            ButtonsCollection.EditByName(oldFavoriteName, newFavoriteName);
-            SaveImmediatelyIfRequested();
-            FireButtonsChangedEvent(oldButtons);
-        }
-
-        public static void UpdateFavoritesToolbarButtons(List<string> newFavoriteNames)
+        internal static void UpdateFavoritesToolbarButtons(List<Guid> newFavoriteIds)
         {
             StartDelayedUpdate();
-            List<string> oldButtons = ButtonsCollection.ToList();
             ButtonsCollection.Clear();
-            foreach (string favoriteName in newFavoriteNames)
+            foreach (Guid favoriteId in newFavoriteIds)
             {
-                AddButtonToInternCollection(favoriteName);
+                AddButtonToInternCollection(favoriteId);
             }
             SaveAndFinishDelayedUpdate();
-            FireButtonsChangedEvent(oldButtons);
+            FireButtonsChangedEvent();
         }
 
-        internal static void EditFavoriteButton(string oldFavoriteName, string newFavoriteName, bool showOnToolbar)
+        internal static void EditFavoriteButton(Guid oldFavoriteId, Guid newFavoriteId, bool showOnToolbar)
         {
-            bool shownOnToolbar = HasToolbarButton(oldFavoriteName);
-            if (shownOnToolbar && !showOnToolbar)
-                DeleteFavoriteButton(oldFavoriteName);
-            else if (shownOnToolbar && (oldFavoriteName != newFavoriteName))
-                EditFavoriteButton(oldFavoriteName, newFavoriteName);
-            else if (!shownOnToolbar && showOnToolbar)
-                AddFavoriteButton(newFavoriteName);
+            DeleteFavoriteButton(oldFavoriteId);
+
+            bool hasToolbarButton = HasToolbarButton(newFavoriteId);
+            if (hasToolbarButton && !showOnToolbar)
+                DeleteFavoriteButton(newFavoriteId);
+            else if (showOnToolbar)
+                AddFavoriteButton(newFavoriteId);
         }
 
-        internal static bool HasToolbarButton(string favoriteName)
+        private static void DeleteFavoriteButton(Guid favoriteId)
         {
-            return FavoritesToolbarButtons.Contains(favoriteName);
+            ButtonsCollection.DeleteByName(favoriteId.ToString());
+            SaveImmediatelyIfRequested();
+            FireButtonsChangedEvent();
         }
 
-        private static void FireButtonsChangedEvent(List<string> oldButtons)
+        internal static bool HasToolbarButton(Guid favoriteId)
         {
-          List<string> newButtons = ButtonsCollection.ToList(); 
-          var args = ConfigurationChangedEventArgs.CreateFromButtons(oldButtons, newButtons);
+            return FavoritesToolbarButtons.Contains(favoriteId);
+        }
+
+        private static void FireButtonsChangedEvent()
+        {
+          var args = ConfigurationChangedEventArgs.CreateFromButtons();
           FireConfigurationChanged(args);
         }
     }

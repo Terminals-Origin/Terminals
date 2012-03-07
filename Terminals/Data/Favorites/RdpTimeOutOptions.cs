@@ -79,5 +79,32 @@ namespace Terminals.Data
 
             return value;
         }
+
+        internal RdpTimeOutOptions Copy()
+        {
+            return new RdpTimeOutOptions
+                {
+                    IdleTimeout = this.IdleTimeout,
+                    ConnectionTimeout = this.ConnectionTimeout,
+                    OverallTimeout = this.OverallTimeout,
+                    ShutdownTimeout = this.ShutdownTimeout
+                };
+        }
+
+        internal void FromConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            this.IdleTimeout = favorite.IdleTimeout;
+            this.ConnectionTimeout = favorite.ConnectionTimeout;
+            this.OverallTimeout = favorite.OverallTimeout;
+            this.ShutdownTimeout = favorite.ShutdownTimeout;
+        }
+
+        internal void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            favorite.IdleTimeout = this.IdleTimeout;
+            favorite.ConnectionTimeout = this.ConnectionTimeout;
+            favorite.OverallTimeout = this.OverallTimeout;
+            favorite.ShutdownTimeout = this.ShutdownTimeout;
+        }
     }
 }

@@ -56,7 +56,7 @@ namespace Terminals.Updates
         private static void CheckForCodeplexRelease()
         {
             Boolean checkForUpdate = true;
-            String releaseFile = "LastUpdateCheck.txt";
+            String releaseFile = FileLocations.LastUpdateCheck;
             if (File.Exists(releaseFile))
             {
                 String text = File.ReadAllText(releaseFile).Trim();
@@ -75,7 +75,7 @@ namespace Terminals.Updates
 
             if (checkForUpdate)
             {
-                RssFeed feed = RssFeed.Read(String.Format("{0}/project/feeds/rss?ProjectRSSFeed=codeplex%3A%2F%2Frelease%2FTerminals&ProjectName=terminals", Program.Resources.GetString("TerminalsURL")));
+                RssFeed feed = RssFeed.Read("http://terminals.codeplex.com/project/feeds/rss?ProjectRSSFeed=codeplex%3A%2F%2Frelease%2FTerminals&ProjectName=terminals");
                 if (feed != null)
                 {
                     Boolean needsUpdate = false;
@@ -165,7 +165,7 @@ namespace Terminals.Updates
 
                                                 finalFolder = parent.FullName;
 
-                                                File.Copy(Settings.CONFIG_FILE_NAME, Path.Combine(finalFolder, Settings.CONFIG_FILE_NAME), true);
+                                                File.Copy(FileLocations.CONFIG_FILENAME, Path.Combine(finalFolder, FileLocations.CONFIG_FILENAME), true);
                                                 File.Copy("Terminals.log4net.config", Path.Combine(finalFolder, "Terminals.log4net.config"), true);
 
                                                 String temp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

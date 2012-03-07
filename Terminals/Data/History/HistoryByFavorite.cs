@@ -1,46 +1,49 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Terminals.History
+namespace Terminals.Data
 {
-    public class HistoryByFavorite : SerializableSortedDictionary<string, List<HistoryItem>>
+    /// <summary>
+    /// Collection of favorites history touches grouped by favorite unique identifier
+    /// </summary>
+    public class HistoryByFavorite : SerializableSortedDictionary<Guid , List<HistoryItem>>
     {
-        internal const string TODAY = "Today";
-        internal const string YESTERDAY = "Yesterday";
-        internal const string WEEK = "Less than 1 Week";
-        internal const string TWOWEEKS = "Less than 2 Weeks";
-        internal const string MONTH = "Less than 1 Month";
-        internal const string OVERONEMONTH = "Over 1 Month";
-        internal const string HALFYEAR = "Over 6 Months";
-        internal const string YEAR = "Over 1 Year";
-
-        internal SerializableDictionary<string, SortableList<HistoryItem>> GroupByDate()
+        internal SerializableDictionary<string, SortableList<IHistoryItem>> GroupByDate()
         {
-            SerializableDictionary<string, SortableList<HistoryItem>> groupedByDate = InitializeGroups();
+            SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate = InitializeGroups();
+            IFavorites favorites = Persistance.Instance.Favorites;
 
-            foreach (string name in this.Keys)  //name is the favorite name
+            foreach (Guid favoriteId in this.Keys)  // key is the favorite unique identifier
             {
-                foreach (HistoryItem item in this[name])  //each history item per favorite
+                IFavorite favorite = favorites[favoriteId];
+                foreach (IHistoryItem item in this[favoriteId])  // each history item per favorite
                 {
-                    SortableList<HistoryItem> timeIntervalItems = GetTimeIntervalItems(item.DateGroup, groupedByDate);
-                    if (!timeIntervalItems.Contains(item))
-                        timeIntervalItems.Add(item);
+                    item.Favorite = favorite; // assign navigation property value
+                    AddItemToGroup(groupedByDate, item);
                 }
-
             }
             return groupedByDate;
         }
 
-        private SerializableDictionary<string, SortableList<HistoryItem>> InitializeGroups()
+        private void AddItemToGroup(SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate, IHistoryItem item)
         {
-            var groupedByDate = new SerializableDictionary<string, SortableList<HistoryItem>>();
-            groupedByDate.Add(TODAY, new SortableList<HistoryItem>());
-            groupedByDate.Add(YESTERDAY, new SortableList<HistoryItem>());
-            groupedByDate.Add(WEEK, new SortableList<HistoryItem>());
-            groupedByDate.Add(TWOWEEKS, new SortableList<HistoryItem>());
-            groupedByDate.Add(MONTH, new SortableList<HistoryItem>());
-            groupedByDate.Add(OVERONEMONTH, new SortableList<HistoryItem>());
-            groupedByDate.Add(HALFYEAR, new SortableList<HistoryItem>());
-            groupedByDate.Add(YEAR, new SortableList<HistoryItem>());
+            string intervalName = HistoryIntervals.GetDateIntervalName(item.Date);
+            SortableList<IHistoryItem> timeIntervalItems = GetTimeIntervalItems(intervalName, groupedByDate);
+            if (!timeIntervalItems.Contains(item)) // add each item only once
+                timeIntervalItems.Add(item);
+        }
+
+        private SerializableDictionary<string, SortableList<IHistoryItem>> InitializeGroups()
+        {
+            var groupedByDate = new SerializableDictionary<string, SortableList<IHistoryItem>>();
+            groupedByDate.Add(HistoryIntervals.TODAY, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.YESTERDAY, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.WEEK, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.TWOWEEKS, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.MONTH, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.OVERONEMONTH, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.HALFYEAR, new SortableList<IHistoryItem>());
+            groupedByDate.Add(HistoryIntervals.YEAR, new SortableList<IHistoryItem>());
             return groupedByDate;
         }
 
@@ -48,12 +51,12 @@ namespace Terminals.History
         /// this will contain each name in each bin of grouped by time.
         /// Returns not null list of items.
         /// </summary>
-        private SortableList<HistoryItem> GetTimeIntervalItems(string timeKey,
-            SerializableDictionary<string, SortableList<HistoryItem>> groupedByDate)
+        private SortableList<IHistoryItem> GetTimeIntervalItems(string timeKey,
+            SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate)
         {
             if (!groupedByDate.ContainsKey(timeKey))
             {
-                var timeIntervalItems = new SortableList<HistoryItem>();
+                var timeIntervalItems = new SortableList<IHistoryItem>();
                 groupedByDate.Add(timeKey, timeIntervalItems);
             }
 

@@ -1,67 +1,31 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
-using System.Windows.Forms;
-using Terminals.Data;
+using Terminals.Configuration;
 using SysConfig = System.Configuration;
 using System.IO;
 using System.Linq;
 using Unified;
 
-namespace Terminals.Configuration
+namespace Terminals.Data
 {
-    internal sealed class StoredCredentials
+    internal sealed class StoredCredentials: ICredentials
     {
-        /// <summary>
-        /// Gets default name of the credentials file.
-        /// </summary>
-        private const string CONFIG_FILE = "Credentials.xml";
-
-        private List<CredentialSet> cache;
-        /// <summary>
-        /// Gets the not null collection containing stored credentials
-        /// </summary>
-        internal List<CredentialSet> Items
-        {
-            get
-            {
-                // prevent manipulation directly with this list
-                return cache.ToList();
-            }
-        }
+        private List<ICredentialSet> cache;
 
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Credentials");
         private DataFileWatcher fileWatcher;
-        internal event EventHandler CredentialsChanged;
-
-        #region Thread safe singleton
-
-        /// <summary>
-        /// Gets the singleton instance with cached credentials
-        /// </summary>
-        public static StoredCredentials Instance
-        {
-            get
-            {
-                return Nested.instance;
-            }
-        }
-
-        private static class Nested
-        {
-            internal static readonly StoredCredentials instance = new StoredCredentials();
-        }
-
-        #endregion
 
         /// <summary>
         /// Prevents creating from other class
         /// </summary>
-        private StoredCredentials()
+        internal StoredCredentials()
         {
-            this.cache = new List<CredentialSet>();
-            string configFileName = GetEnsuredCredentialsFileLocation();
+            this.cache = new List<ICredentialSet>();
+            string configFileName = Settings.FileLocations.Credentials;
             InitializeFileWatch();
 
             if (File.Exists(configFileName))
@@ -72,15 +36,14 @@ namespace Terminals.Configuration
 
         private void InitializeFileWatch()
         {
-            string fileName = Path.Combine(Program.Info.Location, CONFIG_FILE);
-            fileWatcher = new DataFileWatcher(fileName);
+            fileWatcher = new DataFileWatcher(Settings.FileLocations.Credentials);
             fileWatcher.FileChanged += new EventHandler(CredentialsFileChanged);
             fileWatcher.StartObservation();
         }
 
         private void CredentialsFileChanged(object sender, EventArgs e)
         {
-            LoadStoredCredentials(GetEnsuredCredentialsFileLocation());
+            LoadStoredCredentials(Settings.FileLocations.Credentials);
             if (CredentialsChanged != null)
                 CredentialsChanged(this, new EventArgs());
         }
@@ -92,7 +55,7 @@ namespace Terminals.Configuration
 
         private void LoadStoredCredentials(string configFileName)
         {
-            List<CredentialSet> loaded = LoadFile(configFileName);
+            List<ICredentialSet> loaded = LoadFile(configFileName);
             if (loaded != null)
             {
                 this.cache.Clear();
@@ -100,103 +63,37 @@ namespace Terminals.Configuration
             }
         }
 
-        private List<CredentialSet> LoadFile(string configFileName)
+        private List<ICredentialSet> LoadFile(string configFileName)
         {
             try
             {
                 fileLock.WaitOne();
                 object loadedObj = Serialize.DeserializeXMLFromDisk(configFileName, typeof(List<CredentialSet>));
-                return loadedObj as List<CredentialSet>;
+                return (loadedObj as List<CredentialSet>)
+                    .Cast<ICredentialSet>().ToList();
             }
             catch (Exception exception)
             {
                 string errorMessage = String.Format("Load credentials from {0} failed.", configFileName);
                 Logging.Log.Error(errorMessage, exception);
-                return new List<CredentialSet>();
+                return new List<ICredentialSet>();
             }
             finally
             {
                 fileLock.ReleaseMutex();
+                Debug.WriteLine("Credentials file Loaded.");
             }
         }
 
-        internal void Save()
+        #region ICredentials
+
+        public event EventHandler CredentialsChanged;
+
+        public ICredentialSet this[Guid id]
         {
-            try
+            get
             {
-                fileLock.WaitOne();
-                fileWatcher.StopObservation();
-                string fileName = GetEnsuredCredentialsFileLocation();
-                Serialize.SerializeXMLToDisk(cache, fileName);
-            }
-            catch (Exception exception)
-            {
-                string errorMessage = string.Format("Save credentials to {0} failed.", 
-                    GetEnsuredCredentialsFileLocation());
-                Logging.Log.Error(errorMessage, exception);
-            }
-            finally
-            {
-                fileWatcher.StartObservation();
-                fileLock.ReleaseMutex();
-            }
-        }
-
-        private static string GetEnsuredCredentialsFileLocation()
-        {
-            // TODO not configurable location of credentials file (Jiri Pokorny, 08.07.2011)
-            string fileLocation = Settings.SavedCredentialsLocation;
-            if (string.IsNullOrEmpty(fileLocation))
-            {
-                //UpgradeFileLocationFromPreviousVersion();
-                fileLocation = CONFIG_FILE; // GetFullFilePath();
-                Settings.SavedCredentialsLocation = fileLocation;
-            }
-
-            return fileLocation;
-        }
-
-        private static string GetFullFilePath()
-        {
-            string directory = GetEnsuredConfigDirectory();
-            return directory + CONFIG_FILE;
-        }
-
-        private static string GetEnsuredConfigDirectory()
-        {
-            string directory = Program.Info.Location;
-
-            try
-            {
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-            }
-            catch
-            {
-                Logging.Log.Error("Couldn't create directory for credentials configuration file.");
-            }
-            return directory + "\\";
-        }
-
-        /// <summary>
-        /// Moves credentials file from application directory to the user directory
-        /// </summary>
-        private static void UpgradeFileLocationFromPreviousVersion()
-        {
-            try
-            {
-                string fromPath = Application.StartupPath + "\\" + CONFIG_FILE;
-                string toPath = GetFullFilePath();
-                if (File.Exists(fromPath) && !File.Exists(toPath)) // dont overwrite file, if it is already there
-                {
-                    File.Move(fromPath, toPath);
-                }
-            }
-            catch(Exception exception)
-            {
-               Logging.Log.Error("Couldnt move credentials file from application directory to the user directory.", exception);
+                return this.cache.FirstOrDefault(candidate => candidate.Id.Equals(id));
             }
         }
 
@@ -205,36 +102,79 @@ namespace Terminals.Configuration
         /// This method isnt case sensitive. If no item matches, returns null.
         /// </summary>
         /// <param name="name">name of an item to search</param>
-        internal CredentialSet GetByName(string name)
+        public ICredentialSet this[string name]
         {
-            if (string.IsNullOrEmpty(name))
-                return null;
+            get
+            {
+                if (string.IsNullOrEmpty(name))
+                    return null;
 
-            name = name.ToLower();
-            return this.Items.FirstOrDefault(candidate => candidate.Name.ToLower() == name);
+                return this.cache.FirstOrDefault(candidate => candidate.Name
+                   .Equals(name, StringComparison.CurrentCultureIgnoreCase));
+            }
         }
 
-        internal void Remove(CredentialSet toRemove)
-        {
-            cache.Remove(toRemove);
-        }
-
-        internal void Add(CredentialSet toAdd)
+        public void Add(ICredentialSet toAdd)
         {
             if (String.IsNullOrEmpty(toAdd.Name))
                 return;
 
-            cache.Add(toAdd);
+            this.cache.Add(toAdd);
         }
 
-        internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
+        public void Remove(ICredentialSet toRemove)
         {
-          foreach (CredentialSet credentials in cache)
-          {
-            credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
-          }
-
-          Save();
+            cache.Remove(toRemove);
         }
+
+        public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
+        {
+            foreach (ICredentialSet credentials in cache)
+            {
+                credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+            }
+
+            Save();
+        }
+
+        public void Save()
+        {
+            try
+            {
+                this.fileLock.WaitOne();
+                this.fileWatcher.StopObservation();
+                string fileName = Settings.FileLocations.Credentials;
+                List<CredentialSet> fileContent = this.cache.Cast<CredentialSet>().ToList();
+                Serialize.SerializeXMLToDisk(fileContent, fileName);
+                Debug.WriteLine("Credentials file saved.");
+            }
+            catch (Exception exception)
+            {
+                string errorMessage = string.Format("Save credentials to {0} failed.",
+                    Settings.FileLocations.Credentials);
+                Logging.Log.Error(errorMessage, exception);
+            }
+            finally
+            {
+                this.fileWatcher.StartObservation();
+                this.fileLock.ReleaseMutex();
+            }
+        }
+
+        #endregion
+
+        #region IEnumerable members
+
+        public IEnumerator<ICredentialSet> GetEnumerator()
+        {
+            return this.cache.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        #endregion
     }
 }

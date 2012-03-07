@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Windows.Forms;
 using FalafelSoftware.TransPort;
 using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Credentials;
 using Terminals.Data;
 using Terminals.Forms;
+using Terminals.Forms.Controls;
 using Terminals.Network.Servers;
 
 namespace Terminals
@@ -18,18 +21,18 @@ namespace Terminals
         private TerminalServerManager _terminalServerManager = new TerminalServerManager();
         private Dictionary<string, RASENTRY> _dialupList = new Dictionary<string, RASENTRY>();
         private String _currentToolBarFileName;
-        private String _oldName;
-        private List<String> oldTags = new List<string>();
+        private Guid editedId;
+        private string oldName;
 
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
 
-        private Groups PersistedGroups
+        private static IGroups PersistedGroups
         {
             get { return Persistance.Instance.Groups; }
         }
 
-        private Favorites PersistedFavorites
+        private static IFavorites PersistedFavorites
         {
             get { return Persistance.Instance.Favorites; }
         }
@@ -43,7 +46,7 @@ namespace Terminals
             this.Init(null, serverName);
         }
 
-        public NewTerminalForm(FavoriteConfigurationElement favorite)
+        public NewTerminalForm(IFavorite favorite)
             : this()
         {
             this.InitializeComponent();
@@ -61,14 +64,14 @@ namespace Terminals
         #region Properties
 
         public new TerminalFormDialogResult DialogResult { get; private set; }
-        internal FavoriteConfigurationElement Favorite { get; private set; }
+        internal IFavorite Favorite { get; private set; }
         internal bool ShowOnToolbar { get; private set; }
         internal List<string> RedirectedDrives { get; set; }
         internal bool RedirectDevices { get; set; }
 
         #endregion
 
-        private void Init(FavoriteConfigurationElement favorite, String serverName)
+        private void Init(IFavorite favorite, String serverName)
         {
             this.LoadMRUs();
             this.SetOkButtonState();
@@ -79,12 +82,13 @@ namespace Terminals
 
             if (favorite == null)
             {
-                this.FillCredentials(null);
+                this.FillCredentialsCombobox(Guid.Empty);
 
-                FavoriteConfigurationElement defaultFav = PersistedFavorites.GetDefaultFavorite();
-                if (defaultFav != null)
+                var defaultSavedFavorite = Settings.GetDefaultFavorite();
+                if (defaultSavedFavorite != null)
                 {
-                    this.FillControls(defaultFav);
+                    var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite);
+                    this.FillControls(defaultFavorite);
                 }
                 else
                 {
@@ -94,7 +98,7 @@ namespace Terminals
                     this.ProtocolComboBox.SelectedIndex = 0;
                 }
 
-                String server = serverName;
+                String server;
                 Int32 port;
                 GetServerAndPort(serverName, out server, out port);
                 this.cmbServers.Text = server;
@@ -102,50 +106,49 @@ namespace Terminals
             }
             else
             {
-                this._oldName = favorite.Name;
-                this.oldTags = favorite.TagList;
+                this.editedId = favorite.Id;
+                this.oldName = favorite.Name;
                 this.Text = "Edit Connection";
                 this.FillControls(favorite);
             }
         }
 
-        private void FillCredentials(String credentialName)
+        private void FillCredentialsCombobox(Guid credential)
         {
             this.CredentialDropdown.Items.Clear();
-            List<CredentialSet> creds = StoredCredentials.Instance.Items;
             this.CredentialDropdown.Items.Add("(custom)");
+            this.FillCredentialsComboboxWithStoredCredentials();
+            this.CredentialDropdown.SelectedItem = Persistance.Instance.Credentials[credential];
+        }
 
-            Int32 selIndex = 0;
-            if (creds != null)
+        private void FillCredentialsComboboxWithStoredCredentials()
+        {
+            IEnumerable<ICredentialSet> credentials = Persistance.Instance.Credentials;
+            if (credentials != null)
             {
-                foreach (CredentialSet item in creds)
+                foreach (ICredentialSet item in credentials)
                 {
-                    Int32 index = this.CredentialDropdown.Items.Add(item);
-                    if (!String.IsNullOrEmpty(credentialName) && credentialName == item.Name)
-                        selIndex = index;
+                    this.CredentialDropdown.Items.Add(item);
                 }
             }
-
-            this.CredentialDropdown.SelectedIndex = selIndex;
         }
 
         private void NewTerminalForm_Load(Object sender, EventArgs e)
         {
             this.SuspendLayout();
+            this.LoadCustomControlsState();
+            BindGroupsToListView(this.AllTagsListView, PersistedGroups);
+            this.ResumeLayout(true);
+        }
+
+        private void LoadCustomControlsState()
+        {
             this._terminalServerManager.Dock = DockStyle.Fill;
             this._terminalServerManager.Location = new Point(0, 0);
             this._terminalServerManager.Name = "terminalServerManager1";
             this._terminalServerManager.Size = new Size(748, 309);
             this._terminalServerManager.TabIndex = 0;
-            this.tabPage10.Controls.Add(_terminalServerManager);
-
-            foreach (String tag in this.PersistedGroups.Tags)
-            {
-                ListViewItem lvi = new ListViewItem(tag);
-                this.AllTagsListView.Items.Add(lvi);
-            }
-
-            this.ResumeLayout(true);
+            this.tabPage10.Controls.Add(this._terminalServerManager);
         }
 
         private void LoadDialupConnections()
@@ -169,7 +172,8 @@ namespace Terminals
             this.cmbServers.Items.AddRange(Settings.MRUServerNames);
             this.cmbDomains.Items.AddRange(Settings.MRUDomainNames);
             this.cmbUsers.Items.AddRange(Settings.MRUUserNames);
-            this.txtTag.AutoCompleteCustomSource.AddRange(this.PersistedGroups.Tags);
+            string[] groupNames = PersistedGroups.Select(group => group.Name).ToArray();
+            this.txtTag.AutoCompleteCustomSource.AddRange(groupNames);
         }
 
         private void SaveMRUs()
@@ -179,37 +183,40 @@ namespace Terminals
             Settings.AddUserMRUItem(cmbUsers.Text);
         }
 
-        private void FillControls(FavoriteConfigurationElement favorite)
+        private void FillControls(IFavorite favorite)
         {
+            FillGeneralPropertiesControls(favorite);
+            FillDescriptionPropertiesControls(favorite);
+            FillSecurityControls(favorite);
+            this.FillCredentialsCombobox(favorite.Security.Credential);
+            FillDisplayControls(favorite);
+            FillExecuteBeforeControls(favorite);
             this.consolePreferences.FillControls(favorite);
+            FillVmrcControls(favorite);
+            FillVNCControls(favorite);
+            FillIcaControls(favorite);
+            FillSshControls(favorite);
+            FillRdpOptions(favorite);
 
-            this.NewWindowCheckbox.Checked = favorite.NewWindow;
+            ReloadTagsListViewItems(favorite);
+        }
 
-            this.ProtocolComboBox.SelectedItem = favorite.Protocol;
-            this.VMRCAdminModeCheckbox.Checked = favorite.VMRCAdministratorMode;
+        private void FillSecurityControls(IFavorite favorite)
+        {
+            this.cmbDomains.Text = favorite.Security.Domain;
+            this.cmbUsers.Text = favorite.Security.UserName;
+            this.favoritePassword = favorite.Security.Password;
 
-            this.vncAutoScaleCheckbox.Checked = favorite.VncAutoScale;
-            this.vncDisplayNumberInput.Value = favorite.VncDisplayNumber;
-            this.VncViewOnlyCheckbox.Checked = favorite.VncViewOnly;
-
-            this.VMRCReducedColorsCheckbox.Checked = favorite.VMRCReducedColorsMode;
-            this.txtName.Text = favorite.Name;
-            this.cmbServers.Text = favorite.ServerName;
-            this.cmbDomains.Text = favorite.DomainName;
-            this.cmbUsers.Text = favorite.UserName;
-            favoritePassword = favorite.Password;
-
-            if (string.IsNullOrEmpty(favoritePassword) && !string.IsNullOrEmpty(favorite.EncryptedPassword))
+            if (string.IsNullOrEmpty(this.favoritePassword) && !string.IsNullOrEmpty(favorite.Security.EncryptedPassword))
             {
-                System.Windows.Forms.MessageBox.Show("There was an issue with decrypting your password.\n\nPlease provide a new password and save the favorite.");
+                MessageBox.Show("There was an issue with decrypting your password.\n\nPlease provide a new password and save the favorite.");
                 this.txtPassword.Text = "";
-                favoritePassword = "";
+                this.favoritePassword = String.Empty;
                 this.txtPassword.Focus();
-                favorite.Password = "";
-                
+                favorite.Security.Password = String.Empty;
             }
 
-            if (!string.IsNullOrEmpty(favoritePassword))
+            if (!string.IsNullOrEmpty(this.favoritePassword))
             {
                 this.txtPassword.Text = HIDDEN_PASSWORD;
                 this.chkSavePassword.Checked = true;
@@ -219,21 +226,151 @@ namespace Terminals
                 this.txtPassword.Text = String.Empty;
                 this.chkSavePassword.Checked = false;
             }
+        }
 
-            this.cmbResolution.SelectedIndex = (Int32)favorite.DesktopSize;
-            this.cmbColors.SelectedIndex = (Int32)favorite.Colors;
-            this.chkConnectToConsole.Checked = favorite.ConnectToConsole;
+        private void FillDescriptionPropertiesControls(IFavorite favorite)
+        {
+            this.NewWindowCheckbox.Checked = favorite.NewWindow;
+            this.txtDesktopShare.Text = favorite.DesktopShare;
+            this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Id);
+            if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
+            {
+                this.pictureBox2.Load(favorite.ToolBarIcon);
+                this._currentToolBarFileName = favorite.ToolBarIcon;
+            }
 
-            this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Name);
-            this.RedirectedDrives = favorite.RedirectedDrives;
-            this.chkSerialPorts.Checked = favorite.RedirectPorts;
-            this.chkPrinters.Checked = favorite.RedirectPrinters;
-            this.chkRedirectClipboard.Checked = favorite.RedirectClipboard;
-            this.RedirectDevices = favorite.RedirectDevices;
-            this.chkRedirectSmartcards.Checked = favorite.RedirectSmartCards;
-            this.cmbSounds.SelectedIndex = (Int32)favorite.Sounds;
+            this.NotesTextbox.Text = favorite.Notes;
+        }
 
-            switch (favorite.TsgwUsageMethod)
+        private void FillGeneralPropertiesControls(IFavorite favorite)
+        {
+            this.txtName.Text = favorite.Name;
+            this.cmbServers.Text = favorite.ServerName;
+            this.ProtocolComboBox.SelectedItem = favorite.Protocol;
+            this.txtPort.Text = favorite.Port.ToString();
+            this.httpUrlTextBox.Text = WebOptions.ExtractAbsoluteUrl(favorite);
+        }
+
+        private void FillExecuteBeforeControls(IFavorite favorite)
+        {
+            this.chkExecuteBeforeConnect.Checked = favorite.ExecuteBeforeConnect.Execute;
+            this.txtCommand.Text = favorite.ExecuteBeforeConnect.Command;
+            this.txtArguments.Text = favorite.ExecuteBeforeConnect.CommandArguments;
+            this.txtInitialDirectory.Text = favorite.ExecuteBeforeConnect.InitialDirectory;
+            this.chkWaitForExit.Checked = favorite.ExecuteBeforeConnect.WaitForExit;
+        }
+
+        private void FillRdpOptions(IFavorite favorite)
+        {
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions == null)
+                return;
+
+            FillRdpSecurityControls(rdpOptions);
+            FillRdpUserInterfaceControls(rdpOptions);
+            FillRdpDisplayControls(rdpOptions);
+            FillRdpRedirectControls(rdpOptions);
+            FillTsGatewayControls(rdpOptions);
+            FillRdpTimeOutControls(rdpOptions);
+        }
+
+        private void FillRdpDisplayControls(RdpOptions rdpOptions)
+        {
+            this.chkConnectToConsole.Checked = rdpOptions.ConnectToConsole;
+            this.chkDisableWallpaper.Checked = rdpOptions.UserInterface.DisableWallPaper;
+            this.chkDisableCursorBlinking.Checked = rdpOptions.UserInterface.DisableCursorBlinking;
+            this.chkDisableCursorShadow.Checked = rdpOptions.UserInterface.DisableCursorShadow;
+            this.chkDisableFullWindowDrag.Checked = rdpOptions.UserInterface.DisableFullWindowDrag;
+            this.chkDisableMenuAnimations.Checked = rdpOptions.UserInterface.DisableMenuAnimations;
+            this.chkDisableThemes.Checked = rdpOptions.UserInterface.DisableTheming;
+        }
+
+        private void FillRdpSecurityControls(RdpOptions rdpOptions)
+        {
+            this.EnableTLSAuthenticationCheckbox.Checked = rdpOptions.Security.EnableTLSAuthentication;
+            this.EnableNLAAuthenticationCheckbox.Checked = rdpOptions.Security.EnableNLAAuthentication;
+            this.EnableEncryptionCheckbox.Checked = rdpOptions.Security.EnableEncryption;
+            this.SecuritySettingsEnabledCheckbox.Checked = rdpOptions.Security.Enabled;
+            this.SecurityWorkingFolderTextBox.Text = rdpOptions.Security.WorkingFolder;
+            this.SecuriytStartProgramTextbox.Text = rdpOptions.Security.StartProgram;
+            this.SecurityStartFullScreenCheckbox.Checked = rdpOptions.FullScreen;
+        }
+
+        private void FillRdpRedirectControls(RdpOptions rdpOptions)
+        {
+            this.RedirectedDrives = rdpOptions.Redirect.Drives;
+            this.chkSerialPorts.Checked = rdpOptions.Redirect.Ports;
+            this.chkPrinters.Checked = rdpOptions.Redirect.Printers;
+            this.chkRedirectClipboard.Checked = rdpOptions.Redirect.Clipboard;
+            this.RedirectDevices = rdpOptions.Redirect.Devices;
+            this.chkRedirectSmartcards.Checked = rdpOptions.Redirect.SmartCards;
+            this.cmbSounds.SelectedIndex = (Int32)rdpOptions.Redirect.Sounds;
+        }
+
+        private void FillSshControls(IFavorite favorite)
+        {
+            var sshOptions = favorite.ProtocolProperties as SshOptions;
+            if (sshOptions == null)
+                return;
+
+            this.SSHPreferences.AuthMethod = sshOptions.AuthMethod;
+            this.SSHPreferences.KeyTag = sshOptions.CertificateKey;
+            this.SSHPreferences.SSH1 = sshOptions.SSH1;
+        }
+
+        private void FillDisplayControls(IFavorite favorite)
+        {
+            this.cmbResolution.SelectedIndex = (Int32)favorite.Display.DesktopSize;
+            this.cmbColors.SelectedIndex = (Int32)favorite.Display.Colors;
+            this.widthUpDown.Value = favorite.Display.Width;
+            this.heightUpDown.Value = favorite.Display.Height;
+        }
+
+        private void FillIcaControls(IFavorite favorite)
+        {
+            var icaOptions = favorite.ProtocolProperties as ICAOptions;
+            if (icaOptions == null)
+                return;
+
+            this.ICAClientINI.Text = icaOptions.ClientINI;
+            this.ICAServerINI.Text = icaOptions.ServerINI;
+            this.ICAEncryptionLevelCombobox.Text = icaOptions.EncryptionLevel;
+            this.ICAEnableEncryptionCheckbox.Checked = icaOptions.EnableEncryption;
+            this.ICAEncryptionLevelCombobox.Enabled = icaOptions.EnableEncryption;
+
+            this.ICAApplicationNameTextBox.Text = icaOptions.ApplicationName;
+            this.ICAApplicationPath.Text = icaOptions.ApplicationPath;
+            this.ICAWorkingFolder.Text = icaOptions.ApplicationWorkingFolder;
+        }
+
+        private void FillRdpUserInterfaceControls(RdpOptions rdpOptions)
+        {
+            var userInterface = rdpOptions.UserInterface;
+            this.GrabFocusOnConnectCheckbox.Checked = rdpOptions.GrabFocusOnConnect;
+            this.DisableWindowsKeyCheckbox.Checked = userInterface.DisableWindowsKey;
+            this.DetectDoubleClicksCheckbox.Checked = userInterface.DoubleClickDetect;
+            this.DisplayConnectionBarCheckbox.Checked = userInterface.DisplayConnectionBar;
+            this.DisableControlAltDeleteCheckbox.Checked = userInterface.DisableControlAltDelete;
+            this.AcceleratorPassthroughCheckBox.Checked = userInterface.AcceleratorPassthrough;
+            this.EnableCompressionCheckbox.Checked = userInterface.EnableCompression;
+            this.EnableBitmapPersistanceCheckbox.Checked = userInterface.BitmapPeristence;
+            this.AllowBackgroundInputCheckBox.Checked = userInterface.AllowBackgroundInput;
+            this.AllowFontSmoothingCheckbox.Checked = userInterface.EnableFontSmoothing;
+            this.AllowDesktopCompositionCheckbox.Checked = userInterface.EnableDesktopComposition;
+        }
+
+        private void FillRdpTimeOutControls(RdpOptions rdpOptions)
+        {
+            this.ShutdownTimeoutTextBox.Text = rdpOptions.TimeOuts.ShutdownTimeout.ToString();
+            this.OverallTimeoutTextbox.Text = rdpOptions.TimeOuts.OverallTimeout.ToString();
+            this.SingleTimeOutTextbox.Text = rdpOptions.TimeOuts.ConnectionTimeout.ToString();
+            this.IdleTimeoutMinutesTextBox.Text = rdpOptions.TimeOuts.IdleTimeout.ToString();
+        }
+
+        private void FillTsGatewayControls(RdpOptions rdpOptions)
+        {
+            var tsGateway = rdpOptions.TsGateway;
+            switch (tsGateway.UsageMethod)
             {
                 case 0:
                     this.radTSGWdisable.Checked = true;
@@ -253,102 +390,48 @@ namespace Terminals
                     break;
             }
 
-            this.txtTSGWServer.Text = favorite.TsgwHostname;
-            this.txtTSGWDomain.Text = favorite.TsgwDomain;
-            this.txtTSGWUserName.Text = favorite.TsgwUsername;
-            this.txtTSGWPassword.Text = favorite.TsgwPassword;
-            this.chkTSGWlogin.Checked = favorite.TsgwSeparateLogin;
-            this.cmbTSGWLogonMethod.SelectedIndex = favorite.TsgwCredsSource;
-
-            this.httpUrlTextBox.Text = favorite.Url;
-
-            this.txtPort.Text = favorite.Port.ToString();
-            this.txtDesktopShare.Text = favorite.DesktopShare;
-            this.chkExecuteBeforeConnect.Checked = favorite.ExecuteBeforeConnect;
-            this.txtCommand.Text = favorite.ExecuteBeforeConnectCommand;
-            this.txtArguments.Text = favorite.ExecuteBeforeConnectArgs;
-            this.txtInitialDirectory.Text = favorite.ExecuteBeforeConnectInitialDirectory;
-            this.chkWaitForExit.Checked = favorite.ExecuteBeforeConnectWaitForExit;
-
-            ReloadTagsListViewItems(favorite);
-
-            if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
-            {
-                this.pictureBox2.Load(favorite.ToolBarIcon);
-                this._currentToolBarFileName = favorite.ToolBarIcon;
-            }
-
-            //extended settings
-            this.ShutdownTimeoutTextBox.Text = favorite.ShutdownTimeout.ToString();
-            this.OverallTimeoutTextbox.Text = favorite.OverallTimeout.ToString();
-            this.SingleTimeOutTextbox.Text = favorite.ConnectionTimeout.ToString();
-            this.IdleTimeoutMinutesTextBox.Text = favorite.IdleTimeout.ToString();
-            this.SecurityWorkingFolderTextBox.Text = favorite.SecurityWorkingFolder;
-            this.SecuriytStartProgramTextbox.Text = favorite.SecurityStartProgram;
-            this.SecurityStartFullScreenCheckbox.Checked = favorite.SecurityFullScreen;
-            this.SecuritySettingsEnabledCheckbox.Checked = favorite.EnableSecuritySettings;
-            this.GrabFocusOnConnectCheckbox.Checked = favorite.GrabFocusOnConnect;
-            this.EnableEncryptionCheckbox.Checked = favorite.EnableEncryption;
-            this.DisableWindowsKeyCheckbox.Checked = favorite.DisableWindowsKey;
-            this.DetectDoubleClicksCheckbox.Checked = favorite.DoubleClickDetect;
-            this.DisplayConnectionBarCheckbox.Checked = favorite.DisplayConnectionBar;
-            this.DisableControlAltDeleteCheckbox.Checked = favorite.DisableControlAltDelete;
-            this.AcceleratorPassthroughCheckBox.Checked = favorite.AcceleratorPassthrough;
-            this.EnableCompressionCheckbox.Checked = favorite.EnableCompression;
-            this.EnableBitmapPersistanceCheckbox.Checked = favorite.BitmapPeristence;
-            this.EnableTLSAuthenticationCheckbox.Checked = favorite.EnableTLSAuthentication;
-            this.EnableNLAAuthenticationCheckbox.Checked = favorite.EnableNLAAuthentication;
-            this.AllowBackgroundInputCheckBox.Checked = favorite.AllowBackgroundInput;
-
-            this.chkDisableCursorShadow.Checked = false;
-            this.chkDisableCursorBlinking.Checked = false;
-            this.chkDisableFullWindowDrag.Checked = false;
-            this.chkDisableMenuAnimations.Checked = false;
-            this.chkDisableThemes.Checked = false;
-            this.chkDisableWallpaper.Checked = false;
-
-            if (favorite.PerformanceFlags > 0)
-            {
-                this.chkDisableCursorShadow.Checked = favorite.DisableCursorShadow;
-                this.chkDisableCursorBlinking.Checked = favorite.DisableCursorBlinking;
-                this.chkDisableFullWindowDrag.Checked = favorite.DisableFullWindowDrag;
-                this.chkDisableMenuAnimations.Checked = favorite.DisableMenuAnimations;
-                this.chkDisableThemes.Checked = favorite.DisableTheming;
-                this.chkDisableWallpaper.Checked = favorite.DisableWallPaper;
-                this.AllowFontSmoothingCheckbox.Checked = favorite.EnableFontSmoothing;
-                this.AllowDesktopCompositionCheckbox.Checked = favorite.EnableDesktopComposition;
-            }
-
-            this.widthUpDown.Value = favorite.DesktopSizeWidth;
-            this.heightUpDown.Value = favorite.DesktopSizeHeight;
-
-            this.ICAClientINI.Text = favorite.IcaClientINI;
-            this.ICAServerINI.Text = favorite.IcaServerINI;
-            this.ICAEncryptionLevelCombobox.Text = favorite.IcaEncryptionLevel;
-            this.ICAEnableEncryptionCheckbox.Checked = favorite.IcaEnableEncryption;
-            this.ICAEncryptionLevelCombobox.Enabled = ICAEnableEncryptionCheckbox.Checked;
-
-            this.ICAApplicationNameTextBox.Text = favorite.ICAApplicationName;
-            this.ICAApplicationPath.Text = favorite.ICAApplicationPath;
-            this.ICAWorkingFolder.Text = favorite.ICAApplicationWorkingFolder;
-
-
-            this.NotesTextbox.Text = favorite.Notes;
-
-            this.SSHPreferences.AuthMethod = favorite.AuthMethod;
-            this.SSHPreferences.KeyTag = favorite.KeyTag;
-            this.SSHPreferences.SSH1 = favorite.SSH1;
-
-            this.FillCredentials(favorite.Credential);
+            this.txtTSGWServer.Text = tsGateway.HostName;
+            this.txtTSGWDomain.Text = tsGateway.Security.Domain;
+            this.txtTSGWUserName.Text = tsGateway.Security.UserName;
+            this.txtTSGWPassword.Text = tsGateway.Security.Password;
+            this.chkTSGWlogin.Checked = tsGateway.SeparateLogin;
+            this.cmbTSGWLogonMethod.SelectedIndex = tsGateway.CredentialSource;
         }
 
-        private void ReloadTagsListViewItems(FavoriteConfigurationElement favorite)
+        private void FillVmrcControls(IFavorite favorite)
         {
-            List<string> tagsArray = favorite.TagList;
+            VMRCOptions vncOptions = favorite.ProtocolProperties as VMRCOptions;
+            if (vncOptions == null)
+                return;
+            this.VMRCAdminModeCheckbox.Checked = vncOptions.AdministratorMode;
+            this.VMRCReducedColorsCheckbox.Checked = vncOptions.ReducedColorsMode;
+        }
+
+        private void FillVNCControls(IFavorite favorite)
+        {
+            VncOptions vncOptions = favorite.ProtocolProperties as VncOptions;
+            if (vncOptions == null)
+                return;
+            this.vncAutoScaleCheckbox.Checked = vncOptions.AutoScale;
+            this.vncDisplayNumberInput.Value = vncOptions.DisplayNumber;
+            this.VncViewOnlyCheckbox.Checked = vncOptions.ViewOnly;
+        }
+
+        private void ReloadTagsListViewItems(IFavorite favorite)
+        {
             this.lvConnectionTags.Items.Clear();
-            foreach (String tag in tagsArray)
+            BindGroupsToListView(this.lvConnectionTags, favorite.Groups);
+        }
+
+        private static void BindGroupsToListView(ListView listViewToFill, IEnumerable<IGroup> groups)
+        {
+            foreach (IGroup group in groups)
             {
-                this.lvConnectionTags.Items.Add(tag, tag, -1);
+                if (group.Name != Settings.UNTAGGED_NODENAME)
+                {
+                    var groupItem = new GroupListViewItem(group);
+                    listViewToFill.Items.Add(groupItem);
+                }
             }
         }
 
@@ -359,171 +442,24 @@ namespace Terminals
                 if (!this.IsServerNameValid() || !this.IsPortValid())
                     return false;
 
-                if (this.Favorite == null)
-                    this.Favorite = new FavoriteConfigurationElement();
+                ResolveFavortie();
 
+                FillGeneralProrperties();
+                FillDescriptionProperties();
+                FillFavoriteSecurity();
+                FillFavoriteDisplayOptions();
+                FillFavoriteExecuteBeforeOptions();
                 this.consolePreferences.FillFavorite(this.Favorite);
-
-                this.Favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
-
-                this.Favorite.VMRCAdministratorMode = this.VMRCAdminModeCheckbox.Checked;
-                this.Favorite.VMRCReducedColorsMode = this.VMRCReducedColorsCheckbox.Checked;
-
-                this.Favorite.VncAutoScale = this.vncAutoScaleCheckbox.Checked;
-                this.Favorite.VncDisplayNumber = (Int32)this.vncDisplayNumberInput.Value;
-                this.Favorite.VncViewOnly = this.VncViewOnlyCheckbox.Checked;
-
-                this.Favorite.NewWindow = this.NewWindowCheckbox.Checked;
-
-                this.Favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
-                this.Favorite.Port = Int32.Parse(this.txtPort.Text);
-
-                if (!defaultFav)
-                    this.Favorite.ServerName = this.cmbServers.Text;
-
-                CredentialSet set = (this.CredentialDropdown.SelectedItem as CredentialSet);
-                this.Favorite.Credential = (set == null ? String.Empty : set.Name);
-
-                this.Favorite.DomainName = this.cmbDomains.Text;
-                this.Favorite.UserName = this.cmbUsers.Text;
-                if (this.chkSavePassword.Checked)
-                {
-                    if (this.txtPassword.Text != HIDDEN_PASSWORD)
-                        this.Favorite.Password = this.txtPassword.Text;
-                    else
-                        this.Favorite.Password = this.favoritePassword;
-                }
-                else
-                {
-                    this.Favorite.Password = String.Empty;
-                }
-
-                this.Favorite.DesktopSize = (DesktopSize)this.cmbResolution.SelectedIndex;
-                this.Favorite.Colors = (Colors)this.cmbColors.SelectedIndex;
-                this.Favorite.ConnectToConsole = this.chkConnectToConsole.Checked;
-                this.Favorite.DisableWallPaper = this.chkDisableWallpaper.Checked;
-                this.Favorite.DisableCursorBlinking = this.chkDisableCursorBlinking.Checked;
-                this.Favorite.DisableCursorShadow = this.chkDisableCursorShadow.Checked;
-                this.Favorite.DisableFullWindowDrag = this.chkDisableFullWindowDrag.Checked;
-                this.Favorite.DisableMenuAnimations = this.chkDisableMenuAnimations.Checked;
-                this.Favorite.DisableTheming = this.chkDisableThemes.Checked;
-
-                this.Favorite.RedirectedDrives = this.RedirectedDrives;
-                this.Favorite.RedirectPorts = this.chkSerialPorts.Checked;
-                this.Favorite.RedirectPrinters = this.chkPrinters.Checked;
-                this.Favorite.RedirectClipboard = this.chkRedirectClipboard.Checked;
-                this.Favorite.RedirectDevices = this.RedirectDevices;
-                this.Favorite.RedirectSmartCards = this.chkRedirectSmartcards.Checked;
-                this.Favorite.Sounds = (RemoteSounds)this.cmbSounds.SelectedIndex;
-                this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
-
-                if (this.radTSGWenable.Checked)
-                {
-                    if (this.chkTSGWlocalBypass.Checked)
-                        this.Favorite.TsgwUsageMethod = 2;
-                    else
-                        this.Favorite.TsgwUsageMethod = 1;
-                }
-                else
-                {
-                    if (this.chkTSGWlocalBypass.Checked)
-                        this.Favorite.TsgwUsageMethod = 4;
-                    else
-                        this.Favorite.TsgwUsageMethod = 0;
-                }
-
-                this.Favorite.TsgwHostname = this.txtTSGWServer.Text;
-                this.Favorite.TsgwDomain = this.txtTSGWDomain.Text;
-                this.Favorite.TsgwUsername = this.txtTSGWUserName.Text;
-                this.Favorite.TsgwPassword = this.txtTSGWPassword.Text;
-                this.Favorite.TsgwSeparateLogin = this.chkTSGWlogin.Checked;
-                this.Favorite.TsgwCredsSource = this.cmbTSGWLogonMethod.SelectedIndex;
-
-                this.Favorite.DesktopShare = this.txtDesktopShare.Text;
-                this.Favorite.ExecuteBeforeConnect = this.chkExecuteBeforeConnect.Checked;
-                this.Favorite.ExecuteBeforeConnectCommand = this.txtCommand.Text;
-                this.Favorite.ExecuteBeforeConnectArgs = this.txtArguments.Text;
-                this.Favorite.ExecuteBeforeConnectInitialDirectory = this.txtInitialDirectory.Text;
-                this.Favorite.ExecuteBeforeConnectWaitForExit = this.chkWaitForExit.Checked;
-                this.Favorite.ToolBarIcon = this._currentToolBarFileName;
-
-                this.Favorite.ICAApplicationName = this.ICAApplicationNameTextBox.Text;
-                this.Favorite.ICAApplicationPath = this.ICAApplicationPath.Text;
-                this.Favorite.ICAApplicationWorkingFolder = this.ICAWorkingFolder.Text;
-
-                //extended settings
-                if (this.ShutdownTimeoutTextBox.Text.Trim() != String.Empty)
-                {
-                    this.Favorite.ShutdownTimeout = Convert.ToInt32(this.ShutdownTimeoutTextBox.Text.Trim());
-                }
-
-                if (this.OverallTimeoutTextbox.Text.Trim() != String.Empty)
-                {
-                    this.Favorite.OverallTimeout = Convert.ToInt32(this.OverallTimeoutTextbox.Text.Trim());
-                }
-
-                if (this.SingleTimeOutTextbox.Text.Trim() != String.Empty)
-                {
-                    this.Favorite.ConnectionTimeout = Convert.ToInt32(this.SingleTimeOutTextbox.Text.Trim());
-                }
-
-                if (this.IdleTimeoutMinutesTextBox.Text.Trim() != String.Empty)
-                {
-                    this.Favorite.IdleTimeout = Convert.ToInt32(this.IdleTimeoutMinutesTextBox.Text.Trim());
-                }
-
-                this.Favorite.EnableSecuritySettings = this.SecuritySettingsEnabledCheckbox.Checked;
-
-                if (this.SecuritySettingsEnabledCheckbox.Checked)
-                {
-                    this.Favorite.SecurityWorkingFolder = this.SecurityWorkingFolderTextBox.Text;
-                    this.Favorite.SecurityStartProgram = this.SecuriytStartProgramTextbox.Text;
-                    this.Favorite.SecurityFullScreen = this.SecurityStartFullScreenCheckbox.Checked;
-                }
-
-                this.Favorite.GrabFocusOnConnect = this.GrabFocusOnConnectCheckbox.Checked;
-                this.Favorite.EnableEncryption = this.EnableEncryptionCheckbox.Checked;
-                this.Favorite.DisableWindowsKey = this.DisableWindowsKeyCheckbox.Checked;
-                this.Favorite.DoubleClickDetect = this.DetectDoubleClicksCheckbox.Checked;
-                this.Favorite.DisplayConnectionBar = this.DisplayConnectionBarCheckbox.Checked;
-                this.Favorite.DisableControlAltDelete = this.DisableControlAltDeleteCheckbox.Checked;
-                this.Favorite.AcceleratorPassthrough = this.AcceleratorPassthroughCheckBox.Checked;
-                this.Favorite.EnableCompression = this.EnableCompressionCheckbox.Checked;
-                this.Favorite.BitmapPeristence = this.EnableBitmapPersistanceCheckbox.Checked;
-                this.Favorite.EnableTLSAuthentication = this.EnableTLSAuthenticationCheckbox.Checked;
-                this.Favorite.EnableNLAAuthentication = this.EnableNLAAuthenticationCheckbox.Checked;
-                this.Favorite.AllowBackgroundInput = this.AllowBackgroundInputCheckBox.Checked;
-
-                this.Favorite.EnableFontSmoothing = this.AllowFontSmoothingCheckbox.Checked;
-                this.Favorite.EnableDesktopComposition = this.AllowDesktopCompositionCheckbox.Checked;
-
-                this.Favorite.DesktopSizeWidth = (Int32)this.widthUpDown.Value;
-                this.Favorite.DesktopSizeHeight = (Int32)this.heightUpDown.Value;
-
-                this.Favorite.Url = this.httpUrlTextBox.Text;
-
-                this.Favorite.IcaClientINI = this.ICAClientINI.Text;
-                this.Favorite.IcaServerINI = this.ICAServerINI.Text;
-                this.Favorite.IcaEncryptionLevel = this.ICAEncryptionLevelCombobox.Text;
-                this.Favorite.IcaEnableEncryption = this.ICAEnableEncryptionCheckbox.Checked;
-                this.Favorite.ICAApplicationName = this.ICAApplicationNameTextBox.Text;
-                this.Favorite.ICAApplicationPath = this.ICAApplicationPath.Text;
-                this.Favorite.ICAApplicationWorkingFolder = this.ICAWorkingFolder.Text;
-
-
-
-                this.Favorite.Notes = this.NotesTextbox.Text;
-
-                this.Favorite.KeyTag = this.SSHPreferences.KeyTag;
-                this.Favorite.SSH1 = this.SSHPreferences.SSH1;
-                this.Favorite.AuthMethod = this.SSHPreferences.AuthMethod;
-
-                List<String> updatedTags = UpdateFavoriteTags();
+                this.FillFavoriteVmrcOptions();
+                this.FillFavoriteVncOptions();
+                FillFavoriteICAOPtions();
+                FillFavoriteSSHOptions();
+                FillFavoriteRdpOptions();
 
                 if (defaultFav)
                     SaveDefaultFavorite();
                 else
-                    CommitChangesToSettings(updatedTags);
+                    this.CommitFavoriteChanges();
 
                 return true;
             }
@@ -535,37 +471,284 @@ namespace Terminals
             }
         }
 
+        /// <summary>
+        /// Overwrites favortie property by favorite stored in persistance
+        /// or newly created one
+        /// </summary>
+        private void ResolveFavortie()
+        {
+            this.Favorite = null; // force favorite property reset
+            if (!this.editedId.Equals(Guid.Empty))
+                this.Favorite = PersistedFavorites[this.editedId];
+            if (this.Favorite == null)
+                this.Favorite = Persistance.Instance.Factory.CreateFavorite();
+        }
+
+        private void FillDescriptionProperties()
+        {
+            this.Favorite.NewWindow = this.NewWindowCheckbox.Checked;
+            this.Favorite.DesktopShare = this.txtDesktopShare.Text;
+            this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
+            this.Favorite.ToolBarIcon = this._currentToolBarFileName;
+            this.Favorite.Notes = this.NotesTextbox.Text;
+        }
+
+        private void FillGeneralProrperties()
+        {
+            this.Favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
+            this.Favorite.ServerName = this.cmbServers.Text;
+            this.Favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
+            this.Favorite.Port = Int32.Parse(this.txtPort.Text);
+            this.FillWebProperties();
+        }
+
+        private void FillWebProperties()
+        {
+            WebOptions.UpdateFavoriteUrl(this.Favorite, this.httpUrlTextBox.Text);
+        }
+
+        private void FillFavoriteDisplayOptions()
+        {
+            this.Favorite.Display.DesktopSize = (DesktopSize)this.cmbResolution.SelectedIndex;
+            this.Favorite.Display.Colors = (Colors)this.cmbColors.SelectedIndex;
+            this.Favorite.Display.Width = (Int32)this.widthUpDown.Value;
+            this.Favorite.Display.Height = (Int32)this.heightUpDown.Value;
+        }
+
+        private void FillFavoriteRdpSecurity(RdpOptions rdpOptions)
+        {
+            rdpOptions.Security.EnableTLSAuthentication = this.EnableTLSAuthenticationCheckbox.Checked;
+            rdpOptions.Security.EnableNLAAuthentication = this.EnableNLAAuthenticationCheckbox.Checked;
+            rdpOptions.Security.EnableEncryption = this.EnableEncryptionCheckbox.Checked;
+            rdpOptions.Security.Enabled = this.SecuritySettingsEnabledCheckbox.Checked;
+            if (this.SecuritySettingsEnabledCheckbox.Checked)
+            {
+                rdpOptions.Security.WorkingFolder = this.SecurityWorkingFolderTextBox.Text;
+                rdpOptions.Security.StartProgram = this.SecuriytStartProgramTextbox.Text;
+                rdpOptions.FullScreen = this.SecurityStartFullScreenCheckbox.Checked;
+            }
+        }
+
+        private void FillFavoriteRdpTimeOutOptions(RdpOptions rdpOptions)
+        {
+            if (this.ShutdownTimeoutTextBox.Text.Trim() != String.Empty)
+            {
+                rdpOptions.TimeOuts.ShutdownTimeout = Convert.ToInt32(this.ShutdownTimeoutTextBox.Text.Trim());
+            }
+
+            if (this.OverallTimeoutTextbox.Text.Trim() != String.Empty)
+            {
+                rdpOptions.TimeOuts.OverallTimeout = Convert.ToInt32(this.OverallTimeoutTextbox.Text.Trim());
+            }
+
+            if (this.SingleTimeOutTextbox.Text.Trim() != String.Empty)
+            {
+                rdpOptions.TimeOuts.ConnectionTimeout = Convert.ToInt32(this.SingleTimeOutTextbox.Text.Trim());
+            }
+
+            if (this.IdleTimeoutMinutesTextBox.Text.Trim() != String.Empty)
+            {
+                rdpOptions.TimeOuts.IdleTimeout = Convert.ToInt32(this.IdleTimeoutMinutesTextBox.Text.Trim());
+            }
+        }
+
+        private void FillFavoriteRdpInterfaceOptions(RdpOptions rdpOptions)
+        {
+            RdpUserInterfaceOptions userInterface = rdpOptions.UserInterface;
+            rdpOptions.GrabFocusOnConnect = this.GrabFocusOnConnectCheckbox.Checked;
+            userInterface.DisableWindowsKey = this.DisableWindowsKeyCheckbox.Checked;
+            userInterface.DoubleClickDetect = this.DetectDoubleClicksCheckbox.Checked;
+            userInterface.DisplayConnectionBar = this.DisplayConnectionBarCheckbox.Checked;
+            userInterface.DisableControlAltDelete = this.DisableControlAltDeleteCheckbox.Checked;
+            userInterface.AcceleratorPassthrough = this.AcceleratorPassthroughCheckBox.Checked;
+            userInterface.EnableCompression = this.EnableCompressionCheckbox.Checked;
+            userInterface.BitmapPeristence = this.EnableBitmapPersistanceCheckbox.Checked;
+            userInterface.AllowBackgroundInput = this.AllowBackgroundInputCheckBox.Checked;
+            userInterface.EnableFontSmoothing = this.AllowFontSmoothingCheckbox.Checked;
+            userInterface.EnableDesktopComposition = this.AllowDesktopCompositionCheckbox.Checked;
+        }
+
+        private void FillFavoriteExecuteBeforeOptions()
+        {
+            var exucutionOptions = this.Favorite.ExecuteBeforeConnect;
+            exucutionOptions.Execute = this.chkExecuteBeforeConnect.Checked;
+            exucutionOptions.Command = this.txtCommand.Text;
+            exucutionOptions.CommandArguments = this.txtArguments.Text;
+            exucutionOptions.InitialDirectory = this.txtInitialDirectory.Text;
+            exucutionOptions.WaitForExit = this.chkWaitForExit.Checked;
+        }
+
+        private void FillFavoriteSSHOptions()
+        {
+            var sshOptions = this.Favorite.ProtocolProperties as SshOptions;
+            if (sshOptions == null)
+                return;
+
+            sshOptions.AuthMethod = this.SSHPreferences.AuthMethod;
+            sshOptions.CertificateKey = this.SSHPreferences.KeyTag;
+            sshOptions.SSH1 = this.SSHPreferences.SSH1;
+        }
+
+        private void FillFavoriteICAOPtions()
+        {
+            var icaOptions = this.Favorite.ProtocolProperties as ICAOptions;
+            if (icaOptions == null)
+                return;
+
+            icaOptions.ClientINI = this.ICAClientINI.Text;
+            icaOptions.ServerINI = this.ICAServerINI.Text;
+            icaOptions.EncryptionLevel = this.ICAEncryptionLevelCombobox.Text;
+            icaOptions.EnableEncryption = this.ICAEnableEncryptionCheckbox.Checked;
+
+            icaOptions.ApplicationName = this.ICAApplicationNameTextBox.Text;
+            icaOptions.ApplicationPath = this.ICAApplicationPath.Text;
+            icaOptions.ApplicationWorkingFolder = this.ICAWorkingFolder.Text;
+        }
+
+        private void FillFavoriteTSgatewayOptions(RdpOptions rdpOptions)
+        {
+            TsGwOptions tsgwOptions = rdpOptions.TsGateway;
+            tsgwOptions.HostName = this.txtTSGWServer.Text;
+            tsgwOptions.Security.Domain = this.txtTSGWDomain.Text;
+            tsgwOptions.Security.UserName = this.txtTSGWUserName.Text;
+            tsgwOptions.Security.Password = this.txtTSGWPassword.Text;
+            tsgwOptions.SeparateLogin = this.chkTSGWlogin.Checked;
+            tsgwOptions.CredentialSource = this.cmbTSGWLogonMethod.SelectedIndex;
+
+            if (this.radTSGWenable.Checked)
+            {
+                if (this.chkTSGWlocalBypass.Checked)
+                    tsgwOptions.UsageMethod = 2;
+                else
+                    tsgwOptions.UsageMethod = 1;
+            }
+            else
+            {
+                if (this.chkTSGWlocalBypass.Checked)
+                    tsgwOptions.UsageMethod = 4;
+                else
+                    tsgwOptions.UsageMethod = 0;
+            }
+        }
+
+        private void FillFavoriteRdpOptions()
+        {
+            var rdpOptions = this.Favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions == null)
+                return;
+
+            FillFavoriteRdpSecurity(rdpOptions);
+            FillFavoriteRdpInterfaceOptions(rdpOptions);
+            FillFavoriteRdpDisplayOptions(rdpOptions);
+            FillFavoriteRdpRedirectOptions(rdpOptions);
+            FillFavoriteTSgatewayOptions(rdpOptions);
+            FillFavoriteRdpTimeOutOptions(rdpOptions);
+        }
+
+        private void FillFavoriteRdpDisplayOptions(RdpOptions rdpOptions)
+        {
+            rdpOptions.ConnectToConsole = this.chkConnectToConsole.Checked;
+            rdpOptions.UserInterface.DisableWallPaper = this.chkDisableWallpaper.Checked;
+            rdpOptions.UserInterface.DisableCursorBlinking = this.chkDisableCursorBlinking.Checked;
+            rdpOptions.UserInterface.DisableCursorShadow = this.chkDisableCursorShadow.Checked;
+            rdpOptions.UserInterface.DisableFullWindowDrag = this.chkDisableFullWindowDrag.Checked;
+            rdpOptions.UserInterface.DisableMenuAnimations = this.chkDisableMenuAnimations.Checked;
+            rdpOptions.UserInterface.DisableTheming = this.chkDisableThemes.Checked;
+        }
+
+        private void FillFavoriteRdpRedirectOptions(RdpOptions rdpOptions)
+        {
+            rdpOptions.Redirect.Drives = this.RedirectedDrives;
+            rdpOptions.Redirect.Ports = this.chkSerialPorts.Checked;
+            rdpOptions.Redirect.Printers = this.chkPrinters.Checked;
+            rdpOptions.Redirect.Clipboard = this.chkRedirectClipboard.Checked;
+            rdpOptions.Redirect.Devices = this.RedirectDevices;
+            rdpOptions.Redirect.SmartCards = this.chkRedirectSmartcards.Checked;
+            rdpOptions.Redirect.Sounds = (RemoteSounds)this.cmbSounds.SelectedIndex;
+        }
+
+        private void FillFavoriteSecurity()
+        {
+            ICredentialSet selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
+            this.Favorite.Security.Credential = selectedCredential == null ? Guid.Empty : selectedCredential.Id;
+
+            this.Favorite.Security.Domain = this.cmbDomains.Text;
+            this.Favorite.Security.UserName = this.cmbUsers.Text;
+            if (this.chkSavePassword.Checked)
+            {
+                if (this.txtPassword.Text != HIDDEN_PASSWORD)
+                    this.Favorite.Security.Password = this.txtPassword.Text;
+                else
+                    this.Favorite.Security.Password = this.favoritePassword;
+            }
+            else
+            {
+                this.Favorite.Security.Password = String.Empty;
+            }
+        }
+
+        private void FillFavoriteVncOptions()
+        {
+            var vncOptions = this.Favorite.ProtocolProperties as VncOptions;
+            if (vncOptions == null)
+                return;
+
+            vncOptions.AutoScale = this.vncAutoScaleCheckbox.Checked;
+            vncOptions.DisplayNumber = (Int32)this.vncDisplayNumberInput.Value;
+            vncOptions.ViewOnly = this.VncViewOnlyCheckbox.Checked;
+        }
+
+        private void FillFavoriteVmrcOptions()
+        {
+            var vmrcOptions = this.Favorite.ProtocolProperties as VMRCOptions;
+            if (vmrcOptions == null)
+                return;
+
+            vmrcOptions.AdministratorMode = this.VMRCAdminModeCheckbox.Checked;
+            vmrcOptions.ReducedColorsMode = this.VMRCReducedColorsCheckbox.Checked;
+        }
+
         private void SaveDefaultFavorite()
         {
             this.Favorite.Name = String.Empty;
             this.Favorite.ServerName = String.Empty;
-            this.Favorite.DomainName = String.Empty;
-            this.Favorite.UserName = String.Empty;
-            this.Favorite.Password = String.Empty;
             this.Favorite.Notes = String.Empty;
-            this.Favorite.EnableSecuritySettings = false;
-            this.Favorite.SecurityWorkingFolder = String.Empty;
-            this.Favorite.SecurityStartProgram = String.Empty;
-            this.Favorite.SecurityFullScreen = false;
-            this.Favorite.Url = String.Empty;
-            PersistedFavorites.SaveDefaultFavorite(this.Favorite);
+            this.Favorite.Security.Domain = String.Empty;
+            this.Favorite.Security.UserName = String.Empty;
+            this.Favorite.Security.Password = String.Empty;
+
+            var rdpOptions = this.Favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions != null)
+            {
+                rdpOptions.Security.Enabled = false;
+                rdpOptions.Security.WorkingFolder = String.Empty;
+                rdpOptions.Security.StartProgram = String.Empty;
+                rdpOptions.FullScreen = false;
+            }
+
+            var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(this.Favorite);
+            Settings.SaveDefaultFavorite(defaultFavorite);
         }
 
-        private void CommitChangesToSettings(List<string> updatedTags)
+        private void CommitFavoriteChanges()
         {
             Settings.StartDelayedUpdate();
-            if (String.IsNullOrEmpty(this._oldName))
+            Persistance.Instance.StartDelayedUpdate();
+            if (this.editedId == Guid.Empty)
             {
-                PersistedFavorites.AddFavorite(this.Favorite);
+                PersistedFavorites.Add(this.Favorite);
                 if (this.ShowOnToolbar)
-                    Settings.AddFavoriteButton(this.Favorite.Name);
+                    Settings.AddFavoriteButton(this.Favorite.Id);
             }
             else
             {
-                PersistedFavorites.EditFavorite(this._oldName, this.Favorite);
-                Settings.EditFavoriteButton(this._oldName, this.Favorite.Name, this.ShowOnToolbar);
-                this.UpdateTags(updatedTags);
+                OrganizeFavoritesForm.UpdateFavoritePreservingDuplicitNames(this.oldName, this.Favorite.Name, this.Favorite);
+                Settings.EditFavoriteButton(this.editedId, this.Favorite.Id, this.ShowOnToolbar);
             }
+
+            List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
+            PersistedFavorites.UpdateFavorite(this.Favorite, updatedGroups);
+            Persistance.Instance.SaveAndFinishDelayedUpdate();
             Settings.SaveAndFinishDelayedUpdate();
         }
 
@@ -575,27 +758,13 @@ namespace Terminals
         }
 
         /// <summary>
-        /// Call this after favorite was saved, otherwise the removed, otherwise not used tags wouldnt be removed
-        /// </summary>
-        private void UpdateTags(List<string> updatedTags)
-        {
-            List<String> tagsToRemove = ListStringHelper.GetMissingSourcesInTarget(this.oldTags, updatedTags);
-            List<String> tagsToAdd = ListStringHelper.GetMissingSourcesInTarget(updatedTags, this.oldTags);
-            PersistedGroups.AddTags(tagsToAdd);
-            PersistedGroups.DeleteTags(tagsToRemove);
-        }
-
-        /// <summary>
         /// Confirms changes into the favorite tags and returns collection of newly assigned tags.
         /// </summary>
-        private List<String> UpdateFavoriteTags()
+        private List<IGroup> GetNewlySelectedGroups()
         {
-            List<String> updatedTags = new List<String>();
-            foreach (ListViewItem listViewItem in this.lvConnectionTags.Items)
-                updatedTags.Add(listViewItem.Text);
-
-            this.Favorite.Tags = String.Join(",", updatedTags.ToArray());
-            return updatedTags;
+            return this.lvConnectionTags.Items.Cast<GroupListViewItem>()
+                 .Select(candidate => candidate.FavoritesGroup)
+                 .ToList();
         }
 
         private bool IsServerNameValid()
@@ -636,7 +805,15 @@ namespace Terminals
 
         private void SetOkButtonState()
         {
-            this.btnSave.Enabled = this.cmbServers.Text != String.Empty;
+            if (this.httpUrlTextBox.Visible)
+            {
+                Uri testUri = GetFullUrlFromHttpTextBox();
+                this.btnSave.Enabled = testUri != null;
+            }
+            else
+            {
+                this.btnSave.Enabled = this.cmbServers.Text != String.Empty;
+            }
         }
 
         private static void GetServerAndPort(String Connection, out String Server, out Int32 Port)
@@ -659,36 +836,48 @@ namespace Terminals
             }
         }
 
-        private void AddTag()
+        private void AddGroup()
         {
             if (!String.IsNullOrEmpty(this.txtTag.Text))
             {
-                AddTagIfNotAlreadyThere(this.txtTag.Text);
+                IGroup candidate = PersistedGroups[this.txtTag.Text];
+                if (candidate == null)
+                    candidate = Persistance.Instance.Factory.CreateGroup(this.txtTag.Text);
+
+                this.AddGroupIfNotAlreadyThere(candidate);
             }
         }
 
-        private void AddTagsToFavorite()
+        private void AddGroupsToFavorite()
         {
-            foreach (ListViewItem lv in this.AllTagsListView.SelectedItems)
+            foreach (GroupListViewItem groupItem in this.AllTagsListView.SelectedItems)
             {
-                AddTagIfNotAlreadyThere(lv.Text);
+                this.AddGroupIfNotAlreadyThere(groupItem.FavoritesGroup);
             }
         }
 
-        private void AddTagIfNotAlreadyThere(String selectedTag)
+        private void AddGroupIfNotAlreadyThere(IGroup selectedGroup)
         {
-            ListViewItem[] items = this.lvConnectionTags.Items.Find(selectedTag, false);
-            if (items.Length == 0)
+            // this also prevents duplicities in newly created groups not stored in persistance yet
+            bool containsName = SelectedGroupsContainGroupName(selectedGroup);
+            if (!containsName)
             {
-                this.lvConnectionTags.Items.Add(selectedTag);
+                var selectedGroupItem = new GroupListViewItem(selectedGroup);
+                this.lvConnectionTags.Items.Add(selectedGroupItem);
             }
         }
 
-        private void DeleteTag()
+        private bool SelectedGroupsContainGroupName(IGroup selectedGroup)
         {
-            foreach (ListViewItem item in this.lvConnectionTags.SelectedItems)
+            return this.lvConnectionTags.Items.Cast<ListViewItem>()
+                .Any(candidate => candidate.Text == selectedGroup.Name);
+        }
+
+        private void DeleteGroup()
+        {
+            foreach (ListViewItem groupItem in this.lvConnectionTags.SelectedItems)
             {
-                this.lvConnectionTags.Items.Remove(item);
+                this.lvConnectionTags.Items.Remove(groupItem);
             }
         }
 
@@ -737,8 +926,7 @@ namespace Terminals
             this.SaveMRUs();
             if (this.FillFavorite(false))
             {
-                this.Favorite = null;
-                this._oldName = String.Empty;
+                this.editedId = Guid.Empty;
                 this.Init(null, String.Empty);
                 this.cmbServers.Focus();
             }
@@ -753,8 +941,7 @@ namespace Terminals
             if (this.FillFavorite(false))
             {
                 this.txtName.Text = this.Favorite.Name + "_(copy)";
-                this.Favorite = null;
-                this._oldName = String.Empty;
+                this.editedId = Guid.Empty;
                 this.cmbServers.Text = String.Empty;
                 this.cmbServers.Focus();
             }
@@ -812,17 +999,17 @@ namespace Terminals
 
         private void btnAddNewTag_Click(object sender, EventArgs e)
         {
-            this.AddTag();
+            this.AddGroup();
         }
 
         private void btnRemoveTag_Click(object sender, EventArgs e)
         {
-            this.DeleteTag();
+            this.DeleteGroup();
         }
 
         private void lvConnectionTags_DoubleClick(object sender, EventArgs e)
         {
-            this.DeleteTag();
+            this.DeleteGroup();
         }
 
         private void btnSaveDefault_Click(object sender, EventArgs e)
@@ -837,13 +1024,96 @@ namespace Terminals
 
         private void removeSavedDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            PersistedFavorites.RemoveDefaultFavorite();
+            Settings.RemoveDefaultFavorite();
         }
 
         private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            String defaultPort = ConnectionManager.VNCVMRCPort.ToString();
+            SetControlsProtocolIndependent();
 
+            if (this.ProtocolComboBox.Text == ConnectionManager.RDP)
+            {
+                SetControlsForRDP();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.VMRC)
+            {
+                SetControlsForCMRC();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.RAS)
+            {
+                SetControlsForRAS();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.VNC)
+            {
+                SetControlsForVNC();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.ICA_CITRIX)
+            {
+                SetControlsForICA();
+            }
+            else if (ProtocolComboBox.Text == ConnectionManager.HTTP ||
+                     this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
+            {
+                SetControlsForWeb();
+            }
+
+            int defaultPort = ConnectionManager.GetPort(this.ProtocolComboBox.Text);
+            this.txtPort.Text = defaultPort.ToString();
+            SetOkButtonState();
+        }
+
+        private void SetControlsForWeb()
+        {
+            this.lblServerName.Text = "Url:";
+            this.cmbServers.Enabled = false;
+            this.txtPort.Enabled = false;
+            this.httpUrlTextBox.Enabled = true;
+            this.httpUrlTextBox.Visible = true;
+        }
+
+        private void SetControlsForICA()
+        {
+            this.ICAClientINI.Enabled = true;
+            this.ICAServerINI.Enabled = true;
+            this.ICAEncryptionLevelCombobox.Enabled = false;
+            this.ICAEnableEncryptionCheckbox.Enabled = true;
+            this.ICAApplicationNameTextBox.Enabled = true;
+            this.ICAApplicationPath.Enabled = true;
+            this.ICAWorkingFolder.Enabled = true;
+        }
+
+        private void SetControlsForVNC()
+        {
+            this.vncAutoScaleCheckbox.Enabled = true;
+            this.vncDisplayNumberInput.Enabled = true;
+            this.VncViewOnlyCheckbox.Enabled = true;
+        }
+
+        private void SetControlsForRAS()
+        {
+            this.cmbServers.Items.Clear();
+            this.LoadDialupConnections();
+            this.RASGroupBox.Enabled = true;
+            this.txtPort.Enabled = false;
+            this.RASDetailsListBox.Items.Clear();
+        }
+
+        private void SetControlsForCMRC()
+        {
+            this.VMRCReducedColorsCheckbox.Enabled = true;
+            this.VMRCAdminModeCheckbox.Enabled = true;
+        }
+
+        private void SetControlsForRDP()
+        {
+            this.groupBox1.Enabled = true;
+            this.chkConnectToConsole.Enabled = true;
+            this.LocalResourceGroupBox.Enabled = true;
+        }
+
+        private void SetControlsProtocolIndependent()
+        {
+            this.lblServerName.Text = "Computer:";
             this.cmbServers.Enabled = true;
             this.txtPort.Enabled = true;
 
@@ -858,7 +1128,6 @@ namespace Terminals
             this.VMRCAdminModeCheckbox.Enabled = false;
             this.RASGroupBox.Enabled = false;
 
-
             this.ICAClientINI.Enabled = false;
             this.ICAServerINI.Enabled = false;
             this.ICAEncryptionLevelCombobox.Enabled = false;
@@ -867,80 +1136,9 @@ namespace Terminals
             this.ICAApplicationPath.Enabled = false;
             this.ICAWorkingFolder.Enabled = false;
 
-
-
-
             this.httpUrlTextBox.Enabled = false;
+            this.httpUrlTextBox.Visible = false;
             this.txtPort.Enabled = true;
-
-            if (this.ProtocolComboBox.Text == "RDP")
-            {
-                defaultPort = ConnectionManager.RDPPort.ToString();
-                this.groupBox1.Enabled = true;
-                this.chkConnectToConsole.Enabled = true;
-                this.LocalResourceGroupBox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == "VMRC")
-            {
-                this.VMRCReducedColorsCheckbox.Enabled = true;
-                this.VMRCAdminModeCheckbox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == "RAS")
-            {
-                this.cmbServers.Items.Clear();
-                this.LoadDialupConnections();
-                this.RASGroupBox.Enabled = true;
-                this.txtPort.Enabled = false;
-                this.RASDetailsListBox.Items.Clear();
-            }
-            else if (this.ProtocolComboBox.Text == "VNC")
-            {
-                //vnc settings
-                this.vncAutoScaleCheckbox.Enabled = true;
-                this.vncDisplayNumberInput.Enabled = true;
-                this.VncViewOnlyCheckbox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == "Telnet")
-            {
-                defaultPort = ConnectionManager.TelnetPort.ToString();
-            }
-            else if (this.ProtocolComboBox.Text == "SSH")
-            {
-                defaultPort = ConnectionManager.SSHPort.ToString();
-            }
-            else if (this.ProtocolComboBox.Text == "ICA Citrix")
-            {
-                this.ICAClientINI.Enabled = true;
-                this.ICAServerINI.Enabled = true;
-                this.ICAEncryptionLevelCombobox.Enabled = false;
-                this.ICAEnableEncryptionCheckbox.Enabled = true;
-                this.ICAApplicationNameTextBox.Enabled = true;
-                this.ICAApplicationPath.Enabled = true;
-                this.ICAWorkingFolder.Enabled = true;
-                defaultPort = ConnectionManager.ICAPort.ToString();
-
-            
-            }
-            else if (ProtocolComboBox.Text == "HTTP")
-            {
-                this.cmbServers.Enabled = false;
-                this.txtPort.Enabled = false;
-                this.txtPort.Text = "80";
-                this.httpUrlTextBox.Enabled = true;
-                defaultPort = ConnectionManager.HTTPPort.ToString();
-                this.tabControl1.SelectTab(HTTPTabPage);
-            }
-            else if (this.ProtocolComboBox.Text == "HTTPS")
-            {
-                this.cmbServers.Enabled = false;
-                this.txtPort.Text = "443";
-                this.txtPort.Enabled = false;
-                this.httpUrlTextBox.Enabled = true;
-                defaultPort = ConnectionManager.HTTPSPort.ToString();
-                this.tabControl1.SelectTab(HTTPTabPage);
-            }
-
-            this.txtPort.Text = defaultPort;
         }
 
         private void cmbServers_SelectedIndexChanged(object sender, EventArgs e)
@@ -1033,7 +1231,7 @@ namespace Terminals
 
         private void AllTagsAddButton_Click(object sender, EventArgs e)
         {
-            AddTagsToFavorite();
+            this.AddGroupsToFavorite();
         }
 
         private void ICAEnableEncryptionCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -1043,49 +1241,57 @@ namespace Terminals
 
         private void httpUrlTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (this.ProtocolComboBox.Text == "HTTP" | this.ProtocolComboBox.Text == "HTTPS")
+            if (this.ProtocolComboBox.Text == ConnectionManager.HTTP ||
+                this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
             {
-                String url = this.httpUrlTextBox.Text;
-                try
+                Uri newUrl = GetFullUrlFromHttpTextBox();
+                if (newUrl != null)
                 {
-                    Uri u = new Uri(url);
-                    this.cmbServers.Text = u.Host;
-                    this.txtPort.Text = u.Port.ToString();
+                    this.cmbServers.Text = newUrl.Host;
+                    this.txtPort.Text = newUrl.Port.ToString();
                 }
-                catch (Exception ex)
-                {
-                    Logging.Log.Error("Http URL Parse Failed", ex);
-                }
+                SetOkButtonState();
             }
+        }
+
+        private Uri GetFullUrlFromHttpTextBox()
+        {
+            string newUrlText = this.httpUrlTextBox.Text.ToLower();
+            string protocolPrefix = this.ProtocolComboBox.Text.ToLower();
+            if (!newUrlText.StartsWith(ConnectionManager.HTTP.ToLower()) &&
+                !newUrlText.StartsWith(ConnectionManager.HTTPS.ToLower()))
+                newUrlText = String.Format("{0}://{1}", protocolPrefix, newUrlText);
+            return WebOptions.TryParseUrl(newUrlText);
         }
 
         private void AllTagsListView_DoubleClick(object sender, EventArgs e)
         {
-            AddTagsToFavorite();
+            this.AddGroupsToFavorite();
         }
 
         private void CredentialManagerPicturebox_Click(object sender, EventArgs e)
         {
-            String cred = String.Empty;
-            if (this.CredentialDropdown.SelectedItem.GetType() != typeof(string))
-                cred = ((CredentialSet)this.CredentialDropdown.SelectedItem).Name;
+            Guid selectedCredentialId = Guid.Empty;
+            var selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
+            if (selectedCredential != null)
+                selectedCredentialId = selectedCredential.Id;
 
-            Credentials.CredentialManager mgr = new Credentials.CredentialManager();
+            CredentialManager mgr = new CredentialManager();
             mgr.ShowDialog();
-            this.FillCredentials(cred);
+            this.FillCredentialsCombobox(selectedCredentialId);
         }
 
         private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.CredentialsPanel.Enabled = true;
-            CredentialSet set = (this.CredentialDropdown.SelectedItem as CredentialSet);
+            ICredentialSet set = this.CredentialDropdown.SelectedItem as ICredentialSet;
 
             if (set != null)
             {
                 this.CredentialsPanel.Enabled = false;
                 this.cmbDomains.Text = set.Domain;
-                this.cmbUsers.Text = set.Username;
-                this.txtPassword.Text = set.SecretKey;
+                this.cmbUsers.Text = set.UserName;
+                this.txtPassword.Text = set.Password;
                 this.chkSavePassword.Checked = true;
             }
         }
@@ -1115,8 +1321,6 @@ namespace Terminals
             {
                 ICAApplicationPath.Text = d.SelectedPath;
             }
-
-
         }
 
         private void AppWorkingFolderBrowseButton_Click(object sender, EventArgs e)
@@ -1128,7 +1332,6 @@ namespace Terminals
             {
                 ICAWorkingFolder.Text = d.SelectedPath;
             }
-
         }
 
         private void ServerINIBrowseButton_Click(object sender, EventArgs e)
@@ -1141,7 +1344,6 @@ namespace Terminals
             {
                 ICAServerINI.Text = d.FileName;
             }
-
         }
 
         private void ClientINIBrowseButton_Click(object sender, EventArgs e)
@@ -1155,7 +1357,6 @@ namespace Terminals
             {
                 ICAClientINI.Text = d.FileName;
             }
-
         }
     }
 }

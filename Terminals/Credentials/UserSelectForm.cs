@@ -1,35 +1,26 @@
 ﻿using System;
 using System.Windows.Forms;
-using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Credentials
 {
-    public partial class UserSelectForm : Form
+    internal partial class UserSelectForm : Form
     {
-        private CredentialSet set = null;
-        public UserSelectForm()
+        internal ICredentialSet Credentials { get; private set; }
+
+        internal UserSelectForm()
         {
             InitializeComponent();
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
         private void okButton_Click(object sender, EventArgs e)
         {
-            set = new CredentialSet();
-            set.Name = "";
-            set.Username = userTextBox.Text;
-            set.SecretKey = passwordTextBox.Text;
-            set.Domain = domainTextBox.Text;
+            this.Credentials = Persistance.Instance.Factory.CreateCredentialSet();
+            this.Credentials.Name = string.Empty;
+            this.Credentials.UserName = userTextBox.Text;
+            this.Credentials.Password = passwordTextBox.Text;
+            this.Credentials.Domain = domainTextBox.Text;
             Close();
-        }
-
-        private void UserSelectForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            FavsList.credSet = set;
         }
     }
 }

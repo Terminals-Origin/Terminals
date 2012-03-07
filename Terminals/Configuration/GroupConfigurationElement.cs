@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
 
 namespace Terminals
 {
-
+    /// <summary>
+    /// Obsolete since v2.1 replaced by IGroup. Groups are no longer stored in config file
+    /// </summary>
     public class GroupConfigurationElement : ConfigurationElement
     {
         public GroupConfigurationElement()
@@ -31,8 +30,6 @@ namespace Terminals
             }
         }
 
-
-
         [ConfigurationProperty("favoriteAliases")]
         [ConfigurationCollection(typeof(FavoriteAliasConfigurationElementCollection))]
         public FavoriteAliasConfigurationElementCollection FavoriteAliases
@@ -46,7 +43,5 @@ namespace Terminals
                 this["favoriteAliases"] = value;
             }
         }
-
     }
-
 }

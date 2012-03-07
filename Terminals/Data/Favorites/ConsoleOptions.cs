@@ -7,7 +7,7 @@ namespace Terminals.Data
     /// Telnet and ssh protocol console options
     /// </summary>
     [Serializable]
-    public class ConsoleOptions
+    public class ConsoleOptions : ProtocolOptions
     {
         private int rows = 33;
         public int Rows
@@ -82,6 +82,44 @@ namespace Terminals.Data
         {
             get { return this.cursorColor; }
             set { this.cursorColor  = value; }
+        }
+
+        internal override ProtocolOptions Copy()
+        {
+            return Copy2();
+        }
+
+        internal ConsoleOptions Copy2()
+        {
+            return new ConsoleOptions
+            {
+                CursorColor = this.CursorColor,
+                BackColor = this.BackColor,
+                TextColor = this.TextColor,
+                Columns = this.Columns,
+                Rows = this.Rows,
+                Font = this.Font
+            };
+        }
+
+        internal override void FromCofigFavorite(IFavorite destination, FavoriteConfigurationElement source)
+        {
+            this.BackColor = source.ConsoleBackColor;
+            this.TextColor = source.ConsoleTextColor;
+            this.CursorColor = source.ConsoleCursorColor;
+            this.Columns = source.ConsoleCols;
+            this.Rows = source.ConsoleRows;
+            this.Font = source.ConsoleFont;
+        }
+
+        internal override void ToConfigFavorite(IFavorite source, FavoriteConfigurationElement destination)
+        {
+            destination.ConsoleBackColor = this.BackColor;
+            destination.ConsoleTextColor = this.TextColor;
+            destination.ConsoleCursorColor = this.CursorColor;
+            destination.ConsoleCols = this.Columns;
+            destination.ConsoleRows = this.Rows;
+            destination.ConsoleFont = this.Font;
         }
     }
 }

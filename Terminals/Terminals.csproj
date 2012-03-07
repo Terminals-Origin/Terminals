@@ -31,7 +31,9 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <TargetZone>LocalIntranet</TargetZone>
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -46,7 +48,6 @@
     <ApplicationVersion>1.8.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -142,6 +143,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Design" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
@@ -192,11 +194,48 @@
     <Compile Include="CaptureManager\ImageFormatHandler.cs" />
     <Compile Include="CaptureManager\ImageFormatTypes.cs" />
     <Compile Include="Configuration\FileLocations.cs" />
+    <Compile Include="Data\Credentials\CredentialBase.cs" />
+    <Compile Include="Data\DB\BeforeConnectExecute.cs" />
+    <Compile Include="Data\DB\CredentialBase.cs" />
+    <Compile Include="Data\DB\CredentialSet.cs" />
+    <Compile Include="Data\DB\DataBase.cs" />
+    <Compile Include="Data\DB\Factory.cs" />
+    <Compile Include="Data\DB\Favorite.cs" />
+    <Compile Include="Data\DB\Favorites.cs" />
+    <Compile Include="Data\DB\DisplayOptions.cs" />
+    <Compile Include="Data\DB\Group.cs" />
+    <Compile Include="Data\DB\Groups.cs" />
+    <Compile Include="Data\DB\ConnectionHistory.cs" />
+    <Compile Include="Data\DB\HistoryItem.cs" />
+    <Compile Include="Data\DB\IEntityContext.cs" />
+    <Compile Include="Data\DB\SecurityOptions.cs" />
+    <Compile Include="Data\DB\SqlPersistance.cs" />
+    <Compile Include="Data\DB\StoredCredentials.cs" />
+    <Compile Include="Data\Favorites\EmptyOptions.cs" />
+    <Compile Include="Data\History\HistoryIntervals.cs" />
+    <Compile Include="Data\History\HistoryInterval.cs" />
+    <Compile Include="Data\Interfaces\IBeforeConnectExecuteOptions.cs" />
+    <Compile Include="Data\Interfaces\IDisplayOptions.cs" />
+    <Compile Include="Data\Interfaces\ISecurityOptions.cs" />
+    <Compile Include="Data\Favorites\ProtocolOptions.cs" />
+    <Compile Include="Data\Favorites\WebOptions.cs" />
+    <Compile Include="Data\Interfaces\IConnectionHistory.cs" />
+    <Compile Include="Data\Interfaces\ICredentialBase.cs" />
+    <Compile Include="Data\Interfaces\IHistoryItem.cs" />
+    <Compile Include="Data\Interfaces\ICredentials.cs" />
+    <Compile Include="Data\Interfaces\ICredentialSet.cs" />
+    <Compile Include="Data\FilePersisted\FavoritesFactory.cs" />
+    <Compile Include="Data\Interfaces\IFactory.cs" />
+    <Compile Include="Data\Interfaces\IFavorite.cs" />
+    <Compile Include="Data\Interfaces\IGroup.cs" />
+    <Compile Include="Data\ModelConverterV1ToV2.cs" />
+    <Compile Include="Data\ModelConverterV2ToV1.cs" />
     <Compile Include="Data\Favorites\ConsoleOptions.cs" />
     <Compile Include="Data\Favorites\DisplayOptions.cs" />
     <Compile Include="Data\Favorites\BeforeConnectExecuteOptions.cs" />
     <Compile Include="Data\Favorites\Favorite.cs" />
-    <Compile Include="Data\Favorites\FavoritesFile.cs" />
+    <Compile Include="Data\FilePersisted\FavoritesFile.cs" />
+    <Compile Include="Data\FilePersisted\FavoritesInGroup.cs" />
     <Compile Include="Data\Favorites\Group.cs" />
     <Compile Include="Data\Favorites\ICAOptions.cs" />
     <Compile Include="Data\Favorites\RdpOptions.cs" />
@@ -209,10 +248,25 @@
     <Compile Include="Data\Favorites\SshOptions.cs" />
     <Compile Include="Data\Favorites\VMRCOptions.cs" />
     <Compile Include="Data\Favorites\VncOptions.cs" />
-    <Compile Include="Data\FilePersistance.cs" />
+    <Compile Include="Data\FilePersisted\FilePersistance.cs" />
+    <Compile Include="Data\Interfaces\IFavorites.cs" />
+    <Compile Include="Data\Interfaces\IGroups.cs" />
+    <Compile Include="Data\Interfaces\IPersistance.cs" />
     <Compile Include="Data\Persistance.cs" />
-    <Compile Include="Data\Favorites\Groups.cs" />
-    <Compile Include="Data\Favorites\Favorites.cs" />
+    <Compile Include="Data\FilePersisted\Groups.cs" />
+    <Compile Include="Data\FilePersisted\Favorites.cs" />
+    <Compile Include="Forms\Controls\GroupListViewItem.cs" />
+    <Compile Include="Data\DB\SQLPersistance.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SQLPersistance.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\PersistenceOptionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\OptionPanels\PersistenceOptionPanel.Designer.cs">
+      <DependentUpon>PersistenceOptionPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Network\HelperFunctions.cs" />
     <Compile Include="Network\Services\CommandLineServer.cs" />
     <Compile Include="Network\Services\CommandLineService.cs" />
@@ -344,9 +398,11 @@
     <Compile Include="Data\DataDispatcher.cs" />
     <Compile Include="Data\FavoritesChangedEventArgs.cs" />
     <Compile Include="Forms\Controls\FavoriteIcons.cs" />
-    <Compile Include="Forms\Controls\FavoritesMenuLoader.cs" />
-    <Compile Include="Data\ListStringHelper.cs" />
-    <Compile Include="Data\TagsChangedArgs.cs" />
+    <Compile Include="Forms\Controls\FavoritesMenuLoader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Data\ListsHelper.cs" />
+    <Compile Include="Data\GroupsChangedArgs.cs" />
     <Compile Include="DiskDrivesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -391,7 +447,7 @@
     <Compile Include="Forms\Controls\IPAddressControl\IPAddressFieldControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Forms\Controls\TagMenuItem.cs">
+    <Compile Include="Forms\Controls\GroupMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\OptionPanels\DefaultPasswordOptionPanel.Designer.cs">
@@ -430,7 +486,7 @@
     <Compile Include="Forms\Render\Office2007BlueColorTable.cs" />
     <Compile Include="Forms\Render\Office2007Helpers.cs" />
     <Compile Include="Forms\Render\Office2007Renderer.cs" />
-    <Compile Include="Forms\Controls\TagTreeNode.cs" />
+    <Compile Include="Forms\Controls\GroupTreeNode.cs" />
     <Compile Include="Data\History\ConnectionHistory.cs" />
     <Compile Include="Data\History\HistoryByFavorite.cs" />
     <Compile Include="Data\History\HistoryItem.cs" />
@@ -554,7 +610,7 @@
     <Compile Include="Data\SerializableDictionary.cs" />
     <Compile Include="Data\SerializableSortedDictionary.cs" />
     <Compile Include="Settings\ConfigurationChangedEventArgs.cs" />
-    <Compile Include="Settings\FavoritesFactory.cs" />
+    <Compile Include="Data\FilePersisted\Factory.cs" />
     <Compile Include="Settings\Settings_FavoriteButtons.cs" />
     <Compile Include="Settings\Settings_Favorites.cs" />
     <Compile Include="Settings\Settings_FileAccess.cs" />
@@ -846,6 +902,9 @@
     <EmbeddedResource Include="Forms\OptionPanels\MasterPasswordOptionpanel.resx">
       <DependentUpon>MasterPasswordOptionpanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OptionPanels\PersistenceOptionPanel.resx">
+      <DependentUpon>PersistenceOptionPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\ProxyOptionPanel.resx">
       <DependentUpon>ProxyOptionPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -979,10 +1038,20 @@
     <Compile Include="Wizard\MMC\MMCFile.cs" />
     <Compile Include="Wizard\PasswordStrength.cs" />
     <Compile Include="Wizard\SpecialCommandsWizard.cs" />
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Migrated rules for Terminals.ruleset" />
+    <None Include="Data\DB\Terminals.mdf" />
+    <Content Include="Data\DB\Terminals_log.LDF">
+      <DependentUpon>Terminals.mdf</DependentUpon>
+    </Content>
     <Content Include="Resources\amber.png" />
     <Content Include="Resources\back.png" />
+    <EntityDeploy Include="Data\DB\SQLPersistance.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>SQLPersistance.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="Properties\DataSources\FavoriteConfigurationElement.datasource" />
     <None Include="Properties\DataSources\Terminals.Network.ActiveDirectoryComputer.datasource" />
     <None Include="Properties\DataSources\Terminals.Scanner.NetworkScanResult.datasource" />
@@ -1004,6 +1073,9 @@
     <None Include="Resources\treeIcon_http.png" />
     <None Include="Resources\treeIcon_rdp.png" />
     <Content Include="Resources\RotatedHeaderForWizard.png" />
+    <Content Include="Resources\terminalsbanner-install.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\terminalsbanner-left.png" />
     <Content Include="Resources\terminalsbanner-small.png" />
     <Content Include="Resources\terminalsbanner.png" />
@@ -1371,10 +1443,26 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SQL.Server.Compact.3.5">
+      <Visible>False</Visible>
+      <ProductName>SQL Server Compact 3.5 SP2</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Sql.Server.Express.10.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server 2008 Express</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

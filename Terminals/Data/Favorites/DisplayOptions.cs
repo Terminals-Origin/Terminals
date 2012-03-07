@@ -3,7 +3,7 @@
 namespace Terminals.Data
 {
     [Serializable]
-    public class DisplayOptions
+    public class DisplayOptions : IDisplayOptions
     {
         public Int32 Height { get; set; }
         public Int32 Width { get; set; }
@@ -32,6 +32,17 @@ namespace Terminals.Data
             {
                 colors = value;
             }
+        }
+
+        internal DisplayOptions Copy()
+        {
+            return new DisplayOptions
+                {
+                    Height = this.Height,
+                    Width = this.Width,
+                    DesktopSize = this.DesktopSize,
+                    Colors = this.Colors
+                };
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Metro;
 using Metro.Scanning;
 using Terminals.Connections;
+using Terminals.Data;
 using Terminals.Integration.Import;
 
 namespace Terminals.Wizard

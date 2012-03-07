@@ -23,7 +23,7 @@ namespace Terminals.Configuration
             EditFavoriteInSettings(favorite, oldName);
 
             SaveAndFinishDelayedUpdate();
-            DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
+            // DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
         }
 
         [Obsolete("Use new persistance instead.")]
@@ -86,7 +86,7 @@ namespace Terminals.Configuration
         private static void UpdateFavorite(string oldName, FavoriteConfigurationElement favorite)
         {
             EditFavoriteInSettings(favorite, oldName);
-            DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
+            //DataDispatcher.Instance.ReportFavoriteUpdated(oldName, favorite);
         }
 
         private static void EditFavoriteInSettings(FavoriteConfigurationElement favorite, string oldName)
@@ -101,16 +101,16 @@ namespace Terminals.Configuration
         {
             FavoriteConfigurationElement favoriteToDelete = GetOneFavorite(name);
             DeleteFavoriteFromSettings(name);
-            List<String> deletedTags = DeleteTagsFromSettings(favoriteToDelete.TagList);
-            DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
-            DataDispatcher.Instance.ReportFavoriteDeleted(favoriteToDelete);
+            DeleteTagsFromSettings(favoriteToDelete.TagList);
+            //DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
+            //DataDispatcher.Instance.ReportFavoriteDeleted(favoriteToDelete);
         }
 
         private static void DeleteFavoriteFromSettings(string name)
         {
             GetSection().Favorites.Remove(name);
             SaveImmediatelyIfRequested();
-            DeleteFavoriteButton(name);
+            // DeleteFavoriteButton(name);
         }
 
         [Obsolete("Use new persistance instead.")]
@@ -129,8 +129,8 @@ namespace Terminals.Configuration
             }
 
             SaveAndFinishDelayedUpdate();
-            DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
-            DataDispatcher.Instance.ReportFavoritesDeleted(favorites);
+            //DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
+            //DataDispatcher.Instance.ReportFavoritesDeleted(favorites);
         }
 
         [Obsolete("Use new persistance instead.")]
@@ -138,8 +138,8 @@ namespace Terminals.Configuration
         {
             AddFavoriteToSettings(favorite);
             List<String> addedTags = AddTagsToSettings(favorite.TagList);
-            DataDispatcher.Instance.ReportTagsAdded(addedTags);
-            DataDispatcher.Instance.ReportFavoriteAdded(favorite);
+            //DataDispatcher.Instance.ReportTagsAdded(addedTags);
+            //DataDispatcher.Instance.ReportFavoriteAdded(favorite);
         }
 
         /// <summary>
@@ -166,15 +166,15 @@ namespace Terminals.Configuration
             foreach (FavoriteConfigurationElement favorite in favorites)
             {
                 AddFavoriteToSettings(favorite);
-                List<String> difference = ListStringHelper.GetMissingSourcesInTarget(favorite.TagList, tagsToAdd);
+                List<String> difference = ListsHelper.GetMissingSourcesInTarget(favorite.TagList, tagsToAdd);
                 tagsToAdd.AddRange(difference);
             }
 
             List<String> addedTags = AddTagsToSettings(tagsToAdd);
             SaveAndFinishDelayedUpdate();
 
-            DataDispatcher.Instance.ReportTagsAdded(addedTags);
-            DataDispatcher.Instance.ReportFavoritesAdded(favorites);
+            //DataDispatcher.Instance.ReportTagsAdded(addedTags);
+            //DataDispatcher.Instance.ReportFavoritesAdded(favorites);
         }
 
         [Obsolete("Use new persistance instead.")]
@@ -249,7 +249,7 @@ namespace Terminals.Configuration
 
         private static void UpdateFavoritePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            foreach (FavoriteConfigurationElement favorite in GetFavorites())
+            foreach (IFavorite favorite in Persistance.Instance.Favorites)
             {
                 favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
             }

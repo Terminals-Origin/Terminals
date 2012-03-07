@@ -58,16 +58,52 @@ namespace Terminals.Data
             }
             set
             {
-                String drives = String.Empty;
+                String newdrives = String.Empty;
                 for (Int32 i = 0; i < value.Count; i++)
                 {
-                    drives += value[i];
+                    newdrives += value[i];
                     if (i < value.Count - 1)
-                        drives += ";";
+                        newdrives += ";";
                 }
 
-                drives = drives;
+                drives = newdrives;
             }
+        }
+
+        internal RdpRedirectOptions Copy()
+        {
+            return new RdpRedirectOptions
+                {
+                    Ports = this.Ports,
+                    Printers = this.Printers,
+                    SmartCards = this.SmartCards,
+                    Devices = this.Devices,
+                    Sounds = this.Sounds,
+                    Clipboard = this.Clipboard,
+                    drives = this.drives
+                };
+        }
+
+        internal void FromConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            this.Clipboard = favorite.RedirectClipboard;
+            this.Devices = favorite.RedirectDevices;
+            this.drives = favorite.redirectedDrives;
+            this.Ports = favorite.RedirectPorts;
+            this.Printers = favorite.RedirectPrinters;
+            this.SmartCards = favorite.RedirectSmartCards;
+            this.Sounds = favorite.Sounds;
+        }
+
+        internal void ToConfigFavorite(FavoriteConfigurationElement favorite)
+        {
+            favorite.RedirectClipboard = this.Clipboard;
+            favorite.RedirectDevices = this.Devices;
+            favorite.redirectedDrives = this.drives;
+            favorite.RedirectPorts = this.Ports;
+            favorite.RedirectPrinters = this.Printers;
+            favorite.RedirectSmartCards = this.SmartCards;
+            favorite.Sounds = this.Sounds;
         }
     }
 }

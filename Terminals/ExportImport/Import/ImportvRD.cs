@@ -8,6 +8,7 @@ using System.Security.Principal;
 using System.IO;
 using System.Xml.Serialization;
 using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Forms;
 using vRdImport;
 
@@ -105,35 +106,36 @@ namespace Terminals.Integration.Import
 
         private void SaveCredentials(Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials)
         {
+            ICredentials storedCredentials = Persistance.Instance.Credentials;
             foreach (string guid in credentials.Keys)
             {
                 vRDConfigurationFileCredentialsFolderCredentials toImport = credentials[guid];
                 //will store the last one if the same credential name 
-                CredentialSet destination = StoredCredentials.Instance.GetByName(toImport.Name);
+                ICredentialSet destination = storedCredentials[toImport.Name];
                 if (destination == null)
                 {
-                  destination = new CredentialSet();
-                  StoredCredentials.Instance.Add(destination);
+                    destination = Persistance.Instance.Factory.CreateCredentialSet();
+                    storedCredentials.Add(destination);
                 }
 
                 UpdateFromvrDCredentials(toImport, destination);
             }
 
-            StoredCredentials.Instance.Save();
+            storedCredentials.Save();
         }
 
-      private static void UpdateFromvrDCredentials(vRDConfigurationFileCredentialsFolderCredentials source,
-                                                   CredentialSet target)
-      {
-        target.Domain = source.Domain;
-        target.Name = source.Name;
-        target.SecretKey = source.Password;
-        target.Username = source.UserName;
-      }
+        private static void UpdateFromvrDCredentials(vRDConfigurationFileCredentialsFolderCredentials source,
+                                                     ICredentialSet target)
+        {
+            target.Domain = source.Domain;
+            target.Name = source.Name;
+            target.Password = source.Password;
+            target.UserName = source.UserName;
+        }
 
-      private List<FavoriteConfigurationElement> ConvertVRDConnectionCollectionToLocal(Connection[] connections, vRDConfigurationFileConnectionsFolder[] folders,
-          vRDConfigurationFileConnectionsFolderFolder[] subFolders, String connectionTag,
-          Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials)
+        private List<FavoriteConfigurationElement> ConvertVRDConnectionCollectionToLocal(Connection[] connections, vRDConfigurationFileConnectionsFolder[] folders,
+            vRDConfigurationFileConnectionsFolderFolder[] subFolders, String connectionTag,
+            Dictionary<string, vRDConfigurationFileCredentialsFolderCredentials> credentials)
         {
             List<FavoriteConfigurationElement> coll = new List<FavoriteConfigurationElement>();
             //covert vrd connection
@@ -251,7 +253,7 @@ namespace Terminals.Integration.Import
 
         public string Name
         {
-          get { return "Visionapp Remote Desktop"; }
+            get { return "Visionapp Remote Desktop"; }
         }
 
         public string KnownExtension

@@ -1,28 +1,35 @@
 ﻿using System;
 using System.Windows.Forms;
-using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Credentials
 {
     internal partial class ManageCredentialForm : Form
     {
         private string editedCredentialName = "";
+        private ICredentialSet editedCredential;
 
-        internal ManageCredentialForm(CredentialSet editedCredential)
+        private static ICredentials Credentials
+        {
+            get { return Persistance.Instance.Credentials; }
+        }
+
+        internal ManageCredentialForm(ICredentialSet editedCredential)
         {
             InitializeComponent();
 
-            FillControlsFromCredential(editedCredential);
+            this.editedCredential = editedCredential;
+            FillControlsFromCredential();
         }
 
-        private void FillControlsFromCredential(CredentialSet editedCredential)
+        private void FillControlsFromCredential()
         {
-            if (editedCredential != null)
+            if (this.editedCredential != null)
             {
                 this.NameTextbox.Text = editedCredential.Name;
                 this.DomainTextbox.Text = editedCredential.Domain;
-                this.UsernameTextbox.Text = editedCredential.Username;
-                if(!string.IsNullOrEmpty(editedCredential.Password))
+                this.UsernameTextbox.Text = editedCredential.UserName;
+                if(!string.IsNullOrEmpty(editedCredential.EncryptedPassword))
                     this.PasswordTextbox.Text = NewTerminalForm.HIDDEN_PASSWORD;
                 this.editedCredentialName = editedCredential.Name;
             }
@@ -40,7 +47,7 @@ namespace Terminals.Credentials
 
             if (UpdateCredential())
             {
-                StoredCredentials.Instance.Save();
+                Credentials.Save();
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -48,32 +55,38 @@ namespace Terminals.Credentials
 
         private bool UpdateCredential()
         {
-            CredentialSet conflicting = StoredCredentials.Instance.GetByName(this.NameTextbox.Text);
-            CredentialSet oldItem = StoredCredentials.Instance.GetByName(this.editedCredentialName);
-
-            if (conflicting != null && this.editedCredentialName != this.NameTextbox.Text)
+            ICredentialSet conflicting = Credentials[this.NameTextbox.Text];
+            if (conflicting != null && !conflicting.Equals(this.editedCredential) &&
+                EditedNameHasChanged())
             {
-                return UpdateConflicting(conflicting, oldItem);
+                return UpdateConflicting(conflicting, this.editedCredential);
             }
 
-            UpdateOldOrCreateNew(oldItem);
+            UpdateOldOrCreateNew();
             return true;
         }
 
-        private void UpdateOldOrCreateNew(CredentialSet oldItem)
+        private void UpdateOldOrCreateNew()
         {
-            if (oldItem == null || this.editedCredentialName != this.NameTextbox.Text)
+            bool nameChanded = EditedNameHasChanged();
+            if (this.editedCredential == null || nameChanded)
             {
-                CredentialSet newCredential = this.CreateNewCredential();
-                StoredCredentials.Instance.Add(newCredential);
+                ICredentialSet newCredential = this.CreateNewCredential();
+                Credentials.Add(newCredential);
             }
             else
             {
-                this.UpdateFromControls(oldItem);
+                this.UpdateFromControls(this.editedCredential);
             }
         }
 
-        private bool UpdateConflicting(CredentialSet conflicting, CredentialSet oldItem)
+        private bool EditedNameHasChanged()
+        {
+            return !string.Equals(this.editedCredentialName, this.NameTextbox.Text,
+                StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        private bool UpdateConflicting(ICredentialSet conflicting, ICredentialSet oldItem)
         {
             DialogResult result = MessageBox.Show("The Credential Name you entered already exists.\r\n" +
                                                   "Do you want to overwrite it?", "Credential manager",
@@ -83,25 +96,25 @@ namespace Terminals.Credentials
 
             if (oldItem != null)
             {
-                StoredCredentials.Instance.Remove(oldItem);
+                Credentials.Remove(oldItem);
             }
 
             this.UpdateFromControls(conflicting);
             return true;
         }
 
-        private void UpdateFromControls(CredentialSet toUpdate)
+        private void UpdateFromControls(ICredentialSet toUpdate)
         {
             toUpdate.Domain = this.DomainTextbox.Text;
             toUpdate.Name = this.NameTextbox.Text;
-            toUpdate.Username = this.UsernameTextbox.Text;
+            toUpdate.UserName = this.UsernameTextbox.Text;
             if(this.PasswordTextbox.Text != NewTerminalForm.HIDDEN_PASSWORD)
-                toUpdate.SecretKey = this.PasswordTextbox.Text;
+                toUpdate.Password = this.PasswordTextbox.Text;
         }
 
-        private CredentialSet CreateNewCredential()
+        private ICredentialSet CreateNewCredential()
         {
-            CredentialSet newItem = new CredentialSet();
+            var newItem = Persistance.Instance.Factory.CreateCredentialSet();
             UpdateFromControls(newItem);
             return newItem;
         }

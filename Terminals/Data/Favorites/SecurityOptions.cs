@@ -1,72 +1,94 @@
 ﻿using System;
-using System.Xml.Serialization;
 using Terminals.Configuration;
-using Terminals.Security;
 
 namespace Terminals.Data
 {
     [Serializable]
-    public class SecurityOptions
+    public class SecurityOptions : CredentialBase, ISecurityOptions
     {
-        private string domainName;
-        public String DomainName
+        private Guid credential = Guid.Empty;
+        /// <summary>
+        /// Gets or sets the credential unique identifier in text form.
+        /// Only for serialization to prevent serialization of empty ids.
+        /// </summary>
+        public string Credential
         {
             get
             {
-                CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
-                if (cred != null)
-                    return cred.Domain;
+                if (this.credential == Guid.Empty)
+                    return null;
 
-                return domainName;
+                return this.credential.ToString();
             }
             set
             {
-                domainName = value;
+                if (string.IsNullOrEmpty(value))
+                    this.credential = Guid.Empty;
+                else
+                    this.credential = new Guid(value);
             }
         }
 
-        private string userName;
-        public String UserName
+        Guid ISecurityOptions.Credential
         {
-            get
-            {
-                if (!string.IsNullOrEmpty(Credential))
-                {
-                    CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
-                    if (cred != null)
-                        return cred.Username;
-                }
-
-                return userName;
-            }
-            set
-            {
-                userName = value;
-            }
+            get { return this.credential; }
+            set { this.credential = value; }
         }
 
-        public String EncryptedPassword { get; set; }
+        public SecurityOptions()
+        {
+        }
+
+        internal SecurityOptions Copy()
+        {
+            return new SecurityOptions
+            {
+                Credential = this.Credential,
+                Domain = this.Domain,
+                EncryptedPassword = this.EncryptedPassword,
+                UserName = this.UserName
+            };
+        }
 
         /// <summary>
-        /// Gets or sets the password String in not ecrypted form
+        /// Gets this credentails replaced first by Stored credential and then by default
+        /// stored credentials for each value, if the value is empty
         /// </summary>
-        [XmlIgnore]
-        internal String Password
+        ISecurityOptions ISecurityOptions.GetResolvedCredentials()
         {
-            get
-            {
-                CredentialSet cred = StoredCredentials.Instance.GetByName(Credential);
-                if (cred != null)
-                    return cred.SecretKey;
+            var result = new SecurityOptions();
+            var source = Persistance.Instance.Credentials[this.credential];
+            ((ISecurityOptions)result).UpdateFromCredential(source);
+            UpdateFromDefaultValues(result);
+            return result;
+        }
 
-                return PasswordFunctions.DecryptPassword(EncryptedPassword);
-            }
-            set
+        void ISecurityOptions.UpdateFromCredential(ICredentialSet source)
+        {
+            UpdateFromCredential(source, this);
+        }
+
+        internal static void UpdateFromCredential(ICredentialSet source, ISecurityOptions target)
+        {
+            if (source != null)
             {
-                EncryptedPassword = PasswordFunctions.EncryptPassword(value);
+                target.Credential = source.Id;
+                target.Domain = source.Domain;
+                target.UserName = source.UserName;
+                target.EncryptedPassword = source.EncryptedPassword;
             }
         }
 
-        public String Credential { get; set; }
+        internal static void UpdateFromDefaultValues(ICredentialBase target)
+        {
+            if (string.IsNullOrEmpty(target.Domain))
+                target.Domain = Settings.DefaultDomain;
+
+            if (string.IsNullOrEmpty(target.UserName))
+                target.UserName = Settings.DefaultUsername;
+
+            if (string.IsNullOrEmpty(target.Password))
+                target.Password = Settings.DefaultPassword;
+        }
     }
 }

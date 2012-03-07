@@ -1,4 +1,5 @@
 ﻿using System;
+using Terminals.Data;
 
 namespace Terminals.History
 {
@@ -10,6 +11,11 @@ namespace Terminals.History
         /// <summary>
         /// Gets or sets the favorite name added to the history
         /// </summary>
-        internal string ConnectionName { get; set; }
+        internal IFavorite Favorite { get; private set; }
+
+        internal HistoryRecordedEventArgs(IFavorite favorite)
+        {
+            this.Favorite = favorite;
+        }
     }
 }

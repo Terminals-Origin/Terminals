@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Management;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using Terminals.Configuration;
 using Terminals.Credentials;
 using Terminals.Data;
@@ -16,10 +19,9 @@ namespace Terminals
 {
     internal partial class FavsList : UserControl
     {
-        private MainForm mainForm;
-        public static CredentialSet credSet = new CredentialSet();
+        private MainForm _mainForm;
 
-        private static Favorites PersistedFavorites
+        private static IFavorites PersistedFavorites
         {
             get { return Persistance.Instance.Favorites; }
         }
@@ -38,13 +40,13 @@ namespace Terminals
         }
 
         #region Private methods
-
+        
         private MainForm GetMainForm()
         {
-            if (this.mainForm == null)
-                this.mainForm = MainForm.GetMainForm();
+            if (this._mainForm == null)
+                this._mainForm = MainForm.GetMainForm();
 
-            return this.mainForm;
+            return this._mainForm;
         }
 
         private void Connect(TreeNode SelectedNode, bool AllChildren, bool Console, bool NewWindow)
@@ -53,7 +55,7 @@ namespace Terminals
             {
                 foreach (TreeNode node in SelectedNode.Nodes)
                 {
-                    FavoriteConfigurationElement fav = (node.Tag as FavoriteConfigurationElement);
+                    var fav = node.Tag as IFavorite;
                     if (fav != null)
                     {
                         this.GetMainForm().Connect(fav.Name, Console, NewWindow);
@@ -62,7 +64,7 @@ namespace Terminals
             }
             else
             {
-                FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+                IFavorite fav = this.favsTree.SelectedFavorite;
                 if (fav != null)
                 {
                     this.GetMainForm().Connect(fav.Name, Console, NewWindow);
@@ -89,35 +91,35 @@ namespace Terminals
 
         private void pingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("Ping", fav.ServerName);
         }
 
         private void dNSToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("DNS", fav.ServerName);
         }
 
         private void traceRouteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("Trace", fav.ServerName);
         }
 
         private void tSAdminToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("TSAdmin", fav.ServerName);
         }
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().ShowManageTerminalForm(fav);
         }
@@ -128,7 +130,7 @@ namespace Terminals
             String msg = String.Empty;
             NetTools.MagicPacket.ShutdownCommands shutdownStyle;
 
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
                 if (menuItem.Equals(this.shutdownToolStripMenuItem))
@@ -148,15 +150,8 @@ namespace Terminals
 
                 if (MessageBox.Show(msg, Program.Resources.GetString("Confirmation"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(fav.UserName, fav.Password, fav.DomainName);
-                    if (String.IsNullOrEmpty(credentials.Domain))
-                        credentials.Domain = Settings.DefaultDomain;
-
-                    if (String.IsNullOrEmpty(credentials.UserName))
-                        credentials.UserName = Settings.DefaultUsername;
-
-                    if (String.IsNullOrEmpty(credentials.Password))
-                        credentials.Password = Settings.DefaultPassword;
+                    ISecurityOptions security = fav.Security.GetResolvedCredentials();
+                    NetworkCredential credentials = new NetworkCredential(security.UserName, security.Password, security.Domain);
 
                     try
                     {
@@ -166,7 +161,7 @@ namespace Terminals
                             return;
                         }
                     }
-                    catch (System.Management.ManagementException ex)
+                    catch (ManagementException ex)
                     {
                         Logging.Log.Info(ex.ToString(), ex);
                         MessageBox.Show(Program.Resources.GetString("UnableToRemoteShutdown") + "\r\nPlease check the log file.");
@@ -186,11 +181,11 @@ namespace Terminals
 
         private void enableRDPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
-                Microsoft.Win32.RegistryKey reg = Microsoft.Win32.RegistryKey.OpenRemoteBaseKey(Microsoft.Win32.RegistryHive.LocalMachine, fav.ServerName);
-                Microsoft.Win32.RegistryKey ts = reg.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Terminal Server", true);
+                RegistryKey reg = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, fav.ServerName);
+                RegistryKey ts = reg.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Terminal Server", true);
                 Object deny = ts.GetValue("fDenyTSConnections");
                 if (deny != null)
                 {
@@ -227,7 +222,7 @@ namespace Terminals
 
         private void computerManagementMMCToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
                 Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + fav.ServerName);
@@ -237,7 +232,7 @@ namespace Terminals
 
         private void systemInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
                 String programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
@@ -256,7 +251,8 @@ namespace Terminals
             InputBoxResult result = InputBox.Show("Set Credential by Tag\r\n\r\nThis will replace the credential used for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Credential" + " - " + tagName);
             if (result.ReturnCode == DialogResult.OK)
             {
-                if (StoredCredentials.Instance.GetByName(result.Text) == null)
+                ICredentialSet credential = Persistance.Instance.Credentials[result.Text];
+                if (credential == null)
                 {
                     MessageBox.Show("The credential you specified does not exist.");
                     return;
@@ -265,8 +261,8 @@ namespace Terminals
                 this.GetMainForm().Cursor = Cursors.WaitCursor;
                 Application.DoEvents();
 
-                var selectedFavorites = GetSelectedFavorites();
-                PersistedFavorites.ApplyCredentialsForAllSelectedFavorites(selectedFavorites, result.Text);
+                var selectedFavorites  = GetSelectedFavorites();
+                PersistedFavorites.ApplyCredentialsToAllFavorites(selectedFavorites, credential);
 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -274,10 +270,10 @@ namespace Terminals
             }
         }
 
-        private List<FavoriteConfigurationElement> GetSelectedFavorites()
+        private List<IFavorite> GetSelectedFavorites()
         {
-            return this.favsTree.SelectedNode.Nodes.Cast<TreeNode>()
-                .Select(node => node.Tag as FavoriteConfigurationElement)
+            return this.favsTree.SelectedNode.Nodes.Cast<FavoriteTreeNode>()
+                .Select(node => node.Favorite)
                 .ToList();
         }
 
@@ -291,7 +287,7 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites = GetSelectedFavorites();
-                PersistedFavorites.SetPasswordToAllSelectedFavorites(selectedFavorites, result.Text);
+                PersistedFavorites.SetPasswordToAllFavorites(selectedFavorites, result.Text);
 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -309,7 +305,7 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites = GetSelectedFavorites();
-                PersistedFavorites.ApplyDomainNameToAllSelectedFavorites(selectedFavorites, result.Text);
+                PersistedFavorites.ApplyDomainNameToAllFavorites(selectedFavorites, result.Text);
 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -327,7 +323,7 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites = GetSelectedFavorites();
-                PersistedFavorites.ApplyUserNameToAllSelectedFavorites(selectedFavorites, result.Text);
+                PersistedFavorites.ApplyUserNameToAllFavorites(selectedFavorites, result.Text);
 
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
@@ -345,8 +341,8 @@ namespace Terminals
                 Application.DoEvents();
 
                 var selectedFavorites = GetSelectedFavorites();
-                PersistedFavorites.DeleteFavorites(selectedFavorites);
-
+                Persistance.Instance.Favorites.Delete(selectedFavorites);
+                
                 this.GetMainForm().Cursor = Cursors.Default;
                 Application.DoEvents();
                 MessageBox.Show("Delete all Favorites by Tag Complete.");
@@ -355,10 +351,10 @@ namespace Terminals
 
         private void removeSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
-            if (fav != null)
+            IFavorite favorite = this.favsTree.SelectedFavorite;
+            if (favorite != null)
             {
-                PersistedFavorites.DeleteFavorite(fav.Name);
+                PersistedFavorites.Delete(favorite);
             }
         }
 
@@ -423,35 +419,37 @@ namespace Terminals
             this.connectAsToolStripMenuItem.DropDownItems.Clear();
             this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
 
-            List<CredentialSet> list = StoredCredentials.Instance.Items;
-
-            foreach (CredentialSet s in list)
+            IEnumerable<ICredentialSet> credentials = Persistance.Instance.Credentials;
+            foreach (ICredentialSet credential in credentials)
             {
-                this.connectAsToolStripMenuItem.DropDownItems.Add(s.Name, null, new EventHandler(this.connectAsCred_Click));
+                var menuItem = new ToolStripMenuItem(credential.Name, null, new EventHandler(this.connectAsCred_Click));
+                menuItem.Tag = credential.Id;
+                this.connectAsToolStripMenuItem.DropDownItems.Add(menuItem);
             }
         }
 
         private void connectAsCred_Click(object sender, EventArgs e)
         {
-            FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
-            if (fav != null)
+            IFavorite favorite = this.favsTree.SelectedFavorite;
+            if (favorite != null)
             {
-                this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked,
-                                           this.newWindowToolStripMenuItem.Checked,
-                                           StoredCredentials.Instance.GetByName(sender.ToString()));
+                var menuItem = sender as ToolStripItem;
+                var credential = Persistance.Instance.Credentials[(Guid)menuItem.Tag];
+                this.GetMainForm().Connect(favorite.Name, this.consoleToolStripMenuItem.Checked,
+                                           this.newWindowToolStripMenuItem.Checked, credential);
             }
         }
 
         private void userConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form usrForm = new UserSelectForm();
-            usrForm.ShowDialog(this.GetMainForm());
-            if (credSet != null)
+            var usrForm = new UserSelectForm();
+            if (usrForm.ShowDialog() == DialogResult.OK)
             {
-                FavoriteConfigurationElement fav = this.favsTree.SelectedFavorite;
-                if (fav != null)
+                IFavorite selectedFavorite = this.favsTree.SelectedFavorite;
+                if (selectedFavorite != null)
                 {
-                    this.GetMainForm().Connect(fav.Name, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked, credSet);
+                    this.GetMainForm().Connect(selectedFavorite.Name, this.consoleToolStripMenuItem.Checked,
+                        this.newWindowToolStripMenuItem.Checked, usrForm.Credentials);
                 }
             }
         }
@@ -467,7 +465,6 @@ namespace Terminals
         }
 
         #endregion
-
 
         public void SaveState()
         {

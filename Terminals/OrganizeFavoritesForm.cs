@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -14,10 +15,10 @@ namespace Terminals
     internal partial class OrganizeFavoritesForm : Form
     {
         private string editedFavoriteName = String.Empty;
-        private FavoriteConfigurationElement editedFavorite;
+        private IFavorite editedFavorite;
         internal MainForm MainForm { get; set; }
 
-        private Favorites PersistedFavorites
+        private static IFavorites PersistedFavorites
         {
             get { return Persistance.Instance.Favorites; }
         }
@@ -33,8 +34,8 @@ namespace Terminals
 
         private void InitializeDataGrid()
         {
-            this.dataGridFavorites.AutoGenerateColumns = false;
-            this.bsFavorites.DataSource = PersistedFavorites.GetFavorites().ToListOrderedByDefaultSorting();
+            this.dataGridFavorites.AutoGenerateColumns = false; // because of designer
+            this.bsFavorites.DataSource = PersistedFavorites.ToListOrderedByDefaultSorting();
             string sortingProperty = FavoriteConfigurationElement.GetDefaultSortPropertyName();
             DataGridViewColumn sortedColumn = this.dataGridFavorites.FindColumnByPropertyName(sortingProperty);
             sortedColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
@@ -48,7 +49,7 @@ namespace Terminals
             this.lblConnectionCount.Text = this.bsFavorites.Count.ToString();
         }
 
-        private void EditFavorite(FavoriteConfigurationElement favorite)
+        private void EditFavorite(IFavorite favorite)
         {
             NewTerminalForm frmNewTerminal = new NewTerminalForm(favorite);
             if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
@@ -57,10 +58,10 @@ namespace Terminals
             }
         }
 
-        private FavoriteConfigurationElement GetSelectedFavorite()
+        private IFavorite GetSelectedFavorite()
         {
             if (dataGridFavorites.SelectedRows.Count > 0)
-                return dataGridFavorites.SelectedRows[0].DataBoundItem as FavoriteConfigurationElement;
+                return dataGridFavorites.SelectedRows[0].DataBoundItem as IFavorite;
             return null;
         }
 
@@ -84,9 +85,8 @@ namespace Terminals
 
         private void dataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            // the only editable cell should be name
-            this.editedFavoriteName = dataGridFavorites.CurrentCell.Value.ToString();
-            this.editedFavorite = this.dataGridFavorites.SelectedRows[0].DataBoundItem as FavoriteConfigurationElement;
+            this.editedFavorite = this.dataGridFavorites.SelectedRows[0].DataBoundItem as IFavorite;
+            this.editedFavoriteName = this.editedFavorite.Name;
         }
 
         /// <summary>
@@ -97,29 +97,58 @@ namespace Terminals
             if (String.IsNullOrEmpty(this.editedFavorite.Name)) // cancel or nothing changed
                 editedFavorite.Name = this.editedFavoriteName;
             if (editedFavorite.Name.Equals(this.editedFavoriteName, StringComparison.CurrentCultureIgnoreCase))
-                return;
-
-            var copy = editedFavorite.Clone() as FavoriteConfigurationElement;
-            editedFavorite.Name = this.editedFavoriteName;
-            var oldFavorite = PersistedFavorites.GetOneFavorite(copy.Name);
-            if (oldFavorite != null)
             {
-                string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", copy.Name);
-                if (MessageBox.Show(this, message, "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    ReplaceFavoriteInBindingSource(copy);
-                }
+                editedFavorite.Name = this.editedFavoriteName;
+                return;
+            }
+
+            UpdateFavoritePreservingDuplicitNames(this.editedFavoriteName, editedFavorite.Name, this.editedFavorite);
+            this.UpdateFavoritesBindingSource();
+        }
+
+        /// <summary>
+        /// Asks user, if wants to overwrite already present favorite the newName by conflicting (editedFavorite).
+        /// </summary>
+        /// <param name="oldName">The olready present favorite name to check.</param>
+        /// <param name="newName">The newly assigned name of edited favorite.</param>
+        /// <param name="editedFavorite">The currently edited favorite to update.</param>
+        internal static void UpdateFavoritePreservingDuplicitNames(string oldName, string newName, IFavorite editedFavorite)
+        {
+            IFavorites persistedFavorites = Persistance.Instance.Favorites;
+            editedFavorite.Name = oldName; // to prevent find it self as oldFavorite
+            var oldFavorite = persistedFavorites[newName];
+            if (oldFavorite != null && !editedFavorite.Equals(oldFavorite)) // prevent conflict with another favorite than edited
+            {
+                OverwriteByConflictingName(newName, oldFavorite, editedFavorite);
             }
             else
             {
-                ReplaceFavoriteInBindingSource(copy);
+                editedFavorite.Name = newName;
+                // dont have to update buttons here, because they arent changed
+                persistedFavorites.Update(editedFavorite);
             }
         }
 
-        private void ReplaceFavoriteInBindingSource(FavoriteConfigurationElement copy)
+        private static void OverwriteByConflictingName(string newName, IFavorite oldFavorite, IFavorite editedFavorite)
         {
-            PersistedFavorites.EditFavorite(this.editedFavoriteName, copy);
-            this.UpdateFavoritesBindingSource();
+            if (AskUserIfWantsToOverwrite(newName))
+            {
+                IFavorites persistedFavorites = Persistance.Instance.Favorites;
+                Persistance.Instance.StartDelayedUpdate();
+                var groups = editedFavorite.Groups;
+                persistedFavorites.Delete(editedFavorite);
+                editedFavorite.Id = oldFavorite.Id;
+                editedFavorite.Name = newName;
+                persistedFavorites.Update(editedFavorite);
+                persistedFavorites.UpdateFavorite(editedFavorite, groups);
+                Persistance.Instance.SaveAndFinishDelayedUpdate();
+            }
+        }
+
+        private static bool AskUserIfWantsToOverwrite(string newName)
+        {
+            string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", newName);
+            return MessageBox.Show(message, "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
         private void OrganizeFavoritesForm_Shown(object sender, EventArgs e)
@@ -158,7 +187,7 @@ namespace Terminals
         /// </summary>
         private void UpdateFavoritesBindingSource()
         {
-            var data = PersistedFavorites.GetFavorites().ToListOrderedByDefaultSorting();
+            var data = PersistedFavorites.ToListOrderedByDefaultSorting();
 
             DataGridViewColumn lastSortedColumn = this.dataGridFavorites.FindLastSortedColumn();
             if (lastSortedColumn != null) // keep last ordered column
@@ -186,7 +215,7 @@ namespace Terminals
             DataGridViewColumn column = this.dataGridFavorites.Columns[e.ColumnIndex];
 
             SortOrder newSortDirection = SortableUnboundGrid.GetNewSortDirection(lastSortedColumn, column);
-            var data = this.bsFavorites.DataSource as SortableList<FavoriteConfigurationElement>;
+            var data = this.bsFavorites.DataSource as SortableList<IFavorite>;
             this.bsFavorites.DataSource = data.SortByProperty(column.DataPropertyName, newSortDirection);
             column.HeaderCell.SortGlyphDirection = newSortDirection;
         }
@@ -214,7 +243,7 @@ namespace Terminals
 
         private void EditFavorite()
         {
-            FavoriteConfigurationElement favorite = this.GetSelectedFavorite();
+            IFavorite favorite = this.GetSelectedFavorite();
             if (favorite != null)
                 this.EditFavorite(favorite);
         }
@@ -231,18 +260,19 @@ namespace Terminals
                 return;
 
             this.Cursor = Cursors.WaitCursor;
-            List<FavoriteConfigurationElement> selectedFavorites = GetSelectedFavorites();
-            PersistedFavorites.DeleteFavorites(selectedFavorites);
+            List<IFavorite> selectedFavorites = GetSelectedFavorites();
+            PersistedFavorites.Delete(selectedFavorites);
+
             this.UpdateFavoritesBindingSource();
             this.Cursor = Cursors.Default;
         }
 
-        private List<FavoriteConfigurationElement> GetSelectedFavorites()
+        private List<IFavorite> GetSelectedFavorites()
         {
-            var selectedFavorites = new List<FavoriteConfigurationElement>();
+            var selectedFavorites = new List<IFavorite>();
             foreach (DataGridViewRow selectedRow in this.dataGridFavorites.SelectedRows)
             {
-                var selectedFavorite = selectedRow.DataBoundItem as FavoriteConfigurationElement;
+                var selectedFavorite = selectedRow.DataBoundItem as IFavorite;
                 selectedFavorites.Add(selectedFavorite);
             }
             return selectedFavorites;
@@ -256,7 +286,7 @@ namespace Terminals
 
         private void CopySelectedFavorite()
         {
-            FavoriteConfigurationElement favorite = this.GetSelectedFavorite();
+            IFavorite favorite = this.GetSelectedFavorite();
             if (favorite != null)
             {
                 InputBoxResult result = InputBox.Show("New Connection Name");
@@ -267,17 +297,16 @@ namespace Terminals
             }
         }
 
-        private void CopySelectedFavorite(FavoriteConfigurationElement favorite, string newName)
+        private void CopySelectedFavorite(IFavorite favorite, string newName)
         {
-            FavoriteConfigurationElement newFav = favorite.Clone() as FavoriteConfigurationElement;
-            if (newFav != null)
-            {
-                newFav.Name = newName;
-                PersistedFavorites.AddFavorite(newFav);
-                if (Settings.HasToolbarButton(favorite.Name))
-                    Settings.AddFavoriteButton(newFav.Name);
-                this.UpdateFavoritesBindingSource();
-            }
+            IFavorite copy = favorite.Copy();
+            copy.Name = newName;
+            PersistedFavorites.Add(copy);
+            PersistedFavorites.UpdateFavorite(copy, favorite.Groups);
+            
+            if (Settings.HasToolbarButton(favorite.Id))
+                Settings.AddFavoriteButton(copy.Id);
+            this.UpdateFavoritesBindingSource();
         }
 
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -329,11 +358,12 @@ namespace Terminals
         {
             if (MainForm != null)
             {
-                FavoriteConfigurationElement favorite = GetSelectedFavorite();
-                if (favorite != null)
-                {
-                    MainForm.Connect(favorite.Name, favorite.ConnectToConsole, favorite.NewWindow);
-                }
+                IFavorite favorite = GetSelectedFavorite();
+                bool console = false;
+                RdpOptions rdpOptions = favorite.ProtocolProperties as RdpOptions;
+                if (rdpOptions != null)
+                    console = rdpOptions.ConnectToConsole;
+                MainForm.Connect(favorite.Name, console, favorite.NewWindow);
             }
         }
     }

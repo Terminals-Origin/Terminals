@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
-using TabControl;
-using Terminals.Connections;
+using Terminals.Data;
 
 namespace Terminals
 {
@@ -23,16 +21,25 @@ namespace Terminals
             this.mainTabsControler = mainTabsControler;
         }
 
+        internal IFavorite Favorite
+        {
+            get
+            {
+                var tabControl = this.tabControl1.Items[0] as TerminalTabControlItem;
+                return tabControl.Connection.Favorite;
+            }
+        }
+
         internal void AddTerminal(TerminalTabControlItem TabControlItem)
         {
             this.tabControl1.AddTab(TabControlItem);
             this.Text = TabControlItem.Connection.Favorite.Name;
         }
 
-        internal void UpdateTitle(string newTitle)
+        internal void UpdateTitle()
         {
-            this.tabControl1.Items[0].Title = newTitle;
-            this.Text = newTitle;
+            this.Text = this.Favorite.Name;
+            this.tabControl1.Items[0].Title = this.Text;
         }
 
         private void PopupTerminal_Load(object sender, EventArgs e)

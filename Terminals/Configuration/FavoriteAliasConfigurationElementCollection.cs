@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Configuration;
+using System.Linq;
 
 namespace Terminals
 {
@@ -139,6 +139,13 @@ namespace Terminals
         public void Clear()
         {
             BaseClear();
+        }
+
+        internal List<string> GetFavoriteNames()
+        {
+            return this.Cast<FavoriteAliasConfigurationElement>()
+                    .Select(favoriteAlias => favoriteAlias.Name)
+                    .ToList();
         }
     }
 

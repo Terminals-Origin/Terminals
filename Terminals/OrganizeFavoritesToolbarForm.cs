@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals
 {
@@ -10,9 +12,15 @@ namespace Terminals
         public OrganizeFavoritesToolbarForm()
         {
             InitializeComponent();
-            foreach (string favoriteButton in Settings.FavoritesToolbarButtons)
+
+            var favoritesWithButton = Persistance.Instance.Favorites
+                .Where(candidate => Settings.FavoritesToolbarButtons.Contains(candidate.Id));
+
+            foreach (IFavorite favoriteWithButton in favoritesWithButton)
             {
-                lvFavoriteButtons.Items.Add(favoriteButton);
+                ListViewItem favoriteItem = new ListViewItem(favoriteWithButton.Name);
+                favoriteItem.Tag = favoriteWithButton.Id;
+                lvFavoriteButtons.Items.Add(favoriteItem);
             }
         }
 
@@ -66,12 +74,12 @@ namespace Terminals
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            List<string> names = new List<string>();
+            var favoriteIds = new List<Guid>();
             foreach (ListViewItem item in lvFavoriteButtons.Items)
             {
-                names.Add(item.Text);
+                favoriteIds.Add((Guid)item.Tag);
             }
-            Settings.UpdateFavoritesToolbarButtons(names);
+            Settings.UpdateFavoritesToolbarButtons(favoriteIds);
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿namespace Terminals.Data
+﻿using System;
+using Terminals.Configuration;
+using Terminals.Data.DB;
+
+namespace Terminals.Data
 {
     internal class Persistance
     {
@@ -6,15 +10,26 @@
 
         private Persistance()
         {
-            this.persistance = new FilePersistance(DataDispatcher.Instance);
-            // todo choose and initialize persistance type defined by settings
-            //persistance.Save();
+            try
+            {
+                if (Settings.PersistenceType == 0)
+                    this.persistance = new FilePersistance();
+                else 
+                    // todo enable SqlPeristance to be created
+                    //this.persistance = new SqlPersistance();
+                    this.persistance = new FilePersistance(); 
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Fatal("Perstance layer failed to load", exception);
+                throw;
+            }
         }
 
         /// <summary>
         /// Gets the thread safe singleton instance of the persistance layer
         /// </summary>
-        public static FilePersistance Instance
+        public static IPersistance Instance
         {
             get
             {
@@ -29,6 +44,6 @@
 
         #endregion
 
-        private FilePersistance persistance;
+        private IPersistance persistance;
     }
 }

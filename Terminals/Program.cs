@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Resources;
 using System.Threading;
@@ -43,24 +42,30 @@ namespace Terminals
             CommandLineArgs commandLine = ParseCommandline();
 
             Logging.Log.Info("State 4 Complete");
+
             if(UserAccountControlNotSatisfied())
                 return;
-
+            
             Logging.Log.Info("State 5 Complete");
+
             if (commandLine.SingleInstance && SingleInstanceApplication.Instance.NotifyExisting(commandLine))
                 return;
 
 
             Logging.Log.Info("State 6 Complete");
+
             UpdateConfig.CheckConfigVersionUpdate();
 
             Logging.Log.Info("State 7 Complete");
+
             UpdateManager.CheckForUpdates(commandLine);
 
             Logging.Log.Info("State 8 Complete");
+
             StartMainForm(commandLine);
 
             Logging.Log.Info("State 9 Complete");
+
             Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
         }
@@ -70,8 +75,7 @@ namespace Terminals
             try 
             {
                 LogNonAdministrator();
-                string directory = Info.Location;
-                string testFile = Path.Combine(directory, "WriteAccessCheck.txt");
+                string testFile = FileLocations.WriteAccessLock;
                 
                 // Test to make sure that the current user has write access to the current directory.
                 using (StreamWriter sw = File.AppendText(testFile)) { }
@@ -159,8 +163,8 @@ namespace Terminals
             var commandline = new CommandLineArgs();
             String[] cmdLineArgs = Environment.GetCommandLineArgs();
             Parser.ParseArguments(cmdLineArgs, commandline);
-            if (!string.IsNullOrEmpty(commandline.config))
-                Settings.ConfigurationFileLocation = commandline.config;
+            Settings.FileLocations.AssignCustomFileLocations(commandline.configFile,
+                commandline.favoritesFile, commandline.credentialsFile);
             return commandline;
         }
     }
