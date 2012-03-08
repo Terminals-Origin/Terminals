@@ -593,7 +593,7 @@
       <DependentUpon>PopupTerminal.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgramInfo.cs" />
-    <Compile Include="Data\Serialization\StreamHelper.cs" />
+    <Compile Include="Unified\Serialization\StreamHelper.cs" />
     <Compile Include="Data\SerializableDictionary.cs" />
     <Compile Include="Data\SerializableSortedDictionary.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -626,37 +626,37 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Controls\TerminalTabsSelectionControler.cs" />
-    <Compile Include="Updates\HTTP.cs" />
-    <Compile Include="Updates\RSS\Collections\ExceptionCollection.cs" />
-    <Compile Include="Updates\RSS\Collections\RssCategoryCollection.cs" />
-    <Compile Include="Updates\RSS\Collections\RssChannelCollection.cs" />
-    <Compile Include="Updates\RSS\Collections\RssFeedCollection.cs" />
-    <Compile Include="Updates\RSS\Collections\RssItemCollection.cs" />
-    <Compile Include="Updates\RSS\Collections\RssModuleCollection.cs" />
-    <Compile Include="Updates\RSS\Collections\RssModuleItemCollection.cs" />
-    <Compile Include="Updates\RSS\Collections\RssModuleItemCollectionCollection.cs" />
-    <Compile Include="Updates\RSS\RssChannel\RssChannel.cs" />
-    <Compile Include="Updates\RSS\RssChannel\RssCloud.cs" />
-    <Compile Include="Updates\RSS\RssChannel\RssImage.cs" />
-    <Compile Include="Updates\RSS\RssChannel\RssTextInput.cs" />
-    <Compile Include="Updates\RSS\RssFeed.cs" />
-    <Compile Include="Updates\RSS\RssItem\RssEnclosure.cs" />
-    <Compile Include="Updates\RSS\RssItem\RssGuid.cs" />
-    <Compile Include="Updates\RSS\RssItem\RssItem.cs" />
-    <Compile Include="Updates\RSS\RssItem\RssSource.cs" />
-    <Compile Include="Updates\RSS\RssModule.cs" />
-    <Compile Include="Updates\RSS\RssModuleItem.cs" />
-    <Compile Include="Updates\RSS\RssModules\RssBlogChannel.cs" />
-    <Compile Include="Updates\RSS\RssModules\RssCreativeCommon.cs" />
-    <Compile Include="Updates\RSS\RssModules\RssPhotoAlbum.cs" />
-    <Compile Include="Updates\RSS\RssReader.cs" />
-    <Compile Include="Updates\RSS\RssWriter.cs" />
-    <Compile Include="Updates\RSS\Shared\DBBool.cs" />
-    <Compile Include="Updates\RSS\Shared\RssCategory.cs" />
-    <Compile Include="Updates\RSS\Shared\RssCompact.cs" />
-    <Compile Include="Updates\RSS\Shared\RssDefault.cs" />
-    <Compile Include="Updates\RSS\Shared\RssElement.cs" />
-    <Compile Include="Updates\RSS\Shared\RssEnumerators.cs" />
+    <Compile Include="Unified\Network\HTTP.cs" />
+    <Compile Include="Unified\RSS\Collections\ExceptionCollection.cs" />
+    <Compile Include="Unified\RSS\Collections\RssCategoryCollection.cs" />
+    <Compile Include="Unified\RSS\Collections\RssChannelCollection.cs" />
+    <Compile Include="Unified\RSS\Collections\RssFeedCollection.cs" />
+    <Compile Include="Unified\RSS\Collections\RssItemCollection.cs" />
+    <Compile Include="Unified\RSS\Collections\RssModuleCollection.cs" />
+    <Compile Include="Unified\RSS\Collections\RssModuleItemCollection.cs" />
+    <Compile Include="Unified\RSS\Collections\RssModuleItemCollectionCollection.cs" />
+    <Compile Include="Unified\RSS\RssChannel\RssChannel.cs" />
+    <Compile Include="Unified\RSS\RssChannel\RssCloud.cs" />
+    <Compile Include="Unified\RSS\RssChannel\RssImage.cs" />
+    <Compile Include="Unified\RSS\RssChannel\RssTextInput.cs" />
+    <Compile Include="Unified\RSS\RssFeed.cs" />
+    <Compile Include="Unified\RSS\RssItem\RssEnclosure.cs" />
+    <Compile Include="Unified\RSS\RssItem\RssGuid.cs" />
+    <Compile Include="Unified\RSS\RssItem\RssItem.cs" />
+    <Compile Include="Unified\RSS\RssItem\RssSource.cs" />
+    <Compile Include="Unified\RSS\RssModule.cs" />
+    <Compile Include="Unified\RSS\RssModuleItem.cs" />
+    <Compile Include="Unified\RSS\RssModules\RssBlogChannel.cs" />
+    <Compile Include="Unified\RSS\RssModules\RssCreativeCommon.cs" />
+    <Compile Include="Unified\RSS\RssModules\RssPhotoAlbum.cs" />
+    <Compile Include="Unified\RSS\RssReader.cs" />
+    <Compile Include="Unified\RSS\RssWriter.cs" />
+    <Compile Include="Unified\RSS\Shared\DBBool.cs" />
+    <Compile Include="Unified\RSS\Shared\RssCategory.cs" />
+    <Compile Include="Unified\RSS\Shared\RssCompact.cs" />
+    <Compile Include="Unified\RSS\Shared\RssDefault.cs" />
+    <Compile Include="Unified\RSS\Shared\RssElement.cs" />
+    <Compile Include="Unified\RSS\Shared\RssEnumerators.cs" />
     <Compile Include="Updates\TerminalsUpdates.cs">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
       <SubType>Component</SubType>
@@ -719,21 +719,21 @@
     <Compile Include="Network\DNSLookup.Designer.cs">
       <DependentUpon>DNSLookup.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\DNS\ANameRecord.cs" />
-    <Compile Include="Network\DNS\Enums.cs" />
-    <Compile Include="Network\DNS\InvalidResponseException.cs" />
-    <Compile Include="Network\DNS\MXRecord.cs" />
-    <Compile Include="Network\DNS\NoResponseException.cs" />
-    <Compile Include="Network\DNS\NSRecord.cs" />
-    <Compile Include="Network\DNS\Pointer.cs" />
-    <Compile Include="Network\DNS\Question.cs" />
-    <Compile Include="Network\DNS\RecordBase.cs" />
-    <Compile Include="Network\DNS\Request.cs" />
-    <Compile Include="Network\DNS\Resolver.cs" />
-    <Compile Include="Network\DNS\ResourceRecord.cs" />
-    <Compile Include="Network\DNS\Response.cs" />
-    <Compile Include="Network\DNS\Nameserver.cs" />
-    <Compile Include="Network\DNS\SoaRecord.cs" />
+    <Compile Include="Network\Bdev\ANameRecord.cs" />
+    <Compile Include="Network\Bdev\Enums.cs" />
+    <Compile Include="Network\Bdev\InvalidResponseException.cs" />
+    <Compile Include="Network\Bdev\MXRecord.cs" />
+    <Compile Include="Network\Bdev\NoResponseException.cs" />
+    <Compile Include="Network\Bdev\NSRecord.cs" />
+    <Compile Include="Network\Bdev\Pointer.cs" />
+    <Compile Include="Network\Bdev\Question.cs" />
+    <Compile Include="Network\Bdev\RecordBase.cs" />
+    <Compile Include="Network\Bdev\Request.cs" />
+    <Compile Include="Network\Bdev\Resolver.cs" />
+    <Compile Include="Network\Bdev\ResourceRecord.cs" />
+    <Compile Include="Network\Bdev\Response.cs" />
+    <Compile Include="Network\Bdev\Nameserver.cs" />
+    <Compile Include="Network\Bdev\SoaRecord.cs" />
     <Compile Include="Network\InterfacesList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -761,7 +761,7 @@
     <Compile Include="Network\NTP\NetworkTime.Designer.cs">
       <DependentUpon>NetworkTime.cs</DependentUpon>
     </Compile>
-    <Compile Include="Network\NTP\NTPClient.cs" />
+    <Compile Include="Unified\Network\NTPClient.cs" />
     <Compile Include="Network\Servers\ServerList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -985,15 +985,15 @@
     <Compile Include="Network\PortScanner\NetworkScanItem.cs" />
     <Compile Include="Network\PortScanner\NetworkScanManager.cs" />
     <Compile Include="Network\PortScanner\ScanItemEventArgs.cs" />
-    <Compile Include="Data\Serialization\Serialize.cs" />
+    <Compile Include="Unified\Serialization\Serialize.cs" />
     <Compile Include="CaptureManager\ScreenCapture.cs" />
     <Compile Include="CommandLine\ProtocolHandler.cs" />
-    <Compile Include="Security\Decryptor.cs" />
-    <Compile Include="Security\DecryptTransformer.cs" />
-    <Compile Include="Security\EncryptionAlgorithm.cs" />
-    <Compile Include="Security\Encryptor.cs" />
-    <Compile Include="Security\EncryptTransformer.cs" />
-    <Compile Include="Security\Hash.cs" />
+    <Compile Include="Unified\Encryption\Decryptor.cs" />
+    <Compile Include="Unified\Encryption\DecryptTransformer.cs" />
+    <Compile Include="Unified\Encryption\EncryptionAlgorithm.cs" />
+    <Compile Include="Unified\Encryption\Encryptor.cs" />
+    <Compile Include="Unified\Encryption\EncryptTransformer.cs" />
+    <Compile Include="Unified\Encryption\Hash.cs" />
     <Compile Include="Forms\RequestPassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1349,12 +1349,7 @@
     <None Include="Resources\Refresh.gif" />
     <None Include="Resources\server-administrator-icon.png" />
     <None Include="Resources\server_network.gif" />
-    <Content Include="Updates\RSS\bin\Debug\Unified.RSS.dll" />
-    <Content Include="Updates\RSS\bin\Debug\Unified.RSS.pdb" />
-    <Content Include="Updates\RSS\obj\Debug\Unified.RSS.dll" />
-    <Content Include="Updates\RSS\obj\Debug\Unified.RSS.pdb" />
-    <Content Include="Updates\RSS\obj\RSS.csproj.FileList.txt" />
-    <Content Include="Updates\RSS\RSS.csproj" />
+    <Content Include="Unified\RSS\RSS.csproj" />
     <Content Include="Updates\TerminalsUpdates.xml" />
     <None Include="Resources\star.png" />
     <None Include="Resources\ShowPanel.PNG" />
@@ -1369,9 +1364,9 @@
     <Content Include="Terminals.log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Updates\RSS\AUTHORS" />
-    <None Include="Updates\RSS\ChangeLog" />
-    <None Include="Updates\RSS\Makefile" />
+    <None Include="Unified\RSS\AUTHORS" />
+    <None Include="Unified\RSS\ChangeLog" />
+    <None Include="Unified\RSS\Makefile" />
     <None Include="Updates\TerminalsUpdates.xsc">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
     </None>
