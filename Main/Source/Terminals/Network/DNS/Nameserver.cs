@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Terminals.Network.DNS
 {
-    public class Nameserver
+    internal class Nameserver
     {
         public static List<Nameserver> DNSList
         {

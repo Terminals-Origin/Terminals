@@ -5,7 +5,7 @@ namespace Terminals.Network
 	/// <summary>
 	/// Contains data for the Completed event of TraceRoute.
 	/// </summary>
-	public class RouteHopFoundEventArgs : EventArgs
+	internal class RouteHopFoundEventArgs : EventArgs
 	{
 		public RouteHopFoundEventArgs(TraceRouteHopData hop, Boolean isLast)
 		{

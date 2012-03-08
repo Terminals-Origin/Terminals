@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Terminals.Network
 {
-    public partial class InterfacesList : UserControl
+    internal partial class InterfacesList : UserControl
     {
         public InterfacesList()
         {

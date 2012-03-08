@@ -34,7 +34,7 @@ using System.IO;
 
 namespace IconHandler
 {
-	struct SHFILEINFO 
+	internal struct SHFILEINFO 
 	{
 		public IntPtr hIcon;		
 		public int iIcon;		
@@ -45,14 +45,14 @@ namespace IconHandler
 		public string szTypeName;
 	};
 
-	public enum IconSize : uint
+	internal enum IconSize : uint
 	{
 		Large = 0x0,  //32x32
 		Small = 0x1 //16x16		
 	}
 
 	//the function that will extract the icons from a file
-	public class IconHandler
+	internal class IconHandler
 	{
 		const uint SHGFI_ICON = 0x100;
 		const uint SHGFI_USEFILEATTRIBUTES	= 0x10;

@@ -7,7 +7,7 @@ namespace Terminals.Network
     /// <summary>
     /// Contains data of a trace routing hop.
     /// </summary>
-    public class TraceRouteHopData
+    internal class TraceRouteHopData
     {
         /// <summary>
         /// Constructs a new object from the IPAddress of the node and the round trip time taken

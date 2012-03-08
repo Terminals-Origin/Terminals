@@ -1,12 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Terminals.Connections
 {
-    public partial class TabbedTools : UserControl
+    internal partial class TabbedTools : UserControl
     {
-        private WindowsFormsApplication2.PacketCapture packetCapture1;
+        private PacketCapture packetCapture1;
         public delegate void TabChanged(object sender, TabControlEventArgs e);
         public event TabChanged OnTabChanged;
 
@@ -16,7 +15,7 @@ namespace Terminals.Connections
 
             try
             {
-                packetCapture1 = new WindowsFormsApplication2.PacketCapture();
+                packetCapture1 = new PacketCapture();
 
                 // 
                 // PcapTabPage

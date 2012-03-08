@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Net;
 
 namespace Terminals.Network
 {
     /// <summary>
     /// Represents data from ping reply.
     /// </summary>
-    public class PingReplyData
+    internal class PingReplyData
     {
         public PingReplyData(Int64 count, String status, String hostname, String destination, Int32 bytes, Int32 ttl, Int64 roundTripTime)
         {

@@ -38,7 +38,7 @@ namespace Terminals.Network.WhoIs
 	/// <summary>
 	/// Queries the appropriate whois server for a given domain name and returns the results.
 	/// </summary>
-	public static class WhoisResolver
+	internal static class WhoisResolver
 	{
 		public static String Whois(String domain, String host)
 		{

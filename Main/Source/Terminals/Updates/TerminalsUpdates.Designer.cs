@@ -22,7 +22,7 @@ namespace Terminals.Updates {
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
     [global::System.Xml.Serialization.XmlRootAttribute("TerminalsUpdates")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class TerminalsUpdates : global::System.Data.DataSet {
+    internal partial class TerminalsUpdates : global::System.Data.DataSet {
         
         private UpdateDataTable tableUpdate;
         

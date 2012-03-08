@@ -7,7 +7,7 @@ using Terminals.TerminalServices;
 
 namespace Terminals.Network.Servers
 {
-    public partial class TerminalServerManager : UserControl
+    internal partial class TerminalServerManager : UserControl
     {
         private Session SelectedSession = null;
         private TerminalServer server;

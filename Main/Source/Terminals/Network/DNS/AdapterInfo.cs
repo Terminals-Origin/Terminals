@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Terminals.Network.DNS
 {
-    public class AdapterInfo
+    internal class AdapterInfo
     {
         public static List<Adapter> GetAdapters()
         {

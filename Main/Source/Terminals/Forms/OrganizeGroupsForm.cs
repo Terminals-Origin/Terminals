@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals
 {
-    public partial class OrganizeGroupsForm : Form
+    internal partial class OrganizeGroupsForm : Form
     {
         internal OrganizeGroupsForm()
         {

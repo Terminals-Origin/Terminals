@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
 
 namespace Terminals.TerminalServices
 {
-    public class TerminalServer
+    internal class TerminalServer
     {
         public static TerminalServer LoadServer(string ServerName)
         {

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Terminals.Wizard.MMC
 {
-    public class MMCFile
+    internal class MMCFile
     {
         System.IO.FileInfo mmcFileInfo;
         string rawContents;

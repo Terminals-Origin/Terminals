@@ -5,7 +5,7 @@ using Terminals.Configuration;
 
 namespace Terminals.CaptureManager
 {
-    public class Capture
+    internal class Capture
     {
         internal static string FlickrAPIKey = "9362619635c6f6c20e7c14fe4b67c2a0";
         internal static string FlickrSharedSecretKey = "ac8f3c60be0812b6";

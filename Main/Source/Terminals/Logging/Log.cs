@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using log4net;
 
-namespace Terminals{
-
-    public class Logging
+namespace Terminals
+{
+    internal class Logging
     {
-
-        public static readonly ILog Log = LogManager.GetLogger("Terminals");
+        internal static readonly ILog Log = LogManager.GetLogger("Terminals");
     }
 }

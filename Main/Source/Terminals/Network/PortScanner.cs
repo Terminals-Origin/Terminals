@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
-namespace Terminals.Network {
-    public partial class PortScanner : UserControl {
-        public PortScanner() {
+namespace Terminals.Network
+{
+    internal partial class PortScanner : UserControl
+    {
+        public PortScanner()
+        {
             InitializeComponent();
 
             miv = new MethodInvoker(this.UpdateConnections);
@@ -16,29 +15,34 @@ namespace Terminals.Network {
 
         MethodInvoker miv;
         List<Metro.Scanning.TcpSynScanner> scanners;
-        private void StartButton_Click(object sender, EventArgs e) {
+        private void StartButton_Click(object sender, EventArgs e)
+        {
             scanners = new List<Metro.Scanning.TcpSynScanner>();
             Results = new List<ScanResult>();
             this.StartButton.Enabled = false;
             //System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanSubnet), null);
             ScanSubnet();
         }
-        private void ScanSubnet() {
+        private void ScanSubnet()
+        {
 
             string startPort = pa.Text;
             string endPort = pb.Text;
             int iStartPort = 0;
             int iEndPort = 0;
-            if(int.TryParse(startPort, out iStartPort) && int.TryParse(endPort, out iEndPort)) {
+            if (int.TryParse(startPort, out iStartPort) && int.TryParse(endPort, out iEndPort))
+            {
 
-                if(iStartPort > iEndPort) {
+                if (iStartPort > iEndPort)
+                {
                     int iPortTemp = iStartPort;
                     iStartPort = iEndPort;
                     iEndPort = iPortTemp;
                 }
-                ushort[] ports = new ushort[iEndPort - iStartPort+1];
+                ushort[] ports = new ushort[iEndPort - iStartPort + 1];
                 int counter = 0;
-                for(int y = iStartPort;y <= iEndPort;y++) {
+                for (int y = iStartPort; y <= iEndPort; y++)
+                {
                     ports[counter] = (ushort)y;
                     counter++;
                 }
@@ -48,18 +52,25 @@ namespace Terminals.Network {
                 string end = e.Text;
                 int iStart = 0;
                 int iEnd = 0;
-                if(int.TryParse(start, out iStart) && int.TryParse(end, out iEnd)) {
-                    if(iStart > iEnd) {
+                if (int.TryParse(start, out iStart) && int.TryParse(end, out iEnd))
+                {
+                    if (iStart > iEnd)
+                    {
                         int iTemp = iStart;
                         iStart = iEnd;
                         iEnd = iTemp;
                     }
-                    for(int x = iStart;x <= iEnd;x++) {
+                    for (int x = iStart; x <= iEnd; x++)
+                    {
                         System.Net.IPAddress finalAddress;
-                        if(System.Net.IPAddress.TryParse(initial + x.ToString(), out finalAddress)) {
-                            try {
-                                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanMachine), new object[] { finalAddress, ports});
-                            } catch(Exception exc) {
+                        if (System.Net.IPAddress.TryParse(initial + x.ToString(), out finalAddress))
+                        {
+                            try
+                            {
+                                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(ScanMachine), new object[] { finalAddress, ports });
+                            }
+                            catch (Exception exc)
+                            {
                                 Terminals.Logging.Log.Error("Threaded Scan Machine Call", exc);
                             }
                         }
@@ -69,8 +80,10 @@ namespace Terminals.Network {
         }
         private int Counter = 0;
         private int portCount = 0;
-        private void ScanMachine(object state) {
-            try {
+        private void ScanMachine(object state)
+        {
+            try
+            {
                 object[] states = (object[])state;
                 System.Net.IPAddress address = (System.Net.IPAddress)states[0];
                 ushort[] ports = (ushort[])states[1];
@@ -82,20 +95,26 @@ namespace Terminals.Network {
                 scanners.Add(scanner);
                 scanner.StartScan(address, ports, 1000, 100, true);
                 Counter = Counter + ports.Length;
-            } catch(Exception e) {
+            }
+            catch (Exception e)
+            {
                 Terminals.Logging.Log.Info("Scanner caught an exception", e);
             }
-            if(!this.IsDisposed) this.Invoke(miv);
+            if (!this.IsDisposed) this.Invoke(miv);
             Application.DoEvents();
 
         }
 
         System.Net.IPAddress endPointAddress = null;
-        private void PortScanner_Load(object sender, EventArgs eargs) {
+        private void PortScanner_Load(object sender, EventArgs eargs)
+        {
             Metro.NetworkInterfaceList nil = new Metro.NetworkInterfaceList();
-            try {
-                foreach(Metro.NetworkInterface face in nil.Interfaces) {
-                    if(face.IsEnabled && !face.isLoopback) {
+            try
+            {
+                foreach (Metro.NetworkInterface face in nil.Interfaces)
+                {
+                    if (face.IsEnabled && !face.isLoopback)
+                    {
                         endPointAddress = face.Address;
                         string[] parts = endPointAddress.ToString().Split('.');
                         a.Text = parts[0];
@@ -107,16 +126,19 @@ namespace Terminals.Network {
                     }
                 }
 
-            } catch(Exception exc) { Terminals.Logging.Log.Error("Connecting to the network interfaces", exc); }
+            }
+            catch (Exception exc) { Terminals.Logging.Log.Error("Connecting to the network interfaces", exc); }
         }
 
-        void scanner_ScanComplete() {
-            if(Counter>0) Counter = Counter - portCount;
+        void scanner_ScanComplete()
+        {
+            if (Counter > 0) Counter = Counter - portCount;
             this.Invoke(miv);
             this.StartButton.Enabled = true;
         }
         public List<ScanResult> Results;
-        void scanner_PortReply(System.Net.IPEndPoint remoteEndPoint, Metro.Scanning.TcpPortState state) {
+        void scanner_PortReply(System.Net.IPEndPoint remoteEndPoint, Metro.Scanning.TcpPortState state)
+        {
             Counter--;
             ScanResult r = new ScanResult();
             r.RemoteEndPoint = new System.Net.IPEndPoint(remoteEndPoint.Address, remoteEndPoint.Port);
@@ -129,7 +151,8 @@ namespace Terminals.Network {
         }
 
         object resultsLock = new object();
-        private void UpdateConnections() {
+        private void UpdateConnections()
+        {
             this.resultsGridView.Rows.Clear();
             if (this.resultsGridView.Columns == null || this.resultsGridView.Columns.Count == 0)
             {
@@ -145,7 +168,7 @@ namespace Terminals.Network {
                         this.resultsGridView.Rows.Add(new object[] { result.RemoteEndPoint, result.State });
                     }
                 }
-            }   
+            }
             if (Counter <= 0)
             {
                 this.StopButton.Enabled = false;
@@ -155,16 +178,18 @@ namespace Terminals.Network {
             this.ScanResultsLabel.Text = string.Format("Outsanding Requests:{0}", Counter);
         }
 
-        private void StopButton_Click(object sender, EventArgs e) {
-            foreach(Metro.Scanning.TcpSynScanner scanner in scanners) {
-                if(scanner.Running) scanner.CancelScan();
+        private void StopButton_Click(object sender, EventArgs e)
+        {
+            foreach (Metro.Scanning.TcpSynScanner scanner in scanners)
+            {
+                if (scanner.Running) scanner.CancelScan();
             }
             this.Invoke(miv);
         }
 
         private void a_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter || e.KeyCode==Keys.OemPeriod)
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.OemPeriod)
             {
                 b.Focus();
             }
@@ -231,22 +256,29 @@ namespace Terminals.Network {
             }
         }
     }
-    public class ScanResult {
+    public class ScanResult
+    {
         System.Net.IPEndPoint remoteEndPoint;
-        public System.Net.IPEndPoint RemoteEndPoint {
-            get {
+        public System.Net.IPEndPoint RemoteEndPoint
+        {
+            get
+            {
                 return remoteEndPoint;
             }
-            set {
+            set
+            {
                 remoteEndPoint = value;
             }
         }
         Metro.Scanning.TcpPortState state;
-        public Metro.Scanning.TcpPortState State {
-            get {
+        public Metro.Scanning.TcpPortState State
+        {
+            get
+            {
                 return state;
             }
-            set {
+            set
+            {
                 state = value;
             }
         }

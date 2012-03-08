@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Terminals.Network.WhoIs
 {
-    public partial class WhoIs : UserControl
+    internal partial class WhoIs : UserControl
     {
         public WhoIs()
         {

@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace Terminals
 {
-    public partial class NewGroupForm : Form
+    internal partial class NewGroupForm : Form
     {
         public NewGroupForm()
         {

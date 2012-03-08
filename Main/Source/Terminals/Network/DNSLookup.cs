@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 using Bdev.Net.Dns;
 using System.Net;
 
 namespace Terminals.Network
 {
-    public partial class DNSLookup : UserControl
+    internal partial class DNSLookup : UserControl
     {
         public DNSLookup()
         {

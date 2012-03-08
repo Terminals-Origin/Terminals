@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Terminals.TerminalServices
 {
-    public class Session
+    internal class Session
     {
         private bool isTheActiveSession;
 

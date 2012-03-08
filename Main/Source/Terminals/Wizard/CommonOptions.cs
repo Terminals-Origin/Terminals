@@ -4,7 +4,7 @@ using Terminals.Configuration;
 
 namespace Terminals.Wizard
 {
-    public partial class CommonOptions : UserControl
+    internal partial class CommonOptions : UserControl
     {
         public CommonOptions()
         {

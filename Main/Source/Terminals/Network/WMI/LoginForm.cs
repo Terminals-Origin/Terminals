@@ -9,7 +9,7 @@ namespace WMITestClient
     /// <summary>
     /// Summary description for LoginForm.
     /// </summary>
-    public class LoginForm : System.Windows.Forms.Form
+    internal class LoginForm : System.Windows.Forms.Form
     {
         private System.Windows.Forms.TextBox MachineNameTextBox;
         private System.Windows.Forms.TextBox UsernameTextBox;

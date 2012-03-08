@@ -7,7 +7,7 @@ using ZedGraph;
 
 namespace Terminals.Network
 {
-    public partial class TraceRouteControl : UserControl
+    internal partial class TraceRouteControl : UserControl
     {
         #region Fields
         

@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Terminals.TerminalServices
 {
-    public class SessionProcess
+    internal class SessionProcess
     {
         private int sessionID;
         public int SessionID

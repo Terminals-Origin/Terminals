@@ -7,7 +7,7 @@ using Terminals.Data;
 
 namespace Terminals
 {
-    public partial class OrganizeFavoritesToolbarForm : Form
+    internal partial class OrganizeFavoritesToolbarForm : Form
     {
         public OrganizeFavoritesToolbarForm()
         {

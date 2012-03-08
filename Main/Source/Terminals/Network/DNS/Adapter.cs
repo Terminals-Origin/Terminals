@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Terminals.Network.DNS
 {
-    public class Adapter
+    internal class Adapter
     {
         #region Public Properties
         

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
 using Microsoft.CSharp;
 using System.CodeDom;
@@ -8,7 +7,7 @@ using System.CodeDom.Compiler;
 
 namespace Terminals.Network.WMI
 {
-    public class PivotDataTable
+    internal class PivotDataTable
     {
         public static Dictionary<string, string> ConvertToNameValue(DataTable dataValues, int index)
         {
@@ -16,7 +15,7 @@ namespace Terminals.Network.WMI
 
             DataRow row = dataValues.Rows[index];
             //columns become the names
-            foreach (System.Data.DataColumn col in dataValues.Columns)
+            foreach (DataColumn col in dataValues.Columns)
             {
                 nv.Add(col.ColumnName, row[col].ToString());
             }
@@ -50,7 +49,7 @@ namespace Terminals.Network.WMI
 
         public static System.Reflection.Assembly CreateAssemblyFromDataTable(DataTable DataValues)
         {
-            System.Random rnd = new Random();
+            Random rnd = new Random();
             if (DataValues.TableName == null || DataValues.TableName == string.Empty)
                 DataValues.TableName = rnd.Next().ToString();
 
@@ -61,7 +60,7 @@ namespace Terminals.Network.WMI
             constructor.Attributes = MemberAttributes.Public;
             classDec.Members.Add(classDec);
 
-            foreach (System.Data.DataColumn col in DataValues.Columns)
+            foreach (DataColumn col in DataValues.Columns)
             {
                 AddPropertyAndField(classDec, col.DataType, string.Empty, col.ColumnName);
             }

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Terminals
 {
-    public static class WTSApi32
+    internal static class WTSApi32
     {
         [DllImport("wtsapi32.dll")]
         static extern IntPtr WTSOpenServer([MarshalAs(UnmanagedType.LPStr)] String pServerName);
