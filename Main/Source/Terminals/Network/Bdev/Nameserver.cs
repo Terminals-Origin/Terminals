@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Terminals.Network.DNS
+namespace Bdev.Net.Dns
 {
     internal class Nameserver
     {
