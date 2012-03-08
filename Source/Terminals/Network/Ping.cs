@@ -10,7 +10,7 @@ using ZedGraph;
 
 namespace Terminals.Network
 {
-    public partial class Ping : UserControl
+    internal partial class Ping : UserControl
     {
         #region Fields
         

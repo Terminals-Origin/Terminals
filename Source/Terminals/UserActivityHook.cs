@@ -12,7 +12,7 @@ namespace gma.System.Windows
     /// application runes in background or does not have any user interface at all. This class raises 
     /// common .NET events with KeyEventArgs and MouseEventArgs so you can easily retrive any information you need.
     /// </summary>
-    public class UserActivityHook
+    internal class UserActivityHook
     {
         #region Windows structure definitions
 

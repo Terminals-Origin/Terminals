@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Terminals.TerminalServices
 {
-    public class Client
+    internal class Client
     {
         private bool status;
 

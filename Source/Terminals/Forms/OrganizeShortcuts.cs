@@ -6,7 +6,7 @@ using Terminals.Configuration;
 
 namespace Terminals
 {
-    public partial class OrganizeShortcuts : Form
+    internal partial class OrganizeShortcuts : Form
     {
         public OrganizeShortcuts()
         {

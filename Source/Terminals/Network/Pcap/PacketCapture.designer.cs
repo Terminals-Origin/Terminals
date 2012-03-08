@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApplication2 {
+﻿namespace Terminals {
     partial class PacketCapture {
         /// <summary> 
         /// Required designer variable.

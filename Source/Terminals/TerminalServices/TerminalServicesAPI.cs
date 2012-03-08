@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Terminals.TerminalServices
 {
-    public class TerminalServicesAPI
+    internal class TerminalServicesAPI
     {
 
         [DllImport("WtsApi32.dll", EntryPoint = "WTSQuerySessionInformationW", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]

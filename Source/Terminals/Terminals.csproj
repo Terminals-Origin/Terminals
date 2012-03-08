@@ -337,16 +337,16 @@
     </Compile>
     <Compile Include="Data\DataFileWatcher.cs" />
     <Compile Include="Data\History\HistoryRecordedEventArgs.cs" />
-    <Compile Include="ExportImport\Exporters.cs" />
-    <Compile Include="ExportImport\Export\ExportOptions.cs" />
-    <Compile Include="ExportImport\Export\ExportRdp.cs" />
-    <Compile Include="ExportImport\Export\ExportExtraLogicAndroidRd.cs" />
-    <Compile Include="ExportImport\Export\IExport.cs" />
-    <Compile Include="ExportImport\Export\ExportTerminals.cs" />
-    <Compile Include="ExportImport\IIntegration.cs" />
-    <Compile Include="ExportImport\Import\ImportRdpRegistry.cs" />
-    <Compile Include="ExportImport\Integration.cs" />
-    <Compile Include="ExportImport\Integrations.cs" />
+    <Compile Include="Integration\Exporters.cs" />
+    <Compile Include="Integration\Export\ExportOptions.cs" />
+    <Compile Include="Integration\Export\ExportRdp.cs" />
+    <Compile Include="Integration\Export\ExportExtraLogicAndroidRd.cs" />
+    <Compile Include="Integration\Export\IExport.cs" />
+    <Compile Include="Integration\Export\ExportTerminals.cs" />
+    <Compile Include="Integration\IIntegration.cs" />
+    <Compile Include="Integration\Import\ImportRdpRegistry.cs" />
+    <Compile Include="Integration\Integration.cs" />
+    <Compile Include="Integration\Integrations.cs" />
     <Compile Include="Forms\OptionPanels\AmazonOptionPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -483,10 +483,10 @@
     <Compile Include="Data\History\ConnectionHistory.cs" />
     <Compile Include="Data\History\HistoryByFavorite.cs" />
     <Compile Include="Data\History\HistoryItem.cs" />
-    <Compile Include="ExportImport\Importers.cs" />
-    <Compile Include="ExportImport\Import\ImportTerminals.cs" />
-    <Compile Include="ExportImport\Import\ImportvRD.cs" />
-    <Compile Include="ExportImport\Import\vrd.cs" />
+    <Compile Include="Integration\Importers.cs" />
+    <Compile Include="Integration\Import\ImportTerminals.cs" />
+    <Compile Include="Integration\Import\ImportvRD.cs" />
+    <Compile Include="Integration\Import\vrd.cs" />
     <Compile Include="Localization\LocalizedValues.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -655,6 +655,7 @@
     <Compile Include="Updates\RSS\Shared\RssEnumerators.cs" />
     <Compile Include="Updates\TerminalsUpdates.cs">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Updates\TerminalsUpdates.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -698,9 +699,9 @@
     <Compile Include="Forms\FormSettings.cs" />
     <Compile Include="IconHandler.cs" />
     <Compile Include="Forms\InputBox.cs" />
-    <Compile Include="ExportImport\Import\ImportRDP.cs" />
-    <Compile Include="ExportImport\Import\IImport.cs" />
-    <Compile Include="ExportImport\Import\ImportMuRD.cs" />
+    <Compile Include="Integration\Import\ImportRDP.cs" />
+    <Compile Include="Integration\Import\IImport.cs" />
+    <Compile Include="Integration\Import\ImportMuRD.cs" />
     <Compile Include="Network\PortScanner\NetworkScanner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -955,7 +956,7 @@
       <SubType>Designer</SubType>
       <DependentUpon>SaveActiveConnectionsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Security\RequestPassword.resx">
+    <EmbeddedResource Include="Forms\RequestPassword.resx">
       <SubType>Designer</SubType>
       <DependentUpon>RequestPassword.cs</DependentUpon>
     </EmbeddedResource>
@@ -988,10 +989,10 @@
     <Compile Include="Security\Encryptor.cs" />
     <Compile Include="Security\EncryptTransformer.cs" />
     <Compile Include="Security\Hash.cs" />
-    <Compile Include="Security\RequestPassword.cs">
+    <Compile Include="Forms\RequestPassword.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Security\RequestPassword.Designer.cs">
+    <Compile Include="Forms\RequestPassword.Designer.cs">
       <DependentUpon>RequestPassword.cs</DependentUpon>
     </Compile>
     <Compile Include="Settings\Settings.cs" />
@@ -1357,6 +1358,7 @@
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>TerminalsUpdates.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <CustomToolNamespace>Terminals.Updates</CustomToolNamespace>
     </None>
     <None Include="Updates\TerminalsUpdates.xss">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>

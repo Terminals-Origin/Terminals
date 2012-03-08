@@ -10,7 +10,7 @@ using Terminals.Forms;
 
 namespace Terminals.CaptureManager
 {
-    public partial class CaptureManagerLayout : UserControl
+    internal partial class CaptureManagerLayout : UserControl
     {
         private TreeNode root = new TreeNode("Capture Root Folder");
         private ToolStripMenuItem flickrMenuItem;

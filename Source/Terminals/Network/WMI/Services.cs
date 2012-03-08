@@ -1,26 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.Management;
-namespace Terminals.Network.WMI {
-    public partial class Services : UserControl {
-        public Services() {
+
+namespace Terminals.Network.WMI
+{
+    internal partial class Services : UserControl
+    {
+        public Services()
+        {
             InitializeComponent();
         }
 
 
-        private List<System.Management.ManagementObject> list = new List<ManagementObject>();
+        private List<ManagementObject> list = new List<ManagementObject>();
 
         private void LoadServices(string Username, string Password, string Computer)
         {
-            System.Text.StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             string qry = "select AcceptPause, AcceptStop, Caption, CheckPoint, CreationClassName, Description, DesktopInteract, DisplayName, ErrorControl, ExitCode, InstallDate, Name, PathName, ProcessId,ServiceSpecificExitCode, ServiceType, Started, StartMode, StartName, State, Status, SystemCreationClassName, SystemName, TagId, WaitHint from win32_service";
-            System.Management.ManagementObjectSearcher searcher;
-            System.Management.ObjectQuery query = new System.Management.ObjectQuery(qry);
+            ManagementObjectSearcher searcher;
+            ObjectQuery query = new ObjectQuery(qry);
 
             if (Username != "" && Password != "" && Computer != "" && !Computer.StartsWith(@"\\localhost"))
             {
@@ -74,19 +76,23 @@ namespace Terminals.Network.WMI {
 
             this.dataGridView1.DataSource = dt;
         }
-        
 
-        private void Services_Load(object sender, EventArgs e) {
+
+        private void Services_Load(object sender, EventArgs e)
+        {
             LoadServices("", "", "");
         }
 
-        private void button1_Click(object sender, EventArgs e) {
+        private void button1_Click(object sender, EventArgs e)
+        {
             LoadServices(this.wmiServerCredentials1.Username, this.wmiServerCredentials1.Password, this.wmiServerCredentials1.SelectedServer);
         }
 
-        private System.Type ConvertCimType(CimType ctValue) {
+        private System.Type ConvertCimType(CimType ctValue)
+        {
             System.Type tReturnVal = null;
-            switch(ctValue) {
+            switch (ctValue)
+            {
                 case CimType.Boolean:
                     tReturnVal = typeof(System.Boolean);
                     break;
@@ -136,10 +142,13 @@ namespace Terminals.Network.WMI {
             return tReturnVal;
         }
 
-        private System.Management.ManagementObject FindWMIObject(string name, string propname) {
+        private System.Management.ManagementObject FindWMIObject(string name, string propname)
+        {
             System.Management.ManagementObject foundObj = null;
-            foreach(System.Management.ManagementObject obj in list) {
-                if(obj.Properties[propname].Value.ToString() == name) {
+            foreach (System.Management.ManagementObject obj in list)
+            {
+                if (obj.Properties[propname].Value.ToString() == name)
+                {
                     foundObj = obj;
                     break;
                 }
@@ -147,22 +156,28 @@ namespace Terminals.Network.WMI {
             return foundObj;
 
         }
-        private void pauseToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             string name = this.dataGridView1.Rows[this.dataGridView1.SelectedCells[0].RowIndex].Cells["Name"].Value.ToString();
-            if(name != null && name != "") {
+            if (name != null && name != "")
+            {
                 System.Management.ManagementObject obj = FindWMIObject(name, "Name");
-                if(obj != null) {
+                if (obj != null)
+                {
                     obj.InvokeMethod("PauseService", null);
                     LoadServices(this.wmiServerCredentials1.Username, this.wmiServerCredentials1.Password, this.wmiServerCredentials1.SelectedServer);
                 }
             }
         }
 
-        private void stopToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             string name = this.dataGridView1.Rows[this.dataGridView1.SelectedCells[0].RowIndex].Cells["Name"].Value.ToString();
-            if(name != null && name != "") {
+            if (name != null && name != "")
+            {
                 System.Management.ManagementObject obj = FindWMIObject(name, "Name");
-                if(obj != null) {
+                if (obj != null)
+                {
                     obj.InvokeMethod("StopService", null);
                     LoadServices(this.wmiServerCredentials1.Username, this.wmiServerCredentials1.Password, this.wmiServerCredentials1.SelectedServer);
                 }
@@ -170,11 +185,14 @@ namespace Terminals.Network.WMI {
             }
         }
 
-        private void startToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void startToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             string name = this.dataGridView1.Rows[this.dataGridView1.SelectedCells[0].RowIndex].Cells["Name"].Value.ToString();
-            if(name != null && name != "") {
+            if (name != null && name != "")
+            {
                 System.Management.ManagementObject obj = FindWMIObject(name, "Name");
-                if(obj != null) {
+                if (obj != null)
+                {
                     obj.InvokeMethod("StartService", null);
                     LoadServices(this.wmiServerCredentials1.Username, this.wmiServerCredentials1.Password, this.wmiServerCredentials1.SelectedServer);
                 }

@@ -1,47 +1,58 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using System.Windows.Forms;
 
-namespace Terminals.Network.WMI {
-    public partial class WMIServerCredentials : UserControl {
-        public WMIServerCredentials() {
+namespace Terminals.Network.WMI
+{
+    internal partial class WMIServerCredentials : UserControl
+    {
+        public WMIServerCredentials()
+        {
             InitializeComponent();
 
 
         }
-        public string SelectedServer {
-            get {
+        public string SelectedServer
+        {
+            get
+            {
                 return this.comboBox1.Text;
             }
-            set {
+            set
+            {
                 this.comboBox1.Text = value;
             }
         }
-        public string Username {
-            get {
+        public string Username
+        {
+            get
+            {
                 return this.UsernameTextbox.Text;
             }
-            set {
+            set
+            {
                 this.UsernameTextbox.Text = value;
             }
         }
-        public string Password {
-            get {
+        public string Password
+        {
+            get
+            {
                 return this.PasswordTextbox.Text;
             }
-            set {
+            set
+            {
                 this.PasswordTextbox.Text = value;
             }
         }
 
-        private void WMIServerCredentials_Load(object sender, EventArgs e) {
-            if(System.Environment.UserDomainName != null && System.Environment.UserDomainName != "") {
-                this.UsernameTextbox.Text = string.Format(@"{0}\{1}",System.Environment.UserDomainName, System.Environment.UserName);
-            } else {
+        private void WMIServerCredentials_Load(object sender, EventArgs e)
+        {
+            if (System.Environment.UserDomainName != null && System.Environment.UserDomainName != "")
+            {
+                this.UsernameTextbox.Text = string.Format(@"{0}\{1}", System.Environment.UserDomainName, System.Environment.UserName);
+            }
+            else
+            {
                 this.UsernameTextbox.Text = System.Environment.UserName;
             }
 

@@ -7,7 +7,7 @@ using Terminals.Configuration;
 
 namespace Terminals.CaptureManager
 {
-    public class CaptureManager
+    internal class CaptureManager
     {  
         public static string CaptureRoot
         {

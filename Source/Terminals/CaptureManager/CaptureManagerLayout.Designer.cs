@@ -1,6 +1,6 @@
 namespace Terminals.CaptureManager
 {
-    public partial class CaptureManagerLayout
+    internal partial class CaptureManagerLayout
     {
         /// <summary> 
         /// Required designer variable.

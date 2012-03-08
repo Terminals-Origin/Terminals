@@ -1,11 +1,10 @@
 using System;
 using System.Windows.Forms;
 using Terminals.Configuration;
-using Unified.Encryption.Hash;
 
 namespace Terminals.Security
 {
-    public partial class RequestPassword : Form
+    internal partial class RequestPassword : Form
     {
         public RequestPassword()
         {

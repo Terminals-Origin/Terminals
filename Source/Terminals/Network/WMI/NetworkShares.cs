@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Terminals.Network
 {
-    public partial class NetworkShares : UserControl
+    internal partial class NetworkShares : UserControl
     {
         public NetworkShares()
         {

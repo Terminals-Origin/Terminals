@@ -4,7 +4,7 @@ using Terminals.Configuration;
 
 namespace Unified.Network.HTTP
 {
-    public class Web
+    internal class Web
     {
         /// <summary>
         /// Generic HTTP String Reader

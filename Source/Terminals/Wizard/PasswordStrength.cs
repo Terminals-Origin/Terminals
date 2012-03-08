@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Terminals.Wizard
 {
-    public class PasswordStrength
+    internal class PasswordStrength
     {
         public static int Strength(string Password)
         {

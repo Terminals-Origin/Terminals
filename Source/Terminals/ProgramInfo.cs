@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Terminals
 {
-    static partial class Program
+    internal static partial class Program
     {
         /// <summary>
         /// Represents the program assembly info object.

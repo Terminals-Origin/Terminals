@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 namespace Terminals
 {
-    public class TSManager
+    internal class TSManager
     {
         [DllImport("wtsapi32.dll")]
         static extern IntPtr WTSOpenServer([MarshalAs(UnmanagedType.LPStr)] String pServerName);
@@ -212,7 +212,7 @@ namespace Terminals
 
         private TSManager.WTS_CONNECTSTATE_CLASS state;
 
-        public TSManager.WTS_CONNECTSTATE_CLASS State
+        internal TSManager.WTS_CONNECTSTATE_CLASS State
         {
             get { return state; }
             set { state = value; }

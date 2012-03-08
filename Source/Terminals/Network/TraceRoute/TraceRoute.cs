@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Terminals.Network
 {
-    public class TraceRoute : Component
+    internal class TraceRoute : Component
     {
         #region Fields
 

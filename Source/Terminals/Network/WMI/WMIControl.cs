@@ -11,7 +11,7 @@ namespace WMITestClient
     /// <summary>
     /// Summary description for Form1.
     /// </summary>
-    public class WMIControl : System.Windows.Forms.UserControl
+    internal class WMIControl : System.Windows.Forms.UserControl
     {
         private System.Windows.Forms.Button QueryButton;
         private System.Windows.Forms.ProgressBar progressBar1;
