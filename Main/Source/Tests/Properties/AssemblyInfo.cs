@@ -1,17 +1,16 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using log4net;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Terminals")]
-[assembly: AssemblyDescription("RDP, VNC, VMRC, RAS, Telnet, SSH, ICA Citrix")]
+[assembly: AssemblyTitle("Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Robert Chartier")]
-[assembly: AssemblyProduct("Terminals by Robert Chartier")]
-[assembly: AssemblyCopyright("Copyright © by Robert Chartier 2006 - 2012")]
+[assembly: AssemblyCompany("Siemens AG")]
+[assembly: AssemblyProduct("Tests")]
+[assembly: AssemblyCopyright("Copyright © Siemens AG 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,7 +20,7 @@ using log4net;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4e70c9c9-1a64-4a02-b803-a7f1748317a3")]
+[assembly: Guid("8f4efec1-72d0-461d-b146-6ee79838c2b1")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -30,9 +29,7 @@ using log4net;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.0.0.*")]
-[assembly: AssemblyFileVersion("2.0.0.*")]
-
-[assembly: log4net.Config.XmlConfigurator (
-ConfigFile = "Terminals.log4net.config", Watch = true)]
-[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("Tests")]
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
