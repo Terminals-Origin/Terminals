@@ -18,6 +18,7 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Network;
+using Terminals.Network.Servers;
 using Terminals.Properties;
 using Unified.Rss;
 using Settings = Terminals.Configuration.Settings;
@@ -1065,14 +1066,7 @@ namespace Terminals
                 else if (menu.Text == Program.Resources.GetString("SendMessage"))
                 {
                     var session = menu.Tag as TerminalServices.Session;
-                    if (session != null)
-                    {
-                        InputBoxResult result = InputBox.Show(Program.Resources.GetString("Pleaseenterthemessagetosend"));
-                        if (result.ReturnCode == DialogResult.OK && result.Text.Trim() != String.Empty)
-                        {
-                            TerminalServices.TerminalServicesAPI.SendMessage(session, Program.Resources.GetString("MessagefromyourAdministrator"), result.Text.Trim(), 0, 10, false);
-                        }
-                    }
+                    TerminalServerManager.SendMessageToSession(session);
                 }
             }
         }

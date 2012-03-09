@@ -23,7 +23,7 @@ namespace Terminals.Integration.Import
         public List<FavoriteConfigurationElement> ImportFavorites(string Filename)
         {
             List<FavoriteConfigurationElement> fav = new List<FavoriteConfigurationElement>();
-            InputBoxResult result = InputBox.Show("Password", "vRD Password", '*');
+            InputBoxResult result = InputBox.Show("Password:", "Enter vRD Password", '*');
 
             if (result.ReturnCode == System.Windows.Forms.DialogResult.OK)
             {

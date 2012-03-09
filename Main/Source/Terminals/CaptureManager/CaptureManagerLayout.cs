@@ -152,7 +152,7 @@ namespace Terminals.CaptureManager
             if (this.treeViewFolders.SelectedNode != null)
             {
                 DirectoryInfo dir = (this.treeViewFolders.SelectedNode.Tag as DirectoryInfo);
-                InputBoxResult result = InputBox.Show("New Folder Name");
+                InputBoxResult result = InputBox.Show("Enter folder Name:", "Create new folder");
                 if (result.ReturnCode == DialogResult.OK)
                 {
                     string rootFolder = dir.FullName;
