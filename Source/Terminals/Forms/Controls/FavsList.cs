@@ -247,8 +247,8 @@ namespace Terminals
 
         private void setCredentialByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            String tagName = this.favsTree.SelectedNode.Text;
-            InputBoxResult result = InputBox.Show("Set Credential by Tag\r\n\r\nThis will replace the credential used for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Credential" + " - " + tagName);
+            const string variable = "Credential";
+            InputBoxResult result = this.PromptForVariableChange(variable);
             if (result.ReturnCode == DialogResult.OK)
             {
                 ICredentialSet credential = Persistance.Instance.Credentials[result.Text];
@@ -258,16 +258,52 @@ namespace Terminals
                     return;
                 }
 
-                this.GetMainForm().Cursor = Cursors.WaitCursor;
-                Application.DoEvents();
-
-                var selectedFavorites  = GetSelectedFavorites();
+                List<IFavorite> selectedFavorites = this.StartBatchUpdate();
                 PersistedFavorites.ApplyCredentialsToAllFavorites(selectedFavorites, credential);
-
-                this.GetMainForm().Cursor = Cursors.Default;
-                Application.DoEvents();
-                MessageBox.Show("Set Credential by Tag Complete.");
+                this.FinishBatchUpdate(variable);
             }
+        }
+
+        private void setPasswordByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            const string variable = "Password";
+            InputBoxResult result = this.PromptForVariableChange(variable, '*');
+            if (result.ReturnCode == DialogResult.OK)
+            {
+                List<IFavorite> selectedFavorites = this.StartBatchUpdate();
+                PersistedFavorites.SetPasswordToAllFavorites(selectedFavorites, result.Text);
+                this.FinishBatchUpdate(variable);
+            }
+        }
+
+        private void setDomainByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            const string variable = "Domain name";
+            InputBoxResult result = this.PromptForVariableChange(variable);
+            if (result.ReturnCode == DialogResult.OK)
+            {
+                List<IFavorite> selectedFavorites = this.StartBatchUpdate();
+                PersistedFavorites.ApplyDomainNameToAllFavorites(selectedFavorites, result.Text);
+                this.FinishBatchUpdate(variable);
+            }
+        }
+
+        private void setUsernameByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            const string variable = "User name";
+            InputBoxResult result = this.PromptForVariableChange(variable);
+            if (result.ReturnCode == DialogResult.OK)
+            {
+                List<IFavorite> selectedFavorites = this.StartBatchUpdate();
+                PersistedFavorites.ApplyUserNameToAllFavorites(selectedFavorites, result.Text);
+                this.FinishBatchUpdate(variable);
+            }
+        }
+
+        private List<IFavorite> StartBatchUpdate()
+        {
+            this.GetMainForm().Cursor = Cursors.WaitCursor;
+            return this.GetSelectedFavorites();
         }
 
         private List<IFavorite> GetSelectedFavorites()
@@ -277,75 +313,37 @@ namespace Terminals
                 .ToList();
         }
 
-        private void setPasswordByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        private void FinishBatchUpdate(string variable)
         {
-            String tagName = this.favsTree.SelectedNode.Text;
-            InputBoxResult result = InputBox.Show("Set Password by Tag\r\n\r\nThis will replace the password for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Password" + " - " + tagName, '*');
-            if (result.ReturnCode == DialogResult.OK)
-            {
-                this.GetMainForm().Cursor = Cursors.WaitCursor;
-                Application.DoEvents();
-
-                var selectedFavorites = GetSelectedFavorites();
-                PersistedFavorites.SetPasswordToAllFavorites(selectedFavorites, result.Text);
-
-                this.GetMainForm().Cursor = Cursors.Default;
-                Application.DoEvents();
-                MessageBox.Show("Set Password by Tag Complete.");
-            }
+            this.GetMainForm().Cursor = Cursors.Default;
+            string message = string.Format("Set {0} by group Complete.", variable);
+            MessageBox.Show(message);
         }
 
-        private void setDomainByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        private InputBoxResult PromptForVariableChange(string variable, char passwordChar = '\0')
         {
-            String tagName = this.favsTree.SelectedNode.Text;
-            InputBoxResult result = InputBox.Show("Set Domain by Tag\r\n\r\nThis will replace the Domain for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Domain" + " - " + tagName);
-            if (result.ReturnCode == DialogResult.OK)
-            {
-                this.GetMainForm().Cursor = Cursors.WaitCursor;
-                Application.DoEvents();
+            String groupName = this.favsTree.SelectedNode.Text;
+            string prompt = String.Format("This will replace the {0} for all Favorites within this group.\r\nUse at your own risk!\r\n\r\nEnter new {0}:",
+                                            variable);
+            string title = string.Format("Change {0} - {1}", variable, groupName);
+            if (passwordChar != '\0')
+                return InputBox.Show(prompt, title, passwordChar);
 
-                var selectedFavorites = GetSelectedFavorites();
-                PersistedFavorites.ApplyDomainNameToAllFavorites(selectedFavorites, result.Text);
-
-                this.GetMainForm().Cursor = Cursors.Default;
-                Application.DoEvents();
-                MessageBox.Show("Set Domain by Tag Complete.");
-            }
-        }
-
-        private void setUsernameByTagToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            String tagName = this.favsTree.SelectedNode.Text;
-            InputBoxResult result = InputBox.Show("Set Username by Tag\r\n\r\nThis will replace the Username for all Favorites within this tag.\r\n\r\nUse at your own risk!", "Change Username" + " - " + tagName);
-            if (result.ReturnCode == DialogResult.OK)
-            {
-                this.GetMainForm().Cursor = Cursors.WaitCursor;
-                Application.DoEvents();
-
-                var selectedFavorites = GetSelectedFavorites();
-                PersistedFavorites.ApplyUserNameToAllFavorites(selectedFavorites, result.Text);
-
-                this.GetMainForm().Cursor = Cursors.Default;
-                Application.DoEvents();
-                MessageBox.Show("Set Username by Tag Complete.");
-            }
+            return InputBox.Show(prompt, title);
         }
 
         private void deleteAllFavoritesByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            String tagName = this.favsTree.SelectedNode.Text;
-            DialogResult result = MessageBox.Show("Delete all Favorites by Tag\r\n\r\nThis will DELETE all Favorites within this tag.\r\n\r\nUse at your own risk!", "Delete all Favorites by Tag" + " - " + tagName, MessageBoxButtons.OKCancel);
+            String groupName = this.favsTree.SelectedNode.Text;
+            string title = "Delete all Favorites by group - " + groupName;
+            const string prompt = "This will DELETE all Favorites within this group.\r\nUse at your own risk!\r\n\r\nDo you realy want to delete them?";
+            DialogResult result = MessageBox.Show(prompt, title, MessageBoxButtons.OKCancel);
             if (result == DialogResult.OK)
             {
-                this.GetMainForm().Cursor = Cursors.WaitCursor;
-                Application.DoEvents();
-
-                var selectedFavorites = GetSelectedFavorites();
+                List<IFavorite> selectedFavorites = this.StartBatchUpdate();
                 Persistance.Instance.Favorites.Delete(selectedFavorites);
-                
                 this.GetMainForm().Cursor = Cursors.Default;
-                Application.DoEvents();
-                MessageBox.Show("Delete all Favorites by Tag Complete.");
+                MessageBox.Show("Delete all Favorites by group Complete.");
             }
         }
 

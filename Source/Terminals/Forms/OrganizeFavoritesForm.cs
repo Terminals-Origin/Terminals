@@ -288,7 +288,7 @@ namespace Terminals
             IFavorite favorite = this.GetSelectedFavorite();
             if (favorite != null)
             {
-                InputBoxResult result = InputBox.Show("New Connection Name");
+                InputBoxResult result = InputBox.Show("Enter new name:", "Copy selected favorite as ...");
                 if (result.ReturnCode == DialogResult.OK && !string.IsNullOrEmpty(result.Text))
                 {
                     this.CopySelectedFavorite(favorite, result.Text);

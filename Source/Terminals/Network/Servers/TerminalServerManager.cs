@@ -89,12 +89,20 @@ namespace Terminals.Network.Servers
 
         private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(SelectedSession != null)
+            SendMessageToSession(this.SelectedSession);
+        }
+
+        internal static void SendMessageToSession(Session session)
+        {
+            if (session != null)
             {
-                InputBoxResult result = InputBox.Show("Please enter the message to send..");
-                if(result.ReturnCode == DialogResult.OK && result.Text.Trim() != null)
+                string prompt = Program.Resources.GetString("Pleaseenterthemessagetosend");
+                InputBoxResult result = InputBox.Show(prompt, "Send network message");
+                if (result.ReturnCode == DialogResult.OK && !string.IsNullOrEmpty(result.Text))
                 {
-                    TerminalServicesAPI.SendMessage(SelectedSession, "Message from your Administrator", result.Text.Trim(), 0, 10, false);
+                    string meessageText = result.Text.Trim();
+                    string messageHeader = Program.Resources.GetString("MessagefromyourAdministrator");
+                    TerminalServicesAPI.SendMessage(session, messageHeader, meessageText, 0, 10, false);
                 }
             }
         }
