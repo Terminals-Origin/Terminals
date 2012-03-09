@@ -15,7 +15,7 @@ namespace Terminals
 {
     internal static partial class Program
     {
-        private static string TerminalsVersion = "2.0";
+        private static string TerminalsVersion = "2.1 CTP";
         public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", 
             typeof(MainForm).Assembly);
 
