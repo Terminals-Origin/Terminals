@@ -365,7 +365,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Terminals.Data.DB" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityContainer Name="DataBase">
+        <EntityContainer Name="DataBase" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <EntitySet Name="BeforeConnectExecute" EntityType="Terminals.Data.DB.BeforeConnectExecute" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <EntitySet Name="CredentialBase" EntityType="Terminals.Data.DB.CredentialBase" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <EntitySet Name="DisplayOptions" EntityType="Terminals.Data.DB.DisplayOptions" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
