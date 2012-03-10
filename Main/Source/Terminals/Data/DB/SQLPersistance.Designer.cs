@@ -35,7 +35,7 @@ namespace Terminals.Data.DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    public partial class DataBase : ObjectContext
+    internal partial class DataBase : ObjectContext
     {
         #region Constructors
     

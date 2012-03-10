@@ -15,9 +15,8 @@ namespace Tests
     [TestClass]
     public class SqlFavoritesTest
     {
+        private SqlTestsLab lab;
         private TestContext testContextInstance;
-        private DB.SqlPersistance persistence;
-        private DB.DataBase checkDatabase;
         private int addedCount;
         private int updatedCount;
         private int deletedCount;
@@ -41,35 +40,20 @@ namespace Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
-            Settings.ConnectionString = DB.DataBase.DEVELOPMENT_CONNECTION_STRING;
-            persistence = new DB.SqlPersistance();
-            persistence.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(Dispatcher_FavoritesChanged);
-            checkDatabase = DB.DataBase.CreateDatabaseInstance();
+            this.lab = new SqlTestsLab();
+            this.lab.InitializeTestLab();
+            this.lab.Persistence.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(Dispatcher_FavoritesChanged);
         }
 
         [TestCleanup]
         public void TestClose()
         {
-            const string deleteCommand = @"DELETE FROM ";
-            string favoritesTable = checkDatabase.Favorites.EntitySet.Name;
-            checkDatabase.ExecuteStoreCommand(deleteCommand + favoritesTable);
-            string beforeConnectTable = checkDatabase.BeforeConnectExecute.EntitySet.Name;
-            checkDatabase.ExecuteStoreCommand(deleteCommand + beforeConnectTable);
-            string securityTable = checkDatabase.Security.EntitySet.Name;
-            checkDatabase.ExecuteStoreCommand(deleteCommand + securityTable);
-            string displayOptionsTable = checkDatabase.DisplayOptions.EntitySet.Name;
-            checkDatabase.ExecuteStoreCommand(deleteCommand + displayOptionsTable);
-            string groupsTable = checkDatabase.DisplayOptions.EntitySet.Name;
-            checkDatabase.ExecuteStoreCommand(deleteCommand + groupsTable);
-            checkDatabase.ExecuteStoreCommand(@"DELETE FROM FavoritesInGroup");
-
-            //persistence.Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(Dispatcher_FavoritesChanged);
+            this.lab.ClearTestLab();
         }
 
         private Favorite CreateTestFavorite()
         {
-            var favorite = this.persistence.Factory.CreateFavorite() as Favorite;
+            var favorite = this.lab.Persistence.Factory.CreateFavorite() as Favorite;
             favorite.Name = "test";
             favorite.ServerName = "test server";
             return favorite;
@@ -89,12 +73,12 @@ namespace Tests
         public void AddFavoriteTest()
         {
             Favorite favorite = this.CreateTestFavorite();
-            int before = this.checkDatabase.Favorites.Count();
-            persistence.Favorites.Add(favorite);
+            int before = this.lab.CheckDatabase.Favorites.Count();
+            this.lab.Persistence.Favorites.Add(favorite);
 
-            int after = checkDatabase.Favorites.Count();
-            string protocolProperties = checkDatabase.GetFavoriteProtocolProperties(favorite.Id).FirstOrDefault();
-            IFavorite checkFavorite = checkDatabase.Favorites.ToList().FirstOrDefault();
+            int after = this.lab.CheckDatabase.Favorites.Count();
+            string protocolProperties = this.lab.CheckDatabase.GetFavoriteProtocolProperties(favorite.Id).FirstOrDefault();
+            IFavorite checkFavorite = this.lab.CheckDatabase.Favorites.ToList().FirstOrDefault();
 
             Assert.AreNotEqual(before, after, "Favorite didnt reach the database");
             Assert.IsTrue(!string.IsNullOrEmpty(protocolProperties), "Protocol properties are null");
@@ -111,16 +95,16 @@ namespace Tests
         public void DeleteFavoriteTest()
         {
             Favorite favorite = this.CreateTestFavorite();
-            persistence.Favorites.Add(favorite);
-            persistence.Favorites.Delete(favorite);
+            this.lab.Persistence.Favorites.Add(favorite);
+            this.lab.Persistence.Favorites.Delete(favorite);
 
-            int after = checkDatabase.Favorites.Count();
+            int after = this.lab.CheckDatabase.Favorites.Count();
             Assert.AreEqual(0, after, "Favorite wasnt deleted");
-            int displayOptions = checkDatabase.DisplayOptions.Count();
+            int displayOptions = this.lab.CheckDatabase.DisplayOptions.Count();
             Assert.AreEqual(0, displayOptions, "DisplayOptions wasnt deleted");
-            int security = checkDatabase.Security.Count();
+            int security = this.lab.CheckDatabase.Security.Count();
             Assert.AreEqual(0, security, "Security wasnt deleted");
-            int execute = checkDatabase.BeforeConnectExecute.Count();
+            int execute = this.lab.CheckDatabase.BeforeConnectExecute.Count();
             Assert.AreEqual(0, execute, "BeforeConnectExecute wasnt deleted");
             Assert.AreEqual(1, deletedCount, "Event wasnt delivered");
         }
@@ -132,11 +116,11 @@ namespace Tests
         public void UpdateFavoriteTest()
         {
             Favorite favorite = this.CreateTestFavorite();
-            persistence.Favorites.Add(favorite);
+            this.lab.Persistence.Favorites.Add(favorite);
             favorite.Protocol = ConnectionManager.VNC;
-            persistence.Favorites.Update(favorite);
+            this.lab.Persistence.Favorites.Update(favorite);
 
-            Favorite target = checkDatabase.Favorites.FirstOrDefault();
+            Favorite target = this.lab.CheckDatabase.Favorites.FirstOrDefault();
             Assert.IsTrue(target.Protocol == ConnectionManager.VNC, "Protocol wasnt updated");
             var testOptions = target.ProtocolProperties as VncOptions;
             Assert.IsNotNull(testOptions, "Protocol properties werent updated");
@@ -150,14 +134,14 @@ namespace Tests
         public void UpdateFavoriteWithGroupsTest()
         {
             IFavorite favorite = this.CreateTestFavorite();
-            persistence.Favorites.Add(favorite);
-            IGroup groupToDelete = persistence.Factory.CreateGroup("TestGroupToDelete", new List<IFavorite> { favorite });
-            persistence.Groups.Add(groupToDelete);
-            IGroup groupToAdd = persistence.Factory.CreateGroup("TestGroupToAdd", new List<IFavorite>());
-            persistence.Favorites.UpdateFavorite(favorite, new List<IGroup> { groupToAdd });
+            this.lab.Persistence.Favorites.Add(favorite);
+            IGroup groupToDelete = this.lab.Persistence.Factory.CreateGroup("TestGroupToDelete", new List<IFavorite> { favorite });
+            this.lab.Persistence.Groups.Add(groupToDelete);
+            IGroup groupToAdd = this.lab.Persistence.Factory.CreateGroup("TestGroupToAdd", new List<IFavorite>());
+            this.lab.Persistence.Favorites.UpdateFavorite(favorite, new List<IGroup> { groupToAdd });
 
-            Favorite checkFavorite = checkDatabase.Favorites.FirstOrDefault();
-            Assert.IsTrue(checkFavorite.Groups.Count == 1, "Groups count differs");
+            Favorite checkFavorite = this.lab.CheckDatabase.Favorites.FirstOrDefault();
+            Assert.AreEqual(1, checkFavorite.Groups.Count, "Child group is missing");
             DB.Group group = checkFavorite.Groups.FirstOrDefault();
             Assert.IsTrue(group.Name == "TestGroupToAdd", "wrong merge of groups");
             Assert.AreEqual(1, updatedCount, "Event wasnt delivered");

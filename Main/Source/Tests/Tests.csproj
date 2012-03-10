@@ -102,8 +102,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SqlGroupsTest.cs" />
     <Compile Include="SqlFavoritesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlTestsLab.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Granados\Granados.csproj">

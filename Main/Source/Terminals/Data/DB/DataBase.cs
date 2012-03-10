@@ -8,7 +8,7 @@ using Terminals.Configuration;
 
 namespace Terminals.Data.DB
 {
-    public partial class DataBase
+    internal partial class DataBase
     {
         private const string PROVIDER = "System.Data.SqlClient";       
         private const string METADATA = @"res://*/Data.DB.SQLPersistance.csdl|res://*/Data.DB.SQLPersistance.ssdl|res://*/Data.DB.SQLPersistance.msl";
