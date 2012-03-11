@@ -1131,7 +1131,7 @@
     <Content Include="Resources\back.png" />
     <EntityDeploy Include="Data\DB\SQLPersistance.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SQLPersistance.Designer.cs</LastGenOutput>
+      <LastGenOutput>SQLPersistance1.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Properties\DataSources\FavoriteConfigurationElement.datasource" />
     <None Include="Properties\DataSources\Terminals.Network.ActiveDirectoryComputer.datasource" />
