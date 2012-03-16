@@ -162,6 +162,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DB\SQLPersistance.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SQLPersistance.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -249,11 +254,6 @@
     <Compile Include="Data\FilePersisted\Groups.cs" />
     <Compile Include="Data\FilePersisted\Favorites.cs" />
     <Compile Include="Forms\Controls\GroupListViewItem.cs" />
-    <Compile Include="Data\DB\SQLPersistance.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SQLPersistance.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Forms\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>
@@ -1131,7 +1131,7 @@
     <Content Include="Resources\back.png" />
     <EntityDeploy Include="Data\DB\SQLPersistance.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SQLPersistance1.Designer.cs</LastGenOutput>
+      <LastGenOutput>SQLPersistance.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Properties\DataSources\FavoriteConfigurationElement.datasource" />
     <None Include="Properties\DataSources\Terminals.Network.ActiveDirectoryComputer.datasource" />

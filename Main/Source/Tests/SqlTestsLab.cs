@@ -49,6 +49,9 @@ namespace Tests
             CheckDatabase.ExecuteStoreCommand(deleteCommand + displayOptionsTable);
             string groupsTable = CheckDatabase.Groups.EntitySet.Name;
             CheckDatabase.ExecuteStoreCommand(deleteCommand + groupsTable);
+
+            string credentialBase = CheckDatabase.CredentialBase.EntitySet.Name;
+            CheckDatabase.ExecuteStoreCommand(deleteCommand + credentialBase);
         }
     }
 }

@@ -68,6 +68,7 @@ namespace Tests
 
             CredentialSet checkCredentialSet = this.lab.CheckDatabase.CredentialBase
                 .OfType<CredentialSet>().FirstOrDefault();
+
             Assert.IsNotNull(checkCredentialSet, "Credential didnt reach the database");
             Assert.AreEqual(TEST_PASSWORD, ((ICredentialSet)checkCredentialSet).Password, "Password doesnt match");
         }
@@ -89,8 +90,13 @@ namespace Tests
             int credentialsCountAfter = this.lab.CheckDatabase.CredentialBase
                 .OfType<CredentialSet>().Count();
 
+            string SelectCredentialBaseCommand = "select Count(Id) from CredentialBase";
+            int baseAfter = this.lab.CheckDatabase.ExecuteStoreQuery<int>(SelectCredentialBaseCommand)
+                .FirstOrDefault();
+
             Assert.AreEqual(1, credentialsCountBefore, "credential wasnt added to the database");
-            Assert.AreEqual(0, credentialsCountAfter, "credential wasnt added to the database");
+            Assert.AreEqual(0, credentialsCountAfter, "credential wasnt removed from the database");
+            Assert.AreEqual(0, baseAfter, "credentialbase wasnt removed from the database");
         }
 
         /// <summary>

@@ -19,12 +19,12 @@ using System.Runtime.Serialization;
 #region EDM Relationship Metadata
 
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_BeforeConnectExecute_BeforeConnectExecute", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "BeforeConnectExecute", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.BeforeConnectExecute), true)]
-[assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "CredentialBase", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialBase), "Security", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.SecurityOptions))]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_Credentials", "Credentials", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialSet), "Security", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.SecurityOptions))]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_DisplayOptions_Favorites", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "DisplayOptions", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.DisplayOptions), true)]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_Favorites", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "Security", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.SecurityOptions), true)]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Groups", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.Group), "Groups1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FavoritesInGroup", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Favorite), "Groups", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
+[assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "CredentialBase", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialBase), "SecurityOptions", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.SecurityOptions))]
 
 #endregion
 
@@ -705,34 +705,18 @@ namespace Terminals.Data.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "Security")]
-        public SecurityOptions Security
+        [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "SecurityOptions")]
+        public EntityCollection<SecurityOptions> Security
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<SecurityOptions>("Terminals.Data.DB.FK_Security_CredentialBase", "Security").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<SecurityOptions>("Terminals.Data.DB.FK_Security_CredentialBase", "Security").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<SecurityOptions> SecurityReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<SecurityOptions>("Terminals.Data.DB.FK_Security_CredentialBase", "Security");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<SecurityOptions>("Terminals.Data.DB.FK_Security_CredentialBase", "SecurityOptions");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<SecurityOptions>("Terminals.Data.DB.FK_Security_CredentialBase", "Security", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<SecurityOptions>("Terminals.Data.DB.FK_Security_CredentialBase", "SecurityOptions", value);
                 }
             }
         }
@@ -1585,44 +1569,6 @@ namespace Terminals.Data.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "CredentialBase")]
-        public CredentialBase CredentialBase
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<CredentialBase> CredentialBaseReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_Credentials", "Credentials")]
         public CredentialSet CredentialSet
         {
@@ -1689,6 +1635,44 @@ namespace Terminals.Data.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Favorite>("Terminals.Data.DB.FK_Security_Favorites", "Favorites", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "CredentialBase")]
+        public CredentialBase CredentialBase
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<CredentialBase> CredentialBaseReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<CredentialBase>("Terminals.Data.DB.FK_Security_CredentialBase", "CredentialBase", value);
                 }
             }
         }

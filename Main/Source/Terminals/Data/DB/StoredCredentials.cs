@@ -37,15 +37,13 @@ namespace Terminals.Data.DB
         public void Add(ICredentialSet toAdd)
         {
             var credentialToAdd = toAdd as CredentialSet;
-            this.dataBase.AddToCredentialBase(credentialToAdd);
-            this.Save();
+            this.dataBase.CredentialBase.AddObject(credentialToAdd);
         }
 
         public void Remove(ICredentialSet toRemove)
         {
             var credentailToRemove = toRemove as CredentialSet;
-            this.dataBase.AddToCredentialBase(credentailToRemove);
-            this.Save();
+            this.dataBase.CredentialBase.DeleteObject(credentailToRemove);
         }
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
@@ -54,8 +52,6 @@ namespace Terminals.Data.DB
             {
                 credentialSet.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
-            
-            this.Save();
         }
 
         public void Save()
