@@ -35,10 +35,11 @@ namespace Tests
         /// </summary>
         internal void ClearTestLab()
         {
-            // first clear dependences from both Favorites and groups table because of constraints
-            CheckDatabase.ExecuteStoreCommand(@"DELETE FROM FavoritesInGroup");
-
             const string deleteCommand = @"DELETE FROM ";
+            // first clear dependences from both Favorites and groups table because of constraints
+            CheckDatabase.ExecuteStoreCommand(deleteCommand + "FavoritesInGroup");
+            CheckDatabase.ExecuteStoreCommand(deleteCommand + "History");
+            
             string favoritesTable = CheckDatabase.Favorites.EntitySet.Name;
             CheckDatabase.ExecuteStoreCommand(deleteCommand + favoritesTable);
             string beforeConnectTable = CheckDatabase.BeforeConnectExecute.EntitySet.Name;
