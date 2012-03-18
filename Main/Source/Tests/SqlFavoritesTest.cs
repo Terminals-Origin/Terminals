@@ -16,7 +16,7 @@ namespace Tests
     public class SqlFavoritesTest
     {
         private SqlTestsLab lab;
-        private TestContext testContextInstance;
+
         private int addedCount;
         private int updatedCount;
         private int deletedCount;
@@ -25,17 +25,7 @@ namespace Tests
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [TestInitialize]
         public void TestInitialize()
@@ -51,14 +41,6 @@ namespace Tests
             this.lab.ClearTestLab();
         }
 
-        private Favorite CreateTestFavorite()
-        {
-            var favorite = this.lab.Persistence.Factory.CreateFavorite() as Favorite;
-            favorite.Name = "test";
-            favorite.ServerName = "test server";
-            return favorite;
-        }
-
         private void Dispatcher_FavoritesChanged(FavoritesChangedEventArgs args)
         {
             addedCount = args.Added.Count;
@@ -72,7 +54,7 @@ namespace Tests
         [TestMethod]
         public void AddFavoriteTest()
         {
-            Favorite favorite = this.CreateTestFavorite();
+            Favorite favorite = this.lab.CreateTestFavorite();
             int before = this.lab.CheckDatabase.Favorites.Count();
             this.lab.Persistence.Favorites.Add(favorite);
 
@@ -94,7 +76,7 @@ namespace Tests
         [TestMethod]
         public void DeleteFavoriteTest()
         {
-            Favorite favorite = this.CreateTestFavorite();
+            Favorite favorite = this.lab.CreateTestFavorite();
             this.lab.Persistence.Favorites.Add(favorite);
             this.lab.Persistence.Favorites.Delete(favorite);
 
@@ -115,7 +97,7 @@ namespace Tests
         [TestMethod]
         public void UpdateFavoriteTest()
         {
-            Favorite favorite = this.CreateTestFavorite();
+            Favorite favorite = this.lab.CreateTestFavorite();
             this.lab.Persistence.Favorites.Add(favorite);
             favorite.Protocol = ConnectionManager.VNC;
             this.lab.Persistence.Favorites.Update(favorite);
@@ -133,7 +115,7 @@ namespace Tests
         [TestMethod]
         public void UpdateFavoriteWithGroupsTest()
         {
-            IFavorite favorite = this.CreateTestFavorite();
+            IFavorite favorite = this.lab.CreateTestFavorite();
             this.lab.Persistence.Favorites.Add(favorite);
             IGroup groupToDelete = this.lab.Persistence.Factory.CreateGroup("TestGroupToDelete", new List<IFavorite> { favorite });
             this.lab.Persistence.Groups.Add(groupToDelete);
