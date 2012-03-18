@@ -12,11 +12,13 @@ namespace Terminals.Data.DB
     internal class Favorites : IFavorites
     {
         private DataBase dataBase;
+        private Groups groups;
         private DataDispatcher dispatcher;
 
-        internal Favorites(DataBase dataBase, DataDispatcher dispatcher)
+        internal Favorites(DataBase dataBase, Groups groups, DataDispatcher dispatcher)
         {
             this.dataBase = dataBase;
+            this.groups = groups;
             this.dispatcher = dispatcher;
         }
 
@@ -73,10 +75,15 @@ namespace Terminals.Data.DB
 
         public void UpdateFavorite(IFavorite favorite, List<IGroup> groups)
         {
-            // todo merge favorite old and new groups
-            // somethink like Favorites.UpdateFavoriteInGroups(IFavorite favorite, List<IGroup> newGroups)
+            List<IGroup> addedGroups = this.groups.AddToDatabase(groups);
             List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(groups, favorite.Groups);
             List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, groups);
+            
+            Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
+            Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
+            List<IGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDataBase();
+
+            this.dispatcher.ReportGroupsRecreated(addedGroups, removedGroups);
             SaveAndReportFavoriteUpdated(favorite);
         }
 

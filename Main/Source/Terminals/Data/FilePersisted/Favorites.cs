@@ -125,7 +125,7 @@ namespace Terminals.Data
             return addedGroups;
         }
 
-        private static void AddIntoMissingGroups(IFavorite favorite, List<IGroup> missingGroups)
+        internal static void AddIntoMissingGroups(IFavorite favorite, List<IGroup> missingGroups)
         {
             foreach (IGroup group in missingGroups)
             {

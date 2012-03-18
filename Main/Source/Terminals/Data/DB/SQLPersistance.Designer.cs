@@ -22,7 +22,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_Credentials", "Credentials", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialSet), "Security", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.SecurityOptions))]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_DisplayOptions_Favorites", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "DisplayOptions", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.DisplayOptions), true)]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_Favorites", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.Favorite), "Security", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Terminals.Data.DB.SecurityOptions), true)]
-[assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Groups", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.Group), "Groups1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
+[assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Parents", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.Group), "Childs", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FavoritesInGroup", "Favorites", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Favorite), "Groups", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.Group))]
 [assembly: EdmRelationshipAttribute("Terminals.Data.DB", "FK_Security_CredentialBase", "CredentialBase", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(Terminals.Data.DB.CredentialBase), "SecurityOptions", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Terminals.Data.DB.SecurityOptions))]
 
@@ -44,6 +44,7 @@ namespace Terminals.Data.DB
         /// </summary>
         public DataBase() : base("name=DataBase", "DataBase")
         {
+            this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
@@ -52,6 +53,7 @@ namespace Terminals.Data.DB
         /// </summary>
         public DataBase(string connectionString) : base(connectionString, "DataBase")
         {
+            this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
@@ -60,6 +62,7 @@ namespace Terminals.Data.DB
         /// </summary>
         public DataBase(EntityConnection connection) : base(connection, "DataBase")
         {
+            this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
@@ -1429,18 +1432,18 @@ namespace Terminals.Data.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Groups1")]
+        [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Childs")]
         public EntityCollection<Group> ChildGroups
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups1");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Group>("Terminals.Data.DB.FK_Groups_Groups", "Childs");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups1", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Group>("Terminals.Data.DB.FK_Groups_Groups", "Childs", value);
                 }
             }
         }
@@ -1451,16 +1454,16 @@ namespace Terminals.Data.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Groups")]
+        [EdmRelationshipNavigationPropertyAttribute("Terminals.Data.DB", "FK_Groups_Groups", "Parents")]
         public Group ParentGroup
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Parents").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Parents").Value = value;
             }
         }
         /// <summary>
@@ -1472,13 +1475,13 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Parents");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Groups", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Group>("Terminals.Data.DB.FK_Groups_Groups", "Parents", value);
                 }
             }
         }

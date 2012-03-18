@@ -40,14 +40,34 @@ namespace Terminals.Data.DB
 
         public void Add(IGroup group)
         {
-            AddToDatabase(group);
+            if (!AddToDatabase(group))
+                return;
             this.dispatcher.ReportGroupsAdded(new List<IGroup> { group });
             this.dataBase.SaveImmediatelyIfRequested();
         }
 
-        private void AddToDatabase(IGroup group)
+        private bool AddToDatabase(IGroup group)
         {
+            if (this.dataBase.Groups.ToList().Contains(group))
+                return false;
+
             this.dataBase.Groups.AddObject((Group)group);
+            return true;
+        }
+
+        internal List<IGroup> AddToDatabase(List<IGroup> groups)
+        {
+            var added = new List<IGroup>();
+            if (groups == null)
+                return added;
+
+            foreach (Group group in groups)
+            {
+                if (AddToDatabase(group))
+                    added.Add(group);
+            }
+
+            return added;
         }
 
         public void Delete(IGroup group)
@@ -89,7 +109,7 @@ namespace Terminals.Data.DB
             this.dispatcher.ReportGroupsDeleted(emptyGroups);
         }
 
-        private List<IGroup> DeleteEmptyGroupsFromDataBase()
+        internal List<IGroup> DeleteEmptyGroupsFromDataBase()
         {
             List<Group> emptyGroups = this.GetEmptyGroups();
             Delete(emptyGroups);
@@ -100,13 +120,13 @@ namespace Terminals.Data.DB
         {
             foreach (var group in emptyGroups)
             {
-               DeleteFromDatabase(group); 
+                DeleteFromDatabase(group);
             }
         }
 
         private List<Group> GetEmptyGroups()
         {
-            return this.dataBase.Groups
+            return this.dataBase.Groups.ToList()
                 .Where(group => group.Favorites.Count == 0)
                 .ToList();
         }
@@ -124,7 +144,7 @@ namespace Terminals.Data.DB
         {
             return GetEnumerator();
         }
-        
+
         #endregion
     }
 }
