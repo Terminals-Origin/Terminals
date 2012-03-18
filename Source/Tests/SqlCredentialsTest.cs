@@ -15,23 +15,11 @@ namespace Tests
         private const string TEST_PASSWORD = "aaa";
         private SqlTestsLab lab;
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [TestInitialize]
         public void TestInitialize()
@@ -79,19 +67,18 @@ namespace Tests
         [TestMethod]
         public void RemoveCredentialsTest()
         {
-            var credentials = this.CreateTestCredentialSet();
-            this.lab.Persistence.Credentials.Add(credentials);
-            this.lab.Persistence.Credentials.Save();
+            var testCredentials = this.CreateTestCredentialSet();
+            var credentialasDatabase = this.lab.Persistence.Credentials;
+            credentialasDatabase.Add(testCredentials);
+            credentialasDatabase.Save();
 
-            int credentialsCountBefore = this.lab.CheckDatabase.CredentialBase
-                .OfType<CredentialSet>().Count();
-            this.lab.Persistence.Credentials.Remove(credentials);
-            this.lab.Persistence.Credentials.Save();
-            int credentialsCountAfter = this.lab.CheckDatabase.CredentialBase
-                .OfType<CredentialSet>().Count();
+            var checkDatabase = this.lab.CheckDatabase;
+            int credentialsCountBefore = checkDatabase.CredentialBase.OfType<CredentialSet>().Count();
+            credentialasDatabase.Remove(testCredentials);
+            credentialasDatabase.Save();
+            int credentialsCountAfter = checkDatabase.CredentialBase.OfType<CredentialSet>().Count();
 
-            string SelectCredentialBaseCommand = "select Count(Id) from CredentialBase";
-            int baseAfter = this.lab.CheckDatabase.ExecuteStoreQuery<int>(SelectCredentialBaseCommand)
+            int baseAfter = checkDatabase.ExecuteStoreQuery<int>("select Count(Id) from CredentialBase")
                 .FirstOrDefault();
 
             Assert.AreEqual(1, credentialsCountBefore, "credential wasnt added to the database");

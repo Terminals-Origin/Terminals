@@ -21,7 +21,7 @@ namespace Tests
         /// <summary>
         /// Initialzes data connectors on beginning of each test.
         /// </summary>
-        public void InitializeTestLab()
+        internal void InitializeTestLab()
         {
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
             Settings.ConnectionString = DataBase.DEVELOPMENT_CONNECTION_STRING;
@@ -33,7 +33,7 @@ namespace Tests
         /// <summary>
         /// Cleans up all tables in test database
         /// </summary>
-        public void ClearTestLab()
+        internal void ClearTestLab()
         {
             // first clear dependences from both Favorites and groups table because of constraints
             CheckDatabase.ExecuteStoreCommand(@"DELETE FROM FavoritesInGroup");
@@ -52,6 +52,15 @@ namespace Tests
 
             string credentialBase = CheckDatabase.CredentialBase.EntitySet.Name;
             CheckDatabase.ExecuteStoreCommand(deleteCommand + credentialBase);
+        }
+
+        internal Favorite CreateTestFavorite()
+        {
+            var favorite = this.Persistence.Factory.CreateFavorite() as Favorite;
+            // set required properties
+            favorite.Name = "test";
+            favorite.ServerName = "test server";
+            return favorite;
         }
     }
 }
