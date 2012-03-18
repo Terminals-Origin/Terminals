@@ -4,8 +4,10 @@ using System.Linq;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Group : IGroup
+    internal partial class Group : IGroup, IEntityContext
     {
+        public DataBase Database { get; set; }
+
         private Guid guid = Guid.NewGuid();
 
         /// <summary>
@@ -35,8 +37,13 @@ namespace Terminals.Data.DB
             }
             set
             {
-                throw new NotImplementedException();
-            }
+                if (this.Database != null)
+                {
+                    this.ParentGroup = this.Database.Groups.ToList()
+                        .FirstOrDefault(candidate => candidate.Guid == value);
+                    this.Database.SaveImmediatelyIfRequested();
+                }
+            }   
         }
 
         List<IFavorite> IGroup.Favorites

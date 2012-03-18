@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Terminals.Data.DB
 {
@@ -8,9 +7,17 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class Factory : IFactory
     {
+        private DataBase database;
+
+        internal Factory(DataBase database)
+        {
+            this.database = database;
+        }
+
         public IFavorite CreateFavorite()
         {
             var favorite = new Favorite();
+            favorite.Database = this.database;
             favorite.Display = new DisplayOptions();
             favorite.Security = new SecurityOptions();
             favorite.ExecuteBeforeConnect = new BeforeConnectExecute();
@@ -20,11 +27,13 @@ namespace Terminals.Data.DB
 
         public IGroup CreateGroup(string groupName, List<IFavorite> favorites = null)
         {
-            // call this constructor doesnt fire the group changed event
             if (favorites == null)
-                return new Group(groupName, new List<IFavorite>());
-
-            return new Group(groupName, favorites);
+                favorites = new List<IFavorite>();
+            
+            // call this constructor doesnt fire the group changed event
+            Group createdGroup = new Group(groupName, favorites);
+            createdGroup.Database = this.database;
+            return createdGroup;
         }
 
         public ICredentialSet CreateCredentialSet()

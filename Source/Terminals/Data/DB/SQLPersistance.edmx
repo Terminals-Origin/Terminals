@@ -370,7 +370,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Terminals.Data.DB" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityContainer Name="DataBase" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
+        <EntityContainer Name="DataBase" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" b:LazyLoadingEnabled="true" xmlns:b="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
           <EntitySet Name="BeforeConnectExecute" EntityType="Terminals.Data.DB.BeforeConnectExecute" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <EntitySet Name="CredentialBase" EntityType="Terminals.Data.DB.CredentialBase" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <EntitySet Name="DisplayOptions" EntityType="Terminals.Data.DB.DisplayOptions" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -394,8 +394,8 @@
             <End Role="Security" EntitySet="Security" />
           </AssociationSet>
           <AssociationSet Name="FK_Groups_Groups" Association="Terminals.Data.DB.FK_Groups_Groups">
-            <End Role="Groups" EntitySet="Groups" />
-            <End Role="Groups1" EntitySet="Groups" />
+            <End Role="Parents" EntitySet="Groups" />
+            <End Role="Childs" EntitySet="Groups" />
           </AssociationSet>
           <AssociationSet Name="FavoritesInGroup" Association="Terminals.Data.DB.FavoritesInGroup">
             <End Role="Favorites" EntitySet="Favorites" />
@@ -417,7 +417,7 @@
             <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
             <Parameter Name="ProtocolProperties" Mode="In" Type="String" />
           </FunctionImport>
-          <AssociationSet Name="FK_Security_CredentialBase1" Association="Terminals.Data.DB.FK_Security_CredentialBase">
+          <AssociationSet Name="FK_Security_CredentialBase" Association="Terminals.Data.DB.FK_Security_CredentialBase">
             <End Role="CredentialBase" EntitySet="CredentialBase" />
             <End Role="SecurityOptions" EntitySet="Security" />
           </AssociationSet>
@@ -481,8 +481,8 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ChildGroups" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Groups" ToRole="Groups1" />
-          <NavigationProperty Name="ParentGroup" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Groups1" ToRole="Groups" />
+          <NavigationProperty Name="ChildGroups" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Parents" ToRole="Childs" />
+          <NavigationProperty Name="ParentGroup" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Childs" ToRole="Parents" />
           <NavigationProperty Name="Favorites" Relationship="Terminals.Data.DB.FavoritesInGroup" FromRole="Groups" ToRole="Favorites" />
         </EntityType>
         <EntityType Name="SecurityOptions" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
@@ -538,8 +538,8 @@
           
         </Association>
         <Association Name="FK_Groups_Groups">
-          <End Type="Terminals.Data.DB.Group" Role="Groups" Multiplicity="0..1" />
-          <End Type="Terminals.Data.DB.Group" Role="Groups1" Multiplicity="*" />
+          <End Type="Terminals.Data.DB.Group" Role="Parents" Multiplicity="0..1" />
+          <End Type="Terminals.Data.DB.Group" Role="Childs" Multiplicity="*" />
         </Association>
         <Association Name="FavoritesInGroup">
           <End Type="Terminals.Data.DB.Favorite" Role="Favorites" Multiplicity="*" />
@@ -731,21 +731,21 @@
             <EntityTypeMapping TypeName="Terminals.Data.DB.Group">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertGroup">
-                  <AssociationEnd AssociationSet="FK_Groups_Groups" From="Groups1" To="Groups">
+                  <AssociationEnd AssociationSet="FK_Groups_Groups" From="Childs" To="Parents">
                     <ScalarProperty Name="Id" ParameterName="ParentId" />
                   </AssociationEnd>
                   <ScalarProperty Name="Name" ParameterName="Name" />
                   <ResultBinding Name="Id" ColumnName="Id" />
                 </InsertFunction>
                 <UpdateFunction FunctionName="Model1.Store.UpdateGroup">
-                  <AssociationEnd AssociationSet="FK_Groups_Groups" From="Groups1" To="Groups">
+                  <AssociationEnd AssociationSet="FK_Groups_Groups" From="Childs" To="Parents">
                     <ScalarProperty Name="Id" ParameterName="ParentId" Version="Current" />
                   </AssociationEnd>
                   <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
                   <ScalarProperty Name="Id" ParameterName="Id" Version="Current" />
                 </UpdateFunction>
                 <DeleteFunction FunctionName="Model1.Store.DeleteGroup">
-                  <AssociationEnd AssociationSet="FK_Groups_Groups" From="Groups1" To="Groups">
+                  <AssociationEnd AssociationSet="FK_Groups_Groups" From="Childs" To="Parents">
                     <ScalarProperty Name="Id" ParameterName="ParentId" />
                   </AssociationEnd>
                   <ScalarProperty Name="Id" ParameterName="Id" />
@@ -762,7 +762,7 @@
             <EntityTypeMapping TypeName="Terminals.Data.DB.SecurityOptions">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertSecurity">
-                  <AssociationEnd AssociationSet="FK_Security_CredentialBase1" From="SecurityOptions" To="CredentialBase">
+                  <AssociationEnd AssociationSet="FK_Security_CredentialBase" From="SecurityOptions" To="CredentialBase">
                     <ScalarProperty Name="Id" ParameterName="CredentialBaseId" />
                   </AssociationEnd>
                   <AssociationEnd AssociationSet="FK_Security_Credentials" From="Security" To="Credentials">
@@ -771,7 +771,7 @@
                   <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" />
                 </InsertFunction>
                 <UpdateFunction FunctionName="Model1.Store.UpdateSecurity">
-                  <AssociationEnd AssociationSet="FK_Security_CredentialBase1" From="SecurityOptions" To="CredentialBase">
+                  <AssociationEnd AssociationSet="FK_Security_CredentialBase" From="SecurityOptions" To="CredentialBase">
                     <ScalarProperty Name="Id" ParameterName="CredentialBaseId" Version="Current" />
                   </AssociationEnd>
                   <AssociationEnd AssociationSet="FK_Security_Credentials" From="Security" To="Credentials">
@@ -780,7 +780,7 @@
                   <ScalarProperty Name="FavoriteId" ParameterName="FavoriteId" Version="Current" />
                 </UpdateFunction>
                 <DeleteFunction FunctionName="Model1.Store.DeleteSecurity">
-                  <AssociationEnd AssociationSet="FK_Security_CredentialBase1" From="SecurityOptions" To="CredentialBase">
+                  <AssociationEnd AssociationSet="FK_Security_CredentialBase" From="SecurityOptions" To="CredentialBase">
                     <ScalarProperty Name="Id" ParameterName="CredentialBaseId" />
                   </AssociationEnd>
                   <AssociationEnd AssociationSet="FK_Security_Credentials" From="Security" To="Credentials">
@@ -816,10 +816,10 @@
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="FK_Groups_Groups" TypeName="Terminals.Data.DB.FK_Groups_Groups" StoreEntitySet="Groups">
-            <EndProperty Name="Groups1">
+            <EndProperty Name="Childs">
               <ScalarProperty Name="Id" ColumnName="Id" />
             </EndProperty>
-            <EndProperty Name="Groups">
+            <EndProperty Name="Parents">
               <ScalarProperty Name="Id" ColumnName="ParentId" />
             </EndProperty>
             <Condition ColumnName="ParentId" IsNull="false" />
@@ -845,7 +845,7 @@
             <Condition ColumnName="CredentialId" IsNull="false" />
           </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="UpdateFavoriteProtocolProperties" FunctionName="Model1.Store.UpdateFavoriteProtocolProperties" />
-          <AssociationSetMapping Name="FK_Security_CredentialBase1" TypeName="Terminals.Data.DB.FK_Security_CredentialBase" StoreEntitySet="Security">
+          <AssociationSetMapping Name="FK_Security_CredentialBase" TypeName="Terminals.Data.DB.FK_Security_CredentialBase" StoreEntitySet="Security">
             <EndProperty Name="SecurityOptions">
               <ScalarProperty Name="FavoriteId" ColumnName="FavoriteId" />
             </EndProperty>
@@ -880,7 +880,7 @@
         <EntityTypeShape EntityType="Terminals.Data.DB.CredentialSet" Width="1.5" PointX="0.625" PointY="0.5" Height="1.0992643229166668" />
         <EntityTypeShape EntityType="Terminals.Data.DB.DisplayOptions" Width="1.5" PointX="6.875" PointY="4.125" Height="1.9210009765625031" />
         <EntityTypeShape EntityType="Terminals.Data.DB.Favorite" Width="1.75" PointX="4.625" PointY="0.5" Height="3.2357796223958331" />
-        <EntityTypeShape EntityType="Terminals.Data.DB.Group" Width="1.5" PointX="6.875" PointY="0.5" Height="1.7566536458333388" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.Group" Width="1.5" PointX="6.875" PointY="0.5" Height="1.7566536458333335" />
         <EntityTypeShape EntityType="Terminals.Data.DB.SecurityOptions" Width="1.75" PointX="2.75" PointY="4.125" Height="1.5923063151041665" />
         <AssociationConnector Association="Terminals.Data.DB.FK_BeforeConnectExecute_BeforeConnectExecute">
           <ConnectorPoint PointX="5.5" PointY="3.4070849609375" />
@@ -902,14 +902,14 @@
           <ConnectorPoint PointX="3.858619537572924" PointY="4.125" />
         </AssociationConnector>
         <AssociationConnector Association="Terminals.Data.DB.FK_Groups_Groups">
-          <ConnectorPoint PointX="7.4069230769230776" PointY="2.2566536458333388" />
-          <ConnectorPoint PointX="7.4069230769230776" PointY="2.5066536458333388" />
-          <ConnectorPoint PointX="7.8534615384615387" PointY="2.5066536458333388" />
-          <ConnectorPoint PointX="7.8534615384615387" PointY="2.2566536458333388" />
+          <ConnectorPoint PointX="7.4069230769230776" PointY="2.2566536458333335" />
+          <ConnectorPoint PointX="7.4069230769230776" PointY="2.5066536458333335" />
+          <ConnectorPoint PointX="7.8534615384615387" PointY="2.5066536458333335" />
+          <ConnectorPoint PointX="7.8534615384615387" PointY="2.2566536458333335" />
         </AssociationConnector>
         <AssociationConnector Association="Terminals.Data.DB.FavoritesInGroup">
-          <ConnectorPoint PointX="6.375" PointY="1.3783268229166694" />
-          <ConnectorPoint PointX="6.875" PointY="1.3783268229166694" />
+          <ConnectorPoint PointX="6.375" PointY="1.3783268229166668" />
+          <ConnectorPoint PointX="6.875" PointY="1.3783268229166668" />
         </AssociationConnector>
         <InheritanceConnector EntityType="Terminals.Data.DB.CredentialSet" ManuallyRouted="false" >
           <ConnectorPoint PointX="1.25" PointY="4" />
