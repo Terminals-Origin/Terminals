@@ -44,11 +44,11 @@ namespace Tests
             IConnectionHistory history = this.lab.Persistence.ConnectionHistory;
             history.RecordHistoryItem(favorite);
             history.RecordHistoryItem(favorite);
-
             var expectedCountBefore = this.GetExpectedHistoryCount();
 
+            // to preserve duplicit times, when creating new entry in database
             Assert.AreEqual(historyRecordedCount, 2, "Recorded history wasnt reported");
-            Assert.AreEqual(expectedCountBefore, 2, "History wasnt stored into database");
+            Assert.AreEqual(expectedCountBefore, 1, "History wasnt stored into database");
 
             this.lab.Persistence.Favorites.Delete(favorite);
             var expectedCountAfter = this.GetExpectedHistoryCount();
