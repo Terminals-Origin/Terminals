@@ -10,7 +10,7 @@ namespace Tests
     ///This is a test class for database implementation of connection history
     ///</summary>
     [TestClass]
-    public class SqlConnectionsHistory
+    public class SqlConnectionsHistoryTest
     {
         private SqlTestsLab lab;
         private int historyRecordedCount;

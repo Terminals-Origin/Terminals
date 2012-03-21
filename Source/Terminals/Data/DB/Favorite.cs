@@ -181,7 +181,6 @@ namespace Terminals.Data.DB
             {
                 if (this.Database != null)
                 {
-                    // todo WTF
                     string serializedProperties = this.Database.GetFavoriteProtocolProperties(this.Id).FirstOrDefault();
                     Type propertiesType = this.protocolProperties.GetType();
                     this.protocolProperties =
