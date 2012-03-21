@@ -102,7 +102,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SqlConnectionsHistory.cs" />
+    <Compile Include="SqlConnectionsHistoryTest.cs" />
     <Compile Include="SqlGroupsTest.cs" />
     <Compile Include="SqlFavoritesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
