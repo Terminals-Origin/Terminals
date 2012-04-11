@@ -50,7 +50,7 @@ namespace Terminals.Data
 
         internal void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
         {
-            string secret = ((ICredentialSet)this).Password;
+            string secret = ((ICredentialBase)this).Password;
             if (!string.IsNullOrEmpty(secret))
                 this.EncryptedPassword = PasswordFunctions.EncryptPassword(secret, newKeymaterial);            
         }

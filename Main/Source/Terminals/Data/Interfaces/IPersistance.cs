@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Terminals.History;
 
 namespace Terminals.Data
 {
@@ -21,6 +20,11 @@ namespace Terminals.Data
         ICredentials Credentials { get; }
         
         DataDispatcher Dispatcher { get; }
+
+        /// <summary>
+        /// Gets the master pasword authentication module
+        /// </summary>
+        PersistenceSecurity Security { get; }
 
         /// <summary>
         /// Because filewatcher is created before the main form in GUI thread.

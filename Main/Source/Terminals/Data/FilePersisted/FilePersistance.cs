@@ -6,11 +6,12 @@ using System.Linq;
 using System.Threading;
 using Terminals.Configuration;
 using Terminals.History;
+using Terminals.Security;
 using Unified;
 
 namespace Terminals.Data
 {
-    internal class FilePersistance : IPersistance
+    internal class FilePersistance : IPersistance, IPersistedSecurity
     {
         private Favorites favorites;
         public IFavorites Favorites
@@ -55,30 +56,45 @@ namespace Terminals.Data
 
         public DataDispatcher Dispatcher { get; private set; }
 
+        public PersistenceSecurity Security { get; private set; }
+
+        public string MasterPasswordHash
+        {
+            get
+            {
+                return Settings.MasterPasswordHash;
+            }
+            set
+            {
+                Settings.MasterPasswordHash = value;
+            }
+        }
+
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistance");
         private DataFileWatcher fileWatcher;
         private bool delaySave = false;
 
         internal FilePersistance()
         {
+            this.Security = new PersistenceSecurity(this);
             this.Dispatcher = new DataDispatcher();
             this.connectionHistory = new ConnectionHistory();
             this.storedCredentials = new StoredCredentials();
-            InitializeFileWatch();
-            Load();
+            this.InitializeFileWatch();
+            this.Load();
             this.factory = new Factory();
         }
 
         private void InitializeFileWatch()
         {
-            fileWatcher = new DataFileWatcher(Settings.FileLocations.Favorites);
-            fileWatcher.FileChanged += new EventHandler(FavoritesFileChanged);
-            fileWatcher.StartObservation();
+            this.fileWatcher = new DataFileWatcher(Settings.FileLocations.Favorites);
+            this.fileWatcher.FileChanged += new EventHandler(this.FavoritesFileChanged);
+            this.fileWatcher.StartObservation();
         }
 
         private void FavoritesFileChanged(object sender, EventArgs e)
         {
-            FavoritesFile file = LoadFile();
+            FavoritesFile file = this.LoadFile();
             this.groups.Merge(file.Groups.Cast<IGroup>().ToList());
             this.favorites.Merge(file.Favorites.Cast<IFavorite>().ToList());
             // first update also present groups assignment,
@@ -99,26 +115,34 @@ namespace Terminals.Data
 
         public void StartDelayedUpdate()
         {
-            delaySave = true;
+            this.delaySave = true;
         }
 
         public void SaveAndFinishDelayedUpdate()
         {
-            delaySave = false;
-            SaveImmediatelyIfRequested();
+            this.delaySave = false;
+            this.SaveImmediatelyIfRequested();
+        }
+
+        public void UpdatePasswordsByNewMasterPassword(string newMasterPassword)
+        {
+            string newKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(newMasterPassword);
+            this.storedCredentials.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
+            this.favorites.UpdatePasswordsByNewMasterPassword(newKeyMaterial);
+            this.SaveImmediatelyIfRequested();
         }
 
         internal void SaveImmediatelyIfRequested()
         {
-            if (!delaySave)
+            if (!this.delaySave)
             {
-                Save();
+                this.Save();
             }
         }
 
         private void Load()
         {
-            FavoritesFile file = LoadFile();
+            FavoritesFile file = this.LoadFile();
             this.groups = new Groups(this, file.Groups);
             this.favorites = new Favorites(this, file.Favorites);
             this.UpdateFavoritesInGroups(file.FavoritesInGroups);
@@ -128,7 +152,7 @@ namespace Terminals.Data
         {
             try
             {
-                fileLock.WaitOne();
+                this.fileLock.WaitOne();
                 return LoadFileContent();
             }
             catch (Exception exception)
@@ -138,7 +162,7 @@ namespace Terminals.Data
             }
             finally
             {
-                fileLock.ReleaseMutex();
+                this.fileLock.ReleaseMutex();
                 Debug.WriteLine("Favorite file was loaded.");
             }
         }
@@ -172,7 +196,7 @@ namespace Terminals.Data
         {
             if (group != null)
             {
-                List<IFavorite> newFavorites = GetFavoritesInGroup(favoritesInGroup);
+                List<IFavorite> newFavorites = this.GetFavoritesInGroup(favoritesInGroup);
                 return group.UpdateFavorites(newFavorites);
             }
 
@@ -190,9 +214,9 @@ namespace Terminals.Data
         {
             try
             {
-                fileLock.WaitOne();
-                fileWatcher.StopObservation();
-                FavoritesFile persistanceFile = CreatePersistanceFileFromCache();
+                this.fileLock.WaitOne();
+                this.fileWatcher.StopObservation();
+                FavoritesFile persistanceFile = this.CreatePersistanceFileFromCache();
                 string fileLocation = Settings.FileLocations.Favorites;
                 Serialize.SerializeXMLToDisk(persistanceFile, fileLocation);
             }
@@ -202,8 +226,8 @@ namespace Terminals.Data
             }
             finally
             {
-                fileWatcher.StartObservation();
-                fileLock.WaitOne();
+                this.fileWatcher.StartObservation();
+                this.fileLock.WaitOne();
                 Debug.WriteLine("Favorite file was saved.");
             }
         }
@@ -214,7 +238,7 @@ namespace Terminals.Data
               {
                   Favorites = this.Favorites.Cast<Favorite>().ToArray(),
                   Groups = this.Groups.Cast<Group>().ToArray(),
-                  FavoritesInGroups = GetFavoriteInGroups()
+                  FavoritesInGroups = this.GetFavoriteInGroups()
               };
         }
 

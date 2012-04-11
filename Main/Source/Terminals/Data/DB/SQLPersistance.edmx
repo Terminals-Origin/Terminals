@@ -261,6 +261,7 @@
           <Parameter Name="From" Type="datetime" Mode="In" />
           <Parameter Name="To" Type="datetime" Mode="In" />
         </Function>
+        <Function Name="GetMasterPasswordKey" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="InsertBeforeConnectExecute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
           <Parameter Name="Enabled" Type="bit" Mode="In" />
@@ -361,6 +362,9 @@
           <Parameter Name="ParentId" Type="int" Mode="In" />
           <Parameter Name="Name" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="UpdateMasterPasswordKey" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NewKey" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="UpdateSecurity" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
           <Parameter Name="CredentialId" Type="int" Mode="In" />
@@ -401,19 +405,19 @@
             <End Role="Favorites" EntitySet="Favorites" />
             <End Role="Groups" EntitySet="Groups" />
           </AssociationSet>
-          <FunctionImport Name="GetFavoriteProtocolProperties" ReturnType="Collection(String)">
+          <FunctionImport Name="GetFavoriteProtocolProperties" ReturnType="Collection(String)" a:MethodAccess="Internal">
           <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="GetFavoritesHistoryByDate" ReturnType="Collection(Int32)">
+          <FunctionImport Name="GetFavoritesHistoryByDate" ReturnType="Collection(Int32)" a:MethodAccess="Internal">
             <Parameter Name="From" Mode="In" Type="DateTime" />
             <Parameter Name="To" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="InsertHistory">
+          <FunctionImport Name="InsertHistory" a:MethodAccess="Internal">
             <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
             <Parameter Name="Date" Mode="In" Type="DateTime" />
             <Parameter Name="UserSid" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="UpdateFavoriteProtocolProperties">
+          <FunctionImport Name="UpdateFavoriteProtocolProperties" a:MethodAccess="Internal">
             <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
             <Parameter Name="ProtocolProperties" Mode="In" Type="String" />
           </FunctionImport>
@@ -421,6 +425,10 @@
             <End Role="CredentialBase" EntitySet="CredentialBase" />
             <End Role="SecurityOptions" EntitySet="Security" />
           </AssociationSet>
+          <FunctionImport Name="UpdateMasterPasswordKey" a:MethodAccess="Private">
+            <Parameter Name="NewKey" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetMasterPasswordKey" ReturnType="Collection(String)" a:MethodAccess="Private" />
         </EntityContainer>
         <EntityType Name="BeforeConnectExecute" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
@@ -854,6 +862,8 @@
             </EndProperty>
             <Condition ColumnName="CredentialBaseId" IsNull="false" />
           </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="UpdateMasterPasswordKey" FunctionName="Model1.Store.UpdateMasterPasswordKey" />
+          <FunctionImportMapping FunctionImportName="GetMasterPasswordKey" FunctionName="Model1.Store.GetMasterPasswordKey" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
