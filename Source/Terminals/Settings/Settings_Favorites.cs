@@ -246,13 +246,5 @@ namespace Terminals.Configuration
         {
             return GetFavorites()[connectionName];
         }
-
-        private static void UpdateFavoritePasswordsByNewKeyMaterial(string newKeyMaterial)
-        {
-            foreach (IFavorite favorite in Persistance.Instance.Favorites)
-            {
-                favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
-            }
-        }
     }
 }

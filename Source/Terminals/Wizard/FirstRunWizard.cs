@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Forms.Controls;
 using Terminals.Wizard;
 
@@ -139,7 +140,7 @@ namespace Terminals
 
         private void SwitchToDefaultCredentials()
         {
-            Settings.UpdateMasterPassword(this.mp.Password);
+            Persistance.Instance.Security.UpdateMasterPassword(this.mp.Password);
             this.nextButton.Enabled = true;
             this.panel1.Controls.Clear();
             this.panel1.Controls.Add(this.dc);

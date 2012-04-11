@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Forms
 {
     internal partial class MasterPasswordOptionPanel : UserControl, IOptionPanel
     {
+        private PersistenceSecurity security;
+
         public MasterPasswordOptionPanel()
         {
             InitializeComponent();
 
             this.lblPasswordsMatch.Text = string.Empty;
+            this.security = Persistance.Instance.Security;
         }
 
         public void LoadSettings()
         {
-            this.chkPasswordProtectTerminals.Checked = Settings.IsMasterPasswordDefined;
-            this.PasswordTextbox.Enabled = Settings.IsMasterPasswordDefined;
-            this.ConfirmPasswordTextBox.Enabled = Settings.IsMasterPasswordDefined;
-            this.FillTextBoxesByMasterPassword(Settings.IsMasterPasswordDefined);
+            bool isMasterPasswordDefined = this.security.IsMasterPasswordDefined;
+            this.chkPasswordProtectTerminals.Checked = isMasterPasswordDefined;
+            this.PasswordTextbox.Enabled = isMasterPasswordDefined;
+            this.ConfirmPasswordTextBox.Enabled = isMasterPasswordDefined;
+            this.FillTextBoxesByMasterPassword(isMasterPasswordDefined);
         }
 
         private void FillTextBoxesByMasterPassword(bool isMasterPasswordDefined)
@@ -31,16 +35,16 @@ namespace Terminals.Forms
             }
             else
             {
-               this.PasswordTextbox.Text = String.Empty;
-               this.ConfirmPasswordTextBox.Text = String.Empty;
+                this.PasswordTextbox.Text = String.Empty;
+                this.ConfirmPasswordTextBox.Text = String.Empty;
             }
         }
 
         public void SaveSettings()
         {
-            if (!this.chkPasswordProtectTerminals.Checked && Settings.IsMasterPasswordDefined)
+            if (!this.chkPasswordProtectTerminals.Checked && this.security.IsMasterPasswordDefined)
             {
-                Settings.UpdateMasterPassword(string.Empty); // remove password
+                this.security.UpdateMasterPassword(string.Empty); // remove password
             }
             else // new password is defined
             {
@@ -48,7 +52,7 @@ namespace Terminals.Forms
                     !string.IsNullOrEmpty(this.PasswordTextbox.Text) &&
                     this.PasswordTextbox.Text != NewTerminalForm.HIDDEN_PASSWORD)
                 {
-                    Settings.UpdateMasterPassword(this.PasswordTextbox.Text);
+                    this.security.UpdateMasterPassword(this.PasswordTextbox.Text);
                 }
             }
         }

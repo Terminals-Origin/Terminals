@@ -290,87 +290,43 @@ namespace Terminals.Configuration
 
         #endregion
 
-        #region Security tab settings
+        #region Security
 
-        internal static bool IsMasterPasswordDefined
+        internal static string MasterPasswordHash
         {
             get
             {
-                return !String.IsNullOrEmpty(GetMasterPasswordHash());
+                return GetSection().TerminalsPassword; 
             }
-        }
-
-        private static string GetMasterPasswordHash()
-        {
-            return GetSection().TerminalsPassword;
-        }
-
-        internal static void UpdateMasterPassword(string newPassword)
-        {
-            TerminalsConfigurationSection configSection = GetSection();
-
-            UpdateAllFavoritesPasswords(configSection, newPassword);
-            // start of not secured transaction. Old key is still present,
-            // but passwords are already encrypted by newKey
-            configSection.TerminalsPassword = newPassword;
-            SaveImmediatelyIfRequested();
-
-            // finish transaction, the passwords now reflect the new key
-            UpdateKeyMaterial(newPassword);
+            set
+            {
+                GetSection().TerminalsPassword = value;
+            }
         }
 
         /// <summary>
-        /// During this procedure, the old master key material should be still present.
-        /// This finds all stored passwords and updates them to reflect new key material.
+        /// This updates all stored passwords and assignes new key material in config section.
         /// </summary>
-        private static void UpdateAllFavoritesPasswords(TerminalsConfigurationSection configSection,
-            string newMasterPassword)
+        internal static void UpdateConfigurationPasswords(string newMasterPassword)
         {
-            // todo move this method into the persistance
-            string newKeyMaterial = GetKeyMaterial(newMasterPassword);
-            configSection.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
-            UpdateFavoritePasswordsByNewKeyMaterial(newKeyMaterial);
-            Persistance.Instance.Credentials.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
+            MasterPasswordHash = PasswordFunctions.ComputeMasterPasswordHash(newMasterPassword);
+            UpdateStoredPasswords(newMasterPassword);
+            SaveImmediatelyIfRequested();
         }
 
-        private static string keyMaterial = string.Empty;
-        internal static string KeyMaterial
+        private static void UpdateStoredPasswords(string newMasterPassword)
         {
-            get
-            {
-                return keyMaterial;
-            }
-
-            private set
-            {
-                keyMaterial = value;
-            }
+            TerminalsConfigurationSection configSection = GetSection();
+            string newKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(newMasterPassword);
+            configSection.EncryptedDefaultPassword = PasswordFunctions.EncryptPassword(DefaultPassword, newKeyMaterial);
+            configSection.EncryptedAmazonAccessKey = PasswordFunctions.EncryptPassword(AmazonAccessKey, newKeyMaterial);
+            configSection.EncryptedAmazonSecretKey = PasswordFunctions.EncryptPassword(AmazonSecretKey, newKeyMaterial);
+            configSection.EncryptedConnectionString = PasswordFunctions.EncryptPassword(ConnectionString, newKeyMaterial);
         }
 
-        internal static Boolean IsMasterPasswordValid(string passwordToCheck)
-        {
-            String hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(passwordToCheck);
-            if (GetMasterPasswordHash() == hashToCheck)
-            {
-                UpdateKeyMaterial(passwordToCheck);
-                return true;
-            }
+        #endregion
 
-            return false;
-        }
-
-        private static void UpdateKeyMaterial(String password)
-        {
-            KeyMaterial = GetKeyMaterial(password);
-        }
-
-        private static string GetKeyMaterial(string password)
-        {
-            if (string.IsNullOrEmpty(password))
-                return string.Empty;
-            String hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(password);
-            return PasswordFunctions.ComputeMasterPasswordHash(password + hashToCheck);
-        }
+        #region Security tab settings
 
         public static string DefaultDomain
         {
@@ -400,16 +356,17 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string DefaultPassword
+        internal static string DefaultPassword
         {
             get
             {
-                return GetSection().DefaultPassword;
+                string encryptedDefaultPassword = GetSection().EncryptedDefaultPassword;
+                return PasswordFunctions.DecryptPassword(encryptedDefaultPassword);
             }
 
             set
             {
-                GetSection().DefaultPassword = value;
+                GetSection().EncryptedDefaultPassword = PasswordFunctions.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }
@@ -428,30 +385,32 @@ namespace Terminals.Configuration
             }
         }
 
-        public static string AmazonAccessKey
+        internal static string AmazonAccessKey
         {
             get
             {
-                return GetSection().AmazonAccessKey;
+                string encryptedAmazonAccessKey = GetSection().EncryptedAmazonAccessKey;
+                return PasswordFunctions.DecryptPassword(encryptedAmazonAccessKey);
             }
 
             set
             {
-                GetSection().AmazonAccessKey = value;
+                GetSection().EncryptedAmazonAccessKey = PasswordFunctions.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }
 
-        public static string AmazonSecretKey
+        internal static string AmazonSecretKey
         {
             get
             {
-                return GetSection().AmazonSecretKey;
+                string encryptedAmazonSecretKey = GetSection().EncryptedAmazonSecretKey;
+                return PasswordFunctions.DecryptPassword(encryptedAmazonSecretKey);
             }
 
             set
             {
-                GetSection().AmazonSecretKey = value;
+                GetSection().EncryptedAmazonSecretKey = PasswordFunctions.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }
@@ -985,13 +944,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                string connectionString = GetSection().ConnectionString;
-                return PasswordFunctions.DecryptPassword(connectionString);
+                string encryptedConnectionString = GetSection().EncryptedConnectionString;
+                return PasswordFunctions.DecryptPassword(encryptedConnectionString);
             }
 
             set
             {
-                GetSection().ConnectionString = PasswordFunctions.EncryptPassword(value);
+                GetSection().EncryptedConnectionString = PasswordFunctions.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }

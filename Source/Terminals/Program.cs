@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Terminals.CommandLine;
 using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Security;
 using Terminals.Updates;
 using System.Security.Principal;
@@ -102,7 +103,7 @@ namespace Terminals
 
         private static void StartMainForm(CommandLineArgs commandLine)
         {
-            if (Settings.IsMasterPasswordDefined)
+            if (Persistance.Instance.Security.IsMasterPasswordDefined)
             {
                 using (RequestPassword requestPassword = new RequestPassword())
                 {

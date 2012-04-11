@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Wizard
 {
@@ -15,7 +15,7 @@ namespace Terminals.Wizard
             EnableMasterPassword.Enabled = true;
             panel1.Enabled = true;
 
-            if(Settings.IsMasterPasswordDefined)
+            if(Persistance.Instance.Security.IsMasterPasswordDefined)
             {
                 EnableMasterPassword.Checked = true;
                 EnableMasterPassword.Enabled = false;

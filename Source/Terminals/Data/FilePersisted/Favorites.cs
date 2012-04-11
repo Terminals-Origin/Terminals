@@ -141,6 +141,19 @@ namespace Terminals.Data
             return groups.DeleteEmptyGroupsFromCache();
         }
 
+        internal void UpdatePasswordsByNewMasterPassword(string newKeyMaterial)
+        {
+            UpdateFavoritePasswordsByNewKeyMaterial(this, newKeyMaterial);
+        }
+
+        internal static void UpdateFavoritePasswordsByNewKeyMaterial(IEnumerable<IFavorite> favorites, string newKeyMaterial)
+        {
+            foreach (IFavorite favorite in favorites)
+            {
+                favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
+            }
+        }
+
         #region IFavorites members
 
         public IFavorite this[Guid favoriteId]

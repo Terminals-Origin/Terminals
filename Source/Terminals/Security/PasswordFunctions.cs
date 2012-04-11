@@ -1,9 +1,9 @@
 using System;
 using System.Text;
 using System.Security.Cryptography;
-using Terminals.Configuration;
 using Unified.Encryption;
 using Unified.Encryption.Hash;
+using Terminals.Data;
 
 namespace Terminals.Security
 {
@@ -20,17 +20,17 @@ namespace Terminals.Security
 
         internal static string DecryptPassword(string encryptedPassword)
         {
-           return DecryptPassword(encryptedPassword, Settings.KeyMaterial);
+           return DecryptPassword(encryptedPassword, Persistance.Instance.Security.KeyMaterial);
         }
 
-        internal static string DecryptPassword(string encryptedPassword, string keyMaterial)
+        private static string DecryptPassword(string encryptedPassword, string keyMaterial)
         {
             try
             {
                 if (String.IsNullOrEmpty(encryptedPassword))
                     return encryptedPassword;
 
-                if (keyMaterial == string.Empty)
+                if (keyMaterial == String.Empty)
                     return DecryptByEmptyKey(encryptedPassword);
 
                 return DecryptByKey(encryptedPassword, keyMaterial);
@@ -38,7 +38,7 @@ namespace Terminals.Security
             catch (Exception e)
             {
                 Logging.Log.Error("Error Decrypting Password", e);
-                return string.Empty;
+                return String.Empty;
             }
         }
 
@@ -67,7 +67,7 @@ namespace Terminals.Security
 
         internal static string EncryptPassword(string decryptedPassword)
         {
-            return EncryptPassword(decryptedPassword, Settings.KeyMaterial);
+            return EncryptPassword(decryptedPassword, Persistance.Instance.Security.KeyMaterial);
         }
 
         internal static string EncryptPassword(string decryptedPassword, string keyMaterial)
@@ -77,7 +77,7 @@ namespace Terminals.Security
                 if (String.IsNullOrEmpty(decryptedPassword))
                     return decryptedPassword;
 
-                if (keyMaterial == string.Empty)
+                if (keyMaterial == String.Empty)
                     return EncryptByEmptyKey(decryptedPassword);
 
                 return EncryptByKey(decryptedPassword, keyMaterial);
@@ -85,7 +85,7 @@ namespace Terminals.Security
             catch (Exception ec)
             {
                 Logging.Log.Error("Error Encrypting Password", ec);
-                return string.Empty;
+                return String.Empty;
             }
         }
 
@@ -101,7 +101,7 @@ namespace Terminals.Security
                 return Convert.ToBase64String(data);
             }
 
-            return string.Empty;
+            return String.Empty;
         }
 
         private static string EncryptByEmptyKey(string decryptedPassword)
@@ -110,6 +110,14 @@ namespace Terminals.Security
             byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
             byte[] cyphertext = ProtectedData.Protect(plaintext, b_entropy, DataProtectionScope.CurrentUser);
             return Convert.ToBase64String(cyphertext);
+        }
+
+        internal static string CalculateMasterPasswordKey(string password)
+        {
+            if (String.IsNullOrEmpty(password))
+                return String.Empty;
+            String hashToCheck = ComputeMasterPasswordHash(password);
+            return ComputeMasterPasswordHash(password + hashToCheck);
         }
     }
 }

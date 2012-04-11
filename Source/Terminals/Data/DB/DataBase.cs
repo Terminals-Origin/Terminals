@@ -126,5 +126,15 @@ namespace Terminals.Data.DB
             if(entity != null)
                entity.Database = this;   
         }
+        
+        internal string GetMasterPassword()
+        {
+            return this.GetMasterPasswordKey().FirstOrDefault();
+        }
+
+        internal void UpdateMasterPassword(string newMasterPasswordKey)
+        {
+            this.UpdateMasterPasswordKey(newMasterPasswordKey);
+        }
     }
 }

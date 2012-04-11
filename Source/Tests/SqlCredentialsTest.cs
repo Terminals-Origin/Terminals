@@ -93,11 +93,11 @@ namespace Tests
         public void UpdateCredentialsPasswordsByNewKeyMaterialTest()
         {
             var credentials = this.CreateTestCredentialSet();
-            this.lab.Persistence.Credentials.Add(credentials);
-            this.lab.Persistence.Credentials.Save();
+            ICredentials storedCredentials = this.lab.Persistence.Credentials;
+            storedCredentials.Add(credentials);
+            storedCredentials.Save();
 
-            this.lab.Persistence.Credentials.UpdatePasswordsByNewKeyMaterial(String.Empty);
-            this.lab.Persistence.Credentials.Save();
+            this.lab.Persistence.Security.UpdateMasterPassword(String.Empty);
 
             CredentialSet checkCredentials = this.lab.CheckDatabase.CredentialBase
                 .OfType<CredentialSet>().FirstOrDefault();

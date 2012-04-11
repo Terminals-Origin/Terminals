@@ -230,7 +230,7 @@ namespace Terminals.Data.DB
         /// No Metadata Documentation available.
         /// </summary>
         /// <param name="favoriteId">No Metadata Documentation available.</param>
-        public ObjectResult<global::System.String> GetFavoriteProtocolProperties(Nullable<global::System.Int32> favoriteId)
+        internal ObjectResult<global::System.String> GetFavoriteProtocolProperties(Nullable<global::System.Int32> favoriteId)
         {
             ObjectParameter favoriteIdParameter;
             if (favoriteId.HasValue)
@@ -250,7 +250,7 @@ namespace Terminals.Data.DB
         /// </summary>
         /// <param name="from">No Metadata Documentation available.</param>
         /// <param name="to">No Metadata Documentation available.</param>
-        public ObjectResult<Nullable<global::System.Int32>> GetFavoritesHistoryByDate(Nullable<global::System.DateTime> from, Nullable<global::System.DateTime> to)
+        internal ObjectResult<Nullable<global::System.Int32>> GetFavoritesHistoryByDate(Nullable<global::System.DateTime> from, Nullable<global::System.DateTime> to)
         {
             ObjectParameter fromParameter;
             if (from.HasValue)
@@ -281,7 +281,7 @@ namespace Terminals.Data.DB
         /// <param name="favoriteId">No Metadata Documentation available.</param>
         /// <param name="date">No Metadata Documentation available.</param>
         /// <param name="userSid">No Metadata Documentation available.</param>
-        public int InsertHistory(Nullable<global::System.Int32> favoriteId, Nullable<global::System.DateTime> date, global::System.String userSid)
+        internal int InsertHistory(Nullable<global::System.Int32> favoriteId, Nullable<global::System.DateTime> date, global::System.String userSid)
         {
             ObjectParameter favoriteIdParameter;
             if (favoriteId.HasValue)
@@ -321,7 +321,7 @@ namespace Terminals.Data.DB
         /// </summary>
         /// <param name="favoriteId">No Metadata Documentation available.</param>
         /// <param name="protocolProperties">No Metadata Documentation available.</param>
-        public int UpdateFavoriteProtocolProperties(Nullable<global::System.Int32> favoriteId, global::System.String protocolProperties)
+        internal int UpdateFavoriteProtocolProperties(Nullable<global::System.Int32> favoriteId, global::System.String protocolProperties)
         {
             ObjectParameter favoriteIdParameter;
             if (favoriteId.HasValue)
@@ -344,6 +344,33 @@ namespace Terminals.Data.DB
             }
     
             return base.ExecuteFunction("UpdateFavoriteProtocolProperties", favoriteIdParameter, protocolPropertiesParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="newKey">No Metadata Documentation available.</param>
+        private int UpdateMasterPasswordKey(global::System.String newKey)
+        {
+            ObjectParameter newKeyParameter;
+            if (newKey != null)
+            {
+                newKeyParameter = new ObjectParameter("NewKey", newKey);
+            }
+            else
+            {
+                newKeyParameter = new ObjectParameter("NewKey", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction("UpdateMasterPasswordKey", newKeyParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        private ObjectResult<global::System.String> GetMasterPasswordKey()
+        {
+            return base.ExecuteFunction<global::System.String>("GetMasterPasswordKey");
         }
 
         #endregion

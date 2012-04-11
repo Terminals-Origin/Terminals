@@ -8,13 +8,6 @@ namespace Terminals
     {
         public TerminalsConfigurationSection() { }
 
-        internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
-        {
-            EncryptedDefaultPassword = PasswordFunctions.EncryptPassword(DefaultPassword, newKeyMaterial);
-            EncryptedAmazonAccessKey = PasswordFunctions.EncryptPassword(AmazonAccessKey, newKeyMaterial);
-            EncryptedAmazonSecretKey = PasswordFunctions.EncryptPassword(AmazonSecretKey, newKeyMaterial);
-        }
-
         #region Terminals Version
 
         [ConfigurationProperty("ConfigVersion")]
@@ -299,10 +292,7 @@ namespace Terminals
             }
             set
             {
-                if (string.IsNullOrEmpty(value))
-                    this["terminalsPassword"] = string.Empty;
-                else  //hash the password
-                    this["terminalsPassword"] = PasswordFunctions.ComputeMasterPasswordHash(value);
+                this["terminalsPassword"] = value;
             }
         }
 
@@ -345,18 +335,6 @@ namespace Terminals
             }
         }
 
-        internal string DefaultPassword
-        {
-            get
-            {
-                return PasswordFunctions.DecryptPassword(EncryptedDefaultPassword);
-            }
-            set
-            {
-                EncryptedDefaultPassword = PasswordFunctions.EncryptPassword(value);
-            }
-        }
-
         [ConfigurationProperty("useAmazon")]
         public bool UseAmazon
         {
@@ -383,18 +361,6 @@ namespace Terminals
             }
         }
 
-        internal string AmazonAccessKey
-        {
-            get
-            {
-                return PasswordFunctions.DecryptPassword(EncryptedAmazonAccessKey);
-            }
-            set
-            {
-                EncryptedAmazonAccessKey = PasswordFunctions.EncryptPassword(value);
-            }
-        }
-
         [ConfigurationProperty("encryptedAmazonSecretKey", IsRequired = false)]
         public string EncryptedAmazonSecretKey
         {
@@ -405,18 +371,6 @@ namespace Terminals
             set
             {
                 this["encryptedAmazonSecretKey"] = value;
-            }
-        }
-
-        internal string AmazonSecretKey
-        {
-            get
-            {
-                return PasswordFunctions.DecryptPassword(EncryptedAmazonSecretKey);
-            }
-            set
-            {
-                EncryptedAmazonSecretKey = PasswordFunctions.EncryptPassword(value);
             }
         }
 
@@ -992,7 +946,7 @@ namespace Terminals
             }
         }
 
-        #region 
+        #region Database persistence
 
         [ConfigurationProperty("persistenceType", DefaultValue = (byte)0)]
         public byte PersistenceType
@@ -1007,16 +961,16 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("connectionString", DefaultValue = "")]
-        public string ConnectionString
+        [ConfigurationProperty("encryptedConnectionString", DefaultValue = "")]
+        public string EncryptedConnectionString
         {
             get
             {
-                return (string)this["connectionString"];
+                return (string)this["encryptedConnectionString"];
             }
             set
             {
-                this["connectionString"] = value;
+                this["encryptedConnectionString"] = value;
             }
         }
 

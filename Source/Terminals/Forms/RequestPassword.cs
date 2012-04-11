@@ -1,6 +1,6 @@
 using System;
 using System.Windows.Forms;
-using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals.Security
 {
@@ -14,7 +14,7 @@ namespace Terminals.Security
         private void OkButton_Click(object sender, EventArgs e)
         {
             String newPass = this.PasswordTextBox.Text;
-            if (!Settings.IsMasterPasswordValid(newPass))
+            if (!Persistance.Instance.Security.IsMasterPasswordValid(newPass))
             {
                 this.PasswordTextBox.Focus();
                 this.PasswordTextBox.Text = "";
