@@ -56,16 +56,21 @@ namespace Terminals.Data
         /// </summary>
         ISecurityOptions ISecurityOptions.GetResolvedCredentials()
         {
-            var result = new SecurityOptions();
-            var source = Persistance.Instance.Credentials[this.credential];
-            ((ISecurityOptions)result).UpdateFromCredential(source);
-            UpdateFromDefaultValues(result);
+            SecurityOptions result = this.Copy();
+            ResolveCredentials(result, this.credential);
             return result;
         }
 
         void ISecurityOptions.UpdateFromCredential(ICredentialSet source)
         {
             UpdateFromCredential(source, this);
+        }
+
+        internal static void ResolveCredentials(ISecurityOptions result, Guid credentialId)
+        {
+            ICredentialSet source = Persistance.Instance.Credentials[credentialId];
+            result.UpdateFromCredential(source);
+            UpdateFromDefaultValues(result);
         }
 
         internal static void UpdateFromCredential(ICredentialSet source, ISecurityOptions target)
@@ -79,7 +84,7 @@ namespace Terminals.Data
             }
         }
 
-        internal static void UpdateFromDefaultValues(ICredentialBase target)
+        private static void UpdateFromDefaultValues(ICredentialBase target)
         {
             if (string.IsNullOrEmpty(target.Domain))
                 target.Domain = Settings.DefaultDomain;

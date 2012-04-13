@@ -134,10 +134,8 @@ namespace Terminals.Data.DB
 
         public ISecurityOptions GetResolvedCredentials()
         {
-            var result = new SecurityOptions();
-            var source = Persistance.Instance.Credentials[this.Credential];
-            ((ISecurityOptions)result).UpdateFromCredential(source);
-            Data.SecurityOptions.UpdateFromDefaultValues(result);
+            SecurityOptions result = this.Copy();
+            Data.SecurityOptions.ResolveCredentials(result, this.Credential);
             return result;
         }
 
