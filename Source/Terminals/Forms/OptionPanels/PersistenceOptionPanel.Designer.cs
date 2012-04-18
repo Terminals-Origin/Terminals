@@ -32,6 +32,10 @@ namespace Terminals.Forms
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBoxPersistenceType = new System.Windows.Forms.GroupBox();
+            this.txtDbPassword = new System.Windows.Forms.TextBox();
+            this.lblDbPassword = new System.Windows.Forms.Label();
+            this.bntTestSqlConnection = new System.Windows.Forms.Button();
+            this.lblRestart = new System.Windows.Forms.Label();
             this.txtConnectionString = new System.Windows.Forms.TextBox();
             this.lblConnetion = new System.Windows.Forms.Label();
             this.rbtnSqlPersistence = new System.Windows.Forms.RadioButton();
@@ -52,6 +56,10 @@ namespace Terminals.Forms
             // 
             // groupBoxPersistenceType
             // 
+            this.groupBoxPersistenceType.Controls.Add(this.txtDbPassword);
+            this.groupBoxPersistenceType.Controls.Add(this.lblDbPassword);
+            this.groupBoxPersistenceType.Controls.Add(this.bntTestSqlConnection);
+            this.groupBoxPersistenceType.Controls.Add(this.lblRestart);
             this.groupBoxPersistenceType.Controls.Add(this.txtConnectionString);
             this.groupBoxPersistenceType.Controls.Add(this.lblConnetion);
             this.groupBoxPersistenceType.Controls.Add(this.rbtnSqlPersistence);
@@ -63,13 +71,51 @@ namespace Terminals.Forms
             this.groupBoxPersistenceType.TabStop = false;
             this.groupBoxPersistenceType.Text = "Select where to store application data";
             // 
+            // txtDbPassword
+            // 
+            this.txtDbPassword.Enabled = false;
+            this.txtDbPassword.Location = new System.Drawing.Point(206, 228);
+            this.txtDbPassword.Name = "txtDbPassword";
+            this.txtDbPassword.PasswordChar = '*';
+            this.txtDbPassword.Size = new System.Drawing.Size(279, 20);
+            this.txtDbPassword.TabIndex = 9;
+            // 
+            // lblDbPassword
+            // 
+            this.lblDbPassword.AutoSize = true;
+            this.lblDbPassword.Location = new System.Drawing.Point(50, 231);
+            this.lblDbPassword.Name = "lblDbPassword";
+            this.lblDbPassword.Size = new System.Drawing.Size(104, 13);
+            this.lblDbPassword.TabIndex = 8;
+            this.lblDbPassword.Text = "Database password:";
+            // 
+            // bntTestSqlConnection
+            // 
+            this.bntTestSqlConnection.Location = new System.Drawing.Point(371, 259);
+            this.bntTestSqlConnection.Name = "bntTestSqlConnection";
+            this.bntTestSqlConnection.Size = new System.Drawing.Size(115, 23);
+            this.bntTestSqlConnection.TabIndex = 7;
+            this.bntTestSqlConnection.Text = "Test connection";
+            this.bntTestSqlConnection.UseVisualStyleBackColor = true;
+            this.bntTestSqlConnection.Click += new System.EventHandler(this.OnBntTestSqlConnectionClick);
+            // 
+            // lblRestart
+            // 
+            this.lblRestart.AutoSize = true;
+            this.lblRestart.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRestart.Location = new System.Drawing.Point(22, 297);
+            this.lblRestart.Name = "lblRestart";
+            this.lblRestart.Size = new System.Drawing.Size(328, 13);
+            this.lblRestart.TabIndex = 6;
+            this.lblRestart.Text = "To apply this options you have to restart the application!";
+            // 
             // txtConnectionString
             // 
             this.txtConnectionString.Enabled = false;
             this.txtConnectionString.Location = new System.Drawing.Point(53, 87);
             this.txtConnectionString.Multiline = true;
             this.txtConnectionString.Name = "txtConnectionString";
-            this.txtConnectionString.Size = new System.Drawing.Size(433, 166);
+            this.txtConnectionString.Size = new System.Drawing.Size(433, 134);
             this.txtConnectionString.TabIndex = 5;
             // 
             // lblConnetion
@@ -124,5 +170,9 @@ namespace Terminals.Forms
         private Label lblConnetion;
         private RadioButton rbtnSqlPersistence;
         private RadioButton rbtnFilePersistence;
+        private Label lblRestart;
+        private Button bntTestSqlConnection;
+        private TextBox txtDbPassword;
+        private Label lblDbPassword;
     }
 }

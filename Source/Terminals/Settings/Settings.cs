@@ -1,5 +1,4 @@
 using System;
-using Terminals.Data;
 using Terminals.Security;
 using System.IO;
 
@@ -298,9 +297,12 @@ namespace Terminals.Configuration
             {
                 return GetSection().TerminalsPassword; 
             }
-            set
+            private set
             {
-                GetSection().TerminalsPassword = value;
+                string newHash = string.Empty;
+                if (!string.IsNullOrEmpty(value))
+                    newHash = PasswordFunctions.ComputeMasterPasswordHash(value);
+                GetSection().TerminalsPassword = newHash;
             }
         }
 
@@ -309,7 +311,7 @@ namespace Terminals.Configuration
         /// </summary>
         internal static void UpdateConfigurationPasswords(string newMasterPassword)
         {
-            MasterPasswordHash = PasswordFunctions.ComputeMasterPasswordHash(newMasterPassword);
+            MasterPasswordHash = newMasterPassword;
             UpdateStoredPasswords(newMasterPassword);
             SaveImmediatelyIfRequested();
         }
@@ -322,6 +324,7 @@ namespace Terminals.Configuration
             configSection.EncryptedAmazonAccessKey = PasswordFunctions.EncryptPassword(AmazonAccessKey, newKeyMaterial);
             configSection.EncryptedAmazonSecretKey = PasswordFunctions.EncryptPassword(AmazonSecretKey, newKeyMaterial);
             configSection.EncryptedConnectionString = PasswordFunctions.EncryptPassword(ConnectionString, newKeyMaterial);
+            configSection.DatabaseMasterPasswordHash = PasswordFunctions.EncryptPassword(DatabaseMasterPassword, newKeyMaterial);
         }
 
         #endregion
@@ -944,13 +947,27 @@ namespace Terminals.Configuration
         {
             get
             {
-                string encryptedConnectionString = GetSection().EncryptedConnectionString;
-                return PasswordFunctions.DecryptPassword(encryptedConnectionString);
+              string encryptedConnectionString = GetSection().EncryptedConnectionString;
+              return PasswordFunctions.DecryptPassword(encryptedConnectionString);
             }
 
             set
             {
                 GetSection().EncryptedConnectionString = PasswordFunctions.EncryptPassword(value);
+                SaveImmediatelyIfRequested();
+            }
+        }
+
+        internal static string DatabaseMasterPassword
+        {
+            get
+            {
+                string databaseMasterPasswordHash = GetSection().DatabaseMasterPasswordHash;
+                return PasswordFunctions.DecryptPassword(databaseMasterPasswordHash);
+            }
+            set
+            {
+                GetSection().DatabaseMasterPasswordHash = PasswordFunctions.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }

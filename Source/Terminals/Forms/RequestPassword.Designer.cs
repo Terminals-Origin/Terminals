@@ -52,7 +52,7 @@ namespace Terminals.Security {
             // CancelPasswordButton
             // 
             this.CancelPasswordButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelPasswordButton.Location = new System.Drawing.Point(176, 65);
+            this.CancelPasswordButton.Location = new System.Drawing.Point(176, 60);
             this.CancelPasswordButton.Name = "CancelPasswordButton";
             this.CancelPasswordButton.Size = new System.Drawing.Size(75, 23);
             this.CancelPasswordButton.TabIndex = 2;
@@ -62,7 +62,7 @@ namespace Terminals.Security {
             // 
             // OkButton
             // 
-            this.OkButton.Location = new System.Drawing.Point(95, 65);
+            this.OkButton.Location = new System.Drawing.Point(93, 60);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(75, 23);
             this.OkButton.TabIndex = 3;
@@ -87,7 +87,7 @@ namespace Terminals.Security {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelPasswordButton;
-            this.ClientSize = new System.Drawing.Size(258, 88);
+            this.ClientSize = new System.Drawing.Size(258, 91);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.CancelPasswordButton);

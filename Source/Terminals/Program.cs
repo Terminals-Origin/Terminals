@@ -103,18 +103,11 @@ namespace Terminals
 
         private static void StartMainForm(CommandLineArgs commandLine)
         {
-            if (Persistance.Instance.Security.IsMasterPasswordDefined)
-            {
-                using (RequestPassword requestPassword = new RequestPassword())
-                {
-                    if (requestPassword.ShowDialog() == DialogResult.Cancel)
-                        Application.Exit();
-                    else
-                        RunMainForm(commandLine);
-                }
-            }
-            else
+            var security = Persistance.Instance.Security;
+            if (security.Authenticate(RequestPassword.KnowsUserPassword))
                 RunMainForm(commandLine);
+            else
+                Application.Exit(); 
         }
 
         private static void RunMainForm(CommandLineArgs commandLine)

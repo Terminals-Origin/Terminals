@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.EntityClient;
 using System.Data.Objects;
+using System.Diagnostics;
 using System.Linq;
+using System.Timers;
 using Terminals.Configuration;
+using Terminals.Security;
 
 namespace Terminals.Data.DB
 {
@@ -13,26 +16,76 @@ namespace Terminals.Data.DB
         private const string PROVIDER = "System.Data.SqlClient";       
         private const string METADATA = @"res://*/Data.DB.SQLPersistance.csdl|res://*/Data.DB.SQLPersistance.ssdl|res://*/Data.DB.SQLPersistance.msl";
         internal const string DEVELOPMENT_CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
-        
+
+        /// <summary>
+        /// periodicaly download latest changes
+        /// </summary>
+        private Timer reLoadClock;
+
         private bool delaySave = false;
-        // TODO Add eventing, if something is changed in database (Jiri Pokorny, 13.02.2012)
+
+        private object updateLock;
 
         internal static DataBase CreateDatabaseInstance()
         {
-            string connectionString = BuildConnectionString();
+            string connectionString = BuildConnectionString(Settings.ConnectionString);
             return new DataBase(connectionString);
         }
 
-        private static string BuildConnectionString()
+        private static string BuildConnectionString(string providerConnectionString)
         {
             var connectionBuilder = new EntityConnectionStringBuilder
             {
                 Provider = PROVIDER,
                 Metadata = METADATA,
-                ProviderConnectionString = Settings.ConnectionString
+                ProviderConnectionString = providerConnectionString
             };
 
             return connectionBuilder.ToString();
+        }
+
+        partial void OnContextCreated()
+        {
+            this.updateLock = new object();
+            this.ObjectMaterialized += new ObjectMaterializedEventHandler(this.OnDataBaseObjectMaterialized);
+            this.InitializeReLoadClock();
+        }
+
+        private void InitializeReLoadClock()
+        {
+            // todo Run periodical updates
+            //this.reLoadClock = new Timer();
+            //this.reLoadClock.Elapsed += new ElapsedEventHandler(this.OnReLoadClockElapsed);
+            //this.reLoadClock.Start();
+        }
+
+        /// <summary>
+        /// Wery simple refresh of all already cached items.
+        /// </summary>
+        private void OnReLoadClockElapsed(object sender, ElapsedEventArgs e)
+        {
+            // todo check, if there is atleast something new, otherwise we dont have to download every thing
+            // todo make the reload thread safe
+            // first download the masterpassword to ensure, that it wasnt change, otherwise we have
+            // all cached items out of date
+            // after all items are loaded, refresh already cached protocol options, which arent part of an entity
+            
+            this.Refresh(RefreshMode.ClientWins, this.Favorites);
+            this.Refresh(RefreshMode.ClientWins, this.Groups);
+            this.Refresh(RefreshMode.ClientWins, this.CredentialBase);
+            this.Refresh(RefreshMode.ClientWins, this.BeforeConnectExecute);
+            this.Refresh(RefreshMode.ClientWins, this.DisplayOptions);
+            this.Refresh(RefreshMode.ClientWins, this.Security);
+
+            // possible changes in history are only for today
+            
+        }
+
+        private void OnDataBaseObjectMaterialized(object sender, ObjectMaterializedEventArgs e)
+        {
+            var entity = e.Entity as IEntityContext;
+            if(entity != null)
+                entity.Database = this;   
         }
 
         internal void StartDelayedUpdate()
@@ -55,19 +108,22 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal Favorite GetFavoriteByGuid(Guid favoriteId)
-        {
-            // to list, because linq to entities doesnt support Guid search
-            return this.Favorites.ToList()
-                .FirstOrDefault(favorite => favorite.Guid == favoriteId);
-        }
-
         public override int SaveChanges(SaveOptions options)
         {
+            // todo lock the update so nobody is able to update, until we are finished with save
             this.DetachUntaggedGroups();
             var changedFavorites = this.GetChangedOrAddedFavorites();
-            int returnValue = base.SaveChanges(options);
-            this.SaveFavoriteProtocolProperties(changedFavorites);
+            return this.SaveChanges(options, changedFavorites);
+        }
+
+        private int SaveChanges(SaveOptions options, IEnumerable<Favorite> changedFavorites)
+        {
+            int returnValue;
+            lock (updateLock)
+            {
+                returnValue = base.SaveChanges(options);
+                this.SaveFavoriteProtocolProperties(changedFavorites);
+            }
             return returnValue;
         }
 
@@ -114,26 +170,62 @@ namespace Terminals.Data.DB
             return changed;
         }
 
-        partial void OnContextCreated()
+        internal Favorite GetFavoriteByGuid(Guid favoriteId)
         {
-            this.ObjectMaterialized += new ObjectMaterializedEventHandler(this.OnDataBaseObjectMaterialized);  
+            // to list, because linq to entities doesnt support Guid search
+            return this.Favorites.ToList()
+                .FirstOrDefault(favorite => favorite.Guid == favoriteId);
         }
 
-        private void OnDataBaseObjectMaterialized(object sender, ObjectMaterializedEventArgs e)
+        internal string GetMasterPasswordHash()
         {
-            var entity = e.Entity as IEntityContext;
-            if(entity != null)
-               entity.Database = this;   
-        }
-        
-        internal string GetMasterPassword()
-        {
-            return this.GetMasterPasswordKey().FirstOrDefault();
+            string obtained = this.GetMasterPasswordKey().FirstOrDefault();
+            if (obtained != null)
+                return obtained;
+
+            return string.Empty;
         }
 
         internal void UpdateMasterPassword(string newMasterPasswordKey)
         {
-            this.UpdateMasterPasswordKey(newMasterPasswordKey);
+            lock (updateLock)
+            {
+                // todo do it in transaction to prevent inconsistent data
+                this.UpdateMasterPasswordKey(newMasterPasswordKey);
+            }
+        }
+
+        /// <summary>
+        /// Tryes to execute simple command on database to ensure, that the conneciton works.
+        /// </summary>
+        /// <param name="connectionStringToTest">Not null MS SQL connection string
+        ///  to use to create new database instance</param>
+        /// <param name="databasePassword">Not encrypted database pasword</param>
+        /// <returns>True, if connection test was sucessfull; otherwise false
+        /// and string containg the error message</returns>
+        internal static Tuple<bool, string> TestConnection(string connectionStringToTest, string databasePassword)
+        {
+            try
+            {
+                var passwordIsValid = TestDatabasePassword(connectionStringToTest, databasePassword);
+                return new Tuple<bool, string>(passwordIsValid, "Database password doesnt match.");
+            }
+            catch(Exception exception)
+            {
+                string message = exception.Message;
+                if (exception.InnerException != null)
+                    message = exception.InnerException.Message;
+                return new Tuple<bool, string>(false, message);
+            }
+        }
+
+        private static bool TestDatabasePassword(string connectionStringToTest, string databasePassword)
+        {
+            string connectionString = BuildConnectionString(connectionStringToTest);
+            var database = new DataBase(connectionString);
+            string databasePasswordHash = PasswordFunctions.EncryptPassword(databasePassword);
+            bool passwordIsValid = databasePasswordHash == database.GetMasterPasswordHash();
+            return passwordIsValid;
         }
     }
 }

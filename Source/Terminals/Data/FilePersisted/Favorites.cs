@@ -8,17 +8,17 @@ namespace Terminals.Data
 {
     internal class Favorites : IFavorites
     {
-        private DataDispatcher dispatcher;
-        private FilePersistance persistance;
-        private Groups groups;
-        private Dictionary<Guid, IFavorite> cache;
+        private readonly DataDispatcher dispatcher;
+        private readonly FilePersistance persistance;
+        private readonly Groups groups;
+        private readonly Dictionary<Guid, IFavorite> cache;
 
-        internal Favorites(FilePersistance persistance, IFavorite[] favoritesSource)
+        internal Favorites(FilePersistance persistance)
         {
             this.persistance = persistance;
             this.dispatcher = persistance.Dispatcher;
             this.groups = this.persistance.GroupsStore;
-            this.cache = favoritesSource.ToDictionary(favorite => favorite.Id);
+            this.cache = new Dictionary<Guid,IFavorite>();
         }
 
         private bool AddToCache(IFavorite favorite)
@@ -30,7 +30,7 @@ namespace Terminals.Data
             return true;
         }
 
-        private List<IFavorite> AddAllToCache(List<IFavorite> favorites)
+        internal List<IFavorite> AddAllToCache(List<IFavorite> favorites)
         {
             var added = new List<IFavorite>();
             foreach (IFavorite favorite in favorites)

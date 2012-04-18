@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Terminals.Security;
 
 namespace Terminals.Data.DB
 {
@@ -8,7 +7,7 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class SqlPersistance : IPersistance, IPersistedSecurity
     {
-        private readonly DataBase database;
+        private DataBase database;
 
         private Favorites favorites;
         public IFavorites Favorites
@@ -32,28 +31,9 @@ namespace Terminals.Data.DB
 
         public PersistenceSecurity Security { get; private set; }
 
-        public string MasterPasswordHash
-        {
-            get
-            {
-                return this.database.GetMasterPassword();
-            }
-            set
-            {
-                this.database.UpdateMasterPassword(value);
-            }
-        }
-
         internal SqlPersistance()
         {
-            this.database = DataBase.CreateDatabaseInstance();
             this.Security = new PersistenceSecurity(this);
-            this.Dispatcher = new DataDispatcher();
-            this.groups = new Groups(this.database, this.Dispatcher);
-            this.favorites = new Favorites(this.database, this.groups, this.Dispatcher);
-            this.ConnectionHistory = new ConnectionHistory(this.database);
-            this.Credentials = new StoredCredentials(this.database);
-            this.Factory = new Factory(this.database);
         }
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
@@ -71,12 +51,20 @@ namespace Terminals.Data.DB
             this.database.SaveAndFinishDelayedUpdate();
         }
 
+        public void Initialize()
+        {
+            this.database = DataBase.CreateDatabaseInstance();
+            this.Dispatcher = new DataDispatcher();
+            this.groups = new Groups(this.database, this.Dispatcher);
+            this.favorites = new Favorites(this.database, this.groups, this.Dispatcher);
+            this.ConnectionHistory = new ConnectionHistory(this.database);
+            this.Credentials = new StoredCredentials(this.database);
+            this.Factory = new Factory(this.database);
+        }
+
         public void UpdatePasswordsByNewMasterPassword(string newMasterPassword)
         {
-            string newKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(newMasterPassword);
-            this.Credentials.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
-            Data.Favorites.UpdateFavoritePasswordsByNewKeyMaterial(this.favorites, newKeyMaterial);
-            this.database.SaveImmediatelyIfRequested();
+            // nothing to do here, the application master password doesnt affect the database
         }
     }
 }
