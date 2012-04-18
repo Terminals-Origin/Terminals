@@ -11,15 +11,15 @@ namespace Terminals.Data
     /// </summary>
     internal class Groups : IGroups
     {
-        private DataDispatcher dispatcher;
-        private FilePersistance persistance;
-        private Dictionary<Guid, IGroup> cache;
+        private readonly DataDispatcher dispatcher;
+        private readonly FilePersistance persistance;
+        private readonly Dictionary<Guid, IGroup> cache;
 
-        internal Groups(FilePersistance persistance, IGroup[] groups)
+        internal Groups(FilePersistance persistance)
         {
             this.persistance = persistance;
             this.dispatcher = persistance.Dispatcher;
-            this.cache = groups.ToDictionary(group => group.Id);
+            this.cache = new Dictionary<Guid,IGroup>();
         }
 
         private bool AddToCache(IGroup group)

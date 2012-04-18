@@ -974,6 +974,19 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("databaseMasterPassword", DefaultValue = "")]
+        public string DatabaseMasterPasswordHash
+        {
+            get
+            {
+                return (string)this["databaseMasterPassword"];
+            }
+            set
+            {
+                this["databaseMasterPassword"] = value;
+            }
+        }
+
         #endregion
     }
 }

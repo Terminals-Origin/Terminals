@@ -6,25 +6,30 @@ namespace Terminals.Security
 {
     internal partial class RequestPassword : Form
     {
-        public RequestPassword()
+        internal RequestPassword()
         {
             InitializeComponent();
         }
 
+        private string Password
+        {
+            get
+            {
+                return this.PasswordTextBox.Text;
+            }
+        }
+
         private void OkButton_Click(object sender, EventArgs e)
         {
-            String newPass = this.PasswordTextBox.Text;
-            if (!Persistance.Instance.Security.IsMasterPasswordValid(newPass))
-            {
-                this.PasswordTextBox.Focus();
-                this.PasswordTextBox.Text = "";
-                this.label2.Visible = true;
-            }
-            else
-            {
-                this.DialogResult = DialogResult.OK;
-                this.Hide();
-            }
+            this.DialogResult = DialogResult.OK;
+            this.Hide();
+        }
+
+        private void SetWrongPasswordInfo()
+        {
+            this.PasswordTextBox.Focus();
+            this.PasswordTextBox.Text = "";
+            this.label2.Visible = true;
         }
 
         private void CancelPasswordButton_Click(object sender, EventArgs e)
@@ -36,6 +41,28 @@ namespace Terminals.Security
         private void PasswordTextBox_TextChanged(object sender, EventArgs e)
         {
             this.label2.Visible = false;
+        }
+
+        internal static AuthenticationPrompt KnowsUserPassword(bool previousTrySuccess)
+        {
+            using (RequestPassword requestPassword = new RequestPassword())
+            {
+                if(previousTrySuccess)
+                    requestPassword.SetWrongPasswordInfo();
+
+                requestPassword.ShowDialog();
+                return CreatePromptResults(requestPassword);
+            }
+        }
+
+        private static AuthenticationPrompt CreatePromptResults(RequestPassword requestPassword)
+        {
+            bool canceled = requestPassword.DialogResult == DialogResult.Cancel;
+            return new AuthenticationPrompt
+                {
+                    Password = requestPassword.Password,
+                    Canceled = canceled
+                };
         }
     }
 }

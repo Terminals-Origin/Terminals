@@ -58,18 +58,6 @@ namespace Terminals.Data
 
         public PersistenceSecurity Security { get; private set; }
 
-        public string MasterPasswordHash
-        {
-            get
-            {
-                return Settings.MasterPasswordHash;
-            }
-            set
-            {
-                Settings.MasterPasswordHash = value;
-            }
-        }
-
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistance");
         private DataFileWatcher fileWatcher;
         private bool delaySave = false;
@@ -80,9 +68,10 @@ namespace Terminals.Data
             this.Dispatcher = new DataDispatcher();
             this.connectionHistory = new ConnectionHistory();
             this.storedCredentials = new StoredCredentials();
-            this.InitializeFileWatch();
-            this.Load();
+            this.groups = new Groups(this);
+            this.favorites = new Favorites(this);
             this.factory = new Factory();
+            this.InitializeFileWatch();
         }
 
         private void InitializeFileWatch()
@@ -124,6 +113,14 @@ namespace Terminals.Data
             this.SaveImmediatelyIfRequested();
         }
 
+        public void Initialize()
+        {
+            FavoritesFile file = this.LoadFile();
+            this.groups.Add(file.Groups.Cast<IGroup>().ToList());
+            this.favorites.AddAllToCache(file.Favorites.Cast<IFavorite>().ToList());
+            this.UpdateFavoritesInGroups(file.FavoritesInGroups);
+        }
+
         public void UpdatePasswordsByNewMasterPassword(string newMasterPassword)
         {
             string newKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(newMasterPassword);
@@ -138,14 +135,6 @@ namespace Terminals.Data
             {
                 this.Save();
             }
-        }
-
-        private void Load()
-        {
-            FavoritesFile file = this.LoadFile();
-            this.groups = new Groups(this, file.Groups);
-            this.favorites = new Favorites(this, file.Favorites);
-            this.UpdateFavoritesInGroups(file.FavoritesInGroups);
         }
 
         private FavoritesFile LoadFile()

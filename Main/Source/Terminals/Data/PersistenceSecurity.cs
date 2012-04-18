@@ -17,7 +17,7 @@ namespace Terminals.Data
         {
             get
             {
-                return !String.IsNullOrEmpty(this.persistence.MasterPasswordHash);
+                return !String.IsNullOrEmpty(Settings.MasterPasswordHash);
             }
         }
 
@@ -27,10 +27,48 @@ namespace Terminals.Data
             this.KeyMaterial = string.Empty;
         }
 
-        internal Boolean IsMasterPasswordValid(string passwordToCheck)
+        internal bool Authenticate(Func<bool, AuthenticationPrompt> knowsUserPassword)
+        {
+            bool authenticated = this.AuthenticateIfRequired(knowsUserPassword);
+            if (authenticated)
+              this.persistence.Initialize();
+
+            return authenticated;
+        }
+
+        private bool AuthenticateIfRequired(Func<bool, AuthenticationPrompt> knowsUserPassword)
+        {
+            if (this.IsMasterPasswordDefined)
+                return this.PromptUserToAuthenticate(knowsUserPassword);
+
+            return true;
+        }
+
+        private bool PromptUserToAuthenticate(Func<bool, AuthenticationPrompt> knowsUserPassword)
+        {
+            AuthenticationPrompt promptResults = knowsUserPassword(false);
+            bool authenticated = IsUserPaswordValid(promptResults);
+
+            while (!(promptResults.Canceled || authenticated))
+            {
+                promptResults = knowsUserPassword(true);
+                authenticated = this.IsUserPaswordValid(promptResults);
+            }
+            return authenticated;
+        }
+
+        private bool IsUserPaswordValid(AuthenticationPrompt promptResults)
+        {
+            if (!promptResults.Canceled)
+                return this.IsMasterPasswordValid(promptResults.Password);
+
+            return false;
+        }
+
+        private Boolean IsMasterPasswordValid(string passwordToCheck)
         {
             String hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(passwordToCheck);
-            if (this.persistence.MasterPasswordHash == hashToCheck)
+            if (Settings.MasterPasswordHash == hashToCheck)
             {
                 UpdateKeyMaterial(passwordToCheck);
                 return true;

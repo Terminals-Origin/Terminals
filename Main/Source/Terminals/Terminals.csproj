@@ -162,6 +162,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AuthenticationPrompt.cs" />
     <Compile Include="Data\DB\SQLPersistance.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
