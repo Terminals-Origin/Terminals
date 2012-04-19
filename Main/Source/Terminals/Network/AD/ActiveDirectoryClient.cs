@@ -46,7 +46,7 @@ namespace Terminals.Network
 
         internal void FindComputers(string domain)
         {
-            if (this.IsRunning) // nothing is running
+            if (!this.IsRunning) // nothing is running
             {
                 this.IsRunning = true;
                 ThreadPool.QueueUserWorkItem(new WaitCallback(StartScan), domain); 
