@@ -11,7 +11,7 @@ namespace Terminals.Configuration
         /// <summary>
         /// Gets alphabeticaly sorted array of tags resolved from Tags store
         /// </summary>
-        [Obsolete("Use new persistance instead.")]
+        [Obsolete("Use new persistence instead.")]
         public static string[] Tags
         {
             get
@@ -22,7 +22,7 @@ namespace Terminals.Configuration
             }
         }
 
-        [Obsolete("Use new persistance instead.")]
+        [Obsolete("Use new persistence instead.")]
         public static void AddTags(List<String> tags)
         {
             List<String> addedTags = AddTagsToSettings(tags);
@@ -60,7 +60,7 @@ namespace Terminals.Configuration
             return tag;
         }
 
-        [Obsolete("Use new persistance instead.")]
+        [Obsolete("Use new persistence instead.")]
         public static void DeleteTags(List<String> tagsToDelete)
         {
             List<String> deletedTags = DeleteTagsFromSettings(tagsToDelete);
@@ -99,7 +99,7 @@ namespace Terminals.Configuration
                 .Count();
         }
 
-        [Obsolete("Use new persistance instead.")]
+        [Obsolete("Use new persistence instead.")]
         public static void RebuildTagIndex()
         {
             String[] oldTags = Tags;

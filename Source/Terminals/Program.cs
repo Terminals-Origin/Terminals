@@ -102,7 +102,7 @@ namespace Terminals
 
         private static void StartMainForm(CommandLineArgs commandLine)
         {
-            var security = Persistance.Instance.Security;
+            var security = Persistence.Instance.Security;
             if (security.Authenticate(RequestPassword.KnowsUserPassword))
                 RunMainForm(commandLine);
             else

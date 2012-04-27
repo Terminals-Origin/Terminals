@@ -21,12 +21,12 @@ namespace Terminals.Forms.Controls
 
         private static IGroups PersistedGroups
         {
-            get { return Persistance.Instance.Groups; }
+            get { return Persistence.Instance.Groups; }
         }
 
         private static DataDispatcher Dispatcher
         {
-            get { return Persistance.Instance.Dispatcher; }
+            get { return Persistence.Instance.Dispatcher; }
         }
 
         internal FavoriteTreeListLoader(FavoritesTreeView treeListToFill)
@@ -279,11 +279,11 @@ namespace Terminals.Forms.Controls
 
         internal static IGroup CreateUntagedVirtualGroup()
         {
-            var untagedFavorites = Persistance.Instance.Favorites
+            var untagedFavorites = Persistence.Instance.Favorites
                 .Where(candidate => candidate.Groups.Count == 0)
                 .ToList();
 
-            var factory = Persistance.Instance.Factory;
+            var factory = Persistence.Instance.Factory;
             return factory.CreateGroup(Settings.UNTAGGED_NODENAME, untagedFavorites);
         }
 

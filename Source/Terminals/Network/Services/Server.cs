@@ -63,7 +63,7 @@ namespace Terminals.Network
 
         private static ArrayList FavoritesToSharedList()
         {
-            var favoritesToShare = Persistance.Instance.Favorites;
+            var favoritesToShare = Persistence.Instance.Favorites;
             ArrayList list = new ArrayList();
             foreach (IFavorite favorite in favoritesToShare)
             {

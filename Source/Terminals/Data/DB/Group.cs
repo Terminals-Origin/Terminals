@@ -27,7 +27,7 @@ namespace Terminals.Data.DB
 
         /// <summary>
         /// Gets or sets the virtual unique identifer. This isnt used, because of internal database identifier.
-        /// Only for compatibility with file persistance.
+        /// Only for compatibility with file persistence.
         /// </summary>
         public Guid Parent
         {

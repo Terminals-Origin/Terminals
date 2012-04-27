@@ -13,11 +13,11 @@ namespace Terminals.Data
     {
         /// <summary>
         /// Doesnt convert Tags to groups, it has to be handled manualy, 
-        /// when adding Favorite into Persistance
+        /// when adding Favorite into Persistence
         /// </summary>
         internal static IFavorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite)
         {
-            var result = Persistance.Instance.Factory.CreateFavorite();
+            var result = Persistence.Instance.Factory.CreateFavorite();
             ConvertGeneralProperties(result, sourceFavorite);
             ConvertSecurity(result, sourceFavorite);
             ConvertBeforeConnetExecute(result, sourceFavorite);
@@ -45,7 +45,7 @@ namespace Terminals.Data
             security.Domain = sourceFavorite.DomainName;
             security.UserName = sourceFavorite.UserName;
             security.EncryptedPassword = sourceFavorite.EncryptedPassword;
-            ICredentialSet credential = Persistance.Instance.Credentials[sourceFavorite.Credential];
+            ICredentialSet credential = Persistence.Instance.Credentials[sourceFavorite.Credential];
             if (credential != null)
                 security.Credential = credential.Id;
         }

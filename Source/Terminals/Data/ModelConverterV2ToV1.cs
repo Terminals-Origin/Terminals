@@ -51,7 +51,7 @@ namespace Terminals.Data
             result.UserName = security.UserName;
             result.EncryptedPassword = security.EncryptedPassword;
             
-            ICredentialSet credential = Persistance.Instance.Credentials[security.Credential];
+            ICredentialSet credential = Persistence.Instance.Credentials[security.Credential];
             if(credential != null)
                 result.Credential = credential.Name;
         }

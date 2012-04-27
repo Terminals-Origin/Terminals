@@ -23,19 +23,19 @@ namespace Terminals.Data
         IFavorite this[string favoriteName] { get; }
         
         /// <summary>
-        /// Adds favorite in the persistance, if no favorite with its identifier exists.
+        /// Adds favorite in the persistence, if no favorite with its identifier exists.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void Add(IFavorite favorite);
 
         /// <summary>
-        /// Adds all favorites in the persistance, which identifier doesnt exist in current collection yet.
+        /// Adds all favorites in the persistence, which identifier doesnt exist in current collection yet.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void Add(List<IFavorite> favorites);
 
         /// <summary>
-        /// Replace favorite with the present identifier in persistance with the one send as parameter.
+        /// Replace favorite with the present identifier in persistence with the one send as parameter.
         /// Saves changes, if delayed save isnt required.
         /// This expects, that user didnt change favorite groups.
         /// </summary>
@@ -52,14 +52,14 @@ namespace Terminals.Data
         void UpdateFavorite(IFavorite favorite, List<IGroup> groups);
 
         /// <summary>
-        /// Removes the favorite from persistance, if it is present.
+        /// Removes the favorite from persistence, if it is present.
         /// and remove it also from all its groups.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void Delete(IFavorite favorite);
 
         /// <summary>
-        /// Removes all required favorites from persistance, if they are present.
+        /// Removes all required favorites from persistence, if they are present.
         /// And remove them from all their groups.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
@@ -73,28 +73,28 @@ namespace Terminals.Data
         SortableList<IFavorite> ToListOrderedByDefaultSorting();
 
         /// <summary>
-        /// updates all required favorites in persistance, if they are present,
+        /// updates all required favorites in persistence, if they are present,
         /// updating their credential property by credentailName value.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential);
 
         /// <summary>
-        /// updates all required favorites in persistance, if they are present,
+        /// updates all required favorites in persistence, if they are present,
         /// updating their password property by newPassword value.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword);
 
         /// <summary>
-        /// updates all required favorites in persistance, if they are present,
+        /// updates all required favorites in persistence, if they are present,
         /// updating their Domain property by newDomainName value.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void ApplyDomainNameToAllFavorites(List<IFavorite> selectedFavorites, string newDomainName);
 
         /// <summary>
-        /// updates all required favorites in persistance, if they are present,
+        /// updates all required favorites in persistence, if they are present,
         /// updating their UserName property by newUserName value.
         /// Saves changes, if delayed save isnt required.
         /// </summary>

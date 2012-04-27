@@ -5,7 +5,7 @@ namespace Terminals.Data
 {
     /// <summary>
     /// Represents association between group and it favorites.
-    /// Used only for file persistance serialization
+    /// Used only for file persistence serialization
     /// </summary>
     [Serializable]
     public class FavoritesInGroup

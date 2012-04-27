@@ -15,7 +15,7 @@ namespace Terminals.Wizard
             EnableMasterPassword.Enabled = true;
             panel1.Enabled = true;
 
-            if(Persistance.Instance.Security.IsMasterPasswordDefined)
+            if(Persistence.Instance.Security.IsMasterPasswordDefined)
             {
                 EnableMasterPassword.Checked = true;
                 EnableMasterPassword.Enabled = false;

@@ -16,12 +16,12 @@ namespace Terminals.Forms.Controls
 
         private static IFavorites PersistedFavorites
         {
-            get { return Persistance.Instance.Favorites; }
+            get { return Persistence.Instance.Favorites; }
         }
 
         private static IGroups PersistedGroups
         {
-            get { return Persistance.Instance.Groups; }
+            get { return Persistence.Instance.Groups; }
         }
 
         internal ImportWithDialogs(Form sourceForm)
@@ -67,7 +67,7 @@ namespace Terminals.Forms.Controls
         private static void PerformImport(List<FavoriteConfigurationElement> configFavoritesToImport)
         {
             var favorites = new List<IFavorite>();
-            Persistance.Instance.StartDelayedUpdate();
+            Persistence.Instance.StartDelayedUpdate();
             foreach (FavoriteConfigurationElement configFavorite in configFavoritesToImport)
             {
                 IFavorite favorite = PrepareFavoriteToImport(configFavorite);
@@ -76,7 +76,7 @@ namespace Terminals.Forms.Controls
             }
 
             PersistedFavorites.Add(favorites);
-            Persistance.Instance.SaveAndFinishDelayedUpdate();
+            Persistence.Instance.SaveAndFinishDelayedUpdate();
         }
 
         internal static void AddFavoriteIntoGroups(FavoriteConfigurationElement configFavorite, IFavorite favorite)

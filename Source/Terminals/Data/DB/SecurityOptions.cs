@@ -101,7 +101,7 @@ namespace Terminals.Data.DB
             {
                 if (value != Guid.Empty)
                 {
-                    var credentialToAssign = Persistance.Instance.Credentials[value] as CredentialSet;
+                    var credentialToAssign = Persistence.Instance.Credentials[value] as CredentialSet;
                     if (credentialToAssign != null)
                         this.CredentialSet = credentialToAssign;
                 }

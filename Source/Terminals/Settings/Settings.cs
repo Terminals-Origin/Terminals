@@ -973,7 +973,7 @@ namespace Terminals.Configuration
         }
 
         /// <summary>
-        /// Gets or sets the value identifing the persistance.
+        /// Gets or sets the value identifing the persistence.
         /// 0 byfault - file persisted data, 1 - SQL database
         /// </summary>
         internal static byte PersistenceType

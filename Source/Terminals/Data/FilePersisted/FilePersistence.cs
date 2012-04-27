@@ -11,7 +11,7 @@ using Unified;
 
 namespace Terminals.Data
 {
-    internal class FilePersistance : IPersistance, IPersistedSecurity
+    internal class FilePersistence : IPersistence, IPersistedSecurity
     {
         private Favorites favorites;
         public IFavorites Favorites
@@ -58,11 +58,11 @@ namespace Terminals.Data
 
         public PersistenceSecurity Security { get; private set; }
 
-        private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistance");
+        private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistence");
         private DataFileWatcher fileWatcher;
         private bool delaySave = false;
 
-        internal FilePersistance()
+        internal FilePersistence()
         {
             this.Security = new PersistenceSecurity(this);
             this.Dispatcher = new DataDispatcher();
@@ -205,9 +205,9 @@ namespace Terminals.Data
             {
                 this.fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
-                FavoritesFile persistanceFile = this.CreatePersistanceFileFromCache();
+                FavoritesFile persistenceFile = this.CreatePersistenceFileFromCache();
                 string fileLocation = Settings.FileLocations.Favorites;
-                Serialize.SerializeXMLToDisk(persistanceFile, fileLocation);
+                Serialize.SerializeXMLToDisk(persistenceFile, fileLocation);
             }
             catch (Exception exception)
             {
@@ -221,7 +221,7 @@ namespace Terminals.Data
             }
         }
 
-        private FavoritesFile CreatePersistanceFileFromCache()
+        private FavoritesFile CreatePersistenceFileFromCache()
         {
             return new FavoritesFile
               {

@@ -52,7 +52,7 @@ namespace Terminals
 
         private IFavorites PersistedFavorites
         {
-            get { return Persistance.Instance.Favorites; }
+            get { return Persistence.Instance.Favorites; }
         }
 
         #endregion
@@ -157,7 +157,7 @@ namespace Terminals
                 this.QuickContextMenu.ItemClicked += new ToolStripItemClickedEventHandler(QuickContextMenu_ItemClicked);
 
                 ProtocolHandler.Register();
-                Persistance.Instance.AssignSynchronizationObject(this);
+                Persistence.Instance.AssignSynchronizationObject(this);
             }
             catch (Exception exc)
             {
@@ -367,7 +367,7 @@ namespace Terminals
 
             if (favorite != null)
             {
-                Persistance.Instance.ConnectionHistory.RecordHistoryItem(existingFavorite);
+                Persistence.Instance.ConnectionHistory.RecordHistoryItem(existingFavorite);
                 SendNativeMessageToFocus();
                 CreateTerminalTab(favorite);
             }
@@ -1770,7 +1770,7 @@ namespace Terminals
 
         private void rebuildTagsIndexToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Persistance.Instance.Groups.Rebuild();
+            Persistence.Instance.Groups.Rebuild();
             this.menuLoader.LoadGroups();
             this.UpdateControls();
         }

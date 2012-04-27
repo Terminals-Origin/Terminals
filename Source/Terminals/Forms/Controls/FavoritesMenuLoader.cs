@@ -68,12 +68,12 @@ namespace Terminals
 
             private static IGroups PersistedGroups
             {
-                get { return Persistance.Instance.Groups; }
+                get { return Persistence.Instance.Groups; }
             }
 
             private static IFavorites PersistedFavorites
             {
-                get { return Persistance.Instance.Favorites; }
+                get { return Persistence.Instance.Favorites; }
             }
 
             internal FavoritesMenuLoader(MainForm mainForm)
@@ -88,7 +88,7 @@ namespace Terminals
 
             private void RegisterEventHandlers()
             {
-                DataDispatcher dispatcher = Persistance.Instance.Dispatcher;
+                DataDispatcher dispatcher = Persistence.Instance.Dispatcher;
                 dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.OnDataChanged);
                 dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnDataChanged);
                 Settings.ConfigurationChanged += new ConfigurationChangedHandler(this.OnSettingsConfigurationChanged);

@@ -13,7 +13,7 @@ namespace Terminals
         {
             InitializeComponent();
 
-            var favoritesWithButton = Persistance.Instance.Favorites
+            var favoritesWithButton = Persistence.Instance.Favorites
                 .Where(candidate => Settings.FavoritesToolbarButtons.Contains(candidate.Id));
 
             foreach (IFavorite favoriteWithButton in favoritesWithButton)

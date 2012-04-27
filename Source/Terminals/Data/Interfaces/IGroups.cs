@@ -23,13 +23,13 @@ namespace Terminals.Data
         IGroup this[Guid groupId] { get; }
 
         /// <summary>
-        /// Adds group in the persistance, if no group with its identifier exists.
+        /// Adds group in the persistence, if no group with its identifier exists.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void Add(IGroup group);
 
         /// <summary>
-        /// Removes the group from persistance, if it is present.
+        /// Removes the group from persistence, if it is present.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void Delete(IGroup group);
@@ -37,7 +37,7 @@ namespace Terminals.Data
         List<IGroup> GetGroupsContainingFavorite(Guid favoriteId);
 
         /// <summary>
-        /// Removes all empty groups from persistance.
+        /// Removes all empty groups from persistence.
         /// Saves changes, if delayed save isnt required.
         /// </summary>
         void Rebuild();

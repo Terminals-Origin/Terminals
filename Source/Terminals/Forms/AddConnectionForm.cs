@@ -13,7 +13,7 @@ namespace Terminals
             InitializeComponent();
 
             this.gridFavorites.AutoGenerateColumns = false;
-            this.gridFavorites.DataSource = Persistance.Instance.Favorites.ToList();
+            this.gridFavorites.DataSource = Persistence.Instance.Favorites.ToList();
         }
 
         private List<IFavorite> selectedFavorites;

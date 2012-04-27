@@ -17,7 +17,7 @@ namespace Terminals
         private void LoadFavorites()
         {
             cmbServerList.Items.Clear();
-            var favorites = Persistance.Instance.Favorites;
+            var favorites = Persistence.Instance.Favorites;
             var favoriteNames = favorites.Select(favorite => favorite.Name).ToArray();
             cmbServerList.Items.AddRange(favoriteNames);
         }

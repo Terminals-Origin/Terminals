@@ -11,7 +11,7 @@ namespace Terminals.Data
         internal SerializableDictionary<string, SortableList<IHistoryItem>> GroupByDate()
         {
             SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate = InitializeGroups();
-            IFavorites favorites = Persistance.Instance.Favorites;
+            IFavorites favorites = Persistence.Instance.Favorites;
 
             foreach (Guid favoriteId in this.Keys)  // key is the favorite unique identifier
             {

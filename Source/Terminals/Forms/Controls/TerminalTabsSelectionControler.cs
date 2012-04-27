@@ -22,7 +22,7 @@ namespace Terminals
         {
             this.mainTabControl = tabControl;
             this.mainForm = mainForm;
-            Persistance.Instance.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesChanged);
+            Persistence.Instance.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesChanged);
         }
 
         private void OnFavoritesChanged(FavoritesChangedEventArgs args)

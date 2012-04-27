@@ -19,7 +19,7 @@ namespace Terminals
 
         private static IFavorites PersistedFavorites
         {
-            get { return Persistance.Instance.Favorites; }
+            get { return Persistence.Instance.Favorites; }
         }
 
         internal OrganizeFavoritesForm()
@@ -113,7 +113,7 @@ namespace Terminals
         /// <param name="editedFavorite">The currently edited favorite to update.</param>
         internal static void UpdateFavoritePreservingDuplicitNames(string oldName, string newName, IFavorite editedFavorite)
         {
-            IFavorites persistedFavorites = Persistance.Instance.Favorites;
+            IFavorites persistedFavorites = Persistence.Instance.Favorites;
             editedFavorite.Name = oldName; // to prevent find it self as oldFavorite
             var oldFavorite = persistedFavorites[newName];
             if (oldFavorite != null && !editedFavorite.Equals(oldFavorite)) // prevent conflict with another favorite than edited
@@ -132,15 +132,15 @@ namespace Terminals
         {
             if (AskUserIfWantsToOverwrite(newName))
             {
-                IFavorites persistedFavorites = Persistance.Instance.Favorites;
-                Persistance.Instance.StartDelayedUpdate();
+                IFavorites persistedFavorites = Persistence.Instance.Favorites;
+                Persistence.Instance.StartDelayedUpdate();
                 var groups = editedFavorite.Groups;
                 persistedFavorites.Delete(editedFavorite);
                 editedFavorite.Id = oldFavorite.Id;
                 editedFavorite.Name = newName;
                 persistedFavorites.Update(editedFavorite);
                 persistedFavorites.UpdateFavorite(editedFavorite, groups);
-                Persistance.Instance.SaveAndFinishDelayedUpdate();
+                Persistence.Instance.SaveAndFinishDelayedUpdate();
             }
         }
 
