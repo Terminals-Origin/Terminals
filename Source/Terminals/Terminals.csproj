@@ -163,10 +163,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\AuthenticationPrompt.cs" />
-    <Compile Include="Data\DB\SQLPersistance.Designer.cs">
+    <Compile Include="Data\DB\SQLPersistence.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>SQLPersistance.edmx</DependentUpon>
+      <DependentUpon>SQLPersistence.edmx</DependentUpon>
     </Compile>
     <Compile Include="Data\Interfaces\IPersistedSecurity.cs" />
     <Compile Include="Data\PersistenceSecurity.cs" />
@@ -199,7 +199,7 @@
     <Compile Include="Data\DB\BeforeConnectExecute.cs" />
     <Compile Include="Data\DB\CredentialBase.cs" />
     <Compile Include="Data\DB\CredentialSet.cs" />
-    <Compile Include="Data\DB\DataBase.cs" />
+    <Compile Include="Data\DB\Database.cs" />
     <Compile Include="Data\DB\Factory.cs" />
     <Compile Include="Data\DB\Favorite.cs" />
     <Compile Include="Data\DB\Favorites.cs" />
@@ -1133,9 +1133,9 @@
     </Content>
     <None Include="Resources\amber.png" />
     <Content Include="Resources\back.png" />
-    <EntityDeploy Include="Data\DB\SQLPersistance.edmx">
+    <EntityDeploy Include="Data\DB\SQLPersistence.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>SQLPersistance.Designer.cs</LastGenOutput>
+      <LastGenOutput>SQLPersistence.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Properties\DataSources\FavoriteConfigurationElement.datasource" />
     <None Include="Properties\DataSources\Terminals.Network.ActiveDirectoryComputer.datasource" />

@@ -12,10 +12,10 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class ConnectionHistory : IConnectionHistory
     {
-        private DataBase dataBase;
+        private Database dataBase;
         public event HistoryRecorded OnHistoryRecorded;
 
-        internal ConnectionHistory(DataBase dataBase)
+        internal ConnectionHistory(Database dataBase)
         {
             this.dataBase = dataBase;
         }

@@ -7,7 +7,7 @@ namespace Terminals.Data.DB
 {
     internal class StoredCredentials : ICredentials
     {
-        private readonly DataBase dataBase;
+        private readonly Database dataBase;
         public event EventHandler CredentialsChanged;
 
         ICredentialSet ICredentials.this[Guid id]
@@ -29,7 +29,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal StoredCredentials(DataBase dataBase)
+        internal StoredCredentials(Database dataBase)
         {
             this.dataBase = dataBase;
         }

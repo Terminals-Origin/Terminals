@@ -11,11 +11,11 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class Favorites : IFavorites
     {
-        private DataBase dataBase;
+        private Database dataBase;
         private Groups groups;
         private DataDispatcher dispatcher;
 
-        internal Favorites(DataBase dataBase, Groups groups, DataDispatcher dispatcher)
+        internal Favorites(Database dataBase, Groups groups, DataDispatcher dispatcher)
         {
             this.dataBase = dataBase;
             this.groups = groups;
@@ -39,12 +39,12 @@ namespace Terminals.Data.DB
 
         public void Add(IFavorite favorite)
         {
-            AddToDataBase(favorite);
+            AddToDatabase(favorite);
             this.dispatcher.ReportFavoriteAdded(favorite);
             this.dataBase.SaveImmediatelyIfRequested();
         }
 
-        private void AddToDataBase(IFavorite favorite)
+        private void AddToDatabase(IFavorite favorite)
         {
             this.dataBase.AddObject("Favorites", favorite);
         }
@@ -60,7 +60,7 @@ namespace Terminals.Data.DB
         {
             foreach (var favorite in favorites)
             {
-                AddToDataBase(favorite);
+                AddToDatabase(favorite);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Terminals.Data.DB
             
             Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
             Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
-            List<IGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDataBase();
+            List<IGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase();
 
             this.dispatcher.ReportGroupsRecreated(addedGroups, removedGroups);
             SaveAndReportFavoriteUpdated(favorite);

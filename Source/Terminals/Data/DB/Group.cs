@@ -6,7 +6,7 @@ namespace Terminals.Data.DB
 {
     internal partial class Group : IGroup, IEntityContext
     {
-        public DataBase Database { get; set; }
+        public Database Database { get; set; }
 
         private Guid guid = Guid.NewGuid();
 

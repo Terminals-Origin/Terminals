@@ -10,10 +10,10 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class Groups : IGroups
     {
-        private DataBase dataBase;
+        private Database dataBase;
         private DataDispatcher dispatcher;
 
-        internal Groups(DataBase dataBase, DataDispatcher dispatcher)
+        internal Groups(Database dataBase, DataDispatcher dispatcher)
         {
             this.dataBase = dataBase;
             this.dispatcher = dispatcher;
@@ -105,11 +105,11 @@ namespace Terminals.Data.DB
 
         private void DeleteEmptyGroups()
         {
-            var emptyGroups = this.DeleteEmptyGroupsFromDataBase();
+            var emptyGroups = this.DeleteEmptyGroupsFromDatabase();
             this.dispatcher.ReportGroupsDeleted(emptyGroups);
         }
 
-        internal List<IGroup> DeleteEmptyGroupsFromDataBase()
+        internal List<IGroup> DeleteEmptyGroupsFromDatabase()
         {
             List<Group> emptyGroups = this.GetEmptyGroups();
             Delete(emptyGroups);

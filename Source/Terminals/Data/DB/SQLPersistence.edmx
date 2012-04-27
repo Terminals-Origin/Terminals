@@ -374,7 +374,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Terminals.Data.DB" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
-        <EntityContainer Name="DataBase" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" b:LazyLoadingEnabled="true" xmlns:b="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
+        <EntityContainer Name="Database" a:TypeAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" b:LazyLoadingEnabled="true" xmlns:b="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
           <EntitySet Name="BeforeConnectExecute" EntityType="Terminals.Data.DB.BeforeConnectExecute" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <EntitySet Name="CredentialBase" EntityType="Terminals.Data.DB.CredentialBase" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <EntitySet Name="DisplayOptions" EntityType="Terminals.Data.DB.DisplayOptions" cg:GetterAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
@@ -564,7 +564,7 @@
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <Alias Key="Model" Value="Model1" />
         <Alias Key="Target" Value="Model1.Store" />
-        <EntityContainerMapping CdmEntityContainer="DataBase" StorageEntityContainer="Model1StoreContainer">
+        <EntityContainerMapping CdmEntityContainer="Database" StorageEntityContainer="Model1StoreContainer">
           <EntitySetMapping Name="BeforeConnectExecute">
             <EntityTypeMapping TypeName="Terminals.Data.DB.BeforeConnectExecute">
               <MappingFragment StoreEntitySet="BeforeConnectExecute">
