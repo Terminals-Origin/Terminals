@@ -119,10 +119,6 @@ namespace NetTools
                 //send MagicPacket(TM)...
                 byteSend = socketClient.Send (Payload, 0, Payload.Length, SocketFlags.None);
             }
-            catch (SocketException ex)
-            {
-                throw ex;
-            }
             finally
             {
                 socketClient.Close();

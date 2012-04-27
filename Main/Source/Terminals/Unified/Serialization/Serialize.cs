@@ -45,10 +45,11 @@ namespace Unified
                 XmlSerializer xmlSerializer = new XmlSerializer(type);
                 local2 = xmlSerializer.Deserialize(memStream);
             }
-            catch (Exception exc)
+            catch
             {
                 local2 = null;
-                if (ThrowException) throw exc;
+                if (ThrowException)
+                    throw;
             }
 
             return local2;
@@ -116,11 +117,11 @@ namespace Unified
                 xmlSerializer.Serialize(memoryStream1, request);
                 memoryStream2 = memoryStream1;
             }
-            catch (Exception exc)
+            catch
             {
                 memoryStream2 = null;
                 if (ThrowException) 
-                    throw exc;
+                    throw;
             }
 
             return memoryStream2;
@@ -167,11 +168,11 @@ namespace Unified
                 memoryStream.Close();
                 local2 = local1;
             }
-            catch (Exception exc)
+            catch
             {
                 local2 = null;
                 if (ThrowException) 
-                    throw exc;
+                    throw;
             }
 
             return local2;

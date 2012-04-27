@@ -203,17 +203,15 @@ namespace Unified.Rss
 
                         stream = response.GetResponseStream();
                     }
-                    catch (WebException we)
+                    catch (WebException)
                     {
                         if (oldFeed != null)
                         {
                             oldFeed.cached = true;
                             return oldFeed;
                         }
-                        else
-                        {
-                            throw we; // bad
-                        }
+
+                        throw;
                     }
                     break;
             }
