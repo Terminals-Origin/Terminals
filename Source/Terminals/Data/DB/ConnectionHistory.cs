@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using Terminals.History;
+using Terminals.Network;
 
 namespace Terminals.Data.DB
 {
@@ -33,7 +34,7 @@ namespace Terminals.Data.DB
             if (historyTarget == null || historyTarget.EntityState == EntityState.Detached)
                 return;
 
-            string userSid = Data.HistoryItem.GetCurrentUserSid();
+            string userSid = WindowsUserIdentifiers.GetCurrentUserSid();
             int favoriteId = ((Favorite)favorite).Id;
             this.dataBase.InsertHistory(favoriteId, DateTime.Now, userSid);
             this.FireOnHistoryRecorded(favorite);
