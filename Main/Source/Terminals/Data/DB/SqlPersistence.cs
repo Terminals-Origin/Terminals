@@ -7,7 +7,7 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class SqlPersistence : IPersistence, IPersistedSecurity
     {
-        private DataBase database;
+        private Database database;
 
         private Favorites favorites;
         public IFavorites Favorites
@@ -53,7 +53,7 @@ namespace Terminals.Data.DB
 
         public void Initialize()
         {
-            this.database = DataBase.CreateDatabaseInstance();
+            this.database = Database.CreateDatabaseInstance();
             this.Dispatcher = new DataDispatcher();
             this.groups = new Groups(this.database, this.Dispatcher);
             this.favorites = new Favorites(this.database, this.groups, this.Dispatcher);

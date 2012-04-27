@@ -29,7 +29,7 @@ namespace Terminals.Forms
         private void FillSqlUserControls()
         {
             if (String.IsNullOrEmpty(Settings.ConnectionString))
-                this.txtConnectionString.Text = DataBase.DEVELOPMENT_CONNECTION_STRING;
+                this.txtConnectionString.Text = Database.DEVELOPMENT_CONNECTION_STRING;
             else
                 this.txtConnectionString.Text = Settings.ConnectionString;
 
@@ -66,7 +66,7 @@ namespace Terminals.Forms
             this.Cursor = Cursors.WaitCursor;
             string connectionString = this.txtConnectionString.Text;
             string databasePassword = this.txtDbPassword.Text;
-            Tuple<bool, string> result = DataBase.TestConnection(connectionString, databasePassword);
+            Tuple<bool, string> result = Database.TestConnection(connectionString, databasePassword);
             this.Cursor = Cursors.Default;
 
             const string messageHeader = "Terminals - Sql connection test";

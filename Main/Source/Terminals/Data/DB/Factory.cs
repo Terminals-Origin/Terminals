@@ -7,9 +7,9 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class Factory : IFactory
     {
-        private DataBase database;
+        private Database database;
 
-        internal Factory(DataBase database)
+        internal Factory(Database database)
         {
             this.database = database;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Terminals.Connections;
 using Unified;
@@ -8,7 +9,7 @@ namespace Terminals.Data.DB
 {
     internal partial class Favorite : IFavorite, IEntityContext
     {
-        public DataBase Database { get; set; }
+        public Database Database { get; set; }
 
         private ProtocolOptions protocolProperties;
 
@@ -45,7 +46,7 @@ namespace Terminals.Data.DB
 
         ISecurityOptions IFavorite.Security
         {
-            get 
+            get
             {
                 this.SecurityReference.Load();
                 return this.Security; 
@@ -155,7 +156,7 @@ namespace Terminals.Data.DB
         /// <summary>
         /// Using given database context commits changes of protocol properties into the database
         /// </summary>
-        internal void SaveProperties(DataBase database)
+        internal void SaveProperties(Database database)
         {
             if (database != null)
             {

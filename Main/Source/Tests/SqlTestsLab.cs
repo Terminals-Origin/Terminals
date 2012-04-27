@@ -16,7 +16,7 @@ namespace Tests
         /// <summary>
         /// Gets second connector to lab database. Used to check, if data reached the store
         /// </summary>
-        internal DataBase CheckDatabase { get; private set; }
+        internal Database CheckDatabase { get; private set; }
 
         /// <summary>
         /// Initialzes data connectors on beginning of each test.
@@ -24,9 +24,9 @@ namespace Tests
         internal void InitializeTestLab()
         {
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
-            Settings.ConnectionString = DataBase.DEVELOPMENT_CONNECTION_STRING;
+            Settings.ConnectionString = Database.DEVELOPMENT_CONNECTION_STRING;
             Persistence = new SqlPersistence();
-            CheckDatabase = DataBase.CreateDatabaseInstance();
+            CheckDatabase = Database.CreateDatabaseInstance();
             ClearTestLab(); // because of failed previos tests
         }
 

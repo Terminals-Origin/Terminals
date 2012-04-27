@@ -35,32 +35,32 @@ namespace Terminals.Data.DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    internal partial class DataBase : ObjectContext
+    internal partial class Database : ObjectContext
     {
         #region Constructors
     
         /// <summary>
-        /// Initializes a new DataBase object using the connection string found in the 'DataBase' section of the application configuration file.
+        /// Initializes a new Database object using the connection string found in the 'Database' section of the application configuration file.
         /// </summary>
-        public DataBase() : base("name=DataBase", "DataBase")
+        public Database() : base("name=Database", "Database")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new DataBase object.
+        /// Initialize a new Database object.
         /// </summary>
-        public DataBase(string connectionString) : base(connectionString, "DataBase")
+        public Database(string connectionString) : base(connectionString, "Database")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new DataBase object.
+        /// Initialize a new Database object.
         /// </summary>
-        public DataBase(EntityConnection connection) : base(connection, "DataBase")
+        public Database(EntityConnection connection) : base(connection, "Database")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
