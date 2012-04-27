@@ -11,7 +11,7 @@ namespace Tests
         /// <summary>
         /// Gets the data store on which tests should be performed
         /// </summary>
-        internal SqlPersistance Persistence { get; private set; }
+        internal SqlPersistence Persistence { get; private set; }
 
         /// <summary>
         /// Gets second connector to lab database. Used to check, if data reached the store
@@ -25,7 +25,7 @@ namespace Tests
         {
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
             Settings.ConnectionString = DataBase.DEVELOPMENT_CONNECTION_STRING;
-            Persistence = new SqlPersistance();
+            Persistence = new SqlPersistence();
             CheckDatabase = DataBase.CreateDatabaseInstance();
             ClearTestLab(); // because of failed previos tests
         }

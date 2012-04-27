@@ -68,7 +68,7 @@ namespace Terminals.Data
 
         internal static void ResolveCredentials(ISecurityOptions result, Guid credentialId)
         {
-            ICredentialSet source = Persistance.Instance.Credentials[credentialId];
+            ICredentialSet source = Persistence.Instance.Credentials[credentialId];
             result.UpdateFromCredential(source);
             UpdateFromDefaultValues(result);
         }

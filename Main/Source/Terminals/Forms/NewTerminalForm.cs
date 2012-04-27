@@ -29,12 +29,12 @@ namespace Terminals
 
         private static IGroups PersistedGroups
         {
-            get { return Persistance.Instance.Groups; }
+            get { return Persistence.Instance.Groups; }
         }
 
         private static IFavorites PersistedFavorites
         {
-            get { return Persistance.Instance.Favorites; }
+            get { return Persistence.Instance.Favorites; }
         }
 
         #region Constructors
@@ -118,12 +118,12 @@ namespace Terminals
             this.CredentialDropdown.Items.Clear();
             this.CredentialDropdown.Items.Add("(custom)");
             this.FillCredentialsComboboxWithStoredCredentials();
-            this.CredentialDropdown.SelectedItem = Persistance.Instance.Credentials[credential];
+            this.CredentialDropdown.SelectedItem = Persistence.Instance.Credentials[credential];
         }
 
         private void FillCredentialsComboboxWithStoredCredentials()
         {
-            IEnumerable<ICredentialSet> credentials = Persistance.Instance.Credentials;
+            IEnumerable<ICredentialSet> credentials = Persistence.Instance.Credentials;
             if (credentials != null)
             {
                 foreach (ICredentialSet item in credentials)
@@ -353,7 +353,7 @@ namespace Terminals
             this.DisableControlAltDeleteCheckbox.Checked = userInterface.DisableControlAltDelete;
             this.AcceleratorPassthroughCheckBox.Checked = userInterface.AcceleratorPassthrough;
             this.EnableCompressionCheckbox.Checked = userInterface.EnableCompression;
-            this.EnableBitmapPersistanceCheckbox.Checked = userInterface.BitmapPeristence;
+            this.EnableBitmapPersistenceCheckbox.Checked = userInterface.BitmapPeristence;
             this.AllowBackgroundInputCheckBox.Checked = userInterface.AllowBackgroundInput;
             this.AllowFontSmoothingCheckbox.Checked = userInterface.EnableFontSmoothing;
             this.AllowDesktopCompositionCheckbox.Checked = userInterface.EnableDesktopComposition;
@@ -472,7 +472,7 @@ namespace Terminals
         }
 
         /// <summary>
-        /// Overwrites favortie property by favorite stored in persistance
+        /// Overwrites favortie property by favorite stored in persistence
         /// or newly created one
         /// </summary>
         private void ResolveFavortie()
@@ -481,7 +481,7 @@ namespace Terminals
             if (!this.editedId.Equals(Guid.Empty))
                 this.Favorite = PersistedFavorites[this.editedId];
             if (this.Favorite == null)
-                this.Favorite = Persistance.Instance.Factory.CreateFavorite();
+                this.Favorite = Persistence.Instance.Factory.CreateFavorite();
         }
 
         private void FillDescriptionProperties()
@@ -562,7 +562,7 @@ namespace Terminals
             userInterface.DisableControlAltDelete = this.DisableControlAltDeleteCheckbox.Checked;
             userInterface.AcceleratorPassthrough = this.AcceleratorPassthroughCheckBox.Checked;
             userInterface.EnableCompression = this.EnableCompressionCheckbox.Checked;
-            userInterface.BitmapPeristence = this.EnableBitmapPersistanceCheckbox.Checked;
+            userInterface.BitmapPeristence = this.EnableBitmapPersistenceCheckbox.Checked;
             userInterface.AllowBackgroundInput = this.AllowBackgroundInputCheckBox.Checked;
             userInterface.EnableFontSmoothing = this.AllowFontSmoothingCheckbox.Checked;
             userInterface.EnableDesktopComposition = this.AllowDesktopCompositionCheckbox.Checked;
@@ -733,7 +733,7 @@ namespace Terminals
         private void CommitFavoriteChanges()
         {
             Settings.StartDelayedUpdate();
-            Persistance.Instance.StartDelayedUpdate();
+            Persistence.Instance.StartDelayedUpdate();
             if (this.editedId == Guid.Empty)
             {
                 PersistedFavorites.Add(this.Favorite);
@@ -748,7 +748,7 @@ namespace Terminals
 
             List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
             PersistedFavorites.UpdateFavorite(this.Favorite, updatedGroups);
-            Persistance.Instance.SaveAndFinishDelayedUpdate();
+            Persistence.Instance.SaveAndFinishDelayedUpdate();
             Settings.SaveAndFinishDelayedUpdate();
         }
 
@@ -842,7 +842,7 @@ namespace Terminals
             {
                 IGroup candidate = PersistedGroups[this.txtTag.Text];
                 if (candidate == null)
-                    candidate = Persistance.Instance.Factory.CreateGroup(this.txtTag.Text);
+                    candidate = Persistence.Instance.Factory.CreateGroup(this.txtTag.Text);
 
                 this.AddGroupIfNotAlreadyThere(candidate);
             }
@@ -858,7 +858,7 @@ namespace Terminals
 
         private void AddGroupIfNotAlreadyThere(IGroup selectedGroup)
         {
-            // this also prevents duplicities in newly created groups not stored in persistance yet
+            // this also prevents duplicities in newly created groups not stored in persistence yet
             bool containsName = SelectedGroupsContainGroupName(selectedGroup);
             if (!containsName)
             {

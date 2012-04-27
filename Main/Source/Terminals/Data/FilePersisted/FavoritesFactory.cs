@@ -16,12 +16,12 @@ namespace Terminals.Data
 
         private static IFavorites PersistedFavorites
         {
-            get { return Persistance.Instance.Favorites; }
+            get { return Persistence.Instance.Favorites; }
         }
 
-        private static IFactory PersistanceFactory
+        private static IFactory PersistenceFactory
         {
-            get { return Persistance.Instance.Factory; }
+            get { return Persistence.Instance.Factory; }
         }
 
         internal static FavoriteConfigurationElement CreateNewFavorite(string favoriteName, string server, int port,
@@ -85,7 +85,7 @@ namespace Terminals.Data
             IFavorite favorite = PersistedFavorites[server];
             if (favorite == null) //create a temporaty favorite and connect to it
             {
-                favorite = PersistanceFactory.CreateFavorite();
+                favorite = PersistenceFactory.CreateFavorite();
                 favorite.ServerName = server;
                 favorite.Name = server;
 
@@ -133,7 +133,7 @@ namespace Terminals.Data
             IFavorite release = PersistedFavorites[TerminalsReleasesFavoriteName];
             if (release == null)
             {
-                release = PersistanceFactory.CreateFavorite();
+                release = PersistenceFactory.CreateFavorite();
                 release.Name = TerminalsReleasesFavoriteName;
                 release.ServerName = "terminals.codeplex.com";
                 release.Protocol = ConnectionManager.HTTP;
@@ -147,17 +147,17 @@ namespace Terminals.Data
         }
 
         /// <summary>
-        /// Gets group with required groupName or creates new group which is immediately added to the persistance.
+        /// Gets group with required groupName or creates new group which is immediately added to the persistence.
         /// </summary>
-        /// <param name="groupName">Name of the group to search in persistance.</param>
-        /// <returns>Not null value of Group obtained from persistance or newly created group</returns>
+        /// <param name="groupName">Name of the group to search in persistence.</param>
+        /// <returns>Not null value of Group obtained from persistence or newly created group</returns>
         internal static IGroup GetOrCreateGroup(string groupName)
         {
-            var groups = Persistance.Instance.Groups;
+            var groups = Persistence.Instance.Groups;
             IGroup group = groups[groupName];
             if (group == null)
             {
-                group = PersistanceFactory.CreateGroup(groupName);
+                group = PersistenceFactory.CreateGroup(groupName);
                 groups.Add(group);
             }
 

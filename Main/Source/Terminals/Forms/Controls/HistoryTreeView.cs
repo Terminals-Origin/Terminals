@@ -15,7 +15,7 @@ namespace Terminals.Forms.Controls
             // init groups before loading the history to prevent to run the callback earlier
             InitializeTimeLineTreeNodes();
 
-            var connectionHistory = Persistance.Instance.ConnectionHistory;
+            var connectionHistory = Persistence.Instance.ConnectionHistory;
             connectionHistory.OnHistoryRecorded += new HistoryRecorded(this.OnHistoryRecorded);
         }
 
@@ -43,7 +43,7 @@ namespace Terminals.Forms.Controls
 
         private void AddNewHistoryGroupNode(string name, string imageKey)
         {
-            IGroup virtualGroup = Persistance.Instance.Factory.CreateGroup(name);
+            IGroup virtualGroup = Persistence.Instance.Factory.CreateGroup(name);
             var groupNode = new GroupTreeNode(virtualGroup, imageKey);
             this.Nodes.Add(groupNode);
         }
@@ -116,7 +116,7 @@ namespace Terminals.Forms.Controls
         private static void RefreshGroupNodes(GroupTreeNode groupNode)
         {
             groupNode.Nodes.Clear();
-            var groupFavorites = Persistance.Instance.ConnectionHistory.GetDateItems(groupNode.Name);
+            var groupFavorites = Persistence.Instance.ConnectionHistory.GetDateItems(groupNode.Name);
             CreateGroupNodes(groupNode, groupFavorites);
         }
 

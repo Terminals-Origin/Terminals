@@ -11,7 +11,7 @@ namespace Terminals.Credentials
 
         private static ICredentials Credentials
         {
-            get { return Persistance.Instance.Credentials; }
+            get { return Persistence.Instance.Credentials; }
         }
 
         internal ManageCredentialForm(ICredentialSet editedCredential)
@@ -114,7 +114,7 @@ namespace Terminals.Credentials
 
         private ICredentialSet CreateNewCredential()
         {
-            var newItem = Persistance.Instance.Factory.CreateCredentialSet();
+            var newItem = Persistence.Instance.Factory.CreateCredentialSet();
             UpdateFromControls(newItem);
             return newItem;
         }

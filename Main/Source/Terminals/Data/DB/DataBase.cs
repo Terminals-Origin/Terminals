@@ -14,7 +14,7 @@ namespace Terminals.Data.DB
     internal partial class DataBase
     {
         private const string PROVIDER = "System.Data.SqlClient";       
-        private const string METADATA = @"res://*/Data.DB.SQLPersistance.csdl|res://*/Data.DB.SQLPersistance.ssdl|res://*/Data.DB.SQLPersistance.msl";
+        private const string METADATA = @"res://*/Data.DB.SQLPersistence.csdl|res://*/Data.DB.SQLPersistence.ssdl|res://*/Data.DB.SQLPersistence.msl";
         internal const string DEVELOPMENT_CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
 
         /// <summary>

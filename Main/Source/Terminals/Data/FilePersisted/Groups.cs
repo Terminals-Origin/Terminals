@@ -12,13 +12,13 @@ namespace Terminals.Data
     internal class Groups : IGroups
     {
         private readonly DataDispatcher dispatcher;
-        private readonly FilePersistance persistance;
+        private readonly FilePersistence persistence;
         private readonly Dictionary<Guid, IGroup> cache;
 
-        internal Groups(FilePersistance persistance)
+        internal Groups(FilePersistence persistence)
         {
-            this.persistance = persistance;
-            this.dispatcher = persistance.Dispatcher;
+            this.persistence = persistence;
+            this.dispatcher = persistence.Dispatcher;
             this.cache = new Dictionary<Guid,IGroup>();
         }
 
@@ -159,7 +159,7 @@ namespace Terminals.Data
             if (AddToCache(group))
             {
                 this.dispatcher.ReportGroupsAdded(new List<IGroup> {group});
-                this.persistance.SaveImmediatelyIfRequested();
+                this.persistence.SaveImmediatelyIfRequested();
             }
         }
 
@@ -168,7 +168,7 @@ namespace Terminals.Data
             if (DeleteFromCache(group))
             {
                 this.dispatcher.ReportGroupsDeleted(new List<IGroup> {group});
-                this.persistance.SaveImmediatelyIfRequested();
+                this.persistence.SaveImmediatelyIfRequested();
             }
         }
 
@@ -182,7 +182,7 @@ namespace Terminals.Data
         public void Rebuild()
         {
             DeleteEmptyGroups();
-            this.persistance.SaveImmediatelyIfRequested();
+            this.persistence.SaveImmediatelyIfRequested();
         }
 
         #endregion

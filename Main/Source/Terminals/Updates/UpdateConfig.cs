@@ -74,7 +74,7 @@ namespace Terminals.Updates
             MoveDataFile(FileLocations.CONFIG_FILENAME);
             Settings.ForceReload();
             Settings.StartDelayedUpdate();
-            Persistance.Instance.StartDelayedUpdate();
+            Persistence.Instance.StartDelayedUpdate();
             ImportTagsFromConfigFile();
             MoveFavoritesFromConfigFile();
             MoveGroupsFromConfigFile();
@@ -82,8 +82,8 @@ namespace Terminals.Updates
             Settings.DeleteTags(Settings.Tags.ToList());
             ReplaceFavoriteButtonNamesByIds();
             Settings.SaveAndFinishDelayedUpdate();
-            Persistance.Instance.Groups.Rebuild();
-            Persistance.Instance.SaveAndFinishDelayedUpdate();
+            Persistence.Instance.Groups.Rebuild();
+            Persistence.Instance.SaveAndFinishDelayedUpdate();
         }
 
         private static void MoveGroupsFromConfigFile()
@@ -99,10 +99,10 @@ namespace Terminals.Updates
 
         private static void MoveFavoriteAliasesGroup(GroupConfigurationElement configGroup) 
         {
-            IFactory factory = Persistance.Instance.Factory;
+            IFactory factory = Persistence.Instance.Factory;
             IGroup group = FavoritesFactory.GetOrCreateGroup(configGroup.Name);
             List<string> favoriteNames = configGroup.FavoriteAliases.GetFavoriteNames();
-            IFavorites favorites = Persistance.Instance.Favorites;
+            IFavorites favorites = Persistence.Instance.Favorites;
             List<IFavorite> groupFavorites = favoriteNames.Select(favoriteName => favorites[favoriteName])
                 .Where(favorite => favorite != null).ToList();
             group.AddFavorites(groupFavorites);
@@ -111,7 +111,7 @@ namespace Terminals.Updates
         private static void ReplaceFavoriteButtonNamesByIds()
         {
             string[] favoriteNames = Settings.FavoriteNamesToolbarButtons;
-            List<Guid> favoritesWithButton = Persistance.Instance.Favorites
+            List<Guid> favoritesWithButton = Persistence.Instance.Favorites
                 .Where(favorite => favoriteNames.Contains(favorite.Name))
                 .Select(candidate => candidate.Id).ToList();
 
@@ -120,17 +120,17 @@ namespace Terminals.Updates
 
         private static void ImportTagsFromConfigFile()
         {
-            IGroups groups = Persistance.Instance.Groups;
+            IGroups groups = Persistence.Instance.Groups;
             foreach (var tag in Settings.Tags)
             {
-                var group = Persistance.Instance.Factory.CreateGroup(tag);
+                var group = Persistence.Instance.Factory.CreateGroup(tag);
                 groups.Add(group);
             }
         }
 
         private static void MoveFavoritesFromConfigFile()
         {
-            IFavorites favorites = Persistance.Instance.Favorites;
+            IFavorites favorites = Persistence.Instance.Favorites;
             foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
             {
                 var favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement);
@@ -205,12 +205,12 @@ namespace Terminals.Updates
         /// </summary>
         private static void UpdateDefaultFavoriteUrl()
         {
-            var favorites = Persistance.Instance.Favorites;
+            var favorites = Persistence.Instance.Favorites;
             IFavorite newsFavorite = favorites[FavoritesFactory.TerminalsReleasesFavoriteName];
             if (newsFavorite != null)
             {
                 newsFavorite.ServerName = Program.Resources.GetString("TerminalsURL");
-                Persistance.Instance.SaveAndFinishDelayedUpdate();
+                Persistence.Instance.SaveAndFinishDelayedUpdate();
             }
         }
     }

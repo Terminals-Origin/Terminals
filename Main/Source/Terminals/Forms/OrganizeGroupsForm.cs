@@ -19,7 +19,7 @@ namespace Terminals
 
         private void LoadGroups()
         {
-            var groups = Persistance.Instance.Groups.ToList();
+            var groups = Persistence.Instance.Groups.ToList();
             this.gridGroups.DataSource = groups;
         }
 
@@ -58,12 +58,12 @@ namespace Terminals
         private void CreateNewGroupIfDoesntExist(NewGroupForm frmNewGroup)
         {
             string newGroupName = frmNewGroup.txtGroupName.Text;
-            IGroup newGroup = Persistance.Instance.Groups[newGroupName];
+            IGroup newGroup = Persistence.Instance.Groups[newGroupName];
             if(newGroup == null)
             {
-                IFactory factory = Persistance.Instance.Factory;
+                IFactory factory = Persistence.Instance.Factory;
                 newGroup = factory.CreateGroup(newGroupName);
-                Persistance.Instance.Groups.Add(newGroup);
+                Persistence.Instance.Groups.Add(newGroup);
                 this.LoadGroups();
             }
         }
@@ -73,7 +73,7 @@ namespace Terminals
             IGroup group = GetSelectedGroup();
             if (group != null)
             {
-                Persistance.Instance.Groups.Delete(group);
+                Persistence.Instance.Groups.Delete(group);
                 LoadGroups();
             }
         }
@@ -88,7 +88,7 @@ namespace Terminals
                 {
                     group.AddFavorites(frmAddConnection.SelectedFavorites);
                     this.LoadSelectedGroupFavorites();
-                    Persistance.Instance.SaveAndFinishDelayedUpdate();
+                    Persistence.Instance.SaveAndFinishDelayedUpdate();
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace Terminals
                     List<IFavorite> selectedFavorites = GetSelectedFavorites();
                     group.RemoveFavorites(selectedFavorites);
                     LoadSelectedGroupFavorites();
-                    Persistance.Instance.SaveAndFinishDelayedUpdate();
+                    Persistence.Instance.SaveAndFinishDelayedUpdate();
                 }
             }
         }

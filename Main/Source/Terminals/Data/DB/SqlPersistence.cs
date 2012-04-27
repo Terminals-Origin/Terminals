@@ -5,7 +5,7 @@ namespace Terminals.Data.DB
     /// <summary>
     /// SQL Database store using Entity framework
     /// </summary>
-    internal class SqlPersistance : IPersistance, IPersistedSecurity
+    internal class SqlPersistence : IPersistence, IPersistedSecurity
     {
         private DataBase database;
 
@@ -31,7 +31,7 @@ namespace Terminals.Data.DB
 
         public PersistenceSecurity Security { get; private set; }
 
-        internal SqlPersistance()
+        internal SqlPersistence()
         {
             this.Security = new PersistenceSecurity(this);
         }

@@ -28,7 +28,7 @@ namespace Terminals.Data
 
         /// <summary>
         /// Assignes current user security id to it, if the user account is domain.
-        /// For local user accaunt this value isnt set to preserver file persistance space,
+        /// For local user accaunt this value isnt set to preserver file persistence space,
         /// because all istory items than have the same value.
         /// </summary>
         void AssignCurentUser();

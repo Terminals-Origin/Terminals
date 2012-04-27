@@ -40,7 +40,7 @@ namespace Terminals
             this.vncAutoScaleCheckbox = new System.Windows.Forms.CheckBox();
             this.label37 = new System.Windows.Forms.Label();
             this.AllowBackgroundInputCheckBox = new System.Windows.Forms.CheckBox();
-            this.EnableBitmapPersistanceCheckbox = new System.Windows.Forms.CheckBox();
+            this.EnableBitmapPersistenceCheckbox = new System.Windows.Forms.CheckBox();
             this.EnableCompressionCheckbox = new System.Windows.Forms.CheckBox();
             this.AcceleratorPassthroughCheckBox = new System.Windows.Forms.CheckBox();
             this.DisableControlAltDeleteCheckbox = new System.Windows.Forms.CheckBox();
@@ -362,16 +362,16 @@ namespace Terminals
         "led the client can accept input when the client does not have focus.");
             this.AllowBackgroundInputCheckBox.UseVisualStyleBackColor = true;
             // 
-            // EnableBitmapPersistanceCheckbox
+            // EnableBitmapPersistenceCheckbox
             // 
-            this.EnableBitmapPersistanceCheckbox.AutoSize = true;
-            this.EnableBitmapPersistanceCheckbox.Location = new System.Drawing.Point(241, 53);
-            this.EnableBitmapPersistanceCheckbox.Name = "EnableBitmapPersistanceCheckbox";
-            this.EnableBitmapPersistanceCheckbox.Size = new System.Drawing.Size(151, 17);
-            this.EnableBitmapPersistanceCheckbox.TabIndex = 10;
-            this.EnableBitmapPersistanceCheckbox.Text = "Enable Bitmap Persistance";
-            this.toolTip1.SetToolTip(this.EnableBitmapPersistanceCheckbox, resources.GetString("EnableBitmapPersistanceCheckbox.ToolTip"));
-            this.EnableBitmapPersistanceCheckbox.UseVisualStyleBackColor = true;
+            this.EnableBitmapPersistenceCheckbox.AutoSize = true;
+            this.EnableBitmapPersistenceCheckbox.Location = new System.Drawing.Point(241, 53);
+            this.EnableBitmapPersistenceCheckbox.Name = "EnableBitmapPersistenceCheckbox";
+            this.EnableBitmapPersistenceCheckbox.Size = new System.Drawing.Size(151, 17);
+            this.EnableBitmapPersistenceCheckbox.TabIndex = 10;
+            this.EnableBitmapPersistenceCheckbox.Text = "Enable Bitmap Persistence";
+            this.toolTip1.SetToolTip(this.EnableBitmapPersistenceCheckbox, resources.GetString("EnableBitmapPersistenceCheckbox.ToolTip"));
+            this.EnableBitmapPersistenceCheckbox.UseVisualStyleBackColor = true;
             // 
             // EnableCompressionCheckbox
             // 
@@ -1664,7 +1664,7 @@ namespace Terminals
             this.tabPage8.Controls.Add(this.DisableControlAltDeleteCheckbox);
             this.tabPage8.Controls.Add(this.AcceleratorPassthroughCheckBox);
             this.tabPage8.Controls.Add(this.EnableCompressionCheckbox);
-            this.tabPage8.Controls.Add(this.EnableBitmapPersistanceCheckbox);
+            this.tabPage8.Controls.Add(this.EnableBitmapPersistenceCheckbox);
             this.tabPage8.Controls.Add(this.AllowBackgroundInputCheckBox);
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
@@ -2464,7 +2464,7 @@ namespace Terminals
       private System.Windows.Forms.CheckBox DisableControlAltDeleteCheckbox;
       private System.Windows.Forms.CheckBox AcceleratorPassthroughCheckBox;
       private System.Windows.Forms.CheckBox EnableCompressionCheckbox;
-      private System.Windows.Forms.CheckBox EnableBitmapPersistanceCheckbox;
+      private System.Windows.Forms.CheckBox EnableBitmapPersistenceCheckbox;
       private System.Windows.Forms.CheckBox AllowBackgroundInputCheckBox;
       private System.Windows.Forms.TabPage tabPage9;
       private System.Windows.Forms.Panel panel2;

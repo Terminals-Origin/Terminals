@@ -120,7 +120,7 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>91, 17</value>
   </metadata>
-  <data name="EnableBitmapPersistanceCheckbox.ToolTip" xml:space="preserve">
+  <data name="EnableBitmapPersistenceCheckbox.ToolTip" xml:space="preserve">
     <value>The persistent bitmap cache can provide a substantial improvement in performance over low-bandwidth connections, especially when running applications which use large bitmaps.  Persistent caching can improve performance but requires additional disk space.
 
 </value>

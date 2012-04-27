@@ -11,7 +11,7 @@ namespace Terminals.Forms.Controls
         internal GroupListViewItem(string groupName)
             : base(groupName)
         {
-            this.FavoritesGroup = Persistance.Instance.Factory.CreateGroup(groupName);
+            this.FavoritesGroup = Persistence.Instance.Factory.CreateGroup(groupName);
         }
 
         internal GroupListViewItem(IGroup group)

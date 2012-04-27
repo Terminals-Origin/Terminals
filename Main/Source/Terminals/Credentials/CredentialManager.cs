@@ -9,7 +9,7 @@ namespace Terminals.Credentials
     {
         private static ICredentials Credentials
         {
-            get { return Persistance.Instance.Credentials; }
+            get { return Persistence.Instance.Credentials; }
         }
 
         internal CredentialManager()

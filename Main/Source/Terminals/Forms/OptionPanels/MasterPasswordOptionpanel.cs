@@ -14,7 +14,7 @@ namespace Terminals.Forms
             InitializeComponent();
 
             this.lblPasswordsMatch.Text = string.Empty;
-            this.security = Persistance.Instance.Security;
+            this.security = Persistence.Instance.Security;
         }
 
         public void LoadSettings()

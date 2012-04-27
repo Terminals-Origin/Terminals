@@ -22,7 +22,7 @@ namespace Terminals.Data
 
         /// <summary>
         /// Adds new time stamp to the favorite history collection and fires OnHistoryRecorded.
-        /// And saves the history to persistance.
+        /// And saves the history to persistence.
         /// </summary>
         /// <param name="favorite">favorite to remember</param>
         void RecordHistoryItem(IFavorite favorite);

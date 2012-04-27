@@ -30,7 +30,7 @@ namespace Terminals.Data
 
         /// <summary>
         /// Only to identify groups containing this favorite. Manipulating this property 
-        /// has no efect in persistance layer
+        /// has no efect in persistence layer
         /// </summary>
         [XmlIgnore]
         List<IGroup> IFavorite.Groups
@@ -40,7 +40,7 @@ namespace Terminals.Data
 
         private static List<IGroup> GetGroups(IFavorite selected)
         {
-            return Persistance.Instance.Groups.GetGroupsContainingFavorite(selected.Id);
+            return Persistence.Instance.Groups.GetGroupsContainingFavorite(selected.Id);
         }
 
         private string protocol = ConnectionManager.RDP;

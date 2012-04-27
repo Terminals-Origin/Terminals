@@ -210,7 +210,7 @@
     <Compile Include="Data\DB\HistoryItem.cs" />
     <Compile Include="Data\DB\IEntityContext.cs" />
     <Compile Include="Data\DB\SecurityOptions.cs" />
-    <Compile Include="Data\DB\SqlPersistance.cs" />
+    <Compile Include="Data\DB\SqlPersistence.cs" />
     <Compile Include="Data\DB\StoredCredentials.cs" />
     <Compile Include="Data\Favorites\EmptyOptions.cs" />
     <Compile Include="Data\History\HistoryIntervals.cs" />
@@ -249,11 +249,11 @@
     <Compile Include="Data\Favorites\SshOptions.cs" />
     <Compile Include="Data\Favorites\VMRCOptions.cs" />
     <Compile Include="Data\Favorites\VncOptions.cs" />
-    <Compile Include="Data\FilePersisted\FilePersistance.cs" />
+    <Compile Include="Data\FilePersisted\FilePersistence.cs" />
     <Compile Include="Data\Interfaces\IFavorites.cs" />
     <Compile Include="Data\Interfaces\IGroups.cs" />
-    <Compile Include="Data\Interfaces\IPersistance.cs" />
-    <Compile Include="Data\Persistance.cs" />
+    <Compile Include="Data\Interfaces\IPersistence.cs" />
+    <Compile Include="Data\Persistence.cs" />
     <Compile Include="Data\FilePersisted\Groups.cs" />
     <Compile Include="Data\FilePersisted\Favorites.cs" />
     <Compile Include="Forms\Controls\GroupListViewItem.cs" />

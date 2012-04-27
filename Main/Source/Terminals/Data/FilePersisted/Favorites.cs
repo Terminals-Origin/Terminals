@@ -9,15 +9,15 @@ namespace Terminals.Data
     internal class Favorites : IFavorites
     {
         private readonly DataDispatcher dispatcher;
-        private readonly FilePersistance persistance;
+        private readonly FilePersistence persistence;
         private readonly Groups groups;
         private readonly Dictionary<Guid, IFavorite> cache;
 
-        internal Favorites(FilePersistance persistance)
+        internal Favorites(FilePersistence persistence)
         {
-            this.persistance = persistance;
-            this.dispatcher = persistance.Dispatcher;
-            this.groups = this.persistance.GroupsStore;
+            this.persistence = persistence;
+            this.dispatcher = persistence.Dispatcher;
+            this.groups = this.persistence.GroupsStore;
             this.cache = new Dictionary<Guid,IFavorite>();
         }
 
@@ -118,7 +118,7 @@ namespace Terminals.Data
 
         private List<IGroup> AddIntoMissingGroups(IFavorite favorite, List<IGroup> newGroups, List<IGroup> oldGroups)
         {
-            // First create new groups, which arent in persistance yet
+            // First create new groups, which arent in persistence yet
             var addedGroups = this.groups.Add(newGroups);
             List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, oldGroups);
             AddIntoMissingGroups(favorite, missingGroups);
@@ -181,7 +181,7 @@ namespace Terminals.Data
             if (AddToCache(favorite))
             {
                 this.dispatcher.ReportFavoriteAdded(favorite);
-                this.persistance.SaveImmediatelyIfRequested();
+                this.persistence.SaveImmediatelyIfRequested();
             }
         }
 
@@ -193,7 +193,7 @@ namespace Terminals.Data
             List<IFavorite> added = AddAllToCache(favorites);
             this.dispatcher.ReportFavoritesAdded(added);
             if (added.Count > 0)
-                this.persistance.SaveImmediatelyIfRequested();
+                this.persistence.SaveImmediatelyIfRequested();
         }
 
         public void Update(IFavorite favorite)
@@ -216,7 +216,7 @@ namespace Terminals.Data
         private void SaveAndReportFavoriteUpdate(IFavorite favorite)
         {
             this.dispatcher.ReportFavoriteUpdated(favorite);
-            this.persistance.SaveImmediatelyIfRequested();
+            this.persistence.SaveImmediatelyIfRequested();
         }
 
         public void Delete(IFavorite favorite)
@@ -226,7 +226,7 @@ namespace Terminals.Data
                 var favoritesToRemove = new List<IFavorite> { favorite };
                 this.groups.DeleteFavoritesFromAllGroups(favoritesToRemove);
                 this.dispatcher.ReportFavoriteDeleted(favorite);
-                this.persistance.SaveImmediatelyIfRequested();
+                this.persistence.SaveImmediatelyIfRequested();
             }
         }
 
@@ -238,7 +238,7 @@ namespace Terminals.Data
             List<IFavorite> deleted = DeleteAllFavoritesFromCache(favorites);
             this.groups.DeleteFavoritesFromAllGroups(deleted);
             this.dispatcher.ReportFavoritesDeleted(deleted);
-            this.persistance.SaveImmediatelyIfRequested();
+            this.persistence.SaveImmediatelyIfRequested();
         }
 
         public SortableList<IFavorite> ToList()
@@ -261,7 +261,7 @@ namespace Terminals.Data
         private void SaveAndReportFavoritesUpdate(List<IFavorite> selectedFavorites)
         {
             this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
-            this.persistance.SaveImmediatelyIfRequested();
+            this.persistence.SaveImmediatelyIfRequested();
         }
 
         internal static void ApplyCredentialsToFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential)

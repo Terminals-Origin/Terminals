@@ -20,7 +20,7 @@ namespace Terminals.Security
 
         internal static string DecryptPassword(string encryptedPassword)
         {
-           return DecryptPassword(encryptedPassword, Persistance.Instance.Security.KeyMaterial);
+           return DecryptPassword(encryptedPassword, Persistence.Instance.Security.KeyMaterial);
         }
 
         private static string DecryptPassword(string encryptedPassword, string keyMaterial)
@@ -67,7 +67,7 @@ namespace Terminals.Security
 
         internal static string EncryptPassword(string decryptedPassword)
         {
-            return EncryptPassword(decryptedPassword, Persistance.Instance.Security.KeyMaterial);
+            return EncryptPassword(decryptedPassword, Persistence.Instance.Security.KeyMaterial);
         }
 
         internal static string EncryptPassword(string decryptedPassword, string keyMaterial)

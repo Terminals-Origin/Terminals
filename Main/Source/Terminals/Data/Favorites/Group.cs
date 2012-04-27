@@ -117,7 +117,7 @@ namespace Terminals.Data
 
         internal static void ReportGroupChanged(IGroup group)
         {
-            var dispatcher = Persistance.Instance.Dispatcher;
+            var dispatcher = Persistence.Instance.Dispatcher;
             dispatcher.ReportGroupsUpdated(new List<IGroup> { group });
         }
 

@@ -140,7 +140,7 @@ namespace Terminals
 
         private void SwitchToDefaultCredentials()
         {
-            Persistance.Instance.Security.UpdateMasterPassword(this.mp.Password);
+            Persistence.Instance.Security.UpdateMasterPassword(this.mp.Password);
             this.nextButton.Enabled = true;
             this.panel1.Controls.Clear();
             this.panel1.Controls.Add(this.dc);

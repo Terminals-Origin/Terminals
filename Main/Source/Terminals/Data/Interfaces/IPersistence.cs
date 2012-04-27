@@ -7,7 +7,7 @@ namespace Terminals.Data
     /// Provides also abstract central point to create new items in Factory, and using eventing
     /// informs lisseners about changes.
     /// </summary>
-    internal interface IPersistance
+    internal interface IPersistence
     {
         IFavorites Favorites { get; }
         
@@ -34,13 +34,13 @@ namespace Terminals.Data
 
         /// <summary>
         /// Prevents save after each change. After this call, no values are saved
-        /// into persistance, until you call SaveAndFinishDelayedUpdate.
+        /// into persistence, until you call SaveAndFinishDelayedUpdate.
         /// This dramatically increases performance. Use this method for batch updates.
         /// </summary>
         void StartDelayedUpdate();
 
         /// <summary>
-        /// Stops prevent write changes into persistance file and immediately writes last state.
+        /// Stops prevent write changes into persistence file and immediately writes last state.
         /// Usually the changes are saved immediately.
         /// </summary>
         void SaveAndFinishDelayedUpdate();
