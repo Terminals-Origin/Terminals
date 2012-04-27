@@ -26,6 +26,7 @@ namespace Tests
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
             Settings.ConnectionString = Database.DEVELOPMENT_CONNECTION_STRING;
             Persistence = new SqlPersistence();
+            this.Persistence.Initialize();
             CheckDatabase = Database.CreateDatabaseInstance();
             ClearTestLab(); // because of failed previos tests
         }
