@@ -4,6 +4,10 @@ using Terminals.Network;
 
 namespace Terminals
 {
+    /// <summary>
+    /// Allowes to run only one instance of this application per user.
+    /// This is necessary to allow run multiple times on Terminal server
+    /// </summary>
     internal class SingleInstanceApplication
     {
         #region Thread safe singleton
@@ -20,9 +24,11 @@ namespace Terminals
 
         private SingleInstanceApplication()
         {
-            this.instanceLock = new Mutex(true, INSTANCELOCK_NAME, out this.firstInstance);
-            // we are sure, that we own the previous one, so loct the applicatin startup immediately
-            this.startupLock = new Mutex(this.firstInstance, STARTUPLOCK_NAME);
+            string instanceLockName = GetMutexName(INSTANCELOCK_NAME);
+            this.instanceLock = new Mutex(true, instanceLockName, out this.firstInstance);
+            // we are sure, that we own the previous one, so lock the applicatin startup immediately
+            string startupLockName = GetMutexName(STARTUPLOCK_NAME);
+            this.startupLock = new Mutex(this.firstInstance, startupLockName);
         }
 
         #endregion
@@ -44,15 +50,31 @@ namespace Terminals
         private bool firstInstance;
         private CommandLineServer server;
 
-        internal void Start(MainForm mainForm)
+        /// <summary>
+        /// generates mutexee per user names with global prefix to control also sessions on Terminal server
+        /// </summary>
+        private static string GetMutexName(string generalName)
+        {
+            return string.Format("Global\\{0}.{1}", generalName, WindowsUserIdentifiers.GetCurrentUserSid());
+        }
+
+        internal void Initialize(MainForm mainForm, CommandLineArgs commandLine)
         {
             if (!this.firstInstance)
                 return;
             
-            this.server = new CommandLineServer(mainForm);
-            this.server.Open();
+            this.StartServer(mainForm, commandLine);
             // startupLock obtained in constructor, the server is now available to notifications
             this.startupLock.ReleaseMutex();
+        }
+
+        private void StartServer(MainForm mainForm, CommandLineArgs commandLine)
+        {
+            if (!commandLine.SingleInstance)
+                return;
+
+            this.server = new CommandLineServer(mainForm);
+            this.server.Open();
         }
 
         /// <summary>
@@ -66,7 +88,8 @@ namespace Terminals
             try
             {
                 this.startupLock.WaitOne();
-                this.server.Close();
+                if(server != null)
+                    this.server.Close();
             }
             finally
             {

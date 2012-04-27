@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Security.Principal;
 using System.Xml.Serialization;
+using Terminals.Network;
 
 namespace Terminals.Data
 {
@@ -36,17 +36,8 @@ namespace Terminals.Data
         {
             get
             {
-                try
-                {
-                    var userSid = new SecurityIdentifier(this.UserSid);
-                    IdentityReference userLoginReference = userSid.Translate(typeof(NTAccount));
-                    return userLoginReference.ToString();
-                }
-                catch
-                {
-                    return null;
-                }
-            } 
+                return WindowsUserIdentifiers.ResolveUserNameFromSid(this.UserSid);
+            }
         }
 
         /// <summary>
@@ -62,22 +53,7 @@ namespace Terminals.Data
         /// </summary>
         void IHistoryItem.AssignCurentUser()
         {
-            this.UserSid = GetCurrentUserSid();
-        }
-
-        internal static string GetCurrentUserSid()
-        {
-            try
-            {
-                string fullLogin = Environment.UserDomainName + "\\" + Environment.UserName;
-                var account = new NTAccount(fullLogin);
-                IdentityReference sidReference = account.Translate(typeof (SecurityIdentifier));
-                return sidReference.ToString();
-            }
-            catch
-            {
-                return null;
-            }
+            this.UserSid = WindowsUserIdentifiers.GetCurrentUserSid();
         }
     }
 }

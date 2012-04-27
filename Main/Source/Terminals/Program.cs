@@ -52,7 +52,6 @@ namespace Terminals
             if (commandLine.SingleInstance && SingleInstanceApplication.Instance.NotifyExisting(commandLine))
                 return;
 
-
             Logging.Log.Info("State 6 Complete");
 
             UpdateConfig.CheckConfigVersionUpdate();
@@ -115,7 +114,7 @@ namespace Terminals
             try
             {
                 var mainForm = new MainForm();
-                SingleInstanceApplication.Instance.Start(mainForm);
+                SingleInstanceApplication.Instance.Initialize(mainForm, commandLine);
                 mainForm.HandleCommandLineActions(commandLine);
                 Application.Run(mainForm);
             }
