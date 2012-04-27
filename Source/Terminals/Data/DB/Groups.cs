@@ -42,8 +42,8 @@ namespace Terminals.Data.DB
         {
             if (!AddToDatabase(group))
                 return;
-            this.dispatcher.ReportGroupsAdded(new List<IGroup> { group });
             this.dataBase.SaveImmediatelyIfRequested();
+            this.dispatcher.ReportGroupsAdded(new List<IGroup> { group });
         }
 
         private bool AddToDatabase(IGroup group)
@@ -73,8 +73,8 @@ namespace Terminals.Data.DB
         public void Delete(IGroup group)
         {
             DeleteFromDatabase(group);
-            this.dispatcher.ReportGroupsDeleted(new List<IGroup> { group });
             this.dataBase.SaveImmediatelyIfRequested();
+            this.dispatcher.ReportGroupsDeleted(new List<IGroup> { group });
         }
 
         private void DeleteFromDatabase(IGroup group)

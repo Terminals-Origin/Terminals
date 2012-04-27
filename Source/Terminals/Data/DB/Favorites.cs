@@ -40,8 +40,8 @@ namespace Terminals.Data.DB
         public void Add(IFavorite favorite)
         {
             AddToDatabase(favorite);
-            this.dispatcher.ReportFavoriteAdded(favorite);
             this.dataBase.SaveImmediatelyIfRequested();
+            this.dispatcher.ReportFavoriteAdded(favorite);
         }
 
         private void AddToDatabase(IFavorite favorite)
@@ -52,8 +52,8 @@ namespace Terminals.Data.DB
         public void Add(List<IFavorite> favorites)
         {
             AddAllToDatabase(favorites);
-            this.dispatcher.ReportFavoritesAdded(favorites);
             this.dataBase.SaveImmediatelyIfRequested();
+            this.dispatcher.ReportFavoritesAdded(favorites);
         }
 
         private void AddAllToDatabase(List<IFavorite> favorites)
@@ -89,22 +89,22 @@ namespace Terminals.Data.DB
 
         private void SaveAndReportFavoriteUpdated(IFavorite favorite)
         {
-            this.dispatcher.ReportFavoriteUpdated(favorite);
             this.dataBase.SaveImmediatelyIfRequested();
+            this.dispatcher.ReportFavoriteUpdated(favorite);
         }
 
         public void Delete(IFavorite favorite)
         {
             DeleteFavoriteFromDatabase(favorite);
-            this.dispatcher.ReportFavoriteDeleted(favorite);
             this.dataBase.SaveImmediatelyIfRequested();
+            this.dispatcher.ReportFavoriteDeleted(favorite);
         }
 
         public void Delete(List<IFavorite> favorites)
         {
             DeleteFavoritesFromDatabase(favorites);
-            this.dispatcher.ReportFavoritesDeleted(favorites);
             this.dataBase.SaveImmediatelyIfRequested();
+            this.dispatcher.ReportFavoritesDeleted(favorites);
         }
 
         private void DeleteFavoritesFromDatabase(List<IFavorite> favorites)
@@ -145,8 +145,8 @@ namespace Terminals.Data.DB
 
         private void SaveAndReportFavoritesUpdated(List<IFavorite> selectedFavorites)
         {
-            this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
             this.dataBase.SaveImmediatelyIfRequested();
+            this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
         }
 
         public void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword)

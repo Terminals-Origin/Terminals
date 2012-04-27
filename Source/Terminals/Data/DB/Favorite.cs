@@ -30,7 +30,6 @@ namespace Terminals.Data.DB
         {
             get
             {
-                this.ExecuteBeforeConnectReference.Load();
                 return this.ExecuteBeforeConnect; 
             }
         }
@@ -39,7 +38,6 @@ namespace Terminals.Data.DB
         {
             get
             {
-                this.DisplayReference.Load();
                 return this.Display;
             }
         }
@@ -48,7 +46,6 @@ namespace Terminals.Data.DB
         {
             get
             {
-                this.SecurityReference.Load();
                 return this.Security; 
             }
         }
