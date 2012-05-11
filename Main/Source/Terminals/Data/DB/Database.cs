@@ -108,11 +108,9 @@ namespace Terminals.Data.DB
 
         internal void SaveImmediatelyIfRequested()
         {
-            if (!delaySave)
-            {
-                // todo Add protection against concurent updates
-                this.SaveChanges();
-            }
+            // dont ask save immediately. Here is no benefit to save in batch like in FilePersistence
+            // todo Add protection against concurent updates
+            this.SaveChanges();
         }
 
         public override int SaveChanges(SaveOptions options)

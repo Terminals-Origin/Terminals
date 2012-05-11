@@ -46,7 +46,10 @@ namespace Terminals.Data.DB
 
         private void AddToDatabase(IFavorite favorite)
         {
-            this.dataBase.AddObject("Favorites", favorite);
+            if (this.dataBase.Favorites.ToList().Contains(favorite))
+                return;
+
+            this.dataBase.Favorites.AddObject((Favorite)favorite);
         }
 
         public void Add(List<IFavorite> favorites)
@@ -95,17 +98,16 @@ namespace Terminals.Data.DB
 
         public void Delete(IFavorite favorite)
         {
-            DeleteFavoriteFromDatabase(favorite);
-            List<IGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase();
-            this.dataBase.SaveImmediatelyIfRequested();
-            this.dispatcher.ReportGroupsDeleted(deletedGroups);
-            this.dispatcher.ReportFavoriteDeleted(favorite);
+            var favoritesToDelete = new List<IFavorite> { favorite };
+            Delete(favoritesToDelete);
         }
 
         public void Delete(List<IFavorite> favorites)
         {
             DeleteFavoritesFromDatabase(favorites);
+            List<IGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase();
             this.dataBase.SaveImmediatelyIfRequested();
+            this.dispatcher.ReportGroupsDeleted(deletedGroups);
             this.dispatcher.ReportFavoritesDeleted(favorites);
         }
 
