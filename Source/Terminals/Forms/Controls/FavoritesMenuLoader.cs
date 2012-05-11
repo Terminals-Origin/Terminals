@@ -112,6 +112,7 @@ namespace Terminals
 
             private void OnDataChanged(EventArgs args)
             {
+                // todo performance hit when importing large number of favorites => improve the refresh
                 UpdateMenuAndContextMenu();
             }
 
