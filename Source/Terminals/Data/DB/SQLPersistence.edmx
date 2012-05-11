@@ -165,7 +165,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_FavoritesInGroup_Favorites">
-          <End Role="Favorites" Type="Model1.Store.Favorites" Multiplicity="1" />
+          <End Role="Favorites" Type="Model1.Store.Favorites" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FavoritesInGroup" Type="Model1.Store.FavoritesInGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Favorites">
@@ -177,7 +179,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_FavoritesInGroup_Groups">
-          <End Role="Groups" Type="Model1.Store.Groups" Multiplicity="1" />
+          <End Role="Groups" Type="Model1.Store.Groups" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="FavoritesInGroup" Type="Model1.Store.FavoritesInGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Groups">
@@ -426,7 +430,7 @@
             <End Role="SecurityOptions" EntitySet="Security" />
           </AssociationSet>
           <FunctionImport Name="UpdateMasterPasswordKey" a:MethodAccess="Private">
-            <Parameter Name="NewKey" Mode="In" Type="String" />
+          <Parameter Name="NewKey" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetMasterPasswordKey" ReturnType="Collection(String)" a:MethodAccess="Private" />
         </EntityContainer>
@@ -550,8 +554,10 @@
           <End Type="Terminals.Data.DB.Group" Role="Childs" Multiplicity="*" />
         </Association>
         <Association Name="FavoritesInGroup">
-          <End Type="Terminals.Data.DB.Favorite" Role="Favorites" Multiplicity="*" />
-          <End Type="Terminals.Data.DB.Group" Role="Groups" Multiplicity="*" />
+          <End Type="Terminals.Data.DB.Favorite" Role="Favorites" Multiplicity="*" >
+          </End>
+          <End Type="Terminals.Data.DB.Group" Role="Groups" Multiplicity="*" >
+          </End>
         </Association>
         <Association Name="FK_Security_CredentialBase">
           <End Type="Terminals.Data.DB.CredentialBase" Role="CredentialBase" Multiplicity="0..1" />

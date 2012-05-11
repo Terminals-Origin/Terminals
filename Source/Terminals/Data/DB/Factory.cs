@@ -18,6 +18,7 @@ namespace Terminals.Data.DB
         {
             var favorite = new Favorite();
             favorite.Database = this.database;
+            favorite.MarkAsNewlyCreated();
             favorite.Display = new DisplayOptions();
             favorite.Security = new SecurityOptions();
             favorite.ExecuteBeforeConnect = new BeforeConnectExecute();
@@ -29,7 +30,7 @@ namespace Terminals.Data.DB
         {
             if (favorites == null)
                 favorites = new List<IFavorite>();
-            
+
             // call this constructor doesnt fire the group changed event
             Group createdGroup = new Group(groupName, favorites);
             createdGroup.Database = this.database;

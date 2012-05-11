@@ -24,7 +24,7 @@ namespace Tests
         internal void InitializeTestLab()
         {
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
-            Settings.ConnectionString = Database.DEVELOPMENT_CONNECTION_STRING;
+            Settings.ConnectionString = Database.DEFAULT_CONNECTION_STRING;
             Persistence = new SqlPersistence();
             this.Persistence.Initialize();
             CheckDatabase = Database.CreateDatabaseInstance();

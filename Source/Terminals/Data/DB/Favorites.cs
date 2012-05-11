@@ -96,7 +96,9 @@ namespace Terminals.Data.DB
         public void Delete(IFavorite favorite)
         {
             DeleteFavoriteFromDatabase(favorite);
+            List<IGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase();
             this.dataBase.SaveImmediatelyIfRequested();
+            this.dispatcher.ReportGroupsDeleted(deletedGroups);
             this.dispatcher.ReportFavoriteDeleted(favorite);
         }
 
