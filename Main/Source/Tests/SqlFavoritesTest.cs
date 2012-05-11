@@ -55,14 +55,16 @@ namespace Tests
         public void AddFavoriteTest()
         {
             Favorite favorite = this.lab.CreateTestFavorite();
+            Favorite favorite2 = this.lab.CreateTestFavorite();
             int before = this.lab.CheckDatabase.Favorites.Count();
             this.lab.Persistence.Favorites.Add(favorite);
+            this.lab.Persistence.Favorites.Add(favorite2);
 
             int after = this.lab.CheckDatabase.Favorites.Count();
             string protocolProperties = this.lab.CheckDatabase.GetFavoriteProtocolProperties(favorite.Id).FirstOrDefault();
-            IFavorite checkFavorite = this.lab.CheckDatabase.Favorites.ToList().FirstOrDefault();
+            IFavorite checkFavorite = this.lab.CheckDatabase.Favorites.FirstOrDefault();
 
-            Assert.AreNotEqual(before, after, "Favorite didnt reach the database");
+            Assert.AreNotEqual(before, after, -2, "Favorites didnt reach the database");
             Assert.IsTrue(!string.IsNullOrEmpty(protocolProperties), "Protocol properties are null");
             Assert.IsNotNull(checkFavorite.Security, "Security is null");
             Assert.IsNotNull(checkFavorite.Display, "Display is null");
@@ -117,15 +119,18 @@ namespace Tests
         {
             IFavorite favorite = this.lab.CreateTestFavorite();
             this.lab.Persistence.Favorites.Add(favorite);
-            IGroup groupToDelete = this.lab.Persistence.Factory.CreateGroup("TestGroupToDelete", new List<IFavorite> { favorite });
+            IFactory labFactory = this.lab.Persistence.Factory;
+            IGroup groupToDelete = labFactory.CreateGroup("TestGroupToDelete", new List<IFavorite> { favorite });
             this.lab.Persistence.Groups.Add(groupToDelete);
-            IGroup groupToAdd = this.lab.Persistence.Factory.CreateGroup("TestGroupToAdd", new List<IFavorite>());
+            IGroup groupToAdd = labFactory.CreateGroup("TestGroupToAdd", new List<IFavorite>());
             this.lab.Persistence.Favorites.UpdateFavorite(favorite, new List<IGroup> { groupToAdd });
 
             Favorite checkFavorite = this.lab.CheckDatabase.Favorites.FirstOrDefault();
             Assert.AreEqual(1, checkFavorite.Groups.Count, "Child group is missing");
             DB.Group group = checkFavorite.Groups.FirstOrDefault();
             Assert.IsTrue(group.Name == "TestGroupToAdd", "wrong merge of groups");
+            int targetGroupsCount = this.lab.CheckDatabase.Groups.Count();
+            Assert.AreEqual(1, targetGroupsCount, "Empty groups wern't deleted");
             Assert.AreEqual(1, updatedCount, "Event wasnt delivered");
         }
     }

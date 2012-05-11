@@ -38,7 +38,7 @@ namespace Terminals.Data.DB
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
         {
-            // nothing to do here
+          // todo this.database.InitializeReLoadClock(synchronizer);
         }
 
         public void StartDelayedUpdate()

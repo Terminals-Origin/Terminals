@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using Terminals.Connections;
 using Unified;
@@ -11,6 +10,14 @@ namespace Terminals.Data.DB
     {
         public Database Database { get; set; }
 
+        /// <summary>
+        /// cant be set in constructor, because the constructor is used by EF when loading the entities
+        /// </summary>
+        private bool isNewlyCreated = false;
+
+        /// <summary>
+        /// Should be never null to prevent access violations
+        /// </summary>
         private ProtocolOptions protocolProperties;
 
         private Guid guid = Guid.NewGuid();
@@ -142,6 +149,11 @@ namespace Terminals.Data.DB
             this.protocolProperties = new RdpOptions();
         }
 
+        internal void MarkAsNewlyCreated()
+        {
+            this.isNewlyCreated = true;
+        }
+
         /// <summary>
         /// Reflect the protocol change into the protocol properties
         /// </summary>
@@ -155,17 +167,18 @@ namespace Terminals.Data.DB
         /// </summary>
         internal void SaveProperties(Database database)
         {
-            if (database != null)
+            if (this.Database != null)
             {
                 try
                 {
                     string serializedProperties = Serialize.SerializeXMLAsString(this.protocolProperties);
                     database.UpdateFavoriteProtocolProperties(this.Id, serializedProperties);
+                    this.isNewlyCreated = false;
                 }
                 catch (Exception exception)
                 {
                     Logging.Log.Error("Couldnt save protocol properties to database", exception);
-                    // we dont have chance to 
+                    // we dont have chance to recover
                 }
             }
         }
@@ -177,19 +190,29 @@ namespace Terminals.Data.DB
         {
             try
             {
-                if (this.Database != null)
+                if (!this.isNewlyCreated)
                 {
-                    string serializedProperties = this.Database.GetFavoriteProtocolProperties(this.Id).FirstOrDefault();
-                    Type propertiesType = this.protocolProperties.GetType();
-                    this.protocolProperties =
-                        Serialize.DeSerializeXML(serializedProperties, propertiesType) as ProtocolOptions;
+                    this.LoadPropertiesFromDatabase();
                 }
             }
             catch (Exception exception)
             {
                 Logging.Log.Error("Couldnt obtain protocol properties from database", exception);
-                this.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(this.Protocol, new RdpOptions());
+                this.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(
+                  this.Protocol, new RdpOptions());
             }
+        }
+
+        private void LoadPropertiesFromDatabase()
+        {
+            if (this.Database != null)
+            {
+                string serializedProperties = this.Database.GetFavoriteProtocolProperties(this.Id).FirstOrDefault();
+                Type propertiesType = this.protocolProperties.GetType();
+                this.protocolProperties =
+                    Serialize.DeSerializeXML(serializedProperties, propertiesType) as ProtocolOptions;
+            }
+
         }
 
         internal List<IGroup> GetInvariantGroups()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.EntityClient;
 using System.Data.Objects;
@@ -15,7 +16,7 @@ namespace Terminals.Data.DB
     {
         private const string PROVIDER = "System.Data.SqlClient";       
         private const string METADATA = @"res://*/Data.DB.SQLPersistence.csdl|res://*/Data.DB.SQLPersistence.ssdl|res://*/Data.DB.SQLPersistence.msl";
-        internal const string DEVELOPMENT_CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
+        internal const string DEFAULT_CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
 
         /// <summary>
         /// periodicaly download latest changes
@@ -28,7 +29,12 @@ namespace Terminals.Data.DB
 
         internal static Database CreateDatabaseInstance()
         {
-            string connectionString = BuildConnectionString(Settings.ConnectionString);
+           return CreateDatabase(Settings.ConnectionString);
+        }
+
+        private static Database CreateDatabase(string connecitonString)
+        {
+            string connectionString = BuildConnectionString(connecitonString);
             return new Database(connectionString);
         }
 
@@ -48,15 +54,15 @@ namespace Terminals.Data.DB
         {
             this.updateLock = new object();
             this.ObjectMaterialized += new ObjectMaterializedEventHandler(this.OnDatabaseObjectMaterialized);
-            this.InitializeReLoadClock();
         }
 
-        private void InitializeReLoadClock()
+        internal void InitializeReLoadClock(ISynchronizeInvoke synchronizer)
         {
-            // todo Run periodical updates
-            //this.reLoadClock = new Timer();
-            //this.reLoadClock.Elapsed += new ElapsedEventHandler(this.OnReLoadClockElapsed);
-            //this.reLoadClock.Start();
+            this.reLoadClock = new Timer();
+            this.reLoadClock.Interval = 2000;
+            // this.reLoadClock.SynchronizingObject = synchronizer;
+            // this.reLoadClock.Elapsed += new ElapsedEventHandler(this.OnReLoadClockElapsed);
+            this.reLoadClock.Start();
         }
 
         /// <summary>
@@ -69,7 +75,7 @@ namespace Terminals.Data.DB
             // first download the masterpassword to ensure, that it wasnt change, otherwise we have
             // all cached items out of date
             // after all items are loaded, refresh already cached protocol options, which arent part of an entity
-            
+            var clock = Stopwatch.StartNew();
             this.Refresh(RefreshMode.ClientWins, this.Favorites);
             this.Refresh(RefreshMode.ClientWins, this.Groups);
             this.Refresh(RefreshMode.ClientWins, this.CredentialBase);
@@ -77,15 +83,16 @@ namespace Terminals.Data.DB
             this.Refresh(RefreshMode.ClientWins, this.DisplayOptions);
             this.Refresh(RefreshMode.ClientWins, this.Security);
 
-            // possible changes in history are only for today
-            
+            // todo possible changes in history are only for today
+
+            Debug.WriteLine("Updating entities at {0} [{1} ms]", DateTime.Now,  clock.ElapsedMilliseconds);
         }
 
         private void OnDatabaseObjectMaterialized(object sender, ObjectMaterializedEventArgs e)
         {
             var entity = e.Entity as IEntityContext;
-            if(entity != null)
-                entity.Database = this;   
+            if (entity != null)
+                entity.Database = this;
         }
 
         internal void StartDelayedUpdate()
@@ -221,8 +228,7 @@ namespace Terminals.Data.DB
 
         private static bool TestDatabasePassword(string connectionStringToTest, string databasePassword)
         {
-            string connectionString = BuildConnectionString(connectionStringToTest);
-            var database = new Database(connectionString);
+            Database database = CreateDatabase(connectionStringToTest);
             string databasePasswordHash = PasswordFunctions.EncryptPassword(databasePassword);
             bool passwordIsValid = databasePasswordHash == database.GetMasterPasswordHash();
             return passwordIsValid;

@@ -29,7 +29,7 @@ namespace Terminals.Forms
         private void FillSqlUserControls()
         {
             if (String.IsNullOrEmpty(Settings.ConnectionString))
-                this.txtConnectionString.Text = Database.DEVELOPMENT_CONNECTION_STRING;
+                this.txtConnectionString.Text = Database.DEFAULT_CONNECTION_STRING;
             else
                 this.txtConnectionString.Text = Settings.ConnectionString;
 
