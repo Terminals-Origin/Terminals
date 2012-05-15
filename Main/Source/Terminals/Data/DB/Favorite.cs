@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Terminals.Connections;
 using Unified;
@@ -80,16 +81,33 @@ namespace Terminals.Data.DB
             }
         }
 
-        public string ToolBarIcon
+        /// <summary>
+        /// Gets empty string. Set loads the image from file and updates the icon reference in database.
+        /// The string get/set image file path to import/export favorite icon isnt supported in database persistence.
+        /// </summary>
+        public string ToolBarIconFile
         {
             get
             {
                 return string.Empty;
-                // todo ToolBarIcon throw new NotImplementedException();
             }
             set
             {
-                //throw new NotImplementedException();
+                this.toolBarIcon = FavoriteIcons.LoadImage(value, this);
+                //if(FavoriteIcons.IsntDefaultProtocolImage(this.toolBarIcon)) ;
+            }
+        }
+
+        // because of the disposable image, favorite should implement IDisposable
+        private Image toolBarIcon;
+        public Image ToolBarIconImage
+        {
+            get
+            {
+                if (this.Database != null && this.toolBarIcon == null)
+                    this.TryLoadImageFromDatabase();
+
+                return this.toolBarIcon;
             }
         }
 
@@ -99,6 +117,59 @@ namespace Terminals.Data.DB
             {
                 List<IGroup> groups = GetInvariantGroups();
                 return Data.Favorite.GroupsListToString(groups);
+            }
+        }
+
+        /// <summary>
+        /// Initializes new instance of a favorite and sets its properties to default values,
+        /// which arent defined by database.
+        /// </summary>
+        public Favorite()
+        {
+            this._Protocol = ConnectionManager.RDP;
+            this._Port = ConnectionManager.RDPPort;
+            this.protocolProperties = new RdpOptions();
+        }
+
+        internal void MarkAsNewlyCreated()
+        {
+            this.isNewlyCreated = true;
+        }
+
+        internal void UpdateImageInDatabase(Database database)
+        {
+            try
+            {
+                this.TryUpdateImageInDatabase(database);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Couldnt load image from database", exception);
+            }
+        }
+
+        private void TryUpdateImageInDatabase(Database database)
+        {
+            if (this.toolBarIcon != null)
+            {
+                byte[] imageData = FavoriteIcons.ImageToBinary(this.toolBarIcon);
+                if (imageData.Length > 0)
+                {
+                    database.SetFavoriteIcon(this.Id, imageData);
+                }
+            }
+        }
+
+        private void TryLoadImageFromDatabase()
+        {
+            try
+            {
+                byte[] imageData = this.Database.GetFavoriteIcon(this.Id);
+                this.toolBarIcon = FavoriteIcons.LoadImage(imageData, this);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Couldnt load image from database", exception);
             }
         }
 
@@ -115,7 +186,7 @@ namespace Terminals.Data.DB
             copy.Protocol = this.Protocol;
             copy.Security = this.Security.Copy();
             copy.ServerName = this.ServerName;
-            copy.ToolBarIcon = this.ToolBarIcon;
+            copy.ToolBarIconFile = this.ToolBarIconFile;
 
             copy.ProtocolProperties = this.ProtocolProperties.Copy();
 
@@ -139,22 +210,6 @@ namespace Terminals.Data.DB
         }
 
         /// <summary>
-        /// Initializes new instance of a favorite and sets its properties to default values,
-        /// which arent defined by database.
-        /// </summary>
-        public Favorite()
-        {
-            this._Protocol = ConnectionManager.RDP;
-            this._Port = ConnectionManager.RDPPort;
-            this.protocolProperties = new RdpOptions();
-        }
-
-        internal void MarkAsNewlyCreated()
-        {
-            this.isNewlyCreated = true;
-        }
-
-        /// <summary>
         /// Reflect the protocol change into the protocol properties
         /// </summary>
         partial void OnProtocolChanged()
@@ -167,19 +222,15 @@ namespace Terminals.Data.DB
         /// </summary>
         internal void SaveProperties(Database database)
         {
-            if (this.Database != null)
+            try
             {
-                try
-                {
-                    string serializedProperties = Serialize.SerializeXMLAsString(this.protocolProperties);
-                    database.UpdateFavoriteProtocolProperties(this.Id, serializedProperties);
-                    this.isNewlyCreated = false;
-                }
-                catch (Exception exception)
-                {
-                    Logging.Log.Error("Couldnt save protocol properties to database", exception);
-                    // we dont have chance to recover
-                }
+                string serializedProperties = Serialize.SerializeXMLAsString(this.protocolProperties);
+                database.UpdateFavoriteProtocolProperties(this.Id, serializedProperties);
+                this.isNewlyCreated = false;
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Couldnt save protocol properties to database", exception);
             }
         }
 

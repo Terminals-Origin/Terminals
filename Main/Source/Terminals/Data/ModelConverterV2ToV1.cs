@@ -38,7 +38,7 @@ namespace Terminals.Data
             result.ServerName = sourceFavorite.ServerName;
             result.Url = WebOptions.ExtractAbsoluteUrl(sourceFavorite);
 
-            result.ToolBarIcon = sourceFavorite.ToolBarIcon;
+            result.ToolBarIcon = sourceFavorite.ToolBarIconFile;
             result.NewWindow = sourceFavorite.NewWindow;
             result.DesktopShare = sourceFavorite.DesktopShare;
             result.Notes = sourceFavorite.Notes;

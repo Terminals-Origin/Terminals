@@ -233,12 +233,8 @@ namespace Terminals
             this.NewWindowCheckbox.Checked = favorite.NewWindow;
             this.txtDesktopShare.Text = favorite.DesktopShare;
             this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Id);
-            if (favorite.ToolBarIcon != null && File.Exists(favorite.ToolBarIcon))
-            {
-                this.pictureBox2.Load(favorite.ToolBarIcon);
-                this._currentToolBarFileName = favorite.ToolBarIcon;
-            }
-
+            this.pictureBox2.Image = favorite.ToolBarIconImage;
+            this._currentToolBarFileName = favorite.ToolBarIconFile;
             this.NotesTextbox.Text = favorite.Notes;
         }
 
@@ -489,7 +485,7 @@ namespace Terminals
             this.Favorite.NewWindow = this.NewWindowCheckbox.Checked;
             this.Favorite.DesktopShare = this.txtDesktopShare.Text;
             this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
-            this.Favorite.ToolBarIcon = this._currentToolBarFileName;
+            this.Favorite.ToolBarIconFile = this._currentToolBarFileName;
             this.Favorite.Notes = this.NotesTextbox.Text;
         }
 
@@ -1162,41 +1158,44 @@ namespace Terminals
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            String appFolder = Program.Info.Location;
+            OpenFileDialog openFileDialog = CreateIconSelectionDialog();
+
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                this.TryToAssignNewToolbarIcon(openFileDialog.FileName);
+            }
+        }
+
+        private void TryToAssignNewToolbarIcon(string newImagefilePath)
+        {
+            try
+            {
+                this.TryToLoadSelectedImage(newImagefilePath);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Info("Set Terminal Image Failed", exception);
+                this._currentToolBarFileName = String.Empty;
+                MessageBox.Show("You have chosen an invalid image. Try again.");
+            }
+        }
+
+        private void TryToLoadSelectedImage(string newImagefilePath)
+        {
+            string newFileInThumbsDir = FavoriteIcons.CopySelectedImageToThumbsDir(newImagefilePath);
+            this.pictureBox2.Image = Image.FromFile(newImagefilePath);
+            this._currentToolBarFileName = newFileInThumbsDir;
+        }
+
+        private static OpenFileDialog CreateIconSelectionDialog()
+        {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.CheckFileExists = true;
-            openFileDialog.InitialDirectory = appFolder;
+            openFileDialog.InitialDirectory = FileLocations.ThumbsDirectoryFullPath;
             openFileDialog.Filter = "PNG Files (*.png)|*.png|JPG Files (*.jpg)|*.jpg|All files (*.*)|*.*";
             openFileDialog.Multiselect = false;
             openFileDialog.Title = "Select Custom Terminal Image .";
-            String thumbsFolder = Path.Combine(appFolder, "Thumbs");
-            if (!Directory.Exists(thumbsFolder))
-                Directory.CreateDirectory(thumbsFolder);
-
-            this._currentToolBarFileName = String.Empty;
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                //make it relative to the current application executable
-                String filename = openFileDialog.FileName;
-                try
-                {
-                    Image image = Image.FromFile(filename);
-                    if (image != null)
-                    {
-                        this.pictureBox2.Image = image;
-                        String newFile = Path.Combine(thumbsFolder, Path.GetFileName(filename));
-                        if (newFile != filename && !File.Exists(newFile))
-                            File.Copy(filename, newFile);
-                        this._currentToolBarFileName = newFile;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logging.Log.Info("Set Terminal Image Failed", ex);
-                    this._currentToolBarFileName = String.Empty;
-                    MessageBox.Show("You have chosen an invalid image. Try again.");
-                }
-            }
+            return openFileDialog;
         }
 
         private void SecuritySettingsEnabledCheckbox_CheckedChanged(object sender, EventArgs e)

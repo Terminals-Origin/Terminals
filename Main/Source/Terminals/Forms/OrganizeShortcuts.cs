@@ -60,9 +60,7 @@ namespace Terminals
                 shortcut.WorkingFolder = workingFolderTextBox.Text;
                 shortcut.Arguments = argumentsTextBox.Text;
                 string imageName = Path.GetFileName(shortcut.Executable) + ".ico";
-                string exeFolder = Program.Info.Location;
-
-                string imageFullName = Path.Combine(Path.Combine(exeFolder, "Thumbs"), imageName);
+                string imageFullName = Path.Combine(FileLocations.ThumbsDirectoryFullPath, imageName);
                 if(this.iconPicturebox.Image != null)
                 {
                     try

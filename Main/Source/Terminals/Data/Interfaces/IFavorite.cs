@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Terminals.Data
 {
@@ -37,9 +38,15 @@ namespace Terminals.Data
         String ServerName { get; set; }
 
         /// <summary>
-        /// Gets or sets the absolute path to the tool bar icon file.
+        /// Gets or sets the absolute path to the tool bar icon file, if custom icon was assigned.
+        /// To directly access the icon image use <see cref="ToolBarIconImage"/>
         /// </summary>
-        String ToolBarIcon { get; set; } // todo move TollBarIcon to configuration
+        String ToolBarIconFile { get; set; }
+
+        /// <summary>
+        /// Gets the image loaded from assigned icon file.
+        /// </summary>
+        Image ToolBarIconImage { get; }
 
         /// <summary>
         /// Gets or sets the flag identifiyng, if the connection should be opened in new window or in TabControl.

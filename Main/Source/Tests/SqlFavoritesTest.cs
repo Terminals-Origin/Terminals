@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
@@ -132,6 +133,20 @@ namespace Tests
             int targetGroupsCount = this.lab.CheckDatabase.Groups.Count();
             Assert.AreEqual(1, targetGroupsCount, "Empty groups wern't deleted");
             Assert.AreEqual(1, updatedCount, "Event wasnt delivered");
+        }
+
+        [TestMethod]
+        public void LoadSaveFavoriteIconsTest()
+        {
+            IFavorite favorite = this.lab.CreateTestFavorite();
+            // try to access on not saved favorite
+            favorite.ToolBarIconFile = @"Data\ControlPanel.png";
+            Image favoriteIcon = favorite.ToolBarIconImage;
+            this.lab.Persistence.Favorites.Add(favorite);
+            Favorite checkFavorite = this.lab.CheckDatabase.Favorites.FirstOrDefault();
+            
+            Assert.IsNotNull(favoriteIcon, "Icon wasnt assigned successfully");
+            Assert.IsNotNull(checkFavorite.ToolBarIconImage, "Icon didnt reach the database");
         }
     }
 }

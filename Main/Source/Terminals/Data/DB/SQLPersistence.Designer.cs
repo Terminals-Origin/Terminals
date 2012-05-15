@@ -372,6 +372,55 @@ namespace Terminals.Data.DB
         {
             return base.ExecuteFunction<global::System.String>("GetMasterPasswordKey");
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="favoriteId">No Metadata Documentation available.</param>
+        /// <param name="iconData">No Metadata Documentation available.</param>
+        public int SetFavoriteIcon(Nullable<global::System.Int32> favoriteId, global::System.Byte[] iconData)
+        {
+            ObjectParameter favoriteIdParameter;
+            if (favoriteId.HasValue)
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", favoriteId);
+            }
+            else
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter iconDataParameter;
+            if (iconData != null)
+            {
+                iconDataParameter = new ObjectParameter("IconData", iconData);
+            }
+            else
+            {
+                iconDataParameter = new ObjectParameter("IconData", typeof(global::System.Byte[]));
+            }
+    
+            return base.ExecuteFunction("SetFavoriteIcon", favoriteIdParameter, iconDataParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="favoriteId">No Metadata Documentation available.</param>
+        private ObjectResult<global::System.Byte[]> GetFavoriteIcon(Nullable<global::System.Int32> favoriteId)
+        {
+            ObjectParameter favoriteIdParameter;
+            if (favoriteId.HasValue)
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", favoriteId);
+            }
+            else
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", typeof(global::System.Int32));
+            }
+    
+            return base.ExecuteFunction<global::System.Byte[]>("GetFavoriteIcon", favoriteIdParameter);
+        }
 
         #endregion
     }
@@ -1228,6 +1277,30 @@ namespace Terminals.Data.DB
         private global::System.String _Notes;
         partial void OnNotesChanging(global::System.String value);
         partial void OnNotesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.Byte[] IconData
+        {
+            get
+            {
+                return StructuralObject.GetValidValue(_IconData);
+            }
+            set
+            {
+                OnIconDataChanging(value);
+                ReportPropertyChanging("IconData");
+                _IconData = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("IconData");
+                OnIconDataChanged();
+            }
+        }
+        private global::System.Byte[] _IconData;
+        partial void OnIconDataChanging(global::System.Byte[] value);
+        partial void OnIconDataChanged();
 
         #endregion
     
