@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Forms.Controls;
 using Terminals.Network;
 
 namespace Terminals.Data
@@ -38,11 +40,6 @@ namespace Terminals.Data
             get { return GetGroups(this); }
         }
 
-        private static List<IGroup> GetGroups(IFavorite selected)
-        {
-            return Persistence.Instance.Groups.GetGroupsContainingFavorite(selected.Id);
-        }
-
         private string protocol = ConnectionManager.RDP;
         public String Protocol
         {
@@ -64,12 +61,7 @@ namespace Terminals.Data
             }
         }
 
-        private string serverName;
-        public String ServerName
-        {
-            get { return serverName; }
-            set { serverName = value; }
-        }
+        public string ServerName { get; set; }
 
         private SecurityOptions security = new SecurityOptions();
         /// <summary>
@@ -87,11 +79,39 @@ namespace Terminals.Data
             get { return this.security; }
         }
 
-        private string toolBarIcon;
-        public String ToolBarIcon
+        private string toolBarIconFile;
+        public string ToolBarIconFile
         {
-            get { return toolBarIcon; }
-            set { toolBarIcon = value; }
+            get
+            {
+                return this.toolBarIconFile;
+            }
+            set
+            {
+                this.toolBarIconFile = value;
+                this.ResetLoadedIcon();
+            }
+        }
+
+        private void ResetLoadedIcon()
+        {
+            if (this.toolBarIconImage != null)
+            {
+                this.toolBarIconImage.Dispose();
+                this.toolBarIconImage = null;
+            }
+        }
+
+        private Image toolBarIconImage;
+        public Image ToolBarIconImage
+        {
+            get
+            {
+                // cache the image to safe the resources
+                if(this.toolBarIconImage == null)
+                    this.toolBarIconImage = FavoriteIcons.GetFavoriteIcon(this);
+                return this.toolBarIconImage;
+            }
         }
 
         public Boolean NewWindow { get; set; }
@@ -232,19 +252,9 @@ namespace Terminals.Data
             return returnValue;
         }
 
-        public override String ToString()
+        private static List<IGroup> GetGroups(IFavorite selected)
         {
-            return ToString(this);
-        }
-
-        internal static string ToString(IFavorite favorite)
-        {
-            string domain = favorite.Security.Domain;
-            if (!String.IsNullOrEmpty(domain))
-                domain += "\\";
-
-            return String.Format(@"Favorite:{0}({1})={2}{3}:{4}",
-                                 favorite.Name, favorite.Protocol, domain, favorite.ServerName, favorite.Port);
+            return Persistence.Instance.Groups.GetGroupsContainingFavorite(selected.Id);
         }
 
         public String GetToolTipText()
@@ -296,7 +306,7 @@ namespace Terminals.Data
             copy.Protocol = this.Protocol;
             copy.security = this.security.Copy();
             copy.ServerName = this.ServerName;
-            copy.ToolBarIcon = this.ToolBarIcon;
+            copy.ToolBarIconFile = this.ToolBarIconFile;
 
             copy.ProtocolProperties = this.ProtocolProperties.Copy();
 
@@ -357,6 +367,21 @@ namespace Terminals.Data
         public override int GetHashCode()
         {
             return this.Id.GetHashCode();
+        }
+
+        public override String ToString()
+        {
+            return ToString(this);
+        }
+
+        internal static string ToString(IFavorite favorite)
+        {
+            string domain = favorite.Security.Domain;
+            if (!String.IsNullOrEmpty(domain))
+                domain += "\\";
+
+            return String.Format(@"Favorite:{0}({1})={2}{3}:{4}",
+                favorite.Name, favorite.Protocol, domain, favorite.ServerName, favorite.Port);
         }
     }
 }

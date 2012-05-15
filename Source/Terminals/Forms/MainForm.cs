@@ -1297,7 +1297,7 @@ namespace Terminals
                 var tab = this.FindTabControlItemByTitle(menuItem);
 
                 if (tab != null)
-                    menuItem.Image = FavoriteIcons.GetFavoriteIcon(tab.Favorite);
+                    menuItem.Image = tab.Favorite.ToolBarIconImage;
             }
         }
 

@@ -168,6 +168,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SQLPersistence.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Data\Favorites\FavoriteIcons.cs" />
     <Compile Include="Data\Interfaces\IPersistedSecurity.cs" />
     <Compile Include="Data\PersistenceSecurity.cs" />
     <Compile Include="Forms\AboutForm.cs">
@@ -398,7 +399,6 @@
     </Compile>
     <Compile Include="Data\DataDispatcher.cs" />
     <Compile Include="Data\FavoritesChangedEventArgs.cs" />
-    <Compile Include="Forms\Controls\FavoriteIcons.cs" />
     <Compile Include="Forms\Controls\FavoritesMenuLoader.cs">
       <SubType>Form</SubType>
     </Compile>

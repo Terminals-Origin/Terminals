@@ -33,7 +33,7 @@ namespace Terminals.Data
             result.Name = sourceFavorite.Name;
             result.Port = sourceFavorite.Port;
             result.ServerName = sourceFavorite.ServerName;
-            result.ToolBarIcon = sourceFavorite.ToolBarIcon;
+            result.ToolBarIconFile = sourceFavorite.ToolBarIcon;
             result.NewWindow = sourceFavorite.NewWindow;
             result.DesktopShare = sourceFavorite.DesktopShare;
             result.Notes = sourceFavorite.Notes;

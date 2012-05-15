@@ -97,6 +97,7 @@
           <Property Name="DesktopShare" Type="nvarchar" MaxLength="255" />
           <Property Name="Notes" Type="nvarchar" MaxLength="500" />
           <Property Name="ProtocolProperties" Type="xml" />
+          <Property Name="IconData" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="FavoritesInGroup">
           <Key>
@@ -258,6 +259,9 @@
           <Parameter Name="Credential" Type="int" Mode="In" />
           <Parameter Name="CredentialBaseId" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetFavoriteIcon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetFavoriteProtocolProperties" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
         </Function>
@@ -318,6 +322,10 @@
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
           <Parameter Name="CredentialId" Type="int" Mode="In" />
           <Parameter Name="CredentialBaseId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="SetFavoriteIcon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FavoriteId" Type="int" Mode="In" />
+          <Parameter Name="IconData" Type="varbinary(max)" Mode="In" />
         </Function>
         <Function Name="UpdateBeforeConnectExecute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
@@ -433,6 +441,13 @@
           <Parameter Name="NewKey" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetMasterPasswordKey" ReturnType="Collection(String)" a:MethodAccess="Private" />
+          <FunctionImport Name="SetFavoriteIcon">
+            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+            <Parameter Name="IconData" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="GetFavoriteIcon" ReturnType="Collection(Binary)" a:MethodAccess="Private">
+            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="BeforeConnectExecute" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
@@ -486,6 +501,7 @@
           <NavigationProperty Name="Display" Relationship="Terminals.Data.DB.FK_DisplayOptions_Favorites" FromRole="Favorites" ToRole="DisplayOptions" />
           <NavigationProperty Name="Security" Relationship="Terminals.Data.DB.FK_Security_Favorites" FromRole="Favorites" ToRole="Security" />
           <NavigationProperty Name="Groups" Relationship="Terminals.Data.DB.FavoritesInGroup" FromRole="Favorites" ToRole="Groups" />
+          <Property Type="Binary" Name="IconData" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <EntityType Name="Group" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
@@ -697,6 +713,7 @@
           <EntitySetMapping Name="Favorites">
             <EntityTypeMapping TypeName="Terminals.Data.DB.Favorite">
               <MappingFragment StoreEntitySet="Favorites">
+                <ScalarProperty Name="IconData" ColumnName="IconData" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="DesktopShare" ColumnName="DesktopShare" />
                 <ScalarProperty Name="NewWindow" ColumnName="NewWindow" />
@@ -870,6 +887,8 @@
           </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="UpdateMasterPasswordKey" FunctionName="Model1.Store.UpdateMasterPasswordKey" />
           <FunctionImportMapping FunctionImportName="GetMasterPasswordKey" FunctionName="Model1.Store.GetMasterPasswordKey" />
+          <FunctionImportMapping FunctionImportName="SetFavoriteIcon" FunctionName="Model1.Store.SetFavoriteIcon" />
+          <FunctionImportMapping FunctionImportName="GetFavoriteIcon" FunctionName="Model1.Store.GetFavoriteIcon" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

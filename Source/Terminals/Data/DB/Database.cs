@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 using Terminals.Configuration;
+using Terminals.Forms.Controls;
 using Terminals.Security;
 
 namespace Terminals.Data.DB
@@ -153,6 +154,7 @@ namespace Terminals.Data.DB
             foreach (var favorite in changedFavorites)
             {
                 favorite.SaveProperties(this);
+                favorite.UpdateImageInDatabase(this);
             }
         }
 
@@ -180,6 +182,15 @@ namespace Terminals.Data.DB
             // to list, because linq to entities doesnt support Guid search
             return this.Favorites.ToList()
                 .FirstOrDefault(favorite => favorite.Guid == favoriteId);
+        }
+
+        internal byte[] GetFavoriteIcon(int favoriteId)
+        {
+            byte[] obtained = this.GetFavoriteIcon((int?)favoriteId).FirstOrDefault();
+            if (obtained != null)
+                return obtained;
+
+            return FavoriteIcons.EmptyImageData;
         }
 
         internal string GetMasterPasswordHash()
