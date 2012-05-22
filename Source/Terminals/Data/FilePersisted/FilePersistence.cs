@@ -62,9 +62,15 @@ namespace Terminals.Data
         private DataFileWatcher fileWatcher;
         private bool delaySave = false;
 
-        internal FilePersistence()
+        internal FilePersistence() : this(new PersistenceSecurity())
+        {}
+
+        /// <summary>
+        /// Try to reuse current security in case of changing peristence, because user is already authenticated
+        /// </summary>
+        internal FilePersistence(PersistenceSecurity security)
         {
-            this.Security = new PersistenceSecurity(this);
+            this.InitializeSecurity(security);
             this.Dispatcher = new DataDispatcher();
             this.connectionHistory = new ConnectionHistory();
             this.storedCredentials = new StoredCredentials();
@@ -72,6 +78,12 @@ namespace Terminals.Data
             this.favorites = new Favorites(this);
             this.factory = new Factory();
             this.InitializeFileWatch();
+        }
+
+        private void InitializeSecurity(PersistenceSecurity security)
+        {
+            this.Security = security;
+            this.Security.AssignPersistence(this);
         }
 
         private void InitializeFileWatch()

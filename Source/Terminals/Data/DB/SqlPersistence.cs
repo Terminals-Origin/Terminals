@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace Terminals.Data.DB
 {
@@ -33,7 +34,8 @@ namespace Terminals.Data.DB
 
         internal SqlPersistence()
         {
-            this.Security = new PersistenceSecurity(this);
+            this.Security = new PersistenceSecurity();
+            this.Security.AssignPersistence(this);
         }
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
@@ -53,13 +55,31 @@ namespace Terminals.Data.DB
 
         public void Initialize()
         {
-            this.database = Database.CreateDatabaseInstance();
+            if(!this.TryInitializeDatabase())
+                return;
+
             this.Dispatcher = new DataDispatcher();
             this.groups = new Groups(this.database, this.Dispatcher);
             this.favorites = new Favorites(this.database, this.groups, this.Dispatcher);
             this.ConnectionHistory = new ConnectionHistory(this.database);
             this.Credentials = new StoredCredentials(this.database);
             this.Factory = new Factory(this.database);
+        }
+
+        private bool TryInitializeDatabase()
+        {
+            try
+            {
+                this.database = Database.CreateDatabaseInstance();
+                this.database.GetMasterPasswordHash(); // dummy test
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Fatal("SQL Perstance layer failed to load. Fall back to File persistence", exception);
+                Persistence.FallBackToPrimaryPersistence(this.Security);
+                return false;
+            }
         }
 
         public void UpdatePasswordsByNewMasterPassword(string newMasterPassword)

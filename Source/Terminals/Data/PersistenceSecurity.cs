@@ -9,7 +9,7 @@ namespace Terminals.Data
     /// </summary>
     internal class PersistenceSecurity
     {
-        private readonly IPersistedSecurity persistence;
+        private IPersistedSecurity persistence;
 
         internal string KeyMaterial { get; private set; }
 
@@ -21,10 +21,14 @@ namespace Terminals.Data
             }
         }
 
-        internal PersistenceSecurity(IPersistedSecurity persistence)
+        internal PersistenceSecurity()
+        {
+            this.KeyMaterial = string.Empty;
+        }
+
+        internal void AssignPersistence(IPersistedSecurity persistence)
         {
             this.persistence = persistence;
-            this.KeyMaterial = string.Empty;
         }
 
         internal bool Authenticate(Func<bool, AuthenticationPrompt> knowsUserPassword)
