@@ -6,18 +6,17 @@ namespace Terminals.Data
 {
     internal class Persistence
     {
-        #region Thread safe singleton with lazy loading
-
+        private IPersistence persistence;
+     
         private Persistence()
         {
             try
             {
                 if (Settings.PersistenceType == 0)
                     this.persistence = new FilePersistence();
-                else 
-                    // todo enable SqlPeristance to be created
-                    // this.persistence = new SqlPersistence();
-                    this.persistence = new FilePersistence(); 
+                else
+                    // this.persistence = new FilePersistence();
+                    this.persistence = new SqlPersistence();
             }
             catch (Exception exception)
             {
@@ -26,6 +25,18 @@ namespace Terminals.Data
             }
         }
 
+        /// <summary>
+        /// Fall back to file persistence, in case of not available database
+        /// </summary>
+        internal static void FallBackToPrimaryPersistence(PersistenceSecurity security)
+        {
+            FilePersistence persistence = new FilePersistence(security);
+            Nested.instance.persistence = persistence;
+            persistence.Initialize();
+        }
+
+        #region Thread safe singleton with lazy loading
+        
         /// <summary>
         /// Gets the thread safe singleton instance of the persistence layer
         /// </summary>
@@ -44,6 +55,5 @@ namespace Terminals.Data
 
         #endregion
 
-        private IPersistence persistence;
     }
 }
