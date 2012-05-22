@@ -59,6 +59,7 @@ namespace Terminals.Forms
             this.txtConnectionString.Enabled = enableSqlControls;
             this.bntTestSqlConnection.Enabled = enableSqlControls;
             this.txtDbPassword.Enabled = enableSqlControls;
+            this.bntTestSqlConnection.Enabled = enableSqlControls;
         }
 
         private void OnBntTestSqlConnectionClick(object sender, EventArgs e)
