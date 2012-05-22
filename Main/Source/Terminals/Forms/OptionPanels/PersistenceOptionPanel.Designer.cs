@@ -91,6 +91,7 @@ namespace Terminals.Forms
             // 
             // bntTestSqlConnection
             // 
+            this.bntTestSqlConnection.Enabled = false;
             this.bntTestSqlConnection.Location = new System.Drawing.Point(371, 259);
             this.bntTestSqlConnection.Name = "bntTestSqlConnection";
             this.bntTestSqlConnection.Size = new System.Drawing.Size(115, 23);
