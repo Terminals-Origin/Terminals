@@ -23,7 +23,7 @@ namespace Terminals.Forms.Controls
         {
             get
             {
-                return this.group.Favorites;
+                return Data.Favorites.OrderByDefaultSorting(this.group.Favorites);
             }
         }
 

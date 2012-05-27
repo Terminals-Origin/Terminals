@@ -77,14 +77,14 @@ namespace Terminals.Data
 
         internal void Merge(List<IFavorite> newFavorites)
         {
-            var oldFavorites = this.ToList();
+            var oldFavorites = new List<IFavorite>(this);
             List<IFavorite> missingFavorites = ListsHelper.GetMissingSourcesInTarget(newFavorites, oldFavorites);
             List<IFavorite> redundantFavorites = ListsHelper.GetMissingSourcesInTarget(oldFavorites, newFavorites);
             Add(missingFavorites);
             Delete(redundantFavorites);
         }
 
-        internal static SortableList<IFavorite> OrderByDefaultSorting(List<IFavorite> source)
+        internal static SortableList<IFavorite> OrderByDefaultSorting(IEnumerable<IFavorite> source)
         {
             IOrderedEnumerable<IFavorite> sorted;
             switch (Settings.DefaultSortProperty)
@@ -248,8 +248,7 @@ namespace Terminals.Data
 
         public SortableList<IFavorite> ToListOrderedByDefaultSorting()
         {
-            var source = this.ToList();
-            return OrderByDefaultSorting(source);
+            return OrderByDefaultSorting(this);
         }
 
         public void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential)

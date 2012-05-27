@@ -65,11 +65,6 @@ namespace Terminals.Data
         /// </summary>
         void Delete(List<IFavorite> favorites);
 
-        /// <summary>
-        /// Gets favorites as sortable collection. Items arent sorted.
-        /// </summary>
-        SortableList<IFavorite> ToList();
-
         SortableList<IFavorite> ToListOrderedByDefaultSorting();
 
         /// <summary>

@@ -422,7 +422,8 @@ namespace Terminals
             {
                 if (!this.alphabeticalMenu.HasDropDownItems)
                 {
-                    List<IFavorite> favorites = PersistedFavorites.ToList().SortByProperty("Name", SortOrder.Ascending);
+                    List<IFavorite> favorites = new SortableList<IFavorite>(PersistedFavorites)
+                        .SortByProperty("Name", SortOrder.Ascending);
                     CreateAlphabeticalFavoriteMenuItems(favorites);
                     Boolean alphaMenuVisible = this.alphabeticalMenu.DropDownItems.Count > 0;
                     this.alphabeticalMenu.Visible = alphaMenuVisible;

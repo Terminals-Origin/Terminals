@@ -103,7 +103,7 @@ namespace Terminals.Data
             IList<IGroup> updated = this.UpdateFavoritesInGroups(file.FavoritesInGroups);
             this.Dispatcher.ReportGroupsUpdated(updated);
             // Simple update without ensuring, if the favorite was changes or not - possible porformance issue);
-            this.Dispatcher.ReportFavoritesUpdated(this.favorites.ToList());
+            this.Dispatcher.ReportFavoritesUpdated(new List<IFavorite>(this.favorites));
         }
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)

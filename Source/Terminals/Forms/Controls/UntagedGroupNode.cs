@@ -25,9 +25,9 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal static List<IFavorite> GetNotGroupedFavorites()
         {
-            return Persistence.Instance.Favorites
-                .Where(candidate => candidate.Groups.Count == 0)
-                .ToList();
+            var relevantFavorites = Persistence.Instance.Favorites
+                .Where(candidate => candidate.Groups.Count == 0);
+            return Data.Favorites.OrderByDefaultSorting(relevantFavorites);
         }
 
         private readonly Guid groupId;
