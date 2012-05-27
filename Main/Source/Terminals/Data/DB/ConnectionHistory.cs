@@ -24,8 +24,8 @@ namespace Terminals.Data.DB
         {
             HistoryInterval interval = HistoryIntervals.GetIntervalByName(historyDateKey);
             var favoriteIds = this.dataBase.GetFavoritesHistoryByDate(interval.From, interval.To);
-            var favorites = this.dataBase.Favorites.Where(favorite => favoriteIds.Contains(favorite.Id));
-            return new SortableList<IFavorite>(favorites);
+            IQueryable<Favorite> favorites = this.dataBase.Favorites.Where(favorite => favoriteIds.Contains(favorite.Id));
+            return Data.Favorites.OrderByDefaultSorting(favorites);
         }
 
         public void RecordHistoryItem(IFavorite favorite)

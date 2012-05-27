@@ -138,7 +138,7 @@ namespace Terminals.Data.DB
 
         public SortableList<IFavorite> ToListOrderedByDefaultSorting()
         {
-            return Data.Favorites.OrderByDefaultSorting(this.ToList());
+            return Data.Favorites.OrderByDefaultSorting(this);
         }
 
         public void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential)
