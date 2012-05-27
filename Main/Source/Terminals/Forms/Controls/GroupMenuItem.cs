@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using Terminals.Data;
 
@@ -14,19 +15,25 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal const String TAG = "tag";
 
+        private readonly IGroup group;
+
         /// <summary>
-        /// Gets or sets associated favorites group
+        /// Gets the associated favorites group unique identifier
         /// </summary>
-        internal IGroup Group { get; set; }
-
-        internal GroupMenuItem(IGroup group, bool createDummyItem = true)
+        internal virtual Guid GroupId
         {
-            this.Group = group;
-            this.Text = group.Name;
-            this.Tag = TAG;
+            get
+            {
+                return this.group.Id;
+            }
+        }
 
-            if (createDummyItem)
-                this.DropDown.Items.Add(GroupTreeNode.DUMMY_NODE);
+        internal virtual List<IFavorite> Favorites
+        {
+            get
+            {
+                return this.group.Favorites;
+            }
         }
 
         /// <summary>
@@ -40,6 +47,21 @@ namespace Terminals.Forms.Controls
                 return this.DropDown.Items.Count == 1 &&
                 String.IsNullOrEmpty(this.DropDown.Items[0].Name);
             }
+        }
+
+        internal GroupMenuItem(IGroup group, bool createDummyItem = true)
+            : this(group.Name, createDummyItem)
+        {
+            this.group = group;
+        }
+
+        protected GroupMenuItem(string groupName, bool createDummyItem = true)
+        {
+            this.Text = groupName;
+            this.Tag = TAG;
+
+            if (createDummyItem)
+                this.DropDown.Items.Add(GroupTreeNode.DUMMY_NODE);
         }
 
         internal void ClearDropDownsToEmpty()

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Forms.Controls
@@ -13,6 +12,42 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal class GroupTreeNode : TreeNode
     {
+        internal const string DUMMY_NODE = "Dummy";
+
+        private readonly IGroup group;
+
+        /// <summary>
+        /// Gets associated data objects, which should be shown in this group
+        /// </summary>
+        internal virtual List<IFavorite> Favorites
+        {
+            get
+            {
+                return this.group.Favorites;
+            }
+        }
+
+        internal virtual Guid GroupId
+        {
+            get
+            {
+                return this.group.Id;
+            }
+        }
+
+        /// <summary>
+        /// Gets the value indicating lazy loading not performed yet,
+        /// e.g. node contains only dummy node and contains no favorite nodes
+        /// </summary>
+        internal Boolean NotLoadedYet
+        {
+            get
+            {
+                return this.Nodes.Count == 1 &&
+                String.IsNullOrEmpty(this.Nodes[0].Name);
+            }
+        }
+
         internal GroupTreeNode(IGroup group, string imageKey)
             : this(group)
         {
@@ -21,33 +56,27 @@ namespace Terminals.Forms.Controls
         }
 
         internal GroupTreeNode(IGroup group)
-            : base(group.Name, 0, 1)
+            : this(group.Name)
         {
-            this.Nodes.Add(String.Empty, DUMMY_NODE);
-            this.Name = group.Name;
-            this.Group = group;
+            this.group = group;
         }
 
-        internal const string DUMMY_NODE = "Dummy";
-        internal IGroup Group { get; private set; }
-
-        /// <summary>
-        /// Gets the value indicating lazy loading not performed yet,
-        /// e.g. node contains only dummy node and contains no favorite nodes
-        /// </summary>
-        internal Boolean NotLoadedYet
+        protected GroupTreeNode(string groupName)
+            : base(groupName, 0, 1)
         {
-            get 
-            {
-                return this.Nodes.Count == 1 &&
-                String.IsNullOrEmpty(this.Nodes[0].Name);
-            }
+            this.Nodes.Add(String.Empty, DUMMY_NODE);
+            this.Name = groupName;
         }
 
         internal bool ContainsFavoriteNode(Guid favoriteId)
         {
             return this.Nodes.Cast<FavoriteTreeNode>()
                 .Any(treeNode => treeNode.Favorite.Id == favoriteId);
+        }
+
+        internal virtual void UpdateByGroupName()
+        {
+            this.Text = this.group.Name;
         }
     }
 }

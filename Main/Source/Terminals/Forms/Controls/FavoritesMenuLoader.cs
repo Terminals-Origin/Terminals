@@ -126,16 +126,13 @@ namespace Terminals
             /// </summary>
             private void UpdateMenuAndContextMenu()
             {
-                // first update untagged virtual menu item groups to reflect favorite changes
-                this.untaggedToolStripMenuItem.Group = FavoriteTreeListLoader.CreateUntagedVirtualGroup();
-                this.unTaggedQuickMenuItem.Group = FavoriteTreeListLoader.CreateUntagedVirtualGroup();
                 this.FillMainMenu();
                 this.FillTrayContextMenu();
             }
 
             private void CreateUntaggedItem()
             {
-                this.untaggedToolStripMenuItem = CreateUntaggedGroupMenuItem();
+                this.untaggedToolStripMenuItem = new UntagedMenuItem();
                 this.untaggedToolStripMenuItem.DropDownOpening += new EventHandler(this.OnTagMenuDropDownOpening);
                 this.favoritesToolStripMenuItem.DropDownItems.Add(this.untaggedToolStripMenuItem);
             }
@@ -160,7 +157,7 @@ namespace Terminals
 
             private void AddUntaggedQuickContextMenu()
             {
-                this.unTaggedQuickMenuItem = CreateUntaggedGroupMenuItem();
+                this.unTaggedQuickMenuItem = new UntagedMenuItem();
                 unTaggedQuickMenuItem.DropDownItemClicked += new ToolStripItemClickedEventHandler(this.quickContextMenu_ItemClicked);
                 unTaggedQuickMenuItem.DropDownOpening += new EventHandler(OnTagTrayMenuItemDropDownOpening);
                 this.quickContextMenu.Items.Add(unTaggedQuickMenuItem);
@@ -228,7 +225,7 @@ namespace Terminals
                 if (groupMenu.IsEmpty)
                 {
                     groupMenu.DropDown.Items.Clear();
-                    List<IFavorite> tagFavorites = Favorites.OrderByDefaultSorting(groupMenu.Group.Favorites);
+                    List<IFavorite> tagFavorites = Favorites.OrderByDefaultSorting(groupMenu.Favorites);
                     foreach (IFavorite favorite in tagFavorites)
                     {
                         ToolStripMenuItem item = this.CreateToolStripItemByFavorite(favorite);
@@ -342,7 +339,7 @@ namespace Terminals
                 if (groupMenu.IsEmpty)
                 {
                     groupMenu.DropDown.Items.Clear();
-                    List<IFavorite> tagFavorites = Favorites.OrderByDefaultSorting(groupMenu.Group.Favorites);
+                    List<IFavorite> tagFavorites = Favorites.OrderByDefaultSorting(groupMenu.Favorites);
                     foreach (IFavorite favorite in tagFavorites)
                     {
                         ToolStripMenuItem item = CreateFavoriteMenuItem(favorite);
@@ -400,14 +397,6 @@ namespace Terminals
                 ToolStripItem specialItem = sender as ToolStripItem;
                 SpecialCommandConfigurationElement elm = specialItem.Tag as SpecialCommandConfigurationElement;
                 elm.Launch();
-            }
-
-            private static GroupMenuItem CreateUntaggedGroupMenuItem()
-            {
-                // this prevents to identify the group in existing groups
-                IGroup group = FavoriteTreeListLoader.CreateUntagedVirtualGroup();
-                GroupMenuItem groupMenuItem = new GroupMenuItem(group);
-                return groupMenuItem;
             }
 
             private static ToolStripMenuItem CreateFavoriteMenuItem(IFavorite favorite)
