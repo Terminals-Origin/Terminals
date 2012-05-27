@@ -258,6 +258,10 @@
     <Compile Include="Data\FilePersisted\Groups.cs" />
     <Compile Include="Data\FilePersisted\Favorites.cs" />
     <Compile Include="Forms\Controls\GroupListViewItem.cs" />
+    <Compile Include="Forms\Controls\UntagedGroupNode.cs" />
+    <Compile Include="Forms\Controls\UntagedMenuItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Forms\InputBox.Designer.cs">
       <DependentUpon>InputBox.cs</DependentUpon>
     </Compile>

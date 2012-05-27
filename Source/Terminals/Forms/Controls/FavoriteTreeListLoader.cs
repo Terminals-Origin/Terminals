@@ -12,7 +12,7 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal class FavoriteTreeListLoader
     {
-        private FavoritesTreeView treeList;
+        private readonly FavoritesTreeView treeList;
 
         /// <summary>
         /// gets or sets virtual tree node for favorites, which have no Group defined
@@ -211,7 +211,7 @@ namespace Terminals.Forms.Controls
             List<GroupTreeNode> affectedNodes = GetAffectedNodes(updatedGroups);
             foreach (var groupNode in affectedNodes)
             {
-                groupNode.Text = groupNode.Group.Name;
+                groupNode.UpdateByGroupName();
                 UpdateGroupNodeChilds(groupNode);
             }
         }
@@ -235,8 +235,9 @@ namespace Terminals.Forms.Controls
 
         private List<GroupTreeNode> GetAffectedNodes(List<IGroup> requiredGroups)
         {
+            IEnumerable<Guid> groupIds = requiredGroups.Select(group => group.Id);
             return this.treeList.Nodes.Cast<GroupTreeNode>()
-                .Where(candidate => requiredGroups.Contains(candidate.Group))
+                .Where(candidate => groupIds.Contains(candidate.GroupId))
                 .ToList();
         }
 
@@ -268,8 +269,7 @@ namespace Terminals.Forms.Controls
             if (PersistedGroups == null) // because of designer
                 return;
 
-            IGroup untagedVirtualGroup = CreateUntagedVirtualGroup();
-            this.unTaggedNode = this.CreateAndAddGroupNode(untagedVirtualGroup);
+            this.CreateUntagedVirtualGroupNode();
 
             foreach (IGroup group in PersistedGroups)
             {
@@ -277,14 +277,10 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        internal static IGroup CreateUntagedVirtualGroup()
+        internal void CreateUntagedVirtualGroupNode()
         {
-            var untagedFavorites = Persistence.Instance.Favorites
-                .Where(candidate => candidate.Groups.Count == 0)
-                .ToList();
-
-            var factory = Persistence.Instance.Factory;
-            return factory.CreateGroup(Settings.UNTAGGED_NODENAME, untagedFavorites);
+            this.unTaggedNode = new UntagedGroupNode();
+            InsertNodePreservingOrder(this.treeList.Nodes, -1, this.unTaggedNode);
         }
 
         internal void LoadFavorites(GroupTreeNode groupNode)
@@ -303,7 +299,7 @@ namespace Terminals.Forms.Controls
 
         private static void AddFavoriteNodes(GroupTreeNode groupNode)
         {
-            List<IFavorite> favorites = groupNode.Group.Favorites;
+            List<IFavorite> favorites = groupNode.Favorites;
             foreach (var favorite in favorites)
             {
                 var favoriteTreeNode = new FavoriteTreeNode(favorite);

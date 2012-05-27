@@ -1019,15 +1019,19 @@ namespace Terminals
 
         private void groupAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IGroup group = (sender as GroupMenuItem).Group;
-            IFavorite selectedFavorite = this.terminalsControler.Selected.Favorite;
-            group.AddFavorite(selectedFavorite);
+            Guid groupId = (sender as GroupMenuItem).GroupId;
+            IGroup selectedGroup = Persistence.Instance.Groups[groupId];
+            if (selectedGroup != null)
+            {
+                IFavorite selectedFavorite = this.terminalsControler.Selected.Favorite;
+                selectedGroup.AddFavorite(selectedFavorite);
+            }
         }
 
         private void groupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IGroup group = (sender as GroupMenuItem).Group;
-            foreach (IFavorite favorite in group.Favorites)
+            var groupMenuItem = sender as GroupMenuItem;
+            foreach (IFavorite favorite in groupMenuItem.Favorites)
             {
                 this.CreateTerminalTab(favorite);
             }
