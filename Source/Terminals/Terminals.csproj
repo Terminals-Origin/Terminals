@@ -107,9 +107,8 @@
     <Reference Include="AWSSDK, Version=1.3.10.0, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
       <HintPath>..\..\Resources\Libraries\AmazonS3\AWSSDK.dll</HintPath>
     </Reference>
-    <Reference Include="AxInterop.MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Interops\AxInterop.MSTSCLib.dll</HintPath>
+    <Reference Include="AxInterop.MSTSCLib">
+      <HintPath>..\..\Resources\Libraries\AxInterop.MSTSCLib.dll</HintPath>
     </Reference>
     <Reference Include="AxInterop.VMRCClientControlLib">
       <HintPath>..\..\Resources\Libraries\VMRC\AxInterop.VMRCClientControlLib.dll</HintPath>
@@ -130,9 +129,13 @@
     <Reference Include="log4net">
       <HintPath>..\..\Resources\Libraries\log4net\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="MSTSCLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MSTSCLib">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Interops\MSTSCLib.dll</HintPath>
+      <HintPath>..\..\Resources\Libraries\mstsc\MSTSCLib.dll</HintPath>
+    </Reference>
+    <Reference Include="MSTSCLib">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Resources\Libraries\mstsc\AxInterop.MSTSCLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
