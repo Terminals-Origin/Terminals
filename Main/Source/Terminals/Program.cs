@@ -16,7 +16,12 @@ namespace Terminals
 {
     internal static partial class Program
     {
-        private static string TerminalsVersion = "2.1 CTP";
+#if DEBUG
+        private static string TerminalsVersion =
+            System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();  //debug builds, to keep track of minor/revisions, etc..
+#else
+        private static string TerminalsVersion = "2.1 CTP";  //official release builds
+#endif
         public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", 
             typeof(MainForm).Assembly);
 
