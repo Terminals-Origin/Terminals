@@ -275,6 +275,7 @@
     <Compile Include="Forms\OptionPanels\PersistenceOptionPanel.Designer.cs">
       <DependentUpon>PersistenceOptionPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Native\Wow.cs" />
     <Compile Include="Network\HelperFunctions.cs" />
     <Compile Include="Network\WindowsUserIdentifiers.cs" />
     <Compile Include="Network\Services\CommandLineServer.cs" />

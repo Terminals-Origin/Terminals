@@ -142,6 +142,8 @@ namespace Terminals
             Logging.Log.Info(String.Format("UserInteractive:{0}", Environment.UserInteractive));
             Logging.Log.Info(String.Format("Version:{0}", Environment.Version));
             Logging.Log.Info(String.Format("WorkingSet:{0}", Environment.WorkingSet));
+            Logging.Log.Info(String.Format("Is64BitOperatingSystem:{0}", Terminals.Native.Wow.Is64BitOperatingSystem));
+            Logging.Log.Info(String.Format("Is64BitProcess:{0}", Terminals.Native.Wow.Is64BitProcess));
         }
 
         private static void SetApplicationProperties()
