@@ -57,7 +57,7 @@ namespace Terminals
             this.lblTerminals.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
             this.lblTerminals.Location = new System.Drawing.Point(0, 241);
             this.lblTerminals.Name = "lblTerminals";
-            this.lblTerminals.Size = new System.Drawing.Size(486, 27);
+            this.lblTerminals.Size = new System.Drawing.Size(486, 24);
             this.lblTerminals.TabIndex = 1;
             this.lblTerminals.TabStop = true;
             this.lblTerminals.Text = "Terminals Home Page at CodePlex";
@@ -80,11 +80,11 @@ namespace Terminals
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 280);
+            this.label3.Location = new System.Drawing.Point(9, 265);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(134, 13);
+            this.label3.Size = new System.Drawing.Size(210, 13);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Terminals is developed by:";
+            this.label3.Text = "Terminals is maintained and developed by:";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pictureBox1
