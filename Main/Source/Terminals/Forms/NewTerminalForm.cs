@@ -71,6 +71,30 @@ namespace Terminals
 
         #endregion
 
+        /// <summary>
+        /// Overload ShowDialog and return custom result.
+        /// </summary>
+        /// <returns>Returns custom dialogresult.</returns>
+        public new TerminalFormDialogResult ShowDialog()
+        {
+            base.ShowDialog();
+
+            return this.DialogResult;
+        }
+
+        private void NewTerminalForm_Load(Object sender, EventArgs e)
+        {
+            this.SuspendLayout();
+            this.LoadCustomControlsState();
+            BindGroupsToListView(this.AllTagsListView, PersistedGroups);
+            this.ResumeLayout(true);
+        }
+
+        private void NewTerminalForm_Shown(object sender, EventArgs e)
+        {
+            this.cmbServers.Focus();
+        }
+
         private void Init(IFavorite favorite, String serverName)
         {
             this.LoadMRUs();
@@ -133,14 +157,6 @@ namespace Terminals
             }
         }
 
-        private void NewTerminalForm_Load(Object sender, EventArgs e)
-        {
-            this.SuspendLayout();
-            this.LoadCustomControlsState();
-            BindGroupsToListView(this.AllTagsListView, PersistedGroups);
-            this.ResumeLayout(true);
-        }
-
         private void LoadCustomControlsState()
         {
             this._terminalServerManager.Dock = DockStyle.Fill;
@@ -148,7 +164,8 @@ namespace Terminals
             this._terminalServerManager.Name = "terminalServerManager1";
             this._terminalServerManager.Size = new Size(748, 309);
             this._terminalServerManager.TabIndex = 0;
-            this.tabPage10.Controls.Add(this._terminalServerManager);
+            this._terminalServerManager.HostName = (!String.IsNullOrEmpty(this.cmbServers.Text)) ? this.cmbServers.Text : "localhost";
+            this.RdpSessionTabPage.Controls.Add(this._terminalServerManager);
         }
 
         private void LoadDialupConnections()
@@ -750,7 +767,7 @@ namespace Terminals
 
         private void ShowErrorMessageBox(string message)
         {
-            MessageBox.Show(this, message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, message, Terminals.Program.Info.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
@@ -878,17 +895,6 @@ namespace Terminals
         }
 
         /// <summary>
-        /// Overload ShowDialog and return custom result.
-        /// </summary>
-        /// <returns>Returns custom dialogresult.</returns>
-        public new TerminalFormDialogResult ShowDialog()
-        {
-            base.ShowDialog();
-
-            return this.DialogResult;
-        }
-
-        /// <summary>
         /// Save favorite and close form. If the form isnt valid the form control is focused.
         /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
@@ -951,11 +957,6 @@ namespace Terminals
         private void txtPassword_TextChanged(object sender, EventArgs e)
         {
             this.SetOkButtonState();
-        }
-
-        private void NewTerminalForm_Shown(object sender, EventArgs e)
-        {
-            this.cmbServers.Focus();
         }
 
         private void cmbServers_TextChanged(object sender, EventArgs e)
@@ -1025,37 +1026,43 @@ namespace Terminals
 
         private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SetControlsProtocolIndependent();
+            this.SetControlsProtocolIndependent();
 
             if (this.ProtocolComboBox.Text == ConnectionManager.RDP)
             {
-                SetControlsForRDP();
+                this.SetControlsForRdp();
             }
             else if (this.ProtocolComboBox.Text == ConnectionManager.VMRC)
             {
-                SetControlsForCMRC();
+                this.VmrcGroupBox.Enabled = true;
             }
             else if (this.ProtocolComboBox.Text == ConnectionManager.RAS)
             {
-                SetControlsForRAS();
+                this.SetControlsForRas();
             }
             else if (this.ProtocolComboBox.Text == ConnectionManager.VNC)
             {
-                SetControlsForVNC();
+                this.VncGroupBox.Enabled = true;
             }
             else if (this.ProtocolComboBox.Text == ConnectionManager.ICA_CITRIX)
             {
-                SetControlsForICA();
+                this.IcaGroupBox.Enabled = true;
             }
-            else if (ProtocolComboBox.Text == ConnectionManager.HTTP ||
-                     this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
+            else if (this.ProtocolComboBox.Text == ConnectionManager.HTTP || this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
             {
-                SetControlsForWeb();
+                this.SetControlsForWeb();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.SSH || this.ProtocolComboBox.Text == ConnectionManager.TELNET)
+            {
+                this.ConsoleGroupBox.Enabled = true;
+
+                if (this.ProtocolComboBox.Text == ConnectionManager.SSH)
+                    this.SshGroupBox.Enabled = true;
             }
 
             int defaultPort = ConnectionManager.GetPort(this.ProtocolComboBox.Text);
             this.txtPort.Text = defaultPort.ToString();
-            SetOkButtonState();
+            this.SetOkButtonState();
         }
 
         private void SetControlsForWeb()
@@ -1067,25 +1074,7 @@ namespace Terminals
             this.httpUrlTextBox.Visible = true;
         }
 
-        private void SetControlsForICA()
-        {
-            this.ICAClientINI.Enabled = true;
-            this.ICAServerINI.Enabled = true;
-            this.ICAEncryptionLevelCombobox.Enabled = false;
-            this.ICAEnableEncryptionCheckbox.Enabled = true;
-            this.ICAApplicationNameTextBox.Enabled = true;
-            this.ICAApplicationPath.Enabled = true;
-            this.ICAWorkingFolder.Enabled = true;
-        }
-
-        private void SetControlsForVNC()
-        {
-            this.vncAutoScaleCheckbox.Enabled = true;
-            this.vncDisplayNumberInput.Enabled = true;
-            this.VncViewOnlyCheckbox.Enabled = true;
-        }
-
-        private void SetControlsForRAS()
+        private void SetControlsForRas()
         {
             this.cmbServers.Items.Clear();
             this.LoadDialupConnections();
@@ -1094,17 +1083,16 @@ namespace Terminals
             this.RASDetailsListBox.Items.Clear();
         }
 
-        private void SetControlsForCMRC()
+        private void SetControlsForRdp()
         {
-            this.VMRCReducedColorsCheckbox.Enabled = true;
-            this.VMRCAdminModeCheckbox.Enabled = true;
-        }
-
-        private void SetControlsForRDP()
-        {
-            this.groupBox1.Enabled = true;
-            this.chkConnectToConsole.Enabled = true;
+            this.DisplaySettingsGroupBox.Enabled = true;
             this.LocalResourceGroupBox.Enabled = true;
+            this.ExtendedSettingsGgroupBox.Enabled = true;
+            this.SecuritySettingsGroupBox.Enabled = true;
+            this.TerminalGwLoginSettingsGroupBox.Enabled = true;
+            this.TerminalGwSettingsGroupBox.Enabled = true;
+
+            this.chkConnectToConsole.Enabled = true;
         }
 
         private void SetControlsProtocolIndependent()
@@ -1113,24 +1101,19 @@ namespace Terminals
             this.cmbServers.Enabled = true;
             this.txtPort.Enabled = true;
 
-            this.vncAutoScaleCheckbox.Enabled = false;
-            this.vncDisplayNumberInput.Enabled = false;
-            this.VncViewOnlyCheckbox.Enabled = false;
-
-            this.groupBox1.Enabled = false;
-            this.chkConnectToConsole.Enabled = false;
+            this.DisplaySettingsGroupBox.Enabled = false;
             this.LocalResourceGroupBox.Enabled = false;
-            this.VMRCReducedColorsCheckbox.Enabled = false;
-            this.VMRCAdminModeCheckbox.Enabled = false;
-            this.RASGroupBox.Enabled = false;
+            this.ExtendedSettingsGgroupBox.Enabled = false;
+            this.SecuritySettingsGroupBox.Enabled = false;
+            this.TerminalGwLoginSettingsGroupBox.Enabled = false;
+            this.TerminalGwSettingsGroupBox.Enabled = false;
 
-            this.ICAClientINI.Enabled = false;
-            this.ICAServerINI.Enabled = false;
-            this.ICAEncryptionLevelCombobox.Enabled = false;
-            this.ICAEnableEncryptionCheckbox.Enabled = false;
-            this.ICAApplicationNameTextBox.Enabled = false;
-            this.ICAApplicationPath.Enabled = false;
-            this.ICAWorkingFolder.Enabled = false;
+            this.VmrcGroupBox.Enabled = false;
+            this.ConsoleGroupBox.Enabled = false;
+            this.RASGroupBox.Enabled = false;
+            this.IcaGroupBox.Enabled = false;
+            this.VncGroupBox.Enabled = false;
+            this.SshGroupBox.Enabled = false;
 
             this.httpUrlTextBox.Enabled = false;
             this.httpUrlTextBox.Visible = false;
@@ -1213,10 +1196,11 @@ namespace Terminals
 
         private void RDPSubTabPage_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (this.RDPSubTabPage.SelectedTab == this.tabPage10)
+            if (this.RDPSubTabPage.SelectedTab == this.RdpSessionTabPage && this.ProtocolComboBox.Text == ConnectionManager.RDP)
             {
-                this._terminalServerManager.Connect(this.cmbServers.Text, true);
-                this._terminalServerManager.Invalidate();
+                // Do not auto connect for sessions on tab select. This might take a moment and than the program hangs.
+                //this._terminalServerManager.Connect(this.cmbServers.Text, true);
+                //this._terminalServerManager.Invalidate();
             }
         }
 
@@ -1300,7 +1284,7 @@ namespace Terminals
             this.pnlTSGWlogon.Enabled = this.chkTSGWlogin.Checked;
         }
 
-        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        private void radTSGWenable_CheckedChanged(object sender, EventArgs e)
         {
             this.pnlTSGWsettings.Enabled = this.radTSGWenable.Checked;
         }

@@ -11,36 +11,78 @@ namespace Terminals.Network.Servers
     {
         private Session SelectedSession = null;
         private TerminalServer server;
+        private String _hostName;
 
         public TerminalServerManager()
         {
             InitializeComponent();
         }
 
+        public String HostName
+        {
+            get { return this._hostName; }
+            set
+            {
+                this._hostName = value;
+                this.ServerNameComboBox.Text = this._hostName;
+            }
+        }
+
         public void ForceTSAdmin(string Host)
         {
             this.ServerNameComboBox.Text = Host;
-            this.button1_Click(null, null);
+            this.ConnectButton_Click(null, null);
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        public void Connect(string server, bool headless)
         {
+            try
+            {
+                splitContainer1.Panel1Collapsed = headless;
+                if (server != String.Empty)
+                {
+                    this.ServerNameComboBox.Text = server;
+                    this.ConnectButton_Click(null, null);
+                }
+            }
+            catch (Exception exc)
+            {
+                Logging.Log.Error("Connection Failure.", exc);
+            }
+        }
+
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            if (this.ParentForm != null)
+                this.ParentForm.Cursor = Cursors.WaitCursor;
+
             SelectedSession = null;
             dataGridView1.DataSource = null;
             dataGridView2.DataSource = null;
             this.propertyGrid1.SelectedObject = null;
             Application.DoEvents();
             server = TerminalServer.LoadServer(this.ServerNameComboBox.Text);
-            if(server.IsATerminalServer)
+
+            try
             {
-                dataGridView1.DataSource = server.Sessions;
-                dataGridView1.Columns[1].Visible = false;
+                 if (server.IsATerminalServer)
+                {
+                    dataGridView1.DataSource = server.Sessions;
+                    dataGridView1.Columns[1].Visible = false;
+                }
+                else
+                {
+                    MessageBox.Show("This machine does not appear to be a Terminal Server");
+                }
             }
-            else
+            catch (Exception)
             {
-                MessageBox.Show("This machine does not appear to be a Terminal Server");
+                // Do nothing when error
             }
 
+
+            if (this.ParentForm != null)
+                this.ParentForm.Cursor = Cursors.Default;
         }
 
         private void dataGridView1_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -53,24 +95,6 @@ namespace Terminals.Network.Servers
                     this.propertyGrid1.SelectedObject = SelectedSession.Client;
                     this.dataGridView2.DataSource = SelectedSession.Processes;
                 }
-            }
-            
-        }
-        
-        public void Connect(string server, bool headless)
-        {
-            try
-            {
-                splitContainer1.Panel1Collapsed = headless;
-                if(server != "")
-                {
-                    this.ServerNameComboBox.Text = server;
-                    button1_Click(null, null);
-                }
-            }
-            catch(Exception exc)
-            {
-                Logging.Log.Error("Connection Failure.", exc);
             }
         }
         
@@ -85,7 +109,6 @@ namespace Terminals.Network.Servers
                 }
             }
         }
-
 
         private void sendMessageToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -117,6 +140,7 @@ namespace Terminals.Network.Servers
                 }
             }
         }
+
         private void rebootServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(server.IsATerminalServer)
@@ -127,6 +151,7 @@ namespace Terminals.Network.Servers
                 }
             }
         }
+
         private void shutdownServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(server.IsATerminalServer)
@@ -142,7 +167,7 @@ namespace Terminals.Network.Servers
         {
             if (e.KeyCode == Keys.Enter)
             {
-                button1_Click(null, null);
+                this.ConnectButton_Click(null, null);
             }
         }
     }

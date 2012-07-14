@@ -66,7 +66,7 @@ namespace Terminals.Network.Servers
             this.ConnectButton.TabIndex = 1;
             this.ConnectButton.Text = "Connect...";
             this.ConnectButton.UseVisualStyleBackColor = true;
-            this.ConnectButton.Click += new System.EventHandler(this.button1_Click);
+            this.ConnectButton.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
             // label1
             // 
