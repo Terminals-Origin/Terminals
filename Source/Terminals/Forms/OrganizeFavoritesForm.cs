@@ -31,6 +31,19 @@ namespace Terminals
             UpdateCountLabels();
         }
 
+        private void OrganizeFavoritesForm_Shown(object sender, EventArgs e)
+        {
+            if (this.dataGridFavorites.RowCount > 0)
+                dataGridFavorites.Rows[0].Selected = true;
+        }
+
+
+        private void OrganizeFavoritesForm_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                this.Close();
+        }
+
         private void InitializeDataGrid()
         {
             this.dataGridFavorites.AutoGenerateColumns = false; // because of designer
@@ -147,13 +160,7 @@ namespace Terminals
         private static bool AskUserIfWantsToOverwrite(string newName)
         {
             string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", newName);
-            return MessageBox.Show(message, "Terminals", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
-        }
-
-        private void OrganizeFavoritesForm_Shown(object sender, EventArgs e)
-        {
-            if (this.dataGridFavorites.RowCount > 0)
-                dataGridFavorites.Rows[0].Selected = true;
+            return MessageBox.Show(message, Terminals.Program.Info.Title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
         /// <summary>
