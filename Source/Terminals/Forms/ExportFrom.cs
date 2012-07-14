@@ -6,13 +6,13 @@ using Terminals.Forms.Controls;
 using Terminals.Integration;
 using Terminals.Integration.Export;
 
-namespace Terminals
+namespace Terminals.Forms
 {
     internal partial class ExportFrom : Form
     {
         public ExportFrom()
         {
-            InitializeComponent();
+            this.InitializeComponent();
 
             this.favsTree.Load();
             this.saveFileDialog.Filter = Integrations.Exporters.GetProvidersDialogFilter();
@@ -20,21 +20,20 @@ namespace Terminals
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
         
         private void btnExport_Click(object sender, EventArgs e)
         {
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (this.saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                if (favsTree.SelectedNode != null)
+                if (this.favsTree.SelectedNode != null)
                 {
-                    RunExport();
+                    this.RunExport();
                 }
 
-                MessageBox.Show("Done exporting, you can find your exported file at " + saveFileDialog.FileName,
-                                "Terminals export");
-                Close();
+                MessageBox.Show("Done exporting, you can find your exported file at " + this.saveFileDialog.FileName, "Terminals export");
+                this.Close();
             }
         }
 
@@ -77,7 +76,9 @@ namespace Terminals
                     if (favoriteNode != null)
                     {
                         FavoriteConfigurationElement favoriteConfig = ModelConverterV2ToV1.ConvertToFavorite(favoriteNode.Favorite);
-                        favorites.Add(favoriteConfig);
+                        // Check for duplicate item before adding
+                        if (favorites.IndexOf(favoriteConfig) < 0)
+                            favorites.Add(favoriteConfig);
                     }  
                 }
             }
@@ -97,7 +98,7 @@ namespace Terminals
 
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            TreeNodeCollection rootNodes = favsTree.Nodes;
+            TreeNodeCollection rootNodes = this.favsTree.Nodes;
             foreach (TreeNode node in rootNodes)
             {
                 node.Checked = true;
