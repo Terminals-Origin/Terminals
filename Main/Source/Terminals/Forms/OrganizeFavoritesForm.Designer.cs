@@ -1125,6 +1125,7 @@ namespace Terminals
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Terminals - Organize Favorites";
             this.Shown += new System.EventHandler(this.OrganizeFavoritesForm_Shown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(OrganizeFavoritesForm_KeyDown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridFavorites_KeyDown);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
