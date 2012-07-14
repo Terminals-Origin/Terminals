@@ -42,7 +42,6 @@ namespace Terminals
             this.toolStripContainer = new Terminals.Forms.Controls.ToolStripContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.pnlTagsFavorites = new System.Windows.Forms.Panel();
-            this.favsList1 = new Terminals.FavsList();
             this.pnlHideTagsFavorites = new System.Windows.Forms.Panel();
             this.pbHideTagsFavorites = new System.Windows.Forms.PictureBox();
             this.pnlShowTagsFavorites = new System.Windows.Forms.Panel();
@@ -135,6 +134,7 @@ namespace Terminals
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -154,13 +154,13 @@ namespace Terminals
             this.ShortcutsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem3});
             this.ShortcutsContextMenu.Name = "ShortcutsContextMenu";
-            this.ShortcutsContextMenu.Size = new System.Drawing.Size(178, 26);
+            this.ShortcutsContextMenu.Size = new System.Drawing.Size(175, 26);
             this.ShortcutsContextMenu.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ShortcutsContextMenu_MouseClick);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(174, 22);
             this.toolStripMenuItem3.Text = "Organize Shortcuts";
             // 
             // ilTagConnections
@@ -218,7 +218,7 @@ namespace Terminals
             // 
             this.toolStripContainer.ContentPanel.AutoScroll = true;
             this.toolStripContainer.ContentPanel.Controls.Add(this.splitContainer1);
-            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(961, 474);
+            this.toolStripContainer.ContentPanel.Size = new System.Drawing.Size(961, 499);
             this.toolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer.Name = "toolStripContainer";
@@ -229,10 +229,10 @@ namespace Terminals
             // toolStripContainer.TopToolStripPanel
             // 
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.menuStrip);
-            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.favoriteToolBar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.tsRemoteToolbar);
-            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.toolbarStd);
+            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.favoriteToolBar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.SpecialCommandsToolStrip);
+            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.toolbarStd);
             // 
             // splitContainer1
             // 
@@ -249,40 +249,30 @@ namespace Terminals
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tcTerminals);
-            this.splitContainer1.Size = new System.Drawing.Size(961, 474);
-            this.splitContainer1.SplitterDistance = 224;
+            this.splitContainer1.Size = new System.Drawing.Size(961, 499);
+            this.splitContainer1.SplitterDistance = 200;
             this.splitContainer1.TabIndex = 7;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
             // 
             // pnlTagsFavorites
             // 
             this.pnlTagsFavorites.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlTagsFavorites.Controls.Add(this.favsList1);
             this.pnlTagsFavorites.Controls.Add(this.pnlHideTagsFavorites);
             this.pnlTagsFavorites.Controls.Add(this.pnlShowTagsFavorites);
             this.pnlTagsFavorites.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlTagsFavorites.Location = new System.Drawing.Point(0, 0);
             this.pnlTagsFavorites.Name = "pnlTagsFavorites";
-            this.pnlTagsFavorites.Size = new System.Drawing.Size(224, 474);
+            this.pnlTagsFavorites.Size = new System.Drawing.Size(200, 499);
             this.pnlTagsFavorites.TabIndex = 6;
-            // 
-            // favsList1
-            // 
-            this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.favsList1.Location = new System.Drawing.Point(5, 0);
-            this.favsList1.Margin = new System.Windows.Forms.Padding(4);
-            this.favsList1.Name = "favsList1";
-            this.favsList1.Size = new System.Drawing.Size(212, 497);
-            this.favsList1.TabIndex = 2;
             // 
             // pnlHideTagsFavorites
             // 
             this.pnlHideTagsFavorites.BackColor = System.Drawing.Color.Gray;
             this.pnlHideTagsFavorites.Controls.Add(this.pbHideTagsFavorites);
             this.pnlHideTagsFavorites.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(217, 0);
+            this.pnlHideTagsFavorites.Location = new System.Drawing.Point(193, 0);
             this.pnlHideTagsFavorites.Name = "pnlHideTagsFavorites";
-            this.pnlHideTagsFavorites.Size = new System.Drawing.Size(5, 472);
+            this.pnlHideTagsFavorites.Size = new System.Drawing.Size(5, 497);
             this.pnlHideTagsFavorites.TabIndex = 1;
             this.pnlHideTagsFavorites.Visible = false;
             // 
@@ -293,7 +283,7 @@ namespace Terminals
             this.pbHideTagsFavorites.Image = global::Terminals.Properties.Resources.HidePanel;
             this.pbHideTagsFavorites.Location = new System.Drawing.Point(0, 0);
             this.pbHideTagsFavorites.Name = "pbHideTagsFavorites";
-            this.pbHideTagsFavorites.Size = new System.Drawing.Size(5, 472);
+            this.pbHideTagsFavorites.Size = new System.Drawing.Size(5, 497);
             this.pbHideTagsFavorites.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pbHideTagsFavorites.TabIndex = 2;
             this.pbHideTagsFavorites.TabStop = false;
@@ -306,7 +296,7 @@ namespace Terminals
             this.pnlShowTagsFavorites.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlShowTagsFavorites.Location = new System.Drawing.Point(0, 0);
             this.pnlShowTagsFavorites.Name = "pnlShowTagsFavorites";
-            this.pnlShowTagsFavorites.Size = new System.Drawing.Size(5, 472);
+            this.pnlShowTagsFavorites.Size = new System.Drawing.Size(5, 497);
             this.pnlShowTagsFavorites.TabIndex = 0;
             // 
             // pbShowTagsFavorites
@@ -316,7 +306,7 @@ namespace Terminals
             this.pbShowTagsFavorites.Image = global::Terminals.Properties.Resources.ShowPanel;
             this.pbShowTagsFavorites.Location = new System.Drawing.Point(0, 0);
             this.pbShowTagsFavorites.Name = "pbShowTagsFavorites";
-            this.pbShowTagsFavorites.Size = new System.Drawing.Size(5, 472);
+            this.pbShowTagsFavorites.Size = new System.Drawing.Size(5, 497);
             this.pbShowTagsFavorites.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pbShowTagsFavorites.TabIndex = 0;
             this.pbShowTagsFavorites.TabStop = false;
@@ -332,7 +322,7 @@ namespace Terminals
             this.tcTerminals.Location = new System.Drawing.Point(0, 0);
             this.tcTerminals.Name = "tcTerminals";
             this.tcTerminals.ShowToolTipOnTitle = false;
-            this.tcTerminals.Size = new System.Drawing.Size(733, 474);
+            this.tcTerminals.Size = new System.Drawing.Size(757, 499);
             this.tcTerminals.TabIndex = 3;
             this.tcTerminals.TabControlItemClosing += new TabControl.TabControlItemClosingHandler(this.tcTerminals_TabControlItemClosing);
             this.tcTerminals.TabControlItemSelectionChanged += new TabControl.TabControlItemChangedHandler(this.tcTerminals_TabControlItemSelectionChanged);
@@ -788,7 +778,7 @@ namespace Terminals
             this.tsRemoteToolbar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbCMD,
             this.toolStripButton1});
-            this.tsRemoteToolbar.Location = new System.Drawing.Point(6, 24);
+            this.tsRemoteToolbar.Location = new System.Drawing.Point(3, 24);
             this.tsRemoteToolbar.Name = "tsRemoteToolbar";
             this.tsRemoteToolbar.Size = new System.Drawing.Size(58, 25);
             this.tsRemoteToolbar.TabIndex = 3;
@@ -818,7 +808,7 @@ namespace Terminals
             // 
             this.SpecialCommandsToolStrip.ContextMenuStrip = this.ShortcutsContextMenu;
             this.SpecialCommandsToolStrip.Dock = System.Windows.Forms.DockStyle.None;
-            this.SpecialCommandsToolStrip.Location = new System.Drawing.Point(39, 74);
+            this.SpecialCommandsToolStrip.Location = new System.Drawing.Point(3, 49);
             this.SpecialCommandsToolStrip.Name = "SpecialCommandsToolStrip";
             this.SpecialCommandsToolStrip.Size = new System.Drawing.Size(111, 25);
             this.SpecialCommandsToolStrip.TabIndex = 6;
@@ -855,7 +845,7 @@ namespace Terminals
             this.vncActionButton,
             this.TerminalServerMenuButton,
             this.toolStripButton5});
-            this.toolbarStd.Location = new System.Drawing.Point(3, 49);
+            this.toolbarStd.Location = new System.Drawing.Point(114, 49);
             this.toolbarStd.Name = "toolbarStd";
             this.toolbarStd.Size = new System.Drawing.Size(689, 25);
             this.toolbarStd.TabIndex = 2;
@@ -1172,6 +1162,7 @@ namespace Terminals
             this.toolStripContainer.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.pnlTagsFavorites.ResumeLayout(false);
             this.pnlHideTagsFavorites.ResumeLayout(false);
@@ -1278,7 +1269,6 @@ namespace Terminals
         private System.Windows.Forms.ToolStripMenuItem rebuildTagsIndexToolStripMenuItem;
         private TabControl.TabControlItem tabControlItem2;
         private TabControl.TabControlItem tabControlItem1;
-        private FavsList favsList1;
         private System.Windows.Forms.ToolStripMenuItem viewInNewWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rebuildShortcutsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem rebuildToolbarsToolStripMenuItem;

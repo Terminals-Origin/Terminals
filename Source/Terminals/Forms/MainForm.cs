@@ -37,6 +37,7 @@ namespace Terminals
 
         private static Boolean _releaseAvailable = false;
         private static MainForm _mainForm = null;
+        private FavsList favsList1;
 
         private MethodInvoker _specialCommandsMIV;
         private MethodInvoker _releaseMIV;
@@ -134,6 +135,10 @@ namespace Terminals
                 
                 InitializeComponent(); // main designer procedure
 
+                // Initialize FavsList outside of InitializeComponent
+                // Inside InitializeComponent it sometimes caused the design view in VS to return errors
+                this.InitializeFavsListControl();
+
                 // Set notifyicon icon from embedded png image
                 this.MainWindowNotifyIcon.Icon = Icon.FromHandle(global::Terminals.Properties.Resources.terminalsicon.GetHicon());
                 
@@ -163,6 +168,18 @@ namespace Terminals
             {
                 Logging.Log.Error("Error loading the Main Form", exc);
             }
+        }
+
+        private void InitializeFavsListControl()
+        {
+            this.favsList1 = new Terminals.FavsList();
+            this.pnlTagsFavorites.Controls.Add(this.favsList1);
+            this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.favsList1.Location = new System.Drawing.Point(5, 0);
+            this.favsList1.Margin = new System.Windows.Forms.Padding(4);
+            this.favsList1.Name = "favsList1";
+            this.favsList1.Size = new System.Drawing.Size(200, 497);
+            this.favsList1.TabIndex = 2;
         }
 
         private void ApplyControlsEnableAndVisibleState()
