@@ -284,9 +284,12 @@ namespace Terminals.Data
             if (rdp != null)
                 console = rdp.ConnectToConsole;
 
+            // Get favorite's groups and convert groups list to a comma seperated string
             List<IGroup> groups = GetGroups(selected);
+            String grps = (groups.Count > 0) ? String.Join(",", groups.ConvertAll(group => group.Name).ToArray()) : String.Empty;
+
             string extendedToolTip = String.Format("Groups: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
-                                                   Environment.NewLine, groups, console, selected.Notes);
+                                                   Environment.NewLine, grps, console, selected.Notes);
             return extendedToolTip;
         }
 
