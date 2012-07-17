@@ -71,16 +71,7 @@ namespace Terminals
 
         #endregion
 
-        /// <summary>
-        /// Overload ShowDialog and return custom result.
-        /// </summary>
-        /// <returns>Returns custom dialogresult.</returns>
-        public new TerminalFormDialogResult ShowDialog()
-        {
-            base.ShowDialog();
-
-            return this.DialogResult;
-        }
+        #region Private form event handlers
 
         private void NewTerminalForm_Load(Object sender, EventArgs e)
         {
@@ -94,6 +85,375 @@ namespace Terminals
         {
             this.cmbServers.Focus();
         }
+
+        #endregion
+
+        #region Public form functions
+
+        /// <summary>
+        /// Overload ShowDialog and return custom result.
+        /// </summary>
+        /// <returns>Returns custom dialogresult.</returns>
+        public new TerminalFormDialogResult ShowDialog()
+        {
+            base.ShowDialog();
+
+            return this.DialogResult;
+        }
+
+        #endregion
+
+        #region Private form control event handler methods
+
+        private void AllTagsAddButton_Click(object sender, EventArgs e)
+        {
+            this.AddGroupsToFavorite();
+        }
+
+        private void AllTagsListView_DoubleClick(object sender, EventArgs e)
+        {
+            this.AddGroupsToFavorite();
+        }
+
+        private void appPathBrowseButton_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog d = new FolderBrowserDialog();
+
+            DialogResult result = d.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                ICAApplicationPath.Text = d.SelectedPath;
+            }
+        }
+
+        private void AppWorkingFolderBrowseButton_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog d = new FolderBrowserDialog();
+
+            DialogResult result = d.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                ICAWorkingFolder.Text = d.SelectedPath;
+            }
+        }
+
+        private void btnAddNewTag_Click(object sender, EventArgs e)
+        {
+            this.AddGroup();
+        }
+
+        private void btnBrowseShare_Click(object sender, EventArgs e)
+        {
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
+            {
+                dialog.Description = "Select Desktop Share:";
+                dialog.ShowNewFolderButton = false;
+                dialog.SelectedPath = @"\\" + this.cmbServers.Text;
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    this.txtDesktopShare.Text = dialog.SelectedPath;
+            }
+        }
+
+        private void btnDrives_Click(object sender, EventArgs e)
+        {
+            DiskDrivesForm drivesForm = new DiskDrivesForm(this);
+            drivesForm.ShowDialog(this);
+        }
+
+        private void btnRemoveTag_Click(object sender, EventArgs e)
+        {
+            this.DeleteGroup();
+        }
+
+        /// <summary>
+        /// Save favorite and close form. If the form isnt valid the form control is focused.
+        /// </summary>
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            this.SaveMRUs();
+            if (this.FillFavorite(false))
+            {
+                this.DialogResult = TerminalFormDialogResult.SaveAndClose;
+                this.Close();
+            }
+        }
+
+        private void btnSaveDefault_Click(object sender, EventArgs e)
+        {
+            this.contextMenuStripDefaults.Show(this.btnSaveDefault, 0, this.btnSaveDefault.Height);
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            this.pnlTSGWlogon.Enabled = this.chkTSGWlogin.Checked;
+        }
+
+        private void ClientINIBrowseButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog d = new OpenFileDialog();
+            d.DefaultExt = "*.ini";
+            d.CheckFileExists = true;
+
+            DialogResult result = d.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                ICAClientINI.Text = d.FileName;
+            }
+        }
+
+        private void cmbResolution_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.cmbResolution.Text == "Custom" || this.cmbResolution.Text == "Auto Scale")
+                this.customSizePanel.Visible = true;
+            else
+                this.customSizePanel.Visible = false;
+        }
+
+        private void cmbServers_Leave(object sender, EventArgs e)
+        {
+            if (this.txtName.Text == String.Empty)
+            {
+                if (this.cmbServers.Text.Contains(":"))
+                {
+                    String server = String.Empty;
+                    int port;
+                    GetServerAndPort(this.cmbServers.Text, out server, out port);
+                    this.cmbServers.Text = server;
+                    this.txtPort.Text = port.ToString();
+                    this.cmbServers.Text = server;
+                }
+
+                this.txtName.Text = this.cmbServers.Text;
+            }
+        }
+
+        private void cmbServers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ProtocolComboBox.Text == "RAS")
+            {
+                this.LoadDialupConnections();
+                this.RASDetailsListBox.Items.Clear();
+                if (this._dialupList != null && this._dialupList.ContainsKey(cmbServers.Text))
+                {
+                    RASENTRY selectedRAS = this._dialupList[this.cmbServers.Text];
+                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Connection", this.cmbServers.Text));
+                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Area Code", selectedRAS.AreaCode));
+                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Country Code", selectedRAS.CountryCode));
+                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Device Name", selectedRAS.DeviceName));
+                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Device Type", selectedRAS.DeviceType));
+                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Local Phone Number", selectedRAS.LocalPhoneNumber));
+                }
+            }
+        }
+
+        private void cmbServers_TextChanged(object sender, EventArgs e)
+        {
+            this.SetOkButtonState();
+        }
+
+        private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.CredentialsPanel.Enabled = true;
+            ICredentialSet set = this.CredentialDropdown.SelectedItem as ICredentialSet;
+
+            if (set != null)
+            {
+                this.CredentialsPanel.Enabled = false;
+                this.cmbDomains.Text = set.Domain;
+                this.cmbUsers.Text = set.UserName;
+                this.txtPassword.Text = set.Password;
+                this.chkSavePassword.Checked = true;
+            }
+        }
+
+        private void CredentialManagerPicturebox_Click(object sender, EventArgs e)
+        {
+            Guid selectedCredentialId = Guid.Empty;
+            var selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
+            if (selectedCredential != null)
+                selectedCredentialId = selectedCredential.Id;
+
+            CredentialManager mgr = new CredentialManager();
+            mgr.ShowDialog();
+            this.FillCredentialsCombobox(selectedCredentialId);
+        }
+
+        private void httpUrlTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (this.ProtocolComboBox.Text == ConnectionManager.HTTP ||
+                this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
+            {
+                Uri newUrl = GetFullUrlFromHttpTextBox();
+                if (newUrl != null)
+                {
+                    this.cmbServers.Text = newUrl.Host;
+                    this.txtPort.Text = newUrl.Port.ToString();
+                }
+                SetOkButtonState();
+            }
+        }
+
+        private void ICAEnableEncryptionCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            this.ICAEncryptionLevelCombobox.Enabled = this.ICAEnableEncryptionCheckbox.Checked;
+        }
+
+        private void lvConnectionTags_DoubleClick(object sender, EventArgs e)
+        {
+            this.DeleteGroup();
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = CreateIconSelectionDialog();
+
+            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                this.TryToAssignNewToolbarIcon(openFileDialog.FileName);
+            }
+        }
+
+        private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.SetControlsProtocolIndependent();
+
+            if (this.ProtocolComboBox.Text == ConnectionManager.RDP)
+            {
+                this.SetControlsForRdp();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.VMRC)
+            {
+                this.VmrcGroupBox.Enabled = true;
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.RAS)
+            {
+                this.SetControlsForRas();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.VNC)
+            {
+                this.VncGroupBox.Enabled = true;
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.ICA_CITRIX)
+            {
+                this.IcaGroupBox.Enabled = true;
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.HTTP || this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
+            {
+                this.SetControlsForWeb();
+            }
+            else if (this.ProtocolComboBox.Text == ConnectionManager.SSH || this.ProtocolComboBox.Text == ConnectionManager.TELNET)
+            {
+                this.ConsoleGroupBox.Enabled = true;
+
+                if (this.ProtocolComboBox.Text == ConnectionManager.SSH)
+                    this.SshGroupBox.Enabled = true;
+            }
+
+            int defaultPort = ConnectionManager.GetPort(this.ProtocolComboBox.Text);
+            this.txtPort.Text = defaultPort.ToString();
+            this.SetOkButtonState();
+        }
+
+        private void radTSGWenable_CheckedChanged(object sender, EventArgs e)
+        {
+            this.pnlTSGWsettings.Enabled = this.radTSGWenable.Checked;
+        }
+
+        private void RDPSubTabPage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.RDPSubTabPage.SelectedTab == this.RdpSessionTabPage && this.ProtocolComboBox.Text == ConnectionManager.RDP)
+            {
+                // Do not auto connect for sessions on tab select. This might take a moment and than the program hangs.
+                //this._terminalServerManager.Connect(this.cmbServers.Text, true);
+                //this._terminalServerManager.Invalidate();
+            }
+        }
+
+        private void removeSavedDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings.RemoveDefaultFavorite();
+        }
+
+        /// <summary>
+        /// Save favorite, close form and immediatly connect to the favorite.
+        /// </summary>
+        private void saveConnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SaveMRUs();
+
+            if (this.FillFavorite(false))
+                this.DialogResult = TerminalFormDialogResult.SaveAndConnect;
+
+            this.Close();
+        }
+
+        /// <summary>
+        /// Save favorite and copy the current favorite settings, except favorite and connection name.
+        /// </summary>
+        private void saveCopyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SaveMRUs();
+            if (this.FillFavorite(false))
+            {
+                this.txtName.Text = this.Favorite.Name + "_(copy)";
+                this.editedId = Guid.Empty;
+                this.cmbServers.Text = String.Empty;
+                this.cmbServers.Focus();
+            }
+        }
+
+        private void saveCurrentSettingsAsDefaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.FillFavorite(true);
+        }
+
+        /// <summary>
+        /// Save favorite and clear form for a new favorite.
+        /// </summary>
+        private void saveNewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.SaveMRUs();
+            if (this.FillFavorite(false))
+            {
+                this.editedId = Guid.Empty;
+                this.Init(null, String.Empty);
+                this.cmbServers.Focus();
+            }
+        }
+
+        private void SecuritySettingsEnabledCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            this.panel2.Enabled = this.SecuritySettingsEnabledCheckbox.Checked;
+        }
+
+        private void ServerINIBrowseButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog d = new OpenFileDialog();
+            d.DefaultExt = "*.ini";
+            d.CheckFileExists = true;
+            DialogResult result = d.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                ICAServerINI.Text = d.FileName;
+            }
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.tabControl1.SelectedTab == this.RDPTabPage)
+            {
+                this.RDPSubTabPage_SelectedIndexChanged(null, null);
+            }
+        }
+
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
+            this.SetOkButtonState();
+        }
+
+        #endregion
+
+        #region Private form methods
 
         private void Init(IFavorite favorite, String serverName)
         {
@@ -894,177 +1254,6 @@ namespace Terminals
             }
         }
 
-        /// <summary>
-        /// Save favorite and close form. If the form isnt valid the form control is focused.
-        /// </summary>
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            this.SaveMRUs();
-            if (this.FillFavorite(false))
-            {
-                this.DialogResult = TerminalFormDialogResult.SaveAndClose;
-                this.Close();
-            }
-        }
-
-        /// <summary>
-        /// Save favorite, close form and immediatly connect to the favorite.
-        /// </summary>
-        private void saveConnectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.SaveMRUs();
-
-            if (this.FillFavorite(false))
-                this.DialogResult = TerminalFormDialogResult.SaveAndConnect;
-
-            this.Close();
-        }
-
-        /// <summary>
-        /// Save favorite and clear form for a new favorite.
-        /// </summary>
-        private void saveNewToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.SaveMRUs();
-            if (this.FillFavorite(false))
-            {
-                this.editedId = Guid.Empty;
-                this.Init(null, String.Empty);
-                this.cmbServers.Focus();
-            }
-        }
-
-        /// <summary>
-        /// Save favorite and copy the current favorite settings, except favorite and connection name.
-        /// </summary>
-        private void saveCopyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.SaveMRUs();
-            if (this.FillFavorite(false))
-            {
-                this.txtName.Text = this.Favorite.Name + "_(copy)";
-                this.editedId = Guid.Empty;
-                this.cmbServers.Text = String.Empty;
-                this.cmbServers.Focus();
-            }
-        }
-
-        private void control_TextChanged(object sender, EventArgs e)
-        {
-            this.SetOkButtonState();
-        }
-
-        private void txtPassword_TextChanged(object sender, EventArgs e)
-        {
-            this.SetOkButtonState();
-        }
-
-        private void cmbServers_TextChanged(object sender, EventArgs e)
-        {
-            this.SetOkButtonState();
-        }
-
-        private void cmbServers_Leave(object sender, EventArgs e)
-        {
-            if (this.txtName.Text == String.Empty)
-            {
-                if (this.cmbServers.Text.Contains(":"))
-                {
-                    String server = String.Empty;
-                    int port;
-                    GetServerAndPort(this.cmbServers.Text, out server, out port);
-                    this.cmbServers.Text = server;
-                    this.txtPort.Text = port.ToString();
-                    this.cmbServers.Text = server;
-                }
-
-                this.txtName.Text = this.cmbServers.Text;
-            }
-        }
-
-        private void btnBrowseShare_Click(object sender, EventArgs e)
-        {
-            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
-            {
-                dialog.Description = "Select Desktop Share:";
-                dialog.ShowNewFolderButton = false;
-                dialog.SelectedPath = @"\\" + this.cmbServers.Text;
-                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                    this.txtDesktopShare.Text = dialog.SelectedPath;
-            }
-        }
-
-        private void btnAddNewTag_Click(object sender, EventArgs e)
-        {
-            this.AddGroup();
-        }
-
-        private void btnRemoveTag_Click(object sender, EventArgs e)
-        {
-            this.DeleteGroup();
-        }
-
-        private void lvConnectionTags_DoubleClick(object sender, EventArgs e)
-        {
-            this.DeleteGroup();
-        }
-
-        private void btnSaveDefault_Click(object sender, EventArgs e)
-        {
-            this.contextMenuStripDefaults.Show(this.btnSaveDefault, 0, this.btnSaveDefault.Height);
-        }
-
-        private void saveCurrentSettingsAsDefaultToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.FillFavorite(true);
-        }
-
-        private void removeSavedDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Settings.RemoveDefaultFavorite();
-        }
-
-        private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.SetControlsProtocolIndependent();
-
-            if (this.ProtocolComboBox.Text == ConnectionManager.RDP)
-            {
-                this.SetControlsForRdp();
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.VMRC)
-            {
-                this.VmrcGroupBox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.RAS)
-            {
-                this.SetControlsForRas();
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.VNC)
-            {
-                this.VncGroupBox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.ICA_CITRIX)
-            {
-                this.IcaGroupBox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.HTTP || this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
-            {
-                this.SetControlsForWeb();
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.SSH || this.ProtocolComboBox.Text == ConnectionManager.TELNET)
-            {
-                this.ConsoleGroupBox.Enabled = true;
-
-                if (this.ProtocolComboBox.Text == ConnectionManager.SSH)
-                    this.SshGroupBox.Enabled = true;
-            }
-
-            int defaultPort = ConnectionManager.GetPort(this.ProtocolComboBox.Text);
-            this.txtPort.Text = defaultPort.ToString();
-            this.SetOkButtonState();
-        }
-
         private void SetControlsForWeb()
         {
             this.lblServerName.Text = "Url:";
@@ -1120,35 +1309,6 @@ namespace Terminals
             this.txtPort.Enabled = true;
         }
 
-        private void cmbServers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ProtocolComboBox.Text == "RAS")
-            {
-                this.LoadDialupConnections();
-                this.RASDetailsListBox.Items.Clear();
-                if (this._dialupList != null && this._dialupList.ContainsKey(cmbServers.Text))
-                {
-                    RASENTRY selectedRAS = this._dialupList[this.cmbServers.Text];
-                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Connection", this.cmbServers.Text));
-                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Area Code", selectedRAS.AreaCode));
-                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Country Code", selectedRAS.CountryCode));
-                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Device Name", selectedRAS.DeviceName));
-                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Device Type", selectedRAS.DeviceType));
-                    this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Local Phone Number", selectedRAS.LocalPhoneNumber));
-                }
-            }
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog openFileDialog = CreateIconSelectionDialog();
-
-            if (openFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                this.TryToAssignNewToolbarIcon(openFileDialog.FileName);
-            }
-        }
-
         private void TryToAssignNewToolbarIcon(string newImagefilePath)
         {
             try
@@ -1181,62 +1341,6 @@ namespace Terminals
             return openFileDialog;
         }
 
-        private void SecuritySettingsEnabledCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            this.panel2.Enabled = this.SecuritySettingsEnabledCheckbox.Checked;
-        }
-
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.tabControl1.SelectedTab == this.RDPTabPage)
-            {
-                this.RDPSubTabPage_SelectedIndexChanged(null, null);
-            }
-        }
-
-        private void RDPSubTabPage_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.RDPSubTabPage.SelectedTab == this.RdpSessionTabPage && this.ProtocolComboBox.Text == ConnectionManager.RDP)
-            {
-                // Do not auto connect for sessions on tab select. This might take a moment and than the program hangs.
-                //this._terminalServerManager.Connect(this.cmbServers.Text, true);
-                //this._terminalServerManager.Invalidate();
-            }
-        }
-
-        private void cmbResolution_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (this.cmbResolution.Text == "Custom" || this.cmbResolution.Text == "Auto Scale")
-                this.customSizePanel.Visible = true;
-            else
-                this.customSizePanel.Visible = false;
-        }
-
-        private void AllTagsAddButton_Click(object sender, EventArgs e)
-        {
-            this.AddGroupsToFavorite();
-        }
-
-        private void ICAEnableEncryptionCheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            this.ICAEncryptionLevelCombobox.Enabled = this.ICAEnableEncryptionCheckbox.Checked;
-        }
-
-        private void httpUrlTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (this.ProtocolComboBox.Text == ConnectionManager.HTTP ||
-                this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
-            {
-                Uri newUrl = GetFullUrlFromHttpTextBox();
-                if (newUrl != null)
-                {
-                    this.cmbServers.Text = newUrl.Host;
-                    this.txtPort.Text = newUrl.Port.ToString();
-                }
-                SetOkButtonState();
-            }
-        }
-
         private Uri GetFullUrlFromHttpTextBox()
         {
             string newUrlText = this.httpUrlTextBox.Text.ToLower();
@@ -1247,99 +1351,6 @@ namespace Terminals
             return WebOptions.TryParseUrl(newUrlText);
         }
 
-        private void AllTagsListView_DoubleClick(object sender, EventArgs e)
-        {
-            this.AddGroupsToFavorite();
-        }
-
-        private void CredentialManagerPicturebox_Click(object sender, EventArgs e)
-        {
-            Guid selectedCredentialId = Guid.Empty;
-            var selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
-            if (selectedCredential != null)
-                selectedCredentialId = selectedCredential.Id;
-
-            CredentialManager mgr = new CredentialManager();
-            mgr.ShowDialog();
-            this.FillCredentialsCombobox(selectedCredentialId);
-        }
-
-        private void CredentialDropdown_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            this.CredentialsPanel.Enabled = true;
-            ICredentialSet set = this.CredentialDropdown.SelectedItem as ICredentialSet;
-
-            if (set != null)
-            {
-                this.CredentialsPanel.Enabled = false;
-                this.cmbDomains.Text = set.Domain;
-                this.cmbUsers.Text = set.UserName;
-                this.txtPassword.Text = set.Password;
-                this.chkSavePassword.Checked = true;
-            }
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            this.pnlTSGWlogon.Enabled = this.chkTSGWlogin.Checked;
-        }
-
-        private void radTSGWenable_CheckedChanged(object sender, EventArgs e)
-        {
-            this.pnlTSGWsettings.Enabled = this.radTSGWenable.Checked;
-        }
-
-        private void btnDrives_Click(object sender, EventArgs e)
-        {
-            DiskDrivesForm drivesForm = new DiskDrivesForm(this);
-            drivesForm.ShowDialog(this);
-        }
-
-        private void appPathBrowseButton_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog d = new FolderBrowserDialog();
-
-            DialogResult result = d.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                ICAApplicationPath.Text = d.SelectedPath;
-            }
-        }
-
-        private void AppWorkingFolderBrowseButton_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog d = new FolderBrowserDialog();
-
-            DialogResult result = d.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                ICAWorkingFolder.Text = d.SelectedPath;
-            }
-        }
-
-        private void ServerINIBrowseButton_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog d = new OpenFileDialog();
-            d.DefaultExt = "*.ini";
-            d.CheckFileExists = true;
-            DialogResult result = d.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                ICAServerINI.Text = d.FileName;
-            }
-        }
-
-        private void ClientINIBrowseButton_Click(object sender, EventArgs e)
-        {
-            OpenFileDialog d = new OpenFileDialog();
-            d.DefaultExt = "*.ini";
-            d.CheckFileExists = true;
-
-            DialogResult result = d.ShowDialog();
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                ICAClientINI.Text = d.FileName;
-            }
-        }
+        #endregion
     }
 }

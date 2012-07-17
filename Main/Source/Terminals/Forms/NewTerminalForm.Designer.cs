@@ -1,33 +1,33 @@
 namespace Terminals
 {
-  partial class NewTerminalForm
-  {
-    /// <summary>
-    /// Required designer variable.
-    /// </summary>
-    private System.ComponentModel.IContainer components = null;
-
-    /// <summary>
-    /// Clean up any resources being used.
-    /// </summary>
-    /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-    protected override void Dispose(bool disposing)
+    partial class NewTerminalForm
     {
-      if (disposing && (components != null))
-      {
-        components.Dispose();
-      }
-      base.Dispose(disposing);
-    }
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-    #region Windows Form Designer generated code
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-    /// <summary>
-    /// Required method for Designer support - do not modify
-    /// the contents of this method with the code editor.
-    /// </summary>
-    private void InitializeComponent()
-    {
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewTerminalForm));
             this.btnCancel = new System.Windows.Forms.Button();
@@ -599,6 +599,7 @@ namespace Terminals
             this.CredentialManagerPicturebox.TabIndex = 37;
             this.CredentialManagerPicturebox.TabStop = false;
             this.toolTip1.SetToolTip(this.CredentialManagerPicturebox, "Open the Credential Manager window to manage your stored passwords.");
+            this.CredentialManagerPicturebox.Click += new System.EventHandler(CredentialManagerPicturebox_Click);
             // 
             // pictureBox2
             // 
@@ -612,6 +613,7 @@ namespace Terminals
             this.pictureBox2.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox2, "Select your custom icon for this shortcut using custom image, \r\nwhich will be sho" +
         "wn in the shortcuts menu.");
+            this.pictureBox2.Click += new System.EventHandler(pictureBox2_Click);
             // 
             // ProtocolComboBox
             // 
@@ -645,6 +647,9 @@ namespace Terminals
             this.cmbServers.Size = new System.Drawing.Size(265, 21);
             this.cmbServers.TabIndex = 24;
             this.toolTip1.SetToolTip(this.cmbServers, "Here you can define the IP address of the server or its host name.");
+            this.cmbServers.TextChanged += new System.EventHandler(cmbServers_TextChanged);
+            this.cmbServers.SelectedIndexChanged += new System.EventHandler(cmbServers_SelectedIndexChanged);
+            this.cmbServers.Leave += new System.EventHandler(cmbServers_Leave);
             // 
             // btnAddNewTag
             // 
@@ -2136,6 +2141,7 @@ namespace Terminals
             this.httpUrlTextBox.TabIndex = 38;
             this.httpUrlTextBox.Text = "http://terminals.codeplex.com";
             this.httpUrlTextBox.Visible = false;
+            this.httpUrlTextBox.TextChanged += new System.EventHandler(httpUrlTextBox_TextChanged);
             // 
             // NotesTextbox
             // 
@@ -2163,6 +2169,7 @@ namespace Terminals
             this.CredentialDropdown.Name = "CredentialDropdown";
             this.CredentialDropdown.Size = new System.Drawing.Size(334, 21);
             this.CredentialDropdown.TabIndex = 30;
+            this.CredentialDropdown.SelectedIndexChanged += new System.EventHandler(CredentialDropdown_SelectedIndexChanged);
             // 
             // CredentialsPanel
             // 
@@ -2229,6 +2236,7 @@ namespace Terminals
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(334, 21);
             this.txtPassword.TabIndex = 5;
+            this.txtPassword.TextChanged += new System.EventHandler(txtPassword_TextChanged);
             // 
             // chkSavePassword
             // 
@@ -2434,205 +2442,204 @@ namespace Terminals
             this.CredentialsPanel.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
+        }
 
+        #endregion
+
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox chkAddtoToolbar;
+        private System.Windows.Forms.ToolTip toolTip1;
+
+        //private System.Windows.Forms.GroupBox groupBox2;
+
+        private FalafelSoftware.TransPort.Ras ras1;
+        private System.Windows.Forms.CheckBox NewWindowCheckbox;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.Button button1;
+        private Terminals.Forms.Controls.SplitButton btnSaveDefault;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripDefaults;
+        private System.Windows.Forms.ToolStripMenuItem saveCurrentSettingsAsDefaultToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeSavedDefaultsToolStripMenuItem;
+        private Forms.Controls.SplitButton btnSave;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripSave;
+        private System.Windows.Forms.ToolStripMenuItem saveConnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveNewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveCopyToolStripMenuItem;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.TabPage ExecuteTabPage;
+        private System.Windows.Forms.TabPage TagsTabPage;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.TabPage RAStabPage;
+        private System.Windows.Forms.GroupBox RASGroupBox;
+        private System.Windows.Forms.ListBox RASDetailsListBox;
+        private System.Windows.Forms.TabPage ICAtabPage;
+        private System.Windows.Forms.TabPage VMRCtabPage;
+        private System.Windows.Forms.TabPage SSHTabPage;
+        private System.Windows.Forms.TabPage ConsoleTabPage;
+        private System.Windows.Forms.GroupBox ConsoleGroupBox;
+        private ConsolePreferences consolePreferences;
+        private System.Windows.Forms.TabPage VNCTabPage;
+        private System.Windows.Forms.TabPage RDPTabPage;
+        private System.Windows.Forms.TabControl RDPSubTabPage;
+        private System.Windows.Forms.TabPage RDPDisplayTabPage;
+        private System.Windows.Forms.GroupBox DisplaySettingsGroupBox;
+        private System.Windows.Forms.CheckBox AllowDesktopCompositionCheckbox;
+        private System.Windows.Forms.CheckBox AllowFontSmoothingCheckbox;
+        private System.Windows.Forms.Panel customSizePanel;
+        private System.Windows.Forms.NumericUpDown widthUpDown;
+        private System.Windows.Forms.NumericUpDown heightUpDown;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.CheckBox chkDisableWallpaper;
+        private System.Windows.Forms.CheckBox chkDisableThemes;
+        private System.Windows.Forms.CheckBox chkDisableMenuAnimations;
+        private System.Windows.Forms.CheckBox chkDisableFullWindowDrag;
+        private System.Windows.Forms.CheckBox chkDisableCursorBlinking;
+        private System.Windows.Forms.CheckBox chkDisableCursorShadow;
+        private System.Windows.Forms.ComboBox cmbColors;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox cmbResolution;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TabPage RDPLocalResourcesTabPage;
+        private System.Windows.Forms.GroupBox LocalResourceGroupBox;
+        private System.Windows.Forms.Button btnDrives;
+        private System.Windows.Forms.ComboBox cmbSounds;
+        private System.Windows.Forms.CheckBox chkRedirectSmartcards;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox chkRedirectClipboard;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button btnBrowseShare;
+        private System.Windows.Forms.CheckBox chkPrinters;
+        private System.Windows.Forms.TextBox txtDesktopShare;
+        private System.Windows.Forms.CheckBox chkSerialPorts;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.TabPage RdpSessionTabPage;
+        private System.Windows.Forms.TabPage RdpTsgwTabPage;
+        private System.Windows.Forms.GroupBox TerminalGwLoginSettingsGroupBox;
+        private System.Windows.Forms.Panel pnlTSGWlogon;
+        private System.Windows.Forms.TextBox txtTSGWDomain;
+        private System.Windows.Forms.TextBox txtTSGWPassword;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox txtTSGWUserName;
+        private System.Windows.Forms.CheckBox chkTSGWlogin;
+        private System.Windows.Forms.GroupBox TerminalGwSettingsGroupBox;
+        private System.Windows.Forms.RadioButton radTSGWenable;
+        private System.Windows.Forms.RadioButton radTSGWdisable;
+        private System.Windows.Forms.Panel pnlTSGWsettings;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox txtTSGWServer;
+        private System.Windows.Forms.TabPage GeneralTabPage;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.GroupBox ExtendedSettingsGgroupBox;
+        private System.Windows.Forms.CheckBox EnableNLAAuthenticationCheckbox;
+        private System.Windows.Forms.CheckBox EnableTLSAuthenticationCheckbox;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.TextBox ShutdownTimeoutTextBox;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.TextBox OverallTimeoutTextbox;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox SingleTimeOutTextbox;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.TextBox IdleTimeoutMinutesTextBox;
+        private System.Windows.Forms.CheckBox GrabFocusOnConnectCheckbox;
+        private System.Windows.Forms.CheckBox EnableEncryptionCheckbox;
+        private System.Windows.Forms.CheckBox DisableWindowsKeyCheckbox;
+        private System.Windows.Forms.CheckBox DetectDoubleClicksCheckbox;
+        private System.Windows.Forms.CheckBox DisplayConnectionBarCheckbox;
+        private System.Windows.Forms.CheckBox DisableControlAltDeleteCheckbox;
+        private System.Windows.Forms.CheckBox AcceleratorPassthroughCheckBox;
+        private System.Windows.Forms.CheckBox EnableCompressionCheckbox;
+        private System.Windows.Forms.CheckBox EnableBitmapPersistenceCheckbox;
+        private System.Windows.Forms.CheckBox AllowBackgroundInputCheckBox;
+        private System.Windows.Forms.GroupBox SecuritySettingsGroupBox;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.CheckBox SecurityStartFullScreenCheckbox;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.TextBox SecurityWorkingFolderTextBox;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox SecuriytStartProgramTextbox;
+        private System.Windows.Forms.CheckBox SecuritySettingsEnabledCheckbox;
+        private System.Windows.Forms.CheckBox chkConnectToConsole;
+        private System.Windows.Forms.CheckBox chkTSGWlocalBypass;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.ComboBox cmbTSGWLogonMethod;
+        private System.Windows.Forms.GroupBox ExecuteGroupBox;
+        private System.Windows.Forms.TextBox txtInitialDirectory;
+        private System.Windows.Forms.TextBox txtArguments;
+        private System.Windows.Forms.TextBox txtCommand;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.CheckBox chkExecuteBeforeConnect;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.CheckBox chkWaitForExit;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.GroupBox IcaGroupBox;
+        private System.Windows.Forms.Button ClientINIBrowseButton;
+        private System.Windows.Forms.Button ServerINIBrowseButton;
+        private System.Windows.Forms.Button AppWorkingFolderBrowseButton;
+        private System.Windows.Forms.Button appPathBrowseButton;
+        private System.Windows.Forms.ComboBox ICAEncryptionLevelCombobox;
+        private System.Windows.Forms.CheckBox ICAEnableEncryptionCheckbox;
+        private System.Windows.Forms.TextBox ICAClientINI;
+        private System.Windows.Forms.TextBox ICAServerINI;
+        private System.Windows.Forms.TextBox ICAWorkingFolder;
+        private System.Windows.Forms.TextBox ICAApplicationPath;
+        private System.Windows.Forms.TextBox ICAApplicationNameTextBox;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label label34;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.GroupBox VmrcGroupBox;
+        private System.Windows.Forms.CheckBox VMRCReducedColorsCheckbox;
+        private System.Windows.Forms.CheckBox VMRCAdminModeCheckbox;
+        private System.Windows.Forms.GroupBox VncGroupBox;
+        private System.Windows.Forms.CheckBox VncViewOnlyCheckbox;
+        private System.Windows.Forms.NumericUpDown vncDisplayNumberInput;
+        private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.CheckBox vncAutoScaleCheckbox;
+        private System.Windows.Forms.GroupBox SshGroupBox;
+        private SSHClient.Preferences SSHPreferences;
+        private System.Windows.Forms.GroupBox GeneralGroupBox;
+        private System.Windows.Forms.TextBox httpUrlTextBox;
+        private System.Windows.Forms.TextBox NotesTextbox;
+        private System.Windows.Forms.TextBox txtPort;
+        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox CredentialDropdown;
+        private System.Windows.Forms.PictureBox CredentialManagerPicturebox;
+        private System.Windows.Forms.Panel CredentialsPanel;
+        private System.Windows.Forms.ComboBox cmbUsers;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cmbDomains;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.CheckBox chkSavePassword;
+        private System.Windows.Forms.Label label36;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label lblPort;
+        private System.Windows.Forms.ComboBox ProtocolComboBox;
+        private System.Windows.Forms.Label ProtocolLabel;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cmbServers;
+        private System.Windows.Forms.Label lblServerName;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.Button AllTagsAddButton;
+        private System.Windows.Forms.ListView AllTagsListView;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Button btnRemoveTag;
+        private System.Windows.Forms.ListView lvConnectionTags;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.TextBox txtTag;
+        private System.Windows.Forms.Button btnAddNewTag;
+        private System.Windows.Forms.Label label14;
     }
-
-    #endregion
-
-    private System.Windows.Forms.Button btnCancel;
-      private System.Windows.Forms.PictureBox pictureBox1;
-      private System.Windows.Forms.CheckBox chkAddtoToolbar;
-      private System.Windows.Forms.ToolTip toolTip1;
-
-      //private System.Windows.Forms.GroupBox groupBox2;
-
-      private FalafelSoftware.TransPort.Ras ras1;
-      private System.Windows.Forms.CheckBox NewWindowCheckbox;
-      private System.Windows.Forms.TextBox textBox3;
-      private System.Windows.Forms.Label label43;
-      private System.Windows.Forms.Button button1;
-      private Terminals.Forms.Controls.SplitButton btnSaveDefault;
-      private System.Windows.Forms.ContextMenuStrip contextMenuStripDefaults;
-      private System.Windows.Forms.ToolStripMenuItem saveCurrentSettingsAsDefaultToolStripMenuItem;
-      private System.Windows.Forms.ToolStripMenuItem removeSavedDefaultsToolStripMenuItem;
-      private Forms.Controls.SplitButton btnSave;
-      private System.Windows.Forms.ContextMenuStrip contextMenuStripSave;
-      private System.Windows.Forms.ToolStripMenuItem saveConnectToolStripMenuItem;
-      private System.Windows.Forms.ToolStripMenuItem saveNewToolStripMenuItem;
-      private System.Windows.Forms.ToolStripMenuItem saveCopyToolStripMenuItem;
-      private System.Windows.Forms.GroupBox groupBox7;
-      private System.Windows.Forms.TabPage ExecuteTabPage;
-      private System.Windows.Forms.TabPage TagsTabPage;
-      private System.Windows.Forms.Panel panel4;
-      private System.Windows.Forms.TabPage RAStabPage;
-      private System.Windows.Forms.GroupBox RASGroupBox;
-      private System.Windows.Forms.ListBox RASDetailsListBox;
-      private System.Windows.Forms.TabPage ICAtabPage;
-      private System.Windows.Forms.TabPage VMRCtabPage;
-      private System.Windows.Forms.TabPage SSHTabPage;
-      private System.Windows.Forms.TabPage ConsoleTabPage;
-      private System.Windows.Forms.GroupBox ConsoleGroupBox;
-      private ConsolePreferences consolePreferences;
-      private System.Windows.Forms.TabPage VNCTabPage;
-      private System.Windows.Forms.TabPage RDPTabPage;
-      private System.Windows.Forms.TabControl RDPSubTabPage;
-      private System.Windows.Forms.TabPage RDPDisplayTabPage;
-      private System.Windows.Forms.GroupBox DisplaySettingsGroupBox;
-      private System.Windows.Forms.CheckBox AllowDesktopCompositionCheckbox;
-      private System.Windows.Forms.CheckBox AllowFontSmoothingCheckbox;
-      private System.Windows.Forms.Panel customSizePanel;
-      private System.Windows.Forms.NumericUpDown widthUpDown;
-      private System.Windows.Forms.NumericUpDown heightUpDown;
-      private System.Windows.Forms.Label label31;
-      private System.Windows.Forms.Label label32;
-      private System.Windows.Forms.CheckBox chkDisableWallpaper;
-      private System.Windows.Forms.CheckBox chkDisableThemes;
-      private System.Windows.Forms.CheckBox chkDisableMenuAnimations;
-      private System.Windows.Forms.CheckBox chkDisableFullWindowDrag;
-      private System.Windows.Forms.CheckBox chkDisableCursorBlinking;
-      private System.Windows.Forms.CheckBox chkDisableCursorShadow;
-      private System.Windows.Forms.ComboBox cmbColors;
-      private System.Windows.Forms.Label label7;
-      private System.Windows.Forms.ComboBox cmbResolution;
-      private System.Windows.Forms.Label label6;
-      private System.Windows.Forms.TabPage RDPLocalResourcesTabPage;
-      private System.Windows.Forms.GroupBox LocalResourceGroupBox;
-      private System.Windows.Forms.Button btnDrives;
-      private System.Windows.Forms.ComboBox cmbSounds;
-      private System.Windows.Forms.CheckBox chkRedirectSmartcards;
-      private System.Windows.Forms.Label label8;
-      private System.Windows.Forms.CheckBox chkRedirectClipboard;
-      private System.Windows.Forms.Label label9;
-      private System.Windows.Forms.Button btnBrowseShare;
-      private System.Windows.Forms.CheckBox chkPrinters;
-      private System.Windows.Forms.TextBox txtDesktopShare;
-      private System.Windows.Forms.CheckBox chkSerialPorts;
-      private System.Windows.Forms.Label label10;
-      private System.Windows.Forms.TabPage tabPage8;
-      private System.Windows.Forms.Label label30;
-      private System.Windows.Forms.TabPage tabPage9;
-      private System.Windows.Forms.TabPage RdpSessionTabPage;
-      private System.Windows.Forms.TabPage RdpTsgwTabPage;
-      private System.Windows.Forms.GroupBox TerminalGwLoginSettingsGroupBox;
-      private System.Windows.Forms.Panel pnlTSGWlogon;
-      private System.Windows.Forms.TextBox txtTSGWDomain;
-      private System.Windows.Forms.TextBox txtTSGWPassword;
-      private System.Windows.Forms.Label label18;
-      private System.Windows.Forms.Label label19;
-      private System.Windows.Forms.Label label16;
-      private System.Windows.Forms.TextBox txtTSGWUserName;
-      private System.Windows.Forms.CheckBox chkTSGWlogin;
-      private System.Windows.Forms.GroupBox TerminalGwSettingsGroupBox;
-      private System.Windows.Forms.RadioButton radTSGWenable;
-      private System.Windows.Forms.RadioButton radTSGWdisable;
-      private System.Windows.Forms.Panel pnlTSGWsettings;
-      private System.Windows.Forms.Label label17;
-      private System.Windows.Forms.TextBox txtTSGWServer;
-      private System.Windows.Forms.TabPage GeneralTabPage;
-      private System.Windows.Forms.TabControl tabControl1;
-      private System.Windows.Forms.GroupBox ExtendedSettingsGgroupBox;
-      private System.Windows.Forms.CheckBox EnableNLAAuthenticationCheckbox;
-      private System.Windows.Forms.CheckBox EnableTLSAuthenticationCheckbox;
-      private System.Windows.Forms.Label label29;
-      private System.Windows.Forms.TextBox ShutdownTimeoutTextBox;
-      private System.Windows.Forms.Label label28;
-      private System.Windows.Forms.TextBox OverallTimeoutTextbox;
-      private System.Windows.Forms.Label label27;
-      private System.Windows.Forms.TextBox SingleTimeOutTextbox;
-      private System.Windows.Forms.Label label26;
-      private System.Windows.Forms.TextBox IdleTimeoutMinutesTextBox;
-      private System.Windows.Forms.CheckBox GrabFocusOnConnectCheckbox;
-      private System.Windows.Forms.CheckBox EnableEncryptionCheckbox;
-      private System.Windows.Forms.CheckBox DisableWindowsKeyCheckbox;
-      private System.Windows.Forms.CheckBox DetectDoubleClicksCheckbox;
-      private System.Windows.Forms.CheckBox DisplayConnectionBarCheckbox;
-      private System.Windows.Forms.CheckBox DisableControlAltDeleteCheckbox;
-      private System.Windows.Forms.CheckBox AcceleratorPassthroughCheckBox;
-      private System.Windows.Forms.CheckBox EnableCompressionCheckbox;
-      private System.Windows.Forms.CheckBox EnableBitmapPersistenceCheckbox;
-      private System.Windows.Forms.CheckBox AllowBackgroundInputCheckBox;
-      private System.Windows.Forms.GroupBox SecuritySettingsGroupBox;
-      private System.Windows.Forms.Panel panel2;
-      private System.Windows.Forms.CheckBox SecurityStartFullScreenCheckbox;
-      private System.Windows.Forms.Label label25;
-      private System.Windows.Forms.TextBox SecurityWorkingFolderTextBox;
-      private System.Windows.Forms.Label label24;
-      private System.Windows.Forms.TextBox SecuriytStartProgramTextbox;
-      private System.Windows.Forms.CheckBox SecuritySettingsEnabledCheckbox;
-      private System.Windows.Forms.CheckBox chkConnectToConsole;
-      private System.Windows.Forms.CheckBox chkTSGWlocalBypass;
-      private System.Windows.Forms.Label label20;
-      private System.Windows.Forms.ComboBox cmbTSGWLogonMethod;
-      private System.Windows.Forms.GroupBox ExecuteGroupBox;
-      private System.Windows.Forms.TextBox txtInitialDirectory;
-      private System.Windows.Forms.TextBox txtArguments;
-      private System.Windows.Forms.TextBox txtCommand;
-      private System.Windows.Forms.Label label13;
-      private System.Windows.Forms.CheckBox chkExecuteBeforeConnect;
-      private System.Windows.Forms.Label label12;
-      private System.Windows.Forms.CheckBox chkWaitForExit;
-      private System.Windows.Forms.Label label11;
-      private System.Windows.Forms.GroupBox IcaGroupBox;
-      private System.Windows.Forms.Button ClientINIBrowseButton;
-      private System.Windows.Forms.Button ServerINIBrowseButton;
-      private System.Windows.Forms.Button AppWorkingFolderBrowseButton;
-      private System.Windows.Forms.Button appPathBrowseButton;
-      private System.Windows.Forms.ComboBox ICAEncryptionLevelCombobox;
-      private System.Windows.Forms.CheckBox ICAEnableEncryptionCheckbox;
-      private System.Windows.Forms.TextBox ICAClientINI;
-      private System.Windows.Forms.TextBox ICAServerINI;
-      private System.Windows.Forms.TextBox ICAWorkingFolder;
-      private System.Windows.Forms.TextBox ICAApplicationPath;
-      private System.Windows.Forms.TextBox ICAApplicationNameTextBox;
-      private System.Windows.Forms.Label label35;
-      private System.Windows.Forms.Label label34;
-      private System.Windows.Forms.Label label23;
-      private System.Windows.Forms.Label label22;
-      private System.Windows.Forms.Label label21;
-      private System.Windows.Forms.GroupBox VmrcGroupBox;
-      private System.Windows.Forms.CheckBox VMRCReducedColorsCheckbox;
-      private System.Windows.Forms.CheckBox VMRCAdminModeCheckbox;
-      private System.Windows.Forms.GroupBox VncGroupBox;
-      private System.Windows.Forms.CheckBox VncViewOnlyCheckbox;
-      private System.Windows.Forms.NumericUpDown vncDisplayNumberInput;
-      private System.Windows.Forms.Label label37;
-      private System.Windows.Forms.CheckBox vncAutoScaleCheckbox;
-      private System.Windows.Forms.GroupBox SshGroupBox;
-      private SSHClient.Preferences SSHPreferences;
-      private System.Windows.Forms.GroupBox GeneralGroupBox;
-      private System.Windows.Forms.TextBox httpUrlTextBox;
-      private System.Windows.Forms.TextBox NotesTextbox;
-      private System.Windows.Forms.TextBox txtPort;
-      private System.Windows.Forms.TextBox txtName;
-      private System.Windows.Forms.Label label15;
-      private System.Windows.Forms.ComboBox CredentialDropdown;
-      private System.Windows.Forms.PictureBox CredentialManagerPicturebox;
-      private System.Windows.Forms.Panel CredentialsPanel;
-      private System.Windows.Forms.ComboBox cmbUsers;
-      private System.Windows.Forms.Label label1;
-      private System.Windows.Forms.ComboBox cmbDomains;
-      private System.Windows.Forms.Label label3;
-      private System.Windows.Forms.Label label4;
-      private System.Windows.Forms.TextBox txtPassword;
-      private System.Windows.Forms.CheckBox chkSavePassword;
-      private System.Windows.Forms.Label label36;
-      private System.Windows.Forms.PictureBox pictureBox2;
-      private System.Windows.Forms.Label lblPort;
-      private System.Windows.Forms.ComboBox ProtocolComboBox;
-      private System.Windows.Forms.Label ProtocolLabel;
-      private System.Windows.Forms.Label label5;
-      private System.Windows.Forms.ComboBox cmbServers;
-      private System.Windows.Forms.Label lblServerName;
-      private System.Windows.Forms.GroupBox groupBox4;
-      private System.Windows.Forms.Button AllTagsAddButton;
-      private System.Windows.Forms.ListView AllTagsListView;
-      private System.Windows.Forms.Panel panel1;
-      private System.Windows.Forms.GroupBox groupBox3;
-      private System.Windows.Forms.Button btnRemoveTag;
-      private System.Windows.Forms.ListView lvConnectionTags;
-      private System.Windows.Forms.Panel panel3;
-      private System.Windows.Forms.TextBox txtTag;
-      private System.Windows.Forms.Button btnAddNewTag;
-      private System.Windows.Forms.Label label14;
-  }
 }
