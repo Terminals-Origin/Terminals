@@ -50,9 +50,7 @@ namespace Tests
         [TestMethod]
         public void AddCredentialsTest()
         {
-            var credentials = this.CreateTestCredentialSet();
-            this.lab.Persistence.Credentials.Add(credentials);
-            this.lab.Persistence.Credentials.Save();
+            this.AddTestCredentialsToDatabase();
 
             CredentialSet checkCredentialSet = this.lab.CheckDatabase.CredentialBase
                 .OfType<CredentialSet>().FirstOrDefault();
@@ -67,11 +65,9 @@ namespace Tests
         [TestMethod]
         public void RemoveCredentialsTest()
         {
-            var testCredentials = this.CreateTestCredentialSet();
-            var credentialasDatabase = this.lab.Persistence.Credentials;
-            credentialasDatabase.Add(testCredentials);
-            credentialasDatabase.Save();
+            var testCredentials = this.AddTestCredentialsToDatabase();
 
+            var credentialasDatabase = this.lab.Persistence.Credentials;
             var checkDatabase = this.lab.CheckDatabase;
             int credentialsCountBefore = checkDatabase.CredentialBase.OfType<CredentialSet>().Count();
             credentialasDatabase.Remove(testCredentials);
@@ -86,17 +82,22 @@ namespace Tests
             Assert.AreEqual(0, baseAfter, "credentialbase wasnt removed from the database");
         }
 
+        private CredentialSet AddTestCredentialsToDatabase()
+        {
+            var testCredentials = this.CreateTestCredentialSet();
+            var credentialasDatabase = this.lab.Persistence.Credentials;
+            credentialasDatabase.Add(testCredentials);
+            credentialasDatabase.Save();
+            return testCredentials;
+        }
+
         /// <summary>
         ///A test for UpdatePasswordsByNewKeyMaterial
         ///</summary>
         [TestMethod]
         public void UpdateCredentialsPasswordsByNewKeyMaterialTest()
         {
-            var credentials = this.CreateTestCredentialSet();
-            ICredentials storedCredentials = this.lab.Persistence.Credentials;
-            storedCredentials.Add(credentials);
-            storedCredentials.Save();
-
+            this.AddTestCredentialsToDatabase();
             this.lab.Persistence.Security.UpdateMasterPassword(String.Empty);
 
             CredentialSet checkCredentials = this.lab.CheckDatabase.CredentialBase

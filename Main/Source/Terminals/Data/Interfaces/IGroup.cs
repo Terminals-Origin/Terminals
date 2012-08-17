@@ -15,11 +15,11 @@ namespace Terminals.Data
         Guid Id { get; }
 
         /// <summary>
-        /// Gets or sets the unique identifier of group in which this group is listed.
-        /// By default set to Guid.Empty, which means, that it isnt listed no where 
+        /// Gets or sets the group in which this group is listed.
+        /// By default empty, which means, that it isnt listed no where 
         /// and will appear as one of root folders in first level of favorites tree.
         /// </summary>
-        Guid Parent { get; set; }
+        IGroup Parent { get; set; }
 
         /// <summary>
         /// Gets or sets the unique name of the set.

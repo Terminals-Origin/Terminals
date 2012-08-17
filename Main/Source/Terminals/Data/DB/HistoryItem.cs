@@ -2,7 +2,8 @@
 
 namespace Terminals.Data.DB
 {
-    internal partial class HistoryItem //: IHistoryItem
+    // todo prepared new feature to obtain history per favorite
+    internal partial class HistoryItem // : IHistoryItem
     {
         //IFavorite IHistoryItem.Favorite
         //{

@@ -5,6 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Data.DB;
+
 using DB = Terminals.Data.DB;
 using Favorite = Terminals.Data.DB.Favorite;
 
@@ -22,6 +24,8 @@ namespace Tests
         private int updatedCount;
         private int deletedCount;
 
+        private SqlPersistence secondaryPersistence;
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -33,6 +37,8 @@ namespace Tests
         {
             this.lab = new SqlTestsLab();
             this.lab.InitializeTestLab();
+            secondaryPersistence = new SqlPersistence();
+            this.secondaryPersistence.Initialize();
             this.lab.Persistence.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(Dispatcher_FavoritesChanged);
         }
 
@@ -44,9 +50,9 @@ namespace Tests
 
         private void Dispatcher_FavoritesChanged(FavoritesChangedEventArgs args)
         {
-            addedCount = args.Added.Count;
-            deletedCount = args.Removed.Count;
-            updatedCount = args.Updated.Count;
+            addedCount += args.Added.Count;
+            deletedCount += args.Removed.Count;
+            updatedCount += args.Updated.Count;
         }
 
         /// <summary>
@@ -63,14 +69,14 @@ namespace Tests
 
             int after = this.lab.CheckDatabase.Favorites.Count();
             string protocolProperties = this.lab.CheckDatabase.GetFavoriteProtocolProperties(favorite.Id).FirstOrDefault();
-            IFavorite checkFavorite = this.lab.CheckDatabase.Favorites.FirstOrDefault();
+            IFavorite checkFavorite = this.secondaryPersistence.Favorites.FirstOrDefault();
 
             Assert.AreNotEqual(before, after, -2, "Favorites didnt reach the database");
             Assert.IsTrue(!string.IsNullOrEmpty(protocolProperties), "Protocol properties are null");
             Assert.IsNotNull(checkFavorite.Security, "Security is null");
             Assert.IsNotNull(checkFavorite.Display, "Display is null");
             Assert.IsNotNull(checkFavorite.ExecuteBeforeConnect, "ExecuteBeforeConnect is null");
-            Assert.AreEqual(1, addedCount, "Event wasnt delivered");
+            Assert.AreEqual(2, addedCount, "Event wasnt delivered");
         }
 
         /// <summary>
@@ -121,9 +127,10 @@ namespace Tests
             IFavorite favorite = this.lab.CreateTestFavorite();
             this.lab.Persistence.Favorites.Add(favorite);
             IFactory labFactory = this.lab.Persistence.Factory;
-            IGroup groupToDelete = labFactory.CreateGroup("TestGroupToDelete", new List<IFavorite> { favorite });
+            IGroup groupToDelete = labFactory.CreateGroup("TestGroupToDelete");
             this.lab.Persistence.Groups.Add(groupToDelete);
-            IGroup groupToAdd = labFactory.CreateGroup("TestGroupToAdd", new List<IFavorite>());
+            this.lab.Persistence.Favorites.UpdateFavorite(favorite, new List<IGroup> { groupToDelete });
+            IGroup groupToAdd = labFactory.CreateGroup("TestGroupToAdd");
             this.lab.Persistence.Favorites.UpdateFavorite(favorite, new List<IGroup> { groupToAdd });
 
             Favorite checkFavorite = this.lab.CheckDatabase.Favorites.FirstOrDefault();
@@ -132,7 +139,7 @@ namespace Tests
             Assert.IsTrue(group.Name == "TestGroupToAdd", "wrong merge of groups");
             int targetGroupsCount = this.lab.CheckDatabase.Groups.Count();
             Assert.AreEqual(1, targetGroupsCount, "Empty groups wern't deleted");
-            Assert.AreEqual(1, updatedCount, "Event wasnt delivered");
+            Assert.AreEqual(2, updatedCount, "Event wasnt delivered");
         }
 
         [TestMethod]
@@ -144,7 +151,7 @@ namespace Tests
             Image favoriteIcon = favorite.ToolBarIconImage;
             this.lab.Persistence.Favorites.Add(favorite);
             Favorite checkFavorite = this.lab.CheckDatabase.Favorites.FirstOrDefault();
-            
+
             Assert.IsNotNull(favoriteIcon, "Icon wasnt assigned successfully");
             Assert.IsNotNull(checkFavorite.ToolBarIconImage, "Icon didnt reach the database");
         }

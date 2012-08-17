@@ -4,11 +4,9 @@ using System.Linq;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Group : IGroup, IEntityContext
+    internal partial class Group : IGroup
     {
-        public Database Database { get; set; }
-
-        private Guid guid = Guid.NewGuid();
+        private readonly Guid guid = Guid.NewGuid();
 
         /// <summary>
         /// Gets the uniqeu identifier of this goup.
@@ -29,19 +27,20 @@ namespace Terminals.Data.DB
         /// Gets or sets the virtual unique identifer. This isnt used, because of internal database identifier.
         /// Only for compatibility with file persistence.
         /// </summary>
-        public Guid Parent
+        public IGroup Parent
         {
             get
             {
-                return this.ParentGroup != null ? this.ParentGroup.Guid : Guid.Empty;
+                return this.ParentGroup;
             }
             set
             {
-                if (this.Database != null)
+                using (var database = Database.CreateDatabaseInstance())
                 {
-                    this.ParentGroup = this.Database.Groups.ToList()
-                        .FirstOrDefault(candidate => candidate.Guid == value);
-                    this.Database.SaveImmediatelyIfRequested();
+                    database.Attach(this);
+                    this.ParentGroup = value as Group;
+                    database.SaveImmediatelyIfRequested();
+                    database.Detach(this);
                 }
             }   
         }
@@ -59,10 +58,9 @@ namespace Terminals.Data.DB
         /// </summary>
         public Group(){ }
 
-        internal Group(string name, List<IFavorite> favorites)
+        internal Group(string name)
         {
             this.Name = name;
-            AddFavoritesToDatabase(favorites);
         }
 
         public void AddFavorite(IFavorite favorite)
@@ -112,22 +110,24 @@ namespace Terminals.Data.DB
 
         private void RemoveFavoriteFromDatabase(IFavorite favorite)
         {
-            this.Favorites.Remove((Favorite)favorite);
+            var toRemove = favorite as Favorite;
+            this.Favorites.Attach(toRemove);
+            bool result = this.Favorites.Remove(toRemove);
         }
 
-        public override bool Equals(object group)
-        {
-            Group oponent = group as Group;
-            if (oponent == null)
-                return false;
+        //public override bool Equals(object group)
+        //{
+        //    Group oponent = group as Group;
+        //    if (oponent == null)
+        //        return false;
 
-            return this.Id.Equals(oponent.Id);
-        }
+        //    return this.Id.Equals(oponent.Id);
+        //}
 
-        public override int GetHashCode()
-        {
-            return this.Id.GetHashCode();
-        }
+        //public override int GetHashCode()
+        //{
+        //    return this.Id.GetHashCode();
+        //}
 
         public override string ToString()
         {

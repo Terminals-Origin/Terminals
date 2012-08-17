@@ -12,31 +12,33 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class ConnectionHistory : IConnectionHistory
     {
-        private Database dataBase;
         public event HistoryRecorded OnHistoryRecorded;
-
-        internal ConnectionHistory(Database dataBase)
-        {
-            this.dataBase = dataBase;
-        }
 
         public SortableList<IFavorite> GetDateItems(string historyDateKey)
         {
-            HistoryInterval interval = HistoryIntervals.GetIntervalByName(historyDateKey);
-            var favoriteIds = this.dataBase.GetFavoritesHistoryByDate(interval.From, interval.To);
-            IQueryable<Favorite> favorites = this.dataBase.Favorites.Where(favorite => favoriteIds.Contains(favorite.Id));
-            return Data.Favorites.OrderByDefaultSorting(favorites);
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                HistoryInterval interval = HistoryIntervals.GetIntervalByName(historyDateKey);
+                var favoriteIds = database.GetFavoritesHistoryByDate(interval.From, interval.To);
+                IQueryable<Favorite> favorites =
+                    database.Favorites.Where(favorite => favoriteIds.Contains(favorite.Id));
+                return Data.Favorites.OrderByDefaultSorting(favorites);
+            }
         }
 
         public void RecordHistoryItem(IFavorite favorite)
         {
             var historyTarget = favorite as Favorite;
-            if (historyTarget == null || historyTarget.EntityState == EntityState.Detached)
+            if (historyTarget == null)
                 return;
 
             string userSid = WindowsUserIdentifiers.GetCurrentUserSid();
-            int favoriteId = ((Favorite)favorite).Id;
-            this.dataBase.InsertHistory(favoriteId, DateTime.Now, userSid);
+
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                database.InsertHistory(historyTarget.Id, DateTime.Now, userSid);
+            }
+
             this.FireOnHistoryRecorded(favorite);
         }
 

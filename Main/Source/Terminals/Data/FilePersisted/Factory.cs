@@ -17,13 +17,9 @@ namespace Terminals
             return new Favorite();
         }
 
-        public IGroup CreateGroup(string groupName, List<IFavorite> favorites = null)
+        public IGroup CreateGroup(string groupName)
         {
-            // call this constructor doesnt fire the group changed event
-            if (favorites == null)
-                return new Group(groupName, new List<IFavorite>());
-
-            return new Group(groupName, favorites);
+            return new Group(groupName);
         }
 
         public ICredentialSet CreateCredentialSet()

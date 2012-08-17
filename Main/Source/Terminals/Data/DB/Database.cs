@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.EntityClient;
 using System.Data.Objects;
+using System.Data.Objects.DataClasses;
 using System.Linq;
 using Terminals.Configuration;
 using Terminals.Security;
@@ -43,21 +44,28 @@ namespace Terminals.Data.DB
         partial void OnContextCreated()
         {
             this.updateLock = new object();
-            this.ObjectMaterialized += new ObjectMaterializedEventHandler(this.OnDatabaseObjectMaterialized);
-        }
-
-        private void OnDatabaseObjectMaterialized(object sender, ObjectMaterializedEventArgs e)
-        {
-            var entity = e.Entity as IEntityContext;
-            if (entity != null)
-                entity.Database = this;
         }
 
         internal void SaveImmediatelyIfRequested()
         {
-            // dont ask save immediately. Here is no benefit to save in batch like in FilePersistence
-            // todo Add protection against concurent updates
-            this.SaveChanges();
+            try
+            {
+                // dont ask save immediately. Here is no benefit to save in batch like in FilePersistence
+                this.SaveChanges();
+            }
+            catch (OptimisticConcurrencyException exception)
+            {
+                Logging.Log.Debug("Concurency exception catched when saving SqlPersistence", exception);
+                this.RefreshChangedEntities();
+                this.SaveChanges();
+            }
+        }
+
+        private void RefreshChangedEntities()
+        {
+            var favoriteToUpdate = this.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).FirstOrDefault();
+            this.Favorites.MergeOption = MergeOption.OverwriteChanges;
+            this.Refresh(RefreshMode.ClientWins, favoriteToUpdate);
         }
 
         public override int SaveChanges(SaveOptions options)
@@ -70,7 +78,7 @@ namespace Terminals.Data.DB
         private int SaveChanges(SaveOptions options, IEnumerable<Favorite> changedFavorites)
         {
             int returnValue;
-            lock (updateLock)
+            lock (this.updateLock)
             {
                 returnValue = base.SaveChanges(options);
                 this.SaveFavoriteProtocolProperties(changedFavorites);
@@ -128,12 +136,12 @@ namespace Terminals.Data.DB
             if (obtained != null)
                 return obtained;
 
-            return string.Empty;
+            return String.Empty;
         }
 
         internal void UpdateMasterPassword(string newMasterPasswordKey)
         {
-            lock (updateLock)
+            lock (this.updateLock)
             {
                 // todo do it in transaction to prevent inconsistent data
                 this.UpdateMasterPasswordKey(newMasterPasswordKey);
@@ -170,6 +178,44 @@ namespace Terminals.Data.DB
             string databasePasswordHash = PasswordFunctions.EncryptPassword(databasePassword);
             bool passwordIsValid = databasePasswordHash == database.GetMasterPasswordHash();
             return passwordIsValid;
+        }
+        
+        /// <summary>
+        /// Attaches all item in entitiesToAttach to this context.
+        /// Does not check, if the enties are already in the context.
+        /// </summary>
+        /// <typeparam name="TEntity">Entity defined in this object context model</typeparam>
+        /// <param name="entitiesToAttach">Not null collection of items from this model</param>
+        internal void AttachAll<TEntity>(IEnumerable<TEntity> entitiesToAttach)
+            where TEntity : IEntityWithKey
+        {
+            foreach (TEntity entity in entitiesToAttach)
+            {
+                this.Attach(entity);
+            }
+        }
+
+        /// <summary>
+        /// Detaches all item in entitiesToDetach from this context.
+        /// Does not check, if the enties are in the context.
+        /// </summary>
+        /// <typeparam name="TEntity">Entity defined in this object context model</typeparam>
+        /// <param name="entitiesToDetach">Not null collection of items from this model
+        /// currently attached in this object context</param>
+        internal void DetachAll<TEntity>(IEnumerable<TEntity> entitiesToDetach)
+        {
+            foreach (TEntity entity in entitiesToDetach)
+            {
+                this.Detach(entity);
+            }
+        }
+
+        /// <summary>
+        /// Switch toUpdate entity state to Modified. 
+        /// </summary>
+        internal void MarkAsModified(object toUpdate)
+        {
+            this.ObjectStateManager.ChangeObjectState(toUpdate, EntityState.Modified);
         }
     }
 }

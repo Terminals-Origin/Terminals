@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -11,88 +10,109 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class Favorites : IFavorites
     {
-        private Database dataBase;
-        private Groups groups;
-        private DataDispatcher dispatcher;
+        private readonly Groups groups;
+        private readonly DataDispatcher dispatcher;
 
-        internal Favorites(Database dataBase, Groups groups, DataDispatcher dispatcher)
+        internal Favorites(Groups groups, DataDispatcher dispatcher)
         {
-            this.dataBase = dataBase;
             this.groups = groups;
             this.dispatcher = dispatcher;
         }
 
         IFavorite IFavorites.this[Guid favoriteId]
         {
-            get { return this.dataBase.GetFavoriteByGuid(favoriteId); }
+            get
+            {
+                using (var database = Database.CreateDatabaseInstance())
+                {
+                    return database.GetFavoriteByGuid(favoriteId);
+                }
+            }
         }
 
         IFavorite IFavorites.this[string favoriteName]
         {
             get
             {
-                return this.dataBase.Favorites
-                  .FirstOrDefault(favorite => favorite.Name
-                      .Equals(favoriteName, StringComparison.CurrentCultureIgnoreCase));
+                using (var database = Database.CreateDatabaseInstance())
+                {
+                    return database.Favorites.FirstOrDefault(
+                            favorite => favorite.Name.Equals(favoriteName, StringComparison.CurrentCultureIgnoreCase));
+                }
             }
         }
 
         public void Add(IFavorite favorite)
         {
-            AddToDatabase(favorite);
-            this.dataBase.SaveImmediatelyIfRequested();
-            this.dispatcher.ReportFavoriteAdded(favorite);
-        }
-
-        private void AddToDatabase(IFavorite favorite)
-        {
-            if (this.dataBase.Favorites.ToList().Contains(favorite))
-                return;
-
-            this.dataBase.Favorites.AddObject((Favorite)favorite);
+            var favoritesToAdd = new List<IFavorite> { favorite };
+            Add(favoritesToAdd);
         }
 
         public void Add(List<IFavorite> favorites)
         {
-            AddAllToDatabase(favorites);
-            this.dataBase.SaveImmediatelyIfRequested();
-            this.dispatcher.ReportFavoritesAdded(favorites);
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                AddAllToDatabase(database, favorites);
+                database.SaveImmediatelyIfRequested();
+                database.DetachAll(favorites);
+                this.dispatcher.ReportFavoritesAdded(favorites);
+            }
         }
 
-        private void AddAllToDatabase(List<IFavorite> favorites)
+        private void AddAllToDatabase(Database database, List<IFavorite> favorites)
         {
-            foreach (var favorite in favorites)
+            IEnumerable<Favorite> toAdd = favorites.Cast<Favorite>();
+            AddAllToDatabase(database, toAdd);
+        }
+
+        private void AddAllToDatabase(Database database, IEnumerable<Favorite> favorites)
+        {
+            foreach (Favorite favorite in favorites)
             {
-                AddToDatabase(favorite);
+                database.Favorites.AddObject(favorite);
             }
         }
 
         public void Update(IFavorite favorite)
         {
-            var candidate = favorite as Favorite;
-            if(candidate.EntityState != EntityState.Modified)
-                return;
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                AttachFavorite(database, favorite);
+                SaveAndReportFavoriteUpdated(database, favorite);
+            }
+        }
 
-            SaveAndReportFavoriteUpdated(favorite);
+        private static void AttachFavorite(Database database, IFavorite favorite)
+        {
+            var toUpdate = favorite as Favorite;
+            database.Attach(toUpdate);
         }
 
         public void UpdateFavorite(IFavorite favorite, List<IGroup> groups)
         {
-            List<IGroup> addedGroups = this.groups.AddToDatabase(groups);
-            List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(groups, favorite.Groups);
-            List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, groups);
-            
-            Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
-            Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
-            List<IGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase();
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                AttachFavorite(database, favorite);
+                List<IGroup> addedGroups = this.groups.AddToDatabase(database, groups);
 
-            this.dispatcher.ReportGroupsRecreated(addedGroups, removedGroups);
-            SaveAndReportFavoriteUpdated(favorite);
+                List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, groups);
+                List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(groups, favorite.Groups);
+                
+                Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
+                Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
+                
+                List<IGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
+                database.SaveChanges();
+                this.dispatcher.ReportGroupsRecreated(addedGroups, removedGroups);
+                SaveAndReportFavoriteUpdated(database, favorite);
+            }
         }
 
-        private void SaveAndReportFavoriteUpdated(IFavorite favorite)
+        private void SaveAndReportFavoriteUpdated(Database database, IFavorite favorite)
         {
-            this.dataBase.SaveImmediatelyIfRequested();
+            database.MarkAsModified(favorite);
+            database.SaveImmediatelyIfRequested();
+            database.Detach(favorite);
             this.dispatcher.ReportFavoriteUpdated(favorite);
         }
 
@@ -104,24 +124,29 @@ namespace Terminals.Data.DB
 
         public void Delete(List<IFavorite> favorites)
         {
-            DeleteFavoritesFromDatabase(favorites);
-            List<IGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase();
-            this.dataBase.SaveImmediatelyIfRequested();
-            this.dispatcher.ReportGroupsDeleted(deletedGroups);
-            this.dispatcher.ReportFavoritesDeleted(favorites);
-        }
-
-        private void DeleteFavoritesFromDatabase(List<IFavorite> favorites)
-        {
-            foreach (var favorite in favorites)
+            using (var database = Database.CreateDatabaseInstance())
             {
-                DeleteFavoriteFromDatabase(favorite);
+                DeleteFavoritesFromDatabase(database, favorites);
+                List<IGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
+                database.SaveImmediatelyIfRequested();
+                this.dispatcher.ReportGroupsDeleted(deletedGroups);
+                this.dispatcher.ReportFavoritesDeleted(favorites);
             }
         }
 
-        private void DeleteFavoriteFromDatabase(IFavorite favorite)
+        private void DeleteFavoritesFromDatabase(Database database, List<IFavorite> favorites)
         {
-            this.dataBase.Favorites.DeleteObject(favorite as Favorite);
+            IEnumerable<Favorite> favoritesToAdd = favorites.Cast<Favorite>();
+            database.AttachAll(favoritesToAdd);
+            DeleteFavoritseFromDatabase(database, favoritesToAdd);
+        }
+
+        private void DeleteFavoritseFromDatabase(Database database, IEnumerable<Favorite> favoritesToAdd)
+        {
+            foreach (Favorite favorite in favoritesToAdd)
+            {
+                database.Favorites.DeleteObject(favorite);
+            }
         }
 
         public SortableList<IFavorite> ToList()
@@ -132,8 +157,13 @@ namespace Terminals.Data.DB
 
         private IEnumerable<IFavorite> GetFavorites()
         {
-            // to list because Linq to entities allowes only cast to primitive types
-            return this.dataBase.Favorites.ToList();
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                // to list because Linq to entities allowes only cast to primitive types
+                var favorites = database.Favorites.ToList();
+                database.DetachAll(favorites);
+                return favorites;
+            }
         }
 
         public SortableList<IFavorite> ToListOrderedByDefaultSorting()
@@ -143,32 +173,44 @@ namespace Terminals.Data.DB
 
         public void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential)
         {
-            Data.Favorites.ApplyCredentialsToFavorites(selectedFavorites, credential);
-            SaveAndReportFavoritesUpdated(selectedFavorites);
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                Data.Favorites.ApplyCredentialsToFavorites(selectedFavorites, credential);
+                SaveAndReportFavoritesUpdated(database, selectedFavorites);
+            }
         }
 
-        private void SaveAndReportFavoritesUpdated(List<IFavorite> selectedFavorites)
+        private void SaveAndReportFavoritesUpdated(Database database, List<IFavorite> selectedFavorites)
         {
-            this.dataBase.SaveImmediatelyIfRequested();
+            database.SaveImmediatelyIfRequested();
             this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
         }
 
         public void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword)
         {
-            Data.Favorites.SetPasswordToFavorites(selectedFavorites, newPassword);
-            SaveAndReportFavoritesUpdated(selectedFavorites);
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                Data.Favorites.SetPasswordToFavorites(selectedFavorites, newPassword);
+                SaveAndReportFavoritesUpdated(database, selectedFavorites);
+            }
         }
 
         public void ApplyDomainNameToAllFavorites(List<IFavorite> selectedFavorites, string newDomainName)
         {
-            Data.Favorites.ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
-            SaveAndReportFavoritesUpdated(selectedFavorites);
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                Data.Favorites.ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
+                SaveAndReportFavoritesUpdated(database, selectedFavorites);
+            }
         }
 
         public void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName)
         {
-            Data.Favorites.ApplyUserNameToFavorites(selectedFavorites, newUserName);
-            SaveAndReportFavoritesUpdated(selectedFavorites);
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                Data.Favorites.ApplyUserNameToFavorites(selectedFavorites, newUserName);
+                SaveAndReportFavoritesUpdated(database, selectedFavorites);
+            }
         }
 
         #region IEnumerable members

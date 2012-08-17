@@ -13,11 +13,27 @@ namespace Terminals.Data
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the unique identifier of parent group. 
-        /// This allwes deep tree structure of favorite groups.
-        /// Empty Guid by default.
+        /// By default set to Guid.Empty, which means no parrent
         /// </summary>
         public Guid Parent { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unique identifier of group in which this group is listed.
+        /// By default set to null, which means, that it isnt listed no where 
+        /// and will appear as one of root folders in first level of favorites tree.
+        /// </summary>
+        IGroup IGroup.Parent
+        {
+            get
+            {
+                return Persistence.Instance.Groups
+                    .FirstOrDefault(candidate => ((Group)candidate).Id == this.Parent);
+            }
+            set
+            {
+                this.Parent = value.Id;
+            }
+        }
 
         private string name;
         public string Name
@@ -45,8 +61,8 @@ namespace Terminals.Data
             : this(new Dictionary<Guid, IFavorite>())
         { }
 
-        internal Group(string name, List<IFavorite> favorites) 
-            : this(favorites.ToDictionary(favorite => favorite.Id))
+        internal Group(string name) 
+            : this(new Dictionary<Guid, IFavorite>())
         {
             this.Name = name;
         }
@@ -175,8 +191,8 @@ namespace Terminals.Data
         internal static string ToString(IGroup group)
         {
             string parent = "Root";
-            if (group.Parent != Guid.Empty)
-                parent = group.Parent.ToString();
+            if (group.Parent != null)
+                parent = group.Name;
 
             return String.Format("Group:Name={0},Id={1},Parent={2},Favorites={3}",
                                  group.Name, group.Id, parent, group.Favorites.Count);
