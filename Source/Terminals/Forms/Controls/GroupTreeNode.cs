@@ -14,8 +14,6 @@ namespace Terminals.Forms.Controls
     {
         internal const string DUMMY_NODE = "Dummy";
 
-        private readonly IGroup group;
-
         /// <summary>
         /// Gets associated data objects, which should be shown in this group
         /// </summary>
@@ -23,17 +21,11 @@ namespace Terminals.Forms.Controls
         {
             get
             {
-                return Data.Favorites.OrderByDefaultSorting(this.group.Favorites);
+                return Data.Favorites.OrderByDefaultSorting(this.Group.Favorites);
             }
         }
 
-        internal virtual Guid GroupId
-        {
-            get
-            {
-                return this.group.Id;
-            }
-        }
+        internal IGroup Group { get; private set; }
 
         /// <summary>
         /// Gets the value indicating lazy loading not performed yet,
@@ -58,7 +50,7 @@ namespace Terminals.Forms.Controls
         internal GroupTreeNode(IGroup group)
             : this(group.Name)
         {
-            this.group = group;
+            this.Group = group;
         }
 
         protected GroupTreeNode(string groupName)
@@ -76,7 +68,7 @@ namespace Terminals.Forms.Controls
 
         internal virtual void UpdateByGroupName()
         {
-            this.Text = this.group.Name;
+            this.Text = this.Group.Name;
         }
     }
 }

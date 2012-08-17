@@ -169,20 +169,6 @@ namespace Terminals.Data
             return favoritesToRemove.Count > 0;
         }
 
-        public override bool Equals(object group)
-        {
-            Group oponent = group as Group;
-            if (oponent == null)
-                return false;
-
-            return this.Id.Equals(oponent.Id);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.Id.GetHashCode();
-        }
-
         public override string ToString()
         {
             return ToString(this);
@@ -196,6 +182,15 @@ namespace Terminals.Data
 
             return String.Format("Group:Name={0},Id={1},Parent={2},Favorites={3}",
                                  group.Name, group.Id, parent, group.Favorites.Count);
+        }
+
+        bool IStoreIdEquals<IGroup>.StoreIdEquals(IGroup oponent)
+        {
+            var oponentGroup = oponent as Group;
+            if (oponentGroup == null)
+                return false;
+
+            return oponentGroup.Id == this.Id;
         }
     }
 }

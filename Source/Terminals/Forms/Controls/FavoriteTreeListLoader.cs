@@ -128,7 +128,7 @@ namespace Terminals.Forms.Controls
             if (groupNode != null && !groupNode.NotLoadedYet)
             {
                 var favoriteNode = groupNode.Nodes.Cast<FavoriteTreeNode>()
-                    .FirstOrDefault(candidate => candidate.Favorite.Equals(favorite));
+                    .FirstOrDefault(candidate => candidate.Favorite.StoreIdEquals(favorite));
 
                 if(favoriteNode != null)
                     groupNode.Nodes.Remove(favoriteNode);
@@ -234,9 +234,8 @@ namespace Terminals.Forms.Controls
 
         private List<GroupTreeNode> GetAffectedNodes(List<IGroup> requiredGroups)
         {
-            IEnumerable<Guid> groupIds = requiredGroups.Select(group => group.Id);
             return this.treeList.Nodes.Cast<GroupTreeNode>()
-                .Where(candidate => groupIds.Contains(candidate.GroupId))
+                .Where(candidate => requiredGroups.Any(required => required.StoreIdEquals(candidate.Group)))
                 .ToList();
         }
 

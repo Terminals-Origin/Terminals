@@ -1036,8 +1036,7 @@ namespace Terminals
 
         private void groupAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Guid groupId = (sender as GroupMenuItem).GroupId;
-            IGroup selectedGroup = Persistence.Instance.Groups[groupId];
+            IGroup selectedGroup = (sender as GroupMenuItem).Group;
             if (selectedGroup != null)
             {
                 IFavorite selectedFavorite = this.terminalsControler.Selected.Favorite;

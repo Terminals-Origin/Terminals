@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-
 using Terminals.Configuration;
 using Terminals.Data;
 
@@ -30,20 +28,9 @@ namespace Terminals.Forms.Controls
             return Data.Favorites.OrderByDefaultSorting(relevantFavorites);
         }
 
-        private readonly Guid groupId;
-
-        internal override Guid GroupId
-        {
-            get
-            {
-                return this.groupId;
-            }
-        }
-
         internal UntagedGroupNode()
             : base(Settings.UNTAGGED_NODENAME)
         {
-            this.groupId = Guid.NewGuid();
         }
 
         internal override void UpdateByGroupName()

@@ -129,7 +129,8 @@ namespace Terminals
             IFavorites persistedFavorites = Persistence.Instance.Favorites;
             editedFavorite.Name = oldName; // to prevent find it self as oldFavorite
             var oldFavorite = persistedFavorites[newName];
-            if (oldFavorite != null && !editedFavorite.Equals(oldFavorite)) // prevent conflict with another favorite than edited
+            // prevent conflict with another favorite than edited
+            if (oldFavorite != null && !editedFavorite.StoreIdEquals(oldFavorite)) 
             {
                 OverwriteByConflictingName(newName, oldFavorite, editedFavorite);
             }

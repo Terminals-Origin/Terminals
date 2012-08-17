@@ -173,6 +173,7 @@
     </Compile>
     <Compile Include="Data\Favorites\FavoriteIcons.cs" />
     <Compile Include="Data\Interfaces\IPersistedSecurity.cs" />
+    <Compile Include="Data\Interfaces\IStoreIdEquals.cs" />
     <Compile Include="Data\PersistenceSecurity.cs" />
     <Compile Include="Forms\AboutForm.cs">
       <SubType>Form</SubType>
