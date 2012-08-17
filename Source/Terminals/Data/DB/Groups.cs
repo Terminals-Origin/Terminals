@@ -10,12 +10,10 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class Groups : IGroups
     {
-        private Database dataBase;
-        private DataDispatcher dispatcher;
+        private readonly DataDispatcher dispatcher;
 
-        internal Groups(Database dataBase, DataDispatcher dispatcher)
+        internal Groups(DataDispatcher dispatcher)
         {
-            this.dataBase = dataBase;
             this.dispatcher = dispatcher;
         }
 
@@ -23,9 +21,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return this.dataBase.Groups
-                    .FirstOrDefault(group => group.Name
-                    .Equals(groupName, StringComparison.CurrentCultureIgnoreCase));
+                using (var database = Database.CreateDatabaseInstance())
+                {
+                    return database.Groups
+                      .FirstOrDefault(group => group.Name.Equals(groupName, StringComparison.CurrentCultureIgnoreCase));
+                }
             }
         }
 
@@ -33,111 +33,108 @@ namespace Terminals.Data.DB
         {
             get
             {
-                return this.dataBase.Groups
-                .FirstOrDefault(candidate => candidate.Guid == groupId);
+                using (var database = Database.CreateDatabaseInstance())
+                {
+                    return database.Groups.FirstOrDefault(candidate => candidate.Guid == groupId);
+                }
             }
         }
 
         public void Add(IGroup group)
         {
-            if (!AddToDatabase(group))
-                return;
-            this.dataBase.SaveImmediatelyIfRequested();
-            this.dispatcher.ReportGroupsAdded(new List<IGroup> { group });
-        }
-
-        private bool AddToDatabase(IGroup group)
-        {
-            if (this.dataBase.Groups.ToList().Contains(group))
-                return false;
-
-            this.dataBase.Groups.AddObject((Group)group);
-            return true;
-        }
-
-        internal List<IGroup> AddToDatabase(List<IGroup> groups)
-        {
-            var added = new List<IGroup>();
-            if (groups == null)
-                return added;
-
-            foreach (Group group in groups)
+            using (var database = Database.CreateDatabaseInstance())
             {
-                if (AddToDatabase(group))
-                    added.Add(group);
+                database.Groups.AddObject((Group)group);
+                database.SaveImmediatelyIfRequested();
+                database.Detach(group);
+                this.dispatcher.ReportGroupsAdded(new List<IGroup> { group });
             }
+        }
 
+        internal List<IGroup> AddToDatabase(Database database, List<IGroup> groups)
+        {
+            // not added groups dont have an identifier obtained from database
+            List<IGroup> added = groups.Where(candidate => ((Group)candidate).Id == 0).ToList();
+            AddAllToDatabase(database, added);
+            List<Group> toAttach = groups.Where(candidate => ((Group)candidate).Id != 0).Cast<Group>().ToList();
+            database.AttachAll(toAttach);
             return added;
+        }
+
+        private static void AddAllToDatabase(Database database, List<IGroup> added)
+        {
+            foreach (Group group in added)
+            {
+                database.Groups.AddObject(group);
+            }
         }
 
         public void Delete(IGroup group)
         {
-            DeleteFromDatabase(group);
-            this.dataBase.SaveImmediatelyIfRequested();
-            this.dispatcher.ReportGroupsDeleted(new List<IGroup> { group });
-        }
-
-        private void DeleteFromDatabase(IGroup group)
-        {
-            var candidate = group as Group;
-            DeleteFromDatabase(candidate);
-        }
-
-        private void DeleteFromDatabase(Group group)
-        {
-            this.dataBase.Groups.DeleteObject(group);
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                var toDelete = group as Group;
+                database.Attach(toDelete);
+                database.Groups.DeleteObject(toDelete);
+                database.SaveImmediatelyIfRequested();
+                this.dispatcher.ReportGroupsDeleted(new List<IGroup> { group });
+            }
         }
 
         public List<IGroup> GetGroupsContainingFavorite(Guid favoriteId)
         {
-            Favorite favorite = this.dataBase.GetFavoriteByGuid(favoriteId);
-            if (favorite != null)
-                return favorite.GetInvariantGroups();
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                Favorite favorite = database.GetFavoriteByGuid(favoriteId);
+                if (favorite != null)
+                    return favorite.GetInvariantGroups();
 
-            return new List<IGroup>();
+                return new List<IGroup>();
+            }
         }
 
         public void Rebuild()
         {
-            DeleteEmptyGroups();
-            this.dataBase.SaveImmediatelyIfRequested();
-        }
-
-        private void DeleteEmptyGroups()
-        {
-            var emptyGroups = this.DeleteEmptyGroupsFromDatabase();
-            this.dispatcher.ReportGroupsDeleted(emptyGroups);
-        }
-
-        internal List<IGroup> DeleteEmptyGroupsFromDatabase()
-        {
-            List<Group> emptyGroups = this.GetEmptyGroups();
-            Delete(emptyGroups);
-            return emptyGroups.Cast<IGroup>().ToList();
-        }
-
-        private void Delete(List<Group> emptyGroups)
-        {
-            foreach (var group in emptyGroups)
+            using (var database = Database.CreateDatabaseInstance())
             {
-                DeleteFromDatabase(group);
+                List<IGroup> emptyGroups = this.DeleteEmptyGroupsFromDatabase(database);
+                database.SaveImmediatelyIfRequested();
+                this.dispatcher.ReportGroupsDeleted(emptyGroups);
             }
         }
 
-        private List<Group> GetEmptyGroups()
+        internal List<IGroup> DeleteEmptyGroupsFromDatabase(Database database)
         {
-            return this.dataBase.Groups.ToList()
-                .Where(group => group.Favorites.Count == 0)
-                .ToList();
+            List<Group> emptyGroups = this.GetEmptyGroups(database);
+            database.AttachAll(emptyGroups);
+            DeleteFromDatabase(database, emptyGroups);
+            return emptyGroups.Cast<IGroup>().ToList();
+        }
+
+        private void DeleteFromDatabase(Database database, IEnumerable<Group> groups)
+        {
+            foreach (Group group in groups)
+            {
+                database.Groups.DeleteObject(group);
+            }
+        }
+
+        private List<Group> GetEmptyGroups(Database database)
+        {
+            return database.Groups.ToList()
+                .Where(group => group.Favorites.Count == 0).ToList();
         }
 
         #region IEnumerable members
 
         public IEnumerator<IGroup> GetEnumerator()
         {
-            return this.dataBase.Groups
-                .ToList()
-                .GetEnumerator();
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                var groups = database.Groups.ToList();
+                database.DetachAll(groups);
+                return groups.GetEnumerator();
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()

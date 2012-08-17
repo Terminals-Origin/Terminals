@@ -15,8 +15,8 @@ namespace Terminals.Data
                 if (Settings.PersistenceType == 0)
                     this.persistence = new FilePersistence();
                 else
-                    this.persistence = new FilePersistence();
-                    // this.persistence = new SqlPersistence();
+                    // this.persistence = new FilePersistence();
+                    this.persistence = new SqlPersistence();
             }
             catch (Exception exception)
             {

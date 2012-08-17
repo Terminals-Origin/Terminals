@@ -446,7 +446,7 @@
             <Parameter Name="IconData" Mode="In" Type="Binary" />
           </FunctionImport>
           <FunctionImport Name="GetFavoriteIcon" ReturnType="Collection(Binary)" a:MethodAccess="Private">
-            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+          <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="BeforeConnectExecute" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">

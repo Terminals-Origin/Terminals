@@ -7,10 +7,8 @@ using Unified;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Favorite : IFavorite, IEntityContext
+    internal partial class Favorite : IFavorite
     {
-        public Database Database { get; set; }
-
         /// <summary>
         /// cant be set in constructor, because the constructor is used by EF when loading the entities
         /// </summary>
@@ -30,31 +28,40 @@ namespace Terminals.Data.DB
 
         Guid IFavorite.Id
         {
-            get { return this.guid; } 
+            get { return this.guid; }
             set { this.guid = value; }
         }
+
+        private BeforeConnectExecute executeBeforeConnect;
 
         IBeforeConnectExecuteOptions IFavorite.ExecuteBeforeConnect
         {
             get
             {
-                return this.ExecuteBeforeConnect; 
+                this.LoadDetails();
+                return this.executeBeforeConnect;
             }
         }
+
+        private DisplayOptions display;
 
         IDisplayOptions IFavorite.Display
         {
             get
             {
-                return this.Display;
+                this.LoadDetails();
+                return this.display;
             }
         }
+
+        private SecurityOptions security;
 
         ISecurityOptions IFavorite.Security
         {
             get
             {
-                return this.Security; 
+                this.LoadDetails();
+                return this.security;
             }
         }
 
@@ -104,8 +111,8 @@ namespace Terminals.Data.DB
         {
             get
             {
-                if (this.Database != null && this.toolBarIcon == null)
-                    this.TryLoadImageFromDatabase();
+                if (this.toolBarIcon == null)
+                    this.LoadImageFromDatabase();
 
                 return this.toolBarIcon;
             }
@@ -129,6 +136,42 @@ namespace Terminals.Data.DB
             this._Protocol = ConnectionManager.RDP;
             this._Port = ConnectionManager.RDPPort;
             this.protocolProperties = new RdpOptions();
+        }
+
+        private void LoadDetails()
+        {
+            if (this.security == null)
+            {
+                using (var database = Database.CreateDatabaseInstance())
+                {
+                    database.Attach(this);
+                    this.LoadSecurity(database);
+                    this.LoadDisplay(database);
+                    this.LoadExecuteBeforeConnect(database);
+                    database.Detach(this);
+                }
+            }
+        }
+
+        private void LoadExecuteBeforeConnect(Database database)
+        {
+            this.ExecuteBeforeConnectReference.Load();
+            this.executeBeforeConnect = this.ExecuteBeforeConnect;
+            database.Detach(this.executeBeforeConnect);
+        }
+
+        private void LoadDisplay(Database database)
+        {
+            this.DisplayReference.Load();
+            this.display = this.Display;
+            database.Detach(this.display);
+        }
+
+        private void LoadSecurity(Database database)
+        {
+            this.SecurityReference.Load();
+            this.security = this.Security;
+            database.Detach(this.security);
         }
 
         internal void MarkAsNewlyCreated()
@@ -160,16 +203,24 @@ namespace Terminals.Data.DB
             }
         }
 
-        private void TryLoadImageFromDatabase()
+        private void LoadImageFromDatabase()
         {
             try
             {
-                byte[] imageData = this.Database.GetFavoriteIcon(this.Id);
-                this.toolBarIcon = FavoriteIcons.LoadImage(imageData, this);
+                this.TryLoadImageFromDatabase();
             }
             catch (Exception exception)
             {
                 Logging.Log.Error("Couldnt load image from database", exception);
+            }
+        }
+
+        private void TryLoadImageFromDatabase()
+        {
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                byte[] imageData = database.GetFavoriteIcon(this.Id);
+                this.toolBarIcon = FavoriteIcons.LoadImage(imageData, this);
             }
         }
 
@@ -256,9 +307,9 @@ namespace Terminals.Data.DB
 
         private void LoadPropertiesFromDatabase()
         {
-            if (this.Database != null)
+            using (var database = Database.CreateDatabaseInstance())
             {
-                string serializedProperties = this.Database.GetFavoriteProtocolProperties(this.Id).FirstOrDefault();
+                string serializedProperties = database.GetFavoriteProtocolProperties(this.Id).FirstOrDefault();
                 Type propertiesType = this.protocolProperties.GetType();
                 this.protocolProperties =
                     Serialize.DeSerializeXML(serializedProperties, propertiesType) as ProtocolOptions;
@@ -271,19 +322,19 @@ namespace Terminals.Data.DB
             return this.Groups.ToList().Cast<IGroup>().ToList();
         }
 
-        public override bool Equals(object favorite)
-        {
-            var oponent = favorite as Favorite;
-            if (oponent == null)
-                return false;
+        //public override bool Equals(object favorite)
+        //{
+        //    var oponent = favorite as Favorite;
+        //    if (oponent == null)
+        //        return false;
 
-            return this.Id.Equals(oponent.Id);
-        }
+        //    return this.Id.Equals(oponent.Id);
+        //}
 
-        public override int GetHashCode()
-        {
-            return this.Id.GetHashCode();
-        }
+        //public override int GetHashCode()
+        //{
+        //    return this.Id.GetHashCode();
+        //}
 
         public override String ToString()
         {

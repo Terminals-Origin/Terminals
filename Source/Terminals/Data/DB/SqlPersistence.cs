@@ -16,8 +16,6 @@ namespace Terminals.Data.DB
         /// </summary>
         private Timer reLoadClock;
 
-        private Database database;
-
         private Favorites favorites;
         public IFavorites Favorites
         {
@@ -53,7 +51,7 @@ namespace Terminals.Data.DB
 
         public void SaveAndFinishDelayedUpdate()
         {
-            this.database.SaveImmediatelyIfRequested();
+            // nothing to do
         }
 
         public void Initialize()
@@ -62,20 +60,22 @@ namespace Terminals.Data.DB
                 return;
 
             this.Dispatcher = new DataDispatcher();
-            this.groups = new Groups(this.database, this.Dispatcher);
-            this.favorites = new Favorites(this.database, this.groups, this.Dispatcher);
-            this.ConnectionHistory = new ConnectionHistory(this.database);
-            this.Credentials = new StoredCredentials(this.database);
-            this.Factory = new Factory(this.database);
+            this.groups = new Groups(this.Dispatcher);
+            this.favorites = new Favorites(this.groups, this.Dispatcher);
+            this.ConnectionHistory = new ConnectionHistory();
+            this.Credentials = new StoredCredentials();
+            this.Factory = new Factory();
         }
 
         private bool TryInitializeDatabase()
         {
             try
             {
-                this.database = Database.CreateDatabaseInstance();
-                this.database.GetMasterPasswordHash(); // dummy test
-                return true;
+                using (var database = Database.CreateDatabaseInstance())
+                {
+                    database.GetMasterPasswordHash(); // dummy test
+                    return true;
+                }
             }
             catch (Exception exception)
             {
@@ -114,7 +114,7 @@ namespace Terminals.Data.DB
             RefreshSecurity();
             RefreshHistory();
             Debug.WriteLine("Updating entities at {0} [{1} ms]", DateTime.Now, clock.ElapsedMilliseconds);
-            this.reLoadClock.Start();
+            // this.reLoadClock.Start();
         }
 
         private void RefreshDatabaseMasterPassword()
@@ -140,10 +140,10 @@ namespace Terminals.Data.DB
         
         private void RefreshFavorites()
         {
-            //this.Refresh(RefreshMode.ClientWins, this.Favorites);
-            //this.Refresh(RefreshMode.ClientWins, this.CredentialBase);
-            //this.Refresh(RefreshMode.ClientWins, this.BeforeConnectExecute);
-            //this.Refresh(RefreshMode.ClientWins, this.DisplayOptions);
+            //this.database.Refresh(RefreshMode.StoreWins, this.database.Favorites);
+            //this.database.Refresh(RefreshMode.ClientWins, this.database.CredentialBase);
+            //this.database.Refresh(RefreshMode.ClientWins, this.database.BeforeConnectExecute);
+            //this.database.Refresh(RefreshMode.ClientWins, this.database.DisplayOptions);
 
             // after all items are loaded, refresh already cached protocol options, which arent part of an entity
         }

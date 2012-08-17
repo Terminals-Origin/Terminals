@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data.Objects;
+﻿using System.Data.Objects;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
@@ -50,7 +49,7 @@ namespace Tests
 
         private void Dispatcher_GroupsChanged(GroupsChangedArgs args)
         {
-            addedCount = args.Added.Count;
+            addedCount += args.Added.Count;
             deletedCount = args.Removed.Count;
         }
 
@@ -61,11 +60,11 @@ namespace Tests
         public void AddGroupTest()
         {
             IFactory factory = this.lab.Persistence.Factory;
-            Group childGroup = factory.CreateGroup("TestGroupA", new List<IFavorite>()) as Group;
-            Group parentGroup = factory.CreateGroup("TestGroupB", new List<IFavorite>()) as Group;
+            Group childGroup = factory.CreateGroup("TestGroupA") as Group;
+            Group parentGroup = factory.CreateGroup("TestGroupB") as Group;
             this.lab.Persistence.Groups.Add(parentGroup);
             this.lab.Persistence.Groups.Add(childGroup);
-            ((IGroup)childGroup).Parent = ((IGroup)parentGroup).Id; // dont use entites here, we are testing intern logic
+            childGroup.Parent = parentGroup; // dont use entites here, we are testing intern logic
 
             ObjectSet<Group> checkedGroups = this.lab.CheckDatabase.Groups;
             Group checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
@@ -74,7 +73,7 @@ namespace Tests
             Assert.IsNotNull(checkedParent, "Group wasnt added to the database");
             Assert.AreEqual(1, checkedParent.ChildGroups.Count, "Group wasnt added as child");
             // only one, becuase Added event is send once for each group
-            Assert.AreEqual(1, this.addedCount, "Add event wasnt received"); 
+            Assert.AreEqual(2, this.addedCount, "Add event wasnt received"); 
         }
 
         /// <summary>
@@ -108,7 +107,7 @@ namespace Tests
         private Group CreateTestGroup()
         {
             IFactory factory = this.lab.Persistence.Factory;
-            Group testGroup = factory.CreateGroup("TestGroupA", new List<IFavorite>()) as Group;
+            Group testGroup = factory.CreateGroup("TestGroupA") as Group;
             this.lab.Persistence.Groups.Add(testGroup);
             return testGroup;
         }

@@ -7,7 +7,6 @@ namespace Terminals.Data.DB
 {
     internal class StoredCredentials : ICredentials
     {
-        private readonly Database dataBase;
         public event EventHandler CredentialsChanged;
 
         ICredentialSet ICredentials.this[Guid id]
@@ -29,34 +28,42 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal StoredCredentials(Database dataBase)
-        {
-            this.dataBase = dataBase;
-        }
-
         public void Add(ICredentialSet toAdd)
         {
-            var credentialToAdd = toAdd as CredentialSet;
-            this.dataBase.CredentialBase.AddObject(credentialToAdd);
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                var credentialToAdd = toAdd as CredentialSet;
+                database.CredentialBase.AddObject(credentialToAdd);
+                database.SaveImmediatelyIfRequested();
+                database.Detach(toAdd);
+            }
         }
 
         public void Remove(ICredentialSet toRemove)
         {
-            var credentailToRemove = toRemove as CredentialSet;
-            this.dataBase.CredentialBase.DeleteObject(credentailToRemove);
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                var credentailToRemove = toRemove as CredentialSet;
+                database.Attach(credentailToRemove);
+                database.CredentialBase.DeleteObject(credentailToRemove);
+                database.SaveImmediatelyIfRequested();
+            }
         }
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            foreach (CredentialBase credentialSet in this.dataBase.CredentialBase)
+            using (var database = Database.CreateDatabaseInstance())
             {
-                credentialSet.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+                foreach (CredentialBase credentialSet in database.CredentialBase)
+                {
+                    credentialSet.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+                }
             }
         }
 
         public void Save()
         {
-            this.dataBase.SaveImmediatelyIfRequested();
+            // nothing to do
         }
 
         #region IEnumerable members
@@ -76,9 +83,10 @@ namespace Terminals.Data.DB
 
         private IEnumerable<CredentialSet> GetCredentials()
         {
-            return this.dataBase.CredentialBase
-                .OfType<CredentialSet>()
-                .ToList();
+            using (var database = Database.CreateDatabaseInstance())
+            {
+                return database.CredentialBase.OfType<CredentialSet>().ToList();
+            }
         }
     }
 }

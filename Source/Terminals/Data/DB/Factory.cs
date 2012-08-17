@@ -7,17 +7,9 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class Factory : IFactory
     {
-        private Database database;
-
-        internal Factory(Database database)
-        {
-            this.database = database;
-        }
-
         public IFavorite CreateFavorite()
         {
             var favorite = new Favorite();
-            favorite.Database = this.database;
             favorite.MarkAsNewlyCreated();
             favorite.Display = new DisplayOptions();
             favorite.Security = new SecurityOptions();
@@ -26,14 +18,10 @@ namespace Terminals.Data.DB
             return favorite;
         }
 
-        public IGroup CreateGroup(string groupName, List<IFavorite> favorites = null)
+        public IGroup CreateGroup(string groupName)
         {
-            if (favorites == null)
-                favorites = new List<IFavorite>();
-
             // call this constructor doesnt fire the group changed event
-            Group createdGroup = new Group(groupName, favorites);
-            createdGroup.Database = this.database;
+            Group createdGroup = new Group(groupName);
             return createdGroup;
         }
 
