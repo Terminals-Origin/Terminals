@@ -6,7 +6,6 @@ using System.Text;
 using System.Xml.Serialization;
 using Terminals.Configuration;
 using Terminals.Connections;
-using Terminals.Forms.Controls;
 using Terminals.Network;
 
 namespace Terminals.Data
@@ -358,18 +357,13 @@ namespace Terminals.Data
             }
         }
 
-        public override bool Equals(object favorite)
+        bool IStoreIdEquals<IFavorite>.StoreIdEquals(IFavorite oponent)
         {
-            Favorite oponent = favorite as Favorite;
-            if (oponent == null)
+            var oponentFavorite = oponent as Favorite;
+            if (oponentFavorite == null)
                 return false;
 
-            return this.Id.Equals(oponent.Id);
-        }
-
-        public override int GetHashCode()
-        {
-            return this.Id.GetHashCode();
+            return oponentFavorite.Id == this.Id;
         }
 
         public override String ToString()

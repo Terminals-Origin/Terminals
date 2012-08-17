@@ -7,7 +7,7 @@ namespace Terminals.Data
     /// Set of connection favorites used in simillar meaning like directories in operation system.
     /// Allows logical organization of favorites.
     /// </summary>
-    internal interface IGroup
+    internal interface IGroup : IStoreIdEquals<IGroup>
     {
         /// <summary>
         /// Gets the unique identifier of the group.

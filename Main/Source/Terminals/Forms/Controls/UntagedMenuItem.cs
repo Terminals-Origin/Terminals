@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terminals.Configuration;
 using Terminals.Data;
 
@@ -10,16 +9,6 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal class UntagedMenuItem : GroupMenuItem
     {
-        private readonly Guid groupId;
-
-        internal override Guid GroupId
-        {
-            get
-            {
-                return this.groupId;
-            }
-        }
-
         internal override List<IFavorite> Favorites
         {
             get
@@ -31,7 +20,6 @@ namespace Terminals.Forms.Controls
         internal UntagedMenuItem()
             : base(Settings.UNTAGGED_NODENAME, true)
         {
-            this.groupId = Guid.NewGuid();
         }
     }
 }

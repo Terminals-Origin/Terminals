@@ -7,7 +7,7 @@ namespace Terminals.Data
     /// <summary>
     /// Connection properties persisted for future reuse
     /// </summary>
-    internal interface IFavorite
+    internal interface IFavorite : IStoreIdEquals<IFavorite>
     {
         /// <summary>
         /// Gets or sets the unique identifier of this instance
@@ -99,6 +99,10 @@ namespace Terminals.Data
         /// <returns>result of String CompareTo method</returns>
         int CompareByDefaultSorting(IFavorite target);
 
+        /// <summary>
+        /// Replaces stored password by new one created from newKeyMaterial in underlaying store.
+        /// </summary>
+        /// <param name="newKeyMaterial">New shared key used to encrypt passwords in the store</param>
         void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial);
     }
 }

@@ -91,7 +91,7 @@ namespace Terminals.Forms.Controls
                 return null;
 
             return groupNode.Nodes.Cast<FavoriteTreeNode>()
-                .FirstOrDefault(favoriteNode => favoriteNode.Favorite.Equals(favorite));
+                .FirstOrDefault(favoriteNode => favoriteNode.Favorite.StoreIdEquals(favorite));
         }
     }
 }

@@ -260,6 +260,15 @@ namespace Terminals.Data.DB
             Data.Favorite.UpdatePasswordsInProtocolProperties(this.protocolProperties, newKeyMaterial);
         }
 
+        bool IStoreIdEquals<IFavorite>.StoreIdEquals(IFavorite oponent)
+        {
+            var oponentFavorite = oponent as Favorite;
+            if (oponentFavorite == null)
+                return false;
+
+            return oponentFavorite.Id == this.Id;
+        }
+
         /// <summary>
         /// Reflect the protocol change into the protocol properties
         /// </summary>
@@ -321,20 +330,6 @@ namespace Terminals.Data.DB
         {
             return this.Groups.ToList().Cast<IGroup>().ToList();
         }
-
-        //public override bool Equals(object favorite)
-        //{
-        //    var oponent = favorite as Favorite;
-        //    if (oponent == null)
-        //        return false;
-
-        //    return this.Id.Equals(oponent.Id);
-        //}
-
-        //public override int GetHashCode()
-        //{
-        //    return this.Id.GetHashCode();
-        //}
 
         public override String ToString()
         {

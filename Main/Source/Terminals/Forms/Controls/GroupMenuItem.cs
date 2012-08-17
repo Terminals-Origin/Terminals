@@ -15,24 +15,16 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal const String TAG = "tag";
 
-        private readonly IGroup group;
-
         /// <summary>
         /// Gets the associated favorites group unique identifier
         /// </summary>
-        internal virtual Guid GroupId
-        {
-            get
-            {
-                return this.group.Id;
-            }
-        }
+        internal IGroup Group { get; private set; }
 
         internal virtual List<IFavorite> Favorites
         {
             get
             {
-                return this.group.Favorites;
+                return this.Group.Favorites;
             }
         }
 
@@ -52,7 +44,7 @@ namespace Terminals.Forms.Controls
         internal GroupMenuItem(IGroup group, bool createDummyItem = true)
             : this(group.Name, createDummyItem)
         {
-            this.group = group;
+            this.Group = group;
         }
 
         protected GroupMenuItem(string groupName, bool createDummyItem = true)

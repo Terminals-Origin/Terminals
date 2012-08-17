@@ -112,22 +112,17 @@ namespace Terminals.Data.DB
         {
             var toRemove = favorite as Favorite;
             this.Favorites.Attach(toRemove);
-            bool result = this.Favorites.Remove(toRemove);
+            this.Favorites.Remove(toRemove);
         }
 
-        //public override bool Equals(object group)
-        //{
-        //    Group oponent = group as Group;
-        //    if (oponent == null)
-        //        return false;
+        bool IStoreIdEquals<IGroup>.StoreIdEquals(IGroup oponent)
+        {
+            var oponentGroup = oponent as Group;
+            if (oponentGroup == null)
+                return false;
 
-        //    return this.Id.Equals(oponent.Id);
-        //}
-
-        //public override int GetHashCode()
-        //{
-        //    return this.Id.GetHashCode();
-        //}
+            return oponentGroup.Id == this.Id;
+        }
 
         public override string ToString()
         {
