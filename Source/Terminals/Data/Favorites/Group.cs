@@ -31,7 +31,9 @@ namespace Terminals.Data
             }
             set
             {
-                this.Parent = value.Id;
+                var newParent = value as Group;
+                if (newParent != null)
+                    this.Parent = newParent.Id;
             }
         }
 
@@ -47,7 +49,7 @@ namespace Terminals.Data
             }
         }
 
-        private Dictionary<Guid, IFavorite> favorites;
+        private readonly Dictionary<Guid, IFavorite> favorites;
         [XmlIgnore]
         List<IFavorite> IGroup.Favorites
         {
@@ -171,17 +173,17 @@ namespace Terminals.Data
 
         public override string ToString()
         {
-            return ToString(this);
+            return ToString(this, this.Id.ToString());
         }
 
-        internal static string ToString(IGroup group)
+        internal static string ToString(IGroup group, string groupId)
         {
             string parent = "Root";
             if (group.Parent != null)
                 parent = group.Name;
 
             return String.Format("Group:Name={0},Id={1},Parent={2},Favorites={3}",
-                                 group.Name, group.Id, parent, group.Favorites.Count);
+                                 group.Name, groupId, parent, group.Favorites.Count);
         }
 
         bool IStoreIdEquals<IGroup>.StoreIdEquals(IGroup oponent)

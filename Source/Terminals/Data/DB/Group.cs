@@ -6,23 +6,6 @@ namespace Terminals.Data.DB
 {
     internal partial class Group : IGroup
     {
-        private readonly Guid guid = Guid.NewGuid();
-
-        /// <summary>
-        /// Gets the uniqeu identifier of this goup.
-        /// This property is redundant and used only for internal use to reduce interface type casting.
-        /// It isnt persisted. See database Id property.
-        /// </summary>
-        internal Guid Guid
-        {
-            get { return this.guid; }
-        }
-
-        Guid IGroup.Id
-        {
-            get { return this.guid; }
-        }
-
         /// <summary>
         /// Gets or sets the virtual unique identifer. This isnt used, because of internal database identifier.
         /// Only for compatibility with file persistence.
@@ -126,7 +109,7 @@ namespace Terminals.Data.DB
 
         public override string ToString()
         {
-            return Data.Group.ToString(this);
+            return Data.Group.ToString(this, this.Id.ToString());
         }
     }
 }

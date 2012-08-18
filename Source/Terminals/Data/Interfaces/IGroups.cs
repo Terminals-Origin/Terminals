@@ -17,12 +17,6 @@ namespace Terminals.Data
         IGroup this[string groupName] { get; }
 
         /// <summary>
-        /// Gets the stored group identified by its unique identifier.
-        /// If no group exists with provided identifier, than returns null.
-        /// </summary>
-        IGroup this[Guid groupId] { get; }
-
-        /// <summary>
         /// Adds group in the persistence, if no group with its identifier exists.
         /// Saves changes, if delayed save isnt required.
         /// </summary>

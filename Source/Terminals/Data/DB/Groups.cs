@@ -29,17 +29,6 @@ namespace Terminals.Data.DB
             }
         }
 
-        IGroup IGroups.this[Guid groupId]
-        {
-            get
-            {
-                using (var database = Database.CreateDatabaseInstance())
-                {
-                    return database.Groups.FirstOrDefault(candidate => candidate.Guid == groupId);
-                }
-            }
-        }
-
         public void Add(IGroup group)
         {
             using (var database = Database.CreateDatabaseInstance())
