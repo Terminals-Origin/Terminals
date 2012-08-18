@@ -22,7 +22,7 @@ namespace Terminals.Data
             this.cache = new Dictionary<Guid,IGroup>();
         }
 
-        private bool AddToCache(IGroup group)
+        private bool AddToCache(Group group)
         {
             if (group == null || this.cache.ContainsKey(group.Id))
                 return false;
@@ -61,7 +61,7 @@ namespace Terminals.Data
             return deleted;
         }
 
-        private bool DeleteFromCache(IGroup group)
+        private bool DeleteFromCache(Group group)
         {
             if (group == null || !this.cache.ContainsKey(group.Id))
                 return false;
@@ -143,7 +143,7 @@ namespace Terminals.Data
         /// <summary>
         /// Gets a group by its unique identifier. Returns null, if the identifier is unknown.
         /// </summary>
-        public IGroup this[Guid groupId]
+        internal IGroup this[Guid groupId]
         {
             get
             {
@@ -156,7 +156,7 @@ namespace Terminals.Data
 
         public void Add(IGroup group)
         {
-            if (AddToCache(group))
+            if (AddToCache(group as Group))
             {
                 this.dispatcher.ReportGroupsAdded(new List<IGroup> {group});
                 this.persistence.SaveImmediatelyIfRequested();
@@ -165,7 +165,7 @@ namespace Terminals.Data
 
         public void Delete(IGroup group)
         {
-            if (DeleteFromCache(group))
+            if (DeleteFromCache(group as Group))
             {
                 this.dispatcher.ReportGroupsDeleted(new List<IGroup> {group});
                 this.persistence.SaveImmediatelyIfRequested();

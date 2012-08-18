@@ -10,11 +10,6 @@ namespace Terminals.Data
     internal interface IGroup : IStoreIdEquals<IGroup>
     {
         /// <summary>
-        /// Gets the unique identifier of the group.
-        /// </summary>
-        Guid Id { get; }
-
-        /// <summary>
         /// Gets or sets the group in which this group is listed.
         /// By default empty, which means, that it isnt listed no where 
         /// and will appear as one of root folders in first level of favorites tree.

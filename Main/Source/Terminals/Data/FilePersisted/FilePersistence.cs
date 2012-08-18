@@ -13,7 +13,7 @@ namespace Terminals.Data
 {
     internal class FilePersistence : IPersistence, IPersistedSecurity
     {
-        private Favorites favorites;
+        private readonly Favorites favorites;
         public IFavorites Favorites
         {
             get
@@ -22,7 +22,7 @@ namespace Terminals.Data
             }
         }
 
-        private Groups groups;
+        private readonly Groups groups;
         internal Groups GroupsStore
         {
             get { return this.groups; }
@@ -36,19 +36,19 @@ namespace Terminals.Data
             }
         }
 
-        private Factory factory;
+        private readonly Factory factory;
         public IFactory Factory
         {
             get { return this.factory; }
         }
 
-        private StoredCredentials storedCredentials;
+        private readonly StoredCredentials storedCredentials;
         public ICredentials Credentials
         {
             get { return this.storedCredentials; }
         }
 
-        private ConnectionHistory connectionHistory;
+        private readonly ConnectionHistory connectionHistory;
         public IConnectionHistory ConnectionHistory
         {
             get { return this.connectionHistory; }
@@ -58,9 +58,9 @@ namespace Terminals.Data
 
         public PersistenceSecurity Security { get; private set; }
 
-        private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistence");
+        private readonly Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistence");
         private DataFileWatcher fileWatcher;
-        private bool delaySave = false;
+        private bool delaySave;
 
         internal FilePersistence() : this(new PersistenceSecurity())
         {}
@@ -184,7 +184,7 @@ namespace Terminals.Data
 
             foreach (FavoritesInGroup favoritesInGroup in favoritesInGroups)
             {
-                var group = this.Groups[favoritesInGroup.GroupId] as Group;
+                var group = this.groups[favoritesInGroup.GroupId] as Group;
                 bool groupUpdated = this.UpdateFavoritesInGroup(group, favoritesInGroup.Favorites);
                 if (groupUpdated)
                     updatedGroups.Add(group);
