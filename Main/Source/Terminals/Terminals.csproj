@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\AuthenticationPrompt.cs" />
+    <Compile Include="Data\DB\FavoriteDetails.cs" />
     <Compile Include="Data\DB\SQLPersistence.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

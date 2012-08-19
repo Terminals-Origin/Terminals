@@ -12,7 +12,9 @@ namespace Terminals.Data.DB
         /// <summary>
         /// cant be set in constructor, because the constructor is used by EF when loading the entities
         /// </summary>
-        private bool isNewlyCreated = false;
+        private bool isNewlyCreated;
+
+        private readonly FavoriteDetails details;
 
         /// <summary>
         /// Should be never null to prevent access violations
@@ -38,7 +40,7 @@ namespace Terminals.Data.DB
         {
             get
             {
-                this.LoadDetails();
+                this.details.Load();
                 return this.executeBeforeConnect;
             }
         }
@@ -49,7 +51,7 @@ namespace Terminals.Data.DB
         {
             get
             {
-                this.LoadDetails();
+                this.details.Load();
                 return this.display;
             }
         }
@@ -60,7 +62,7 @@ namespace Terminals.Data.DB
         {
             get
             {
-                this.LoadDetails();
+                this.details.Load();
                 return this.security;
             }
         }
@@ -79,7 +81,7 @@ namespace Terminals.Data.DB
         {
             get
             {
-                this.LoadProtocolProperties();
+                this.details.LoadProtocolProperties();
                 return this.protocolProperties;
             }
             set
@@ -112,7 +114,7 @@ namespace Terminals.Data.DB
             get
             {
                 if (this.toolBarIcon == null)
-                    this.LoadImageFromDatabase();
+                    this.details.LoadImageFromDatabase();
 
                 return this.toolBarIcon;
             }
@@ -136,92 +138,12 @@ namespace Terminals.Data.DB
             this._Protocol = ConnectionManager.RDP;
             this._Port = ConnectionManager.RDPPort;
             this.protocolProperties = new RdpOptions();
-        }
-
-        private void LoadDetails()
-        {
-            if (this.security == null)
-            {
-                using (var database = Database.CreateDatabaseInstance())
-                {
-                    database.Attach(this);
-                    this.LoadSecurity(database);
-                    this.LoadDisplay(database);
-                    this.LoadExecuteBeforeConnect(database);
-                    database.Detach(this);
-                }
-            }
-        }
-
-        private void LoadExecuteBeforeConnect(Database database)
-        {
-            this.ExecuteBeforeConnectReference.Load();
-            this.executeBeforeConnect = this.ExecuteBeforeConnect;
-            database.Detach(this.executeBeforeConnect);
-        }
-
-        private void LoadDisplay(Database database)
-        {
-            this.DisplayReference.Load();
-            this.display = this.Display;
-            database.Detach(this.display);
-        }
-
-        private void LoadSecurity(Database database)
-        {
-            this.SecurityReference.Load();
-            this.security = this.Security;
-            database.Detach(this.security);
+            this.details = new FavoriteDetails(this);
         }
 
         internal void MarkAsNewlyCreated()
         {
             this.isNewlyCreated = true;
-        }
-
-        internal void UpdateImageInDatabase(Database database)
-        {
-            try
-            {
-                this.TryUpdateImageInDatabase(database);
-            }
-            catch (Exception exception)
-            {
-                Logging.Log.Error("Couldnt load image from database", exception);
-            }
-        }
-
-        private void TryUpdateImageInDatabase(Database database)
-        {
-            if (this.toolBarIcon != null)
-            {
-                byte[] imageData = FavoriteIcons.ImageToBinary(this.toolBarIcon);
-                if (imageData.Length > 0)
-                {
-                    database.SetFavoriteIcon(this.Id, imageData);
-                }
-            }
-        }
-
-        private void LoadImageFromDatabase()
-        {
-            try
-            {
-                this.TryLoadImageFromDatabase();
-            }
-            catch (Exception exception)
-            {
-                Logging.Log.Error("Couldnt load image from database", exception);
-            }
-        }
-
-        private void TryLoadImageFromDatabase()
-        {
-            using (var database = Database.CreateDatabaseInstance())
-            {
-                byte[] imageData = database.GetFavoriteIcon(this.Id);
-                this.toolBarIcon = FavoriteIcons.LoadImage(imageData, this);
-            }
         }
 
         public IFavorite Copy()
@@ -277,60 +199,27 @@ namespace Terminals.Data.DB
             this.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(this.Protocol, this.protocolProperties);
         }
 
-        /// <summary>
-        /// Using given database context commits changes of protocol properties into the database
-        /// </summary>
-        internal void SaveProperties(Database database)
-        {
-            try
-            {
-                string serializedProperties = Serialize.SerializeXMLAsString(this.protocolProperties);
-                database.UpdateFavoriteProtocolProperties(this.Id, serializedProperties);
-                this.isNewlyCreated = false;
-            }
-            catch (Exception exception)
-            {
-                Logging.Log.Error("Couldnt save protocol properties to database", exception);
-            }
-        }
-
-        /// <summary>
-        /// Realization of expensive property lazy loading
-        /// </summary>
-        private void LoadProtocolProperties()
-        {
-            try
-            {
-                if (!this.isNewlyCreated)
-                {
-                    this.LoadPropertiesFromDatabase();
-                }
-            }
-            catch (Exception exception)
-            {
-                Logging.Log.Error("Couldnt obtain protocol properties from database", exception);
-                this.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(
-                  this.Protocol, new RdpOptions());
-            }
-        }
-
-        private void LoadPropertiesFromDatabase()
-        {
-            using (var database = Database.CreateDatabaseInstance())
-            {
-                string serializedProperties = database.GetFavoriteProtocolProperties(this.Id).FirstOrDefault();
-                Type propertiesType = this.protocolProperties.GetType();
-                this.protocolProperties =
-                    Serialize.DeSerializeXML(serializedProperties, propertiesType) as ProtocolOptions;
-            }
-
-        }
-
         internal List<IGroup> GetInvariantGroups()
         {
             return this.Groups.ToList().Cast<IGroup>().ToList();
         }
 
+        internal void MarkAsModified(Database database)
+        {
+            database.MarkAsModified(this);
+            this.details.MarkAsModified(database);
+        }
+
+        internal void SaveDetails(Database database)
+        {
+            this.details.Save(database);
+        }
+
+        internal void DetachDetails(Database database)
+        {
+            this.details.Detach(database);
+        }
+        
         public override String ToString()
         {
             return Data.Favorite.ToString(this);

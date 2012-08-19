@@ -81,17 +81,16 @@ namespace Terminals.Data.DB
             lock (this.updateLock)
             {
                 returnValue = base.SaveChanges(options);
-                this.SaveFavoriteProtocolProperties(changedFavorites);
+                this.SaveFavoriteDetails(changedFavorites);
             }
             return returnValue;
         }
 
-        private void SaveFavoriteProtocolProperties(IEnumerable<Favorite> changedFavorites)
+        private void SaveFavoriteDetails(IEnumerable<Favorite> changedFavorites)
         {
-            foreach (var favorite in changedFavorites)
+            foreach (Favorite favorite in changedFavorites)
             {
-                favorite.SaveProperties(this);
-                favorite.UpdateImageInDatabase(this);
+                favorite.SaveDetails(this);
             }
         }
 
@@ -208,6 +207,20 @@ namespace Terminals.Data.DB
             {
                 this.Detach(entity);
             }
+        }
+
+        internal void DetachAll(IEnumerable<Favorite> favorites)
+        {
+            foreach (Favorite favorite in favorites)
+            {
+                this.DetachFavorite(favorite);
+            }
+        }
+
+        internal void DetachFavorite(Favorite favorite)
+        {
+            favorite.DetachDetails(this);
+            this.Detach(favorite);
         }
 
         /// <summary>
