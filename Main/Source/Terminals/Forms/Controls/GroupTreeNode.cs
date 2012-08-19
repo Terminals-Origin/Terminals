@@ -60,10 +60,10 @@ namespace Terminals.Forms.Controls
             this.Name = groupName;
         }
 
-        internal bool ContainsFavoriteNode(Guid favoriteId)
+        internal bool ContainsFavoriteNode(IFavorite favorite)
         {
             return this.Nodes.Cast<FavoriteTreeNode>()
-                .Any(treeNode => treeNode.Favorite.Id == favoriteId);
+                .Any(treeNode => treeNode.Favorite.StoreIdEquals(favorite));
         }
 
         internal virtual void UpdateByGroupName()

@@ -14,6 +14,7 @@ namespace Terminals.History
 
     internal sealed class ConnectionHistory : IConnectionHistory
     {
+        private readonly Favorites favorites;
         private ManualResetEvent loadingGate = new ManualResetEvent(false);
         private DataFileWatcher fileWatcher;
         private HistoryByFavorite currentHistory = null;
@@ -24,8 +25,9 @@ namespace Terminals.History
         /// </summary>
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.History");
 
-        internal ConnectionHistory()
+        internal ConnectionHistory(Favorites favorites)
         {
+            this.favorites = favorites;
             fileWatcher = new DataFileWatcher(FileLocations.HistoryFullFileName);
             fileWatcher.FileChanged += new EventHandler(this.OnFileChanged);
             fileWatcher.StartObservation();
@@ -127,7 +129,7 @@ namespace Terminals.History
                     LoadFile();
 
                 if (this.currentHistory == null)
-                    this.currentHistory = new HistoryByFavorite();
+                    this.currentHistory = new HistoryByFavorite{ Favorites = this.favorites};
             }
         }
 
@@ -136,7 +138,9 @@ namespace Terminals.History
             try
             {
                 fileLock.WaitOne();
-                this.currentHistory = Serialize.DeserializeXMLFromDisk(FileLocations.HistoryFullFileName, typeof(HistoryByFavorite)) as HistoryByFavorite;
+                var loadedHistory = Serialize.DeserializeXMLFromDisk(FileLocations.HistoryFullFileName, typeof(HistoryByFavorite)) as HistoryByFavorite;
+                loadedHistory.Favorites = this.favorites;
+                this.currentHistory = loadedHistory;
             }
             finally 
             {

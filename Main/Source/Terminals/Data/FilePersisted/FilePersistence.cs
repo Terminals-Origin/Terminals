@@ -72,10 +72,10 @@ namespace Terminals.Data
         {
             this.InitializeSecurity(security);
             this.Dispatcher = new DataDispatcher();
-            this.connectionHistory = new ConnectionHistory();
             this.storedCredentials = new StoredCredentials();
             this.groups = new Groups(this);
             this.favorites = new Favorites(this);
+            this.connectionHistory = new ConnectionHistory(this.favorites);
             this.factory = new Factory();
             this.InitializeFileWatch();
         }
