@@ -37,8 +37,6 @@ namespace Tests
         {
             this.lab = new SqlTestsLab();
             this.lab.InitializeTestLab();
-            secondaryPersistence = new SqlPersistence();
-            this.secondaryPersistence.Initialize();
             this.lab.Persistence.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(Dispatcher_FavoritesChanged);
         }
 
@@ -112,8 +110,10 @@ namespace Tests
             favorite.Display.Colors = Terminals.Colors.Bits24;
             this.lab.Persistence.Favorites.Update(favorite);
 
-            Favorite target = this.lab.CheckDatabase.Favorites.FirstOrDefault();
+            IFavorite target = this.lab.SecondaryPersistence.Favorites.FirstOrDefault();
             Assert.IsTrue(target.Protocol == ConnectionManager.VNC, "Protocol wasnt updated");
+            Assert.IsTrue(target.Display.Colors == Terminals.Colors.Bits24, "Colors property wasnt updated");
+
             var testOptions = target.ProtocolProperties as VncOptions;
             Assert.IsNotNull(testOptions, "Protocol properties werent updated");
             Assert.AreEqual(1, updatedCount, "Event wasnt delivered");
