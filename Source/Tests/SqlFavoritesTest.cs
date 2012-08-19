@@ -106,9 +106,10 @@ namespace Tests
         [TestMethod]
         public void UpdateFavoriteTest()
         {
-            Favorite favorite = this.lab.CreateTestFavorite();
+            IFavorite favorite = this.lab.CreateTestFavorite();
             this.lab.Persistence.Favorites.Add(favorite);
             favorite.Protocol = ConnectionManager.VNC;
+            favorite.Display.Colors = Terminals.Colors.Bits24;
             this.lab.Persistence.Favorites.Update(favorite);
 
             Favorite target = this.lab.CheckDatabase.Favorites.FirstOrDefault();

@@ -54,7 +54,7 @@ namespace Terminals.Data.DB
             {
                 AddAllToDatabase(database, favorites);
                 database.SaveImmediatelyIfRequested();
-                database.DetachAll(favorites);
+                database.DetachAll(favorites.Cast<Favorite>());
                 this.dispatcher.ReportFavoritesAdded(favorites);
             }
         }
@@ -77,22 +77,24 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateDatabaseInstance())
             {
-                AttachFavorite(database, favorite);
-                SaveAndReportFavoriteUpdated(database, favorite);
+                var toUpdate = favorite as Favorite;
+                if (toUpdate != null)
+                {
+                    database.Attach(toUpdate);
+                    SaveAndReportFavoriteUpdated(database, toUpdate);
+                }
             }
-        }
-
-        private static void AttachFavorite(Database database, IFavorite favorite)
-        {
-            var toUpdate = favorite as Favorite;
-            database.Attach(toUpdate);
         }
 
         public void UpdateFavorite(IFavorite favorite, List<IGroup> groups)
         {
             using (var database = Database.CreateDatabaseInstance())
             {
-                AttachFavorite(database, favorite);
+                var toUpdate = favorite as Favorite;
+                if (toUpdate == null)
+                    return;
+
+                database.Attach(toUpdate);
                 List<IGroup> addedGroups = this.groups.AddToDatabase(database, groups);
 
                 List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, groups);
@@ -104,15 +106,15 @@ namespace Terminals.Data.DB
                 List<IGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
                 database.SaveChanges();
                 this.dispatcher.ReportGroupsRecreated(addedGroups, removedGroups);
-                SaveAndReportFavoriteUpdated(database, favorite);
+                SaveAndReportFavoriteUpdated(database, toUpdate);
             }
         }
 
-        private void SaveAndReportFavoriteUpdated(Database database, IFavorite favorite)
+        private void SaveAndReportFavoriteUpdated(Database database, Favorite favorite)
         {
-            database.MarkAsModified(favorite);
+            favorite.MarkAsModified(database);
             database.SaveImmediatelyIfRequested();
-            database.Detach(favorite);
+            database.DetachFavorite(favorite);
             this.dispatcher.ReportFavoriteUpdated(favorite);
         }
 
@@ -136,7 +138,7 @@ namespace Terminals.Data.DB
 
         private void DeleteFavoritesFromDatabase(Database database, List<IFavorite> favorites)
         {
-            IEnumerable<Favorite> favoritesToAdd = favorites.Cast<Favorite>();
+            IEnumerable<Favorite> favoritesToAdd = favorites.Cast<Favorite>().ToList();
             database.AttachAll(favoritesToAdd);
             DeleteFavoritseFromDatabase(database, favoritesToAdd);
         }
@@ -160,7 +162,7 @@ namespace Terminals.Data.DB
             using (var database = Database.CreateDatabaseInstance())
             {
                 // to list because Linq to entities allowes only cast to primitive types
-                var favorites = database.Favorites.ToList();
+                List<Favorite> favorites = database.Favorites.ToList();
                 database.DetachAll(favorites);
                 return favorites;
             }
