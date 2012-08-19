@@ -8,6 +8,8 @@ namespace Terminals.Data
     /// </summary>
     internal interface IFavorites : IEnumerable<IFavorite>
     {
+        // todo remove this indexer, because it depends on store type,
+        // expecting, that for DB persistence the per user stored toolbarbuttons wouldnt work
         /// <summary>
         /// Gets the stored favorite identified by its unique identifier.
         /// If no favorites exists with provided identifier, than returns null.
