@@ -13,6 +13,8 @@ namespace Tests
         /// </summary>
         internal SqlPersistence Persistence { get; private set; }
 
+        internal SqlPersistence SecondaryPersistence { get; private set; }
+
         /// <summary>
         /// Gets second connector to lab database. Used to check, if data reached the store
         /// </summary>
@@ -25,8 +27,12 @@ namespace Tests
         {
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
             Settings.ConnectionString = Database.DEFAULT_CONNECTION_STRING;
-            Persistence = new SqlPersistence();
+            
+            this.Persistence = new SqlPersistence();
             this.Persistence.Initialize();
+            this.SecondaryPersistence = new SqlPersistence();
+            this.SecondaryPersistence.Initialize();
+
             CheckDatabase = Database.CreateDatabaseInstance();
             ClearTestLab(); // because of failed previos tests
         }
