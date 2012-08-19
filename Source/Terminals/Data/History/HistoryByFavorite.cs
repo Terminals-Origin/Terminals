@@ -8,21 +8,32 @@ namespace Terminals.Data
     /// </summary>
     public class HistoryByFavorite : SerializableSortedDictionary<Guid , List<HistoryItem>>
     {
+        /// <summary>
+        /// Internal store to resolve favorites from.
+        /// </summary>
+        internal Favorites Favorites { get; set; }
+
         internal SerializableDictionary<string, SortableList<IHistoryItem>> GroupByDate()
         {
             SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate = InitializeGroups();
-            IFavorites favorites = Persistence.Instance.Favorites;
+            if (this.Favorites == null)
+                return groupedByDate;
 
-            foreach (Guid favoriteId in this.Keys)  // key is the favorite unique identifier
+            this.GroupFavoriteKeysByDate(groupedByDate);
+            return groupedByDate;
+        }
+
+        private void GroupFavoriteKeysByDate(SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate)
+        {
+            foreach (Guid favoriteId in this.Keys) // key is the favorite unique identifier
             {
-                IFavorite favorite = favorites[favoriteId];
-                foreach (IHistoryItem item in this[favoriteId])  // each history item per favorite
+                IFavorite favorite = this.Favorites[favoriteId];
+                foreach (IHistoryItem item in this[favoriteId]) // each history item per favorite
                 {
                     item.Favorite = favorite; // assign navigation property value
-                    AddItemToGroup(groupedByDate, item);
+                    this.AddItemToGroup(groupedByDate, item);
                 }
             }
-            return groupedByDate;
         }
 
         private void AddItemToGroup(SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate, IHistoryItem item)

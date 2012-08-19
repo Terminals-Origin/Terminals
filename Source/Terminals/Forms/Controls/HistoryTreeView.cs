@@ -82,7 +82,7 @@ namespace Terminals.Forms.Controls
             if (todayGroup.NotLoadedYet)
                 return;
 
-            if (!todayGroup.ContainsFavoriteNode(args.Favorite.Id))
+            if (!todayGroup.ContainsFavoriteNode(args.Favorite))
                 InsertRecordedNode(todayGroup, args);
         }
 
