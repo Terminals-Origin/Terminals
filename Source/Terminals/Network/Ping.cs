@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Text;
@@ -33,8 +34,8 @@ namespace Terminals.Network
         #endregion
 
         #region Constructors
-        
-        public Ping()
+
+        internal Ping()
         {
             InitializeComponent();
             this.DoUpdateForm = new MethodInvoker(this.UpdateForm);
@@ -179,6 +180,12 @@ namespace Terminals.Network
 
         #region Developer made methods
 
+        internal void ForcePing(String hostName)
+        {
+            this.TextHost.Text = hostName;
+            this.ButtonStart.PerformClick();
+        }
+
         private void TryPing(Object state)
         {
             if (this.pingRunning && this.pingReady)
@@ -285,12 +292,6 @@ namespace Terminals.Network
             }
         }
 
-        public void ForcePing(String hostName)
-        {
-            this.TextHost.Text = hostName;
-            this.ButtonStart.PerformClick();
-        }
-
         /// <summary>
         /// Update form control with new data.
         /// </summary>
@@ -375,21 +376,23 @@ namespace Terminals.Network
         private void UpdateGraph()
         {
             // Make up some data points based on the Sine function
-            PointPairList list = new PointPairList();
-            PointPairList avgList = new PointPairList();
-            Int32 x = 1;
-            Int64 yMax = 0;
+            var roundTripList = new PointPairList();
+            var avgList = new PointPairList();
+            const Int32 topPad = 8;
+            Int32 x = 0;
+            Int64 yMax = topPad;
             Int64 sum = 0;
+            
 
             foreach (PingReplyData p in pingList)
             {
                 if (p.RoundTripTime > yMax)
-                    yMax = p.RoundTripTime;
+                    yMax = p.RoundTripTime + topPad;
 
-                list.Add(x, p.RoundTripTime);
+                roundTripList.Add(x, p.RoundTripTime);
 
                 sum += p.RoundTripTime;
-                avgList.Add(x, (Int32)(sum / x));
+                avgList.Add(x, (Int32)(sum / (x + 1)));
                 x++;
             }
 
@@ -402,13 +405,13 @@ namespace Terminals.Network
             myPane.XAxis.Scale.Max = x;
 
             myPane.CurveList.Clear();
-            LineItem myCurve = myPane.AddCurve(this.TextHost.Text, list, Color.Blue, SymbolType.Diamond);
-            LineItem avgCurve = myPane.AddCurve("Average", avgList, Color.Red, SymbolType.Diamond);
+            LineItem myCurve = myPane.AddCurve(this.TextHost.Text, roundTripList, Color.Blue, SymbolType.Circle);
+            myPane.AddCurve("Average", avgList, Color.Red, SymbolType.Square);
 
             // Fill the symbols with white
             myCurve.Symbol.Fill = new Fill(Color.White);
             // Associate this curve with the Y2 axis
-            myCurve.IsY2Axis = true;
+            //myCurve.IsY2Axis = true;
 
             // Tell ZedGraph to calculate the axis ranges
             // Note that you MUST call this after enabling IsAutoScrollRange, since AxisChange() sets
