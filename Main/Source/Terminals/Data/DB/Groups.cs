@@ -21,7 +21,7 @@ namespace Terminals.Data.DB
         {
             get
             {
-                using (var database = Database.CreateDatabaseInstance())
+                using (var database = Database.CreateInstance())
                 {
                     return database.Groups
                       .FirstOrDefault(group => group.Name.Equals(groupName, StringComparison.CurrentCultureIgnoreCase));
@@ -31,7 +31,7 @@ namespace Terminals.Data.DB
 
         public void Add(IGroup group)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 database.Groups.AddObject((Group)group);
                 database.SaveImmediatelyIfRequested();
@@ -60,7 +60,7 @@ namespace Terminals.Data.DB
 
         public void Delete(IGroup group)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 var toDelete = group as Group;
                 database.Attach(toDelete);
@@ -72,7 +72,7 @@ namespace Terminals.Data.DB
 
         public List<IGroup> GetGroupsContainingFavorite(Guid favoriteId)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 Favorite favorite = database.GetFavoriteByGuid(favoriteId);
                 if (favorite != null)
@@ -84,7 +84,7 @@ namespace Terminals.Data.DB
 
         public void Rebuild()
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 List<IGroup> emptyGroups = this.DeleteEmptyGroupsFromDatabase(database);
                 database.SaveImmediatelyIfRequested();
@@ -118,7 +118,7 @@ namespace Terminals.Data.DB
 
         public IEnumerator<IGroup> GetEnumerator()
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 var groups = database.Groups.ToList();
                 database.DetachAll(groups);

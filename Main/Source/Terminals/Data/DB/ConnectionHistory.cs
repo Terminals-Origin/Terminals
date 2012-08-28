@@ -16,7 +16,7 @@ namespace Terminals.Data.DB
 
         public SortableList<IFavorite> GetDateItems(string historyDateKey)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 HistoryInterval interval = HistoryIntervals.GetIntervalByName(historyDateKey);
                 var favoriteIds = database.GetFavoritesHistoryByDate(interval.From, interval.To);
@@ -34,7 +34,7 @@ namespace Terminals.Data.DB
 
             string userSid = WindowsUserIdentifiers.GetCurrentUserSid();
 
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 database.InsertHistory(historyTarget.Id, DateTime.Now, userSid);
             }

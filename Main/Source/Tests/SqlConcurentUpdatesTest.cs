@@ -4,7 +4,6 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
-using Terminals.Data.DB;
 using Favorite = Terminals.Data.DB.Favorite;
 
 namespace Tests
@@ -13,9 +12,6 @@ namespace Tests
     public class SqlConcurentUpdatesTest
     {
         private SqlTestsLab lab;
-
-        private SqlPersistence secondaryPersistence;
-
         private IFavorite updatedFavorite;
         private bool eventCatched;
 
@@ -39,7 +35,7 @@ namespace Tests
         {
             get
             {
-                return this.secondaryPersistence.Favorites;
+                return this.lab.SecondaryPersistence.Favorites;
             }
         }
 
@@ -48,8 +44,6 @@ namespace Tests
         {
             this.lab = new SqlTestsLab();
             this.lab.InitializeTestLab();
-            secondaryPersistence = new SqlPersistence();
-            this.secondaryPersistence.Initialize();
         }
 
         [TestCleanup]
@@ -71,7 +65,7 @@ namespace Tests
 
             var favoriteB = this.SecondaryFavorites.FirstOrDefault() as Favorite;
             favoriteB.Name = TEST_NAME;
-            this.secondaryPersistence.Favorites.Update(favoriteB);
+            this.SecondaryFavorites.Update(favoriteB);
 
             ISynchronizeInvoke control = new Control();
             this.lab.Persistence.AssignSynchronizationObject(control);
@@ -93,20 +87,21 @@ namespace Tests
         {
             Favorite favoriteA = this.lab.CreateTestFavorite();
             this.PrimaryFavorites.Add(favoriteA);
-
             var favoriteB = this.SecondaryFavorites.FirstOrDefault() as Favorite;
-            favoriteB.Name = TEST_NAME;
-            this.SecondaryFavorites.Update(favoriteB);
 
-            UpdateFirstFavorite(favoriteA);
+            this.UpdateFavorite(favoriteA, this.PrimaryFavorites);
+            this.UpdateFavorite(favoriteB, this.SecondaryFavorites);
+            // last update wins
+            this.UpdateFavorite(favoriteA, this.PrimaryFavorites);
             this.SecondaryFavorites.Delete(favoriteB);
-            UpdateFirstFavorite(favoriteA);
+            // next update shouldnt fail on deleted favorite
+            this.UpdateFavorite(favoriteA, this.PrimaryFavorites);
         }
 
-        private void UpdateFirstFavorite(Favorite favoriteA)
+        private void UpdateFavorite(Favorite toUpdate, IFavorites targetPersistence)
         {
-            favoriteA.Name = "Second 2";
-            this.PrimaryFavorites.Update(favoriteA);
+            toUpdate.Name += " Changed";
+            targetPersistence.Update(toUpdate);
         }
     }
 }
