@@ -33,16 +33,16 @@ namespace Terminals.Data.DB
                 if (this.DetailsLoaded)
                 {
                     this.Attach(database);
-                    database.MarkAsModified(this.favorite.executeBeforeConnect);
-                    database.MarkAsModified(this.favorite.display);
                     database.MarkAsModified(this.favorite.security);
+                    database.MarkAsModified(this.favorite.display);
+                    database.MarkAsModified(this.favorite.executeBeforeConnect);
                 }
             }
 
             private void Attach(Database database)
             {
-                database.Attach(this.favorite.display);
                 database.Attach(this.favorite.security);
+                database.Attach(this.favorite.display);
                 database.Attach(this.favorite.executeBeforeConnect);
             }
 
@@ -50,8 +50,8 @@ namespace Terminals.Data.DB
             {
                 if (this.DetailsLoaded)
                 {
-                    database.Detach(this.favorite.display);
                     database.Detach(this.favorite.security);
+                    database.Detach(this.favorite.display);
                     database.Detach(this.favorite.executeBeforeConnect);
                 }
             }
@@ -60,33 +60,34 @@ namespace Terminals.Data.DB
             {
                 if (!this.DetailsLoaded)
                 {
-                    using (var database = Database.CreateDatabaseInstance())
-                    {
-                        database.Attach(favorite);
-                        this.LoadSecurity();
-                        this.LoadDisplay();
-                        this.LoadExecuteBeforeConnect();
-                        database.DetachFavorite(favorite);
-                    }
+                    if (!this.favorite.isNewlyCreated)
+                        this.LoadDetailsFromDatabase();
                 }
             }
 
-            private void LoadExecuteBeforeConnect()
+            private void LoadDetailsFromDatabase()
             {
-                this.favorite.ExecuteBeforeConnectReference.Load();
+                using (var database = Database.CreateInstance())
+                {
+                    database.Attach(this.favorite);
+                    this.LoadReferences();
+                    this.LoadFieldsFromReferences();
+                    database.DetachFavorite(this.favorite);
+                }
+            }
+
+            private void LoadFieldsFromReferences()
+            {
+                this.favorite.security = this.favorite.Security;
+                this.favorite.display = this.favorite.Display;
                 this.favorite.executeBeforeConnect = this.favorite.ExecuteBeforeConnect;
             }
 
-            private void LoadDisplay()
-            {
-                this.favorite.DisplayReference.Load();
-                this.favorite.display = this.favorite.Display;
-            }
-
-            private void LoadSecurity()
+            private void LoadReferences()
             {
                 this.favorite.SecurityReference.Load();
-                this.favorite.security = this.favorite.Security;
+                this.favorite.DisplayReference.Load();
+                this.favorite.ExecuteBeforeConnectReference.Load();
             }
 
             internal void Save(Database database)
@@ -158,7 +159,7 @@ namespace Terminals.Data.DB
 
             private void LoadPropertiesFromDatabase()
             {
-                using (var database = Database.CreateDatabaseInstance())
+                using (var database = Database.CreateInstance())
                 {
                     string serializedProperties = database.GetFavoriteProtocolProperties(this.favorite.Id).FirstOrDefault();
                     Type propertiesType = this.favorite.protocolProperties.GetType();
@@ -181,7 +182,7 @@ namespace Terminals.Data.DB
 
             private void TryLoadImageFromDatabase()
             {
-                using (var database = Database.CreateDatabaseInstance())
+                using (var database = Database.CreateInstance())
                 {
                     byte[] imageData = database.GetFavoriteIcon(this.favorite.Id);
                     this.favorite.toolBarIcon = FavoriteIcons.LoadImage(imageData, this.favorite);

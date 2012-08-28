@@ -2,11 +2,8 @@
 using System.Drawing;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
-using Terminals.Data.DB;
-
 using DB = Terminals.Data.DB;
 using Favorite = Terminals.Data.DB.Favorite;
 
@@ -23,8 +20,6 @@ namespace Tests
         private int addedCount;
         private int updatedCount;
         private int deletedCount;
-
-        private SqlPersistence secondaryPersistence;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -67,7 +62,7 @@ namespace Tests
 
             int after = this.lab.CheckDatabase.Favorites.Count();
             string protocolProperties = this.lab.CheckDatabase.GetFavoriteProtocolProperties(favorite.Id).FirstOrDefault();
-            IFavorite checkFavorite = this.secondaryPersistence.Favorites.FirstOrDefault();
+            IFavorite checkFavorite = this.lab.SecondaryPersistence.Favorites.FirstOrDefault();
 
             Assert.AreNotEqual(before, after, -2, "Favorites didnt reach the database");
             Assert.IsTrue(!string.IsNullOrEmpty(protocolProperties), "Protocol properties are null");

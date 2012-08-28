@@ -33,7 +33,7 @@ namespace Tests
             this.SecondaryPersistence = new SqlPersistence();
             this.SecondaryPersistence.Initialize();
 
-            CheckDatabase = Database.CreateDatabaseInstance();
+            CheckDatabase = Database.CreateInstance();
             ClearTestLab(); // because of failed previos tests
         }
 

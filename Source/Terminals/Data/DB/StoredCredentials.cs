@@ -30,7 +30,7 @@ namespace Terminals.Data.DB
 
         public void Add(ICredentialSet toAdd)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 var credentialToAdd = toAdd as CredentialSet;
                 database.CredentialBase.AddObject(credentialToAdd);
@@ -41,7 +41,7 @@ namespace Terminals.Data.DB
 
         public void Remove(ICredentialSet toRemove)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 var credentailToRemove = toRemove as CredentialSet;
                 database.Attach(credentailToRemove);
@@ -52,7 +52,7 @@ namespace Terminals.Data.DB
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 foreach (CredentialBase credentialSet in database.CredentialBase)
                 {
@@ -83,7 +83,7 @@ namespace Terminals.Data.DB
 
         private IEnumerable<CredentialSet> GetCredentials()
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 return database.CredentialBase.OfType<CredentialSet>().ToList();
             }

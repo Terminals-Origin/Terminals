@@ -23,7 +23,7 @@ namespace Terminals.Data.DB
         {
             get
             {
-                using (var database = Database.CreateDatabaseInstance())
+                using (var database = Database.CreateInstance())
                 {
                     return database.GetFavoriteByGuid(favoriteId);
                 }
@@ -34,7 +34,7 @@ namespace Terminals.Data.DB
         {
             get
             {
-                using (var database = Database.CreateDatabaseInstance())
+                using (var database = Database.CreateInstance())
                 {
                     return database.Favorites.FirstOrDefault(
                             favorite => favorite.Name.Equals(favoriteName, StringComparison.CurrentCultureIgnoreCase));
@@ -50,7 +50,7 @@ namespace Terminals.Data.DB
 
         public void Add(List<IFavorite> favorites)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 AddAllToDatabase(database, favorites);
                 database.SaveImmediatelyIfRequested();
@@ -75,7 +75,7 @@ namespace Terminals.Data.DB
 
         public void Update(IFavorite favorite)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 var toUpdate = favorite as Favorite;
                 if (toUpdate != null)
@@ -88,7 +88,7 @@ namespace Terminals.Data.DB
 
         public void UpdateFavorite(IFavorite favorite, List<IGroup> groups)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 var toUpdate = favorite as Favorite;
                 if (toUpdate == null)
@@ -104,7 +104,7 @@ namespace Terminals.Data.DB
                 Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
                 
                 List<IGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
-                database.SaveChanges();
+                database.SaveImmediatelyIfRequested();
                 this.dispatcher.ReportGroupsRecreated(addedGroups, removedGroups);
                 SaveAndReportFavoriteUpdated(database, toUpdate);
             }
@@ -126,7 +126,7 @@ namespace Terminals.Data.DB
 
         public void Delete(List<IFavorite> favorites)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 DeleteFavoritesFromDatabase(database, favorites);
                 List<IGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
@@ -159,7 +159,7 @@ namespace Terminals.Data.DB
 
         private IEnumerable<IFavorite> GetFavorites()
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 // to list because Linq to entities allowes only cast to primitive types
                 List<Favorite> favorites = database.Favorites.ToList();
@@ -175,7 +175,7 @@ namespace Terminals.Data.DB
 
         public void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 Data.Favorites.ApplyCredentialsToFavorites(selectedFavorites, credential);
                 SaveAndReportFavoritesUpdated(database, selectedFavorites);
@@ -190,7 +190,7 @@ namespace Terminals.Data.DB
 
         public void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 Data.Favorites.SetPasswordToFavorites(selectedFavorites, newPassword);
                 SaveAndReportFavoritesUpdated(database, selectedFavorites);
@@ -199,7 +199,7 @@ namespace Terminals.Data.DB
 
         public void ApplyDomainNameToAllFavorites(List<IFavorite> selectedFavorites, string newDomainName)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 Data.Favorites.ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
                 SaveAndReportFavoritesUpdated(database, selectedFavorites);
@@ -208,7 +208,7 @@ namespace Terminals.Data.DB
 
         public void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName)
         {
-            using (var database = Database.CreateDatabaseInstance())
+            using (var database = Database.CreateInstance())
             {
                 Data.Favorites.ApplyUserNameToFavorites(selectedFavorites, newUserName);
                 SaveAndReportFavoritesUpdated(database, selectedFavorites);

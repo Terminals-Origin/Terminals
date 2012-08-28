@@ -71,7 +71,7 @@ namespace Terminals.Data.DB
         {
             try
             {
-                using (var database = Database.CreateDatabaseInstance())
+                using (var database = Database.CreateInstance())
                 {
                     database.GetMasterPasswordHash(); // dummy test
                     return true;

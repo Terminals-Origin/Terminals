@@ -18,7 +18,7 @@ namespace Terminals.Data.DB
             }
             set
             {
-                using (var database = Database.CreateDatabaseInstance())
+                using (var database = Database.CreateInstance())
                 {
                     database.Attach(this);
                     this.ParentGroup = value as Group;
