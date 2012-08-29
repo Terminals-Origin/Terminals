@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using SSHClient;
 using Terminals.Security;
 using System.IO;
 
@@ -299,8 +301,8 @@ namespace Terminals.Configuration
             }
             private set
             {
-                string newHash = string.Empty;
-                if (!string.IsNullOrEmpty(value))
+                string newHash = String.Empty;
+                if (!String.IsNullOrEmpty(value))
                     newHash = PasswordFunctions.ComputeMasterPasswordHash(value);
                 GetSection().TerminalsPassword = newHash;
             }
@@ -552,7 +554,7 @@ namespace Terminals.Configuration
             get
             {
                 string root = GetSection().CaptureRoot;
-                if (string.IsNullOrEmpty(root))
+                if (String.IsNullOrEmpty(root))
                     root = GetDefaultCaptureRootDirectory();
 
                 return EnsureCaptureDirectory(root);
@@ -571,14 +573,14 @@ namespace Terminals.Configuration
             {
                 if (!Directory.Exists(root))
                 {
-                    Logging.Log.Info(string.Format("Capture root folder does not exist:{0}. Lets try to create it now.", root));
+                    Logging.Log.Info(String.Format("Capture root folder does not exist:{0}. Lets try to create it now.", root));
                     Directory.CreateDirectory(root);
                 }
             }
             catch (Exception exception)
             {
                 root = GetDefaultCaptureRootDirectory();
-                string logMessage = string.Format("Capture root could not be created, set it to the default value : {0}", root);
+                string logMessage = String.Format("Capture root could not be created, set it to the default value : {0}", root);
                 Logging.Log.Error(logMessage, exception);
                 SwitchToDefaultDirectory(root);
             }
@@ -996,7 +998,7 @@ namespace Terminals.Configuration
 
         public static string ToTitleCase(string name)
         {
-            return System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
+            return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
         }
 
         public static void AddServerMRUItem(string name)
@@ -1061,15 +1063,15 @@ namespace Terminals.Configuration
             }
         }
 
-        public static SSHClient.KeysSection SSHKeys
+        public static KeysSection SSHKeys
         {
             get
             {
-                SSHClient.KeysSection keys = Config.Sections["SSH"] as SSHClient.KeysSection;
+                KeysSection keys = Config.Sections["SSH"] as KeysSection;
                 if (keys == null)
                 {
                     // The section wasn't found, so add it.
-                    keys = new SSHClient.KeysSection();
+                    keys = new KeysSection();
                     Config.Sections.Add("SSH", keys);
                 }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -78,8 +79,7 @@ namespace Terminals.Updates
             ImportTagsFromConfigFile();
             MoveFavoritesFromConfigFile();
             MoveGroupsFromConfigFile();
-            Settings.DeleteFavorites(Settings.GetFavorites().ToList());
-            Settings.DeleteTags(Settings.Tags.ToList());
+            Settings.RemoveAllFavoritesAndTags();
             ReplaceFavoriteButtonNamesByIds();
             Settings.SaveAndFinishDelayedUpdate();
             Persistence.Instance.Groups.Rebuild();
@@ -88,13 +88,13 @@ namespace Terminals.Updates
 
         private static void MoveGroupsFromConfigFile()
         {
-            var configGroups = Settings.GetGroups();
+            GroupConfigurationElementCollection configGroups = Settings.GetGroups();
             foreach (GroupConfigurationElement configGroup in configGroups)
             {
                 MoveFavoriteAliasesGroup(configGroup);
             }
             
-            configGroups.Clear();
+            Settings.ClearGroups();
         }
 
         private static void MoveFavoriteAliasesGroup(GroupConfigurationElement configGroup) 

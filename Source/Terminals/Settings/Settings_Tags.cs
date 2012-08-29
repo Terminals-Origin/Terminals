@@ -11,7 +11,7 @@ namespace Terminals.Configuration
         /// <summary>
         /// Gets alphabeticaly sorted array of tags resolved from Tags store
         /// </summary>
-        [Obsolete("Use new persistence instead.")]
+        [Obsolete("Since version 2. only for updates. Use new persistence instead.")]
         public static string[] Tags
         {
             get
@@ -22,54 +22,41 @@ namespace Terminals.Configuration
             }
         }
 
-        [Obsolete("Use new persistence instead.")]
-        public static void AddTags(List<String> tags)
+        private static void AddTagsToSettings(List<string> tags)
         {
-            List<String> addedTags = AddTagsToSettings(tags);
-            //DataDispatcher.Instance.ReportTagsAdded(addedTags);
-        }
-
-        private static List<string> AddTagsToSettings(List<String> tags)
-        {
-            List<String> addedTags = new List<string>();
             foreach (String tag in tags)
             {
                 if (String.IsNullOrEmpty(tag))
                     continue;
 
-                String addedTag = AddTagToSettings(tag);
-                if (!String.IsNullOrEmpty(addedTag))
-                    addedTags.Add(addedTag);
+                AddTagToSettings(tag);
             }
-            return addedTags;
         }
 
         /// <summary>
         /// Adds tag to the tags collection if it already isnt there.
         /// If the tag is in database, than it returns empty string, otherwise the commited tag.
         /// </summary>
-        private static String AddTagToSettings(String tag)
+        private static void AddTagToSettings(String tag)
         {
             if (AutoCaseTags)
                 tag = ToTitleCase(tag);
             if (Tags.Contains(tag))
-                return String.Empty;
+                return;
 
             GetSection().Tags.AddByName(tag);
             SaveImmediatelyIfRequested();
-            return tag;
         }
 
-        [Obsolete("Use new persistence instead.")]
-        public static void DeleteTags(List<String> tagsToDelete)
+        public static void DeleteTags()
         {
-            List<String> deletedTags = DeleteTagsFromSettings(tagsToDelete);
-            //DataDispatcher.Instance.ReportTagsDeleted(deletedTags);
+            List<string> tagsToDelete = Tags.ToList();
+            DeleteTagsFromSettings(tagsToDelete);
         }
 
-        private static List<String> DeleteTagsFromSettings(List<String> tagsToDelete)
+        private static List<string> DeleteTagsFromSettings(List<string> tagsToDelete)
         {
-            List<String> deletedTags = new List<String>();
+            List<string> deletedTags = new List<string>();
             foreach (String tagTodelete in tagsToDelete)
             {
                 if (GetNumberOfFavoritesUsingTag(tagTodelete) > 0)
@@ -97,35 +84,6 @@ namespace Terminals.Configuration
             var favorites = GetFavorites().ToList();
             return favorites.Where(favorite => favorite.TagList.Contains(tagToRemove))
                 .Count();
-        }
-
-        [Obsolete("Use new persistence instead.")]
-        public static void RebuildTagIndex()
-        {
-            String[] oldTags = Tags;
-            ClearTags();
-            ReCreateAllTags();
-            //DataDispatcher.Instance.ReportTagsRecreated(Tags.ToList(), oldTags.ToList());
-        }
-
-        private static void ReCreateAllTags()
-        {
-            FavoriteConfigurationElementCollection favorites = GetFavorites();
-            foreach (FavoriteConfigurationElement favorite in favorites)
-            {   // dont report update here
-                AddTagsToSettings(favorite.TagList);
-            }
-        }
-
-        /// <summary>
-        /// Clears all tags from database, but doesnt sed the tags changed event
-        /// </summary>
-        private static void ClearTags()
-        {
-            foreach (String tag in Tags)
-            {
-                DeleteTagFromSettings(tag);
-            }
         }
     }
 }
