@@ -5,24 +5,16 @@ namespace Terminals.Configuration
 {
     internal static partial class Settings
     {
-        [Obsolete("Use new persistence instead.")]
         public static GroupConfigurationElementCollection GetGroups()
         {
             return GetSection().Groups;
         }
 
-        [Obsolete("Use new persistence instead.")]
-        public static void DeleteGroup(string name)
+        [Obsolete("Since version 2. only for updates. Use new persistence instead.")]
+        internal static void ClearGroups()
         {
-            GetSection().Groups.Remove(name);
-            SaveImmediatelyIfRequested();
-        }
-
-        [Obsolete("Use new persistence instead.")]
-        public static void AddGroup(GroupConfigurationElement group)
-        {
-            GetSection().Groups.Add(group);
-            SaveImmediatelyIfRequested();
+            GroupConfigurationElementCollection configGroups = GetGroups();
+            configGroups.Clear();
         }
     }
 }

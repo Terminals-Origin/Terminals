@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using Terminals.Data;
+using Terminals.Properties;
 using SysConfig = System.Configuration;
 using System.Reflection;
 using System.Windows.Forms;
@@ -27,8 +29,8 @@ namespace Terminals.Configuration
             get { return fileLocations; }
         }
 
-        private static SysConfig.Configuration _config = null;
-        private static SysConfig.Configuration Config
+        private static System.Configuration.Configuration _config = null;
+        private static System.Configuration.Configuration Config
         {
             get
             {
@@ -139,10 +141,10 @@ namespace Terminals.Configuration
             fileWatcher.StopObservation();
             Config.Save();
             fileWatcher.StartObservation();
-            Debug.WriteLine(string.Format("Terminals.config file saved."));
+            Debug.WriteLine(String.Format("Terminals.config file saved."));
         }
 
-        private static SysConfig.Configuration GetConfiguration()
+        private static System.Configuration.Configuration GetConfiguration()
         {
             try
             {
@@ -164,18 +166,18 @@ namespace Terminals.Configuration
                 SaveDefaultConfigFile();
         }
 
-        private static SysConfig.ExeConfigurationFileMap CreateConfigFileMap()
+        private static ExeConfigurationFileMap CreateConfigFileMap()
         {
-            SysConfig.ExeConfigurationFileMap configFileMap = new SysConfig.ExeConfigurationFileMap();
+            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
             configFileMap.ExeConfigFilename = fileLocations.Configuration;
             return configFileMap;
         }
 
-        private static SysConfig.Configuration OpenConfiguration()
+        private static System.Configuration.Configuration OpenConfiguration()
         {
-            SysConfig.ExeConfigurationFileMap configFileMap = CreateConfigFileMap();
+            ExeConfigurationFileMap configFileMap = CreateConfigFileMap();
             fileLock.WaitOne();
-            SysConfig.Configuration config = SysConfig.ConfigurationManager.OpenMappedExeConfiguration(configFileMap, SysConfig.ConfigurationUserLevel.None);
+            System.Configuration.Configuration config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
             fileLock.ReleaseMutex();
             return config;
         }
@@ -196,13 +198,13 @@ namespace Terminals.Configuration
         {
             string newGUID = Guid.NewGuid().ToString();
             long fileDate = DateTime.Now.ToFileTime();
-            string backupFile = string.Format("Terminals-{1}-{0}.config", newGUID, fileDate);
+            string backupFile = String.Format("Terminals-{1}-{0}.config", newGUID, fileDate);
             return FileLocations.GetFullPath(backupFile);
         }
 
         private static void SaveDefaultConfigFile()
         {
-            string templateConfigFile = Properties.Resources.Terminals;
+            string templateConfigFile = Resources.Terminals;
             using (StreamWriter sr = new StreamWriter(fileLocations.Configuration))
             {
                 sr.Write(templateConfigFile);
@@ -223,7 +225,7 @@ namespace Terminals.Configuration
                 File.Delete(fileName);
         }
 
-        private static SysConfig.Configuration ImportConfiguration()
+        private static System.Configuration.Configuration ImportConfiguration()
         {
             // get a temp filename to hold the current settings which are failing
             string tempFile = Path.GetTempFileName();
@@ -232,7 +234,7 @@ namespace Terminals.Configuration
             MoveAndDeleteFile(fileLocations.Configuration, tempFile);
             SaveDefaultConfigFile();
             fileWatcher.StartObservation();
-            SysConfig.Configuration c = OpenConfiguration();
+            System.Configuration.Configuration c = OpenConfiguration();
 
             // get a list of the properties on the Settings object (static props)
             PropertyInfo[] propList = typeof(Settings).GetProperties();
@@ -361,7 +363,7 @@ namespace Terminals.Configuration
                 try
                 {
                     // kick into the import routine
-                    SysConfig.Configuration configuration = ImportConfiguration();
+                    System.Configuration.Configuration configuration = ImportConfiguration();
                     configuration = GetConfiguration();
                     if (configuration == null)
                         MessageBox.Show("Terminals was able to automatically upgrade your existing connections.");
