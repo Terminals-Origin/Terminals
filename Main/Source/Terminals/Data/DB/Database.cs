@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using System.Linq;
-using Terminals.Configuration;
-using Terminals.Security;
 
 namespace Terminals.Data.DB
 {
@@ -14,29 +11,13 @@ namespace Terminals.Data.DB
     {
         internal void SaveImmediatelyIfRequested()
         {
-            try
-            {
-                // dont ask, save immediately. Here is no benefit to save in batch like in FilePersistence
-                this.SaveChanges();
-            }
-            catch (OptimisticConcurrencyException exception)
-            {
-                Logging.Log.Debug("Concurency exception catched when saving SqlPersistence", exception);
-                this.RefreshChangedEntities();
-                this.SaveChanges();
-            }
-        }
-
-        private void RefreshChangedEntities()
-        {
-            ObjectStateEntry modifiedEntry = this.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).FirstOrDefault();
-            this.Favorites.MergeOption = MergeOption.OverwriteChanges;
-            this.Refresh(RefreshMode.ClientWins, modifiedEntry);
+            // dont ask, save immediately. Here is no benefit to save in batch like in FilePersistence
+            this.SaveChanges();
         }
 
         public override int SaveChanges(SaveOptions options)
         {
-            var changedFavorites = this.GetChangedOrAddedFavorites();
+            IEnumerable<Favorite> changedFavorites = this.GetChangedOrAddedFavorites();
             return this.SaveChanges(options, changedFavorites);
         }
 
