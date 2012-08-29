@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Objects;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -81,12 +83,12 @@ namespace Terminals.Data.DB
                 if (toUpdate != null)
                 {
                     database.Attach(toUpdate);
-                    SaveAndReportFavoriteUpdated(database, toUpdate);
+                    this.TrySaveAndReportFavoriteUpdate(toUpdate, database);
                 }
             }
         }
 
-        public void UpdateFavorite(IFavorite favorite, List<IGroup> groups)
+        public void UpdateFavorite(IFavorite favorite, List<IGroup> newGroups)
         {
             using (var database = Database.CreateInstance())
             {
@@ -95,10 +97,10 @@ namespace Terminals.Data.DB
                     return;
 
                 database.Attach(toUpdate);
-                List<IGroup> addedGroups = this.groups.AddToDatabase(database, groups);
+                List<IGroup> addedGroups = this.groups.AddToDatabase(database, newGroups);
 
-                List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, groups);
-                List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(groups, favorite.Groups);
+                List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, newGroups);
+                List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, favorite.Groups);
                 
                 Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
                 Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
@@ -106,7 +108,32 @@ namespace Terminals.Data.DB
                 List<IGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
                 database.SaveImmediatelyIfRequested();
                 this.dispatcher.ReportGroupsRecreated(addedGroups, removedGroups);
-                SaveAndReportFavoriteUpdated(database, toUpdate);
+                this.TrySaveAndReportFavoriteUpdate(toUpdate, database);
+            }
+        }
+
+        private void TrySaveAndReportFavoriteUpdate(Favorite toUpdate, Database database)
+        {
+            try
+            {
+                this.SaveAndReportFavoriteUpdated(database, toUpdate);
+            }
+            catch (OptimisticConcurrencyException)
+            {
+                this.TryToRefreshUpdatedFavorite(toUpdate, database);
+            }
+        }
+
+        private void TryToRefreshUpdatedFavorite(Favorite toUpdate, Database database)
+        {
+            try
+            {
+                database.Refresh(RefreshMode.ClientWins, toUpdate);
+                this.SaveAndReportFavoriteUpdated(database, toUpdate);
+            }
+            catch (InvalidOperationException)
+            {
+                this.dispatcher.ReportFavoriteDeleted(toUpdate);
             }
         }
 

@@ -13,7 +13,9 @@ namespace Tests
     {
         private SqlTestsLab lab;
         private IFavorite updatedFavorite;
-        private bool eventCatched;
+        private bool updateEventCatched;
+
+        private bool removedEventCatched;
 
         private const string TEST_NAME = "second";
 
@@ -72,14 +74,14 @@ namespace Tests
             // refresh interval is set to 2 sec. by default
             Thread.Sleep(10000);
 
-            Assert.IsTrue(this.eventCatched, "Data changed event wasnt received");
+            Assert.IsTrue(this.updateEventCatched, "Data changed event wasnt received");
             Assert.AreEqual(this.updatedFavorite.Name, TEST_NAME, "The updated favorite wasnt refreshed");
         }
 
         private void OnPrimaryStoreFavoritesChanged(FavoritesChangedEventArgs args)
         {
             this.updatedFavorite = args.Updated.FirstOrDefault();
-            this.eventCatched = true;
+            this.updateEventCatched = true;
         }
 
         [TestMethod]
@@ -88,6 +90,8 @@ namespace Tests
             Favorite favoriteA = this.lab.CreateTestFavorite();
             this.PrimaryFavorites.Add(favoriteA);
             var favoriteB = this.SecondaryFavorites.FirstOrDefault() as Favorite;
+            this.lab.Persistence.Dispatcher.FavoritesChanged += 
+                new FavoritesChangedEventHandler(this.OnUpdateAlreadyUpdatedFavoritesChanged);
 
             this.UpdateFavorite(favoriteA, this.PrimaryFavorites);
             this.UpdateFavorite(favoriteB, this.SecondaryFavorites);
@@ -96,6 +100,13 @@ namespace Tests
             this.SecondaryFavorites.Delete(favoriteB);
             // next update shouldnt fail on deleted favorite
             this.UpdateFavorite(favoriteA, this.PrimaryFavorites);
+            Assert.IsTrue(this.removedEventCatched, "Persistence didnt catched the already removed favorite update event.");
+        }
+
+        private void OnUpdateAlreadyUpdatedFavoritesChanged(FavoritesChangedEventArgs args)
+        {
+            if (args.Removed.Count > 0)
+                this.removedEventCatched = true;
         }
 
         private void UpdateFavorite(Favorite toUpdate, IFavorites targetPersistence)
