@@ -2,7 +2,7 @@
 
 namespace Terminals.Data.DB
 {
-    internal partial class CredentialSet : ICredentialSet
+    internal partial class CredentialSet : ICredentialSet, IIntegerKeyEnityty
     {
         private Guid guid = Guid.NewGuid();
         Guid ICredentialSet.Id

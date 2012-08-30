@@ -253,7 +253,9 @@ namespace Terminals.Data
 
         private static List<IGroup> GetGroups(IFavorite selected)
         {
-            return Persistence.Instance.Groups.GetGroupsContainingFavorite(selected.Id);
+            // todo remove Groups dependency
+            var groups = Persistence.Instance.Groups as Groups;
+            return groups.GetGroupsContainingFavorite(selected.Id);
         }
 
         public String GetToolTipText()

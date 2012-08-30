@@ -28,8 +28,6 @@ namespace Terminals.Data
         /// </summary>
         void Delete(IGroup group);
 
-        List<IGroup> GetGroupsContainingFavorite(Guid favoriteId);
-
         /// <summary>
         /// Removes all empty groups from persistence.
         /// Saves changes, if delayed save isnt required.
