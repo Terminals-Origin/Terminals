@@ -55,13 +55,6 @@ namespace Terminals.Data.DB
             return changed;
         }
 
-        internal Favorite GetFavoriteByGuid(Guid favoriteId)
-        {
-            // to list, because linq to entities doesnt support Guid search
-            return this.Favorites.ToList()
-                .FirstOrDefault(favorite => favorite.Guid == favoriteId);
-        }
-
         internal byte[] GetFavoriteIcon(int favoriteId)
         {
             byte[] obtained = this.GetFavoriteIcon((int?)favoriteId).FirstOrDefault();

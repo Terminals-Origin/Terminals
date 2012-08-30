@@ -7,7 +7,7 @@ using Unified;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Favorite : IFavorite
+    internal partial class Favorite : IFavorite, IIntegerKeyEnityty
     {
         /// <summary>
         /// cant be set in constructor, because the constructor is used by EF when loading the entities

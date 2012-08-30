@@ -5,16 +5,21 @@ using System.Linq;
 
 namespace Terminals.Data.DB
 {
+    /// <summary>
+    /// SQL database implementation of managing credentails
+    /// </summary>
     internal class StoredCredentials : ICredentials
     {
         public event EventHandler CredentialsChanged;
 
+        private readonly EntitiesCache<CredentialSet> cache = new EntitiesCache<CredentialSet>();
+
         ICredentialSet ICredentials.this[Guid id]
         {
-            get 
+            get
             {
-                var credentials = GetCredentials();
-                return credentials.FirstOrDefault(candidate => candidate.Guid == id);
+                this.EnsureCache();
+                return this.cache.FirstOrDefault(candidate => candidate.Guid == id);
             }
         }
 
@@ -22,17 +27,23 @@ namespace Terminals.Data.DB
         {
             get
             {
-                var credentials = GetCredentials();
-                return credentials.FirstOrDefault(candidate => candidate.Name
+                this.EnsureCache();
+                return this.cache.FirstOrDefault(candidate => candidate.Name
                    .Equals(name, StringComparison.CurrentCultureIgnoreCase));
             }
         }
 
         public void Add(ICredentialSet toAdd)
         {
+            var credentialToAdd = toAdd as CredentialSet;
+            AddToDatabase(toAdd, credentialToAdd);
+            this.cache.Add(credentialToAdd);
+        }
+
+        private static void AddToDatabase(ICredentialSet toAdd, CredentialSet credentialToAdd)
+        {
             using (var database = Database.CreateInstance())
             {
-                var credentialToAdd = toAdd as CredentialSet;
                 database.CredentialBase.AddObject(credentialToAdd);
                 database.SaveImmediatelyIfRequested();
                 database.Detach(toAdd);
@@ -41,9 +52,15 @@ namespace Terminals.Data.DB
 
         public void Remove(ICredentialSet toRemove)
         {
+            var credentailToRemove = toRemove as CredentialSet;
+            DeleteFromDatabase(credentailToRemove);
+            this.cache.Delete(credentailToRemove);
+        }
+
+        private static void DeleteFromDatabase(CredentialSet credentailToRemove)
+        {
             using (var database = Database.CreateInstance())
             {
-                var credentailToRemove = toRemove as CredentialSet;
                 database.Attach(credentailToRemove);
                 database.CredentialBase.DeleteObject(credentailToRemove);
                 database.SaveImmediatelyIfRequested();
@@ -51,6 +68,13 @@ namespace Terminals.Data.DB
         }
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
+        {
+            UpdatePasswordsInDatabase(newKeyMaterial);
+            this.cache.Clear();
+            this.ReloadCache();
+        }
+
+        private static void UpdatePasswordsInDatabase(string newKeyMaterial)
         {
             using (var database = Database.CreateInstance())
             {
@@ -66,12 +90,34 @@ namespace Terminals.Data.DB
             // nothing to do
         }
 
+        private void EnsureCache()
+        {
+            if (this.cache.IsEmpty)
+            {
+                this.ReloadCache();
+            }
+        }
+
+        private void ReloadCache()
+        {
+            List<CredentialSet> loaded = LoadFromDatabase();
+            this.cache.Add(loaded);
+        }
+
+        private static List<CredentialSet> LoadFromDatabase()
+        {
+            using (var database = Database.CreateInstance())
+            {
+                return database.CredentialBase.OfType<CredentialSet>().ToList();
+            }
+        }
+
         #region IEnumerable members
 
         public IEnumerator<ICredentialSet> GetEnumerator()
         {
-            return GetCredentials()
-                .GetEnumerator();
+            this.EnsureCache();
+            return this.cache.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -81,12 +127,9 @@ namespace Terminals.Data.DB
 
         #endregion
 
-        private IEnumerable<CredentialSet> GetCredentials()
+        public override string ToString()
         {
-            using (var database = Database.CreateInstance())
-            {
-                return database.CredentialBase.OfType<CredentialSet>().ToList();
-            }
+            return string.Format("StoredCredentials:Cached={0}", this.cache.Count());
         }
     }
 }

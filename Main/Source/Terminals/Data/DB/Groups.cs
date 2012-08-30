@@ -12,20 +12,21 @@ namespace Terminals.Data.DB
     {
         private readonly DataDispatcher dispatcher;
 
+        private readonly EntitiesCache<Group> cache; 
+
         internal Groups(DataDispatcher dispatcher)
         {
             this.dispatcher = dispatcher;
+            this.cache = new EntitiesCache<Group>();
         }
 
         IGroup IGroups.this[string groupName]
         {
             get
             {
-                using (var database = Database.CreateInstance())
-                {
-                    return database.Groups
-                      .FirstOrDefault(group => group.Name.Equals(groupName, StringComparison.CurrentCultureIgnoreCase));
-                }
+                this.CheckCache();
+                return this.cache.FirstOrDefault(group => 
+                    group.Name.Equals(groupName, StringComparison.CurrentCultureIgnoreCase));
             }
         }
 
@@ -33,10 +34,12 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                database.Groups.AddObject((Group)group);
+                Group toAdd = group as Group;
+                database.Groups.AddObject(toAdd);
                 database.SaveImmediatelyIfRequested();
-                database.Detach(group);
-                this.dispatcher.ReportGroupsAdded(new List<IGroup> { group });
+                database.Detach(toAdd);
+                this.cache.Add(toAdd);
+                this.dispatcher.ReportGroupsAdded(new List<IGroup> { toAdd });
             }
         }
 
@@ -66,19 +69,8 @@ namespace Terminals.Data.DB
                 database.Attach(toDelete);
                 database.Groups.DeleteObject(toDelete);
                 database.SaveImmediatelyIfRequested();
+                this.cache.Delete(toDelete);
                 this.dispatcher.ReportGroupsDeleted(new List<IGroup> { group });
-            }
-        }
-
-        public List<IGroup> GetGroupsContainingFavorite(Guid favoriteId)
-        {
-            using (var database = Database.CreateInstance())
-            {
-                Favorite favorite = database.GetFavoriteByGuid(favoriteId);
-                if (favorite != null)
-                    return favorite.GetInvariantGroups();
-
-                return new List<IGroup>();
             }
         }
 
@@ -86,18 +78,32 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                List<IGroup> emptyGroups = this.DeleteEmptyGroupsFromDatabase(database);
+                List<Group> emptyGroups = this.DeleteEmptyGroupsFromDatabase(database);
                 database.SaveImmediatelyIfRequested();
-                this.dispatcher.ReportGroupsDeleted(emptyGroups);
+                List<IGroup> toReport = this.DeleteFromCache(emptyGroups);
+                this.dispatcher.ReportGroupsDeleted(toReport);
             }
         }
 
-        internal List<IGroup> DeleteEmptyGroupsFromDatabase(Database database)
+        /// <summary>
+        /// Call this method after the changes were commited into database, 
+        /// to let the cache in last state as long as possible and ensure, that the commit didnt fail.
+        /// </summary>
+        internal List<IGroup> DeleteFromCache(List<Group> emptyGroups)
+        {
+            this.cache.Delete(emptyGroups);
+            return emptyGroups.Cast<IGroup>().ToList();
+        }
+
+        /// <summary>
+        /// Doesnt remove them from cache, only fro database
+        /// </summary>
+        internal List<Group> DeleteEmptyGroupsFromDatabase(Database database)
         {
             List<Group> emptyGroups = this.GetEmptyGroups(database);
             database.AttachAll(emptyGroups);
             DeleteFromDatabase(database, emptyGroups);
-            return emptyGroups.Cast<IGroup>().ToList();
+            return emptyGroups;
         }
 
         private void DeleteFromDatabase(Database database, IEnumerable<Group> groups)
@@ -110,20 +116,36 @@ namespace Terminals.Data.DB
 
         private List<Group> GetEmptyGroups(Database database)
         {
+            // not optimized access to database. Weeknes: Current state doesnt have to reflect the cache.
             return database.Groups.ToList()
                 .Where(group => group.Favorites.Count == 0).ToList();
+        }
+
+        private void CheckCache()
+        {
+            if (!this.cache.IsEmpty)
+                return;
+            
+            List<Group> loaded = LoadFromDatabase();
+            this.cache.Add(loaded);
+        }
+
+        private static List<Group> LoadFromDatabase()
+        {
+            using (var database = Database.CreateInstance())
+            {
+                List<Group> groups = database.Groups.ToList();
+                database.DetachAll(groups);
+                return groups;
+            }
         }
 
         #region IEnumerable members
 
         public IEnumerator<IGroup> GetEnumerator()
         {
-            using (var database = Database.CreateInstance())
-            {
-                var groups = database.Groups.ToList();
-                database.DetachAll(groups);
-                return groups.GetEnumerator();
-            }
+            this.CheckCache();
+            return this.cache.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -132,5 +154,10 @@ namespace Terminals.Data.DB
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("Groups:Cached={0}", this.cache.Count());
+        }
     }
 }

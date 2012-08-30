@@ -26,6 +26,7 @@ namespace Terminals.Data
         {
             get
             {
+                // todo remove Groups dependency
                 return Persistence.Instance.Groups
                     .FirstOrDefault(candidate => ((Group)candidate).Id == this.Parent);
             }

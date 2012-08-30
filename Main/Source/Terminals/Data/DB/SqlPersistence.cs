@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Data.Objects;
 using System.Diagnostics;
+using System.Linq;
 using System.Timers;
 
 namespace Terminals.Data.DB
@@ -62,7 +62,7 @@ namespace Terminals.Data.DB
             this.Dispatcher = new DataDispatcher();
             this.groups = new Groups(this.Dispatcher);
             this.favorites = new Favorites(this.groups, this.Dispatcher);
-            this.ConnectionHistory = new ConnectionHistory();
+            this.ConnectionHistory = new ConnectionHistory(this.favorites);
             this.Credentials = new StoredCredentials();
             this.Factory = new Factory();
         }
@@ -146,6 +146,12 @@ namespace Terminals.Data.DB
             //this.database.Refresh(RefreshMode.ClientWins, this.database.DisplayOptions);
 
             // after all items are loaded, refresh already cached protocol options, which arent part of an entity
+        }
+
+        public override string ToString()
+        {
+            return string.Format("SqlPersistence:Favorites={0},Groups={1},Credentials={2}",
+                this.favorites.Count(), this.groups.Count(), this.Credentials.Count());
         }
     }
 }

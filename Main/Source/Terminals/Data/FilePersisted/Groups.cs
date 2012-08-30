@@ -172,7 +172,7 @@ namespace Terminals.Data
             }
         }
 
-        public List<IGroup> GetGroupsContainingFavorite(Guid favoriteId)
+        internal List<IGroup> GetGroupsContainingFavorite(Guid favoriteId)
         {
             return this.cache.Values.Where(group => group.Favorites
                     .Select(favorite => favorite.Id).Contains(favoriteId))

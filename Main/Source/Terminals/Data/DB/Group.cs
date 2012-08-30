@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Group : IGroup
+    internal partial class Group : IGroup, IIntegerKeyEnityty
     {
         /// <summary>
         /// Gets or sets the virtual unique identifer. This isnt used, because of internal database identifier.
@@ -18,6 +18,7 @@ namespace Terminals.Data.DB
             }
             set
             {
+                // todo ask cache in Groups, dont ask database directly
                 using (var database = Database.CreateInstance())
                 {
                     database.Attach(this);

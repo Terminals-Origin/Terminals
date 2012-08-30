@@ -153,6 +153,7 @@ namespace Terminals.Data
         /// <returns>Not null value of Group obtained from persistence or newly created group</returns>
         internal static IGroup GetOrCreateGroup(string groupName)
         {
+            // todo remove Groups dependency
             var groups = Persistence.Instance.Groups;
             IGroup group = groups[groupName];
             if (group == null)
