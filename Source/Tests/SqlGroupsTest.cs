@@ -1,4 +1,5 @@
-﻿using System.Data.Objects;
+﻿using System.Collections.Generic;
+using System.Data.Objects;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
@@ -13,25 +14,15 @@ namespace Tests
     public class SqlGroupsTest
     {
         private int addedCount;
+        private int updatedCount;
         private int deletedCount;
         private SqlTestsLab lab;
-        private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         [TestInitialize]
         public void TestInitialize()
@@ -49,23 +40,20 @@ namespace Tests
 
         private void Dispatcher_GroupsChanged(GroupsChangedArgs args)
         {
-            addedCount += args.Added.Count;
-            deletedCount = args.Removed.Count;
+            this.addedCount += args.Added.Count;
+            this.updatedCount += args.Updated.Count;
+            this.deletedCount = args.Removed.Count;
         }
 
-        /// <summary>
-        ///A test for Add
-        ///</summary>
         [TestMethod]
         public void AddGroupTest()
         {
-            IFactory factory = this.lab.Persistence.Factory;
-            Group childGroup = factory.CreateGroup("TestGroupA") as Group;
-            Group parentGroup = factory.CreateGroup("TestGroupB") as Group;
-            this.lab.Persistence.Groups.Add(parentGroup);
-            this.lab.Persistence.Groups.Add(childGroup);
+            Group childGroup = this.CreateTestGroup("TestGroupA");
+            Group parentGroup = this.CreateTestGroup("TestGroupB");
             childGroup.Parent = parentGroup; // dont use entites here, we are testing intern logic
+            IGroup testParent = childGroup.Parent; // dummy test to resolve parrent
 
+            Assert.AreEqual(testParent, parentGroup, "Parent group wasnt set properly");
             ObjectSet<Group> checkedGroups = this.lab.CheckDatabase.Groups;
             Group checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
             Group checkedParent = checkedGroups.FirstOrDefault(group => group.Id == parentGroup.Id);
@@ -76,13 +64,21 @@ namespace Tests
             Assert.AreEqual(2, this.addedCount, "Add event wasnt received"); 
         }
 
-        /// <summary>
-        ///A test for Delete
-        ///</summary>
+        [TestMethod]
+        public void LoadGroupFavoritesTest()
+        {
+            IGroup group = this.CreateTestGroupA();
+            var favorite = this.lab.AddFavoriteToPrimaryPersistence();
+            group.AddFavorite(favorite);
+            List<IFavorite> favorites = group.Favorites;
+            Assert.AreEqual(favorites.Count, 1, "Group favorites count doesnt match.");
+            Assert.AreEqual(this.updatedCount, 1, "Group favorites count doesnt match.");
+        }
+
         [TestMethod]
         public void DeleteGroupTest()
         {
-            var testGroup = this.CreateTestGroup();
+            var testGroup = this.CreateTestGroupA();
             int storedBefore = this.lab.CheckDatabase.Groups.Count();
             this.lab.Persistence.Groups.Delete(testGroup);
             int storedAfter = this.lab.CheckDatabase.Groups.Count();
@@ -90,13 +86,10 @@ namespace Tests
             this.AssertGroupDeleted(storedAfter, storedBefore);
         }
 
-        /// <summary>
-        ///A test for Rebuild
-        ///</summary>
         [TestMethod]
         public void RebuildGroupsTest()
         {
-            this.CreateTestGroup();
+            this.CreateTestGroupA();
             int storedBefore = this.lab.CheckDatabase.Groups.Count();
             this.lab.Persistence.Groups.Rebuild();
             int storedAfter = this.lab.CheckDatabase.Groups.Count();
@@ -104,10 +97,16 @@ namespace Tests
             this.AssertGroupDeleted(storedAfter, storedBefore);
         }
 
-        private Group CreateTestGroup()
+        private Group CreateTestGroupA()
         {
+            return this.CreateTestGroup("TestGroupA");
+        }
+
+        private Group CreateTestGroup(string newGroupName)
+        {
+            // todo it is possible to receive two times an event, that favorite was added to the cache 
             IFactory factory = this.lab.Persistence.Factory;
-            Group testGroup = factory.CreateGroup("TestGroupA") as Group;
+            Group testGroup = factory.CreateGroup(newGroupName) as Group;
             this.lab.Persistence.Groups.Add(testGroup);
             return testGroup;
         }

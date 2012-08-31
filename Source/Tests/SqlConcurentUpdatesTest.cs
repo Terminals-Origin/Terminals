@@ -58,8 +58,7 @@ namespace Tests
         [TestMethod]
         public void TestPeriodicalUpdates()
         {
-            Favorite favoriteA = this.lab.CreateTestFavorite();
-            this.PrimaryFavorites.Add(favoriteA);
+            this.lab.AddFavoriteToPrimaryPersistence();
 
             // assign event handler before another changes to catch all of them
             this.lab.Persistence.Dispatcher.FavoritesChanged +=
@@ -87,8 +86,7 @@ namespace Tests
         [TestMethod]
         public void TestSaveOnAlreadyUpdatedFavorite()
         {
-            Favorite favoriteA = this.lab.CreateTestFavorite();
-            this.PrimaryFavorites.Add(favoriteA);
+            Favorite favoriteA = this.lab.AddFavoriteToPrimaryPersistence();
             var favoriteB = this.SecondaryFavorites.FirstOrDefault() as Favorite;
             this.lab.Persistence.Dispatcher.FavoritesChanged += 
                 new FavoritesChangedEventHandler(this.OnUpdateAlreadyUpdatedFavoritesChanged);

@@ -38,8 +38,7 @@ namespace Tests
         [TestMethod]
         public void HistoryTest()
         {
-            Favorite favorite = this.lab.CreateTestFavorite();
-            this.lab.Persistence.Favorites.Add(favorite);
+            Favorite favorite = this.lab.AddFavoriteToPrimaryPersistence();
 
             IConnectionHistory history = this.lab.Persistence.ConnectionHistory;
             history.RecordHistoryItem(favorite);

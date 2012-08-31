@@ -64,7 +64,7 @@ namespace Terminals.Data.DB
             this.favorites = new Favorites(this.groups, this.Dispatcher);
             this.ConnectionHistory = new ConnectionHistory(this.favorites);
             this.Credentials = new StoredCredentials();
-            this.Factory = new Factory();
+            this.Factory = new Factory(this.groups);
         }
 
         private bool TryInitializeDatabase()
