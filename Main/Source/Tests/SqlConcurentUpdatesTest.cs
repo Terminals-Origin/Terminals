@@ -74,7 +74,7 @@ namespace Tests
             Thread.Sleep(10000);
 
             Assert.IsTrue(this.updateEventCatched, "Data changed event wasnt received");
-            Assert.AreEqual(this.updatedFavorite.Name, TEST_NAME, "The updated favorite wasnt refreshed");
+            Assert.AreEqual(TEST_NAME, this.updatedFavorite.Name, "The updated favorite wasnt refreshed");
         }
 
         private void OnPrimaryStoreFavoritesChanged(FavoritesChangedEventArgs args)

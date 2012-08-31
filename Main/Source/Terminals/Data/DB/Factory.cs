@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Terminals.Data.DB
+﻿namespace Terminals.Data.DB
 {
     /// <summary>
     /// Unified creation of Entity framework entities
@@ -9,9 +7,12 @@ namespace Terminals.Data.DB
     {
         private readonly Groups groups;
 
-        internal Factory(Groups groups)
+        private readonly DataDispatcher dispatcher;
+
+        internal Factory(Groups groups, DataDispatcher dispatcher)
         {
             this.groups = groups;
+            this.dispatcher = dispatcher;
         }
 
         public IFavorite CreateFavorite()
@@ -29,7 +30,7 @@ namespace Terminals.Data.DB
         {
             // call this constructor doesnt fire the group changed event
             Group createdGroup = new Group(groupName);
-            createdGroup.Groups = this.groups;
+            createdGroup.AssignStores(this.groups, this.dispatcher);
             return createdGroup;
         }
 

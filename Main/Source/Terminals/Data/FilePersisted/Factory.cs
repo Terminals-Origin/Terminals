@@ -9,9 +9,12 @@ namespace Terminals
     {
         private readonly Groups groups;
 
-        internal Factory(Groups groups)
+        private readonly DataDispatcher dispatcher;
+
+        internal Factory(Groups groups, DataDispatcher dispatcher)
         {
             this.groups = groups;
+            this.dispatcher = dispatcher;
         }
 
         public IFavorite CreateFavorite()
@@ -24,7 +27,7 @@ namespace Terminals
         public IGroup CreateGroup(string groupName)
         {
             var newGroup = new Group(groupName);
-            newGroup.Groups = this.groups;
+            newGroup.AssignStores(this.groups, this.dispatcher);
             return newGroup;
         }
 

@@ -128,9 +128,11 @@ namespace Terminals.Data.DB
 
         private List<Group> GetEmptyGroups(Database database)
         {
-            // not optimized access to database. Weeknes: Current state doesnt have to reflect the cache.
-            return database.Groups.ToList()
+            // not optimized access to database. Weeknes: Current state doesnt have to reflect the cache
+            List<Group> loaded = database.Groups.ToList()
                 .Where(group => group.Favorites.Count == 0).ToList();
+            this.AssignGroupsContainer(loaded);
+            return loaded;
         }
 
         private void CheckCache()
@@ -139,7 +141,16 @@ namespace Terminals.Data.DB
                 return;
             
             List<Group> loaded = LoadFromDatabase();
+            this.AssignGroupsContainer(loaded);
             this.cache.Add(loaded);
+        }
+
+        private void AssignGroupsContainer(List<Group> groups)
+        {
+            foreach (Group group in groups)
+            {
+                group.AssignStores(this, this.dispatcher);
+            }
         }
 
         private static List<Group> LoadFromDatabase()

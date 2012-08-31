@@ -45,13 +45,13 @@ namespace Tests
             history.RecordHistoryItem(favorite);
             var expectedCount = this.GetExpectedHistoryCount();
 
-            Assert.AreEqual(historyRecordedCount, 2, "Recorded history wasnt reported");
+            Assert.AreEqual(2, historyRecordedCount, "Recorded history wasnt reported");
             // to preserve duplicit times, when creating new entry in database, only one should be recorded
-            Assert.AreEqual(expectedCount, 1, "History wasnt stored into database");
+            Assert.AreEqual(1, expectedCount, "History wasnt stored into database");
 
             this.lab.Persistence.Favorites.Delete(favorite);
             var expectedCountAfter = this.GetExpectedHistoryCount();
-            Assert.AreEqual(expectedCountAfter, 0, "Favorite history wasnt deleted from database");
+            Assert.AreEqual(0, expectedCountAfter, "Favorite history wasnt deleted from database");
         }
 
         private int GetExpectedHistoryCount()

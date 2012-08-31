@@ -76,7 +76,7 @@ namespace Terminals.Data
             this.groups = new Groups(this);
             this.favorites = new Favorites(this);
             this.connectionHistory = new ConnectionHistory(this.favorites);
-            this.factory = new Factory(this.groups);
+            this.factory = new Factory(this.groups, this.Dispatcher);
             this.InitializeFileWatch();
         }
 
@@ -189,7 +189,7 @@ namespace Terminals.Data
         {
             foreach (Group group in fileGroups)
             {
-                group.Groups = this.groups;
+                group.AssignStores(this.groups, this.Dispatcher);
             }
         }
 
