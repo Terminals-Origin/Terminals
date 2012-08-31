@@ -3,6 +3,7 @@ using System.Data.Objects;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
+using Favorite = Terminals.Data.DB.Favorite;
 using Group = Terminals.Data.DB.Group;
 
 namespace Tests
@@ -68,11 +69,11 @@ namespace Tests
         public void LoadGroupFavoritesTest()
         {
             IGroup group = this.CreateTestGroupA();
-            var favorite = this.lab.AddFavoriteToPrimaryPersistence();
+            Favorite favorite = this.lab.AddFavoriteToPrimaryPersistence();
             group.AddFavorite(favorite);
             List<IFavorite> favorites = group.Favorites;
-            Assert.AreEqual(favorites.Count, 1, "Group favorites count doesnt match.");
-            Assert.AreEqual(this.updatedCount, 1, "Group favorites count doesnt match.");
+            Assert.AreEqual(1, favorites.Count, "Group favorites count doesnt match.");
+            Assert.AreEqual(1, this.updatedCount, "Group update event didnt reach properly.");
         }
 
         [TestMethod]
@@ -104,7 +105,6 @@ namespace Tests
 
         private Group CreateTestGroup(string newGroupName)
         {
-            // todo it is possible to receive two times an event, that favorite was added to the cache 
             IFactory factory = this.lab.Persistence.Factory;
             Group testGroup = factory.CreateGroup(newGroupName) as Group;
             this.lab.Persistence.Groups.Add(testGroup);

@@ -15,7 +15,12 @@ namespace Terminals.Data
         /// <summary>
         /// Gets or sets its associated groups container. Used to resolve accociated groups membership.
         /// </summary>
-        internal Groups Groups { get; set; }
+        private Groups groups;
+
+        /// <summary>
+        /// Gets or sets its associated eventing container. Used to report favorite in group memebership changes.
+        /// </summary>
+        private DataDispatcher dispatcher;
 
         /// <summary>
         /// By default set to Guid.Empty, which means no parrent
@@ -31,7 +36,7 @@ namespace Terminals.Data
         {
             get
             {
-                return this.Groups[this.Parent];
+                return this.groups[this.Parent];
             }
             set
             {
@@ -83,28 +88,34 @@ namespace Terminals.Data
             this.favorites = favorites;
         }
 
+        internal void AssignStores(Groups groups, DataDispatcher dispatcher)
+        {
+            this.groups = groups;
+            this.dispatcher = dispatcher;
+        }
+
         void IGroup.AddFavorite(IFavorite favorite)
         {
-            AddFavoriteToCache(favorite);
-            ReportGroupChanged(this);
+            this.AddFavoriteToCache(favorite);
+            this.ReportGroupChanged(this);
         }
 
         void IGroup.AddFavorites(List<IFavorite> favorites)
         {
-            AddFavoritesToCache(favorites);
-            ReportGroupChanged(this);
+            this.AddFavoritesToCache(favorites);
+            this.ReportGroupChanged(this);
         }
 
         void IGroup.RemoveFavorites(List<IFavorite> favorites)
         {
-            RemoveFavoritesFromCache(favorites);
-            ReportGroupChanged(this);
+            this.RemoveFavoritesFromCache(favorites);
+            this.ReportGroupChanged(this);
         }
 
         void IGroup.RemoveFavorite(IFavorite favorite)
         {
             this.RemoveFavoriteFromCache(favorite);
-            ReportGroupChanged(this);
+            this.ReportGroupChanged(this);
         }
 
         private void AddFavoriteToCache(IFavorite favorite)
@@ -140,11 +151,9 @@ namespace Terminals.Data
             }
         }
 
-        internal static void ReportGroupChanged(IGroup group)
+        private void ReportGroupChanged(IGroup group)
         {
-            // todo remove the instance dependency
-            var dispatcher = Persistence.Instance.Dispatcher;
-            dispatcher.ReportGroupsUpdated(new List<IGroup> { group });
+            this.dispatcher.ReportGroupsUpdated(new List<IGroup> { group });
         }
 
         internal FavoritesInGroup GetGroupReferences()
