@@ -27,6 +27,11 @@ namespace Terminals.Data
             }
         }
 
+        /// <summary>
+        /// Gets or sets its associated groups container. Used to resolve accociated groups membership.
+        /// </summary>
+        internal Groups Groups { get; set; }
+
         public string Name { get; set; }
 
         /// <summary>
@@ -36,7 +41,7 @@ namespace Terminals.Data
         [XmlIgnore]
         List<IGroup> IFavorite.Groups
         {
-            get { return GetGroups(this); }
+            get { return this.GetGroups(); }
         }
 
         private string protocol = ConnectionManager.RDP;
@@ -102,6 +107,7 @@ namespace Terminals.Data
         }
 
         private Image toolBarIconImage;
+        [XmlIgnore]
         public Image ToolBarIconImage
         {
             get
@@ -220,14 +226,17 @@ namespace Terminals.Data
         {
             get
             {
-                List<IGroup> groups = GetGroups(this);
+                List<IGroup> groups = this.GetGroups();
                 return GroupsListToString(groups);
             }
         }
 
         internal static string GroupsListToString(List<IGroup> groups)
         {
-            var groupNames = groups.Select(group => @group.Name).ToArray();
+            if (groups.Count == 0)
+                return string.Empty;
+
+            string[] groupNames = groups.Select(group => @group.Name).ToArray();
             return string.Join(",", groupNames);
         }
 
@@ -251,11 +260,9 @@ namespace Terminals.Data
             return returnValue;
         }
 
-        private static List<IGroup> GetGroups(IFavorite selected)
+        private List<IGroup> GetGroups()
         {
-            // todo remove Groups dependency
-            var groups = Persistence.Instance.Groups as Groups;
-            return groups.GetGroupsContainingFavorite(selected.Id);
+            return this.Groups.GetGroupsContainingFavorite(this.Id);
         }
 
         public String GetToolTipText()
@@ -285,13 +292,8 @@ namespace Terminals.Data
             if (rdp != null)
                 console = rdp.ConnectToConsole;
 
-            // Get favorite's groups and convert groups list to a comma seperated string
-            List<IGroup> groups = GetGroups(selected);
-            String grps = (groups.Count > 0) ? String.Join(",", groups.ConvertAll(group => group.Name).ToArray()) : String.Empty;
-
-            string extendedToolTip = String.Format("Groups: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
-                                                   Environment.NewLine, grps, console, selected.Notes);
-            return extendedToolTip;
+            return String.Format("Groups: {1}{0}Connect to Console: {2}{0}Notes: {3}{0}",
+                                 Environment.NewLine, selected.GroupNames, console, selected.Notes);
         }
 
         /// <summary>
@@ -300,6 +302,7 @@ namespace Terminals.Data
         IFavorite IFavorite.Copy()
         {
             var copy = new Favorite();
+            copy.Groups = this.Groups;
             copy.DesktopShare = this.DesktopShare;
             copy.Display = this.Display.Copy();
             copy.ExecuteBeforeConnect = this.ExecuteBeforeConnect.Copy();

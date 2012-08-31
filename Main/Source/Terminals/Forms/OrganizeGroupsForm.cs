@@ -50,22 +50,15 @@ namespace Terminals
             {
                 if (frmNewGroup.ShowDialog() == DialogResult.OK)
                 {
-                    this.CreateNewGroupIfDoesntExist(frmNewGroup);
+                  this.CreateNewGroupIfDoesntExist(frmNewGroup.txtGroupName.Text);
                 }
             }
         }
 
-        private void CreateNewGroupIfDoesntExist(NewGroupForm frmNewGroup)
+        private void CreateNewGroupIfDoesntExist(string newGroupName)
         {
-            string newGroupName = frmNewGroup.txtGroupName.Text;
-            IGroup newGroup = Persistence.Instance.Groups[newGroupName];
-            if(newGroup == null)
-            {
-                IFactory factory = Persistence.Instance.Factory;
-                newGroup = factory.CreateGroup(newGroupName);
-                Persistence.Instance.Groups.Add(newGroup);
-                this.LoadGroups();
-            }
+            FavoritesFactory.GetOrCreateGroup(newGroupName);   
+            this.LoadGroups();
         }
 
         private void tsbDeleteGroup_Click(object sender, EventArgs e)

@@ -1211,12 +1211,10 @@ namespace Terminals
 
         private void AddGroup()
         {
-            if (!String.IsNullOrEmpty(this.txtTag.Text))
+            string newGroupName = this.txtTag.Text;
+            if (!String.IsNullOrEmpty(newGroupName))
             {
-                IGroup candidate = PersistedGroups[this.txtTag.Text];
-                if (candidate == null)
-                    candidate = Persistence.Instance.Factory.CreateGroup(this.txtTag.Text);
-
+                IGroup candidate = FavoritesFactory.GetOrCreateGroup(newGroupName);
                 this.AddGroupIfNotAlreadyThere(candidate);
             }
         }
