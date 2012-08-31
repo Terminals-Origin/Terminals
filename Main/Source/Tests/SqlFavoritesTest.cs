@@ -78,8 +78,7 @@ namespace Tests
         [TestMethod]
         public void DeleteFavoriteTest()
         {
-            Favorite favorite = this.lab.CreateTestFavorite();
-            this.lab.Persistence.Favorites.Add(favorite);
+            Favorite favorite = this.lab.AddFavoriteToPrimaryPersistence();
             this.lab.Persistence.Favorites.Delete(favorite);
 
             int after = this.lab.CheckDatabase.Favorites.Count();
@@ -99,8 +98,7 @@ namespace Tests
         [TestMethod]
         public void UpdateFavoriteTest()
         {
-            IFavorite favorite = this.lab.CreateTestFavorite();
-            this.lab.Persistence.Favorites.Add(favorite);
+            IFavorite favorite = this.lab.AddFavoriteToPrimaryPersistence();
             favorite.Protocol = ConnectionManager.VNC;
             favorite.Display.Colors = Terminals.Colors.Bits24;
             this.lab.Persistence.Favorites.Update(favorite);
@@ -120,8 +118,7 @@ namespace Tests
         [TestMethod]
         public void UpdateFavoriteWithGroupsTest()
         {
-            IFavorite favorite = this.lab.CreateTestFavorite();
-            this.lab.Persistence.Favorites.Add(favorite);
+            IFavorite favorite = this.lab.AddFavoriteToPrimaryPersistence();
             IFactory labFactory = this.lab.Persistence.Factory;
             IGroup groupToDelete = labFactory.CreateGroup("TestGroupToDelete");
             this.lab.Persistence.Groups.Add(groupToDelete);

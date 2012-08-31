@@ -7,6 +7,13 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class Factory : IFactory
     {
+        private readonly Groups groups;
+
+        internal Factory(Groups groups)
+        {
+            this.groups = groups;
+        }
+
         public IFavorite CreateFavorite()
         {
             var favorite = new Favorite();
@@ -22,6 +29,7 @@ namespace Terminals.Data.DB
         {
             // call this constructor doesnt fire the group changed event
             Group createdGroup = new Group(groupName);
+            createdGroup.Groups = this.groups;
             return createdGroup;
         }
 

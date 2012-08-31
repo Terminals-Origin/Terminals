@@ -12,7 +12,19 @@ namespace Terminals.Data.DB
     {
         private readonly DataDispatcher dispatcher;
 
-        private readonly EntitiesCache<Group> cache; 
+        private readonly EntitiesCache<Group> cache;
+
+        /// <summary>
+        /// Gets cached item by tis database unique identifier
+        /// </summary>
+        internal Group this[int id]
+        {
+            get
+            {
+                this.CheckCache();
+                return this.cache.FirstOrDefault(candidate => candidate.Id == id);
+            }
+        }
 
         internal Groups(DataDispatcher dispatcher)
         {

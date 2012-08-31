@@ -142,6 +142,7 @@ namespace Terminals.Data
 
         internal static void ReportGroupChanged(IGroup group)
         {
+            // todo remove the instance dependency
             var dispatcher = Persistence.Instance.Dispatcher;
             dispatcher.ReportGroupsUpdated(new List<IGroup> { group });
         }

@@ -62,12 +62,27 @@ namespace Tests
             CheckDatabase.ExecuteStoreCommand(deleteCommand + credentialBase);
         }
 
+        /// <summary>
+        /// Creates new test favorite using primary persistence. Returns this newly created instance.
+        /// Doesnt add it to the persistence.
+        /// </summary>
         internal Favorite CreateTestFavorite()
         {
             var favorite = this.Persistence.Factory.CreateFavorite() as Favorite;
             // set required properties
             favorite.Name = "test";
             favorite.ServerName = "test server";
+            return favorite;
+        }
+
+        /// <summary>
+        /// Creates test favorite and adds it to the primary peristence.
+        /// Returns newly created favorite
+        /// </summary>
+        internal Favorite AddFavoriteToPrimaryPersistence()
+        {
+            Favorite favorite = this.CreateTestFavorite();
+            this.Persistence.Favorites.Add(favorite);
             return favorite;
         }
     }
