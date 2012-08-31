@@ -13,6 +13,11 @@ namespace Terminals.Data
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Gets or sets its associated groups container. Used to resolve accociated groups membership.
+        /// </summary>
+        internal Groups Groups { get; set; }
+
+        /// <summary>
         /// By default set to Guid.Empty, which means no parrent
         /// </summary>
         public Guid Parent { get; set; }
@@ -26,9 +31,7 @@ namespace Terminals.Data
         {
             get
             {
-                // todo remove Groups dependency
-                return Persistence.Instance.Groups
-                    .FirstOrDefault(candidate => ((Group)candidate).Id == this.Parent);
+                return this.Groups[this.Parent];
             }
             set
             {
@@ -60,6 +63,9 @@ namespace Terminals.Data
             }
         }
 
+        /// <summary>
+        /// Default parameterless constructor required by serialization
+        /// </summary>
         public Group()
             : this(new Dictionary<Guid, IFavorite>())
         { }

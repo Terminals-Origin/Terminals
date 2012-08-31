@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Terminals.Connections;
-using Terminals.Data;
+﻿using Terminals.Data;
 
 namespace Terminals
 {
@@ -10,16 +7,25 @@ namespace Terminals
     /// </summary>
     internal class Factory : IFactory
     {
-        internal Factory() { }
+        private readonly Groups groups;
+
+        internal Factory(Groups groups)
+        {
+            this.groups = groups;
+        }
 
         public IFavorite CreateFavorite()
         {
-            return new Favorite();
+            var newItem = new Favorite();
+            newItem.Groups = this.groups;
+            return newItem;
         }
 
         public IGroup CreateGroup(string groupName)
         {
-            return new Group(groupName);
+            var newGroup = new Group(groupName);
+            newGroup.Groups = this.groups;
+            return newGroup;
         }
 
         public ICredentialSet CreateCredentialSet()

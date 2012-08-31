@@ -76,7 +76,7 @@ namespace Terminals.Data
             this.groups = new Groups(this);
             this.favorites = new Favorites(this);
             this.connectionHistory = new ConnectionHistory(this.favorites);
-            this.factory = new Factory();
+            this.factory = new Factory(this.groups);
             this.InitializeFileWatch();
         }
 
@@ -154,7 +154,7 @@ namespace Terminals.Data
             try
             {
                 this.fileLock.WaitOne();
-                return LoadFileContent();
+                return this.LoadFileContent();
             }
             catch (Exception exception)
             {
@@ -168,14 +168,37 @@ namespace Terminals.Data
             }
         }
 
-        private static FavoritesFile LoadFileContent()
+        private FavoritesFile LoadFileContent()
         {
             string fileLocation = Settings.FileLocations.Favorites;
             object fileContent = Serialize.DeserializeXMLFromDisk(fileLocation, typeof(FavoritesFile));
             var file = fileContent as FavoritesFile;
             if (file == null)
                 file = new FavoritesFile();
+            this.AssignGroupsToFileContent(file);
             return file;
+        }
+
+        private void AssignGroupsToFileContent(FavoritesFile file)
+        {
+            this.AssignGroupsToGroups(file.Favorites);
+            this.AssignGroupsToFavorites(file.Groups);
+        }
+
+        private void AssignGroupsToFavorites(Group[] fileGroups)
+        {
+            foreach (Group group in fileGroups)
+            {
+                group.Groups = this.groups;
+            }
+        }
+
+        private void AssignGroupsToGroups(Favorite[] fileFavorites)
+        {
+            foreach (Favorite favorite in fileFavorites)
+            {
+                favorite.Groups = this.groups;
+            }
         }
 
         private List<IGroup> UpdateFavoritesInGroups(FavoritesInGroup[] favoritesInGroups)
