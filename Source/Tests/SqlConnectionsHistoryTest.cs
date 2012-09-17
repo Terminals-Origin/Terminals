@@ -35,12 +35,16 @@ namespace Tests
             this.lab.ClearTestLab();
         }
 
+        [Description("If this test failes, the reason may be the delay to the database server.")]
         [TestMethod]
         public void HistoryTest()
         {
             Favorite favorite = this.lab.AddFavoriteToPrimaryPersistence();
 
             IConnectionHistory history = this.lab.Persistence.ConnectionHistory;
+            // thats not a mystake, we want to check, if two fast tryes are ignored,
+            // but it may fail, if the response from the server doesnt reflect our requirement
+            // todo make this test 100% successful
             history.RecordHistoryItem(favorite);
             history.RecordHistoryItem(favorite);
             var expectedCount = this.GetExpectedHistoryCount();

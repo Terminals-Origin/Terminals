@@ -28,8 +28,23 @@ namespace Terminals.Data.DB
         {
             get
             {
-                //this.favorites
-                return this.Favorites.ToList().Cast<IFavorite>().ToList();
+                // see also the Favorite.Groups
+                List<int?> favoriteIds = this.LoadFavoritesFromDatabase();
+
+                // List<Favorite> recent = this.Favorites.ToList();
+                // prefere to select cached items, instead of selecting from database directly
+                List<Favorite> selected = this.favorites.Cached
+                    .Where(candidate => favoriteIds.Contains(candidate.Id))
+                    .ToList();
+                return selected.Cast<IFavorite>().ToList();
+            }
+        }
+
+        private List<int?> LoadFavoritesFromDatabase()
+        {
+            using (var database = Database.CreateInstance())
+            {
+                return database.GetFavoritesInGroup(this.Id).ToList();
             }
         }
 
@@ -55,10 +70,11 @@ namespace Terminals.Data.DB
             this.Name = name;
         }
 
-        internal void AssignStores(Groups groups, DataDispatcher dispatcher)
+        internal void AssignStores(Groups groups, DataDispatcher dispatcher, Favorites favorites)
         {
             this.groups = groups;
             this.dispatcher = dispatcher;
+            this.favorites = favorites;
         }
 
         private void SaveParentToDatabase(IGroup value)
@@ -96,32 +112,29 @@ namespace Terminals.Data.DB
 
         public void AddFavorite(IFavorite favorite)
         {
-            AddFavoriteToDatabase(favorite);
-            this.ReportGroupChanged(this);
+            this.AddFavorites(new List<IFavorite> { favorite });
         }
 
-        private void AddFavoriteToDatabase(IFavorite favorite)
+        private void UpdateFavoritesMembershipInDatabase(List<IFavorite> favorites)
         {
-            this.Favorites.Add((Favorite)favorite);
+            using (var database = Database.CreateInstance())
+            {
+                foreach (Favorite favorite in favorites)
+                {
+                    database.InsertFavoritesInGroup(favorite.Id, this.Id);
+                }
+            }
         }
 
         public void AddFavorites(List<IFavorite> favorites)
         {
-            AddFavoritesToDatabase(favorites);
+            this.UpdateFavoritesMembershipInDatabase(favorites);
             this.ReportGroupChanged(this);
-        }
-
-        private void AddFavoritesToDatabase(List<IFavorite> favorites)
-        {
-            foreach (IFavorite favorite in favorites)
-            {
-                AddFavoriteToDatabase(favorite);
-            }
         }
 
         public void RemoveFavorite(IFavorite favorite)
         {
-            RemoveFavoriteFromDatabase(favorite);
+            this.RemoveFavorites(new List<IFavorite> { favorite });
             this.ReportGroupChanged(this);
         }
 
@@ -138,17 +151,13 @@ namespace Terminals.Data.DB
 
         private void RemoveFavoritesFromDatabase(List<IFavorite> favorites)
         {
-            foreach (IFavorite favorite in favorites)
+            using (var database = Database.CreateInstance())
             {
-                RemoveFavoriteFromDatabase(favorite);
+                foreach (Favorite favorite in favorites)
+                {
+                    database.DeleteFavoritesInGroup(favorite.Id, this.Id);
+                }
             }
-        }
-
-        private void RemoveFavoriteFromDatabase(IFavorite favorite)
-        {
-            var toRemove = favorite as Favorite;
-            this.Favorites.Attach(toRemove);
-            this.Favorites.Remove(toRemove);
         }
 
         bool IStoreIdEquals<IGroup>.StoreIdEquals(IGroup oponent)

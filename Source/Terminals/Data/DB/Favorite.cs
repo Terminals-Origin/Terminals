@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Terminals.Connections;
-using Unified;
 
 namespace Terminals.Data.DB
 {
     internal partial class Favorite : IFavorite, IIntegerKeyEnityty
     {
+        private Groups groups;
+
+        private DataDispatcher dispatcher;
+
         /// <summary>
         /// cant be set in constructor, because the constructor is used by EF when loading the entities
         /// </summary>
@@ -109,6 +112,7 @@ namespace Terminals.Data.DB
 
         // because of the disposable image, favorite should implement IDisposable
         private Image toolBarIcon;
+
         public Image ToolBarIconImage
         {
             get
@@ -124,8 +128,8 @@ namespace Terminals.Data.DB
         {
             get
             {
-                List<IGroup> groups = GetInvariantGroups();
-                return Data.Favorite.GroupsListToString(groups);
+                List<IGroup> loadedGroups = GetInvariantGroups();
+                return Data.Favorite.GroupsListToString(loadedGroups);
             }
         }
 
@@ -162,6 +166,7 @@ namespace Terminals.Data.DB
             copy.ToolBarIconFile = this.ToolBarIconFile;
 
             copy.ProtocolProperties = this.ProtocolProperties.Copy();
+            copy.AssignStores(this.groups, this.dispatcher);
 
             return copy;
         }
@@ -201,7 +206,27 @@ namespace Terminals.Data.DB
 
         internal List<IGroup> GetInvariantGroups()
         {
-            return this.Groups.ToList().Cast<IGroup>().ToList();
+            // see also the Group.Favorites
+            // prefere to select cached items, instead of selecting from database directly
+            List<int?> groupIds = this.LoadGroupsFromDatabase();
+            List<Group> selected = this.groups.Cached
+                .Where(candidate => groupIds.Contains(candidate.Id))
+                .ToList();
+            return selected.Cast<IGroup>().ToList();
+        }
+
+        private List<int?> LoadGroupsFromDatabase()
+        {
+            using (var database = Database.CreateInstance())
+            {
+                return database.GetFavoriteGroups(this.Id).ToList();
+            }
+        }
+
+        public void AssignStores(Groups groups, DataDispatcher dispatcher)
+        {
+            this.groups = groups;
+            this.dispatcher = dispatcher;
         }
 
         internal void MarkAsModified(Database database)
