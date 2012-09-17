@@ -421,6 +421,104 @@ namespace Terminals.Data.DB
     
             return base.ExecuteFunction<global::System.Byte[]>("GetFavoriteIcon", favoriteIdParameter);
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="groupId">No Metadata Documentation available.</param>
+        public ObjectResult<Nullable<global::System.Int32>> GetFavoritesInGroup(Nullable<global::System.Int32> groupId)
+        {
+            ObjectParameter groupIdParameter;
+            if (groupId.HasValue)
+            {
+                groupIdParameter = new ObjectParameter("groupId", groupId);
+            }
+            else
+            {
+                groupIdParameter = new ObjectParameter("groupId", typeof(global::System.Int32));
+            }
+    
+            return base.ExecuteFunction<Nullable<global::System.Int32>>("GetFavoritesInGroup", groupIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="favoriteId">No Metadata Documentation available.</param>
+        public ObjectResult<Nullable<global::System.Int32>> GetFavoriteGroups(Nullable<global::System.Int32> favoriteId)
+        {
+            ObjectParameter favoriteIdParameter;
+            if (favoriteId.HasValue)
+            {
+                favoriteIdParameter = new ObjectParameter("favoriteId", favoriteId);
+            }
+            else
+            {
+                favoriteIdParameter = new ObjectParameter("favoriteId", typeof(global::System.Int32));
+            }
+    
+            return base.ExecuteFunction<Nullable<global::System.Int32>>("GetFavoriteGroups", favoriteIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="favoriteId">No Metadata Documentation available.</param>
+        /// <param name="groupId">No Metadata Documentation available.</param>
+        public int InsertFavoritesInGroup(Nullable<global::System.Int32> favoriteId, Nullable<global::System.Int32> groupId)
+        {
+            ObjectParameter favoriteIdParameter;
+            if (favoriteId.HasValue)
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", favoriteId);
+            }
+            else
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter groupIdParameter;
+            if (groupId.HasValue)
+            {
+                groupIdParameter = new ObjectParameter("GroupId", groupId);
+            }
+            else
+            {
+                groupIdParameter = new ObjectParameter("GroupId", typeof(global::System.Int32));
+            }
+    
+            return base.ExecuteFunction("InsertFavoritesInGroup", favoriteIdParameter, groupIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="favoriteId">No Metadata Documentation available.</param>
+        /// <param name="groupId">No Metadata Documentation available.</param>
+        public int DeleteFavoritesInGroup(Nullable<global::System.Int32> favoriteId, Nullable<global::System.Int32> groupId)
+        {
+            ObjectParameter favoriteIdParameter;
+            if (favoriteId.HasValue)
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", favoriteId);
+            }
+            else
+            {
+                favoriteIdParameter = new ObjectParameter("FavoriteId", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter groupIdParameter;
+            if (groupId.HasValue)
+            {
+                groupIdParameter = new ObjectParameter("GroupId", groupId);
+            }
+            else
+            {
+                groupIdParameter = new ObjectParameter("GroupId", typeof(global::System.Int32));
+            }
+    
+            return base.ExecuteFunction("DeleteFavoritesInGroup", favoriteIdParameter, groupIdParameter);
+        }
 
         #endregion
     }

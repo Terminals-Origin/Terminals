@@ -7,12 +7,15 @@
     {
         private readonly Groups groups;
 
+        private readonly Favorites favorites;
+
         private readonly DataDispatcher dispatcher;
 
-        internal Factory(Groups groups, DataDispatcher dispatcher)
+        internal Factory(Groups groups, Favorites favorites, DataDispatcher dispatcher)
         {
             this.groups = groups;
             this.dispatcher = dispatcher;
+            this.favorites = favorites;
         }
 
         public IFavorite CreateFavorite()
@@ -22,7 +25,7 @@
             favorite.Display = new DisplayOptions();
             favorite.Security = new SecurityOptions();
             favorite.ExecuteBeforeConnect = new BeforeConnectExecute();
-
+            favorite.AssignStores(this.groups, this.dispatcher);
             return favorite;
         }
 
@@ -30,7 +33,7 @@
         {
             // call this constructor doesnt fire the group changed event
             Group createdGroup = new Group(groupName);
-            createdGroup.AssignStores(this.groups, this.dispatcher);
+            createdGroup.AssignStores(this.groups, this.dispatcher, this.favorites);
             return createdGroup;
         }
 

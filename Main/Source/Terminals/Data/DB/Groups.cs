@@ -10,9 +10,16 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class Groups : IGroups
     {
-        private readonly DataDispatcher dispatcher;
+        private DataDispatcher dispatcher;
+
+        private Favorites favorites;
 
         private readonly EntitiesCache<Group> cache;
+
+        internal List<Group> Cached
+        {
+            get { return this.cache.ToList(); }
+        }
 
         /// <summary>
         /// Gets cached item by tis database unique identifier
@@ -26,10 +33,15 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal Groups(DataDispatcher dispatcher)
+        internal Groups()
+        {
+            this.cache = new EntitiesCache<Group>();
+        }
+
+        public void AssignStores(DataDispatcher dispatcher, Favorites favorites)
         {
             this.dispatcher = dispatcher;
-            this.cache = new EntitiesCache<Group>();
+            this.favorites = favorites;
         }
 
         IGroup IGroups.this[string groupName]
@@ -128,7 +140,7 @@ namespace Terminals.Data.DB
 
         private List<Group> GetEmptyGroups(Database database)
         {
-            // not optimized access to database. Weeknes: Current state doesnt have to reflect the cache
+            // todo not optimized access to database. Weeknes: Current state doesnt have to reflect the cache
             List<Group> loaded = database.Groups.ToList()
                 .Where(group => group.Favorites.Count == 0).ToList();
             this.AssignGroupsContainer(loaded);
@@ -149,7 +161,7 @@ namespace Terminals.Data.DB
         {
             foreach (Group group in groups)
             {
-                group.AssignStores(this, this.dispatcher);
+                group.AssignStores(this, this.dispatcher, this.favorites);
             }
         }
 

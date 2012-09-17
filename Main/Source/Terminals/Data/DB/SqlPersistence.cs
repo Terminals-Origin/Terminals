@@ -60,11 +60,12 @@ namespace Terminals.Data.DB
                 return;
 
             this.Dispatcher = new DataDispatcher();
-            this.groups = new Groups(this.Dispatcher);
+            this.groups = new Groups();
             this.favorites = new Favorites(this.groups, this.Dispatcher);
+            this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.ConnectionHistory = new ConnectionHistory(this.favorites);
             this.Credentials = new StoredCredentials();
-            this.Factory = new Factory(this.groups, this.Dispatcher);
+            this.Factory = new Factory(this.groups, this.favorites, this.Dispatcher);
         }
 
         private bool TryInitializeDatabase()

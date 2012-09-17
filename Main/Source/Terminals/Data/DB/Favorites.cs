@@ -97,20 +97,25 @@ namespace Terminals.Data.DB
 
                 database.Attach(toUpdate);
                 List<IGroup> addedGroups = this.groups.AddToDatabase(database, newGroups);
-
-                List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, newGroups);
-                List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, favorite.Groups);
-                
-                Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
-                Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
-                
-                List<Group> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
+                // commit newly created groups, otherwise we cant add into them
+                database.SaveImmediatelyIfRequested(); 
+                List<Group> removedGroups = this.UpdateGroupsMembership(favorite, newGroups, database);
                 database.SaveImmediatelyIfRequested();
 
                 List<IGroup> removedToReport = this.groups.DeleteFromCache(removedGroups);
                 this.dispatcher.ReportGroupsRecreated(addedGroups, removedToReport);
                 this.TrySaveAndReportFavoriteUpdate(toUpdate, database);
             }
+        }
+
+        private List<Group> UpdateGroupsMembership(IFavorite favorite, List<IGroup> newGroups, Database database)
+        {
+            List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, newGroups);
+            List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, favorite.Groups);
+            Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
+            Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> {favorite}, redundantGroups);
+            List<Group> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
+            return removedGroups;
         }
 
         private void TrySaveAndReportFavoriteUpdate(Favorite toUpdate, Database database)

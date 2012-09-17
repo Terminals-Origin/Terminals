@@ -259,6 +259,9 @@
           <Parameter Name="Credential" Type="int" Mode="In" />
           <Parameter Name="CredentialBaseId" Type="int" Mode="In" />
         </Function>
+        <Function Name="GetFavoriteGroups" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="favoriteId" Type="int" Mode="In" />
+        </Function>
         <Function Name="GetFavoriteIcon" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
         </Function>
@@ -268,6 +271,9 @@
         <Function Name="GetFavoritesHistoryByDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="From" Type="datetime" Mode="In" />
           <Parameter Name="To" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="GetFavoritesInGroup" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="groupId" Type="int" Mode="In" />
         </Function>
         <Function Name="GetMasterPasswordKey" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="InsertBeforeConnectExecute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -447,6 +453,20 @@
           </FunctionImport>
           <FunctionImport Name="GetFavoriteIcon" ReturnType="Collection(Binary)" a:MethodAccess="Private">
           <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFavoritesInGroup" ReturnType="Collection(Int32)">
+            <Parameter Name="groupId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetFavoriteGroups" ReturnType="Collection(Int32)">
+            <Parameter Name="favoriteId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertFavoritesInGroup">
+            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+            <Parameter Name="GroupId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteFavoritesInGroup">
+            <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
+            <Parameter Name="GroupId" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="BeforeConnectExecute" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
@@ -889,6 +909,10 @@
           <FunctionImportMapping FunctionImportName="GetMasterPasswordKey" FunctionName="Model1.Store.GetMasterPasswordKey" />
           <FunctionImportMapping FunctionImportName="SetFavoriteIcon" FunctionName="Model1.Store.SetFavoriteIcon" />
           <FunctionImportMapping FunctionImportName="GetFavoriteIcon" FunctionName="Model1.Store.GetFavoriteIcon" />
+          <FunctionImportMapping FunctionImportName="GetFavoritesInGroup" FunctionName="Model1.Store.GetFavoritesInGroup" />
+          <FunctionImportMapping FunctionImportName="GetFavoriteGroups" FunctionName="Model1.Store.GetFavoriteGroups" />
+          <FunctionImportMapping FunctionImportName="InsertFavoritesInGroup" FunctionName="Model1.Store.InsertFavoritesInGroup" />
+          <FunctionImportMapping FunctionImportName="DeleteFavoritesInGroup" FunctionName="Model1.Store.DeleteFavoritesInGroup" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
