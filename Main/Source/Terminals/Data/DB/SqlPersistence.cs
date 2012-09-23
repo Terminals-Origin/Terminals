@@ -30,11 +30,13 @@ namespace Terminals.Data.DB
         {
             get { return this.groups; }
         }
+
         public IConnectionHistory ConnectionHistory { get; private set; }
         public IFactory Factory { get; private set; }
         public DataDispatcher Dispatcher { get; private set; }
 
-        public ICredentials Credentials { get; private set; }
+        private StoredCredentials credentials;
+        public ICredentials Credentials { get { return this.credentials; } }
 
         public PersistenceSecurity Security { get; private set; }
 
@@ -64,7 +66,7 @@ namespace Terminals.Data.DB
             this.favorites = new Favorites(this.groups, this.Dispatcher);
             this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.ConnectionHistory = new ConnectionHistory(this.favorites);
-            this.Credentials = new StoredCredentials();
+            this.credentials = new StoredCredentials();
             this.Factory = new Factory(this.groups, this.favorites, this.Dispatcher);
         }
 
@@ -98,7 +100,7 @@ namespace Terminals.Data.DB
             // this forces the clock to run the updates in gui thread, because Entity framework isnt thread safe
             this.reLoadClock.SynchronizingObject = synchronizer;
             this.reLoadClock.Elapsed += new ElapsedEventHandler(this.OnReLoadClockElapsed);
-            this.reLoadClock.Start();
+            //this.reLoadClock.Start();
         }
 
         /// <summary>
@@ -107,15 +109,14 @@ namespace Terminals.Data.DB
         private void OnReLoadClockElapsed(object sender, ElapsedEventArgs e)
         {
             this.reLoadClock.Stop();
-            // todo check, if there is atleast something new, otherwise we dont have to download everything
             var clock = Stopwatch.StartNew();
             this.RefreshDatabaseMasterPassword();
-            RefreshGroups();
-            RefreshFavorites();
-            RefreshSecurity();
+            this.groups.RefreshCache();
+            this.favorites.RefreshCache();
+            this.credentials.RefreshCache();
             RefreshHistory();
             Debug.WriteLine("Updating entities at {0} [{1} ms]", DateTime.Now, clock.ElapsedMilliseconds);
-            // this.reLoadClock.Start();
+            //this.reLoadClock.Start();
         }
 
         private void RefreshDatabaseMasterPassword()
@@ -127,26 +128,6 @@ namespace Terminals.Data.DB
         private void RefreshHistory()
         {
             // possible changes in history are only for today
-        }
-
-        private void RefreshSecurity()
-        {
-            //this.Refresh(RefreshMode.ClientWins, this.Security);
-        }
-
-        private void RefreshGroups()
-        {
-            //this.Refresh(RefreshMode.ClientWins, this.Groups);
-        }
-        
-        private void RefreshFavorites()
-        {
-            //this.database.Refresh(RefreshMode.StoreWins, this.database.Favorites);
-            //this.database.Refresh(RefreshMode.ClientWins, this.database.CredentialBase);
-            //this.database.Refresh(RefreshMode.ClientWins, this.database.BeforeConnectExecute);
-            //this.database.Refresh(RefreshMode.ClientWins, this.database.DisplayOptions);
-
-            // after all items are loaded, refresh already cached protocol options, which arent part of an entity
         }
 
         public override string ToString()

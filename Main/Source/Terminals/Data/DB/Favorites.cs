@@ -246,11 +246,55 @@ namespace Terminals.Data.DB
             this.cache.Add(loaded);
         }
 
+        internal void RefreshCache()
+        {
+            List<Favorite> newlyLoaded = LoadFromDatabase(this.Cached);
+            List<Favorite> oldFavorites = this.Cached;
+            List<Favorite> missing = ListsHelper.GetMissingSourcesInTarget(newlyLoaded, oldFavorites);
+            List<Favorite> redundant = ListsHelper.GetMissingSourcesInTarget(oldFavorites, newlyLoaded);
+            List<Favorite> toUpdate = ListsHelper.GetMissingSourcesInTarget(oldFavorites, redundant);
+
+            this.cache.Add(missing);
+            this.cache.Delete(redundant);
+            this.RefreshCachedItems();
+
+            var missingToReport = missing.Cast<IFavorite>().ToList();
+            var redundantToReport = redundant.Cast<IFavorite>().ToList();
+            var updatedToReport = toUpdate.Cast<IFavorite>().ToList();
+            
+            this.dispatcher.ReportFavoritesAdded(missingToReport);
+            this.dispatcher.ReportFavoritesDeleted(redundantToReport);
+            this.dispatcher.ReportFavoritesUpdated(updatedToReport);
+        }
+
+        private void RefreshCachedItems()
+        {
+            foreach (Favorite favorite in this.cache)
+            {
+                favorite.ReleaseLoadedDetails();
+            }
+        }
+
         private static List<Favorite> LoadFromDatabase()
         {
             using (var database = Database.CreateInstance())
             {
                 // to list because Linq to entities allowes only cast to primitive types
+                List<Favorite> favorites = database.Favorites.ToList();
+                database.DetachAll(favorites);
+                return favorites;
+            }
+        }
+
+        private static List<Favorite> LoadFromDatabase(List<Favorite> toRefresh)
+        {
+            using (var database = Database.CreateInstance())
+            {
+                if (toRefresh != null)
+                    database.AttachAll(toRefresh);
+
+                // to list because Linq to entities allowes only cast to primitive types
+                database.Refresh(RefreshMode.StoreWins, database.Favorites);
                 List<Favorite> favorites = database.Favorites.ToList();
                 database.DetachAll(favorites);
                 return favorites;

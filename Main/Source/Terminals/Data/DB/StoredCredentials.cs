@@ -70,8 +70,7 @@ namespace Terminals.Data.DB
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
             UpdatePasswordsInDatabase(newKeyMaterial);
-            this.cache.Clear();
-            this.ReloadCache();
+            this.RefreshCache();
         }
 
         private static void UpdatePasswordsInDatabase(string newKeyMaterial)
@@ -96,6 +95,14 @@ namespace Terminals.Data.DB
             {
                 this.ReloadCache();
             }
+        }
+
+        internal void RefreshCache()
+        {
+            this.cache.Clear();
+            this.ReloadCache();
+            if (CredentialsChanged != null)
+                CredentialsChanged(this, new EventArgs());
         }
 
         private void ReloadCache()

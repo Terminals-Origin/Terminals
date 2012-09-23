@@ -15,6 +15,8 @@ namespace Terminals.Data.DB
         {
             private readonly Favorite favorite;
 
+            private bool protocolPropertiesLoaded;
+
             private bool DetailsLoaded
             {
                 get
@@ -144,9 +146,10 @@ namespace Terminals.Data.DB
             {
                 try
                 {
-                    if (!this.favorite.isNewlyCreated)
+                    if (!this.favorite.isNewlyCreated && !this.protocolPropertiesLoaded)
                     {
                         this.LoadPropertiesFromDatabase();
+                        this.protocolPropertiesLoaded = true;
                     }
                 }
                 catch (Exception exception)
@@ -187,6 +190,18 @@ namespace Terminals.Data.DB
                     byte[] imageData = database.GetFavoriteIcon(this.favorite.Id);
                     this.favorite.toolBarIcon = FavoriteIcons.LoadImage(imageData, this.favorite);
                 }
+            }
+
+            /// <summary>
+            /// Releases cached lazy loaded properties to force refresh by next access
+            /// </summary>
+            internal void ReleaseLoadedDetails()
+            {
+                // release protocolProperties, icon, other detail properties, not loaded with Entity
+                this.protocolPropertiesLoaded = false;
+                // dont dispose, because there is may be shared default protocol icon, which is still in use
+                this.favorite.toolBarIcon = null;
+                this.favorite.security = null; // it is enough, all other sespect the security part 
             }
         }
     }

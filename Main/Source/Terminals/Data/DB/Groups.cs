@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Objects;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -18,7 +19,11 @@ namespace Terminals.Data.DB
 
         internal List<Group> Cached
         {
-            get { return this.cache.ToList(); }
+            get
+            {
+                this.CheckCache();
+                return this.cache.ToList();
+            }
         }
 
         /// <summary>
@@ -140,21 +145,43 @@ namespace Terminals.Data.DB
 
         private List<Group> GetEmptyGroups(Database database)
         {
-            // todo not optimized access to database. Weeknes: Current state doesnt have to reflect the cache
+            // not optimized access to database. Weeknes: Current state doesnt have to reflect the cache
             List<Group> loaded = database.Groups.ToList()
                 .Where(group => group.Favorites.Count == 0).ToList();
             this.AssignGroupsContainer(loaded);
             return loaded;
         }
 
+        internal void RefreshCache()
+        {
+            List<Group> newlyLoaded = this.Load(this.Cached);
+            List<Group> oldGroups = this.Cached;
+
+            List<Group> missing = ListsHelper.GetMissingSourcesInTarget(newlyLoaded, oldGroups);
+            List<Group> redundant = ListsHelper.GetMissingSourcesInTarget(oldGroups, newlyLoaded);
+            this.cache.Add(missing);
+            this.cache.Delete(redundant);
+
+            var missingToReport = missing.Cast<IGroup>().ToList();
+            var redundantToReport = redundant.Cast<IGroup>().ToList();
+            this.dispatcher.ReportGroupsRecreated(missingToReport, redundantToReport);
+        }
+
         private void CheckCache()
         {
             if (!this.cache.IsEmpty)
                 return;
-            
+
             List<Group> loaded = LoadFromDatabase();
             this.AssignGroupsContainer(loaded);
             this.cache.Add(loaded);
+        }
+
+        private List<Group> Load(List<Group> toRefresh)
+        {
+            List<Group> loaded = LoadFromDatabase(toRefresh);
+            this.AssignGroupsContainer(loaded);
+            return loaded;
         }
 
         private void AssignGroupsContainer(List<Group> groups)
@@ -169,6 +196,20 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
+                List<Group> groups = database.Groups.ToList();
+                database.DetachAll(groups);
+                return groups;
+            }
+        }
+
+        private static List<Group> LoadFromDatabase(List<Group> toRefresh)
+        {
+            using (var database = Database.CreateInstance())
+            {
+                if (toRefresh != null)
+                    database.AttachAll(toRefresh);
+
+                database.Refresh(RefreshMode.StoreWins, database.Groups);
                 List<Group> groups = database.Groups.ToList();
                 database.DetachAll(groups);
                 return groups;
