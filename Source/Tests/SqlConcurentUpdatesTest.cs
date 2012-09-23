@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,8 +14,8 @@ namespace Tests
     {
         private SqlTestsLab lab;
         private IFavorite updatedFavorite;
+        private bool addEventCatched;
         private bool updateEventCatched;
-
         private bool removedEventCatched;
 
         private const string TEST_NAME = "second";
@@ -59,28 +60,48 @@ namespace Tests
         public void TestPeriodicalUpdates()
         {
             this.lab.AddFavoriteToPrimaryPersistence();
-
+            this.lab.AddFavoriteToPrimaryPersistence();
+            
             // assign event handler before another changes to catch all of them
             this.lab.Persistence.Dispatcher.FavoritesChanged +=
                 new FavoritesChangedEventHandler(this.OnPrimaryStoreFavoritesChanged);
 
-            var favoriteB = this.SecondaryFavorites.FirstOrDefault() as Favorite;
-            favoriteB.Name = TEST_NAME;
-            this.SecondaryFavorites.Update(favoriteB);
+            this.MakeChangesOnSecondaryPersistence();
 
             ISynchronizeInvoke control = new Control();
             this.lab.Persistence.AssignSynchronizationObject(control);
             // refresh interval is set to 2 sec. by default
             Thread.Sleep(10000);
 
-            Assert.IsTrue(this.updateEventCatched, "Data changed event wasnt received");
+            Assert.IsTrue(this.addEventCatched, "Favorite added event wasnt received");
+            Assert.IsTrue(this.updateEventCatched, "Favorite updated event wasnt received");
+            Assert.IsTrue(this.removedEventCatched, "Favorite removed event wasnt received");
             Assert.AreEqual(TEST_NAME, this.updatedFavorite.Name, "The updated favorite wasnt refreshed");
         }
 
-        private void OnPrimaryStoreFavoritesChanged(FavoritesChangedEventArgs args)
+      private void MakeChangesOnSecondaryPersistence()
+      {
+        List<IFavorite> secondary = this.SecondaryFavorites.ToList();
+        this.SecondaryFavorites.Delete(secondary[0]);
+        var favoriteA = secondary[1] as Favorite;
+        favoriteA.Name = TEST_NAME;
+        this.SecondaryFavorites.Update(favoriteA);
+
+        IFavorite favoriteB = this.lab.SecondaryPersistence.Factory.CreateFavorite();
+        favoriteB.Name = "test";
+        favoriteB.ServerName = "test server";
+        this.SecondaryFavorites.Add(favoriteB);
+      }
+
+      private void OnPrimaryStoreFavoritesChanged(FavoritesChangedEventArgs args)
         {
-            this.updatedFavorite = args.Updated.FirstOrDefault();
-            this.updateEventCatched = true;
+            var updated = args.Updated.FirstOrDefault();
+            if (updated !=null)
+              this.updatedFavorite = updated;
+
+            this.addEventCatched |= args.Added.Count > 0;
+            this.updateEventCatched |= args.Updated.Count > 0;
+            this.removedEventCatched |= args.Removed.Count > 0;
         }
 
         [TestMethod]

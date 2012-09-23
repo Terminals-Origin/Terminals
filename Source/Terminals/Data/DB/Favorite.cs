@@ -106,7 +106,6 @@ namespace Terminals.Data.DB
             set
             {
                 this.toolBarIcon = FavoriteIcons.LoadImage(value, this);
-                //if(FavoriteIcons.IsntDefaultProtocolImage(this.toolBarIcon)) ;
             }
         }
 
@@ -244,7 +243,12 @@ namespace Terminals.Data.DB
         {
             this.details.Detach(database);
         }
-        
+
+        internal void ReleaseLoadedDetails()
+        {
+            this.details.ReleaseLoadedDetails();
+        }
+
         public override String ToString()
         {
             return Data.Favorite.ToString(this);
