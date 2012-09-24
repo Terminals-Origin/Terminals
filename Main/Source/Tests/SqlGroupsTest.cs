@@ -12,12 +12,11 @@ namespace Tests
     ///This is a test class for database implementation of Groups
     ///</summary>
     [TestClass]
-    public class SqlGroupsTest
+    public class SqlGroupsTest : SqlTestsLab
     {
         private int addedCount;
         private int updatedCount;
         private int deletedCount;
-        private SqlTestsLab lab;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -28,15 +27,14 @@ namespace Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            this.lab = new SqlTestsLab();
-            this.lab.InitializeTestLab();
-            this.lab.Persistence.Dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.Dispatcher_GroupsChanged);
+            this.InitializeTestLab();
+            this.PrimaryPersistence.Dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.Dispatcher_GroupsChanged);
         }
 
         [TestCleanup]
         public void TestClose()
         {
-            this.lab.ClearTestLab();
+            this.ClearTestLab();
         }
 
         private void Dispatcher_GroupsChanged(GroupsChangedArgs args)
@@ -55,7 +53,7 @@ namespace Tests
             IGroup testParent = childGroup.Parent; // dummy test to resolve parrent
 
             Assert.AreEqual(testParent, parentGroup, "Parent group wasnt set properly");
-            ObjectSet<Group> checkedGroups = this.lab.CheckDatabase.Groups;
+            ObjectSet<Group> checkedGroups = this.CheckDatabase.Groups;
             Group checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
             Group checkedParent = checkedGroups.FirstOrDefault(group => group.Id == parentGroup.Id);
             Assert.IsNotNull(checkedChild, "Group wasnt added to the database");
@@ -69,7 +67,7 @@ namespace Tests
         public void LoadGroupFavoritesTest()
         {
             IGroup group = this.CreateTestGroupA();
-            Favorite favorite = this.lab.AddFavoriteToPrimaryPersistence();
+            Favorite favorite = this.AddFavoriteToPrimaryPersistence();
             group.AddFavorite(favorite);
             List<IFavorite> favorites = group.Favorites;
             Assert.AreEqual(1, favorites.Count, "Group favorites count doesnt match.");
@@ -80,9 +78,9 @@ namespace Tests
         public void DeleteGroupTest()
         {
             var testGroup = this.CreateTestGroupA();
-            int storedBefore = this.lab.CheckDatabase.Groups.Count();
-            this.lab.Persistence.Groups.Delete(testGroup);
-            int storedAfter = this.lab.CheckDatabase.Groups.Count();
+            int storedBefore = this.CheckDatabase.Groups.Count();
+            this.PrimaryPersistence.Groups.Delete(testGroup);
+            int storedAfter = this.CheckDatabase.Groups.Count();
 
             this.AssertGroupDeleted(storedAfter, storedBefore);
         }
@@ -91,9 +89,9 @@ namespace Tests
         public void RebuildGroupsTest()
         {
             this.CreateTestGroupA();
-            int storedBefore = this.lab.CheckDatabase.Groups.Count();
-            this.lab.Persistence.Groups.Rebuild();
-            int storedAfter = this.lab.CheckDatabase.Groups.Count();
+            int storedBefore = this.CheckDatabase.Groups.Count();
+            this.PrimaryPersistence.Groups.Rebuild();
+            int storedAfter = this.CheckDatabase.Groups.Count();
 
             this.AssertGroupDeleted(storedAfter, storedBefore);
         }
@@ -105,9 +103,9 @@ namespace Tests
 
         private Group CreateTestGroup(string newGroupName)
         {
-            IFactory factory = this.lab.Persistence.Factory;
+            IFactory factory = this.PrimaryPersistence.Factory;
             Group testGroup = factory.CreateGroup(newGroupName) as Group;
-            this.lab.Persistence.Groups.Add(testGroup);
+            this.PrimaryPersistence.Groups.Add(testGroup);
             return testGroup;
         }
 

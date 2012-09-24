@@ -10,9 +10,8 @@ using Favorite = Terminals.Data.DB.Favorite;
 namespace Tests
 {
     [TestClass]
-    public class SqlConcurentUpdatesTest
+    public class SqlConcurentUpdatesTest : SqlTestsLab
     {
-        private SqlTestsLab lab;
         private IFavorite updatedFavorite;
         private bool addEventCatched;
         private bool updateEventCatched;
@@ -26,27 +25,10 @@ namespace Tests
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        private IFavorites PrimaryFavorites
-        {
-            get
-            {
-                return this.lab.Persistence.Favorites;
-            }
-        }
-
-        private IFavorites SecondaryFavorites
-        {
-            get
-            {
-                return this.lab.SecondaryPersistence.Favorites;
-            }
-        }
-
         [TestInitialize]
         public void TestInitialize()
         {
-            this.lab = new SqlTestsLab();
-            this.lab.InitializeTestLab();
+            this.InitializeTestLab();
         }
 
         [TestCleanup]
@@ -59,17 +41,17 @@ namespace Tests
         [TestMethod]
         public void TestPeriodicalUpdates()
         {
-            this.lab.AddFavoriteToPrimaryPersistence();
-            this.lab.AddFavoriteToPrimaryPersistence();
+            this.AddFavoriteToPrimaryPersistence();
+            this.AddFavoriteToPrimaryPersistence();
             
             // assign event handler before another changes to catch all of them
-            this.lab.Persistence.Dispatcher.FavoritesChanged +=
+            this.PrimaryPersistence.Dispatcher.FavoritesChanged +=
                 new FavoritesChangedEventHandler(this.OnPrimaryStoreFavoritesChanged);
 
             this.MakeChangesOnSecondaryPersistence();
 
             ISynchronizeInvoke control = new Control();
-            this.lab.Persistence.AssignSynchronizationObject(control);
+            this.PrimaryPersistence.AssignSynchronizationObject(control);
             // refresh interval is set to 2 sec. by default
             Thread.Sleep(10000);
 
@@ -87,7 +69,7 @@ namespace Tests
         favoriteA.Name = TEST_NAME;
         this.SecondaryFavorites.Update(favoriteA);
 
-        IFavorite favoriteB = this.lab.SecondaryPersistence.Factory.CreateFavorite();
+        IFavorite favoriteB = this.SecondaryPersistence.Factory.CreateFavorite();
         favoriteB.Name = "test";
         favoriteB.ServerName = "test server";
         this.SecondaryFavorites.Add(favoriteB);
@@ -107,9 +89,9 @@ namespace Tests
         [TestMethod]
         public void TestSaveOnAlreadyUpdatedFavorite()
         {
-            Favorite favoriteA = this.lab.AddFavoriteToPrimaryPersistence();
+            Favorite favoriteA = this.AddFavoriteToPrimaryPersistence();
             var favoriteB = this.SecondaryFavorites.FirstOrDefault() as Favorite;
-            this.lab.Persistence.Dispatcher.FavoritesChanged += 
+            this.PrimaryPersistence.Dispatcher.FavoritesChanged += 
                 new FavoritesChangedEventHandler(this.OnUpdateAlreadyUpdatedFavoritesChanged);
 
             this.UpdateFavorite(favoriteA, this.PrimaryFavorites);

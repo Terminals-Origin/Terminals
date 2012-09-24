@@ -10,19 +10,19 @@ namespace Tests
     ///This is a test class for database implementation of connection history
     ///</summary>
     [TestClass]
-    public class SqlConnectionsHistoryTest
+    public class SqlConnectionsHistoryTest : SqlTestsLab
     {
-        private SqlTestsLab lab;
         private int historyRecordedCount;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            this.lab = new SqlTestsLab();
-            this.lab.InitializeTestLab();
+            this.InitializeTestLab();
             historyRecordedCount = 0;
-            this.lab.Persistence.ConnectionHistory.OnHistoryRecorded += new HistoryRecorded(ConnectionHistory_OnHistoryRecorded);
+            this.PrimaryHistory.OnHistoryRecorded += new HistoryRecorded(ConnectionHistory_OnHistoryRecorded);
         }
+
+        private IConnectionHistory PrimaryHistory { get { return this.PrimaryPersistence.ConnectionHistory; } }
 
         private void ConnectionHistory_OnHistoryRecorded(HistoryRecordedEventArgs args)
         {
@@ -32,35 +32,34 @@ namespace Tests
         [TestCleanup]
         public void TestClose()
         {
-            this.lab.ClearTestLab();
+            this.ClearTestLab();
         }
 
         [Description("If this test failes, the reason may be the delay to the database server.")]
         [TestMethod]
         public void HistoryTest()
         {
-            Favorite favorite = this.lab.AddFavoriteToPrimaryPersistence();
+            Favorite favorite = this.AddFavoriteToPrimaryPersistence();
 
-            IConnectionHistory history = this.lab.Persistence.ConnectionHistory;
             // thats not a mystake, we want to check, if two fast tryes are ignored,
             // but it may fail, if the response from the server doesnt reflect our requirement
             // todo make this test 100% successful
-            history.RecordHistoryItem(favorite);
-            history.RecordHistoryItem(favorite);
+            PrimaryHistory.RecordHistoryItem(favorite);
+            PrimaryHistory.RecordHistoryItem(favorite);
             var expectedCount = this.GetExpectedHistoryCount();
 
             Assert.AreEqual(2, historyRecordedCount, "Recorded history wasnt reported");
             // to preserve duplicit times, when creating new entry in database, only one should be recorded
             Assert.AreEqual(1, expectedCount, "History wasnt stored into database");
 
-            this.lab.Persistence.Favorites.Delete(favorite);
+            this.PrimaryFavorites.Delete(favorite);
             var expectedCountAfter = this.GetExpectedHistoryCount();
             Assert.AreEqual(0, expectedCountAfter, "Favorite history wasnt deleted from database");
         }
 
         private int GetExpectedHistoryCount()
         {
-            return this.lab.CheckDatabase
+            return this.CheckDatabase
                 .ExecuteStoreQuery<int>("select Count(FavoriteId) from History")
                 .FirstOrDefault();
         }

@@ -1,17 +1,19 @@
 ﻿using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Data.DB;
+using Favorite = Terminals.Data.DB.Favorite;
 
 namespace Tests
 {
     /// <summary>
     /// Shared configured store used by all SQL peristance tests
     /// </summary>
-    internal class SqlTestsLab
+    public class SqlTestsLab
     {
         /// <summary>
         /// Gets the data store on which tests should be performed
         /// </summary>
-        internal SqlPersistence Persistence { get; private set; }
+        internal SqlPersistence PrimaryPersistence { get; private set; }
 
         internal SqlPersistence SecondaryPersistence { get; private set; }
 
@@ -20,16 +22,34 @@ namespace Tests
         /// </summary>
         internal Database CheckDatabase { get; private set; }
 
+        internal IFavorites PrimaryFavorites
+        {
+            get
+            {
+                return this.PrimaryPersistence.Favorites;
+            }
+        }
+
+        internal IFavorites SecondaryFavorites
+        {
+            get
+            {
+                return this.SecondaryPersistence.Favorites;
+            }
+        }
+
+        internal IFactory PrimaryFactory { get { return this.PrimaryPersistence.Factory; } }
+
         /// <summary>
         /// Initialzes data connectors on beginning of each test.
         /// </summary>
-        internal void InitializeTestLab()
+        protected void InitializeTestLab()
         {
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
             Settings.ConnectionString = Database.DEFAULT_CONNECTION_STRING;
             
-            this.Persistence = new SqlPersistence();
-            this.Persistence.Initialize();
+            this.PrimaryPersistence = new SqlPersistence();
+            this.PrimaryPersistence.Initialize();
             this.SecondaryPersistence = new SqlPersistence();
             this.SecondaryPersistence.Initialize();
 
@@ -40,7 +60,7 @@ namespace Tests
         /// <summary>
         /// Cleans up all tables in test database
         /// </summary>
-        internal void ClearTestLab()
+        protected void ClearTestLab()
         {
             const string deleteCommand = @"DELETE FROM ";
             // first clear dependences from both Favorites and groups table because of constraints
@@ -68,7 +88,7 @@ namespace Tests
         /// </summary>
         internal Favorite CreateTestFavorite()
         {
-            var favorite = this.Persistence.Factory.CreateFavorite() as Favorite;
+            var favorite = this.PrimaryPersistence.Factory.CreateFavorite() as Favorite;
             // set required properties
             favorite.Name = "test";
             favorite.ServerName = "test server";
@@ -82,7 +102,7 @@ namespace Tests
         internal Favorite AddFavoriteToPrimaryPersistence()
         {
             Favorite favorite = this.CreateTestFavorite();
-            this.Persistence.Favorites.Add(favorite);
+            this.PrimaryPersistence.Favorites.Add(favorite);
             return favorite;
         }
     }
