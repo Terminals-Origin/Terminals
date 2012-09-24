@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Objects;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
@@ -10,10 +11,9 @@ namespace Tests
     ///This is a test class for database implementation of StoredCredentials
     ///</summary>
     [TestClass]
-    public class SqlCredentialsTest
+    public class SqlCredentialsTest : SqlTestsLab
     {
         private const string TEST_PASSWORD = "aaa";
-        private SqlTestsLab lab;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -21,22 +21,29 @@ namespace Tests
         ///</summary>
         public TestContext TestContext { get; set; }
 
+        private ICredentials PrimaryCredentials
+        {
+            get
+            {
+                return this.PrimaryPersistence.Credentials;
+            }
+        }
+
         [TestInitialize]
         public void TestInitialize()
         {
-            this.lab = new SqlTestsLab();
-            this.lab.InitializeTestLab();
+            this.InitializeTestLab();
         }
 
         [TestCleanup]
         public void TestClose()
         {
-            this.lab.ClearTestLab();
+            this.ClearTestLab();
         }
 
         private CredentialSet CreateTestCredentialSet()
         {
-            CredentialSet credentials = this.lab.Persistence.Factory.CreateCredentialSet() as CredentialSet;
+            CredentialSet credentials = this.PrimaryFactory.CreateCredentialSet() as CredentialSet;
             credentials.Name = "TestCredentialName";
             credentials.Domain = "TestDomain";
             credentials.UserName = "TestUserName";
@@ -44,37 +51,37 @@ namespace Tests
             return credentials;
         }
 
-        /// <summary>
-        ///A test for Add
-        ///</summary>
         [TestMethod]
         public void AddCredentialsTest()
         {
             this.AddTestCredentialsToDatabase();
 
-            CredentialSet checkCredentialSet = this.lab.CheckDatabase.CredentialBase
-                .OfType<CredentialSet>().FirstOrDefault();
+            CredentialSet checkCredentialSet = this.CheckDatabaseCredentials.FirstOrDefault();
 
             Assert.IsNotNull(checkCredentialSet, "Credential didnt reach the database");
             Assert.AreEqual(TEST_PASSWORD, ((ICredentialSet)checkCredentialSet).Password, "Password doesnt match");
         }
 
-        /// <summary>
-        ///A test for Remove
-        ///</summary>
+        private ObjectQuery<CredentialSet> CheckDatabaseCredentials
+        {
+            get
+            {
+                return this.CheckDatabase.CredentialBase
+                    .OfType<CredentialSet>();
+            }
+        }
+
         [TestMethod]
         public void RemoveCredentialsTest()
         {
             var testCredentials = this.AddTestCredentialsToDatabase();
 
-            var credentialasDatabase = this.lab.Persistence.Credentials;
-            var checkDatabase = this.lab.CheckDatabase;
-            int credentialsCountBefore = checkDatabase.CredentialBase.OfType<CredentialSet>().Count();
-            credentialasDatabase.Remove(testCredentials);
-            credentialasDatabase.Save();
-            int credentialsCountAfter = checkDatabase.CredentialBase.OfType<CredentialSet>().Count();
+            int credentialsCountBefore = this.CheckDatabaseCredentials.Count();
+            PrimaryCredentials.Remove(testCredentials);
+            PrimaryCredentials.Save();
+            int credentialsCountAfter = this.CheckDatabaseCredentials.Count();
 
-            int baseAfter = checkDatabase.ExecuteStoreQuery<int>("select Count(Id) from CredentialBase")
+            int baseAfter = this.CheckDatabase.ExecuteStoreQuery<int>("select Count(Id) from CredentialBase")
                 .FirstOrDefault();
 
             Assert.AreEqual(1, credentialsCountBefore, "credential wasnt added to the database");
@@ -85,9 +92,8 @@ namespace Tests
         private CredentialSet AddTestCredentialsToDatabase()
         {
             var testCredentials = this.CreateTestCredentialSet();
-            var credentialasDatabase = this.lab.Persistence.Credentials;
-            credentialasDatabase.Add(testCredentials);
-            credentialasDatabase.Save();
+            PrimaryCredentials.Add(testCredentials);
+            PrimaryCredentials.Save();
             return testCredentials;
         }
 
@@ -98,11 +104,9 @@ namespace Tests
         public void UpdateCredentialsPasswordsByNewKeyMaterialTest()
         {
             this.AddTestCredentialsToDatabase();
-            this.lab.Persistence.Security.UpdateMasterPassword(String.Empty);
+            this.PrimaryPersistence.Security.UpdateMasterPassword(String.Empty);
 
-            CredentialSet checkCredentials = this.lab.CheckDatabase.CredentialBase
-                .OfType<CredentialSet>().FirstOrDefault();
-
+            CredentialSet checkCredentials = this.CheckDatabaseCredentials.FirstOrDefault();
             Assert.AreEqual(TEST_PASSWORD, ((ICredentialSet)checkCredentials).Password, "Passwrod lost after update of keymaterial");
         }
     }
