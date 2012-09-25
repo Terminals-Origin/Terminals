@@ -64,7 +64,7 @@ namespace Terminals.Data.DB
             return FavoriteIcons.EmptyImageData;
         }
 
-        internal string GetMasterPasswordHash()
+        private string GetMasterPasswordHash()
         {
             string obtained = this.GetMasterPasswordKey().FirstOrDefault();
             if (obtained != null)

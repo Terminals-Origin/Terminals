@@ -7,7 +7,7 @@ using System.Timers;
 namespace Terminals.Data.DB
 {
     /// <summary>
-    /// SQL Database store using Entity framework
+    /// SQL Database store using Entity framework. All parts use Disconected entities.
     /// </summary>
     internal class SqlPersistence : IPersistence, IPersistedSecurity
     {
@@ -31,7 +31,9 @@ namespace Terminals.Data.DB
             get { return this.groups; }
         }
 
-        public IConnectionHistory ConnectionHistory { get; private set; }
+        private ConnectionHistory connectionHistory;
+        public IConnectionHistory ConnectionHistory { get { return this.connectionHistory; } }
+        
         public IFactory Factory { get; private set; }
         public DataDispatcher Dispatcher { get; private set; }
 
@@ -65,27 +67,19 @@ namespace Terminals.Data.DB
             this.groups = new Groups();
             this.favorites = new Favorites(this.groups, this.Dispatcher);
             this.groups.AssignStores(this.Dispatcher, this.favorites);
-            this.ConnectionHistory = new ConnectionHistory(this.favorites);
+            this.connectionHistory = new ConnectionHistory(this.favorites);
             this.credentials = new StoredCredentials();
             this.Factory = new Factory(this.groups, this.favorites, this.Dispatcher);
         }
 
         private bool TryInitializeDatabase()
         {
-            try
-            {
-                using (var database = Database.CreateInstance())
-                {
-                    database.GetMasterPasswordHash(); // dummy test
-                    return true;
-                }
-            }
-            catch (Exception exception)
-            {
-                Logging.Log.Fatal("SQL Perstance layer failed to load. Fall back to File persistence", exception);
-                Persistence.FallBackToPrimaryPersistence(this.Security);
-                return false;
-            }
+            if (Database.TestConnection())
+                return true;
+
+            Logging.Log.Fatal("SQL Perstance layer failed to load. Fall back to File persistence");
+            Persistence.FallBackToPrimaryPersistence(this.Security);
+            return false;
         }
 
         public void UpdatePasswordsByNewMasterPassword(string newMasterPassword)
@@ -100,7 +94,7 @@ namespace Terminals.Data.DB
             // this forces the clock to run the updates in gui thread, because Entity framework isnt thread safe
             this.reLoadClock.SynchronizingObject = synchronizer;
             this.reLoadClock.Elapsed += new ElapsedEventHandler(this.OnReLoadClockElapsed);
-            //this.reLoadClock.Start();
+            // this.reLoadClock.Start();
         }
 
         /// <summary>
@@ -110,24 +104,14 @@ namespace Terminals.Data.DB
         {
             this.reLoadClock.Stop();
             var clock = Stopwatch.StartNew();
-            this.RefreshDatabaseMasterPassword();
+            
             this.groups.RefreshCache();
             this.favorites.RefreshCache();
             this.credentials.RefreshCache();
-            RefreshHistory();
+            // nothing to update in History: possible changes are only for today, and that day item isnt cached
+
             Debug.WriteLine("Updating entities at {0} [{1} ms]", DateTime.Now, clock.ElapsedMilliseconds);
             //this.reLoadClock.Start();
-        }
-
-        private void RefreshDatabaseMasterPassword()
-        {
-            // first download the masterpassword to ensure, that it wasnt changed,
-            // otherwise we have all cached items out of date
-        }
-
-        private void RefreshHistory()
-        {
-            // possible changes in history are only for today
         }
 
         public override string ToString()

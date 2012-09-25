@@ -34,6 +34,12 @@ namespace Terminals.Data.DB
             return connectionBuilder.ToString();
         }
 
+        internal static bool TestConnection()
+        {
+            Tuple<bool, string> result = TestConnection(Settings.ConnectionString, Settings.DatabaseMasterPassword);
+            return result.Item1;
+        }
+
         /// <summary>
         /// Tryes to execute simple command on database to ensure, that the conneciton works.
         /// </summary>
@@ -60,10 +66,26 @@ namespace Terminals.Data.DB
 
         private static bool TestDatabasePassword(string connectionStringToTest, string databasePassword)
         {
-            Database database = CreateDatabase(connectionStringToTest);
-            string databasePasswordHash = PasswordFunctions.EncryptPassword(databasePassword);
-            bool passwordIsValid = databasePasswordHash == database.GetMasterPasswordHash();
-            return passwordIsValid;
+            string storedHash = TryGetMasterPasswordHash(connectionStringToTest);
+            string hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(databasePassword);
+            return hashToCheck == storedHash;
+        }
+
+        private static string TryGetMasterPasswordHash(string connectionString)
+        {
+            using (Database database = CreateDatabase(connectionString))
+            {
+                return database.GetMasterPasswordHash();
+            }
+        }
+
+        internal static void UpdateMastrerPassord(string newPassword)
+        {
+            using (var database = CreateInstance())
+            {
+                string newHash = PasswordFunctions.ComputeMasterPasswordHash(newPassword);
+                database.UpdateMasterPassword(newHash);
+            }
         }
     }
 }
