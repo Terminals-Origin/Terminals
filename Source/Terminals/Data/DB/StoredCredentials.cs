@@ -14,6 +14,8 @@ namespace Terminals.Data.DB
 
         private readonly EntitiesCache<CredentialSet> cache = new EntitiesCache<CredentialSet>();
 
+        private bool isLoaded;
+
         ICredentialSet ICredentials.this[Guid id]
         {
             get
@@ -91,10 +93,11 @@ namespace Terminals.Data.DB
 
         private void EnsureCache()
         {
-            if (this.cache.IsEmpty)
-            {
-                this.ReloadCache();
-            }
+            if (this.isLoaded)
+                return;
+
+            this.ReloadCache();
+            this.isLoaded = true;
         }
 
         internal void RefreshCache()

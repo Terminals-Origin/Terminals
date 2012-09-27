@@ -23,6 +23,13 @@ namespace Terminals.Data
             }
         }
 
+        private static readonly Image TreeIconRdp = Resources.treeIcon_rdp;
+        private static readonly Image TreeIconHttp = Resources.treeIcon_http;
+        private static readonly Image TreeIconVnc = Resources.treeIcon_vnc;
+        private static readonly Image TreeIconTelnet = Resources.treeIcon_telnet;
+        private static readonly Image TreeIconSsh = Resources.treeIcon_ssh;
+        private static readonly Image Terminalsicon = Resources.terminalsicon;
+
         /// <summary>
         /// Gets the icon file name by icons defined in FavoritesTreeView imageListIcons
         /// </summary>
@@ -41,7 +48,6 @@ namespace Terminals.Data
                     return "treeIcon_telnet.png";
                 case ConnectionManager.SSH:
                     return "treeIcon_ssh.png";
-                case ConnectionManager.VMRC:
                 default:
                     return "terminalsicon.ico";
             }
@@ -55,19 +61,18 @@ namespace Terminals.Data
             switch (favorite.Protocol)
             {
                 case ConnectionManager.RDP:
-                    return Resources.treeIcon_rdp;
+                    return TreeIconRdp;
                 case ConnectionManager.HTTP:
                 case ConnectionManager.HTTPS:
-                    return Resources.treeIcon_http;
+                    return TreeIconHttp;
                 case ConnectionManager.VNC:
-                    return Resources.treeIcon_vnc;
+                    return TreeIconVnc;
                 case ConnectionManager.TELNET:
-                    return Resources.treeIcon_telnet;
+                    return TreeIconTelnet;
                 case ConnectionManager.SSH:
-                    return Resources.treeIcon_ssh;
-                case ConnectionManager.VMRC:
+                    return TreeIconSsh;
                 default:
-                    return Resources.terminalsicon;
+                    return Terminalsicon;
             }
         }
 
@@ -110,7 +115,7 @@ namespace Terminals.Data
             {
                 // empty or not assign icon replace by default icon
                 if (imageData.Length == 0) 
-                    GetProtocolImage(favorite);
+                    return GetProtocolImage(favorite);
 
                 return LoadFromBinary(imageData);
             }
@@ -176,14 +181,14 @@ namespace Terminals.Data
             }
         }
 
-        private static bool IsDefaultProtocolImage(Image image)
+        internal static bool IsDefaultProtocolImage(Image image)
         {
-            return image == Resources.treeIcon_rdp ||
-                   image == Resources.treeIcon_http ||
-                   image == Resources.treeIcon_vnc ||
-                   image == Resources.treeIcon_telnet ||
-                   image == Resources.treeIcon_ssh ||
-                   image == Resources.terminalsicon;
+            return image == TreeIconRdp ||
+                   image == TreeIconHttp ||
+                   image == TreeIconVnc ||
+                   image == TreeIconTelnet ||
+                   image == TreeIconSsh ||
+                   image == Terminalsicon;
         }
     }
 }

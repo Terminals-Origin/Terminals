@@ -66,16 +66,15 @@ namespace Terminals.Forms.Controls
 
         private static void PerformImport(List<FavoriteConfigurationElement> configFavoritesToImport)
         {
-            var favorites = new List<IFavorite>();
             Persistence.Instance.StartDelayedUpdate();
+
             foreach (FavoriteConfigurationElement configFavorite in configFavoritesToImport)
             {
                 IFavorite favorite = PrepareFavoriteToImport(configFavorite);
-                favorites.Add(favorite);
+                PersistedFavorites.Add(favorite);
                 AddFavoriteIntoGroups(configFavorite, favorite);
             }
 
-            PersistedFavorites.Add(favorites);
             Persistence.Instance.SaveAndFinishDelayedUpdate();
         }
 

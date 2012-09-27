@@ -65,6 +65,16 @@ namespace Terminals.Data
             }
         }
 
+        internal void AddFrom(GroupsChangedArgs source)
+        {
+            var toAdd = ListsHelper.GetMissingSourcesInTarget(source.Added, this.Added);
+            this.Added.AddRange(toAdd);
+            var toUpdate = ListsHelper.GetMissingSourcesInTarget(source.Updated, this.Updated);
+            this.Updated.AddRange(toUpdate);
+            var toRemove = ListsHelper.GetMissingSourcesInTarget(source.Removed, this.Removed);
+            this.Removed.AddRange(toRemove);
+        }
+
         public override String ToString()
         {
             return String.Format("GroupsChangedArgs:Added={0};Updated {1};Removed={2}",

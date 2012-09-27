@@ -23,7 +23,28 @@ namespace Terminals.Data
     {
         internal event GroupsChangedEventHandler GroupsChanged;
         internal event FavoritesChangedEventHandler FavoritesChanged;
-        internal DataDispatcher() { }
+
+        private GroupsChangedArgs groups;
+
+        private FavoritesChangedEventArgs favorites;
+
+        private bool DelayedUpdate { get { return this.groups !=null; } }
+
+        internal void StartDelayedUpdate()
+        {
+            if (this.DelayedUpdate)
+                return;
+            this.groups = new GroupsChangedArgs();
+            this.favorites = new FavoritesChangedEventArgs();
+        }
+
+        internal void EndDelayedUpdate()
+        {
+            this.FireGroupsChangedEvent(this.groups);
+            this.groups = null;
+            this.FireFavoritesChangedEvent(this.favorites);
+            this.favorites = null;
+        }
 
         internal static List<IFavorite> GetMissingFavorites(List<IFavorite> newFavorites, List<IFavorite> oldFavorites)
         {
@@ -77,10 +98,24 @@ namespace Terminals.Data
         private void FireFavoriteChanges(FavoritesChangedEventArgs args)
         {
             Debug.WriteLine(args.ToString());
-            if (this.FavoritesChanged != null && !args.IsEmpty)
-            {
+            if (args.IsEmpty)
+                return;
+
+            this.DeliverFavoriteChanges(args);
+        }
+
+        private void DeliverFavoriteChanges(FavoritesChangedEventArgs args)
+        {
+            if (this.DelayedUpdate)
+                this.favorites.AddFrom(args);
+            else
+                this.FireFavoritesChangedEvent(args);
+        }
+
+        private void FireFavoritesChangedEvent(FavoritesChangedEventArgs args)
+        {
+            if (this.FavoritesChanged != null)
                 this.FavoritesChanged(args);
-            }
         }
 
         internal void ReportGroupsAdded(List<IGroup> addedGroups)
@@ -94,7 +129,7 @@ namespace Terminals.Data
         {
             var args = new GroupsChangedArgs();
             args.Updated.AddRange(updatedGroups);
-            this.FireGroupsChanged(args); 
+            this.FireGroupsChanged(args);
         }
 
         internal void ReportGroupsDeleted(List<IGroup> deletedGroups)
@@ -113,10 +148,24 @@ namespace Terminals.Data
         private void FireGroupsChanged(GroupsChangedArgs args)
         {
             Debug.WriteLine(args.ToString());
-            if (this.GroupsChanged != null && !args.IsEmpty)
-            {
+            if (args.IsEmpty)
+                return;
+
+            this.DeliverGroupsChanges(args);
+        }
+
+        private void DeliverGroupsChanges(GroupsChangedArgs args)
+        {
+            if (this.DelayedUpdate)
+                this.groups.AddFrom(args);
+            else
+                this.FireGroupsChangedEvent(args);
+        }
+
+        private void FireGroupsChangedEvent(GroupsChangedArgs args)
+        {
+            if (this.GroupsChanged != null)
                 this.GroupsChanged(args);
-            }
         }
     }
 }

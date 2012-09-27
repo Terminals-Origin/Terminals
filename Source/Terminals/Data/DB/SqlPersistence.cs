@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Timers;
+using Terminals.Configuration;
 
 namespace Terminals.Data.DB
 {
@@ -50,12 +51,13 @@ namespace Terminals.Data.DB
 
         public void StartDelayedUpdate()
         {
-            // nothing to do here, database context trancks changes for us
+            this.Dispatcher.StartDelayedUpdate();
         }
 
         public void SaveAndFinishDelayedUpdate()
         {
-            // nothing to do
+            this.Dispatcher.EndDelayedUpdate();
+            // nothing to save
         }
 
         public void Initialize()

@@ -10,8 +10,6 @@ namespace Terminals.Data.DB
     {
         private Groups groups;
 
-        private DataDispatcher dispatcher;
-
         /// <summary>
         /// cant be set in constructor, because the constructor is used by EF when loading the entities
         /// </summary>
@@ -147,6 +145,7 @@ namespace Terminals.Data.DB
         internal void MarkAsNewlyCreated()
         {
             this.isNewlyCreated = true;
+            this.details.LoadFieldsFromReferences();
         }
 
         public IFavorite Copy()
@@ -165,7 +164,7 @@ namespace Terminals.Data.DB
             copy.ToolBarIconFile = this.ToolBarIconFile;
 
             copy.ProtocolProperties = this.ProtocolProperties.Copy();
-            copy.AssignStores(this.groups, this.dispatcher);
+            copy.AssignStores(this.groups);
 
             return copy;
         }
@@ -222,10 +221,9 @@ namespace Terminals.Data.DB
             }
         }
 
-        public void AssignStores(Groups groups, DataDispatcher dispatcher)
+        public void AssignStores(Groups groups)
         {
             this.groups = groups;
-            this.dispatcher = dispatcher;
         }
 
         internal void MarkAsModified(Database database)

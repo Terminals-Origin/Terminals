@@ -19,7 +19,9 @@ namespace Terminals.Data.DB
         internal List<Favorite> Cached
         {
             get { return this.cache.ToList(); }
-        } 
+        }
+
+        private bool isLoaded;
 
         internal Favorites(Groups groups, DataDispatcher dispatcher)
         {
@@ -239,11 +241,12 @@ namespace Terminals.Data.DB
 
         private void EnsureCache()
         {
-            if (!this.cache.IsEmpty)
+            if (isLoaded)
                 return;
             
             List<Favorite> loaded = LoadFromDatabase();
             this.cache.Add(loaded);
+            this.isLoaded = true;
         }
 
         internal void RefreshCache()
@@ -275,13 +278,14 @@ namespace Terminals.Data.DB
             }
         }
 
-        private static List<Favorite> LoadFromDatabase()
+        private List<Favorite> LoadFromDatabase()
         {
             using (var database = Database.CreateInstance())
             {
                 // to list because Linq to entities allowes only cast to primitive types
                 List<Favorite> favorites = database.Favorites.ToList();
                 database.DetachAll(favorites);
+                favorites.ForEach(candidate => candidate.AssignStores(this.groups));
                 return favorites;
             }
         }
