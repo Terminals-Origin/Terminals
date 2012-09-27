@@ -25,6 +25,15 @@ namespace Terminals.Data.DB
                 }
             }
 
+            private bool ShouldSaveIcon
+            {
+                get
+                {
+                    return this.favorite.toolBarIcon != null &&
+                           !FavoriteIcons.IsDefaultProtocolImage(this.favorite.toolBarIcon);
+                }
+            }
+
             internal FavoriteDetails(Favorite favorite)
             {
                 this.favorite = favorite;
@@ -78,7 +87,7 @@ namespace Terminals.Data.DB
                 }
             }
 
-            private void LoadFieldsFromReferences()
+            internal void LoadFieldsFromReferences()
             {
                 this.favorite.security = this.favorite.Security;
                 this.favorite.display = this.favorite.Display;
@@ -129,7 +138,7 @@ namespace Terminals.Data.DB
 
             private void TryUpdateImageInDatabase(Database database)
             {
-                if (this.favorite.toolBarIcon != null)
+                if (this.ShouldSaveIcon)
                 {
                     byte[] imageData = FavoriteIcons.ImageToBinary(this.favorite.toolBarIcon);
                     if (imageData.Length > 0)

@@ -21,11 +21,11 @@
         public IFavorite CreateFavorite()
         {
             var favorite = new Favorite();
-            favorite.MarkAsNewlyCreated();
             favorite.Display = new DisplayOptions();
             favorite.Security = new SecurityOptions();
             favorite.ExecuteBeforeConnect = new BeforeConnectExecute();
-            favorite.AssignStores(this.groups, this.dispatcher);
+            favorite.AssignStores(this.groups);
+            favorite.MarkAsNewlyCreated();
             return favorite;
         }
 

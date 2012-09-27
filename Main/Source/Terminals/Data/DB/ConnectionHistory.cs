@@ -57,7 +57,7 @@ namespace Terminals.Data.DB
             using (var database = Database.CreateInstance())
             {
                 HistoryInterval interval = HistoryIntervals.GetIntervalByName(historyDateKey);
-                ObjectResult<int?> favoriteIds = database.GetFavoritesHistoryByDate(interval.From, interval.To);
+                var favoriteIds = database.GetFavoritesHistoryByDate(interval.From, interval.To).ToList();
                 IEnumerable<Favorite> intervalFavorites =
                     this.favorites.Cached.Where(favorite => favoriteIds.Contains(favorite.Id));
                 return Data.Favorites.OrderByDefaultSorting(intervalFavorites);

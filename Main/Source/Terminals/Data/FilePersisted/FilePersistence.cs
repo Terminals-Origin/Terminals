@@ -117,12 +117,14 @@ namespace Terminals.Data
         public void StartDelayedUpdate()
         {
             this.delaySave = true;
+            this.Dispatcher.StartDelayedUpdate();
         }
 
         public void SaveAndFinishDelayedUpdate()
         {
             this.delaySave = false;
             this.SaveImmediatelyIfRequested();
+            this.Dispatcher.EndDelayedUpdate();
         }
 
         public void Initialize()

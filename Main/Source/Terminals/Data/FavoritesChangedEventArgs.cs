@@ -43,6 +43,16 @@ namespace Terminals.Data
             this.Updated = new List<IFavorite>();
         }
 
+        internal void AddFrom(FavoritesChangedEventArgs source)
+        {
+            var toAdd = ListsHelper.GetMissingSourcesInTarget(source.Added, this.Added);
+            this.Added.AddRange(toAdd);
+            var toUpdate = ListsHelper.GetMissingSourcesInTarget(source.Updated, this.Updated);
+            this.Updated.AddRange(toUpdate);
+            var toRemove = ListsHelper.GetMissingSourcesInTarget(source.Removed, this.Removed);
+            this.Removed.AddRange(toRemove);
+        }
+
         public override string ToString()
         {
             return String.Format("FavoritesChangedEventArgs:Added={0};Removed={1};Changed={2}",

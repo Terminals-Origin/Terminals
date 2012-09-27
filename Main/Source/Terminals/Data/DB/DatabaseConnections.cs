@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.EntityClient;
+using System.Data.Objects;
 using Terminals.Configuration;
 using Terminals.Security;
 
@@ -11,15 +12,36 @@ namespace Terminals.Data.DB
         private const string METADATA = @"res://*/Data.DB.SQLPersistence.csdl|res://*/Data.DB.SQLPersistence.ssdl|res://*/Data.DB.SQLPersistence.msl";
         internal const string DEFAULT_CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
 
+        /// <summary>
+        /// The Connection string getter is performace expensive because of decryption, so we reuse the connetion instance.
+        /// Until there is no possibility to change the persistence by runtime, we dont have to release the connection.
+        /// </summary>
+        private static EntityConnection cachedConnection;
+
         internal static Database CreateInstance()
         {
-            return CreateDatabase(Settings.ConnectionString);
+            EntityConnection connection = CacheConnection();
+            return new Database(connection);
+        }
+
+        internal static EntityConnection CacheConnection()
+        {
+            if (cachedConnection == null)
+              cachedConnection = BuildConnection(Settings.ConnectionString);
+
+            return cachedConnection;
         }
 
         private static Database CreateDatabase(string connecitonString)
         {
+            EntityConnection connection = BuildConnection(connecitonString);
+            return new Database(connection);
+        }
+
+        private static EntityConnection BuildConnection(string connecitonString)
+        {
             string connectionString = BuildConnectionString(connecitonString);
-            return new Database(connectionString);
+            return new EntityConnection(connectionString);
         }
 
         private static string BuildConnectionString(string providerConnectionString)
@@ -67,7 +89,9 @@ namespace Terminals.Data.DB
         private static bool TestDatabasePassword(string connectionStringToTest, string databasePassword)
         {
             string storedHash = TryGetMasterPasswordHash(connectionStringToTest);
-            string hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(databasePassword);
+            string hashToCheck = string.Empty;
+             if(!string.IsNullOrEmpty(databasePassword))
+                 hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(databasePassword);
             return hashToCheck == storedHash;
         }
 
@@ -83,7 +107,9 @@ namespace Terminals.Data.DB
         {
             using (var database = CreateInstance())
             {
-                string newHash = PasswordFunctions.ComputeMasterPasswordHash(newPassword);
+                string newHash = string.Empty;
+                if (!string.IsNullOrEmpty(newPassword))
+                    newHash = PasswordFunctions.ComputeMasterPasswordHash(newPassword);
                 database.UpdateMasterPassword(newHash);
             }
         }

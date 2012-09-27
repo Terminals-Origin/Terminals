@@ -17,6 +17,8 @@ namespace Terminals.Data.DB
 
         private readonly EntitiesCache<Group> cache;
 
+        private bool isLoaded;
+
         internal List<Group> Cached
         {
             get
@@ -169,12 +171,13 @@ namespace Terminals.Data.DB
 
         private void CheckCache()
         {
-            if (!this.cache.IsEmpty)
+            if (isLoaded)
                 return;
 
             List<Group> loaded = LoadFromDatabase();
             this.AssignGroupsContainer(loaded);
             this.cache.Add(loaded);
+            this.isLoaded = true;
         }
 
         private List<Group> Load(List<Group> toRefresh)
