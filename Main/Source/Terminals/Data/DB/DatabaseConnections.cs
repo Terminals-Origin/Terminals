@@ -24,7 +24,7 @@ namespace Terminals.Data.DB
             return new Database(connection);
         }
 
-        internal static EntityConnection CacheConnection()
+        private static EntityConnection CacheConnection()
         {
             if (cachedConnection == null)
               cachedConnection = BuildConnection(Settings.ConnectionString);
