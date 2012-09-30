@@ -206,19 +206,9 @@ namespace Terminals.Data.DB
         {
             // see also the Group.Favorites
             // prefere to select cached items, instead of selecting from database directly
-            List<int?> groupIds = this.LoadGroupsFromDatabase();
-            List<Group> selected = this.groups.Cached
-                .Where(candidate => groupIds.Contains(candidate.Id))
+            return this.groups.GetGroupsContainingFavorite(this.Id)
+                .Cast<IGroup>()
                 .ToList();
-            return selected.Cast<IGroup>().ToList();
-        }
-
-        private List<int?> LoadGroupsFromDatabase()
-        {
-            using (var database = Database.CreateInstance())
-            {
-                return database.GetFavoriteGroups(this.Id).ToList();
-            }
         }
 
         public void AssignStores(Groups groups)
