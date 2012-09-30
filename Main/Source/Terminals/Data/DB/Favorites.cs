@@ -167,6 +167,8 @@ namespace Terminals.Data.DB
             {
                 List<Favorite> favoritesToDelete = favorites.Cast<Favorite>().ToList();
                 DeleteFavoritesFromDatabase(database, favoritesToDelete);
+                database.SaveImmediatelyIfRequested();
+                this.groups.RefreshCache();
                 List<Group> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
                 database.SaveImmediatelyIfRequested();
                 List<IGroup> groupsToReport = this.groups.DeleteFromCache(deletedGroups);
