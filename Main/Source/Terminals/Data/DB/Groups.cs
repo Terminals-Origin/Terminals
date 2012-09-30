@@ -131,7 +131,7 @@ namespace Terminals.Data.DB
         /// </summary>
         internal List<Group> DeleteEmptyGroupsFromDatabase(Database database)
         {
-            List<Group> emptyGroups = this.GetEmptyGroups(database);
+            List<Group> emptyGroups = this.GetEmptyGroups();
             database.AttachAll(emptyGroups);
             DeleteFromDatabase(database, emptyGroups);
             return emptyGroups;
@@ -145,13 +145,10 @@ namespace Terminals.Data.DB
             }
         }
 
-        private List<Group> GetEmptyGroups(Database database)
+        private List<Group> GetEmptyGroups()
         {
-            // not optimized access to database. Weeknes: Current state doesnt have to reflect the cache
-            List<Group> loaded = database.Groups.ToList()
-                .Where(group => group.Favorites.Count == 0).ToList();
-            this.AssignGroupsContainer(loaded);
-            return loaded;
+            return this.cache.Where(group => ((IGroup)group).Favorites.Count == 0)
+                .ToList();
         }
 
         internal void RefreshCache()
@@ -163,10 +160,19 @@ namespace Terminals.Data.DB
             List<Group> redundant = ListsHelper.GetMissingSourcesInTarget(oldGroups, newlyLoaded);
             this.cache.Add(missing);
             this.cache.Delete(redundant);
+            this.RefreshLoaded();
 
             var missingToReport = missing.Cast<IGroup>().ToList();
             var redundantToReport = redundant.Cast<IGroup>().ToList();
             this.dispatcher.ReportGroupsRecreated(missingToReport, redundantToReport);
+        }
+
+        private void RefreshLoaded()
+        {
+            foreach (Group group in this.cache)
+            {
+                group.ReleaseFavoriteIds();
+            }
         }
 
         private void CheckCache()
@@ -217,6 +223,13 @@ namespace Terminals.Data.DB
                 database.DetachAll(groups);
                 return groups;
             }
+        }
+
+        internal List<Group> GetGroupsContainingFavorite(int favoriteId)
+        {
+            this.CheckCache();
+            return this.cache.Where(candidate => candidate.ContainsFavorite(favoriteId))
+                .ToList();
         }
 
         #region IEnumerable members

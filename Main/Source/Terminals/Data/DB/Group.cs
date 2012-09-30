@@ -24,12 +24,14 @@ namespace Terminals.Data.DB
             }
         }
 
+        private List<int?> favoriteIds;
+
         List<IFavorite> IGroup.Favorites
         {
             get
             {
                 // see also the Favorite.Groups
-                List<int?> favoriteIds = this.LoadFavoritesFromDatabase();
+                this.CacheFavoriteIds();
 
                 // List<Favorite> recent = this.Favorites.ToList();
                 // prefere to select cached items, instead of selecting from database directly
@@ -37,14 +39,6 @@ namespace Terminals.Data.DB
                     .Where(candidate => favoriteIds.Contains(candidate.Id))
                     .ToList();
                 return selected.Cast<IFavorite>().ToList();
-            }
-        }
-
-        private List<int?> LoadFavoritesFromDatabase()
-        {
-            using (var database = Database.CreateInstance())
-            {
-                return database.GetFavoritesInGroup(this.Id).ToList();
             }
         }
 
@@ -110,6 +104,43 @@ namespace Terminals.Data.DB
             }
         }
 
+        private void CacheFavoriteIds()
+        {
+            if (this.favoriteIds == null)
+                this.favoriteIds = this.LoadFavoritesFromDatabase();
+        }
+
+        private List<int?> LoadFavoritesFromDatabase()
+        {
+            using (var database = Database.CreateInstance())
+            {
+                return database.GetFavoritesInGroup(this.Id).ToList();
+            }
+        }
+
+        internal void ReleaseFavoriteIds()
+        {
+            this.favoriteIds = null;
+        }
+
+        private void AddToCachedIds(Favorite favorite)
+        {
+            if (!this.ContainsFavorite(favorite.Id))
+                this.favoriteIds.Add(favorite.Id);
+        }
+
+        private void RemoveFromCachedIds(Favorite favorite)
+        {
+            if (this.ContainsFavorite(favorite.Id))
+                this.favoriteIds.Remove(favorite.Id);
+        }
+
+        internal bool ContainsFavorite(int favoriteId)
+        {
+            this.CacheFavoriteIds();
+            return this.favoriteIds.Contains(favoriteId);
+        }
+
         public void AddFavorite(IFavorite favorite)
         {
             this.AddFavorites(new List<IFavorite> { favorite });
@@ -122,6 +153,7 @@ namespace Terminals.Data.DB
                 foreach (Favorite favorite in favorites)
                 {
                     database.InsertFavoritesInGroup(favorite.Id, this.Id);
+                    this.AddToCachedIds(favorite);
                 }
             }
         }
@@ -156,6 +188,7 @@ namespace Terminals.Data.DB
                 foreach (Favorite favorite in favorites)
                 {
                     database.DeleteFavoritesInGroup(favorite.Id, this.Id);
+                    this.RemoveFromCachedIds(favorite);
                 }
             }
         }
