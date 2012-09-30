@@ -202,7 +202,7 @@ namespace Terminals.Data.DB
             this.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(this.Protocol, this.protocolProperties);
         }
 
-        internal List<IGroup> GetInvariantGroups()
+        private List<IGroup> GetInvariantGroups()
         {
             // see also the Group.Favorites
             // prefere to select cached items, instead of selecting from database directly
