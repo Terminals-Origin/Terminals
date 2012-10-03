@@ -103,9 +103,19 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal static void UpdateMastrerPassord(string newPassword)
+        internal static void UpdateMastrerPassord(string connectionString, string oldPassword, string newPassword)
         {
-            using (var database = CreateInstance())
+            Tuple<bool, string> oldPasswordCheck = TestConnection(connectionString, oldPassword);
+            if (oldPasswordCheck.Item1)
+            {
+                UpdateMastrerPassord(connectionString, newPassword);
+            }
+        }
+
+        internal static void UpdateMastrerPassord(string connecitonString, string newPassword)
+        {
+            // todo do it in transaction to prevent inconsistent data
+            using (Database database = CreateDatabase(connecitonString))
             {
                 string newHash = string.Empty;
                 if (!string.IsNullOrEmpty(newPassword))

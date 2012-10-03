@@ -39,7 +39,7 @@ namespace Tests
         public void TestClose()
         {
             Settings.DatabaseMasterPassword = string.Empty;
-            Database.UpdateMastrerPassord(string.Empty);
+            Database.UpdateMastrerPassord(Settings.ConnectionString, string.Empty);
 
             // do not clean up the store here, because of waiting for background threads
             // this.lab.ClearTestLab();
@@ -127,7 +127,7 @@ namespace Tests
         public void TestMasterPasswordUpdate()
         {
             const string dummyPassword = "bbb";
-            Database.UpdateMastrerPassord(dummyPassword);
+            Database.UpdateMastrerPassord(Settings.ConnectionString, dummyPassword);
             Settings.DatabaseMasterPassword = dummyPassword;
             bool result = Database.TestConnection();
             Assert.IsTrue(result, "Couldnt update database master password");

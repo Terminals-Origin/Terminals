@@ -83,6 +83,8 @@ namespace Terminals.Data.DB
             return false;
         }
 
+        // todo assign the new database password
+        
         public void UpdatePasswordsByNewMasterPassword(string newMasterPassword)
         {
             // nothing to do here, the application master password doesnt affect the database

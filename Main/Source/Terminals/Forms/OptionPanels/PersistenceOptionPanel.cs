@@ -7,6 +7,8 @@ namespace Terminals.Forms
 {
     internal partial class PersistenceOptionPanel : UserControl, IOptionPanel
     {
+        private string EnteredConnectionString { get { return this.txtConnectionString.Text; } }
+
         public PersistenceOptionPanel()
         {
             InitializeComponent();
@@ -65,9 +67,8 @@ namespace Terminals.Forms
         private void OnBntTestSqlConnectionClick(object sender, EventArgs e)
         {
             this.Cursor = Cursors.WaitCursor;
-            string connectionString = this.txtConnectionString.Text;
             string databasePassword = this.txtDbPassword.Text;
-            Tuple<bool, string> result = Database.TestConnection(connectionString, databasePassword);
+            Tuple<bool, string> result = Database.TestConnection(this.EnteredConnectionString, databasePassword);
             this.Cursor = Cursors.Default;
 
             const string messageHeader = "Terminals - Sql connection test";
@@ -75,6 +76,28 @@ namespace Terminals.Forms
                 MessageBox.Show("Test connection succeded.", messageHeader, MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
                 MessageBox.Show(result.Item2, messageHeader, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void OnBtnSetPasswordClick(object sender, EventArgs e)
+        {
+            Tuple<bool, string, string> passwordPrompt = AskForDatabasePasswords();
+            if (!passwordPrompt.Item1)
+                return;
+
+            this.Cursor = Cursors.WaitCursor;
+            Database.UpdateMastrerPassord(this.EnteredConnectionString, passwordPrompt.Item2, passwordPrompt.Item3);
+            this.Cursor = Cursors.Default;
+        }
+
+        private Tuple<bool, string, string> AskForDatabasePasswords()
+        {
+            using (var passwordPrompt = new ChangePassword())
+            {
+                if (passwordPrompt.ShowDialog() == DialogResult.OK)
+                    return new Tuple<bool, string, string>(true, passwordPrompt.OldPassword, passwordPrompt.NewPassword);
+            }
+
+            return new Tuple<bool, string, string>(false, string.Empty, string.Empty);
         }
     }
 }
