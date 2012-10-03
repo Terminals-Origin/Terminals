@@ -40,6 +40,7 @@ namespace Terminals.Forms
             this.lblConnetion = new System.Windows.Forms.Label();
             this.rbtnSqlPersistence = new System.Windows.Forms.RadioButton();
             this.rbtnFilePersistence = new System.Windows.Forms.RadioButton();
+            this.btnSetPassword = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBoxPersistenceType.SuspendLayout();
             this.SuspendLayout();
@@ -56,6 +57,7 @@ namespace Terminals.Forms
             // 
             // groupBoxPersistenceType
             // 
+            this.groupBoxPersistenceType.Controls.Add(this.btnSetPassword);
             this.groupBoxPersistenceType.Controls.Add(this.txtDbPassword);
             this.groupBoxPersistenceType.Controls.Add(this.lblDbPassword);
             this.groupBoxPersistenceType.Controls.Add(this.bntTestSqlConnection);
@@ -151,6 +153,16 @@ namespace Terminals.Forms
             this.rbtnFilePersistence.UseVisualStyleBackColor = true;
             this.rbtnFilePersistence.CheckedChanged += new System.EventHandler(this.OnRbtnFilePersistenceCheckedChanged);
             // 
+            // btnSetPassword
+            // 
+            this.btnSetPassword.Location = new System.Drawing.Point(177, 259);
+            this.btnSetPassword.Name = "btnSetPassword";
+            this.btnSetPassword.Size = new System.Drawing.Size(188, 23);
+            this.btnSetPassword.TabIndex = 10;
+            this.btnSetPassword.Text = "Change Database password";
+            this.btnSetPassword.UseVisualStyleBackColor = true;
+            this.btnSetPassword.Click += new System.EventHandler(this.OnBtnSetPasswordClick);
+            // 
             // PersistenceOptionPanel
             // 
             this.Controls.Add(this.panel1);
@@ -175,5 +187,6 @@ namespace Terminals.Forms
         private Button bntTestSqlConnection;
         private TextBox txtDbPassword;
         private Label lblDbPassword;
+        private Button btnSetPassword;
     }
 }

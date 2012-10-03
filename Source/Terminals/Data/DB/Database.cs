@@ -75,7 +75,6 @@ namespace Terminals.Data.DB
 
         internal void UpdateMasterPassword(string newMasterPasswordKey)
         {
-            // todo do it in transaction to prevent inconsistent data
             this.UpdateMasterPasswordKey(newMasterPasswordKey);
         }
 
