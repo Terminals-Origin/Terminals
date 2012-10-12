@@ -3,31 +3,38 @@ using Terminals.Security;
 
 namespace Terminals.Data.DB
 {
-  internal partial class CredentialBase : ICredentialBase
-  {
-    string ICredentialBase.Password
+    internal partial class CredentialBase : ICredentialBase
     {
-      get
-      {
-        if (!string.IsNullOrEmpty(this.EncryptedPassword))
-          return PasswordFunctions.DecryptPassword(this.EncryptedPassword);
+        string ICredentialBase.Password
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(this.EncryptedPassword))
+                    return PasswordFunctions.DecryptPassword(this.EncryptedPassword);
 
-        return String.Empty;
-      }
-      set
-      {
-        if (string.IsNullOrEmpty(value))
-          this.EncryptedPassword = String.Empty;
-        else
-          this.EncryptedPassword = PasswordFunctions.EncryptPassword(value);
-      }
-    }
+                return String.Empty;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    this.EncryptedPassword = String.Empty;
+                else
+                    this.EncryptedPassword = PasswordFunctions.EncryptPassword(value);
+            }
+        }
 
-    public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
-    {
-      string secret = ((ICredentialBase)this).Password;
-      if (!string.IsNullOrEmpty(secret))
-        this.EncryptedPassword = PasswordFunctions.EncryptPassword(secret, newKeymaterial);
+        public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
+        {
+            string secret = ((ICredentialBase)this).Password;
+            if (!string.IsNullOrEmpty(secret))
+                this.EncryptedPassword = PasswordFunctions.EncryptPassword(secret, newKeymaterial);
+        }
+
+        protected void CopyTo(CredentialBase copy)
+        {
+            copy.UserName = this.UserName;
+            copy.Domain = this.Domain;
+            copy.EncryptedPassword = this.EncryptedPassword;
+        }
     }
-  }
 }

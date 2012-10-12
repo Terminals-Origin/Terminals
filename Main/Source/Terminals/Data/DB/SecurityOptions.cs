@@ -93,7 +93,7 @@ namespace Terminals.Data.DB
             get
             {
                 if (this.CredentialSet != null)
-                    return ((ICredentialSet)this.CredentialSet).Id;
+                    return this.CredentialSet.Guid;
 
                 return Guid.Empty;
             }
@@ -123,13 +123,17 @@ namespace Terminals.Data.DB
 
         internal SecurityOptions Copy()
         {
-            return new SecurityOptions
+            var copy = new SecurityOptions
             {
-                CredentialSet = this.CredentialSet,
                 Domain = this.Domain,
                 EncryptedPassword = this.EncryptedPassword,
                 UserName = this.UserName
             };
+
+            if (this.CredentialSet != null)
+                copy.CredentialSet = this.CredentialSet.Copy();
+            
+            return copy;
         }
 
         public ISecurityOptions GetResolvedCredentials()

@@ -51,10 +51,12 @@ namespace Terminals.Data.DB
         public void StartDelayedUpdate()
         {
             this.Dispatcher.StartDelayedUpdate();
+            Database.OpenConnection();
         }
 
         public void SaveAndFinishDelayedUpdate()
         {
+            Database.CloseConneciton();
             this.Dispatcher.EndDelayedUpdate();
             // nothing to save
         }
