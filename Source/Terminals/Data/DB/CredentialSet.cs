@@ -1,19 +1,37 @@
 ﻿using System;
+using Terminals.Converters;
 
 namespace Terminals.Data.DB
 {
-    internal partial class CredentialSet : ICredentialSet, IIntegerKeyEnityty
+    internal partial class CredentialSet : CredentialBase, ICredentialSet, IIntegerKeyEnityty
     {
-        private Guid guid = Guid.NewGuid();
-        Guid ICredentialSet.Id
+        // for backwrad compatibility with the file persistence only
+        private Guid guid;
+        
+        internal Guid Guid
         {
-            get { return this.guid; }
+            get
+            {
+                if (this.guid == Guid.Empty)
+                    this.guid = GuidConverter.ToGuid(this.Id);
+
+                return this.guid;
+            }
         }
 
-        public Guid Guid
+        Guid ICredentialSet.Id
         {
-            get { return this.guid; }
-            set { this.guid = value; }
+            get { return this.Guid; }
+        }
+
+        internal CredentialSet Copy()
+        {
+            var copy = new CredentialSet
+                {
+                    Name = this.Name
+                };
+            CopyTo(copy);
+            return copy;
         }
     }
 }

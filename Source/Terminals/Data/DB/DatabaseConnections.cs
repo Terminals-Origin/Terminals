@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data.EntityClient;
 using System.Data.Objects;
+using System.Linq;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Security;
 
 namespace Terminals.Data.DB
@@ -56,6 +58,22 @@ namespace Terminals.Data.DB
             return connectionBuilder.ToString();
         }
 
+        /// <summary>
+        /// Entity framework performance optimization, the connection is opened once for batch operations.
+        /// </summary>
+        internal static void OpenConnection()
+        {
+            cachedConnection.Open();
+        }
+
+        /// <summary>
+        /// Entity framework performance optimization, the connection is opened once for batch operations.
+        /// </summary>
+        internal static void CloseConneciton()
+        {
+            cachedConnection.Close();
+        }
+
         internal static bool TestConnection()
         {
             Tuple<bool, string> result = TestConnection(Settings.ConnectionString, Settings.DatabaseMasterPassword);
@@ -107,20 +125,48 @@ namespace Terminals.Data.DB
         {
             Tuple<bool, string> oldPasswordCheck = TestConnection(connectionString, oldPassword);
             if (oldPasswordCheck.Item1)
-            {
                 UpdateMastrerPassord(connectionString, newPassword);
-            }
         }
 
-        internal static void UpdateMastrerPassord(string connecitonString, string newPassword)
+        private static void UpdateMastrerPassord(string connecitonString, string newPassword)
         {
             // todo do it in transaction to prevent inconsistent data
             using (Database database = CreateDatabase(connecitonString))
             {
-                string newHash = string.Empty;
-                if (!string.IsNullOrEmpty(newPassword))
-                    newHash = PasswordFunctions.ComputeMasterPasswordHash(newPassword);
-                database.UpdateMasterPassword(newHash);
+                string newKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(newPassword);
+                // database.UpdateAllPasswords(newKeyMaterial);
+                database.UpdateMasterPasswodInOptions(newPassword);
+            }
+        }
+
+        private void UpdateMasterPasswodInOptions(string newPassword)
+        {
+            string newHash = string.Empty;
+            if (!string.IsNullOrEmpty(newPassword))
+                newHash = PasswordFunctions.ComputeMasterPasswordHash(newPassword);
+            this.UpdateMasterPassword(newHash);
+        }
+
+        private void UpdateAllPasswords(string newKeyMaterial)
+        {
+            this.UpdateCredentialsPasswords(newKeyMaterial);
+            IQueryable<Favorite> rdpFavorites = this.Favorites.Where(candidate => candidate.Protocol == ConnectionManager.RDP);
+            this.UpdateFavoriteProtocolPasswords(rdpFavorites, newKeyMaterial);
+        }
+
+        private void UpdateFavoriteProtocolPasswords(IQueryable<Favorite> rdpFavorites, string newKeyMaterial)
+        {
+            foreach (Favorite favorite in rdpFavorites)
+            {
+                favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
+            }
+        }
+
+        private void UpdateCredentialsPasswords(string newKeyMaterial)
+        {
+            foreach (CredentialBase credentials in this.CredentialBase)
+            {
+                credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
         }
     }

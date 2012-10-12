@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Terminals.Connections;
+using Terminals.Converters;
 
 namespace Terminals.Data.DB
 {
@@ -22,17 +23,28 @@ namespace Terminals.Data.DB
         /// </summary>
         private ProtocolOptions protocolProperties;
 
-        private Guid guid = Guid.NewGuid();
+        // for backwrad compatibility with the file persistence only
+        private Guid guid;
 
         internal Guid Guid
         {
-            get { return this.guid; }
+            get
+            {
+                if (this.guid == Guid.Empty)
+                    this.guid = GuidConverter.ToGuid(this.Id);
+
+                return this.guid;
+            }
         }
 
         Guid IFavorite.Id
         {
-            get { return this.guid; }
-            set { this.guid = value; }
+            get { return this.Guid; }
+            set
+            {
+                // todo update the favorite unique identifier. 
+                // Called from OrganizeFavoritesForm, where this logic doesnt work
+            }
         }
 
         private BeforeConnectExecute executeBeforeConnect;
@@ -192,6 +204,11 @@ namespace Terminals.Data.DB
                 return false;
 
             return oponentFavorite.Id == this.Id;
+        }
+
+        partial void OnIdChanging(int value)
+        {
+            this.guid = GuidConverter.ToGuid(value);
         }
 
         /// <summary>

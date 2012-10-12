@@ -165,6 +165,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\GuidConverter.cs" />
     <Compile Include="Data\AuthenticationPrompt.cs" />
     <Compile Include="Data\DB\DatabaseConnections.cs" />
     <Compile Include="Data\DB\EntitiesCache.cs" />

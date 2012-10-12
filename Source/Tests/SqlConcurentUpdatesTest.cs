@@ -39,10 +39,10 @@ namespace Tests
         public void TestClose()
         {
             Settings.DatabaseMasterPassword = string.Empty;
-            Database.UpdateMastrerPassord(Settings.ConnectionString, string.Empty);
+            this.CheckDatabase.UpdateMasterPassword(string.Empty);
 
-            // do not clean up the store here, because of waiting for background threads
-            // this.lab.ClearTestLab();
+          // do not clean up the store here, because of waiting for background threads
+          // this.lab.ClearTestLab();
         }
 
         [TestMethod]
@@ -126,11 +126,18 @@ namespace Tests
         [TestMethod]
         public void TestMasterPasswordUpdate()
         {
+            IFavorite testFavorite = this.CreateTestFavorite();
+            const string testPassword = "aaa";
+            testFavorite.Security.Password = testPassword;
+            PrimaryFavorites.Add(testFavorite);
             const string dummyPassword = "bbb";
-            Database.UpdateMastrerPassord(Settings.ConnectionString, dummyPassword);
-            Settings.DatabaseMasterPassword = dummyPassword;
-            bool result = Database.TestConnection();
-            Assert.IsTrue(result, "Couldnt update database master password");
+            //Database.UpdateMastrerPassord(Settings.ConnectionString, string.Empty, dummyPassword);
+            //Settings.DatabaseMasterPassword = dummyPassword;
+            //bool result = Database.TestConnection();
+            //Assert.IsTrue(result, "Couldnt update database master password");
+            IFavorite resultFavorite = SecondaryFavorites.FirstOrDefault();
+            Assert.AreEqual(testPassword, resultFavorite.Security.Password,
+                "Favorite password doesnt match after database password update.");
         }
     }
 }
