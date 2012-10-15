@@ -13,21 +13,23 @@ namespace Terminals.Data.DB
     /// </summary>
     internal partial class SecurityOptions : ISecurityOptions
     {
+        private CredentialBase credentialBase;
+
         public string UserName
         {
             get
             {
-                if (this.CredentialBase == null)
-                    return null;
+                if (this.credentialBase != null)
+                   return this.credentialBase.UserName;
 
-                return this.CredentialBase.UserName;
+                return null;
             }
             set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.EnsureCredentialBase();
-                    this.CredentialBase.UserName = value;
+                    this.credentialBase.UserName = value;
                 }
             }
         }
@@ -36,17 +38,17 @@ namespace Terminals.Data.DB
         {
             get
             {
-                if (this.CredentialBase == null)
-                    return null;
+                if (this.credentialBase != null)
+                    return this.credentialBase.Domain;
 
-                return this.CredentialBase.Domain;
+                return null;
             }
             set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.EnsureCredentialBase();
-                    this.CredentialBase.Domain = value;
+                    this.credentialBase.Domain = value;
                 }
             }
         }
@@ -55,17 +57,17 @@ namespace Terminals.Data.DB
         {
             get
             {
-                if (this.CredentialBase == null)
-                    return null;
+                if (this.credentialBase != null)
+                    return this.credentialBase.EncryptedPassword;
 
-                return this.CredentialBase.EncryptedPassword;
+                return null;
             }
             set
             {
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.EnsureCredentialBase();
-                    this.CredentialBase.EncryptedPassword = value;
+                    this.credentialBase.EncryptedPassword = value;
                 }
             }
         }
@@ -92,6 +94,7 @@ namespace Terminals.Data.DB
         {
             get
             {
+                // todo check the credential resolution from SQL persistence in getter and setter
                 if (this.CredentialSet != null)
                     return this.CredentialSet.Guid;
 
@@ -113,27 +116,16 @@ namespace Terminals.Data.DB
         }
 
         /// <summary>
-        /// LazyLoading of CredentialBase for favorites, where security isnt touched
+        /// LazyLoading of CredentialBase for favorites, where security wasnt touched until now.
+        /// The credential base doesnt have to be initialized, if used doent configure its properties.
         /// </summary>
         private void EnsureCredentialBase()
         {
-            if (this.CredentialBase == null)
-                this.CredentialBase = new CredentialBase();
-        }
-
-        internal SecurityOptions Copy()
-        {
-            var copy = new SecurityOptions
+            if (this.credentialBase == null)
             {
-                Domain = this.Domain,
-                EncryptedPassword = this.EncryptedPassword,
-                UserName = this.UserName
-            };
-
-            if (this.CredentialSet != null)
-                copy.CredentialSet = this.CredentialSet.Copy();
-            
-            return copy;
+                this.credentialBase = new CredentialBase();
+                this.CredentialBase = this.credentialBase;
+            }
         }
 
         public ISecurityOptions GetResolvedCredentials()
@@ -150,8 +142,62 @@ namespace Terminals.Data.DB
         
         public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
         {
+            if (this.credentialBase != null)
+                this.credentialBase.UpdatePasswordByNewKeyMaterial(newKeymaterial);
+        }
+
+        internal void Attach(Database database)
+        {
+            database.Attach(this);
+            if (this.credentialBase != null)
+                database.Attach(this.credentialBase);
+        }
+
+        internal void Detach(Database database)
+        {
+            database.Detach(this);
+            // check the reference, not local cached field
             if (this.CredentialBase != null)
-                this.CredentialBase.UpdatePasswordByNewKeyMaterial(newKeymaterial);
+                database.Detach(this.credentialBase);
+        }
+
+        internal void LoadReferences()
+        {
+            this.CredentialBaseReference.Load();
+        }
+
+        internal void LoadFieldsFromReferences()
+        {
+            this.credentialBase = this.CredentialBase;
+        }
+
+        internal void MarkAsModified(Database database)
+        {
+            database.MarkAsModified(this);
+            if (this.credentialBase != null)
+                database.MarkAsModified(this.credentialBase);
+        }
+
+        internal SecurityOptions Copy()
+        {
+            var copy = new SecurityOptions
+                           {
+                               Domain = this.Domain,
+                               EncryptedPassword = this.EncryptedPassword,
+                               UserName = this.UserName
+                           };
+
+            if (this.CredentialSet != null)
+                copy.CredentialSet = this.CredentialSet.Copy();
+            
+            return copy;
+        }
+
+        public override string ToString()
+        {
+            if (this.credentialBase == null)
+                return "SecurityOptions:Empty";
+            return string.Format("SecurityOptions:User='{0}',Domain='{1}'", this.UserName, this.Domain);
         }
     }
 }

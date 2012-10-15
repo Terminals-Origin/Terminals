@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Terminals.Configuration;
 using Terminals.Data;
-using Terminals.Data.DB;
-using Terminals.Security;
 using Favorite = Terminals.Data.DB.Favorite;
 
 namespace Tests
@@ -38,9 +34,6 @@ namespace Tests
         [TestCleanup]
         public void TestClose()
         {
-            Settings.DatabaseMasterPassword = string.Empty;
-            this.CheckDatabase.UpdateMasterPassword(string.Empty);
-
           // do not clean up the store here, because of waiting for background threads
           // this.lab.ClearTestLab();
         }
@@ -121,23 +114,6 @@ namespace Tests
         {
             toUpdate.Name += " Changed";
             targetPersistence.Update(toUpdate);
-        }
-
-        [TestMethod]
-        public void TestMasterPasswordUpdate()
-        {
-            IFavorite testFavorite = this.CreateTestFavorite();
-            const string testPassword = "aaa";
-            testFavorite.Security.Password = testPassword;
-            PrimaryFavorites.Add(testFavorite);
-            const string dummyPassword = "bbb";
-            //Database.UpdateMastrerPassord(Settings.ConnectionString, string.Empty, dummyPassword);
-            //Settings.DatabaseMasterPassword = dummyPassword;
-            //bool result = Database.TestConnection();
-            //Assert.IsTrue(result, "Couldnt update database master password");
-            IFavorite resultFavorite = SecondaryFavorites.FirstOrDefault();
-            Assert.AreEqual(testPassword, resultFavorite.Security.Password,
-                "Favorite password doesnt match after database password update.");
         }
     }
 }

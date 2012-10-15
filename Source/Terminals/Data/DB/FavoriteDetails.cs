@@ -9,7 +9,8 @@ namespace Terminals.Data.DB
     internal partial class Favorite : IFavorite
     {
         /// <summary>
-        /// Managese saving of icon and favorite detailed properties
+        /// Manages lazy loading and caching of the favorite extended properties, which are modeled
+        /// as referenced entities. Also handles manual loading/saving of icon and favorite protocol properties.
         /// </summary>
         private class FavoriteDetails
         {
@@ -44,7 +45,7 @@ namespace Terminals.Data.DB
                 if (this.DetailsLoaded)
                 {
                     this.Attach(database);
-                    database.MarkAsModified(this.favorite.security);
+                    this.favorite.security.MarkAsModified(database);
                     database.MarkAsModified(this.favorite.display);
                     database.MarkAsModified(this.favorite.executeBeforeConnect);
                 }
@@ -52,7 +53,7 @@ namespace Terminals.Data.DB
 
             private void Attach(Database database)
             {
-                database.Attach(this.favorite.security);
+                this.favorite.security.Attach(database);
                 database.Attach(this.favorite.display);
                 database.Attach(this.favorite.executeBeforeConnect);
             }
@@ -61,7 +62,7 @@ namespace Terminals.Data.DB
             {
                 if (this.DetailsLoaded)
                 {
-                    database.Detach(this.favorite.security);
+                    this.favorite.security.Detach(database);
                     database.Detach(this.favorite.display);
                     database.Detach(this.favorite.executeBeforeConnect);
                 }
@@ -90,6 +91,7 @@ namespace Terminals.Data.DB
             internal void LoadFieldsFromReferences()
             {
                 this.favorite.security = this.favorite.Security;
+                this.favorite.security.LoadFieldsFromReferences();
                 this.favorite.display = this.favorite.Display;
                 this.favorite.executeBeforeConnect = this.favorite.ExecuteBeforeConnect;
             }
@@ -97,9 +99,13 @@ namespace Terminals.Data.DB
             private void LoadReferences()
             {
                 this.favorite.SecurityReference.Load();
+                // we have to load security references after the parent references is loaded
+                this.favorite.Security.LoadReferences();
                 this.favorite.DisplayReference.Load();
                 this.favorite.ExecuteBeforeConnectReference.Load();
             }
+
+
 
             internal void Save(Database database)
             {

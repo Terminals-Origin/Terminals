@@ -95,5 +95,10 @@ namespace Terminals.Data
             if (string.IsNullOrEmpty(target.Password))
                 target.Password = Settings.DefaultPassword;
         }
+
+        public override string ToString()
+        {
+            return string.Format("SecurityOptions:User='{0}',Domain='{1}'", this.UserName, this.Domain);
+        }
     }
 }
