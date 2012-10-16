@@ -33,5 +33,10 @@ namespace Terminals.Data.DB
             CopyTo(copy);
             return copy;
         }
+
+        public override string ToString()
+        {
+            return string.Format("CredentialSet:Name={0},Id={1}", this.Name, this.Guid);
+        }
     }
 }

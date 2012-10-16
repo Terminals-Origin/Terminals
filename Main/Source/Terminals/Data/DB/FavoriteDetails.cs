@@ -1,7 +1,5 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
-
 using Unified;
 
 namespace Terminals.Data.DB
@@ -51,11 +49,14 @@ namespace Terminals.Data.DB
                 }
             }
 
-            private void Attach(Database database)
+            internal void Attach(Database database)
             {
-                this.favorite.security.Attach(database);
-                database.Attach(this.favorite.display);
-                database.Attach(this.favorite.executeBeforeConnect);
+                if (DetailsLoaded)
+                {
+                    this.favorite.security.Attach(database);
+                    database.Attach(this.favorite.display);
+                    database.Attach(this.favorite.executeBeforeConnect);
+                }
             }
 
             internal void Detach(Database database)
@@ -91,6 +92,7 @@ namespace Terminals.Data.DB
             internal void LoadFieldsFromReferences()
             {
                 this.favorite.security = this.favorite.Security;
+                this.favorite.security.StoredCredentials = this.favorite.credentials;
                 this.favorite.security.LoadFieldsFromReferences();
                 this.favorite.display = this.favorite.Display;
                 this.favorite.executeBeforeConnect = this.favorite.ExecuteBeforeConnect;
@@ -104,8 +106,6 @@ namespace Terminals.Data.DB
                 this.favorite.DisplayReference.Load();
                 this.favorite.ExecuteBeforeConnectReference.Load();
             }
-
-
 
             internal void Save(Database database)
             {
@@ -216,7 +216,7 @@ namespace Terminals.Data.DB
                 this.protocolPropertiesLoaded = false;
                 // dont dispose, because there is may be shared default protocol icon, which is still in use
                 this.favorite.toolBarIcon = null;
-                this.favorite.security = null; // it is enough, all other sespect the security part 
+                this.favorite.security = null; // it is enough, all other respect the security part 
             }
         }
     }

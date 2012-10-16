@@ -93,6 +93,20 @@ namespace Terminals.Data.DB
             }
         }
 
+        internal void AttachAll(IEnumerable<Favorite> favorites)
+        {
+            foreach (Favorite favorite in favorites)
+            {
+                this.AttachFavorite(favorite);
+            }
+        }
+
+        private void AttachFavorite(Favorite favorite)
+        {
+            favorite.AttachDetails(this);
+            this.Attach(favorite);
+        }
+
         /// <summary>
         /// Detaches all item in entitiesToDetach from this context.
         /// Does not check, if the enties are in the context.

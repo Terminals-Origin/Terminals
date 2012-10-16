@@ -11,6 +11,8 @@ namespace Terminals.Data.DB
     {
         private Groups groups;
 
+        private StoredCredentials credentials;
+
         /// <summary>
         /// cant be set in constructor, because the constructor is used by EF when loading the entities
         /// </summary>
@@ -176,7 +178,7 @@ namespace Terminals.Data.DB
             copy.ToolBarIconFile = this.ToolBarIconFile;
 
             copy.ProtocolProperties = this.ProtocolProperties.Copy();
-            copy.AssignStores(this.groups);
+            copy.AssignStores(this.groups, this.credentials);
 
             return copy;
         }
@@ -228,9 +230,10 @@ namespace Terminals.Data.DB
                 .ToList();
         }
 
-        public void AssignStores(Groups groups)
+        public void AssignStores(Groups groups, StoredCredentials credentials)
         {
             this.groups = groups;
+            this.credentials = credentials;
         }
 
         internal void MarkAsModified(Database database)
@@ -242,6 +245,11 @@ namespace Terminals.Data.DB
         internal void SaveDetails(Database database)
         {
             this.details.Save(database);
+        }
+
+        public void AttachDetails(Database database)
+        {
+            this.details.Attach(database);
         }
 
         internal void DetachDetails(Database database)

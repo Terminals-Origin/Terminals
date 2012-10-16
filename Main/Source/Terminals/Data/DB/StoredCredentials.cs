@@ -20,8 +20,25 @@ namespace Terminals.Data.DB
         {
             get
             {
+                return this[id];
+            }
+        }
+
+        internal CredentialSet this[Guid id]
+        {
+            get
+            {
                 this.EnsureCache();
                 return this.cache.FirstOrDefault(candidate => candidate.Guid == id);
+            }
+        }
+
+        internal CredentialSet this[int storeId]
+        {
+            get
+            {
+                this.EnsureCache();
+                return this.cache.FirstOrDefault(candidate => candidate.Id == storeId);
             }
         }
 
