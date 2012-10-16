@@ -13,6 +13,10 @@ namespace Terminals.Data.DB
     /// </summary>
     internal partial class SecurityOptions : ISecurityOptions
     {
+        internal StoredCredentials StoredCredentials { get; set; }
+
+        private int? credentialId;
+
         private CredentialBase credentialBase;
 
         public string UserName
@@ -92,26 +96,47 @@ namespace Terminals.Data.DB
 
         public Guid Credential
         {
-            get
+            get 
             {
-                // todo check the credential resolution from SQL persistence in getter and setter
-                if (this.CredentialSet != null)
-                    return this.CredentialSet.Guid;
-
-                return Guid.Empty;
+                return this.GetCredential();
             }
             set
             {
-                if (value != Guid.Empty)
-                {
-                    var credentialToAssign = Persistence.Instance.Credentials[value] as CredentialSet;
-                    if (credentialToAssign != null)
-                        this.CredentialSet = credentialToAssign;
-                }
-                else
-                {
-                    this.CredentialSet = null;
-                }
+                this.SetCredential(value);
+            }
+        }
+
+        private Guid GetCredential()
+        {
+            CredentialSet resolved = this.ResolveCredentailFromStore();
+            if (resolved != null)
+                return resolved.Guid;
+
+            return Guid.Empty;
+        }
+
+        private CredentialSet ResolveCredentailFromStore()
+        {
+            if (this.credentialId != null)
+                return this.StoredCredentials[this.credentialId.Value];
+            
+            return null;
+        }
+
+        private void SetCredential(Guid value)
+        {
+            if (value != Guid.Empty)
+                this.SetCredentialByStoreId(value);
+            else
+                this.credentialId = null;
+        }
+
+        private void SetCredentialByStoreId(Guid value)
+        {
+            CredentialSet credentialToAssign = this.StoredCredentials[value];
+            if (credentialToAssign != null)
+            {
+                this.credentialId = credentialToAssign.Id;
             }
         }
 
@@ -164,11 +189,21 @@ namespace Terminals.Data.DB
         internal void LoadReferences()
         {
             this.CredentialBaseReference.Load();
+            this.CredentialSetReference.Load();
         }
 
         internal void LoadFieldsFromReferences()
         {
             this.credentialBase = this.CredentialBase;
+            this.LoadFromCredentialSetReference();
+        }
+
+        private void LoadFromCredentialSetReference()
+        {
+            if (this.CredentialSet != null)
+                this.credentialId = this.CredentialSet.Id;
+            else
+                this.credentialId = null;
         }
 
         internal void MarkAsModified(Database database)
@@ -176,6 +211,16 @@ namespace Terminals.Data.DB
             database.MarkAsModified(this);
             if (this.credentialBase != null)
                 database.MarkAsModified(this.credentialBase);
+
+            this.UpdateCredentialSetReference();
+        }
+
+        private void UpdateCredentialSetReference()
+        {
+            if (this.credentialId != null)
+                this.CredentialSet = this.StoredCredentials[this.credentialId.Value];
+            else
+                this.CredentialSet = null;
         }
 
         internal SecurityOptions Copy()
@@ -184,11 +229,10 @@ namespace Terminals.Data.DB
                            {
                                Domain = this.Domain,
                                EncryptedPassword = this.EncryptedPassword,
-                               UserName = this.UserName
+                               UserName = this.UserName,
+                               credentialId = this.credentialId,
+                               StoredCredentials = this.StoredCredentials
                            };
-
-            if (this.CredentialSet != null)
-                copy.CredentialSet = this.CredentialSet.Copy();
             
             return copy;
         }

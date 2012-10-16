@@ -9,13 +9,16 @@
 
         private readonly Favorites favorites;
 
+        private readonly StoredCredentials credentials;
+
         private readonly DataDispatcher dispatcher;
 
-        internal Factory(Groups groups, Favorites favorites, DataDispatcher dispatcher)
+        internal Factory(Groups groups, Favorites favorites, StoredCredentials credentials, DataDispatcher dispatcher)
         {
             this.groups = groups;
             this.dispatcher = dispatcher;
             this.favorites = favorites;
+            this.credentials = credentials;
         }
 
         public IFavorite CreateFavorite()
@@ -24,7 +27,7 @@
             favorite.Display = new DisplayOptions();
             favorite.Security = new SecurityOptions();
             favorite.ExecuteBeforeConnect = new BeforeConnectExecute();
-            favorite.AssignStores(this.groups);
+            favorite.AssignStores(this.groups, credentials);
             favorite.MarkAsNewlyCreated();
             return favorite;
         }

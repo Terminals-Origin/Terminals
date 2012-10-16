@@ -68,11 +68,11 @@ namespace Terminals.Data.DB
 
             this.Dispatcher = new DataDispatcher();
             this.groups = new Groups();
-            this.favorites = new Favorites(this.groups, this.Dispatcher);
+            this.credentials = new StoredCredentials();
+            this.favorites = new Favorites(this.groups, this.credentials, this.Dispatcher);
             this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.connectionHistory = new ConnectionHistory(this.favorites);
-            this.credentials = new StoredCredentials();
-            this.Factory = new Factory(this.groups, this.favorites, this.Dispatcher);
+            this.Factory = new Factory(this.groups, this.favorites, credentials, this.Dispatcher);
         }
 
         private bool TryInitializeDatabase()

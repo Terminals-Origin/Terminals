@@ -13,6 +13,9 @@ namespace Terminals.Data.DB
     internal class Favorites : IFavorites
     {
         private readonly Groups groups;
+
+        private readonly StoredCredentials credentials;
+
         private readonly DataDispatcher dispatcher;
         private readonly EntitiesCache<Favorite> cache = new EntitiesCache<Favorite>();
 
@@ -23,9 +26,10 @@ namespace Terminals.Data.DB
 
         private bool isLoaded;
 
-        internal Favorites(Groups groups, DataDispatcher dispatcher)
+        internal Favorites(Groups groups, StoredCredentials credentials, DataDispatcher dispatcher)
         {
             this.groups = groups;
+            this.credentials = credentials;
             this.dispatcher = dispatcher;
         }
 
@@ -179,6 +183,7 @@ namespace Terminals.Data.DB
 
         private void DeleteFavoritesFromDatabase(Database database, List<Favorite> favorites)
         {
+            // we dont have to attache the details, because they will be deleted by reference constraints
             database.AttachAll(favorites);
             DeleteAllFromDatabase(database, favorites);
         }
@@ -286,7 +291,7 @@ namespace Terminals.Data.DB
                 // to list because Linq to entities allowes only cast to primitive types
                 List<Favorite> favorites = database.Favorites.ToList();
                 database.DetachAll(favorites);
-                favorites.ForEach(candidate => candidate.AssignStores(this.groups));
+                favorites.ForEach(candidate => candidate.AssignStores(this.groups, this.credentials));
                 return favorites;
             }
         }
