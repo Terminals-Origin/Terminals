@@ -5,13 +5,16 @@ using Terminals.Security;
 namespace Terminals.Data
 {
     /// <summary>
-    /// Provides persistence authentication and manipulations with master password
+    /// Provides persistence authentication and manipulations with master password.
+    /// Doesnt distinquish between application and persistence masterpassword.
     /// </summary>
     internal class PersistenceSecurity
     {
         private IPersistedSecurity persistence;
 
-        internal string KeyMaterial { get; private set; }
+        protected string KeyMaterial { get; private set; }
+
+        protected virtual string PersistenceKeyMaterial { get { return this.KeyMaterial; }  }
 
         internal bool IsMasterPasswordDefined
         {
@@ -24,6 +27,15 @@ namespace Terminals.Data
         internal PersistenceSecurity()
         {
             this.KeyMaterial = string.Empty;
+        }
+
+        /// <summary>
+        /// Creates new instance initializating internal state from sourceSecurity.
+        /// </summary>
+        /// <param name="sourceSecurity">Not null current security instance to initialize from.</param>
+        internal PersistenceSecurity(PersistenceSecurity sourceSecurity)
+        {
+            this.KeyMaterial = sourceSecurity.KeyMaterial;
         }
 
         internal void AssignPersistence(IPersistedSecurity persistence)
@@ -83,7 +95,7 @@ namespace Terminals.Data
 
         private void UpdateKeyMaterial(String password)
         {
-            KeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(password);
+            this.KeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(password);
         }
 
         internal void UpdateMasterPassword(string newPassword)
@@ -96,6 +108,26 @@ namespace Terminals.Data
 
             // finish transaction, the passwords now reflect the new key
             UpdateKeyMaterial(newPassword);
+        }
+
+        internal string DecryptPassword(string encryptedPassword)
+        {
+            return PasswordFunctions.DecryptPassword(encryptedPassword, this.KeyMaterial);
+        }
+
+        internal string EncryptPassword(string decryptedPassword)
+        {
+            return PasswordFunctions.EncryptPassword(decryptedPassword, this.KeyMaterial);
+        }
+
+        internal string DecryptPersistencePassword(string encryptedPassword)
+        {
+            return PasswordFunctions.DecryptPassword(encryptedPassword, this.PersistenceKeyMaterial);
+        }
+
+        internal string EncryptPersistencePassword(string decryptedPassword)
+        {
+            return PasswordFunctions.EncryptPassword(decryptedPassword, this.PersistenceKeyMaterial);
         }
     }
 }

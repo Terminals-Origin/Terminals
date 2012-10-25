@@ -11,14 +11,18 @@
 
         private readonly StoredCredentials credentials;
 
+        private readonly PersistenceSecurity persistenceSecurity;
+
         private readonly DataDispatcher dispatcher;
 
-        internal Factory(Groups groups, Favorites favorites, StoredCredentials credentials, DataDispatcher dispatcher)
+        internal Factory(Groups groups, Favorites favorites, StoredCredentials credentials,
+            PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher)
         {
             this.groups = groups;
-            this.dispatcher = dispatcher;
             this.favorites = favorites;
             this.credentials = credentials;
+            this.persistenceSecurity = persistenceSecurity;
+            this.dispatcher = dispatcher;
         }
 
         public IFavorite CreateFavorite()
@@ -27,7 +31,7 @@
             favorite.Display = new DisplayOptions();
             favorite.Security = new SecurityOptions();
             favorite.ExecuteBeforeConnect = new BeforeConnectExecute();
-            favorite.AssignStores(this.groups, credentials);
+            favorite.AssignStores(this.groups, credentials, this.persistenceSecurity);
             favorite.MarkAsNewlyCreated();
             return favorite;
         }
@@ -42,7 +46,9 @@
 
         public ICredentialSet CreateCredentialSet()
         {
-            return new CredentialSet();
+            var newCredential = new CredentialSet();
+            newCredential.AssignSecurity(this.persistenceSecurity);
+            return newCredential;
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using SSHClient;
+using Terminals.Data;
 using Terminals.Security;
 using System.IO;
 
@@ -366,14 +367,19 @@ namespace Terminals.Configuration
             get
             {
                 string encryptedDefaultPassword = GetSection().EncryptedDefaultPassword;
-                return PasswordFunctions.DecryptPassword(encryptedDefaultPassword);
+                return PersistenceSecurity.DecryptPassword(encryptedDefaultPassword);
             }
 
             set
             {
-                GetSection().EncryptedDefaultPassword = PasswordFunctions.EncryptPassword(value);
+                GetSection().EncryptedDefaultPassword = PersistenceSecurity.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
+        }
+
+        private static PersistenceSecurity PersistenceSecurity
+        {
+            get { return Persistence.Instance.Security; }
         }
 
         public static bool UseAmazon
@@ -395,12 +401,12 @@ namespace Terminals.Configuration
             get
             {
                 string encryptedAmazonAccessKey = GetSection().EncryptedAmazonAccessKey;
-                return PasswordFunctions.DecryptPassword(encryptedAmazonAccessKey);
+                return PersistenceSecurity.DecryptPassword(encryptedAmazonAccessKey);
             }
 
             set
             {
-                GetSection().EncryptedAmazonAccessKey = PasswordFunctions.EncryptPassword(value);
+                GetSection().EncryptedAmazonAccessKey = PersistenceSecurity.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }
@@ -410,12 +416,12 @@ namespace Terminals.Configuration
             get
             {
                 string encryptedAmazonSecretKey = GetSection().EncryptedAmazonSecretKey;
-                return PasswordFunctions.DecryptPassword(encryptedAmazonSecretKey);
+                return PersistenceSecurity.DecryptPassword(encryptedAmazonSecretKey);
             }
 
             set
             {
-                GetSection().EncryptedAmazonSecretKey = PasswordFunctions.EncryptPassword(value);
+                GetSection().EncryptedAmazonSecretKey = PersistenceSecurity.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }
@@ -950,12 +956,12 @@ namespace Terminals.Configuration
             get
             {
               string encryptedConnectionString = GetSection().EncryptedConnectionString;
-              return PasswordFunctions.DecryptPassword(encryptedConnectionString);
+              return PersistenceSecurity.DecryptPassword(encryptedConnectionString);
             }
 
             set
             {
-                GetSection().EncryptedConnectionString = PasswordFunctions.EncryptPassword(value);
+                GetSection().EncryptedConnectionString = PersistenceSecurity.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }
@@ -965,11 +971,11 @@ namespace Terminals.Configuration
             get
             {
                 string databaseMasterPasswordHash = GetSection().DatabaseMasterPasswordHash;
-                return PasswordFunctions.DecryptPassword(databaseMasterPasswordHash);
+                return PersistenceSecurity.DecryptPassword(databaseMasterPasswordHash);
             }
             set
             {
-                GetSection().DatabaseMasterPasswordHash = PasswordFunctions.EncryptPassword(value);
+                GetSection().DatabaseMasterPasswordHash = PersistenceSecurity.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }

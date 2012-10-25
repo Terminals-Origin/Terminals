@@ -26,10 +26,14 @@ namespace Terminals.Data.DB
 
         private bool isLoaded;
 
-        internal Favorites(Groups groups, StoredCredentials credentials, DataDispatcher dispatcher)
+        private PersistenceSecurity persistenceSecurity;
+
+        internal Favorites(Groups groups, StoredCredentials credentials,
+            PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher)
         {
             this.groups = groups;
             this.credentials = credentials;
+            this.persistenceSecurity = persistenceSecurity;
             this.dispatcher = dispatcher;
         }
 
@@ -291,7 +295,7 @@ namespace Terminals.Data.DB
                 // to list because Linq to entities allowes only cast to primitive types
                 List<Favorite> favorites = database.Favorites.ToList();
                 database.DetachAll(favorites);
-                favorites.ForEach(candidate => candidate.AssignStores(this.groups, this.credentials));
+                favorites.ForEach(candidate => candidate.AssignStores(this.groups, this.credentials, this.persistenceSecurity));
                 return favorites;
             }
         }

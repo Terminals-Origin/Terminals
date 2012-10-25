@@ -13,17 +13,20 @@ namespace Terminals.Security
         private const int IV_LENGTH = 16;
         private static EncryptionAlgorithm EncryptionAlgorithm = EncryptionAlgorithm.Rijndael;
 
+        internal static string CalculateMasterPasswordKey(string password)
+        {
+            if (String.IsNullOrEmpty(password))
+                return String.Empty;
+            String hashToCheck = ComputeMasterPasswordHash(password);
+            return ComputeMasterPasswordHash(password + hashToCheck);
+        }
+
         internal static string ComputeMasterPasswordHash(string password)
         {
           return Hash.GetHash(password, Hash.HashType.SHA512);
         }
 
-        internal static string DecryptPassword(string encryptedPassword)
-        {
-           return DecryptPassword(encryptedPassword, Persistence.Instance.Security.KeyMaterial);
-        }
-
-        private static string DecryptPassword(string encryptedPassword, string keyMaterial)
+        internal static string DecryptPassword(string encryptedPassword, string keyMaterial)
         {
             try
             {
@@ -63,11 +66,6 @@ namespace Terminals.Security
             byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
             byte[] plaintext = ProtectedData.Unprotect(cyphertext, b_entropy, DataProtectionScope.CurrentUser);
             return Encoding.UTF8.GetString(plaintext);
-        }
-
-        internal static string EncryptPassword(string decryptedPassword)
-        {
-            return EncryptPassword(decryptedPassword, Persistence.Instance.Security.KeyMaterial);
         }
 
         internal static string EncryptPassword(string decryptedPassword, string keyMaterial)
@@ -110,14 +108,6 @@ namespace Terminals.Security
             byte[] b_entropy = Encoding.UTF8.GetBytes(String.Empty);
             byte[] cyphertext = ProtectedData.Protect(plaintext, b_entropy, DataProtectionScope.CurrentUser);
             return Convert.ToBase64String(cyphertext);
-        }
-
-        internal static string CalculateMasterPasswordKey(string password)
-        {
-            if (String.IsNullOrEmpty(password))
-                return String.Empty;
-            String hashToCheck = ComputeMasterPasswordHash(password);
-            return ComputeMasterPasswordHash(password + hashToCheck);
         }
     }
 }

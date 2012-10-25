@@ -955,12 +955,17 @@ namespace Terminals
                 if (cred != null)
                     return cred.Password;
 
-                return PasswordFunctions.DecryptPassword(EncryptedPassword);
+                return PersistenceSecurity.DecryptPassword(EncryptedPassword);
             }
             set
             {
-                EncryptedPassword = PasswordFunctions.EncryptPassword(value);
+                EncryptedPassword = PersistenceSecurity.EncryptPassword(value);
             }
+        }
+
+        private PersistenceSecurity PersistenceSecurity
+        {
+            get { return Persistence.Instance.Security; }
         }
 
         [ConfigurationProperty("vncAutoScale", IsRequired = false, DefaultValue = false)]
@@ -1329,11 +1334,11 @@ namespace Terminals
         {
             get
             {
-                return PasswordFunctions.DecryptPassword(TsgwEncryptedPassword);
+                return PersistenceSecurity.DecryptPassword(TsgwEncryptedPassword);
             }
             set
             {
-                TsgwEncryptedPassword = PasswordFunctions.EncryptPassword(value);
+                TsgwEncryptedPassword = PersistenceSecurity.EncryptPassword(value);
             }
         }
 

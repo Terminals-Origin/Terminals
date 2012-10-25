@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
-using Favorite = Terminals.Data.DB.Favorite;
 
 namespace Tests
 {
@@ -84,7 +83,7 @@ namespace Tests
         private IFavorite AddFavoriteWithTestPassword()
         {
             IFavorite testFavorite = this.CreateTestFavorite();
-            testFavorite.Security.UserName = PASSWORD_A;
+            testFavorite.Security.Password = PASSWORD_A;
             this.PrimaryFavorites.Add(testFavorite);
             return testFavorite;
         }
