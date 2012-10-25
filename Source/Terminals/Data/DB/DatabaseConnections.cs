@@ -11,7 +11,9 @@ namespace Terminals.Data.DB
     internal partial class Database
     {
         private const string PROVIDER = "System.Data.SqlClient";
+
         private const string METADATA = @"res://*/Data.DB.SQLPersistence.csdl|res://*/Data.DB.SQLPersistence.ssdl|res://*/Data.DB.SQLPersistence.msl";
+
         internal const string DEFAULT_CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
 
         /// <summary>
@@ -29,12 +31,12 @@ namespace Terminals.Data.DB
         private static EntityConnection CacheConnection()
         {
             if (cachedConnection == null)
-              cachedConnection = BuildConnection(Settings.ConnectionString);
+                cachedConnection = BuildConnection(Settings.ConnectionString);
 
             return cachedConnection;
         }
 
-        private static Database CreateDatabase(string connecitonString)
+        private static Database CreateInstance(string connecitonString)
         {
             EntityConnection connection = BuildConnection(connecitonString);
             return new Database(connection);
@@ -49,11 +51,11 @@ namespace Terminals.Data.DB
         private static string BuildConnectionString(string providerConnectionString)
         {
             var connectionBuilder = new EntityConnectionStringBuilder
-            {
-                Provider = PROVIDER,
-                Metadata = METADATA,
-                ProviderConnectionString = providerConnectionString
-            };
+                                        {
+                                            Provider = PROVIDER,
+                                            Metadata = METADATA,
+                                            ProviderConnectionString = providerConnectionString
+                                        };
 
             return connectionBuilder.ToString();
         }
@@ -108,33 +110,37 @@ namespace Terminals.Data.DB
         {
             string storedHash = TryGetMasterPasswordHash(connectionStringToTest);
             string hashToCheck = string.Empty;
-             if(!string.IsNullOrEmpty(databasePassword))
-                 hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(databasePassword);
+            if (!string.IsNullOrEmpty(databasePassword))
+                hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(databasePassword);
             return hashToCheck == storedHash;
         }
 
         private static string TryGetMasterPasswordHash(string connectionString)
         {
-            using (Database database = CreateDatabase(connectionString))
+            using (Database database = CreateInstance(connectionString))
             {
                 return database.GetMasterPasswordHash();
             }
         }
 
+        private SqlPersistenceSecurity persistenceSecurity;
+
         internal static void UpdateMastrerPassord(string connectionString, string oldPassword, string newPassword)
         {
             Tuple<bool, string> oldPasswordCheck = TestConnection(connectionString, oldPassword);
             if (oldPasswordCheck.Item1)
-                UpdateMastrerPassord(connectionString, newPassword);
+                CommitNewMastrerPassord(connectionString, oldPassword, newPassword);
         }
 
-        private static void UpdateMastrerPassord(string connecitonString, string newPassword)
+        private static void CommitNewMastrerPassord(string connecitonString, string oldPassword, string newPassword)
         {
             // todo do it in transaction to prevent inconsistent data
-            using (Database database = CreateDatabase(connecitonString))
+            using (Database database = CreateInstance(connecitonString))
             {
+                database.persistenceSecurity = new SqlPersistenceSecurity();
+                database.persistenceSecurity.UpdateDatabaseKey(oldPassword);
                 string newKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(newPassword);
-                // database.UpdateAllPasswords(newKeyMaterial);
+                database.UpdateStoredPasswords(newKeyMaterial);
                 database.UpdateMasterPasswodInOptions(newPassword);
             }
         }
@@ -147,7 +153,7 @@ namespace Terminals.Data.DB
             this.UpdateMasterPassword(newHash);
         }
 
-        private void UpdateAllPasswords(string newKeyMaterial)
+        private void UpdateStoredPasswords(string newKeyMaterial)
         {
             this.UpdateCredentialsPasswords(newKeyMaterial);
             IQueryable<Favorite> rdpFavorites = this.Favorites.Where(candidate => candidate.Protocol == ConnectionManager.RDP);
@@ -158,6 +164,9 @@ namespace Terminals.Data.DB
         {
             foreach (Favorite favorite in rdpFavorites)
             {
+                // when assigning stored, we dont have initialize complete SQLpersistence,
+                // we need only the access the paswords stuff
+                favorite.AssignStores(null, null, this.persistenceSecurity);
                 favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
             }
         }
@@ -166,6 +175,7 @@ namespace Terminals.Data.DB
         {
             foreach (CredentialBase credentials in this.CredentialBase)
             {
+                credentials.AssignSecurity(persistenceSecurity);
                 credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
         }

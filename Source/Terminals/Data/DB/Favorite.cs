@@ -13,6 +13,8 @@ namespace Terminals.Data.DB
 
         private StoredCredentials credentials;
 
+        private PersistenceSecurity persistenceSecurity;
+
         /// <summary>
         /// cant be set in constructor, because the constructor is used by EF when loading the entities
         /// </summary>
@@ -77,9 +79,14 @@ namespace Terminals.Data.DB
         {
             get
             {
-                this.details.Load();
-                return this.security;
+                return this.GetSecurity();
             }
+        }
+
+        private SecurityOptions GetSecurity()
+        {
+            this.details.Load();
+            return this.security;
         }
 
         List<IGroup> IFavorite.Groups
@@ -178,7 +185,7 @@ namespace Terminals.Data.DB
             copy.ToolBarIconFile = this.ToolBarIconFile;
 
             copy.ProtocolProperties = this.ProtocolProperties.Copy();
-            copy.AssignStores(this.groups, this.credentials);
+            copy.AssignStores(this.groups, this.credentials, this.persistenceSecurity);
 
             return copy;
         }
@@ -195,7 +202,10 @@ namespace Terminals.Data.DB
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            this.Security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+            SecurityOptions security = this.GetSecurity();
+            security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
+            // TODO the passwords resolution inside protocol propoerties cant work,
+            // because it doesnt point to PersistenceSecurity
             Data.Favorite.UpdatePasswordsInProtocolProperties(this.protocolProperties, newKeyMaterial);
         }
 
@@ -230,10 +240,11 @@ namespace Terminals.Data.DB
                 .ToList();
         }
 
-        public void AssignStores(Groups groups, StoredCredentials credentials)
+        public void AssignStores(Groups groups, StoredCredentials credentials, PersistenceSecurity persistenceSecurity)
         {
             this.groups = groups;
             this.credentials = credentials;
+            this.persistenceSecurity = persistenceSecurity;
         }
 
         internal void MarkAsModified(Database database)

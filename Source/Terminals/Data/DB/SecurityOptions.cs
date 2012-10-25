@@ -1,5 +1,4 @@
 ﻿using System;
-using Terminals.Security;
 
 namespace Terminals.Data.DB
 {
@@ -13,7 +12,9 @@ namespace Terminals.Data.DB
     /// </summary>
     internal partial class SecurityOptions : ISecurityOptions
     {
-        internal StoredCredentials StoredCredentials { get; set; }
+        private PersistenceSecurity persistenceSecurity;
+
+        private StoredCredentials storedCredentials;
 
         private int? credentialId;
 
@@ -81,7 +82,7 @@ namespace Terminals.Data.DB
             get
             {
                 if (!string.IsNullOrEmpty(this.EncryptedPassword))
-                    return PasswordFunctions.DecryptPassword(this.EncryptedPassword);
+                    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedPassword);
 
                 return String.Empty;
             }
@@ -90,7 +91,7 @@ namespace Terminals.Data.DB
                 if (string.IsNullOrEmpty(value))
                     this.EncryptedPassword = String.Empty;
                 else
-                    this.EncryptedPassword = PasswordFunctions.EncryptPassword(value);
+                    this.EncryptedPassword = this.persistenceSecurity.EncryptPersistencePassword(value);
             }
         }
 
@@ -106,6 +107,12 @@ namespace Terminals.Data.DB
             }
         }
 
+        internal void AssignStores(StoredCredentials storedCredentials, PersistenceSecurity persistenceSecurity)
+        {
+            this.storedCredentials = storedCredentials;
+            this.persistenceSecurity = persistenceSecurity;
+        }
+
         private Guid GetCredential()
         {
             CredentialSet resolved = this.ResolveCredentailFromStore();
@@ -118,7 +125,7 @@ namespace Terminals.Data.DB
         private CredentialSet ResolveCredentailFromStore()
         {
             if (this.credentialId != null)
-                return this.StoredCredentials[this.credentialId.Value];
+                return this.storedCredentials[this.credentialId.Value];
             
             return null;
         }
@@ -133,7 +140,7 @@ namespace Terminals.Data.DB
 
         private void SetCredentialByStoreId(Guid value)
         {
-            CredentialSet credentialToAssign = this.StoredCredentials[value];
+            CredentialSet credentialToAssign = this.storedCredentials[value];
             if (credentialToAssign != null)
             {
                 this.credentialId = credentialToAssign.Id;
@@ -149,6 +156,7 @@ namespace Terminals.Data.DB
             if (this.credentialBase == null)
             {
                 this.credentialBase = new CredentialBase();
+                this.credentialBase.AssignSecurity(this.persistenceSecurity);
                 this.CredentialBase = this.credentialBase;
             }
         }
@@ -195,6 +203,8 @@ namespace Terminals.Data.DB
         internal void LoadFieldsFromReferences()
         {
             this.credentialBase = this.CredentialBase;
+            if (this.credentialBase != null)
+                this.credentialBase.AssignSecurity(this.persistenceSecurity);
             this.LoadFromCredentialSetReference();
         }
 
@@ -218,7 +228,7 @@ namespace Terminals.Data.DB
         private void UpdateCredentialSetReference()
         {
             if (this.credentialId != null)
-                this.CredentialSet = this.StoredCredentials[this.credentialId.Value];
+                this.CredentialSet = this.storedCredentials[this.credentialId.Value];
             else
                 this.CredentialSet = null;
         }
@@ -231,7 +241,7 @@ namespace Terminals.Data.DB
                                EncryptedPassword = this.EncryptedPassword,
                                UserName = this.UserName,
                                credentialId = this.credentialId,
-                               StoredCredentials = this.StoredCredentials
+                               storedCredentials = this.storedCredentials
                            };
             
             return copy;

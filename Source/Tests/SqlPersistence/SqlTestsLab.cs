@@ -1,4 +1,5 @@
-﻿using Terminals.Configuration;
+﻿using System.Data.Objects;
+using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
 using Favorite = Terminals.Data.DB.Favorite;
@@ -66,20 +67,26 @@ namespace Tests
             // first clear dependences from both Favorites and groups table because of constraints
             CheckDatabase.ExecuteStoreCommand(deleteCommand + "FavoritesInGroup");
             CheckDatabase.ExecuteStoreCommand(deleteCommand + "History");
-            
-            string favoritesTable = CheckDatabase.Favorites.EntitySet.Name;
+
+            string favoritesTable = GetTableName(CheckDatabase.Favorites);
             CheckDatabase.ExecuteStoreCommand(deleteCommand + favoritesTable);
-            string beforeConnectTable = CheckDatabase.BeforeConnectExecute.EntitySet.Name;
+            string beforeConnectTable = GetTableName(CheckDatabase.BeforeConnectExecute);
             CheckDatabase.ExecuteStoreCommand(deleteCommand + beforeConnectTable);
-            string securityTable = CheckDatabase.Security.EntitySet.Name;
+            string securityTable = GetTableName(CheckDatabase.Security);
             CheckDatabase.ExecuteStoreCommand(deleteCommand + securityTable);
-            string displayOptionsTable = CheckDatabase.DisplayOptions.EntitySet.Name;
+            string displayOptionsTable = GetTableName(CheckDatabase.DisplayOptions);
             CheckDatabase.ExecuteStoreCommand(deleteCommand + displayOptionsTable);
-            string groupsTable = CheckDatabase.Groups.EntitySet.Name;
+            string groupsTable = GetTableName(CheckDatabase.Groups);
             CheckDatabase.ExecuteStoreCommand(deleteCommand + groupsTable);
 
-            string credentialBase = CheckDatabase.CredentialBase.EntitySet.Name;
+            string credentialBase = GetTableName(CheckDatabase.CredentialBase);
             CheckDatabase.ExecuteStoreCommand(deleteCommand + credentialBase);
+            CheckDatabase.ExecuteStoreCommand(deleteCommand + "Credentials");
+        }
+
+        private string GetTableName<TEntity>(ObjectSet<TEntity> table) where TEntity : class
+        {
+            return table.EntitySet.Name;
         }
 
         /// <summary>

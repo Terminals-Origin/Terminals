@@ -29,6 +29,15 @@ namespace Tests
             }
         }
 
+        private ObjectQuery<CredentialSet> CheckDatabaseCredentials
+        {
+            get
+            {
+                return this.CheckDatabase.CredentialBase
+                    .OfType<CredentialSet>();
+            }
+        }
+
         [TestInitialize]
         public void TestInitialize()
         {
@@ -56,19 +65,10 @@ namespace Tests
         {
             this.AddTestCredentialsToDatabase();
 
-            CredentialSet checkCredentialSet = this.CheckDatabaseCredentials.FirstOrDefault();
+            var checkCredentialSet = this.SecondaryPersistence.Credentials.FirstOrDefault() as CredentialSet;
 
             Assert.IsNotNull(checkCredentialSet, "Credential didnt reach the database");
             Assert.AreEqual(TEST_PASSWORD, ((ICredentialSet)checkCredentialSet).Password, "Password doesnt match");
-        }
-
-        private ObjectQuery<CredentialSet> CheckDatabaseCredentials
-        {
-            get
-            {
-                return this.CheckDatabase.CredentialBase
-                    .OfType<CredentialSet>();
-            }
         }
 
         [TestMethod]
@@ -106,8 +106,8 @@ namespace Tests
             this.AddTestCredentialsToDatabase();
             this.PrimaryPersistence.Security.UpdateMasterPassword(String.Empty);
 
-            CredentialSet checkCredentials = this.CheckDatabaseCredentials.FirstOrDefault();
-            Assert.AreEqual(TEST_PASSWORD, ((ICredentialSet)checkCredentials).Password, "Passwrod lost after update of keymaterial");
+            ICredentialSet checkCredentials = this.SecondaryPersistence.Credentials.FirstOrDefault();
+            Assert.AreEqual(TEST_PASSWORD, checkCredentials.Password, "Passwrod lost after update of keymaterial");
         }
     }
 }

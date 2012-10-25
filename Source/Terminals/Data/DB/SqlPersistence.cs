@@ -40,12 +40,13 @@ namespace Terminals.Data.DB
         private StoredCredentials credentials;
         public ICredentials Credentials { get { return this.credentials; } }
 
-        public PersistenceSecurity Security { get; private set; }
+        private readonly SqlPersistenceSecurity security;
+        public PersistenceSecurity Security { get { return this.security; } }
 
         internal SqlPersistence()
         {
-            this.Security = new PersistenceSecurity();
-            this.Security.AssignPersistence(this);
+            this.security = new SqlPersistenceSecurity();
+            this.security.AssignPersistence(this);
         }
 
         public void StartDelayedUpdate()
@@ -68,17 +69,20 @@ namespace Terminals.Data.DB
 
             this.Dispatcher = new DataDispatcher();
             this.groups = new Groups();
-            this.credentials = new StoredCredentials();
-            this.favorites = new Favorites(this.groups, this.credentials, this.Dispatcher);
+            this.credentials = new StoredCredentials(this.security);
+            this.favorites = new Favorites(this.groups, this.credentials, this.security, this.Dispatcher);
             this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.connectionHistory = new ConnectionHistory(this.favorites);
-            this.Factory = new Factory(this.groups, this.favorites, credentials, this.Dispatcher);
+            this.Factory = new Factory(this.groups, this.favorites, this.credentials, this.security, this.Dispatcher);
         }
 
         private bool TryInitializeDatabase()
         {
             if (Database.TestConnection())
+            {
+                this.security.UpdateDatabaseKey();
                 return true;
+            }
 
             Logging.Log.Fatal("SQL Perstance layer failed to load. Fall back to File persistence");
             Persistence.FallBackToPrimaryPersistence(this.Security);

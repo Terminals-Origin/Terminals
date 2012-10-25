@@ -92,7 +92,7 @@ namespace Terminals.Data.DB
             internal void LoadFieldsFromReferences()
             {
                 this.favorite.security = this.favorite.Security;
-                this.favorite.security.StoredCredentials = this.favorite.credentials;
+                this.favorite.security.AssignStores(this.favorite.credentials, this.favorite.persistenceSecurity);
                 this.favorite.security.LoadFieldsFromReferences();
                 this.favorite.display = this.favorite.Display;
                 this.favorite.executeBeforeConnect = this.favorite.ExecuteBeforeConnect;

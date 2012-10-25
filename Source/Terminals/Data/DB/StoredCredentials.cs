@@ -10,11 +10,18 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class StoredCredentials : ICredentials
     {
+        private readonly SqlPersistenceSecurity persistenceSecurity;
+
         public event EventHandler CredentialsChanged;
 
         private readonly EntitiesCache<CredentialSet> cache = new EntitiesCache<CredentialSet>();
 
         private bool isLoaded;
+
+        public StoredCredentials(SqlPersistenceSecurity persistenceSecurity)
+        {
+            this.persistenceSecurity = persistenceSecurity;
+        }
 
         ICredentialSet ICredentials.this[Guid id]
         {
@@ -129,7 +136,16 @@ namespace Terminals.Data.DB
         private void ReloadCache()
         {
             List<CredentialSet> loaded = LoadFromDatabase();
+            this.AssignSecurity(loaded);
             this.cache.Add(loaded);
+        }
+
+        private void AssignSecurity(List<CredentialSet> loaded)
+        {
+            foreach (CredentialSet credentialSet in loaded)
+            {
+                credentialSet.AssignSecurity(this.persistenceSecurity);
+            }
         }
 
         private static List<CredentialSet> LoadFromDatabase()

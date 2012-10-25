@@ -30,7 +30,7 @@ namespace Terminals.Data
             get
             {
                 if (!string.IsNullOrEmpty(this.EncryptedPassword))
-                    return PasswordFunctions.DecryptPassword(this.EncryptedPassword);
+                    return PersistenceSecurity.DecryptPersistencePassword(this.EncryptedPassword);
 
                 return String.Empty;
             }
@@ -39,8 +39,13 @@ namespace Terminals.Data
                 if (string.IsNullOrEmpty(value))
                     this.EncryptedPassword = String.Empty;
                 else
-                    this.EncryptedPassword = PasswordFunctions.EncryptPassword(value);
+                    this.EncryptedPassword = PersistenceSecurity.EncryptPersistencePassword(value);
             }
+        }
+
+        private PersistenceSecurity PersistenceSecurity
+        {
+            get { return Persistence.Instance.Security; }
         }
 
         void ICredentialBase.UpdatePasswordByNewKeyMaterial(string newKeymaterial)
