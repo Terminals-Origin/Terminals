@@ -79,6 +79,8 @@ namespace Tests
             bool result = Database.TestConnection();
             Assert.IsTrue(result, "Couldnt update database master password");
             
+            // the secondary persistence has to reflect the database password change
+            ((SqlPersistenceSecurity)this.SecondaryPersistence.Security).UpdateDatabaseKey();
             IFavorite resultFavorite = SecondaryFavorites.FirstOrDefault();
             Assert.AreEqual(PASSWORD_A, resultFavorite.Security.Password,
                 "Favorite password doesnt match after database password update.");

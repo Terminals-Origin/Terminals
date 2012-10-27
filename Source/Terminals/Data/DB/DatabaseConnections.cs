@@ -201,6 +201,8 @@ namespace Terminals.Data.DB
                 credentials.AssignSecurity(persistenceSecurity);
                 credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             }
+
+            this.SaveChanges();
         }
     }
 }
