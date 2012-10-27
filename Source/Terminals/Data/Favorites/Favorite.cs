@@ -346,7 +346,11 @@ namespace Terminals.Data
             }
         }
 
-        void IFavorite.UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
+        /// <summary>
+        /// Replaces stored password by new one created from newKeyMaterial in underlaying store.
+        /// </summary>
+        /// <param name="newKeyMaterial">New shared key used to encrypt passwords in the store</param>
+        internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
             this.security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
             UpdatePasswordsInProtocolProperties(this.protocolProperties, newKeyMaterial);
@@ -369,6 +373,22 @@ namespace Terminals.Data
                 return false;
 
             return oponentFavorite.Id == this.Id;
+        }
+
+        internal void AssignStores(PersistenceSecurity persistenceSecurity, Groups groups)
+        {
+            this.Groups = groups;
+            this.Security.AssignStore(persistenceSecurity);
+            AssignStoreToRdpOptions(this.ProtocolProperties, persistenceSecurity);
+        }
+
+        internal static void AssignStoreToRdpOptions(ProtocolOptions protocolOptions, PersistenceSecurity persistenceSecurity)
+        {
+            var rdpOptions = protocolOptions as RdpOptions;
+            if (rdpOptions != null)
+            {
+                rdpOptions.AssignStore(persistenceSecurity);
+            }
         }
 
         public override String ToString()

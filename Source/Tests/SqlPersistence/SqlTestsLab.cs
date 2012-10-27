@@ -49,12 +49,15 @@ namespace Tests
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
             Settings.ConnectionString = Database.DEFAULT_CONNECTION_STRING;
             
+            // first reset the database password, then continue with other initializations
+            CheckDatabase = Database.CreateInstance();
+            this.CheckDatabase.UpdateMasterPassword(string.Empty);
+
             this.PrimaryPersistence = new SqlPersistence();
             this.PrimaryPersistence.Initialize();
             this.SecondaryPersistence = new SqlPersistence();
             this.SecondaryPersistence.Initialize();
-
-            CheckDatabase = Database.CreateInstance();
+            
             ClearTestLab(); // because of failed previos tests
         }
 

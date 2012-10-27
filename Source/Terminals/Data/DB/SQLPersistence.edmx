@@ -423,7 +423,7 @@
             <End Role="Favorites" EntitySet="Favorites" />
             <End Role="Groups" EntitySet="Groups" />
           </AssociationSet>
-          <FunctionImport Name="GetFavoriteProtocolProperties" ReturnType="Collection(String)" a:MethodAccess="Internal">
+          <FunctionImport Name="GetFavoriteProtocolProperties" ReturnType="Collection(String)" a:MethodAccess="Private">
           <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="GetFavoritesHistoryByDate" ReturnType="Collection(Int32)" a:MethodAccess="Internal">

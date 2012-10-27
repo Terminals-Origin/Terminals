@@ -64,6 +64,11 @@ namespace Terminals.Data.DB
             return FavoriteIcons.EmptyImageData;
         }
 
+        internal string GetProtocolPropertiesByFavorite(int favoriteId)
+        {
+            return GetFavoriteProtocolProperties(favoriteId).FirstOrDefault();
+        }
+
         private string GetMasterPasswordHash()
         {
             string obtained = this.GetMasterPasswordKey().FirstOrDefault();

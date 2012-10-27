@@ -70,14 +70,22 @@ namespace Tests
         [TestMethod]
         public void TestMasterPasswordUpdate()
         {
-            this.AddFavoriteWithTestPassword();
+            var newFavorite = this.AddFavoriteWithTestPassword();
+            var rdpOptions = newFavorite.ProtocolProperties as RdpOptions;
+            rdpOptions.TsGateway.Security.Password = PASSWORD_A;
+            PrimaryFavorites.Update(newFavorite);
             Database.UpdateMastrerPassord(Settings.ConnectionString, string.Empty, PASSWORD_B);
             Settings.DatabaseMasterPassword = PASSWORD_B;
             bool result = Database.TestConnection();
             Assert.IsTrue(result, "Couldnt update database master password");
+            
             IFavorite resultFavorite = SecondaryFavorites.FirstOrDefault();
             Assert.AreEqual(PASSWORD_A, resultFavorite.Security.Password,
                 "Favorite password doesnt match after database password update.");
+            
+            var secondaryRdpOptions = resultFavorite.ProtocolProperties as RdpOptions;
+            Assert.AreEqual(PASSWORD_A, secondaryRdpOptions.TsGateway.Security.Password,
+                "Favorite TS gateway password doesnt match after database password update.");
         }
 
         private IFavorite AddFavoriteWithTestPassword()

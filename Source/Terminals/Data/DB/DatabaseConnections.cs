@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Linq;
+using System.Xml.Linq;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Security;
@@ -123,6 +125,7 @@ namespace Terminals.Data.DB
             }
         }
 
+        // todo code cleanup needed to isolate the passwords update from connections creation
         private SqlPersistenceSecurity persistenceSecurity;
 
         internal static void UpdateMastrerPassord(string connectionString, string oldPassword, string newPassword)
@@ -134,6 +137,7 @@ namespace Terminals.Data.DB
 
         private static void CommitNewMastrerPassord(string connecitonString, string oldPassword, string newPassword)
         {
+            // todo surround all database usings by try/catch
             // todo do it in transaction to prevent inconsistent data
             using (Database database = CreateInstance(connecitonString))
             {
@@ -155,23 +159,42 @@ namespace Terminals.Data.DB
 
         private void UpdateStoredPasswords(string newKeyMaterial)
         {
-            this.UpdateCredentialsPasswords(newKeyMaterial);
-            IQueryable<Favorite> rdpFavorites = this.Favorites.Where(candidate => candidate.Protocol == ConnectionManager.RDP);
-            this.UpdateFavoriteProtocolPasswords(rdpFavorites, newKeyMaterial);
+            this.UpdateCredentialBasePasswords(newKeyMaterial);
+            List<int> rdpFavoriteIds = this.GetRdpFavoriteIds();
+            this.UpdateFavoriteProtocolPasswords(rdpFavoriteIds, newKeyMaterial);
         }
 
-        private void UpdateFavoriteProtocolPasswords(IQueryable<Favorite> rdpFavorites, string newKeyMaterial)
+        private List<int> GetRdpFavoriteIds()
         {
-            foreach (Favorite favorite in rdpFavorites)
+            return this.Favorites.Where(candidate => candidate.Protocol == ConnectionManager.RDP)
+                .Select(rdpFavorite => rdpFavorite.Id).ToList();
+        }
+
+        private void UpdateFavoriteProtocolPasswords(List<int> rdpFavorites, string newKeyMaterial)
+        {
+            foreach (int favoriteId in rdpFavorites)
             {
-                // when assigning stored, we dont have initialize complete SQLpersistence,
-                // we need only the access the paswords stuff
-                favorite.AssignStores(null, null, this.persistenceSecurity);
-                favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
+                // there is no other choice, we have to download the properties content
+                // end replace the passwords xml element content
+                string rdpOptions = this.GetProtocolPropertiesByFavorite(favoriteId);
+                rdpOptions = this.UpdateThePropertiesPassword(newKeyMaterial, rdpOptions);
+                this.UpdateFavoriteProtocolProperties(favoriteId, rdpOptions);
             }
         }
 
-        private void UpdateCredentialsPasswords(string newKeyMaterial)
+        private string UpdateThePropertiesPassword(string newKeyMaterial, string rdpOptions)
+        {
+            var document = XDocument.Parse(rdpOptions);
+            XElement tsgwPasswordHash = document.Root.Descendants("EncryptedPassword").First();
+            string oldPassword = this.persistenceSecurity.DecryptPersistencePassword(tsgwPasswordHash.Value);
+            tsgwPasswordHash.Value = PasswordFunctions.EncryptPassword(oldPassword, newKeyMaterial);
+            return document.ToString();
+        }
+
+        /// <summary>
+        /// both Credential and security passwords are in the same table, updated by this method
+        /// </summary>
+        private void UpdateCredentialBasePasswords(string newKeyMaterial)
         {
             foreach (CredentialBase credentials in this.CredentialBase)
             {

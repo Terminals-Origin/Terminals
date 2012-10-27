@@ -164,6 +164,7 @@ namespace Terminals.Data.DB
                     if (!this.favorite.isNewlyCreated && !this.protocolPropertiesLoaded)
                     {
                         this.LoadPropertiesFromDatabase();
+                        this.favorite.AssignStoreToRdpOptions(this.favorite.persistenceSecurity);
                         this.protocolPropertiesLoaded = true;
                     }
                 }
@@ -179,7 +180,7 @@ namespace Terminals.Data.DB
             {
                 using (var database = Database.CreateInstance())
                 {
-                    string serializedProperties = database.GetFavoriteProtocolProperties(this.favorite.Id).FirstOrDefault();
+                    string serializedProperties = database.GetProtocolPropertiesByFavorite(this.favorite.Id);
                     Type propertiesType = this.favorite.protocolProperties.GetType();
                     this.favorite.protocolProperties =
                         Serialize.DeSerializeXML(serializedProperties, propertiesType) as ProtocolOptions;
