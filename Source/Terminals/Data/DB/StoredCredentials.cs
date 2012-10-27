@@ -95,19 +95,7 @@ namespace Terminals.Data.DB
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
         {
-            UpdatePasswordsInDatabase(newKeyMaterial);
             this.RefreshCache();
-        }
-
-        private static void UpdatePasswordsInDatabase(string newKeyMaterial)
-        {
-            using (var database = Database.CreateInstance())
-            {
-                foreach (CredentialBase credentialSet in database.CredentialBase)
-                {
-                    credentialSet.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
-                }
-            }
         }
 
         public void Save()

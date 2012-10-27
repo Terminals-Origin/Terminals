@@ -74,7 +74,7 @@ namespace Tests
             var rdpOptions = newFavorite.ProtocolProperties as RdpOptions;
             rdpOptions.TsGateway.Security.Password = PASSWORD_A;
             PrimaryFavorites.Update(newFavorite);
-            Database.UpdateMastrerPassord(Settings.ConnectionString, string.Empty, PASSWORD_B);
+            DatabasePasswordUpdate.UpdateMastrerPassord(Settings.ConnectionString, string.Empty, PASSWORD_B);
             Settings.DatabaseMasterPassword = PASSWORD_B;
             bool result = Database.TestConnection();
             Assert.IsTrue(result, "Couldnt update database master password");

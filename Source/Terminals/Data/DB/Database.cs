@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using System.Linq;
+using Terminals.Connections;
 
 namespace Terminals.Data.DB
 {
@@ -147,6 +148,12 @@ namespace Terminals.Data.DB
         internal void MarkAsModified(object toUpdate)
         {
             this.ObjectStateManager.ChangeObjectState(toUpdate, EntityState.Modified);
+        }
+
+        internal List<int> GetRdpFavoriteIds()
+        {
+            return this.Favorites.Where(candidate => candidate.Protocol == ConnectionManager.RDP)
+                .Select(rdpFavorite => rdpFavorite.Id).ToList();
         }
     }
 }
