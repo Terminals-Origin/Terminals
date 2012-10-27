@@ -200,15 +200,6 @@ namespace Terminals.Data.DB
             return Data.Favorite.CompareByDefaultSorting(this, target);
         }
 
-        public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
-        {
-            SecurityOptions security = this.GetSecurity();
-            security.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
-            // TODO the passwords resolution inside protocol propoerties cant work,
-            // because it doesnt point to PersistenceSecurity
-            Data.Favorite.UpdatePasswordsInProtocolProperties(this.protocolProperties, newKeyMaterial);
-        }
-
         bool IStoreIdEquals<IFavorite>.StoreIdEquals(IFavorite oponent)
         {
             var oponentFavorite = oponent as Favorite;
@@ -240,7 +231,13 @@ namespace Terminals.Data.DB
                 .ToList();
         }
 
-        public void AssignStores(Groups groups, StoredCredentials credentials, PersistenceSecurity persistenceSecurity)
+        internal void AssignStoreToRdpOptions(PersistenceSecurity persistenceSecurity)
+        {
+            // only, if the favorite is newly created
+            Data.Favorite.AssignStoreToRdpOptions(this.protocolProperties, persistenceSecurity);
+        }
+
+        internal void AssignStores(Groups groups, StoredCredentials credentials, PersistenceSecurity persistenceSecurity)
         {
             this.groups = groups;
             this.credentials = credentials;

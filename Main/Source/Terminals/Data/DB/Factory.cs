@@ -31,6 +31,7 @@
             favorite.Display = new DisplayOptions();
             favorite.Security = new SecurityOptions();
             favorite.ExecuteBeforeConnect = new BeforeConnectExecute();
+            favorite.AssignStoreToRdpOptions(this.persistenceSecurity);
             favorite.AssignStores(this.groups, credentials, this.persistenceSecurity);
             favorite.MarkAsNewlyCreated();
             return favorite;

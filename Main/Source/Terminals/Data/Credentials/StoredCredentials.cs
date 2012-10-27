@@ -14,16 +14,14 @@ namespace Terminals.Data
 {
     internal sealed class StoredCredentials: ICredentials
     {
-        private List<ICredentialSet> cache;
-
-        private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Credentials");
+        private readonly PersistenceSecurity persistenceSecurity;
+        private readonly List<ICredentialSet> cache;
+        private readonly Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Credentials");
         private DataFileWatcher fileWatcher;
 
-        /// <summary>
-        /// Prevents creating from other class
-        /// </summary>
-        internal StoredCredentials()
+        internal StoredCredentials(PersistenceSecurity persistenceSecurity)
         {
+            this.persistenceSecurity = persistenceSecurity;
             this.cache = new List<ICredentialSet>();
             string configFileName = Settings.FileLocations.Credentials;
             InitializeFileWatch();
@@ -68,9 +66,7 @@ namespace Terminals.Data
             try
             {
                 fileLock.WaitOne();
-                object loadedObj = Serialize.DeserializeXMLFromDisk(configFileName, typeof(List<CredentialSet>));
-                return (loadedObj as List<CredentialSet>)
-                    .Cast<ICredentialSet>().ToList();
+                return DeserializeFileContent(configFileName);
             }
             catch (Exception exception)
             {
@@ -83,6 +79,18 @@ namespace Terminals.Data
                 fileLock.ReleaseMutex();
                 Debug.WriteLine("Credentials file Loaded.");
             }
+        }
+
+        private List<ICredentialSet> DeserializeFileContent(string configFileName)
+        {
+            object loadedObj = Serialize.DeserializeXMLFromDisk(configFileName, typeof (List<CredentialSet>));
+            var loadedItems = loadedObj as List<CredentialSet>;
+            foreach (CredentialSet credentialSet in loadedItems)
+            {
+                credentialSet.AssignStore(this.persistenceSecurity);
+            }
+
+            return loadedItems.Cast<ICredentialSet>().ToList();
         }
 
         #region ICredentials

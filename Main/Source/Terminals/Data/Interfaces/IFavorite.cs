@@ -98,11 +98,5 @@ namespace Terminals.Data
         /// <param name="target">not null favorite to compare with</param>
         /// <returns>result of String CompareTo method</returns>
         int CompareByDefaultSorting(IFavorite target);
-
-        /// <summary>
-        /// Replaces stored password by new one created from newKeyMaterial in underlaying store.
-        /// </summary>
-        /// <param name="newKeyMaterial">New shared key used to encrypt passwords in the store</param>
-        void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial);
     }
 }

@@ -7,6 +7,7 @@ namespace Terminals.Data
     public class SecurityOptions : CredentialBase, ISecurityOptions
     {
         private Guid credential = Guid.Empty;
+
         /// <summary>
         /// Gets or sets the credential unique identifier in text form.
         /// Only for serialization to prevent serialization of empty ids.
@@ -41,13 +42,9 @@ namespace Terminals.Data
 
         internal SecurityOptions Copy()
         {
-            return new SecurityOptions
-            {
-                Credential = this.Credential,
-                Domain = this.Domain,
-                EncryptedPassword = this.EncryptedPassword,
-                UserName = this.UserName
-            };
+            var copy = new SecurityOptions{ Credential = this.Credential };
+            this.CopyInto(copy);
+            return copy;
         }
 
         /// <summary>

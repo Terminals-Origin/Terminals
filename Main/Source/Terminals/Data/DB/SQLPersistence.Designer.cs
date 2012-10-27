@@ -230,7 +230,7 @@ namespace Terminals.Data.DB
         /// No Metadata Documentation available.
         /// </summary>
         /// <param name="favoriteId">No Metadata Documentation available.</param>
-        internal ObjectResult<global::System.String> GetFavoriteProtocolProperties(Nullable<global::System.Int32> favoriteId)
+        private ObjectResult<global::System.String> GetFavoriteProtocolProperties(Nullable<global::System.Int32> favoriteId)
         {
             ObjectParameter favoriteIdParameter;
             if (favoriteId.HasValue)

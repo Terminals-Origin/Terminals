@@ -143,7 +143,7 @@ namespace Terminals.Data
 
         internal void UpdatePasswordsByNewMasterPassword(string newKeyMaterial)
         {
-            foreach (IFavorite favorite in this)
+            foreach (Favorite favorite in this)
             {
                 favorite.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
             }

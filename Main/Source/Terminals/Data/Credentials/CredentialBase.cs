@@ -30,7 +30,7 @@ namespace Terminals.Data
             get
             {
                 if (!string.IsNullOrEmpty(this.EncryptedPassword))
-                    return PersistenceSecurity.DecryptPersistencePassword(this.EncryptedPassword);
+                    return persistenceSecurity.DecryptPersistencePassword(this.EncryptedPassword);
 
                 return String.Empty;
             }
@@ -39,13 +39,23 @@ namespace Terminals.Data
                 if (string.IsNullOrEmpty(value))
                     this.EncryptedPassword = String.Empty;
                 else
-                    this.EncryptedPassword = PersistenceSecurity.EncryptPersistencePassword(value);
+                    this.EncryptedPassword = persistenceSecurity.EncryptPersistencePassword(value);
             }
         }
 
-        private PersistenceSecurity PersistenceSecurity
+        private PersistenceSecurity persistenceSecurity;
+
+        protected void CopyInto(CredentialBase target)
         {
-            get { return Persistence.Instance.Security; }
+            target.UserName = this.UserName;
+            target.Domain = this.Domain;
+            target.EncryptedPassword = this.EncryptedPassword;
+            target.persistenceSecurity = this.persistenceSecurity;
+        }
+
+        internal void AssignStore(PersistenceSecurity persistenceSecurity)
+        {
+            this.persistenceSecurity = persistenceSecurity;
         }
 
         void ICredentialBase.UpdatePasswordByNewKeyMaterial(string newKeymaterial)

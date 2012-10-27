@@ -56,7 +56,7 @@ namespace Tests
             this.PrimaryFavorites.Add(favorite2);
 
             int after = this.CheckFavorites.Count();
-            string protocolProperties = this.CheckDatabase.GetFavoriteProtocolProperties(favorite.Id).FirstOrDefault();
+            string protocolProperties = this.CheckDatabase.GetProtocolPropertiesByFavorite(favorite.Id);
             IFavorite checkFavorite = this.SecondaryPersistence.Favorites.FirstOrDefault();
 
             Assert.AreNotEqual(before, after, -2, "Favorites didnt reach the database");

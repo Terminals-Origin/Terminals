@@ -72,11 +72,11 @@ namespace Terminals.Data
         {
             this.InitializeSecurity(security);
             this.Dispatcher = new DataDispatcher();
-            this.storedCredentials = new StoredCredentials();
+            this.storedCredentials = new StoredCredentials(security);
             this.groups = new Groups(this);
             this.favorites = new Favorites(this);
             this.connectionHistory = new ConnectionHistory(this.favorites);
-            this.factory = new Factory(this.groups, this.Dispatcher);
+            this.factory = new Factory(security, this.groups, this.Dispatcher);
             this.InitializeFileWatch();
         }
 
@@ -183,7 +183,7 @@ namespace Terminals.Data
 
         private void AssignGroupsToFileContent(FavoritesFile file)
         {
-            this.AssignGroupsToGroups(file.Favorites);
+            this.AssignStoresToFavorites(file.Favorites);
             this.AssignGroupsToFavorites(file.Groups);
         }
 
@@ -195,11 +195,11 @@ namespace Terminals.Data
             }
         }
 
-        private void AssignGroupsToGroups(Favorite[] fileFavorites)
+        private void AssignStoresToFavorites(Favorite[] fileFavorites)
         {
             foreach (Favorite favorite in fileFavorites)
             {
-                favorite.Groups = this.groups;
+                favorite.AssignStores(this.Security, this.groups);
             }
         }
 
