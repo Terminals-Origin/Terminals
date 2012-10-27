@@ -85,7 +85,7 @@ namespace Terminals.Forms
                 return;
 
             this.Cursor = Cursors.WaitCursor;
-            Database.UpdateMastrerPassord(this.EnteredConnectionString, passwordPrompt.Item2, passwordPrompt.Item3);
+            DatabasePasswordUpdate.UpdateMastrerPassord(this.EnteredConnectionString, passwordPrompt.Item2, passwordPrompt.Item3);
             this.Cursor = Cursors.Default;
         }
 

@@ -73,7 +73,6 @@ namespace Terminals.Data.DB
             this.favorites = new Favorites(this.groups, this.credentials, this.security, this.Dispatcher);
             this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.connectionHistory = new ConnectionHistory(this.favorites);
-            // todo code cleanup in constructors
             this.Factory = new Factory(this.groups, this.favorites, this.credentials, this.security, this.Dispatcher);
         }
 

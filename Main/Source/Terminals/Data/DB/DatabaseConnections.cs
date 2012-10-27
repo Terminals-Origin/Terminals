@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.EntityClient;
-using System.Data.Objects;
 using System.Linq;
 using System.Xml.Linq;
 using Terminals.Configuration;
@@ -38,7 +37,7 @@ namespace Terminals.Data.DB
             return cachedConnection;
         }
 
-        private static Database CreateInstance(string connecitonString)
+        internal static Database CreateInstance(string connecitonString)
         {
             EntityConnection connection = BuildConnection(connecitonString);
             return new Database(connection);
@@ -123,86 +122,6 @@ namespace Terminals.Data.DB
             {
                 return database.GetMasterPasswordHash();
             }
-        }
-
-        // todo code cleanup needed to isolate the passwords update from connections creation
-        private SqlPersistenceSecurity persistenceSecurity;
-
-        internal static void UpdateMastrerPassord(string connectionString, string oldPassword, string newPassword)
-        {
-            Tuple<bool, string> oldPasswordCheck = TestConnection(connectionString, oldPassword);
-            if (oldPasswordCheck.Item1)
-                CommitNewMastrerPassord(connectionString, oldPassword, newPassword);
-        }
-
-        private static void CommitNewMastrerPassord(string connecitonString, string oldPassword, string newPassword)
-        {
-            // todo surround all database usings by try/catch
-            // todo do it in transaction to prevent inconsistent data
-            using (Database database = CreateInstance(connecitonString))
-            {
-                database.persistenceSecurity = new SqlPersistenceSecurity();
-                database.persistenceSecurity.UpdateDatabaseKey(oldPassword);
-                string newKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(newPassword);
-                database.UpdateStoredPasswords(newKeyMaterial);
-                database.UpdateMasterPasswodInOptions(newPassword);
-            }
-        }
-
-        private void UpdateMasterPasswodInOptions(string newPassword)
-        {
-            string newHash = string.Empty;
-            if (!string.IsNullOrEmpty(newPassword))
-                newHash = PasswordFunctions.ComputeMasterPasswordHash(newPassword);
-            this.UpdateMasterPassword(newHash);
-        }
-
-        private void UpdateStoredPasswords(string newKeyMaterial)
-        {
-            this.UpdateCredentialBasePasswords(newKeyMaterial);
-            List<int> rdpFavoriteIds = this.GetRdpFavoriteIds();
-            this.UpdateFavoriteProtocolPasswords(rdpFavoriteIds, newKeyMaterial);
-        }
-
-        private List<int> GetRdpFavoriteIds()
-        {
-            return this.Favorites.Where(candidate => candidate.Protocol == ConnectionManager.RDP)
-                .Select(rdpFavorite => rdpFavorite.Id).ToList();
-        }
-
-        private void UpdateFavoriteProtocolPasswords(List<int> rdpFavorites, string newKeyMaterial)
-        {
-            foreach (int favoriteId in rdpFavorites)
-            {
-                // there is no other choice, we have to download the properties content
-                // end replace the passwords xml element content
-                string rdpOptions = this.GetProtocolPropertiesByFavorite(favoriteId);
-                rdpOptions = this.UpdateThePropertiesPassword(newKeyMaterial, rdpOptions);
-                this.UpdateFavoriteProtocolProperties(favoriteId, rdpOptions);
-            }
-        }
-
-        private string UpdateThePropertiesPassword(string newKeyMaterial, string rdpOptions)
-        {
-            var document = XDocument.Parse(rdpOptions);
-            XElement tsgwPasswordHash = document.Root.Descendants("EncryptedPassword").First();
-            string oldPassword = this.persistenceSecurity.DecryptPersistencePassword(tsgwPasswordHash.Value);
-            tsgwPasswordHash.Value = PasswordFunctions.EncryptPassword(oldPassword, newKeyMaterial);
-            return document.ToString();
-        }
-
-        /// <summary>
-        /// both Credential and security passwords are in the same table, updated by this method
-        /// </summary>
-        private void UpdateCredentialBasePasswords(string newKeyMaterial)
-        {
-            foreach (CredentialBase credentials in this.CredentialBase)
-            {
-                credentials.AssignSecurity(persistenceSecurity);
-                credentials.UpdatePasswordByNewKeyMaterial(newKeyMaterial);
-            }
-
-            this.SaveChanges();
         }
     }
 }

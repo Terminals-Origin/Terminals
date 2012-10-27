@@ -168,6 +168,7 @@
     <Compile Include="Converters\GuidConverter.cs" />
     <Compile Include="Data\AuthenticationPrompt.cs" />
     <Compile Include="Data\DB\DatabaseConnections.cs" />
+    <Compile Include="Data\DB\DatabasePasswordUpdate.cs" />
     <Compile Include="Data\DB\EntitiesCache.cs" />
     <Compile Include="Data\DB\FavoriteDetails.cs" />
     <Compile Include="Data\DB\IIntegerKeyEnityty.cs" />
