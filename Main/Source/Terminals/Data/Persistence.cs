@@ -30,7 +30,8 @@ namespace Terminals.Data
         /// </summary>
         internal static void FallBackToPrimaryPersistence(PersistenceSecurity security)
         {
-            FilePersistence persistence = new FilePersistence(security);
+            var newSecurity = new PersistenceSecurity(security);
+            var persistence = new FilePersistence(newSecurity);
             Nested.instance.persistence = persistence;
             persistence.Initialize();
         }
