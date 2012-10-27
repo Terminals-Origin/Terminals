@@ -33,7 +33,9 @@ namespace Terminals.Data.DB
         public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
         {
             string secret = this.GetDecryptedPassword();
-            if (!string.IsNullOrEmpty(secret))
+            if (string.IsNullOrEmpty(secret))
+                this.EncryptedPassword = string.Empty;
+            else
                 this.EncryptedPassword = PasswordFunctions.EncryptPassword(secret, newKeymaterial);
         }
 
