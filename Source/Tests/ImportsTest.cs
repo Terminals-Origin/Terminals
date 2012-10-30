@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Configuration;
@@ -21,8 +20,7 @@ namespace Tests
         public TestContext TestContext { get; set; }
 
         // folowing functions simulate the answer usualy provided by user in UI
-        private Func<int, DialogResult> overwrite = itemsCount => DialogResult.No;
-        private Func<int, DialogResult> rename = itemsCount => DialogResult.Yes;
+        private readonly Func<int, DialogResult> rename = itemsCount => DialogResult.Yes;
 
         private static int PersistenceFavoritesCount
         {
