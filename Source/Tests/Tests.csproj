@@ -102,6 +102,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImportsTest.cs" />
     <Compile Include="SqlPersistence\SqlConcurentUpdatesTest.cs" />
     <Compile Include="SqlPersistence\SqlConnectionsHistoryTest.cs" />
     <Compile Include="SqlPersistence\SqlGroupsTest.cs" />
@@ -150,6 +151,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Resources\TestData\Issue_21279_import_800_items.xml">
+      <Link>Data\Issue_21279_import_800_items.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\Terminals\Data\DB\Terminals.mdf">
       <Link>Data\Terminals.mdf</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
