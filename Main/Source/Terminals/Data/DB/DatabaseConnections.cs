@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.EntityClient;
-using System.Linq;
-using System.Xml.Linq;
 using Terminals.Configuration;
-using Terminals.Connections;
 using Terminals.Security;
 
 namespace Terminals.Data.DB

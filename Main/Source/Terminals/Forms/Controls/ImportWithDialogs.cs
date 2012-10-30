@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
 
@@ -11,17 +12,12 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal class ImportWithDialogs
     {
-        private const String importSuffix = "_(imported)";
-        private Form sourceForm;
+        private const String IMPORT_SUFFIX = "_(imported)";
+        private readonly Form sourceForm;
 
         private static IFavorites PersistedFavorites
         {
             get { return Persistence.Instance.Favorites; }
-        }
-
-        private static IGroups PersistedGroups
-        {
-            get { return Persistence.Instance.Groups; }
         }
 
         internal ImportWithDialogs(Form sourceForm)
@@ -32,7 +28,7 @@ namespace Terminals.Forms.Controls
         internal Boolean Import(List<FavoriteConfigurationElement> favoritesToImport)
         {
             this.sourceForm.Cursor = Cursors.WaitCursor;
-            bool imported = ImportPreservingNames(favoritesToImport);
+            bool imported = ImportPreservingNames(favoritesToImport, AskIfOverwriteOrRename);
             this.sourceForm.Cursor = Cursors.Default;
             if (imported)
                 ShowImportResultMessage(favoritesToImport.Count);
@@ -48,20 +44,37 @@ namespace Terminals.Forms.Controls
             MessageBox.Show(message, "Terminals import result", MessageBoxButtons.OK);
         }
 
-        private Boolean ImportPreservingNames(List<FavoriteConfigurationElement> favoritesToImport)
+        private Boolean ImportPreservingNames(List<FavoriteConfigurationElement> favoritesToImport,
+            Func<int, DialogResult> askIfOverwriteOrRename)
         {
-            List<FavoriteConfigurationElement> conflictingFavorites = GetConflictingFavorites(favoritesToImport);
-            DialogResult renameAnswer = AskIfOverwriteOrRename(conflictingFavorites.Count);
+            List<FavoriteConfigurationElement> uniqueToImport = GetUniqueItemsToImport(favoritesToImport);
+            List<FavoriteConfigurationElement> conflictingFavorites = GetConflictingFavorites(uniqueToImport);
+            DialogResult renameAnswer = askIfOverwriteOrRename(conflictingFavorites.Count);
             if (renameAnswer == DialogResult.Yes)
                 RenameConflictingFavorites(conflictingFavorites);
-                  
+
             if (renameAnswer != DialogResult.Cancel)
             {
-                PerformImport(favoritesToImport);
+                PerformImport(uniqueToImport);
                 return true;
             }
 
             return false;
+        }
+
+        private static List<FavoriteConfigurationElement> GetConflictingFavorites(List<FavoriteConfigurationElement> favorites)
+        {
+            // an item may appear more then once in persistence and also in the import file
+            return favorites.Where(favorite => NotUniqueInPersistence(favorite.Name))
+                .ToList();
+        }
+
+        private static List<FavoriteConfigurationElement> GetUniqueItemsToImport(List<FavoriteConfigurationElement> favorites)
+        {
+            // respect all other comparisons to keep unique names case insensitive
+            return favorites.GroupBy(favorite => favorite.Name, StringComparer.CurrentCultureIgnoreCase)
+                .SelectMany(group => group.Take(1))
+                .ToList();
         }
 
         private static void PerformImport(List<FavoriteConfigurationElement> configFavoritesToImport)
@@ -106,9 +119,14 @@ namespace Terminals.Forms.Controls
 
         private void AddImportSuffixToFavorite(FavoriteConfigurationElement favoriteToRename)
         {
-            favoriteToRename.Name += importSuffix;
-            if (PersistedFavorites[favoriteToRename.Name] != null)
+            favoriteToRename.Name += IMPORT_SUFFIX;
+            if (NotUniqueInPersistence(favoriteToRename.Name))
                 this.AddImportSuffixToFavorite(favoriteToRename);
+        }
+
+        private static bool NotUniqueInPersistence(string favoriteName)
+        {
+            return PersistedFavorites[favoriteName] != null;
         }
 
         private static DialogResult AskIfOverwriteOrRename(Int32 conflictingFavoritesCount)
@@ -121,7 +139,7 @@ namespace Terminals.Forms.Controls
                     conflictingFavoritesCount);
                 String message = messagePrefix +
                             "\r\nDo you want to rename them?\r\n\r\nSelect" +
-                            "\r\n- Yes to rename the newly imported items with \"" + importSuffix + "\" suffix" +
+                            "\r\n- Yes to rename the newly imported items with \"" + IMPORT_SUFFIX + "\" suffix" +
                             "\r\n- No to overwrite existing items" +
                             "\r\n- Cancel to interupt the import";
 
@@ -130,20 +148,6 @@ namespace Terminals.Forms.Controls
             }
 
             return overwriteResult;
-        }
-
-        private static List<FavoriteConfigurationElement> GetConflictingFavorites(List<FavoriteConfigurationElement> favorites)
-        {
-            var conflictingFavorites = new List<FavoriteConfigurationElement>();
-
-            foreach (FavoriteConfigurationElement favorite in favorites)
-            {
-                if (PersistedFavorites[favorite.Name] != null)
-                {
-                    conflictingFavorites.Add(favorite);
-                }
-            }
-            return conflictingFavorites;
         }
     }
 }

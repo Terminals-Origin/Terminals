@@ -37,7 +37,6 @@ namespace Terminals.Data.DB
         private void CommitNewMastrerPassord(string connecitonString, string newPassword)
         {
             // todo surround all database usings by try/catch
-            // todo do it in transaction to prevent inconsistent data
             using (this.database = Database.CreateInstance(connecitonString))
             {
                 UpdateStoredPasswords();
