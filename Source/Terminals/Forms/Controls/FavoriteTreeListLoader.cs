@@ -53,9 +53,9 @@ namespace Terminals.Forms.Controls
 
             GroupTreeNode selectedGroup = this.treeList.FindSelectedGroupNode();
             IFavorite selectedFavorite = this.treeList.SelectedFavorite;
-            RemoveFavorites(args.Removed);
-            UpdateFavorites(args.Updated);
             AddNewFavorites(args.Added);
+            UpdateFavorites(args.Updated);
+            RemoveFavorites(args.Removed);
             this.treeList.RestoreSelectedFavorite(selectedGroup, selectedFavorite);
         }
 
@@ -170,9 +170,9 @@ namespace Terminals.Forms.Controls
             if (this.IsOrphan())
                 return;
 
-            this.RemoveUnusedGroupNodes(args.Removed);
-            this.UpdateGroups(args.Updated);
             this.AddMissingGroupNodes(args.Added);
+            this.UpdateGroups(args.Updated);
+            this.RemoveUnusedGroupNodes(args.Removed);
         }
 
         private void AddMissingGroupNodes(List<IGroup> newGroups)
