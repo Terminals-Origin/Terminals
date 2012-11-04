@@ -49,6 +49,7 @@ namespace Terminals.Forms.Controls
         {
             List<FavoriteConfigurationElement> uniqueToImport = GetUniqueItemsToImport(favoritesToImport);
             List<FavoriteConfigurationElement> conflictingFavorites = GetConflictingFavorites(uniqueToImport);
+            // using delegate allows us to call this method from unit tests, without use of UI
             DialogResult renameAnswer = askIfOverwriteOrRename(conflictingFavorites.Count);
             if (renameAnswer == DialogResult.Yes)
                 RenameConflictingFavorites(conflictingFavorites);
@@ -84,7 +85,6 @@ namespace Terminals.Forms.Controls
             foreach (FavoriteConfigurationElement configFavorite in configFavoritesToImport)
             {
                 IFavorite favorite = PrepareFavoriteToImport(configFavorite);
-                PersistedFavorites.Add(favorite);
                 AddFavoriteIntoGroups(configFavorite, favorite);
             }
 
@@ -105,7 +105,15 @@ namespace Terminals.Forms.Controls
             var favorite = ModelConverterV1ToV2.ConvertToFavorite(configFavorite);
             var oldFavorite = PersistedFavorites[favorite.Name];
             if (oldFavorite != null) // force to override old favorite
-                favorite.Id = oldFavorite.Id;
+            {
+                oldFavorite.UpdateFrom(favorite);
+                PersistedFavorites.Update(oldFavorite);
+            }
+            else
+            {
+                PersistedFavorites.Add(favorite);
+            }
+            
             return favorite;
         }
 

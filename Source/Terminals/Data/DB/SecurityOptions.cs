@@ -16,8 +16,15 @@ namespace Terminals.Data.DB
 
         private StoredCredentials storedCredentials;
 
+        /// <summary>
+        /// reference to the associated credentials by its ID.
+        /// Is resolved by request from storedCredentials field.
+        /// </summary>
         private int? credentialId;
 
+        /// <summary>
+        /// Cached base properties. Loaded from reference or assigned by creation only.
+        /// </summary>
         private CredentialBase credentialBase;
 
         public string UserName
@@ -235,16 +242,19 @@ namespace Terminals.Data.DB
 
         internal SecurityOptions Copy()
         {
-            var copy = new SecurityOptions
-                           {
-                               Domain = this.Domain,
-                               EncryptedPassword = this.EncryptedPassword,
-                               UserName = this.UserName,
-                               credentialId = this.credentialId,
-                               storedCredentials = this.storedCredentials
-                           };
-            
+            var copy = new SecurityOptions();
+            copy.UpdateFrom(this);
             return copy;
+        }
+
+        internal void UpdateFrom(SecurityOptions source)
+        {
+            this.Domain = source.Domain;
+            this.EncryptedPassword = source.EncryptedPassword;
+            this.UserName = source.UserName;
+            this.credentialId = source.credentialId;
+            this.storedCredentials = source.storedCredentials;
+            this.persistenceSecurity = source.persistenceSecurity;
         }
 
         public override string ToString()

@@ -52,15 +52,12 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal DisplayOptions Copy()
+        internal void UpdateFrom(DisplayOptions source)
         {
-            return new DisplayOptions
-                {
-                    Height = this.Height,
-                    Width = this.Width,
-                    DesktopSize = this.DesktopSize,
-                    Colors = this.Colors
-                };
+            this.Height = source.Height;
+            this.Width = source.Width;
+            this.DesktopSize = source.DesktopSize;
+            this.Colors = source.Colors;
         }
     }
 }

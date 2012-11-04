@@ -45,12 +45,12 @@ namespace Terminals.Data
 
         private PersistenceSecurity persistenceSecurity;
 
-        protected void CopyInto(CredentialBase target)
+        protected void UpdateFrom(CredentialBase source)
         {
-            target.UserName = this.UserName;
-            target.Domain = this.Domain;
-            target.EncryptedPassword = this.EncryptedPassword;
-            target.persistenceSecurity = this.persistenceSecurity;
+            this.UserName = source.UserName;
+            this.Domain = source.Domain;
+            this.EncryptedPassword = source.EncryptedPassword;
+            this.persistenceSecurity = source.persistenceSecurity;
         }
 
         internal void AssignStore(PersistenceSecurity persistenceSecurity)

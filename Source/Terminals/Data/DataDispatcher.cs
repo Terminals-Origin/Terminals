@@ -97,7 +97,6 @@ namespace Terminals.Data
 
         private void FireFavoriteChanges(FavoritesChangedEventArgs args)
         {
-            Debug.WriteLine(args.ToString());
             if (args.IsEmpty)
                 return;
 
@@ -114,6 +113,7 @@ namespace Terminals.Data
 
         private void FireFavoritesChangedEvent(FavoritesChangedEventArgs args)
         {
+            Debug.WriteLine(args.ToString());
             if (this.FavoritesChanged != null)
                 this.FavoritesChanged(args);
         }
@@ -147,7 +147,6 @@ namespace Terminals.Data
 
         private void FireGroupsChanged(GroupsChangedArgs args)
         {
-            Debug.WriteLine(args.ToString());
             if (args.IsEmpty)
                 return;
 
@@ -164,6 +163,7 @@ namespace Terminals.Data
 
         private void FireGroupsChangedEvent(GroupsChangedArgs args)
         {
+            Debug.WriteLine(args.ToString());
             if (this.GroupsChanged != null)
                 this.GroupsChanged(args);
         }

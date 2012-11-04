@@ -126,9 +126,8 @@ namespace Terminals
         /// <param name="editedFavorite">The currently edited favorite to update.</param>
         internal static void UpdateFavoritePreservingDuplicitNames(string oldName, string newName, IFavorite editedFavorite)
         {
-            IFavorites persistedFavorites = Persistence.Instance.Favorites;
             editedFavorite.Name = oldName; // to prevent find it self as oldFavorite
-            var oldFavorite = persistedFavorites[newName];
+            var oldFavorite = PersistedFavorites[newName];
             // prevent conflict with another favorite than edited
             if (oldFavorite != null && !editedFavorite.StoreIdEquals(oldFavorite)) 
             {
@@ -138,30 +137,31 @@ namespace Terminals
             {
                 editedFavorite.Name = newName;
                 // dont have to update buttons here, because they arent changed
-                persistedFavorites.Update(editedFavorite);
+                PersistedFavorites.Update(editedFavorite);
             }
         }
 
         private static void OverwriteByConflictingName(string newName, IFavorite oldFavorite, IFavorite editedFavorite)
         {
-            if (AskUserIfWantsToOverwrite(newName))
-            {
-                IFavorites persistedFavorites = Persistence.Instance.Favorites;
-                Persistence.Instance.StartDelayedUpdate();
-                var groups = editedFavorite.Groups;
-                persistedFavorites.Delete(editedFavorite);
-                editedFavorite.Id = oldFavorite.Id;
-                editedFavorite.Name = newName;
-                persistedFavorites.Update(editedFavorite);
-                persistedFavorites.UpdateFavorite(editedFavorite, groups);
-                Persistence.Instance.SaveAndFinishDelayedUpdate();
-            }
+            if (!AskUserIfWantsToOverwrite(newName))
+                return;
+            
+            Persistence.Instance.StartDelayedUpdate();
+            // remember the edited favorite groups, because delete may also delete its groups,
+            // if it is the last favorite in the group
+            List<IGroup> groups = editedFavorite.Groups;
+            editedFavorite.Name = newName;
+            oldFavorite.UpdateFrom(editedFavorite);
+            PersistedFavorites.Update(oldFavorite);
+            PersistedFavorites.UpdateFavorite(oldFavorite, groups);
+            PersistedFavorites.Delete(editedFavorite);
+            Persistence.Instance.SaveAndFinishDelayedUpdate();
         }
 
         private static bool AskUserIfWantsToOverwrite(string newName)
         {
             string message = String.Format("A connection named \"{0}\" already exists\r\nDo you want to overwrite it?", newName);
-            return MessageBox.Show(message, Terminals.Program.Info.Title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+            return MessageBox.Show(message, Program.Info.Title, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
         /// <summary>
