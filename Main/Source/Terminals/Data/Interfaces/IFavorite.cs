@@ -10,9 +10,9 @@ namespace Terminals.Data
     internal interface IFavorite : IStoreIdEquals<IFavorite>
     {
         /// <summary>
-        /// Gets or sets the unique identifier of this instance
+        /// Gets the unique identifier of this instance in associated store
         /// </summary>
-        Guid Id { get; set; }
+        Guid Id { get; }
 
         /// <summary>
         /// Gets or sets the name of the connection, this will appear as default label in GUI.
@@ -85,6 +85,12 @@ namespace Terminals.Data
         /// </summary>
         /// <returns>Not null newly created copy of this instance</returns>
         IFavorite Copy();
+
+        /// <summary>
+        /// Updates this instance from source instance using deep copy. The only property which isnt updated is Id.
+        /// </summary>
+        /// <param name="source">Not null item, which properties should be use to update this instance</param>
+        void UpdateFrom(IFavorite source);
 
         /// <summary>
         /// Gets label, which represents this instance detail informations.

@@ -2,16 +2,13 @@
 {
     internal partial class BeforeConnectExecute : IBeforeConnectExecuteOptions
     {
-        internal BeforeConnectExecute Copy()
+        internal void UpdateFrom(BeforeConnectExecute source)
         {
-            return new BeforeConnectExecute
-            {
-                Execute = this.Execute,
-                Command = this.Command,
-                CommandArguments = this.CommandArguments,
-                InitialDirectory = this.InitialDirectory,
-                WaitForExit = this.WaitForExit
-            };
+            this.Execute = source.Execute;
+            this.Command = source.Command;
+            this.CommandArguments = source.CommandArguments;
+            this.InitialDirectory = source.InitialDirectory;
+            this.WaitForExit = source.WaitForExit;
         }
     }
 }

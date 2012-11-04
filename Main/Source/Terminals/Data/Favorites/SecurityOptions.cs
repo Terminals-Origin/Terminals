@@ -43,7 +43,7 @@ namespace Terminals.Data
         internal SecurityOptions Copy()
         {
             var copy = new SecurityOptions{ Credential = this.Credential };
-            this.CopyInto(copy);
+            copy.UpdateFrom(this);
             return copy;
         }
 

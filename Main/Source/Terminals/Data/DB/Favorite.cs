@@ -44,11 +44,6 @@ namespace Terminals.Data.DB
         Guid IFavorite.Id
         {
             get { return this.Guid; }
-            set
-            {
-                // todo update the favorite unique identifier. 
-                // Called from OrganizeFavoritesForm, where this logic doesnt work
-            }
         }
 
         private BeforeConnectExecute executeBeforeConnect;
@@ -169,25 +164,42 @@ namespace Terminals.Data.DB
             this.details.LoadFieldsFromReferences();
         }
 
-        public IFavorite Copy()
+        IFavorite IFavorite.Copy()
         {
             var copy = new Favorite();
-            copy.DesktopShare = this.DesktopShare;
-            copy.Display = this.Display.Copy();
-            copy.ExecuteBeforeConnect = this.ExecuteBeforeConnect.Copy();
-            copy.Name = this.Name;
-            copy.NewWindow = this.NewWindow;
-            copy.Notes = this.Notes;
-            copy.Port = this.Port;
-            copy.Protocol = this.Protocol;
-            copy.Security = this.Security.Copy();
-            copy.ServerName = this.ServerName;
-            copy.ToolBarIconFile = this.ToolBarIconFile;
-
-            copy.ProtocolProperties = this.ProtocolProperties.Copy();
-            copy.AssignStores(this.groups, this.credentials, this.persistenceSecurity);
-
+            copy.UpdateFrom(this);
             return copy;
+        }
+
+        void IFavorite.UpdateFrom(IFavorite source)
+        {
+            var sourceFavorite = source as Favorite;
+            if (sourceFavorite == null)
+                return;
+            this.UpdateFrom(sourceFavorite);
+        }
+
+        private void UpdateFrom(Favorite source)
+        {
+            // force load first to fill the content, otherwise we dont have to able to copy
+            this.details.Load();
+            source.details.Load();
+
+            this.DesktopShare = source.DesktopShare;
+            // we cand copy the fields, because they are also dependent on the favorite Id
+            this.display.UpdateFrom(source.display);
+            this.executeBeforeConnect.UpdateFrom(source.executeBeforeConnect);
+            this.Name = source.Name;
+            this.NewWindow = source.NewWindow;
+            this.Notes = source.Notes;
+            this.Port = source.Port;
+            this.Protocol = source.Protocol;
+            this.security.UpdateFrom(source.security);
+            this.ServerName = source.ServerName;
+            this.toolBarIcon = source.ToolBarIconImage;
+            // protocolProperties dont have a favorite Id reference, so we can overwrite complete content
+            this.protocolProperties = source.protocolProperties.Copy();
+            this.AssignStores(source.groups, source.credentials, source.persistenceSecurity);
         }
 
         public string GetToolTipText()

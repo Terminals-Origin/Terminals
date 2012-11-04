@@ -21,6 +21,7 @@ namespace Tests
 
         // folowing functions simulate the answer usualy provided by user in UI
         private readonly Func<int, DialogResult> rename = itemsCount => DialogResult.Yes;
+        private readonly Func<int, DialogResult> overwrite = itemsCount => DialogResult.No;
 
         private static int PersistenceFavoritesCount
         {
@@ -42,44 +43,66 @@ namespace Tests
             }
         }
 
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
+            List<IFavorite> current = Persistence.Instance.Favorites.ToList();
+            Persistence.Instance.Favorites.Delete(current);
+        }
+
         /// <summary>
-        /// Tries to import duplict items into the file persistence
+        /// Tries to import duplict items into the file persistence renaming duplicit items
         ///</summary>
         [TestMethod]
-        public void ImportDuplicitFavoritesTest()
+        public void ImportRenamingDuplicitFavoritesTest()
+        {
+            ImportDuplicitFavoritesTest(this.rename, 2);
+        }
+
+        /// <summary>
+        /// Tries to import duplict items into the file persistence overwriting duplicit items
+        ///</summary>
+        [TestMethod]
+        public void ImportOverwritingDuplicitFavoritesTest()
+        {
+            ImportDuplicitFavoritesTest(this.overwrite, 1);
+        }
+
+        private void ImportDuplicitFavoritesTest(Func<int, DialogResult> strategy, int expectedSecondImportCount)
         {
             // call import first to force the persistence initialization
-            List<FavoriteConfigurationElement> favoritesToImport = this.ImportItemsFromFile();
+            List<FavoriteConfigurationElement> toImport = this.ImportItemsFromFile();
 
             // 887 obtained by manual check of the xml elements
-            Assert.AreEqual(887, favoritesToImport.Count, "Some items from Import file were not identified");
-            object result = this.InvokeTheImport(favoritesToImport);
+            Assert.AreEqual(887, toImport.Count, "Some items from Import file were not identified");
+            object result = this.InvokeTheImport(toImport, strategy);
             Assert.AreEqual(true, result, "Import wasnt successfull");
-            int expected = ExpectedFavoritesCount(favoritesToImport);
+            int expected = ExpectedFavoritesCount(toImport);
             Assert.AreEqual(expected, PersistenceFavoritesCount, "Imported favorites count doesnt match.");
-            this.InvokeTheImport(favoritesToImport);
-            Assert.AreEqual(expected * 2, PersistenceFavoritesCount, "Imported favorites count doesnt match after second import");
+            this.InvokeTheImport(toImport, strategy);
+            Assert.AreEqual(expected * expectedSecondImportCount, PersistenceFavoritesCount,
+                "Imported favorites count doesnt match after second import");
             int expectedGroups = Persistence.Instance.Groups.Count();
             Assert.AreEqual(expectedGroups, ImportedGroupsCount, "Imported groups count doesnt match.");
         }
 
-        private object InvokeTheImport(List<FavoriteConfigurationElement> favoritesToImport)
+        private object InvokeTheImport(List<FavoriteConfigurationElement> toImport, Func<int, DialogResult> strategy)
         {
             var managedImport = new ImportWithDialogs(null);
             var privateObject = new PrivateObject(managedImport);
-            return privateObject.Invoke("ImportPreservingNames", new object[] { favoritesToImport, this.rename });
+            return privateObject.Invoke("ImportPreservingNames", new object[] { toImport, strategy });
         }
 
-        private static int ExpectedFavoritesCount(List<FavoriteConfigurationElement> favoritesToImport)
+        private static int ExpectedFavoritesCount(List<FavoriteConfigurationElement> toImport)
         {
-            return favoritesToImport.Select(favorite => favorite.Name)
+            return toImport.Select(favorite => favorite.Name)
                 .Distinct(StringComparer.CurrentCultureIgnoreCase)
                 .Count();
         }
 
         private List<FavoriteConfigurationElement> ImportItemsFromFile()
         {
-            Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
             string fullFileName = Path.Combine(this.TestContext.TestDir, DUPLICIT_ITEMS_FILE);
             return Integrations.Importers.ImportFavorites(fullFileName);
         }

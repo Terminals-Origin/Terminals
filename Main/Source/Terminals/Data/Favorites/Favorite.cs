@@ -302,22 +302,35 @@ namespace Terminals.Data
         IFavorite IFavorite.Copy()
         {
             var copy = new Favorite();
-            copy.Groups = this.Groups;
-            copy.DesktopShare = this.DesktopShare;
-            copy.Display = this.Display.Copy();
-            copy.ExecuteBeforeConnect = this.ExecuteBeforeConnect.Copy();
-            copy.Name = this.Name;
-            copy.NewWindow = this.NewWindow;
-            copy.Notes = this.Notes;
-            copy.Port = this.Port;
-            copy.Protocol = this.Protocol;
-            copy.security = this.security.Copy();
-            copy.ServerName = this.ServerName;
-            copy.ToolBarIconFile = this.ToolBarIconFile;
-
-            copy.ProtocolProperties = this.ProtocolProperties.Copy();
-
+            copy.UpdateFrom(this);
             return copy;
+        }
+
+        void IFavorite.UpdateFrom(IFavorite source)
+        {
+            var sourceFavorite = source as Favorite;
+            if (sourceFavorite == null)
+                return;
+            this.UpdateFrom(sourceFavorite);
+        }
+
+        private void UpdateFrom(Favorite source)
+        {
+            // we do not call AssignStores here, because they will be copied together with the child properties
+            this.Groups = source.Groups;
+            this.DesktopShare = source.DesktopShare;
+            this.Display = source.Display.Copy();
+            this.ExecuteBeforeConnect = source.ExecuteBeforeConnect.Copy();
+            this.Name = source.Name;
+            this.NewWindow = source.NewWindow;
+            this.Notes = source.Notes;
+            this.Port = source.Port;
+            this.Protocol = source.Protocol;
+            this.security = source.security.Copy();
+            this.ServerName = source.ServerName;
+            this.ToolBarIconFile = source.ToolBarIconFile;
+
+            this.ProtocolProperties = source.ProtocolProperties.Copy();
         }
 
         /// <summary>
