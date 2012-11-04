@@ -5,8 +5,6 @@ namespace Terminals.Data
 {
     /// <summary>
     /// Provides collection of stored credential sets used to logon when opening new connection.
-    /// Unlike other parts, this doesnt save changes directly, you have to call <see cref="Save"/>
-    /// method to commit changes to the persistence layer.
     /// </summary>
     internal interface ICredentials : IEnumerable<ICredentialSet>
     {
@@ -43,15 +41,16 @@ namespace Terminals.Data
         void Remove(ICredentialSet toRemove);
 
         /// <summary>
+        /// Updates required item in stored credentials collection.
+        /// </summary>
+        /// <param name="toUpdate">Not null item, which will be updated</param>
+        void Update(ICredentialSet toUpdate);
+
+        /// <summary>
         /// Updates password hashes for currently stored credentials updating their value
         /// by key material created from masterpassword hash.
         /// </summary>
         /// <param name="newKeyMaterial">new key used to updated password hashes</param>
         void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial);
-
-        /// <summary>
-        /// Commits changes to the persistence.
-        /// </summary>
-        void Save();
     }
 }

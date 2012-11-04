@@ -19,11 +19,16 @@ namespace Terminals.Data
         private readonly Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.Credentials");
         private DataFileWatcher fileWatcher;
 
+        private string FileFullName
+        {
+            get { return Settings.FileLocations.Credentials; }
+        }
+
         internal StoredCredentials(PersistenceSecurity persistenceSecurity)
         {
             this.persistenceSecurity = persistenceSecurity;
             this.cache = new List<ICredentialSet>();
-            string configFileName = Settings.FileLocations.Credentials;
+            string configFileName = this.FileFullName;
             InitializeFileWatch();
 
             if (File.Exists(configFileName))
@@ -34,14 +39,14 @@ namespace Terminals.Data
 
         private void InitializeFileWatch()
         {
-            fileWatcher = new DataFileWatcher(Settings.FileLocations.Credentials);
+            fileWatcher = new DataFileWatcher(FileFullName);
             fileWatcher.FileChanged += new EventHandler(CredentialsFileChanged);
             fileWatcher.StartObservation();
         }
 
         private void CredentialsFileChanged(object sender, EventArgs e)
         {
-            LoadStoredCredentials(Settings.FileLocations.Credentials);
+            LoadStoredCredentials(FileFullName);
             if (CredentialsChanged != null)
                 CredentialsChanged(this, new EventArgs());
         }
@@ -128,11 +133,22 @@ namespace Terminals.Data
                 return;
 
             this.cache.Add(toAdd);
+            this.Save();
         }
 
         public void Remove(ICredentialSet toRemove)
         {
-            cache.Remove(toRemove);
+            this.cache.Remove(toRemove);
+            this.Save();
+        }
+
+        public void Update(ICredentialSet toUpdate)
+        {
+            var oldItem = this[toUpdate.Id];
+            if (oldItem != null)
+                this.cache.Remove(oldItem);
+            this.cache.Add(toUpdate);
+            Save();
         }
 
         public void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)
@@ -145,21 +161,17 @@ namespace Terminals.Data
             Save();
         }
 
-        public void Save()
+        private void Save()
         {
             try
             {
                 this.fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
-                string fileName = Settings.FileLocations.Credentials;
-                List<CredentialSet> fileContent = this.cache.Cast<CredentialSet>().ToList();
-                Serialize.SerializeXMLToDisk(fileContent, fileName);
-                Debug.WriteLine("Credentials file saved.");
+                this.SaveToFile();
             }
             catch (Exception exception)
             {
-                string errorMessage = string.Format("Save credentials to {0} failed.",
-                    Settings.FileLocations.Credentials);
+                string errorMessage = string.Format("Save credentials to {0} failed.", FileFullName);
                 Logging.Log.Error(errorMessage, exception);
             }
             finally
@@ -167,6 +179,13 @@ namespace Terminals.Data
                 this.fileWatcher.StartObservation();
                 this.fileLock.ReleaseMutex();
             }
+        }
+
+        private void SaveToFile()
+        {
+            List<CredentialSet> fileContent = this.cache.Cast<CredentialSet>().ToList();
+            Serialize.SerializeXMLToDisk(fileContent, FileFullName);
+            Debug.WriteLine("Credentials file saved.");
         }
 
         #endregion

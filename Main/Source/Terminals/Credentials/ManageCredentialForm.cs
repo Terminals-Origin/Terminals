@@ -7,7 +7,7 @@ namespace Terminals.Credentials
     internal partial class ManageCredentialForm : Form
     {
         private string editedCredentialName = "";
-        private ICredentialSet editedCredential;
+        private readonly ICredentialSet editedCredential;
 
         private static ICredentials Credentials
         {
@@ -47,7 +47,6 @@ namespace Terminals.Credentials
 
             if (UpdateCredential())
             {
-                Credentials.Save();
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -77,6 +76,7 @@ namespace Terminals.Credentials
             else
             {
                 this.UpdateFromControls(this.editedCredential);
+                Credentials.Update(this.editedCredential);
             }
         }
 

@@ -81,7 +81,6 @@ namespace Terminals.Credentials
                                     "Credential manager", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     Credentials.Remove(toRemove);
-                    Credentials.Save();
                     BindList();
                 }
             }
