@@ -78,7 +78,6 @@ namespace Tests
 
             int credentialsCountBefore = this.CheckDatabaseCredentials.Count();
             PrimaryCredentials.Remove(testCredentials);
-            PrimaryCredentials.Save();
             int credentialsCountAfter = this.CheckDatabaseCredentials.Count();
 
             int baseAfter = this.CheckDatabase.ExecuteStoreQuery<int>("select Count(Id) from CredentialBase")
@@ -93,7 +92,6 @@ namespace Tests
         {
             var testCredentials = this.CreateTestCredentialSet();
             PrimaryCredentials.Add(testCredentials);
-            PrimaryCredentials.Save();
             return testCredentials;
         }
 

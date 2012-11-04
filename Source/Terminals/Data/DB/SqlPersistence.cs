@@ -57,9 +57,9 @@ namespace Terminals.Data.DB
 
         public void SaveAndFinishDelayedUpdate()
         {
+            // nothing to save, because changes are already commited by each operation
             Database.CloseConneciton();
             this.Dispatcher.EndDelayedUpdate();
-            // nothing to save
         }
 
         public void Initialize()

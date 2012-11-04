@@ -83,6 +83,21 @@ namespace Terminals.Data.DB
             this.cache.Delete(credentailToRemove);
         }
 
+        public void Update(ICredentialSet toUpdate)
+        {
+            using (var database = Database.CreateInstance())
+            {
+                var credentialToUpdate = toUpdate as CredentialSet;
+                if (credentialToUpdate == null)
+                    return;
+                database.Attach(credentialToUpdate);
+                database.MarkAsModified(credentialToUpdate);
+                database.SaveImmediatelyIfRequested();
+                database.Detach(credentialToUpdate);
+                this.cache.Update(credentialToUpdate);
+            }
+        }
+
         private static void DeleteFromDatabase(CredentialSet credentailToRemove)
         {
             using (var database = Database.CreateInstance())

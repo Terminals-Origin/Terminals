@@ -120,8 +120,6 @@ namespace Terminals.Integration.Import
 
                 UpdateFromvrDCredentials(toImport, destination);
             }
-
-            storedCredentials.Save();
         }
 
         private static void UpdateFromvrDCredentials(vRDConfigurationFileCredentialsFolderCredentials source,
