@@ -1092,6 +1092,22 @@ namespace Terminals.Configuration
             ////}
         }
 
+        internal static FormsSection Forms
+        {
+            get
+            {
+                FormsSection formsSection = Config.Sections[FormsSection.FORMS] as FormsSection;
+                if (formsSection == null)
+                {
+                    // The section wasn't found, so add it.
+                    formsSection = new FormsSection();
+                    Config.Sections.Add(FormsSection.FORMS, formsSection);
+                }
+
+                return formsSection;
+            }
+        }
+
         #endregion
     }
 }

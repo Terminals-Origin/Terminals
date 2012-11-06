@@ -7,25 +7,41 @@ using Terminals.Properties;
 
 namespace Terminals.Forms
 {
+    /// <summary>
+    /// Manages saving and reloading Windows Form state in the configuration file
+    /// </summary>
     internal class FormSettings
     {
-        private Form _form;
-        private Boolean _saveSettings = false;
-        private Boolean _loadCalled = false;
-        private Size _lastNormalSize;
-        private Point _lastNormalLocation;
-        private const String WindowStateSetting = "WindowState";
-        private const String SizeSetting = "Size";
-        private const String LocationSetting = "Location";
-        public Boolean Enabled { get; set; }
+        private readonly Form form;
+        private Boolean saveSettings;
+        private Boolean loadCalled;
+        private Size lastNormalSize;
+        private Point lastNormalLocation;
+        internal Boolean Enabled { get; set; }
 
-        public FormSettings(Form form)
+        private FormsSection Settings
         {
-            _form = form;
-            _form.HandleDestroyed += new EventHandler(FormHandleDestroyed);
-            _form.HandleCreated += new EventHandler(FormHandleCreated);
-            _form.Load += new EventHandler(FormLoad);
-            _form.Resize += new EventHandler(FormResize);
+            get
+            {
+                return Configuration.Settings.Forms;
+            }
+        }
+
+        private FormStateConfigElement SavedState
+        {
+            get
+            {
+                return this.Settings.Forms[this.form.Name];
+            }
+        }
+
+        internal FormSettings(Form form)
+        {
+            this.form = form;
+            this.form.HandleDestroyed += new EventHandler(FormHandleDestroyed);
+            this.form.HandleCreated += new EventHandler(FormHandleCreated);
+            this.form.Load += new EventHandler(FormLoad);
+            this.form.Resize += new EventHandler(FormResize);
             this.Enabled = true;
         }
 
@@ -36,10 +52,10 @@ namespace Terminals.Forms
 
         private void FormResize(object sender, EventArgs e)
         {
-            if (_form.WindowState == FormWindowState.Normal)
+            if (this.form.WindowState == FormWindowState.Normal)
             {
-                _lastNormalSize = _form.Size;
-                _lastNormalLocation = _form.Location;
+                this.lastNormalSize = this.form.Size;
+                this.lastNormalLocation = this.form.Location;
             }
         }
 
@@ -50,107 +66,94 @@ namespace Terminals.Forms
 
         private void FormHandleDestroyed(object sender, EventArgs e)
         {
-            if (!_form.RecreatingHandle)
+            if (!this.form.RecreatingHandle)
             {
                 SaveFormState();
             }
-        }
-
-        private string BuildPropertyName(String settingName)
-        {
-            return String.Format("{0}.{1}.{2}", _form.GetType().Name, _form.Name, settingName);
-        }
-
-        private static void ValidateProperty(String propertyName, Type propertyType)
-        {
-            SettingsProperty property = Settings.Default.Properties[propertyName];
-            if (property == null)
-            {
-                SettingsProperty propInitializer = Settings.Default.Properties["Initializer"];
-                property = new SettingsProperty(propInitializer);
-                property.Name = propertyName;
-                property.PropertyType = propertyType;
-                property.DefaultValue = null;
-                Settings.Default.Properties.Add(property);
-            }
-        }
-
-        private T GetValue<T>(String settingName, T defaultValue)
-        {
-            String propertyName = BuildPropertyName(settingName);
-            ValidateProperty(propertyName, typeof(T));
-            Object result = Settings.Default[propertyName];
-            if (result == null)
-                result = defaultValue;
-            return (T)result;
-        }
-
-        private void SetValue(String settingName, Object value)
-        {
-            String propertyName = BuildPropertyName(settingName);
-            ValidateProperty(propertyName, value.GetType());
-            Settings.Default[propertyName] = value;
         }
 
         private void LoadFormState()
         {
             if (this.Enabled)
             {
-                _form.WindowState = GetValue(WindowStateSetting, _form.WindowState);
-                if (_form.WindowState == FormWindowState.Minimized)
-                    _form.WindowState = FormWindowState.Normal;
+                FormStateConfigElement lastFormState = this.SavedState;
+                if(lastFormState != null)
+                    this.form.WindowState = lastFormState.State;
+
+                if (this.form.WindowState == FormWindowState.Minimized)
+                    this.form.WindowState = FormWindowState.Normal;
             }
         }
 
-        public void LoadFormSize()
+        internal void LoadFormSize()
         {
-            if (!_loadCalled)
+            if (!this.loadCalled)
             {
-                _loadCalled = true;
+                this.loadCalled = true;
 
-                if (this.Enabled)
+                FormStateConfigElement lastFormState = this.SavedState;
+                if (this.Enabled && lastFormState != null)
                 {
-                    if (_form.FormBorderStyle == FormBorderStyle.Sizable ||
-                      _form.FormBorderStyle == FormBorderStyle.SizableToolWindow)
-                    {
-                        _form.Size = GetValue(SizeSetting, _form.Size);
-                        _lastNormalSize = _form.Size;
-                    }
-
-                    if (_form.StartPosition == FormStartPosition.Manual)
-                    {
-                        Point location = GetValue(LocationSetting, _form.Location);
-                        
-                        _form.Location = location;
-                        EnsureVisibleScreenArrea();
-                        _lastNormalLocation = _form.Location;
-                    }
+                    this.ReloadSize(lastFormState);
+                    this.ReloadLocation(lastFormState);
                 }
-                _saveSettings = true;
+                this.saveSettings = true;
+            }
+        }
+
+        private void ReloadLocation(FormStateConfigElement lastFormState)
+        {
+            if (this.form.StartPosition == FormStartPosition.Manual)
+            {
+                this.form.Location = lastFormState.Location;
+                this.EnsureVisibleScreenArrea();
+                this.lastNormalLocation = this.form.Location;
+            }
+        }
+
+        private void ReloadSize(FormStateConfigElement lastFormState)
+        {
+            if (this.form.FormBorderStyle == FormBorderStyle.Sizable ||
+                this.form.FormBorderStyle == FormBorderStyle.SizableToolWindow)
+            {
+                this.form.Size = lastFormState.Size;
+                this.lastNormalSize = this.form.Size;
             }
         }
 
         private void SaveFormState()
         {
-            if (_saveSettings && this.Enabled)
+            if (this.saveSettings && this.Enabled)
             {
-                if (_form.WindowState != FormWindowState.Normal)
-                {
-                    SetValue(SizeSetting, _lastNormalSize);
-                    SetValue(LocationSetting, _lastNormalLocation);
-                }
-                else
-                {
-                    SetValue(SizeSetting, _form.Size);
-                    SetValue(LocationSetting, _form.Location);
-                }
+                FormStateConfigElement formSettings = this.PrepareStateToSave();
+                Settings.AddForm(formSettings);
+                Configuration.Settings.SaveAndFinishDelayedUpdate();
+            }
+        }
 
-                if (_form.WindowState != FormWindowState.Minimized)
-                {
-                    SetValue(WindowStateSetting, _form.WindowState);
-                }
+        private FormStateConfigElement PrepareStateToSave()
+        {
+            var formSettings = new FormStateConfigElement(this.form.Name);
+            this.SetFormSizeAndLocation(formSettings);
 
-                Settings.Default.Save();
+            if (this.form.WindowState != FormWindowState.Minimized)
+            {
+                formSettings.State = this.form.WindowState;
+            }
+            return formSettings;
+        }
+
+        private void SetFormSizeAndLocation(FormStateConfigElement formSettings)
+        {
+            if (this.form.WindowState != FormWindowState.Normal)
+            {
+                formSettings.Size = this.lastNormalSize;
+                formSettings.Location = this.lastNormalLocation;
+            }
+            else
+            {
+                formSettings.Size = this.form.Size;
+                formSettings.Location = this.form.Location;
             }
         }
 
@@ -161,7 +164,7 @@ namespace Terminals.Forms
         internal void EnsureVisibleScreenArrea()
         {
             // because when comming back from minimalized state, this method is called firs yet with this state
-            if (this._form.WindowState == FormWindowState.Minimized)
+            if (this.form.WindowState == FormWindowState.Minimized)
                 return;
 
             Screen lastScreen = LastScreenOfCaptionPoint(GetLeftCaptionPoint());
@@ -170,7 +173,7 @@ namespace Terminals.Forms
                 lastScreen = LastScreenOfCaptionPoint(GetRightCaptionPoint());
 
             if (lastScreen == null)
-                _form.Location = new Point(100, 100);
+                this.form.Location = new Point(100, 100);
         }
 
         /// <summary>
@@ -180,8 +183,8 @@ namespace Terminals.Forms
         private Point GetRightCaptionPoint()
         {
             int captionButtonsWidth = SystemInformation.CaptionButtonSize.Width * 5;
-            return new Point(this._form.Location.X + this._form.Width - captionButtonsWidth,
-                             this._form.Location.Y + GetCaptionHeightMidle());
+            return new Point(this.form.Location.X + this.form.Width - captionButtonsWidth,
+                             this.form.Location.Y + GetCaptionHeightMidle());
         }
 
         /// <summary>
@@ -190,8 +193,8 @@ namespace Terminals.Forms
         /// </summary>
         private Point GetLeftCaptionPoint()
         {
-            return new Point(this._form.Location.X + GetCaptionHeightMidle(),
-                             this._form.Location.Y + GetCaptionHeightMidle());
+            return new Point(this.form.Location.X + GetCaptionHeightMidle(),
+                             this.form.Location.Y + GetCaptionHeightMidle());
         }
 
         private static int GetCaptionHeightMidle()

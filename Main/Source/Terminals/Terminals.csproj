@@ -165,6 +165,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\FormsCollection.cs" />
+    <Compile Include="Configuration\FormsSection.cs" />
+    <Compile Include="Configuration\FormStateConfigElement.cs" />
     <Compile Include="Converters\GuidConverter.cs" />
     <Compile Include="Data\AuthenticationPrompt.cs" />
     <Compile Include="Data\DB\DatabaseConnections.cs" />
