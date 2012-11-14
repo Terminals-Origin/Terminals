@@ -106,10 +106,7 @@ namespace Terminals.Data.DB
         private static bool TestDatabasePassword(string connectionStringToTest, string databasePassword)
         {
             string storedHash = TryGetMasterPasswordHash(connectionStringToTest);
-            string hashToCheck = string.Empty;
-            if (!string.IsNullOrEmpty(databasePassword))
-                hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(databasePassword);
-            return hashToCheck == storedHash;
+            return PasswordFunctions.MasterPasswordIsValid(databasePassword, storedHash);
         }
 
         private static string TryGetMasterPasswordHash(string connectionString)

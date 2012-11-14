@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImportsTest.cs" />
+    <Compile Include="PasswordTests.cs" />
     <Compile Include="SqlPersistence\SqlConcurentUpdatesTest.cs" />
     <Compile Include="SqlPersistence\SqlConnectionsHistoryTest.cs" />
     <Compile Include="SqlPersistence\SqlGroupsTest.cs" />

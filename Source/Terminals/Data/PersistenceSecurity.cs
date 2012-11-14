@@ -83,8 +83,8 @@ namespace Terminals.Data
 
         private Boolean IsMasterPasswordValid(string passwordToCheck)
         {
-            String hashToCheck = PasswordFunctions.ComputeMasterPasswordHash(passwordToCheck);
-            if (Settings.MasterPasswordHash == hashToCheck)
+            bool isValid = PasswordFunctions.MasterPasswordIsValid(passwordToCheck, Settings.MasterPasswordHash);
+            if (isValid)
             {
                 UpdateKeyMaterial(passwordToCheck);
                 return true;
