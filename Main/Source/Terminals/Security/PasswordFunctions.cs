@@ -16,8 +16,8 @@ namespace Terminals.Security
     /// </summary>
     internal static class PasswordFunctions
     {
-        private const int KEY_LENGTH = 24;
-        private const int IV_LENGTH = 16;
+        internal const int KEY_LENGTH = 24;
+        internal const int IV_LENGTH = 16;
         private const EncryptionAlgorithm ENCRYPTION_ALGORITHM = EncryptionAlgorithm.Rijndael;
 
         internal static bool MasterPasswordIsValid(string password, string storedPassword)
@@ -62,16 +62,22 @@ namespace Terminals.Security
 
         private static string DecryptByKey(string encryptedPassword, string keyMaterial)
         {
-            string hashedPass = keyMaterial.Substring(0, KEY_LENGTH);
-            string password = "";
-            var dec = new Decryptor(ENCRYPTION_ALGORITHM);
-            dec.IV = Encoding.Default.GetBytes(keyMaterial.Substring(keyMaterial.Length - IV_LENGTH));
-            byte[] data = dec.Decrypt(Convert.FromBase64String(encryptedPassword), Encoding.Default.GetBytes(hashedPass));
+            byte[] initializationVector = GetInitializationVector(keyMaterial);
+            byte[] passwordKey = GetPasswordKey(keyMaterial);
+            byte[] passwordBytes = Convert.FromBase64String(encryptedPassword);
+            byte[] data = DecryptByKey(passwordBytes, initializationVector, passwordKey);
+
             if (data != null && data.Length > 0)
-            {
-                password = Encoding.Default.GetString(data);
-            }
-            return password;
+                return Encoding.Default.GetString(data);
+
+            return string.Empty;
+        }
+
+        internal static byte[] DecryptByKey(byte[] encryptedPassword, byte[] initializationVector, byte[] passwordKey)
+        {
+            var dec = new Decryptor(ENCRYPTION_ALGORITHM);
+            dec.IV = initializationVector;
+            return dec.Decrypt(encryptedPassword, passwordKey);
         }
 
         private static string DecryptByEmptyKey(string encryptedPassword)
@@ -103,16 +109,22 @@ namespace Terminals.Security
 
         private static string EncryptByKey(string decryptedPassword, string keyMaterial)
         {
-            string hashedPass = keyMaterial.Substring(0, KEY_LENGTH);
-            var enc = new Encryptor(ENCRYPTION_ALGORITHM);
-            enc.IV = Encoding.Default.GetBytes(keyMaterial.Substring(keyMaterial.Length - IV_LENGTH));
-            byte[] data = enc.Encrypt(Encoding.Default.GetBytes(decryptedPassword), Encoding.Default.GetBytes(hashedPass));
+            var initializationVector = GetInitializationVector(keyMaterial);
+            byte[] passwordKey = GetPasswordKey(keyMaterial);
+            byte[] passwordBytes = Encoding.Default.GetBytes(decryptedPassword);
+            byte[] data = EncryptByKey(passwordBytes, initializationVector, passwordKey);
+
             if (data != null && data.Length > 0)
-            {
                 return Convert.ToBase64String(data);
-            }
 
             return String.Empty;
+        }
+
+        internal static byte[] EncryptByKey(byte[] decryptedPassword, byte[] initializationVector, byte[] passwordKey)
+        {
+            Encryptor enc = new Encryptor(ENCRYPTION_ALGORITHM);
+            enc.IV = initializationVector;
+            return enc.Encrypt(decryptedPassword, passwordKey);
         }
 
         private static string EncryptByEmptyKey(string decryptedPassword)
@@ -121,6 +133,18 @@ namespace Terminals.Security
             byte[] entropy = Encoding.UTF8.GetBytes(String.Empty);
             byte[] cyphertext = ProtectedData.Protect(plaintext, entropy, DataProtectionScope.CurrentUser);
             return Convert.ToBase64String(cyphertext);
+        }
+
+        private static byte[] GetInitializationVector(string keyMaterial)
+        {
+            var keyPart = keyMaterial.Substring(keyMaterial.Length - IV_LENGTH);
+            return Encoding.Default.GetBytes(keyPart);
+        }
+
+        private static byte[] GetPasswordKey(string keyMaterial)
+        {
+            string keyChars = keyMaterial.Substring(0, KEY_LENGTH);
+            return Encoding.Default.GetBytes(keyChars);
         }
     }
 }
