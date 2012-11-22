@@ -36,13 +36,16 @@ namespace Terminals
         //
         //Incremental builds, daily, etc will include full M.M.P.B
         //Release builds only include M.M.P
+        //
+        //.NET Likes:  MAJOR.MINOR.BUILD.REVISION
+
 
         var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
 #if DEBUG
         TerminalsVersion =  version.ToString();  //debug builds, to keep track of minor/revisions, etc..
 #else
-            TerminalsVersion = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Revision);        
+        TerminalsVersion = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);        
 #endif
 
 
