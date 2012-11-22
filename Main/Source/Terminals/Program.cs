@@ -16,12 +16,7 @@ namespace Terminals
 {
     internal static partial class Program
     {
-#if DEBUG
-        private static string TerminalsVersion =
-            System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();  //debug builds, to keep track of minor/revisions, etc..
-#else
-        private static string TerminalsVersion = "2.1 CTP";  //official release builds
-#endif
+        private static string TerminalsVersion;
         public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", 
             typeof(MainForm).Assembly);
 
@@ -32,7 +27,26 @@ namespace Terminals
         [ComVisible(true)]
         internal static void Main()
         {
-            Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
+            
+        //MAJOR.MINOR.PATCH.BUILD
+        //MAJOR == Breaking Changes in API or features
+        //MINOR == Non breaking changes, but significant feature changes
+        //PATH (Or Revision) == Bug fixs only, etc...
+        //BUILD == Build increments
+        //
+        //Incremental builds, daily, etc will include full M.M.P.B
+        //Release builds only include M.M.P
+
+        var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+
+#if DEBUG
+        TerminalsVersion =  version.ToString();  //debug builds, to keep track of minor/revisions, etc..
+#else
+            TerminalsVersion = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Revision);        
+#endif
+
+
+        Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
 
             Logging.Log.Info(String.Format("-------------------------------Title: {0} started Version:{1} Date:{2}-------------------------------", 
                 Info.TitleVersion, Info.DLLVersion, Info.BuildDate));
