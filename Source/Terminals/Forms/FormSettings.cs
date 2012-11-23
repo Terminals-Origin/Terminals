@@ -42,7 +42,13 @@ namespace Terminals.Forms
             this.form.HandleCreated += new EventHandler(FormHandleCreated);
             this.form.Load += new EventHandler(FormLoad);
             this.form.Resize += new EventHandler(FormResize);
+            this.form.Move += new EventHandler(form_Move);
             this.Enabled = true;
+        }
+
+        void form_Move(object sender, EventArgs e)
+        {
+            SaveSizeAndLocation();
         }
 
         private void FormLoad(object sender, EventArgs e)
@@ -51,6 +57,10 @@ namespace Terminals.Forms
         }
 
         private void FormResize(object sender, EventArgs e)
+        {
+            SaveSizeAndLocation();
+        }
+        private void SaveSizeAndLocation()
         {
             if (this.form.WindowState == FormWindowState.Normal)
             {
