@@ -507,6 +507,21 @@ namespace Terminals
 
         #region More section
 
+        [ConfigurationProperty("restoreWindowOnLastTerminalDisconnect", DefaultValue = true)]
+        public bool RestoreWindowOnLastTerminalDisconnect
+        {
+            get
+            {
+                if (this["restoreWindowOnLastTerminalDisconnect"] == null ||
+                    this["restoreWindowOnLastTerminalDisconnect"].ToString() == string.Empty)
+                    return true;
+                bool min = true;
+                bool.TryParse(this["restoreWindowOnLastTerminalDisconnect"].ToString(), out min);
+                return min;
+            }
+            set { this["restoreWindowOnLastTerminalDisconnect"] = value; }
+        }
+
         [ConfigurationProperty("enableFavoritesPanel", DefaultValue = true)]
         public bool EnableFavoritesPanel
         {

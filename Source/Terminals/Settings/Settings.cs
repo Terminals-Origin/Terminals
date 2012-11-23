@@ -616,6 +616,20 @@ namespace Terminals.Configuration
 
         #region More tab settings
 
+        public static bool RestoreWindowOnLastTerminalDisconnect
+        {
+            get
+            {
+                return GetSection().RestoreWindowOnLastTerminalDisconnect;
+            }
+
+            set
+            {
+                GetSection().RestoreWindowOnLastTerminalDisconnect = value;
+                SaveImmediatelyIfRequested();
+            }
+        }
+
         public static bool EnableFavoritesPanel
         {
             get

@@ -21,6 +21,7 @@ namespace Terminals.Forms
             this.warnDisconnectCheckBox.Checked = Settings.WarnOnConnectionClose;
             this.txtDefaultDesktopShare.Text = Settings.DefaultDesktopShare;
             this.PortscanTimeoutTextBox.Text = Settings.PortScanTimeoutSeconds.ToString();
+            this.restoreWindowCheckbox.Checked = Settings.RestoreWindowOnLastTerminalDisconnect;
         }
 
         public void SaveSettings()
@@ -28,7 +29,7 @@ namespace Terminals.Forms
             Settings.ForceComputerNamesAsURI = this.validateServerNamesCheckbox.Checked;
             Settings.WarnOnConnectionClose = this.warnDisconnectCheckBox.Checked;
             Settings.DefaultDesktopShare = this.txtDefaultDesktopShare.Text;
-
+            Settings.RestoreWindowOnLastTerminalDisconnect = this.restoreWindowCheckbox.Checked;
             Int32.TryParse(this.PortscanTimeoutTextBox.Text, out timeout);
             if (Settings.PortScanTimeoutSeconds <= 0 || Settings.PortScanTimeoutSeconds >= 60)
                 timeout = 5;

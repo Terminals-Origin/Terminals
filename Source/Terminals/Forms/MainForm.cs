@@ -493,8 +493,12 @@ namespace Terminals
         private void CloseTabControlItem()
         {
             this.Text = Program.Info.AboutText;
-            if (this.tcTerminals.Items.Count == 0)
-                this.fullScreenSwitch.FullScreen = false;
+
+            if (Settings.RestoreWindowOnLastTerminalDisconnect)
+            {
+                if (this.tcTerminals.Items.Count == 0)
+                    this.fullScreenSwitch.FullScreen = false;
+            }
         }
 
         internal void RemoveTabPage(TabControlItem tabControlToRemove)
