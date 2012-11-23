@@ -1,3 +1,5 @@
+using Terminals.TerminalServices;
+
 namespace Terminals
 {
     partial class NewTerminalForm
@@ -2104,9 +2106,7 @@ namespace Terminals
             // 
             this.cmbTSGWLogonMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTSGWLogonMethod.FormattingEnabled = true;
-            this.cmbTSGWLogonMethod.Items.AddRange(new object[] {
-            "Ask for Password (NTLM)",
-            "Smart Card"});
+            this.cmbTSGWLogonMethod.Items.AddRange(GatewayCredentialsSources.Sources.ToArray());
             this.cmbTSGWLogonMethod.Location = new System.Drawing.Point(113, 30);
             this.cmbTSGWLogonMethod.Name = "cmbTSGWLogonMethod";
             this.cmbTSGWLogonMethod.Size = new System.Drawing.Size(224, 21);
