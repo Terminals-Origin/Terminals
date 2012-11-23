@@ -12,21 +12,31 @@ namespace Terminals
         {
             InitializeComponent();
             LoadFavorites();
+            InputTextbox.Focus();
         }
 
+        void cmbServerList_GotFocus(object sender, EventArgs e)
+        {
+            this.InputTextbox.Focus();
+        }
+        
         private void LoadFavorites()
         {
-            cmbServerList.Items.Clear();
+            var q = InputTextbox.Text;
             var favorites = Persistence.Instance.Favorites;
-            var favoriteNames = favorites.Select(favorite => favorite.Name).ToArray();
-            cmbServerList.Items.AddRange(favoriteNames);
+            var favoriteNames = (
+                from f in favorites 
+                select f.Name
+                ).ToArray();
+            this.InputTextbox.AutoCompleteCustomSource = new AutoCompleteStringCollection();
+            this.InputTextbox.AutoCompleteCustomSource.AddRange(favoriteNames);
         }
 
         public string ConnectionName
         {
             get
             {
-                return cmbServerList.Text;
+                return InputTextbox.Text;
             }
         }
 
@@ -41,5 +51,6 @@ namespace Terminals
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
     }
 }

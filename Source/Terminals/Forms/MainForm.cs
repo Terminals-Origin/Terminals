@@ -849,6 +849,18 @@ namespace Terminals
                 if (!this.tscConnectTo.Focused)
                     this.tscConnectTo.Focus();
             }
+            else if (e.KeyCode == Keys.F3)
+            {
+                this.ShowQuickConnect();
+            }
+        }
+        private void ShowQuickConnect()
+        {
+            QuickConnect qc = new QuickConnect();
+            if (qc.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
+            {
+                this.Connect(qc.ConnectionName, false, false, null);
+            }
         }
 
         private void MainForm_Activated(object sender, EventArgs e)
@@ -969,6 +981,11 @@ namespace Terminals
             {
                 this.Close();
             }
+            else if (clickedItem.Name == FavoritesMenuLoader.QUICK_CONNECT)
+            {
+                ShowQuickConnect();
+            }
+                
             else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_SHOWMENU)
             {
                 Boolean visible = !this.menuStrip.Visible;
