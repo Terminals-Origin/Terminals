@@ -934,6 +934,9 @@
     <EmbeddedResource Include="Forms\Controls\HistoryTreeView.resx">
       <DependentUpon>HistoryTreeView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OptionPanels\ConnectionsOptionPanel.resx">
+      <DependentUpon>ConnectionsOptionPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\MasterPasswordOptionpanel.resx">
       <DependentUpon>MasterPasswordOptionpanel.cs</DependentUpon>
     </EmbeddedResource>
