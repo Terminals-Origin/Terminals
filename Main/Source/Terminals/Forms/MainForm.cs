@@ -856,8 +856,9 @@ namespace Terminals
         }
         private void ShowQuickConnect()
         {
-            QuickConnect qc = new QuickConnect();
-            if (qc.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
+            QuickConnect qc = new QuickConnect();           
+            qc.StartPosition = FormStartPosition.CenterParent;
+            if (qc.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
             {
                 this.Connect(qc.ConnectionName, false, false, null);
             }

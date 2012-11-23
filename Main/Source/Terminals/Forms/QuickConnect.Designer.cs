@@ -40,6 +40,7 @@ namespace Terminals {
             this.ButtonConnect.Text = "&Connect";
             this.ButtonConnect.UseVisualStyleBackColor = true;
             this.ButtonConnect.Click += new System.EventHandler(this.ConnectButton_Click);
+            this.ButtonConnect.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ButtonConnect_KeyUp);
             // 
             // ButtonCancel
             // 
@@ -51,6 +52,7 @@ namespace Terminals {
             this.ButtonCancel.Text = "Cancel";
             this.ButtonCancel.UseVisualStyleBackColor = true;
             this.ButtonCancel.Click += new System.EventHandler(this.CancelButton_Click);
+            this.ButtonCancel.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ButtonCancel_KeyUp);
             // 
             // InputTextbox
             // 
@@ -60,6 +62,7 @@ namespace Terminals {
             this.InputTextbox.Name = "InputTextbox";
             this.InputTextbox.Size = new System.Drawing.Size(158, 20);
             this.InputTextbox.TabIndex = 0;
+            this.InputTextbox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.InputTextbox_KeyUp);
             // 
             // pictureBox1
             // 
@@ -88,6 +91,7 @@ namespace Terminals {
             this.MinimizeBox = false;
             this.Name = "QuickConnect";
             this.Text = "Quick Connect...";
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.QuickConnect_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

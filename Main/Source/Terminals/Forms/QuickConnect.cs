@@ -52,5 +52,34 @@ namespace Terminals
             this.Close();
         }
 
+        private void TestKeys(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F3)
+            {
+                this.DialogResult = DialogResult.No;
+                this.Close();
+            }
+            
+        }
+        private void QuickConnect_KeyUp(object sender, KeyEventArgs e)
+        {
+            TestKeys(e);
+        }
+
+        private void InputTextbox_KeyUp(object sender, KeyEventArgs e)
+        {
+            TestKeys(e);
+        }
+
+        private void ButtonConnect_KeyUp(object sender, KeyEventArgs e)
+        {
+            TestKeys(e);
+        }
+
+        private void ButtonCancel_KeyUp(object sender, KeyEventArgs e)
+        {
+            TestKeys(e);
+        }
+
     }
 }
