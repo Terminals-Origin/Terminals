@@ -153,6 +153,9 @@
   <data name="Exit" xml:space="preserve">
     <value>Exit Terminals</value>
   </data>
+  <data name="QuickConnect" xml:space="preserve">
+    <value>Quick Connect</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
@@ -326,9 +329,6 @@
   </data>
   <data name="Properties" xml:space="preserve">
     <value>Properties</value>
-  </data>
-  <data name="QuickConnect" xml:space="preserve">
-    <value>Quick Connect</value>
   </data>
   <data name="RebuildShortcuts" xml:space="preserve">
     <value>Rebuild Shortcuts</value>

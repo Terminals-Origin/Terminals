@@ -33,6 +33,7 @@ namespace Terminals
             private EventHandler groupAddToolStripMenuItem_Click;
 
             internal const String COMMAND_EXIT = "Exit";
+            internal const String QUICK_CONNECT = "QuickConnect";
             internal const String COMMAND_SPECIAL = "SpecialCommands";
             internal const String COMMAND_RESTORESCREEN = "RestoreScreen";
             internal const String COMMAND_FULLSCREEN = "FullScreen";
@@ -150,9 +151,19 @@ namespace Terminals
                 // here favorite Tags will be placed
 
                 this.AddAlphabeticalContextMenu();
+
+
+                ToolStripItem quickConnect = this.quickContextMenu.Items.Add(Program.Resources.GetString(QUICK_CONNECT));
+                quickConnect.Name = QUICK_CONNECT;
+
                 this.quickContextMenu.Items.Add("-");
+
                 ToolStripItem exitMenu = this.quickContextMenu.Items.Add(Program.Resources.GetString(COMMAND_EXIT));
                 exitMenu.Name = COMMAND_EXIT;
+
+
+
+
             }
 
             private void AddUntaggedQuickContextMenu()
