@@ -13,6 +13,7 @@ using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Network.Servers;
+using Terminals.TerminalServices;
 
 namespace Terminals
 {
@@ -50,7 +51,9 @@ namespace Terminals
             : this()
         {
             this.InitializeComponent();
+
             this.Init(favorite, String.Empty);
+
         }
 
         private NewTerminalForm()
@@ -768,7 +771,15 @@ namespace Terminals
             this.txtTSGWUserName.Text = tsGateway.Security.UserName;
             this.txtTSGWPassword.Text = tsGateway.Security.Password;
             this.chkTSGWlogin.Checked = tsGateway.SeparateLogin;
-            this.cmbTSGWLogonMethod.SelectedIndex = tsGateway.CredentialSource;
+            if (tsGateway.CredentialSource == 4)
+            {
+                this.cmbTSGWLogonMethod.SelectedIndex = 2;
+            }
+            else
+            {
+                this.cmbTSGWLogonMethod.SelectedIndex = tsGateway.CredentialSource;
+
+            }
         }
 
         private void FillVmrcControls(IFavorite favorite)
@@ -987,6 +998,8 @@ namespace Terminals
             tsgwOptions.Security.Password = this.txtTSGWPassword.Text;
             tsgwOptions.SeparateLogin = this.chkTSGWlogin.Checked;
             tsgwOptions.CredentialSource = this.cmbTSGWLogonMethod.SelectedIndex;
+            if (tsgwOptions.CredentialSource == 2)
+                tsgwOptions.CredentialSource = 4;
 
             if (this.radTSGWenable.Checked)
             {

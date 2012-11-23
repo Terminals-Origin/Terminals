@@ -626,6 +626,7 @@
     </Compile>
     <Compile Include="ProgramInfo.cs" />
     <Compile Include="Security\PasswordFunctions2.cs" />
+    <Compile Include="TerminalServices\GatewayCredentialsSources.cs" />
     <Compile Include="Unified\Serialization\StreamHelper.cs" />
     <Compile Include="Data\SerializableDictionary.cs" />
     <Compile Include="Data\SerializableSortedDictionary.cs" />
