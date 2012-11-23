@@ -1152,7 +1152,7 @@ namespace Terminals
             if (Settings.ForceComputerNamesAsURI &&
                 Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
             {
-                RerportErrorInServerName("Server name has to be defined as URI.");
+                RerportErrorInServerName("Server name is not in the correct format.");
                 return false;
             }
 

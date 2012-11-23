@@ -80,6 +80,8 @@ namespace Terminals
             this.saveNewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveCopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.btnSaveDefault = new Terminals.Forms.Controls.SplitButton();
+            this.btnSave = new Terminals.Forms.Controls.SplitButton();
             this.ExecuteTabPage = new System.Windows.Forms.TabPage();
             this.ExecuteGroupBox = new System.Windows.Forms.GroupBox();
             this.txtInitialDirectory = new System.Windows.Forms.TextBox();
@@ -129,6 +131,7 @@ namespace Terminals
             this.SSHPreferences = new SSHClient.Preferences();
             this.ConsoleTabPage = new System.Windows.Forms.TabPage();
             this.ConsoleGroupBox = new System.Windows.Forms.GroupBox();
+            this.consolePreferences = new Terminals.ConsolePreferences();
             this.VNCTabPage = new System.Windows.Forms.TabPage();
             this.VncGroupBox = new System.Windows.Forms.GroupBox();
             this.VncViewOnlyCheckbox = new System.Windows.Forms.CheckBox();
@@ -219,9 +222,6 @@ namespace Terminals
             this.label5 = new System.Windows.Forms.Label();
             this.lblServerName = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.consolePreferences = new Terminals.ConsolePreferences();
-            this.btnSaveDefault = new Terminals.Forms.Controls.SplitButton();
-            this.btnSave = new Terminals.Forms.Controls.SplitButton();
             ((System.ComponentModel.ISupportInitialize)(this.heightUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
@@ -376,6 +376,8 @@ namespace Terminals
             // EnableNLAAuthenticationCheckbox
             // 
             this.EnableNLAAuthenticationCheckbox.AutoSize = true;
+            this.EnableNLAAuthenticationCheckbox.Checked = true;
+            this.EnableNLAAuthenticationCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.EnableNLAAuthenticationCheckbox.Location = new System.Drawing.Point(241, 112);
             this.EnableNLAAuthenticationCheckbox.Name = "EnableNLAAuthenticationCheckbox";
             this.EnableNLAAuthenticationCheckbox.Size = new System.Drawing.Size(153, 17);
@@ -387,6 +389,8 @@ namespace Terminals
             // EnableTLSAuthenticationCheckbox
             // 
             this.EnableTLSAuthenticationCheckbox.AutoSize = true;
+            this.EnableTLSAuthenticationCheckbox.Checked = true;
+            this.EnableTLSAuthenticationCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.EnableTLSAuthenticationCheckbox.Location = new System.Drawing.Point(241, 89);
             this.EnableTLSAuthenticationCheckbox.Name = "EnableTLSAuthenticationCheckbox";
             this.EnableTLSAuthenticationCheckbox.Size = new System.Drawing.Size(151, 17);
@@ -599,7 +603,7 @@ namespace Terminals
             this.CredentialManagerPicturebox.TabIndex = 37;
             this.CredentialManagerPicturebox.TabStop = false;
             this.toolTip1.SetToolTip(this.CredentialManagerPicturebox, "Open the Credential Manager window to manage your stored passwords.");
-            this.CredentialManagerPicturebox.Click += new System.EventHandler(CredentialManagerPicturebox_Click);
+            this.CredentialManagerPicturebox.Click += new System.EventHandler(this.CredentialManagerPicturebox_Click);
             // 
             // pictureBox2
             // 
@@ -613,7 +617,7 @@ namespace Terminals
             this.pictureBox2.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox2, "Select your custom icon for this shortcut using custom image, \r\nwhich will be sho" +
         "wn in the shortcuts menu.");
-            this.pictureBox2.Click += new System.EventHandler(pictureBox2_Click);
+            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // ProtocolComboBox
             // 
@@ -647,9 +651,9 @@ namespace Terminals
             this.cmbServers.Size = new System.Drawing.Size(265, 21);
             this.cmbServers.TabIndex = 24;
             this.toolTip1.SetToolTip(this.cmbServers, "Here you can define the IP address of the server or its host name.");
-            this.cmbServers.TextChanged += new System.EventHandler(cmbServers_TextChanged);
-            this.cmbServers.SelectedIndexChanged += new System.EventHandler(cmbServers_SelectedIndexChanged);
-            this.cmbServers.Leave += new System.EventHandler(cmbServers_Leave);
+            this.cmbServers.SelectedIndexChanged += new System.EventHandler(this.cmbServers_SelectedIndexChanged);
+            this.cmbServers.TextChanged += new System.EventHandler(this.cmbServers_TextChanged);
+            this.cmbServers.Leave += new System.EventHandler(this.cmbServers_Leave);
             // 
             // btnAddNewTag
             // 
@@ -830,6 +834,35 @@ namespace Terminals
             this.groupBox7.Size = new System.Drawing.Size(579, 78);
             this.groupBox7.TabIndex = 10;
             this.groupBox7.TabStop = false;
+            // 
+            // btnSaveDefault
+            // 
+            this.btnSaveDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveDefault.AutoSize = true;
+            this.btnSaveDefault.ContextMenuStrip = this.contextMenuStripDefaults;
+            this.btnSaveDefault.Location = new System.Drawing.Point(277, 41);
+            this.btnSaveDefault.Name = "btnSaveDefault";
+            this.btnSaveDefault.Size = new System.Drawing.Size(88, 27);
+            this.btnSaveDefault.SplitMenuStrip = this.contextMenuStripDefaults;
+            this.btnSaveDefault.TabIndex = 5;
+            this.btnSaveDefault.Text = "Defaults";
+            this.btnSaveDefault.UseVisualStyleBackColor = true;
+            this.btnSaveDefault.Click += new System.EventHandler(this.btnSaveDefault_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.AutoSize = true;
+            this.btnSave.ContextMenuStrip = this.contextMenuStripSave;
+            this.btnSave.Location = new System.Drawing.Point(371, 41);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(120, 27);
+            this.btnSave.SplitMenuStrip = this.contextMenuStripSave;
+            this.btnSave.TabIndex = 1;
+            this.btnSave.Text = "Save && Close";
+            this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // ExecuteTabPage
             // 
@@ -1333,6 +1366,14 @@ namespace Terminals
             this.ConsoleGroupBox.Size = new System.Drawing.Size(481, 364);
             this.ConsoleGroupBox.TabIndex = 1;
             this.ConsoleGroupBox.TabStop = false;
+            // 
+            // consolePreferences
+            // 
+            this.consolePreferences.Location = new System.Drawing.Point(3, 8);
+            this.consolePreferences.Margin = new System.Windows.Forms.Padding(4);
+            this.consolePreferences.Name = "consolePreferences";
+            this.consolePreferences.Size = new System.Drawing.Size(285, 210);
+            this.consolePreferences.TabIndex = 0;
             // 
             // VNCTabPage
             // 
@@ -2141,7 +2182,7 @@ namespace Terminals
             this.httpUrlTextBox.TabIndex = 38;
             this.httpUrlTextBox.Text = "http://terminals.codeplex.com";
             this.httpUrlTextBox.Visible = false;
-            this.httpUrlTextBox.TextChanged += new System.EventHandler(httpUrlTextBox_TextChanged);
+            this.httpUrlTextBox.TextChanged += new System.EventHandler(this.httpUrlTextBox_TextChanged);
             // 
             // NotesTextbox
             // 
@@ -2169,7 +2210,7 @@ namespace Terminals
             this.CredentialDropdown.Name = "CredentialDropdown";
             this.CredentialDropdown.Size = new System.Drawing.Size(334, 21);
             this.CredentialDropdown.TabIndex = 30;
-            this.CredentialDropdown.SelectedIndexChanged += new System.EventHandler(CredentialDropdown_SelectedIndexChanged);
+            this.CredentialDropdown.SelectedIndexChanged += new System.EventHandler(this.CredentialDropdown_SelectedIndexChanged);
             // 
             // CredentialsPanel
             // 
@@ -2236,7 +2277,7 @@ namespace Terminals
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(334, 21);
             this.txtPassword.TabIndex = 5;
-            this.txtPassword.TextChanged += new System.EventHandler(txtPassword_TextChanged);
+            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
             // 
             // chkSavePassword
             // 
@@ -2312,43 +2353,6 @@ namespace Terminals
             this.tabControl1.Size = new System.Drawing.Size(495, 396);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
-            // 
-            // consolePreferences
-            // 
-            this.consolePreferences.Location = new System.Drawing.Point(3, 8);
-            this.consolePreferences.Margin = new System.Windows.Forms.Padding(4);
-            this.consolePreferences.Name = "consolePreferences";
-            this.consolePreferences.Size = new System.Drawing.Size(285, 210);
-            this.consolePreferences.TabIndex = 0;
-            // 
-            // btnSaveDefault
-            // 
-            this.btnSaveDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveDefault.AutoSize = true;
-            this.btnSaveDefault.ContextMenuStrip = this.contextMenuStripDefaults;
-            this.btnSaveDefault.Location = new System.Drawing.Point(277, 41);
-            this.btnSaveDefault.Name = "btnSaveDefault";
-            this.btnSaveDefault.Size = new System.Drawing.Size(88, 27);
-            this.btnSaveDefault.SplitMenuStrip = this.contextMenuStripDefaults;
-            this.btnSaveDefault.TabIndex = 5;
-            this.btnSaveDefault.Text = "Defaults";
-            this.btnSaveDefault.UseVisualStyleBackColor = true;
-            this.btnSaveDefault.Click += new System.EventHandler(this.btnSaveDefault_Click);
-            // 
-            // btnSave
-            // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.AutoSize = true;
-            this.btnSave.ContextMenuStrip = this.contextMenuStripSave;
-            this.btnSave.Location = new System.Drawing.Point(371, 41);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(120, 27);
-            this.btnSave.SplitMenuStrip = this.contextMenuStripSave;
-            this.btnSave.TabIndex = 1;
-            this.btnSave.Text = "Save && Close";
-            this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // NewTerminalForm
             // 
@@ -2442,6 +2446,7 @@ namespace Terminals
             this.CredentialsPanel.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         #endregion
