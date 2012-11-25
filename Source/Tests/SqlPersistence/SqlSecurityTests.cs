@@ -36,11 +36,11 @@ namespace Tests
             PrimaryFavorites.Update(testFavorite);
 
             Assert.AreEqual(PASSWORD_B, testFavorite.Security.Password,
-                 "Favorite password doesnt match after first password update.");
+                 "Favorite password doesn't match after first password update.");
 
             IFavorite resultFavorite = SecondaryFavorites.FirstOrDefault();
             Assert.AreEqual(PASSWORD_B, resultFavorite.Security.Password,
-                "Secondary Favorite password doesnt match after Favorite password update.");
+                "Secondary Favorite password doesn't match after Favorite password update.");
         }
 
         [TestMethod]
@@ -54,7 +54,7 @@ namespace Tests
             PrimaryPersistence.Credentials.Add(credential);
 
             IFavorite secondary = SecondaryFavorites.FirstOrDefault();
-            Assert.AreEqual(Guid.Empty, secondary.Security.Credential, "Favorite credentails should be null");
+            Assert.AreEqual(Guid.Empty, secondary.Security.Credential, "Favorite credentials should be null");
 
             favorite.Security.Credential = credential.Id;
             PrimaryFavorites.Update(favorite);
@@ -62,9 +62,9 @@ namespace Tests
             secondaryFavorites.RefreshCache();
             secondary = SecondaryFavorites.FirstOrDefault();
             Guid favoriteCredential = secondary.Security.Credential;
-            Assert.AreNotEqual(Guid.Empty, favoriteCredential, "Favorite credentail wasnt assigned properly");
+            Assert.AreNotEqual(Guid.Empty, favoriteCredential, "Favorite credential wasn't assigned properly");
             ICredentialSet resolvedCredentials = SecondaryPersistence.Credentials[favoriteCredential];
-            Assert.AreEqual(PASSWORD_A, resolvedCredentials.Password, "Favorite credentials, doesnt match");
+            Assert.AreEqual(PASSWORD_A, resolvedCredentials.Password, "Favorite credentials, doesn't match");
         }
 
         [TestMethod]
@@ -77,17 +77,17 @@ namespace Tests
             DatabasePasswordUpdate.UpdateMastrerPassord(Settings.ConnectionString, string.Empty, PASSWORD_B);
             Settings.DatabaseMasterPassword = PASSWORD_B;
             bool result = Database.TestConnection();
-            Assert.IsTrue(result, "Couldnt update database master password");
+            Assert.IsTrue(result, "Couldn't update database master password");
             
             // the secondary persistence has to reflect the database password change
             ((SqlPersistenceSecurity)this.SecondaryPersistence.Security).UpdateDatabaseKey();
             IFavorite resultFavorite = SecondaryFavorites.FirstOrDefault();
             Assert.AreEqual(PASSWORD_A, resultFavorite.Security.Password,
-                "Favorite password doesnt match after database password update.");
+                "Favorite password doesn't match after database password update.");
             
             var secondaryRdpOptions = resultFavorite.ProtocolProperties as RdpOptions;
             Assert.AreEqual(PASSWORD_A, secondaryRdpOptions.TsGateway.Security.Password,
-                "Favorite TS gateway password doesnt match after database password update.");
+                "Favorite TS gateway password doesn't match after database password update.");
         }
 
         private IFavorite AddFavoriteWithTestPassword()

@@ -14,17 +14,17 @@ namespace Terminals.Data
         internal List<IFavorite> Added { get; private set; }
 
         /// <summary>
-        /// All favorites actualy no longer stored in favorites persisted database
+        /// All favorites actually no longer stored in favorites persisted database
         /// </summary> 
         internal List<IFavorite> Removed { get; private set; }
 
         /// <summary>
-        /// Already stored favorites, where at least one prperty was changed.
+        /// Already stored favorites, where at least one property was changed.
         /// </summary>
         internal List<IFavorite> Updated { get; private set; }
 
         /// <summary>
-        /// Gets the value idicating if there are any added or reomoved items to report.
+        /// Gets the value indicating if there are any added or removed items to report.
         /// </summary>
         internal Boolean IsEmpty
         {

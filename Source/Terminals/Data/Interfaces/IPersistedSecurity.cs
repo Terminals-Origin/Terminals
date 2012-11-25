@@ -1,7 +1,7 @@
 ﻿namespace Terminals.Data
 {
     /// <summary>
-    /// Defines persistence dependent masterpassword security members
+    /// Defines persistence dependent master password security members
     /// </summary>
     internal interface IPersistedSecurity
     {

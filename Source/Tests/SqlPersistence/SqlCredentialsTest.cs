@@ -67,8 +67,8 @@ namespace Tests
 
             var checkCredentialSet = this.SecondaryPersistence.Credentials.FirstOrDefault() as CredentialSet;
 
-            Assert.IsNotNull(checkCredentialSet, "Credential didnt reach the database");
-            Assert.AreEqual(TEST_PASSWORD, ((ICredentialSet)checkCredentialSet).Password, "Password doesnt match");
+            Assert.IsNotNull(checkCredentialSet, "Credential didn't reach the database");
+            Assert.AreEqual(TEST_PASSWORD, ((ICredentialSet)checkCredentialSet).Password, "Password doesn't match");
         }
 
         [TestMethod]
@@ -83,9 +83,9 @@ namespace Tests
             int baseAfter = this.CheckDatabase.ExecuteStoreQuery<int>("select Count(Id) from CredentialBase")
                 .FirstOrDefault();
 
-            Assert.AreEqual(1, credentialsCountBefore, "credential wasnt added to the database");
-            Assert.AreEqual(0, credentialsCountAfter, "credential wasnt removed from the database");
-            Assert.AreEqual(0, baseAfter, "credentialbase wasnt removed from the database");
+            Assert.AreEqual(1, credentialsCountBefore, "credential wasn't added to the database");
+            Assert.AreEqual(0, credentialsCountAfter, "credential wasn't removed from the database");
+            Assert.AreEqual(0, baseAfter, "credential base wasn't removed from the database");
         }
 
         private CredentialSet AddTestCredentialsToDatabase()
@@ -105,7 +105,7 @@ namespace Tests
             this.PrimaryPersistence.Security.UpdateMasterPassword(String.Empty);
 
             ICredentialSet checkCredentials = this.SecondaryPersistence.Credentials.FirstOrDefault();
-            Assert.AreEqual(TEST_PASSWORD, checkCredentials.Password, "Passwrod lost after update of keymaterial");
+            Assert.AreEqual(TEST_PASSWORD, checkCredentials.Password, "Password lost after update of key material");
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Tests
         public void TestInitialize()
         {
             this.InitializeTestLab();
-            this.PrimaryPersistence.Dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.Dispatcher_GroupsChanged);
+            this.PrimaryPersistence.Dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.DispatcherGroupsChanged);
         }
 
         [TestCleanup]
@@ -37,7 +37,7 @@ namespace Tests
             this.ClearTestLab();
         }
 
-        private void Dispatcher_GroupsChanged(GroupsChangedArgs args)
+        private void DispatcherGroupsChanged(GroupsChangedArgs args)
         {
             this.addedCount += args.Added.Count;
             this.updatedCount += args.Updated.Count;
@@ -49,18 +49,18 @@ namespace Tests
         {
             Group childGroup = this.CreateTestGroup("TestGroupA");
             Group parentGroup = this.CreateTestGroup("TestGroupB");
-            childGroup.Parent = parentGroup; // dont use entites here, we are testing intern logic
-            IGroup testParent = childGroup.Parent; // dummy test to resolve parrent
+            childGroup.Parent = parentGroup; // don't use entities here, we are testing intern logic
+            IGroup testParent = childGroup.Parent; // dummy test to resolve parent
 
-            Assert.AreEqual(testParent, parentGroup, "Parent group wasnt set properly");
+            Assert.AreEqual(testParent, parentGroup, "Parent group wasn't set properly");
             ObjectSet<Group> checkedGroups = this.CheckDatabase.Groups;
             Group checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
             Group checkedParent = checkedGroups.FirstOrDefault(group => group.Id == parentGroup.Id);
-            Assert.IsNotNull(checkedChild, "Group wasnt added to the database");
-            Assert.IsNotNull(checkedParent, "Group wasnt added to the database");
-            Assert.AreEqual(1, checkedParent.ChildGroups.Count, "Group wasnt added as child");
-            // only one, becuase Added event is send once for each group
-            Assert.AreEqual(2, this.addedCount, "Add event wasnt received"); 
+            Assert.IsNotNull(checkedChild, "Group wasn't added to the database");
+            Assert.IsNotNull(checkedParent, "Group wasn't added to the database");
+            Assert.AreEqual(1, checkedParent.ChildGroups.Count, "Group wasn't added as child");
+            // only one, because Added event is send once for each group
+            Assert.AreEqual(2, this.addedCount, "Add event wasn't received"); 
         }
 
         [TestMethod]
@@ -70,8 +70,8 @@ namespace Tests
             Favorite favorite = this.AddFavoriteToPrimaryPersistence();
             group.AddFavorite(favorite);
             List<IFavorite> favorites = group.Favorites;
-            Assert.AreEqual(1, favorites.Count, "Group favorites count doesnt match.");
-            Assert.AreEqual(1, this.updatedCount, "Group update event didnt reach properly.");
+            Assert.AreEqual(1, favorites.Count, "Group favorites count doesn't match.");
+            Assert.AreEqual(1, this.updatedCount, "Group update event didn't reach properly.");
         }
 
         [TestMethod]
@@ -111,9 +111,9 @@ namespace Tests
 
         private void AssertGroupDeleted(int storedAfter, int storedBefore)
         {
-            Assert.AreEqual(1, storedBefore, "group wasnt created");
-            Assert.AreEqual(0, storedAfter, "group wasnt deleted");
-            Assert.AreEqual(1, this.deletedCount, "Deleted event wasnt received");
+            Assert.AreEqual(1, storedBefore, "group wasn't created");
+            Assert.AreEqual(0, storedAfter, "group wasn't deleted");
+            Assert.AreEqual(1, this.deletedCount, "Deleted event wasn't received");
         }
     }
 }

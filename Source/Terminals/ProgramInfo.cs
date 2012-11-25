@@ -14,7 +14,7 @@ namespace Terminals
             private static Assembly aAssembly = Assembly.GetExecutingAssembly();
 
             /// <summary>
-            /// Gets full path to the exucting assembly location without last backslash
+            /// Gets full path to the executing assembly location without last backslash
             /// </summary>
             internal static string Location
             {

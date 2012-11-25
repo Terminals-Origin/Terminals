@@ -112,7 +112,7 @@ namespace Terminals.Data
 
         /// <summary>
         /// Gets a credential by its name from cached credentials.
-        /// This method isnt case sensitive. If no item matches, returns null.
+        /// This method isn't case sensitive. If no item matches, returns null.
         /// </summary>
         /// <param name="name">name of an item to search</param>
         public ICredentialSet this[string name]

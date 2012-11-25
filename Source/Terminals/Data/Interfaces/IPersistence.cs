@@ -3,9 +3,9 @@
 namespace Terminals.Data
 {
     /// <summary>
-    /// Datalayer store of Terminals data. Handles favorites, groups, credentials and history.
+    /// Data layer store of Terminals data. Handles favorites, groups, credentials and history.
     /// Provides also abstract central point to create new items in Factory, and using eventing
-    /// informs lisseners about changes.
+    /// informs listeners about changes.
     /// </summary>
     internal interface IPersistence
     {
@@ -22,12 +22,12 @@ namespace Terminals.Data
         DataDispatcher Dispatcher { get; }
 
         /// <summary>
-        /// Gets the master pasword authentication module
+        /// Gets the master password authentication module
         /// </summary>
         PersistenceSecurity Security { get; }
 
         /// <summary>
-        /// Because filewatcher is created before the main form in GUI thread.
+        /// Because file watcher is created before the main form in GUI thread.
         /// This lets to fire the file system watcher events in GUI thread. 
         /// </summary>
         void AssignSynchronizationObject(ISynchronizeInvoke synchronizer);

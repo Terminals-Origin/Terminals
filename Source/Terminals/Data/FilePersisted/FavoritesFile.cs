@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace Terminals.Data
 {
     /// <summary>
-    /// Represents xml file persited favorites data and their groups
+    /// Represents xml file persisted favorites data and their groups
     /// </summary>
     [Serializable]
     [XmlRoot(Namespace = "http://Terminals.codeplex.com")]

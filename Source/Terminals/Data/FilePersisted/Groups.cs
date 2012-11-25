@@ -126,8 +126,8 @@ namespace Terminals.Data
 
         /// <summary>
         /// Gets group by its name. If there are more than one with this name returns the first found.
-        /// If there is no group with such name, returns null. Search isnt case sensitive.
-        /// Use this only to identify, if group with required name isnt already present,
+        /// If there is no group with such name, returns null. Search isn't case sensitive.
+        /// Use this only to identify, if group with required name isn't already present,
         /// to prevent name duplicities.
         /// </summary>
         public IGroup this[string groupName]

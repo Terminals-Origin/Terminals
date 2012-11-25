@@ -5,7 +5,7 @@ using System.Drawing;
 namespace Terminals.Converters
 {
     /// <summary>
-    /// Converts font to string and viceversa in example form:
+    /// Converts font to string and vice versa in example form:
     /// "[Font: Name=Microsoft Sans Serif, Size=8.25, Units=3, GdiCharSet=0, GdiVerticalFont=False]"
     /// </summary>
     internal class FontParser
@@ -48,14 +48,14 @@ namespace Terminals.Converters
 
         private static String ParseName(String fontText, Int32 sizeIndex)
         {
-            Int32 nameIndex = 12; // see the default formating
+            Int32 nameIndex = 12; // see the default formatting
             return fontText.Substring(nameIndex, sizeIndex - nameIndex - 2); // 2 means space and comma
         }
 
         private static float ParseSize(String fontText, Int32 sizeIndex, Int32 unitsIndex)
         {
             String sizeText = fontText.Substring(sizeIndex + 5, unitsIndex - sizeIndex - 7);
-            if (!sizeText.Contains(",")) // recover from previous trubles
+            if (!sizeText.Contains(",")) // recover from previous troubles
             {
                 return Convert.ToSingle(sizeText, CultureInfo.InvariantCulture);
             }
@@ -78,7 +78,7 @@ namespace Terminals.Converters
         private static Boolean ParseVertical(String fontText, Int32 verticalIndex, Int32 styleIndex)
         {
             String verticalText = "0";
-            if (styleIndex < 0) // style wasnt provided in previous versions
+            if (styleIndex < 0) // style wasn't provided in previous versions
             {
                 verticalText  = fontText.Substring(verticalIndex + 16, fontText.Length - 17 - verticalIndex);
             }

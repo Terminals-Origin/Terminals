@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Unified;
 
 namespace Terminals.Data.DB
@@ -126,7 +125,7 @@ namespace Terminals.Data.DB
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log.Error("Couldnt save protocol properties to database", exception);
+                    Logging.Log.Error("Couldn't save protocol properties to database", exception);
                 }
             }
 
@@ -138,7 +137,7 @@ namespace Terminals.Data.DB
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log.Error("Couldnt load image from database", exception);
+                    Logging.Log.Error("Couldn't load image from database", exception);
                 }
             }
 
@@ -170,7 +169,7 @@ namespace Terminals.Data.DB
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log.Error("Couldnt obtain protocol properties from database", exception);
+                    Logging.Log.Error("Couldn't obtain protocol properties from database", exception);
                     this.favorite.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(
                       this.favorite.Protocol, new RdpOptions());
                 }
@@ -195,7 +194,7 @@ namespace Terminals.Data.DB
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log.Error("Couldnt load image from database", exception);
+                    Logging.Log.Error("Couldn't load image from database", exception);
                 }
             }
 
@@ -215,7 +214,7 @@ namespace Terminals.Data.DB
             {
                 // release protocolProperties, icon, other detail properties, not loaded with Entity
                 this.protocolPropertiesLoaded = false;
-                // dont dispose, because there is may be shared default protocol icon, which is still in use
+                // don't dispose, because there is may be shared default protocol icon, which is still in use
                 this.favorite.toolBarIcon = null;
                 this.favorite.security = null; // it is enough, all other respect the security part 
             }

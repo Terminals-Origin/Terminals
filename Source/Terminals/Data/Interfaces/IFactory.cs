@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Terminals.Data
+﻿namespace Terminals.Data
 {
     /// <summary>
     /// Provides access to create persisted item from one place

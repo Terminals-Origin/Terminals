@@ -5,7 +5,7 @@ namespace Terminals.Data.DB
 {
     internal partial class CredentialSet : CredentialBase, ICredentialSet, IIntegerKeyEnityty
     {
-        // for backwrad compatibility with the file persistence only
+        // for backward compatibility with the file persistence only
         private Guid guid;
         
         internal Guid Guid

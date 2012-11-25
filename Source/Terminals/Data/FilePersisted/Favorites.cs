@@ -118,7 +118,7 @@ namespace Terminals.Data
 
         private List<IGroup> AddIntoMissingGroups(IFavorite favorite, List<IGroup> newGroups, List<IGroup> oldGroups)
         {
-            // First create new groups, which arent in persistence yet
+            // First create new groups, which aren't in persistence yet
             var addedGroups = this.groups.Add(newGroups);
             List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, oldGroups);
             AddIntoMissingGroups(favorite, missingGroups);

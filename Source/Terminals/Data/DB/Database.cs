@@ -12,7 +12,7 @@ namespace Terminals.Data.DB
     {
         internal void SaveImmediatelyIfRequested()
         {
-            // dont ask, save immediately. Here is no benefit to save in batch like in FilePersistence
+            // don't ask, save immediately. Here is no benefit to save in batch like in FilePersistence
             this.SaveChanges();
         }
 
@@ -86,7 +86,7 @@ namespace Terminals.Data.DB
 
         /// <summary>
         /// Attaches all item in entitiesToAttach to this context.
-        /// Does not check, if the enties are already in the context.
+        /// Does not check, if the entities are already in the context.
         /// </summary>
         /// <typeparam name="TEntity">Entity defined in this object context model</typeparam>
         /// <param name="entitiesToAttach">Not null collection of items from this model</param>
@@ -115,7 +115,7 @@ namespace Terminals.Data.DB
 
         /// <summary>
         /// Detaches all item in entitiesToDetach from this context.
-        /// Does not check, if the enties are in the context.
+        /// Does not check, if the entities are in the context.
         /// </summary>
         /// <typeparam name="TEntity">Entity defined in this object context model</typeparam>
         /// <param name="entitiesToDetach">Not null collection of items from this model

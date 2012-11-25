@@ -39,7 +39,7 @@
 
         public IGroup CreateGroup(string groupName)
         {
-            // call this constructor doesnt fire the group changed event
+            // call this constructor doesn't fire the group changed event
             Group createdGroup = new Group(groupName);
             createdGroup.AssignStores(this.groups, this.dispatcher, this.favorites);
             return createdGroup;

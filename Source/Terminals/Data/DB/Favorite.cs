@@ -27,7 +27,7 @@ namespace Terminals.Data.DB
         /// </summary>
         private ProtocolOptions protocolProperties;
 
-        // for backwrad compatibility with the file persistence only
+        // for backward compatibility with the file persistence only
         private Guid guid;
 
         internal Guid Guid
@@ -90,8 +90,8 @@ namespace Terminals.Data.DB
         }
 
         /// <summary>
-        /// Gets or sets the protocol specific container. This isnt a part of an entity,
-        /// because we are using lazy loading of this property and we dont want to cache
+        /// Gets or sets the protocol specific container. This isn't a part of an entity,
+        /// because we are using lazy loading of this property and we don't want to cache
         /// its xml persisted content.
         /// </summary>
         public ProtocolOptions ProtocolProperties
@@ -109,7 +109,7 @@ namespace Terminals.Data.DB
 
         /// <summary>
         /// Gets empty string. Set loads the image from file and updates the icon reference in database.
-        /// The string get/set image file path to import/export favorite icon isnt supported in database persistence.
+        /// The string get/set image file path to import/export favorite icon isn't supported in database persistence.
         /// </summary>
         public string ToolBarIconFile
         {
@@ -148,7 +148,7 @@ namespace Terminals.Data.DB
 
         /// <summary>
         /// Initializes new instance of a favorite and sets its properties to default values,
-        /// which arent defined by database.
+        /// which aren't defined by database.
         /// </summary>
         public Favorite()
         {
@@ -181,12 +181,12 @@ namespace Terminals.Data.DB
 
         private void UpdateFrom(Favorite source)
         {
-            // force load first to fill the content, otherwise we dont have to able to copy
+            // force load first to fill the content, otherwise we don't have to able to copy
             this.details.Load();
             source.details.Load();
 
             this.DesktopShare = source.DesktopShare;
-            // we cand copy the fields, because they are also dependent on the favorite Id
+            // we cant copy the fields, because they are also dependent on the favorite Id
             this.display.UpdateFrom(source.display);
             this.executeBeforeConnect.UpdateFrom(source.executeBeforeConnect);
             this.Name = source.Name;
@@ -197,7 +197,7 @@ namespace Terminals.Data.DB
             this.security.UpdateFrom(source.security);
             this.ServerName = source.ServerName;
             this.toolBarIcon = source.ToolBarIconImage;
-            // protocolProperties dont have a favorite Id reference, so we can overwrite complete content
+            // protocolProperties don't have a favorite Id reference, so we can overwrite complete content
             this.protocolProperties = source.protocolProperties.Copy();
             this.AssignStores(source.groups, source.credentials, source.persistenceSecurity);
         }
@@ -237,7 +237,7 @@ namespace Terminals.Data.DB
         private List<IGroup> GetInvariantGroups()
         {
             // see also the Group.Favorites
-            // prefere to select cached items, instead of selecting from database directly
+            // prefer to select cached items, instead of selecting from database directly
             return this.groups.GetGroupsContainingFavorite(this.Id)
                 .Cast<IGroup>()
                 .ToList();

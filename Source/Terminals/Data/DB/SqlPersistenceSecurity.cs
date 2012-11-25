@@ -4,7 +4,7 @@ using Terminals.Security;
 namespace Terminals.Data.DB
 {
     /// <summary>
-    /// Distinquish between the application masterpassword and persistence masterpassword.
+    /// Distinguish between the application master password and persistence master password.
     /// Used only by SqlPersistence. 
     /// </summary>
     internal class SqlPersistenceSecurity : PersistenceSecurity

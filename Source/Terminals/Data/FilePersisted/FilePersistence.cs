@@ -66,7 +66,7 @@ namespace Terminals.Data
         {}
 
         /// <summary>
-        /// Try to reuse current security in case of changing peristence, because user is already authenticated
+        /// Try to reuse current security in case of changing persistence, because user is already authenticated
         /// </summary>
         internal FilePersistence(PersistenceSecurity security)
         {
@@ -102,7 +102,7 @@ namespace Terminals.Data
             // than send the favorite update also for present favorites
             IList<IGroup> updated = this.UpdateFavoritesInGroups(file.FavoritesInGroups);
             this.Dispatcher.ReportGroupsUpdated(updated);
-            // Simple update without ensuring, if the favorite was changes or not - possible porformance issue);
+            // Simple update without ensuring, if the favorite was changes or not - possible performance issue);
             this.Dispatcher.ReportFavoritesUpdated(new List<IFavorite>(this.favorites));
         }
 
@@ -160,7 +160,7 @@ namespace Terminals.Data
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("File peristance was unable to load Favorites.xml", exception);
+                Logging.Log.Error("File persistence was unable to load Favorites.xml", exception);
                 return new FavoritesFile();
             }
             finally
@@ -248,7 +248,7 @@ namespace Terminals.Data
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("File peristance was unable to save Favorites.xml", exception);
+                Logging.Log.Error("File persistence was unable to save Favorites.xml", exception);
             }
             finally
             {

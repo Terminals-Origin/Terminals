@@ -7,12 +7,12 @@ using System.Timers;
 namespace Terminals.Data.DB
 {
     /// <summary>
-    /// SQL Database store using Entity framework. All parts use Disconected entities.
+    /// SQL Database store using Entity framework. All parts use Disconnected entities.
     /// </summary>
     internal class SqlPersistence : IPersistence, IPersistedSecurity
     {
         /// <summary>
-        /// periodicaly download latest changes
+        /// periodical download of latest changes
         /// </summary>
         private Timer reLoadClock;
 
@@ -57,7 +57,7 @@ namespace Terminals.Data.DB
 
         public void SaveAndFinishDelayedUpdate()
         {
-            // nothing to save, because changes are already commited by each operation
+            // nothing to save, because changes are already committed by each operation
             Database.CloseConneciton();
             this.Dispatcher.EndDelayedUpdate();
         }
@@ -84,28 +84,28 @@ namespace Terminals.Data.DB
                 return true;
             }
 
-            Logging.Log.Fatal("SQL Perstance layer failed to load. Fall back to File persistence");
+            Logging.Log.Fatal("SQL Persistence layer failed to load. Fall back to File persistence");
             Persistence.FallBackToPrimaryPersistence(this.Security);
             return false;
         }
 
         public void UpdatePasswordsByNewMasterPassword(string newMasterPassword)
         {
-            // nothing to do here, the application master password doesnt affect the database
+            // nothing to do here, the application master password doesn't affect the database
         }
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
         {
             this.reLoadClock = new Timer();
             this.reLoadClock.Interval = 2000;
-            // this forces the clock to run the updates in gui thread, because Entity framework isnt thread safe
+            // this forces the clock to run the updates in gui thread, because Entity framework isn't thread safe
             this.reLoadClock.SynchronizingObject = synchronizer;
             this.reLoadClock.Elapsed += new ElapsedEventHandler(this.OnReLoadClockElapsed);
             // this.reLoadClock.Start();
         }
 
         /// <summary>
-        /// Wery simple refresh of all already cached items.
+        /// Fire simple refresh of all already cached items.
         /// </summary>
         private void OnReLoadClockElapsed(object sender, ElapsedEventArgs e)
         {
@@ -115,7 +115,7 @@ namespace Terminals.Data.DB
             this.groups.RefreshCache();
             this.favorites.RefreshCache();
             this.credentials.RefreshCache();
-            // nothing to update in History: possible changes are only for today, and that day item isnt cached
+            // nothing to update in History: possible changes are only for today, and that day item isn't cached
 
             Debug.WriteLine("Updating entities at {0} [{1} ms]", DateTime.Now, clock.ElapsedMilliseconds);
             //this.reLoadClock.Start();

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Terminals.Data
 {
     /// <summary>
-    /// Set of connection favorites used in simillar meaning like directories in operation system.
+    /// Set of connection favorites used in similar meaning like directories in operation system.
     /// Allows logical organization of favorites.
     /// </summary>
     internal interface IGroup : IStoreIdEquals<IGroup>
     {
         /// <summary>
         /// Gets or sets the group in which this group is listed.
-        /// By default empty, which means, that it isnt listed no where 
+        /// By default empty, which means, that it isn't listed no where 
         /// and will appear as one of root folders in first level of favorites tree.
         /// </summary>
         IGroup Parent { get; set; }
@@ -45,7 +44,7 @@ namespace Terminals.Data
         /// Removes required favorite from set of favorites. If there is no favorite with the same Id,
         /// than nothing happens.
         /// </summary>
-        /// <param name="favorite">Not null instance to remove. This instance doesnt have to be peristed</param>
+        /// <param name="favorite">Not null instance to remove. This instance doesn't have to be persisted</param>
         void RemoveFavorite(IFavorite favorite);
 
         /// <summary>

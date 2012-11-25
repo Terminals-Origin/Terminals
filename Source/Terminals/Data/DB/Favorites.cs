@@ -187,7 +187,7 @@ namespace Terminals.Data.DB
 
         private void DeleteFavoritesFromDatabase(Database database, List<Favorite> favorites)
         {
-            // we dont have to attache the details, because they will be deleted by reference constraints
+            // we don't have to attach the details, because they will be deleted by reference constraints
             database.AttachAll(favorites);
             DeleteAllFromDatabase(database, favorites);
         }
@@ -292,7 +292,7 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                // to list because Linq to entities allowes only cast to primitive types
+                // to list because Linq to entities allows only cast to primitive types
                 List<Favorite> favorites = database.Favorites.ToList();
                 database.DetachAll(favorites);
                 favorites.ForEach(candidate => candidate.AssignStores(this.groups, this.credentials, this.persistenceSecurity));
@@ -307,7 +307,7 @@ namespace Terminals.Data.DB
                 if (toRefresh != null)
                     database.AttachAll(toRefresh);
 
-                // to list because Linq to entities allowes only cast to primitive types
+                // to list because Linq to entities allows only cast to primitive types
                 database.Refresh(RefreshMode.StoreWins, database.Favorites);
                 List<Favorite> favorites = database.Favorites.ToList();
                 database.DetachAll(favorites);

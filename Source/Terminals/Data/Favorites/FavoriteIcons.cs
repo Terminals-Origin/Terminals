@@ -13,7 +13,7 @@ namespace Terminals.Data
     internal static class FavoriteIcons
     {
         /// <summary>
-        /// Gets empty bytes arrray used as empty not assigned image data.
+        /// Gets empty bytes array used as empty not assigned image data.
         /// </summary>
         internal static byte[] EmptyImageData
         {

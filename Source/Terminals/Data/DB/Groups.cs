@@ -29,7 +29,7 @@ namespace Terminals.Data.DB
         }
 
         /// <summary>
-        /// Gets cached item by tis database unique identifier
+        /// Gets cached item by its database unique identifier
         /// </summary>
         internal Group this[int id]
         {
@@ -76,7 +76,7 @@ namespace Terminals.Data.DB
 
         internal List<IGroup> AddToDatabase(Database database, List<IGroup> groups)
         {
-            // not added groups dont have an identifier obtained from database
+            // not added groups don't have an identifier obtained from database
             List<IGroup> added = groups.Where(candidate => ((Group)candidate).Id == 0).ToList();
             AddAllToDatabase(database, added);
             List<Group> toAttach = groups.Where(candidate => ((Group)candidate).Id != 0).Cast<Group>().ToList();
@@ -117,8 +117,8 @@ namespace Terminals.Data.DB
         }
 
         /// <summary>
-        /// Call this method after the changes were commited into database, 
-        /// to let the cache in last state as long as possible and ensure, that the commit didnt fail.
+        /// Call this method after the changes were committed into database, 
+        /// to let the cache in last state as long as possible and ensure, that the commit didn't fail.
         /// </summary>
         internal List<IGroup> DeleteFromCache(List<Group> emptyGroups)
         {
@@ -127,7 +127,7 @@ namespace Terminals.Data.DB
         }
 
         /// <summary>
-        /// Doesnt remove them from cache, only fro database
+        /// Doesn't remove them from cache, only fro database
         /// </summary>
         internal List<Group> DeleteEmptyGroupsFromDatabase(Database database)
         {

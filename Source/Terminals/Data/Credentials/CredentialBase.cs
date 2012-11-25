@@ -15,7 +15,7 @@ namespace Terminals.Data
         public string EncryptedPassword { get; set; }
 
         /// <summary>
-        /// Gets or sets the password String in not ecrypted form
+        /// Gets or sets the password String in not encrypted form
         /// </summary>
         [XmlIgnore]
         String ICredentialBase.Password

@@ -35,7 +35,7 @@ namespace Terminals.Data
         }
 
         /// <summary>
-        /// Because filewatcher is created before the main form,
+        /// Because file watcher is created before the main form,
         /// the synchronization object has to be assigned later.
         /// This lets to fire the file system watcher events in GUI thread. 
         /// </summary>

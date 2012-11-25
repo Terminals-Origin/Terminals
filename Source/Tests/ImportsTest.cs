@@ -19,7 +19,7 @@ namespace Tests
 
         public TestContext TestContext { get; set; }
 
-        // folowing functions simulate the answer usualy provided by user in UI
+        // following functions simulate the answer usually provided by user in UI
         private readonly Func<int, DialogResult> rename = itemsCount => DialogResult.Yes;
         private readonly Func<int, DialogResult> overwrite = itemsCount => DialogResult.No;
 
@@ -52,7 +52,7 @@ namespace Tests
         }
 
         /// <summary>
-        /// Tries to import duplict items into the file persistence renaming duplicit items
+        /// Tries to import duplicate items into the file persistence renaming duplicate items
         ///</summary>
         [TestMethod]
         public void ImportRenamingDuplicitFavoritesTest()
@@ -61,7 +61,7 @@ namespace Tests
         }
 
         /// <summary>
-        /// Tries to import duplict items into the file persistence overwriting duplicit items
+        /// Tries to import duplicate items into the file persistence overwriting duplicate items
         ///</summary>
         [TestMethod]
         public void ImportOverwritingDuplicitFavoritesTest()
@@ -77,14 +77,14 @@ namespace Tests
             // 887 obtained by manual check of the xml elements
             Assert.AreEqual(887, toImport.Count, "Some items from Import file were not identified");
             object result = this.InvokeTheImport(toImport, strategy);
-            Assert.AreEqual(true, result, "Import wasnt successfull");
+            Assert.AreEqual(true, result, "Import wasn't successful");
             int expected = ExpectedFavoritesCount(toImport);
-            Assert.AreEqual(expected, PersistenceFavoritesCount, "Imported favorites count doesnt match.");
+            Assert.AreEqual(expected, PersistenceFavoritesCount, "Imported favorites count doesn't match.");
             this.InvokeTheImport(toImport, strategy);
             Assert.AreEqual(expected * expectedSecondImportCount, PersistenceFavoritesCount,
-                "Imported favorites count doesnt match after second import");
+                "Imported favorites count doesn't match after second import");
             int expectedGroups = Persistence.Instance.Groups.Count();
-            Assert.AreEqual(expectedGroups, ImportedGroupsCount, "Imported groups count doesnt match.");
+            Assert.AreEqual(expectedGroups, ImportedGroupsCount, "Imported groups count doesn't match.");
         }
 
         private object InvokeTheImport(List<FavoriteConfigurationElement> toImport, Func<int, DialogResult> strategy)
