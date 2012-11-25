@@ -31,7 +31,7 @@ namespace Terminals
         //MAJOR.MINOR.PATCH.BUILD
         //MAJOR == Breaking Changes in API or features
         //MINOR == Non breaking changes, but significant feature changes
-        //PATH (Or Revision) == Bug fixs only, etc...
+        //PATH (Or Revision) == Bug fixes only, etc...
         //BUILD == Build increments
         //
         //Incremental builds, daily, etc will include full M.M.P.B
@@ -142,12 +142,12 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Logging.Log.Fatal("Main Form Execption", exc);
+                Logging.Log.Fatal("Main Form Exception", exc);
             }
         }
 
         /// <summary>
-        /// dump out commong/useful debugging data at app start
+        /// dump out common/useful debugging data at app start
         /// </summary>
         private static void LogGeneralProperties() 
         {

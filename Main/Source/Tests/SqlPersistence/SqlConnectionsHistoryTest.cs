@@ -35,26 +35,26 @@ namespace Tests
             this.ClearTestLab();
         }
 
-        [Description("If this test failes, the reason may be the delay to the database server.")]
+        [Description("If this test fails, the reason may be the delay to the database server.")]
         [TestMethod]
         public void HistoryTest()
         {
             Favorite favorite = this.AddFavoriteToPrimaryPersistence();
 
-            // thats not a mystake, we want to check, if two fast tryes are ignored,
-            // but it may fail, if the response from the server doesnt reflect our requirement
+            // that's not a mistake, we want to check, if two fast tries are ignored,
+            // but it may fail, if the response from the server doesn't reflect our requirement
             // todo make this test 100% successful
             PrimaryHistory.RecordHistoryItem(favorite);
             PrimaryHistory.RecordHistoryItem(favorite);
             var expectedCount = this.GetExpectedHistoryCount();
 
-            Assert.AreEqual(2, historyRecordedCount, "Recorded history wasnt reported");
-            // to preserve duplicit times, when creating new entry in database, only one should be recorded
-            Assert.AreEqual(1, expectedCount, "History wasnt stored into database");
+            Assert.AreEqual(2, historyRecordedCount, "Recorded history wasn't reported");
+            // to preserve duplicate times, when creating new entry in database, only one should be recorded
+            Assert.AreEqual(1, expectedCount, "History wasn't stored into database");
 
             this.PrimaryFavorites.Delete(favorite);
             var expectedCountAfter = this.GetExpectedHistoryCount();
-            Assert.AreEqual(0, expectedCountAfter, "Favorite history wasnt deleted from database");
+            Assert.AreEqual(0, expectedCountAfter, "Favorite history wasn't deleted from database");
         }
 
         private int GetExpectedHistoryCount()

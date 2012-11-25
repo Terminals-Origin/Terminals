@@ -1,18 +1,15 @@
-﻿using System;
-using Terminals.Connections;
-
-namespace Terminals.Data
+﻿namespace Terminals.Data
 {
     /// <summary>
     /// Converts favorites from data model used in version 1.X (FavoriteConfigurationElement)
-    /// to the model used in verison 2.0 (Favorite).
-    /// Temoporary used also to suport imports and export using old data model, 
+    /// to the model used in version 2.0 (Favorite).
+    /// Temporary used also to support imports and export using old data model, 
     /// before they will be updated.
     /// </summary>
     internal static class ModelConverterV1ToV2
     {
         /// <summary>
-        /// Doesnt convert Tags to groups, it has to be handled manualy, 
+        /// Doesn't convert Tags to groups, it has to be handled manually, 
         /// when adding Favorite into Persistence
         /// </summary>
         internal static IFavorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite)

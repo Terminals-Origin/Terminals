@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 namespace Terminals.Data
 {
     /// <summary>
-    /// Base user authentication values. These are used when ever stored password si required.
+    /// Base user authentication values. These are used when ever stored password is required.
     /// </summary>
     internal interface ICredentialBase
     {

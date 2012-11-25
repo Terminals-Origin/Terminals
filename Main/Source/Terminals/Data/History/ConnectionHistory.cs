@@ -21,7 +21,7 @@ namespace Terminals.History
         public event HistoryRecorded OnHistoryRecorded;
 
         /// <summary>
-        /// Prevent concurent updates on History file by another program
+        /// Prevent concurrent updates on History file by another program
         /// </summary>
         private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.History");
 
@@ -36,7 +36,7 @@ namespace Terminals.History
 
         private void OnFileChanged(object sender, EventArgs e)
         {
-            // dont need locking here, because only today is updated adding new items
+            // don't need locking here, because only today is updated adding new items
             SortableList<IFavorite> oldTodays = GetOldTodaysHistory();
             LoadHistory(null);
             List<IFavorite> newTodays = MergeWithNewTodays(oldTodays);
@@ -63,7 +63,7 @@ namespace Terminals.History
         }
 
         /// <summary>
-        /// Because filewatcher is created before the main form in GUI thread.
+        /// Because file watcher is created before the main form in GUI thread.
         /// This lets to fire the file system watcher events in GUI thread. 
         /// </summary>
         internal void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)

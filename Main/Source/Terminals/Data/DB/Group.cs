@@ -7,7 +7,7 @@ namespace Terminals.Data.DB
     {
         private IGroup parent;
         /// <summary>
-        /// Gets or sets the virtual unique identifer. This isnt used, because of internal database identifier.
+        /// Gets or sets the virtual unique identifier. This isn't used, because of internal database identifier.
         /// Only for compatibility with file persistence.
         /// </summary>
         public IGroup Parent
@@ -34,7 +34,7 @@ namespace Terminals.Data.DB
                 this.CacheFavoriteIds();
 
                 // List<Favorite> recent = this.Favorites.ToList();
-                // prefere to select cached items, instead of selecting from database directly
+                // prefer to select cached items, instead of selecting from database directly
                 List<Favorite> selected = this.favorites.Cached
                     .Where(candidate => favoriteIds.Contains(candidate.Id))
                     .ToList();
@@ -48,7 +48,7 @@ namespace Terminals.Data.DB
         private Groups groups;
 
         /// <summary>
-        /// Gets or sets its associated eventing container. Used to report favorite in group memebership changes.
+        /// Gets or sets its associated eventing container. Used to report favorite in group membership changes.
         /// </summary>
         private DataDispatcher dispatcher;
 
@@ -96,7 +96,7 @@ namespace Terminals.Data.DB
             {
                 database.Attach(this);
                 this.ParentGroupReference.Load();
-                // pick up the item from cache instead of temporar connection to use only cached items
+                // pick up the item from cache instead of temporal connection to use only cached items
                 // groups should be already loaded, because this Group was also resolved from cache
                 int parentGroupId = this.ParentGroup != null ? this.ParentGroup.Id : -1;
                 this.parent = this.groups[parentGroupId];

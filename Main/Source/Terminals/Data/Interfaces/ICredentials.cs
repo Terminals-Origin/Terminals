@@ -9,7 +9,7 @@ namespace Terminals.Data
     internal interface ICredentials : IEnumerable<ICredentialSet>
     {
         /// <summary>
-        /// Informes all lisseners, that credentials collection was changed.
+        /// Informs all listeners, that credentials collection was changed.
         /// </summary>
         event EventHandler CredentialsChanged;
 

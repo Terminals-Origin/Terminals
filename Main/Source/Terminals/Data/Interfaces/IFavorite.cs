@@ -28,7 +28,7 @@ namespace Terminals.Data
 
         /// <summary>
         /// Gets or sets positive number in range 0 - 65535
-        /// of port on which server service defined by protocol is lissening.
+        /// of port on which server service defined by protocol is listening.
         /// </summary>
         Int32 Port { get; set; }
 
@@ -49,7 +49,7 @@ namespace Terminals.Data
         Image ToolBarIconImage { get; }
 
         /// <summary>
-        /// Gets or sets the flag identifiyng, if the connection should be opened in new window or in TabControl.
+        /// Gets or sets the flag identifying, if the connection should be opened in new window or in TabControl.
         /// False by default.
         /// </summary>
         Boolean NewWindow { get; set; }
@@ -60,7 +60,7 @@ namespace Terminals.Data
 
         /// <summary>
         /// Gets collection of groups, where this favorite appears. 
-        /// This is navigation property only and shouldnt be used for changes.
+        /// This is navigation property only and shouldn't be used for changes.
         /// </summary>
         List<IGroup> Groups { get; }
 
@@ -74,31 +74,31 @@ namespace Terminals.Data
         IBeforeConnectExecuteOptions ExecuteBeforeConnect { get; }
 
         /// <summary>
-        /// Depending on selected protocol, this should contian the protocol detailed options.
+        /// Depending on selected protocol, this should contain the protocol detailed options.
         /// Because default protocol is RDP, also this properties are RdpOptions by default.
         /// This property should be always updated by changing Protocol property value
         /// </summary>
         ProtocolOptions ProtocolProperties { get; set; }
 
         /// <summary>
-        /// Creates new deep copy of this instance. The only property which isnt copied is Id.
+        /// Creates new deep copy of this instance. The only property which isn't copied is Id.
         /// </summary>
         /// <returns>Not null newly created copy of this instance</returns>
         IFavorite Copy();
 
         /// <summary>
-        /// Updates this instance from source instance using deep copy. The only property which isnt updated is Id.
+        /// Updates this instance from source instance using deep copy. The only property which isn't updated is Id.
         /// </summary>
         /// <param name="source">Not null item, which properties should be use to update this instance</param>
         void UpdateFrom(IFavorite source);
 
         /// <summary>
-        /// Gets label, which represents this instance detail informations.
+        /// Gets label, which represents this instance detail information.
         /// </summary>
         string GetToolTipText();
 
         /// <summary>
-        /// Returns text compareto method values selecting property to compare
+        /// Returns text compare to method values selecting property to compare
         /// depending on Settings default sort property value
         /// </summary>
         /// <param name="target">not null favorite to compare with</param>

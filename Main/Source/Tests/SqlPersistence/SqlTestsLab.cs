@@ -7,7 +7,7 @@ using Favorite = Terminals.Data.DB.Favorite;
 namespace Tests
 {
     /// <summary>
-    /// Shared configured store used by all SQL peristance tests
+    /// Shared configured store used by all SQL persistence tests
     /// </summary>
     public class SqlTestsLab
     {
@@ -42,7 +42,7 @@ namespace Tests
         internal IFactory PrimaryFactory { get { return this.PrimaryPersistence.Factory; } }
 
         /// <summary>
-        /// Initialzes data connectors on beginning of each test.
+        /// Initializes data connectors on beginning of each test.
         /// </summary>
         protected void InitializeTestLab()
         {
@@ -58,7 +58,7 @@ namespace Tests
             this.SecondaryPersistence = new SqlPersistence();
             this.SecondaryPersistence.Initialize();
             
-            ClearTestLab(); // because of failed previos tests
+            ClearTestLab(); // because of failed previous tests
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Tests
 
         /// <summary>
         /// Creates new test favorite using primary persistence. Returns this newly created instance.
-        /// Doesnt add it to the persistence.
+        /// Doesn't add it to the persistence.
         /// </summary>
         internal Favorite CreateTestFavorite()
         {
@@ -106,7 +106,7 @@ namespace Tests
         }
 
         /// <summary>
-        /// Creates test favorite and adds it to the primary peristence.
+        /// Creates test favorite and adds it to the primary persistence.
         /// Returns newly created favorite
         /// </summary>
         internal Favorite AddFavoriteToPrimaryPersistence()

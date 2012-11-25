@@ -14,7 +14,7 @@ namespace Terminals.Data
         event HistoryRecorded OnHistoryRecorded;
 
         /// <summary>
-        /// Gets not null distinct collecion of favorites, which were visited in selected time interval
+        /// Gets not null distinct collection of favorites, which were visited in selected time interval
         /// represented by historyDateKey. Keys can be found in ConnectionHistory as constants.
         /// </summary>
         /// <param name="historyDateKey">One of time interval constants</param>

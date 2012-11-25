@@ -5,7 +5,7 @@ using System.Linq;
 namespace Terminals.Data
 {
     /// <summary>
-    /// Infroms about changes in Tags collection
+    /// Informs about changes in Tags collection
     /// </summary>
     /// <param name="args">Not null container reporting removed and added Tags</param>
     internal delegate void GroupsChangedEventHandler(GroupsChangedArgs args);
@@ -17,7 +17,7 @@ namespace Terminals.Data
     internal delegate void FavoritesChangedEventHandler(FavoritesChangedEventArgs args);
 
     /// <summary>
-    /// Central point, which distributes informations about changes in Tags and Favorites collections
+    /// Central point, which distributes information about changes in Tags and Favorites collections
     /// </summary>
     internal sealed class DataDispatcher
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using Terminals.Connections;
 
@@ -64,8 +65,9 @@ namespace Terminals.Data
                 string portName = ConnectionManager.GetPortName(port, true);
                 return string.Format("{0}_{1}", name, portName);
             }
-            catch //lets not log dns lookups!
+            catch // don't log dns lookups!
             {
+                Debug.WriteLine("Unable to resolve '{0}' host name.", server);
                 return name;
             }
         }
@@ -73,17 +75,17 @@ namespace Terminals.Data
 
         /// <summary>
         /// Gets persisted favorite, if there is a favorite named by server parameter.
-        /// If no favorite is found creates new favorite, which is configured by paramter properties
+        /// If no favorite is found creates new favorite, which is configured by parameter properties
         /// and point to RDP server.
         /// </summary>
         /// <param name="server">the RDP server name</param>
         /// <param name="connectToConsole">Flag used for ConnectToConsole RDP option</param>
-        /// <param name="port">Number of port, which RDP service is lisening on server "server"</param>
+        /// <param name="port">Number of port, which RDP service is listening on server "server"</param>
         internal static IFavorite GetOrCreateQuickConnectFavorite(String server,
             Boolean connectToConsole, Int32 port)
         {
             IFavorite favorite = PersistedFavorites[server];
-            if (favorite == null) //create a temporaty favorite and connect to it
+            if (favorite == null) //create a temporary favorite and connect to it
             {
                 favorite = PersistenceFactory.CreateFavorite();
                 favorite.ServerName = server;

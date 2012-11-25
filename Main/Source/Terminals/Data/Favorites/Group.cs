@@ -13,23 +13,23 @@ namespace Terminals.Data
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets its associated groups container. Used to resolve accociated groups membership.
+        /// Gets or sets its associated groups container. Used to resolve associated groups membership.
         /// </summary>
         private Groups groups;
 
         /// <summary>
-        /// Gets or sets its associated eventing container. Used to report favorite in group memebership changes.
+        /// Gets or sets its associated eventing container. Used to report favorite in group membership changes.
         /// </summary>
         private DataDispatcher dispatcher;
 
         /// <summary>
-        /// By default set to Guid.Empty, which means no parrent
+        /// By default set to Guid.Empty, which means no parent
         /// </summary>
         public Guid Parent { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier of group in which this group is listed.
-        /// By default set to null, which means, that it isnt listed no where 
+        /// By default set to null, which means, that it isn't listed no where 
         /// and will appear as one of root folders in first level of favorites tree.
         /// </summary>
         IGroup IGroup.Parent
@@ -69,7 +69,7 @@ namespace Terminals.Data
         }
 
         /// <summary>
-        /// Default parameterless constructor required by serialization
+        /// Default parameter less constructor required by serialization
         /// </summary>
         public Group()
             : this(new Dictionary<Guid, IFavorite>())

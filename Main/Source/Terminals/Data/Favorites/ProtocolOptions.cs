@@ -3,7 +3,7 @@
 namespace Terminals.Data
 {
     /// <summary>
-    /// Used as "clonable" in favorite protocol properties
+    /// Used as "clone able" in favorite protocol properties
     /// </summary>
     [Serializable]
     public abstract class ProtocolOptions

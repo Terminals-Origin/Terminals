@@ -6,7 +6,7 @@ namespace Terminals.Data
 {
     /// <summary>
     /// Provides persistence authentication and manipulations with master password.
-    /// Doesnt distinquish between application and persistence masterpassword.
+    /// Doesn't distinguish between application and persistence master password.
     /// </summary>
     internal class PersistenceSecurity
     {

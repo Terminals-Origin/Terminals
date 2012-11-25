@@ -6,7 +6,7 @@ namespace Terminals.Data
 {
     /// <summary>
     /// Represents one favorite touch when trying connect to its server.
-    /// Stored is time stamp and user who accessed it. Usefull for access audits.
+    /// Stored is time stamp and user who accessed it. Useful for access audits.
     /// </summary>
     [Serializable]
     public class HistoryItem : IHistoryItem
@@ -23,7 +23,7 @@ namespace Terminals.Data
 
         /// <summary>
         /// Gets or sets the user security Id in text form. Null by default or in case of local account.
-        /// Usefull for application data share in domain environment.
+        /// Useful for application data share in domain environment.
         /// http://stackoverflow.com/questions/1140528/what-is-the-maximum-length-of-a-sid-in-sddl-format
         /// </summary>
         public string UserSid { get; set; }
@@ -47,9 +47,9 @@ namespace Terminals.Data
         IFavorite IHistoryItem.Favorite { get; set; }
 
         /// <summary>
-        /// Assignes current user security id to it, if the user account is domain.
-        /// For local user accaunt this value isnt set to preserver file persistence space,
-        /// because all istory items than have the same value.
+        /// Assigns current user security id to it, if the user account is domain.
+        /// For local user account this value isn't set to preserver file persistence space,
+        /// because all history items than have the same value.
         /// </summary>
         void IHistoryItem.AssignCurentUser()
         {

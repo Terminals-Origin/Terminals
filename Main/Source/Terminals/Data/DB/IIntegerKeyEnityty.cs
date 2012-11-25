@@ -6,7 +6,7 @@ namespace Terminals.Data.DB
     internal interface IIntegerKeyEnityty
     {
         /// <summary>
-        /// Gets unique identifer of an entity to distinguish entities in cache
+        /// Gets unique identifier of an entity to distinguish entities in cache
         /// </summary>
         int Id { get; }
     }

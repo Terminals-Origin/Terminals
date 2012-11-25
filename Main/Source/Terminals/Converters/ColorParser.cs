@@ -4,7 +4,7 @@ using System.Drawing;
 namespace Terminals.Converters
 {
     /// <summary>
-    /// Encapsulates Color text representaion conversions
+    /// Encapsulates Color text representation conversions
     /// </summary>
     internal static class ColorParser
     {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Terminals.Data.DB
+﻿namespace Terminals.Data.DB
 {
     internal partial class DisplayOptions : IDisplayOptions
     {

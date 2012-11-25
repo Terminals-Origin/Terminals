@@ -6,7 +6,7 @@ using System.Linq;
 namespace Terminals.Data.DB
 {
     /// <summary>
-    /// SQL database implementation of managing credentails
+    /// SQL database implementation of managing credentials
     /// </summary>
     internal class StoredCredentials : ICredentials
     {
@@ -115,7 +115,7 @@ namespace Terminals.Data.DB
 
         public void Save()
         {
-            // todo check, if the Updated credentails are commited to the database properly
+            // todo check, if the Updated credentials are committed to the database properly
             // nothing to do
         }
 

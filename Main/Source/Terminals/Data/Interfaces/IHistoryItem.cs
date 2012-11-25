@@ -5,7 +5,7 @@ namespace Terminals.Data
 {
     /// <summary>
     /// Represents one favorite touch when trying connect to its server.
-    /// Stored is time stamp and user who accessed it. Usefull for access audits.
+    /// Stored is time stamp and user who accessed it. Useful for access audits.
     /// </summary>
     internal interface IHistoryItem
     {
@@ -27,9 +27,9 @@ namespace Terminals.Data
         IFavorite Favorite { get; set; }
 
         /// <summary>
-        /// Assignes current user security id to it, if the user account is domain.
-        /// For local user accaunt this value isnt set to preserver file persistence space,
-        /// because all istory items than have the same value.
+        /// Assigns current user security id to it, if the user account is domain.
+        /// For local user account this value isn't set to preserver file persistence space,
+        /// because all history items than have the same value.
         /// </summary>
         void AssignCurentUser();
     }

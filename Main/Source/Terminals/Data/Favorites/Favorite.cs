@@ -28,7 +28,7 @@ namespace Terminals.Data
         }
 
         /// <summary>
-        /// Gets or sets its associated groups container. Used to resolve accociated groups membership.
+        /// Gets or sets its associated groups container. Used to resolve associated groups membership.
         /// </summary>
         internal Groups Groups { get; set; }
 
@@ -36,7 +36,7 @@ namespace Terminals.Data
 
         /// <summary>
         /// Only to identify groups containing this favorite. Manipulating this property 
-        /// has no efect in persistence layer
+        /// has no effect in persistence layer
         /// </summary>
         [XmlIgnore]
         List<IGroup> IFavorite.Groups
@@ -69,7 +69,7 @@ namespace Terminals.Data
 
         private SecurityOptions security = new SecurityOptions();
         /// <summary>
-        /// Gets or sets the user credits. Only for serialization puroposes.
+        /// Gets or sets the user credits. Only for serialization purposes.
         /// General access is done by interface property
         /// </summary>
         public SecurityOptions Security
@@ -154,9 +154,9 @@ namespace Terminals.Data
 
         private ProtocolOptions protocolProperties = new RdpOptions();
         /// <summary>
-        /// Depending on selected protocol, this should contian the protocol detailed options.
+        /// Depending on selected protocol, this should contain the protocol detailed options.
         /// Because default protocol is RDP, also this properties are RdpOptions by default.
-        /// This property should be never null, use EmptyProperties to provide in not necesary case.
+        /// This property should be never null, use EmptyProperties to provide in not necessary case.
         /// </summary>
         [XmlElement(typeof(RdpOptions))]
         [XmlElement(typeof(VncOptions))]
@@ -177,7 +177,7 @@ namespace Terminals.Data
         /// </summary>
         internal static ProtocolOptions UpdateProtocolPropertiesByProtocol(string newProtocol, ProtocolOptions currentOptions)
         {
-            switch (newProtocol) // Dont call this in property setter, because of serializer
+            switch (newProtocol) // Don't call this in property setter, because of serializer
             {
                 case ConnectionManager.VNC:
                     return SwitchPropertiesIfNotTheSameType<VncOptions>(currentOptions);
@@ -202,7 +202,7 @@ namespace Terminals.Data
         private static ProtocolOptions SwitchPropertiesIfNotTheSameType<TOptions>(ProtocolOptions currentOptions)
             where TOptions: ProtocolOptions
         {
-            if (!(currentOptions is TOptions)) // prevent to reset proeprties
+            if (!(currentOptions is TOptions)) // prevent to reset properties
                 return Activator.CreateInstance<TOptions>();
 
             return currentOptions;
@@ -297,7 +297,7 @@ namespace Terminals.Data
         }
 
         /// <summary>
-        /// Creates new favorite filled by properties of this favorite exept Id and Groups.
+        /// Creates new favorite filled by properties of this favorite except Id and Groups.
         /// </summary>
         IFavorite IFavorite.Copy()
         {
@@ -334,7 +334,7 @@ namespace Terminals.Data
         }
 
         /// <summary>
-        /// Returns text compareto method values selecting property to compare
+        /// Returns text compare to method values selecting property to compare
         /// depending on Settings default sort property value
         /// </summary>
         /// <param name="target">not null favorite to compare with</param>
@@ -360,7 +360,7 @@ namespace Terminals.Data
         }
 
         /// <summary>
-        /// Replaces stored password by new one created from newKeyMaterial in underlaying store.
+        /// Replaces stored password by new one created from newKeyMaterial in underlying store.
         /// </summary>
         /// <param name="newKeyMaterial">New shared key used to encrypt passwords in the store</param>
         internal void UpdatePasswordsByNewKeyMaterial(string newKeyMaterial)

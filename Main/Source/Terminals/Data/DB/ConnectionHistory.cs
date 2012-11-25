@@ -9,7 +9,7 @@ namespace Terminals.Data.DB
 {
     /// <summary>
     /// SQl implementation of connections history.
-    /// This doesnt cache the history table in entity framework, because of performance.
+    /// This doesn't cache the history table in entity framework, because of performance.
     /// </summary>
     internal class ConnectionHistory : IConnectionHistory
     {
@@ -20,7 +20,7 @@ namespace Terminals.Data.DB
 
         /// <summary>
         /// Cache older items than today only, because the history cant change.
-        /// The reason is to dont reload these items from database.
+        /// The reason is to don't reload these items from database.
         /// </summary>
         private readonly Dictionary<string, SortableList<IFavorite>> cache =
             new Dictionary<string, SortableList<IFavorite>>();
@@ -70,7 +70,7 @@ namespace Terminals.Data.DB
             if (historyTarget == null)
                 return;
 
-            // here we dont cache todays items, we always load the current state from database
+            // here we don't cache today's items, we always load the current state from database
             AddToDatabase(historyTarget);
             this.FireOnHistoryRecorded(favorite);
         }

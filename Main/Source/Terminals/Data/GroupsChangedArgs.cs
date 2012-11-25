@@ -9,19 +9,19 @@ namespace Terminals.Data
     internal class GroupsChangedArgs : EventArgs
     {
         /// <summary>
-        /// Newly added IGroups, currently used atleast by one connection
+        /// Newly added IGroups, currently used at least by one connection
         /// </summary>
         internal List<IGroup> Added { get; private set; }
 
         internal List<IGroup> Updated { get; private set; }
 
         /// <summary>
-        /// All IGroups actualy no longer used by any favorite
+        /// All IGroups actually no longer used by any favorite
         /// </summary>
         internal List<IGroup> Removed { get; private set; }
 
         /// <summary>
-        /// Gets the value idicating if there are any added or reomoved items to report.
+        /// Gets the value indicating if there are any added or removed items to report.
         /// </summary>
         internal Boolean IsEmpty
         {

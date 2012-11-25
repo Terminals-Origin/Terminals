@@ -1,6 +1,5 @@
 ﻿using System;
 using Terminals.Configuration;
-using Terminals.Data.DB;
 
 namespace Terminals.Data
 {
@@ -20,7 +19,7 @@ namespace Terminals.Data
             }
             catch (Exception exception)
             {
-                Logging.Log.Fatal("Perstance layer failed to load", exception);
+                Logging.Log.Fatal("Persistence layer failed to load", exception);
                 throw;
             }
         }

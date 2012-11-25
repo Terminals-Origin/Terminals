@@ -55,10 +55,10 @@ namespace Tests
             // refresh interval is set to 2 sec. by default
             Thread.Sleep(10000);
 
-            Assert.IsTrue(this.addEventCatched, "Favorite added event wasnt received");
-            Assert.IsTrue(this.updateEventCatched, "Favorite updated event wasnt received");
-            Assert.IsTrue(this.removedEventCatched, "Favorite removed event wasnt received");
-            Assert.AreEqual(TEST_NAME, this.updatedFavorite.Name, "The updated favorite wasnt refreshed");
+            Assert.IsTrue(this.addEventCatched, "Favorite added event wasn't received");
+            Assert.IsTrue(this.updateEventCatched, "Favorite updated event wasn't received");
+            Assert.IsTrue(this.removedEventCatched, "Favorite removed event wasn't received");
+            Assert.AreEqual(TEST_NAME, this.updatedFavorite.Name, "The updated favorite wasn't refreshed");
         }
 
         private void MakeChangesOnSecondaryPersistence()
@@ -99,9 +99,9 @@ namespace Tests
             // last update wins
             this.UpdateFavorite(favoriteA, this.PrimaryFavorites);
             this.SecondaryFavorites.Delete(favoriteB);
-            // next update shouldnt fail on deleted favorite
+            // next update shouldn't fail on deleted favorite
             this.UpdateFavorite(favoriteA, this.PrimaryFavorites);
-            Assert.IsTrue(this.removedEventCatched, "Persistence didnt catched the already removed favorite update event.");
+            Assert.IsTrue(this.removedEventCatched, "Persistence didn't catched the already removed favorite update event.");
         }
 
         private void OnUpdateAlreadyUpdatedFavoritesChanged(FavoritesChangedEventArgs args)

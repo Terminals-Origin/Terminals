@@ -4,10 +4,10 @@ namespace Terminals.Data.DB
 {
     /// <summary>
     /// Sql implementation of user credentials directly used on favorites.
-    /// Remember, that this type isnt used inside protocol options.
-    /// We dont use table per type mapping here, because the credential base doesnt have to be defined,
+    /// Remember, that this type isn't used inside protocol options.
+    /// We don't use table per type mapping here, because the credential base doesn't have to be defined,
     /// if user has selected StoredCredential. CredentialBase is implemented with lazy loading, 
-    /// eg. this item has in database its CredentialBase only 
+    /// e.g. this item has in database its CredentialBase only 
     /// if some of its values to assigned has not null or empty value
     /// </summary>
     internal partial class SecurityOptions : ISecurityOptions

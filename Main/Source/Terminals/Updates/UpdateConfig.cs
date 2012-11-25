@@ -16,7 +16,7 @@ namespace Terminals.Updates
     internal static class UpdateConfig
     {
         /// <summary>
-        /// Updates config file to current version, if it isnt up to date
+        /// Updates config file to current version, if it isn't up to date
         /// </summary>
         internal static void CheckConfigVersionUpdate()
         {
@@ -43,10 +43,10 @@ namespace Terminals.Updates
 
         private static void MoveFilesToVersion2Location()
         {
-            // dont need to refresh the file location, because if the files were changed
+            // don't need to refresh the file location, because if the files were changed
             // are already in use, they will be reloaded
             MoveThumbsDirectory();
-            // dont move the logs directory, because it is in use by Log4net library.
+            // don't move the logs directory, because it is in use by Log4net library.
             MoveDataFile(FileLocations.HISTORY_FILENAME);
             MoveDataFile(FileLocations.TOOLSTRIPS_FILENAME);
             UpgradeCredentialsFile();

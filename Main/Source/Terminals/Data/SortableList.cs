@@ -7,28 +7,28 @@ using System.Windows.Forms;
 namespace Terminals
 {
     /// <summary>
-    /// Extened generic list, which allows to sort by property name
+    /// Extended generic list, which allows to sort by property name
     /// </summary>
-    internal class SortableList<ItemType>: List<ItemType>
+    internal class SortableList<TItemType>: List<TItemType>
     {
         internal SortableList() { }
-        internal SortableList(IEnumerable<ItemType> collection) : base(collection) { }
+        internal SortableList(IEnumerable<TItemType> collection) : base(collection) { }
 
-        internal SortableList<ItemType> SortByProperty(string propertyName, SortOrder direction)
+        internal SortableList<TItemType> SortByProperty(string propertyName, SortOrder direction)
         {
             if (direction == SortOrder.None)
                 return this;
 
-            var param = Expression.Parameter(typeof(ItemType), "item");
+            var param = Expression.Parameter(typeof(TItemType), "item");
             var mySortExpression = Expression
-                .Lambda<Func<ItemType, object>>(Expression.Property(param, propertyName), param);
+                .Lambda<Func<TItemType, object>>(Expression.Property(param, propertyName), param);
 
             if (direction == SortOrder.Ascending)
             {
-                return new SortableList<ItemType>(this.AsQueryable().OrderBy(mySortExpression));
+                return new SortableList<TItemType>(this.AsQueryable().OrderBy(mySortExpression));
             }
 
-            return new SortableList<ItemType>(this.AsQueryable().OrderByDescending(mySortExpression));
+            return new SortableList<TItemType>(this.AsQueryable().OrderByDescending(mySortExpression));
         }
     }
 }

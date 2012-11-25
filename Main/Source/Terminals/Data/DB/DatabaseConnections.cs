@@ -14,8 +14,8 @@ namespace Terminals.Data.DB
         internal const string DEFAULT_CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
 
         /// <summary>
-        /// The Connection string getter is performace expensive because of decryption, so we reuse the connetion instance.
-        /// Until there is no possibility to change the persistence by runtime, we dont have to release the connection.
+        /// The Connection string getter is performance expensive because of decryption, so we reuse the connection instance.
+        /// Until there is no possibility to change the persistence by runtime, we don't have to release the connection.
         /// </summary>
         private static EntityConnection cachedConnection;
 
@@ -80,19 +80,19 @@ namespace Terminals.Data.DB
         }
 
         /// <summary>
-        /// Tryes to execute simple command on database to ensure, that the conneciton works.
+        /// Tries to execute simple command on database to ensure, that the connection works.
         /// </summary>
         /// <param name="connectionStringToTest">Not null MS SQL connection string
         ///  to use to create new database instance</param>
-        /// <param name="databasePassword">Not encrypted database pasword</param>
-        /// <returns>True, if connection test was sucessfull; otherwise false
-        /// and string containg the error message</returns>
+        /// <param name="databasePassword">Not encrypted database password</param>
+        /// <returns>True, if connection test was successful; otherwise false
+        /// and string containing the error message</returns>
         internal static Tuple<bool, string> TestConnection(string connectionStringToTest, string databasePassword)
         {
             try
             {
                 var passwordIsValid = TestDatabasePassword(connectionStringToTest, databasePassword);
-                return new Tuple<bool, string>(passwordIsValid, "Database password doesnt match.");
+                return new Tuple<bool, string>(passwordIsValid, "Database password doesn't match.");
             }
             catch (Exception exception)
             {

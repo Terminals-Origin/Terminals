@@ -30,7 +30,7 @@ namespace Tests
         public void TestInitialize()
         {
             this.InitializeTestLab();
-            this.PrimaryPersistence.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(Dispatcher_FavoritesChanged);
+            this.PrimaryPersistence.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.DispatcherFavoritesChanged);
         }
 
         [TestCleanup]
@@ -39,7 +39,7 @@ namespace Tests
             this.ClearTestLab();
         }
 
-        private void Dispatcher_FavoritesChanged(FavoritesChangedEventArgs args)
+        private void DispatcherFavoritesChanged(FavoritesChangedEventArgs args)
         {
             addedCount += args.Added.Count;
             deletedCount += args.Removed.Count;
@@ -59,12 +59,12 @@ namespace Tests
             string protocolProperties = this.CheckDatabase.GetProtocolPropertiesByFavorite(favorite.Id);
             IFavorite checkFavorite = this.SecondaryPersistence.Favorites.FirstOrDefault();
 
-            Assert.AreNotEqual(before, after, -2, "Favorites didnt reach the database");
+            Assert.AreNotEqual(before, after, -2, "Favorites didn't reach the database");
             Assert.IsTrue(!string.IsNullOrEmpty(protocolProperties), "Protocol properties are null");
             Assert.IsNotNull(checkFavorite.Security, "Security is null");
             Assert.IsNotNull(checkFavorite.Display, "Display is null");
             Assert.IsNotNull(checkFavorite.ExecuteBeforeConnect, "ExecuteBeforeConnect is null");
-            Assert.AreEqual(2, addedCount, "Event wasnt delivered");
+            Assert.AreEqual(2, addedCount, "Event wasn't delivered");
         }
 
         [TestMethod]
@@ -74,14 +74,14 @@ namespace Tests
             this.PrimaryFavorites.Delete(favorite);
 
             int after = this.CheckFavorites.Count();
-            Assert.AreEqual(0, after, "Favorite wasnt deleted");
+            Assert.AreEqual(0, after, "Favorite wasn't deleted");
             int displayOptions = this.CheckDatabase.DisplayOptions.Count();
-            Assert.AreEqual(0, displayOptions, "DisplayOptions wasnt deleted");
+            Assert.AreEqual(0, displayOptions, "DisplayOptions wasn't deleted");
             int security = this.CheckDatabase.Security.Count();
-            Assert.AreEqual(0, security, "Security wasnt deleted");
+            Assert.AreEqual(0, security, "Security wasn't deleted");
             int execute = this.CheckDatabase.BeforeConnectExecute.Count();
-            Assert.AreEqual(0, execute, "BeforeConnectExecute wasnt deleted");
-            Assert.AreEqual(1, deletedCount, "Event wasnt delivered");
+            Assert.AreEqual(0, execute, "BeforeConnectExecute wasn't deleted");
+            Assert.AreEqual(1, deletedCount, "Event wasn't delivered");
         }
 
         private ObjectSet<Favorite> CheckFavorites { get { return this.CheckDatabase.Favorites; } }
@@ -95,12 +95,12 @@ namespace Tests
             this.PrimaryFavorites.Update(favorite);
 
             IFavorite target = this.SecondaryFavorites.FirstOrDefault();
-            Assert.IsTrue(target.Protocol == ConnectionManager.VNC, "Protocol wasnt updated");
-            Assert.IsTrue(target.Display.Colors == Terminals.Colors.Bits24, "Colors property wasnt updated");
+            Assert.IsTrue(target.Protocol == ConnectionManager.VNC, "Protocol wasn't updated");
+            Assert.IsTrue(target.Display.Colors == Terminals.Colors.Bits24, "Colors property wasn't updated");
 
             var testOptions = target.ProtocolProperties as VncOptions;
-            Assert.IsNotNull(testOptions, "Protocol properties werent updated");
-            Assert.AreEqual(1, updatedCount, "Event wasnt delivered");
+            Assert.IsNotNull(testOptions, "Protocol properties weren't updated");
+            Assert.AreEqual(1, updatedCount, "Event wasn't delivered");
         }
 
         [TestMethod]
@@ -118,8 +118,8 @@ namespace Tests
             DB.Group group = checkFavorite.Groups.FirstOrDefault();
             Assert.IsTrue(group.Name == "TestGroupToAdd", "wrong merge of groups");
             int targetGroupsCount = this.CheckDatabase.Groups.Count();
-            Assert.AreEqual(1, targetGroupsCount, "Empty groups wern't deleted");
-            Assert.AreEqual(2, updatedCount, "Event wasnt delivered");
+            Assert.AreEqual(1, targetGroupsCount, "Empty groups weren't deleted");
+            Assert.AreEqual(2, updatedCount, "Event wasn't delivered");
         }
 
         [TestMethod]
@@ -132,8 +132,8 @@ namespace Tests
             this.PrimaryFavorites.Add(favorite);
             Favorite checkFavorite = this.CheckFavorites.FirstOrDefault();
 
-            Assert.IsNotNull(favoriteIcon, "Icon wasnt assigned successfully");
-            Assert.IsNotNull(checkFavorite.ToolBarIconImage, "Icon didnt reach the database");
+            Assert.IsNotNull(favoriteIcon, "Icon wasn't assigned successfully");
+            Assert.IsNotNull(checkFavorite.ToolBarIconImage, "Icon didn't reach the database");
         }
     }
 }

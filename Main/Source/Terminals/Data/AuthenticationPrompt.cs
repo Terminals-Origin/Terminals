@@ -11,7 +11,7 @@ namespace Terminals.Data
         internal string Password { get; set; }
 
         /// <summary>
-        /// Gets or sets the flag identifiyng, that the user has canceled the prompt dialog
+        /// Gets or sets the flag identifying, that the user has canceled the prompt dialog
         /// </summary>
         internal bool Canceled { get; set; }
     }
