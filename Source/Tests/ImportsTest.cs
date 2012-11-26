@@ -15,7 +15,7 @@ namespace Tests
     [TestClass]
     public class ImportsTest
     {
-        private const string DUPLICIT_ITEMS_FILE = @"Data\Issue_21279_import_800_items.xml";
+        private const string DUPLICIT_ITEMS_FILE = @"Issue_21279_import_800_items.xml";
 
         public TestContext TestContext { get; set; }
 
@@ -103,7 +103,7 @@ namespace Tests
 
         private List<FavoriteConfigurationElement> ImportItemsFromFile()
         {
-            string fullFileName = Path.Combine(this.TestContext.TestDir, DUPLICIT_ITEMS_FILE);
+            string fullFileName = Path.Combine(this.TestContext.DeploymentDirectory, DUPLICIT_ITEMS_FILE);
             return Integrations.Importers.ImportFavorites(fullFileName);
         }
     }

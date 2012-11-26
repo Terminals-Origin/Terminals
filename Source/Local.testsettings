@@ -1,9 +1,21 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="Local" id="42f6b753-e325-46a0-b3df-919d138004fc" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
-  <Deployment enabled="false" />
+  <Deployment>
+    <DeploymentItem filename="..\Resources\TestData\Issue_21279_import_800_items.xml" />
+    <DeploymentItem filename="Terminals\Data\DB\Terminals.mdf" />
+    <DeploymentItem filename="Terminals\Resources\ControlPanel.png" />
+    <DeploymentItem filename="Terminals\Data\DB\Terminals_log.LDF" />
+  </Deployment>
   <Execution>
-    <TestTypeSpecific />
+    <Hosts skipUnhostableTests="false" />
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="false" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
     <AgentRule name="Execution Agents">
     </AgentRule>
   </Execution>
