@@ -1,4 +1,6 @@
 ﻿using System.Data.Objects;
+using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
@@ -12,11 +14,19 @@ namespace Tests
     public class SqlTestsLab
     {
         /// <summary>
+        ///Gets or sets the test context which provides
+        ///information about and functionality for the current test run.
+        ///</summary>
+        public TestContext TestContext { get; set; }
+
+        /// <summary>
         /// Gets the data store on which tests should be performed
         /// </summary>
         internal SqlPersistence PrimaryPersistence { get; private set; }
 
         internal SqlPersistence SecondaryPersistence { get; private set; }
+
+        private const string CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Terminals.mdf;Integrated Security=True;User Instance=False";
 
         /// <summary>
         /// Gets second connector to lab database. Used to check, if data reached the store
@@ -46,8 +56,9 @@ namespace Tests
         /// </summary>
         protected void InitializeTestLab()
         {
+            RemoveDatabaseFileReadOnly();
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
-            Settings.ConnectionString = Database.DEFAULT_CONNECTION_STRING;
+            Settings.ConnectionString = CONNECTION_STRING;
             
             // first reset the database password, then continue with other initializations
             CheckDatabase = Database.CreateInstance();
@@ -59,6 +70,18 @@ namespace Tests
             this.SecondaryPersistence.Initialize();
             
             ClearTestLab(); // because of failed previous tests
+        }
+
+        private void RemoveDatabaseFileReadOnly()
+        {
+            this.RemoveReadOnlyAttribute("Terminals.mdf");
+            this.RemoveReadOnlyAttribute("Terminals_log.ldf");
+        }
+
+        private void RemoveReadOnlyAttribute(string fileName)
+        {
+            string databaseMdf = Path.Combine(this.TestContext.DeploymentDirectory, fileName);
+            File.SetAttributes(databaseMdf, FileAttributes.Normal);
         }
 
         /// <summary>

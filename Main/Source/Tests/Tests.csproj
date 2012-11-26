@@ -154,26 +154,21 @@
   <ItemGroup>
     <Content Include="..\..\Resources\TestData\Issue_21279_import_800_items.xml">
       <Link>Data\Issue_21279_import_800_items.xml</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\Terminals\Data\DB\Terminals.mdf">
       <Link>Data\Terminals.mdf</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\Terminals\Data\DB\Terminals_log.LDF">
       <Link>Data\Terminals_log.LDF</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Terminals.mdf</DependentUpon>
     </Content>
     <Content Include="..\Terminals\Resources\ControlPanel.png">
       <Link>Data\ControlPanel.png</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resources\TestData\Terminals.config">
       <Link>Data\Terminals.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -13,8 +13,6 @@ namespace Tests
         private const string PASSWORD_A = "aaa";
         private const string PASSWORD_B = "bbb";
 
-        public TestContext TestContext { get; set; }
-
         [TestInitialize]
         public void TestInitialize()
         {

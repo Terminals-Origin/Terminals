@@ -19,12 +19,6 @@ namespace Tests
 
         private const string TEST_NAME = "second";
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
         [TestInitialize]
         public void TestInitialize()
         {
