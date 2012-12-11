@@ -61,6 +61,8 @@ namespace Terminals
             Logging.Log.Info("State 2 Complete");
             SetApplicationProperties();
 
+            UpgradeDatabaseVersion();
+
             Logging.Log.Info("State 3 Complete");
             CommandLineArgs commandLine = ParseCommandline();
 
@@ -90,6 +92,11 @@ namespace Terminals
 
             Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
+        }
+
+        private static void UpgradeDatabaseVersion()
+        {
+            
         }
 
         private static bool UserAccountControlNotSatisfied()
