@@ -26,7 +26,7 @@ namespace Tests
 
         internal SqlPersistence SecondaryPersistence { get; private set; }
 
-        private const string CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Terminals.mdf;Integrated Security=True;User Instance=False";
+        private const string CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Terminals.mdf;Integrated Security=True;User Instance=True";
 
         /// <summary>
         /// Gets second connector to lab database. Used to check, if data reached the store
@@ -59,9 +59,13 @@ namespace Tests
             RemoveDatabaseFileReadOnly();
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
             Settings.ConnectionString = CONNECTION_STRING;
-            
+            if (Settings.ConnectionString.Contains("|DataDirectory|"))
+            {
+                Settings.ConnectionString = Settings.ConnectionString.Replace("|DataDirectory|", this.TestContext.DeploymentDirectory);
+            }
             // first reset the database password, then continue with other initializations
             CheckDatabase = Database.CreateInstance();
+            
             this.CheckDatabase.UpdateMasterPassword(string.Empty);
 
             this.PrimaryPersistence = new SqlPersistence();
