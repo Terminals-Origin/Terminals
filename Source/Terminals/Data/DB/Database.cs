@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
+using System.Data.SqlClient;
 using System.Linq;
 using Terminals.Connections;
-using SqlScriptRunner.Versioning;
+using Versioning = SqlScriptRunner.Versioning;
 
 namespace Terminals.Data.DB
 {
@@ -17,58 +19,68 @@ namespace Terminals.Data.DB
             this.SaveChanges();
         }
 
-        public static List<string> Databases(string ConnectionString)
+        internal static List<string> Databases(string connectionString)
         {
-            List<string> databases = new List<string>();
-
-            using (var connection = System.Data.SqlClient.SqlClientFactory.Instance.CreateConnection())
+            try
             {
-                connection.ConnectionString = ConnectionString;
+                return TryFindDatabases(connectionString);
+            }
+            catch
+            {
+                // don't log an exception, because some SqlExceptions contain connection string information
+                return new List<string>();
+            }
+        }
+
+        private static List<string> TryFindDatabases(string connectionString)
+        {
+            using (var connection = SqlClientFactory.Instance.CreateConnection())
+            {
+                connection.ConnectionString = connectionString;
                 connection.Open();
-                var cmd = connection.CreateCommand();
+                DbCommand cmd = connection.CreateCommand();
 
                 cmd.CommandText = "SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb');";
-                var result = cmd.ExecuteReader();
-                if (!result.HasRows)
+                DbDataReader dbReader = cmd.ExecuteReader();
+
+                List<string> databases = new List<string>();
+                if (!dbReader.HasRows)
+                {
                     return databases;
-                else
-                {
-                    while (result.Read())
-                    {
-                        databases.Add(result[0].ToString());
-                    }
                 }
 
+                while (dbReader.Read())
+                {
+                    databases.Add(dbReader[0].ToString());
+                }
+
+                return databases;
             }
-            return databases;
         }
-        public static SqlScriptRunner.Versioning.Version DatabaseVersion(string ConnectionString)
+
+        internal static Versioning.Version DatabaseVersion(string connectionString)
         {
-            var v = SqlScriptRunner.Versioning.Version.Min;
+            var minVersion = Versioning.Version.Min;
 
-
-            using (var connection = System.Data.SqlClient.SqlClientFactory.Instance.CreateConnection())
+            using (var connection = SqlClientFactory.Instance.CreateConnection())
             {
-                connection.ConnectionString = ConnectionString;
+                connection.ConnectionString = connectionString;
                 connection.Open();
-                var cmd = connection.CreateCommand();
-                
+                DbCommand cmd = connection.CreateCommand();
+
                 cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Version'";
-                var result = cmd.ExecuteReader();
-                if (!result.HasRows)
-                    return v;
-                else
-                {
-                    cmd.CommandText = "Select top 1 VersionNumber from Version order by Date desc";
-                    var r = cmd.ExecuteReader();
+                DbDataReader versionsReader = cmd.ExecuteReader();
+                if (!versionsReader.HasRows)
+                    return minVersion;
 
-                    var verValue = r[0].ToString();
-                    var parser = new JustVersionParser();
-                    v = parser.Parse(verValue);
-                }
+                cmd.CommandText = "Select top 1 VersionNumber from Version order by Date desc";
+                DbDataReader dbDataReader = cmd.ExecuteReader();
 
+                string verValue = dbDataReader[0].ToString();
+                var parser = new Versioning.JustVersionParser();
+                minVersion = parser.Parse(verValue);
             }
-            return v;
+            return minVersion;
         }
 
         public override int SaveChanges(SaveOptions options)
