@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <UsingTask AssemblyFile="../bin/Debug/BuildTasks.dll" TaskName="BuildTasks.ScriptPackageTask" />
+
+  <Target Name="Build">
+    <PropertyGroup>
+      <ArtifactFile>C:\Users\rchartier\Desktop\packagegoeshere\Packaged.zip</ArtifactFile> <!--defaults to SqlClient / Sql Server-->
+      <ScriptPath>D:\data\sqlscriptrunner\SqlScriptRunner.Tests\VersionScripts\</ScriptPath>
+      <ScriptPattern>*.sql</ScriptPattern>
+
+      <Recurse>true</Recurse>
+      <DryRun>false</DryRun>
+      <MinimumVersion>1.1</MinimumVersion>
+      <MaximumVersion>1.2</MaximumVersion>
+
+      <!--only override if you know what you are doing.  -->
+      <VersionParser></VersionParser> <!--Defaults to the version.date format -->
+
+    </PropertyGroup>
+    <ScriptPackageTask ArtifactFile="$(ArtifactFile)" ScriptPath="$(ScriptPath)" ScriptPattern="$(ScriptPattern)" Recurse="$(Recurse)" DryRun="$(DryRun)" MinimumVersion="$(MinimumVersion)" MaximumVersion="$(MaximumVersion)" VersionParser="$(VersionParser)" />
+  </Target>
+
+
+  
+
+</Project>

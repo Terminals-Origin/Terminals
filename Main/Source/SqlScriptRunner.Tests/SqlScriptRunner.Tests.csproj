@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C451F6AA-0F56-4051-968B-90EBB90C8864}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SqlScriptRunner.Tests</RootNamespace>
+    <AssemblyName>SqlScriptRunner.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\Resources\Libraries\NUnit\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.81.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Resources\Libraries\SqLite\System.Data.SQLite.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Mother.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReleaseTests.cs" />
+    <Compile Include="ScriptRunnerTests.cs" />
+    <Compile Include="VersionTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SqlScriptRunner\SqlScriptRunner.csproj">
+      <Project>{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}</Project>
+      <Name>SqlScriptRunner</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\System.Data.SQLite.dll" />
+    <Content Include="Resources\System.Data.SQLite.pdb" />
+    <Content Include="Scripts\Level 1\Level 2\Level2Script.Sql" />
+    <Content Include="Scripts\Level 1\Level 2\Level2ScriptText.txt" />
+    <Content Include="Scripts\Level 1\Level1Script.sql" />
+    <Content Include="Scripts\Script1.sql" />
+    <Content Include="Scripts\Script2.sql" />
+    <Content Include="Scripts\Script3.sql" />
+    <Content Include="VersionScripts\1.0.0.2012.01.01 Initial Release on Jan 1, 2012\Script1.sql" />
+    <Content Include="VersionScripts\1.0.0.2012.01.01 Initial Release on Jan 1, 2012\Script2.sql" />
+    <Content Include="VersionScripts\1.0.0.2012.01.01 Initial Release on Jan 1, 2012\Script3.sql" />
+    <Content Include="VersionScripts\1.1.0.2012.02.01 Second Public Release\Script1.sql" />
+    <Content Include="VersionScripts\1.1.0.2012.02.01 Second Public Release\Script3.sql" />
+    <Content Include="VersionScripts\1.2.0.2012.03.01 Third Public Release\Script1.sql" />
+    <Content Include="VersionScripts\1.2.1.2012.04.01 Third Public Release, Patch release\Script1.sql" />
+    <Content Include="VersionScripts\1.2.1.2012.04.01 Third Public Release, Patch release\Script2.sql" />
+    <Content Include="VersionScripts\1.2.1.2012.04.01 Third Public Release, Patch release\Script3.sql" />
+    <Content Include="VersionScripts\1.2.2.2012.04.04 Third Public Release, Another Patch release\Script1.sql" />
+    <Content Include="VersionScripts\1.2.2.2012.04.04 Third Public Release, Another Patch release\Script3.sql" />
+    <Content Include="VersionScripts\1.3.0.2012.04.15 Fourth Public Release\Script1.sql" />
+    <Content Include="VersionScripts\1.3.0.2012.04.15 Fourth Public Release\Script2.sql" />
+    <Content Include="VersionScripts\1.4.0.2012.04.30 Broken Release\Script1.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
