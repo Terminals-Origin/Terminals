@@ -1166,6 +1166,7 @@
     </Content>
     <None Include="Resources\amber.png" />
     <Content Include="Migrations\1.0.0\dbo.001.CreateDatabase.sql" />
+    <Content Include="Migrations\1.0.0\dbo.012.Versions.Table.sql" />
     <Content Include="Migrations\1.0.0\dbo.AddFavoriteToGroup.StoredProcedure.sql" />
     <Content Include="Migrations\1.0.0\dbo.003.BeforeConnectExecute.Table.sql" />
     <Content Include="Migrations\1.0.0\dbo.009.CredentialBase.Table.sql" />

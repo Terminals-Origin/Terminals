@@ -32,17 +32,32 @@ namespace Terminals.Forms
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBoxPersistenceType = new System.Windows.Forms.GroupBox();
-            this.txtDbPassword = new System.Windows.Forms.TextBox();
-            this.lblDbPassword = new System.Windows.Forms.Label();
+            this.SqlServerOptionsPanel = new System.Windows.Forms.Panel();
+            this.QueryLabel = new System.Windows.Forms.Label();
+            this.serversComboBox = new System.Windows.Forms.ComboBox();
+            this.SearchButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.SqlServerAuthPanel = new System.Windows.Forms.Panel();
+            this.DatabaseCombobox = new System.Windows.Forms.ComboBox();
+            this.TableQueryLabel = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.TestLabel = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.SqlServerPasswordTextBox = new System.Windows.Forms.TextBox();
+            this.SqlServerUserNameTextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.bntTestSqlConnection = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.SqlServerAuthenticationComboBox = new System.Windows.Forms.ComboBox();
             this.lblRestart = new System.Windows.Forms.Label();
-            this.txtConnectionString = new System.Windows.Forms.TextBox();
-            this.lblConnetion = new System.Windows.Forms.Label();
             this.rbtnSqlPersistence = new System.Windows.Forms.RadioButton();
             this.rbtnFilePersistence = new System.Windows.Forms.RadioButton();
-            this.btnSetPassword = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.groupBoxPersistenceType.SuspendLayout();
+            this.SqlServerOptionsPanel.SuspendLayout();
+            this.SqlServerAuthPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -57,13 +72,8 @@ namespace Terminals.Forms
             // 
             // groupBoxPersistenceType
             // 
-            this.groupBoxPersistenceType.Controls.Add(this.btnSetPassword);
-            this.groupBoxPersistenceType.Controls.Add(this.txtDbPassword);
-            this.groupBoxPersistenceType.Controls.Add(this.lblDbPassword);
-            this.groupBoxPersistenceType.Controls.Add(this.bntTestSqlConnection);
+            this.groupBoxPersistenceType.Controls.Add(this.SqlServerOptionsPanel);
             this.groupBoxPersistenceType.Controls.Add(this.lblRestart);
-            this.groupBoxPersistenceType.Controls.Add(this.txtConnectionString);
-            this.groupBoxPersistenceType.Controls.Add(this.lblConnetion);
             this.groupBoxPersistenceType.Controls.Add(this.rbtnSqlPersistence);
             this.groupBoxPersistenceType.Controls.Add(this.rbtnFilePersistence);
             this.groupBoxPersistenceType.Location = new System.Drawing.Point(6, 3);
@@ -73,34 +83,198 @@ namespace Terminals.Forms
             this.groupBoxPersistenceType.TabStop = false;
             this.groupBoxPersistenceType.Text = "Select where to store application data";
             // 
-            // txtDbPassword
+            // SqlServerOptionsPanel
             // 
-            this.txtDbPassword.Enabled = false;
-            this.txtDbPassword.Location = new System.Drawing.Point(206, 228);
-            this.txtDbPassword.Name = "txtDbPassword";
-            this.txtDbPassword.PasswordChar = '*';
-            this.txtDbPassword.Size = new System.Drawing.Size(279, 20);
-            this.txtDbPassword.TabIndex = 9;
+            this.SqlServerOptionsPanel.Controls.Add(this.QueryLabel);
+            this.SqlServerOptionsPanel.Controls.Add(this.serversComboBox);
+            this.SqlServerOptionsPanel.Controls.Add(this.SearchButton);
+            this.SqlServerOptionsPanel.Controls.Add(this.label5);
+            this.SqlServerOptionsPanel.Controls.Add(this.label1);
+            this.SqlServerOptionsPanel.Controls.Add(this.SqlServerAuthPanel);
+            this.SqlServerOptionsPanel.Controls.Add(this.label2);
+            this.SqlServerOptionsPanel.Controls.Add(this.SqlServerAuthenticationComboBox);
+            this.SqlServerOptionsPanel.Enabled = false;
+            this.SqlServerOptionsPanel.Location = new System.Drawing.Point(25, 74);
+            this.SqlServerOptionsPanel.Name = "SqlServerOptionsPanel";
+            this.SqlServerOptionsPanel.Size = new System.Drawing.Size(427, 209);
+            this.SqlServerOptionsPanel.TabIndex = 17;
             // 
-            // lblDbPassword
+            // QueryLabel
             // 
-            this.lblDbPassword.AutoSize = true;
-            this.lblDbPassword.Location = new System.Drawing.Point(50, 231);
-            this.lblDbPassword.Name = "lblDbPassword";
-            this.lblDbPassword.Size = new System.Drawing.Size(104, 13);
-            this.lblDbPassword.TabIndex = 8;
-            this.lblDbPassword.Text = "Database password:";
+            this.QueryLabel.AutoSize = true;
+            this.QueryLabel.Location = new System.Drawing.Point(331, 20);
+            this.QueryLabel.Name = "QueryLabel";
+            this.QueryLabel.Size = new System.Drawing.Size(58, 13);
+            this.QueryLabel.TabIndex = 20;
+            this.QueryLabel.Text = "Querying...";
+            this.QueryLabel.Visible = false;
+            // 
+            // serversComboBox
+            // 
+            this.serversComboBox.FormattingEnabled = true;
+            this.serversComboBox.Location = new System.Drawing.Point(116, 12);
+            this.serversComboBox.Name = "serversComboBox";
+            this.serversComboBox.Size = new System.Drawing.Size(173, 21);
+            this.serversComboBox.TabIndex = 2;
+            // 
+            // SearchButton
+            // 
+            this.SearchButton.Location = new System.Drawing.Point(296, 12);
+            this.SearchButton.Name = "SearchButton";
+            this.SearchButton.Size = new System.Drawing.Size(29, 23);
+            this.SearchButton.TabIndex = 3;
+            this.SearchButton.Text = "...";
+            this.SearchButton.UseVisualStyleBackColor = true;
+            this.SearchButton.Click += new System.EventHandler(this.SearchButton_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(22, 128);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(56, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Database:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(22, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(72, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Server Name:";
+            // 
+            // SqlServerAuthPanel
+            // 
+            this.SqlServerAuthPanel.Controls.Add(this.DatabaseCombobox);
+            this.SqlServerAuthPanel.Controls.Add(this.TableQueryLabel);
+            this.SqlServerAuthPanel.Controls.Add(this.button2);
+            this.SqlServerAuthPanel.Controls.Add(this.TestLabel);
+            this.SqlServerAuthPanel.Controls.Add(this.button1);
+            this.SqlServerAuthPanel.Controls.Add(this.label3);
+            this.SqlServerAuthPanel.Controls.Add(this.SqlServerPasswordTextBox);
+            this.SqlServerAuthPanel.Controls.Add(this.SqlServerUserNameTextBox);
+            this.SqlServerAuthPanel.Controls.Add(this.label4);
+            this.SqlServerAuthPanel.Controls.Add(this.bntTestSqlConnection);
+            this.SqlServerAuthPanel.Enabled = false;
+            this.SqlServerAuthPanel.Location = new System.Drawing.Point(14, 66);
+            this.SqlServerAuthPanel.Name = "SqlServerAuthPanel";
+            this.SqlServerAuthPanel.Size = new System.Drawing.Size(410, 113);
+            this.SqlServerAuthPanel.TabIndex = 16;
+            // 
+            // DatabaseCombobox
+            // 
+            this.DatabaseCombobox.FormattingEnabled = true;
+            this.DatabaseCombobox.Location = new System.Drawing.Point(102, 59);
+            this.DatabaseCombobox.Name = "DatabaseCombobox";
+            this.DatabaseCombobox.Size = new System.Drawing.Size(173, 21);
+            this.DatabaseCombobox.TabIndex = 23;
+            // 
+            // TableQueryLabel
+            // 
+            this.TableQueryLabel.AutoSize = true;
+            this.TableQueryLabel.Location = new System.Drawing.Point(317, 62);
+            this.TableQueryLabel.Name = "TableQueryLabel";
+            this.TableQueryLabel.Size = new System.Drawing.Size(58, 13);
+            this.TableQueryLabel.TabIndex = 21;
+            this.TableQueryLabel.Text = "Querying...";
+            this.TableQueryLabel.Visible = false;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(282, 57);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(29, 23);
+            this.button2.TabIndex = 22;
+            this.button2.Text = "...";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // TestLabel
+            // 
+            this.TestLabel.AutoSize = true;
+            this.TestLabel.Location = new System.Drawing.Point(347, 90);
+            this.TestLabel.Name = "TestLabel";
+            this.TestLabel.Size = new System.Drawing.Size(51, 13);
+            this.TestLabel.TabIndex = 21;
+            this.TestLabel.Text = "Testing...";
+            this.TestLabel.Visible = false;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(160, 85);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(115, 23);
+            this.button1.TabIndex = 9;
+            this.button1.Text = "Create New...";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(8, 7);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(61, 13);
+            this.label3.TabIndex = 12;
+            this.label3.Text = "User name:";
+            // 
+            // SqlServerPasswordTextBox
+            // 
+            this.SqlServerPasswordTextBox.Location = new System.Drawing.Point(102, 30);
+            this.SqlServerPasswordTextBox.Name = "SqlServerPasswordTextBox";
+            this.SqlServerPasswordTextBox.PasswordChar = '*';
+            this.SqlServerPasswordTextBox.Size = new System.Drawing.Size(173, 20);
+            this.SqlServerPasswordTextBox.TabIndex = 6;
+            // 
+            // SqlServerUserNameTextBox
+            // 
+            this.SqlServerUserNameTextBox.Location = new System.Drawing.Point(102, 4);
+            this.SqlServerUserNameTextBox.Name = "SqlServerUserNameTextBox";
+            this.SqlServerUserNameTextBox.Size = new System.Drawing.Size(173, 20);
+            this.SqlServerUserNameTextBox.TabIndex = 5;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(8, 33);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(56, 13);
+            this.label4.TabIndex = 14;
+            this.label4.Text = "Password:";
             // 
             // bntTestSqlConnection
             // 
             this.bntTestSqlConnection.Enabled = false;
-            this.bntTestSqlConnection.Location = new System.Drawing.Point(371, 259);
+            this.bntTestSqlConnection.Location = new System.Drawing.Point(281, 85);
             this.bntTestSqlConnection.Name = "bntTestSqlConnection";
-            this.bntTestSqlConnection.Size = new System.Drawing.Size(115, 23);
+            this.bntTestSqlConnection.Size = new System.Drawing.Size(60, 23);
             this.bntTestSqlConnection.TabIndex = 7;
-            this.bntTestSqlConnection.Text = "Test connection";
+            this.bntTestSqlConnection.Text = "Test...";
             this.bntTestSqlConnection.UseVisualStyleBackColor = true;
             this.bntTestSqlConnection.Click += new System.EventHandler(this.OnBntTestSqlConnectionClick);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(22, 42);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(78, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Authentication:";
+            // 
+            // SqlServerAuthenticationComboBox
+            // 
+            this.SqlServerAuthenticationComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SqlServerAuthenticationComboBox.FormattingEnabled = true;
+            this.SqlServerAuthenticationComboBox.Items.AddRange(new object[] {
+            "Windows Authentication",
+            "SQL Server Authentication"});
+            this.SqlServerAuthenticationComboBox.Location = new System.Drawing.Point(116, 39);
+            this.SqlServerAuthenticationComboBox.Name = "SqlServerAuthenticationComboBox";
+            this.SqlServerAuthenticationComboBox.Size = new System.Drawing.Size(173, 21);
+            this.SqlServerAuthenticationComboBox.TabIndex = 4;
+            this.SqlServerAuthenticationComboBox.SelectedIndexChanged += new System.EventHandler(this.SqlServerAuthenticationComboBox_SelectedIndexChanged);
             // 
             // lblRestart
             // 
@@ -112,24 +286,6 @@ namespace Terminals.Forms
             this.lblRestart.TabIndex = 6;
             this.lblRestart.Text = "To apply this options you have to restart the application!";
             // 
-            // txtConnectionString
-            // 
-            this.txtConnectionString.Enabled = false;
-            this.txtConnectionString.Location = new System.Drawing.Point(53, 87);
-            this.txtConnectionString.Multiline = true;
-            this.txtConnectionString.Name = "txtConnectionString";
-            this.txtConnectionString.Size = new System.Drawing.Size(433, 134);
-            this.txtConnectionString.TabIndex = 5;
-            // 
-            // lblConnetion
-            // 
-            this.lblConnetion.AutoSize = true;
-            this.lblConnetion.Location = new System.Drawing.Point(50, 71);
-            this.lblConnetion.Name = "lblConnetion";
-            this.lblConnetion.Size = new System.Drawing.Size(92, 13);
-            this.lblConnetion.TabIndex = 4;
-            this.lblConnetion.Text = "Connection string:";
-            // 
             // rbtnSqlPersistence
             // 
             this.rbtnSqlPersistence.AutoSize = true;
@@ -139,6 +295,7 @@ namespace Terminals.Forms
             this.rbtnSqlPersistence.TabIndex = 1;
             this.rbtnSqlPersistence.Text = "Microsoft SQL database server:";
             this.rbtnSqlPersistence.UseVisualStyleBackColor = true;
+            this.rbtnSqlPersistence.CheckedChanged += new System.EventHandler(this.rbtnSqlPersistence_CheckedChanged);
             // 
             // rbtnFilePersistence
             // 
@@ -153,16 +310,6 @@ namespace Terminals.Forms
             this.rbtnFilePersistence.UseVisualStyleBackColor = true;
             this.rbtnFilePersistence.CheckedChanged += new System.EventHandler(this.OnRbtnFilePersistenceCheckedChanged);
             // 
-            // btnSetPassword
-            // 
-            this.btnSetPassword.Location = new System.Drawing.Point(177, 259);
-            this.btnSetPassword.Name = "btnSetPassword";
-            this.btnSetPassword.Size = new System.Drawing.Size(188, 23);
-            this.btnSetPassword.TabIndex = 10;
-            this.btnSetPassword.Text = "Change Database password";
-            this.btnSetPassword.UseVisualStyleBackColor = true;
-            this.btnSetPassword.Click += new System.EventHandler(this.OnBtnSetPasswordClick);
-            // 
             // PersistenceOptionPanel
             // 
             this.Controls.Add(this.panel1);
@@ -171,6 +318,10 @@ namespace Terminals.Forms
             this.panel1.ResumeLayout(false);
             this.groupBoxPersistenceType.ResumeLayout(false);
             this.groupBoxPersistenceType.PerformLayout();
+            this.SqlServerOptionsPanel.ResumeLayout(false);
+            this.SqlServerOptionsPanel.PerformLayout();
+            this.SqlServerAuthPanel.ResumeLayout(false);
+            this.SqlServerAuthPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -179,14 +330,27 @@ namespace Terminals.Forms
 
         private Panel panel1;
         private GroupBox groupBoxPersistenceType;
-        private TextBox txtConnectionString;
-        private Label lblConnetion;
         private RadioButton rbtnSqlPersistence;
         private RadioButton rbtnFilePersistence;
         private Label lblRestart;
         private Button bntTestSqlConnection;
-        private TextBox txtDbPassword;
-        private Label lblDbPassword;
-        private Button btnSetPassword;
+        private Panel SqlServerAuthPanel;
+        private Label label3;
+        private TextBox SqlServerPasswordTextBox;
+        private TextBox SqlServerUserNameTextBox;
+        private Label label4;
+        private ComboBox SqlServerAuthenticationComboBox;
+        private Label label2;
+        private Label label1;
+        private Panel SqlServerOptionsPanel;
+        private Button button1;
+        private Label label5;
+        private Button SearchButton;
+        private ComboBox serversComboBox;
+        private Label QueryLabel;
+        private Label TestLabel;
+        private Label TableQueryLabel;
+        private Button button2;
+        private ComboBox DatabaseCombobox;
     }
 }
