@@ -5,9 +5,11 @@ using System.Runtime.InteropServices;
 using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
+using SqlScriptRunner.Versioning;
 using Terminals.CommandLine;
 using Terminals.Configuration;
 using Terminals.Data;
+using Terminals.Data.DB;
 using Terminals.Security;
 using Terminals.Updates;
 using System.Security.Principal;
@@ -96,7 +98,26 @@ namespace Terminals
 
         private static void UpgradeDatabaseVersion()
         {
-            
+            bool filePersistence = Settings.PersistenceType == 0;
+            Logging.Log.InfoFormat("File Persistence Mode:{0}", filePersistence);
+
+            if (!filePersistence)
+            {
+                string connectionString = Settings.ConnectionString;
+                var dbVersion = Database.DatabaseVersion(connectionString);
+
+                var root = (new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location)).Directory.FullName;
+                var migrationsRoot = System.IO.Path.Combine(root, "Migrations");
+                if (System.IO.Directory.Exists(migrationsRoot))
+                {
+                    var parser = new JustVersionParser();
+                    var list = SqlScriptRunner.ScriptRunner.ResolveScriptsFromPathAndVersion(migrationsRoot, "*.sql", true,
+                                                                                  migrationsRoot, dbVersion,
+                                                                                  SqlScriptRunner.Versioning.Version.Max,
+                                                                                  parser);
+                }
+            }
+
         }
 
         private static bool UserAccountControlNotSatisfied()
