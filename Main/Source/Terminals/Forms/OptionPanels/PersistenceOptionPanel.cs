@@ -119,7 +119,7 @@ namespace Terminals.Forms
                     ////string databasePassword = this.txtDbPassword.Text;
                     try
                     {
-                        version = Database.DatabaseVersion(cstr, null);
+                        version = Database.DatabaseVersion(cstr);
                     }
                     catch (Exception exception)
                     {

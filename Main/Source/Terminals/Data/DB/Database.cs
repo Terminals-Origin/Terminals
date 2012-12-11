@@ -42,8 +42,7 @@ namespace Terminals.Data.DB
             }
             return databases;
         }
-        public static SqlScriptRunner.Versioning.Version DatabaseVersion(string ConnectionString,
-                                                                         string DatabasePassword)
+        public static SqlScriptRunner.Versioning.Version DatabaseVersion(string ConnectionString)
         {
             var v = SqlScriptRunner.Versioning.Version.Min;
 
