@@ -38,9 +38,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SqlMigrations", "SqlMigrations", "{92B0C240-075E-4B86-820E-BBEC58B331DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlScriptRunner", "SqlScriptRunner\SqlScriptRunner.csproj", "{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlScriptRunner.Tests", "SqlScriptRunner.Tests\SqlScriptRunner.Tests.csproj", "{C451F6AA-0F56-4051-968B-90EBB90C8864}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildTasks", "BuildTasks\BuildTasks.csproj", "{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 16
+		SccNumberOfProjects = 19
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -92,6 +100,18 @@ Global
 		SccProjectUniqueName15 = Tests\\Tests.csproj
 		SccProjectName15 = Tests
 		SccLocalPath15 = Tests
+		SccProjectUniqueName16 = SqlScriptRunner\\SqlScriptRunner.csproj
+		SccProjectTopLevelParentUniqueName16 = Terminals.sln
+		SccProjectName16 = SqlScriptRunner
+		SccLocalPath16 = SqlScriptRunner
+		SccProjectUniqueName17 = SqlScriptRunner.Tests\\SqlScriptRunner.Tests.csproj
+		SccProjectTopLevelParentUniqueName17 = Terminals.sln
+		SccProjectName17 = SqlScriptRunner.Tests
+		SccLocalPath17 = SqlScriptRunner.Tests
+		SccProjectUniqueName18 = BuildTasks\\BuildTasks.csproj
+		SccProjectTopLevelParentUniqueName18 = Terminals.sln
+		SccProjectName18 = BuildTasks
+		SccLocalPath18 = BuildTasks
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Terminals.vsmdi
@@ -262,8 +282,40 @@ Global
 		{81B4C28B-5B10-4A53-B0AC-9E8F72733139}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81B4C28B-5B10-4A53-B0AC-9E8F72733139}.Release|Any CPU.Build.0 = Release|Any CPU
 		{81B4C28B-5B10-4A53-B0AC-9E8F72733139}.Release|x86.ActiveCfg = Release|Any CPU
+		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Distribution Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Distribution Release|Any CPU.Build.0 = Release|Any CPU
+		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Distribution Release|x86.ActiveCfg = Release|Any CPU
+		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}.Release|x86.ActiveCfg = Release|Any CPU
+		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Distribution Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Distribution Release|Any CPU.Build.0 = Release|Any CPU
+		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Distribution Release|x86.ActiveCfg = Release|Any CPU
+		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C451F6AA-0F56-4051-968B-90EBB90C8864}.Release|x86.ActiveCfg = Release|Any CPU
+		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Distribution Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Distribution Release|Any CPU.Build.0 = Release|Any CPU
+		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Distribution Release|x86.ActiveCfg = Release|Any CPU
+		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
+		{C451F6AA-0F56-4051-968B-90EBB90C8864} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
+		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
 	EndGlobalSection
 EndGlobal
