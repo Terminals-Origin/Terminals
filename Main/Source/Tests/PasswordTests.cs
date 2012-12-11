@@ -105,17 +105,18 @@ namespace Tests
             Assert.AreNotEqual(encryptedPassword, encryptedPassword2, "password encryption always generates identical encrypted bytes");
         }
 
-        [TestMethod]
-        public void V2UpgradePasswordsTest()
-        {
-            string targetDir = Path.Combine(this.TestContext.TestDir, "Terminals.config");
-            throw new NotImplementedException();
-            // deploy test version 2.0 config file
-            // check, if we are able to read all passwords (validate using old version)
-            // use upgrade routine to ensure, that we are able to:
-            // - update the stored master password
-            // - all stored passwords in favorite, credentials, RDP protocol properties are still valid
-        }
+        ///TODO: Implement Test
+        //[TestMethod]
+        //public void V2UpgradePasswordsTest()
+        //{
+        //    string targetDir = Path.Combine(this.TestContext.TestDir, "Terminals.config");
+        //    throw new NotImplementedException();
+        //    // deploy test version 2.0 config file
+        //    // check, if we are able to read all passwords (validate using old version)
+        //    // use upgrade routine to ensure, that we are able to:
+        //    // - update the stored master password
+        //    // - all stored passwords in favorite, credentials, RDP protocol properties are still valid
+        //}
 
         [TestMethod]
         public void V2PasswordsEncryptDecryptTest()
