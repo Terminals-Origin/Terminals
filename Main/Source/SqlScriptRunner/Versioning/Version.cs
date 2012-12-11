@@ -11,7 +11,7 @@ namespace SqlScriptRunner.Versioning
         public int Minor { get; set; }
         public int Build { get; set; }
         public string Description { get; set; }
-        public DateTime DateTime { get; set; }
+        public DateTime DateTime { get; set; }        
 
         public override string ToString()
         {

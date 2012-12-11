@@ -5,6 +5,7 @@ using System.Data.Objects;
 using System.Data.Objects.DataClasses;
 using System.Linq;
 using Terminals.Connections;
+using SqlScriptRunner.Versioning;
 
 namespace Terminals.Data.DB
 {
@@ -14,6 +15,61 @@ namespace Terminals.Data.DB
         {
             // don't ask, save immediately. Here is no benefit to save in batch like in FilePersistence
             this.SaveChanges();
+        }
+
+        public static List<string> Databases(string ConnectionString)
+        {
+            List<string> databases = new List<string>();
+
+            using (var connection = System.Data.SqlClient.SqlClientFactory.Instance.CreateConnection())
+            {
+                connection.ConnectionString = ConnectionString;
+                connection.Open();
+                var cmd = connection.CreateCommand();
+
+                cmd.CommandText = "SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb');";
+                var result = cmd.ExecuteReader();
+                if (!result.HasRows)
+                    return databases;
+                else
+                {
+                    while (result.Read())
+                    {
+                        databases.Add(result[0].ToString());
+                    }
+                }
+
+            }
+            return databases;
+        }
+        public static SqlScriptRunner.Versioning.Version DatabaseVersion(string ConnectionString,
+                                                                         string DatabasePassword)
+        {
+            var v = SqlScriptRunner.Versioning.Version.Min;
+
+
+            using (var connection = System.Data.SqlClient.SqlClientFactory.Instance.CreateConnection())
+            {
+                connection.ConnectionString = ConnectionString;
+                connection.Open();
+                var cmd = connection.CreateCommand();
+                
+                cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Version'";
+                var result = cmd.ExecuteReader();
+                if (!result.HasRows)
+                    return v;
+                else
+                {
+                    cmd.CommandText = "Select top 1 VersionNumber from Version order by Date desc";
+                    var r = cmd.ExecuteReader();
+
+                    var verValue = r[0].ToString();
+                    var parser = new JustVersionParser();
+                    v = parser.Parse(verValue);
+                }
+
+            }
+            return v;
         }
 
         public override int SaveChanges(SaveOptions options)
@@ -42,8 +98,8 @@ namespace Terminals.Data.DB
             List<ObjectStateEntry> changes = this.GetChangedOrAddedEntitites();
 
             IEnumerable<Favorite> affectedFavorites = changes.Where(candidate => candidate.Entity is Favorite)
-                .Select(change => change.Entity)
-                .Cast<Favorite>();
+                                                             .Select(change => change.Entity)
+                                                             .Cast<Favorite>();
 
             return affectedFavorites;
         }
@@ -51,7 +107,8 @@ namespace Terminals.Data.DB
         private List<ObjectStateEntry> GetChangedOrAddedEntitites()
         {
             IEnumerable<ObjectStateEntry> added = this.ObjectStateManager.GetObjectStateEntries(EntityState.Added);
-            List<ObjectStateEntry> changed = this.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).ToList();
+            List<ObjectStateEntry> changed =
+                this.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).ToList();
             changed.AddRange(added);
             return changed;
         }
@@ -153,7 +210,7 @@ namespace Terminals.Data.DB
         internal List<int> GetRdpFavoriteIds()
         {
             return this.Favorites.Where(candidate => candidate.Protocol == ConnectionManager.RDP)
-                .Select(rdpFavorite => rdpFavorite.Id).ToList();
+                       .Select(rdpFavorite => rdpFavorite.Id).ToList();
         }
     }
 }
