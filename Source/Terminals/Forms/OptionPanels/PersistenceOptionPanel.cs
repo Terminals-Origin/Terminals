@@ -15,36 +15,24 @@ namespace Terminals.Forms
     {
         private readonly bool filePersistence = Settings.PersistenceType == 0;
 
+        /// <summary>
+        /// don't depend only on the user control properties.
+        /// Using this instance we are able to update all connections string properties,
+        /// because some of them are edited only in "advanced properties" window.
+        /// </summary>
+        private SqlConnectionStringBuilder connectionStringBuilder;
+
         private string ConnectionString
         {
             get
             {
-                var connectionStringBuilder = new SqlConnectionStringBuilder();
-                connectionStringBuilder.DataSource = this.serversComboBox.Text;
-                connectionStringBuilder.InitialCatalog = this.databaseCombobox.Text;
-
-                if (string.IsNullOrEmpty(connectionStringBuilder.InitialCatalog))
-                    connectionStringBuilder.InitialCatalog = "master";
-
-                connectionStringBuilder.IntegratedSecurity = !this.IsSqlServerAuth;
-                if (!connectionStringBuilder.IntegratedSecurity)
-                {
-                    connectionStringBuilder.UserID = this.SqlServerUserNameTextBox.Text;
-                    connectionStringBuilder.Password = this.SqlServerPasswordTextBox.Text;
-                }
-                return connectionStringBuilder.ToString();
+                this.FillSqlConnectionStringBuilder();
+                return this.connectionStringBuilder.ToString();
             }
             set
             {
-                var connectionStringBuilder = new SqlConnectionStringBuilder(value);
-                this.serversComboBox.Text = connectionStringBuilder.DataSource;
-                this.databaseCombobox.Text = connectionStringBuilder.InitialCatalog;
-                this.IsSqlServerAuth = !connectionStringBuilder.IntegratedSecurity;
-                if (!connectionStringBuilder.IntegratedSecurity)
-                {
-                    this.SqlServerUserNameTextBox.Text = connectionStringBuilder.UserID;
-                    this.SqlServerPasswordTextBox.Text = connectionStringBuilder.Password;
-                }
+                var newConnectionStringBuilder = new SqlConnectionStringBuilder(value);
+                this.FillSqlControlsFromConnecitonBuilder(newConnectionStringBuilder);
             }
         }
 
@@ -57,11 +45,9 @@ namespace Terminals.Forms
             set
             {
                 if (value)
-                    this.SqlServerAuthenticationComboBox.SelectedIndex = 0;
-                else
-                {
                     this.SqlServerAuthenticationComboBox.SelectedIndex = 1;
-                }
+                else
+                    this.SqlServerAuthenticationComboBox.SelectedIndex = 0;
             }
         }
 
@@ -121,7 +107,7 @@ namespace Terminals.Forms
             this.TestLabel.Visible = true;
             var version = Versioning.Version.Min;
             string connectionString = this.ConnectionString;
-            Exception exc= null;
+            Exception exc = null;
 
             Task t = Task.Factory.StartNew(() =>
                 {
@@ -146,7 +132,7 @@ namespace Terminals.Forms
         private static void ShowConnectionTestResult(Versioning.Version version, Exception exc)
         {
             const string messageHeader = "Terminals - Sql connection test";
-            if (exc != null &&  version != Versioning.Version.Min)
+            if (exc != null && version != Versioning.Version.Min)
             {
                 string message = string.Format("Test connection succeeded. (Version: {0})", version);
                 MessageBox.Show(message, messageHeader, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -241,6 +227,55 @@ namespace Terminals.Forms
                     TableQueryLabel.Visible = false;
                 }
             }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private void ButtonAdvancedClick(object sender, EventArgs e)
+        {
+            using (var advancedForm = new SqlConnectionForm())
+            {
+                this.FillSqlConnectionStringBuilder();
+                // create copy to be able cancel the edit
+                var currentConnectionCopy = new SqlConnectionStringBuilder(this.connectionStringBuilder.ToString());
+                advancedForm.DataSource = currentConnectionCopy;
+                if (advancedForm.ShowDialog() == DialogResult.OK)
+                {
+                    this.FillSqlControlsFromConnecitonBuilder(currentConnectionCopy);
+                }
+            }
+        }
+
+        private void FillSqlConnectionStringBuilder()
+        {
+            if (this.connectionStringBuilder == null)
+               this.connectionStringBuilder = new SqlConnectionStringBuilder(); 
+            
+            this.connectionStringBuilder.DataSource = this.serversComboBox.Text;
+            this.connectionStringBuilder.InitialCatalog = this.databaseCombobox.Text;
+
+            if (string.IsNullOrEmpty(this.connectionStringBuilder.InitialCatalog))
+            {
+                this.connectionStringBuilder.InitialCatalog = "master";
+            }
+
+            this.connectionStringBuilder.IntegratedSecurity = !this.IsSqlServerAuth;
+            if (!this.connectionStringBuilder.IntegratedSecurity)
+            {
+                this.connectionStringBuilder.UserID = this.SqlServerUserNameTextBox.Text;
+                this.connectionStringBuilder.Password = this.SqlServerPasswordTextBox.Text;
+            }
+        }
+
+        private void FillSqlControlsFromConnecitonBuilder(SqlConnectionStringBuilder connectionStringBuilder)
+        {
+            this.connectionStringBuilder = connectionStringBuilder;
+            this.serversComboBox.Text = connectionStringBuilder.DataSource;
+            this.databaseCombobox.Text = connectionStringBuilder.InitialCatalog;
+            this.IsSqlServerAuth = !connectionStringBuilder.IntegratedSecurity;
+            if (!connectionStringBuilder.IntegratedSecurity)
+            {
+                this.SqlServerUserNameTextBox.Text = connectionStringBuilder.UserID;
+                this.SqlServerPasswordTextBox.Text = connectionStringBuilder.Password;
+            }
         }
     }
 }
