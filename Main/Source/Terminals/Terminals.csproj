@@ -291,6 +291,12 @@
     <Compile Include="Forms\OptionPanels\PersistenceOptionPanel.Designer.cs">
       <DependentUpon>PersistenceOptionPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SqlConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SqlConnectionForm.Designer.cs">
+      <DependentUpon>SqlConnectionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Native\Wow.cs" />
     <Compile Include="Network\HelperFunctions.cs" />
     <Compile Include="Network\WindowsUserIdentifiers.cs" />
@@ -946,6 +952,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\ProxyOptionPanel.resx">
       <DependentUpon>ProxyOptionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SqlConnectionForm.resx">
+      <DependentUpon>SqlConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>
