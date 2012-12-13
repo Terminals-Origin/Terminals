@@ -22,32 +22,32 @@ namespace Terminals.Configuration
         private const string DATA_DIRECTORY = "Data";
 
         /// <summary>
-        /// Gets directory name of the commands thumb images location
+        /// Gets directory name of the commands thumb images location ("Thumbs").
         /// </summary>
         internal const string THUMBS_DIRECTORY = "Thumbs";
 
         /// <summary>
-        /// Gets default name of the credentials file.
+        /// Gets default name of the credentials file ("Credentials.xml").
         /// </summary>
         internal const string CREDENTIALS_FILENAME = "Credentials.xml";
 
         /// <summary>
-        /// Gets default name of the favorites file.
+        /// Gets default name of the favorites file ("Favorites.xml").
         /// </summary>
         internal const string FAVORITES_FILENAME = "Favorites.xml";
 
         /// <summary>
-        /// Gets the file name of stored history values
+        /// Gets the file name of stored history values ("History.xml").
         /// </summary>
         internal const string HISTORY_FILENAME = "History.xml";
 
         /// <summary>
-        /// Gets the name of custom user options configuration file
+        /// Gets the name of custom user options configuration file ("Terminals.config").
         /// </summary>
         internal const string CONFIG_FILENAME = "Terminals.config";
 
         /// <summary>
-        /// Gets the file name of xml config file, where toolbar positions are stored
+        /// Gets the file name of xml config file, where toolbar positions are stored ("ToolStrip.settings.config").
         /// </summary>
         internal const string TOOLSTRIPS_FILENAME = "ToolStrip.settings.config";
 
@@ -70,7 +70,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                // dont take if from other paths, because it can be changed by some one else.
+                // don't take if from other paths, because it can be changed by some one else.
                 string log4NetFilePath = "Terminals.log4net.config";
                 XDocument configFile = XDocument.Load(log4NetFilePath);
                 XAttribute fileAttribute = SelectFileElement(configFile);
@@ -110,13 +110,13 @@ namespace Terminals.Configuration
         /// Sets custom file locations for general data files.
         /// All paths have to be set to absolute file path,  otherwise are ignored.
         /// You have to call this method only once at startup before files are loaded,
-        /// otherwise their usage isnt consistent.
+        /// otherwise their usage isn't consistent.
         /// </summary>
         internal void AssignCustomFileLocations(string configurationFullPath,
             string favoritesFullPath, string credentialsFullPath)
         {
-            // we dont have to assign to file filewatchers, they arent initialized yet
-            // we dont have to check if files exist, we recreate them
+            // we don't have to assign to file file watchers, they aren't initialized yet
+            // we don't have to check if files exist, we recreate them
             AssignConfigurationFile(configurationFullPath);
             AssignFavoritesFile(favoritesFullPath);
             AssignCredentialsFile(credentialsFullPath);
@@ -181,7 +181,7 @@ namespace Terminals.Configuration
 
         private static string GetProfileDataDirectoryPath()
         {
-            string relativeDataPath = PROFILE_PATH + DATA_DIRECTORY;
+            const string relativeDataPath = PROFILE_PATH + DATA_DIRECTORY;
             return Path.Combine(PROFILE_DATA_DIRECTORY, relativeDataPath);
         }
 

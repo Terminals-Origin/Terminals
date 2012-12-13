@@ -33,10 +33,10 @@ namespace Tests
         }
 
 
-        ///TODO : FIX TEST
-        //[TestMethod]
-        //public void TestPeriodicalUpdates()
-        //{
+        //TODO : FIX TestPeriodicalUpdates test
+        [TestMethod]
+        public void TestPeriodicalUpdates()
+        {
         //    this.AddFavoriteToPrimaryPersistence();
         //    this.AddFavoriteToPrimaryPersistence();
 
@@ -55,7 +55,7 @@ namespace Tests
         //    Assert.IsTrue(this.updateEventCatched, "Favorite updated event wasn't received");
         //    Assert.IsTrue(this.removedEventCatched, "Favorite removed event wasn't received");
         //    Assert.AreEqual(TEST_NAME, this.updatedFavorite.Name, "The updated favorite wasn't refreshed");
-        //}
+        }
 
         private void MakeChangesOnSecondaryPersistence()
         {

@@ -28,17 +28,52 @@ namespace Terminals.Security
         private const int ITERATION_COUNT = 1212;
         private static readonly RandomNumberGenerator saltGenerator = RandomNumberGenerator.Create();
 
-        internal static bool MasterPasswordIsValid(string password, string storedPassword)
+        /// <summary>
+        /// Ensures if, password entered by user is valid against storedPassword.
+        /// </summary>
+        /// <param name="password">Password entered by user</param>
+        /// <param name="storedMasterPassword">Validation key, encrypted by masterPassword key,
+        /// which should be identical to key, which we are able to generate from entered password</param>
+        internal static bool MasterPasswordIsValid(string password, string storedMasterPassword)
         {
-            byte[] keySalt = SplitEncryptedPassword(storedPassword).Item1;
+            byte[] keySalt = SplitEncryptedPassword(storedMasterPassword).Item1;
             byte[] key = CalculateMasterPasswordKey(password, keySalt);
-            string decryptedValidationKey = DecryptPassword(storedPassword, key);
+            string decryptedValidationKey = DecryptPassword(storedMasterPassword, key);
             return VALIDATION_KEY == decryptedValidationKey;
         }
 
+        /// <summary>
+        /// Extracts key salt used to encrypt master password and generate master password key.
+        /// </summary>
+        /// <param name="storedMasterPassword">Validation key, encrypted by masterPassword key,
+        /// which should be identical to key, which we are able to generate from entered password</param>
+        internal static byte[] GetMasterPasswordKeySalt(string storedMasterPassword)
+        {
+            return SplitEncryptedPassword(storedMasterPassword).Item1;
+        }
+
+        /// <summary>
+        /// Calculates new master password key using random salt.
+        /// Because of random salt, always generates unique result for the same master password.
+        /// Use only for test purpose.
+        /// </summary>
+        /// <param name="password">new master password for which the key has to be generated</param>
         internal static string CalculateMasterPasswordKey(string password)
         {
             byte[] keySalt = CreateRandomKeySalt();
+            return CalculateMasterPasswordKeyText(password, keySalt);
+        }
+
+        /// <summary>
+        /// Calculates new master password key using key salt used for stored master password.
+        /// Doesn't validate, if the stored master password is valid. Use only this overload on real data.
+        /// </summary>
+        /// <param name="password">master password for which the key has to be generated</param>
+        /// <param name="storedMasterPassword">Not empty stored <see cref="VALIDATION_KEY"/>
+        /// from which master password salt will be extracted</param>
+        internal static string CalculateMasterPasswordKey(string password, string storedMasterPassword)
+        {
+            byte[] keySalt = GetMasterPasswordKeySalt(storedMasterPassword);
             return CalculateMasterPasswordKeyText(password, keySalt);
         }
 
@@ -57,7 +92,7 @@ namespace Terminals.Security
         /// <summary>
         /// Replacement of v1 passwords <see cref="PasswordFunctions.ComputeMasterPasswordHash"/>
         /// </summary>
-        internal static string ComputeMasterPasswordStoredKey(string password)
+        internal static string ComputeStoredMasterPasswordKey(string password)
         {
             byte[] keySalt = CreateRandomKeySalt();
             byte[] key = CalculateMasterPasswordKey(password, keySalt);
