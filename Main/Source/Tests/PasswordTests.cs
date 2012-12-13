@@ -1,7 +1,12 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Terminals;
+using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Security;
+using Terminals.Updates;
 
 namespace Tests
 {
@@ -68,8 +73,8 @@ namespace Tests
         [TestMethod]
         public void V2MasterPasswordValidationTest()
         {
-            string stored = PasswordFunctions2.ComputeMasterPasswordStoredKey(MASTERPASSWORD);
-            string stored2 = PasswordFunctions2.ComputeMasterPasswordStoredKey(MASTERPASSWORD);
+            string stored = PasswordFunctions2.ComputeStoredMasterPasswordKey(MASTERPASSWORD);
+            string stored2 = PasswordFunctions2.ComputeStoredMasterPasswordKey(MASTERPASSWORD);
             Assert.AreNotEqual(stored, stored2);
 
             bool isValid = PasswordFunctions2.MasterPasswordIsValid(MASTERPASSWORD, stored);
@@ -105,18 +110,74 @@ namespace Tests
             Assert.AreNotEqual(encryptedPassword, encryptedPassword2, "password encryption always generates identical encrypted bytes");
         }
 
-        ///TODO: Implement Test
-        //[TestMethod]
-        //public void V2UpgradePasswordsTest()
-        //{
-        //    string targetDir = Path.Combine(this.TestContext.TestDir, "Terminals.config");
-        //    throw new NotImplementedException();
-        //    // deploy test version 2.0 config file
-        //    // check, if we are able to read all passwords (validate using old version)
-        //    // use upgrade routine to ensure, that we are able to:
-        //    // - update the stored master password
-        //    // - all stored passwords in favorite, credentials, RDP protocol properties are still valid
-        //}
+        [DeploymentItem(@"..\Resources\TestData\SecuredTerminals.config")]
+        [DeploymentItem(@"..\Resources\TestData\SecuredCredentials.xml")]
+        [TestMethod]
+        public void V2UpgradePasswordsTest()
+        {
+            // todo To finish this test, whole application has to be able to use PasswordFunctions2
+            //this.UpgradePasswordsTestInitialize();
+            //this.RunUpgrade();
+            //Settings.ForceReload(); // because we changed its file, when upgrading
+
+            //bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(MASTERPASSWORD, Settings.MasterPasswordHash);
+            //Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
+
+            //string newMasterPasswordKey = PasswordFunctions2.CalculateMasterPasswordKey(MASTERPASSWORD, Settings.MasterPasswordHash);
+            //IPersistence persistence = Persistence.Instance;
+            //persistence.Security.Authenticate(GetMasterPassword);
+            //IFavorite favorite = persistence.Favorites.First();
+            //String favoritePassword = favorite.Security.EncryptedPassword;
+            //String decryptedFavoritePassword = PasswordFunctions2.DecryptPassword(favoritePassword, newMasterPasswordKey);
+            //Assert.AreEqual(USERPASSWORD, decryptedFavoritePassword, "Upgrade favorite password failed.");
+
+            //ICredentialSet credential = persistence.Credentials.First();
+            //Assert.AreEqual(credential.UserName, credential.Password, "Credential password upgrade failed.");
+        }
+
+        private void RunUpgrade()
+        {
+            var passwordsUpdate = new PasswordsV2Update(GetMasterPassword);
+            string credentialsFileName = this.GetFullTestCredentialsFileName();
+            string credentialsFile = File.ReadAllText(credentialsFileName);
+            string updatedCredentials = passwordsUpdate.UpdateCredentialPasswords(credentialsFile);
+            File.WriteAllText(credentialsFileName, updatedCredentials);
+            string configFileName = this.GetFullTestConfigFileName();
+            passwordsUpdate.UpdateConfigFilePasswords(configFileName);
+        }
+
+        private AuthenticationPrompt GetMasterPassword(bool retry)
+        {
+            // simulate user prompt for master password
+            return new AuthenticationPrompt {Password = MASTERPASSWORD};
+        }
+
+        private void UpgradePasswordsTestInitialize()
+        {
+            string configFileName = this.GetFullTestConfigFileName();
+            string favoritesFileName = this.CreateFullTestFileName(FileLocations.FAVORITES_FILENAME);
+            string credentialsFileName = this.GetFullTestCredentialsFileName();
+
+            // we have to force all values to test deployment directory,
+            // because upgrade works with fully configured files structure
+            Settings.FileLocations.AssignCustomFileLocations(configFileName, favoritesFileName, credentialsFileName);
+        }
+
+        private string GetFullTestConfigFileName()
+        {
+            return this.CreateFullTestFileName("SecuredTerminals.config");
+        }
+
+        private string GetFullTestCredentialsFileName()
+        {
+            return this.CreateFullTestFileName("SecuredCredentials.xml");
+        }
+
+        private string CreateFullTestFileName(string sourceConfigFile)
+        {
+            string deplymentDir = this.TestContext.DeploymentDirectory;
+            return Path.Combine(deplymentDir, sourceConfigFile);
+        }
 
         [TestMethod]
         public void V2PasswordsEncryptDecryptTest()

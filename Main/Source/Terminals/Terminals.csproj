@@ -107,11 +107,10 @@
     <Reference Include="AWSSDK, Version=1.3.10.0, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
       <HintPath>..\..\Resources\Libraries\AmazonS3\AWSSDK.dll</HintPath>
     </Reference>
-    <Reference Include="AxInterop.MSTSCLib">
-      <HintPath>..\..\Resources\Libraries\AxInterop.MSTSCLib.dll</HintPath>
-    </Reference>
-    <Reference Include="AxInterop.VMRCClientControlLib">
+    <Reference Include="AxInterop.VMRCClientControlLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Resources\Libraries\VMRC\AxInterop.VMRCClientControlLib.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="AxWFICALib">
       <HintPath>..\..\Resources\Libraries\Citrix\AxWFICALib.dll</HintPath>
@@ -124,7 +123,7 @@
     </Reference>
     <Reference Include="Interop.VMRCClientControlLib">
       <HintPath>..\..\Resources\Libraries\VMRC\Interop.VMRCClientControlLib.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\Resources\Libraries\log4net\log4net.dll</HintPath>
@@ -697,6 +696,7 @@
     <Compile Include="Unified\RSS\Shared\RssDefault.cs" />
     <Compile Include="Unified\RSS\Shared\RssElement.cs" />
     <Compile Include="Unified\RSS\Shared\RssEnumerators.cs" />
+    <Compile Include="Updates\PasswordsV2Update.cs" />
     <Compile Include="Updates\TerminalsUpdates.cs">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
       <SubType>Component</SubType>

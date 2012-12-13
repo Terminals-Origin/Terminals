@@ -1,0 +1,15 @@
+TRY TO KEEP THIS FILE UP TO DATE!
+
+Credentials.xml - Credentials version 2 example file. Each user has encrypted password using empty master password.
+The credential password is always identical to the user name.
+
+SecuredCredentials.xml - Credentials version 2 example file. One test Credential, password identical to the user name. Password is encrypted by SecuredTerminals.config.
+
+History.xml - example version 2 historical data.
+
+Issue_21279_import_800_items.xml - 887 terminals version 2 favorites. Contains duplicities, so the real unique favorites count is 507 only.
+
+Terminals.config = Default empty config file
+
+SecuredTerminals.config = Version 2 config file, which contains one favorite "computer" with stored password "testPassword".
+Master password is "testMaster".
