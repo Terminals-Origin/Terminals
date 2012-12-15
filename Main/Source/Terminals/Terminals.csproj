@@ -1087,11 +1087,17 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Migrated rules for Terminals.ruleset" />
-    <None Include="Data\DB\Terminals.mdf" />
     <None Include="..\..\Resources\Libraries\wpcap\wpcap.dll">
       <Link>wpcap.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="..\..\Resources\Database\Terminals.mdf">
+      <Link>Data\DB\Terminals.mdf</Link>
+    </Content>
+    <Content Include="..\..\Resources\Database\Terminals_log.ldf">
+      <Link>Data\DB\Terminals_log.ldf</Link>
+      <DependentUpon>Terminals.mdf</DependentUpon>
+    </Content>
     <Content Include="..\..\Resources\Images\Thumbs\certmgr.msc.jpg">
       <Link>Thumbs\certmgr.msc.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1171,9 +1177,6 @@
     <Content Include="..\..\Resources\Images\Thumbs\wmimgmt.msc.jpg">
       <Link>Thumbs\wmimgmt.msc.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\DB\Terminals_log.LDF">
-      <DependentUpon>Terminals.mdf</DependentUpon>
     </Content>
     <None Include="Resources\amber.png" />
     <Content Include="Migrations\1.0.0\dbo.001.CreateDatabase.sql" />
