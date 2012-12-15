@@ -1179,52 +1179,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\amber.png" />
-    <Content Include="Migrations\1.0.0\dbo.001.CreateDatabase.sql" />
-    <Content Include="Migrations\1.0.0\dbo.012.Versions.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.AddFavoriteToGroup.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.003.BeforeConnectExecute.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.009.CredentialBase.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.011.Credentials.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.DeleteBeforeConnectExecute.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.DeleteCredentialBase.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.DeleteCredentials.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.DeleteDisplayOptions.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.DeleteFavorite.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.DeleteFavoritesInGroup.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.DeleteGroup.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.DeleteSecurity.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.010.DisplayOptions.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.008.Favorites.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.007.FavoritesInGroup.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.GetFavoriteGroups.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.GetFavoriteIcon.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.GetFavoriteProtocolProperties.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.GetFavoritesHistoryByDate.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.GetFavoritesInGroup.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.GetMasterPasswordKey.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.005.Groups.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.006.History.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.InsertBeforeConnectExecute.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.InsertCredentialBase.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.InsertCredentials.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.InsertDisplayOptions.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.InsertFavorite.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.InsertFavoritesInGroup.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.InsertGroup.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.InsertHistory.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.InsertSecurity.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.004.Options.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.002.Security.Table.sql" />
-    <Content Include="Migrations\1.0.0\dbo.SetFavoriteIcon.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.UpdateBeforeConnectExecute.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.UpdateCredentialBase.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.UpdateCredentials.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.UpdateDisplayOptions.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.UpdateFavorite.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.UpdateFavoriteProtocolProperties.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.UpdateGroup.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.UpdateMasterPasswordKey.StoredProcedure.sql" />
-    <Content Include="Migrations\1.0.0\dbo.UpdateSecurity.StoredProcedure.sql" />
     <Content Include="Resources\back.png" />
     <EntityDeploy Include="Data\DB\SQLPersistence.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -1569,7 +1523,6 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
