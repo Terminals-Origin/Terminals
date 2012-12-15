@@ -130,7 +130,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ChangePassword";
-            this.Text = "1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Set database password";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ChangePassword_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

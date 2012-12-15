@@ -2,12 +2,12 @@
 using System.Data;
 using System.Data.Sql;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data.DB;
 using System.Collections.Generic;
-using Versioning = SqlScriptRunner.Versioning;
 
 namespace Terminals.Forms
 {
@@ -40,16 +40,18 @@ namespace Terminals.Forms
         {
             get
             {
-                return this.SqlServerAuthenticationComboBox.Text == "SQL Server Authentication";
+                return this.sqlServerAuthenticationComboBox.Text == "SQL Server Authentication";
             }
             set
             {
                 if (value)
-                    this.SqlServerAuthenticationComboBox.SelectedIndex = 1;
+                    this.sqlServerAuthenticationComboBox.SelectedIndex = 1;
                 else
-                    this.SqlServerAuthenticationComboBox.SelectedIndex = 0;
+                    this.sqlServerAuthenticationComboBox.SelectedIndex = 0;
             }
         }
+
+        private const string MESSAGE_HEADER = "Terminals - Sql connection test";
 
         public PersistenceOptionPanel()
         {
@@ -75,6 +77,9 @@ namespace Terminals.Forms
                 this.ConnectionString = Database.DEFAULT_CONNECTION_STRING;
             else
                 this.ConnectionString = Settings.ConnectionString;
+
+            if (!string.IsNullOrEmpty(Settings.DatabaseMasterPassword))
+                this.txtDbPassword.Text = NewTerminalForm.HIDDEN_PASSWORD;
         }
 
         public void SaveSettings()
@@ -83,6 +88,8 @@ namespace Terminals.Forms
             if (this.rbtnSqlPersistence.Checked)
             {
                 Settings.ConnectionString = ConnectionString;
+                if (this.txtDbPassword.Text != NewTerminalForm.HIDDEN_PASSWORD)
+                    Settings.DatabaseMasterPassword = this.txtDbPassword.Text;
             }
             else
             {
@@ -94,104 +101,89 @@ namespace Terminals.Forms
         private void OnRbtnFilePersistenceCheckedChanged(object sender, EventArgs e)
         {
             bool enableSqlControls = !this.rbtnFilePersistence.Checked;
-            SqlServerOptionsPanel.Enabled = rbtnSqlPersistence.Checked;
-            //this.txtConnectionString.Enabled = enableSqlControls;
-            this.bntTestSqlConnection.Enabled = enableSqlControls;
-            //this.txtDbPassword.Enabled = enableSqlControls;
-            this.bntTestSqlConnection.Enabled = enableSqlControls;
+            this.sqlServerOptionsPanel.Enabled = rbtnSqlPersistence.Checked;
+            this.btnTestSqlConnection.Enabled = enableSqlControls;
+            this.txtDbPassword.Enabled = enableSqlControls;
         }
 
         private void OnBntTestSqlConnectionClick(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.WaitCursor;
-            this.TestLabel.Visible = true;
-            var version = Versioning.Version.Min;
-            string connectionString = this.ConnectionString;
-            Exception exc = null;
-
-            Task t = Task.Factory.StartNew(() =>
-                {
-                    try
-                    {
-                        version = Database.DatabaseVersion(connectionString);
-                    }
-                    catch (Exception exception)
-                    {
-                        exc = exception;
-                    }
-                });
-
-            t.ContinueWith((antecedant) =>
-                {
-                    ShowConnectionTestResult(version, exc);
-                    this.Cursor = Cursors.Default;
-                    this.TestLabel.Visible = false;
-                }, TaskScheduler.FromCurrentSynchronizationContext());
+            this.testLabel.Visible = true;
+            var connectionProperties = new Tuple<string, string>(this.ConnectionString, this.txtDbPassword.Text);
+            var t = Task<DatabaseValidataionResult>.Factory.StartNew(TryTestDatabaseConnection, connectionProperties);
+            t.ContinueWith(this.ShowConnectionTestResult, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private static void ShowConnectionTestResult(Versioning.Version version, Exception exc)
+        private static DatabaseValidataionResult TryTestDatabaseConnection(object objectState)
         {
-            const string messageHeader = "Terminals - Sql connection test";
-            if (exc != null && version != Versioning.Version.Min)
+            var connectionParams = objectState as Tuple<string, string>;
+            return Database.ValidateDatabaseConnection(connectionParams.Item1, connectionParams.Item2);
+        }
+
+        private void ShowConnectionTestResult(Task<DatabaseValidataionResult> antecedent)
+        {
+            DatabaseValidataionResult connectionResult = antecedent.Result;
+
+            if (connectionResult.SuccessfulWithVersion)
             {
-                string message = string.Format("Test connection succeeded. (Version: {0})", version);
-                MessageBox.Show(message, messageHeader, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string message = string.Format("Test connection succeeded. (Version: {0})", connectionResult.CurrentVersion);
+                MessageBox.Show(message, MESSAGE_HEADER, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                string message = "Test database failed.\r\nReason:";
-                if (exc != null)
-                {
-                    message += exc.Message;
-                }
-                else
-                {
-                    message += "The specified database does include a versions table. " +
-                               "Change the name of the database and click 'Create New' to create a new database on the server, " +
-                               "or just hit 'Create New' to deploy into this existing database.";
-                }
-                MessageBox.Show(message, messageHeader, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowFailedConnectionTestMessage(connectionResult);
             }
+
+            this.testLabel.Visible = false;
+        }
+
+        private static void ShowFailedConnectionTestMessage(DatabaseValidataionResult connectionResult)
+        {
+            string message = string.Format("Test database failed.\r\nReason:{0}", connectionResult.ErroMessage);
+            if (connectionResult.IsMinimalVersion)
+            {
+                message += "\r\n\r\nThe specified database does include a versions table.\r\n" +
+                           "Change the name of the database and click 'Create New' to create a new database on the server, " +
+                           "or just hit 'Create New' to deploy into this existing database.";
+            }
+            MessageBox.Show(message, MESSAGE_HEADER, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void SqlServerAuthenticationComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            SqlServerAuthPanel.Enabled = IsSqlServerAuth;
+            sqlServerAuthPanel.Enabled = IsSqlServerAuth;
         }
 
         private void RbtnSqlPersistenceCheckedChanged(object sender, EventArgs e)
         {
-            SqlServerOptionsPanel.Enabled = rbtnSqlPersistence.Checked;
+            sqlServerOptionsPanel.Enabled = rbtnSqlPersistence.Checked;
         }
 
-        private void SearchButtonClick(object sender, EventArgs e)
+        private void SearchServersButtonClick(object sender, EventArgs e)
         {
-            QueryLabel.Visible = true;
-            Cursor = Cursors.WaitCursor;
-            DataTable instances = null;
-            Task t = Task.Factory.StartNew(() => instances = SqlDataSourceEnumerator.Instance.GetDataSources());
+            this.queryLabel.Visible = true;
+            var t = Task<DataTable>.Factory.StartNew(() => SqlDataSourceEnumerator.Instance.GetDataSources());
 
-            t.ContinueWith((antecedant) =>
+            t.ContinueWith((antecedent) =>
                 {
-                    this.FillServersComboboxItems(instances);
-                    Cursor = Cursors.Default;
-                    QueryLabel.Visible = false;
+                    this.FillServersComboboxItems(antecedent.Result);
+                    this.queryLabel.Visible = false;
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void FillServersComboboxItems(DataTable instances)
+        private void FillServersComboboxItems(DataTable availableServers)
         {
-            if (instances != null)
+            if (availableServers == null)
+                return;
+
+            this.serversComboBox.Items.Clear();
+            foreach (DataRow row in availableServers.Rows)
             {
-                this.serversComboBox.Items.Clear();
-                foreach (DataRow row in instances.Rows)
-                {
-                    string serverName = row["ServerName"].ToString();
-                    string instanceName = row["InstanceName"].ToString();
-                    string version = row["Version"].ToString();
-                    string display = FormatSqlInstanceDisplayName(serverName, instanceName, version);
-                    this.serversComboBox.Items.Add(display);
-                }
+                string serverName = row["ServerName"].ToString();
+                string instanceName = row["InstanceName"].ToString();
+                string version = row["Version"].ToString();
+                string display = FormatSqlInstanceDisplayName(serverName, instanceName, version);
+                this.serversComboBox.Items.Add(display);
             }
         }
 
@@ -209,24 +201,20 @@ namespace Terminals.Forms
             return display;
         }
 
-        private void ButtonDatabasesClick(object sender, EventArgs e)
+        private void ButtonFindDatabasesClick(object sender, EventArgs e)
         {
-            TableQueryLabel.Visible = true;
-            Cursor = Cursors.WaitCursor;
-            List<string> dbs = null;
-            string connectionString = this.ConnectionString;
-            Task t = Task.Factory.StartNew(() => dbs = Database.Databases(connectionString));
+            tableQueryLabel.Visible = true;
+            string connectionString = FillNewGeneralConnectionString();
+            var t = Task<List<string>>.Factory.StartNew((cs) => Database.FindDatabasesOnServer(cs.ToString()), connectionString);
+            t.ContinueWith(this.FinishDatabasesReload, TaskScheduler.FromCurrentSynchronizationContext());
+        }
 
-            t.ContinueWith((antecedant) =>
-            {
-                if (dbs != null)
-                {
-                    this.databaseCombobox.Items.Clear();
-                    this.databaseCombobox.Items.AddRange(dbs.ToArray());
-                    Cursor = Cursors.Default;
-                    TableQueryLabel.Visible = false;
-                }
-            }, TaskScheduler.FromCurrentSynchronizationContext());
+        private void FinishDatabasesReload(Task<List<string>> antecedent)
+        {
+            object[] databases = antecedent.Result.Cast<object>().ToArray();
+            this.databaseCombobox.Items.Clear();
+            this.databaseCombobox.Items.AddRange(databases);
+            tableQueryLabel.Visible = false;
         }
 
         private void ButtonAdvancedClick(object sender, EventArgs e)
@@ -247,22 +235,32 @@ namespace Terminals.Forms
         private void FillSqlConnectionStringBuilder()
         {
             if (this.connectionStringBuilder == null)
-               this.connectionStringBuilder = new SqlConnectionStringBuilder(); 
-            
-            this.connectionStringBuilder.DataSource = this.serversComboBox.Text;
+                this.connectionStringBuilder = new SqlConnectionStringBuilder();
+
+            this.FillConnectionStringBuilder(this.connectionStringBuilder);
             this.connectionStringBuilder.InitialCatalog = this.databaseCombobox.Text;
+        }
 
-            if (string.IsNullOrEmpty(this.connectionStringBuilder.InitialCatalog))
+        private void FillConnectionStringBuilder(SqlConnectionStringBuilder connectionBuilder)
+        {
+            connectionBuilder.IntegratedSecurity = !this.IsSqlServerAuth;
+            if (!connectionBuilder.IntegratedSecurity)
             {
-                this.connectionStringBuilder.InitialCatalog = "master";
+                connectionBuilder.UserID = this.sqlServerUserNameTextBox.Text;
+                connectionBuilder.Password = this.sqlServerPasswordTextBox.Text;
             }
 
-            this.connectionStringBuilder.IntegratedSecurity = !this.IsSqlServerAuth;
-            if (!this.connectionStringBuilder.IntegratedSecurity)
-            {
-                this.connectionStringBuilder.UserID = this.SqlServerUserNameTextBox.Text;
-                this.connectionStringBuilder.Password = this.SqlServerPasswordTextBox.Text;
-            }
+            connectionBuilder.DataSource = this.serversComboBox.Text;
+        }
+
+        private string FillNewGeneralConnectionString()
+        {
+            var connectionBuilder = new SqlConnectionStringBuilder(this.connectionStringBuilder.ToString());
+            // fill as much as from the current, because advanced properties may be set
+            this.FillConnectionStringBuilder(connectionBuilder);
+            connectionBuilder.InitialCatalog = string.Empty;
+            connectionBuilder.AttachDBFilename = string.Empty;
+            return connectionBuilder.ToString();
         }
 
         private void FillSqlControlsFromConnecitonBuilder(SqlConnectionStringBuilder connectionStringBuilder)
@@ -273,9 +271,31 @@ namespace Terminals.Forms
             this.IsSqlServerAuth = !connectionStringBuilder.IntegratedSecurity;
             if (!connectionStringBuilder.IntegratedSecurity)
             {
-                this.SqlServerUserNameTextBox.Text = connectionStringBuilder.UserID;
-                this.SqlServerPasswordTextBox.Text = connectionStringBuilder.Password;
+                this.sqlServerUserNameTextBox.Text = connectionStringBuilder.UserID;
+                this.sqlServerPasswordTextBox.Text = connectionStringBuilder.Password;
             }
+        }
+
+        private void OnBtnSetPasswordClick(object sender, EventArgs e)
+        {
+            Tuple<bool, string, string> passwordPrompt = AskForDatabasePasswords();
+            if (!passwordPrompt.Item1)
+                return;
+
+            this.Cursor = Cursors.WaitCursor;
+            DatabasePasswordUpdate.UpdateMastrerPassord(this.ConnectionString, passwordPrompt.Item2, passwordPrompt.Item3);
+            this.Cursor = Cursors.Default;
+        }
+
+        private Tuple<bool, string, string> AskForDatabasePasswords()
+        {
+            using (var passwordPrompt = new ChangePassword())
+            {
+                if (passwordPrompt.ShowDialog() == DialogResult.OK)
+                    return new Tuple<bool, string, string>(true, passwordPrompt.OldPassword, passwordPrompt.NewPassword);
+            }
+
+            return new Tuple<bool, string, string>(false, string.Empty, string.Empty);
         }
     }
 }
