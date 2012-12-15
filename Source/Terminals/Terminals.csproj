@@ -171,6 +171,7 @@
     <Compile Include="Data\AuthenticationPrompt.cs" />
     <Compile Include="Data\DB\DatabaseConnections.cs" />
     <Compile Include="Data\DB\DatabasePasswordUpdate.cs" />
+    <Compile Include="Data\DB\DatabaseValidataionResult.cs" />
     <Compile Include="Data\DB\EntitiesCache.cs" />
     <Compile Include="Data\DB\FavoriteDetails.cs" />
     <Compile Include="Data\DB\IIntegerKeyEnityty.cs" />
@@ -179,6 +180,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SQLPersistence.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Data\DB\TestConnectionResult.cs" />
     <Compile Include="Data\Favorites\FavoriteIcons.cs" />
     <Compile Include="Data\Interfaces\IPersistedSecurity.cs" />
     <Compile Include="Data\Interfaces\IStoreIdEquals.cs" />

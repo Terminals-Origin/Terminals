@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.SqlClient;
 using System.Linq;
 using Terminals.Connections;
-using Versioning = SqlScriptRunner.Versioning;
 
 namespace Terminals.Data.DB
 {
@@ -17,70 +14,6 @@ namespace Terminals.Data.DB
         {
             // don't ask, save immediately. Here is no benefit to save in batch like in FilePersistence
             this.SaveChanges();
-        }
-
-        internal static List<string> Databases(string connectionString)
-        {
-            try
-            {
-                return TryFindDatabases(connectionString);
-            }
-            catch
-            {
-                // don't log an exception, because some SqlExceptions contain connection string information
-                return new List<string>();
-            }
-        }
-
-        private static List<string> TryFindDatabases(string connectionString)
-        {
-            using (var connection = SqlClientFactory.Instance.CreateConnection())
-            {
-                connection.ConnectionString = connectionString;
-                connection.Open();
-                DbCommand cmd = connection.CreateCommand();
-
-                cmd.CommandText = "SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb');";
-                DbDataReader dbReader = cmd.ExecuteReader();
-
-                List<string> databases = new List<string>();
-                if (!dbReader.HasRows)
-                {
-                    return databases;
-                }
-
-                while (dbReader.Read())
-                {
-                    databases.Add(dbReader[0].ToString());
-                }
-
-                return databases;
-            }
-        }
-
-        internal static Versioning.Version DatabaseVersion(string connectionString)
-        {
-            var minVersion = Versioning.Version.Min;
-
-            using (var connection = SqlClientFactory.Instance.CreateConnection())
-            {
-                connection.ConnectionString = connectionString;
-                connection.Open();
-                DbCommand cmd = connection.CreateCommand();
-
-                cmd.CommandText = "SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Version'";
-                DbDataReader versionsReader = cmd.ExecuteReader();
-                if (!versionsReader.HasRows)
-                    return minVersion;
-
-                cmd.CommandText = "Select top 1 VersionNumber from Version order by Date desc";
-                DbDataReader dbDataReader = cmd.ExecuteReader();
-
-                string verValue = dbDataReader[0].ToString();
-                var parser = new Versioning.JustVersionParser();
-                minVersion = parser.Parse(verValue);
-            }
-            return minVersion;
         }
 
         public override int SaveChanges(SaveOptions options)

@@ -104,15 +104,15 @@ namespace Terminals
             if (!filePersistence)
             {
                 string connectionString = Settings.ConnectionString;
-                var dbVersion = Database.DatabaseVersion(connectionString);
+                DatabaseValidataionResult dbResult = Database.ValidateDatabaseConnection(connectionString, "databasemasterpassword");
 
-                var root = (new System.IO.FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location)).Directory.FullName;
-                var migrationsRoot = System.IO.Path.Combine(root, "Migrations");
-                if (System.IO.Directory.Exists(migrationsRoot))
+                var root = (new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location)).Directory.FullName;
+                var migrationsRoot = Path.Combine(root, "Migrations");
+                if (Directory.Exists(migrationsRoot))
                 {
                     var parser = new JustVersionParser();
                     var list = SqlScriptRunner.ScriptRunner.ResolveScriptsFromPathAndVersion(migrationsRoot, "*.sql", true,
-                                                                                  migrationsRoot, dbVersion,
+                                                                                  migrationsRoot, dbResult.CurrentVersion,
                                                                                   SqlScriptRunner.Versioning.Version.Max,
                                                                                   parser);
                 }

@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.EntityClient;
+using System.Linq;
 using Terminals.Configuration;
 using Terminals.Security;
+using Versioning = SqlScriptRunner.Versioning;
 
 namespace Terminals.Data.DB
 {
@@ -75,8 +78,8 @@ namespace Terminals.Data.DB
 
         internal static bool TestConnection()
         {
-            Tuple<bool, string> result = TestConnection(Settings.ConnectionString, Settings.DatabaseMasterPassword);
-            return result.Item1;
+            TestConnectionResult result = TestConnection(Settings.ConnectionString, Settings.DatabaseMasterPassword);
+            return result.Successful;
         }
 
         /// <summary>
@@ -87,19 +90,22 @@ namespace Terminals.Data.DB
         /// <param name="databasePassword">Not encrypted database password</param>
         /// <returns>True, if connection test was successful; otherwise false
         /// and string containing the error message</returns>
-        internal static Tuple<bool, string> TestConnection(string connectionStringToTest, string databasePassword)
+        internal static TestConnectionResult TestConnection(string connectionStringToTest, string databasePassword)
         {
             try
             {
                 var passwordIsValid = TestDatabasePassword(connectionStringToTest, databasePassword);
-                return new Tuple<bool, string>(passwordIsValid, "Database password doesn't match.");
+                if (passwordIsValid)
+                    return new TestConnectionResult();
+
+                return new TestConnectionResult("Database password doesn't match.");
             }
             catch (Exception exception)
             {
                 string message = exception.Message;
                 if (exception.InnerException != null)
                     message = exception.InnerException.Message;
-                return new Tuple<bool, string>(false, message);
+                return new TestConnectionResult(message);
             }
         }
 
@@ -115,6 +121,82 @@ namespace Terminals.Data.DB
             {
                 return database.GetMasterPasswordHash();
             }
+        }
+
+        internal static List<string> FindDatabasesOnServer(string connectionString)
+        {
+            try
+            {
+                return TryFindDatabases(connectionString);
+            }
+            catch
+            {
+                // don't log an exception, because some SqlExceptions contain connection string information
+                return new List<string>();
+            }
+        }
+
+        private static List<string> TryFindDatabases(string connectionString)
+        {
+            using (Database database = CreateInstance(connectionString))
+            {
+                const string COMMAND_TEXT = "SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb');";
+                return database.ExecuteStoreQuery<string>(COMMAND_TEXT)
+                    .ToList();
+            }
+        }
+
+        internal static DatabaseValidataionResult ValidateDatabaseConnection(string connectionString, string databasePassword)
+        {
+            TestConnectionResult connectionResult = TestConnection(connectionString, databasePassword);
+            if (!connectionResult.Successful)
+                return new DatabaseValidataionResult(connectionResult.ErroMessage);
+            
+            return IdentifyDatabaseVersion(connectionString);
+        }
+
+        /// <summary>
+        /// Tries to obtain the version number from database Versions table.
+        /// If, database doesn't contain such table or contains no versions, Version.Min is returned.
+        /// </summary>
+        private static DatabaseValidataionResult IdentifyDatabaseVersion(string connectionString)
+        {
+            try
+            {
+                Versioning.Version version = TryIdentifyDatabaseVersion(connectionString);
+                return new DatabaseValidataionResult(version);
+            }
+            catch (Exception exception)
+            {
+                return new DatabaseValidataionResult(exception.Message);
+            }
+        }
+
+        private static Versioning.Version TryIdentifyDatabaseVersion(string connectionString)
+        {
+            using (Database database = CreateInstance(connectionString))
+            {
+                int versionTable = ContainsDatabaseVersionTable(database);
+                if (versionTable == 0)
+                    return Versioning.Version.Min;
+
+                return GetFirstVersionInVersionsTable(database);
+            }
+        }
+
+        private static int ContainsDatabaseVersionTable(Database database)
+        {
+            const string VERSIONTABLE_COMMAND = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Version'";
+            return database.ExecuteStoreQuery<int>(VERSIONTABLE_COMMAND)
+                           .FirstOrDefault();
+        }
+
+        private static Versioning.Version GetFirstVersionInVersionsTable(Database database)
+        {
+            const string LAST_VERSION_COMMAND = "Select top 1 VersionNumber from Version order by Date desc";
+            string lastVersion = database.ExecuteStoreQuery<string>(LAST_VERSION_COMMAND).FirstOrDefault();
+            var parser = new Versioning.JustVersionParser();
+            return parser.Parse(lastVersion);
         }
     }
 }

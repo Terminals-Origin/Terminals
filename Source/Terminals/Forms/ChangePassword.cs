@@ -40,11 +40,14 @@ namespace Terminals.Forms
 
         private void ChangePassword_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (this.DialogResult == DialogResult.Cancel)
+                return;
+
             if (!this.ConfirmedPasswordMatch)
             {
                 e.Cancel = true;
-                MessageBox.Show("New password doesnt match", "Database password change",
-                                     MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                MessageBox.Show("New password doesn't match", "Database password change",
+                                MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
         }
     }

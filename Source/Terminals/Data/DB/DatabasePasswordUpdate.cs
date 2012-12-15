@@ -29,8 +29,8 @@ namespace Terminals.Data.DB
 
         private void Run(string connectionString, string oldPassword, string newPassword)
         {
-            Tuple<bool, string> oldPasswordCheck = Database.TestConnection(connectionString, oldPassword);
-            if (oldPasswordCheck.Item1)
+            TestConnectionResult oldPasswordCheck = Database.TestConnection(connectionString, oldPassword);
+            if (oldPasswordCheck.Successful)
                 CommitNewMastrerPassord(connectionString, newPassword);
         }
 
