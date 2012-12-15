@@ -16,7 +16,7 @@ namespace Terminals.Security
     /// </summary>
     internal static class PasswordFunctions
     {
-        internal const int KEY_LENGTH = 24;
+        private const int KEY_LENGTH = 24;
         internal const int IV_LENGTH = 16;
         private const EncryptionAlgorithm ENCRYPTION_ALGORITHM = EncryptionAlgorithm.Rijndael;
 
