@@ -2,10 +2,10 @@
 <TestSettings name="Local" id="42f6b753-e325-46a0-b3df-919d138004fc" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
+    <DeploymentItem filename="..\Resources\Database\Terminals.mdf" />
+    <DeploymentItem filename="..\Resources\Database\Terminals_log.LDF" />
     <DeploymentItem filename="..\Resources\TestData\Issue_21279_import_800_items.xml" />
-    <DeploymentItem filename="Terminals\Data\DB\Terminals.mdf" />
     <DeploymentItem filename="Terminals\Resources\ControlPanel.png" />
-    <DeploymentItem filename="Terminals\Data\DB\Terminals_log.LDF" />
   </Deployment>
   <Execution>
     <Hosts skipUnhostableTests="false" />
