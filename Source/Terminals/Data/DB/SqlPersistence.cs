@@ -107,7 +107,7 @@ namespace Terminals.Data.DB
             // this forces the clock to run the updates in gui thread, because Entity framework isn't thread safe
             this.reLoadClock.SynchronizingObject = synchronizer;
             this.reLoadClock.Elapsed += new ElapsedEventHandler(this.OnReLoadClockElapsed);
-            // this.reLoadClock.Start();
+            this.reLoadClock.Start();
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Terminals.Data.DB
             // nothing to update in History: possible changes are only for today, and that day item isn't cached
 
             Debug.WriteLine("Updating entities at {0} [{1} ms]", DateTime.Now, clock.ElapsedMilliseconds);
-            //this.reLoadClock.Start();
+            this.reLoadClock.Start();
         }
 
         public override string ToString()
