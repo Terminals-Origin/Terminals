@@ -37,24 +37,24 @@ namespace Tests
         [TestMethod]
         public void TestPeriodicalUpdates()
         {
-        //    this.AddFavoriteToPrimaryPersistence();
-        //    this.AddFavoriteToPrimaryPersistence();
+            this.AddFavoriteToPrimaryPersistence();
+            this.AddFavoriteToPrimaryPersistence();
 
-        //    // assign event handler before another changes to catch all of them
-        //    this.PrimaryPersistence.Dispatcher.FavoritesChanged +=
-        //        new FavoritesChangedEventHandler(this.OnPrimaryStoreFavoritesChanged);
+            // assign event handler before another changes to catch all of them
+            this.PrimaryPersistence.Dispatcher.FavoritesChanged +=
+                new FavoritesChangedEventHandler(this.OnPrimaryStoreFavoritesChanged);
 
-        //    this.MakeChangesOnSecondaryPersistence();
+            this.MakeChangesOnSecondaryPersistence();
 
-        //    ISynchronizeInvoke control = new Control();
-        //    this.PrimaryPersistence.AssignSynchronizationObject(control);
-        //    // refresh interval is set to 2 sec. by default
-        //    Thread.Sleep(10000);
+            ISynchronizeInvoke control = new Control();
+            this.PrimaryPersistence.AssignSynchronizationObject(control);
+            // refresh interval is set to 2 sec. by default
+            Thread.Sleep(10000);
 
-        //    Assert.IsTrue(this.addEventCatched, "Favorite added event wasn't received");
-        //    Assert.IsTrue(this.updateEventCatched, "Favorite updated event wasn't received");
-        //    Assert.IsTrue(this.removedEventCatched, "Favorite removed event wasn't received");
-        //    Assert.AreEqual(TEST_NAME, this.updatedFavorite.Name, "The updated favorite wasn't refreshed");
+            Assert.IsTrue(this.addEventCatched, "Favorite added event wasn't received");
+            Assert.IsTrue(this.updateEventCatched, "Favorite updated event wasn't received");
+            Assert.IsTrue(this.removedEventCatched, "Favorite removed event wasn't received");
+            Assert.AreEqual(TEST_NAME, this.updatedFavorite.Name, "The updated favorite wasn't refreshed");
         }
 
         private void MakeChangesOnSecondaryPersistence()
