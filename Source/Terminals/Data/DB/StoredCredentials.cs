@@ -113,11 +113,6 @@ namespace Terminals.Data.DB
             this.RefreshCache();
         }
 
-        public void Save()
-        {
-            // nothing to do
-        }
-
         private void EnsureCache()
         {
             if (this.isLoaded)
