@@ -32,7 +32,7 @@ namespace Terminals.Data.DB
             get
             {
                 if (this.credentialBase != null)
-                    return this.credentialBase.UserName;
+                    return this.credentialBase.EncryptedUserName;
 
                 return null;
             }
@@ -41,7 +41,7 @@ namespace Terminals.Data.DB
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.EnsureCredentialBase();
-                    this.credentialBase.UserName = value;
+                    this.credentialBase.EncryptedUserName = value;
                 }
             }
         }
@@ -69,7 +69,7 @@ namespace Terminals.Data.DB
             get
             {
                 if (this.credentialBase != null)
-                    return this.credentialBase.Domain;
+                    return this.credentialBase.EncryptedDomain;
 
                 return null;
             }
@@ -78,7 +78,7 @@ namespace Terminals.Data.DB
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.EnsureCredentialBase();
-                    this.credentialBase.Domain = value;
+                    this.credentialBase.EncryptedDomain = value;
                 }
             }
         }
