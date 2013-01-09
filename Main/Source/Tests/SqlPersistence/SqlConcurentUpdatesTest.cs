@@ -32,8 +32,6 @@ namespace Tests
           // this.lab.ClearTestLab();
         }
 
-
-        //TODO : FIX TestPeriodicalUpdates test
         [TestMethod]
         public void TestPeriodicalUpdates()
         {
