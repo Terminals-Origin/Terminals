@@ -805,48 +805,48 @@ namespace Terminals.Data.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String UserName
+        public global::System.String EncryptedUserName
         {
             get
             {
-                return _UserName;
+                return _EncryptedUserName;
             }
             set
             {
-                OnUserNameChanging(value);
-                ReportPropertyChanging("UserName");
-                _UserName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("UserName");
-                OnUserNameChanged();
+                OnEncryptedUserNameChanging(value);
+                ReportPropertyChanging("EncryptedUserName");
+                _EncryptedUserName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("EncryptedUserName");
+                OnEncryptedUserNameChanged();
             }
         }
-        private global::System.String _UserName;
-        partial void OnUserNameChanging(global::System.String value);
-        partial void OnUserNameChanged();
+        private global::System.String _EncryptedUserName;
+        partial void OnEncryptedUserNameChanging(global::System.String value);
+        partial void OnEncryptedUserNameChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String Domain
+        public global::System.String EncryptedDomain
         {
             get
             {
-                return _Domain;
+                return _EncryptedDomain;
             }
             set
             {
-                OnDomainChanging(value);
-                ReportPropertyChanging("Domain");
-                _Domain = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Domain");
-                OnDomainChanged();
+                OnEncryptedDomainChanging(value);
+                ReportPropertyChanging("EncryptedDomain");
+                _EncryptedDomain = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("EncryptedDomain");
+                OnEncryptedDomainChanged();
             }
         }
-        private global::System.String _Domain;
-        partial void OnDomainChanging(global::System.String value);
-        partial void OnDomainChanged();
+        private global::System.String _EncryptedDomain;
+        partial void OnEncryptedDomainChanging(global::System.String value);
+        partial void OnEncryptedDomainChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

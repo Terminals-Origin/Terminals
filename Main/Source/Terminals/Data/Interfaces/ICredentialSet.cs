@@ -19,7 +19,7 @@ namespace Terminals.Data
         /// </summary>
         string Name { get; set; }
 
-        // next two properties are required to be shown in GridControls
+        // next two properties are required to be shown in GridControls, see implementation
         new string UserName { get; set; }
         new string Domain { get; set; }
     }

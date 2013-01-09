@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Text;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms.Controls;
+using Terminals.Security;
 
 namespace Terminals.Updates
 {
@@ -34,48 +34,72 @@ namespace Terminals.Updates
 
         private static void UpdateToVersion20()
         {
-            if (Program.Info.Version >= new Version(2, 0, 0, 0))
+            // problem: Settings file is already loaded from new location,
+            // but we need to check, if there is one in old location
+            if (IsVersion2UpTo21() || IsConfigFileOnV2Location())
             {
                 MoveFilesToVersion2Location();
                 UpdateDefaultFavoriteUrl();
             }
         }
 
+        private static bool IsVersion2UpTo21()
+        {
+            return Program.Info.Version >= new Version(2, 0, 0, 0) &&
+                   (Settings.ConfigVersion != null && Settings.ConfigVersion < new Version(2,1,0,0));
+        }
+
         private static void MoveFilesToVersion2Location()
         {
+            // we upgrade only files, there was no SqlPersistence before
             // don't need to refresh the file location, because if the files were changed
             // are already in use, they will be reloaded
             MoveThumbsDirectory();
             // don't move the logs directory, because it is in use by Log4net library.
             MoveDataFile(FileLocations.HISTORY_FILENAME);
             MoveDataFile(FileLocations.TOOLSTRIPS_FILENAME);
-            UpgradeCredentialsFile();
-            UpgradeConfigFile();
-        }
-
-        private static void UpgradeCredentialsFile()
-        {
-            MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
-            string credentialsFile = Settings.FileLocations.Credentials;
-            if (System.IO.File.Exists(credentialsFile))
-            {
-                string credentialsXml = File.ReadAllText(credentialsFile);
-                StringBuilder credentialsText = new StringBuilder(credentialsXml);
-                credentialsText.Replace("<Password>", "<EncryptedPassword>");
-                credentialsText.Replace("</Password>", "</EncryptedPassword>");
-                credentialsText.Replace("<Username>", "<UserName>");
-                credentialsText.Replace("</Username>", "</UserName>");
-                File.WriteAllText(credentialsFile, credentialsText.ToString());
-            }
-        }
-
-        private static void UpgradeConfigFile() 
-        {
             // only this is already in use if started with default location
             MoveDataFile(FileLocations.CONFIG_FILENAME);
             Settings.ForceReload();
+            Func<bool, AuthenticationPrompt> knowsUserPassword = RequestPassword.KnowsUserPassword;
+            var passwordsUpdate = new PasswordsV2Update(knowsUserPassword);
+            UpgradeCredentialsFile(passwordsUpdate);
+            UpgradeConfigFile(passwordsUpdate, knowsUserPassword);
+        }
+
+        private static void UpgradeCredentialsFile(PasswordsV2Update passwordsUpdate)
+        {
+            MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
+            string credentialsFile = Settings.FileLocations.Credentials;
+            if (File.Exists(credentialsFile))
+            {
+                string credentialsXml = File.ReadAllText(credentialsFile);
+                string updatedContet = UpdateCredentialXmlTags(credentialsXml);
+                updatedContet = passwordsUpdate.UpdateCredentialPasswords(updatedContet);
+                File.WriteAllText(credentialsFile, updatedContet);
+            }
+        }
+
+        private static string UpdateCredentialXmlTags(string credentialsXml)
+        {
+            StringBuilder credentialsText = new StringBuilder(credentialsXml);
+            credentialsText.Replace("Password", "EncryptedPassword");
+            credentialsText.Replace("Username", "EncryptedUserName");
+            credentialsText.Replace("Domain", "EncryptedDomain");
+            return credentialsText.ToString();
+        }
+
+        private static void UpgradeConfigFile(PasswordsV2Update passwordsUpdate,
+            Func<bool, AuthenticationPrompt> knowsUserPassword) 
+        {
             Settings.StartDelayedUpdate();
             Persistence.Instance.StartDelayedUpdate();
+            string newConfigFileName = Settings.FileLocations.Configuration;
+            passwordsUpdate.UpdateConfigFilePasswords(newConfigFileName);
+            // we don't have to reload now, because the file watcher is already listening
+            Settings.ForceReload(); // not identified why, but otherwise master password is lost
+            // now already need to have persistence authenticated, otherwise we are working with wrong masterKey
+            Persistence.Instance.Security.Authenticate(knowsUserPassword);
             ImportTagsFromConfigFile();
             MoveFavoritesFromConfigFile();
             MoveGroupsFromConfigFile();
@@ -99,7 +123,6 @@ namespace Terminals.Updates
 
         private static void MoveFavoriteAliasesGroup(GroupConfigurationElement configGroup) 
         {
-            IFactory factory = Persistence.Instance.Factory;
             IGroup group = FavoritesFactory.GetOrCreateGroup(configGroup.Name);
             List<string> favoriteNames = configGroup.FavoriteAliases.GetFavoriteNames();
             IFavorites favorites = Persistence.Instance.Favorites;
@@ -121,7 +144,7 @@ namespace Terminals.Updates
         private static void ImportTagsFromConfigFile()
         {
             IGroups groups = Persistence.Instance.Groups;
-            foreach (var tag in Settings.Tags)
+            foreach (string tag in Settings.Tags)
             {
                 var group = Persistence.Instance.Factory.CreateGroup(tag);
                 groups.Add(group);
@@ -133,7 +156,7 @@ namespace Terminals.Updates
             IFavorites favorites = Persistence.Instance.Favorites;
             foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
             {
-                var favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement);
+                IFavorite favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement);
                 ImportWithDialogs.AddFavoriteIntoGroups(favoriteConfigElement, favorite);
                 favorites.Add(favorite);
             }
@@ -193,6 +216,12 @@ namespace Terminals.Updates
                     File.Delete(oldPath);
                 }
             }
+        }
+
+        private static bool IsConfigFileOnV2Location()
+        {
+            string oldConfigFile = GetOldDataFullPath(FileLocations.CONFIG_FILENAME);
+            return File.Exists(oldConfigFile);
         }
 
         private static string GetOldDataFullPath(string relativePath)

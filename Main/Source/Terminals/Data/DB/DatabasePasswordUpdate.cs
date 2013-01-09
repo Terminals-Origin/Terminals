@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Terminals.Security;
@@ -8,22 +7,24 @@ namespace Terminals.Data.DB
 {
     internal class DatabasePasswordUpdate
     {
-        private readonly SqlPersistenceSecurity persistenceSecurity;
+        private SqlPersistenceSecurity persistenceSecurity;
 
-        private readonly string newKeyMaterial;
+        private string newStoredKey = string.Empty;
+
+        private string newKeyMaterial;
 
         private Database database;
 
-        private DatabasePasswordUpdate(string oldPassword, string newPassword)
+        /// <summary>
+        /// Only for security reasons
+        /// </summary>
+        private DatabasePasswordUpdate()
         {
-            this.persistenceSecurity = new SqlPersistenceSecurity();
-            this.persistenceSecurity.UpdateDatabaseKey(oldPassword);
-            this.newKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(newPassword); 
         }
 
         internal static void UpdateMastrerPassord(string connectionString, string oldPassword, string newPassword)
         {
-            var update = new DatabasePasswordUpdate(oldPassword, newPassword);
+            var update = new DatabasePasswordUpdate();
             update.Run(connectionString, oldPassword, newPassword);
         }
 
@@ -31,28 +32,34 @@ namespace Terminals.Data.DB
         {
             TestConnectionResult oldPasswordCheck = Database.TestConnection(connectionString, oldPassword);
             if (oldPasswordCheck.Successful)
-                CommitNewMastrerPassord(connectionString, newPassword);
+            {
+                this.Configure(connectionString, oldPassword, newPassword);
+                this.CommitNewMastrerPassord(connectionString);
+            }
         }
 
-        private void CommitNewMastrerPassord(string connecitonString, string newPassword)
+        private void Configure(string connectionString, string oldPassword, string newPassword)
+        {
+            // persistence doesn't have to be fully configured, we need only the persistence passwords part
+            this.persistenceSecurity = new SqlPersistenceSecurity();
+            this.persistenceSecurity.UpdateDatabaseKey(connectionString, oldPassword);
+
+            if (!string.IsNullOrEmpty(newPassword))
+                this.newStoredKey = PasswordFunctions2.CalculateStoredMasterPasswordKey(newPassword);
+            this.newKeyMaterial = PasswordFunctions2.CalculateMasterPasswordKey(newPassword, this.newStoredKey);
+        }
+
+        private void CommitNewMastrerPassord(string connecitonString)
         {
             // todo surround all database usings by try/catch
             using (this.database = Database.CreateInstance(connecitonString))
             {
                 UpdateStoredPasswords();
-                UpdateMasterPasswodInOptions(newPassword);
+                this.database.UpdateMasterPassword(this.newStoredKey);
                 database.SaveChanges();
             }
 
             this.database = null;
-        }
-
-        private void UpdateMasterPasswodInOptions(string newPassword)
-        {
-            string newHash = string.Empty;
-            if (!string.IsNullOrEmpty(newPassword))
-                newHash = PasswordFunctions.ComputeMasterPasswordHash(newPassword);
-            this.database.UpdateMasterPassword(newHash);
         }
 
         private void UpdateStoredPasswords()
@@ -82,7 +89,7 @@ namespace Terminals.Data.DB
 
             XElement tsgwPasswordHash = document.Root.Descendants("EncryptedPassword").First();
             string oldPassword = this.persistenceSecurity.DecryptPersistencePassword(tsgwPasswordHash.Value);
-            tsgwPasswordHash.Value = PasswordFunctions.EncryptPassword(oldPassword, this.newKeyMaterial);
+            tsgwPasswordHash.Value = PasswordFunctions2.EncryptPassword(oldPassword, this.newKeyMaterial);
             return document.ToString();
         }
 

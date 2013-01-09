@@ -27,12 +27,12 @@ namespace Terminals.Data.DB
         /// </summary>
         private CredentialBase credentialBase;
 
-        public string UserName
+        public string EncryptedUserName
         {
             get
             {
                 if (this.credentialBase != null)
-                   return this.credentialBase.UserName;
+                    return this.credentialBase.UserName;
 
                 return null;
             }
@@ -46,7 +46,25 @@ namespace Terminals.Data.DB
             }
         }
 
-        public string Domain
+        string ICredentialBase.UserName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(this.EncryptedUserName))
+                    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedUserName);
+
+                return String.Empty;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    this.EncryptedUserName = String.Empty;
+                else
+                    this.EncryptedUserName = this.persistenceSecurity.EncryptPersistencePassword(value);
+            }
+        }
+
+        public string EncryptedDomain
         {
             get
             {
@@ -62,6 +80,24 @@ namespace Terminals.Data.DB
                     this.EnsureCredentialBase();
                     this.credentialBase.Domain = value;
                 }
+            }
+        }
+
+        string ICredentialBase.Domain
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(this.EncryptedDomain))
+                    return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedDomain);
+
+                return String.Empty;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    this.EncryptedDomain = String.Empty;
+                else
+                    this.EncryptedDomain = this.persistenceSecurity.EncryptPersistencePassword(value);
             }
         }
 
@@ -155,8 +191,8 @@ namespace Terminals.Data.DB
         }
 
         /// <summary>
-        /// LazyLoading of CredentialBase for favorites, where security wasnt touched until now.
-        /// The credential base doesnt have to be initialized, if used doent configure its properties.
+        /// LazyLoading of CredentialBase for favorites, where security wasn't touched until now.
+        /// The credential base doesn't have to be initialized, if used doesn't configure its properties.
         /// </summary>
         private void EnsureCredentialBase()
         {
@@ -249,9 +285,9 @@ namespace Terminals.Data.DB
 
         internal void UpdateFrom(SecurityOptions source)
         {
-            this.Domain = source.Domain;
+            this.EncryptedUserName = source.EncryptedUserName;
+            this.EncryptedDomain = source.EncryptedDomain;
             this.EncryptedPassword = source.EncryptedPassword;
-            this.UserName = source.UserName;
             this.credentialId = source.credentialId;
             this.storedCredentials = source.storedCredentials;
             this.persistenceSecurity = source.persistenceSecurity;
@@ -261,7 +297,8 @@ namespace Terminals.Data.DB
         {
             if (this.credentialBase == null)
                 return "SecurityOptions:Empty";
-            return string.Format("SecurityOptions:User='{0}',Domain='{1}'", this.UserName, this.Domain);
+            var security = this as ICredentialBase;
+            return string.Format("SecurityOptions:User='{0}',Domain='{1}'", security.UserName, security.Domain);
         }
     }
 }

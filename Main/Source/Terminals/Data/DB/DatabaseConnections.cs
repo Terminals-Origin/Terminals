@@ -112,10 +112,10 @@ namespace Terminals.Data.DB
         private static bool TestDatabasePassword(string connectionStringToTest, string databasePassword)
         {
             string storedHash = TryGetMasterPasswordHash(connectionStringToTest);
-            return PasswordFunctions.MasterPasswordIsValid(databasePassword, storedHash);
+            return PasswordFunctions2.MasterPasswordIsValid(databasePassword, storedHash);
         }
 
-        private static string TryGetMasterPasswordHash(string connectionString)
+        internal static string TryGetMasterPasswordHash(string connectionString)
         {
             using (Database database = CreateInstance(connectionString))
             {

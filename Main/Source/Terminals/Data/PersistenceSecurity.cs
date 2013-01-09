@@ -10,6 +10,8 @@ namespace Terminals.Data
     /// </summary>
     internal class PersistenceSecurity
     {
+        private bool isAuthenticated;
+
         private IPersistedSecurity persistence;
 
         protected string KeyMaterial { get; private set; }
@@ -20,7 +22,7 @@ namespace Terminals.Data
         {
             get
             {
-                return !String.IsNullOrEmpty(Settings.MasterPasswordHash);
+                return AuthenticationSequence.IsMasterPasswordDefined();
             }
         }
 
@@ -30,7 +32,7 @@ namespace Terminals.Data
         }
 
         /// <summary>
-        /// Creates new instance initializating internal state from sourceSecurity.
+        /// Creates new instance and initializes internal state from sourceSecurity.
         /// </summary>
         /// <param name="sourceSecurity">Not null current security instance to initialize from.</param>
         internal PersistenceSecurity(PersistenceSecurity sourceSecurity)
@@ -45,89 +47,62 @@ namespace Terminals.Data
 
         internal bool Authenticate(Func<bool, AuthenticationPrompt> knowsUserPassword)
         {
-            bool authenticated = this.AuthenticateIfRequired(knowsUserPassword);
-            if (authenticated)
+            // don't prompt user third time for password when upgrading passwords from v2
+            if (this.isAuthenticated)
+                return true;
+            
+            var authentication = new AuthenticationSequence(this.IsMasterPasswordValid, knowsUserPassword);
+            this.isAuthenticated = authentication.AuthenticateIfRequired();
+            if (this.isAuthenticated)
               this.persistence.Initialize();
 
-            return authenticated;
-        }
-
-        private bool AuthenticateIfRequired(Func<bool, AuthenticationPrompt> knowsUserPassword)
-        {
-            if (this.IsMasterPasswordDefined)
-                return this.PromptUserToAuthenticate(knowsUserPassword);
-
-            return true;
-        }
-
-        private bool PromptUserToAuthenticate(Func<bool, AuthenticationPrompt> knowsUserPassword)
-        {
-            AuthenticationPrompt promptResults = knowsUserPassword(false);
-            bool authenticated = IsUserPaswordValid(promptResults);
-
-            while (!(promptResults.Canceled || authenticated))
-            {
-                promptResults = knowsUserPassword(true);
-                authenticated = this.IsUserPaswordValid(promptResults);
-            }
-            return authenticated;
-        }
-
-        private bool IsUserPaswordValid(AuthenticationPrompt promptResults)
-        {
-            if (!promptResults.Canceled)
-                return this.IsMasterPasswordValid(promptResults.Password);
-
-            return false;
+            return this.isAuthenticated;
         }
 
         private Boolean IsMasterPasswordValid(string passwordToCheck)
         {
-            bool isValid = PasswordFunctions.MasterPasswordIsValid(passwordToCheck, Settings.MasterPasswordHash);
+            string storedMasterPassword = Settings.MasterPasswordHash;
+            bool isValid = PasswordFunctions2.MasterPasswordIsValid(passwordToCheck, storedMasterPassword);
             if (isValid)
             {
-                UpdateKeyMaterial(passwordToCheck);
+                this.KeyMaterial = PasswordFunctions2.CalculateMasterPasswordKey(passwordToCheck, storedMasterPassword);
                 return true;
             }
 
             return false;
         }
 
-        private void UpdateKeyMaterial(String password)
-        {
-            this.KeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(password);
-        }
-
         internal void UpdateMasterPassword(string newPassword)
         {
-            this.persistence.UpdatePasswordsByNewMasterPassword(newPassword);
+            string storedMasterPassword = PasswordFunctions2.CalculateStoredMasterPasswordKey(newPassword);
+            string newMasterKey = PasswordFunctions2.CalculateMasterPasswordKey(newPassword, storedMasterPassword);
 
             // start of not secured transaction. Old key is still present,
-            // but passwords are already encrypted by newKey
-            Settings.UpdateConfigurationPasswords(newPassword);
-
+            // but passwords are already encrypted by new Key
+            this.persistence.UpdatePasswordsByNewMasterPassword(newMasterKey);
+            Settings.UpdateConfigurationPasswords(newMasterKey, storedMasterPassword);
             // finish transaction, the passwords now reflect the new key
-            UpdateKeyMaterial(newPassword);
+            this.KeyMaterial = newMasterKey;
         }
 
         internal string DecryptPassword(string encryptedPassword)
         {
-            return PasswordFunctions.DecryptPassword(encryptedPassword, this.KeyMaterial);
+            return PasswordFunctions2.DecryptPassword(encryptedPassword, this.KeyMaterial);
         }
 
         internal string EncryptPassword(string decryptedPassword)
         {
-            return PasswordFunctions.EncryptPassword(decryptedPassword, this.KeyMaterial);
+            return PasswordFunctions2.EncryptPassword(decryptedPassword, this.KeyMaterial);
         }
 
         internal string DecryptPersistencePassword(string encryptedPassword)
         {
-            return PasswordFunctions.DecryptPassword(encryptedPassword, this.PersistenceKeyMaterial);
+            return PasswordFunctions2.DecryptPassword(encryptedPassword, this.PersistenceKeyMaterial);
         }
 
         internal string EncryptPersistencePassword(string decryptedPassword)
         {
-            return PasswordFunctions.EncryptPassword(decryptedPassword, this.PersistenceKeyMaterial);
+            return PasswordFunctions2.EncryptPassword(decryptedPassword, this.PersistenceKeyMaterial);
         }
     }
 }

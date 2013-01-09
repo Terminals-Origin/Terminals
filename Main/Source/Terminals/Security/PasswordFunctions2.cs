@@ -12,6 +12,10 @@ namespace Terminals.Security
     /// Passwords are stored as text combined of initialization vector + encrypted password.
     /// Master password key and stored password keys are based on random initialization vector.
     /// There is no stored master password key hash.
+    /// To create new master password key:
+    /// 1. call <see cref="CalculateStoredMasterPasswordKey"/> method
+    /// 2. call <see cref="CalculateMasterPasswordKey(string,string)"/> to get new master password key
+    /// 
     /// Links:
     /// <seealso cref="http://msdn.microsoft.com/en-us/magazine/cc163913.aspx"/>
     /// <seealso cref="http://blogs.msdn.com/b/shawnfa/archive/2004/04/14/generating-a-key-from-a-password.aspx?Redirected=true"/>
@@ -48,42 +52,43 @@ namespace Terminals.Security
             Tuple<byte[], byte[]> keyParts = SplitEncryptedPassword(storedMasterPassword);
             // from the second part again first part is salt, second is not encrypted validation key
             Tuple<byte[], byte[]> validationParts = SplitEncryptedPassword(keyParts.Item2);
+            
+            // empty password check
+            if (string.IsNullOrEmpty(password) && validationParts.Item1.Length == 0)
+                return true;
+
             byte[] validationKey = CalculateMasterPasswordKey(password, validationParts.Item1);
             return validationKey.SequenceEqual(validationParts.Item2);
         }
 
         /// <summary>
-        /// Extracts key salt used to encrypt master password and generate master password key.
+        /// Replacement of v1 passwords <see cref="PasswordFunctions.ComputeMasterPasswordHash"/>
         /// </summary>
-        /// <param name="storedMasterPassword">Validation key, encrypted by masterPassword key,
-        /// which should be identical to key, which we are able to generate from entered password</param>
-        internal static byte[] GetMasterPasswordKeySalt(string storedMasterPassword)
+        internal static string CalculateStoredMasterPasswordKey(string password)
         {
-            return SplitEncryptedPassword(storedMasterPassword).Item1;
-        }
+            if (string.IsNullOrEmpty(password))
+                return string.Empty;
 
-        /// <summary>
-        /// Calculates new master password key using random salt.
-        /// Because of random salt, always generates unique result for the same master password.
-        /// Use only for test purpose.
-        /// </summary>
-        /// <param name="password">new master password for which the key has to be generated</param>
-        internal static string CalculateMasterPasswordKey(string password)
-        {
-            byte[] keySalt = CreateRandomKeySalt();
-            return CalculateMasterPasswordKeyText(password, keySalt);
+            byte[] validationKeySalt = CreateRandomKeySalt();
+            byte[] vaidationKey = CalculateMasterPasswordKey(password, validationKeySalt);
+            byte[] validationKeyWithSalt = ConcatenatePasswordParts(validationKeySalt, vaidationKey);
+            byte[] masterKeySalt = CreateRandomKeySalt();
+            return ConcatenatePasswordPartsToText(masterKeySalt, validationKeyWithSalt);
         }
 
         /// <summary>
         /// Calculates new master password key using key salt used for stored master password.
         /// Doesn't validate, if the stored master password is valid. Use only this overload on real data.
+        /// For newly entered passwords, should be used always after <see cref="CalculateStoredMasterPasswordKey"/> method.
         /// </summary>
         /// <param name="password">master password for which the key has to be generated</param>
         /// <param name="storedMasterPassword">Not empty stored random key derived from master password,
         /// contains two key salt</param>
         internal static string CalculateMasterPasswordKey(string password, string storedMasterPassword)
         {
-            byte[] keySalt = GetMasterPasswordKeySalt(storedMasterPassword);
+            if (string.IsNullOrEmpty(password))
+                return string.Empty;
+            byte[] keySalt = SplitEncryptedPassword(storedMasterPassword).Item1;
             return CalculateMasterPasswordKeyText(password, keySalt);
         }
 
@@ -99,26 +104,30 @@ namespace Terminals.Security
             return rfbk2.GetBytes(KEY_LENGTH);            
         }
 
-        /// <summary>
-        /// Replacement of v1 passwords <see cref="PasswordFunctions.ComputeMasterPasswordHash"/>
-        /// </summary>
-        internal static string ComputeStoredMasterPasswordKey(string password)
-        {
-            byte[] validationKeySalt = CreateRandomKeySalt();
-            byte[] vaidationKey = CalculateMasterPasswordKey(password, validationKeySalt);
-            byte[] validationKeyWithSalt = ConcatenatePasswordParts(validationKeySalt, vaidationKey);
-            byte[] masterKeySalt = CreateRandomKeySalt();
-            return ConcatenatePasswordPartsToText(masterKeySalt, validationKeyWithSalt);
-        }
-
         internal static string EncryptPassword(string password, string keyMaterial)
         {
             if (string.IsNullOrEmpty(password))
                 return string.Empty;
+            
+            if (string.IsNullOrEmpty(keyMaterial))
+                return EncryptByEmptyKeyMaterial(password);
 
+            return EncryptPasswordByRandomSalt(password, keyMaterial);
+        }
+
+        private static string EncryptPasswordByRandomSalt(string password, string keyMaterial)
+        {
             byte[] initializationVector = CreateRandomKeySalt();
             byte[] passwordKey = Convert.FromBase64String(keyMaterial);
             return EncryptPassword(password, passwordKey, initializationVector);
+        }
+
+        private static string EncryptByEmptyKeyMaterial(string password)
+        {
+            byte[] initializationVector = CreateRandomKeySalt();
+            byte[] passwordBytes = Encoding.Unicode.GetBytes(password);
+            byte[] protectedPassword = ProtectedData.Protect(passwordBytes, initializationVector, DataProtectionScope.CurrentUser);
+            return ConcatenatePasswordPartsToText(initializationVector, protectedPassword);
         }
 
         private static string EncryptPassword(string password, byte[] passwordKey, byte[] initializationVector)
@@ -132,9 +141,26 @@ namespace Terminals.Security
         {
             if (string.IsNullOrEmpty(encryptedPassword) || encryptedPassword.Length < IV_LENGTH)
                 return string.Empty;
-            
+
+            if (string.IsNullOrEmpty(keyMaterial))
+                return DecryptByEmptyKeyMaterial(encryptedPassword);
+
             byte[] passwordKey = Convert.FromBase64String(keyMaterial);
             return DecryptPassword(encryptedPassword, passwordKey);
+        }
+
+        private static string DecryptByEmptyKeyMaterial(string encryptedPassword)
+        {
+            try
+            {
+                Tuple<byte[], byte[]> passwordParts = SplitEncryptedPassword(encryptedPassword);
+                byte[] plaintext = ProtectedData.Unprotect(passwordParts.Item2, passwordParts.Item1, DataProtectionScope.CurrentUser);
+                return Encoding.Unicode.GetString(plaintext);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         private static string DecryptPassword(string encryptedPassword, byte[] passwordKey)

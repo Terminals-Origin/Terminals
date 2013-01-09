@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel.Security;
 using System.Xml.Linq;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -14,46 +15,54 @@ namespace Terminals.Updates
     /// </summary>
     internal class PasswordsV2Update
     {
-        private readonly bool isAuthenticated;
+        private bool isAuthenticated;
 
-        private readonly string oldKey;
+        private string oldKey;
 
-        private readonly string newKey;
+        private string newKey;
 
         /// <summary>
         /// Hold in memory to be able resolve master password key salt and update the stored master password
         /// as last step in the update procedure.
         /// </summary>
-        private readonly string storedMasterPassword;
-
+        private string storedMasterPassword;
+        
         internal PasswordsV2Update(Func<bool, AuthenticationPrompt> knowsUserPassword)
         {
-            AuthenticationPrompt authenticationResult = knowsUserPassword(false);
-            string masterPassword = authenticationResult.Password;
-            isAuthenticated = PasswordFunctions.MasterPasswordIsValid(masterPassword, Settings.MasterPasswordHash);
-            if (!isAuthenticated)
+            // we cant use PersistenceSecurity, because it already works on new PasswordFunctions2 methods
+            var authentication = new AuthenticationSequence(this.IsMasterPasswordValid, knowsUserPassword);
+            authentication.AuthenticateIfRequired();
+            if (!this.isAuthenticated)
             {
-                Logging.Log.Debug("Application was not able to upgrade your passwords to version 2, because your master password isn't valid.");
-                return;
+                const string MESSAGE = "Application was not able to upgrade your passwords to version 2, because your master password isn't valid.";
+                throw new SecurityAccessDeniedException(MESSAGE);
             }
+        }
 
-            this.oldKey = PasswordFunctions.CalculateMasterPasswordKey(masterPassword);
-            this.storedMasterPassword = PasswordFunctions2.ComputeStoredMasterPasswordKey(masterPassword);
-            this.newKey = PasswordFunctions2.CalculateMasterPasswordKey(masterPassword, this.storedMasterPassword);
+        private bool IsMasterPasswordValid(string masterPassword)
+        {
+            this.isAuthenticated = PasswordFunctions.MasterPasswordIsValid(masterPassword, Settings.MasterPasswordHash);
+            if (this.isAuthenticated)
+            {
+                this.oldKey = PasswordFunctions.CalculateMasterPasswordKey(masterPassword);
+                this.storedMasterPassword = PasswordFunctions2.CalculateStoredMasterPasswordKey(masterPassword);
+                this.newKey = PasswordFunctions2.CalculateMasterPasswordKey(masterPassword, this.storedMasterPassword);
+            }
+            return this.isAuthenticated;
         }
 
         internal string UpdateCredentialPasswords(string credentialsFileContent)
         {
-            if (!isAuthenticated)
+            if (!this.isAuthenticated)
                 return credentialsFileContent;
 
             XDocument credentialsDocument = XDocument.Parse(credentialsFileContent);
             IEnumerable<XElement> credentials = credentialsDocument.Root.Descendants("CredentialSet");
             foreach (XElement credential in credentials)
             {
-                this.MigratePasswordElement(credential, "Password");
-                this.MigrateNotEncryptedElement(credential, "Username");
-                this.MigrateNotEncryptedElement(credential, "Domain");
+                this.MigratePasswordElement(credential, "EncryptedPassword");
+                this.MigrateNotEncryptedElement(credential, "EncryptedUserName");
+                this.MigrateNotEncryptedElement(credential, "EncryptedDomain");
             }
             return credentialsDocument.ToString();
         }
@@ -72,7 +81,7 @@ namespace Terminals.Updates
 
         internal void UpdateConfigFilePasswords(string fullConfigFileName)
         {
-            if (!isAuthenticated)
+            if (!this.isAuthenticated)
                 return;
 
             var configFile = XDocument.Load(fullConfigFileName);
@@ -97,10 +106,8 @@ namespace Terminals.Updates
 
         private void UpgradeFavorite(XElement favorite)
         {
-            this.MigrateNotEncryptedAttribute(favorite, "userName");
-            this.MigrateNotEncryptedAttribute(favorite, "domainName");
-            this.MigrateNotEncryptedAttribute(favorite, "tsgwUsername");
-            this.MigrateNotEncryptedAttribute(favorite, "tsgwDomain");
+            // attributes userName, domainName, tsgwUsername and tsgwDomain cant be upgraded, 
+            // because rest of the application understands them unencrypted
             this.MigratePasswordAttribute(favorite, "encryptedPassword");
             this.MigratePasswordAttribute(favorite, "tsgwPassword");
         }

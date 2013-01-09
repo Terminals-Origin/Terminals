@@ -73,8 +73,8 @@ namespace Tests
         [TestMethod]
         public void V2MasterPasswordValidationTest()
         {
-            string stored = PasswordFunctions2.ComputeStoredMasterPasswordKey(MASTERPASSWORD);
-            string stored2 = PasswordFunctions2.ComputeStoredMasterPasswordKey(MASTERPASSWORD);
+            string stored = PasswordFunctions2.CalculateStoredMasterPasswordKey(MASTERPASSWORD);
+            string stored2 = PasswordFunctions2.CalculateStoredMasterPasswordKey(MASTERPASSWORD);
             Assert.AreNotEqual(stored, stored2);
 
             bool isValid = PasswordFunctions2.MasterPasswordIsValid(MASTERPASSWORD, stored);
@@ -84,8 +84,8 @@ namespace Tests
         [TestMethod]
         public void V2MasterPasswordIsUniqueTest()
         {
-            string key1 = PasswordFunctions2.CalculateMasterPasswordKey(MASTERPASSWORD);
-            string key2 = PasswordFunctions2.CalculateMasterPasswordKey(MASTERPASSWORD);
+            string key1 = CalculateNewMasterPasswordKey(MASTERPASSWORD);
+            string key2 = CalculateNewMasterPasswordKey(MASTERPASSWORD);
             Assert.AreNotEqual(key1, key2, "generated master password key always equals.");
 
             var accessor = new PrivateType(typeof(PasswordFunctions2));
@@ -104,7 +104,7 @@ namespace Tests
         [TestMethod]
         public void V2PasswordsUniqueEncryptionTest()
         {
-            string key = PasswordFunctions2.CalculateMasterPasswordKey(MASTERPASSWORD);
+            string key = CalculateNewMasterPasswordKey(MASTERPASSWORD);
             string encryptedPassword = PasswordFunctions2.EncryptPassword(USERPASSWORD, key);
             string encryptedPassword2 = PasswordFunctions2.EncryptPassword(USERPASSWORD, key);
             Assert.AreNotEqual(encryptedPassword, encryptedPassword2, "password encryption always generates identical encrypted bytes");
@@ -115,35 +115,34 @@ namespace Tests
         [TestMethod]
         public void V2UpgradePasswordsTest()
         {
-            // todo To finish this test, whole application has to be able to use PasswordFunctions2
-            //this.UpgradePasswordsTestInitialize();
-            //this.RunUpgrade();
-            //Settings.ForceReload(); // because we changed its file, when upgrading
+            this.UpgradePasswordsTestInitialize();
+            this.RunUpgrade();
 
-            //bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(MASTERPASSWORD, Settings.MasterPasswordHash);
-            //Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
+            bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(MASTERPASSWORD, Settings.MasterPasswordHash);
+            Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
 
-            //string newMasterPasswordKey = PasswordFunctions2.CalculateMasterPasswordKey(MASTERPASSWORD, Settings.MasterPasswordHash);
-            //IPersistence persistence = Persistence.Instance;
-            //persistence.Security.Authenticate(GetMasterPassword);
-            //IFavorite favorite = persistence.Favorites.First();
-            //String favoritePassword = favorite.Security.EncryptedPassword;
-            //String decryptedFavoritePassword = PasswordFunctions2.DecryptPassword(favoritePassword, newMasterPasswordKey);
-            //Assert.AreEqual(USERPASSWORD, decryptedFavoritePassword, "Upgrade favorite password failed.");
+            // don't use the application SingleTon static instance, because other test fail, when running tests in batch
+            IPersistence persistence = new FilePersistence();
+            persistence.Security.Authenticate(GetMasterPassword);
+            
+            IFavorite favorite = persistence.Favorites.First();
+            String favoritePassword = favorite.Security.Password;
+            Assert.AreEqual(USERPASSWORD, favoritePassword, "Upgrade favorite password failed.");
 
-            //ICredentialSet credential = persistence.Credentials.First();
-            //Assert.AreEqual(credential.UserName, credential.Password, "Credential password upgrade failed.");
+            ICredentialSet credential = persistence.Credentials.First();
+            Assert.AreEqual(credential.UserName, credential.Password, "Credential password upgrade failed.");
         }
 
         private void RunUpgrade()
         {
+            // simulate last two method calls in UpdateConfig class
             var passwordsUpdate = new PasswordsV2Update(GetMasterPassword);
-            string credentialsFileName = this.GetFullTestCredentialsFileName();
-            string credentialsFile = File.ReadAllText(credentialsFileName);
-            string updatedCredentials = passwordsUpdate.UpdateCredentialPasswords(credentialsFile);
-            File.WriteAllText(credentialsFileName, updatedCredentials);
-            string configFileName = this.GetFullTestConfigFileName();
-            passwordsUpdate.UpdateConfigFilePasswords(configFileName);
+            var updateConfig = new PrivateType(typeof(UpdateConfig));
+            updateConfig.InvokeStatic("UpgradeCredentialsFile", new object[] { passwordsUpdate });
+            // because of needed method group conversion (method group is not convertible to object)
+            object knowsUserPassword = (Func<bool, AuthenticationPrompt>)GetMasterPassword;
+            updateConfig.InvokeStatic("UpgradeConfigFile", new object[] { passwordsUpdate, knowsUserPassword });
+            Settings.ForceReload(); // because we changed its file, while upgrading
         }
 
         private AuthenticationPrompt GetMasterPassword(bool retry)
@@ -157,10 +156,15 @@ namespace Tests
             string configFileName = this.GetFullTestConfigFileName();
             string favoritesFileName = this.CreateFullTestFileName(FileLocations.FAVORITES_FILENAME);
             string credentialsFileName = this.GetFullTestCredentialsFileName();
+            // remove source control read only attribute
+            File.SetAttributes(configFileName, FileAttributes.Normal);
+            File.SetAttributes(credentialsFileName, FileAttributes.Normal);
 
             // we have to force all values to test deployment directory,
             // because upgrade works with fully configured files structure
             Settings.FileLocations.AssignCustomFileLocations(configFileName, favoritesFileName, credentialsFileName);
+            // when running multiple tests, there is may be already old configuration
+            Settings.ForceReload();
         }
 
         private string GetFullTestConfigFileName()
@@ -184,18 +188,24 @@ namespace Tests
         {
             PasswordsEncryptDecryptCheck(CheckEncryptDecryptPasswordV2);
 
-            string masterKey = PasswordFunctions2.CalculateMasterPasswordKey(MASTERPASSWORD);
+            string masterKey = CalculateNewMasterPasswordKey(MASTERPASSWORD);
             string decryptedPassword = PasswordFunctions2.DecryptPassword(string.Empty, masterKey);
             Assert.AreEqual(string.Empty, decryptedPassword, "Decryption of empty stored password failed");
         }
 
         private static string CheckEncryptDecryptPasswordV2(string password, string masterPassword)
         {
-            string masterKey = PasswordFunctions2.CalculateMasterPasswordKey(masterPassword);
+            string masterKey = CalculateNewMasterPasswordKey(masterPassword);
             string encryptedPassword = PasswordFunctions2.EncryptPassword(password, masterKey);
             string decryptedPassword = PasswordFunctions2.DecryptPassword(encryptedPassword, masterKey);
             Assert.AreEqual(password, decryptedPassword, "Unable to decrypt password");
             return encryptedPassword;
+        }
+
+        private static string CalculateNewMasterPasswordKey(string password)
+        {
+            string storedKey = PasswordFunctions2.CalculateStoredMasterPasswordKey(password);
+            return PasswordFunctions2.CalculateMasterPasswordKey(password, storedKey);
         }
 
         private static void PasswordsEncryptDecryptCheck(Func<string, string, string> checkEncryptDecryptPassword)

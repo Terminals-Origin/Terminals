@@ -7,6 +7,36 @@ namespace Terminals.Data.DB
     {
         private PersistenceSecurity persistenceSecurity;
 
+        public string UserName
+        {
+            get
+            {
+                return this.GetDecryptedUserName();
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    this.EncryptedUserName = String.Empty;
+                else
+                    this.EncryptedUserName = persistenceSecurity.EncryptPersistencePassword(value);
+            }
+        }
+
+        public string Domain
+        {
+            get
+            {
+                return this.GetDecryptedDomain();
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                    this.EncryptedDomain = String.Empty;
+                else
+                    this.EncryptedDomain = persistenceSecurity.EncryptPersistencePassword(value);
+            }
+        }
+
         string ICredentialBase.Password
         {
             get
@@ -22,6 +52,37 @@ namespace Terminals.Data.DB
             }
         }
 
+        public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
+        {
+            string secret = this.GetDecryptedPassword();
+            if (!string.IsNullOrEmpty(secret))
+                this.EncryptedPassword = PasswordFunctions2.EncryptPassword(secret, newKeymaterial);
+
+            string userName = this.GetDecryptedUserName();
+            if (!string.IsNullOrEmpty(userName))
+                this.EncryptedPassword = PasswordFunctions2.EncryptPassword(userName, newKeymaterial);
+
+            string domain = this.GetDecryptedDomain();
+            if (!string.IsNullOrEmpty(domain))
+                this.EncryptedPassword = PasswordFunctions2.EncryptPassword(domain, newKeymaterial);
+        }
+
+        private string GetDecryptedUserName()
+        {
+            if (!string.IsNullOrEmpty(this.EncryptedUserName))
+                return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedUserName);
+
+            return String.Empty;
+        }
+
+        private string GetDecryptedDomain()
+        {
+            if (!string.IsNullOrEmpty(this.EncryptedDomain))
+                return this.persistenceSecurity.DecryptPersistencePassword(this.EncryptedDomain);
+
+            return String.Empty;
+        }
+
         private string GetDecryptedPassword()
         {
             if (!string.IsNullOrEmpty(this.EncryptedPassword))
@@ -30,19 +91,10 @@ namespace Terminals.Data.DB
             return String.Empty;
         }
 
-        public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
-        {
-            string secret = this.GetDecryptedPassword();
-            if (string.IsNullOrEmpty(secret))
-                this.EncryptedPassword = string.Empty;
-            else
-                this.EncryptedPassword = PasswordFunctions.EncryptPassword(secret, newKeymaterial);
-        }
-
         protected void CopyTo(CredentialBase copy)
         {
-            copy.UserName = this.UserName;
-            copy.Domain = this.Domain;
+            copy.EncryptedUserName = this.EncryptedUserName;
+            copy.EncryptedDomain = this.EncryptedDomain;
             copy.EncryptedPassword = this.EncryptedPassword;
             copy.persistenceSecurity = this.persistenceSecurity;
         }

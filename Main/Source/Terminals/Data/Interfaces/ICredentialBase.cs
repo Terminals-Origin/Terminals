@@ -7,22 +7,29 @@ namespace Terminals.Data
     /// </summary>
     internal interface ICredentialBase
     {
+        /// <summary>
+        /// Gets or sets the user name in not encrypted form. This value isn't stored.
+        /// </summary>
         string UserName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the domain in not encrypted form. This value isn't stored.
+        /// </summary>
         string Domain { get; set; }
 
         /// <summary>
-        /// Gets the encrypted password hash.
+        /// Gets or sets the encrypted password. Depends on the master password key.
         /// </summary>
         string EncryptedPassword { get; set; }
 
         /// <summary>
-        /// Gets or sets the password in not encrypted form.
+        /// Gets or sets the password in not encrypted form. This value isn't stored.
         /// </summary>
         [XmlIgnore]
         string Password { get; set; }
 
         /// <summary>
-        /// Replaces stored password hash by new one using newKeymaterial
+        /// Replaces stored encrypted password by new one using newKeymaterial
         /// </summary>
         /// <param name="newKeymaterial">key created from master password hash</param>
         void UpdatePasswordByNewKeyMaterial(string newKeymaterial);

@@ -8,8 +8,8 @@
         /// <summary>
         /// Recalculates stored password hashes to reflect new value of the master password.
         /// </summary>
-        /// <param name="newMasterPassword">not encrypted master password</param>
-        void UpdatePasswordsByNewMasterPassword(string newMasterPassword);
+        /// <param name="newMasterKey">New master password key derived from new master password to assign</param>
+        void UpdatePasswordsByNewMasterPassword(string newMasterKey);
 
         /// <summary>
         /// Does initial steps after access to persistence was validated
