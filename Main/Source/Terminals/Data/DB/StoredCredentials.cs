@@ -115,7 +115,6 @@ namespace Terminals.Data.DB
 
         public void Save()
         {
-            // todo check, if the Updated credentials are committed to the database properly
             // nothing to do
         }
 
