@@ -80,8 +80,9 @@ namespace Terminals.Data.DB
         {
             if (Database.TestConnection())
             {
-                this.security.UpdateDatabaseKey();
-                return true;
+                bool updatedKey = this.security.UpdateDatabaseKey();
+                if (updatedKey)
+                    return true;
             }
 
             Logging.Log.Fatal("SQL Persistence layer failed to load. Fall back to File persistence");
@@ -89,9 +90,14 @@ namespace Terminals.Data.DB
             return false;
         }
 
-        public void UpdatePasswordsByNewMasterPassword(string newMasterPassword)
+        public void UpdatePasswordsByNewMasterPassword(string newMasterKey)
         {
-            // nothing to do here, the application master password doesn't affect the database
+            // nothing to do in database, the application master password doesn't affect the database
+            // but, the file persisted passwords may be lost, so we have to update them
+            var newSecurity = new PersistenceSecurity(this.security);
+            var filePersistence = new FilePersistence(newSecurity);
+            filePersistence.Initialize();
+            filePersistence.UpdatePasswordsByNewMasterPassword(newMasterKey);
         }
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)

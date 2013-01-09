@@ -147,15 +147,16 @@ namespace Terminals.Configuration
         private void AssignCredentialsFile(string credentialsFullPath)
         {
             if (string.IsNullOrEmpty(credentialsFullPath))
-            {
-                this.Credentials = Settings.SavedCredentialsLocation;
-                if (string.IsNullOrEmpty(this.Credentials))
-                    this.Credentials = GetFullPath(CREDENTIALS_FILENAME);
-            }
+                this.AssignDefaultCredentialsFile();
             else
-            {
                 this.Credentials = credentialsFullPath;
-            }
+        }
+
+        private void AssignDefaultCredentialsFile()
+        {
+            this.Credentials = Settings.SavedCredentialsLocation;
+            if (string.IsNullOrEmpty(this.Credentials) || this.Credentials == CREDENTIALS_FILENAME)
+                this.Credentials = GetFullPath(CREDENTIALS_FILENAME);
         }
 
         /// <summary>

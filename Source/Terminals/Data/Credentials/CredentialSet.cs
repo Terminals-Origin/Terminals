@@ -36,9 +36,23 @@ namespace Terminals.Data
             }
         }
 
+        // next two properties are only to simplify presentation in grids using SortableList
+        // otherwise sorting fails, see ICredentialSet
+        string ICredentialSet.UserName
+        {
+            get { return this.UserName; }
+            set { this.UserName = value; }
+        }
+
+        string ICredentialSet.Domain
+        {
+            get { return this.Domain; }
+            set { this.Domain = value; }
+        }
+
         public override string ToString()
         {
-            return String.Format(@"{0}:{1}\{2}", Name, Domain, this.UserName);
+            return String.Format(@"{0}:{1}\{2}", this.Name, "", "");
         }
     }
 }

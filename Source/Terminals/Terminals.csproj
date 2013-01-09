@@ -169,6 +169,7 @@
     <Compile Include="Configuration\FormStateConfigElement.cs" />
     <Compile Include="Converters\GuidConverter.cs" />
     <Compile Include="Data\AuthenticationPrompt.cs" />
+    <Compile Include="Data\AuthenticationSequence.cs" />
     <Compile Include="Data\DB\DatabaseConnections.cs" />
     <Compile Include="Data\DB\DatabasePasswordUpdate.cs" />
     <Compile Include="Data\DB\DatabaseValidataionResult.cs" />

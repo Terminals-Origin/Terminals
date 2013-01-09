@@ -486,8 +486,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="String" Name="UserName" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Domain" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EncryptedUserName" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EncryptedDomain" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="EncryptedPassword" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Security" Relationship="Terminals.Data.DB.FK_Security_CredentialBase" FromRole="CredentialBase" ToRole="SecurityOptions" />
         </EntityType>
@@ -647,14 +647,14 @@
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertCredentialBase">
                   <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" />
-                  <ScalarProperty Name="Domain" ParameterName="Domain" />
-                  <ScalarProperty Name="UserName" ParameterName="UserName" />
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="Domain" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="UserName" />
                   <ResultBinding Name="Id" ColumnName="Id" />
                 </InsertFunction>
                 <UpdateFunction FunctionName="Model1.Store.UpdateCredentialBase">
                   <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" Version="Current" />
-                  <ScalarProperty Name="Domain" ParameterName="Domain" Version="Current" />
-                  <ScalarProperty Name="UserName" ParameterName="UserName" Version="Current" />
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="Domain" Version="Current" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="UserName" Version="Current" />
                   <ScalarProperty Name="Id" ParameterName="Id" Version="Current" />
                 </UpdateFunction>
                 <DeleteFunction FunctionName="Model1.Store.DeleteCredentialBase">
@@ -666,15 +666,15 @@
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertCredentials">
                   <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" />
-                  <ScalarProperty Name="UserName" ParameterName="UserName" />
-                  <ScalarProperty Name="Domain" ParameterName="Domain" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="UserName" />
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="Domain" />
                   <ScalarProperty Name="Name" ParameterName="Name" />
                   <ResultBinding Name="Id" ColumnName="Id" />
                 </InsertFunction>
                 <UpdateFunction FunctionName="Model1.Store.UpdateCredentials">
                   <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" Version="Current" />
-                  <ScalarProperty Name="Domain" ParameterName="Domain" Version="Current" />
-                  <ScalarProperty Name="UserName" ParameterName="UserName" Version="Current" />
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="Domain" Version="Current" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="UserName" Version="Current" />
                   <ScalarProperty Name="Id" ParameterName="Id" Version="Current" />
                   <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
                 </UpdateFunction>
@@ -686,8 +686,8 @@
             <EntityTypeMapping TypeName="IsTypeOf(Terminals.Data.DB.CredentialBase)">
               <MappingFragment StoreEntitySet="CredentialBase">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="EncryptedUserName" ColumnName="UserName" />
+                <ScalarProperty Name="EncryptedDomain" ColumnName="Domain" />
                 <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -294,6 +294,9 @@ namespace Terminals.Configuration
 
         #region Security
 
+        /// <summary>
+        /// Gets or sets the stored master password key, getter and setter don't make any encryption.
+        /// </summary>
         internal static string MasterPasswordHash
         {
             get
@@ -302,32 +305,28 @@ namespace Terminals.Configuration
             }
             private set
             {
-                string newHash = String.Empty;
-                if (!String.IsNullOrEmpty(value))
-                    newHash = PasswordFunctions.ComputeMasterPasswordHash(value);
-                GetSection().TerminalsPassword = newHash;
+                GetSection().TerminalsPassword = value;
             }
         }
 
         /// <summary>
-        /// This updates all stored passwords and assignes new key material in config section.
+        /// This updates all stored passwords and assigns new key material in config section.
         /// </summary>
-        internal static void UpdateConfigurationPasswords(string newMasterPassword)
+        internal static void UpdateConfigurationPasswords(string newMasterKey, string newStoredMasterKey)
         {
-            MasterPasswordHash = newMasterPassword;
-            UpdateStoredPasswords(newMasterPassword);
+            MasterPasswordHash = newStoredMasterKey;
+            UpdateStoredPasswords(newMasterKey);
             SaveImmediatelyIfRequested();
         }
 
-        private static void UpdateStoredPasswords(string newMasterPassword)
+        private static void UpdateStoredPasswords(string newKeyMaterial)
         {
             TerminalsConfigurationSection configSection = GetSection();
-            string newKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(newMasterPassword);
-            configSection.EncryptedDefaultPassword = PasswordFunctions.EncryptPassword(DefaultPassword, newKeyMaterial);
-            configSection.EncryptedAmazonAccessKey = PasswordFunctions.EncryptPassword(AmazonAccessKey, newKeyMaterial);
-            configSection.EncryptedAmazonSecretKey = PasswordFunctions.EncryptPassword(AmazonSecretKey, newKeyMaterial);
-            configSection.EncryptedConnectionString = PasswordFunctions.EncryptPassword(ConnectionString, newKeyMaterial);
-            configSection.DatabaseMasterPasswordHash = PasswordFunctions.EncryptPassword(DatabaseMasterPassword, newKeyMaterial);
+            configSection.EncryptedDefaultPassword = PasswordFunctions2.EncryptPassword(DefaultPassword, newKeyMaterial);
+            configSection.EncryptedAmazonAccessKey = PasswordFunctions2.EncryptPassword(AmazonAccessKey, newKeyMaterial);
+            configSection.EncryptedAmazonSecretKey = PasswordFunctions2.EncryptPassword(AmazonSecretKey, newKeyMaterial);
+            configSection.EncryptedConnectionString = PasswordFunctions2.EncryptPassword(ConnectionString, newKeyMaterial);
+            configSection.DatabaseMasterPasswordHash = PasswordFunctions2.EncryptPassword(DatabaseMasterPassword, newKeyMaterial);
         }
 
         #endregion
@@ -338,12 +337,12 @@ namespace Terminals.Configuration
         {
             get
             {
-                return GetSection().DefaultDomain;
+                string encryptedDefaultDomain = GetSection().DefaultDomain;
+                return PersistenceSecurity.DecryptPassword(encryptedDefaultDomain);
             }
-
             set
             {
-                GetSection().DefaultDomain = value;
+                GetSection().DefaultDomain = PersistenceSecurity.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }
@@ -352,12 +351,12 @@ namespace Terminals.Configuration
         {
             get
             {
-                return GetSection().DefaultUsername;
+                string encryptedDefaultUserName = GetSection().DefaultUsername;
+                return PersistenceSecurity.DecryptPassword(encryptedDefaultUserName);
             }
-
             set
             {
-                GetSection().DefaultUsername = value;
+                GetSection().DefaultUsername = PersistenceSecurity.EncryptPassword(value);
                 SaveImmediatelyIfRequested();
             }
         }
@@ -369,7 +368,6 @@ namespace Terminals.Configuration
                 string encryptedDefaultPassword = GetSection().EncryptedDefaultPassword;
                 return PersistenceSecurity.DecryptPassword(encryptedDefaultPassword);
             }
-
             set
             {
                 GetSection().EncryptedDefaultPassword = PersistenceSecurity.EncryptPassword(value);
@@ -980,6 +978,10 @@ namespace Terminals.Configuration
             }
         }
 
+        /// <summary>
+        /// Gets or sets bidirectional encrypted database password. We need it in unencrypted form 
+        /// to be able authenticate against the database and don't prompt user for it.
+        /// </summary>
         internal static string DatabaseMasterPassword
         {
             get
@@ -995,8 +997,8 @@ namespace Terminals.Configuration
         }
 
         /// <summary>
-        /// Gets or sets the value identifing the persistence.
-        /// 0 byfault - file persisted data, 1 - SQL database
+        /// Gets or sets the value identifying the persistence.
+        /// 0 by default - file persisted data, 1 - SQL database
         /// </summary>
         internal static byte PersistenceType
         {

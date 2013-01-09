@@ -135,11 +135,10 @@ namespace Terminals.Data
             this.UpdateFavoritesInGroups(file.FavoritesInGroups);
         }
 
-        public void UpdatePasswordsByNewMasterPassword(string newMasterPassword)
+        public void UpdatePasswordsByNewMasterPassword(string newMasterKey)
         {
-            string newKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(newMasterPassword);
-            this.storedCredentials.UpdatePasswordsByNewKeyMaterial(newKeyMaterial);
-            this.favorites.UpdatePasswordsByNewMasterPassword(newKeyMaterial);
+            this.storedCredentials.UpdatePasswordsByNewKeyMaterial(newMasterKey);
+            this.favorites.UpdatePasswordsByNewMasterPassword(newMasterKey);
             this.SaveImmediatelyIfRequested();
         }
 

@@ -1,3 +1,4 @@
+using System;
 using Terminals.Configuration;
 using Terminals.Security;
 
@@ -16,14 +17,24 @@ namespace Terminals.Data.DB
             get { return this.persistenceKeyMaterial; }
         }
 
-        internal void UpdateDatabaseKey()
+        internal bool UpdateDatabaseKey()
         {
-            this.UpdateDatabaseKey(Settings.DatabaseMasterPassword);
+            return this.UpdateDatabaseKey(Settings.ConnectionString, Settings.DatabaseMasterPassword);
         }
 
-        internal void UpdateDatabaseKey(string databasePassword)
+        internal bool UpdateDatabaseKey(string connectionString, string databasePassword)
         {
-            this.persistenceKeyMaterial = PasswordFunctions.CalculateMasterPasswordKey(databasePassword);
+            try
+            {
+                string databaseStoredKey = Database.TryGetMasterPasswordHash(connectionString);
+                this.persistenceKeyMaterial = PasswordFunctions2.CalculateMasterPasswordKey(databasePassword, databaseStoredKey);
+                return true;
+            }
+            catch
+            {
+                Logging.Log.Error("Unable to obtain database key from database");
+                return false;
+            }
         }
     }
 }
