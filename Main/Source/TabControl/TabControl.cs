@@ -330,18 +330,22 @@ namespace TabControl
         private bool HandleTabDetach(MouseEventArgs e)
         {
             bool outside = this.IsMouseOutsideHeader(e.Location);
-            if (outside)
+            if (outside && this.tabAtMouseDown != null)
             {
-                if (TabControlItemDetach != null)
-                {
-                    var args = new TabControlItemChangedEventArgs(this.tabAtMouseDown, TabControlItemChangeTypes.Changed);
-                    TabControlItemDetach(args);
-                }
-
+                this.FireTabItemDetach();
                 return true;
             }
 
             return false;
+        }
+
+        private void FireTabItemDetach()
+        {
+            if (this.TabControlItemDetach != null)
+            {
+                var args = new TabControlItemChangedEventArgs(this.tabAtMouseDown, TabControlItemChangeTypes.Changed);
+                this.TabControlItemDetach(args);
+            }
         }
 
         private const int MOVE_TOLERANCE = 5;
