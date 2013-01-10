@@ -106,9 +106,22 @@ namespace Terminals.Security
 
         internal static string EncryptPassword(string password, string keyMaterial)
         {
+            try
+            {
+                return TryEncryptPassword(password, keyMaterial);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Error Encrypting Password", exception);
+                return String.Empty;
+            }
+        }
+
+        private static string TryEncryptPassword(string password, string keyMaterial)
+        {
             if (string.IsNullOrEmpty(password))
                 return string.Empty;
-            
+
             if (string.IsNullOrEmpty(keyMaterial))
                 return EncryptByEmptyKeyMaterial(password);
 
@@ -139,6 +152,19 @@ namespace Terminals.Security
 
         internal static string DecryptPassword(string encryptedPassword, string keyMaterial)
         {
+            try
+            {
+                return TryDecryptPassword(encryptedPassword, keyMaterial);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Error Decrypting Password", exception);
+                return String.Empty;
+            }
+        }
+
+        private static string TryDecryptPassword(string encryptedPassword, string keyMaterial)
+        {
             if (string.IsNullOrEmpty(encryptedPassword) || encryptedPassword.Length < IV_LENGTH)
                 return string.Empty;
 
@@ -151,16 +177,9 @@ namespace Terminals.Security
 
         private static string DecryptByEmptyKeyMaterial(string encryptedPassword)
         {
-            try
-            {
-                Tuple<byte[], byte[]> passwordParts = SplitEncryptedPassword(encryptedPassword);
-                byte[] plaintext = ProtectedData.Unprotect(passwordParts.Item2, passwordParts.Item1, DataProtectionScope.CurrentUser);
-                return Encoding.Unicode.GetString(plaintext);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            Tuple<byte[], byte[]> passwordParts = SplitEncryptedPassword(encryptedPassword);
+            byte[] plaintext = ProtectedData.Unprotect(passwordParts.Item2, passwordParts.Item1, DataProtectionScope.CurrentUser);
+            return Encoding.Unicode.GetString(plaintext);
         }
 
         private static string DecryptPassword(string encryptedPassword, byte[] passwordKey)
