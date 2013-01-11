@@ -46,6 +46,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlScriptRunner.Tests", "Sq
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildTasks", "BuildTasks\BuildTasks.csproj", "{1640B78A-F3C9-4420-8DE8-63D60AFF68FF}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 19
@@ -92,9 +94,11 @@ Global
 		SccProjectName12 = TerminalsLauncher
 		SccLocalPath12 = TerminalsLauncher
 		SccProjectUniqueName13 = CustomInstaller\\CustomInstaller.csproj
+		SccProjectTopLevelParentUniqueName13 = Terminals.sln
 		SccProjectName13 = CustomInstaller
 		SccLocalPath13 = CustomInstaller
 		SccProjectUniqueName14 = SetupTerminals\\SetupTerminals.vdproj
+		SccProjectTopLevelParentUniqueName14 = Terminals.sln
 		SccProjectName14 = SetupTerminals
 		SccLocalPath14 = SetupTerminals
 		SccProjectUniqueName15 = Tests\\Tests.csproj
@@ -211,7 +215,7 @@ Global
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Distribution Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Distribution Release|Any CPU.Build.0 = Release|Any CPU
-		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Distribution Release|x86.ActiveCfg = Distribution Release|Any CPU
+		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Distribution Release|x86.ActiveCfg = Release|Any CPU
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9780D85D-2E12-4747-9E08-DEDB95A71FC3}.Release|x86.ActiveCfg = Release|Any CPU
@@ -238,7 +242,7 @@ Global
 		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Distribution Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Distribution Release|Any CPU.Build.0 = Release|Any CPU
-		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Distribution Release|x86.ActiveCfg = Distribution Release|Any CPU
+		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Distribution Release|x86.ActiveCfg = Release|Any CPU
 		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6F218F20-AE4B-4966-A821-4BDE214B8BFF}.Release|x86.ActiveCfg = Release|Any CPU
@@ -317,5 +321,7 @@ Global
 		{54106F05-1C42-43EB-B4EE-F4B7F6CA302F} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
 		{C451F6AA-0F56-4051-968B-90EBB90C8864} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
 		{1640B78A-F3C9-4420-8DE8-63D60AFF68FF} = {92B0C240-075E-4B86-820E-BBEC58B331DE}
+		{5085BDC8-1793-4FCC-A038-8AE15816238A} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
+		{0E32FC99-79E4-4C16-827F-232222C494AC} = {BC0E69F2-1AE0-4E09-BDC7-C3753ACEB24A}
 	EndGlobalSection
 EndGlobal
