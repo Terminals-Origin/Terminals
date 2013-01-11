@@ -152,5 +152,14 @@ namespace Terminals.Connections
                     return RDP;
             }
         }
+
+        /// <summary>
+        /// Ensures web based protocol shortcut. Returns true in case of HTTP or HTTPS.
+        /// </summary>
+        /// <param name="protocol">One of connection short cuts.</param>
+        internal static bool IsProtocolWebBased(string protocol)
+        {
+            return protocol == HTTP || protocol == HTTPS;
+        }
     }
 }

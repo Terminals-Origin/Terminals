@@ -232,7 +232,7 @@ namespace Terminals
 
         private void cmbServers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ProtocolComboBox.Text == "RAS")
+            if (ProtocolComboBox.Text == ConnectionManager.RAS)
             {
                 this.LoadDialupConnections();
                 this.RASDetailsListBox.Items.Clear();
@@ -283,8 +283,7 @@ namespace Terminals
 
         private void httpUrlTextBox_TextChanged(object sender, EventArgs e)
         {
-            if (this.ProtocolComboBox.Text == ConnectionManager.HTTP ||
-                this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
+            if (ConnectionManager.IsProtocolWebBased(this.ProtocolComboBox.Text))
             {
                 Uri newUrl = GetFullUrlFromHttpTextBox();
                 if (newUrl != null)
@@ -340,7 +339,7 @@ namespace Terminals
             {
                 this.IcaGroupBox.Enabled = true;
             }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.HTTP || this.ProtocolComboBox.Text == ConnectionManager.HTTPS)
+            else if (ConnectionManager.IsProtocolWebBased(this.ProtocolComboBox.Text))
             {
                 this.SetControlsForWeb();
             }
@@ -1155,17 +1154,25 @@ namespace Terminals
 
         private bool IsServerNameValid()
         {
+            if (ConnectionManager.IsProtocolWebBased(this.ProtocolComboBox.Text))
+                return true;
+
             string serverName = this.cmbServers.Text.Trim();
+            return this.IsServerNameValid(serverName);
+        }
+
+        private bool IsServerNameValid(string serverName)
+        {
             if (String.IsNullOrEmpty(serverName))
             {
-                RerportErrorInServerName("Server name was not specified.");
+                this.RerportErrorInServerName("Server name was not specified.");
                 return false;
             }
 
             if (Settings.ForceComputerNamesAsURI &&
                 Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
             {
-                RerportErrorInServerName("Server name is not in the correct format.");
+                this.RerportErrorInServerName("Server name is not in the correct format.");
                 return false;
             }
 
