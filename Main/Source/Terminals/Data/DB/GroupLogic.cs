@@ -199,7 +199,7 @@ namespace Terminals.Data.DB
 
         public override string ToString()
         {
-            return Data.Group.ToString(this, this.Id.ToString());
+            return Group.ToString(this, this.Id.ToString());
         }
     }
 }

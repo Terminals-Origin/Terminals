@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.EntityClient;
-using System.Data.Metadata.Edm;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Reflection;
 using Terminals.Configuration;
 using Terminals.Security;
 using Versioning = SqlScriptRunner.Versioning;

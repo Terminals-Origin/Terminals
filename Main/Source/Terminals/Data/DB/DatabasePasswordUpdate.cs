@@ -51,7 +51,7 @@ namespace Terminals.Data.DB
 
         private void CommitNewMastrerPassord(string connecitonString)
         {
-            // todo surround all database usings by try/catch
+            // todo surround all database usages by try/catch
             using (this.database = Database.CreateInstance(connecitonString))
             {
                 UpdateStoredPasswords();
