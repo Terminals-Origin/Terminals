@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Data.Objects;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Connections;
 using Terminals.Data;
-using DB = Terminals.Data.DB;
-using Favorite = Terminals.Data.DB.Favorite;
+using Terminals.Data.DB;
 
 namespace Tests
 {
@@ -43,8 +42,8 @@ namespace Tests
         [TestMethod]
         public void AddFavoriteTest()
         {
-            Favorite favorite = this.CreateTestFavorite();
-            Favorite favorite2 = this.CreateTestFavorite();
+            DbFavorite favorite = this.CreateTestFavorite();
+            DbFavorite favorite2 = this.CreateTestFavorite();
             int before = this.CheckFavorites.Count();
             this.PrimaryPersistence.Favorites.Add(favorite);
             this.PrimaryFavorites.Add(favorite2);
@@ -64,7 +63,7 @@ namespace Tests
         [TestMethod]
         public void DeleteFavoriteTest()
         {
-            Favorite favorite = this.AddFavoriteToPrimaryPersistence();
+            DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
             this.PrimaryFavorites.Delete(favorite);
 
             int after = this.CheckFavorites.Count();
@@ -78,7 +77,7 @@ namespace Tests
             Assert.AreEqual(1, deletedCount, "Event wasn't delivered");
         }
 
-        private ObjectSet<Favorite> CheckFavorites { get { return this.CheckDatabase.Favorites; } }
+        private DbSet<DbFavorite> CheckFavorites { get { return this.CheckDatabase.Favorites; } }
 
         [TestMethod]
         public void UpdateFavoriteTest()
@@ -107,9 +106,9 @@ namespace Tests
             IGroup groupToAdd = PrimaryFactory.CreateGroup("TestGroupToAdd");
             this.PrimaryFavorites.UpdateFavorite(favorite, new List<IGroup> { groupToAdd });
 
-            Favorite checkFavorite = this.CheckFavorites.FirstOrDefault();
+            DbFavorite checkFavorite = this.CheckFavorites.Include(f => f.Groups).FirstOrDefault();
             Assert.AreEqual(1, checkFavorite.Groups.Count, "Child group is missing");
-            DB.Group group = checkFavorite.Groups.FirstOrDefault();
+            IGroup group = checkFavorite.Groups.FirstOrDefault();
             Assert.IsTrue(group.Name == "TestGroupToAdd", "wrong merge of groups");
             int targetGroupsCount = this.CheckDatabase.Groups.Count();
             Assert.AreEqual(1, targetGroupsCount, "Empty groups weren't deleted");
@@ -124,7 +123,7 @@ namespace Tests
             favorite.ToolBarIconFile = @"Data\ControlPanel.png";
             Image favoriteIcon = favorite.ToolBarIconImage;
             this.PrimaryFavorites.Add(favorite);
-            Favorite checkFavorite = this.CheckFavorites.FirstOrDefault();
+            DbFavorite checkFavorite = this.CheckFavorites.FirstOrDefault();
 
             Assert.IsNotNull(favoriteIcon, "Icon wasn't assigned successfully");
             Assert.IsNotNull(checkFavorite.ToolBarIconImage, "Icon didn't reach the database");

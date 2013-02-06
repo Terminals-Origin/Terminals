@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Data.Objects;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Terminals.Configuration;
 using Terminals.Data;
-using CredentialSet = Terminals.Data.DB.CredentialSet;
+using Terminals.Data.DB;
 
 namespace Tests
 {
@@ -23,12 +23,12 @@ namespace Tests
             }
         }
 
-        private ObjectQuery<CredentialSet> CheckDatabaseCredentials
+        private IQueryable<DbCredentialSet> CheckDatabaseCredentials
         {
             get
             {
                 return this.CheckDatabase.CredentialBase
-                    .OfType<CredentialSet>();
+                    .OfType<DbCredentialSet>();
             }
         }
 
@@ -44,9 +44,9 @@ namespace Tests
             this.ClearTestLab();
         }
 
-        private CredentialSet CreateTestCredentialSet()
+        private DbCredentialSet CreateTestCredentialSet()
         {
-            CredentialSet credentials = this.PrimaryFactory.CreateCredentialSet() as CredentialSet;
+            DbCredentialSet credentials = this.PrimaryFactory.CreateCredentialSet() as DbCredentialSet;
             credentials.Name = "TestCredentialName";
             credentials.Domain = "TestDomain";
             credentials.UserName = "TestUserName";
@@ -59,7 +59,7 @@ namespace Tests
         {
             this.AddTestCredentialsToDatabase();
 
-            var checkCredentialSet = this.SecondaryPersistence.Credentials.FirstOrDefault() as CredentialSet;
+            var checkCredentialSet = this.SecondaryPersistence.Credentials.FirstOrDefault() as DbCredentialSet;
 
             Assert.IsNotNull(checkCredentialSet, "Credential didn't reach the database");
             Assert.AreEqual(TEST_PASSWORD, ((ICredentialSet)checkCredentialSet).Password, "Password doesn't match");
@@ -74,7 +74,8 @@ namespace Tests
             PrimaryCredentials.Remove(testCredentials);
             int credentialsCountAfter = this.CheckDatabaseCredentials.Count();
 
-            int baseAfter = this.CheckDatabase.ExecuteStoreQuery<int>("select Count(Id) from CredentialBase")
+            int baseAfter = this.CheckDatabase.Database
+                .SqlQuery<int>("select Count(Id) from CredentialBase")
                 .FirstOrDefault();
 
             Assert.AreEqual(1, credentialsCountBefore, "credential wasn't added to the database");
@@ -82,7 +83,7 @@ namespace Tests
             Assert.AreEqual(0, baseAfter, "credential base wasn't removed from the database");
         }
 
-        private CredentialSet AddTestCredentialsToDatabase()
+        private DbCredentialSet AddTestCredentialsToDatabase()
         {
             var testCredentials = this.CreateTestCredentialSet();
             PrimaryCredentials.Add(testCredentials);
@@ -95,6 +96,8 @@ namespace Tests
         [TestMethod]
         public void UpdateCredentialsPasswordsByNewKeyMaterialTest()
         {
+            // this is the only one test, which plays with different master passwords
+            Settings.PersistenceSecurity = this.PrimaryPersistence.Security;
             this.AddTestCredentialsToDatabase();
             this.PrimaryPersistence.Security.UpdateMasterPassword(String.Empty);
 

@@ -27,10 +27,10 @@
 
         public IFavorite CreateFavorite()
         {
-            var favorite = new Favorite();
-            favorite.Display = new DisplayOptions();
-            favorite.Security = new SecurityOptions();
-            favorite.ExecuteBeforeConnect = new BeforeConnectExecute();
+            var favorite = new DbFavorite();
+            favorite.Display = new DbDisplayOptions();
+            favorite.Security = new DbSecurityOptions();
+            favorite.ExecuteBeforeConnect = new DbBeforeConnectExecute();
             favorite.AssignStoreToRdpOptions(this.persistenceSecurity);
             favorite.AssignStores(this.groups, credentials, this.persistenceSecurity);
             favorite.MarkAsNewlyCreated();
@@ -40,14 +40,14 @@
         public IGroup CreateGroup(string groupName)
         {
             // call this constructor doesn't fire the group changed event
-            Group createdGroup = new Group(groupName);
+            DbGroup createdGroup = new DbGroup(groupName);
             createdGroup.AssignStores(this.groups, this.dispatcher, this.favorites);
             return createdGroup;
         }
 
         public ICredentialSet CreateCredentialSet()
         {
-            var newCredential = new CredentialSet();
+            var newCredential = new DbCredentialSet();
             newCredential.AssignSecurity(this.persistenceSecurity);
             return newCredential;
         }

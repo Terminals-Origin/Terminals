@@ -1,5 +1,6 @@
 ﻿using System;
 using Terminals.Configuration;
+using Terminals.Data.DB;
 
 namespace Terminals.Data
 {
@@ -11,17 +12,23 @@ namespace Terminals.Data
         {
             try
             {
-                if (Settings.PersistenceType == 0)
-                    this.persistence = new FilePersistence();
-                else
-                    this.persistence = new FilePersistence();
-                    // this.persistence = new SqlPersistence();
+                this.InitializePersistence();
+                Settings.PersistenceSecurity = this.persistence.Security;
             }
             catch (Exception exception)
             {
                 Logging.Log.Fatal("Persistence layer failed to load", exception);
                 throw;
             }
+        }
+
+        private void InitializePersistence()
+        {
+            if (Settings.PersistenceType == 0)
+                this.persistence = new FilePersistence();
+            else
+                // this.persistence = new FilePersistence();
+                this.persistence = new SqlPersistence();
         }
 
         /// <summary>
@@ -31,6 +38,7 @@ namespace Terminals.Data
         {
             var newSecurity = new PersistenceSecurity(security);
             var persistence = new FilePersistence(newSecurity);
+            Settings.PersistenceSecurity = newSecurity;
             Nested.instance.persistence = persistence;
             persistence.Initialize();
         }

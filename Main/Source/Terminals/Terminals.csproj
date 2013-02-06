@@ -48,6 +48,8 @@
     <ApplicationVersion>2.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -115,6 +117,9 @@
     <Reference Include="AxWFICALib">
       <HintPath>..\..\Resources\Libraries\Citrix\AxWFICALib.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="FlickrNet">
       <HintPath>..\..\Resources\Libraries\Flicker\FlickrNet.dll</HintPath>
     </Reference>
@@ -137,6 +142,7 @@
       <HintPath>..\..\Resources\Libraries\mstsc\AxInterop.MSTSCLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -173,13 +179,44 @@
     <Compile Include="Data\DB\DatabaseConnections.cs" />
     <Compile Include="Data\DB\DatabasePasswordUpdate.cs" />
     <Compile Include="Data\DB\DatabaseValidataionResult.cs" />
+    <Compile Include="Data\DB\DbBeforeConnectExecute.cs">
+      <DependentUpon>SQLPersistence.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB\DbCredentialBase.cs">
+      <DependentUpon>SQLPersistence.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB\DbCredentialSet.cs">
+      <DependentUpon>SQLPersistence.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB\DbDisplayOptions.cs">
+      <DependentUpon>SQLPersistence.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB\DbFavorite.cs">
+      <DependentUpon>SQLPersistence.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB\DbGroup.cs">
+      <DependentUpon>SQLPersistence.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB\DbSecurityOptions.cs">
+      <DependentUpon>SQLPersistence.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\DB\EntitiesCache.cs" />
     <Compile Include="Data\DB\FavoriteDetails.cs" />
     <Compile Include="Data\DB\IIntegerKeyEnityty.cs" />
-    <Compile Include="Data\DB\SQLPersistence.Designer.cs">
+    <Compile Include="Data\DB\SQLPersistence.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>SQLPersistence.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB\SQLPersistence.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SQLPersistence.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\DB\SQLPersistence.Designer.cs">
       <DependentUpon>SQLPersistence.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Data\DB\TestConnectionResult.cs" />
     <Compile Include="Data\Favorites\FavoriteIcons.cs" />
@@ -213,20 +250,20 @@
     <Compile Include="CaptureManager\ImageFormatTypes.cs" />
     <Compile Include="Configuration\FileLocations.cs" />
     <Compile Include="Data\Credentials\CredentialBase.cs" />
-    <Compile Include="Data\DB\BeforeConnectExecute.cs" />
-    <Compile Include="Data\DB\CredentialBase.cs" />
-    <Compile Include="Data\DB\CredentialSet.cs" />
-    <Compile Include="Data\DB\Database.cs" />
+    <Compile Include="Data\DB\BeforeConnectExecuteLogic.cs" />
+    <Compile Include="Data\DB\CredentialBaseLogic.cs" />
+    <Compile Include="Data\DB\CredentialSetLogic.cs" />
+    <Compile Include="Data\DB\DatabaseLogic.cs" />
     <Compile Include="Data\DB\Factory.cs" />
-    <Compile Include="Data\DB\Favorite.cs" />
-    <Compile Include="Data\DB\Favorites.cs" />
-    <Compile Include="Data\DB\DisplayOptions.cs" />
-    <Compile Include="Data\DB\Group.cs" />
-    <Compile Include="Data\DB\Groups.cs" />
+    <Compile Include="Data\DB\FavoriteLogic.cs" />
+    <Compile Include="Data\DB\FavoritesLogic.cs" />
+    <Compile Include="Data\DB\DisplayOptionsLogic.cs" />
+    <Compile Include="Data\DB\GroupLogic.cs" />
+    <Compile Include="Data\DB\GroupsLogic.cs" />
     <Compile Include="Data\DB\ConnectionHistory.cs" />
-    <Compile Include="Data\DB\HistoryItem.cs" />
-    <Compile Include="Data\DB\SecurityOptions.cs" />
-    <Compile Include="Data\DB\SqlPersistence.cs" />
+    <Compile Include="Data\DB\HistoryItemLogic.cs" />
+    <Compile Include="Data\DB\SecurityOptionsLogic.cs" />
+    <Compile Include="Data\DB\SqlPersistenceLogic.cs" />
     <Compile Include="Data\DB\StoredCredentials.cs" />
     <Compile Include="Data\Favorites\EmptyOptions.cs" />
     <Compile Include="Data\History\HistoryIntervals.cs" />
@@ -1087,6 +1124,15 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Data\DB\SQLPersistence.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SQLPersistence.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Data\DB\SQLPersistence.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SQLPersistence.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Migrated rules for Terminals.ruleset" />
     <None Include="..\..\Resources\Libraries\wpcap\wpcap.dll">
       <Link>wpcap.dll</Link>
@@ -1524,6 +1570,9 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -1536,4 +1585,5 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

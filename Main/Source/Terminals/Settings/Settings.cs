@@ -375,10 +375,11 @@ namespace Terminals.Configuration
             }
         }
 
-        private static PersistenceSecurity PersistenceSecurity
-        {
-            get { return Persistence.Instance.Security; }
-        }
+        /// <summary>
+        /// Gets or sets authentication instance used to encrypt and decrypt secured settings.
+        /// Set only initialized and authenticated instance before access to any data. 
+        /// </summary>
+        internal static PersistenceSecurity PersistenceSecurity { get; set; }
 
         public static bool UseAmazon
         {

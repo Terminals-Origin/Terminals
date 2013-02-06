@@ -3,7 +3,7 @@ using Terminals.Converters;
 
 namespace Terminals.Data.DB
 {
-    internal partial class CredentialSet : CredentialBase, ICredentialSet, IIntegerKeyEnityty
+    internal partial class DbCredentialSet : DbCredentialBase, ICredentialSet, IIntegerKeyEnityty
     {
         // for backward compatibility with the file persistence only
         private Guid guid;
@@ -24,9 +24,9 @@ namespace Terminals.Data.DB
             get { return this.Guid; }
         }
 
-        internal CredentialSet Copy()
+        internal DbCredentialSet Copy()
         {
-            var copy = new CredentialSet
+            var copy = new DbCredentialSet
                 {
                     Name = this.Name
                 };

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
 using System.Linq;
 
@@ -15,11 +16,11 @@ namespace Terminals.Data.DB
 
         private Favorites favorites;
 
-        private readonly EntitiesCache<Group> cache;
+        private readonly EntitiesCache<DbGroup> cache;
 
         private bool isLoaded;
 
-        internal List<Group> Cached
+        internal List<DbGroup> Cached
         {
             get
             {
@@ -31,7 +32,7 @@ namespace Terminals.Data.DB
         /// <summary>
         /// Gets cached item by its database unique identifier
         /// </summary>
-        internal Group this[int id]
+        internal DbGroup this[int id]
         {
             get
             {
@@ -42,7 +43,7 @@ namespace Terminals.Data.DB
 
         internal Groups()
         {
-            this.cache = new EntitiesCache<Group>();
+            this.cache = new EntitiesCache<DbGroup>();
         }
 
         public void AssignStores(DataDispatcher dispatcher, Favorites favorites)
@@ -65,8 +66,8 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                Group toAdd = group as Group;
-                database.Groups.AddObject(toAdd);
+                DbGroup toAdd = group as DbGroup;
+                database.Groups.Add(toAdd);
                 database.SaveImmediatelyIfRequested();
                 database.Detach(toAdd);
                 this.cache.Add(toAdd);
@@ -77,18 +78,18 @@ namespace Terminals.Data.DB
         internal List<IGroup> AddToDatabase(Database database, List<IGroup> groups)
         {
             // not added groups don't have an identifier obtained from database
-            List<IGroup> added = groups.Where(candidate => ((Group)candidate).Id == 0).ToList();
+            List<IGroup> added = groups.Where(candidate => ((DbGroup)candidate).Id == 0).ToList();
             AddAllToDatabase(database, added);
-            List<Group> toAttach = groups.Where(candidate => ((Group)candidate).Id != 0).Cast<Group>().ToList();
+            List<DbGroup> toAttach = groups.Where(candidate => ((DbGroup)candidate).Id != 0).Cast<DbGroup>().ToList();
             database.AttachAll(toAttach);
             return added;
         }
 
         private static void AddAllToDatabase(Database database, List<IGroup> added)
         {
-            foreach (Group group in added)
+            foreach (DbGroup group in added)
             {
-                database.Groups.AddObject(group);
+                database.Groups.Add(group);
             }
         }
 
@@ -96,9 +97,9 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                var toDelete = group as Group;
-                database.Attach(toDelete);
-                database.Groups.DeleteObject(toDelete);
+                var toDelete = group as DbGroup;
+                database.Groups.Attach(toDelete);
+                database.Groups.Remove(toDelete);
                 database.SaveImmediatelyIfRequested();
                 this.cache.Delete(toDelete);
                 this.dispatcher.ReportGroupsDeleted(new List<IGroup> { group });
@@ -109,7 +110,7 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                List<Group> emptyGroups = this.DeleteEmptyGroupsFromDatabase(database);
+                List<DbGroup> emptyGroups = this.DeleteEmptyGroupsFromDatabase(database);
                 database.SaveImmediatelyIfRequested();
                 List<IGroup> toReport = this.DeleteFromCache(emptyGroups);
                 this.dispatcher.ReportGroupsDeleted(toReport);
@@ -120,7 +121,7 @@ namespace Terminals.Data.DB
         /// Call this method after the changes were committed into database, 
         /// to let the cache in last state as long as possible and ensure, that the commit didn't fail.
         /// </summary>
-        internal List<IGroup> DeleteFromCache(List<Group> emptyGroups)
+        internal List<IGroup> DeleteFromCache(List<DbGroup> emptyGroups)
         {
             this.cache.Delete(emptyGroups);
             return emptyGroups.Cast<IGroup>().ToList();
@@ -129,23 +130,23 @@ namespace Terminals.Data.DB
         /// <summary>
         /// Doesn't remove them from cache, only fro database
         /// </summary>
-        internal List<Group> DeleteEmptyGroupsFromDatabase(Database database)
+        internal List<DbGroup> DeleteEmptyGroupsFromDatabase(Database database)
         {
-            List<Group> emptyGroups = this.GetEmptyGroups();
+            List<DbGroup> emptyGroups = this.GetEmptyGroups();
             database.AttachAll(emptyGroups);
             DeleteFromDatabase(database, emptyGroups);
             return emptyGroups;
         }
 
-        private void DeleteFromDatabase(Database database, IEnumerable<Group> groups)
+        private void DeleteFromDatabase(Database database, IEnumerable<DbGroup> groups)
         {
-            foreach (Group group in groups)
+            foreach (DbGroup group in groups)
             {
-                database.Groups.DeleteObject(group);
+                database.Groups.Remove(group);
             }
         }
 
-        private List<Group> GetEmptyGroups()
+        private List<DbGroup> GetEmptyGroups()
         {
             return this.cache.Where(group => ((IGroup)group).Favorites.Count == 0)
                 .ToList();
@@ -153,11 +154,11 @@ namespace Terminals.Data.DB
 
         internal void RefreshCache()
         {
-            List<Group> newlyLoaded = this.Load(this.Cached);
-            List<Group> oldGroups = this.Cached;
+            List<DbGroup> newlyLoaded = this.Load(this.Cached);
+            List<DbGroup> oldGroups = this.Cached;
 
-            List<Group> missing = ListsHelper.GetMissingSourcesInTarget(newlyLoaded, oldGroups);
-            List<Group> redundant = ListsHelper.GetMissingSourcesInTarget(oldGroups, newlyLoaded);
+            List<DbGroup> missing = ListsHelper.GetMissingSourcesInTarget(newlyLoaded, oldGroups);
+            List<DbGroup> redundant = ListsHelper.GetMissingSourcesInTarget(oldGroups, newlyLoaded);
             this.cache.Add(missing);
             this.cache.Delete(redundant);
             this.RefreshLoaded();
@@ -169,7 +170,7 @@ namespace Terminals.Data.DB
 
         private void RefreshLoaded()
         {
-            foreach (Group group in this.cache)
+            foreach (DbGroup group in this.cache)
             {
                 group.ReleaseFavoriteIds();
             }
@@ -180,52 +181,52 @@ namespace Terminals.Data.DB
             if (isLoaded)
                 return;
 
-            List<Group> loaded = LoadFromDatabase();
+            List<DbGroup> loaded = LoadFromDatabase();
             this.AssignGroupsContainer(loaded);
             this.cache.Add(loaded);
             this.isLoaded = true;
         }
 
-        private List<Group> Load(List<Group> toRefresh)
+        private List<DbGroup> Load(List<DbGroup> toRefresh)
         {
-            List<Group> loaded = LoadFromDatabase(toRefresh);
+            List<DbGroup> loaded = LoadFromDatabase(toRefresh);
             this.AssignGroupsContainer(loaded);
             return loaded;
         }
 
-        private void AssignGroupsContainer(List<Group> groups)
+        private void AssignGroupsContainer(List<DbGroup> groups)
         {
-            foreach (Group group in groups)
+            foreach (DbGroup group in groups)
             {
                 group.AssignStores(this, this.dispatcher, this.favorites);
             }
         }
 
-        private static List<Group> LoadFromDatabase()
+        private static List<DbGroup> LoadFromDatabase()
         {
             using (var database = Database.CreateInstance())
             {
-                List<Group> groups = database.Groups.ToList();
+                List<DbGroup> groups = database.Groups.ToList();
                 database.DetachAll(groups);
                 return groups;
             }
         }
 
-        private static List<Group> LoadFromDatabase(List<Group> toRefresh)
+        private static List<DbGroup> LoadFromDatabase(List<DbGroup> toRefresh)
         {
             using (var database = Database.CreateInstance())
             {
                 if (toRefresh != null)
                     database.AttachAll(toRefresh);
 
-                database.Refresh(RefreshMode.StoreWins, database.Groups);
-                List<Group> groups = database.Groups.ToList();
+                ((IObjectContextAdapter)database).ObjectContext.Refresh(RefreshMode.StoreWins, database.Groups);
+                List<DbGroup> groups = database.Groups.ToList();
                 database.DetachAll(groups);
                 return groups;
             }
         }
 
-        internal List<Group> GetGroupsContainingFavorite(int favoriteId)
+        internal List<DbGroup> GetGroupsContainingFavorite(int favoriteId)
         {
             this.CheckCache();
             return this.cache.Where(candidate => candidate.ContainsFavorite(favoriteId))

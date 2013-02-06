@@ -58,7 +58,7 @@ namespace Terminals.Data.DB
             {
                 HistoryInterval interval = HistoryIntervals.GetIntervalByName(historyDateKey);
                 var favoriteIds = database.GetFavoritesHistoryByDate(interval.From, interval.To).ToList();
-                IEnumerable<Favorite> intervalFavorites =
+                IEnumerable<DbFavorite> intervalFavorites =
                     this.favorites.Cached.Where(favorite => favoriteIds.Contains(favorite.Id));
                 return Data.Favorites.OrderByDefaultSorting(intervalFavorites);
             }
@@ -66,7 +66,7 @@ namespace Terminals.Data.DB
 
         public void RecordHistoryItem(IFavorite favorite)
         {
-            var historyTarget = favorite as Favorite;
+            var historyTarget = favorite as DbFavorite;
             if (historyTarget == null)
                 return;
 
@@ -75,7 +75,7 @@ namespace Terminals.Data.DB
             this.FireOnHistoryRecorded(favorite);
         }
 
-        private static void AddToDatabase(Favorite historyTarget)
+        private static void AddToDatabase(DbFavorite historyTarget)
         {
             using (var database = Database.CreateInstance())
             {

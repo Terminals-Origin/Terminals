@@ -1,10 +1,8 @@
-﻿using System.Data.Objects;
-using System.IO;
+﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
-using Favorite = Terminals.Data.DB.Favorite;
 
 namespace Tests
 {
@@ -58,11 +56,11 @@ namespace Tests
         {
             RemoveDatabaseFileReadOnly();
             Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
+            Settings.PersistenceSecurity = new SqlPersistenceSecurity();
             Settings.ConnectionString = string.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
 
             // first reset the database password, then continue with other initializations
             CheckDatabase = Database.CreateInstance();
-            
             this.CheckDatabase.UpdateMasterPassword(string.Empty);
 
             this.PrimaryPersistence = new SqlPersistence();
@@ -90,39 +88,29 @@ namespace Tests
         /// </summary>
         protected void ClearTestLab()
         {
-            const string deleteCommand = @"DELETE FROM ";
+            const string DELETE_COMMAND = @"DELETE FROM ";
             // first clear dependences from both Favorites and groups table because of constraints
-            CheckDatabase.ExecuteStoreCommand(deleteCommand + "FavoritesInGroup");
-            CheckDatabase.ExecuteStoreCommand(deleteCommand + "History");
+            System.Data.Entity.Database checkQueries = this.CheckDatabase.Database;
+            checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "FavoritesInGroup");
+            checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "History");
 
-            string favoritesTable = GetTableName(CheckDatabase.Favorites);
-            CheckDatabase.ExecuteStoreCommand(deleteCommand + favoritesTable);
-            string beforeConnectTable = GetTableName(CheckDatabase.BeforeConnectExecute);
-            CheckDatabase.ExecuteStoreCommand(deleteCommand + beforeConnectTable);
-            string securityTable = GetTableName(CheckDatabase.Security);
-            CheckDatabase.ExecuteStoreCommand(deleteCommand + securityTable);
-            string displayOptionsTable = GetTableName(CheckDatabase.DisplayOptions);
-            CheckDatabase.ExecuteStoreCommand(deleteCommand + displayOptionsTable);
-            string groupsTable = GetTableName(CheckDatabase.Groups);
-            CheckDatabase.ExecuteStoreCommand(deleteCommand + groupsTable);
+            checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "Favorites");
+            checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "BeforeConnectExecute");
+            checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "Security");
+            checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "DisplayOptions");
+            checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "Groups");
 
-            string credentialBase = GetTableName(CheckDatabase.CredentialBase);
-            CheckDatabase.ExecuteStoreCommand(deleteCommand + credentialBase);
-            CheckDatabase.ExecuteStoreCommand(deleteCommand + "Credentials");
-        }
-
-        private string GetTableName<TEntity>(ObjectSet<TEntity> table) where TEntity : class
-        {
-            return table.EntitySet.Name;
+            checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "CredentialBase");
+            checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "Credentials");
         }
 
         /// <summary>
         /// Creates new test favorite using primary persistence. Returns this newly created instance.
         /// Doesn't add it to the persistence.
         /// </summary>
-        internal Favorite CreateTestFavorite()
+        internal DbFavorite CreateTestFavorite()
         {
-            var favorite = this.PrimaryPersistence.Factory.CreateFavorite() as Favorite;
+            var favorite = this.PrimaryPersistence.Factory.CreateFavorite() as DbFavorite;
             // set required properties
             favorite.Name = "test";
             favorite.ServerName = "test server";
@@ -133,9 +121,9 @@ namespace Tests
         /// Creates test favorite and adds it to the primary persistence.
         /// Returns newly created favorite
         /// </summary>
-        internal Favorite AddFavoriteToPrimaryPersistence()
+        internal DbFavorite AddFavoriteToPrimaryPersistence()
         {
-            Favorite favorite = this.CreateTestFavorite();
+            DbFavorite favorite = this.CreateTestFavorite();
             this.PrimaryPersistence.Favorites.Add(favorite);
             return favorite;
         }

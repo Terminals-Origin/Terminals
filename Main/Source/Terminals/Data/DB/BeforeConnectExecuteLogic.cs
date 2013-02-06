@@ -1,8 +1,8 @@
 ﻿namespace Terminals.Data.DB
 {
-    internal partial class BeforeConnectExecute : IBeforeConnectExecuteOptions
+    internal partial class DbBeforeConnectExecute : IBeforeConnectExecuteOptions
     {
-        internal void UpdateFrom(BeforeConnectExecute source)
+        internal void UpdateFrom(DbBeforeConnectExecute source)
         {
             this.Execute = source.Execute;
             this.Command = source.Command;

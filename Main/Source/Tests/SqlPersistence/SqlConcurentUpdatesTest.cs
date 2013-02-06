@@ -5,7 +5,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
-using Favorite = Terminals.Data.DB.Favorite;
+using Terminals.Data.DB;
 
 namespace Tests
 {
@@ -59,7 +59,7 @@ namespace Tests
         {
             List<IFavorite> secondary = this.SecondaryFavorites.ToList();
             this.SecondaryFavorites.Delete(secondary[0]);
-            var favoriteA = secondary[1] as Favorite;
+            var favoriteA = secondary[1] as DbFavorite;
             favoriteA.Name = TEST_NAME;
             this.SecondaryFavorites.Update(favoriteA);
 
@@ -83,8 +83,8 @@ namespace Tests
         [TestMethod]
         public void TestSaveOnAlreadyUpdatedFavorite()
         {
-            Favorite favoriteA = this.AddFavoriteToPrimaryPersistence();
-            var favoriteB = this.SecondaryFavorites.FirstOrDefault() as Favorite;
+            DbFavorite favoriteA = this.AddFavoriteToPrimaryPersistence();
+            var favoriteB = this.SecondaryFavorites.FirstOrDefault() as DbFavorite;
             this.PrimaryPersistence.Dispatcher.FavoritesChanged +=
                 new FavoritesChangedEventHandler(this.OnUpdateAlreadyUpdatedFavoritesChanged);
 
@@ -104,7 +104,7 @@ namespace Tests
                 this.removedEventCatched = true;
         }
 
-        private void UpdateFavorite(Favorite toUpdate, IFavorites targetPersistence)
+        private void UpdateFavorite(DbFavorite toUpdate, IFavorites targetPersistence)
         {
             toUpdate.Name += " Changed";
             targetPersistence.Update(toUpdate);

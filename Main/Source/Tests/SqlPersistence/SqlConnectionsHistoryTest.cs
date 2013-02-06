@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
+using Terminals.Data.DB;
 using Terminals.History;
-using Favorite = Terminals.Data.DB.Favorite;
 
 namespace Tests
 {
@@ -39,7 +39,7 @@ namespace Tests
         [TestMethod]
         public void HistoryTest()
         {
-            Favorite favorite = this.AddFavoriteToPrimaryPersistence();
+            DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
 
             // that's not a mistake, we want to check, if two fast tries are ignored,
             // but it may fail, if the response from the server doesn't reflect our requirement
@@ -60,7 +60,7 @@ namespace Tests
         private int GetExpectedHistoryCount()
         {
             return this.CheckDatabase
-                .ExecuteStoreQuery<int>("select Count(FavoriteId) from History")
+                .Database.SqlQuery<int>("select Count(FavoriteId) from History")
                 .FirstOrDefault();
         }
     }

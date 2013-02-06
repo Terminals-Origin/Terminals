@@ -3,7 +3,7 @@ using Terminals.Security;
 
 namespace Terminals.Data.DB
 {
-    internal partial class CredentialBase : ICredentialBase
+    internal partial class DbCredentialBase : ICredentialBase
     {
         private PersistenceSecurity persistenceSecurity;
 
@@ -91,7 +91,7 @@ namespace Terminals.Data.DB
             return String.Empty;
         }
 
-        protected void CopyTo(CredentialBase copy)
+        protected void CopyTo(DbCredentialBase copy)
         {
             copy.EncryptedUserName = this.EncryptedUserName;
             copy.EncryptedDomain = this.EncryptedDomain;

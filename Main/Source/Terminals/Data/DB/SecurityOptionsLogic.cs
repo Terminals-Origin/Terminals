@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity.Infrastructure;
 
 namespace Terminals.Data.DB
 {
@@ -10,7 +11,7 @@ namespace Terminals.Data.DB
     /// e.g. this item has in database its CredentialBase only 
     /// if some of its values to assigned has not null or empty value
     /// </summary>
-    internal partial class SecurityOptions : ISecurityOptions
+    internal partial class DbSecurityOptions : ISecurityOptions
     {
         private PersistenceSecurity persistenceSecurity;
 
@@ -25,7 +26,7 @@ namespace Terminals.Data.DB
         /// <summary>
         /// Cached base properties. Loaded from reference or assigned by creation only.
         /// </summary>
-        private CredentialBase credentialBase;
+        private DbCredentialBase credentialBase;
 
         public string EncryptedUserName
         {
@@ -158,14 +159,14 @@ namespace Terminals.Data.DB
 
         private Guid GetCredential()
         {
-            CredentialSet resolved = this.ResolveCredentailFromStore();
+            DbCredentialSet resolved = this.ResolveCredentailFromStore();
             if (resolved != null)
                 return resolved.Guid;
 
             return Guid.Empty;
         }
 
-        private CredentialSet ResolveCredentailFromStore()
+        private DbCredentialSet ResolveCredentailFromStore()
         {
             if (this.credentialId != null)
                 return this.storedCredentials[this.credentialId.Value];
@@ -183,7 +184,7 @@ namespace Terminals.Data.DB
 
         private void SetCredentialByStoreId(Guid value)
         {
-            CredentialSet credentialToAssign = this.storedCredentials[value];
+            DbCredentialSet credentialToAssign = this.storedCredentials[value];
             if (credentialToAssign != null)
             {
                 this.credentialId = credentialToAssign.Id;
@@ -198,7 +199,7 @@ namespace Terminals.Data.DB
         {
             if (this.credentialBase == null)
             {
-                this.credentialBase = new CredentialBase();
+                this.credentialBase = new DbCredentialBase();
                 this.credentialBase.AssignSecurity(this.persistenceSecurity);
                 this.CredentialBase = this.credentialBase;
             }
@@ -206,14 +207,14 @@ namespace Terminals.Data.DB
 
         public ISecurityOptions GetResolvedCredentials()
         {
-            SecurityOptions result = this.Copy();
-            Data.SecurityOptions.ResolveCredentials(result, this.Credential);
+            DbSecurityOptions result = this.Copy();
+            SecurityOptions.ResolveCredentials(result, this.Credential);
             return result;
         }
 
         public void UpdateFromCredential(ICredentialSet source)
         {
-            Data.SecurityOptions.UpdateFromCredential(source, this);
+            SecurityOptions.UpdateFromCredential(source, this);
         } 
         
         public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
@@ -224,9 +225,12 @@ namespace Terminals.Data.DB
 
         internal void Attach(Database database)
         {
-            database.Attach(this);
+            database.Security.Attach(this);
             if (this.credentialBase != null)
-                database.Attach(this.credentialBase);
+            {
+                this.CredentialBase = this.credentialBase;
+                database.CredentialBase.Attach(this.credentialBase);
+            }
         }
 
         internal void Detach(Database database)
@@ -237,10 +241,11 @@ namespace Terminals.Data.DB
                 database.Detach(this.credentialBase);
         }
 
-        internal void LoadReferences()
+        internal void LoadReferences(Database database)
         {
-            this.CredentialBaseReference.Load();
-            this.CredentialSetReference.Load();
+            var securityEntry = database.Entry(this);
+            securityEntry.Reference(so => so.CredentialBase).Load();
+            securityEntry.Reference(so => so.CredentialSet).Load();
         }
 
         internal void LoadFieldsFromReferences()
@@ -276,14 +281,14 @@ namespace Terminals.Data.DB
                 this.CredentialSet = null;
         }
 
-        internal SecurityOptions Copy()
+        internal DbSecurityOptions Copy()
         {
-            var copy = new SecurityOptions();
+            var copy = new DbSecurityOptions();
             copy.UpdateFrom(this);
             return copy;
         }
 
-        internal void UpdateFrom(SecurityOptions source)
+        internal void UpdateFrom(DbSecurityOptions source)
         {
             this.EncryptedUserName = source.EncryptedUserName;
             this.EncryptedDomain = source.EncryptedDomain;
