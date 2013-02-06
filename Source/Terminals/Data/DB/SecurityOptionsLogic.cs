@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Entity.Infrastructure;
 
 namespace Terminals.Data.DB
 {

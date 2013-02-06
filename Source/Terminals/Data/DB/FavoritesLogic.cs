@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
 using System.Linq;
@@ -91,7 +90,6 @@ namespace Terminals.Data.DB
                 var toUpdate = favorite as DbFavorite;
                 if (toUpdate != null)
                 {
-                    // todo check if it is better to use db.AttachFavorite
                     database.AttachFavorite(toUpdate);
                     this.TrySaveAndReportFavoriteUpdate(toUpdate, database);
                 }

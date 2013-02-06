@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Objects;
 using System.Linq;
 using Terminals.History;
 using Terminals.Network;
