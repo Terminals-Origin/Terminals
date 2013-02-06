@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Data.Entity.Infrastructure;
 using Unified;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Favorite : IFavorite
+    internal partial class DbFavorite : IFavorite
     {
         /// <summary>
         /// Manages lazy loading and caching of the favorite extended properties, which are modeled
@@ -11,7 +12,7 @@ namespace Terminals.Data.DB
         /// </summary>
         private class FavoriteDetails
         {
-            private readonly Favorite favorite;
+            private readonly DbFavorite favorite;
 
             private bool protocolPropertiesLoaded;
 
@@ -32,7 +33,7 @@ namespace Terminals.Data.DB
                 }
             }
 
-            internal FavoriteDetails(Favorite favorite)
+            internal FavoriteDetails(DbFavorite favorite)
             {
                 this.favorite = favorite;
             }
@@ -41,7 +42,6 @@ namespace Terminals.Data.DB
             {
                 if (this.DetailsLoaded)
                 {
-                    this.Attach(database);
                     this.favorite.security.MarkAsModified(database);
                     database.MarkAsModified(this.favorite.display);
                     database.MarkAsModified(this.favorite.executeBeforeConnect);
@@ -53,8 +53,8 @@ namespace Terminals.Data.DB
                 if (DetailsLoaded)
                 {
                     this.favorite.security.Attach(database);
-                    database.Attach(this.favorite.display);
-                    database.Attach(this.favorite.executeBeforeConnect);
+                    database.DisplayOptions.Attach(this.favorite.display);
+                    database.BeforeConnectExecute.Attach(this.favorite.executeBeforeConnect);
                 }
             }
 
@@ -81,8 +81,8 @@ namespace Terminals.Data.DB
             {
                 using (var database = Database.CreateInstance())
                 {
-                    database.Attach(this.favorite);
-                    this.LoadReferences();
+                    database.Favorites.Attach(this.favorite);
+                    this.LoadReferences(database);
                     this.LoadFieldsFromReferences();
                     database.DetachFavorite(this.favorite);
                 }
@@ -97,13 +97,14 @@ namespace Terminals.Data.DB
                 this.favorite.executeBeforeConnect = this.favorite.ExecuteBeforeConnect;
             }
 
-            private void LoadReferences()
+            private void LoadReferences(Database database)
             {
-                this.favorite.SecurityReference.Load();
+                DbEntityEntry<DbFavorite> favoriteEntry = database.Entry(this.favorite);
+                favoriteEntry.Reference(f => f.Security).Load();
                 // we have to load security references after the parent references is loaded
-                this.favorite.Security.LoadReferences();
-                this.favorite.DisplayReference.Load();
-                this.favorite.ExecuteBeforeConnectReference.Load();
+                this.favorite.Security.LoadReferences(database);
+                favoriteEntry.Reference(f => f.Display).Load();
+                favoriteEntry.Reference(f => f.ExecuteBeforeConnect).Load();
             }
 
             internal void Save(Database database)
@@ -170,7 +171,7 @@ namespace Terminals.Data.DB
                 catch (Exception exception)
                 {
                     Logging.Log.Error("Couldn't obtain protocol properties from database", exception);
-                    this.favorite.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(
+                    this.favorite.protocolProperties = Favorite.UpdateProtocolPropertiesByProtocol(
                       this.favorite.Protocol, new RdpOptions());
                 }
             }

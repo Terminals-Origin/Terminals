@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Data.Objects;
+using System.Data.Entity;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
-using Favorite = Terminals.Data.DB.Favorite;
-using Group = Terminals.Data.DB.Group;
+using Terminals.Data.DB;
 
 namespace Tests
 {
@@ -41,15 +40,15 @@ namespace Tests
         [TestMethod]
         public void AddGroupTest()
         {
-            Group childGroup = this.CreateTestGroup("TestGroupA");
-            Group parentGroup = this.CreateTestGroup("TestGroupB");
+            DbGroup childGroup = this.CreateTestGroup("TestGroupA");
+            DbGroup parentGroup = this.CreateTestGroup("TestGroupB");
             childGroup.Parent = parentGroup; // don't use entities here, we are testing intern logic
             IGroup testParent = childGroup.Parent; // dummy test to resolve parent
 
             Assert.AreEqual(testParent, parentGroup, "Parent group wasn't set properly");
-            ObjectSet<Group> checkedGroups = this.CheckDatabase.Groups;
-            Group checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
-            Group checkedParent = checkedGroups.FirstOrDefault(group => group.Id == parentGroup.Id);
+            DbSet<DbGroup> checkedGroups = this.CheckDatabase.Groups;
+            DbGroup checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
+            DbGroup checkedParent = checkedGroups.FirstOrDefault(group => group.Id == parentGroup.Id);
             Assert.IsNotNull(checkedChild, "Group wasn't added to the database");
             Assert.IsNotNull(checkedParent, "Group wasn't added to the database");
             Assert.AreEqual(1, checkedParent.ChildGroups.Count, "Group wasn't added as child");
@@ -61,7 +60,7 @@ namespace Tests
         public void LoadGroupFavoritesTest()
         {
             IGroup group = this.CreateTestGroupA();
-            Favorite favorite = this.AddFavoriteToPrimaryPersistence();
+            DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
             group.AddFavorite(favorite);
             List<IFavorite> favorites = group.Favorites;
             Assert.AreEqual(1, favorites.Count, "Group favorites count doesn't match.");
@@ -90,15 +89,15 @@ namespace Tests
             this.AssertGroupDeleted(storedAfter, storedBefore);
         }
 
-        private Group CreateTestGroupA()
+        private DbGroup CreateTestGroupA()
         {
             return this.CreateTestGroup("TestGroupA");
         }
 
-        private Group CreateTestGroup(string newGroupName)
+        private DbGroup CreateTestGroup(string newGroupName)
         {
             IFactory factory = this.PrimaryPersistence.Factory;
-            Group testGroup = factory.CreateGroup(newGroupName) as Group;
+            DbGroup testGroup = factory.CreateGroup(newGroupName) as DbGroup;
             this.PrimaryPersistence.Groups.Add(testGroup);
             return testGroup;
         }

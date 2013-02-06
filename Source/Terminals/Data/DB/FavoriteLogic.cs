@@ -7,7 +7,7 @@ using Terminals.Converters;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Favorite : IFavorite, IIntegerKeyEnityty
+    internal partial class DbFavorite : IFavorite, IIntegerKeyEnityty
     {
         private Groups groups;
 
@@ -46,7 +46,7 @@ namespace Terminals.Data.DB
             get { return this.Guid; }
         }
 
-        private BeforeConnectExecute executeBeforeConnect;
+        private DbBeforeConnectExecute executeBeforeConnect;
 
         IBeforeConnectExecuteOptions IFavorite.ExecuteBeforeConnect
         {
@@ -57,7 +57,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        private DisplayOptions display;
+        private DbDisplayOptions display;
 
         IDisplayOptions IFavorite.Display
         {
@@ -68,7 +68,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        private SecurityOptions security;
+        private DbSecurityOptions security;
 
         ISecurityOptions IFavorite.Security
         {
@@ -78,7 +78,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        private SecurityOptions GetSecurity()
+        private DbSecurityOptions GetSecurity()
         {
             this.details.Load();
             return this.security;
@@ -142,7 +142,35 @@ namespace Terminals.Data.DB
             get
             {
                 List<IGroup> loadedGroups = GetInvariantGroups();
-                return Data.Favorite.GroupsListToString(loadedGroups);
+                return Favorite.GroupsListToString(loadedGroups);
+            }
+        }
+
+        private int id;
+
+        public int Id
+        {
+            get
+            {
+                return this.id;
+            }
+            set
+            {
+                this.id = value;
+                this.guid = GuidConverter.ToGuid(value); 
+            }
+        }
+
+        private string protocol;
+
+        public string Protocol
+        {
+            get { return this.protocol; }
+            set
+            {
+                this.protocol = value;
+                // Reflect the protocol change into the protocol properties
+                this.protocolProperties = Favorite.UpdateProtocolPropertiesByProtocol(this.protocol, this.protocolProperties);
             }
         }
 
@@ -150,10 +178,11 @@ namespace Terminals.Data.DB
         /// Initializes new instance of a favorite and sets its properties to default values,
         /// which aren't defined by database.
         /// </summary>
-        public Favorite()
+        public DbFavorite()
         {
-            this._Protocol = ConnectionManager.RDP;
-            this._Port = ConnectionManager.RDPPort;
+            this.Groups = new HashSet<DbGroup>();
+            this.Protocol = ConnectionManager.RDP;
+            this.Port = ConnectionManager.RDPPort;
             this.protocolProperties = new RdpOptions();
             this.details = new FavoriteDetails(this);
         }
@@ -166,20 +195,20 @@ namespace Terminals.Data.DB
 
         IFavorite IFavorite.Copy()
         {
-            var copy = new Favorite();
+            var copy = new DbFavorite();
             copy.UpdateFrom(this);
             return copy;
         }
 
         void IFavorite.UpdateFrom(IFavorite source)
         {
-            var sourceFavorite = source as Favorite;
+            var sourceFavorite = source as DbFavorite;
             if (sourceFavorite == null)
                 return;
             this.UpdateFrom(sourceFavorite);
         }
 
-        private void UpdateFrom(Favorite source)
+        private void UpdateFrom(DbFavorite source)
         {
             // force load first to fill the content, otherwise we don't have to able to copy
             this.details.Load();
@@ -204,34 +233,21 @@ namespace Terminals.Data.DB
 
         public string GetToolTipText()
         {
-            return Data.Favorite.GetToolTipText(this);
+            return Favorite.GetToolTipText(this);
         }
 
         public int CompareByDefaultSorting(IFavorite target)
         {
-            return Data.Favorite.CompareByDefaultSorting(this, target);
+            return Favorite.CompareByDefaultSorting(this, target);
         }
 
         bool IStoreIdEquals<IFavorite>.StoreIdEquals(IFavorite oponent)
         {
-            var oponentFavorite = oponent as Favorite;
+            var oponentFavorite = oponent as DbFavorite;
             if (oponentFavorite == null)
                 return false;
 
             return oponentFavorite.Id == this.Id;
-        }
-
-        partial void OnIdChanging(int value)
-        {
-            this.guid = GuidConverter.ToGuid(value);
-        }
-
-        /// <summary>
-        /// Reflect the protocol change into the protocol properties
-        /// </summary>
-        partial void OnProtocolChanged()
-        {
-            this.protocolProperties = Data.Favorite.UpdateProtocolPropertiesByProtocol(this.Protocol, this.protocolProperties);
         }
 
         private List<IGroup> GetInvariantGroups()
@@ -246,7 +262,7 @@ namespace Terminals.Data.DB
         internal void AssignStoreToRdpOptions(PersistenceSecurity persistenceSecurity)
         {
             // only, if the favorite is newly created
-            Data.Favorite.AssignStoreToRdpOptions(this.protocolProperties, persistenceSecurity);
+            Favorite.AssignStoreToRdpOptions(this.protocolProperties, persistenceSecurity);
         }
 
         internal void AssignStores(Groups groups, StoredCredentials credentials, PersistenceSecurity persistenceSecurity)
@@ -284,7 +300,7 @@ namespace Terminals.Data.DB
 
         public override String ToString()
         {
-            return Data.Favorite.ToString(this);
+            return Favorite.ToString(this);
         }
     }
 }

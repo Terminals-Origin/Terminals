@@ -1,6 +1,6 @@
 ﻿namespace Terminals.Data.DB
 {
-    internal partial class DisplayOptions : IDisplayOptions
+    internal partial class DbDisplayOptions : IDisplayOptions
     {
         int IDisplayOptions.Height
         {
@@ -50,7 +50,7 @@
             }
         }
 
-        internal void UpdateFrom(DisplayOptions source)
+        internal void UpdateFrom(DbDisplayOptions source)
         {
             this.Height = source.Height;
             this.Width = source.Width;

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
 using System.Linq;
 
@@ -17,16 +18,16 @@ namespace Terminals.Data.DB
         private readonly StoredCredentials credentials;
 
         private readonly DataDispatcher dispatcher;
-        private readonly EntitiesCache<Favorite> cache = new EntitiesCache<Favorite>();
+        private readonly EntitiesCache<DbFavorite> cache = new EntitiesCache<DbFavorite>();
 
-        internal List<Favorite> Cached
+        internal List<DbFavorite> Cached
         {
             get { return this.cache.ToList(); }
         }
 
         private bool isLoaded;
 
-        private PersistenceSecurity persistenceSecurity;
+        private readonly PersistenceSecurity persistenceSecurity;
 
         internal Favorites(Groups groups, StoredCredentials credentials,
             PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher)
@@ -66,7 +67,7 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                List<Favorite> toAdd = favorites.Cast<Favorite>().ToList();
+                List<DbFavorite> toAdd = favorites.Cast<DbFavorite>().ToList();
                 AddAllToDatabase(database, toAdd);
                 database.SaveImmediatelyIfRequested();
                 database.DetachAll(toAdd);
@@ -75,11 +76,11 @@ namespace Terminals.Data.DB
             }
         }
 
-        private void AddAllToDatabase(Database database, IEnumerable<Favorite> favorites)
+        private void AddAllToDatabase(Database database, IEnumerable<DbFavorite> favorites)
         {
-            foreach (Favorite favorite in favorites)
+            foreach (DbFavorite favorite in favorites)
             {
-                database.Favorites.AddObject(favorite);
+                database.Favorites.Add(favorite);
             }
         }
 
@@ -87,10 +88,11 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                var toUpdate = favorite as Favorite;
+                var toUpdate = favorite as DbFavorite;
                 if (toUpdate != null)
                 {
-                    database.Attach(toUpdate);
+                    // todo check if it is better to use db.AttachFavorite
+                    database.AttachFavorite(toUpdate);
                     this.TrySaveAndReportFavoriteUpdate(toUpdate, database);
                 }
             }
@@ -100,15 +102,15 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                var toUpdate = favorite as Favorite;
+                var toUpdate = favorite as DbFavorite;
                 if (toUpdate == null)
                     return;
 
-                database.Attach(toUpdate);
+                database.AttachFavorite(toUpdate);
                 List<IGroup> addedGroups = this.groups.AddToDatabase(database, newGroups);
                 // commit newly created groups, otherwise we cant add into them
                 database.SaveImmediatelyIfRequested(); 
-                List<Group> removedGroups = this.UpdateGroupsMembership(favorite, newGroups, database);
+                List<DbGroup> removedGroups = this.UpdateGroupsMembership(favorite, newGroups, database);
                 database.SaveImmediatelyIfRequested();
 
                 List<IGroup> removedToReport = this.groups.DeleteFromCache(removedGroups);
@@ -117,33 +119,34 @@ namespace Terminals.Data.DB
             }
         }
 
-        private List<Group> UpdateGroupsMembership(IFavorite favorite, List<IGroup> newGroups, Database database)
+        private List<DbGroup> UpdateGroupsMembership(IFavorite favorite, List<IGroup> newGroups, Database database)
         {
             List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, newGroups);
             List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, favorite.Groups);
             Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
             Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> {favorite}, redundantGroups);
-            List<Group> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
+            List<DbGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
             return removedGroups;
         }
 
-        private void TrySaveAndReportFavoriteUpdate(Favorite toUpdate, Database database)
+        private void TrySaveAndReportFavoriteUpdate(DbFavorite toUpdate, Database database)
         {
             try
             {
                 this.SaveAndReportFavoriteUpdated(database, toUpdate);
             }
-            catch (OptimisticConcurrencyException)
+            catch (DbUpdateConcurrencyException)
             {
                 this.TryToRefreshUpdatedFavorite(toUpdate, database);
             }
         }
 
-        private void TryToRefreshUpdatedFavorite(Favorite toUpdate, Database database)
+        private void TryToRefreshUpdatedFavorite(DbFavorite toUpdate, Database database)
         {
             try
             {
-                database.Refresh(RefreshMode.ClientWins, toUpdate);
+                database.Entry(toUpdate).Reload();
+                ((IObjectContextAdapter)database).ObjectContext.Refresh(RefreshMode.ClientWins, toUpdate);
                 this.SaveAndReportFavoriteUpdated(database, toUpdate);
             }
             catch (InvalidOperationException)
@@ -153,7 +156,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        private void SaveAndReportFavoriteUpdated(Database database, Favorite favorite)
+        private void SaveAndReportFavoriteUpdated(Database database, DbFavorite favorite)
         {
             favorite.MarkAsModified(database);
             database.SaveImmediatelyIfRequested();
@@ -172,11 +175,11 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                List<Favorite> favoritesToDelete = favorites.Cast<Favorite>().ToList();
+                List<DbFavorite> favoritesToDelete = favorites.Cast<DbFavorite>().ToList();
                 DeleteFavoritesFromDatabase(database, favoritesToDelete);
                 database.SaveImmediatelyIfRequested();
                 this.groups.RefreshCache();
-                List<Group> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
+                List<DbGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
                 database.SaveImmediatelyIfRequested();
                 List<IGroup> groupsToReport = this.groups.DeleteFromCache(deletedGroups);
                 this.dispatcher.ReportGroupsDeleted(groupsToReport);
@@ -185,18 +188,18 @@ namespace Terminals.Data.DB
             }
         }
 
-        private void DeleteFavoritesFromDatabase(Database database, List<Favorite> favorites)
+        private void DeleteFavoritesFromDatabase(Database database, List<DbFavorite> favorites)
         {
             // we don't have to attach the details, because they will be deleted by reference constraints
             database.AttachAll(favorites);
             DeleteAllFromDatabase(database, favorites);
         }
 
-        private void DeleteAllFromDatabase(Database database, IEnumerable<Favorite> favorites)
+        private void DeleteAllFromDatabase(Database database, IEnumerable<DbFavorite> favorites)
         {
-            foreach (Favorite favorite in favorites)
+            foreach (DbFavorite favorite in favorites)
             {
-                database.Favorites.DeleteObject(favorite);
+                database.Favorites.Remove(favorite);
             }
         }
 
@@ -217,7 +220,7 @@ namespace Terminals.Data.DB
         private void SaveAndReportFavoritesUpdated(Database database, List<IFavorite> selectedFavorites)
         {
             database.SaveImmediatelyIfRequested();
-            List<Favorite> toUpdate = selectedFavorites.Cast<Favorite>().ToList();
+            List<DbFavorite> toUpdate = selectedFavorites.Cast<DbFavorite>().ToList();
             this.cache.Update(toUpdate);
             this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
         }
@@ -254,18 +257,18 @@ namespace Terminals.Data.DB
             if (isLoaded)
                 return;
             
-            List<Favorite> loaded = LoadFromDatabase();
+            List<DbFavorite> loaded = LoadFromDatabase();
             this.cache.Add(loaded);
             this.isLoaded = true;
         }
 
         internal void RefreshCache()
         {
-            List<Favorite> newlyLoaded = LoadFromDatabase(this.Cached);
-            List<Favorite> oldFavorites = this.Cached;
-            List<Favorite> missing = ListsHelper.GetMissingSourcesInTarget(newlyLoaded, oldFavorites);
-            List<Favorite> redundant = ListsHelper.GetMissingSourcesInTarget(oldFavorites, newlyLoaded);
-            List<Favorite> toUpdate = ListsHelper.GetMissingSourcesInTarget(oldFavorites, redundant);
+            List<DbFavorite> newlyLoaded = LoadFromDatabase(this.Cached);
+            List<DbFavorite> oldFavorites = this.Cached;
+            List<DbFavorite> missing = ListsHelper.GetMissingSourcesInTarget(newlyLoaded, oldFavorites);
+            List<DbFavorite> redundant = ListsHelper.GetMissingSourcesInTarget(oldFavorites, newlyLoaded);
+            List<DbFavorite> toUpdate = ListsHelper.GetMissingSourcesInTarget(oldFavorites, redundant);
 
             this.cache.Add(missing);
             this.cache.Delete(redundant);
@@ -282,25 +285,25 @@ namespace Terminals.Data.DB
 
         private void RefreshCachedItems()
         {
-            foreach (Favorite favorite in this.cache)
+            foreach (DbFavorite favorite in this.cache)
             {
                 favorite.ReleaseLoadedDetails();
             }
         }
 
-        private List<Favorite> LoadFromDatabase()
+        private List<DbFavorite> LoadFromDatabase()
         {
             using (var database = Database.CreateInstance())
             {
                 // to list because Linq to entities allows only cast to primitive types
-                List<Favorite> favorites = database.Favorites.ToList();
+                List<DbFavorite> favorites = database.Favorites.ToList();
                 database.DetachAll(favorites);
                 favorites.ForEach(candidate => candidate.AssignStores(this.groups, this.credentials, this.persistenceSecurity));
                 return favorites;
             }
         }
 
-        private static List<Favorite> LoadFromDatabase(List<Favorite> toRefresh)
+        private static List<DbFavorite> LoadFromDatabase(List<DbFavorite> toRefresh)
         {
             using (var database = Database.CreateInstance())
             {
@@ -308,8 +311,8 @@ namespace Terminals.Data.DB
                     database.AttachAll(toRefresh);
 
                 // to list because Linq to entities allows only cast to primitive types
-                database.Refresh(RefreshMode.StoreWins, database.Favorites);
-                List<Favorite> favorites = database.Favorites.ToList();
+                ((IObjectContextAdapter)database).ObjectContext.Refresh(RefreshMode.StoreWins, database.Favorites);
+                List<DbFavorite> favorites = database.Favorites.ToList();
                 database.DetachAll(favorites);
                 return favorites;
             }

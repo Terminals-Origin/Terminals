@@ -98,7 +98,7 @@ namespace Terminals.Data.DB
         /// </summary>
         private void UpdateCredentialBasePasswords()
         {
-            foreach (CredentialBase credentials in this.database.CredentialBase)
+            foreach (DbCredentialBase credentials in this.database.CredentialBase)
             {
                 credentials.AssignSecurity(this.persistenceSecurity);
                 credentials.UpdatePasswordByNewKeyMaterial(this.newKeyMaterial);

@@ -14,7 +14,7 @@ namespace Terminals.Data.DB
 
         public event EventHandler CredentialsChanged;
 
-        private readonly EntitiesCache<CredentialSet> cache = new EntitiesCache<CredentialSet>();
+        private readonly EntitiesCache<DbCredentialSet> cache = new EntitiesCache<DbCredentialSet>();
 
         private bool isLoaded;
 
@@ -31,7 +31,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal CredentialSet this[Guid id]
+        internal DbCredentialSet this[Guid id]
         {
             get
             {
@@ -40,7 +40,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal CredentialSet this[int storeId]
+        internal DbCredentialSet this[int storeId]
         {
             get
             {
@@ -61,16 +61,16 @@ namespace Terminals.Data.DB
 
         public void Add(ICredentialSet toAdd)
         {
-            var credentialToAdd = toAdd as CredentialSet;
+            var credentialToAdd = toAdd as DbCredentialSet;
             AddToDatabase(toAdd, credentialToAdd);
             this.cache.Add(credentialToAdd);
         }
 
-        private static void AddToDatabase(ICredentialSet toAdd, CredentialSet credentialToAdd)
+        private static void AddToDatabase(ICredentialSet toAdd, DbCredentialSet credentialToAdd)
         {
             using (var database = Database.CreateInstance())
             {
-                database.CredentialBase.AddObject(credentialToAdd);
+                database.CredentialBase.Add(credentialToAdd);
                 database.SaveImmediatelyIfRequested();
                 database.Detach(toAdd);
             }
@@ -78,7 +78,7 @@ namespace Terminals.Data.DB
 
         public void Remove(ICredentialSet toRemove)
         {
-            var credentailToRemove = toRemove as CredentialSet;
+            var credentailToRemove = toRemove as DbCredentialSet;
             DeleteFromDatabase(credentailToRemove);
             this.cache.Delete(credentailToRemove);
         }
@@ -87,10 +87,10 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
-                var credentialToUpdate = toUpdate as CredentialSet;
+                var credentialToUpdate = toUpdate as DbCredentialSet;
                 if (credentialToUpdate == null)
                     return;
-                database.Attach(credentialToUpdate);
+                database.CredentialBase.Attach(credentialToUpdate);
                 database.MarkAsModified(credentialToUpdate);
                 database.SaveImmediatelyIfRequested();
                 database.Detach(credentialToUpdate);
@@ -98,12 +98,12 @@ namespace Terminals.Data.DB
             }
         }
 
-        private static void DeleteFromDatabase(CredentialSet credentailToRemove)
+        private static void DeleteFromDatabase(DbCredentialSet credentailToRemove)
         {
             using (var database = Database.CreateInstance())
             {
-                database.Attach(credentailToRemove);
-                database.CredentialBase.DeleteObject(credentailToRemove);
+                database.CredentialBase.Attach(credentailToRemove);
+                database.CredentialBase.Remove(credentailToRemove);
                 database.SaveImmediatelyIfRequested();
             }
         }
@@ -132,24 +132,24 @@ namespace Terminals.Data.DB
 
         private void ReloadCache()
         {
-            List<CredentialSet> loaded = LoadFromDatabase();
+            List<DbCredentialSet> loaded = LoadFromDatabase();
             this.AssignSecurity(loaded);
             this.cache.Add(loaded);
         }
 
-        private void AssignSecurity(List<CredentialSet> loaded)
+        private void AssignSecurity(List<DbCredentialSet> loaded)
         {
-            foreach (CredentialSet credentialSet in loaded)
+            foreach (DbCredentialSet credentialSet in loaded)
             {
                 credentialSet.AssignSecurity(this.persistenceSecurity);
             }
         }
 
-        private static List<CredentialSet> LoadFromDatabase()
+        private static List<DbCredentialSet> LoadFromDatabase()
         {
             using (var database = Database.CreateInstance())
             {
-                return database.CredentialBase.OfType<CredentialSet>().ToList();
+                return database.CredentialBase.OfType<DbCredentialSet>().ToList();
             }
         }
 

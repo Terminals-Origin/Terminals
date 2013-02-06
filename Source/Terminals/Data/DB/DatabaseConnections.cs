@@ -1,39 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.EntityClient;
+using System.Data.Metadata.Edm;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using Terminals.Configuration;
 using Terminals.Security;
 using Versioning = SqlScriptRunner.Versioning;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Database
+    internal partial class Database : DbContext
     {
         private const string PROVIDER = "System.Data.SqlClient";
 
-        private const string METADATA = @"res://*/Data.DB.SQLPersistence.csdl|res://*/Data.DB.SQLPersistence.ssdl|res://*/Data.DB.SQLPersistence.msl";
+        /// <summary>
+        /// Load all the EF metadata from current assembly
+        /// </summary>
+        private const string METADATA = @"res://Terminals/Data.DB.SQLPersistence.csdl|res://Terminals/Data.DB.SQLPersistence.ssdl|res://Terminals/Data.DB.SQLPersistence.msl";
 
         internal const string DEFAULT_CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename=|DataDirectory|\Data\Terminals.mdf;Integrated Security=True;User Instance=False";
 
-        /// <summary>
-        /// The Connection string getter is performance expensive because of decryption, so we reuse the connection instance.
-        /// Until there is no possibility to change the persistence by runtime, we don't have to release the connection.
-        /// </summary>
-        private static EntityConnection cachedConnection;
-
         internal static Database CreateInstance()
         {
-            EntityConnection connection = CacheConnection();
+            EntityConnection connection = BuildConnection(Settings.ConnectionString);
             return new Database(connection);
-        }
-
-        private static EntityConnection CacheConnection()
-        {
-            if (cachedConnection == null)
-                cachedConnection = BuildConnection(Settings.ConnectionString);
-
-            return cachedConnection;
         }
 
         internal static Database CreateInstance(string connecitonString)
@@ -58,22 +51,6 @@ namespace Terminals.Data.DB
                                         };
 
             return connectionBuilder.ToString();
-        }
-
-        /// <summary>
-        /// Entity framework performance optimization, the connection is opened once for batch operations.
-        /// </summary>
-        internal static void OpenConnection()
-        {
-            cachedConnection.Open();
-        }
-
-        /// <summary>
-        /// Entity framework performance optimization, the connection is opened once for batch operations.
-        /// </summary>
-        internal static void CloseConneciton()
-        {
-            cachedConnection.Close();
         }
 
         internal static bool TestConnection()
@@ -141,7 +118,7 @@ namespace Terminals.Data.DB
             using (Database database = CreateInstance(connectionString))
             {
                 const string COMMAND_TEXT = "SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb');";
-                return database.ExecuteStoreQuery<string>(COMMAND_TEXT)
+                return database.Database.SqlQuery<string>(COMMAND_TEXT)
                     .ToList();
             }
         }
@@ -187,14 +164,14 @@ namespace Terminals.Data.DB
         private static int ContainsDatabaseVersionTable(Database database)
         {
             const string VERSIONTABLE_COMMAND = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Version'";
-            return database.ExecuteStoreQuery<int>(VERSIONTABLE_COMMAND)
+            return database.Database.SqlQuery<int>(VERSIONTABLE_COMMAND)
                            .FirstOrDefault();
         }
 
         private static Versioning.Version GetFirstVersionInVersionsTable(Database database)
         {
             const string LAST_VERSION_COMMAND = "Select top 1 VersionNumber from Version order by Date desc";
-            string lastVersion = database.ExecuteStoreQuery<string>(LAST_VERSION_COMMAND).FirstOrDefault();
+            string lastVersion = database.Database.SqlQuery<string>(LAST_VERSION_COMMAND).FirstOrDefault();
             var parser = new Versioning.JustVersionParser();
             return parser.Parse(lastVersion);
         }

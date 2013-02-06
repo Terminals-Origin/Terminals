@@ -1,60 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
-using System.Data.Objects.DataClasses;
 using System.Linq;
 using Terminals.Connections;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Database
+    internal partial class Database : DbContext
     {
+        internal Database(DbConnection connection)
+            : base(connection, true)
+        {
+            this.BeforeConnectExecute = this.Set<DbBeforeConnectExecute>();
+            this.CredentialBase = this.Set<DbCredentialBase>();
+            this.DisplayOptions = this.Set<DbDisplayOptions>();
+            this.Favorites = this.Set<DbFavorite>();
+            this.Groups = this.Set<DbGroup>();
+            this.Security = this.Set<DbSecurityOptions>();
+        }
+
         internal void SaveImmediatelyIfRequested()
         {
             // don't ask, save immediately. Here is no benefit to save in batch like in FilePersistence
             this.SaveChanges();
         }
 
-        public override int SaveChanges(SaveOptions options)
+        public override int SaveChanges()
         {
-            IEnumerable<Favorite> changedFavorites = this.GetChangedOrAddedFavorites();
-            return this.SaveChanges(options, changedFavorites);
-        }
-
-        private int SaveChanges(SaveOptions options, IEnumerable<Favorite> changedFavorites)
-        {
-            int returnValue = base.SaveChanges(options);
+            IEnumerable<DbFavorite> changedFavorites = this.GetChangedOrAddedFavorites();
+            // add to database first, otherwise the favorite properties cant be committed.
+            int returnValue = base.SaveChanges();
             this.SaveFavoriteDetails(changedFavorites);
             return returnValue;
         }
 
-        private void SaveFavoriteDetails(IEnumerable<Favorite> changedFavorites)
+        private void SaveFavoriteDetails(IEnumerable<DbFavorite> changedFavorites)
         {
-            foreach (Favorite favorite in changedFavorites)
+            foreach (DbFavorite favorite in changedFavorites)
             {
                 favorite.SaveDetails(this);
             }
         }
 
-        private IEnumerable<Favorite> GetChangedOrAddedFavorites()
+        private IEnumerable<DbFavorite> GetChangedOrAddedFavorites()
         {
-            List<ObjectStateEntry> changes = this.GetChangedOrAddedEntitites();
-
-            IEnumerable<Favorite> affectedFavorites = changes.Where(candidate => candidate.Entity is Favorite)
-                                                             .Select(change => change.Entity)
-                                                             .Cast<Favorite>();
-
-            return affectedFavorites;
-        }
-
-        private List<ObjectStateEntry> GetChangedOrAddedEntitites()
-        {
-            IEnumerable<ObjectStateEntry> added = this.ObjectStateManager.GetObjectStateEntries(EntityState.Added);
-            List<ObjectStateEntry> changed =
-                this.ObjectStateManager.GetObjectStateEntries(EntityState.Modified).ToList();
-            changed.AddRange(added);
-            return changed;
+            return this.ChangeTracker.Entries<DbFavorite>()
+                .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified)
+                .Select(change => change.Entity)
+                .ToList();
         }
 
         internal byte[] GetFavoriteIcon(int favoriteId)
@@ -86,32 +83,36 @@ namespace Terminals.Data.DB
         }
 
         /// <summary>
-        /// Attaches all item in entitiesToAttach to this context.
+        /// Attaches all groups in toAttach to this context.
         /// Does not check, if the entities are already in the context.
         /// </summary>
-        /// <typeparam name="TEntity">Entity defined in this object context model</typeparam>
-        /// <param name="entitiesToAttach">Not null collection of items from this model</param>
-        internal void AttachAll<TEntity>(IEnumerable<TEntity> entitiesToAttach)
-            where TEntity : IEntityWithKey
+        /// <param name="toAttach">Not null collection of items from this model</param>
+        internal void AttachAll(IEnumerable<DbGroup> toAttach)
         {
-            foreach (TEntity entity in entitiesToAttach)
+            foreach (DbGroup group in toAttach)
             {
-                this.Attach(entity);
+                this.Groups.Attach(group);
             }
         }
 
-        internal void AttachAll(IEnumerable<Favorite> favorites)
+        internal void AttachAll(IEnumerable<DbFavorite> favorites)
         {
-            foreach (Favorite favorite in favorites)
+            foreach (DbFavorite favorite in favorites)
             {
                 this.AttachFavorite(favorite);
             }
         }
 
-        private void AttachFavorite(Favorite favorite)
+        internal void AttachFavorite(DbFavorite favorite)
         {
             favorite.AttachDetails(this);
-            this.Attach(favorite);
+            this.Favorites.Attach(favorite);
+        }
+
+        internal void Detach<TEntity>(TEntity entity)
+             where TEntity : class
+        {
+            this.Entry(entity).State = EntityState.Detached;
         }
 
         /// <summary>
@@ -122,6 +123,7 @@ namespace Terminals.Data.DB
         /// <param name="entitiesToDetach">Not null collection of items from this model
         /// currently attached in this object context</param>
         internal void DetachAll<TEntity>(IEnumerable<TEntity> entitiesToDetach)
+            where TEntity : class
         {
             foreach (TEntity entity in entitiesToDetach)
             {
@@ -129,15 +131,15 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal void DetachAll(IEnumerable<Favorite> favorites)
+        internal void DetachAll(IEnumerable<DbFavorite> favorites)
         {
-            foreach (Favorite favorite in favorites)
+            foreach (DbFavorite favorite in favorites)
             {
                 this.DetachFavorite(favorite);
             }
         }
 
-        internal void DetachFavorite(Favorite favorite)
+        internal void DetachFavorite(DbFavorite favorite)
         {
             favorite.DetachDetails(this);
             this.Detach(favorite);
@@ -148,7 +150,7 @@ namespace Terminals.Data.DB
         /// </summary>
         internal void MarkAsModified(object toUpdate)
         {
-            this.ObjectStateManager.ChangeObjectState(toUpdate, EntityState.Modified);
+            this.Entry(toUpdate).State = EntityState.Modified;
         }
 
         internal List<int> GetRdpFavoriteIds()
