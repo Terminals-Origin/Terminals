@@ -4,7 +4,7 @@ using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
 
-namespace Tests
+namespace Tests.SqlPersisted
 {
     /// <summary>
     /// Shared configured store used by all SQL persistence tests
@@ -54,13 +54,13 @@ namespace Tests
         /// </summary>
         protected void InitializeTestLab()
         {
-            RemoveDatabaseFileReadOnly();
+            this.RemoveDatabaseFileReadOnly();
             ImportsTest.SetDefaultFileLocations();
             Settings.PersistenceSecurity = new SqlPersistenceSecurity();
             Settings.ConnectionString = string.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
 
             // first reset the database password, then continue with other initializations
-            CheckDatabase = Database.CreateInstance();
+            this.CheckDatabase = Database.CreateInstance();
             this.CheckDatabase.UpdateMasterPassword(string.Empty);
 
             this.PrimaryPersistence = new SqlPersistence();
@@ -68,7 +68,7 @@ namespace Tests
             this.SecondaryPersistence = new SqlPersistence();
             this.SecondaryPersistence.Initialize();
             
-            ClearTestLab(); // because of failed previous tests
+            this.ClearTestLab(); // because of failed previous tests
         }
 
         private void RemoveDatabaseFileReadOnly()

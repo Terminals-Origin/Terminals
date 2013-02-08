@@ -5,7 +5,7 @@ using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
 
-namespace Tests
+namespace Tests.SqlPersisted
 {
     [TestClass]
     public class SqlSecurityTests : SqlTestsLab
@@ -31,12 +31,12 @@ namespace Tests
         {
             IFavorite testFavorite = this.AddFavoriteWithTestPassword();
             testFavorite.Security.Password = PASSWORD_B;
-            PrimaryFavorites.Update(testFavorite);
+            this.PrimaryFavorites.Update(testFavorite);
 
             Assert.AreEqual(PASSWORD_B, testFavorite.Security.Password,
                  "Favorite password doesn't match after first password update.");
 
-            IFavorite resultFavorite = SecondaryFavorites.FirstOrDefault();
+            IFavorite resultFavorite = this.SecondaryFavorites.FirstOrDefault();
             Assert.AreEqual(PASSWORD_B, resultFavorite.Security.Password,
                 "Secondary Favorite password doesn't match after Favorite password update.");
         }
@@ -45,23 +45,23 @@ namespace Tests
         public void TestCredentialsUpdate()
         {
             IFavorite favorite = this.CreateTestFavorite();
-            PrimaryFavorites.Add(favorite);
+            this.PrimaryFavorites.Add(favorite);
             ICredentialSet credential = this.PrimaryFactory.CreateCredentialSet();
             credential.Name = "testCredential";
             credential.Password = PASSWORD_A;
-            PrimaryPersistence.Credentials.Add(credential);
+            this.PrimaryPersistence.Credentials.Add(credential);
 
-            IFavorite secondary = SecondaryFavorites.FirstOrDefault();
+            IFavorite secondary = this.SecondaryFavorites.FirstOrDefault();
             Assert.AreEqual(Guid.Empty, secondary.Security.Credential, "Favorite credentials should be null");
 
             favorite.Security.Credential = credential.Id;
-            PrimaryFavorites.Update(favorite);
-            var secondaryFavorites = SecondaryFavorites as Terminals.Data.DB.Favorites;
+            this.PrimaryFavorites.Update(favorite);
+            var secondaryFavorites = this.SecondaryFavorites as Terminals.Data.DB.Favorites;
             secondaryFavorites.RefreshCache();
-            secondary = SecondaryFavorites.FirstOrDefault();
+            secondary = this.SecondaryFavorites.FirstOrDefault();
             Guid favoriteCredential = secondary.Security.Credential;
             Assert.AreNotEqual(Guid.Empty, favoriteCredential, "Favorite credential wasn't assigned properly");
-            ICredentialSet resolvedCredentials = SecondaryPersistence.Credentials[favoriteCredential];
+            ICredentialSet resolvedCredentials = this.SecondaryPersistence.Credentials[favoriteCredential];
             Assert.AreEqual(PASSWORD_A, resolvedCredentials.Password, "Favorite credentials, doesn't match");
         }
 
@@ -71,7 +71,7 @@ namespace Tests
             var newFavorite = this.AddFavoriteWithTestPassword();
             var rdpOptions = newFavorite.ProtocolProperties as RdpOptions;
             rdpOptions.TsGateway.Security.Password = PASSWORD_A;
-            PrimaryFavorites.Update(newFavorite);
+            this.PrimaryFavorites.Update(newFavorite);
             DatabasePasswordUpdate.UpdateMastrerPassord(Settings.ConnectionString, string.Empty, PASSWORD_B);
             Settings.DatabaseMasterPassword = PASSWORD_B;
             bool result = Database.TestConnection();
@@ -79,7 +79,7 @@ namespace Tests
             
             // the secondary persistence has to reflect the database password change
             ((SqlPersistenceSecurity)this.SecondaryPersistence.Security).UpdateDatabaseKey();
-            IFavorite resultFavorite = SecondaryFavorites.FirstOrDefault();
+            IFavorite resultFavorite = this.SecondaryFavorites.FirstOrDefault();
             Assert.AreEqual(PASSWORD_A, resultFavorite.Security.Password,
                 "Favorite password doesn't match after database password update.");
             

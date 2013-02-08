@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using Terminals.Data.DB;
 
-namespace Tests
+namespace Tests.SqlPersisted
 {
     /// <summary>
     ///This is a test class for database implementation of Groups

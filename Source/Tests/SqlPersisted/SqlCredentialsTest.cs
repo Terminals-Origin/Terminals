@@ -5,7 +5,7 @@ using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
 
-namespace Tests
+namespace Tests.SqlPersisted
 {
     /// <summary>
     ///This is a test class for database implementation of StoredCredentials
@@ -71,7 +71,7 @@ namespace Tests
             var testCredentials = this.AddTestCredentialsToDatabase();
 
             int credentialsCountBefore = this.CheckDatabaseCredentials.Count();
-            PrimaryCredentials.Remove(testCredentials);
+            this.PrimaryCredentials.Remove(testCredentials);
             int credentialsCountAfter = this.CheckDatabaseCredentials.Count();
 
             int baseAfter = this.CheckDatabase.Database
@@ -86,7 +86,7 @@ namespace Tests
         private DbCredentialSet AddTestCredentialsToDatabase()
         {
             var testCredentials = this.CreateTestCredentialSet();
-            PrimaryCredentials.Add(testCredentials);
+            this.PrimaryCredentials.Add(testCredentials);
             return testCredentials;
         }
 
