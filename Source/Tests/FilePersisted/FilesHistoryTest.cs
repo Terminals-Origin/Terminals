@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Data;
+using Terminals.Data.History;
 
 namespace Tests.FilePersisted
 {
@@ -12,11 +13,10 @@ namespace Tests.FilePersisted
         [TestMethod]
         public void HistoryDateTimeIsInUtcTest()
         {
-            var latesttime = DateTime.Now;
+            InjectionDateTime.SetTestDateTime();
             IConnectionHistory history = RecordHistoryItemToFilePersistence();
             DateTime recordedDate = GetRecordedDate(history);
-            bool savedIdentical = Math.Abs((latesttime - recordedDate).TotalHours) < 1;
-            Assert.IsTrue(savedIdentical, "Correct date wasn't delivered to the history file");
+            Assert.AreEqual(recordedDate, Moment.Now, "Correct date wasn't delivered to the history file");
         }
 
         private static IConnectionHistory RecordHistoryItemToFilePersistence()
@@ -34,7 +34,8 @@ namespace Tests.FilePersisted
         {
             var historyAccesor = new PrivateObject(history);
             var recordedItems = historyAccesor.Invoke("GetGroupedByDate") as SerializableDictionary<string, SortableList<IHistoryItem>>;
-            return recordedItems.SelectMany(group => group.Value).First().Date;
+            var foundItem = recordedItems.SelectMany(group => group.Value).First();
+            return foundItem.Date.ToUniversalTime();
         }
     }
 }

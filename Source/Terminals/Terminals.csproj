@@ -220,6 +220,8 @@
     </Compile>
     <Compile Include="Data\DB\TestConnectionResult.cs" />
     <Compile Include="Data\Favorites\FavoriteIcons.cs" />
+    <Compile Include="Data\History\Moment.cs" />
+    <Compile Include="Data\History\IDateService.cs" />
     <Compile Include="Data\Interfaces\IPersistedSecurity.cs" />
     <Compile Include="Data\Interfaces\IStoreIdEquals.cs" />
     <Compile Include="Data\PersistenceSecurity.cs" />

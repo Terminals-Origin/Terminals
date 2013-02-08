@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Timers;
+using Terminals.Data.History;
 
 namespace Terminals.Data.DB
 {
@@ -121,7 +122,7 @@ namespace Terminals.Data.DB
             this.credentials.RefreshCache();
             // nothing to update in History: possible changes are only for today, and that day item isn't cached
 
-            Debug.WriteLine("Updating entities at {0} [{1} ms]", DateTime.Now, clock.ElapsedMilliseconds);
+            Debug.WriteLine("Updating entities at {0} [{1} ms]", Moment.Now, clock.ElapsedMilliseconds);
             this.reLoadClock.Start();
         }
 

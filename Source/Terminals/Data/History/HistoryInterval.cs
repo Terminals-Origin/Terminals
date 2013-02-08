@@ -4,6 +4,7 @@ namespace Terminals.Data
 {
     /// <summary>
     /// Represents (time interval) part of timeline for history items. Used to group history items by time.
+    /// All members operate with in UTC.
     /// </summary>
     internal class HistoryInterval
     {
@@ -11,11 +12,17 @@ namespace Terminals.Data
         private readonly Func<DateTime> getTo;
         internal string Name { get; private set; }
 
+        /// <summary>
+        /// Gets starting time in universal time
+        /// </summary>
         internal DateTime From
         {
             get { return getFrom(); }
         }
 
+        /// <summary>
+        /// Gets end time in universal time
+        /// </summary>
         internal DateTime To
         {
             get { return getTo(); }
@@ -33,6 +40,10 @@ namespace Terminals.Data
             return String.Format("HistoryTimeInterval:{0}{{{1} - {2}}}", this.Name, this.From, this.To);
         }
 
+        /// <summary>
+        /// Checks whether the given UTC date is inside this interval range.
+        /// </summary>
+        /// <param name="dateToCheck">UTC DateTime of the interval to find</param>
         internal bool IsInRange(DateTime dateToCheck)
         {
             return this.From < dateToCheck && dateToCheck <= this.To;
@@ -40,42 +51,49 @@ namespace Terminals.Data
 
         internal static DateTime GetNow()
         {
-            return DateTime.Now;
+            return DateTime.UtcNow;
         }
 
         internal static DateTime GetToday()
         {
-            return DateTime.Today;
+            return DateTime.Today
+                .ToUniversalTime();
         }
 
         internal static DateTime GetYesterday()
         {
-            return DateTime.Today.AddDays(-1);
+            return DateTime.Today.AddDays(-1)
+                .ToUniversalTime();
         }
 
         internal static DateTime GetWeek()
         {
-            return DateTime.Today.AddDays(-7);
+            return DateTime.Today.AddDays(-7)
+                .ToUniversalTime();
         }
 
         internal static DateTime GetTwoWeeks()
         {
-            return DateTime.Today.AddDays(-14);
+            return DateTime.Today.AddDays(-14)
+                .ToUniversalTime();
         }
 
         internal static DateTime GetMonth()
         {
-            return DateTime.Today.AddMonths(-1);
+            return DateTime.Today.AddMonths(-1)
+                .ToUniversalTime();
         }
 
         internal static DateTime GetOneHalfYear()
         {
-            return DateTime.Today.AddMonths(-6);
+            return DateTime.Today.AddMonths(-6)
+                .ToUniversalTime();
         }
 
         internal static DateTime GetYear()
         {
-            return DateTime.Today.AddYears(-1);
+            return DateTime.Today.AddYears(-1)
+                .ToUniversalTime();
         }
 
         internal static DateTime GetEveryTime()
