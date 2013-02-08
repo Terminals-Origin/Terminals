@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using Terminals.Data.DB;
 
-namespace Tests
+namespace Tests.SqlPersisted
 {
     [TestClass]
     public class SqlConcurentUpdatesTest : SqlTestsLab

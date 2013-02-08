@@ -7,7 +7,7 @@ using Terminals.Connections;
 using Terminals.Data;
 using Terminals.Data.DB;
 
-namespace Tests
+namespace Tests.SqlPersisted
 {
     /// <summary>
     ///This is a test class for database implementation of Favorites
@@ -34,9 +34,9 @@ namespace Tests
 
         private void DispatcherFavoritesChanged(FavoritesChangedEventArgs args)
         {
-            addedCount += args.Added.Count;
-            deletedCount += args.Removed.Count;
-            updatedCount += args.Updated.Count;
+            this.addedCount += args.Added.Count;
+            this.deletedCount += args.Removed.Count;
+            this.updatedCount += args.Updated.Count;
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace Tests
             Assert.IsNotNull(checkFavorite.Security, "Security is null");
             Assert.IsNotNull(checkFavorite.Display, "Display is null");
             Assert.IsNotNull(checkFavorite.ExecuteBeforeConnect, "ExecuteBeforeConnect is null");
-            Assert.AreEqual(2, addedCount, "Event wasn't delivered");
+            Assert.AreEqual(2, this.addedCount, "Event wasn't delivered");
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace Tests
             Assert.AreEqual(0, security, "Security wasn't deleted");
             int execute = this.CheckDatabase.BeforeConnectExecute.Count();
             Assert.AreEqual(0, execute, "BeforeConnectExecute wasn't deleted");
-            Assert.AreEqual(1, deletedCount, "Event wasn't delivered");
+            Assert.AreEqual(1, this.deletedCount, "Event wasn't delivered");
         }
 
         private DbSet<DbFavorite> CheckFavorites { get { return this.CheckDatabase.Favorites; } }
@@ -93,17 +93,17 @@ namespace Tests
 
             var testOptions = target.ProtocolProperties as VncOptions;
             Assert.IsNotNull(testOptions, "Protocol properties weren't updated");
-            Assert.AreEqual(1, updatedCount, "Event wasn't delivered");
+            Assert.AreEqual(1, this.updatedCount, "Event wasn't delivered");
         }
 
         [TestMethod]
         public void UpdateFavoriteWithGroupsTest()
         {
             IFavorite favorite = this.AddFavoriteToPrimaryPersistence();
-            IGroup groupToDelete = PrimaryFactory.CreateGroup("TestGroupToDelete");
+            IGroup groupToDelete = this.PrimaryFactory.CreateGroup("TestGroupToDelete");
             this.PrimaryPersistence.Groups.Add(groupToDelete);
             this.PrimaryFavorites.UpdateFavorite(favorite, new List<IGroup> { groupToDelete });
-            IGroup groupToAdd = PrimaryFactory.CreateGroup("TestGroupToAdd");
+            IGroup groupToAdd = this.PrimaryFactory.CreateGroup("TestGroupToAdd");
             this.PrimaryFavorites.UpdateFavorite(favorite, new List<IGroup> { groupToAdd });
 
             DbFavorite checkFavorite = this.CheckFavorites.Include(f => f.Groups).FirstOrDefault();
@@ -112,7 +112,7 @@ namespace Tests
             Assert.IsTrue(group.Name == "TestGroupToAdd", "wrong merge of groups");
             int targetGroupsCount = this.CheckDatabase.Groups.Count();
             Assert.AreEqual(1, targetGroupsCount, "Empty groups weren't deleted");
-            Assert.AreEqual(2, updatedCount, "Event wasn't delivered");
+            Assert.AreEqual(2, this.updatedCount, "Event wasn't delivered");
         }
 
         [TestMethod]
