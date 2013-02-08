@@ -58,7 +58,7 @@ namespace Terminals.Data.DB
                 HistoryInterval interval = HistoryIntervals.GetIntervalByName(historyDateKey);
                 var favoriteIds = database.GetFavoritesHistoryByDate(interval.From, interval.To).ToList();
                 IEnumerable<DbFavorite> intervalFavorites =
-                    this.favorites.Cached.Where(favorite => favoriteIds.Contains(favorite.Id));
+                    this.favorites.Cast<DbFavorite>().Where(favorite => favoriteIds.Contains(favorite.Id));
                 return Data.Favorites.OrderByDefaultSorting(intervalFavorites);
             }
         }

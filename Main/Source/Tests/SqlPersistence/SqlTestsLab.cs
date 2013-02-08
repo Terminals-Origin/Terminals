@@ -55,7 +55,7 @@ namespace Tests
         protected void InitializeTestLab()
         {
             RemoveDatabaseFileReadOnly();
-            Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
+            ImportsTest.SetDefaultFileLocations();
             Settings.PersistenceSecurity = new SqlPersistenceSecurity();
             Settings.ConnectionString = string.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
 

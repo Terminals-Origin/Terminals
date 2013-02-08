@@ -128,7 +128,7 @@ namespace Terminals.Data.DB
         public override string ToString()
         {
             return string.Format("SqlPersistence:Favorites={0},Groups={1},Credentials={2}",
-                this.favorites.Count(), this.groups.Count(), this.Credentials.Count());
+                this.favorites.Count<DbFavorite>(), this.groups.Count(), this.Credentials.Count());
         }
     }
 }

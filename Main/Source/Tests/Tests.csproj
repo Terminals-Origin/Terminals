@@ -108,6 +108,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FilePersisted\FilesHistoryTest.cs" />
     <Compile Include="ImportsTest.cs" />
     <Compile Include="PasswordTests.cs" />
     <Compile Include="SqlPersistence\SqlConcurentUpdatesTest.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using Terminals.Data.DB;
@@ -37,7 +38,7 @@ namespace Tests
 
         [Description("If this test fails, the reason may be the delay to the database server.")]
         [TestMethod]
-        public void HistoryTest()
+        public void HistoryCommitTest()
         {
             DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
 
@@ -46,14 +47,14 @@ namespace Tests
             // todo make this test 100% successful
             PrimaryHistory.RecordHistoryItem(favorite);
             PrimaryHistory.RecordHistoryItem(favorite);
-            var expectedCount = this.GetExpectedHistoryCount();
+            int expectedCount = this.GetExpectedHistoryCount();
 
             Assert.AreEqual(2, historyRecordedCount, "Recorded history wasn't reported");
             // to preserve duplicate times, when creating new entry in database, only one should be recorded
             Assert.AreEqual(1, expectedCount, "History wasn't stored into database");
 
             this.PrimaryFavorites.Delete(favorite);
-            var expectedCountAfter = this.GetExpectedHistoryCount();
+            int expectedCountAfter = this.GetExpectedHistoryCount();
             Assert.AreEqual(0, expectedCountAfter, "Favorite history wasn't deleted from database");
         }
 
@@ -62,6 +63,24 @@ namespace Tests
             return this.CheckDatabase
                 .Database.SqlQuery<int>("select Count(FavoriteId) from History")
                 .FirstOrDefault();
+        }
+
+        [TestMethod]
+        public void HistoryEqualsOnDifferentTimeZones()
+        {
+            var latesttime = DateTime.Now;
+            DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
+            PrimaryHistory.RecordHistoryItem(favorite);
+            // may fail about midnight, ignore this case
+            IFavorite resultFavorite = SecondaryPersistence.ConnectionHistory
+                .GetDateItems(HistoryIntervals.TODAY)
+                .First();
+
+            Assert.IsNotNull(resultFavorite, "History favorite wasn't resolved");
+            var recordedHistory = this.CheckDatabase.Database.SqlQuery<DateTime>("select Date from History")
+                .First();
+            bool savedIdentical = Math.Abs((latesttime - recordedHistory).TotalHours) < 1;
+            Assert.IsTrue(savedIdentical, "Correct date wasn't delivered to the store");
         }
     }
 }

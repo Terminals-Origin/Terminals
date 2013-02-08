@@ -2,6 +2,7 @@
 
 namespace Terminals.Data.DB
 {
+    // todo replace the DateTime by TimeStamp
     // todo prepared new feature to obtain history per favorite
     internal partial class HistoryItem // : IHistoryItem
     {
