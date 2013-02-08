@@ -163,10 +163,10 @@
     <Content Include="..\..\Resources\TestData\Issue_21279_import_800_items.xml">
       <Link>Data\Issue_21279_import_800_items.xml</Link>
     </Content>
-    <Content Include="..\Terminals\Data\DB\Terminals.mdf">
+    <Content Include="..\..\Resources\Database\Terminals.mdf">
       <Link>Data\Terminals.mdf</Link>
     </Content>
-    <Content Include="..\Terminals\Data\DB\Terminals_log.LDF">
+    <Content Include="..\..\Resources\Database\Terminals_log.LDF">
       <Link>Data\Terminals_log.LDF</Link>
       <DependentUpon>Terminals.mdf</DependentUpon>
     </Content>
