@@ -10,7 +10,7 @@ namespace Terminals.Data.DB
     /// <summary>
     /// SQL persisted favorites container
     /// </summary>
-    internal class Favorites : IFavorites
+    internal class Favorites : IFavorites, IEnumerable<DbFavorite>
     {
         private readonly Groups groups;
 
@@ -19,7 +19,7 @@ namespace Terminals.Data.DB
         private readonly DataDispatcher dispatcher;
         private readonly EntitiesCache<DbFavorite> cache = new EntitiesCache<DbFavorite>();
 
-        internal List<DbFavorite> Cached
+        private List<DbFavorite> Cached
         {
             get { return this.cache.ToList(); }
         }
@@ -318,12 +318,17 @@ namespace Terminals.Data.DB
 
         #region IEnumerable members
 
-        public IEnumerator<IFavorite> GetEnumerator()
+        IEnumerator<IFavorite> IEnumerable<IFavorite>.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        
+        public IEnumerator<DbFavorite> GetEnumerator()
         {
             this.EnsureCache();
             return this.cache.GetEnumerator();
         }
-
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

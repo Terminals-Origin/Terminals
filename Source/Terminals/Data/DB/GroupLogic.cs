@@ -35,8 +35,8 @@ namespace Terminals.Data.DB
 
                 // List<Favorite> recent = this.Favorites.ToList();
                 // prefer to select cached items, instead of selecting from database directly
-                List<DbFavorite> selected = this.favorites.Cached
-                    .Where(candidate => favoriteIds.Contains(candidate.Id))
+                List<DbFavorite> selected = this.favorites
+                    .Where<DbFavorite>(candidate => favoriteIds.Contains(candidate.Id))
                     .ToList();
                 return selected.Cast<IFavorite>().ToList();
             }

@@ -46,9 +46,14 @@ namespace Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
+            SetDefaultFileLocations();
             List<IFavorite> current = Persistence.Instance.Favorites.ToList();
             Persistence.Instance.Favorites.Delete(current);
+        }
+
+        internal static void SetDefaultFileLocations()
+        {
+            Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
         }
 
         /// <summary>
