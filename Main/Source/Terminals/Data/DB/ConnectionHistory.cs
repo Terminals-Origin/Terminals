@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Terminals.Data.History;
 using Terminals.History;
 using Terminals.Network;
 
@@ -56,6 +56,7 @@ namespace Terminals.Data.DB
             using (var database = Database.CreateInstance())
             {
                 HistoryInterval interval = HistoryIntervals.GetIntervalByName(historyDateKey);
+                // store holds dates in UTC
                 var favoriteIds = database.GetFavoritesHistoryByDate(interval.From, interval.To).ToList();
                 IEnumerable<DbFavorite> intervalFavorites =
                     this.favorites.Cast<DbFavorite>().Where(favorite => favoriteIds.Contains(favorite.Id));
@@ -79,7 +80,8 @@ namespace Terminals.Data.DB
             using (var database = Database.CreateInstance())
             {
                 string userSid = WindowsUserIdentifiers.GetCurrentUserSid();
-                database.InsertHistory(historyTarget.Id, DateTime.Now, userSid);
+                // store holds dates in UTC
+                database.InsertHistory(historyTarget.Id, Moment.Now, userSid);
             }
         }
 

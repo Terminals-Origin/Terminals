@@ -2,8 +2,8 @@
 
 namespace Terminals.Data.DB
 {
-    // todo replace the DateTime by TimeStamp
-    // todo prepared new feature to obtain history per favorite
+    // prepared new feature to obtain complete history per favorite
+    // currently not used
     internal partial class HistoryItem // : IHistoryItem
     {
         //IFavorite IHistoryItem.Favorite
@@ -22,7 +22,7 @@ namespace Terminals.Data.DB
 
         //internal HistoryItem()
         //{
-        //    this.Date = DateTime.Now;
+        //    this.Date = Moment.Now;
         //}
 
         //public void AssignCurentUser()

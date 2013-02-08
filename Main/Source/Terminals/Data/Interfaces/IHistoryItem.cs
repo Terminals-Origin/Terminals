@@ -10,9 +10,10 @@ namespace Terminals.Data
     internal interface IHistoryItem
     {
         /// <summary>
-        /// Gets or sets access time stamp of time when the favorite connection was initialized.
+        /// Gets current machine local time, when the favorite connection was initialized.
+        /// Currently not used, for future use to be able present complete history list per favorite.
         /// </summary>
-        DateTime Date { get; set; }
+        DateTime Date { get; }
 
         /// <summary>
         /// Gets the user name with domain prefix in form of DOMAIN\USERNAME
@@ -24,7 +25,7 @@ namespace Terminals.Data
         /// Gets or sets associated favorite. This is only a navigation property
         /// </summary>
         [XmlIgnore]
-        IFavorite Favorite { get; set; }
+        IFavorite Favorite { get; }
 
         /// <summary>
         /// Assigns current user security id to it, if the user account is domain.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Serialization;
+using Terminals.Data.History;
 using Terminals.Network;
 
 namespace Terminals.Data
@@ -13,11 +14,17 @@ namespace Terminals.Data
     {
         public HistoryItem()
         {
-            Date = DateTime.Now;
+            Date = Moment.Now;
+        }
+
+        [XmlIgnore]
+        DateTime IHistoryItem.Date
+        {
+            get { return this.Date.ToLocalTime(); }
         }
 
         /// <summary>
-        /// Gets or sets access time stamp of time when the favorite connection was initialized.
+        /// Gets or sets the persisted date in UTC, when the favorite connection was initialized.
         /// </summary>
         public DateTime Date { get; set; }
 
@@ -44,7 +51,13 @@ namespace Terminals.Data
         /// Gets or sets associated favorite. This is only a navigation property
         /// </summary>
         [XmlIgnore]
-        IFavorite IHistoryItem.Favorite { get; set; }
+        IFavorite IHistoryItem.Favorite { get { return this.Favorite; } }
+
+        /// <summary>
+        /// We don't serialize the favorite, the history item is serialized in groups by favorite
+        /// </summary>
+        [XmlIgnore]
+        public Favorite Favorite { get; set; }
 
         /// <summary>
         /// Assigns current user security id to it, if the user account is domain.

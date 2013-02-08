@@ -6,7 +6,7 @@ namespace Terminals.Data
 {
     /// <summary>
     /// Collection of time intervals used to represent connection history time line
-    /// cut into smaler logical parts.
+    /// cut into smaller logical parts. All members operate in UTC.
     /// </summary>
     internal class HistoryIntervals
     {
@@ -36,15 +36,14 @@ namespace Terminals.Data
             return intervals.FirstOrDefault(candidate => candidate.Name == intervalName);
         }
 
+        /// <summary>
+        /// Identifies the time range group by given UTC DateTime.
+        /// </summary>
+        /// <param name="itemDate">UTC DateTime of the interval to find</param>
         internal static string GetDateIntervalName(DateTime itemDate)
         {
-            HistoryInterval interval = DateGroup(itemDate);
-            return interval.Name;
-        }
-
-        private static HistoryInterval DateGroup(DateTime itemDate)
-        {
-            return intervals.FirstOrDefault(interval => interval.IsInRange(itemDate));
+            HistoryInterval foundInterval = intervals.FirstOrDefault(interval => interval.IsInRange(itemDate));
+            return foundInterval.Name;
         }
     }
 }

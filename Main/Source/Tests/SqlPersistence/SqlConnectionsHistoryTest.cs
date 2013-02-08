@@ -3,7 +3,9 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using Terminals.Data.DB;
+using Terminals.Data.History;
 using Terminals.History;
+using Tests.FilePersisted;
 
 namespace Tests
 {
@@ -42,9 +44,7 @@ namespace Tests
         {
             DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
 
-            // that's not a mistake, we want to check, if two fast tries are ignored,
-            // but it may fail, if the response from the server doesn't reflect our requirement
-            // todo make this test 100% successful
+            // that's not a mistake, we want to check, if two fast tries are ignored
             PrimaryHistory.RecordHistoryItem(favorite);
             PrimaryHistory.RecordHistoryItem(favorite);
             int expectedCount = this.GetExpectedHistoryCount();
@@ -68,7 +68,7 @@ namespace Tests
         [TestMethod]
         public void HistoryEqualsOnDifferentTimeZones()
         {
-            var latesttime = DateTime.Now;
+            InjectionDateTime.SetTestDateTime();
             DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
             PrimaryHistory.RecordHistoryItem(favorite);
             // may fail about midnight, ignore this case
@@ -79,8 +79,7 @@ namespace Tests
             Assert.IsNotNull(resultFavorite, "History favorite wasn't resolved");
             var recordedHistory = this.CheckDatabase.Database.SqlQuery<DateTime>("select Date from History")
                 .First();
-            bool savedIdentical = Math.Abs((latesttime - recordedHistory).TotalHours) < 1;
-            Assert.IsTrue(savedIdentical, "Correct date wasn't delivered to the store");
+            Assert.AreEqual(recordedHistory, Moment.Now, "Correct date wasn't delivered to the store");
         }
     }
 }

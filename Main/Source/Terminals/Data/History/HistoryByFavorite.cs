@@ -4,7 +4,8 @@ using System.Collections.Generic;
 namespace Terminals.Data
 {
     /// <summary>
-    /// Collection of favorites history touches grouped by favorite unique identifier
+    /// Collection of favorites history touches grouped by favorite unique identifier.
+    /// Dates are stored in UTC.
     /// </summary>
     public class HistoryByFavorite : SerializableSortedDictionary<Guid , List<HistoryItem>>
     {
@@ -27,8 +28,8 @@ namespace Terminals.Data
         {
             foreach (Guid favoriteId in this.Keys) // key is the favorite unique identifier
             {
-                IFavorite favorite = this.Favorites[favoriteId];
-                foreach (IHistoryItem item in this[favoriteId]) // each history item per favorite
+                var favorite = this.Favorites[favoriteId] as Favorite;
+                foreach (HistoryItem item in this[favoriteId]) // each history item per favorite
                 {
                     item.Favorite = favorite; // assign navigation property value
                     this.AddItemToGroup(groupedByDate, item);
@@ -36,7 +37,7 @@ namespace Terminals.Data
             }
         }
 
-        private void AddItemToGroup(SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate, IHistoryItem item)
+        private void AddItemToGroup(SerializableDictionary<string, SortableList<IHistoryItem>> groupedByDate, HistoryItem item)
         {
             string intervalName = HistoryIntervals.GetDateIntervalName(item.Date);
             SortableList<IHistoryItem> timeIntervalItems = GetTimeIntervalItems(intervalName, groupedByDate);
