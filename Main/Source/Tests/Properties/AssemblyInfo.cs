@@ -8,9 +8,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Terminals tests")]
 [assembly: AssemblyDescription("Unit test for Terminals")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Robert Chartier")]
-[assembly: AssemblyProduct("Terminals by Robert Chartier")]
-[assembly: AssemblyCopyright("Copyright © by Robert Chartier 2006 - 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
