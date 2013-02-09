@@ -108,6 +108,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
+      <Link>Common.AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="FilePersisted\FilesHistoryTest.cs" />
     <Compile Include="FilePersisted\InjectionDateTime.cs" />
     <Compile Include="ImportsTest.cs" />

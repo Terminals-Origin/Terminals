@@ -8,9 +8,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("TerminalsUpdater")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Rob Chartier")]
-[assembly: AssemblyProduct("TerminalsUpdater")]
-[assembly: AssemblyCopyright("Copyright © Rob Chartier 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

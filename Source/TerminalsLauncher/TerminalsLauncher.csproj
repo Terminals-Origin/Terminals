@@ -97,6 +97,9 @@
     <Compile Include="..\Terminals\Logging\Log.cs">
       <Link>Logging\Log.cs</Link>
     </Compile>
+    <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
+      <Link>Properties\Common.AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="..\Terminals\Forms\MainForm.resx">

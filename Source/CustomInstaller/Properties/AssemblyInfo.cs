@@ -5,12 +5,9 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CustomInstaller")]
+[assembly: AssemblyTitle("Custom Installer for Terminals")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Siemens AG")]
-[assembly: AssemblyProduct("CustomInstaller")]
-[assembly: AssemblyCopyright("Copyright © Siemens AG 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
