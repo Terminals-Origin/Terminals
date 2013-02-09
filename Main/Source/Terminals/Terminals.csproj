@@ -130,8 +130,9 @@
       <HintPath>..\..\Resources\Libraries\VMRC\Interop.VMRCClientControlLib.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\..\Resources\Libraries\log4net\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MSTSCLib">
       <SpecificVersion>False</SpecificVersion>
@@ -1228,6 +1229,7 @@
       <Link>Thumbs\wmimgmt.msc.jpg</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="packages.config" />
     <None Include="Resources\amber.png" />
     <Content Include="Resources\back.png" />
     <EntityDeploy Include="Data\DB\SQLPersistence.edmx">
