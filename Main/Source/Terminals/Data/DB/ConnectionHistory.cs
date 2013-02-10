@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Terminals.Data.History;
 using Terminals.History;
@@ -53,6 +54,19 @@ namespace Terminals.Data.DB
 
         private SortableList<IFavorite> LodFromDatabaseByDate(string historyDateKey)
         {
+            try
+            {
+                return this.TryLodFromDatabase(historyDateKey);
+            }
+            catch(Exception exception)
+            {
+                Logging.Log.Error("Unable to load history part form database: " + historyDateKey, exception);
+                return new SortableList<IFavorite>();
+            }
+        }
+
+        private SortableList<IFavorite> TryLodFromDatabase(string historyDateKey)
+        {
             using (var database = Database.CreateInstance())
             {
                 HistoryInterval interval = HistoryIntervals.GetIntervalByName(historyDateKey);
@@ -72,10 +86,23 @@ namespace Terminals.Data.DB
 
             // here we don't cache today's items, we always load the current state from database
             AddToDatabase(historyTarget);
-            this.FireOnHistoryRecorded(favorite);
         }
 
-        private static void AddToDatabase(DbFavorite historyTarget)
+        private void AddToDatabase(DbFavorite historyTarget)
+        {
+            try
+            {
+                TryAddToDatabase(historyTarget);
+                // don't report, if it wasn't successfully added
+                this.FireOnHistoryRecorded(historyTarget);
+            }
+            catch(Exception exception)
+            {
+                Logging.Log.Warn("Unable to save connection history for " + historyTarget, exception);
+            }
+        }
+
+        private static void TryAddToDatabase(DbFavorite historyTarget)
         {
             using (var database = Database.CreateInstance())
             {

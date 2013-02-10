@@ -61,29 +61,75 @@ namespace Terminals.Data.DB
 
         public void Add(ICredentialSet toAdd)
         {
+            try
+            {
+                this.TryAdd(toAdd);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Warn("Unable to add credential to database", exception);
+            }
+        }
+
+        private void TryAdd(ICredentialSet toAdd)
+        {
             var credentialToAdd = toAdd as DbCredentialSet;
-            AddToDatabase(toAdd, credentialToAdd);
+            AddToDatabase(credentialToAdd);
             this.cache.Add(credentialToAdd);
         }
 
-        private static void AddToDatabase(ICredentialSet toAdd, DbCredentialSet credentialToAdd)
+        private static void AddToDatabase(DbCredentialSet credentialToAdd)
         {
             using (var database = Database.CreateInstance())
             {
                 database.CredentialBase.Add(credentialToAdd);
                 database.SaveImmediatelyIfRequested();
-                database.Detach(toAdd);
+                database.Detach(credentialToAdd);
             }
         }
 
         public void Remove(ICredentialSet toRemove)
+        {
+            try
+            {
+                this.TryRemove(toRemove);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to remove credential from database " + toRemove, exception);
+            }
+        }
+
+        private void TryRemove(ICredentialSet toRemove)
         {
             var credentailToRemove = toRemove as DbCredentialSet;
             DeleteFromDatabase(credentailToRemove);
             this.cache.Delete(credentailToRemove);
         }
 
+        private static void DeleteFromDatabase(DbCredentialSet credentailToRemove)
+        {
+            using (var database = Database.CreateInstance())
+            {
+                database.CredentialBase.Attach(credentailToRemove);
+                database.CredentialBase.Remove(credentailToRemove);
+                database.SaveImmediatelyIfRequested();
+            }
+        }
+
         public void Update(ICredentialSet toUpdate)
+        {
+            try
+            {
+                this.TryUpdate(toUpdate);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to update credential set " + toUpdate, exception);
+            }
+        }
+
+        private void TryUpdate(ICredentialSet toUpdate)
         {
             using (var database = Database.CreateInstance())
             {
@@ -95,16 +141,6 @@ namespace Terminals.Data.DB
                 database.SaveImmediatelyIfRequested();
                 database.Detach(credentialToUpdate);
                 this.cache.Update(credentialToUpdate);
-            }
-        }
-
-        private static void DeleteFromDatabase(DbCredentialSet credentailToRemove)
-        {
-            using (var database = Database.CreateInstance())
-            {
-                database.CredentialBase.Attach(credentailToRemove);
-                database.CredentialBase.Remove(credentailToRemove);
-                database.SaveImmediatelyIfRequested();
             }
         }
 
@@ -146,6 +182,19 @@ namespace Terminals.Data.DB
         }
 
         private static List<DbCredentialSet> LoadFromDatabase()
+        {
+            try
+            {
+                return TryLoadFromDatabase();
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to load credentials from database", exception);
+                return new List<DbCredentialSet>();
+            }
+        }
+
+        private static List<DbCredentialSet> TryLoadFromDatabase()
         {
             using (var database = Database.CreateInstance())
             {
