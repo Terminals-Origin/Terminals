@@ -64,6 +64,18 @@ namespace Terminals.Data.DB
 
         public void Add(IGroup group)
         {
+            try
+            {
+                this.TryAdd(group);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to add group to database " + group, exception);
+            }
+        }
+
+        private void TryAdd(IGroup group)
+        {
             using (var database = Database.CreateInstance())
             {
                 DbGroup toAdd = group as DbGroup;
@@ -71,7 +83,7 @@ namespace Terminals.Data.DB
                 database.SaveImmediatelyIfRequested();
                 database.Detach(toAdd);
                 this.cache.Add(toAdd);
-                this.dispatcher.ReportGroupsAdded(new List<IGroup> { toAdd });
+                this.dispatcher.ReportGroupsAdded(new List<IGroup> {toAdd});
             }
         }
 
@@ -95,6 +107,18 @@ namespace Terminals.Data.DB
 
         public void Delete(IGroup group)
         {
+            try
+            {
+                this.TryDelete(group);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to remove from database " + group, exception);
+            }
+        }
+
+        private void TryDelete(IGroup group)
+        {
             using (var database = Database.CreateInstance())
             {
                 var toDelete = group as DbGroup;
@@ -102,11 +126,23 @@ namespace Terminals.Data.DB
                 database.Groups.Remove(toDelete);
                 database.SaveImmediatelyIfRequested();
                 this.cache.Delete(toDelete);
-                this.dispatcher.ReportGroupsDeleted(new List<IGroup> { group });
+                this.dispatcher.ReportGroupsDeleted(new List<IGroup> {group});
             }
         }
 
         public void Rebuild()
+        {
+            try
+            {
+                this.TryRebuild();
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to rebuild groups", exception);
+            }
+        }
+
+        private void TryRebuild()
         {
             using (var database = Database.CreateInstance())
             {
@@ -204,6 +240,19 @@ namespace Terminals.Data.DB
 
         private static List<DbGroup> LoadFromDatabase()
         {
+            try
+            {
+                return TryLoadFromDatabase();
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to load groups from database", exception);
+                return new List<DbGroup>();
+            }
+        }
+
+        private static List<DbGroup> TryLoadFromDatabase()
+        {
             using (var database = Database.CreateInstance())
             {
                 List<DbGroup> groups = database.Groups.ToList();
@@ -213,6 +262,19 @@ namespace Terminals.Data.DB
         }
 
         private static List<DbGroup> LoadFromDatabase(List<DbGroup> toRefresh)
+        {
+            try
+            {
+                return TryLoadFromDatabase(toRefresh);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to refresh groups from database", exception);
+                return new List<DbGroup>();
+            }
+        }
+
+        private static List<DbGroup> TryLoadFromDatabase(List<DbGroup> toRefresh)
         {
             using (var database = Database.CreateInstance())
             {
