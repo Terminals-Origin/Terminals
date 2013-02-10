@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using System.Xml.Linq;
 using Terminals.Security;
 
@@ -31,10 +33,28 @@ namespace Terminals.Data.DB
         private void Run(string connectionString, string oldPassword, string newPassword)
         {
             TestConnectionResult oldPasswordCheck = Database.TestConnection(connectionString, oldPassword);
-            if (oldPasswordCheck.Successful)
+            if (!oldPasswordCheck.Successful)
+                return;
+
+            this.Configure(connectionString, oldPassword, newPassword);
+            this.CommitMasterPasswordInTransaction(connectionString);
+
+        }
+
+        private void CommitMasterPasswordInTransaction(string connectionString)
+        {
+            try
             {
-                this.Configure(connectionString, oldPassword, newPassword);
-                this.CommitNewMastrerPassord(connectionString);
+                using (var transaction = new TransactionScope())
+                {
+                    // dangerous operation, which may break all stored passwords or database access
+                    this.CommitNewMastrerPassord(connectionString);
+                    transaction.Complete();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Error("Unable to update the database master password", ex);
             }
         }
 
@@ -49,16 +69,15 @@ namespace Terminals.Data.DB
             this.newKeyMaterial = PasswordFunctions2.CalculateMasterPasswordKey(newPassword, this.newStoredKey);
         }
 
-        private void CommitNewMastrerPassord(string connecitonString)
+        private void CommitNewMastrerPassord(string connectionString)
         {
             // todo surround all database usages by try/catch
-            using (this.database = Database.CreateInstance(connecitonString))
+            using (this.database = Database.CreateInstance(connectionString))
             {
                 UpdateStoredPasswords();
                 this.database.UpdateMasterPassword(this.newStoredKey);
-                database.SaveChanges();
+                this.database.SaveChanges();
             }
-
             this.database = null;
         }
 
