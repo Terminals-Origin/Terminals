@@ -79,6 +79,19 @@ namespace Terminals.Data.DB
 
             private void LoadDetailsFromDatabase()
             {
+                try
+                {
+                    this.TryLoadDetailsFromDatabase();
+                }
+                catch (Exception exception)
+                {
+                    Logging.Log.Error("Unable to load favorite details from database" + this.favorite, exception);
+                    ReleaseReferences(); // rollback loading
+                }
+            }
+
+            private void TryLoadDetailsFromDatabase()
+            {
                 using (var database = Database.CreateInstance())
                 {
                     database.Favorites.Attach(this.favorite);
@@ -109,6 +122,7 @@ namespace Terminals.Data.DB
 
             internal void Save(Database database)
             {
+                // partial save possible of of next methods, try to save as much as possible
                 this.SaveProtocolProperties(database);
                 this.UpdateImageInDatabase(database);
             }
@@ -161,18 +175,23 @@ namespace Terminals.Data.DB
             {
                 try
                 {
-                    if (!this.favorite.isNewlyCreated && !this.protocolPropertiesLoaded)
-                    {
-                        this.LoadPropertiesFromDatabase();
-                        this.favorite.AssignStoreToRdpOptions(this.favorite.persistenceSecurity);
-                        this.protocolPropertiesLoaded = true;
-                    }
+                    this.TryLoadPotocolProperties();
                 }
                 catch (Exception exception)
                 {
                     Logging.Log.Error("Couldn't obtain protocol properties from database", exception);
                     this.favorite.protocolProperties = Favorite.UpdateProtocolPropertiesByProtocol(
                       this.favorite.Protocol, new RdpOptions());
+                }
+            }
+
+            private void TryLoadPotocolProperties()
+            {
+                if (!this.favorite.isNewlyCreated && !this.protocolPropertiesLoaded)
+                {
+                    this.LoadPropertiesFromDatabase();
+                    this.favorite.AssignStoreToRdpOptions(this.favorite.persistenceSecurity);
+                    this.protocolPropertiesLoaded = true;
                 }
             }
 
@@ -196,6 +215,8 @@ namespace Terminals.Data.DB
                 catch (Exception exception)
                 {
                     Logging.Log.Error("Couldn't load image from database", exception);
+                    // as recovery, load default icon
+                    this.favorite.toolBarIcon = FavoriteIcons.GetFavoriteIcon(this.favorite);
                 }
             }
 
@@ -217,7 +238,14 @@ namespace Terminals.Data.DB
                 this.protocolPropertiesLoaded = false;
                 // don't dispose, because there is may be shared default protocol icon, which is still in use
                 this.favorite.toolBarIcon = null;
-                this.favorite.security = null; // it is enough, all other respect the security part 
+                this.ReleaseReferences();
+            }
+
+            private void ReleaseReferences()
+            {
+                this.favorite.security = null;
+                this.favorite.display = null;
+                this.favorite.executeBeforeConnect = null;
             }
         }
     }

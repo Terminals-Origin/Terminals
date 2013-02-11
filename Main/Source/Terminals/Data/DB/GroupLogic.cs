@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -20,7 +21,6 @@ namespace Terminals.Data.DB
             set
             {
                 this.SaveParentToDatabase(value);
-                this.parent = value;
             }
         }
 
@@ -54,7 +54,8 @@ namespace Terminals.Data.DB
 
         private Favorites favorites;
 
-        internal DbGroup(string name) :this()
+        internal DbGroup(string name)
+            : this()
         {
             this.Name = name;
         }
@@ -67,6 +68,19 @@ namespace Terminals.Data.DB
         }
 
         private void SaveParentToDatabase(IGroup value)
+        {
+            try
+            {
+                this.TrySaveParentToDatabase(value);
+                this.parent = value;
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to save new group parent", exception);
+            }
+        }
+
+        private void TrySaveParentToDatabase(IGroup value)
         {
             using (var database = Database.CreateInstance())
             {
@@ -87,6 +101,18 @@ namespace Terminals.Data.DB
 
         private void LoadFromDatabase()
         {
+            try
+            {
+                this.TryLoadFromDatabase();
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to load parent from database", exception);
+            }
+        }
+
+        private void TryLoadFromDatabase()
+        {
             using (var database = Database.CreateInstance())
             {
                 database.Groups.Attach(this);
@@ -106,6 +132,19 @@ namespace Terminals.Data.DB
         }
 
         private List<int?> LoadFavoritesFromDatabase()
+        {
+            try
+            {
+                return this.TryLoadFavoritesFromDatabase();
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to load group favorites from database", exception);
+                return new List<int?>();
+            }
+        }
+
+        private List<int?> TryLoadFavoritesFromDatabase()
         {
             using (var database = Database.CreateInstance())
             {
@@ -141,6 +180,24 @@ namespace Terminals.Data.DB
             this.AddFavorites(new List<IFavorite> { favorite });
         }
 
+        public void AddFavorites(List<IFavorite> favorites)
+        {
+            try
+            {
+                this.TryAddFavorites(favorites);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to add favorite to database group", exception);
+            }
+        }
+
+        private void TryAddFavorites(List<IFavorite> favorites)
+        {
+            this.UpdateFavoritesMembershipInDatabase(favorites);
+            this.ReportGroupChanged(this);
+        }
+
         private void UpdateFavoritesMembershipInDatabase(List<IFavorite> favorites)
         {
             using (var database = Database.CreateInstance())
@@ -153,12 +210,6 @@ namespace Terminals.Data.DB
             }
         }
 
-        public void AddFavorites(List<IFavorite> favorites)
-        {
-            this.UpdateFavoritesMembershipInDatabase(favorites);
-            this.ReportGroupChanged(this);
-        }
-
         public void RemoveFavorite(IFavorite favorite)
         {
             this.RemoveFavorites(new List<IFavorite> { favorite });
@@ -167,7 +218,19 @@ namespace Terminals.Data.DB
 
         public void RemoveFavorites(List<IFavorite> favorites)
         {
-            RemoveFavoritesFromDatabase(favorites);
+            try
+            {
+                this.TryRemoveFavorites(favorites);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to remove favorites from group", exception);
+            }
+        }
+
+        private void TryRemoveFavorites(List<IFavorite> favorites)
+        {
+            this.RemoveFavoritesFromDatabase(favorites);
             this.ReportGroupChanged(this);
         }
 
