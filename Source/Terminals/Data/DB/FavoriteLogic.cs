@@ -81,6 +81,8 @@ namespace Terminals.Data.DB
         private DbSecurityOptions GetSecurity()
         {
             this.details.Load();
+            // returns null, if the favorite details loading failed.
+            // the same for all other detail properties
             return this.security;
         }
 
