@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
 using System.Linq;
+using System.Transactions;
 
 namespace Terminals.Data.DB
 {
@@ -51,7 +52,7 @@ namespace Terminals.Data.DB
             get
             {
                 this.EnsureCache();
-                return this.cache.FirstOrDefault(favorite => 
+                return this.cache.FirstOrDefault(favorite =>
                             favorite.Name.Equals(favoriteName, StringComparison.CurrentCultureIgnoreCase));
             }
         }
@@ -64,10 +65,22 @@ namespace Terminals.Data.DB
 
         public void Add(List<IFavorite> favorites)
         {
+            try
+            {
+                this.TryAdd(favorites);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to add favorite to database", exception);
+            }
+        }
+
+        private void TryAdd(List<IFavorite> favorites)
+        {
             using (var database = Database.CreateInstance())
             {
                 List<DbFavorite> toAdd = favorites.Cast<DbFavorite>().ToList();
-                AddAllToDatabase(database, toAdd);
+                this.AddAllToDatabase(database, toAdd);
                 database.SaveImmediatelyIfRequested();
                 database.DetachAll(toAdd);
                 this.cache.Add(toAdd);
@@ -85,18 +98,47 @@ namespace Terminals.Data.DB
 
         public void Update(IFavorite favorite)
         {
+            try
+            {
+                this.TryUpdateFavorite(favorite);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to update favorite in database", exception);
+            }
+        }
+
+        private void TryUpdateFavorite(IFavorite favorite)
+        {
             using (var database = Database.CreateInstance())
             {
                 var toUpdate = favorite as DbFavorite;
-                if (toUpdate != null)
-                {
-                    database.AttachFavorite(toUpdate);
-                    this.TrySaveAndReportFavoriteUpdate(toUpdate, database);
-                }
+                if (toUpdate == null)
+                    return;
+
+                database.AttachFavorite(toUpdate);
+                this.TrySaveAndReportFavoriteUpdate(toUpdate, database);
             }
         }
 
         public void UpdateFavorite(IFavorite favorite, List<IGroup> newGroups)
+        {
+            try
+            {
+                using (var transaction = new TransactionScope())
+                {
+                    // do it in transaction, because here we do more things at once
+                    this.TryUpdateFavorite(favorite, newGroups);
+                    transaction.Complete();
+                }
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to update favorite and its groups in database", exception);
+            }
+        }
+
+        private void TryUpdateFavorite(IFavorite favorite, List<IGroup> newGroups)
         {
             using (var database = Database.CreateInstance())
             {
@@ -107,7 +149,7 @@ namespace Terminals.Data.DB
                 database.AttachFavorite(toUpdate);
                 List<IGroup> addedGroups = this.groups.AddToDatabase(database, newGroups);
                 // commit newly created groups, otherwise we cant add into them
-                database.SaveImmediatelyIfRequested(); 
+                database.SaveImmediatelyIfRequested();
                 List<DbGroup> removedGroups = this.UpdateGroupsMembership(favorite, newGroups, database);
                 database.SaveImmediatelyIfRequested();
 
@@ -122,7 +164,7 @@ namespace Terminals.Data.DB
             List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, newGroups);
             List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, favorite.Groups);
             Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
-            Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> {favorite}, redundantGroups);
+            Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
             List<DbGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
             return removedGroups;
         }
@@ -171,10 +213,26 @@ namespace Terminals.Data.DB
 
         public void Delete(List<IFavorite> favorites)
         {
+            try
+            {
+                using (var transaction = new TransactionScope())
+                {
+                    this.TryDelete(favorites);
+                    transaction.Complete();
+                }
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to delete favorites from database", exception);
+            }
+        }
+
+        private void TryDelete(List<IFavorite> favorites)
+        {
             using (var database = Database.CreateInstance())
             {
                 List<DbFavorite> favoritesToDelete = favorites.Cast<DbFavorite>().ToList();
-                DeleteFavoritesFromDatabase(database, favoritesToDelete);
+                this.DeleteFavoritesFromDatabase(database, favoritesToDelete);
                 database.SaveImmediatelyIfRequested();
                 this.groups.RefreshCache();
                 List<DbGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
@@ -208,10 +266,24 @@ namespace Terminals.Data.DB
 
         public void ApplyCredentialsToAllFavorites(List<IFavorite> selectedFavorites, ICredentialSet credential)
         {
+            try
+            {
+                this.TryApplyCredentials(selectedFavorites, credential);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to set credentials on favorites", exception);
+            }
+        }
+
+        private void TryApplyCredentials(List<IFavorite> selectedFavorites, ICredentialSet credential)
+        {
+            // todo check the results, currently nothing is attached to the context, so nothing is commited
+            // check also other similar methods
             using (var database = Database.CreateInstance())
             {
                 Data.Favorites.ApplyCredentialsToFavorites(selectedFavorites, credential);
-                SaveAndReportFavoritesUpdated(database, selectedFavorites);
+                this.SaveAndReportFavoritesUpdated(database, selectedFavorites);
             }
         }
 
@@ -225,28 +297,64 @@ namespace Terminals.Data.DB
 
         public void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword)
         {
+            try
+            {
+                this.TrySetPassword(selectedFavorites, newPassword);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable set password to favorites", exception);
+            }
+        }
+
+        private void TrySetPassword(List<IFavorite> selectedFavorites, string newPassword)
+        {
             using (var database = Database.CreateInstance())
             {
                 Data.Favorites.SetPasswordToFavorites(selectedFavorites, newPassword);
-                SaveAndReportFavoritesUpdated(database, selectedFavorites);
+                this.SaveAndReportFavoritesUpdated(database, selectedFavorites);
             }
         }
 
         public void ApplyDomainNameToAllFavorites(List<IFavorite> selectedFavorites, string newDomainName)
         {
+            try
+            {
+                this.TryApplyDomainName(selectedFavorites, newDomainName);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to set domain name to favorites", exception);
+            }
+        }
+
+        private void TryApplyDomainName(List<IFavorite> selectedFavorites, string newDomainName)
+        {
             using (var database = Database.CreateInstance())
             {
                 Data.Favorites.ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
-                SaveAndReportFavoritesUpdated(database, selectedFavorites);
+                this.SaveAndReportFavoritesUpdated(database, selectedFavorites);
             }
         }
 
         public void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName)
         {
+            try
+            {
+                this.TryApplyUserName(selectedFavorites, newUserName);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to apply user name to favorites", exception);
+            }
+        }
+
+        private void TryApplyUserName(List<IFavorite> selectedFavorites, string newUserName)
+        {
             using (var database = Database.CreateInstance())
             {
                 Data.Favorites.ApplyUserNameToFavorites(selectedFavorites, newUserName);
-                SaveAndReportFavoritesUpdated(database, selectedFavorites);
+                this.SaveAndReportFavoritesUpdated(database, selectedFavorites);
             }
         }
 
@@ -254,7 +362,7 @@ namespace Terminals.Data.DB
         {
             if (isLoaded)
                 return;
-            
+
             List<DbFavorite> loaded = LoadFromDatabase();
             this.cache.Add(loaded);
             this.isLoaded = true;
@@ -275,7 +383,7 @@ namespace Terminals.Data.DB
             var missingToReport = missing.Cast<IFavorite>().ToList();
             var redundantToReport = redundant.Cast<IFavorite>().ToList();
             var updatedToReport = toUpdate.Cast<IFavorite>().ToList();
-            
+
             this.dispatcher.ReportFavoritesAdded(missingToReport);
             this.dispatcher.ReportFavoritesDeleted(redundantToReport);
             this.dispatcher.ReportFavoritesUpdated(updatedToReport);
@@ -291,6 +399,19 @@ namespace Terminals.Data.DB
 
         private List<DbFavorite> LoadFromDatabase()
         {
+            try
+            {
+                return this.TryLoadFromDatabase();
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to load favorites from database", exception);
+                return new List<DbFavorite>();
+            }
+        }
+
+        private List<DbFavorite> TryLoadFromDatabase()
+        {
             using (var database = Database.CreateInstance())
             {
                 // to list because Linq to entities allows only cast to primitive types
@@ -302,6 +423,20 @@ namespace Terminals.Data.DB
         }
 
         private static List<DbFavorite> LoadFromDatabase(List<DbFavorite> toRefresh)
+        {
+            try
+            {
+                return TryLoadFromDatabase(toRefresh);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Unable to refresh favorites from database", exception);
+                // force to clear cache, because we are not able to refresh
+                return new List<DbFavorite>();
+            }
+        }
+
+        private static List<DbFavorite> TryLoadFromDatabase(List<DbFavorite> toRefresh)
         {
             using (var database = Database.CreateInstance())
             {
@@ -322,13 +457,13 @@ namespace Terminals.Data.DB
         {
             return GetEnumerator();
         }
-        
+
         public IEnumerator<DbFavorite> GetEnumerator()
         {
             this.EnsureCache();
             return this.cache.GetEnumerator();
         }
-        
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
