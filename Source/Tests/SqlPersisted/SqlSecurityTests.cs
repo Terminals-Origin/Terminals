@@ -63,6 +63,7 @@ namespace Tests.SqlPersisted
             Assert.AreNotEqual(Guid.Empty, favoriteCredential, "Favorite credential wasn't assigned properly");
             ICredentialSet resolvedCredentials = this.SecondaryPersistence.Credentials[favoriteCredential];
             Assert.AreEqual(PASSWORD_A, resolvedCredentials.Password, "Favorite credentials, doesn't match");
+            this.AssertStoredCredentialsCount();
         }
 
         [TestMethod]

@@ -89,6 +89,7 @@
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -112,6 +113,7 @@
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
     <Compile Include="FilePersisted\FilesHistoryTest.cs" />
     <Compile Include="FilePersisted\InjectionDateTime.cs" />
     <Compile Include="ImportsTest.cs" />
@@ -141,6 +143,10 @@
     <ProjectReference Include="..\SharpPcap\SharpPcap.csproj">
       <Project>{A1B25B92-DE01-4DD6-8D44-72B9A1772D3E}</Project>
       <Name>SharpPcap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SqlScriptRunner\SqlScriptRunner.csproj">
+      <Project>{54106F05-1C42-43EB-B4EE-F4B7F6CA302F}</Project>
+      <Name>SqlScriptRunner</Name>
     </ProjectReference>
     <ProjectReference Include="..\SSHClient\SSHClient.csproj">
       <Project>{6F218F20-AE4B-4966-A821-4BDE214B8BFF}</Project>

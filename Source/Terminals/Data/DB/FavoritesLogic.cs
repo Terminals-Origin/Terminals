@@ -278,21 +278,16 @@ namespace Terminals.Data.DB
 
         private void TryApplyCredentials(List<IFavorite> selectedFavorites, ICredentialSet credential)
         {
-            // todo check the results, currently nothing is attached to the context, so nothing is commited
-            // check also other similar methods
             using (var database = Database.CreateInstance())
             {
+                var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
                 Data.Favorites.ApplyCredentialsToFavorites(selectedFavorites, credential);
-                this.SaveAndReportFavoritesUpdated(database, selectedFavorites);
+                database.AttachAll(dbFavorites);
+                // here we have to mark it modified, because caching detail properties
+                // sets proper credential set reference
+                database.MarkAsModified(dbFavorites);
+                this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
             }
-        }
-
-        private void SaveAndReportFavoritesUpdated(Database database, List<IFavorite> selectedFavorites)
-        {
-            database.SaveImmediatelyIfRequested();
-            List<DbFavorite> toUpdate = selectedFavorites.Cast<DbFavorite>().ToList();
-            this.cache.Update(toUpdate);
-            this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
         }
 
         public void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword)
@@ -311,8 +306,10 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
+                var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
+                database.AttachAll(dbFavorites);
                 Data.Favorites.SetPasswordToFavorites(selectedFavorites, newPassword);
-                this.SaveAndReportFavoritesUpdated(database, selectedFavorites);
+                this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
             }
         }
 
@@ -332,8 +329,10 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
+                var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
+                database.AttachAll(dbFavorites);
                 Data.Favorites.ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
-                this.SaveAndReportFavoritesUpdated(database, selectedFavorites);
+                this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
             }
         }
 
@@ -353,9 +352,19 @@ namespace Terminals.Data.DB
         {
             using (var database = Database.CreateInstance())
             {
+                var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
+                database.AttachAll(dbFavorites);
                 Data.Favorites.ApplyUserNameToFavorites(selectedFavorites, newUserName);
-                this.SaveAndReportFavoritesUpdated(database, selectedFavorites);
+                this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
             }
+        }
+
+        private void SaveAndReportFavoritesUpdated(Database database, List<DbFavorite> dbFavorites,
+            List<IFavorite> selectedFavorites)
+        {
+            database.SaveImmediatelyIfRequested();
+            this.cache.Update(dbFavorites);
+            this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
         }
 
         private void EnsureCache()

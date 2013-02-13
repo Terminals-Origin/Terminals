@@ -151,6 +151,14 @@ namespace Terminals.Data.DB
             this.Entry(toUpdate).State = EntityState.Modified;
         }
 
+        internal void MarkAsModified(List<DbFavorite> toUpdate)
+        {
+            foreach (DbFavorite favorite in toUpdate)
+            {
+                favorite.MarkAsModified(this);
+            }
+        }
+
         internal List<int> GetRdpFavoriteIds()
         {
             return this.Favorites.Where(candidate => candidate.Protocol == ConnectionManager.RDP)
