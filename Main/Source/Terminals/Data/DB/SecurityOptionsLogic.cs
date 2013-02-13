@@ -225,6 +225,12 @@ namespace Terminals.Data.DB
         internal void Attach(Database database)
         {
             database.Security.Attach(this);
+            this.AttachCredentialBase(database);
+            this.AttachCredentialSet(database);
+        }
+
+        private void AttachCredentialBase(Database database)
+        {
             if (this.credentialBase != null)
             {
                 this.CredentialBase = this.credentialBase;
@@ -232,12 +238,25 @@ namespace Terminals.Data.DB
             }
         }
 
+        private void AttachCredentialSet(Database database)
+        {
+            DbCredentialSet credentialSet = ResolveCredentailFromStore();
+            if (credentialSet == null)
+                return;
+
+            database.CredentialBase.Attach(credentialSet);
+        }
+
         internal void Detach(Database database)
         {
-            database.Detach(this);
+            if (this.CredentialSet != null)
+                database.Detach(this.CredentialSet);
+
             // check the reference, not local cached field
             if (this.CredentialBase != null)
                 database.Detach(this.credentialBase);
+            
+            database.Detach(this);
         }
 
         internal void LoadReferences(Database database)

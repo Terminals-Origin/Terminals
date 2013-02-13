@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -126,6 +127,12 @@ namespace Tests.SqlPersisted
             DbFavorite favorite = this.CreateTestFavorite();
             this.PrimaryPersistence.Favorites.Add(favorite);
             return favorite;
+        }
+
+        protected void AssertStoredCredentialsCount()
+        {
+            int storedCredentials = this.CheckDatabase.CredentialBase.Count();
+            Assert.AreEqual(1, storedCredentials, "Apply credentials changed the credentials count");
         }
     }
 }
