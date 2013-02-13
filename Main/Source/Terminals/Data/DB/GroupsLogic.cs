@@ -76,7 +76,7 @@ namespace Terminals.Data.DB
 
         private void TryAdd(IGroup group)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 DbGroup toAdd = group as DbGroup;
                 database.Groups.Add(toAdd);
@@ -119,7 +119,7 @@ namespace Terminals.Data.DB
 
         private void TryDelete(IGroup group)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 var toDelete = group as DbGroup;
                 database.Groups.Attach(toDelete);
@@ -144,7 +144,7 @@ namespace Terminals.Data.DB
 
         private void TryRebuild()
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 List<DbGroup> emptyGroups = this.DeleteEmptyGroupsFromDatabase(database);
                 database.SaveImmediatelyIfRequested();
@@ -253,7 +253,7 @@ namespace Terminals.Data.DB
 
         private static List<DbGroup> TryLoadFromDatabase()
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 List<DbGroup> groups = database.Groups.ToList();
                 database.DetachAll(groups);
@@ -276,7 +276,7 @@ namespace Terminals.Data.DB
 
         private static List<DbGroup> TryLoadFromDatabase(List<DbGroup> toRefresh)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 if (toRefresh != null)
                     database.AttachAll(toRefresh);

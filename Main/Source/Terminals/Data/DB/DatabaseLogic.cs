@@ -66,7 +66,7 @@ namespace Terminals.Data.DB
             return GetFavoriteProtocolProperties(favoriteId).FirstOrDefault();
         }
 
-        private string GetMasterPasswordHash()
+        internal string GetMasterPasswordHash()
         {
             string obtained = this.GetMasterPasswordKey().FirstOrDefault();
             if (obtained != null)

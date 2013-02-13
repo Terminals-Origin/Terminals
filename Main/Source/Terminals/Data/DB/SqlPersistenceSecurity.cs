@@ -26,7 +26,7 @@ namespace Terminals.Data.DB
         {
             try
             {
-                string databaseStoredKey = Database.TryGetMasterPasswordHash(connectionString);
+                string databaseStoredKey = DatabaseConnections.TryGetMasterPasswordHash(connectionString);
                 this.persistenceKeyMaterial = PasswordFunctions2.CalculateMasterPasswordKey(databasePassword, databaseStoredKey);
                 return true;
             }

@@ -32,7 +32,7 @@ namespace Terminals.Data.DB
 
         private void Run(string connectionString, string oldPassword, string newPassword)
         {
-            TestConnectionResult oldPasswordCheck = Database.TestConnection(connectionString, oldPassword);
+            TestConnectionResult oldPasswordCheck = DatabaseConnections.TestConnection(connectionString, oldPassword);
             if (!oldPasswordCheck.Successful)
                 return;
 
@@ -71,8 +71,7 @@ namespace Terminals.Data.DB
 
         private void CommitNewMastrerPassord(string connectionString)
         {
-            // todo surround all database usages by try/catch
-            using (this.database = Database.CreateInstance(connectionString))
+            using (this.database = DatabaseConnections.CreateInstance(connectionString))
             {
                 UpdateStoredPasswords();
                 this.database.UpdateMasterPassword(this.newStoredKey);

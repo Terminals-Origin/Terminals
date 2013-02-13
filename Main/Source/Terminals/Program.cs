@@ -104,7 +104,7 @@ namespace Terminals
             if (!filePersistence)
             {
                 string connectionString = Settings.ConnectionString;
-                DatabaseValidataionResult dbResult = Database.ValidateDatabaseConnection(connectionString, "databasemasterpassword");
+                DatabaseValidataionResult dbResult = DatabaseConnections.ValidateDatabaseConnection(connectionString, "databasemasterpassword");
 
                 var root = (new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location)).Directory.FullName;
                 var migrationsRoot = Path.Combine(root, "Migrations");

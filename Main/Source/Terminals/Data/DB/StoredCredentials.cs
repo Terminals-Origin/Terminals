@@ -80,7 +80,7 @@ namespace Terminals.Data.DB
 
         private static void AddToDatabase(DbCredentialSet credentialToAdd)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 database.CredentialBase.Add(credentialToAdd);
                 database.SaveImmediatelyIfRequested();
@@ -109,7 +109,7 @@ namespace Terminals.Data.DB
 
         private static void DeleteFromDatabase(DbCredentialSet credentailToRemove)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 database.CredentialBase.Attach(credentailToRemove);
                 database.CredentialBase.Remove(credentailToRemove);
@@ -131,7 +131,7 @@ namespace Terminals.Data.DB
 
         private void TryUpdate(ICredentialSet toUpdate)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 var credentialToUpdate = toUpdate as DbCredentialSet;
                 if (credentialToUpdate == null)
@@ -196,7 +196,7 @@ namespace Terminals.Data.DB
 
         private static List<DbCredentialSet> TryLoadFromDatabase()
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 return database.CredentialBase.OfType<DbCredentialSet>().ToList();
             }
