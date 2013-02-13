@@ -82,7 +82,7 @@ namespace Terminals.Data.DB
 
         private void TrySaveParentToDatabase(IGroup value)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 database.Groups.Attach(this);
                 this.ParentGroup = value as DbGroup;
@@ -113,7 +113,7 @@ namespace Terminals.Data.DB
 
         private void TryLoadFromDatabase()
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 database.Groups.Attach(this);
                 database.Entry(this).Reference(g => g.ParentGroup).Load();
@@ -146,7 +146,7 @@ namespace Terminals.Data.DB
 
         private List<int?> TryLoadFavoritesFromDatabase()
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 return database.GetFavoritesInGroup(this.Id).ToList();
             }
@@ -200,7 +200,7 @@ namespace Terminals.Data.DB
 
         private void UpdateFavoritesMembershipInDatabase(List<IFavorite> favorites)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 foreach (DbFavorite favorite in favorites)
                 {
@@ -241,7 +241,7 @@ namespace Terminals.Data.DB
 
         private void RemoveFavoritesFromDatabase(List<IFavorite> favorites)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 foreach (DbFavorite favorite in favorites)
                 {

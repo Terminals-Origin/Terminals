@@ -92,7 +92,7 @@ namespace Terminals.Data.DB
 
             private void TryLoadDetailsFromDatabase()
             {
-                using (var database = Database.CreateInstance())
+                using (Database database = DatabaseConnections.CreateInstance())
                 {
                     database.Favorites.Attach(this.favorite);
                     this.LoadReferences(database);
@@ -197,7 +197,7 @@ namespace Terminals.Data.DB
 
             private void LoadPropertiesFromDatabase()
             {
-                using (var database = Database.CreateInstance())
+                using (Database database = DatabaseConnections.CreateInstance())
                 {
                     string serializedProperties = database.GetProtocolPropertiesByFavorite(this.favorite.Id);
                     Type propertiesType = this.favorite.protocolProperties.GetType();
@@ -222,7 +222,7 @@ namespace Terminals.Data.DB
 
             private void TryLoadImageFromDatabase()
             {
-                using (var database = Database.CreateInstance())
+                using (Database database = DatabaseConnections.CreateInstance())
                 {
                     byte[] imageData = database.GetFavoriteIcon(this.favorite.Id);
                     this.favorite.toolBarIcon = FavoriteIcons.LoadImage(imageData, this.favorite);

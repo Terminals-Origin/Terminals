@@ -67,7 +67,7 @@ namespace Terminals.Data.DB
 
         private SortableList<IFavorite> TryLodFromDatabase(string historyDateKey)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 HistoryInterval interval = HistoryIntervals.GetIntervalByName(historyDateKey);
                 // store holds dates in UTC
@@ -104,7 +104,7 @@ namespace Terminals.Data.DB
 
         private static void TryAddToDatabase(DbFavorite historyTarget)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 string userSid = WindowsUserIdentifiers.GetCurrentUserSid();
                 // store holds dates in UTC

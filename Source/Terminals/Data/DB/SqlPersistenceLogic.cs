@@ -77,7 +77,7 @@ namespace Terminals.Data.DB
 
         private bool TryInitializeDatabase()
         {
-            if (Database.TestConnection())
+            if (DatabaseConnections.TestConnection())
             {
                 bool updatedKey = this.security.UpdateDatabaseKey();
                 if (updatedKey)

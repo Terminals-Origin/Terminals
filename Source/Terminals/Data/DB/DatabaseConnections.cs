@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.EntityClient;
 using System.Linq;
 using Terminals.Configuration;
@@ -9,7 +8,7 @@ using Versioning = SqlScriptRunner.Versioning;
 
 namespace Terminals.Data.DB
 {
-    internal partial class Database : DbContext
+    internal class DatabaseConnections
     {
         private const string PROVIDER = "System.Data.SqlClient";
 

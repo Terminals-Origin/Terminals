@@ -61,7 +61,7 @@ namespace Tests.SqlPersisted
             Settings.ConnectionString = string.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
 
             // first reset the database password, then continue with other initializations
-            this.CheckDatabase = Database.CreateInstance();
+            this.CheckDatabase = DatabaseConnections.CreateInstance();
             this.CheckDatabase.UpdateMasterPassword(string.Empty);
 
             this.PrimaryPersistence = new SqlPersistence();

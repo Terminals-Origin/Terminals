@@ -75,7 +75,7 @@ namespace Tests.SqlPersisted
             this.PrimaryFavorites.Update(newFavorite);
             DatabasePasswordUpdate.UpdateMastrerPassord(Settings.ConnectionString, string.Empty, PASSWORD_B);
             Settings.DatabaseMasterPassword = PASSWORD_B;
-            bool result = Database.TestConnection();
+            bool result = DatabaseConnections.TestConnection();
             Assert.IsTrue(result, "Couldn't update database master password");
             
             // the secondary persistence has to reflect the database password change

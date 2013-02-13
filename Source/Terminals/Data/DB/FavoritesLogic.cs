@@ -77,7 +77,7 @@ namespace Terminals.Data.DB
 
         private void TryAdd(List<IFavorite> favorites)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 List<DbFavorite> toAdd = favorites.Cast<DbFavorite>().ToList();
                 this.AddAllToDatabase(database, toAdd);
@@ -110,7 +110,7 @@ namespace Terminals.Data.DB
 
         private void TryUpdateFavorite(IFavorite favorite)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 var toUpdate = favorite as DbFavorite;
                 if (toUpdate == null)
@@ -140,7 +140,7 @@ namespace Terminals.Data.DB
 
         private void TryUpdateFavorite(IFavorite favorite, List<IGroup> newGroups)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 var toUpdate = favorite as DbFavorite;
                 if (toUpdate == null)
@@ -229,7 +229,7 @@ namespace Terminals.Data.DB
 
         private void TryDelete(List<IFavorite> favorites)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 List<DbFavorite> favoritesToDelete = favorites.Cast<DbFavorite>().ToList();
                 this.DeleteFavoritesFromDatabase(database, favoritesToDelete);
@@ -278,7 +278,7 @@ namespace Terminals.Data.DB
 
         private void TryApplyCredentials(List<IFavorite> selectedFavorites, ICredentialSet credential)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
                 Data.Favorites.ApplyCredentialsToFavorites(selectedFavorites, credential);
@@ -304,7 +304,7 @@ namespace Terminals.Data.DB
 
         private void TrySetPassword(List<IFavorite> selectedFavorites, string newPassword)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
                 database.AttachAll(dbFavorites);
@@ -327,7 +327,7 @@ namespace Terminals.Data.DB
 
         private void TryApplyDomainName(List<IFavorite> selectedFavorites, string newDomainName)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
                 database.AttachAll(dbFavorites);
@@ -350,7 +350,7 @@ namespace Terminals.Data.DB
 
         private void TryApplyUserName(List<IFavorite> selectedFavorites, string newUserName)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
                 database.AttachAll(dbFavorites);
@@ -421,7 +421,7 @@ namespace Terminals.Data.DB
 
         private List<DbFavorite> TryLoadFromDatabase()
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 // to list because Linq to entities allows only cast to primitive types
                 List<DbFavorite> favorites = database.Favorites.ToList();
@@ -447,7 +447,7 @@ namespace Terminals.Data.DB
 
         private static List<DbFavorite> TryLoadFromDatabase(List<DbFavorite> toRefresh)
         {
-            using (var database = Database.CreateInstance())
+            using (Database database = DatabaseConnections.CreateInstance())
             {
                 if (toRefresh != null)
                     database.AttachAll(toRefresh);

@@ -74,7 +74,7 @@ namespace Terminals.Forms
         private void FillSqlUserControls()
         {
             if (String.IsNullOrEmpty(Settings.ConnectionString))
-                this.ConnectionString = Database.DEFAULT_CONNECTION_STRING;
+                this.ConnectionString = DatabaseConnections.DEFAULT_CONNECTION_STRING;
             else
                 this.ConnectionString = Settings.ConnectionString;
 
@@ -117,7 +117,7 @@ namespace Terminals.Forms
         private static DatabaseValidataionResult TryTestDatabaseConnection(object objectState)
         {
             var connectionParams = objectState as Tuple<string, string>;
-            return Database.ValidateDatabaseConnection(connectionParams.Item1, connectionParams.Item2);
+            return DatabaseConnections.ValidateDatabaseConnection(connectionParams.Item1, connectionParams.Item2);
         }
 
         private void ShowConnectionTestResult(Task<DatabaseValidataionResult> antecedent)
@@ -205,7 +205,7 @@ namespace Terminals.Forms
         {
             tableQueryLabel.Visible = true;
             string connectionString = FillNewGeneralConnectionString();
-            var t = Task<List<string>>.Factory.StartNew((cs) => Database.FindDatabasesOnServer(cs.ToString()), connectionString);
+            var t = Task<List<string>>.Factory.StartNew((cs) => DatabaseConnections.FindDatabasesOnServer(cs.ToString()), connectionString);
             t.ContinueWith(this.FinishDatabasesReload, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
