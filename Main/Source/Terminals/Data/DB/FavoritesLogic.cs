@@ -29,6 +29,8 @@ namespace Terminals.Data.DB
 
         private readonly PersistenceSecurity persistenceSecurity;
 
+        private FavoritesBatchActions batchActions;
+
         internal Favorites(Groups groups, StoredCredentials credentials,
             PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher)
         {
@@ -36,6 +38,7 @@ namespace Terminals.Data.DB
             this.credentials = credentials;
             this.persistenceSecurity = persistenceSecurity;
             this.dispatcher = dispatcher;
+            this.batchActions = new FavoritesBatchActions(this.cache, this.dispatcher);
         }
 
         IFavorite IFavorites.this[Guid favoriteId]
@@ -280,85 +283,29 @@ namespace Terminals.Data.DB
                 // here we have to mark it modified, because caching detail properties
                 // sets proper credential set reference
                 database.Cache.MarkAsModified(dbFavorites);
-                this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
+                this.batchActions.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
             }
         }
 
         public void SetPasswordToAllFavorites(List<IFavorite> selectedFavorites, string newPassword)
         {
-            try
-            {
-                this.TrySetPassword(selectedFavorites, newPassword);
-            }
-            catch (Exception exception)
-            {
-                Logging.Log.Error("Unable set password to favorites", exception);
-            }
-        }
-
-        private void TrySetPassword(List<IFavorite> selectedFavorites, string newPassword)
-        {
-            using (Database database = DatabaseConnections.CreateInstance())
-            {
-                var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
-                database.Cache.AttachAll(dbFavorites);
-                Data.Favorites.SetPasswordToFavorites(selectedFavorites, newPassword);
-                this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
-            }
+            var values = new ApplyValueParams(Data.Favorites.SetPasswordToFavorites,
+                                                      selectedFavorites, newPassword, "Password");
+            this.batchActions.ApplyValue(values);
         }
 
         public void ApplyDomainNameToAllFavorites(List<IFavorite> selectedFavorites, string newDomainName)
         {
-            try
-            {
-                this.TryApplyDomainName(selectedFavorites, newDomainName);
-            }
-            catch (Exception exception)
-            {
-                Logging.Log.Error("Unable to set domain name to favorites", exception);
-            }
-        }
-
-        private void TryApplyDomainName(List<IFavorite> selectedFavorites, string newDomainName)
-        {
-            using (Database database = DatabaseConnections.CreateInstance())
-            {
-                var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
-                database.Cache.AttachAll(dbFavorites);
-                Data.Favorites.ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
-                this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
-            }
+            var values = new ApplyValueParams(Data.Favorites.ApplyDomainNameToFavorites,
+                                                      selectedFavorites, newDomainName, "DomainName");
+            this.batchActions.ApplyValue(values);
         }
 
         public void ApplyUserNameToAllFavorites(List<IFavorite> selectedFavorites, string newUserName)
         {
-            try
-            {
-                this.TryApplyUserName(selectedFavorites, newUserName);
-            }
-            catch (Exception exception)
-            {
-                Logging.Log.Error("Unable to apply user name to favorites", exception);
-            }
-        }
-
-        private void TryApplyUserName(List<IFavorite> selectedFavorites, string newUserName)
-        {
-            using (Database database = DatabaseConnections.CreateInstance())
-            {
-                var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
-                database.Cache.AttachAll(dbFavorites);
-                Data.Favorites.ApplyUserNameToFavorites(selectedFavorites, newUserName);
-                this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
-            }
-        }
-
-        private void SaveAndReportFavoritesUpdated(Database database, List<DbFavorite> dbFavorites,
-            List<IFavorite> selectedFavorites)
-        {
-            database.SaveImmediatelyIfRequested();
-            this.cache.Update(dbFavorites);
-            this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
+            var values = new ApplyValueParams(Data.Favorites.ApplyUserNameToFavorites,
+                                                      selectedFavorites, newUserName, "UserName");
+            this.batchActions.ApplyValue(values); 
         }
 
         private void EnsureCache()

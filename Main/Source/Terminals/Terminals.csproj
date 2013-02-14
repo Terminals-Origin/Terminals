@@ -172,7 +172,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DB\ApplyValueParams.cs" />
     <Compile Include="Data\DB\CacheConnector.cs" />
+    <Compile Include="Data\DB\FavoritesBatchActions.cs" />
     <Compile Include="Properties\Common.AssemblyInfo.cs" />
     <Compile Include="Configuration\FormsCollection.cs" />
     <Compile Include="Configuration\FormsSection.cs" />
