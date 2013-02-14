@@ -25,14 +25,14 @@ namespace Terminals.Data.DB
         /// <summary>
         /// Cached base properties. Loaded from reference or assigned by creation only.
         /// </summary>
-        private DbCredentialBase credentialBase;
+        internal DbCredentialBase CachedCredentials { get; set; }
 
         public string EncryptedUserName
         {
             get
             {
-                if (this.credentialBase != null)
-                    return this.credentialBase.EncryptedUserName;
+                if (this.CachedCredentials != null)
+                    return this.CachedCredentials.EncryptedUserName;
 
                 return null;
             }
@@ -41,7 +41,7 @@ namespace Terminals.Data.DB
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.EnsureCredentialBase();
-                    this.credentialBase.EncryptedUserName = value;
+                    this.CachedCredentials.EncryptedUserName = value;
                 }
             }
         }
@@ -68,8 +68,8 @@ namespace Terminals.Data.DB
         {
             get
             {
-                if (this.credentialBase != null)
-                    return this.credentialBase.EncryptedDomain;
+                if (this.CachedCredentials != null)
+                    return this.CachedCredentials.EncryptedDomain;
 
                 return null;
             }
@@ -78,7 +78,7 @@ namespace Terminals.Data.DB
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.EnsureCredentialBase();
-                    this.credentialBase.EncryptedDomain = value;
+                    this.CachedCredentials.EncryptedDomain = value;
                 }
             }
         }
@@ -105,8 +105,8 @@ namespace Terminals.Data.DB
         {
             get
             {
-                if (this.credentialBase != null)
-                    return this.credentialBase.EncryptedPassword;
+                if (this.CachedCredentials != null)
+                    return this.CachedCredentials.EncryptedPassword;
 
                 return null;
             }
@@ -115,7 +115,7 @@ namespace Terminals.Data.DB
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.EnsureCredentialBase();
-                    this.credentialBase.EncryptedPassword = value;
+                    this.CachedCredentials.EncryptedPassword = value;
                 }
             }
         }
@@ -165,7 +165,7 @@ namespace Terminals.Data.DB
             return Guid.Empty;
         }
 
-        private DbCredentialSet ResolveCredentailFromStore()
+        internal DbCredentialSet ResolveCredentailFromStore()
         {
             if (this.credentialId != null)
                 return this.storedCredentials[this.credentialId.Value];
@@ -196,11 +196,11 @@ namespace Terminals.Data.DB
         /// </summary>
         private void EnsureCredentialBase()
         {
-            if (this.credentialBase == null)
+            if (this.CachedCredentials == null)
             {
-                this.credentialBase = new DbCredentialBase();
-                this.credentialBase.AssignSecurity(this.persistenceSecurity);
-                this.CredentialBase = this.credentialBase;
+                this.CachedCredentials = new DbCredentialBase();
+                this.CachedCredentials.AssignSecurity(this.persistenceSecurity);
+                this.CredentialBase = this.CachedCredentials;
             }
         }
 
@@ -218,45 +218,8 @@ namespace Terminals.Data.DB
         
         public void UpdatePasswordByNewKeyMaterial(string newKeymaterial)
         {
-            if (this.credentialBase != null)
-                this.credentialBase.UpdatePasswordByNewKeyMaterial(newKeymaterial);
-        }
-
-        internal void Attach(Database database)
-        {
-            database.Security.Attach(this);
-            this.AttachCredentialBase(database);
-            this.AttachCredentialSet(database);
-        }
-
-        private void AttachCredentialBase(Database database)
-        {
-            if (this.credentialBase != null)
-            {
-                this.CredentialBase = this.credentialBase;
-                database.CredentialBase.Attach(this.credentialBase);
-            }
-        }
-
-        private void AttachCredentialSet(Database database)
-        {
-            DbCredentialSet credentialSet = ResolveCredentailFromStore();
-            if (credentialSet == null)
-                return;
-
-            database.CredentialBase.Attach(credentialSet);
-        }
-
-        internal void Detach(Database database)
-        {
-            if (this.CredentialSet != null)
-                database.Detach(this.CredentialSet);
-
-            // check the reference, not local cached field
-            if (this.CredentialBase != null)
-                database.Detach(this.credentialBase);
-            
-            database.Detach(this);
+            if (this.CachedCredentials != null)
+                this.CachedCredentials.UpdatePasswordByNewKeyMaterial(newKeymaterial);
         }
 
         internal void LoadReferences(Database database)
@@ -268,9 +231,9 @@ namespace Terminals.Data.DB
 
         internal void LoadFieldsFromReferences()
         {
-            this.credentialBase = this.CredentialBase;
-            if (this.credentialBase != null)
-                this.credentialBase.AssignSecurity(this.persistenceSecurity);
+            this.CachedCredentials = this.CredentialBase;
+            if (this.CachedCredentials != null)
+                this.CachedCredentials.AssignSecurity(this.persistenceSecurity);
             this.LoadFromCredentialSetReference();
         }
 
@@ -282,16 +245,7 @@ namespace Terminals.Data.DB
                 this.credentialId = null;
         }
 
-        internal void MarkAsModified(Database database)
-        {
-            database.MarkAsModified(this);
-            if (this.credentialBase != null)
-                database.MarkAsModified(this.credentialBase);
-
-            this.UpdateCredentialSetReference();
-        }
-
-        private void UpdateCredentialSetReference()
+        internal void UpdateCredentialSetReference()
         {
             if (this.credentialId != null)
                 this.CredentialSet = this.storedCredentials[this.credentialId.Value];
@@ -318,7 +272,7 @@ namespace Terminals.Data.DB
 
         public override string ToString()
         {
-            if (this.credentialBase == null)
+            if (this.CachedCredentials == null)
                 return "SecurityOptions:Empty";
             var security = this as ICredentialBase;
             return string.Format("SecurityOptions:User='{0}',Domain='{1}'", security.UserName, security.Domain);

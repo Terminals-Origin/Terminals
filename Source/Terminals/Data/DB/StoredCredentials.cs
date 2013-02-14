@@ -84,7 +84,7 @@ namespace Terminals.Data.DB
             {
                 database.CredentialBase.Add(credentialToAdd);
                 database.SaveImmediatelyIfRequested();
-                database.Detach(credentialToAdd);
+                database.Cache.Detach(credentialToAdd);
             }
         }
 
@@ -134,12 +134,10 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 var credentialToUpdate = toUpdate as DbCredentialSet;
-                if (credentialToUpdate == null)
-                    return;
                 database.CredentialBase.Attach(credentialToUpdate);
-                database.MarkAsModified(credentialToUpdate);
+                database.Cache.MarkAsModified(credentialToUpdate);
                 database.SaveImmediatelyIfRequested();
-                database.Detach(credentialToUpdate);
+                database.Cache.Detach(credentialToUpdate);
                 this.cache.Update(credentialToUpdate);
             }
         }
