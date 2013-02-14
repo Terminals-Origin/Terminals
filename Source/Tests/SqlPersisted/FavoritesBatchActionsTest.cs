@@ -77,7 +77,7 @@ namespace Tests.SqlPersisted
             foreach (IFavorite secondaryFavorite in SecondaryFavorites)
             {
                 string finalDomain = secondaryFavorite.Security.Domain;
-                Assert.AreEqual(VALIDATION_VALUE, finalDomain, "User name was not set properly to all favorites");
+                Assert.AreEqual(VALIDATION_VALUE, finalDomain, "Domain name was not set properly to all favorites");
             }
         }
 
@@ -89,7 +89,7 @@ namespace Tests.SqlPersisted
             foreach (IFavorite secondaryFavorite in SecondaryFavorites)
             {
                 string finalPassword = secondaryFavorite.Security.Password;
-                Assert.AreEqual(VALIDATION_VALUE, finalPassword, "User name was not set properly to all favorites");
+                Assert.AreEqual(VALIDATION_VALUE, finalPassword, "Password was not set properly to all favorites");
             }
         }
     }
