@@ -82,7 +82,7 @@ namespace Terminals.Data.DB
                 List<DbFavorite> toAdd = favorites.Cast<DbFavorite>().ToList();
                 this.AddAllToDatabase(database, toAdd);
                 database.SaveImmediatelyIfRequested();
-                database.DetachAll(toAdd);
+                database.Cache.DetachAll(toAdd);
                 this.cache.Add(toAdd);
                 this.dispatcher.ReportFavoritesAdded(favorites);
             }
@@ -113,10 +113,7 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 var toUpdate = favorite as DbFavorite;
-                if (toUpdate == null)
-                    return;
-
-                database.AttachFavorite(toUpdate);
+                database.Cache.AttachFavorite(toUpdate);
                 this.TrySaveAndReportFavoriteUpdate(toUpdate, database);
             }
         }
@@ -143,10 +140,7 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 var toUpdate = favorite as DbFavorite;
-                if (toUpdate == null)
-                    return;
-
-                database.AttachFavorite(toUpdate);
+                database.Cache.AttachFavorite(toUpdate);
                 List<IGroup> addedGroups = this.groups.AddToDatabase(database, newGroups);
                 // commit newly created groups, otherwise we cant add into them
                 database.SaveImmediatelyIfRequested();
@@ -198,9 +192,9 @@ namespace Terminals.Data.DB
 
         private void SaveAndReportFavoriteUpdated(Database database, DbFavorite favorite)
         {
-            favorite.MarkAsModified(database);
+            database.Cache.MarkFavoriteAsModified(favorite);
             database.SaveImmediatelyIfRequested();
-            database.DetachFavorite(favorite);
+            database.Cache.DetachFavorite(favorite);
             this.cache.Update(favorite);
             this.dispatcher.ReportFavoriteUpdated(favorite);
         }
@@ -247,7 +241,7 @@ namespace Terminals.Data.DB
         private void DeleteFavoritesFromDatabase(Database database, List<DbFavorite> favorites)
         {
             // we don't have to attach the details, because they will be deleted by reference constraints
-            database.AttachAll(favorites);
+            database.Cache.AttachAll(favorites);
             DeleteAllFromDatabase(database, favorites);
         }
 
@@ -282,10 +276,10 @@ namespace Terminals.Data.DB
             {
                 var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
                 Data.Favorites.ApplyCredentialsToFavorites(selectedFavorites, credential);
-                database.AttachAll(dbFavorites);
+                database.Cache.AttachAll(dbFavorites);
                 // here we have to mark it modified, because caching detail properties
                 // sets proper credential set reference
-                database.MarkAsModified(dbFavorites);
+                database.Cache.MarkAsModified(dbFavorites);
                 this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
             }
         }
@@ -307,7 +301,7 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
-                database.AttachAll(dbFavorites);
+                database.Cache.AttachAll(dbFavorites);
                 Data.Favorites.SetPasswordToFavorites(selectedFavorites, newPassword);
                 this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
             }
@@ -330,7 +324,7 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
-                database.AttachAll(dbFavorites);
+                database.Cache.AttachAll(dbFavorites);
                 Data.Favorites.ApplyDomainNameToFavorites(selectedFavorites, newDomainName);
                 this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
             }
@@ -353,7 +347,7 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 var dbFavorites = selectedFavorites.Cast<DbFavorite>().ToList();
-                database.AttachAll(dbFavorites);
+                database.Cache.AttachAll(dbFavorites);
                 Data.Favorites.ApplyUserNameToFavorites(selectedFavorites, newUserName);
                 this.SaveAndReportFavoritesUpdated(database, dbFavorites, selectedFavorites);
             }
@@ -425,7 +419,7 @@ namespace Terminals.Data.DB
             {
                 // to list because Linq to entities allows only cast to primitive types
                 List<DbFavorite> favorites = database.Favorites.ToList();
-                database.DetachAll(favorites);
+                database.Cache.DetachAll(favorites);
                 favorites.ForEach(candidate => candidate.AssignStores(this.groups, this.credentials, this.persistenceSecurity));
                 return favorites;
             }
@@ -450,12 +444,12 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 if (toRefresh != null)
-                    database.AttachAll(toRefresh);
+                    database.Cache.AttachAll(toRefresh);
 
                 // to list because Linq to entities allows only cast to primitive types
                 ((IObjectContextAdapter)database).ObjectContext.Refresh(RefreshMode.StoreWins, database.Favorites);
                 List<DbFavorite> favorites = database.Favorites.ToList();
-                database.DetachAll(favorites);
+                database.Cache.DetachAll(favorites);
                 return favorites;
             }
         }

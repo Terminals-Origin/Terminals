@@ -87,7 +87,7 @@ namespace Terminals.Data.DB
                 database.Groups.Attach(this);
                 this.ParentGroup = value as DbGroup;
                 database.SaveImmediatelyIfRequested();
-                database.Detach(this);
+                database.Cache.Detach(this);
             }
         }
 
@@ -121,7 +121,7 @@ namespace Terminals.Data.DB
                 // groups should be already loaded, because this Group was also resolved from cache
                 int parentGroupId = this.ParentGroup != null ? this.ParentGroup.Id : -1;
                 this.parent = this.groups[parentGroupId];
-                database.Detach(this);
+                database.Cache.Detach(this);
             }
         }
 

@@ -20,7 +20,7 @@ namespace Terminals.Data.DB
         /// </summary>
         private bool isNewlyCreated;
 
-        private readonly FavoriteDetails details;
+        internal FavoriteDetails Details { get; private set; }
 
         /// <summary>
         /// Should be never null to prevent access violations
@@ -46,29 +46,25 @@ namespace Terminals.Data.DB
             get { return this.Guid; }
         }
 
-        private DbBeforeConnectExecute executeBeforeConnect;
+        
 
         IBeforeConnectExecuteOptions IFavorite.ExecuteBeforeConnect
         {
             get
             {
-                this.details.Load();
-                return this.executeBeforeConnect;
+                this.Details.Load();
+                return this.Details.ExecuteBeforeConnect;
             }
         }
-
-        private DbDisplayOptions display;
 
         IDisplayOptions IFavorite.Display
         {
             get
             {
-                this.details.Load();
-                return this.display;
+                this.Details.Load();
+                return this.Details.Display;
             }
         }
-
-        private DbSecurityOptions security;
 
         ISecurityOptions IFavorite.Security
         {
@@ -80,10 +76,10 @@ namespace Terminals.Data.DB
 
         private DbSecurityOptions GetSecurity()
         {
-            this.details.Load();
+            this.Details.Load();
             // returns null, if the favorite details loading failed.
             // the same for all other detail properties
-            return this.security;
+            return this.Details.Security;
         }
 
         List<IGroup> IFavorite.Groups
@@ -100,7 +96,7 @@ namespace Terminals.Data.DB
         {
             get
             {
-                this.details.LoadProtocolProperties();
+                this.Details.LoadProtocolProperties();
                 return this.protocolProperties;
             }
             set
@@ -133,7 +129,7 @@ namespace Terminals.Data.DB
             get
             {
                 if (this.toolBarIcon == null)
-                    this.details.LoadImageFromDatabase();
+                    this.Details.LoadImageFromDatabase();
 
                 return this.toolBarIcon;
             }
@@ -186,13 +182,13 @@ namespace Terminals.Data.DB
             this.Protocol = ConnectionManager.RDP;
             this.Port = ConnectionManager.RDPPort;
             this.protocolProperties = new RdpOptions();
-            this.details = new FavoriteDetails(this);
+            this.Details = new FavoriteDetails(this);
         }
 
         internal void MarkAsNewlyCreated()
         {
             this.isNewlyCreated = true;
-            this.details.LoadFieldsFromReferences();
+            this.Details.LoadFieldsFromReferences();
         }
 
         IFavorite IFavorite.Copy()
@@ -213,19 +209,17 @@ namespace Terminals.Data.DB
         private void UpdateFrom(DbFavorite source)
         {
             // force load first to fill the content, otherwise we don't have to able to copy
-            this.details.Load();
-            source.details.Load();
+            this.Details.Load();
+            source.Details.Load();
 
             this.DesktopShare = source.DesktopShare;
             // we cant copy the fields, because they are also dependent on the favorite Id
-            this.display.UpdateFrom(source.display);
-            this.executeBeforeConnect.UpdateFrom(source.executeBeforeConnect);
+            this.Details.UpdateFrom(source.Details);
             this.Name = source.Name;
             this.NewWindow = source.NewWindow;
             this.Notes = source.Notes;
             this.Port = source.Port;
             this.Protocol = source.Protocol;
-            this.security.UpdateFrom(source.security);
             this.ServerName = source.ServerName;
             this.toolBarIcon = source.ToolBarIconImage;
             // protocolProperties don't have a favorite Id reference, so we can overwrite complete content
@@ -274,30 +268,14 @@ namespace Terminals.Data.DB
             this.persistenceSecurity = persistenceSecurity;
         }
 
-        internal void MarkAsModified(Database database)
-        {
-            database.MarkAsModified(this);
-            this.details.MarkAsModified(database);
-        }
-
         internal void SaveDetails(Database database)
         {
-            this.details.Save(database);
-        }
-
-        public void AttachDetails(Database database)
-        {
-            this.details.Attach(database);
-        }
-
-        internal void DetachDetails(Database database)
-        {
-            this.details.Detach(database);
+            this.Details.Save(database);
         }
 
         internal void ReleaseLoadedDetails()
         {
-            this.details.ReleaseLoadedDetails();
+            this.Details.ReleaseLoadedDetails();
         }
 
         public override String ToString()

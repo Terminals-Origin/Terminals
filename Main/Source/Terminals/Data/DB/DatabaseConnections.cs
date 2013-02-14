@@ -8,7 +8,7 @@ using Versioning = SqlScriptRunner.Versioning;
 
 namespace Terminals.Data.DB
 {
-    internal class DatabaseConnections
+    internal static class DatabaseConnections
     {
         private const string PROVIDER = "System.Data.SqlClient";
 

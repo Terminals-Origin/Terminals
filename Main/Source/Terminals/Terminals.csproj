@@ -172,6 +172,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DB\CacheConnector.cs" />
     <Compile Include="Properties\Common.AssemblyInfo.cs" />
     <Compile Include="Configuration\FormsCollection.cs" />
     <Compile Include="Configuration\FormsSection.cs" />

@@ -81,7 +81,7 @@ namespace Terminals.Data.DB
                 DbGroup toAdd = group as DbGroup;
                 database.Groups.Add(toAdd);
                 database.SaveImmediatelyIfRequested();
-                database.Detach(toAdd);
+                database.Cache.Detach(toAdd);
                 this.cache.Add(toAdd);
                 this.dispatcher.ReportGroupsAdded(new List<IGroup> {toAdd});
             }
@@ -93,7 +93,7 @@ namespace Terminals.Data.DB
             List<IGroup> added = groups.Where(candidate => ((DbGroup)candidate).Id == 0).ToList();
             AddAllToDatabase(database, added);
             List<DbGroup> toAttach = groups.Where(candidate => ((DbGroup)candidate).Id != 0).Cast<DbGroup>().ToList();
-            database.AttachAll(toAttach);
+            database.Cache.AttachAll(toAttach);
             return added;
         }
 
@@ -169,7 +169,7 @@ namespace Terminals.Data.DB
         internal List<DbGroup> DeleteEmptyGroupsFromDatabase(Database database)
         {
             List<DbGroup> emptyGroups = this.GetEmptyGroups();
-            database.AttachAll(emptyGroups);
+            database.Cache.AttachAll(emptyGroups);
             DeleteFromDatabase(database, emptyGroups);
             return emptyGroups;
         }
@@ -256,7 +256,7 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 List<DbGroup> groups = database.Groups.ToList();
-                database.DetachAll(groups);
+                database.Cache.DetachAll(groups);
                 return groups;
             }
         }
@@ -279,11 +279,11 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 if (toRefresh != null)
-                    database.AttachAll(toRefresh);
+                    database.Cache.AttachAll(toRefresh);
 
                 ((IObjectContextAdapter)database).ObjectContext.Refresh(RefreshMode.StoreWins, database.Groups);
                 List<DbGroup> groups = database.Groups.ToList();
-                database.DetachAll(groups);
+                database.Cache.DetachAll(groups);
                 return groups;
             }
         }

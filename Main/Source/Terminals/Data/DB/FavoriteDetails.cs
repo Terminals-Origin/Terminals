@@ -10,17 +10,20 @@ namespace Terminals.Data.DB
         /// Manages lazy loading and caching of the favorite extended properties, which are modeled
         /// as referenced entities. Also handles manual loading/saving of icon and favorite protocol properties.
         /// </summary>
-        private class FavoriteDetails
+        internal class FavoriteDetails
         {
             private readonly DbFavorite favorite;
+            internal DbSecurityOptions Security { get; private set; }
+            internal DbBeforeConnectExecute ExecuteBeforeConnect { get; private set; }
+            internal DbDisplayOptions Display { get; private set; }
 
             private bool protocolPropertiesLoaded;
 
-            private bool DetailsLoaded
+            internal bool Loaded
             {
                 get
                 {
-                    return this.favorite.security != null;
+                    return this.Security != null;
                 }
             }
 
@@ -38,43 +41,10 @@ namespace Terminals.Data.DB
                 this.favorite = favorite;
             }
 
-            internal void MarkAsModified(Database database)
-            {
-                if (this.DetailsLoaded)
-                {
-                    this.favorite.security.MarkAsModified(database);
-                    database.MarkAsModified(this.favorite.display);
-                    database.MarkAsModified(this.favorite.executeBeforeConnect);
-                }
-            }
-
-            internal void Attach(Database database)
-            {
-                if (DetailsLoaded)
-                {
-                    this.favorite.security.Attach(database);
-                    database.DisplayOptions.Attach(this.favorite.display);
-                    database.BeforeConnectExecute.Attach(this.favorite.executeBeforeConnect);
-                }
-            }
-
-            internal void Detach(Database database)
-            {
-                if (this.DetailsLoaded)
-                {
-                    this.favorite.security.Detach(database);
-                    database.Detach(this.favorite.display);
-                    database.Detach(this.favorite.executeBeforeConnect);
-                }
-            }
-
             internal void Load()
             {
-                if (!this.DetailsLoaded)
-                {
-                    if (!this.favorite.isNewlyCreated)
-                        this.LoadDetailsFromDatabase();
-                }
+                if (!this.Loaded && !this.favorite.isNewlyCreated)
+                    this.LoadDetailsFromDatabase();
             }
 
             private void LoadDetailsFromDatabase()
@@ -97,17 +67,17 @@ namespace Terminals.Data.DB
                     database.Favorites.Attach(this.favorite);
                     this.LoadReferences(database);
                     this.LoadFieldsFromReferences();
-                    database.DetachFavorite(this.favorite);
+                    database.Cache.DetachFavorite(this.favorite);
                 }
             }
 
             internal void LoadFieldsFromReferences()
             {
-                this.favorite.security = this.favorite.Security;
-                this.favorite.security.AssignStores(this.favorite.credentials, this.favorite.persistenceSecurity);
-                this.favorite.security.LoadFieldsFromReferences();
-                this.favorite.display = this.favorite.Display;
-                this.favorite.executeBeforeConnect = this.favorite.ExecuteBeforeConnect;
+                this.Security = this.favorite.Security;
+                this.Security.AssignStores(this.favorite.credentials, this.favorite.persistenceSecurity);
+                this.Security.LoadFieldsFromReferences();
+                this.Display = this.favorite.Display;
+                this.ExecuteBeforeConnect = this.favorite.ExecuteBeforeConnect;
             }
 
             private void LoadReferences(Database database)
@@ -243,9 +213,16 @@ namespace Terminals.Data.DB
 
             private void ReleaseReferences()
             {
-                this.favorite.security = null;
-                this.favorite.display = null;
-                this.favorite.executeBeforeConnect = null;
+                this.Security = null;
+                this.Display = null;
+                this.ExecuteBeforeConnect = null;
+            }
+
+            internal void UpdateFrom(FavoriteDetails source)
+            {
+                this.Security.UpdateFrom(source.Security);
+                this.Display.UpdateFrom(source.Display);
+                this.ExecuteBeforeConnect.UpdateFrom(source.ExecuteBeforeConnect);
             }
         }
     }

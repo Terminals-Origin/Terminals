@@ -10,6 +10,11 @@ namespace Terminals.Data.DB
 {
     internal partial class Database : DbContext
     {
+        /// <summary>
+        /// Gets this instance connector for cached entities
+        /// </summary>
+        public CacheConnector Cache { get; private set; }
+
         internal Database(DbConnection connection)
             : base(connection, true)
         {
@@ -19,6 +24,8 @@ namespace Terminals.Data.DB
             this.Favorites = this.Set<DbFavorite>();
             this.Groups = this.Set<DbGroup>();
             this.Security = this.Set<DbSecurityOptions>();
+            
+            this.Cache = new CacheConnector(this);
         }
 
         internal void SaveImmediatelyIfRequested()
@@ -78,85 +85,6 @@ namespace Terminals.Data.DB
         internal void UpdateMasterPassword(string newMasterPasswordKey)
         {
             this.UpdateMasterPasswordKey(newMasterPasswordKey);
-        }
-
-        /// <summary>
-        /// Attaches all groups in toAttach to this context.
-        /// Does not check, if the entities are already in the context.
-        /// </summary>
-        /// <param name="toAttach">Not null collection of items from this model</param>
-        internal void AttachAll(IEnumerable<DbGroup> toAttach)
-        {
-            foreach (DbGroup group in toAttach)
-            {
-                this.Groups.Attach(group);
-            }
-        }
-
-        internal void AttachAll(IEnumerable<DbFavorite> favorites)
-        {
-            foreach (DbFavorite favorite in favorites)
-            {
-                this.AttachFavorite(favorite);
-            }
-        }
-
-        internal void AttachFavorite(DbFavorite favorite)
-        {
-            favorite.AttachDetails(this);
-            this.Favorites.Attach(favorite);
-        }
-
-        internal void Detach<TEntity>(TEntity entity)
-             where TEntity : class
-        {
-            this.Entry(entity).State = EntityState.Detached;
-        }
-
-        /// <summary>
-        /// Detaches all item in entitiesToDetach from this context.
-        /// Does not check, if the entities are in the context.
-        /// </summary>
-        /// <typeparam name="TEntity">Entity defined in this object context model</typeparam>
-        /// <param name="entitiesToDetach">Not null collection of items from this model
-        /// currently attached in this object context</param>
-        internal void DetachAll<TEntity>(IEnumerable<TEntity> entitiesToDetach)
-            where TEntity : class
-        {
-            foreach (TEntity entity in entitiesToDetach)
-            {
-                this.Detach(entity);
-            }
-        }
-
-        internal void DetachAll(IEnumerable<DbFavorite> favorites)
-        {
-            foreach (DbFavorite favorite in favorites)
-            {
-                this.DetachFavorite(favorite);
-            }
-        }
-
-        internal void DetachFavorite(DbFavorite favorite)
-        {
-            favorite.DetachDetails(this);
-            this.Detach(favorite);
-        }
-
-        /// <summary>
-        /// Switch toUpdate entity state to Modified. 
-        /// </summary>
-        internal void MarkAsModified(object toUpdate)
-        {
-            this.Entry(toUpdate).State = EntityState.Modified;
-        }
-
-        internal void MarkAsModified(List<DbFavorite> toUpdate)
-        {
-            foreach (DbFavorite favorite in toUpdate)
-            {
-                favorite.MarkAsModified(this);
-            }
         }
 
         internal List<int> GetRdpFavoriteIds()
