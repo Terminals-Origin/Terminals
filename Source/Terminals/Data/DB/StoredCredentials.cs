@@ -12,15 +12,18 @@ namespace Terminals.Data.DB
     {
         private readonly SqlPersistenceSecurity persistenceSecurity;
 
+        private readonly DataDispatcher dispatcher;
+
         public event EventHandler CredentialsChanged;
 
         private readonly EntitiesCache<DbCredentialSet> cache = new EntitiesCache<DbCredentialSet>();
 
         private bool isLoaded;
 
-        public StoredCredentials(SqlPersistenceSecurity persistenceSecurity)
+        public StoredCredentials(SqlPersistenceSecurity persistenceSecurity, DataDispatcher dispatcher)
         {
             this.persistenceSecurity = persistenceSecurity;
+            this.dispatcher = dispatcher;
         }
 
         ICredentialSet ICredentials.this[Guid id]
@@ -67,7 +70,7 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Warn("Unable to add credential to database", exception);
+                this.dispatcher.ReportActionError(Add, toAdd, this, exception, "Unable to add credential to database");
             }
         }
 
@@ -96,7 +99,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to remove credential from database " + toRemove, exception);
+                this.dispatcher.ReportActionError(Remove, toRemove, this, exception,
+                    "Unable to remove credential from database.");
             }
         }
 
@@ -125,7 +129,7 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to update credential set " + toUpdate, exception);
+                this.dispatcher.ReportActionError(Update, toUpdate, this, exception, "Unable to update credential set.");
             }
         }
 
@@ -179,7 +183,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        private static List<DbCredentialSet> LoadFromDatabase()
+        private List<DbCredentialSet> LoadFromDatabase()
         {
             try
             {
@@ -187,8 +191,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to load credentials from database", exception);
-                return new List<DbCredentialSet>();
+                return this.dispatcher.ReportFunctionError(LoadFromDatabase, this, exception,
+                    "Unable to load credentials from database.");
             }
         }
 

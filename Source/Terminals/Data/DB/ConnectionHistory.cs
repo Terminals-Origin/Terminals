@@ -39,7 +39,7 @@ namespace Terminals.Data.DB
         {
             // cache older groups only
             if (historyDateKey == HistoryIntervals.TODAY)
-                return this.LodFromDatabaseByDate(historyDateKey);
+                return this.LoadFromDatabaseByDate(historyDateKey);
 
             return this.LoadFromCache(historyDateKey);
         }
@@ -48,14 +48,14 @@ namespace Terminals.Data.DB
         {
             if (!this.cache.ContainsKey(historyDateKey))
             {
-                SortableList<IFavorite> loaded = this.LodFromDatabaseByDate(historyDateKey);
+                SortableList<IFavorite> loaded = this.LoadFromDatabaseByDate(historyDateKey);
                 this.cache.Add(historyDateKey, loaded);
             }
 
             return this.cache[historyDateKey];
         }
 
-        private SortableList<IFavorite> LodFromDatabaseByDate(string historyDateKey)
+        private SortableList<IFavorite> LoadFromDatabaseByDate(string historyDateKey)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace Terminals.Data.DB
             }
             catch(Exception exception)
             {
-                return this.dispatcher.ReportFunctionError(LodFromDatabaseByDate, historyDateKey, this,
+                return this.dispatcher.ReportFunctionError(this.LoadFromDatabaseByDate, historyDateKey, this,
                      exception, "Unable to load history part form database.\r\nDatabase connection lost.");
             }
         }

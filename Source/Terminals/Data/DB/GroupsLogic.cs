@@ -70,7 +70,7 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to add group to database " + group, exception);
+                this.dispatcher.ReportActionError(Add, group, this, exception, "Unable to add group to database.");
             }
         }
 
@@ -113,7 +113,7 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to remove from database " + group, exception);
+                this.dispatcher.ReportActionError(Delete, group, this, exception, "Unable to remove group from database.");
             }
         }
 
@@ -138,7 +138,7 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to rebuild groups", exception);
+                this.dispatcher.ReportActionError(Rebuild, this, exception, "Unable to rebuild groups.");
             }
         }
 
@@ -238,7 +238,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        private static List<DbGroup> LoadFromDatabase()
+        private List<DbGroup> LoadFromDatabase()
         {
             try
             {
@@ -246,8 +246,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to load groups from database", exception);
-                return new List<DbGroup>();
+                return this.dispatcher.ReportFunctionError(LoadFromDatabase, this, exception,
+                    "Unable to load groups from database");
             }
         }
 
@@ -261,7 +261,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        private static List<DbGroup> LoadFromDatabase(List<DbGroup> toRefresh)
+        private List<DbGroup> LoadFromDatabase(List<DbGroup> toRefresh)
         {
             try
             {
@@ -269,8 +269,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to refresh groups from database", exception);
-                return new List<DbGroup>();
+                return this.dispatcher.ReportFunctionError(LoadFromDatabase, toRefresh, this, exception,
+                    "Unable to refresh groups from database");
             }
         }
 
