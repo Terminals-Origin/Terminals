@@ -68,7 +68,7 @@ namespace Terminals.Data.DB
 
             this.Dispatcher = new DataDispatcher();
             this.groups = new Groups();
-            this.credentials = new StoredCredentials(this.security);
+            this.credentials = new StoredCredentials(this.security, this.Dispatcher);
             this.favorites = new Favorites(this.groups, this.credentials, this.security, this.Dispatcher);
             this.groups.AssignStores(this.Dispatcher, this.favorites);
             this.connectionHistory = new ConnectionHistory(this.favorites, this.Dispatcher);

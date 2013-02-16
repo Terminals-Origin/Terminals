@@ -197,6 +197,15 @@ namespace Terminals.Data
             return returnValue;
         }
 
+        internal TFuncReturnValue ReportFunctionError<TFuncReturnValue>(Func<TFuncReturnValue> function,
+            object sender, Exception exception, string message)
+        {
+            this.ReportDataError(sender, exception, message);
+            TFuncReturnValue returnValue = function();
+            callStackCounter = 0;
+            return returnValue;
+        }
+
         private void ReportDataError<TActionParams>(TActionParams actionParams, object sender,
             Exception exception, string message)
         {

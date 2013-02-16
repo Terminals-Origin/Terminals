@@ -27,7 +27,7 @@ namespace Terminals.Data.DB
             catch (Exception exception)
             {
                 string message = string.Format("Unable to apply {0} to favorites", applyParams.PropertyName);
-                Logging.Log.Error(message, exception);
+                this.dispatcher.ReportActionError(ApplyValue, applyParams, this, exception, message);
             }
         }
 
