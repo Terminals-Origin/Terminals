@@ -32,7 +32,7 @@
             favorite.Security = new DbSecurityOptions();
             favorite.ExecuteBeforeConnect = new DbBeforeConnectExecute();
             favorite.AssignStoreToRdpOptions(this.persistenceSecurity);
-            favorite.AssignStores(this.groups, credentials, this.persistenceSecurity);
+            favorite.AssignStores(this.groups, credentials, this.persistenceSecurity, this.dispatcher);
             favorite.MarkAsNewlyCreated();
             return favorite;
         }

@@ -18,6 +18,8 @@ namespace Terminals.Data.DB
         /// </summary>
         private readonly Favorites favorites;
 
+        private DataDispatcher dispatcher;
+
         /// <summary>
         /// Cache older items than today only, because the history cant change.
         /// The reason is to don't reload these items from database.
@@ -27,9 +29,10 @@ namespace Terminals.Data.DB
 
         public event HistoryRecorded OnHistoryRecorded;
 
-        internal ConnectionHistory(Favorites favorites)
+        internal ConnectionHistory(Favorites favorites, DataDispatcher dispatcher)
         {
             this.favorites = favorites;
+            this.dispatcher = dispatcher;
         }
 
         public SortableList<IFavorite> GetDateItems(string historyDateKey)
@@ -60,8 +63,8 @@ namespace Terminals.Data.DB
             }
             catch(Exception exception)
             {
-                Logging.Log.Error("Unable to load history part form database: " + historyDateKey, exception);
-                return new SortableList<IFavorite>();
+                return this.dispatcher.ReportFunctionError(LodFromDatabaseByDate, historyDateKey, this,
+                     exception, "Unable to load history part form database.\r\nDatabase connection lost.");
             }
         }
 
@@ -98,7 +101,8 @@ namespace Terminals.Data.DB
             }
             catch(Exception exception)
             {
-                Logging.Log.Warn("Unable to save connection history for " + historyTarget, exception);
+                this.dispatcher.ReportActionError(AddToDatabase, historyTarget, this, exception,
+                         "Unable to save connection history.\r\nDatabase connection lost.");
             }
         }
 

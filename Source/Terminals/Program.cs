@@ -10,6 +10,7 @@ using Terminals.CommandLine;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
+using Terminals.Forms;
 using Terminals.Security;
 using Terminals.Updates;
 using System.Security.Principal;
@@ -152,8 +153,9 @@ namespace Terminals
 
         private static void StartMainForm(CommandLineArgs commandLine)
         {
-            var security = Persistence.Instance.Security;
-            if (security.Authenticate(RequestPassword.KnowsUserPassword))
+            IPersistence persistence = Persistence.Instance;
+            PersistenceErrorForm.RegisterDataEventHandler(persistence.Dispatcher);
+            if (persistence.Security.Authenticate(RequestPassword.KnowsUserPassword))
                 RunMainForm(commandLine);
             else
                 Application.Exit(); 

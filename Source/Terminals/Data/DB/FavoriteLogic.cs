@@ -224,7 +224,7 @@ namespace Terminals.Data.DB
             this.toolBarIcon = source.ToolBarIconImage;
             // protocolProperties don't have a favorite Id reference, so we can overwrite complete content
             this.protocolProperties = source.protocolProperties.Copy();
-            this.AssignStores(source.groups, source.credentials, source.persistenceSecurity);
+            this.AssignStores(source.groups, source.credentials, source.persistenceSecurity, source.Details.Dispatcher);
         }
 
         public string GetToolTipText()
@@ -261,11 +261,13 @@ namespace Terminals.Data.DB
             Favorite.AssignStoreToRdpOptions(this.protocolProperties, persistenceSecurity);
         }
 
-        internal void AssignStores(Groups groups, StoredCredentials credentials, PersistenceSecurity persistenceSecurity)
+        internal void AssignStores(Groups groups, StoredCredentials credentials,
+            PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher)
         {
             this.groups = groups;
             this.credentials = credentials;
             this.persistenceSecurity = persistenceSecurity;
+            this.Details.Dispatcher = dispatcher;
         }
 
         internal void SaveDetails(Database database)
