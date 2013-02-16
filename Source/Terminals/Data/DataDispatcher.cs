@@ -173,6 +173,14 @@ namespace Terminals.Data
                 this.GroupsChanged(args);
         }
 
+        internal void ReportActionError<TActionParams1, TActionParams2>(Action<TActionParams1, TActionParams2> action,
+            TActionParams1 actionParams1, TActionParams2 actionParams2, object sender, Exception exception, string message)
+        {
+            this.ReportDataError(actionParams1, sender, exception, message);
+            action(actionParams1, actionParams2);
+            callStackCounter = 0;
+        }
+
         internal void ReportActionError<TActionParams>(Action<TActionParams> action, TActionParams actionParams,
             object sender, Exception exception, string message)
         {

@@ -74,7 +74,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to add favorite to database", exception);
+                this.dispatcher.ReportActionError(Add, favorites, this, exception, 
+                    "Unable to add favorite to database.");
             }
         }
 
@@ -107,7 +108,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to update favorite in database", exception);
+                this.dispatcher.ReportActionError(Update, favorite, this, exception, 
+                    "Unable to update favorite in database");
             }
         }
 
@@ -134,7 +136,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to update favorite and its groups in database", exception);
+                this.dispatcher.ReportActionError(UpdateFavorite, favorite, newGroups, this, exception, 
+                    "Unable to update favorite and its groups in database.");
             }
         }
 
@@ -220,7 +223,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to delete favorites from database", exception);
+                this.dispatcher.ReportActionError(Delete, favorites, this, exception,
+                    "Unable to delete favorites from database");
             }
         }
 
@@ -269,7 +273,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to set credentials on favorites", exception);
+                this.dispatcher.ReportActionError(ApplyCredentialsToAllFavorites, selectedFavorites, credential,
+                     this, exception, "Unable to set credentials on favorites.");
             }
         }
 
@@ -355,8 +360,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to load favorites from database", exception);
-                return new List<DbFavorite>();
+                return this.dispatcher.ReportFunctionError(LoadFromDatabase, this, exception, 
+                    "Unable to load favorites from database.");
             }
         }
 
@@ -373,7 +378,7 @@ namespace Terminals.Data.DB
             }
         }
 
-        private static List<DbFavorite> LoadFromDatabase(List<DbFavorite> toRefresh)
+        private List<DbFavorite> LoadFromDatabase(List<DbFavorite> toRefresh)
         {
             try
             {
@@ -381,9 +386,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to refresh favorites from database", exception);
-                // force to clear cache, because we are not able to refresh
-                return new List<DbFavorite>();
+                return this.dispatcher.ReportFunctionError(LoadFromDatabase, toRefresh, this, exception, 
+                    "Unable to refresh favorites from database");
             }
         }
 
