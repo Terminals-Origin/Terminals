@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -23,6 +24,10 @@ namespace Terminals.Data
     {
         internal event GroupsChangedEventHandler GroupsChanged;
         internal event FavoritesChangedEventHandler FavoritesChanged;
+
+        internal event EventHandler<DataErrorEventArgs> ErrorOccurred;
+
+        private int callStackCounter;
 
         private GroupsChangedArgs groups;
 
@@ -166,6 +171,57 @@ namespace Terminals.Data
             Debug.WriteLine(args.ToString());
             if (this.GroupsChanged != null)
                 this.GroupsChanged(args);
+        }
+
+        internal void ReportActionError<TActionParams>(Action<TActionParams> action, TActionParams actionParams,
+            object sender, Exception exception, string message)
+        {
+            this.ReportDataError(actionParams, sender, exception, message);
+            action(actionParams);
+            callStackCounter = 0;
+        }
+
+        internal void ReportActionError(Action action, object sender, Exception exception, string message)
+        {
+            this.ReportDataError(sender, exception, message);
+            action();
+            callStackCounter = 0;
+        }
+
+        internal TFuncReturnValue ReportFunctionError<TActionParams, TFuncReturnValue>(Func<TActionParams, TFuncReturnValue> function,
+            TActionParams actionParams, object sender, Exception exception, string message)
+        {
+            this.ReportDataError(actionParams, sender, exception, message);
+            TFuncReturnValue returnValue = function(actionParams);
+            callStackCounter = 0;
+            return returnValue;
+        }
+
+        private void ReportDataError<TActionParams>(TActionParams actionParams, object sender,
+            Exception exception, string message)
+        {
+            string formatedMessage = message + ": " + actionParams;
+            ReportDataError(sender, exception, formatedMessage);
+        }
+
+        private void ReportDataError(object sender, Exception exception, string message)
+        {
+            callStackCounter++;
+            Logging.Log.Error(message, exception);
+            this.FireDataErrorOccured(sender, message);
+        }
+
+        private void FireDataErrorOccured(object sender, string message)
+        {
+            if (this.ErrorOccurred == null)
+                return;
+
+            var arguments = new DataErrorEventArgs 
+            { 
+                Message = message,
+                CallStackFull = this.callStackCounter == 20 
+            };
+            this.ErrorOccurred(sender, arguments);
         }
     }
 }

@@ -172,9 +172,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DataErrorEventArgs.cs" />
     <Compile Include="Data\DB\ApplyValueParams.cs" />
     <Compile Include="Data\DB\CacheConnector.cs" />
     <Compile Include="Data\DB\FavoritesBatchActions.cs" />
+    <Compile Include="Forms\PersistenceErrorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PersistenceErrorForm.Designer.cs">
+      <DependentUpon>PersistenceErrorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Common.AssemblyInfo.cs" />
     <Compile Include="Configuration\FormsCollection.cs" />
     <Compile Include="Configuration\FormsSection.cs" />
@@ -1000,6 +1007,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\OptionPanels\ProxyOptionPanel.resx">
       <DependentUpon>ProxyOptionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PersistenceErrorForm.resx">
+      <DependentUpon>PersistenceErrorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SqlConnectionForm.resx">
       <DependentUpon>SqlConnectionForm.cs</DependentUpon>

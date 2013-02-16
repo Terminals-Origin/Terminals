@@ -367,7 +367,8 @@ namespace Terminals.Data.DB
                 // to list because Linq to entities allows only cast to primitive types
                 List<DbFavorite> favorites = database.Favorites.ToList();
                 database.Cache.DetachAll(favorites);
-                favorites.ForEach(candidate => candidate.AssignStores(this.groups, this.credentials, this.persistenceSecurity));
+                favorites.ForEach(candidate => candidate
+                    .AssignStores(this.groups, this.credentials, this.persistenceSecurity, this.dispatcher));
                 return favorites;
             }
         }

@@ -13,6 +13,8 @@ namespace Terminals.Data.DB
         internal class FavoriteDetails
         {
             private readonly DbFavorite favorite;
+
+            internal DataDispatcher Dispatcher { get; set; }
             internal DbSecurityOptions Security { get; private set; }
             internal DbBeforeConnectExecute ExecuteBeforeConnect { get; private set; }
             internal DbDisplayOptions Display { get; private set; }
@@ -55,8 +57,9 @@ namespace Terminals.Data.DB
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log.Error("Unable to load favorite details from database" + this.favorite, exception);
                     ReleaseReferences(); // rollback loading
+                    this.Dispatcher.ReportActionError(LoadDetailsFromDatabase, this.favorite, exception,
+                        "Unable to load favorite details from database.\r\nDatabase connection lost.");
                 }
             }
 
@@ -110,7 +113,8 @@ namespace Terminals.Data.DB
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log.Error("Couldn't save protocol properties to database", exception);
+                    this.Dispatcher.ReportActionError(SaveProtocolProperties, database, this.favorite,
+                        exception, "Unable to Save favorite protocol properties to database.\r\nDatabase connection lost.");
                 }
             }
 
@@ -122,7 +126,8 @@ namespace Terminals.Data.DB
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log.Error("Couldn't load image from database", exception);
+                    this.Dispatcher.ReportActionError(UpdateImageInDatabase, database, this.favorite, exception,
+                       "Unable to Save favorite icon to database.\r\nDatabase connection lost.");
                 }
             }
 
@@ -149,9 +154,8 @@ namespace Terminals.Data.DB
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log.Error("Couldn't obtain protocol properties from database", exception);
-                    this.favorite.protocolProperties = Favorite.UpdateProtocolPropertiesByProtocol(
-                      this.favorite.Protocol, new RdpOptions());
+                    this.Dispatcher.ReportActionError(LoadProtocolProperties, this.favorite, exception,
+                        "Unable to load favorite protocol properties from database.\r\nDatabase connection lost.");
                 }
             }
 
@@ -184,9 +188,8 @@ namespace Terminals.Data.DB
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log.Error("Couldn't load image from database", exception);
-                    // as recovery, load default icon
-                    this.favorite.toolBarIcon = FavoriteIcons.GetFavoriteIcon(this.favorite);
+                    this.Dispatcher.ReportActionError(LoadImageFromDatabase, this.favorite, exception,
+                        "Unable to load favorite icon from database.\r\nDatabase connection lost.");
                 }
             }
 
