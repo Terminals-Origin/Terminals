@@ -67,25 +67,26 @@ namespace Terminals.Data.DB
             this.favorites = favorites;
         }
 
-        private void SaveParentToDatabase(IGroup value)
+        private void SaveParentToDatabase(IGroup newParent)
         {
             try
             {
-                this.TrySaveParentToDatabase(value);
-                this.parent = value;
+                this.TrySaveParentToDatabase(newParent);
+                this.parent = newParent;
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to save new group parent", exception);
+                this.dispatcher.ReportActionError(SaveParentToDatabase, newParent, this, exception,
+                    "Unable to save new group parent to database.");
             }
         }
 
-        private void TrySaveParentToDatabase(IGroup value)
+        private void TrySaveParentToDatabase(IGroup newParent)
         {
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 database.Groups.Attach(this);
-                this.ParentGroup = value as DbGroup;
+                this.ParentGroup = newParent as DbGroup;
                 database.SaveImmediatelyIfRequested();
                 database.Cache.Detach(this);
             }
@@ -107,7 +108,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to load parent from database", exception);
+                this.dispatcher.ReportActionError(LoadFromDatabase, this, exception, 
+                    "Unable to load group parent from database");
             }
         }
 
@@ -139,8 +141,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to load group favorites from database", exception);
-                return new List<int?>();
+                return this.dispatcher.ReportFunctionError(LoadFavoritesFromDatabase, this, exception,
+                     "Unable to load group favorites from database");
             }
         }
 
@@ -188,7 +190,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to add favorite to database group", exception);
+                this.dispatcher.ReportActionError(AddFavorites, favorites, this, exception,
+                    "Unable to add favorite to database group.");
             }
         }
 
@@ -224,7 +227,8 @@ namespace Terminals.Data.DB
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Unable to remove favorites from group", exception);
+                this.dispatcher.ReportActionError(RemoveFavorites, favorites, this, exception, 
+                    "Unable to remove favorites from group.");
             }
         }
 
