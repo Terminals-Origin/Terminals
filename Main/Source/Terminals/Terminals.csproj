@@ -176,6 +176,12 @@
     <Compile Include="Data\DB\ApplyValueParams.cs" />
     <Compile Include="Data\DB\CacheConnector.cs" />
     <Compile Include="Data\DB\FavoritesBatchActions.cs" />
+    <Compile Include="Forms\UnhandledTerminationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UnhandledTerminationForm.Designer.cs">
+      <DependentUpon>UnhandledTerminationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\PersistenceErrorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -983,6 +989,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ChangePassword.resx">
       <DependentUpon>ChangePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UnhandledTerminationForm.resx">
+      <DependentUpon>UnhandledTerminationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputBox.resx">
       <DependentUpon>InputBox.cs</DependentUpon>

@@ -20,7 +20,7 @@ namespace Terminals
     internal static partial class Program
     {
         private static string TerminalsVersion;
-        public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues", 
+        public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues",
             typeof(MainForm).Assembly);
 
         /// <summary>
@@ -30,32 +30,30 @@ namespace Terminals
         [ComVisible(true)]
         internal static void Main()
         {
-            
-        //MAJOR.MINOR.PATCH.BUILD
-        //MAJOR == Breaking Changes in API or features
-        //MINOR == Non breaking changes, but significant feature changes
-        //PATH (Or Revision) == Bug fixes only, etc...
-        //BUILD == Build increments
-        //
-        //Incremental builds, daily, etc will include full M.M.P.B
-        //Release builds only include M.M.P
-        //
-        //.NET Likes:  MAJOR.MINOR.BUILD.REVISION
+            SetUnhandledExceptions();
+
+            //MAJOR.MINOR.PATCH.BUILD
+            //MAJOR == Breaking Changes in API or features
+            //MINOR == Non breaking changes, but significant feature changes
+            //PATH (Or Revision) == Bug fixes only, etc...
+            //BUILD == Build increments
+            //
+            //Incremental builds, daily, etc will include full M.M.P.B
+            //Release builds only include M.M.P
+            //
+            //.NET Likes:  MAJOR.MINOR.BUILD.REVISION
 
 
-        var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
 #if DEBUG
-        TerminalsVersion =  version.ToString();  //debug builds, to keep track of minor/revisions, etc..
+            TerminalsVersion = version.ToString();  //debug builds, to keep track of minor/revisions, etc..
 #else
         TerminalsVersion = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);        
 #endif
 
-
-        Application.ThreadException += new ThreadExceptionEventHandler(Application_ThreadException);
-
-            Logging.Log.Info(String.Format("-------------------------------Title: {0} started Version:{1} Date:{2}-------------------------------", 
-                Info.TitleVersion, Info.DLLVersion, Info.BuildDate));
+            Logging.Log.Info(String.Format("-------------------------------Title: {0} started Version:{1} Date:{2}-------------------------------",
+                  Info.TitleVersion, Info.DLLVersion, Info.BuildDate));
 
             Logging.Log.Info("State 1 Complete");
 
@@ -71,9 +69,9 @@ namespace Terminals
 
             Logging.Log.Info("State 4 Complete");
 
-            if(UserAccountControlNotSatisfied())
+            if (UserAccountControlNotSatisfied())
                 return;
-            
+
             Logging.Log.Info("State 5 Complete");
 
             if (commandLine.SingleInstance && SingleInstanceApplication.Instance.NotifyExisting(commandLine))
@@ -95,6 +93,30 @@ namespace Terminals
 
             Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
+        }
+
+        private static void SetUnhandledExceptions()
+        {
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomainUnhandledException);
+            Application.ThreadException += new ThreadExceptionEventHandler(ApplicationThreadException);
+        }
+
+        private static void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            ShowApplicationExit(e.ExceptionObject);
+        }
+
+        private static void ApplicationThreadException(object sender, ThreadExceptionEventArgs e)
+        {
+            ShowApplicationExit(e.Exception);
+        }
+
+        private static void ShowApplicationExit(object messageToLog)
+        {
+            Logging.Log.Fatal(messageToLog);
+            Logging.Log.Fatal("Application has to be terminated.");
+            UnhandledTerminationForm.ShowRipDialog();
         }
 
         private static void UpgradeDatabaseVersion()
@@ -123,17 +145,17 @@ namespace Terminals
 
         private static bool UserAccountControlNotSatisfied()
         {
-            try 
+            try
             {
                 LogNonAdministrator();
                 string testFile = FileLocations.WriteAccessLock;
-                
+
                 // Test to make sure that the current user has write access to the current directory.
                 using (StreamWriter sw = File.AppendText(testFile)) { }
             }
             catch (Exception ex)
             {
-                Logging.Log.FatalFormat("Access Denied {0}" , ex.Message);
+                Logging.Log.FatalFormat("Access Denied {0}", ex.Message);
                 string message = String.Format("{0}\r\n\r\nWrite Access is denied\r\n\r\nPlease make sure you are running as administrator", ex.Message);
                 MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
@@ -158,28 +180,21 @@ namespace Terminals
             if (persistence.Security.Authenticate(RequestPassword.KnowsUserPassword))
                 RunMainForm(commandLine);
             else
-                Application.Exit(); 
+                Application.Exit();
         }
 
         private static void RunMainForm(CommandLineArgs commandLine)
         {
-            try
-            {
-                var mainForm = new MainForm();
-                SingleInstanceApplication.Instance.Initialize(mainForm, commandLine);
-                mainForm.HandleCommandLineActions(commandLine);
-                Application.Run(mainForm);
-            }
-            catch (Exception exc)
-            {
-                Logging.Log.Fatal("Main Form Exception", exc);
-            }
+            var mainForm = new MainForm();
+            SingleInstanceApplication.Instance.Initialize(mainForm, commandLine);
+            mainForm.HandleCommandLineActions(commandLine);
+            Application.Run(mainForm);
         }
 
         /// <summary>
         /// dump out common/useful debugging data at app start
         /// </summary>
-        private static void LogGeneralProperties() 
+        private static void LogGeneralProperties()
         {
             Logging.Log.Info(String.Format("CommandLine:{0}", Environment.CommandLine));
             Logging.Log.Info(String.Format("CurrentDirectory:{0}", Environment.CurrentDirectory));
@@ -198,11 +213,6 @@ namespace Terminals
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-        }
-
-        private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
-        {
-            Logging.Log.Fatal("Application Exception", e.Exception);
         }
 
         private static CommandLineArgs ParseCommandline()
