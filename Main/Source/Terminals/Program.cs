@@ -31,7 +31,43 @@ namespace Terminals
         internal static void Main()
         {
             SetUnhandledExceptions();
+            SetApplicationVersion();
 
+            Logging.Log.Info(String.Format("-------------------------------Title: {0} started Version:{1} Date:{2}-------------------------------",
+                  Info.TitleVersion, Info.DLLVersion, Info.BuildDate));
+            Logging.Log.Info("Start state 1 Complete: Unhandled exceptions");
+
+            LogGeneralProperties();
+            Logging.Log.Info("Start state 2 Complete: Log General properties");
+
+            SetApplicationProperties();
+            Logging.Log.Info("Start state 3 Complete: Set application properties");
+
+            CommandLineArgs commandLine = ParseCommandline();
+            Logging.Log.Info("Start state 4 Complete: Parse command line");
+
+            if (UserAccountControlNotSatisfied())
+                return;
+            Logging.Log.Info("Start state 5 Complete: User account control");
+            
+            if (commandLine.SingleInstance && SingleInstanceApplication.Instance.NotifyExisting(commandLine))
+                return;
+            Logging.Log.Info("Start state 6 Complete: Set Single instance mode");
+
+            UpdateConfig.CheckConfigVersionUpdate();
+            Logging.Log.Info("Start state 7 Complete: Configuration upgrade");
+
+            UpdateManager.CheckForUpdates(commandLine);
+            Logging.Log.Info("Start state 8 Complete: Check application updates");
+
+            StartMainForm(commandLine);
+
+            Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
+                Info.TitleVersion));
+        }
+
+        private static void SetApplicationVersion()
+        {
             //MAJOR.MINOR.PATCH.BUILD
             //MAJOR == Breaking Changes in API or features
             //MINOR == Non breaking changes, but significant feature changes
@@ -43,56 +79,13 @@ namespace Terminals
             //
             //.NET Likes:  MAJOR.MINOR.BUILD.REVISION
 
-
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
 
 #if DEBUG
-            TerminalsVersion = version.ToString();  //debug builds, to keep track of minor/revisions, etc..
+            TerminalsVersion = version.ToString(); //debug builds, to keep track of minor/revisions, etc..
 #else
         TerminalsVersion = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);        
 #endif
-
-            Logging.Log.Info(String.Format("-------------------------------Title: {0} started Version:{1} Date:{2}-------------------------------",
-                  Info.TitleVersion, Info.DLLVersion, Info.BuildDate));
-
-            Logging.Log.Info("State 1 Complete");
-
-            LogGeneralProperties();
-
-            Logging.Log.Info("State 2 Complete");
-            SetApplicationProperties();
-
-            UpgradeDatabaseVersion();
-
-            Logging.Log.Info("State 3 Complete");
-            CommandLineArgs commandLine = ParseCommandline();
-
-            Logging.Log.Info("State 4 Complete");
-
-            if (UserAccountControlNotSatisfied())
-                return;
-
-            Logging.Log.Info("State 5 Complete");
-
-            if (commandLine.SingleInstance && SingleInstanceApplication.Instance.NotifyExisting(commandLine))
-                return;
-
-            Logging.Log.Info("State 6 Complete");
-
-            UpdateConfig.CheckConfigVersionUpdate();
-
-            Logging.Log.Info("State 7 Complete");
-
-            UpdateManager.CheckForUpdates(commandLine);
-
-            Logging.Log.Info("State 8 Complete");
-
-            StartMainForm(commandLine);
-
-            Logging.Log.Info("State 9 Complete");
-
-            Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
-                Info.TitleVersion));
         }
 
         private static void SetUnhandledExceptions()
@@ -117,30 +110,6 @@ namespace Terminals
             Logging.Log.Fatal(messageToLog);
             Logging.Log.Fatal("Application has to be terminated.");
             UnhandledTerminationForm.ShowRipDialog();
-        }
-
-        private static void UpgradeDatabaseVersion()
-        {
-            bool filePersistence = Settings.PersistenceType == 0;
-            Logging.Log.InfoFormat("File Persistence Mode:{0}", filePersistence);
-
-            if (!filePersistence)
-            {
-                string connectionString = Settings.ConnectionString;
-                DatabaseValidataionResult dbResult = DatabaseConnections.ValidateDatabaseConnection(connectionString, "databasemasterpassword");
-
-                var root = (new FileInfo(System.Reflection.Assembly.GetExecutingAssembly().Location)).Directory.FullName;
-                var migrationsRoot = Path.Combine(root, "Migrations");
-                if (Directory.Exists(migrationsRoot))
-                {
-                    var parser = new JustVersionParser();
-                    var list = SqlScriptRunner.ScriptRunner.ResolveScriptsFromPathAndVersion(migrationsRoot, "*.sql", true,
-                                                                                  migrationsRoot, dbResult.CurrentVersion,
-                                                                                  SqlScriptRunner.Versioning.Version.Max,
-                                                                                  parser);
-                }
-            }
-
         }
 
         private static bool UserAccountControlNotSatisfied()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.EntityClient;
+using System.IO;
 using System.Linq;
 using Terminals.Configuration;
 using Terminals.Security;
@@ -116,6 +117,24 @@ namespace Terminals.Data.DB
                 const string COMMAND_TEXT = "SELECT name FROM sys.databases WHERE name NOT IN ('master', 'tempdb', 'model', 'msdb');";
                 return database.Database.SqlQuery<string>(COMMAND_TEXT)
                     .ToList();
+            }
+        }
+
+        internal static void UpgradeDatabaseVersion()
+        {
+            string connectionString = Settings.ConnectionString;
+            string databaseMasterPassword = Settings.DatabaseMasterPassword;
+            DatabaseValidataionResult dbResult = ValidateDatabaseConnection(connectionString, databaseMasterPassword);
+
+            string migrationsRoot = FileLocations.SqlMigrations;
+            if (Directory.Exists(migrationsRoot))
+            {
+                var parser = new Versioning.JustVersionParser();
+                var list = SqlScriptRunner.ScriptRunner.ResolveScriptsFromPathAndVersion(migrationsRoot, "*.sql", true,
+                                                                                         migrationsRoot, dbResult.CurrentVersion,
+                                                                                         Versioning.Version.Max, parser);
+
+                // todo commit the database upgrade in next version
             }
         }
 
