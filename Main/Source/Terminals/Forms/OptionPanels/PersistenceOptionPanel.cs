@@ -297,5 +297,10 @@ namespace Terminals.Forms
 
             return new Tuple<bool, string, string>(false, string.Empty, string.Empty);
         }
+
+        private void ButtonCreateNewDatabaseClick(object sender, EventArgs e)
+        {
+            // todo create new database, when configuring connection
+        }
     }
 }
