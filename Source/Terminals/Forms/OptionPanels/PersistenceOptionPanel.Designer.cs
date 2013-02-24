@@ -33,6 +33,7 @@ namespace Terminals.Forms
             this.mainPanel = new System.Windows.Forms.Panel();
             this.groupBoxPersistenceType = new System.Windows.Forms.GroupBox();
             this.sqlServerOptionsPanel = new System.Windows.Forms.Panel();
+            this.lblDbMasterPassword = new System.Windows.Forms.Label();
             this.txtDbPassword = new System.Windows.Forms.TextBox();
             this.btnSetDatabasePassword = new System.Windows.Forms.Button();
             this.btnAdvanced = new System.Windows.Forms.Button();
@@ -47,7 +48,6 @@ namespace Terminals.Forms
             this.btnCreateNew = new System.Windows.Forms.Button();
             this.lblServerName = new System.Windows.Forms.Label();
             this.sqlServerAuthPanel = new System.Windows.Forms.Panel();
-            this.lblDbMasterPassword = new System.Windows.Forms.Label();
             this.lblUserName = new System.Windows.Forms.Label();
             this.sqlServerPasswordTextBox = new System.Windows.Forms.TextBox();
             this.sqlServerUserNameTextBox = new System.Windows.Forms.TextBox();
@@ -113,6 +113,16 @@ namespace Terminals.Forms
             this.sqlServerOptionsPanel.Size = new System.Drawing.Size(469, 209);
             this.sqlServerOptionsPanel.TabIndex = 17;
             // 
+            // lblDbMasterPassword
+            // 
+            this.lblDbMasterPassword.AutoSize = true;
+            this.lblDbMasterPassword.Location = new System.Drawing.Point(38, 155);
+            this.lblDbMasterPassword.Name = "lblDbMasterPassword";
+            this.lblDbMasterPassword.Size = new System.Drawing.Size(104, 13);
+            this.lblDbMasterPassword.TabIndex = 27;
+            this.lblDbMasterPassword.Text = "Database password:";
+            this.lblDbMasterPassword.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // txtDbPassword
             // 
             this.txtDbPassword.Location = new System.Drawing.Point(148, 152);
@@ -133,7 +143,7 @@ namespace Terminals.Forms
             // 
             // btnAdvanced
             // 
-            this.btnAdvanced.Location = new System.Drawing.Point(67, 181);
+            this.btnAdvanced.Location = new System.Drawing.Point(205, 181);
             this.btnAdvanced.Name = "btnAdvanced";
             this.btnAdvanced.Size = new System.Drawing.Size(75, 23);
             this.btnAdvanced.TabIndex = 24;
@@ -219,12 +229,14 @@ namespace Terminals.Forms
             // 
             // btnCreateNew
             // 
-            this.btnCreateNew.Location = new System.Drawing.Point(148, 181);
+            this.btnCreateNew.Location = new System.Drawing.Point(67, 181);
             this.btnCreateNew.Name = "btnCreateNew";
             this.btnCreateNew.Size = new System.Drawing.Size(132, 23);
             this.btnCreateNew.TabIndex = 9;
             this.btnCreateNew.Text = "Create new database";
             this.btnCreateNew.UseVisualStyleBackColor = true;
+            this.btnCreateNew.Visible = false;
+            this.btnCreateNew.Click += new System.EventHandler(this.ButtonCreateNewDatabaseClick);
             // 
             // lblServerName
             // 
@@ -247,16 +259,6 @@ namespace Terminals.Forms
             this.sqlServerAuthPanel.Name = "sqlServerAuthPanel";
             this.sqlServerAuthPanel.Size = new System.Drawing.Size(327, 55);
             this.sqlServerAuthPanel.TabIndex = 16;
-            // 
-            // lblDbMasterPassword
-            // 
-            this.lblDbMasterPassword.AutoSize = true;
-            this.lblDbMasterPassword.Location = new System.Drawing.Point(38, 155);
-            this.lblDbMasterPassword.Name = "lblDbMasterPassword";
-            this.lblDbMasterPassword.Size = new System.Drawing.Size(104, 13);
-            this.lblDbMasterPassword.TabIndex = 27;
-            this.lblDbMasterPassword.Text = "Database password:";
-            this.lblDbMasterPassword.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblUserName
             // 
