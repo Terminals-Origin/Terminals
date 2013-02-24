@@ -5,11 +5,9 @@ using System.Runtime.InteropServices;
 using System.Resources;
 using System.Threading;
 using System.Windows.Forms;
-using SqlScriptRunner.Versioning;
 using Terminals.CommandLine;
 using Terminals.Configuration;
 using Terminals.Data;
-using Terminals.Data.DB;
 using Terminals.Forms;
 using Terminals.Security;
 using Terminals.Updates;
@@ -173,8 +171,8 @@ namespace Terminals
             Logging.Log.Info(String.Format("UserInteractive:{0}", Environment.UserInteractive));
             Logging.Log.Info(String.Format("Version:{0}", Environment.Version));
             Logging.Log.Info(String.Format("WorkingSet:{0}", Environment.WorkingSet));
-            Logging.Log.Info(String.Format("Is64BitOperatingSystem:{0}", Terminals.Native.Wow.Is64BitOperatingSystem));
-            Logging.Log.Info(String.Format("Is64BitProcess:{0}", Terminals.Native.Wow.Is64BitProcess));
+            Logging.Log.Info(String.Format("Is64BitOperatingSystem:{0}", Native.Wow.Is64BitOperatingSystem));
+            Logging.Log.Info(String.Format("Is64BitProcess:{0}", Native.Wow.Is64BitProcess));
         }
 
         private static void SetApplicationProperties()
