@@ -1493,7 +1493,7 @@
     <None Include="Resources\tag.png" />
     <None Include="Resources\smallterm.png" />
     <None Include="Resources\Terminals.config" />
-    <None Include="Terminals.config">
+    <None Include="Data\Terminals.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Terminals.log4net.config">
