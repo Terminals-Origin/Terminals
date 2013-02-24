@@ -51,6 +51,8 @@ namespace Terminals.Configuration
         /// </summary>
         internal const string TOOLSTRIPS_FILENAME = "ToolStrip.settings.config";
 
+        private const string SQL_MIGRATIONS = "Migrations";
+
         internal static string ControlPanelImage
         {
             get { return Path.Combine(DATA_DIRECTORY, @"Thumbs\ControlPanel.png"); }
@@ -98,6 +100,17 @@ namespace Terminals.Configuration
         internal static string HistoryFullFileName
         {
             get { return GetFullPath(HISTORY_FILENAME); }
+        }
+
+        /// <summary>
+        /// Gets full path to the Sql migration scripts directory in application install directory
+        /// </summary>
+        internal static string SqlMigrations
+        {
+            get
+            {
+                return Path.Combine(Program.Info.Location, SQL_MIGRATIONS);
+            }
         }
 
         internal string Configuration { get; private set; }
