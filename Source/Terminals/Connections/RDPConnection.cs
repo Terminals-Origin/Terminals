@@ -18,8 +18,8 @@ namespace Terminals.Connections
 {
     internal class RDPConnection : Connection
     {
-        private MSTSCLib.IMsRdpClientNonScriptable4 _nonScriptable;
-        private AxMsRdpClient6 client = null;
+        private MSTSCLib.IMsRdpClientNonScriptable4 nonScriptable;
+        private AxMsRdpClient6NotSafeForScripting client = null;
 
         public delegate void Disconnected(RDPConnection Connection);
         public event Disconnected OnDisconnected;
@@ -30,7 +30,7 @@ namespace Terminals.Connections
         {
             get
             {
-                return this.client;
+                return null;
             }
         }
 
@@ -51,7 +51,6 @@ namespace Terminals.Connections
                 if (!this.InitializeClientControl())
                   return false;
                 this.ConfigureCientUserControl();
-                _nonScriptable = (this.client.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable4);
                 ChangeDesktopSize(Favorite.Display.DesktopSize);
                 
                 try
@@ -93,13 +92,7 @@ namespace Terminals.Connections
         {
             try
             {
-                // todo replace the client with not safe for scripting prototype
-                //var client = new AxMsRdpClient6NotSafeForScripting();
-                //Control control = (Control)client;
-                //Controls.Add(control);
-                //client.Connect();
-                //client.CreateControl();
-                this.client = new AxMsRdpClient6();
+                this.client = new AxMsRdpClient6NotSafeForScripting();
             }
             catch (Exception exception)
             {
@@ -115,6 +108,8 @@ namespace Terminals.Connections
         {
             var clientControl = (Control)this.client;
             this.Controls.Add(clientControl);
+            this.client.CreateControl();
+            nonScriptable = this.client.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable4;
             this.client.BringToFront();
             this.BringToFront();
             this.client.Parent = this.TerminalTabPage;
@@ -174,9 +169,9 @@ namespace Terminals.Connections
                 this.client.AdvancedSettings2.RedirectDrives = true;
             else
             {
-                for (int i = 0; i < this._nonScriptable.DriveCollection.DriveCount; i++)
+                for (int i = 0; i < nonScriptable.DriveCollection.DriveCount; i++)
                 {
-                    MSTSCLib.IMsRdpDrive drive = this._nonScriptable.DriveCollection.get_DriveByIndex((uint)i);
+                    MSTSCLib.IMsRdpDrive drive = nonScriptable.DriveCollection.get_DriveByIndex((uint)i);
                     foreach (string str in rdpOptions.Redirect.Drives)
                     {
                         if (drive.Name.IndexOf(str) > -1)
@@ -309,7 +304,7 @@ namespace Terminals.Connections
             if (rdpOptions.Security.EnableTLSAuthentication)
                 this.client.AdvancedSettings5.AuthenticationLevel = 2;
 
-            this._nonScriptable.EnableCredSspSupport = rdpOptions.Security.EnableNLAAuthentication;
+            this.nonScriptable.EnableCredSspSupport = rdpOptions.Security.EnableNLAAuthentication;
 
             this.client.SecuredSettings2.AudioRedirectionMode = (int)rdpOptions.Redirect.Sounds;
 
@@ -321,8 +316,8 @@ namespace Terminals.Connections
             {
                 if (!String.IsNullOrEmpty(security.Password))
                 {
-                    if (this._nonScriptable != null)
-                        this._nonScriptable.ClearTextPassword = security.Password;
+                    if (this.nonScriptable != null)
+                        this.nonScriptable.ClearTextPassword = security.Password;
                 }
             }
             catch (Exception exc)
@@ -349,9 +344,11 @@ namespace Terminals.Connections
             this.client.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(this.client_OnWarning);
             this.client.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(this.client_OnFatalError);
             this.client.OnLogonError += new IMsTscAxEvents_OnLogonErrorEventHandler(this.client_OnLogonError);
-            this.client.DragEnter += new DragEventHandler(this.client_DragEnter);
-            this.client.DragDrop += new DragEventHandler(this.client_DragDrop);
             this.client.OnConnected += new EventHandler(this.client_OnConnected);
+            // assign the drag and drop event handlers directly throws an exception
+            var clientControl = (Control)this.client;
+            clientControl.DragEnter += new DragEventHandler(this.client_DragEnter);
+            clientControl.DragDrop += new DragEventHandler(this.client_DragDrop);
         }
 
         public override void Disconnect()
@@ -432,33 +429,32 @@ namespace Terminals.Connections
 
         private void client_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            var client = (AxMsRdpClient6)sender;
-            this.ShowDisconnetMessageBox(e, client);
-            this.CloseTabPageOnParent(client);
+            this.ShowDisconnetMessageBox(e);
+            this.CloseTabPageOnParent();
             this.FireDisconnected();
         }
 
-        private void ShowDisconnetMessageBox(IMsTscAxEvents_OnDisconnectedEvent e, AxMsRdpClient6 client)
+        private void ShowDisconnetMessageBox(IMsTscAxEvents_OnDisconnectedEvent e)
         {
             int reason = e.discReason;
-            string error = RdpClientErrorMessages.ToDisconnectMessage(client, reason);
+            string error = RdpClientErrorMessages.ToDisconnectMessage(this.client, reason);
             
             if (!string.IsNullOrEmpty(error))
             {
-                string message = String.Format("Error connecting to {0}\n\n{1}", client.Server, error);
+                string message = String.Format("Error connecting to {0}\n\n{1}", this.client.Server, error);
                 MessageBox.Show(this, message, Program.Info.TitleVersion, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
-        private void CloseTabPageOnParent(AxMsRdpClient6 client)
+        private void CloseTabPageOnParent()
         {
             if (this.ParentForm.InvokeRequired)
             {
-                this.Invoke(new InvokeCloseTabPage(this.CloseTabPage), new object[] {client.Parent});
+                this.Invoke(new InvokeCloseTabPage(this.CloseTabPage), new object[] { this.client.Parent});
             }
             else
             {
-                this.CloseTabPage(client.Parent);
+                this.CloseTabPage(this.client.Parent);
             }
         }
 
