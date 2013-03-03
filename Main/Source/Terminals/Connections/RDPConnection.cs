@@ -19,36 +19,19 @@ namespace Terminals.Connections
     internal class RDPConnection : Connection
     {
         private MSTSCLib.IMsRdpClientNonScriptable4 _nonScriptable;
-        private AxMsRdpClient6 _axMsRdpClient = null;
+        private AxMsRdpClient6 client = null;
 
         public delegate void Disconnected(RDPConnection Connection);
         public event Disconnected OnDisconnected;
         public delegate void ConnectionEstablish(RDPConnection Connection);
         public event ConnectionEstablish OnConnected;
-        
+
         public AxMsRdpClient6 AxMsRdpClient
         {
             get
             {
-                return _axMsRdpClient;
+                return this.client;
             }
-        }
-
-        private void SHCopyFiles(string[] sourceFiles, string destinationFolder)
-        {
-            SHFileOperationWrapper fo = new SHFileOperationWrapper();
-            List<string> destinationFiles = new List<string>();
-
-            foreach (string sourceFile in sourceFiles)
-            {
-                destinationFiles.Add(Path.Combine(destinationFolder, Path.GetFileName(sourceFile)));
-            }
-
-            fo.Operation = SHFileOperationWrapper.FileOperations.FO_COPY;
-            fo.OwnerWindow = this.Handle;
-            fo.SourceFiles = sourceFiles;
-            fo.DestFiles = destinationFiles.ToArray();
-            fo.DoOperation();
         }
 
         #region IConnection Members
@@ -57,7 +40,7 @@ namespace Terminals.Connections
         {
             get
             {
-                return Convert.ToBoolean(_axMsRdpClient.Connected);
+                return Convert.ToBoolean(this.client.Connected);
             }
         }
 
@@ -71,27 +54,33 @@ namespace Terminals.Connections
                 {
                     case DesktopSize.AutoScale:
                     case DesktopSize.FitToWindow:
-                        this._axMsRdpClient.AdvancedSettings3.SmartSizing = true;
+                        this.client.AdvancedSettings3.SmartSizing = true;
                         break;
                     case DesktopSize.FullScreen:
-                        _axMsRdpClient.FullScreen = true;
+                        this.client.FullScreen = true;
                         break;
                 }
 
-                _axMsRdpClient.DesktopWidth = size.Width;
-                _axMsRdpClient.DesktopHeight = size.Height;
+                this.client.DesktopWidth = size.Width;
+                this.client.DesktopHeight = size.Height;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
-                Logging.Log.Error("Error trying to set the desktop dimensions",exc);
+                Logging.Log.Error("Error trying to set the desktop dimensions", exc);
             }
         }
-                
+
         public override bool Connect()
         {
             try
             {
-                _axMsRdpClient = new AxMsRdpClient6();
+                // todo replace the client with not safe for scripting prototype
+                //var client = new AxMsRdpClient6NotSafeForScripting();
+                //Control control = (Control)client;
+                //Controls.Add(control);
+                //client.Connect();
+                //client.CreateControl();
+                this.client = new AxMsRdpClient6();
             }
             catch (Exception exc)
             {
@@ -103,19 +92,19 @@ namespace Terminals.Connections
 
             try
             {
-                Controls.Add(_axMsRdpClient);
-                _axMsRdpClient.BringToFront();
+                Controls.Add(this.client);
+                this.client.BringToFront();
                 this.BringToFront();
-                _axMsRdpClient.Parent = TerminalTabPage;
+                this.client.Parent = TerminalTabPage;
                 this.Parent = TerminalTabPage;
-                _axMsRdpClient.AllowDrop = true;
+                this.client.AllowDrop = true;
 
-                ((Control)_axMsRdpClient).DragEnter += new DragEventHandler(axMsRdpClient2_DragEnter);
-                ((Control)_axMsRdpClient).DragDrop += new DragEventHandler(axMsRdpClient2_DragDrop);
-                _axMsRdpClient.OnConnected += new EventHandler(axMsRdpClient2_OnConnected);
-                _axMsRdpClient.Dock = DockStyle.Fill;
-                _nonScriptable = (_axMsRdpClient.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable4);
-                    
+                ((Control)this.client).DragEnter += new DragEventHandler(this.client_DragEnter);
+                ((Control)this.client).DragDrop += new DragEventHandler(this.client_DragDrop);
+                this.client.OnConnected += new EventHandler(this.client_OnConnected);
+                this.client.Dock = DockStyle.Fill;
+                _nonScriptable = (this.client.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable4);
+
                 ChangeDesktopSize(Favorite.Display.DesktopSize);
                 try
                 {
@@ -123,29 +112,29 @@ namespace Terminals.Connections
                     //axMsRdpClient2.DesktopWidth = width;
                     //axMsRdpClient2.DesktopHeight = height;
 
-                    switch(Favorite.Display.Colors)
+                    switch (Favorite.Display.Colors)
                     {
                         case Colors.Bits8:
-                            _axMsRdpClient.ColorDepth = 8;
+                            this.client.ColorDepth = 8;
                             break;
                         case Colors.Bit16:
-                            _axMsRdpClient.ColorDepth = 16;
+                            this.client.ColorDepth = 16;
                             break;
                         case Colors.Bits24:
-                            _axMsRdpClient.ColorDepth = 24;
+                            this.client.ColorDepth = 24;
                             break;
                         case Colors.Bits32:
-                            _axMsRdpClient.ColorDepth = 32;
+                            this.client.ColorDepth = 32;
                             break;
                     }
 
-                    _axMsRdpClient.ConnectingText = "Connecting. Please wait...";
-                    _axMsRdpClient.DisconnectedText = "Disconnecting...";
+                    this.client.ConnectingText = "Connecting. Please wait...";
+                    this.client.DisconnectedText = "Disconnecting...";
 
                     var rdpOptions = this.Favorite.ProtocolProperties as RdpOptions;
                     if (rdpOptions.Redirect.Drives.Count > 0 && rdpOptions.Redirect.Drives[0].Equals("true"))
                     {
-                        _axMsRdpClient.AdvancedSettings2.RedirectDrives = true;
+                        this.client.AdvancedSettings2.RedirectDrives = true;
                     }
                     else
                     {
@@ -160,81 +149,81 @@ namespace Terminals.Connections
 
                     //advanced settings
                     //bool, 0 is false, other is true
-                    if (rdpOptions.UserInterface.AllowBackgroundInput) 
-                        _axMsRdpClient.AdvancedSettings.allowBackgroundInput = -1;
+                    if (rdpOptions.UserInterface.AllowBackgroundInput)
+                        this.client.AdvancedSettings.allowBackgroundInput = -1;
 
-                    if (rdpOptions.UserInterface.BitmapPeristence) 
-                        _axMsRdpClient.AdvancedSettings.BitmapPeristence = -1;
+                    if (rdpOptions.UserInterface.BitmapPeristence)
+                        this.client.AdvancedSettings.BitmapPeristence = -1;
 
                     if (rdpOptions.UserInterface.EnableCompression)
-                        _axMsRdpClient.AdvancedSettings.Compress = -1;
+                        this.client.AdvancedSettings.Compress = -1;
 
-                    if (rdpOptions.UserInterface.AcceleratorPassthrough) 
-                        _axMsRdpClient.AdvancedSettings2.AcceleratorPassthrough = -1;
+                    if (rdpOptions.UserInterface.AcceleratorPassthrough)
+                        this.client.AdvancedSettings2.AcceleratorPassthrough = -1;
 
-                    if (rdpOptions.UserInterface.DisableControlAltDelete) 
-                        _axMsRdpClient.AdvancedSettings2.DisableCtrlAltDel = -1;
+                    if (rdpOptions.UserInterface.DisableControlAltDelete)
+                        this.client.AdvancedSettings2.DisableCtrlAltDel = -1;
 
-                    if (rdpOptions.UserInterface.DisplayConnectionBar) 
-                        _axMsRdpClient.AdvancedSettings2.DisplayConnectionBar = true;
+                    if (rdpOptions.UserInterface.DisplayConnectionBar)
+                        this.client.AdvancedSettings2.DisplayConnectionBar = true;
 
-                    if (rdpOptions.UserInterface.DoubleClickDetect) 
-                        _axMsRdpClient.AdvancedSettings2.DoubleClickDetect = -1;
+                    if (rdpOptions.UserInterface.DoubleClickDetect)
+                        this.client.AdvancedSettings2.DoubleClickDetect = -1;
 
-                    if (rdpOptions.UserInterface.DisableWindowsKey) 
-                        _axMsRdpClient.AdvancedSettings2.EnableWindowsKey = -1;
+                    if (rdpOptions.UserInterface.DisableWindowsKey)
+                        this.client.AdvancedSettings2.EnableWindowsKey = -1;
 
-                    if (rdpOptions.Security.EnableEncryption) 
-                        _axMsRdpClient.AdvancedSettings2.EncryptionEnabled = -1;
+                    if (rdpOptions.Security.EnableEncryption)
+                        this.client.AdvancedSettings2.EncryptionEnabled = -1;
 
 
-                    if (rdpOptions.GrabFocusOnConnect) 
-                        _axMsRdpClient.AdvancedSettings2.GrabFocusOnConnect = true;
+                    if (rdpOptions.GrabFocusOnConnect)
+                        this.client.AdvancedSettings2.GrabFocusOnConnect = true;
 
                     if (rdpOptions.Security.Enabled)
-                        {
-                            if (rdpOptions.FullScreen) 
-                                _axMsRdpClient.SecuredSettings2.FullScreen = -1;
+                    {
+                        if (rdpOptions.FullScreen)
+                            this.client.SecuredSettings2.FullScreen = -1;
 
-                            _axMsRdpClient.SecuredSettings2.StartProgram = rdpOptions.Security.StartProgram;
-                            _axMsRdpClient.SecuredSettings2.WorkDir = rdpOptions.Security.WorkingFolder;
-                        }
+                        this.client.SecuredSettings2.StartProgram = rdpOptions.Security.StartProgram;
+                        this.client.SecuredSettings2.WorkDir = rdpOptions.Security.WorkingFolder;
+                    }
 
-                    _axMsRdpClient.AdvancedSettings2.MinutesToIdleTimeout = rdpOptions.TimeOuts.IdleTimeout;
+                    this.client.AdvancedSettings2.MinutesToIdleTimeout = rdpOptions.TimeOuts.IdleTimeout;
 
-                    try 
+                    try
                     {
                         int timeout = rdpOptions.TimeOuts.OverallTimeout;
-                        if(timeout > 600) timeout = 10;
-                        if(timeout <= 0) timeout = 10;
-                        _axMsRdpClient.AdvancedSettings2.overallConnectionTimeout = timeout;
+                        if (timeout > 600) timeout = 10;
+                        if (timeout <= 0) timeout = 10;
+                        this.client.AdvancedSettings2.overallConnectionTimeout = timeout;
                         timeout = rdpOptions.TimeOuts.ConnectionTimeout;
-                        if(timeout > 600) timeout = 10;
-                        if(timeout <= 0) timeout = 10;
-                        
-                        _axMsRdpClient.AdvancedSettings2.singleConnectionTimeout = timeout;
+                        if (timeout > 600) timeout = 10;
+                        if (timeout <= 0) timeout = 10;
+
+                        this.client.AdvancedSettings2.singleConnectionTimeout = timeout;
 
                         timeout = rdpOptions.TimeOuts.ShutdownTimeout;
-                        if(timeout > 600) timeout = 10;
-                        if(timeout <= 0) timeout = 10;
-                        _axMsRdpClient.AdvancedSettings2.shutdownTimeout = timeout;
-                        
+                        if (timeout > 600) timeout = 10;
+                        if (timeout <= 0) timeout = 10;
+                        this.client.AdvancedSettings2.shutdownTimeout = timeout;
+
 
                         //axMsRdpClient2.AdvancedSettings2.PinConnectionBar;
                         //axMsRdpClient2.AdvancedSettings2.TransportType;
                         //axMsRdpClient2.AdvancedSettings2.WinceFixedPalette;
                         //axMsRdpClient2.AdvancedSettings3.CanAutoReconnect = Favorite.CanAutoReconnect;
                     }
-                    catch(Exception exc) 
+                    catch (Exception exc)
                     {
                         Logging.Log.Error("Error when trying to set timeout values.", exc);
                     }
 
-                    _axMsRdpClient.AdvancedSettings3.RedirectPorts = rdpOptions.Redirect.Ports;
-                    _axMsRdpClient.AdvancedSettings3.RedirectPrinters = rdpOptions.Redirect.Printers;
-                    _axMsRdpClient.AdvancedSettings3.RedirectSmartCards = rdpOptions.Redirect.SmartCards;
-                    _axMsRdpClient.AdvancedSettings3.PerformanceFlags = rdpOptions.UserInterface.PerformanceFlags;
-                        
+                    this.client.AdvancedSettings3.RedirectPorts = rdpOptions.Redirect.Ports;
+                    this.client.AdvancedSettings3.RedirectPrinters = rdpOptions.Redirect.Printers;
+                    this.client.AdvancedSettings3.RedirectSmartCards = rdpOptions.Redirect.SmartCards;
+                    this.client.AdvancedSettings3.PerformanceFlags = rdpOptions.UserInterface.PerformanceFlags;
+
                     /*
                     TS_PERF_DISABLE_CURSOR_SHADOW
                     0x00000020
@@ -261,80 +250,80 @@ namespace Terminals.Connections
                     TS_PERF_ENABLE_FONT_SMOOTHING 0x00000080
                     TS_PERF_ENABLE_DESKTOP_COMPOSITION 0x00000100
                     */
-                    _axMsRdpClient.AdvancedSettings6.RedirectClipboard = rdpOptions.Redirect.Clipboard;
-                    _axMsRdpClient.AdvancedSettings6.RedirectDevices = rdpOptions.Redirect.Devices;
-                    _axMsRdpClient.AdvancedSettings6.ConnectionBarShowMinimizeButton = false;
-                    _axMsRdpClient.AdvancedSettings6.ConnectionBarShowPinButton = false;
-                    _axMsRdpClient.AdvancedSettings6.ConnectionBarShowRestoreButton = false;
+                    this.client.AdvancedSettings6.RedirectClipboard = rdpOptions.Redirect.Clipboard;
+                    this.client.AdvancedSettings6.RedirectDevices = rdpOptions.Redirect.Devices;
+                    this.client.AdvancedSettings6.ConnectionBarShowMinimizeButton = false;
+                    this.client.AdvancedSettings6.ConnectionBarShowPinButton = false;
+                    this.client.AdvancedSettings6.ConnectionBarShowRestoreButton = false;
 
                     // Terminal Server Gateway Settings
-                    _axMsRdpClient.TransportSettings.GatewayUsageMethod = (uint)rdpOptions.TsGateway.UsageMethod;
-                    _axMsRdpClient.TransportSettings.GatewayCredsSource = (uint)rdpOptions.TsGateway.CredentialSource;
-                    _axMsRdpClient.TransportSettings.GatewayHostname = rdpOptions.TsGateway.HostName;
-                    _axMsRdpClient.TransportSettings2.GatewayDomain = rdpOptions.TsGateway.Security.Domain;
-                    _axMsRdpClient.TransportSettings2.GatewayProfileUsageMethod = 1;
+                    this.client.TransportSettings.GatewayUsageMethod = (uint)rdpOptions.TsGateway.UsageMethod;
+                    this.client.TransportSettings.GatewayCredsSource = (uint)rdpOptions.TsGateway.CredentialSource;
+                    this.client.TransportSettings.GatewayHostname = rdpOptions.TsGateway.HostName;
+                    this.client.TransportSettings2.GatewayDomain = rdpOptions.TsGateway.Security.Domain;
+                    this.client.TransportSettings2.GatewayProfileUsageMethod = 1;
                     if (rdpOptions.TsGateway.SeparateLogin)
                     {
-                        _axMsRdpClient.TransportSettings2.GatewayUsername = rdpOptions.TsGateway.Security.UserName;
-                        _axMsRdpClient.TransportSettings2.GatewayPassword = rdpOptions.TsGateway.Security.Password;
+                        this.client.TransportSettings2.GatewayUsername = rdpOptions.TsGateway.Security.UserName;
+                        this.client.TransportSettings2.GatewayPassword = rdpOptions.TsGateway.Security.Password;
                     }
                     else
                     {
-                        _axMsRdpClient.TransportSettings2.GatewayUsername = Favorite.Security.UserName;
-                        _axMsRdpClient.TransportSettings2.GatewayPassword = Favorite.Security.Password;
+                        this.client.TransportSettings2.GatewayUsername = Favorite.Security.UserName;
+                        this.client.TransportSettings2.GatewayPassword = Favorite.Security.Password;
                     }
 
                     if (rdpOptions.Security.EnableTLSAuthentication)
-                        _axMsRdpClient.AdvancedSettings5.AuthenticationLevel = 2;
+                        this.client.AdvancedSettings5.AuthenticationLevel = 2;
 
                     _nonScriptable.EnableCredSspSupport = rdpOptions.Security.EnableNLAAuthentication;
 
-                    _axMsRdpClient.SecuredSettings2.AudioRedirectionMode = (int)rdpOptions.Redirect.Sounds;
+                    this.client.SecuredSettings2.AudioRedirectionMode = (int)rdpOptions.Redirect.Sounds;
 
                     ISecurityOptions security = Favorite.Security.GetResolvedCredentials();
 
-                    _axMsRdpClient.UserName = security.UserName;
-                    _axMsRdpClient.Domain = security.Domain;
-                    try 
+                    this.client.UserName = security.UserName;
+                    this.client.Domain = security.Domain;
+                    try
                     {
-                        if(!String.IsNullOrEmpty(security.Password)) 
+                        if (!String.IsNullOrEmpty(security.Password))
                         {
-                            if(_nonScriptable != null)
+                            if (_nonScriptable != null)
                                 _nonScriptable.ClearTextPassword = security.Password;
                         }
-                    } 
-                    catch(Exception exc) 
+                    }
+                    catch (Exception exc)
                     {
                         Logging.Log.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
                     }
 
-                    _axMsRdpClient.Server = Favorite.ServerName;
-                    _axMsRdpClient.AdvancedSettings3.RDPPort = Favorite.Port;
-                    _axMsRdpClient.AdvancedSettings3.ContainerHandledFullScreen = -1;
-                    _axMsRdpClient.AdvancedSettings3.DisplayConnectionBar = rdpOptions.UserInterface.DisplayConnectionBar;
+                    this.client.Server = Favorite.ServerName;
+                    this.client.AdvancedSettings3.RDPPort = Favorite.Port;
+                    this.client.AdvancedSettings3.ContainerHandledFullScreen = -1;
+                    this.client.AdvancedSettings3.DisplayConnectionBar = rdpOptions.UserInterface.DisplayConnectionBar;
 
                     // Use ConnectToServerConsole or ConnectToAdministerServer based on implementation
-                    _axMsRdpClient.AdvancedSettings7.ConnectToAdministerServer = rdpOptions.ConnectToConsole;
-                    _axMsRdpClient.AdvancedSettings3.ConnectToServerConsole = rdpOptions.ConnectToConsole;
+                    this.client.AdvancedSettings7.ConnectToAdministerServer = rdpOptions.ConnectToConsole;
+                    this.client.AdvancedSettings3.ConnectToServerConsole = rdpOptions.ConnectToConsole;
 
-                    _axMsRdpClient.OnRequestGoFullScreen += new EventHandler(axMsTscAx_OnRequestGoFullScreen);
-                    _axMsRdpClient.OnRequestLeaveFullScreen += new EventHandler(axMsTscAx_OnRequestLeaveFullScreen);
-                    _axMsRdpClient.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(axMsTscAx_OnDisconnected);
-                    _axMsRdpClient.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(axMsRdpClient2_OnWarning);
-                    _axMsRdpClient.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(axMsRdpClient2_OnFatalError);
-                    _axMsRdpClient.OnLogonError += new IMsTscAxEvents_OnLogonErrorEventHandler(_axMsRdpClient_OnLogonError);
+                    this.client.OnRequestGoFullScreen += new EventHandler(this.client_OnRequestGoFullScreen);
+                    this.client.OnRequestLeaveFullScreen += new EventHandler(this.client_OnRequestLeaveFullScreen);
+                    this.client.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(this.client_OnDisconnected);
+                    this.client.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(this.client_OnWarning);
+                    this.client.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(this.client_OnFatalError);
+                    this.client.OnLogonError += new IMsTscAxEvents_OnLogonErrorEventHandler(this.client_OnLogonError);
 
                     Text = "Connecting to RDP Server...";
-                    _axMsRdpClient.FullScreen = true;
+                    this.client.FullScreen = true;
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
                     Logging.Log.Info("There was an exception setting an RDP Value.", exc);
                 }
-                _axMsRdpClient.Connect();
+                this.client.Connect();
                 return true;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Logging.Log.Fatal("Connecting to RDP", exc);
                 return false;
@@ -345,25 +334,24 @@ namespace Terminals.Connections
         {
             try
             {
-                
-                _axMsRdpClient.Disconnect();
+                this.client.Disconnect();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Logging.Log.Info("Error on Disconnect RDP", e);
             }
-        }
-
-        private void axMsRdpClient2_OnConnected(object sender, EventArgs e)
-        {
-            if (OnConnected != null) OnConnected(this);
         }
 
         #endregion
 
         #region Private event
 
-        private void axMsRdpClient2_DragDrop(object sender, DragEventArgs e)
+        private void client_OnConnected(object sender, EventArgs e)
+        {
+            if (this.OnConnected != null) this.OnConnected(this);
+        }
+
+        private void client_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
             string desktopShare = ParentForm.GetDesktopShare();
@@ -379,180 +367,197 @@ namespace Terminals.Connections
             }
         }
 
-        private void axMsRdpClient2_DragEnter(object sender, DragEventArgs e)
+        private void SHCopyFiles(string[] sourceFiles, string destinationFolder)
         {
-            if(e.Data.GetDataPresent(DataFormats.FileDrop, false))
+            SHFileOperationWrapper fo = new SHFileOperationWrapper();
+            List<string> destinationFiles = new List<string>();
+
+            foreach (string sourceFile in sourceFiles)
+            {
+                destinationFiles.Add(Path.Combine(destinationFolder, Path.GetFileName(sourceFile)));
+            }
+
+            fo.Operation = SHFileOperationWrapper.FileOperations.FO_COPY;
+            fo.OwnerWindow = this.Handle;
+            fo.SourceFiles = sourceFiles;
+            fo.DestFiles = destinationFiles.ToArray();
+            fo.DoOperation();
+        }
+
+        private void client_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
                 e.Effect = DragDropEffects.Copy;
             else
                 e.Effect = DragDropEffects.None;
         }
 
-        private void axMsTscAx_OnRequestLeaveFullScreen(object sender, EventArgs e)
+        private void client_OnRequestLeaveFullScreen(object sender, EventArgs e)
         {
             ParentForm.tsbGrabInput.Checked = false;
             ParentForm.UpdateControls();
             Native.Methods.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
         }
 
-        private void axMsTscAx_OnRequestGoFullScreen(object sender, EventArgs e)
+        private void client_OnRequestGoFullScreen(object sender, EventArgs e)
         {
             ParentForm.tsbGrabInput.Checked = true;
             ParentForm.UpdateControls();
         }
 
-        private void axMsTscAx_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
+        private void client_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            AxMsRdpClient6 client = (AxMsRdpClient6)sender;
+            var client = (AxMsRdpClient6)sender;
+            this.ShowDisconnetMessageBox(e, client);
+            this.CloseTabPageOnParent(client);
+            this.FireDisconnected();
+        }
 
-            switch (e.discReason)
+        private void ShowDisconnetMessageBox(IMsTscAxEvents_OnDisconnectedEvent e, AxMsRdpClient6 client)
+        {
+            int reason = e.discReason;
+            string error = ToDisconnectMessage(client, reason);
+            
+            if (!string.IsNullOrEmpty(error))
+            {
+                string message = String.Format("Error connecting to {0}\n\n{1}", client.Server, error);
+                MessageBox.Show(this, message, Program.Info.TitleVersion, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private static string ToDisconnectMessage(AxMsRdpClient6 client, int reason)
+        {
+            switch (reason)
             {
                 case 1:
                 case 2:
                 case 3:
                     // These are normal disconnects and not considered errors.
-                    break;
+                    return string.Empty;
 
                 default:
-                    string error = client.GetErrorDescription((uint)e.discReason, (uint)client.ExtendedDisconnectReason);
-                    if ((error != null) && (error.Length > 0))
-                        MessageBox.Show(this, String.Format("Error connecting to {0}\n\n{1}", client.Server, error), Program.Info.TitleVersion, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    break;
+                    return client.GetErrorDescription((uint)reason, (uint)client.ExtendedDisconnectReason);
             }
+        }
 
-            if (ParentForm.InvokeRequired)
+        private void CloseTabPageOnParent(AxMsRdpClient6 client)
+        {
+            if (this.ParentForm.InvokeRequired)
             {
-                InvokeCloseTabPage d = new InvokeCloseTabPage(CloseTabPage);
-                this.Invoke(d, new object[] { client.Parent });
+                this.Invoke(new InvokeCloseTabPage(this.CloseTabPage), new object[] {client.Parent});
             }
             else
             {
-                CloseTabPage(client.Parent);
+                this.CloseTabPage(client.Parent);
             }
-
-            if(OnDisconnected != null) OnDisconnected(this);
         }
 
-        private void axMsRdpClient2_OnFatalError(object sender, IMsTscAxEvents_OnFatalErrorEvent e)
+        private void FireDisconnected()
         {
-            string msg = "";
+            if (this.OnDisconnected != null)
+                this.OnDisconnected(this);
+        }
 
-            switch (e.errorCode)
-            {
-                case 0:
-                    msg = "An unknown error has occurred.";
-                    break;
-                case 1:
-                    msg = "Internal error code 1.";
-                    break;
-                case 2:
-                    msg = "An out-of-memory error has occurred.";
-                    break;
-                case 3:
-                    msg = "A window-creation error has occurred.";
-                    break;
-                case 4:
-                    msg = "Internal error code 2.";
-                    break;
-                case 5:
-                    msg = "Internal error code 3. This is not a valid state.";
-                    break;
-                case 6:
-                    msg = "Internal error code 4.";
-                    break;
-                case 7:
-                    msg = "An unrecoverable error has occurred during client connection.";
-                    break;
-                case 100:
-                    msg = "Winsock initialization error.";
-                    break;
-                default:
-                    msg = "An unknown error.";
-                    break;
-            }
-
-            string finalMsg = string.Format("There was a fatal error returned from the RDP Connection, details:\n\nError Code:{0}\n\nError Description:{1}", e.errorCode, msg);
-            System.Windows.Forms.MessageBox.Show(finalMsg);
+        private void client_OnFatalError(object sender, IMsTscAxEvents_OnFatalErrorEvent e)
+        {
+            int errorCode = e.errorCode;
+            string message = ToFatalErrorMessage(errorCode);
+            string finalMsg = string.Format("There was a fatal error returned from the RDP Connection, details:\n\nError Code:{0}\n\nError Description:{1}", errorCode, message);
+            MessageBox.Show(finalMsg);
             Logging.Log.Fatal(finalMsg);
         }
 
-        private void axMsRdpClient2_OnWarning(object sender, IMsTscAxEvents_OnWarningEvent e)
+        private static string ToFatalErrorMessage(int errorCode)
         {
-            string msg = "";
-
-            switch (e.warningCode)
+            switch (errorCode)
             {
+                case 0:
+                    return "An unknown error has occurred.";
                 case 1:
-                    msg = "Bitmap cache is corrupt.";
-                    break;
+                    return "Internal error code 1.";
+                case 2:
+                    return "An out-of-memory error has occurred.";
+                case 3:
+                    return "A window-creation error has occurred.";
+                case 4:
+                    return "Internal error code 2.";
+                case 5:
+                    return "Internal error code 3. This is not a valid state.";
+                case 6:
+                    return "Internal error code 4.";
+                case 7:
+                    return "An unrecoverable error has occurred during client connection.";
+                case 100:
+                    return "Winsock initialization error.";
                 default:
-                    msg = "An unknown warning";
-                    break;
+                    return "An unknown error.";
             }
+        }
 
-            string finalMsg = string.Format("There was a warning returned from the RDP Connection, details:\n\nWarning Code:{0}\n\nWarning Description:{1}", e.warningCode, msg);
-            //System.Windows.Forms.MessageBox.Show(finalMsg);
+        private void client_OnWarning(object sender, IMsTscAxEvents_OnWarningEvent e)
+        {
+            int warningCode = e.warningCode;
+            string message = ToWarningMessage(warningCode);
+            string finalMsg = string.Format("There was a warning returned from the RDP Connection, details:\n\nWarning Code:{0}\n\nWarning Description:{1}", warningCode, message);
             Logging.Log.Warn(finalMsg);
         }
 
-        private void _axMsRdpClient_OnLogonError(object sender, IMsTscAxEvents_OnLogonErrorEvent e)
+        private static string ToWarningMessage(int warningCode)
         {
-            string msg = "";
+            switch (warningCode)
+            {
+                case 1:
+                    return "Bitmap cache is corrupt.";
+                default:
+                    return "An unknown warning";
+            }
+        }
 
-            switch (e.lError)
+        private void client_OnLogonError(object sender, IMsTscAxEvents_OnLogonErrorEvent e)
+        {
+            int errorCode = e.lError;
+            string message = ToLogonMessage(errorCode);
+            string finalMsg = string.Format("There was a logon error returned from the RDP Connection, details:\n\nLogon Code:{0}\n\nLogon Description:{1}", errorCode, message);
+            Logging.Log.Error(finalMsg);
+        }
+
+        private static string ToLogonMessage(int errorCode)
+        {
+            switch (errorCode)
             {
                 case -5:
-                    msg = "Winlogon is displaying the Session Contention dialog box.";
-                    break;
+                    return "Winlogon is displaying the Session Contention dialog box.";
                 case -2:
-                    msg = "Winlogon is continuing with the logon process.";
-                    break;
+                    return "Winlogon is continuing with the logon process.";
                 case -3:
-                    msg = "Winlogon is ending silently.";
-                    break;
+                    return "Winlogon is ending silently.";
                 case -6:
-                    msg = "Winlogon is displaying the No Permissions dialog box.";
-                    break;
+                    return "Winlogon is displaying the No Permissions dialog box.";
                 case -7:
-                    msg = "Winlogon is displaying the Disconnect Refused dialog box.";
-                    break;
+                    return "Winlogon is displaying the Disconnect Refused dialog box.";
                 case -4:
-                    msg = "Winlogon is displaying the Reconnect dialog box.";
-                    break;
+                    return "Winlogon is displaying the Reconnect dialog box.";
                 case -1:
-                    msg = "The user was denied access.";
-                    break;
+                    return "The user was denied access.";
                 case 0:
-                    msg = "The logon failed because the logon credentials are not valid.";
-                    break;
+                    return "The logon failed because the logon credentials are not valid.";
                 case 2:
-                    msg = "Another logon or post-logon error occurred. The Remote Desktop client displays a logon screen to the user.";
-                    break;
+                    return "Another logon or post-logon error occurred. The Remote Desktop client displays a logon screen to the user.";
                 case 1:
-                    msg = "The password is expired. The user must update their password to continue logging on.";
-                    break;
+                    return "The password is expired. The user must update their password to continue logging on.";
                 case 3:
-                    msg = "The Remote Desktop client displays a dialog box that contains important information for the user.";
-                    break;
+                    return "The Remote Desktop client displays a dialog box that contains important information for the user.";
                 case -1073741714:
-                    msg = "The user name and authentication information are valid, but authentication was blocked due to restrictions on the user account, such as time-of-day restrictions.";
-                    break;
+                    return "The user name and authentication information are valid, but authentication was blocked due to restrictions on the user account, such as time-of-day restrictions.";
                 case -1073741715:
-                    msg = "The attempted logon is not valid. This is due to either an incorrect user name or incorrect authentication information.";
-                    break;
+                    return "The attempted logon is not valid. This is due to either an incorrect user name or incorrect authentication information.";
                 case -1073741276:
-                    msg = "The password is expired. The user must update their password to continue logging on.";
-                    break;
+                    return "The password is expired. The user must update their password to continue logging on.";
                 default:
-                    msg = "An unknown error.";
-                    break;
+                    return "An unknown error.";
             }
+        }
 
-            string finalMsg = string.Format("There was a logon error returned from the RDP Connection, details:\n\nLogon Code:{0}\n\nLogon Description:{1}", e.lError, msg);
-            //System.Windows.Forms.MessageBox.Show(finalMsg);
-            Logging.Log.Error(finalMsg);
-        }        
-
-
-        #endregion        
+        #endregion
     }
 }
