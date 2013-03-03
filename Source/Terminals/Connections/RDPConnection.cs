@@ -44,9 +44,88 @@ namespace Terminals.Connections
             }
         }
 
+        public override bool Connect()
+        {
+            try
+            {
+                if (!this.InitializeClientControl())
+                  return false;
+                this.ConfigureCientUserControl();
+                _nonScriptable = (this.client.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable4);
+                ChangeDesktopSize(Favorite.Display.DesktopSize);
+                
+                try
+                {
+                    this.client.ConnectingText = "Connecting. Please wait...";
+                    this.client.DisconnectedText = "Disconnecting...";
+                    
+                    var rdpOptions = this.Favorite.ProtocolProperties as RdpOptions;
+                    this.ConfigureColorsDepth();
+                    this.ConfigureRedirectedDrives(rdpOptions);
+                    this.ConfigureInterface(rdpOptions);
+                    this.ConfigureStartBehaviour(rdpOptions);
+                    this.ConfigureTimeouts(rdpOptions);
+                    this.ConfigureRedirectOptions(rdpOptions);
+                    this.ConfigureConnectionBar(rdpOptions);
+                    this.ConfigureTsGateway(rdpOptions);
+                    this.ConfigureSecurity(rdpOptions);
+                    this.ConfigureConnection(rdpOptions);
+                    this.AssignEventHandlers();
+
+                    Text = "Connecting to RDP Server...";
+                    this.client.FullScreen = true;
+                }
+                catch (Exception exc)
+                {
+                    Logging.Log.Info("There was an exception setting an RDP Value.", exc);
+                }
+                this.client.Connect();
+                return true;
+            }
+            catch (Exception exc)
+            {
+                Logging.Log.Fatal("Connecting to RDP", exc);
+                return false;
+            }
+        }
+
+        private bool InitializeClientControl()
+        {
+            try
+            {
+                // todo replace the client with not safe for scripting prototype
+                //var client = new AxMsRdpClient6NotSafeForScripting();
+                //Control control = (Control)client;
+                //Controls.Add(control);
+                //client.Connect();
+                //client.CreateControl();
+                this.client = new AxMsRdpClient6();
+            }
+            catch (Exception exception)
+            {
+                string message = "Please update your RDP client to at least version 6.";
+                Logging.Log.Info(message, exception);
+                MessageBox.Show(message);
+                return false;
+            }
+            return true;
+        }
+
+        private void ConfigureCientUserControl()
+        {
+            var clientControl = (Control)this.client;
+            this.Controls.Add(clientControl);
+            this.client.BringToFront();
+            this.BringToFront();
+            this.client.Parent = this.TerminalTabPage;
+            this.Parent = this.TerminalTabPage;
+            this.client.AllowDrop = true;
+            this.client.Dock = DockStyle.Fill;
+        }
+
         public override void ChangeDesktopSize(DesktopSize desktopSize)
         {
-            Size size = ConnectionManager.GetSize(this, Favorite);
+            Size size = ConnectionManager.GetSize(this, this.Favorite);
 
             try
             {
@@ -70,264 +149,209 @@ namespace Terminals.Connections
             }
         }
 
-        public override bool Connect()
+        private void ConfigureColorsDepth()
+        {
+            switch (this.Favorite.Display.Colors)
+            {
+                case Colors.Bits8:
+                    this.client.ColorDepth = 8;
+                    break;
+                case Colors.Bit16:
+                    this.client.ColorDepth = 16;
+                    break;
+                case Colors.Bits24:
+                    this.client.ColorDepth = 24;
+                    break;
+                case Colors.Bits32:
+                    this.client.ColorDepth = 32;
+                    break;
+            }
+        }
+
+        private void ConfigureRedirectedDrives(RdpOptions rdpOptions)
+        {
+            if (rdpOptions.Redirect.Drives.Count > 0 && rdpOptions.Redirect.Drives[0].Equals("true"))
+                this.client.AdvancedSettings2.RedirectDrives = true;
+            else
+            {
+                for (int i = 0; i < this._nonScriptable.DriveCollection.DriveCount; i++)
+                {
+                    MSTSCLib.IMsRdpDrive drive = this._nonScriptable.DriveCollection.get_DriveByIndex((uint)i);
+                    foreach (string str in rdpOptions.Redirect.Drives)
+                    {
+                        if (drive.Name.IndexOf(str) > -1)
+                            drive.RedirectionState = true;
+                    }
+                }
+            }
+        }
+
+        private void ConfigureInterface(RdpOptions rdpOptions)
+        {
+            //advanced settings
+            //bool, 0 is false, other is true
+            if (rdpOptions.UserInterface.AllowBackgroundInput)
+                this.client.AdvancedSettings.allowBackgroundInput = -1;
+
+            if (rdpOptions.UserInterface.BitmapPeristence)
+                this.client.AdvancedSettings.BitmapPeristence = -1;
+
+            if (rdpOptions.UserInterface.EnableCompression)
+                this.client.AdvancedSettings.Compress = -1;
+
+            if (rdpOptions.UserInterface.AcceleratorPassthrough)
+                this.client.AdvancedSettings2.AcceleratorPassthrough = -1;
+
+            if (rdpOptions.UserInterface.DisableControlAltDelete)
+                this.client.AdvancedSettings2.DisableCtrlAltDel = -1;
+
+            if (rdpOptions.UserInterface.DisplayConnectionBar)
+                this.client.AdvancedSettings2.DisplayConnectionBar = true;
+
+            if (rdpOptions.UserInterface.DoubleClickDetect)
+                this.client.AdvancedSettings2.DoubleClickDetect = -1;
+
+            if (rdpOptions.UserInterface.DisableWindowsKey)
+                this.client.AdvancedSettings2.EnableWindowsKey = -1;
+
+            if (rdpOptions.Security.EnableEncryption)
+                this.client.AdvancedSettings2.EncryptionEnabled = -1;
+        }
+
+        private void ConfigureStartBehaviour(RdpOptions rdpOptions)
+        {
+            if (rdpOptions.GrabFocusOnConnect)
+                this.client.AdvancedSettings2.GrabFocusOnConnect = true;
+
+            if (rdpOptions.Security.Enabled)
+            {
+                if (rdpOptions.FullScreen)
+                    this.client.SecuredSettings2.FullScreen = -1;
+
+                this.client.SecuredSettings2.StartProgram = rdpOptions.Security.StartProgram;
+                this.client.SecuredSettings2.WorkDir = rdpOptions.Security.WorkingFolder;
+            }
+        }
+
+        private void ConfigureTimeouts(RdpOptions rdpOptions)
         {
             try
             {
-                // todo replace the client with not safe for scripting prototype
-                //var client = new AxMsRdpClient6NotSafeForScripting();
-                //Control control = (Control)client;
-                //Controls.Add(control);
-                //client.Connect();
-                //client.CreateControl();
-                this.client = new AxMsRdpClient6();
+                this.client.AdvancedSettings2.MinutesToIdleTimeout = rdpOptions.TimeOuts.IdleTimeout;
+
+                int timeout = rdpOptions.TimeOuts.OverallTimeout;
+                if (timeout > 600)
+                    timeout = 10;
+                if (timeout <= 0)
+                    timeout = 10;
+                this.client.AdvancedSettings2.overallConnectionTimeout = timeout;
+                timeout = rdpOptions.TimeOuts.ConnectionTimeout;
+                if (timeout > 600)
+                    timeout = 10;
+                if (timeout <= 0)
+                    timeout = 10;
+
+                this.client.AdvancedSettings2.singleConnectionTimeout = timeout;
+
+                timeout = rdpOptions.TimeOuts.ShutdownTimeout;
+                if (timeout > 600)
+                    timeout = 10;
+                if (timeout <= 0)
+                    timeout = 10;
+                this.client.AdvancedSettings2.shutdownTimeout = timeout;
             }
             catch (Exception exc)
             {
-                String msg = "Please update your RDP client to at least version 6.";
-                Logging.Log.Info(msg, exc);
-                MessageBox.Show(msg);
-                return false;
+                Logging.Log.Error("Error when trying to set timeout values.", exc);
             }
+        }
 
+        private void ConfigureRedirectOptions(RdpOptions rdpOptions)
+        {
+            this.client.AdvancedSettings3.RedirectPorts = rdpOptions.Redirect.Ports;
+            this.client.AdvancedSettings3.RedirectPrinters = rdpOptions.Redirect.Printers;
+            this.client.AdvancedSettings3.RedirectSmartCards = rdpOptions.Redirect.SmartCards;
+            this.client.AdvancedSettings3.PerformanceFlags = rdpOptions.UserInterface.PerformanceFlags;
+            this.client.AdvancedSettings6.RedirectClipboard = rdpOptions.Redirect.Clipboard;
+            this.client.AdvancedSettings6.RedirectDevices = rdpOptions.Redirect.Devices;
+        }
+
+        private void ConfigureConnectionBar(RdpOptions rdpOptions)
+        {
+            this.client.AdvancedSettings6.ConnectionBarShowMinimizeButton = false;
+            this.client.AdvancedSettings6.ConnectionBarShowPinButton = false;
+            this.client.AdvancedSettings6.ConnectionBarShowRestoreButton = false;
+            this.client.AdvancedSettings3.DisplayConnectionBar = rdpOptions.UserInterface.DisplayConnectionBar;
+        }
+
+        private void ConfigureTsGateway(RdpOptions rdpOptions)
+        {
+            // Terminal Server Gateway Settings
+            this.client.TransportSettings.GatewayUsageMethod = (uint)rdpOptions.TsGateway.UsageMethod;
+            this.client.TransportSettings.GatewayCredsSource = (uint)rdpOptions.TsGateway.CredentialSource;
+            this.client.TransportSettings.GatewayHostname = rdpOptions.TsGateway.HostName;
+            this.client.TransportSettings2.GatewayDomain = rdpOptions.TsGateway.Security.Domain;
+            this.client.TransportSettings2.GatewayProfileUsageMethod = 1;
+            if (rdpOptions.TsGateway.SeparateLogin)
+            {
+                this.client.TransportSettings2.GatewayUsername = rdpOptions.TsGateway.Security.UserName;
+                this.client.TransportSettings2.GatewayPassword = rdpOptions.TsGateway.Security.Password;
+            }
+            else
+            {
+                this.client.TransportSettings2.GatewayUsername = this.Favorite.Security.UserName;
+                this.client.TransportSettings2.GatewayPassword = this.Favorite.Security.Password;
+            }
+        }
+
+        private void ConfigureSecurity(RdpOptions rdpOptions)
+        {
+            if (rdpOptions.Security.EnableTLSAuthentication)
+                this.client.AdvancedSettings5.AuthenticationLevel = 2;
+
+            this._nonScriptable.EnableCredSspSupport = rdpOptions.Security.EnableNLAAuthentication;
+
+            this.client.SecuredSettings2.AudioRedirectionMode = (int)rdpOptions.Redirect.Sounds;
+
+            ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
+
+            this.client.UserName = security.UserName;
+            this.client.Domain = security.Domain;
             try
             {
-                Controls.Add(this.client);
-                this.client.BringToFront();
-                this.BringToFront();
-                this.client.Parent = TerminalTabPage;
-                this.Parent = TerminalTabPage;
-                this.client.AllowDrop = true;
-
-                ((Control)this.client).DragEnter += new DragEventHandler(this.client_DragEnter);
-                ((Control)this.client).DragDrop += new DragEventHandler(this.client_DragDrop);
-                this.client.OnConnected += new EventHandler(this.client_OnConnected);
-                this.client.Dock = DockStyle.Fill;
-                _nonScriptable = (this.client.GetOcx() as MSTSCLib.IMsRdpClientNonScriptable4);
-
-                ChangeDesktopSize(Favorite.Display.DesktopSize);
-                try
+                if (!String.IsNullOrEmpty(security.Password))
                 {
-                    //if(Favorite.DesktopSize == DesktopSize.AutoScale) axMsRdpClient2.AdvancedSettings3.SmartSizing = true;
-                    //axMsRdpClient2.DesktopWidth = width;
-                    //axMsRdpClient2.DesktopHeight = height;
-
-                    switch (Favorite.Display.Colors)
-                    {
-                        case Colors.Bits8:
-                            this.client.ColorDepth = 8;
-                            break;
-                        case Colors.Bit16:
-                            this.client.ColorDepth = 16;
-                            break;
-                        case Colors.Bits24:
-                            this.client.ColorDepth = 24;
-                            break;
-                        case Colors.Bits32:
-                            this.client.ColorDepth = 32;
-                            break;
-                    }
-
-                    this.client.ConnectingText = "Connecting. Please wait...";
-                    this.client.DisconnectedText = "Disconnecting...";
-
-                    var rdpOptions = this.Favorite.ProtocolProperties as RdpOptions;
-                    if (rdpOptions.Redirect.Drives.Count > 0 && rdpOptions.Redirect.Drives[0].Equals("true"))
-                    {
-                        this.client.AdvancedSettings2.RedirectDrives = true;
-                    }
-                    else
-                    {
-                        for (int i = 0; i < _nonScriptable.DriveCollection.DriveCount; i++)
-                        {
-                            MSTSCLib.IMsRdpDrive drive = _nonScriptable.DriveCollection.get_DriveByIndex((uint)i);
-                            foreach (string str in rdpOptions.Redirect.Drives)
-                                if (drive.Name.IndexOf(str) > -1)
-                                    drive.RedirectionState = true;
-                        }
-                    }
-
-                    //advanced settings
-                    //bool, 0 is false, other is true
-                    if (rdpOptions.UserInterface.AllowBackgroundInput)
-                        this.client.AdvancedSettings.allowBackgroundInput = -1;
-
-                    if (rdpOptions.UserInterface.BitmapPeristence)
-                        this.client.AdvancedSettings.BitmapPeristence = -1;
-
-                    if (rdpOptions.UserInterface.EnableCompression)
-                        this.client.AdvancedSettings.Compress = -1;
-
-                    if (rdpOptions.UserInterface.AcceleratorPassthrough)
-                        this.client.AdvancedSettings2.AcceleratorPassthrough = -1;
-
-                    if (rdpOptions.UserInterface.DisableControlAltDelete)
-                        this.client.AdvancedSettings2.DisableCtrlAltDel = -1;
-
-                    if (rdpOptions.UserInterface.DisplayConnectionBar)
-                        this.client.AdvancedSettings2.DisplayConnectionBar = true;
-
-                    if (rdpOptions.UserInterface.DoubleClickDetect)
-                        this.client.AdvancedSettings2.DoubleClickDetect = -1;
-
-                    if (rdpOptions.UserInterface.DisableWindowsKey)
-                        this.client.AdvancedSettings2.EnableWindowsKey = -1;
-
-                    if (rdpOptions.Security.EnableEncryption)
-                        this.client.AdvancedSettings2.EncryptionEnabled = -1;
-
-
-                    if (rdpOptions.GrabFocusOnConnect)
-                        this.client.AdvancedSettings2.GrabFocusOnConnect = true;
-
-                    if (rdpOptions.Security.Enabled)
-                    {
-                        if (rdpOptions.FullScreen)
-                            this.client.SecuredSettings2.FullScreen = -1;
-
-                        this.client.SecuredSettings2.StartProgram = rdpOptions.Security.StartProgram;
-                        this.client.SecuredSettings2.WorkDir = rdpOptions.Security.WorkingFolder;
-                    }
-
-                    this.client.AdvancedSettings2.MinutesToIdleTimeout = rdpOptions.TimeOuts.IdleTimeout;
-
-                    try
-                    {
-                        int timeout = rdpOptions.TimeOuts.OverallTimeout;
-                        if (timeout > 600) timeout = 10;
-                        if (timeout <= 0) timeout = 10;
-                        this.client.AdvancedSettings2.overallConnectionTimeout = timeout;
-                        timeout = rdpOptions.TimeOuts.ConnectionTimeout;
-                        if (timeout > 600) timeout = 10;
-                        if (timeout <= 0) timeout = 10;
-
-                        this.client.AdvancedSettings2.singleConnectionTimeout = timeout;
-
-                        timeout = rdpOptions.TimeOuts.ShutdownTimeout;
-                        if (timeout > 600) timeout = 10;
-                        if (timeout <= 0) timeout = 10;
-                        this.client.AdvancedSettings2.shutdownTimeout = timeout;
-
-
-                        //axMsRdpClient2.AdvancedSettings2.PinConnectionBar;
-                        //axMsRdpClient2.AdvancedSettings2.TransportType;
-                        //axMsRdpClient2.AdvancedSettings2.WinceFixedPalette;
-                        //axMsRdpClient2.AdvancedSettings3.CanAutoReconnect = Favorite.CanAutoReconnect;
-                    }
-                    catch (Exception exc)
-                    {
-                        Logging.Log.Error("Error when trying to set timeout values.", exc);
-                    }
-
-                    this.client.AdvancedSettings3.RedirectPorts = rdpOptions.Redirect.Ports;
-                    this.client.AdvancedSettings3.RedirectPrinters = rdpOptions.Redirect.Printers;
-                    this.client.AdvancedSettings3.RedirectSmartCards = rdpOptions.Redirect.SmartCards;
-                    this.client.AdvancedSettings3.PerformanceFlags = rdpOptions.UserInterface.PerformanceFlags;
-
-                    /*
-                    TS_PERF_DISABLE_CURSOR_SHADOW
-                    0x00000020
-                     No shadow is displayed for the cursor.
-                    TS_PERF_DISABLE_CURSORSETTINGS
-                    0x00000040
-                     Cursor blinking is disabled.
-                    TS_PERF_DISABLE_FULLWINDOWDRAG
-                    0x00000002
-                     Full-window drag is disabled; only the window outline is displayed when the window is moved.
-                    TS_PERF_DISABLE_MENUANIMATIONS
-                    0x00000004
-                     Menu animations are disabled.
-                    TS_PERF_DISABLE_NOTHING
-                    0x00000000
-                     No features are disabled.
-                    TS_PERF_DISABLE_THEMING
-                    0x00000008
-                     Themes are disabled.
-                    TS_PERF_DISABLE_WALLPAPER
-                    0x00000001
-                     Wallpaper on the desktop is not displayed.
-                 
-                    TS_PERF_ENABLE_FONT_SMOOTHING 0x00000080
-                    TS_PERF_ENABLE_DESKTOP_COMPOSITION 0x00000100
-                    */
-                    this.client.AdvancedSettings6.RedirectClipboard = rdpOptions.Redirect.Clipboard;
-                    this.client.AdvancedSettings6.RedirectDevices = rdpOptions.Redirect.Devices;
-                    this.client.AdvancedSettings6.ConnectionBarShowMinimizeButton = false;
-                    this.client.AdvancedSettings6.ConnectionBarShowPinButton = false;
-                    this.client.AdvancedSettings6.ConnectionBarShowRestoreButton = false;
-
-                    // Terminal Server Gateway Settings
-                    this.client.TransportSettings.GatewayUsageMethod = (uint)rdpOptions.TsGateway.UsageMethod;
-                    this.client.TransportSettings.GatewayCredsSource = (uint)rdpOptions.TsGateway.CredentialSource;
-                    this.client.TransportSettings.GatewayHostname = rdpOptions.TsGateway.HostName;
-                    this.client.TransportSettings2.GatewayDomain = rdpOptions.TsGateway.Security.Domain;
-                    this.client.TransportSettings2.GatewayProfileUsageMethod = 1;
-                    if (rdpOptions.TsGateway.SeparateLogin)
-                    {
-                        this.client.TransportSettings2.GatewayUsername = rdpOptions.TsGateway.Security.UserName;
-                        this.client.TransportSettings2.GatewayPassword = rdpOptions.TsGateway.Security.Password;
-                    }
-                    else
-                    {
-                        this.client.TransportSettings2.GatewayUsername = Favorite.Security.UserName;
-                        this.client.TransportSettings2.GatewayPassword = Favorite.Security.Password;
-                    }
-
-                    if (rdpOptions.Security.EnableTLSAuthentication)
-                        this.client.AdvancedSettings5.AuthenticationLevel = 2;
-
-                    _nonScriptable.EnableCredSspSupport = rdpOptions.Security.EnableNLAAuthentication;
-
-                    this.client.SecuredSettings2.AudioRedirectionMode = (int)rdpOptions.Redirect.Sounds;
-
-                    ISecurityOptions security = Favorite.Security.GetResolvedCredentials();
-
-                    this.client.UserName = security.UserName;
-                    this.client.Domain = security.Domain;
-                    try
-                    {
-                        if (!String.IsNullOrEmpty(security.Password))
-                        {
-                            if (_nonScriptable != null)
-                                _nonScriptable.ClearTextPassword = security.Password;
-                        }
-                    }
-                    catch (Exception exc)
-                    {
-                        Logging.Log.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
-                    }
-
-                    this.client.Server = Favorite.ServerName;
-                    this.client.AdvancedSettings3.RDPPort = Favorite.Port;
-                    this.client.AdvancedSettings3.ContainerHandledFullScreen = -1;
-                    this.client.AdvancedSettings3.DisplayConnectionBar = rdpOptions.UserInterface.DisplayConnectionBar;
-
-                    // Use ConnectToServerConsole or ConnectToAdministerServer based on implementation
-                    this.client.AdvancedSettings7.ConnectToAdministerServer = rdpOptions.ConnectToConsole;
-                    this.client.AdvancedSettings3.ConnectToServerConsole = rdpOptions.ConnectToConsole;
-
-                    this.client.OnRequestGoFullScreen += new EventHandler(this.client_OnRequestGoFullScreen);
-                    this.client.OnRequestLeaveFullScreen += new EventHandler(this.client_OnRequestLeaveFullScreen);
-                    this.client.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(this.client_OnDisconnected);
-                    this.client.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(this.client_OnWarning);
-                    this.client.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(this.client_OnFatalError);
-                    this.client.OnLogonError += new IMsTscAxEvents_OnLogonErrorEventHandler(this.client_OnLogonError);
-
-                    Text = "Connecting to RDP Server...";
-                    this.client.FullScreen = true;
+                    if (this._nonScriptable != null)
+                        this._nonScriptable.ClearTextPassword = security.Password;
                 }
-                catch (Exception exc)
-                {
-                    Logging.Log.Info("There was an exception setting an RDP Value.", exc);
-                }
-                this.client.Connect();
-                return true;
             }
             catch (Exception exc)
             {
-                Logging.Log.Fatal("Connecting to RDP", exc);
-                return false;
+                Logging.Log.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
             }
+        }
+
+        private void ConfigureConnection(RdpOptions rdpOptions)
+        {
+            this.client.Server = this.Favorite.ServerName;
+            this.client.AdvancedSettings3.RDPPort = this.Favorite.Port;
+            this.client.AdvancedSettings3.ContainerHandledFullScreen = -1;
+            // Use ConnectToServerConsole or ConnectToAdministerServer based on implementation
+            this.client.AdvancedSettings7.ConnectToAdministerServer = rdpOptions.ConnectToConsole;
+            this.client.AdvancedSettings3.ConnectToServerConsole = rdpOptions.ConnectToConsole;
+        }
+
+        private void AssignEventHandlers()
+        {
+            this.client.OnRequestGoFullScreen += new EventHandler(this.client_OnRequestGoFullScreen);
+            this.client.OnRequestLeaveFullScreen += new EventHandler(this.client_OnRequestLeaveFullScreen);
+            this.client.OnDisconnected += new IMsTscAxEvents_OnDisconnectedEventHandler(this.client_OnDisconnected);
+            this.client.OnWarning += new IMsTscAxEvents_OnWarningEventHandler(this.client_OnWarning);
+            this.client.OnFatalError += new IMsTscAxEvents_OnFatalErrorEventHandler(this.client_OnFatalError);
+            this.client.OnLogonError += new IMsTscAxEvents_OnLogonErrorEventHandler(this.client_OnLogonError);
+            this.client.DragEnter += new DragEventHandler(this.client_DragEnter);
+            this.client.DragDrop += new DragEventHandler(this.client_DragDrop);
+            this.client.OnConnected += new EventHandler(this.client_OnConnected);
         }
 
         public override void Disconnect()
@@ -344,11 +368,12 @@ namespace Terminals.Connections
 
         #endregion
 
-        #region Private event
+        #region Eventing
 
         private void client_OnConnected(object sender, EventArgs e)
         {
-            if (this.OnConnected != null) this.OnConnected(this);
+            if (this.OnConnected != null)
+                this.OnConnected(this);
         }
 
         private void client_DragDrop(object sender, DragEventArgs e)
