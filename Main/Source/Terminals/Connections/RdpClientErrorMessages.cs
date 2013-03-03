@@ -8,7 +8,7 @@ namespace Terminals.Connections
     /// </summary>
     internal class RdpClientErrorMessages
     {
-        internal static string ToDisconnectMessage(AxMsRdpClient6 client, int reason)
+        internal static string ToDisconnectMessage(AxMsRdpClient6NotSafeForScripting client, int reason)
         {
             switch (reason)
             {

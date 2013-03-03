@@ -1119,15 +1119,15 @@ namespace Terminals
             if (terminalTabControlItem != null)
             {
                 var rdpConnection = terminalTabControlItem.Connection as RDPConnection;
-                if (rdpConnection != null &&
-                    !rdpConnection.AxMsRdpClient.AdvancedSettings3.SmartSizing)
-                {
-                    //rdpConnection.AxMsRdpClient.DesktopWidth = terminalTabControlItem.Width;
-                    //rdpConnection.AxMsRdpClient.DesktopHeight = terminalTabControlItem.Height;
-                    //Debug.WriteLine("Tab size:" + terminalTabControlItem.Size.ToString() + ";" +
-                    //  rdpConnection.AxMsRdpClient.DesktopHeight.ToString() + "," +
-                    //  rdpConnection.AxMsRdpClient.DesktopWidth.ToString());
-                }
+                //if (rdpConnection != null &&
+                //    !rdpConnection.AxMsRdpClient.AdvancedSettings3.SmartSizing)
+                //{
+                //    //rdpConnection.AxMsRdpClient.DesktopWidth = terminalTabControlItem.Width;
+                //    //rdpConnection.AxMsRdpClient.DesktopHeight = terminalTabControlItem.Height;
+                //    //Debug.WriteLine("Tab size:" + terminalTabControlItem.Size.ToString() + ";" +
+                //    //  rdpConnection.AxMsRdpClient.DesktopHeight.ToString() + "," +
+                //    //  rdpConnection.AxMsRdpClient.DesktopWidth.ToString());
+                //}
             }
         }
 
