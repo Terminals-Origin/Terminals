@@ -107,7 +107,7 @@ namespace Terminals.History
             {
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 this.TryLoadFile();
-                Debug.WriteLine(string.Format("History Loaded. Duration:{0}ms", stopwatch.ElapsedMilliseconds));
+                Debug.WriteLine("History Loaded. Duration:{0}ms", stopwatch.ElapsedMilliseconds);
             }
             catch (Exception exc)
             {
@@ -126,11 +126,13 @@ namespace Terminals.History
             {
                 Logging.Log.InfoFormat("Loading History from: {0}", fileName);
                 if (File.Exists(fileName))
+                {
                     LoadFile();
-
-                if (this.currentHistory == null)
-                    this.currentHistory = new HistoryByFavorite{ Favorites = this.favorites};
+                    return;
+                }
             }
+
+            this.currentHistory = new HistoryByFavorite { Favorites = this.favorites };
         }
 
         private void LoadFile()
@@ -141,6 +143,10 @@ namespace Terminals.History
                 var loadedHistory = Serialize.DeserializeXMLFromDisk(FileLocations.HistoryFullFileName, typeof(HistoryByFavorite)) as HistoryByFavorite;
                 loadedHistory.Favorites = this.favorites;
                 this.currentHistory = loadedHistory;
+            }
+            catch // fails also in case of history upgrade, we don't upgrade history file
+            {
+                this.currentHistory = new HistoryByFavorite{ Favorites = this.favorites};
             }
             finally 
             {
