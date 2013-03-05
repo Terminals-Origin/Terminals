@@ -356,35 +356,35 @@
             // 
             this.setCredentialByTagToolStripMenuItem.Name = "setCredentialByTagToolStripMenuItem";
             this.setCredentialByTagToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.setCredentialByTagToolStripMenuItem.Text = "Set Credential by Tag";
+            this.setCredentialByTagToolStripMenuItem.Text = "Set Credential to all in Group...";
             this.setCredentialByTagToolStripMenuItem.Click += new System.EventHandler(this.setCredentialByTagToolStripMenuItem_Click);
             // 
             // setUsernameByTagToolStripMenuItem
             // 
             this.setUsernameByTagToolStripMenuItem.Name = "setUsernameByTagToolStripMenuItem";
             this.setUsernameByTagToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.setUsernameByTagToolStripMenuItem.Text = "Set Username by Tag";
+            this.setUsernameByTagToolStripMenuItem.Text = "Set Username to all in Group...";
             this.setUsernameByTagToolStripMenuItem.Click += new System.EventHandler(this.setUsernameByTagToolStripMenuItem_Click);
             // 
             // setDomainByTagToolStripMenuItem
             // 
             this.setDomainByTagToolStripMenuItem.Name = "setDomainByTagToolStripMenuItem";
             this.setDomainByTagToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.setDomainByTagToolStripMenuItem.Text = "Set Domain by Tag";
+            this.setDomainByTagToolStripMenuItem.Text = "Set Domain to all in Group...";
             this.setDomainByTagToolStripMenuItem.Click += new System.EventHandler(this.setDomainByTagToolStripMenuItem_Click);
             // 
             // setPasswordByTagToolStripMenuItem
             // 
             this.setPasswordByTagToolStripMenuItem.Name = "setPasswordByTagToolStripMenuItem";
             this.setPasswordByTagToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.setPasswordByTagToolStripMenuItem.Text = "Set Password by Tag";
+            this.setPasswordByTagToolStripMenuItem.Text = "Set Password to all in Group...";
             this.setPasswordByTagToolStripMenuItem.Click += new System.EventHandler(this.setPasswordByTagToolStripMenuItem_Click);
             // 
             // deleteAllFavoritesByTagToolStripMenuItem
             // 
             this.deleteAllFavoritesByTagToolStripMenuItem.Name = "deleteAllFavoritesByTagToolStripMenuItem";
             this.deleteAllFavoritesByTagToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.deleteAllFavoritesByTagToolStripMenuItem.Text = "Delete all Favorites by Tag";
+            this.deleteAllFavoritesByTagToolStripMenuItem.Text = "Delete all Favorites in Group...";
             this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.deleteAllFavoritesByTagToolStripMenuItem_Click);
             // 
             // FavsList

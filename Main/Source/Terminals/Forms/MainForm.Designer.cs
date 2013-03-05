@@ -688,8 +688,8 @@ namespace Terminals
             // 
             this.rebuildTagsIndexToolStripMenuItem.Name = "rebuildTagsIndexToolStripMenuItem";
             this.rebuildTagsIndexToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
-            this.rebuildTagsIndexToolStripMenuItem.Text = "Rebuild Tags Index";
-            this.rebuildTagsIndexToolStripMenuItem.ToolTipText = "Recreates connection \"Tags\" list used by all connections.";
+            this.rebuildTagsIndexToolStripMenuItem.Text = "Rebuild Groups Index";
+            this.rebuildTagsIndexToolStripMenuItem.ToolTipText = "Recreates connection \"Groups\" list used by all connections.";
             this.rebuildTagsIndexToolStripMenuItem.Click += new System.EventHandler(this.rebuildTagsIndexToolStripMenuItem_Click);
             // 
             // rebuildShortcutsToolStripMenuItem
@@ -991,7 +991,7 @@ namespace Terminals
             this.tsbTags.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbTags.Name = "tsbTags";
             this.tsbTags.Size = new System.Drawing.Size(23, 22);
-            this.tsbTags.ToolTipText = "Show/Hide Tags pane";
+            this.tsbTags.ToolTipText = "Show/Hide Groups pane";
             this.tsbTags.Click += new System.EventHandler(this.tsbTags_Click);
             // 
             // tsbFavorites

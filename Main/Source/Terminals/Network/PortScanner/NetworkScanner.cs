@@ -199,7 +199,7 @@ namespace Terminals
         private string GetTagsToApply()
         {
             String tags = this.TagsTextbox.Text;
-            tags = tags.Replace("Tags...", String.Empty).Trim();
+            tags = tags.Replace("Groups...", String.Empty).Trim();
             return tags;
         }
 

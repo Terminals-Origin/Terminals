@@ -9,7 +9,7 @@ namespace Terminals.Configuration
         /// <summary>
         /// Gets the default tag name for favorites without any tag
         /// </summary>
-        internal const String UNTAGGED_NODENAME = "Untagged";
+        internal const String UNTAGGED_NODENAME = "Not grouped";
 
         [Obsolete("Since version 2. only for updates. Use new persistence instead.")]
         internal static void RemoveAllFavoritesAndTags()
