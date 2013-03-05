@@ -23,6 +23,10 @@ namespace Terminals.Data
             return !String.IsNullOrEmpty(Settings.MasterPasswordHash);
         }
 
+        /// <summary>
+        /// Check, if provide password is valid, when defined.
+        /// Returns true, if password is not defined or is present and was verified.
+        /// </summary>
         internal bool AuthenticateIfRequired()
         {
             if (IsMasterPasswordDefined())
