@@ -252,7 +252,7 @@ namespace Terminals.Data
             finally
             {
                 this.fileWatcher.StartObservation();
-                this.fileLock.WaitOne();
+                this.fileLock.ReleaseMutex();
                 Debug.WriteLine("Favorite file was saved.");
             }
         }
