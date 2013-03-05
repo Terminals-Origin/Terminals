@@ -171,6 +171,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\Resources\TestData\EmptyCredentials.xml">
+      <Link>Data\EmptyCredentials.xml</Link>
+    </Content>
     <Content Include="..\..\Resources\TestData\Issue_21279_import_800_items.xml">
       <Link>Data\Issue_21279_import_800_items.xml</Link>
     </Content>
@@ -186,6 +189,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\Resources\TestData\EmptyTerminals.config">
+      <Link>Data\EmptyTerminals.config</Link>
+    </None>
     <None Include="..\..\Resources\TestData\Terminals.config">
       <Link>Data\Terminals.config</Link>
     </None>

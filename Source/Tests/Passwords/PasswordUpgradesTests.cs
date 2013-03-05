@@ -9,17 +9,31 @@ using Terminals.Updates;
 
 namespace Tests.Passwords
 {
+    /// <summary>
+    /// Tests to ensure that passwords after upgrade of v2.0 work
+    /// and upgrade doesn't break any stored passwords
+    /// </summary>
     [TestClass]
     public class PasswordUpgradesTests
     {
         public TestContext TestContext { get; set; }
+
+        [DeploymentItem(@"..\Resources\TestData\EmptyTerminals.config")]
+        [DeploymentItem(@"..\Resources\TestData\EmptyCredentials.xml")]
+        [TestMethod]
+        public void V2UpgradeEmptyConfigTest()
+        {
+            this.UpgradePasswordsTestInitialize("EmptyTerminals.config", "EmptyCredentials.xml");
+            // simply nothing to upgrade, procedure shouldn't fail.
+            this.RunUpgrade();
+        }
 
         [DeploymentItem(@"..\Resources\TestData\SecuredTerminals.config")]
         [DeploymentItem(@"..\Resources\TestData\SecuredCredentials.xml")]
         [TestMethod]
         public void V2UpgradePasswordsTest()
         {
-            this.UpgradePasswordsTestInitialize();
+            this.UpgradePasswordsTestInitialize("SecuredTerminals.config", "SecuredCredentials.xml");
             this.RunUpgrade();
 
             bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(PasswordTests.MASTERPASSWORD, Settings.MasterPasswordHash);
@@ -55,11 +69,11 @@ namespace Tests.Passwords
             return new AuthenticationPrompt { Password = PasswordTests.MASTERPASSWORD };
         }
 
-        private void UpgradePasswordsTestInitialize()
+        private void UpgradePasswordsTestInitialize(string configFile, string credentialsFile)
         {
-            string configFileName = this.CreateFullTestFileName("SecuredTerminals.config");
+            string configFileName = this.CreateFullTestFileName(configFile);
             string favoritesFileName = this.CreateFullTestFileName(FileLocations.FAVORITES_FILENAME);
-            string credentialsFileName = this.CreateFullTestFileName("SecuredCredentials.xml");
+            string credentialsFileName = this.CreateFullTestFileName(credentialsFile);
             // remove source control read only attribute
             File.SetAttributes(configFileName, FileAttributes.Normal);
             File.SetAttributes(credentialsFileName, FileAttributes.Normal);

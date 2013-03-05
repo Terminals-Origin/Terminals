@@ -10,8 +10,7 @@ using Terminals.Updates;
 namespace Tests.Passwords
 {
     /// <summary>
-    /// Tests to ensure that passwords in version after v2.0 work
-    /// and upgrade doesn't break any stored passwords
+    /// Tests to ensure that passwords encryption/decryption logic works
     /// </summary>
     [TestClass]
     public class PasswordTests
