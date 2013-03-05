@@ -130,7 +130,7 @@ namespace Terminals.Forms
             this.chkAutoCaseTags.Name = "autoCaseTagsCheckbox";
             this.chkAutoCaseTags.Size = new System.Drawing.Size(143, 17);
             this.chkAutoCaseTags.TabIndex = 23;
-            this.chkAutoCaseTags.Text = "Auto-Case Favorite Tags";
+            this.chkAutoCaseTags.Text = "Auto-Case Favorite Groups";
             this.chkAutoCaseTags.UseVisualStyleBackColor = true;
             // 
             // AutoExapandTagsPanelCheckBox

@@ -768,8 +768,8 @@ namespace Terminals
             // 
             // tagsDataGridViewTextBoxColumn
             // 
-            this.tagsDataGridViewTextBoxColumn.DataPropertyName = "Tags";
-            this.tagsDataGridViewTextBoxColumn.HeaderText = "Tags";
+            this.tagsDataGridViewTextBoxColumn.DataPropertyName = "Groups";
+            this.tagsDataGridViewTextBoxColumn.HeaderText = "Groups";
             this.tagsDataGridViewTextBoxColumn.Name = "tagsDataGridViewTextBoxColumn";
             // 
             // lockAttributesDataGridViewTextBoxColumn
@@ -1078,7 +1078,7 @@ namespace Terminals
             // 
             this.colTags.DataPropertyName = "GroupNames";
             this.colTags.FillWeight = 200F;
-            this.colTags.HeaderText = "Tags";
+            this.colTags.HeaderText = "Groups";
             this.colTags.Name = "colTags";
             this.colTags.ReadOnly = true;
             // 
