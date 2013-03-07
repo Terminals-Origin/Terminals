@@ -55,7 +55,7 @@ namespace Terminals.Configuration
 
         internal static string ControlPanelImage
         {
-            get { return Path.Combine(DATA_DIRECTORY, @"Thumbs\ControlPanel.png"); }
+            get { return Path.Combine(ThumbsDirectoryFullPath, @"ControlPanel.png"); }
         }
 
         internal static string LastUpdateCheck
@@ -207,7 +207,7 @@ namespace Terminals.Configuration
 
         internal static string FormatThumbFileName(string fileName)
         {
-            return string.Format(@"{0}\{1}\{2}.jpg", DATA_DIRECTORY, THUMBS_DIRECTORY, fileName);
+            return string.Format(@"{0}\{1}.jpg", ThumbsDirectoryFullPath, fileName);
         }
 
         internal static void EnsureImagesDirectory()
