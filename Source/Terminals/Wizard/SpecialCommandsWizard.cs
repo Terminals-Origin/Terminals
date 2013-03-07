@@ -74,8 +74,9 @@ namespace Terminals.Wizard
             string controlPanelImage = FileLocations.ControlPanelImage;
             if (!File.Exists(controlPanelImage))
             {
-                Properties.Resources.ControlPanel.Save(controlPanelImage);
+                SaveBitmap(Properties.Resources.ControlPanel, controlPanelImage);
             }
+
             foreach (FileInfo file in SystemRoot.GetFiles("*.cpl"))
             {
                 var command = new SpecialCommandConfigurationElement(file.Name);
@@ -167,10 +168,15 @@ namespace Terminals.Wizard
 
         private static void SaveIcon(Icon iconToSave, string fullThumbFileName)
         {
+            SaveBitmap(iconToSave.ToBitmap(), fullThumbFileName);
+        }
+
+        private static void SaveBitmap(Image imageToSave, string fullThumbFileName)
+        {
             try
             {
                 if (!File.Exists(fullThumbFileName))
-                    iconToSave.ToBitmap().Save(fullThumbFileName);
+                    imageToSave.Save(fullThumbFileName);
             }
             catch (Exception)
             {
