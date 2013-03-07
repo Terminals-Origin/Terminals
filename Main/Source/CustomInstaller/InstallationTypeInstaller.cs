@@ -93,9 +93,7 @@ namespace Terminals
 
         private static string GetLogDirectoryPath()
         {
-            string profileDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            string relativePath = @"Robert_Chartier\Terminals\Data\logs\CurrentLog.txt";
-            return Path.Combine(profileDirectory, relativePath);
+            return @"${USERPROFILE}\Local Settings\Application Data\Robert_Chartier\Terminals\Data\logs\CurrentLog.txt";
         }
 
         private static XAttribute SelectFileElement(XDocument configFile)
