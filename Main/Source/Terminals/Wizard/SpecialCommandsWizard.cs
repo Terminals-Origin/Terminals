@@ -66,7 +66,6 @@ namespace Terminals.Wizard
             AddRegEditCommand(cmdList);
             AddMmcCommands(cmdList);
             AddControlPanelApplets(cmdList);
-
             return cmdList;
         }
 
@@ -86,8 +85,7 @@ namespace Terminals.Wizard
                 Icon[] fileIcons = IconHandler.IconHandler.IconsFromFile(file.FullName, IconHandler.IconSize.Small);
                 if (fileIcons != null && fileIcons.Length > 0)
                 {
-                    if (!File.Exists(thumbName))
-                        fileIcons[0].ToBitmap().Save(thumbName);
+                    SaveIcon(fileIcons[0], thumbName);
                 }
                 
                 if (File.Exists(thumbName))
@@ -124,17 +122,15 @@ namespace Terminals.Wizard
                     string thumbName = FileLocations.FormatThumbFileName(file.Name);
                     elm1.Thumbnail = thumbName;
 
-                    if (!File.Exists(thumbName))
+                    if (fileMMC.SmallIcon != null)
                     {
-                        if (fileMMC.SmallIcon != null)
-                        {
-                            fileMMC.SmallIcon.ToBitmap().Save(thumbName);
-                        }
-                        else
-                        {
-                            IconsList[rnd.Next(IconsList.Length - 1)].ToBitmap().Save(thumbName);
-                        }
+                        SaveIcon(fileMMC.SmallIcon, thumbName);
                     }
+                    else
+                    {
+                        SaveIcon(IconsList[rnd.Next(IconsList.Length - 1)], thumbName);
+                    }
+
                     if (fileMMC.Parsed)
                     {
                         elm1.Name = fileMMC.Name;
@@ -161,13 +157,26 @@ namespace Terminals.Wizard
                 FileLocations.EnsureImagesDirectory();
 
                 string thumbName = FileLocations.FormatThumbFileName(regEditExe);
-                if (!File.Exists(thumbName))
-                    regeditIcons[0].ToBitmap().Save(thumbName);
+                SaveIcon(regeditIcons[0], thumbName);
                 regEditElm.Thumbnail = thumbName;
             }
 
             regEditElm.Executable = regEditFile;
             cmdList.Add(regEditElm);
+        }
+
+        private static void SaveIcon(Icon iconToSave, string fullThumbFileName)
+        {
+            try
+            {
+                if (!File.Exists(fullThumbFileName))
+                    iconToSave.ToBitmap().Save(fullThumbFileName);
+            }
+            catch (Exception)
+            {
+                // nothing to recover, the icon is optional
+                Logging.Log.Info("Unable to create icon for command: " + fullThumbFileName);
+            }
         }
 
         private static void AddCmdCommand(SpecialCommandConfigurationElementCollection cmdList)
