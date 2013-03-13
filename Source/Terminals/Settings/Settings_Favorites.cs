@@ -11,7 +11,9 @@ namespace Terminals.Configuration
         /// </summary>
         internal const String UNTAGGED_NODENAME = "Not grouped";
 
-        [Obsolete("Since version 2. only for updates. Use new persistence instead.")]
+        /// <summary>
+        /// "Since version 2. only for updates. Use new persistence instead."
+        /// </summary>
         internal static void RemoveAllFavoritesAndTags()
         {
             DeleteFavorites();
@@ -46,7 +48,7 @@ namespace Terminals.Configuration
         }
 
         /// <summary>
-        /// Adds favorite to the database, but doesnt fire the changed event
+        /// Adds favorite to the database, but doesn't fire the changed event
         /// </summary>
         private static void AddFavoriteToSettings(FavoriteConfigurationElement favorite)
         {
@@ -54,7 +56,6 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested();
         }
 
-        [Obsolete("Since version 2. only for updates. Use new persistence instead.")]
         internal static FavoriteConfigurationElement GetDefaultFavorite()
         {
             TerminalsConfigurationSection section = GetSection();
@@ -63,7 +64,6 @@ namespace Terminals.Configuration
             return null;
         }
 
-        [Obsolete("Since version 2. only for updates. Use new persistence instead.")]
         internal static void SaveDefaultFavorite(FavoriteConfigurationElement favorite)
         {
             FavoriteConfigurationElementCollection defaultFav = GetSection().DefaultFavorite;
@@ -72,7 +72,6 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested();
         }
 
-        [Obsolete("Since version 2. only for updates. Use new persistence instead.")]
         internal static void RemoveDefaultFavorite()
         {
             FavoriteConfigurationElementCollection defaultFav = GetSection().DefaultFavorite;

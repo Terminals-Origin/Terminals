@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using SysConfig = System.Configuration;
 using System.Linq;
-using Terminals.Data;
 
 namespace Terminals.Configuration
 {
     internal static partial class Settings
     {
         /// <summary>
-        /// Gets alphabeticaly sorted array of tags resolved from Tags store
+        /// Gets alphabeticaly sorted array of tags resolved from Tags store.
+        /// Since version 2. only for updates. Use new persistence instead.
         /// </summary>
-        [Obsolete("Since version 2. only for updates. Use new persistence instead.")]
-        public static string[] Tags
+        internal static string[] Tags
         {
             get
             {
@@ -48,7 +47,7 @@ namespace Terminals.Configuration
             SaveImmediatelyIfRequested();
         }
 
-        public static void DeleteTags()
+        private static void DeleteTags()
         {
             List<string> tagsToDelete = Tags.ToList();
             DeleteTagsFromSettings(tagsToDelete);
