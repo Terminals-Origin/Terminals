@@ -142,7 +142,7 @@ namespace Terminals.Updates
             if (newsFavorite != null)
             {
                 newsFavorite.ServerName = Program.Resources.GetString("TerminalsURL");
-                persistence.SaveAndFinishDelayedUpdate();
+                persistence.Favorites.Update(newsFavorite);
             }
         }
     }

@@ -118,7 +118,12 @@ namespace Terminals.Data
 
         private void FireFavoritesChangedEvent(FavoritesChangedEventArgs args)
         {
+            // prevent persistence dummy call without start update
+            if (args == null)
+                return;
+
             Debug.WriteLine(args.ToString());
+
             if (this.FavoritesChanged != null)
                 this.FavoritesChanged(args);
         }
@@ -168,7 +173,12 @@ namespace Terminals.Data
 
         private void FireGroupsChangedEvent(GroupsChangedArgs args)
         {
+            // prevent persistence dummy call without start update
+            if (args == null)
+                return;
+
             Debug.WriteLine(args.ToString());
+
             if (this.GroupsChanged != null)
                 this.GroupsChanged(args);
         }
