@@ -28,13 +28,7 @@ namespace Terminals.Data
         {
             this.persistenceSecurity = persistenceSecurity;
             this.cache = new List<ICredentialSet>();
-            string configFileName = this.FileFullName;
             InitializeFileWatch();
-
-            if (File.Exists(configFileName))
-                LoadStoredCredentials(configFileName);
-            else
-                Save();
         }
 
         private void InitializeFileWatch()
@@ -42,6 +36,20 @@ namespace Terminals.Data
             fileWatcher = new DataFileWatcher(FileFullName);
             fileWatcher.FileChanged += new EventHandler(CredentialsFileChanged);
             fileWatcher.StartObservation();
+        }
+
+        /// <summary>
+        /// Don't load the file in constructor, we wait until persistence is authenticated.
+        /// This is needed specially by upgrades from previous version,
+        ///  to let it upgrade the file, before it is loaded into persistence.
+        /// </summary>
+        internal void Initialize()
+        {
+            string configFileName = this.FileFullName;
+            if (File.Exists(configFileName))
+                LoadStoredCredentials(configFileName);
+            else
+                Save();
         }
 
         private void CredentialsFileChanged(object sender, EventArgs e)

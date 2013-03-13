@@ -129,6 +129,7 @@ namespace Terminals.Data
 
         public void Initialize()
         {
+            this.storedCredentials.Initialize();
             FavoritesFile file = this.LoadFile();
             this.groups.Add(file.Groups.Cast<IGroup>().ToList());
             this.favorites.AddAllToCache(file.Favorites.Cast<IFavorite>().ToList());
