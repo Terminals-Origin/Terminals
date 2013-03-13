@@ -18,6 +18,8 @@ namespace Tests.Passwords
     {
         public TestContext TestContext { get; set; }
 
+        private bool askedForPassword;
+
         [DeploymentItem(@"..\Resources\TestData\EmptyTerminals.config")]
         [DeploymentItem(@"..\Resources\TestData\EmptyCredentials.xml")]
         [TestMethod]
@@ -26,6 +28,7 @@ namespace Tests.Passwords
             this.UpgradePasswordsTestInitialize("EmptyTerminals.config", "EmptyCredentials.xml");
             // simply nothing to upgrade, procedure shouldn't fail.
             this.RunUpgrade(new FilePersistence());
+            Assert.IsFalse(askedForPassword, "Empty config file shouldn't ask for password");
         }
 
         [DeploymentItem(@"..\Resources\TestData\SecuredTerminals.config")]
@@ -60,6 +63,8 @@ namespace Tests.Passwords
 
         private AuthenticationPrompt GetMasterPassword(bool retry)
         {
+            Assert.IsFalse(askedForPassword, "Upgrade asks for password second time");
+            askedForPassword = true;
             // simulate user prompt for master password
             return new AuthenticationPrompt { Password = PasswordTests.MASTERPASSWORD };
         }

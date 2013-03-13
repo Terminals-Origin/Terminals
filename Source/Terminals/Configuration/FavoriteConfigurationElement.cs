@@ -861,7 +861,9 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("domainName", IsRequired = false)]
+        private const string DOMAIN_ELEMENT = "domainName";
+
+        [ConfigurationProperty(DOMAIN_ELEMENT, IsRequired = false)]
         public String DomainName
         {
             get
@@ -870,12 +872,21 @@ namespace Terminals
                 if (cred != null)
                     return cred.Domain;
 
-                return (String)this["domainName"];
+                return PlainDomainName;
             }
             set
             {
-                this["domainName"] = value;
+                this[DOMAIN_ELEMENT] = value;
             }
+        }
+
+        /// <summary>
+        /// Gets the stored domain name without checking for credentials resolution.
+        /// Use for direct upgrades.
+        /// </summary>
+        internal string PlainDomainName
+        {
+            get { return (String)this[DOMAIN_ELEMENT]; }
         }
 
         [ConfigurationProperty("authMethod", DefaultValue = SSHClient.AuthMethod.Password)]
@@ -904,7 +915,9 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("userName", IsRequired = false)]
+        private const string USERNAME_ELEMENT = "userName";
+
+        [ConfigurationProperty(USERNAME_ELEMENT, IsRequired = false)]
         public String UserName
         {
             get
@@ -916,12 +929,21 @@ namespace Terminals
                         return cred.UserName;
                 }
 
-                return (String)this["userName"];
+                return PlainUserName;
             }
             set
             {
-                this["userName"] = value;
+                this[USERNAME_ELEMENT] = value;
             }
+        }
+
+        /// <summary>
+        /// Gets the stored user name without checking for credentials resolution.
+        /// Use for direct upgrades.
+        /// </summary>
+        internal string PlainUserName
+        {
+            get { return (String)this[USERNAME_ELEMENT]; }
         }
 
         [ConfigurationProperty("encryptedPassword", IsRequired = false)]
@@ -938,7 +960,7 @@ namespace Terminals
         }
 
         /// <summary>
-        /// Gets or sets the password String in not ecrypted form
+        /// Gets or sets the password String in not encrypted form
         /// </summary>
         internal String Password
         {
