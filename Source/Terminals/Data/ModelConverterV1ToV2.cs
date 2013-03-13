@@ -6,15 +6,37 @@
     /// Temporary used also to support imports and export using old data model, 
     /// before they will be updated.
     /// </summary>
-    internal static class ModelConverterV1ToV2
+    internal class ModelConverterV1ToV2
     {
+        private readonly IPersistence persistence;
+
+        private ModelConverterV1ToV2(IPersistence persistence)
+        {
+            this.persistence = persistence;
+        }
+
         /// <summary>
         /// Doesn't convert Tags to groups, it has to be handled manually, 
         /// when adding Favorite into Persistence
         /// </summary>
         internal static IFavorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite)
         {
-            var result = Persistence.Instance.Factory.CreateFavorite();
+            return ConvertToFavorite(sourceFavorite, Persistence.Instance);
+        }
+
+        /// <summary>
+        /// Doesn't convert Tags to groups, it has to be handled manually, 
+        /// when adding Favorite into Persistence
+        /// </summary>
+        internal static IFavorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite, IPersistence persistence)
+        {
+            var converter = new ModelConverterV1ToV2(persistence);
+            return converter.Convert(sourceFavorite);
+        }
+
+        private IFavorite Convert(FavoriteConfigurationElement sourceFavorite)
+        {
+            IFavorite result = persistence.Factory.CreateFavorite();
             ConvertGeneralProperties(result, sourceFavorite);
             ConvertSecurity(result, sourceFavorite);
             ConvertBeforeConnetExecute(result, sourceFavorite);
@@ -36,13 +58,13 @@
             result.Notes = sourceFavorite.Notes;
         }
 
-        private static void ConvertSecurity(IFavorite result, FavoriteConfigurationElement sourceFavorite)
+        private void ConvertSecurity(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             ISecurityOptions security = result.Security;
             security.Domain = sourceFavorite.DomainName;
             security.UserName = sourceFavorite.UserName;
             security.EncryptedPassword = sourceFavorite.EncryptedPassword;
-            ICredentialSet credential = Persistence.Instance.Credentials[sourceFavorite.Credential];
+            ICredentialSet credential = persistence.Credentials[sourceFavorite.Credential];
             if (credential != null)
                 security.Credential = credential.Id;
         }

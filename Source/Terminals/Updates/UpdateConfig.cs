@@ -39,7 +39,7 @@ namespace Terminals.Updates
             if (IsVersion2UpTo21() || IsConfigFileOnV2Location())
             {
                 MoveFilesToVersion2Location();
-                UpdateDefaultFavoriteUrl();
+                UpdateDefaultFavoriteUrl(Persistence.Instance);
             }
         }
 
@@ -58,108 +58,12 @@ namespace Terminals.Updates
             // don't move the logs directory, because it is in use by Log4net library.
             MoveDataFile(FileLocations.HISTORY_FILENAME);
             MoveDataFile(FileLocations.TOOLSTRIPS_FILENAME);
+            MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
             // only this is already in use if started with default location
             MoveDataFile(FileLocations.CONFIG_FILENAME);
             Settings.ForceReload();
-            Func<bool, AuthenticationPrompt> knowsUserPassword = RequestPassword.KnowsUserPassword;
-            var passwordsUpdate = new PasswordsV2Update(knowsUserPassword);
-            UpgradeCredentialsFile(passwordsUpdate);
-            UpgradeConfigFile(passwordsUpdate, knowsUserPassword);
-        }
-
-        private static void UpgradeCredentialsFile(PasswordsV2Update passwordsUpdate)
-        {
-            MoveDataFile(FileLocations.CREDENTIALS_FILENAME);
-            string credentialsFile = Settings.FileLocations.Credentials;
-            if (File.Exists(credentialsFile))
-            {
-                string credentialsXml = File.ReadAllText(credentialsFile);
-                string updatedContet = UpdateCredentialXmlTags(credentialsXml);
-                updatedContet = passwordsUpdate.UpdateCredentialPasswords(updatedContet);
-                File.WriteAllText(credentialsFile, updatedContet);
-            }
-        }
-
-        private static string UpdateCredentialXmlTags(string credentialsXml)
-        {
-            StringBuilder credentialsText = new StringBuilder(credentialsXml);
-            credentialsText.Replace("Password", "EncryptedPassword");
-            credentialsText.Replace("Username", "EncryptedUserName");
-            credentialsText.Replace("Domain", "EncryptedDomain");
-            return credentialsText.ToString();
-        }
-
-        private static void UpgradeConfigFile(PasswordsV2Update passwordsUpdate,
-            Func<bool, AuthenticationPrompt> knowsUserPassword) 
-        {
-            Settings.StartDelayedUpdate();
-            Persistence.Instance.StartDelayedUpdate();
-            string newConfigFileName = Settings.FileLocations.Configuration;
-            passwordsUpdate.UpdateConfigFilePasswords(newConfigFileName);
-            // we don't have to reload now, because the file watcher is already listening
-            Settings.ForceReload(); // not identified why, but otherwise master password is lost
-            // now already need to have persistence authenticated, otherwise we are working with wrong masterKey
-            Persistence.Instance.Security.Authenticate(knowsUserPassword);
-            ImportTagsFromConfigFile();
-            MoveFavoritesFromConfigFile();
-            MoveGroupsFromConfigFile();
-            Settings.RemoveAllFavoritesAndTags();
-            ReplaceFavoriteButtonNamesByIds();
-            Settings.SaveAndFinishDelayedUpdate();
-            Persistence.Instance.Groups.Rebuild();
-            Persistence.Instance.SaveAndFinishDelayedUpdate();
-        }
-
-        private static void MoveGroupsFromConfigFile()
-        {
-            GroupConfigurationElementCollection configGroups = Settings.GetGroups();
-            foreach (GroupConfigurationElement configGroup in configGroups)
-            {
-                MoveFavoriteAliasesGroup(configGroup);
-            }
-            
-            Settings.ClearGroups();
-        }
-
-        private static void MoveFavoriteAliasesGroup(GroupConfigurationElement configGroup) 
-        {
-            IGroup group = FavoritesFactory.GetOrCreateGroup(configGroup.Name);
-            List<string> favoriteNames = configGroup.FavoriteAliases.GetFavoriteNames();
-            IFavorites favorites = Persistence.Instance.Favorites;
-            List<IFavorite> groupFavorites = favoriteNames.Select(favoriteName => favorites[favoriteName])
-                .Where(favorite => favorite != null).ToList();
-            group.AddFavorites(groupFavorites);
-        }
-
-        private static void ReplaceFavoriteButtonNamesByIds()
-        {
-            string[] favoriteNames = Settings.FavoriteNamesToolbarButtons;
-            List<Guid> favoritesWithButton = Persistence.Instance.Favorites
-                .Where(favorite => favoriteNames.Contains(favorite.Name))
-                .Select(candidate => candidate.Id).ToList();
-
-            Settings.UpdateFavoritesToolbarButtons(favoritesWithButton);
-        }
-
-        private static void ImportTagsFromConfigFile()
-        {
-            IGroups groups = Persistence.Instance.Groups;
-            foreach (string tag in Settings.Tags)
-            {
-                var group = Persistence.Instance.Factory.CreateGroup(tag);
-                groups.Add(group);
-            }
-        }
-
-        private static void MoveFavoritesFromConfigFile()
-        {
-            IFavorites favorites = Persistence.Instance.Favorites;
-            foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
-            {
-                IFavorite favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement);
-                ImportWithDialogs.AddFavoriteIntoGroups(favoriteConfigElement, favorite);
-                favorites.Add(favorite);
-            }
+            var contentUpgrade = new FilesV2ContentUpgrade(Persistence.Instance, RequestPassword.KnowsUserPassword);
+            contentUpgrade.Run();
         }
 
         private static void MoveThumbsDirectory()
@@ -232,14 +136,13 @@ namespace Terminals.Updates
         /// <summary>
         /// Change the Terminals URL to the correct URL used for Terminals News as of version 2.0 RC1
         /// </summary>
-        private static void UpdateDefaultFavoriteUrl()
+        private static void UpdateDefaultFavoriteUrl(IPersistence persistence)
         {
-            var favorites = Persistence.Instance.Favorites;
-            IFavorite newsFavorite = favorites[FavoritesFactory.TerminalsReleasesFavoriteName];
+            IFavorite newsFavorite = persistence.Favorites[FavoritesFactory.TerminalsReleasesFavoriteName];
             if (newsFavorite != null)
             {
                 newsFavorite.ServerName = Program.Resources.GetString("TerminalsURL");
-                Persistence.Instance.SaveAndFinishDelayedUpdate();
+                persistence.SaveAndFinishDelayedUpdate();
             }
         }
     }

@@ -25,7 +25,7 @@ namespace Tests.Passwords
         {
             this.UpgradePasswordsTestInitialize("EmptyTerminals.config", "EmptyCredentials.xml");
             // simply nothing to upgrade, procedure shouldn't fail.
-            this.RunUpgrade();
+            this.RunUpgrade(new FilePersistence());
         }
 
         [DeploymentItem(@"..\Resources\TestData\SecuredTerminals.config")]
@@ -34,13 +34,13 @@ namespace Tests.Passwords
         public void V2UpgradePasswordsTest()
         {
             this.UpgradePasswordsTestInitialize("SecuredTerminals.config", "SecuredCredentials.xml");
-            this.RunUpgrade();
+            IPersistence persistence = new FilePersistence();
+            this.RunUpgrade(persistence);
 
             bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(PasswordTests.MASTERPASSWORD, Settings.MasterPasswordHash);
             Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
 
             // don't use the application SingleTon static instance, because other test fail, when running tests in batch
-            IPersistence persistence = new FilePersistence();
             persistence.Security.Authenticate(GetMasterPassword);
 
             IFavorite favorite = persistence.Favorites.First();
@@ -51,15 +51,10 @@ namespace Tests.Passwords
             Assert.AreEqual(credential.UserName, credential.Password, "Credential password upgrade failed.");
         }
 
-        private void RunUpgrade()
+        private void RunUpgrade(IPersistence persistence)
         {
-            // simulate last two method calls in UpdateConfig class
-            var passwordsUpdate = new PasswordsV2Update(GetMasterPassword);
-            var updateConfig = new PrivateType(typeof(UpdateConfig));
-            updateConfig.InvokeStatic("UpgradeCredentialsFile", new object[] { passwordsUpdate });
-            // because of needed method group conversion (method group is not convertible to object)
-            object knowsUserPassword = (Func<bool, AuthenticationPrompt>)GetMasterPassword;
-            updateConfig.InvokeStatic("UpgradeConfigFile", new object[] { passwordsUpdate, knowsUserPassword });
+            var contentUpgrade = new FilesV2ContentUpgrade(persistence, GetMasterPassword);
+            contentUpgrade.Run();
             Settings.ForceReload(); // because we changed its file, while upgrading
         }
 
