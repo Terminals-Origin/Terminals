@@ -703,7 +703,7 @@ namespace Terminals
             {
                 if (show)
                 {
-                    splitContainer1.Panel1MinSize = 15;
+                    splitContainer1.Panel1MinSize = 10;
                     splitContainer1.SplitterDistance = Settings.FavoritePanelWidth;
                     splitContainer1.Panel1Collapsed = false;
                     splitContainer1.IsSplitterFixed = false;
@@ -712,8 +712,8 @@ namespace Terminals
                 }
                 else
                 {
-                    splitContainer1.Panel1MinSize = 9;
-                    splitContainer1.SplitterDistance = 9;
+                    splitContainer1.Panel1MinSize = 5;
+                    splitContainer1.SplitterDistance = 5;
                     splitContainer1.IsSplitterFixed = true;
                     pnlHideTagsFavorites.Hide();
                     pnlShowTagsFavorites.Show();

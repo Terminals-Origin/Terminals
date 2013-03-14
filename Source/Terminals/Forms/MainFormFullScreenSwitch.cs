@@ -65,8 +65,6 @@ namespace Terminals
                     RestoreMainFormState();
 
                 mainForm.tcTerminals.ShowTabs = !fullScreen;
-                mainForm.tcTerminals.ShowBorder = !fullScreen;
-
                 mainForm.Visible = true;
                 mainForm.PerformLayout();
             }
