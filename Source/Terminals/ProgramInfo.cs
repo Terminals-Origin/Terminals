@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -9,9 +10,9 @@ namespace Terminals
         /// <summary>
         /// Represents the program assembly info object.
         /// </summary>
-        public static class Info
+        internal static class Info
         {
-            private static Assembly aAssembly = Assembly.GetExecutingAssembly();
+            private static readonly Assembly aAssembly = Assembly.GetExecutingAssembly();
 
             /// <summary>
             /// Gets full path to the executing assembly location without last backslash
@@ -32,7 +33,7 @@ namespace Terminals
             {
                 get
                 {
-                    return string.Format("{0} ({1}) - {2}", Info.TitleVersion, Info.Description, Info.BuildDate.ToShortDateString());
+                    return String.Format("{0} ({1}) - {2}", TitleVersion, Description, BuildDate.ToShortDateString());
                 }
             }
 
@@ -48,7 +49,7 @@ namespace Terminals
             {
                 get
                 {
-                    AssemblyDescriptionAttribute desc = (AssemblyDescriptionAttribute)AssemblyDescriptionAttribute.GetCustomAttribute(aAssembly, typeof(AssemblyDescriptionAttribute));
+                    AssemblyDescriptionAttribute desc = (AssemblyDescriptionAttribute)Attribute.GetCustomAttribute(aAssembly, typeof(AssemblyDescriptionAttribute));
                     return desc.Description;
                 }
             }
@@ -57,7 +58,7 @@ namespace Terminals
             {
                 get
                 {
-                    AssemblyTitleAttribute title = (AssemblyTitleAttribute)AssemblyTitleAttribute.GetCustomAttribute(aAssembly, typeof(AssemblyTitleAttribute));
+                    AssemblyTitleAttribute title = (AssemblyTitleAttribute)Attribute.GetCustomAttribute(aAssembly, typeof(AssemblyTitleAttribute));
                     return title.Title;
                 }
             }
@@ -66,17 +67,11 @@ namespace Terminals
             {
                 get
                 {
-                    return string.Format("{0} {1}", Title, VersionString);
+                    return String.Format("{0} {1}", Title, VersionString);
                 }
             }
 
-            public static string VersionString
-            {
-                get
-                {
-                    return Program.TerminalsVersion;
-                }
-            }
+            public static string VersionString { get; private set; }
 
             public static Version Version
             {
@@ -90,7 +85,6 @@ namespace Terminals
             /// Taken from http://stackoverflow.com/questions/1600962/c-displaying-the-build-date
             /// (code by Joe Spivey)
             /// </summary>
-            /// <returns></returns>
             private static DateTime RetrieveLinkerTimestamp()
             {
                 string filePath = aAssembly.Location;
@@ -116,6 +110,32 @@ namespace Terminals
                 dt = dt.AddSeconds(secondsSince1970);
                 dt = dt.AddHours(TimeZone.CurrentTimeZone.GetUtcOffset(dt).Hours);
                 return dt;
+            }
+
+            internal static void SetApplicationVersion()
+            {
+                //MAJOR.MINOR.PATCH.BUILD
+                //MAJOR == Breaking Changes in API or features
+                //MINOR == Non breaking changes, but significant feature changes
+                //PATH (Or Revision) == Bug fixes only, etc...
+                //BUILD == Build increments
+                //
+                //Incremental builds, daily, etc will include full M.M.P.B
+                //Release builds only include M.M.P
+                //
+                //.NET Likes:  MAJOR.MINOR.BUILD.REVISION
+
+                var version = Assembly.GetExecutingAssembly().GetName().Version;
+                VersionString = String.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
+                SetDebugBuild(version);
+            }
+
+            [Conditional("DEBUG")]
+            private static void SetDebugBuild(Version version)
+            {
+                // debug builds, to keep track of minor/revisions, etc..
+                // Adds also the revision
+                VersionString = version.ToString(); 
             }
         }
     }
