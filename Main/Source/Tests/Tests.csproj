@@ -111,7 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
-      <Link>Common.AssemblyInfo.cs</Link>
+      <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />

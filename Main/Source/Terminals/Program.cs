@@ -17,7 +17,6 @@ namespace Terminals
 {
     internal static partial class Program
     {
-        private static string TerminalsVersion;
         public static ResourceManager Resources = new ResourceManager("Terminals.Localization.LocalizedValues",
             typeof(MainForm).Assembly);
 
@@ -29,7 +28,7 @@ namespace Terminals
         internal static void Main()
         {
             SetUnhandledExceptions();
-            SetApplicationVersion();
+            Info.SetApplicationVersion();
 
             Logging.Log.Info(String.Format("-------------------------------Title: {0} started Version:{1} Date:{2}-------------------------------",
                   Info.TitleVersion, Info.DLLVersion, Info.BuildDate));
@@ -62,28 +61,6 @@ namespace Terminals
 
             Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
-        }
-
-        private static void SetApplicationVersion()
-        {
-            //MAJOR.MINOR.PATCH.BUILD
-            //MAJOR == Breaking Changes in API or features
-            //MINOR == Non breaking changes, but significant feature changes
-            //PATH (Or Revision) == Bug fixes only, etc...
-            //BUILD == Build increments
-            //
-            //Incremental builds, daily, etc will include full M.M.P.B
-            //Release builds only include M.M.P
-            //
-            //.NET Likes:  MAJOR.MINOR.BUILD.REVISION
-
-            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-
-#if DEBUG
-            TerminalsVersion = version.ToString(); //debug builds, to keep track of minor/revisions, etc..
-#else
-        TerminalsVersion = string.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);        
-#endif
         }
 
         private static void SetUnhandledExceptions()
