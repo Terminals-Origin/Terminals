@@ -1,5 +1,7 @@
-namespace Terminals.Security {
-    partial class RequestPassword {
+namespace Terminals.Security
+{
+    partial class RequestPassword
+    {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -9,8 +11,10 @@ namespace Terminals.Security {
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing) {
-            if (disposing && (components != null)) {
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -22,7 +26,8 @@ namespace Terminals.Security {
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RequestPassword));
             this.label1 = new System.Windows.Forms.Label();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
@@ -98,6 +103,7 @@ namespace Terminals.Security {
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "RequestPassword";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Terminals Password";
             this.ResumeLayout(false);
             this.PerformLayout();
