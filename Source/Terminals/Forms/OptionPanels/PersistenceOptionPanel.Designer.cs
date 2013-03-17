@@ -153,7 +153,7 @@ namespace Terminals.Forms
             // 
             // databaseCombobox
             // 
-            this.databaseCombobox.DropDownWidth = 500;
+            this.databaseCombobox.DropDownWidth = 200;
             this.databaseCombobox.Location = new System.Drawing.Point(148, 125);
             this.databaseCombobox.Name = "databaseCombobox";
             this.databaseCombobox.Size = new System.Drawing.Size(173, 21);
