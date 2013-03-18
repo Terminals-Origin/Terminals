@@ -227,7 +227,7 @@ namespace Terminals.Forms
                 advancedForm.DataSource = currentConnectionCopy;
                 if (advancedForm.ShowDialog() == DialogResult.OK)
                 {
-                    this.FillSqlControlsFromConnecitonBuilder(currentConnectionCopy);
+                  this.FillSqlControlsFromConnecitonBuilder(currentConnectionCopy);
                 }
             }
         }
@@ -239,6 +239,8 @@ namespace Terminals.Forms
 
             this.FillConnectionStringBuilder(this.connectionStringBuilder);
             this.connectionStringBuilder.InitialCatalog = this.databaseCombobox.Text;
+            if (!string.IsNullOrEmpty(this.connectionStringBuilder.InitialCatalog))
+              this.connectionStringBuilder.AttachDBFilename = string.Empty;
         }
 
         private void FillConnectionStringBuilder(SqlConnectionStringBuilder connectionBuilder)
@@ -267,13 +269,19 @@ namespace Terminals.Forms
         {
             this.connectionStringBuilder = connectionStringBuilder;
             this.serversComboBox.Text = connectionStringBuilder.DataSource;
-            this.databaseCombobox.Text = connectionStringBuilder.InitialCatalog;
+            
             this.IsSqlServerAuth = !connectionStringBuilder.IntegratedSecurity;
             if (!connectionStringBuilder.IntegratedSecurity)
             {
                 this.sqlServerUserNameTextBox.Text = connectionStringBuilder.UserID;
                 this.sqlServerPasswordTextBox.Text = connectionStringBuilder.Password;
             }
+
+            // advanced properties override possible inconsistent values.
+            if (!string.IsNullOrEmpty(connectionStringBuilder.AttachDBFilename))
+                connectionStringBuilder.InitialCatalog = string.Empty;
+            
+            this.databaseCombobox.Text = connectionStringBuilder.InitialCatalog;
         }
 
         private void OnBtnSetPasswordClick(object sender, EventArgs e)
