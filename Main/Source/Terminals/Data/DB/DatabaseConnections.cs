@@ -141,8 +141,9 @@ namespace Terminals.Data.DB
         internal static DatabaseValidataionResult ValidateDatabaseConnection(string connectionString, string databasePassword)
         {
             TestConnectionResult connectionResult = TestConnection(connectionString, databasePassword);
-            if (!connectionResult.Successful)
-                return new DatabaseValidataionResult(connectionResult.ErroMessage);
+            // todo enable database versioning
+            // if (!connectionResult.Successful)
+                return new DatabaseValidataionResult(connectionResult, Versioning.Version.Max);
             
             return IdentifyDatabaseVersion(connectionString);
         }
