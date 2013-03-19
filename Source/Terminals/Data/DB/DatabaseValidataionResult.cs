@@ -33,6 +33,12 @@ namespace Terminals.Data.DB
             this.CurrentVersion = Versioning.Version.Min;
         }
 
+        internal DatabaseValidataionResult(TestConnectionResult connectionResult, Versioning.Version version)
+            : base(connectionResult)
+        {
+            CurrentVersion = version;
+        }
+
         public override string ToString()
         {
             return string.Format("DatabaseValidataionResult:Successful={0},CurrentVersion={1},ErrorMessage={2}",

@@ -32,6 +32,12 @@
             this.ErroMessage = errorMessage;
         }
 
+        protected TestConnectionResult(TestConnectionResult connectionResult)
+        {
+            this.Successful = connectionResult.Successful;
+            this.ErroMessage = connectionResult.ErroMessage;
+        }
+
         public override string ToString()
         {
             return string.Format("TestConnectionResult:Successful={0},ErrorMessage={1}", this.Successful, this.ErroMessage);

@@ -126,7 +126,9 @@ namespace Terminals.Forms
 
             if (connectionResult.SuccessfulWithVersion)
             {
-                string message = string.Format("Test connection succeeded. (Version: {0})", connectionResult.CurrentVersion);
+                string message = string.Format("Test connection succeeded.");
+                // todo enable database versioning
+                // string message = string.Format("Test connection succeeded. (Version: {0})", connectionResult.CurrentVersion);
                 MessageBox.Show(message, MESSAGE_HEADER, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
@@ -140,12 +142,13 @@ namespace Terminals.Forms
         private static void ShowFailedConnectionTestMessage(DatabaseValidataionResult connectionResult)
         {
             string message = string.Format("Test database failed.\r\nReason:{0}", connectionResult.ErroMessage);
-            if (connectionResult.IsMinimalVersion)
-            {
-                message += "\r\n\r\nThe specified database does include a versions table.\r\n" +
-                           "Change the name of the database and click 'Create New' to create a new database on the server, " +
-                           "or just hit 'Create New' to deploy into this existing database.";
-            }
+            // todo enable database versioning
+            //if (connectionResult.IsMinimalVersion)
+            //{
+            //    message += "\r\n\r\nThe specified database does include a versions table.\r\n" +
+            //               "Change the name of the database and click 'Create New' to create a new database on the server, " +
+            //               "or just hit 'Create New' to deploy into this existing database.";
+            //}
             MessageBox.Show(message, MESSAGE_HEADER, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
