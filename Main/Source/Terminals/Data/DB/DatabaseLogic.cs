@@ -18,6 +18,10 @@ namespace Terminals.Data.DB
         internal Database(DbConnection connection)
             : base(connection, true)
         {
+            // disable change tracking, we use the context disconnected
+            this.Configuration.ProxyCreationEnabled = false;
+            this.Configuration.AutoDetectChangesEnabled = false;
+
             this.BeforeConnectExecute = this.Set<DbBeforeConnectExecute>();
             this.CredentialBase = this.Set<DbCredentialBase>();
             this.DisplayOptions = this.Set<DbDisplayOptions>();
