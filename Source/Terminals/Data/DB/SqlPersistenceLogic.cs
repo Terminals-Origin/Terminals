@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Timers;
@@ -48,10 +47,13 @@ namespace Terminals.Data.DB
         {
             this.security = new SqlPersistenceSecurity();
             this.security.AssignPersistence(this);
+            this.Dispatcher = new DataDispatcher();
         }
 
         public void StartDelayedUpdate()
         {
+            // don't reload during batch operations, otherwise recursive updates degrade performance
+            this.reLoadClock.Stop();
             this.Dispatcher.StartDelayedUpdate();
         }
 
@@ -59,6 +61,7 @@ namespace Terminals.Data.DB
         {
             // nothing to save, because changes are already committed by each operation
             this.Dispatcher.EndDelayedUpdate();
+            this.reLoadClock.Start();
         }
 
         public void Initialize()
@@ -66,7 +69,6 @@ namespace Terminals.Data.DB
             if(!this.TryInitializeDatabase())
                 return;
 
-            this.Dispatcher = new DataDispatcher();
             this.groups = new Groups();
             this.credentials = new StoredCredentials(this.security, this.Dispatcher);
             this.favorites = new Favorites(this.groups, this.credentials, this.security, this.Dispatcher);
@@ -103,7 +105,7 @@ namespace Terminals.Data.DB
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
         {
             this.reLoadClock = new Timer();
-            this.reLoadClock.Interval = 2000;
+            this.reLoadClock.Interval = 30000;
             // this forces the clock to run the updates in gui thread, because Entity framework isn't thread safe
             this.reLoadClock.SynchronizingObject = synchronizer;
             this.reLoadClock.Elapsed += new ElapsedEventHandler(this.OnReLoadClockElapsed);

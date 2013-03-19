@@ -90,7 +90,7 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
-          <Property Name="Protocol" Type="nvarchar" Nullable="false" MaxLength="5" />
+          <Property Name="Protocol" Type="nvarchar" Nullable="false" MaxLength="10" />
           <Property Name="Port" Type="int" Nullable="false" />
           <Property Name="ServerName" Type="nvarchar" Nullable="false" MaxLength="255" />
           <Property Name="NewWindow" Type="bit" Nullable="false" />
@@ -231,6 +231,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="ClearHistory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="DeleteBeforeConnectExecute" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FavoriteId" Type="int" Mode="In" />
         </Function>
