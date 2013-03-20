@@ -14,7 +14,18 @@ namespace Terminals.Data.DB
         /// <summary>
         /// periodical download of latest changes
         /// </summary>
-        private Timer reLoadClock;
+        private readonly Timer reLoadClock;
+
+        private const int DEFAULT_REFRESH_INTERVAL = 1000 * 30;
+        /// <summary>
+        /// Gets or sets value in seconds indicating, how often should persistence
+        /// ping server to check for latest state. Default value 30 seconds.
+        /// </summary>
+        internal int RefreshInterval 
+        {
+            get { return (int)this.reLoadClock.Interval / 1000; }
+            set { this.reLoadClock.Interval = 1000 * value; }
+        }
 
         private Favorites favorites;
         public IFavorites Favorites
@@ -45,6 +56,7 @@ namespace Terminals.Data.DB
 
         internal SqlPersistence()
         {
+            this.reLoadClock = new Timer(DEFAULT_REFRESH_INTERVAL);
             this.security = new SqlPersistenceSecurity();
             this.security.AssignPersistence(this);
             this.Dispatcher = new DataDispatcher();
@@ -104,8 +116,6 @@ namespace Terminals.Data.DB
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
         {
-            this.reLoadClock = new Timer();
-            this.reLoadClock.Interval = 30000;
             // this forces the clock to run the updates in gui thread, because Entity framework isn't thread safe
             this.reLoadClock.SynchronizingObject = synchronizer;
             this.reLoadClock.Elapsed += new ElapsedEventHandler(this.OnReLoadClockElapsed);
