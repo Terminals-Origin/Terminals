@@ -37,7 +37,9 @@ namespace Tests.SqlPersisted
         {
             this.AddFavoriteToPrimaryPersistence();
             this.AddFavoriteToPrimaryPersistence();
-
+            
+            // refresh interval is set to 30 sec. by default
+            this.PrimaryPersistence.RefreshInterval = 2;
             // assign event handler before another changes to catch all of them
             this.PrimaryPersistence.Dispatcher.FavoritesChanged +=
                 new FavoritesChangedEventHandler(this.OnPrimaryStoreFavoritesChanged);
@@ -46,8 +48,8 @@ namespace Tests.SqlPersisted
 
             ISynchronizeInvoke control = new Control();
             this.PrimaryPersistence.AssignSynchronizationObject(control);
-            // refresh interval is set to 2 sec. by default
-            Thread.Sleep(10000);
+            
+            Thread.Sleep(3000);
 
             Assert.IsTrue(this.addEventCatched, "Favorite added event wasn't received");
             Assert.IsTrue(this.updateEventCatched, "Favorite updated event wasn't received");
