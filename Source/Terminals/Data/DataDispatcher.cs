@@ -241,7 +241,7 @@ namespace Terminals.Data
         private void FireDataErrorOccured(object sender, string message)
         {
             if (this.ErrorOccurred == null)
-                return;
+                throw new ApplicationException("Terminals was not recover from previous data exception");
 
             var arguments = new DataErrorEventArgs 
             { 

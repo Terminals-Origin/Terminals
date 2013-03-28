@@ -98,6 +98,7 @@
           <Property Name="Notes" Type="nvarchar" MaxLength="500" />
           <Property Name="ProtocolProperties" Type="xml" />
           <Property Name="IconData" Type="varbinary(max)" />
+          <Property Name="Version" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="FavoritesInGroup">
           <Key>
@@ -523,6 +524,7 @@
           <NavigationProperty Name="Security" Relationship="Terminals.Data.DB.FK_Security_Favorites" FromRole="Favorites" ToRole="Security" />
           <NavigationProperty Name="Groups" Relationship="Terminals.Data.DB.FavoritesInGroup" FromRole="Favorites" ToRole="Groups" />
           <Property Type="Binary" Name="IconData" MaxLength="Max" FixedLength="false" />
+          <Property Type="Binary" Name="Version" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
         </EntityType>
         <EntityType Name="DbGroup" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
@@ -734,6 +736,7 @@
           <EntitySetMapping Name="Favorites">
             <EntityTypeMapping TypeName="Terminals.Data.DB.DbFavorite">
               <MappingFragment StoreEntitySet="Favorites">
+                <ScalarProperty Name="Version" ColumnName="Version" />
                 <ScalarProperty Name="IconData" ColumnName="IconData" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="DesktopShare" ColumnName="DesktopShare" />

@@ -174,7 +174,9 @@
     <Compile Include="Connections\RdpClientErrorMessages.cs" />
     <Compile Include="Data\DataErrorEventArgs.cs" />
     <Compile Include="Data\DB\ApplyValueParams.cs" />
+    <Compile Include="Data\DB\ByIdComparer.cs" />
     <Compile Include="Data\DB\CacheConnector.cs" />
+    <Compile Include="Data\DB\ChangedVersionComparer.cs" />
     <Compile Include="Data\DB\FavoritesBatchActions.cs" />
     <Compile Include="Forms\UnhandledTerminationForm.cs">
       <SubType>Form</SubType>

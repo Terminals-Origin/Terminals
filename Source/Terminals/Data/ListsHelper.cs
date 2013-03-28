@@ -20,11 +20,21 @@ namespace Terminals.Data
 
         /// <summary>
         /// Finds all items from source list, which are not in destination list.
-        /// Returns not null collection of differences. Compares ignoring case.
+        /// Returns not null collection of differences.
         /// </summary>
         internal static List<TType> GetMissingSourcesInTarget<TType>(List<TType> sourceItems, List<TType> targetItems)
         {
             return sourceItems.Except(targetItems).ToList();
+        }
+
+        /// <summary>
+        /// Finds all items from source list, which are not in destination list.
+        /// Returns not null collection of differences. Compares by custom comparer.
+        /// </summary>
+        internal static List<TType> GetMissingSourcesInTarget<TType>(List<TType> sourceItems, List<TType> targetItems,
+            IEqualityComparer<TType> comparer)
+        {
+            return sourceItems.Except(targetItems, comparer).ToList();
         }
     }
 }
