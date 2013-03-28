@@ -325,16 +325,17 @@ namespace Terminals.Data.DB
 
         internal void RefreshCache()
         {
-            List<DbFavorite> newlyLoaded = LoadFromDatabase(this.Cached);
+            List<DbFavorite> newlyLoaded = LoadFromDatabase();
             List<DbFavorite> oldFavorites = this.Cached;
-            List<DbFavorite> missing = ListsHelper.GetMissingSourcesInTarget(newlyLoaded, oldFavorites);
-            List<DbFavorite> redundant = ListsHelper.GetMissingSourcesInTarget(oldFavorites, newlyLoaded);
-            List<DbFavorite> toUpdate = ListsHelper.GetMissingSourcesInTarget(oldFavorites, redundant);
+            List<DbFavorite> missing = ListsHelper.GetMissingSourcesInTarget(newlyLoaded, oldFavorites, new ByIdComparer());
+            List<DbFavorite> redundant = ListsHelper.GetMissingSourcesInTarget(oldFavorites, newlyLoaded, new ByIdComparer());
+            List<DbFavorite> toUpdate = newlyLoaded.Intersect(oldFavorites, new ChangedVersionComparer()).ToList();
 
             this.cache.Add(missing);
             this.cache.Delete(redundant);
+            this.cache.Update(toUpdate);
             this.RefreshCachedItems();
-
+            
             var missingToReport = missing.Cast<IFavorite>().ToList();
             var redundantToReport = redundant.Cast<IFavorite>().ToList();
             var updatedToReport = toUpdate.Cast<IFavorite>().ToList();

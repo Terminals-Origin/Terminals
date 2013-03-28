@@ -21,6 +21,7 @@ namespace Terminals.Data.DB
         public string DesktopShare { get; set; }
         public string Notes { get; set; }
         public byte[] IconData { get; set; }
+        public byte[] Version { get; set; }
     
         public virtual DbBeforeConnectExecute ExecuteBeforeConnect { get; set; }
         public virtual DbDisplayOptions Display { get; set; }
