@@ -115,6 +115,7 @@
     </Compile>
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />
+    <Compile Include="SqlPersisted\FavoriteCopiesTest.cs" />
     <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
     <Compile Include="FilePersisted\FilesHistoryTest.cs" />
     <Compile Include="FilePersisted\InjectionDateTime.cs" />

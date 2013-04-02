@@ -14,6 +14,7 @@ namespace Terminals.Forms.Controls
 
             this.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite);
             this.SelectedImageKey = this.ImageKey;
+            // todo performance hit, when loading details for each created favorite and also in menu loader
             this.ToolTipText = favorite.GetToolTipText();
         }
 
