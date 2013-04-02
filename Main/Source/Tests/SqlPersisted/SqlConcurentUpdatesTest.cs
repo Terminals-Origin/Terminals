@@ -66,8 +66,8 @@ namespace Tests.SqlPersisted
             this.SecondaryFavorites.Update(favoriteA);
 
             IFavorite favoriteB = this.SecondaryPersistence.Factory.CreateFavorite();
-            favoriteB.Name = "test";
-            favoriteB.ServerName = "test server";
+            favoriteB.Name = FAVORITE_NAME;
+            favoriteB.ServerName = FAVORITE_SERVERNAME;
             this.SecondaryFavorites.Add(favoriteB);
         }
 

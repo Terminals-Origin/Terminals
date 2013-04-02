@@ -12,6 +12,12 @@ namespace Tests.SqlPersisted
     /// </summary>
     public class SqlTestsLab
     {
+        private const string CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;User Instance=True";
+
+        protected const string FAVORITE_NAME = "test";
+
+        protected const string FAVORITE_SERVERNAME = "test server";
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
@@ -24,8 +30,6 @@ namespace Tests.SqlPersisted
         internal SqlPersistence PrimaryPersistence { get; private set; }
 
         internal SqlPersistence SecondaryPersistence { get; private set; }
-
-        private const string CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;User Instance=True";
 
         /// <summary>
         /// Gets second connector to lab database. Used to check, if data reached the store
@@ -113,8 +117,8 @@ namespace Tests.SqlPersisted
         {
             var favorite = this.PrimaryPersistence.Factory.CreateFavorite() as DbFavorite;
             // set required properties
-            favorite.Name = "test";
-            favorite.ServerName = "test server";
+            favorite.Name = FAVORITE_NAME;
+            favorite.ServerName = FAVORITE_SERVERNAME;
             return favorite;
         }
 
