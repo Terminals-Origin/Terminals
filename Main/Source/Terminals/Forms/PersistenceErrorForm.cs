@@ -22,19 +22,12 @@ namespace Terminals.Forms
                 Application.Exit();
 
             var form = new PersistenceErrorForm();
-            form.detailLabel.Text = args.Message;
-            form.ShowDialog();
+            form.textBoxDetail.Text = args.Message;
             // continue means, that user wants to retry
-        }
-
-        private void ReTryButtonClick(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
-        private void ExitButtonClick(object sender, EventArgs e)
-        {
-            Application.Exit();
+            if (form.ShowDialog() == DialogResult.Cancel)
+            {
+                Application.Exit();
+            }
         }
     }
 }
