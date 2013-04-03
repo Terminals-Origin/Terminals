@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -65,7 +66,7 @@ namespace Terminals.Data.DB
 
         public void Add(ICredentialSet toAdd)
         {
-            try
+            try // no concurrency here, because there are no dependences on other tables
             {
                 this.TryAdd(toAdd);
             }
@@ -98,10 +99,14 @@ namespace Terminals.Data.DB
             {
                 this.TryRemove(toRemove);
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                this.cache.Delete((DbCredentialSet)toRemove);
+            }
             catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Remove, toRemove, this, exception,
-                    "Unable to remove credential from database.");
+                                                  "Unable to remove credential from database.");
             }
         }
 
@@ -127,6 +132,10 @@ namespace Terminals.Data.DB
             try
             {
                 this.TryUpdate(toUpdate);
+            }
+            catch (DbUpdateConcurrencyException) // item already removed
+            {
+                this.cache.Delete((DbCredentialSet)toUpdate);
             }
             catch (EntityException exception)
             {
