@@ -27,12 +27,18 @@
 
         public IFavorite CreateFavorite()
         {
+            return CreateFavorite(this.persistenceSecurity, this.groups, this.credentials, this.dispatcher);
+        }
+
+        internal static DbFavorite CreateFavorite(PersistenceSecurity peristenceSecurity, Groups groups,
+            StoredCredentials credentials, DataDispatcher dispatcher)
+        {
             var favorite = new DbFavorite();
             favorite.Display = new DbDisplayOptions();
             favorite.Security = new DbSecurityOptions();
             favorite.ExecuteBeforeConnect = new DbBeforeConnectExecute();
-            favorite.AssignStoreToRdpOptions(this.persistenceSecurity);
-            favorite.AssignStores(this.groups, credentials, this.persistenceSecurity, this.dispatcher);
+            favorite.AssignStoreToRdpOptions(peristenceSecurity);
+            favorite.AssignStores(groups, credentials, peristenceSecurity, dispatcher);
             favorite.MarkAsNewlyCreated();
             return favorite;
         }

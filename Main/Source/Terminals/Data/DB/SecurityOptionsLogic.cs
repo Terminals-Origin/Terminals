@@ -112,6 +112,7 @@ namespace Terminals.Data.DB
             }
             set
             {
+                // todo unable to reset password to empty, when already configured
                 if (!string.IsNullOrEmpty(value))
                 {
                     this.EnsureCredentialBase();
