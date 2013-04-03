@@ -107,7 +107,6 @@ namespace Terminals.Data.DB
             {
                 this.TryUpdateFavorite(favorite);
             }
-            // todo add concurrency
             catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Update, favorite, this, exception, 
@@ -136,7 +135,6 @@ namespace Terminals.Data.DB
                     transaction.Complete();
                 }
             }
-            // todo add concurrency
             catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(UpdateFavorite, favorite, newGroups, this, exception, 
