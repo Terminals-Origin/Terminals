@@ -186,7 +186,7 @@ namespace Terminals.Data
         internal void ReportActionError<TActionParams1, TActionParams2>(Action<TActionParams1, TActionParams2> action,
             TActionParams1 actionParams1, TActionParams2 actionParams2, object sender, Exception exception, string message)
         {
-            this.ReportDataError(actionParams1, sender, exception, message);
+            this.ReportDataError(sender, exception, message);
             action(actionParams1, actionParams2);
             callStackCounter = 0;
         }
@@ -194,7 +194,7 @@ namespace Terminals.Data
         internal void ReportActionError<TActionParams>(Action<TActionParams> action, TActionParams actionParams,
             object sender, Exception exception, string message)
         {
-            this.ReportDataError(actionParams, sender, exception, message);
+            this.ReportDataError(sender, exception, message);
             action(actionParams);
             callStackCounter = 0;
         }
@@ -209,7 +209,7 @@ namespace Terminals.Data
         internal TFuncReturnValue ReportFunctionError<TActionParams, TFuncReturnValue>(Func<TActionParams, TFuncReturnValue> function,
             TActionParams actionParams, object sender, Exception exception, string message)
         {
-            this.ReportDataError(actionParams, sender, exception, message);
+            this.ReportDataError(sender, exception, message);
             TFuncReturnValue returnValue = function(actionParams);
             callStackCounter = 0;
             return returnValue;
@@ -224,16 +224,10 @@ namespace Terminals.Data
             return returnValue;
         }
 
-        private void ReportDataError<TActionParams>(TActionParams actionParams, object sender,
-            Exception exception, string message)
-        {
-            string formatedMessage = message + ": " + actionParams;
-            ReportDataError(sender, exception, formatedMessage);
-        }
-
         private void ReportDataError(object sender, Exception exception, string message)
         {
             callStackCounter++;
+            // don't log the action params, because they may contain sensitive value (passwords etc.)
             Logging.Log.Error(message, exception);
             this.FireDataErrorOccured(sender, message);
         }
