@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
 using System.Linq;
@@ -190,7 +191,7 @@ namespace Terminals.Data.DB
                 this.SaveAndReportFavoriteUpdated(database, toUpdate);
             }
             catch (InvalidOperationException)
-            {
+            {   
                 this.cache.Delete(toUpdate);
                 this.dispatcher.ReportFavoriteDeleted(toUpdate);
             }
@@ -215,16 +216,26 @@ namespace Terminals.Data.DB
         {
             try
             {
-                using (var transaction = new TransactionScope())
-                {
-                    this.TryDelete(favorites);
-                    transaction.Complete();
-                }
+                this.TryDeleteInTransaction(favorites);
             }
-            catch (Exception exception)
+            catch (DbUpdateConcurrencyException) // item already removed
+            {
+                var toRemove = favorites.Cast<DbFavorite>().ToList();
+                this.FinishRemove(favorites, toRemove);
+            }
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Delete, favorites, this, exception,
-                    "Unable to delete favorites from database");
+                                                  "Unable to delete favorites from database");
+            }
+        }
+
+        private void TryDeleteInTransaction(List<IFavorite> favorites)
+        {
+            using (var transaction = new TransactionScope())
+            {
+                this.TryDelete(favorites);
+                transaction.Complete();
             }
         }
 
@@ -240,9 +251,14 @@ namespace Terminals.Data.DB
                 database.SaveImmediatelyIfRequested();
                 List<IGroup> groupsToReport = this.groups.DeleteFromCache(deletedGroups);
                 this.dispatcher.ReportGroupsDeleted(groupsToReport);
-                this.cache.Delete(favoritesToDelete);
-                this.dispatcher.ReportFavoritesDeleted(favorites);
+                this.FinishRemove(favorites, favoritesToDelete);
             }
+        }
+
+        private void FinishRemove(List<IFavorite> favorites, List<DbFavorite> favoritesToDelete)
+        {
+            this.cache.Delete(favoritesToDelete);
+            this.dispatcher.ReportFavoritesDeleted(favorites);
         }
 
         private void DeleteFavoritesFromDatabase(Database database, List<DbFavorite> favorites)
@@ -379,6 +395,7 @@ namespace Terminals.Data.DB
             }
         }
 
+        // todo remove unused call
         private List<DbFavorite> LoadFromDatabase(List<DbFavorite> toRefresh)
         {
             try

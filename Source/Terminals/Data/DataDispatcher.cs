@@ -234,7 +234,8 @@ namespace Terminals.Data
 
         private void FireDataErrorOccured(object sender, string message)
         {
-            if (this.ErrorOccurred == null)
+            // prevent not only not unregistered event handler, but also wrong handing resulting in call stack overflow
+            if (this.ErrorOccurred == null || this.callStackCounter > 20)
                 throw new ApplicationException("Terminals was not recover from previous data exception");
 
             var arguments = new DataErrorEventArgs 

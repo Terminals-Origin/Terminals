@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
 
@@ -94,6 +96,7 @@ namespace Tests.SqlPersisted
             this.UpdateFavorite(favoriteB, this.SecondaryFavorites);
             // last update wins
             this.UpdateFavorite(favoriteA, this.PrimaryFavorites);
+            // now the stored name is "Test Changed Changed", because third update replaced previous change
             this.SecondaryFavorites.Delete(favoriteB);
             // next update shouldn't fail on deleted favorite
             this.UpdateFavorite(favoriteA, this.PrimaryFavorites);
@@ -110,6 +113,28 @@ namespace Tests.SqlPersisted
         {
             toUpdate.Name += " Changed";
             targetPersistence.Update(toUpdate);
+        }
+
+        [TestMethod]
+        public void TestDeleteFavoriteWhenDisconnected()
+        {
+            DbFavorite favoriteA = this.AddFavoriteToPrimaryPersistence();
+            // simulate disconnection using invalid connection string for next call
+            Settings.ConnectionString = @"Data Source=.\\SQLEXPRESS;AttachDbFilename=C:\\fake.mdf;Integrated Security=True;User Instance=True";
+            this.PrimaryPersistence.Dispatcher.ErrorOccurred += new EventHandler<DataErrorEventArgs>(this.DispatcherErrorOccurred);
+            // first call throws a connection exception, which is reported and results in reset connection string
+            this.PrimaryFavorites.Delete(favoriteA);
+            // second call throws a concurrency exception, which should be handled
+            this.PrimaryFavorites.Delete(favoriteA);
+
+            Assert.IsTrue(removedEventCatched, "Disconnected state wasn't reported");
+        }
+
+        private void DispatcherErrorOccurred(object sender, DataErrorEventArgs e)
+        {
+            SetDeploymentDirConnectionString();
+            removedEventCatched = true;
+            Assert.IsFalse(e.CallStackFull, "Dispatcher error reported full call stack");
         }
     }
 }

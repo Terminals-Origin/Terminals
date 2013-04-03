@@ -62,7 +62,7 @@ namespace Tests.SqlPersisted
             this.RemoveDatabaseFileReadOnly();
             ImportsTest.SetDefaultFileLocations();
             Settings.PersistenceSecurity = new SqlPersistenceSecurity();
-            Settings.ConnectionString = string.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
+            this.SetDeploymentDirConnectionString();
 
             // first reset the database password, then continue with other initializations
             this.CheckDatabase = DatabaseConnections.CreateInstance();
@@ -74,6 +74,11 @@ namespace Tests.SqlPersisted
             this.SecondaryPersistence.Initialize();
             
             this.ClearTestLab(); // because of failed previous tests
+        }
+
+        protected void SetDeploymentDirConnectionString()
+        {
+            Settings.ConnectionString = string.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
         }
 
         private void RemoveDatabaseFileReadOnly()
