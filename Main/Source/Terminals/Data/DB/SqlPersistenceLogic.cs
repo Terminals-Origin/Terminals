@@ -96,7 +96,7 @@ namespace Terminals.Data.DB
                 bool updatedKey = this.security.UpdateDatabaseKey();
                 if (updatedKey)
                     return true;
-                // todo UpgradeDatabaseVersion();
+                // UpgradeDatabaseVersion();
             }
 
             Logging.Log.Fatal("SQL Persistence layer failed to load. Fall back to File persistence");

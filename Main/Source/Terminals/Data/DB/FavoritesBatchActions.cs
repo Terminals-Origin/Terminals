@@ -24,6 +24,7 @@ namespace Terminals.Data.DB
             {
                 this.TryApplyValue(applyParams);
             }
+            // todo concurrency
             catch (EntityException exception)
             {
                 string message = string.Format("Unable to apply {0} to favorites", applyParams.PropertyName);

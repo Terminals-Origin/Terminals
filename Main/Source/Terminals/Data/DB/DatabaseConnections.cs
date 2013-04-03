@@ -134,7 +134,7 @@ namespace Terminals.Data.DB
                                                                                          migrationsRoot, dbResult.CurrentVersion,
                                                                                          Versioning.Version.Max, parser);
 
-                // todo commit the database upgrade in next version
+                // commit the database upgrade in next version
             }
         }
 
