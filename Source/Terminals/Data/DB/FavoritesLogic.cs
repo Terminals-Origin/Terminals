@@ -178,7 +178,7 @@ namespace Terminals.Data.DB
             {
                 this.SaveAndReportFavoriteUpdated(database, toUpdate);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException)
             {
                 this.TryToRefreshUpdatedFavorite(toUpdate, database);
             }
@@ -220,7 +220,7 @@ namespace Terminals.Data.DB
             {
                 this.TryDeleteInTransaction(favorites);
             }
-            catch (DbUpdateConcurrencyException) // item already removed
+            catch (DbUpdateException) // item already removed
             {
                 var toRemove = favorites.Cast<DbFavorite>().ToList();
                 this.FinishRemove(favorites, toRemove);

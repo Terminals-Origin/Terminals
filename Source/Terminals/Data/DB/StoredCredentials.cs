@@ -99,7 +99,7 @@ namespace Terminals.Data.DB
             {
                 this.TryRemove(toRemove);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateException)
             {
                 this.cache.Delete((DbCredentialSet)toRemove);
             }
@@ -133,7 +133,7 @@ namespace Terminals.Data.DB
             {
                 this.TryUpdate(toUpdate);
             }
-            catch (DbUpdateConcurrencyException) // item already removed
+            catch (DbUpdateException) // item already removed
             {
                 this.cache.Delete((DbCredentialSet)toUpdate);
             }

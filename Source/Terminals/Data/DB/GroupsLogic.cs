@@ -112,7 +112,7 @@ namespace Terminals.Data.DB
             {
                 this.TryDelete(group);
             }
-            catch (DbUpdateConcurrencyException) // item already removed
+            catch (DbUpdateException) // item already removed
             {
                 this.FinishGroupRemove(group);
             }
