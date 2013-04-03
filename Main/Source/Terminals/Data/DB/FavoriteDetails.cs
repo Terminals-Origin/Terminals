@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.Entity.Infrastructure;
 using Unified;
 
@@ -56,7 +57,7 @@ namespace Terminals.Data.DB
                 {
                     this.TryLoadDetailsFromDatabase();
                 }
-                catch (Exception exception)
+                catch (EntityException exception)
                 {
                     ReleaseReferences(); // rollback loading
                     this.Dispatcher.ReportActionError(LoadDetailsFromDatabase, this.favorite, exception,
@@ -112,7 +113,7 @@ namespace Terminals.Data.DB
                     database.UpdateFavoriteProtocolProperties(this.favorite.Id, serializedProperties);
                     this.favorite.isNewlyCreated = false;
                 }
-                catch (Exception exception)
+                catch (EntityException exception)
                 {
                     this.Dispatcher.ReportActionError(SaveProtocolProperties, database, this.favorite,
                         exception, "Unable to Save favorite protocol properties to database.\r\nDatabase connection lost.");
@@ -125,7 +126,7 @@ namespace Terminals.Data.DB
                 {
                     this.TryUpdateImageInDatabase(database);
                 }
-                catch (Exception exception)
+                catch (EntityException exception)
                 {
                     this.Dispatcher.ReportActionError(UpdateImageInDatabase, database, this.favorite, exception,
                        "Unable to Save favorite icon to database.\r\nDatabase connection lost.");
@@ -153,7 +154,7 @@ namespace Terminals.Data.DB
                 {
                     this.TryLoadPotocolProperties();
                 }
-                catch (Exception exception)
+                catch (EntityException exception)
                 {
                     this.Dispatcher.ReportActionError(LoadProtocolProperties, this.favorite, exception,
                         "Unable to load favorite protocol properties from database.\r\nDatabase connection lost.");
@@ -187,7 +188,7 @@ namespace Terminals.Data.DB
                 {
                     this.TryLoadImageFromDatabase();
                 }
-                catch (Exception exception)
+                catch (EntityException exception)
                 {
                     this.Dispatcher.ReportActionError(LoadImageFromDatabase, this.favorite, exception,
                         "Unable to load favorite icon from database.\r\nDatabase connection lost.");

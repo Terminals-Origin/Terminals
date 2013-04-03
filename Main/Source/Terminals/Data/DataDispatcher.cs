@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 
@@ -184,7 +185,7 @@ namespace Terminals.Data
         }
 
         internal void ReportActionError<TActionParams1, TActionParams2>(Action<TActionParams1, TActionParams2> action,
-            TActionParams1 actionParams1, TActionParams2 actionParams2, object sender, Exception exception, string message)
+            TActionParams1 actionParams1, TActionParams2 actionParams2, object sender, EntityException exception, string message)
         {
             this.ReportDataError(sender, exception, message);
             action(actionParams1, actionParams2);
@@ -192,14 +193,14 @@ namespace Terminals.Data
         }
 
         internal void ReportActionError<TActionParams>(Action<TActionParams> action, TActionParams actionParams,
-            object sender, Exception exception, string message)
+            object sender, EntityException exception, string message)
         {
             this.ReportDataError(sender, exception, message);
             action(actionParams);
             callStackCounter = 0;
         }
 
-        internal void ReportActionError(Action action, object sender, Exception exception, string message)
+        internal void ReportActionError(Action action, object sender, EntityException exception, string message)
         {
             this.ReportDataError(sender, exception, message);
             action();
@@ -207,7 +208,7 @@ namespace Terminals.Data
         }
 
         internal TFuncReturnValue ReportFunctionError<TActionParams, TFuncReturnValue>(Func<TActionParams, TFuncReturnValue> function,
-            TActionParams actionParams, object sender, Exception exception, string message)
+            TActionParams actionParams, object sender, EntityException exception, string message)
         {
             this.ReportDataError(sender, exception, message);
             TFuncReturnValue returnValue = function(actionParams);
@@ -216,7 +217,7 @@ namespace Terminals.Data
         }
 
         internal TFuncReturnValue ReportFunctionError<TFuncReturnValue>(Func<TFuncReturnValue> function,
-            object sender, Exception exception, string message)
+            object sender, EntityException exception, string message)
         {
             this.ReportDataError(sender, exception, message);
             TFuncReturnValue returnValue = function();
@@ -224,7 +225,7 @@ namespace Terminals.Data
             return returnValue;
         }
 
-        private void ReportDataError(object sender, Exception exception, string message)
+        private void ReportDataError(object sender, EntityException exception, string message)
         {
             callStackCounter++;
             // don't log the action params, because they may contain sensitive value (passwords etc.)

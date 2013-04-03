@@ -73,7 +73,7 @@ namespace Terminals.Data.DB
             {
                 this.TryAdd(favorites);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Add, favorites, this, exception, 
                     "Unable to add favorite to database.");
@@ -107,7 +107,7 @@ namespace Terminals.Data.DB
             {
                 this.TryUpdateFavorite(favorite);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Update, favorite, this, exception, 
                     "Unable to update favorite in database");
@@ -135,7 +135,7 @@ namespace Terminals.Data.DB
                     transaction.Complete();
                 }
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(UpdateFavorite, favorite, newGroups, this, exception, 
                     "Unable to update favorite and its groups in database.");
@@ -287,7 +287,7 @@ namespace Terminals.Data.DB
             {
                 this.TryApplyCredentials(selectedFavorites, credential);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(ApplyCredentialsToAllFavorites, selectedFavorites, credential,
                      this, exception, "Unable to set credentials on favorites.");
@@ -375,7 +375,7 @@ namespace Terminals.Data.DB
             {
                 return this.TryLoadFromDatabase();
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 return this.dispatcher.ReportFunctionError(LoadFromDatabase, this, exception, 
                     "Unable to load favorites from database.");
