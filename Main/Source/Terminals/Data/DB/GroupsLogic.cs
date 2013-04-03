@@ -112,6 +112,10 @@ namespace Terminals.Data.DB
             {
                 this.TryDelete(group);
             }
+            catch (DbUpdateConcurrencyException) // item already removed
+            {
+                this.FinishGroupRemove(group);
+            }
             catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Delete, group, this, exception, "Unable to remove group from database.");
@@ -126,9 +130,14 @@ namespace Terminals.Data.DB
                 database.Groups.Attach(toDelete);
                 database.Groups.Remove(toDelete);
                 database.SaveImmediatelyIfRequested();
-                this.cache.Delete(toDelete);
-                this.dispatcher.ReportGroupsDeleted(new List<IGroup> {group});
+                this.FinishGroupRemove(group);
             }
+        }
+
+        private void FinishGroupRemove(IGroup group)
+        {
+            this.cache.Delete((DbGroup)group);
+            this.dispatcher.ReportGroupsDeleted(new List<IGroup> { group });
         }
 
         public void Rebuild()
@@ -136,6 +145,11 @@ namespace Terminals.Data.DB
             try
             {
                 this.TryRebuild();
+            }
+            catch (DBConcurrencyException)
+            {
+                // merge or update is not critical simply force refresh
+                RefreshCache();
             }
             catch (EntityException exception)
             {
