@@ -395,35 +395,6 @@ namespace Terminals.Data.DB
             }
         }
 
-        // todo remove unused call
-        private List<DbFavorite> LoadFromDatabase(List<DbFavorite> toRefresh)
-        {
-            try
-            {
-                return TryLoadFromDatabase(toRefresh);
-            }
-            catch (Exception exception)
-            {
-                return this.dispatcher.ReportFunctionError(LoadFromDatabase, toRefresh, this, exception, 
-                    "Unable to refresh favorites from database");
-            }
-        }
-
-        private static List<DbFavorite> TryLoadFromDatabase(List<DbFavorite> toRefresh)
-        {
-            using (Database database = DatabaseConnections.CreateInstance())
-            {
-                if (toRefresh != null)
-                    database.Cache.AttachAll(toRefresh);
-
-                // to list because Linq to entities allows only cast to primitive types
-                ((IObjectContextAdapter)database).ObjectContext.Refresh(RefreshMode.StoreWins, database.Favorites);
-                List<DbFavorite> favorites = database.Favorites.ToList();
-                database.Cache.DetachAll(favorites);
-                return favorites;
-            }
-        }
-
         #region IEnumerable members
 
         IEnumerator<IFavorite> IEnumerable<IFavorite>.GetEnumerator()
