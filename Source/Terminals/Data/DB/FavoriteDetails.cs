@@ -14,6 +14,7 @@ namespace Terminals.Data.DB
         {
             private readonly DbFavorite favorite;
 
+            // cached copies of reference properties
             internal DataDispatcher Dispatcher { get; set; }
             internal DbSecurityOptions Security { get; private set; }
             internal DbBeforeConnectExecute ExecuteBeforeConnect { get; private set; }

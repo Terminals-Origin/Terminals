@@ -193,7 +193,8 @@ namespace Terminals.Data.DB
 
         IFavorite IFavorite.Copy()
         {
-            var copy = new DbFavorite();
+            DbFavorite copy = Factory.CreateFavorite(this.persistenceSecurity, this.groups, 
+                this.credentials, this.Details.Dispatcher);
             copy.UpdateFrom(this);
             return copy;
         }
