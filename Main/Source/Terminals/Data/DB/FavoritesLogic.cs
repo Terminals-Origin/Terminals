@@ -39,7 +39,7 @@ namespace Terminals.Data.DB
             this.credentials = credentials;
             this.persistenceSecurity = persistenceSecurity;
             this.dispatcher = dispatcher;
-            this.batchActions = new FavoritesBatchActions(this.cache, this.dispatcher);
+            this.batchActions = new FavoritesBatchActions(this, this.cache, this.dispatcher);
         }
 
         IFavorite IFavorites.this[Guid favoriteId]
@@ -289,7 +289,6 @@ namespace Terminals.Data.DB
             {
                 this.TryApplyCredentials(selectedFavorites, credential);
             }
-            // todo concurrency
             catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(ApplyCredentialsToAllFavorites, selectedFavorites, credential,

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -9,11 +10,13 @@ namespace Terminals.Data.DB
     /// </summary>
     internal class FavoritesBatchActions
     {
+        private readonly Favorites favorites;
         private readonly EntitiesCache<DbFavorite> cache;
         private readonly DataDispatcher dispatcher;
 
-        internal FavoritesBatchActions(EntitiesCache<DbFavorite> cache, DataDispatcher dispatcher)
+        internal FavoritesBatchActions(Favorites favorites, EntitiesCache<DbFavorite> cache, DataDispatcher dispatcher)
         {
+            this.favorites = favorites;
             this.cache = cache;
             this.dispatcher = dispatcher;
         }
@@ -24,7 +27,6 @@ namespace Terminals.Data.DB
             {
                 this.TryApplyValue(applyParams);
             }
-            // todo concurrency
             catch (EntityException exception)
             {
                 string message = string.Format("Unable to apply {0} to favorites", applyParams.PropertyName);
@@ -46,9 +48,16 @@ namespace Terminals.Data.DB
         internal void SaveAndReportFavoritesUpdated(Database database, List<DbFavorite> dbFavorites,
             List<IFavorite> selectedFavorites)
         {
-            database.SaveImmediatelyIfRequested();
-            this.cache.Update(dbFavorites);
-            this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
+            try
+            {
+                database.SaveImmediatelyIfRequested();
+                this.cache.Update(dbFavorites);
+                this.dispatcher.ReportFavoritesUpdated(selectedFavorites);
+            }
+            catch (DbUpdateException)
+            {
+                this.favorites.RefreshCache();
+            }
         }
     }
 }

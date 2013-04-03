@@ -92,5 +92,13 @@ namespace Tests.SqlPersisted
                 Assert.AreEqual(VALIDATION_VALUE, finalPassword, "Password was not set properly to all favorites");
             }
         }
+
+        [TestMethod]
+        public void SetUserNameConcurrentUpdateTest()
+        {
+            IFavorite sendaryFavorite = this.SecondaryFavorites.First();
+            this.SecondaryFavorites.Delete(sendaryFavorite);
+            PrimaryFavorites.ApplyUserNameToAllFavorites(this.TestFavorites, VALIDATION_VALUE);
+        }
     }
 }
