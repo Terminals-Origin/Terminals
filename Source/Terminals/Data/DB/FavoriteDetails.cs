@@ -113,6 +113,7 @@ namespace Terminals.Data.DB
                     database.UpdateFavoriteProtocolProperties(this.favorite.Id, serializedProperties);
                     this.favorite.isNewlyCreated = false;
                 }
+                // todo concurrency
                 catch (EntityException exception)
                 {
                     this.Dispatcher.ReportActionError(SaveProtocolProperties, database, this.favorite,
@@ -126,6 +127,7 @@ namespace Terminals.Data.DB
                 {
                     this.TryUpdateImageInDatabase(database);
                 }
+                // todo concurrency
                 catch (EntityException exception)
                 {
                     this.Dispatcher.ReportActionError(UpdateImageInDatabase, database, this.favorite, exception,

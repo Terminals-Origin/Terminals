@@ -75,10 +75,14 @@ namespace Terminals.Data.DB
                 this.TrySaveParentToDatabase(newParent);
                 this.parent = newParent;
             }
+            catch (DBConcurrencyException)
+            {
+                groups.RefreshCache();
+            }
             catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(SaveParentToDatabase, newParent, this, exception,
-                    "Unable to save new group parent to database.");
+                                                  "Unable to save new group parent to database.");
             }
         }
 
@@ -189,10 +193,14 @@ namespace Terminals.Data.DB
             {
                 this.TryAddFavorites(favorites);
             }
+            catch (DBConcurrencyException)
+            {
+                this.groups.RefreshCache();
+            }
             catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(AddFavorites, favorites, this, exception,
-                    "Unable to add favorite to database group.");
+                                                  "Unable to add favorite to database group.");
             }
         }
 
@@ -225,6 +233,10 @@ namespace Terminals.Data.DB
             try
             {
                 this.TryRemoveFavorites(favorites);
+            }
+            catch (DBConcurrencyException)
+            {
+                this.groups.RefreshCache();
             }
             catch (EntityException exception)
             {
