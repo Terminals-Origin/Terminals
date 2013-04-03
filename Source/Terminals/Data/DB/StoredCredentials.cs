@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -68,7 +69,7 @@ namespace Terminals.Data.DB
             {
                 this.TryAdd(toAdd);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Add, toAdd, this, exception, "Unable to add credential to database");
             }
@@ -97,7 +98,7 @@ namespace Terminals.Data.DB
             {
                 this.TryRemove(toRemove);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Remove, toRemove, this, exception,
                     "Unable to remove credential from database.");
@@ -127,7 +128,7 @@ namespace Terminals.Data.DB
             {
                 this.TryUpdate(toUpdate);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Update, toUpdate, this, exception, "Unable to update credential set.");
             }
@@ -189,7 +190,7 @@ namespace Terminals.Data.DB
             {
                 return TryLoadFromDatabase();
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 return this.dispatcher.ReportFunctionError(LoadFromDatabase, this, exception,
                     "Unable to load credentials from database.");

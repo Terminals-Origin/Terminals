@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -24,7 +24,7 @@ namespace Terminals.Data.DB
             {
                 this.TryApplyValue(applyParams);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 string message = string.Format("Unable to apply {0} to favorites", applyParams.PropertyName);
                 this.dispatcher.ReportActionError(ApplyValue, applyParams, this, exception, message);

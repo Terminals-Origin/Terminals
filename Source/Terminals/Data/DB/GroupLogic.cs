@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -74,7 +75,7 @@ namespace Terminals.Data.DB
                 this.TrySaveParentToDatabase(newParent);
                 this.parent = newParent;
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(SaveParentToDatabase, newParent, this, exception,
                     "Unable to save new group parent to database.");
@@ -106,7 +107,7 @@ namespace Terminals.Data.DB
             {
                 this.TryLoadFromDatabase();
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(LoadFromDatabase, this, exception, 
                     "Unable to load group parent from database");
@@ -139,7 +140,7 @@ namespace Terminals.Data.DB
             {
                 return this.TryLoadFavoritesFromDatabase();
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 return this.dispatcher.ReportFunctionError(LoadFavoritesFromDatabase, this, exception,
                      "Unable to load group favorites from database");
@@ -188,7 +189,7 @@ namespace Terminals.Data.DB
             {
                 this.TryAddFavorites(favorites);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(AddFavorites, favorites, this, exception,
                     "Unable to add favorite to database group.");
@@ -225,7 +226,7 @@ namespace Terminals.Data.DB
             {
                 this.TryRemoveFavorites(favorites);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(RemoveFavorites, favorites, this, exception, 
                     "Unable to remove favorites from group.");

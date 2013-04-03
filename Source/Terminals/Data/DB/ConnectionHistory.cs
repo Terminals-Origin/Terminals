@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using Terminals.Data.History;
 using Terminals.History;
@@ -61,7 +62,7 @@ namespace Terminals.Data.DB
             {
                 return this.TryLodFromDatabase(historyDateKey);
             }
-            catch(Exception exception)
+            catch (EntityException exception)
             {
                 return this.dispatcher.ReportFunctionError(this.LoadFromDatabaseByDate, historyDateKey, this,
                      exception, "Unable to load history part form database.\r\nDatabase connection lost.");
@@ -99,7 +100,7 @@ namespace Terminals.Data.DB
                 // don't report, if it wasn't successfully added
                 this.FireOnHistoryRecorded(historyTarget);
             }
-            catch(Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(AddToDatabase, historyTarget, this, exception,
                          "Unable to save connection history.\r\nDatabase connection lost.");

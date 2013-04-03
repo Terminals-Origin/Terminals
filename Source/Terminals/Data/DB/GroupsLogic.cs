@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Data.Objects;
 using System.Linq;
@@ -68,7 +69,7 @@ namespace Terminals.Data.DB
             {
                 this.TryAdd(group);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Add, group, this, exception, "Unable to add group to database.");
             }
@@ -111,7 +112,7 @@ namespace Terminals.Data.DB
             {
                 this.TryDelete(group);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Delete, group, this, exception, "Unable to remove group from database.");
             }
@@ -136,7 +137,7 @@ namespace Terminals.Data.DB
             {
                 this.TryRebuild();
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 this.dispatcher.ReportActionError(Rebuild, this, exception, "Unable to rebuild groups.");
             }
@@ -244,7 +245,7 @@ namespace Terminals.Data.DB
             {
                 return TryLoadFromDatabase();
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 return this.dispatcher.ReportFunctionError(LoadFromDatabase, this, exception,
                     "Unable to load groups from database");
@@ -267,7 +268,7 @@ namespace Terminals.Data.DB
             {
                 return TryLoadFromDatabase(toRefresh);
             }
-            catch (Exception exception)
+            catch (EntityException exception)
             {
                 return this.dispatcher.ReportFunctionError(LoadFromDatabase, toRefresh, this, exception,
                     "Unable to refresh groups from database");
