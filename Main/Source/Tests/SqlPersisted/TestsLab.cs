@@ -60,7 +60,7 @@ namespace Tests.SqlPersisted
         protected void InitializeTestLab()
         {
             this.RemoveDatabaseFileReadOnly();
-            ImportsTest.SetDefaultFileLocations();
+            FilePersisted.FilePersistedTestLab.SetDefaultFileLocations();
             Settings.PersistenceSecurity = new SqlPersistenceSecurity();
             this.SetDeploymentDirConnectionString();
 

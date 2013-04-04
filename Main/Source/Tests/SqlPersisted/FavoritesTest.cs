@@ -128,5 +128,15 @@ namespace Tests.SqlPersisted
             Assert.IsNotNull(favoriteIcon, "Icon wasn't assigned successfully");
             Assert.IsNotNull(checkFavorite.ToolBarIconImage, "Icon didn't reach the database");
         }
+
+        [TestMethod]
+        public void UpdateProtocolTest()
+        {
+            IFavorite favorite = this.CreateTestFavorite();
+            // now it has RdpOptions
+            favorite.Protocol = ConnectionManager.VNC;
+            this.PrimaryFavorites.Update(favorite);
+            FilePersisted.FavoritesTest.AssertRdpSecurity(favorite);
+        }
     }
 }

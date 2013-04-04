@@ -5,10 +5,10 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
-using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 using Terminals.Integration;
+using Tests.FilePersisted;
 
 namespace Tests
 {
@@ -46,14 +46,9 @@ namespace Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            SetDefaultFileLocations();
+            FilePersistedTestLab.SetDefaultFileLocations();
             List<IFavorite> current = Persistence.Instance.Favorites.ToList();
             Persistence.Instance.Favorites.Delete(current);
-        }
-
-        internal static void SetDefaultFileLocations()
-        {
-            Settings.FileLocations.AssignCustomFileLocations(string.Empty, string.Empty, string.Empty);
         }
 
         /// <summary>

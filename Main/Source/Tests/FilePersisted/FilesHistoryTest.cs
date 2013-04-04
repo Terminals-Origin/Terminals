@@ -8,7 +8,7 @@ using Terminals.Data.History;
 namespace Tests.FilePersisted
 {
     [TestClass]
-    public class FilesHistoryTest
+    public class FilesHistoryTest : FilePersistedTestLab
     {
         [TestMethod]
         public void HistoryDateTimeIsInUtcTest()
@@ -19,13 +19,10 @@ namespace Tests.FilePersisted
             Assert.AreEqual(recordedDate, Moment.Now, "Correct date wasn't delivered to the history file");
         }
 
-        private static IConnectionHistory RecordHistoryItemToFilePersistence()
+        private IConnectionHistory RecordHistoryItemToFilePersistence()
         {
-            ImportsTest.SetDefaultFileLocations();
-            var persistence = new FilePersistence();
-            IFavorite favorite = persistence.Factory.CreateFavorite();
-            persistence.Favorites.Add(favorite);
-            var history = persistence.ConnectionHistory;
+            IFavorite favorite = this.AddFavorite();
+            IConnectionHistory history = this.Persistence.ConnectionHistory;
             history.RecordHistoryItem(favorite);
             return history;
         }
