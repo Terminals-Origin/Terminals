@@ -171,6 +171,7 @@ namespace Terminals.Data.DB
                 catch (DbUpdateException)
                 {
                     // load default values, because have load something, the favorite will be removed by next refresh
+                    this.favorite.UpdateProtocolProperties(new RdpOptions());
                 }
                 catch (EntityException exception)
                 {
@@ -183,8 +184,8 @@ namespace Terminals.Data.DB
             {
                 if (!this.favorite.isNewlyCreated && !this.protocolPropertiesLoaded)
                 {
-                    this.favorite.protocolProperties = this.LoadPropertiesFromDatabase();
-                    this.favorite.AssignStoreToRdpOptions();
+                    ProtocolOptions protocolProperties = this.LoadPropertiesFromDatabase();
+                    this.favorite.UpdateProtocolProperties(protocolProperties);
                     this.protocolPropertiesLoaded = true;
                 }
             }
