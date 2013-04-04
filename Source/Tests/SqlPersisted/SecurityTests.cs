@@ -30,15 +30,39 @@ namespace Tests.SqlPersisted
         public void PasswordUpdateTest()
         {
             IFavorite testFavorite = this.AddFavoriteWithTestPassword();
-            testFavorite.Security.Password = PASSWORD_B;
+            this.UpdateWithNewSecuredValue(testFavorite, PASSWORD_B);
+            this.AssertFavoriteSecuredValues(testFavorite, PASSWORD_B);
+        }
+
+        [TestMethod]
+        public void PasswordClearTest()
+        {
+            IFavorite testFavorite = this.AddFavoriteWithTestPassword();
+            this.UpdateWithNewSecuredValue(testFavorite, PASSWORD_B);
+            this.UpdateWithNewSecuredValue(testFavorite, string.Empty);
+            this.AssertFavoriteSecuredValues(testFavorite, string.Empty);
+        }
+
+        private void UpdateWithNewSecuredValue(IFavorite testFavorite, string newValue)
+        {
+            testFavorite.Security.UserName = newValue;
+            testFavorite.Security.Password = newValue;
+            testFavorite.Security.Domain = newValue;
             this.PrimaryFavorites.Update(testFavorite);
+        }
 
-            Assert.AreEqual(PASSWORD_B, testFavorite.Security.Password,
-                 "Favorite password doesn't match after first password update.");
-
+        private void AssertFavoriteSecuredValues(IFavorite testFavorite, string expectedValue)
+        {
+            AssertSecurityValues(testFavorite, expectedValue);
             IFavorite resultFavorite = this.SecondaryFavorites.FirstOrDefault();
-            Assert.AreEqual(PASSWORD_B, resultFavorite.Security.Password,
-                "Secondary Favorite password doesn't match after Favorite password update.");
+            AssertSecurityValues(resultFavorite, expectedValue);
+        }
+
+        private static void AssertSecurityValues(IFavorite testFavorite, string expectedValue)
+        {
+            Assert.AreEqual(expectedValue, testFavorite.Security.Password, "Favorite password doesn't match after update.");
+            Assert.AreEqual(expectedValue, testFavorite.Security.UserName, "Favorite user name doesn't match after update.");
+            Assert.AreEqual(expectedValue, testFavorite.Security.Domain, "Favorite user name doesn't match after update.");
         }
 
         [TestMethod]

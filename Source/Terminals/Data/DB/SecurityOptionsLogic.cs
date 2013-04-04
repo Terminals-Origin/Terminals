@@ -38,7 +38,7 @@ namespace Terminals.Data.DB
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                if (this.CanCommitSecuredValue(value))
                 {
                     this.EnsureCredentialBase();
                     this.CachedCredentials.EncryptedUserName = value;
@@ -75,7 +75,7 @@ namespace Terminals.Data.DB
             }
             set
             {
-                if (!string.IsNullOrEmpty(value))
+                if (this.CanCommitSecuredValue(value))
                 {
                     this.EnsureCredentialBase();
                     this.CachedCredentials.EncryptedDomain = value;
@@ -112,8 +112,7 @@ namespace Terminals.Data.DB
             }
             set
             {
-                // todo unable to reset password to empty, when already configured
-                if (!string.IsNullOrEmpty(value))
+                if (this.CanCommitSecuredValue(value))
                 {
                     this.EnsureCredentialBase();
                     this.CachedCredentials.EncryptedPassword = value;
@@ -149,6 +148,14 @@ namespace Terminals.Data.DB
             {
                 this.SetCredential(value);
             }
+        }
+
+        private bool CanCommitSecuredValue(string newValue)
+        {
+            // don't force store of empty value, if Security is not present in database
+            // but allow clear, if security was already used
+            return !string.IsNullOrEmpty(newValue) ||
+                   (string.IsNullOrEmpty(newValue) && this.CachedCredentials != null);
         }
 
         internal void AssignStores(StoredCredentials storedCredentials, PersistenceSecurity persistenceSecurity)
