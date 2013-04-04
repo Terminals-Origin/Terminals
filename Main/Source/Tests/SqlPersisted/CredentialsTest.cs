@@ -11,7 +11,7 @@ namespace Tests.SqlPersisted
     ///This is a test class for database implementation of StoredCredentials
     ///</summary>
     [TestClass]
-    public class SqlCredentialsTest : SqlTestsLab
+    public class CredentialsTest : TestsLab
     {
         private const string TEST_PASSWORD = "aaa";
 

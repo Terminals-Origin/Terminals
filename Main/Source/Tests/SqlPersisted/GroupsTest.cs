@@ -11,7 +11,7 @@ namespace Tests.SqlPersisted
     ///This is a test class for database implementation of Groups
     ///</summary>
     [TestClass]
-    public class SqlGroupsTest : SqlTestsLab
+    public class GroupsTest : TestsLab
     {
         private int addedCount;
         private int updatedCount;

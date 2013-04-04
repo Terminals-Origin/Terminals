@@ -121,14 +121,14 @@
     <Compile Include="FilePersisted\InjectionDateTime.cs" />
     <Compile Include="ImportsTest.cs" />
     <Compile Include="Passwords\PasswordTests.cs" />
-    <Compile Include="SqlPersisted\SqlConcurentUpdatesTest.cs" />
-    <Compile Include="SqlPersisted\SqlConnectionsHistoryTest.cs" />
-    <Compile Include="SqlPersisted\SqlGroupsTest.cs" />
-    <Compile Include="SqlPersisted\SqlFavoritesTest.cs" />
+    <Compile Include="SqlPersisted\ConcurentUpdatesTest.cs" />
+    <Compile Include="SqlPersisted\ConnectionsHistoryTest.cs" />
+    <Compile Include="SqlPersisted\GroupsTest.cs" />
+    <Compile Include="SqlPersisted\FavoritesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlPersisted\SqlSecurityTests.cs" />
-    <Compile Include="SqlPersisted\SqlTestsLab.cs" />
-    <Compile Include="SqlPersisted\SqlCredentialsTest.cs" />
+    <Compile Include="SqlPersisted\SecurityTests.cs" />
+    <Compile Include="SqlPersisted\TestsLab.cs" />
+    <Compile Include="SqlPersisted\CredentialsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Granados\Granados.csproj">
