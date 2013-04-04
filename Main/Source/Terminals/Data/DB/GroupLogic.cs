@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 
 namespace Terminals.Data.DB
@@ -75,7 +75,7 @@ namespace Terminals.Data.DB
                 this.TrySaveParentToDatabase(newParent);
                 this.parent = newParent;
             }
-            catch (DBConcurrencyException)
+            catch (DbUpdateException)
             {
                 groups.RefreshCache();
             }
@@ -193,7 +193,7 @@ namespace Terminals.Data.DB
             {
                 this.TryAddFavorites(favorites);
             }
-            catch (DBConcurrencyException)
+            catch (DbUpdateException)
             {
                 this.groups.RefreshCache();
             }
@@ -234,7 +234,7 @@ namespace Terminals.Data.DB
             {
                 this.TryRemoveFavorites(favorites);
             }
-            catch (DBConcurrencyException)
+            catch (DbUpdateException)
             {
                 this.groups.RefreshCache();
             }
