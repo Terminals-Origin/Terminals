@@ -165,6 +165,7 @@ namespace Terminals.Data.DB
                 this.protocol = value;
                 // Reflect the protocol change into the protocol properties
                 this.protocolProperties = Favorite.UpdateProtocolPropertiesByProtocol(this.protocol, this.protocolProperties);
+                this.AssignStoreToRdpOptions();
             }
         }
 
@@ -252,10 +253,9 @@ namespace Terminals.Data.DB
                 .ToList();
         }
 
-        internal void AssignStoreToRdpOptions(PersistenceSecurity persistenceSecurity)
+        private void AssignStoreToRdpOptions()
         {
-            // only, if the favorite is newly created
-            Favorite.AssignStoreToRdpOptions(this.protocolProperties, persistenceSecurity);
+            Favorite.AssignStoreToRdpOptions(this.protocolProperties, this.persistenceSecurity);
         }
 
         internal void AssignStores(Groups groups, StoredCredentials credentials,
@@ -265,6 +265,7 @@ namespace Terminals.Data.DB
             this.credentials = credentials;
             this.persistenceSecurity = persistenceSecurity;
             this.Details.Dispatcher = dispatcher;
+            this.AssignStoreToRdpOptions();
         }
 
         internal void SaveDetails(Database database)

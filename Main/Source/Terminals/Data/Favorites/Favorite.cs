@@ -52,6 +52,7 @@ namespace Terminals.Data
             {
                 protocol = value;
                 this.protocolProperties = UpdateProtocolPropertiesByProtocol(this.protocol, this.protocolProperties);
+                AssignStoreToRdpOptions(this.ProtocolProperties, this.persistenceSecurity);
             }
         }
 
@@ -122,6 +123,8 @@ namespace Terminals.Data
         public Boolean NewWindow { get; set; }
         public String DesktopShare { get; set; }
 
+        private PersistenceSecurity persistenceSecurity;
+
         private IBeforeConnectExecuteOptions executeBeforeConnect = new BeforeConnectExecuteOptions();
         /// <summary>
         /// Only for serialization
@@ -169,6 +172,7 @@ namespace Terminals.Data
         public ProtocolOptions ProtocolProperties
         {
             get { return protocolProperties; }
+            // setter should be used for deserialization only
             set { protocolProperties = value; }
         }
 
@@ -209,6 +213,7 @@ namespace Terminals.Data
         }
 
         private string notes;
+
         public String Notes
         {
             get
@@ -390,6 +395,7 @@ namespace Terminals.Data
 
         internal void AssignStores(PersistenceSecurity persistenceSecurity, Groups groups)
         {
+            this.persistenceSecurity = persistenceSecurity;
             this.Groups = groups;
             this.Security.AssignStore(persistenceSecurity);
             AssignStoreToRdpOptions(this.ProtocolProperties, persistenceSecurity);
