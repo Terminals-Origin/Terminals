@@ -12,7 +12,7 @@ using Terminals.Data.DB;
 namespace Tests.SqlPersisted
 {
     [TestClass]
-    public class SqlConcurentUpdatesTest : SqlTestsLab
+    public class ConcurentUpdatesTest : TestsLab
     {
         private IFavorite updatedFavorite;
         private bool addEventCatched;
@@ -35,7 +35,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void TestPeriodicalUpdates()
+        public void PeriodicalUpdatesTest()
         {
             this.AddFavoriteToPrimaryPersistence();
             this.AddFavoriteToPrimaryPersistence();
@@ -85,7 +85,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void TestSaveOnAlreadyUpdatedFavorite()
+        public void SaveOnAlreadyUpdatedFavoriteTest()
         {
             DbFavorite favoriteA = this.AddFavoriteToPrimaryPersistence();
             var favoriteB = this.SecondaryFavorites.FirstOrDefault() as DbFavorite;
@@ -116,7 +116,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void TestDeleteFavoriteWhenDisconnected()
+        public void DeleteFavoriteWhenDisconnectedTest()
         {
             DbFavorite favoriteA = this.AddFavoriteToPrimaryPersistence();
             // simulate disconnection using invalid connection string for next call

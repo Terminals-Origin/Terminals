@@ -8,7 +8,7 @@ using Terminals.Data.DB;
 namespace Tests.SqlPersisted
 {
     [TestClass]
-    public class SqlSecurityTests : SqlTestsLab
+    public class SecurityTests : TestsLab
     {
         private const string PASSWORD_A = "aaa";
         private const string PASSWORD_B = "bbb";
@@ -27,7 +27,7 @@ namespace Tests.SqlPersisted
         }
         
         [TestMethod]
-        public void TestPasswordUpdate()
+        public void PasswordUpdateTest()
         {
             IFavorite testFavorite = this.AddFavoriteWithTestPassword();
             testFavorite.Security.Password = PASSWORD_B;
@@ -42,7 +42,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void TestCredentialsUpdate()
+        public void CredentialsUpdateTest()
         {
             IFavorite favorite = this.CreateTestFavorite();
             this.PrimaryFavorites.Add(favorite);
@@ -67,7 +67,7 @@ namespace Tests.SqlPersisted
         }
 
         [TestMethod]
-        public void TestMasterPasswordUpdate()
+        public void MasterPasswordUpdateTest()
         {
             var newFavorite = this.AddFavoriteWithTestPassword();
             var rdpOptions = newFavorite.ProtocolProperties as RdpOptions;

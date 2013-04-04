@@ -13,7 +13,7 @@ namespace Tests.SqlPersisted
     ///This is a test class for database implementation of connection history
     ///</summary>
     [TestClass]
-    public class SqlConnectionsHistoryTest : SqlTestsLab
+    public class ConnectionsHistoryTest : TestsLab
     {
         private int historyRecordedCount;
 

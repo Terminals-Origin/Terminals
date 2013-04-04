@@ -10,7 +10,7 @@ namespace Tests.SqlPersisted
     /// <summary>
     /// Shared configured store used by all SQL persistence tests
     /// </summary>
-    public class SqlTestsLab
+    public class TestsLab
     {
         private const string CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;User Instance=True";
 

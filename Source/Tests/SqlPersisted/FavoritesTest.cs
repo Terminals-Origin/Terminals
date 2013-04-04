@@ -13,7 +13,7 @@ namespace Tests.SqlPersisted
     ///This is a test class for database implementation of Favorites
     ///</summary>
     [TestClass]
-    public class SqlFavoritesTest : SqlTestsLab
+    public class FavoritesTest : TestsLab
     {
         private int addedCount;
         private int updatedCount;

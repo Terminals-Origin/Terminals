@@ -8,7 +8,7 @@ namespace Tests.SqlPersisted
     /// Ensure, that all deep copies of favorite work properly
     /// </summary>
     [TestClass]
-    public class FavoriteCopiesTest : SqlTestsLab
+    public class FavoriteCopiesTest : TestsLab
     {
         private const string FAVORITE_SERVERNAME2 = "Second server";
 
