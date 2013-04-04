@@ -57,6 +57,10 @@ namespace Terminals.Data.DB
                 {
                     this.TryLoadDetailsFromDatabase();
                 }
+                catch (DbUpdateException)
+                {
+                    // todo concurrency: load default values, because have load something, the favorite will be removed by next refresh
+                }
                 catch (EntityException exception)
                 {
                     ReleaseReferences(); // rollback loading
@@ -113,11 +117,15 @@ namespace Terminals.Data.DB
                     database.UpdateFavoriteProtocolProperties(this.favorite.Id, serializedProperties);
                     this.favorite.isNewlyCreated = false;
                 }
-                // todo concurrency
+                catch (DbUpdateException)
+                {
+                    // recovery will be done by next update
+                    Logging.Log.Error("Unable to update favorite protocol properties in database because of concurrency exception");
+                }
                 catch (EntityException exception)
                 {
                     this.Dispatcher.ReportActionError(SaveProtocolProperties, database, this.favorite,
-                        exception, "Unable to Save favorite protocol properties to database.\r\nDatabase connection lost.");
+                                                      exception, "Unable to Save favorite protocol properties to database.\r\nDatabase connection lost.");
                 }
             }
 
@@ -127,7 +135,11 @@ namespace Terminals.Data.DB
                 {
                     this.TryUpdateImageInDatabase(database);
                 }
-                // todo concurrency
+                catch (DbUpdateException)
+                {
+                    // recovery will be done by next update
+                    Logging.Log.Error("Unable to update favorite image in database because of concurrency exception");
+                }
                 catch (EntityException exception)
                 {
                     this.Dispatcher.ReportActionError(UpdateImageInDatabase, database, this.favorite, exception,
@@ -155,6 +167,10 @@ namespace Terminals.Data.DB
                 try
                 {
                     this.TryLoadPotocolProperties();
+                }
+                catch (DbUpdateException)
+                {
+                    // load default values, because have load something, the favorite will be removed by next refresh
                 }
                 catch (EntityException exception)
                 {
@@ -190,6 +206,11 @@ namespace Terminals.Data.DB
                 {
                     this.TryLoadImageFromDatabase();
                 }
+                catch (DbUpdateException)
+                {
+                    // assign default image and let fix by next refresh
+                    this.AssignImageByLoadedData(new byte[0]);
+                }
                 catch (EntityException exception)
                 {
                     this.Dispatcher.ReportActionError(LoadImageFromDatabase, this.favorite, exception,
@@ -202,8 +223,13 @@ namespace Terminals.Data.DB
                 using (Database database = DatabaseConnections.CreateInstance())
                 {
                     byte[] imageData = database.GetFavoriteIcon(this.favorite.Id);
-                    this.favorite.toolBarIcon = FavoriteIcons.LoadImage(imageData, this.favorite);
+                    this.AssignImageByLoadedData(imageData);
                 }
+            }
+
+            private void AssignImageByLoadedData(byte[] imageData)
+            {
+                this.favorite.toolBarIcon = FavoriteIcons.LoadImage(imageData, this.favorite);
             }
 
             /// <summary>
