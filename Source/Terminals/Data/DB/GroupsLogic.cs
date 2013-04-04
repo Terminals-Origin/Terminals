@@ -146,10 +146,10 @@ namespace Terminals.Data.DB
             {
                 this.TryRebuild();
             }
-            catch (DBConcurrencyException)
+            catch (DbUpdateException)
             {
                 // merge or update is not critical simply force refresh
-                RefreshCache();
+                this.RefreshCache();
             }
             catch (EntityException exception)
             {

@@ -99,10 +99,6 @@ namespace Terminals.Data.DB
                 this.Details.LoadProtocolProperties();
                 return this.protocolProperties;
             }
-            set
-            {
-                this.protocolProperties = value;
-            }
         }
 
         /// <summary>
