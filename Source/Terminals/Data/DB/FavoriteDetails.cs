@@ -57,10 +57,7 @@ namespace Terminals.Data.DB
                 {
                     this.TryLoadDetailsFromDatabase();
                 }
-                catch (DbUpdateException)
-                {
-                    // todo concurrency: load default values, because have load something, the favorite will be removed by next refresh
-                }
+                // todo concurrency: no idea how to solve favorite details loading
                 catch (EntityException exception)
                 {
                     ReleaseReferences(); // rollback loading
