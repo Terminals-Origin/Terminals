@@ -16,34 +16,52 @@ namespace Tests.Passwords
     [TestClass]
     public class PasswordUpgradesTests
     {
-        public TestContext TestContext { get; set; }
+        private const string TESTDATA_DIRECTORY = @"..\Resources\TestData\";
+        private const string EMPTY_CONFIG_FILE = "EmptyTerminals.config";
+        private const string EMPTY_CREDENTIALS_FILE = "EmptyCredentials.xml";
+        private const string NOMASTER_CONFIG_FILE = "NoMasterTerminals.config";
+        private const string NOMASTER_CREDENTIALS_FILE = "NoMasterCredentials.xml";
+        private const string SECURED_CONFIG_FILE = "SecuredTerminals.config";
+        private const string SECURED_CREDENTIALS_FILE = "SecuredCredentials.xml";
 
         /// <summary>
         /// User name and password encrypted in test credential file
         /// </summary>
         private const string TEST_PASSWORD = "TestUser";
+        
+        public TestContext TestContext { get; set; }
 
         private bool askedForPassword;
 
-        [DeploymentItem(@"..\Resources\TestData\EmptyTerminals.config")]
-        [DeploymentItem(@"..\Resources\TestData\EmptyCredentials.xml")]
+        [DeploymentItem(TESTDATA_DIRECTORY + EMPTY_CONFIG_FILE)]
+        [DeploymentItem(TESTDATA_DIRECTORY + EMPTY_CREDENTIALS_FILE)]
         [TestMethod]
         public void V2UpgradeEmptyConfigTest()
         {
-            this.UpgradePasswordsTestInitialize("EmptyTerminals.config", "EmptyCredentials.xml");
+            this.UpgradePasswordsTestInitialize(EMPTY_CONFIG_FILE, EMPTY_CREDENTIALS_FILE);
             // simply nothing to upgrade, procedure shouldn't fail.
-            this.RunUpgrade(new FilePersistence());
+            this.RunUpgrade();
             Assert.IsFalse(askedForPassword, "Empty config file shouldn't ask for password");
         }
 
-        [DeploymentItem(@"..\Resources\TestData\SecuredTerminals.config")]
-        [DeploymentItem(@"..\Resources\TestData\SecuredCredentials.xml")]
+        [DeploymentItem(TESTDATA_DIRECTORY + NOMASTER_CONFIG_FILE)]
+        [DeploymentItem(TESTDATA_DIRECTORY + NOMASTER_CREDENTIALS_FILE)]
+        [TestMethod]
+        public void V2UpgradeNoMasterPasswordConfigTest()
+        {
+            this.UpgradePasswordsTestInitialize(NOMASTER_CONFIG_FILE, NOMASTER_CREDENTIALS_FILE);
+            // simply nothing to upgrade, procedure shouldn't fail.
+            this.RunUpgrade();
+            Assert.IsFalse(askedForPassword, "Config file shouldn't ask for password");
+        }
+
+        [DeploymentItem(TESTDATA_DIRECTORY + SECURED_CONFIG_FILE)]
+        [DeploymentItem(TESTDATA_DIRECTORY + SECURED_CREDENTIALS_FILE)]
         [TestMethod]
         public void V2UpgradePasswordsTest()
         {
-            this.UpgradePasswordsTestInitialize("SecuredTerminals.config", "SecuredCredentials.xml");
-            IPersistence persistence = new FilePersistence();
-            this.RunUpgrade(persistence);
+            this.UpgradePasswordsTestInitialize(SECURED_CONFIG_FILE, SECURED_CREDENTIALS_FILE);
+            IPersistence persistence = this.RunUpgrade();
 
             bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(PasswordTests.MASTERPASSWORD, Settings.MasterPasswordHash);
             Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
@@ -58,11 +76,13 @@ namespace Tests.Passwords
             Assert.AreEqual(TEST_PASSWORD, credential.Password, "Credential password upgrade failed.");
         }
 
-        private void RunUpgrade(IPersistence persistence)
+        private IPersistence RunUpgrade()
         {
+            var persistence = new FilePersistence();
             var contentUpgrade = new FilesV2ContentUpgrade(persistence, GetMasterPassword);
             contentUpgrade.Run();
             Settings.ForceReload(); // because we changed its file, while upgrading
+            return persistence;
         }
 
         private AuthenticationPrompt GetMasterPassword(bool retry)
@@ -89,10 +109,10 @@ namespace Tests.Passwords
             Settings.ForceReload();
         }
 
-        private string CreateFullTestFileName(string sourceConfigFile)
+        private string CreateFullTestFileName(string fileName)
         {
             string deplymentDir = this.TestContext.DeploymentDirectory;
-            return Path.Combine(deplymentDir, sourceConfigFile);
+            return Path.Combine(deplymentDir, fileName);
         }
     }
 }
