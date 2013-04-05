@@ -25,8 +25,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SSHClient", "SSHClient\SSHC
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupTerminals", "SetupTerminals\SetupTerminals.vdproj", "{5085BDC8-1793-4FCC-A038-8AE15816238A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TerminalsLauncher", "TerminalsLauncher\TerminalsLauncher.csproj", "{A582F1CC-FDE7-4B16-B571-08E103E8977B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomInstaller", "CustomInstaller\CustomInstaller.csproj", "{0E32FC99-79E4-4C16-827F-232222C494AC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{81B4C28B-5B10-4A53-B0AC-9E8F72733139}"
@@ -57,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FD8570
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 19
+		SccNumberOfProjects = 18
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -97,32 +95,29 @@ Global
 		SccProjectUniqueName11 = SSHClient\\SSHClient.csproj
 		SccProjectName11 = SSHClient
 		SccLocalPath11 = SSHClient
-		SccProjectUniqueName12 = TerminalsLauncher\\TerminalsLauncher.csproj
-		SccProjectName12 = TerminalsLauncher
-		SccLocalPath12 = TerminalsLauncher
-		SccProjectUniqueName13 = CustomInstaller\\CustomInstaller.csproj
+		SccProjectUniqueName12 = CustomInstaller\\CustomInstaller.csproj
+		SccProjectTopLevelParentUniqueName12 = Terminals.sln
+		SccProjectName12 = CustomInstaller
+		SccLocalPath12 = CustomInstaller
+		SccProjectUniqueName13 = SetupTerminals\\SetupTerminals.vdproj
 		SccProjectTopLevelParentUniqueName13 = Terminals.sln
-		SccProjectName13 = CustomInstaller
-		SccLocalPath13 = CustomInstaller
-		SccProjectUniqueName14 = SetupTerminals\\SetupTerminals.vdproj
-		SccProjectTopLevelParentUniqueName14 = Terminals.sln
-		SccProjectName14 = SetupTerminals
-		SccLocalPath14 = SetupTerminals
-		SccProjectUniqueName15 = Tests\\Tests.csproj
-		SccProjectName15 = Tests
-		SccLocalPath15 = Tests
-		SccProjectUniqueName16 = SqlScriptRunner\\SqlScriptRunner.csproj
+		SccProjectName13 = SetupTerminals
+		SccLocalPath13 = SetupTerminals
+		SccProjectUniqueName14 = Tests\\Tests.csproj
+		SccProjectName14 = Tests
+		SccLocalPath14 = Tests
+		SccProjectUniqueName15 = SqlScriptRunner\\SqlScriptRunner.csproj
+		SccProjectTopLevelParentUniqueName15 = Terminals.sln
+		SccProjectName15 = SqlScriptRunner
+		SccLocalPath15 = SqlScriptRunner
+		SccProjectUniqueName16 = SqlScriptRunner.Tests\\SqlScriptRunner.Tests.csproj
 		SccProjectTopLevelParentUniqueName16 = Terminals.sln
-		SccProjectName16 = SqlScriptRunner
-		SccLocalPath16 = SqlScriptRunner
-		SccProjectUniqueName17 = SqlScriptRunner.Tests\\SqlScriptRunner.Tests.csproj
+		SccProjectName16 = SqlScriptRunner.Tests
+		SccLocalPath16 = SqlScriptRunner.Tests
+		SccProjectUniqueName17 = BuildTasks\\BuildTasks.csproj
 		SccProjectTopLevelParentUniqueName17 = Terminals.sln
-		SccProjectName17 = SqlScriptRunner.Tests
-		SccLocalPath17 = SqlScriptRunner.Tests
-		SccProjectUniqueName18 = BuildTasks\\BuildTasks.csproj
-		SccProjectTopLevelParentUniqueName18 = Terminals.sln
-		SccProjectName18 = BuildTasks
-		SccLocalPath18 = BuildTasks
+		SccProjectName17 = BuildTasks
+		SccLocalPath17 = BuildTasks
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Terminals.vsmdi
@@ -263,18 +258,6 @@ Global
 		{5085BDC8-1793-4FCC-A038-8AE15816238A}.Release|Any CPU.ActiveCfg = Release
 		{5085BDC8-1793-4FCC-A038-8AE15816238A}.Release|x86.ActiveCfg = Release
 		{5085BDC8-1793-4FCC-A038-8AE15816238A}.Release|x86.Build.0 = Release
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Debug|x86.ActiveCfg = Debug|x86
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Debug|x86.Build.0 = Debug|x86
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Distribution Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Distribution Release|Any CPU.Build.0 = Release|Any CPU
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Distribution Release|x86.ActiveCfg = Release|x86
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Distribution Release|x86.Build.0 = Release|x86
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Release|x86.ActiveCfg = Release|x86
-		{A582F1CC-FDE7-4B16-B571-08E103E8977B}.Release|x86.Build.0 = Release|x86
 		{0E32FC99-79E4-4C16-827F-232222C494AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E32FC99-79E4-4C16-827F-232222C494AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E32FC99-79E4-4C16-827F-232222C494AC}.Debug|x86.ActiveCfg = Debug|Any CPU

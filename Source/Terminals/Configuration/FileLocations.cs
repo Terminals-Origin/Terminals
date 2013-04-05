@@ -2,6 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using log4net;
+using log4net.Appender;
+using log4net.Repository.Hierarchy;
 
 namespace Terminals.Configuration
 {
@@ -72,19 +75,13 @@ namespace Terminals.Configuration
         {
             get
             {
-                // don't take if from other paths, because it can be changed by some one else.
-                string log4NetFilePath = "Terminals.log4net.config";
-                XDocument configFile = XDocument.Load(log4NetFilePath);
-                XAttribute fileAttribute = SelectFileElement(configFile);
-                return Path.GetDirectoryName(fileAttribute.Value);
+                // different configuration can be defined by setup or by user.
+                FileAppender rootAppender = FindLogAppender();
+                if (rootAppender != null)
+                    return rootAppender.File;
+                
+                return string.Empty;
             }
-        }
-
-        private static XAttribute SelectFileElement(XDocument configFile)
-        {
-          return configFile.Descendants("file")
-              .Attributes("value")
-              .FirstOrDefault();
         }
 
         internal static string ThumbsDirectoryFullPath
@@ -118,6 +115,13 @@ namespace Terminals.Configuration
         internal string Favorites { get; private set; }
 
         internal string Credentials { get; private set; }
+
+        private static FileAppender FindLogAppender()
+        {
+            return ((Hierarchy)LogManager.GetRepository()).Root.Appenders
+                                                          .OfType<FileAppender>()
+                                                          .FirstOrDefault();
+        }
 
         /// <summary>
         /// Sets custom file locations for general data files.

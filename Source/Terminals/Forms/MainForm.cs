@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using AxMSTSCLib;
 using TabControl;
@@ -1839,7 +1840,20 @@ namespace Terminals
 
         private void openLogFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Process.Start(FileLocations.LogDirectory);
+            Task.Factory.StartNew(this.OpenLogsFolder);
+        }
+
+        private void OpenLogsFolder()
+        {
+            try
+            {
+                Process.Start(FileLocations.LogDirectory);
+            }
+            catch (Exception)
+            {
+                string message = string.Format("Unable to open logs directory:\r\n{0}", FileLocations.LogDirectory);
+                MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
