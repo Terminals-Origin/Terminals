@@ -93,7 +93,7 @@ namespace Terminals
 
         private static string GetLogDirectoryPath()
         {
-            return @"${USERPROFILE}\Local Settings\Application Data\Robert_Chartier\Terminals\Data\logs\CurrentLog.txt";
+            return @"${LOCALAPPDATA}\Robert_Chartier\Terminals\Data\logs\CurrentLog.txt";
         }
 
         private static XAttribute SelectFileElement(XDocument configFile)

@@ -225,18 +225,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B2A34A09509BDF7276BBEAD79CB39C36"
-        "OwnerKey" = "8:_C5BEFE695C79477B8F1236DAABF64AA1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C5BEFE695C79477B8F1236DAABF64AA1"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_D58842ED96C50984711735CC0E811B92"
         "OwnerKey" = "8:_3161AAC887024CD69FD18FC7ED12824D"
         "MsmSig" = "8:_UNDEFINED"
@@ -323,12 +311,6 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_6B3169ABF6ACD1EC139D2760C2CC23F0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C5BEFE695C79477B8F1236DAABF64AA1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -919,7 +901,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:HexEditor, Version=1.3.0.43015, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:HexEditor, Version=1.3.0.25236, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_5C75A7FA99DB22852BE41AD09B600AF8"
@@ -1433,7 +1415,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SSHClient, Version=1.0.4822.41830, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:SSHClient, Version=1.0.4843.34312, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_F09898E68D24CEA0A77C5C7B8A2F493B"
@@ -1517,7 +1499,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Terminals"
         "ProductCode" = "8:{709CF75B-86EA-4102-B329-1D8AC6322047}"
-        "PackageCode" = "8:{45DFA8AA-4528-41E5-83BF-3325D4C50C7D}"
+        "PackageCode" = "8:{07B55917-E2B8-485D-9D27-E9A68E739FC4}"
         "UpgradeCode" = "8:{DD0D31A2-2E86-4F3F-98CE-6AED37FF24CD}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1733,7 +1715,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_C5BEFE695C79477B8F1236DAABF64AA1"
+            "Target" = "8:_3161AAC887024CD69FD18FC7ED12824D"
             "Folder" = "8:_ACD33128DE3F4E0EA7B85480DCD7CB1B"
             "WorkingFolder" = "8:_E147B34F8EC64C4EAA693E7BB1969F43"
             "Icon" = "8:_6B677C10FDAC49B4B4F7840D46A97425"
@@ -1747,7 +1729,7 @@
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
-            "Target" = "8:_C5BEFE695C79477B8F1236DAABF64AA1"
+            "Target" = "8:_3161AAC887024CD69FD18FC7ED12824D"
             "Folder" = "8:_64E688FAE2AB49ADBA30DA43865B76E2"
             "WorkingFolder" = "8:_E147B34F8EC64C4EAA693E7BB1969F43"
             "Icon" = "8:_6B677C10FDAC49B4B4F7840D46A97425"
@@ -2340,34 +2322,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{0E32FC99-79E4-4C16-827F-232222C494AC}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C5BEFE695C79477B8F1236DAABF64AA1"
-            {
-            "SourcePath" = "8:..\\TerminalsLauncher\\obj\\Release\\TerminalsLauncher.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_E147B34F8EC64C4EAA693E7BB1969F43"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{A582F1CC-FDE7-4B16-B571-08E103E8977B}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
