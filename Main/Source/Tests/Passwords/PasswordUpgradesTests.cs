@@ -51,8 +51,11 @@ namespace Tests.Passwords
         {
             this.UpgradePasswordsTestInitialize(NOMASTER_CONFIG_FILE, NOMASTER_CREDENTIALS_FILE);
             // simply nothing to upgrade, procedure shouldn't fail.
-            this.RunUpgrade();
+            IPersistence persistence = this.RunUpgrade();
             Assert.IsFalse(askedForPassword, "Config file shouldn't ask for password");
+            bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(string.Empty, Settings.MasterPasswordHash);
+            Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
+            AssertUserAndCredential(persistence);
         }
 
         [DeploymentItem(TESTDATA_DIRECTORY + SECURED_CONFIG_FILE)]
@@ -65,7 +68,12 @@ namespace Tests.Passwords
 
             bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(PasswordTests.MASTERPASSWORD, Settings.MasterPasswordHash);
             Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
+            AssertUserAndCredential(persistence);
+        }
 
+        private static void AssertUserAndCredential(IPersistence persistence)
+        {
+            // todo concurrency problem when running multiple test in parallel
             // we don't have to authenticate, because it was already done by upgrade
             IFavorite favorite = persistence.Favorites.First();
             String favoritePassword = favorite.Security.Password;

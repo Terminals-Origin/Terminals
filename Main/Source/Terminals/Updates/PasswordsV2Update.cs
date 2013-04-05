@@ -36,6 +36,18 @@ namespace Terminals.Updates
                 const string MESSAGE = "Application was not able to upgrade your passwords to version 2, because your master password isn't valid.";
                 throw new SecurityAccessDeniedException(MESSAGE);
             }
+
+            this.CheckEmptyMasterPassword();
+        }
+
+        private void CheckEmptyMasterPassword()
+        {
+            // we have to do it manually, because if master password isn't defined, 
+            // authentication sequence doesn't call IsMasterPasswordValid to assign the fields
+            if (this.isAuthenticated && string.IsNullOrEmpty(this.oldKey))
+            {
+                this.AssignFieldsByOldMasterPassword(string.Empty);
+            }
         }
 
         private bool IsMasterPasswordValid(string masterPassword)
@@ -43,11 +55,16 @@ namespace Terminals.Updates
             bool isValid = PasswordFunctions.MasterPasswordIsValid(masterPassword, Settings.MasterPasswordHash);
             if (isValid)
             {
-                this.oldKey = PasswordFunctions.CalculateMasterPasswordKey(masterPassword);
-                this.storedMasterPassword = PasswordFunctions2.CalculateStoredMasterPasswordKey(masterPassword);
-                this.newKey = PasswordFunctions2.CalculateMasterPasswordKey(masterPassword, this.storedMasterPassword);
+                this.AssignFieldsByOldMasterPassword(masterPassword);
             }
             return isValid;
+        }
+
+        private void AssignFieldsByOldMasterPassword(string masterPassword)
+        {
+            this.oldKey = PasswordFunctions.CalculateMasterPasswordKey(masterPassword);
+            this.storedMasterPassword = PasswordFunctions2.CalculateStoredMasterPasswordKey(masterPassword);
+            this.newKey = PasswordFunctions2.CalculateMasterPasswordKey(masterPassword, this.storedMasterPassword);
         }
 
         internal string UpdateCredentialPasswords(string credentialsFileContent)
