@@ -160,6 +160,7 @@ namespace Terminals.Forms
         private void RbtnSqlPersistenceCheckedChanged(object sender, EventArgs e)
         {
             sqlServerOptionsPanel.Enabled = rbtnSqlPersistence.Checked;
+            this.DatabaseComboboxTextChanged(null, null);
         }
 
         private void SearchServersButtonClick(object sender, EventArgs e)
@@ -202,6 +203,12 @@ namespace Terminals.Forms
                 display = display + " (" + version + ")";
             }
             return display;
+        }
+
+        private void DatabaseComboboxTextChanged(object sender, System.EventArgs e)
+        {
+            // Enable "Test connection" button when the database combox contains text, otherwise disable the button.
+            this.btnTestSqlConnection.Enabled = !String.IsNullOrEmpty(this.databaseCombobox.Text);
         }
 
         private void ButtonFindDatabasesClick(object sender, EventArgs e)
