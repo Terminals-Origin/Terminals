@@ -124,7 +124,7 @@ namespace Terminals.Data.DB
         {
             string connectionString = Settings.ConnectionString;
             string databaseMasterPassword = Settings.DatabaseMasterPassword;
-            DatabaseValidataionResult dbResult = ValidateDatabaseConnection(connectionString, databaseMasterPassword);
+            DatabaseValidationResult dbResult = ValidateDatabaseConnection(connectionString, databaseMasterPassword);
 
             string migrationsRoot = FileLocations.SqlMigrations;
             if (Directory.Exists(migrationsRoot))
@@ -138,12 +138,12 @@ namespace Terminals.Data.DB
             }
         }
 
-        internal static DatabaseValidataionResult ValidateDatabaseConnection(string connectionString, string databasePassword)
+        internal static DatabaseValidationResult ValidateDatabaseConnection(string connectionString, string databasePassword)
         {
             TestConnectionResult connectionResult = TestConnection(connectionString, databasePassword);
             // todo enable database versioning
             // if (!connectionResult.Successful)
-                return new DatabaseValidataionResult(connectionResult, Versioning.Version.Max);
+                return new DatabaseValidationResult(connectionResult, Versioning.Version.Max);
             
             return IdentifyDatabaseVersion(connectionString);
         }
@@ -152,16 +152,16 @@ namespace Terminals.Data.DB
         /// Tries to obtain the version number from database Versions table.
         /// If, database doesn't contain such table or contains no versions, Version.Min is returned.
         /// </summary>
-        private static DatabaseValidataionResult IdentifyDatabaseVersion(string connectionString)
+        private static DatabaseValidationResult IdentifyDatabaseVersion(string connectionString)
         {
             try
             {
                 Versioning.Version version = TryIdentifyDatabaseVersion(connectionString);
-                return new DatabaseValidataionResult(version);
+                return new DatabaseValidationResult(version);
             }
             catch (Exception exception)
             {
-                return new DatabaseValidataionResult(exception.Message);
+                return new DatabaseValidationResult(exception.Message);
             }
         }
 

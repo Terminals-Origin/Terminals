@@ -5,7 +5,7 @@ namespace Terminals.Data.DB
     /// <summary>
     /// Ensured connection, database master password and database content version
     /// </summary>
-    internal class DatabaseValidataionResult : TestConnectionResult
+    internal class DatabaseValidationResult : TestConnectionResult
     {
         internal Versioning.Version CurrentVersion { get; set; }
 
@@ -22,18 +22,18 @@ namespace Terminals.Data.DB
             get { return this.CurrentVersion == Versioning.Version.Min; }
         }
 
-        internal DatabaseValidataionResult(Versioning.Version currentVersion)
+        internal DatabaseValidationResult(Versioning.Version currentVersion)
         {
             this.CurrentVersion = currentVersion;
         }
 
-        internal DatabaseValidataionResult(string errorMesasge)
+        internal DatabaseValidationResult(string errorMesasge)
             : base(errorMesasge)
         {
             this.CurrentVersion = Versioning.Version.Min;
         }
 
-        internal DatabaseValidataionResult(TestConnectionResult connectionResult, Versioning.Version version)
+        internal DatabaseValidationResult(TestConnectionResult connectionResult, Versioning.Version version)
             : base(connectionResult)
         {
             CurrentVersion = version;

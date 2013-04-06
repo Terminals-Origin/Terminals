@@ -110,19 +110,19 @@ namespace Terminals.Forms
         {
             this.testLabel.Visible = true;
             var connectionProperties = new Tuple<string, string>(this.ConnectionString, this.txtDbPassword.Text);
-            var t = Task<DatabaseValidataionResult>.Factory.StartNew(TryTestDatabaseConnection, connectionProperties);
+            var t = Task<DatabaseValidationResult>.Factory.StartNew(TryTestDatabaseConnection, connectionProperties);
             t.ContinueWith(this.ShowConnectionTestResult, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private static DatabaseValidataionResult TryTestDatabaseConnection(object objectState)
+        private static DatabaseValidationResult TryTestDatabaseConnection(object objectState)
         {
             var connectionParams = objectState as Tuple<string, string>;
             return DatabaseConnections.ValidateDatabaseConnection(connectionParams.Item1, connectionParams.Item2);
         }
 
-        private void ShowConnectionTestResult(Task<DatabaseValidataionResult> antecedent)
+        private void ShowConnectionTestResult(Task<DatabaseValidationResult> antecedent)
         {
-            DatabaseValidataionResult connectionResult = antecedent.Result;
+            DatabaseValidationResult connectionResult = antecedent.Result;
 
             if (connectionResult.SuccessfulWithVersion)
             {
@@ -139,7 +139,7 @@ namespace Terminals.Forms
             this.testLabel.Visible = false;
         }
 
-        private static void ShowFailedConnectionTestMessage(DatabaseValidataionResult connectionResult)
+        private static void ShowFailedConnectionTestMessage(DatabaseValidationResult connectionResult)
         {
             string message = string.Format("Test database failed.\r\nReason:{0}", connectionResult.ErroMessage);
             // todo enable database versioning
