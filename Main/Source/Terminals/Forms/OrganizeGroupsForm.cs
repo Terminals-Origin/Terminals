@@ -57,7 +57,7 @@ namespace Terminals
 
         private void CreateNewGroupIfDoesntExist(string newGroupName)
         {
-            FavoritesFactory.GetOrCreateGroup(newGroupName);   
+            FavoritesFactory.GetOrAddNewGroup(newGroupName);   
             this.LoadGroups();
         }
 

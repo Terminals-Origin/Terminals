@@ -142,7 +142,7 @@ namespace Terminals.Data
                 PersistedFavorites.Add(release);
 
                 string terminalsGroupName = Program.Resources.GetString("Terminals");
-                IGroup group = GetOrCreateGroup(terminalsGroupName);
+                IGroup group = GetOrAddNewGroup(terminalsGroupName);
                 group.AddFavorite(release);
             }
             return release;
@@ -153,17 +153,31 @@ namespace Terminals.Data
         /// </summary>
         /// <param name="groupName">Name of the group to search in persistence.</param>
         /// <returns>Not null value of Group obtained from persistence or newly created group</returns>
-        internal static IGroup GetOrCreateGroup(string groupName)
+        internal static IGroup GetOrAddNewGroup(string groupName)
         {
-            var groups = Persistence.Instance.Groups;
+            IGroups groups = Persistence.Instance.Groups;
             IGroup group = groups[groupName];
             if (group == null)
             {
                 group = PersistenceFactory.CreateGroup(groupName);
-                groups.Add(group);
+                groups.Add(group); 
             }
 
             return group;
+        }
+
+        /// <summary>
+        /// Gets group with required groupName or creates new group. Newly created groups isn't added to the persistence.
+        /// </summary>
+        /// <param name="groupName">Name of the group to search in persistence.</param>
+        /// <returns>Not null value of Group obtained from persistence or newly created group</returns>
+        internal static IGroup GetOrCreateNewGroup(string groupName)
+        {
+            IGroup group = Persistence.Instance.Groups[groupName];
+            if (group != null)
+                return group;
+
+            return PersistenceFactory.CreateGroup(groupName);
         }
     }
 }

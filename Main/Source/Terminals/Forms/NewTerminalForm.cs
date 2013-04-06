@@ -1234,7 +1234,7 @@ namespace Terminals
             string newGroupName = this.txtTag.Text;
             if (!String.IsNullOrEmpty(newGroupName))
             {
-                IGroup candidate = FavoritesFactory.GetOrCreateGroup(newGroupName);
+                IGroup candidate = FavoritesFactory.GetOrCreateNewGroup(newGroupName);
                 this.AddGroupIfNotAlreadyThere(candidate);
             }
         }
