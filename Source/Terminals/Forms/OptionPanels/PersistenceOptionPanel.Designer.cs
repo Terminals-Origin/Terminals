@@ -158,6 +158,7 @@ namespace Terminals.Forms
             this.databaseCombobox.Name = "databaseCombobox";
             this.databaseCombobox.Size = new System.Drawing.Size(173, 21);
             this.databaseCombobox.TabIndex = 23;
+            this.databaseCombobox.TextChanged += DatabaseComboboxTextChanged;
             // 
             // queryLabel
             // 
