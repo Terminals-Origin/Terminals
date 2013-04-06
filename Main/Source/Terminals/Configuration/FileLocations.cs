@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Xml.Linq;
 using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
@@ -80,7 +79,7 @@ namespace Terminals.Configuration
                 if (rootAppender != null)
                     return rootAppender.File;
                 
-                return string.Empty;
+                return String.Empty;
             }
         }
 
@@ -134,14 +133,14 @@ namespace Terminals.Configuration
         {
             // we don't have to assign to file file watchers, they aren't initialized yet
             // we don't have to check if files exist, we recreate them
-            AssignConfigurationFile(configurationFullPath);
-            AssignFavoritesFile(favoritesFullPath);
-            AssignCredentialsFile(credentialsFullPath);
+            this.AssignConfigurationFile(configurationFullPath);
+            this.AssignFavoritesFile(favoritesFullPath);
+            this.AssignCredentialsFile(credentialsFullPath);
         }
 
         private void AssignConfigurationFile(string configurationFullPath)
         {
-            if (string.IsNullOrEmpty(configurationFullPath))
+            if (String.IsNullOrEmpty(configurationFullPath))
                 this.Configuration = GetFullPath(CONFIG_FILENAME);
             else
                 this.Configuration = configurationFullPath;
@@ -149,10 +148,10 @@ namespace Terminals.Configuration
 
         private void AssignFavoritesFile(string favoritesFullPath)
         {
-            if (string.IsNullOrEmpty(favoritesFullPath))
+            if (String.IsNullOrEmpty(favoritesFullPath))
             {
                 this.Favorites = Settings.SavedFavoritesFileLocation;
-                if (string.IsNullOrEmpty(this.Favorites))
+                if (String.IsNullOrEmpty(this.Favorites))
                     this.Favorites = GetFullPath(FAVORITES_FILENAME);
             }
             else
@@ -163,7 +162,7 @@ namespace Terminals.Configuration
 
         private void AssignCredentialsFile(string credentialsFullPath)
         {
-            if (string.IsNullOrEmpty(credentialsFullPath))
+            if (String.IsNullOrEmpty(credentialsFullPath))
                 this.AssignDefaultCredentialsFile();
             else
                 this.Credentials = credentialsFullPath;
@@ -172,7 +171,7 @@ namespace Terminals.Configuration
         private void AssignDefaultCredentialsFile()
         {
             this.Credentials = Settings.SavedCredentialsLocation;
-            if (string.IsNullOrEmpty(this.Credentials) || this.Credentials == CREDENTIALS_FILENAME)
+            if (String.IsNullOrEmpty(this.Credentials) || this.Credentials == CREDENTIALS_FILENAME)
                 this.Credentials = GetFullPath(CREDENTIALS_FILENAME);
         }
 
@@ -211,12 +210,29 @@ namespace Terminals.Configuration
 
         internal static string FormatThumbFileName(string fileName)
         {
-            return string.Format(@"{0}\{1}.jpg", ThumbsDirectoryFullPath, fileName);
+            return String.Format(@"{0}\{1}.jpg", ThumbsDirectoryFullPath, fileName);
         }
 
         internal static void EnsureImagesDirectory()
         {
             EnsureDataDirectory(ThumbsDirectoryFullPath);
+        }
+
+        internal static bool UserHasAccessToDataDirectory()
+        {
+            try
+            {
+                // Test to make sure that the current user has write access to the current directory.
+                using (StreamWriter sw = File.AppendText(WriteAccessLock))
+                {
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.FatalFormat("Access Denied {0}", ex.Message);
+                return false;
+            }
         }
     }
 }
