@@ -29,6 +29,7 @@ namespace Terminals.Forms
         internal SqlConnectionForm()
         {
             InitializeComponent();
+            this.MinimumSize = this.Size; // Don't allow form to get smaller then it is initialy set to.
         }
 
         private void PropertyGridConnectionPropertyValueChanged(object s, PropertyValueChangedEventArgs e)
