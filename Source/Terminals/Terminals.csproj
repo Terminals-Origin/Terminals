@@ -199,7 +199,7 @@
     <Compile Include="Data\AuthenticationSequence.cs" />
     <Compile Include="Data\DB\DatabaseConnections.cs" />
     <Compile Include="Data\DB\DatabasePasswordUpdate.cs" />
-    <Compile Include="Data\DB\DatabaseValidataionResult.cs" />
+    <Compile Include="Data\DB\DatabaseValidationResult.cs" />
     <Compile Include="Data\DB\DbBeforeConnectExecute.cs">
       <DependentUpon>SQLPersistence.tt</DependentUpon>
     </Compile>
