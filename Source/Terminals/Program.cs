@@ -43,7 +43,7 @@ namespace Terminals
             CommandLineArgs commandLine = ParseCommandline();
             Logging.Log.Info("Start state 4 Complete: Parse command line");
 
-            if (UserAccountControlNotSatisfied())
+            if (!EnsureDataAreWriteAble())
                 return;
             Logging.Log.Info("Start state 5 Complete: User account control");
             
@@ -87,34 +87,17 @@ namespace Terminals
             UnhandledTerminationForm.ShowRipDialog();
         }
 
-        private static bool UserAccountControlNotSatisfied()
+        private static bool EnsureDataAreWriteAble()
         {
-            try
+            bool hasDataAccess = FileLocations.UserHasAccessToDataDirectory();
+            if (!hasDataAccess)
             {
-                LogNonAdministrator();
-                string testFile = FileLocations.WriteAccessLock;
-
-                // Test to make sure that the current user has write access to the current directory.
-                using (StreamWriter sw = File.AppendText(testFile)) { }
-            }
-            catch (Exception ex)
-            {
-                Logging.Log.FatalFormat("Access Denied {0}", ex.Message);
-                string message = String.Format("{0}\r\n\r\nWrite Access is denied\r\n\r\nPlease make sure you are running as administrator", ex.Message);
+                string message = String.Format("Write Access is denied to:\r\n{0}\r\n" +
+                                               "Please make sure you have write permissions to the data directory",
+                                               FileLocations.WriteAccessLock);
                 MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Application.Exit();
-                return true;
             }
-            return false;
-        }
-
-        private static void LogNonAdministrator()
-        {
-            if (!(new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)))
-            {
-                Debug.WriteLine("Terminals is running in non-admin mode");
-                Logging.Log.Info("Terminals is running in non-admin mode");
-            }
+            return hasDataAccess;
         }
 
         private static void StartMainForm(CommandLineArgs commandLine)
@@ -123,8 +106,6 @@ namespace Terminals
             PersistenceErrorForm.RegisterDataEventHandler(persistence.Dispatcher);
             if (persistence.Security.Authenticate(RequestPassword.KnowsUserPassword))
                 RunMainForm(commandLine);
-            else
-                Application.Exit();
         }
 
         private static void RunMainForm(CommandLineArgs commandLine)
