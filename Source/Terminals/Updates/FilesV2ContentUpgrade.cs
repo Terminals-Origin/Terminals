@@ -97,7 +97,7 @@ namespace Terminals.Updates
 
         private void MoveFavoriteAliasesGroup(GroupConfigurationElement configGroup)
         {
-            IGroup group = FavoritesFactory.GetOrCreateGroup(configGroup.Name);
+            IGroup group = FavoritesFactory.GetOrAddNewGroup(configGroup.Name);
             List<string> favoriteNames = configGroup.FavoriteAliases.GetFavoriteNames();
             List<IFavorite> groupFavorites = favoriteNames.Select(favoriteName => persistence.Favorites[favoriteName])
                 .Where(favorite => favorite != null).ToList();

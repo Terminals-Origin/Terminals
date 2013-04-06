@@ -95,7 +95,7 @@ namespace Terminals.Forms.Controls
         {
             foreach (string groupName in configFavorite.TagList)
             {
-                IGroup group = FavoritesFactory.GetOrCreateGroup(groupName);
+                IGroup group = FavoritesFactory.GetOrAddNewGroup(groupName);
                 group.AddFavorite(favorite);
             }
         }
