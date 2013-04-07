@@ -63,7 +63,7 @@ namespace Tests.Passwords
         [TestMethod]
         public void V2UpgradePasswordsTest()
         {
-            this.UpgradePasswordsTestInitialize(SECURED_CONFIG_FILE, SECURED_CREDENTIALS_FILE);
+            this.UpgradePasswordsTestInitialize(SECURED_CONFIG_FILE, SECURED_CREDENTIALS_FILE, "favoritesSecured.xml");
             IPersistence persistence = this.RunUpgrade();
 
             bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(PasswordTests.MASTERPASSWORD, Settings.MasterPasswordHash);
@@ -73,7 +73,6 @@ namespace Tests.Passwords
 
         private static void AssertUserAndCredential(IPersistence persistence)
         {
-            // todo concurrency problem when running multiple test in parallel
             // we don't have to authenticate, because it was already done by upgrade
             IFavorite favorite = persistence.Favorites.First();
             String favoritePassword = favorite.Security.Password;
@@ -101,10 +100,15 @@ namespace Tests.Passwords
             return new AuthenticationPrompt { Password = PasswordTests.MASTERPASSWORD };
         }
 
-        private void UpgradePasswordsTestInitialize(string configFile, string credentialsFile)
+        /// <summary>
+        /// because of concurrently running tests, we have to isolate all the files,
+        /// otherwise multiple test are writing to the same file and tests fail (specially favorites file).
+        /// </summary>
+        private void UpgradePasswordsTestInitialize(string configFile, string credentialsFile,
+            string favoritesFile = FileLocations.FAVORITES_FILENAME)
         {
             string configFileName = this.CreateFullTestFileName(configFile);
-            string favoritesFileName = this.CreateFullTestFileName(FileLocations.FAVORITES_FILENAME);
+            string favoritesFileName = this.CreateFullTestFileName(favoritesFile);
             string credentialsFileName = this.CreateFullTestFileName(credentialsFile);
             // remove source control read only attribute
             File.SetAttributes(configFileName, FileAttributes.Normal);
