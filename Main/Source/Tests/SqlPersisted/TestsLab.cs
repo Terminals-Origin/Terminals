@@ -26,6 +26,11 @@ namespace Tests.SqlPersisted
         protected const string VALIDATION_VALUE = "AAA";
 
         /// <summary>
+        /// Gets second sample text value to be checked in tests when used as password, user name or another tested value
+        /// </summary>
+        protected const string VALIDATION_VALUE_B = "BBB";
+
+        /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
