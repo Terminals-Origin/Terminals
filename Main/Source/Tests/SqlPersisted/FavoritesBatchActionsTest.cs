@@ -10,8 +10,6 @@ namespace Tests.SqlPersisted
     [TestClass]
     public class FavoritesBatchActionsTest : TestsLab
     {
-        private const string VALIDATION_VALUE = "AAA";
-
         private List<IFavorite> TestFavorites
         {
             get

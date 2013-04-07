@@ -13,8 +13,6 @@ namespace Tests.SqlPersisted
     [TestClass]
     public class CredentialsTest : TestsLab
     {
-        private const string TEST_PASSWORD = "aaa";
-
         private ICredentials PrimaryCredentials
         {
             get
@@ -50,7 +48,7 @@ namespace Tests.SqlPersisted
             credentials.Name = "TestCredentialName";
             credentials.Domain = "TestDomain";
             credentials.UserName = "TestUserName";
-            ((ICredentialSet)credentials).Password = TEST_PASSWORD;
+            ((ICredentialSet)credentials).Password = VALIDATION_VALUE;
             return credentials;
         }
 
@@ -62,7 +60,7 @@ namespace Tests.SqlPersisted
             var checkCredentialSet = this.SecondaryPersistence.Credentials.FirstOrDefault() as DbCredentialSet;
 
             Assert.IsNotNull(checkCredentialSet, "Credential didn't reach the database");
-            Assert.AreEqual(TEST_PASSWORD, ((ICredentialSet)checkCredentialSet).Password, "Password doesn't match");
+            Assert.AreEqual(VALIDATION_VALUE, ((ICredentialSet)checkCredentialSet).Password, "Password doesn't match");
         }
 
         [TestMethod]
@@ -102,7 +100,7 @@ namespace Tests.SqlPersisted
             this.PrimaryPersistence.Security.UpdateMasterPassword(String.Empty);
 
             ICredentialSet checkCredentials = this.SecondaryPersistence.Credentials.FirstOrDefault();
-            Assert.AreEqual(TEST_PASSWORD, checkCredentials.Password, "Password lost after update of key material");
+            Assert.AreEqual(VALIDATION_VALUE, checkCredentials.Password, "Password lost after update of key material");
         }
     }
 }

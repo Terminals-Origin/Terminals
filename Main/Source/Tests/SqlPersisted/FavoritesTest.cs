@@ -19,6 +19,8 @@ namespace Tests.SqlPersisted
         private int updatedCount;
         private int deletedCount;
 
+        private DbSet<DbFavorite> CheckFavorites { get { return this.CheckDatabase.Favorites; } }
+
         [TestInitialize]
         public void TestInitialize()
         {
@@ -77,8 +79,6 @@ namespace Tests.SqlPersisted
             Assert.AreEqual(1, this.deletedCount, "Event wasn't delivered");
         }
 
-        private DbSet<DbFavorite> CheckFavorites { get { return this.CheckDatabase.Favorites; } }
-
         [TestMethod]
         public void UpdateFavoriteTest()
         {
@@ -93,6 +93,26 @@ namespace Tests.SqlPersisted
 
             var testOptions = target.ProtocolProperties as VncOptions;
             Assert.IsNotNull(testOptions, "Protocol properties weren't updated");
+            Assert.AreEqual(1, this.updatedCount, "Event wasn't delivered");
+        }
+
+        /// <summary>
+        /// Checks if Security is properly saved, if not saved in previous commit, 
+        /// because this property is initialized using lazy loading
+        /// </summary>
+        [TestMethod]
+        public void DoubleUpdateFavoriteTest()
+        {
+            IFavorite favorite = this.AddFavoriteToPrimaryPersistence();
+            // first time change nothing to ensure, that dummy update doesn't fail. EF Security property is still null.
+            this.PrimaryFavorites.Update(favorite);
+
+            // now assign new values to security and commit it as newly added, should not fail
+            favorite.Security.UserName = VALIDATION_VALUE;
+            this.PrimaryFavorites.Update(favorite);
+
+            IFavorite target = this.SecondaryFavorites.FirstOrDefault();
+            Assert.AreEqual(VALIDATION_VALUE, target.Security.UserName, "Protocol properties weren't updated");
             Assert.AreEqual(1, this.updatedCount, "Event wasn't delivered");
         }
 
