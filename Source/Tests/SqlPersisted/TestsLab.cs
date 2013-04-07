@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Data.DB;
+using Tests.FilePersisted;
 
 namespace Tests.SqlPersisted
 {
@@ -17,6 +19,11 @@ namespace Tests.SqlPersisted
         protected const string FAVORITE_NAME = "test";
 
         protected const string FAVORITE_SERVERNAME = "test server";
+
+        /// <summary>
+        /// Gets sample text value to be checked in tests when used as password, user name or another tested value
+        /// </summary>
+        protected const string VALIDATION_VALUE = "AAA";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -60,13 +67,13 @@ namespace Tests.SqlPersisted
         protected void InitializeTestLab()
         {
             this.RemoveDatabaseFileReadOnly();
-            FilePersisted.FilePersistedTestLab.SetDefaultFileLocations();
+            FilePersistedTestLab.SetDefaultFileLocations();
             Settings.PersistenceSecurity = new SqlPersistenceSecurity();
             this.SetDeploymentDirConnectionString();
 
             // first reset the database password, then continue with other initializations
             this.CheckDatabase = DatabaseConnections.CreateInstance();
-            this.CheckDatabase.UpdateMasterPassword(string.Empty);
+            this.CheckDatabase.UpdateMasterPassword(String.Empty);
 
             this.PrimaryPersistence = new SqlPersistence();
             this.PrimaryPersistence.Initialize();
@@ -78,7 +85,7 @@ namespace Tests.SqlPersisted
 
         protected void SetDeploymentDirConnectionString()
         {
-            Settings.ConnectionString = string.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
+            Settings.ConnectionString = String.Format(CONNECTION_STRING, this.TestContext.DeploymentDirectory);
         }
 
         private void RemoveDatabaseFileReadOnly()
