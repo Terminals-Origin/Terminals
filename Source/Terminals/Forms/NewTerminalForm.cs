@@ -43,21 +43,18 @@ namespace Terminals
         public NewTerminalForm(String serverName)
             : this()
         {
-            this.InitializeComponent();
             this.Init(null, serverName);
         }
 
         public NewTerminalForm(IFavorite favorite)
             : this()
         {
-            this.InitializeComponent();
-
             this.Init(favorite, String.Empty);
-
         }
 
         private NewTerminalForm()
         {
+            this.InitializeComponent();
             this.RedirectedDrives = new List<String>();
             this.RedirectDevices = false;
         }
