@@ -99,6 +99,9 @@ namespace Terminals.Data.DB
             internal void Save(Database database)
             {
                 // partial save possible of of next methods, try to save as much as possible
+                if (this.Loaded)
+                    this.Security.Save();
+                
                 this.SaveProtocolProperties(database);
                 this.UpdateImageInDatabase(database);
             }

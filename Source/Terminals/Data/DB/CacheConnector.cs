@@ -105,9 +105,20 @@ namespace Terminals.Data.DB
         {
             this.MarkAsModified(security);
             if (security.CachedCredentials != null)
-                this.MarkAsModified(security.CachedCredentials);
+                this.MarkCachedCredentials(security);
 
             security.UpdateCredentialSetReference();
+        }
+
+        /// <summary>
+        /// Because of CachedCredentialBase lazy loading, we have to distinguish, how to save the property manually
+        /// </summary>
+        private void MarkCachedCredentials(DbSecurityOptions security)
+        {
+            if (security.NewCachedCredentials)
+                this.database.Entry(security.CachedCredentials).State = EntityState.Added;
+            else
+                this.MarkAsModified(security.CachedCredentials);
         }
 
         /// <summary>

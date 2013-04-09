@@ -104,20 +104,20 @@ namespace Tests.SqlPersisted
         public void DoubleUpdateFavoriteTest()
         {
             IFavorite favorite = this.AddFavoriteToPrimaryPersistence();
-            // first time change nothing to ensure, that dummy update doesn't fail. EF Security.CachedCredentials property is still null.
+            // first time change nothing to ensure, that dummy update doesn't fail.
+            // EF Security.CachedCredentials property is still null.
             this.PrimaryFavorites.Update(favorite);
 
             // now assign new values to security and commit it as newly added, should not fail
             favorite.Security.UserName = VALIDATION_VALUE;
             this.PrimaryFavorites.Update(favorite);
             // try again to ensure, that second update also doesn't fail.
-            const string validationValue2 = VALIDATION_VALUE_B;
-            favorite.Security.UserName = validationValue2;
+            favorite.Security.UserName = VALIDATION_VALUE_B;
             this.PrimaryFavorites.Update(favorite);
 
             IFavorite target = this.SecondaryFavorites.FirstOrDefault();
-            Assert.AreEqual(validationValue2, target.Security.UserName, "Protocol properties weren't updated");
-            Assert.AreEqual(2, this.updatedCount, "Event wasn't delivered");
+            Assert.AreEqual(VALIDATION_VALUE_B, target.Security.UserName, "Protocol properties weren't updated");
+            Assert.AreEqual(3, this.updatedCount, "Event wasn't delivered");
         }
 
         [TestMethod]
