@@ -19,15 +19,13 @@ namespace Terminals.Forms
         private static void DataErrorOccured(object sender, DataErrorEventArgs args)
         {
             if (args.CallStackFull)
-                Application.Exit();
+                Environment.Exit(-1);
 
             var form = new PersistenceErrorForm();
             form.textBoxDetail.Text = args.Message;
             // continue means, that user wants to retry
             if (form.ShowDialog() == DialogResult.Cancel)
-            {
-                Application.Exit();
-            }
+                Environment.Exit(-1);
         }
     }
 }

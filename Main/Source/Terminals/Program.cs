@@ -85,6 +85,7 @@ namespace Terminals
             Logging.Log.Fatal(messageToLog);
             Logging.Log.Fatal("Application has to be terminated.");
             UnhandledTerminationForm.ShowRipDialog();
+            Environment.Exit(-1);
         }
 
         private static bool EnsureDataAreWriteAble()
