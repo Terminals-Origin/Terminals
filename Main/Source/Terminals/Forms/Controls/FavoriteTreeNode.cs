@@ -10,11 +10,11 @@ namespace Terminals.Forms.Controls
         {
             this.Name = favorite.Name;
             this.Favorite = favorite;
-            this.Tag = favorite; // temporar solution, for backwarad compatibility only
+            this.Tag = favorite; // temporary solution, for backward compatibility only
 
             this.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite);
             this.SelectedImageKey = this.ImageKey;
-            // todo performance hit, when loading details for each created favorite and also in menu loader
+            // possible performance hit on SQL persistence, when loading details for each created favorite and also in menu loader
             this.ToolTipText = favorite.GetToolTipText();
         }
 
@@ -24,7 +24,7 @@ namespace Terminals.Forms.Controls
         internal IFavorite Favorite { get; private set; }
 
         /// <summary>
-        /// Returns text compareto method values selecting property to compare
+        /// Returns text compare to method values selecting property to compare
         /// depending on Settings default sort property value
         /// </summary>
         /// <param name="target">not null favorite to compare with</param>
