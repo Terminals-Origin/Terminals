@@ -23,9 +23,14 @@ namespace Terminals.Data.DB
         private int? credentialId;
 
         /// <summary>
+        /// Distinguish between newly created CachedCredentials or loaded
+        /// </summary>
+        internal bool NewCachedCredentials { get; private set; }
+
+        /// <summary>
         /// Cached base properties. Loaded from reference or assigned by creation only.
         /// </summary>
-        internal DbCredentialBase CachedCredentials { get; set; }
+        internal DbCredentialBase CachedCredentials { get; private set; }
 
         public string EncryptedUserName
         {
@@ -209,6 +214,7 @@ namespace Terminals.Data.DB
                 this.CachedCredentials = new DbCredentialBase();
                 this.CachedCredentials.AssignSecurity(this.persistenceSecurity);
                 this.CredentialBase = this.CachedCredentials;
+                this.NewCachedCredentials = true;
             }
         }
 
@@ -264,6 +270,7 @@ namespace Terminals.Data.DB
         internal DbSecurityOptions Copy()
         {
             var copy = new DbSecurityOptions();
+            // newCachedCredentials doesn't have to be assigned here, because it depends on the values copied
             copy.UpdateFrom(this);
             return copy;
         }
@@ -284,6 +291,14 @@ namespace Terminals.Data.DB
                 return "SecurityOptions:Empty";
             var security = this as ICredentialBase;
             return string.Format("SecurityOptions:User='{0}',Domain='{1}'", security.UserName, security.Domain);
+        }
+
+        /// <summary>
+        /// Because of CachedCredentialBase lazy loading, we have to mark the property as initially saved.
+        /// </summary>
+        internal void Save()
+        {
+            this.NewCachedCredentials = false;
         }
     }
 }
