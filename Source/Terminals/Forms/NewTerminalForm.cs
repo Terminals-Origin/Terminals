@@ -1185,7 +1185,7 @@ namespace Terminals
         private bool IsPortValid()
         {
             Int32 result;
-            if (Int32.TryParse(this.txtPort.Text, out result) && result > 0 && result < 65536)
+            if (Int32.TryParse(this.txtPort.Text, out result) && result >= 0 && result < 65536)
                 return true;
 
             ShowErrorMessageBox("Port must be a number between 0 and 65535");

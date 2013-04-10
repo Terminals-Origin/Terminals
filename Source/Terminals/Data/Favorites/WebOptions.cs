@@ -36,17 +36,29 @@ namespace Terminals.Data
 
         internal static string ExtractAbsoluteUrl(IFavorite source)
         {
-            var webOptions = source.ProtocolProperties as WebOptions;
-            string relativeUrl = string.Empty;
-            if (webOptions != null)
-                relativeUrl = webOptions.RelativeUrl;
-
-            string protocol = source.Protocol.ToLower();
-            var uriBuilder = new UriBuilder(protocol, source.ServerName, source.Port, relativeUrl);
-            return uriBuilder.ToString();
+          try
+          {
+            return TryFormatAbsoluteUrl(source);
+          }
+          catch // UriBuilder fails on at least ICA Citrix as unknown service, use stupid URI formatting in this case
+          {
+            return string.Format(@"{0}://{1}:{2}/", source.Protocol, source.ServerName, source.Port);
+          }
         }
 
-        internal static void UpdateFavoriteUrl(IFavorite destination, string newAbsoluteUrl)
+      private static string TryFormatAbsoluteUrl(IFavorite source)
+      {
+        var webOptions = source.ProtocolProperties as WebOptions;
+        string relativeUrl = string.Empty;
+        if (webOptions != null)
+          relativeUrl = webOptions.RelativeUrl;
+
+        string protocol = source.Protocol.ToLower();
+        var uriBuilder = new UriBuilder(protocol, source.ServerName, source.Port, relativeUrl);
+        return uriBuilder.ToString();
+      }
+
+      internal static void UpdateFavoriteUrl(IFavorite destination, string newAbsoluteUrl)
         {
             var webOptions = destination.ProtocolProperties as WebOptions;
             if (webOptions != null)
