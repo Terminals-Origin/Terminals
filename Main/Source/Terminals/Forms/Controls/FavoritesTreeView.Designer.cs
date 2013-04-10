@@ -44,7 +44,7 @@
       this.imageListIcons.Images.SetKeyName(4, "treeIcon_vnc.png");
       this.imageListIcons.Images.SetKeyName(5, "treeIcon_telnet.png");
       this.imageListIcons.Images.SetKeyName(6, "treeIcon_ssh.png");
-      this.imageListIcons.Images.SetKeyName(7, "terminalsicon.ico");
+      this.imageListIcons.Images.SetKeyName(7, "terminalsicon.png");
       // 
       // FavoritesTreeView
       // 
