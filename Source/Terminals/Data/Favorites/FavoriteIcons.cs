@@ -49,7 +49,7 @@ namespace Terminals.Data
                 case ConnectionManager.SSH:
                     return "treeIcon_ssh.png";
                 default:
-                    return "terminalsicon.ico";
+                    return "terminalsicon.png";
             }
         }
 
@@ -162,7 +162,7 @@ namespace Terminals.Data
             string newFileName = Path.GetFileName(newImagefilePath);
             String newFileInThumbsDir = Path.Combine(FileLocations.ThumbsDirectoryFullPath, newFileName);
 
-            // the file wasnt selected directly from Thumbs dir, otherwise we dont need to copy it
+            // the file wasn't selected directly from Thumbs dir, otherwise we don't need to copy it
             if (newFileInThumbsDir != newImagefilePath && !File.Exists(newFileInThumbsDir))
                 File.Copy(newImagefilePath, newFileInThumbsDir);
 
