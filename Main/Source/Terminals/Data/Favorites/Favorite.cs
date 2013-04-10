@@ -94,15 +94,7 @@ namespace Terminals.Data
             set
             {
                 this.toolBarIconFile = value;
-                this.ResetLoadedIcon();
-            }
-        }
-
-        private void ResetLoadedIcon()
-        {
-            if (this.toolBarIconImage != null)
-            {
-                this.toolBarIconImage.Dispose();
+                // don't dispose the previous image here, because it can be loaded from default shared FavoriteIcons
                 this.toolBarIconImage = null;
             }
         }
