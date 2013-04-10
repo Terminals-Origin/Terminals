@@ -115,6 +115,7 @@
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ParentId" Type="int" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="Version" Type="timestamp" Nullable="false" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="Security">
           <Key>
@@ -513,7 +514,7 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Protocol" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Protocol" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
           <Property Type="Int32" Name="Port" Nullable="false" />
           <Property Type="String" Name="ServerName" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="NewWindow" Nullable="false" />
@@ -535,6 +536,7 @@
           <NavigationProperty Name="ChildGroups" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Parents" ToRole="Childs" />
           <NavigationProperty Name="ParentGroup" Relationship="Terminals.Data.DB.FK_Groups_Groups" FromRole="Childs" ToRole="Parents" />
           <NavigationProperty Name="Favorites" Relationship="Terminals.Data.DB.FavoritesInGroup" FromRole="Groups" ToRole="Favorites" />
+          <Property Type="Binary" Name="Version" Nullable="false" MaxLength="8" FixedLength="true" a:StoreGeneratedPattern="Computed" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
         </EntityType>
         <EntityType Name="DbSecurityOptions" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
@@ -779,6 +781,7 @@
           <EntitySetMapping Name="Groups">
             <EntityTypeMapping TypeName="Terminals.Data.DB.DbGroup">
               <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="Version" ColumnName="Version" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
