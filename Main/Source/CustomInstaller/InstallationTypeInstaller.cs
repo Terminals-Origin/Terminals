@@ -93,7 +93,21 @@ namespace Terminals
 
         private static string GetLogDirectoryPath()
         {
-            return @"${LOCALAPPDATA}\Robert_Chartier\Terminals\Data\logs\CurrentLog.txt";
+            const string RELATIVE_PATH = @"\Robert_Chartier\Terminals\Data\logs\CurrentLog.txt";
+
+            if (IsNewerThanXp())
+                return @"${LOCALAPPDATA}" + RELATIVE_PATH;
+         
+            return @"${USERPROFILE}\Local Settings\Application Data" + RELATIVE_PATH;
+        }
+
+        private static bool IsNewerThanXp()
+        {
+            // http://stackoverflow.com/questions/2819934/detect-windows-7-in-net
+            var osVersion = Environment.OSVersion.Version;
+            bool isServer2003 = osVersion.Major == 5 && osVersion.Minor == 2;
+            bool isVistaOrNewer = osVersion.Major >= 6;
+            return isServer2003 || isVistaOrNewer;
         }
 
         private static XAttribute SelectFileElement(XDocument configFile)
