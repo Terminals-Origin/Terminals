@@ -57,6 +57,7 @@ namespace Terminals
             UpdateManager.CheckForUpdates(commandLine);
             Logging.Log.Info("Start state 8 Complete: Check application updates");
 
+            ShowFirstRunWizard();
             StartMainForm(commandLine);
 
             Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
@@ -99,6 +100,17 @@ namespace Terminals
                 MessageBox.Show(message, "Terminals", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return hasDataAccess;
+        }
+
+
+        private static void ShowFirstRunWizard()
+        {
+            if (Settings.ShowWizard)
+            {
+                //settings file doesn't exist
+                using (var wzrd = new FirstRunWizard())
+                    wzrd.ShowDialog();
+            }
         }
 
         private static void StartMainForm(CommandLineArgs commandLine)
