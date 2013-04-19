@@ -81,6 +81,10 @@ namespace Terminals.Updates
             this.ReplaceFavoriteButtonNamesByIds();
             Settings.SaveAndFinishDelayedUpdate();
             persistence.Groups.Rebuild();
+            // we can upgrade only file persistence, so the cast is safe.
+            // Credentials Ids were newly created, and the file persistence didn't save the file.
+            // We have to force the save to ensure, that upgraded favorites now point to proper credential ids.
+            ((StoredCredentials)persistence.Credentials).Save();
             persistence.SaveAndFinishDelayedUpdate();
         }
 
