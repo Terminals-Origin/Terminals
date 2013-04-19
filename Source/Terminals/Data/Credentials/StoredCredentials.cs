@@ -169,7 +169,11 @@ namespace Terminals.Data
             Save();
         }
 
-        private void Save()
+        /// <summary>
+        /// Called automatically after each <see cref="ICredentials"/> method.
+        /// Not necessary to call manually.
+        /// </summary>
+        internal void Save()
         {
             try
             {

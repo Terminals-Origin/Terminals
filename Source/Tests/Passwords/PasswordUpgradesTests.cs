@@ -69,6 +69,7 @@ namespace Tests.Passwords
             bool masterStillValid = PasswordFunctions2.MasterPasswordIsValid(PasswordTests.MASTERPASSWORD, Settings.MasterPasswordHash);
             Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
             AssertUserAndCredential(persistence);
+            AssertFavoriteCredentialSet(persistence);
         }
 
         private static void AssertUserAndCredential(IPersistence persistence)
@@ -81,6 +82,14 @@ namespace Tests.Passwords
             ICredentialSet credential = persistence.Credentials.First();
             Assert.AreEqual(TEST_PASSWORD, credential.UserName, "Credential user name upgrade failed.");
             Assert.AreEqual(TEST_PASSWORD, credential.Password, "Credential password upgrade failed.");
+        }
+
+        private static void AssertFavoriteCredentialSet(IPersistence persistence)
+        {
+            IFavorite favoriteWithCredentials = persistence.Favorites.ToList()[1];
+            var credentialsId = favoriteWithCredentials.Security.Credential;
+            ICredentialSet credential = persistence.Credentials[credentialsId];
+            Assert.IsNotNull(credential, "Favorite referenced credential was lost");
         }
 
         private IPersistence RunUpgrade()
