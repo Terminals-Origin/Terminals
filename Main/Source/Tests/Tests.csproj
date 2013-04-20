@@ -131,6 +131,7 @@
     <Compile Include="SqlPersisted\SecurityTests.cs" />
     <Compile Include="SqlPersisted\TestsLab.cs" />
     <Compile Include="SqlPersisted\CredentialsTest.cs" />
+    <Compile Include="UpdateManagerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Granados\Granados.csproj">

@@ -53,7 +53,7 @@ namespace Terminals.Updates
         /// <summary>
         /// check codeplex's rss feed to see if we have a new release available.
         /// </summary>
-        private static void CheckForCodeplexRelease()
+        private static void CheckForCodeplexRelease(DateTime buildDate)
         {
             Boolean checkForUpdate = true;
             String releaseFile = FileLocations.LastUpdateCheck;
@@ -85,7 +85,7 @@ namespace Terminals.Updates
                         {
                             //check the date the item was published.  
                             //Is it after the currently executing application BuildDate? if so, then its probably a new build!
-                            if (item.PubDate > Program.Info.BuildDate)  
+                            if (item.PubDate > buildDate)  
                             {
                                 MainForm.ReleaseAvailable = true;
                                 MainForm.ReleaseDescription = item;
@@ -107,7 +107,7 @@ namespace Terminals.Updates
         {
             try
             {
-                CheckForCodeplexRelease();
+                CheckForCodeplexRelease(Program.Info.BuildDate);
             }
             catch(Exception exc)
             {
