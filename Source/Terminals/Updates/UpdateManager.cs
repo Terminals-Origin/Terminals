@@ -52,9 +52,12 @@ namespace Terminals.Updates
 
         /// <summary>
         /// check codeplex's rss feed to see if we have a new release available.
+        /// Returns not null info about obtained current release.
+        /// ReleaseInfo.NotAvailable in a case, new version was not checked or current version is the latest.
         /// </summary>
-        private static void CheckForCodeplexRelease(DateTime buildDate)
+        private static ReleaseInfo CheckForCodeplexRelease(DateTime buildDate)
         {
+            ReleaseInfo releaseInfo = ReleaseInfo.NotAvailable;
             Boolean checkForUpdate = true;
             String releaseFile = FileLocations.LastUpdateCheck;
             if (File.Exists(releaseFile))
@@ -87,8 +90,7 @@ namespace Terminals.Updates
                             //Is it after the currently executing application BuildDate? if so, then its probably a new build!
                             if (item.PubDate > buildDate)  
                             {
-                                MainForm.ReleaseAvailable = true;
-                                MainForm.ReleaseDescription = item;
+                                releaseInfo = new ReleaseInfo(item.PubDate, item.Title);
                                 needsUpdate = true;
                                 break;
                             }
@@ -101,6 +103,8 @@ namespace Terminals.Updates
                 
                 File.WriteAllText(releaseFile, DateTime.Now.ToString());
             }
+
+            return releaseInfo;
         }
 
         private static void PerformCheck(object state)

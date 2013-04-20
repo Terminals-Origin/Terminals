@@ -29,17 +29,12 @@ namespace Terminals
     {
         #region Declarations
 
-        internal delegate void ReleaseIsAvailable(IFavorite releaseFavorite);
-        internal static event ReleaseIsAvailable OnReleaseIsAvailable;
-
         public const Int32 WM_LEAVING_FULLSCREEN = 0x4ff;
         private const String FULLSCREEN_ERROR_MSG = "Screen properties not available for RDP";
 
-        private static Boolean _releaseAvailable = false;
         private static MainForm _mainForm = null;
         private FavsList favsList1;
 
-        private MethodInvoker _releaseMIV;
         private FormSettings _formSettings;
         private FormWindowState _originalFormWindowState;
         private TabControlItem _currentToolTipItem = null;
@@ -50,10 +45,44 @@ namespace Terminals
         private FavoritesMenuLoader menuLoader;
         private MainFormFullScreenSwitch fullScreenSwitch;
 
+        #endregion
+
+        #region Properties
+
         private IFavorites PersistedFavorites
         {
             get { return Persistence.Instance.Favorites; }
         }
+        public IConnection CurrentConnection
+        {
+            get
+            {
+                if (this.terminalsControler.HasSelected)
+                    return this.terminalsControler.Selected.Connection;
+
+                return null;
+            }
+        }
+
+        public AxMsRdpClient6 CurrentTerminal
+        {
+            get
+            {
+                if (this.CurrentConnection != null)
+                {
+                    if (this.CurrentConnection is RDPConnection)
+                        return (this.CurrentConnection as RDPConnection).AxMsRdpClient;
+                }
+
+                return null;
+            }
+        }
+
+        [Obsolete("New release available event removed")]
+        public static bool ReleaseAvailable { get; set; }
+
+        [Obsolete("New release available event removed")]
+        public static RssItem ReleaseDescription { get; set; }
 
         #endregion
 
@@ -230,58 +259,6 @@ namespace Terminals
             this.toolStripContainer.tsRemoteToolbar = this.tsRemoteToolbar;
             this.toolStripContainer.AssignToolStripsLocationChangedEventHandler();
         }
-
-        #endregion
-
-        #region Properties
-
-        public IConnection CurrentConnection
-        {
-            get
-            {
-                if (this.terminalsControler.HasSelected)
-                    return this.terminalsControler.Selected.Connection;
-
-                return null;
-            }
-        }
-
-        public AxMsRdpClient6 CurrentTerminal
-        {
-            get
-            {
-                if (this.CurrentConnection != null)
-                {
-                    if (this.CurrentConnection is RDPConnection)
-                        return (this.CurrentConnection as RDPConnection).AxMsRdpClient;
-                }
-
-                return null;
-            }
-        }
-
-        public static Boolean ReleaseAvailable
-        {
-            get
-            {
-                return _releaseAvailable;
-            }
-
-            set
-            {
-                _releaseAvailable = value;
-                if (_releaseAvailable)
-                {
-                    IFavorite release = FavoritesFactory.GetOrCreateReleaseFavorite();
-
-                    Thread.Sleep(5000);
-                    if (OnReleaseIsAvailable != null)
-                        OnReleaseIsAvailable(release);
-                }
-            }
-        }
-
-        public static RssItem ReleaseDescription { get; set; }
 
         #endregion
 
@@ -788,10 +765,13 @@ namespace Terminals
             Settings.CreateSavedConnectionsList(activeConnections.ToArray());
         }
 
-        private void OpenReleasePage()
+        private void CheckForNewRelease()
         {
+            // todo here check for new release using UpdateManager in background thread and then if necessary open release page
             if (!Settings.NeverShowTerminalsWindow)
                 this.Connect(FavoritesFactory.TerminalsReleasesFavoriteName, false, false);
+
+            this.UpdateReleaseToolStripItem();
         }
 
         #endregion
@@ -800,10 +780,9 @@ namespace Terminals
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this._releaseMIV = new MethodInvoker(this.OpenReleasePage);
             this.Text = Program.Info.AboutText;
-            OnReleaseIsAvailable += new ReleaseIsAvailable(this.MainForm_OnReleaseIsAvailable);
-            OpenSavedConnections();
+            this.CheckForNewRelease();
+            this.OpenSavedConnections();
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
@@ -1757,12 +1736,7 @@ namespace Terminals
             this.toolStripContainer.ChangeLockState();
         }
 
-        private void MainForm_OnReleaseIsAvailable(IFavorite releaseFavorite)
-        {
-            this.Invoke(this._releaseMIV);
-        }
-
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UpdateReleaseToolStripItem()
         {
             if (!this.updateToolStripItem.Visible)
             {
@@ -1770,9 +1744,7 @@ namespace Terminals
                 {
                     this.updateToolStripItem.Visible = ReleaseAvailable;
                     if (ReleaseDescription != null)
-                    {
                         this.updateToolStripItem.Text = String.Format("{0} - {1}", this.updateToolStripItem.Text, ReleaseDescription.Title);
-                    }
                 }
             }
         }
