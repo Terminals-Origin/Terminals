@@ -761,6 +761,7 @@
     <Compile Include="Unified\RSS\Shared\RssEnumerators.cs" />
     <Compile Include="Updates\FilesV2ContentUpgrade.cs" />
     <Compile Include="Updates\PasswordsV2Update.cs" />
+    <Compile Include="Updates\ReleaseInfo.cs" />
     <Compile Include="Updates\TerminalsUpdates.cs">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
       <SubType>Component</SubType>

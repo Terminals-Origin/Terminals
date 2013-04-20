@@ -3,7 +3,6 @@ using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 using Terminals.Configuration;
-using Terminals.Data;
 using Terminals.Updates;
 using Tests.FilePersisted;
 
@@ -19,8 +18,18 @@ namespace Tests
     [TestClass]
     public class UpdateManagerTest
     {
-        private bool releaseEventReceived;
         private DateTime buildDate = Program.Info.BuildDate;
+
+        private readonly DateTime yesterDay = DateTime.Today.AddDays(-1);
+
+        [TestInitialize]
+        public void ConfigureTestLab()
+        {
+            FilePersistedTestLab.SetDefaultFileLocations();
+
+            if (File.Exists(FileLocations.LastUpdateCheck))
+                File.Delete(FileLocations.LastUpdateCheck);
+        }
 
         /// <summary>
         /// in debug there is never a newer version, because it is checked by build date
@@ -28,67 +37,48 @@ namespace Tests
         [TestMethod]
         public void CheckReleaseNotAvailableTest()
         {
-            var started = DateTime.Now;
             this.ConfigureTestLab();
-            RunUpdateCheck();
+            ReleaseInfo checkResult = RunUpdateCheck();
 
-            this.AssertNotReportedRelease();
-            AssertLastUpdateCheck(started);
+            Assert.AreEqual(ReleaseInfo.NotAvailable, checkResult, "New release noticed");
+            AssertLastUpdateCheck();
         }
 
-        /// <summary>
-        /// in case of concurrent test, fails because of not initialized persistence called from  MainForm.ReleaseAvailable.
-        /// </summary>
         [TestMethod]
         public void CheckAvailableReleaseTest()
         {
-            buildDate = DateTime.MinValue;
-            var started = DateTime.Now;
             this.ConfigureTestLab();
-            RunUpdateCheck();
+            buildDate = DateTime.MinValue;
+            ReleaseInfo checkResult = RunUpdateCheck();
 
-            const string RELEASE_NOTICED = "Didn't notice new release";
-            Assert.IsNotNull(MainForm.ReleaseDescription, RELEASE_NOTICED);
-            Assert.IsTrue(this.releaseEventReceived, RELEASE_NOTICED);
-            AssertLastUpdateCheck(started);
+            Assert.AreNotEqual(ReleaseInfo.NotAvailable, checkResult, "Didn't notice new release");
+            AssertLastUpdateCheck();
         }
 
         [TestMethod]
         public void AlreadyReportedReleaseTest()
         {
             this.ConfigureTestLab();
-            var previousCheck = DateTime.Now;
+            var previousCheck = DateTime.Today;
             File.WriteAllText(FileLocations.LastUpdateCheck, previousCheck.ToString());
-            RunUpdateCheck();
+            ReleaseInfo checkResult = RunUpdateCheck();
 
-            this.AssertNotReportedRelease();
+            Assert.AreEqual(ReleaseInfo.NotAvailable, checkResult, "New release noticed");
             DateTime lastNoticed = ParseLastUpdateDate();
-            Assert.IsTrue(lastNoticed.Date == previousCheck.Date, "Last update check date wasn't saved");
+            Assert.AreEqual(lastNoticed.Date, previousCheck.Date, "Last update check date wasn't saved");
         }
 
-        private void ConfigureTestLab()
-        {
-            FilePersistedTestLab.SetDefaultFileLocations();
-            MainForm.OnReleaseIsAvailable += this.OnReleaseIsAvailable;
-        }
-
-        private void RunUpdateCheck()
+        private ReleaseInfo RunUpdateCheck()
         {
             var updateManager = new PrivateType(typeof (UpdateManager));
-            updateManager.InvokeStatic("CheckForCodeplexRelease", new object[] { buildDate });
+            object releaseInfo = updateManager.InvokeStatic("CheckForCodeplexRelease", new object[] { buildDate });
+            return releaseInfo as ReleaseInfo;
         }
 
-        private void AssertNotReportedRelease()
-        {
-            const string RELEASE_NOTICED = "New release noticed";
-            Assert.IsNull(MainForm.ReleaseDescription, RELEASE_NOTICED);
-            Assert.IsFalse(this.releaseEventReceived, RELEASE_NOTICED);
-        }
-
-        private static void AssertLastUpdateCheck(DateTime started)
+        private void AssertLastUpdateCheck()
         {
             DateTime lastNoticed = ParseLastUpdateDate();
-            Assert.IsTrue(lastNoticed > started, "Last update check date wasn't saved");
+            Assert.IsTrue(lastNoticed.Date > yesterDay, "Last update check date wasn't saved");
         }
 
         private static DateTime ParseLastUpdateDate()
@@ -97,11 +87,6 @@ namespace Tests
             DateTime lastNoticed = DateTime.MinValue;
             DateTime.TryParse(text, out lastNoticed);
             return lastNoticed;
-        }
-
-        private void OnReleaseIsAvailable(IFavorite releaseFavorite)
-        {
-            this.releaseEventReceived = true;
         }
     }
 }

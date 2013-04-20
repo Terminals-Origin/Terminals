@@ -130,6 +130,7 @@ namespace Terminals.Data
         /// </summary>
         /// <returns>Not null, configured instance of connection favorite,
         /// which points to the terminals web site</returns>
+        [Obsolete("Because nobody likes this favorite, it will be created only manually")]
         internal static IFavorite GetOrCreateReleaseFavorite()
         {
             IFavorite release = PersistedFavorites[TerminalsReleasesFavoriteName];
