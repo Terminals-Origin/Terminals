@@ -54,9 +54,6 @@ namespace Terminals
             UpdateConfig.CheckConfigVersionUpdate();
             Logging.Log.Info("Start state 7 Complete: Configuration upgrade");
 
-            UpdateManager.CheckForUpdates(commandLine);
-            Logging.Log.Info("Start state 8 Complete: Check application updates");
-
             ShowFirstRunWizard();
             StartMainForm(commandLine);
 

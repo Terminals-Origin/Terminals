@@ -20,6 +20,7 @@ using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Network;
 using Terminals.Network.Servers;
+using Terminals.Updates;
 using Unified.Rss;
 using Settings = Terminals.Configuration.Settings;
 
@@ -740,7 +741,7 @@ namespace Terminals
             if (commandLineArgs.HasMachineDefined)
                 QuickConnect(commandLineArgs.MachineName, commandLineArgs.Port, connectToConsole);
 
-            ConnectToFavorites(commandLineArgs, connectToConsole);
+            this.ConnectToFavorites(commandLineArgs, connectToConsole);
         }
 
         private void ConnectToFavorites(CommandLineArgs commandLineArgs, bool connectToConsole)
@@ -767,11 +768,17 @@ namespace Terminals
 
         private void CheckForNewRelease()
         {
-            // todo here check for new release using UpdateManager in background thread and then if necessary open release page
-            if (!Settings.NeverShowTerminalsWindow)
-                this.Connect(FavoritesFactory.TerminalsReleasesFavoriteName, false, false);
+            Task<ReleaseInfo> downloadTask = UpdateManager.CheckForUpdates(false);
+            downloadTask.ContinueWith(this.CheckForNewRelease, TaskScheduler.FromCurrentSynchronizationContext());
+        }
 
-            this.UpdateReleaseToolStripItem();
+        private void CheckForNewRelease(Task<ReleaseInfo> downloadTask)
+        {
+            ReleaseInfo downloaded = downloadTask.Result;
+            if (downloaded.NewAvailable && !Settings.NeverShowTerminalsWindow)
+                this.CreateTerminalTab(FavoritesFactory.CreateReleaseFavorite());
+
+            this.UpdateReleaseToolStripItem(downloaded);
         }
 
         #endregion
@@ -1736,15 +1743,16 @@ namespace Terminals
             this.toolStripContainer.ChangeLockState();
         }
 
-        private void UpdateReleaseToolStripItem()
+        private void UpdateReleaseToolStripItem(ReleaseInfo downloaded)
         {
-            if (!this.updateToolStripItem.Visible)
+            // todo the updateToolStripItem doesn't have assigned click event handler
+            if (this.updateToolStripItem != null && !this.updateToolStripItem.Visible)
             {
-                if (ReleaseAvailable && this.updateToolStripItem != null)
+                if (downloaded.NewAvailable)
                 {
-                    this.updateToolStripItem.Visible = ReleaseAvailable;
-                    if (ReleaseDescription != null)
-                        this.updateToolStripItem.Text = String.Format("{0} - {1}", this.updateToolStripItem.Text, ReleaseDescription.Title);
+                    this.updateToolStripItem.Visible = true;
+                    string newText = String.Format("{0} - {1}", this.updateToolStripItem.Text, downloaded.Version);
+                    this.updateToolStripItem.Text = newText;
                 }
             }
         }
