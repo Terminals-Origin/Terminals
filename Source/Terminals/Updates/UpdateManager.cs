@@ -137,14 +137,12 @@ namespace Terminals.Updates
         /// </summary>
         private static ReleaseInfo TryCheckForCodeplexRelease(DateTime buildDate)
         {
-            String releaseFile = FileLocations.LastUpdateCheck;
-            Boolean checkForUpdate = ShouldCheckForUpdate(releaseFile);
-
-            if (!checkForUpdate)
+            var checksFile = new UpdateChecksFile();
+            if (!checksFile.ShouldCheckForUpdate)
                 return ReleaseInfo.NotAvailable;
 
-            ReleaseInfo downLoaded =  DownLoadLatestReleaseInfo(buildDate);
-            File.WriteAllText(releaseFile, DateTime.Now.ToString());
+            ReleaseInfo downLoaded = DownLoadLatestReleaseInfo(buildDate);
+            checksFile.WriteLastCheck();
             return downLoaded;
         }
 
@@ -168,21 +166,6 @@ namespace Terminals.Updates
                             .Where(item => item.PubDate > buildDate)
                             .OrderByDescending(selected => selected.PubDate)
                             .FirstOrDefault();
-        }
-
-        private static bool ShouldCheckForUpdate(string releaseFile)
-        {
-            if (File.Exists(releaseFile))
-            {
-                String text = File.ReadAllText(releaseFile).Trim();
-                DateTime lastUpdate = DateTime.MinValue;
-                DateTime.TryParse(text, out lastUpdate);
-                //don't run the update if the file is today or later..if we have checked today or not
-                if (lastUpdate.Date >= DateTime.Now.Date)
-                    return false;
-
-            }
-            return true;
         }
 
         private static DirectoryInfo FindFileInFolder(DirectoryInfo path, String filename)

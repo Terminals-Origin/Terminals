@@ -37,7 +37,6 @@ namespace Tests
         [TestMethod]
         public void CheckReleaseNotAvailableTest()
         {
-            this.ConfigureTestLab();
             ReleaseInfo checkResult = RunUpdateCheck();
 
             Assert.AreEqual(ReleaseInfo.NotAvailable, checkResult, "New release noticed");
@@ -47,7 +46,6 @@ namespace Tests
         [TestMethod]
         public void CheckAvailableReleaseTest()
         {
-            this.ConfigureTestLab();
             buildDate = DateTime.MinValue;
             ReleaseInfo checkResult = RunUpdateCheck();
 
@@ -58,7 +56,6 @@ namespace Tests
         [TestMethod]
         public void AlreadyReportedReleaseTest()
         {
-            this.ConfigureTestLab();
             var previousCheck = DateTime.Today;
             File.WriteAllText(FileLocations.LastUpdateCheck, previousCheck.ToString());
             ReleaseInfo checkResult = RunUpdateCheck();
@@ -78,15 +75,13 @@ namespace Tests
         private void AssertLastUpdateCheck()
         {
             DateTime lastNoticed = ParseLastUpdateDate();
-            Assert.IsTrue(lastNoticed.Date > yesterDay, "Last update check date wasn't saved");
+            Assert.IsTrue(lastNoticed.Date > this.yesterDay, "Last update check date wasn't saved");
         }
 
-        private static DateTime ParseLastUpdateDate()
+        private DateTime ParseLastUpdateDate()
         {
-            String text = File.ReadAllText(FileLocations.LastUpdateCheck).Trim();
-            DateTime lastNoticed = DateTime.MinValue;
-            DateTime.TryParse(text, out lastNoticed);
-            return lastNoticed;
+            var checkFileAccessor = new PrivateObject(new UpdateChecksFile());
+            return (DateTime)checkFileAccessor.Invoke("ReadLastUpdate");
         }
     }
 }
