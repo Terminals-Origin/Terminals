@@ -771,6 +771,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Updates\UpdateChecksFile.cs" />
     <Compile Include="Updates\UpdateManager.cs" />
     <Compile Include="Updates\UpdateConfig.cs" />
     <Compile Include="UserActivityHook.cs" />
