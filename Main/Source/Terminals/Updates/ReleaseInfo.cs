@@ -30,5 +30,11 @@ namespace Terminals.Updates
             this.Published = published;
             this.Version = version;
         }
+
+        public override string ToString()
+        {
+            return string.Format("ReleaseInfo:{0},Published={1},IsNew={2}",
+                                 this.Version, this.Published, this.IsNew);
+        }
     }
 }

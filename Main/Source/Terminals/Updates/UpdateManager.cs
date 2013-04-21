@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.IO;
 using System.Security.Cryptography;
@@ -16,6 +17,11 @@ namespace Terminals.Updates
     internal class UpdateManager
     {
         /// <summary>
+        /// Url to releases Rss feed, where the Terminals releases are published
+        /// </summary>
+        private const string RSS_URL = "http://terminals.codeplex.com/project/feeds/rss?ProjectRSSFeed=codeplex%3A%2F%2Frelease%2FTerminals&ProjectName=terminals";
+
+        /// <summary>
         /// Check for available application updates
         /// </summary>
         internal static void CheckForUpdates(CommandLineArgs commandLine)
@@ -25,14 +31,7 @@ namespace Terminals.Updates
 
         private static void PerformCheck(object state)
         {
-            try
-            {
-                CheckForCodeplexRelease(Program.Info.BuildDate);
-            }
-            catch(Exception exc)
-            {
-                Logging.Log.Error("Failed during CheckForCodeplexRelease.", exc);
-            }
+            CheckForCodeplexRelease(Program.Info.BuildDate);
 
             try
             {
@@ -118,61 +117,72 @@ namespace Terminals.Updates
             }
         }
 
+        private static ReleaseInfo CheckForCodeplexRelease(DateTime buildDate)
+        {
+            try
+            {
+                return TryCheckForCodeplexRelease(buildDate);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Error("Failed during CheckForCodeplexRelease.", exception);
+                return ReleaseInfo.NotAvailable;
+            }
+        }
+
         /// <summary>
         /// check codeplex's rss feed to see if we have a new release available.
         /// Returns not null info about obtained current release.
         /// ReleaseInfo.NotAvailable in a case, new version was not checked or current version is the latest.
         /// </summary>
-        private static ReleaseInfo CheckForCodeplexRelease(DateTime buildDate)
+        private static ReleaseInfo TryCheckForCodeplexRelease(DateTime buildDate)
         {
-            ReleaseInfo releaseInfo = ReleaseInfo.NotAvailable;
-            Boolean checkForUpdate = true;
             String releaseFile = FileLocations.LastUpdateCheck;
+            Boolean checkForUpdate = ShouldCheckForUpdate(releaseFile);
+
+            if (!checkForUpdate)
+                return ReleaseInfo.NotAvailable;
+
+            ReleaseInfo downLoaded =  DownLoadLatestReleaseInfo(buildDate);
+            File.WriteAllText(releaseFile, DateTime.Now.ToString());
+            return downLoaded;
+        }
+
+        private static ReleaseInfo DownLoadLatestReleaseInfo(DateTime buildDate)
+        {
+            RssFeed feed = RssFeed.Read(RSS_URL);
+            if (feed != null)
+            {
+                RssItem newvestRssItem = SelectNewvestRssRssItem(feed, buildDate);
+                if (newvestRssItem != null)
+                    return new ReleaseInfo(newvestRssItem.PubDate, newvestRssItem.Title);
+            }
+
+            return ReleaseInfo.NotAvailable;
+        }
+
+        private static RssItem SelectNewvestRssRssItem(RssFeed feed, DateTime buildDate)
+        {
+             return feed.Channels.OfType<RssChannel>()
+                            .SelectMany(chanel => chanel.Items.OfType<RssItem>())
+                            .Where(item => item.PubDate > buildDate)
+                            .OrderByDescending(selected => selected.PubDate)
+                            .FirstOrDefault();
+        }
+
+        private static bool ShouldCheckForUpdate(string releaseFile)
+        {
             if (File.Exists(releaseFile))
             {
                 String text = File.ReadAllText(releaseFile).Trim();
-                if (text != String.Empty)
-                {
-                    DateTime lastUpdate = DateTime.MinValue;
-                    if (DateTime.TryParse(text, out lastUpdate))
-                    {   //don't run the update if the file is today or later..if we have checked today or not
-                        if(lastUpdate.Date >= DateTime.Now.Date) 
-                        {
-                            checkForUpdate = false;
-                        }
-                    }
-                }
+                DateTime lastUpdate = DateTime.MinValue;
+                DateTime.TryParse(text, out lastUpdate);
+                //don't run the update if the file is today or later..if we have checked today or not
+                if (lastUpdate.Date >= DateTime.Now.Date)
+                    return false;
+
             }
-
-            if (checkForUpdate)
-            {
-                RssFeed feed = RssFeed.Read("http://terminals.codeplex.com/project/feeds/rss?ProjectRSSFeed=codeplex%3A%2F%2Frelease%2FTerminals&ProjectName=terminals");
-                if (feed != null)
-                {
-                    Boolean needsUpdate = false;
-                    foreach (RssChannel chan in feed.Channels)
-                    {
-                        foreach (RssItem item in chan.Items)
-                        {
-                            //check the date the item was published.  
-                            //Is it after the currently executing application BuildDate? if so, then its probably a new build!
-                            if (item.PubDate > buildDate)  
-                            {
-                                releaseInfo = new ReleaseInfo(item.PubDate, item.Title);
-                                needsUpdate = true;
-                                break;
-                            }
-                        }
-
-                        if(needsUpdate) 
-                            break;
-                    }
-                }
-                
-                File.WriteAllText(releaseFile, DateTime.Now.ToString());
-            }
-
-            return releaseInfo;
+            return true;
         }
 
         private static DirectoryInfo FindFileInFolder(DirectoryInfo path, String filename)
