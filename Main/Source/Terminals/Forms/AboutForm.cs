@@ -2,6 +2,7 @@ using System;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Terminals.Configuration;
+using Terminals.Data;
 
 namespace Terminals
 {
@@ -14,7 +15,7 @@ namespace Terminals
 
         private void lblTerminals_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("http://" + Program.Resources.GetString("TerminalsURL"));
+            Process.Start("http://" + FavoritesFactory.TerminalsReleasesUrl);
         }
 
         private void lblEyal_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

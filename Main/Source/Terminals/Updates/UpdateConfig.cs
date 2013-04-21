@@ -141,7 +141,7 @@ namespace Terminals.Updates
             IFavorite newsFavorite = persistence.Favorites[FavoritesFactory.TerminalsReleasesFavoriteName];
             if (newsFavorite != null)
             {
-                newsFavorite.ServerName = Program.Resources.GetString("TerminalsURL");
+                newsFavorite.ServerName = FavoritesFactory.TerminalsReleasesUrl;
                 persistence.Favorites.Update(newsFavorite);
             }
         }

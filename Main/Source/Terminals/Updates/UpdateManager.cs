@@ -3,10 +3,9 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Security.Cryptography;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip;
-using Terminals.CommandLine;
 using Terminals.Configuration;
 using Unified;
 using Unified.Network.HTTP;
@@ -22,99 +21,25 @@ namespace Terminals.Updates
         private const string RSS_URL = "http://terminals.codeplex.com/project/feeds/rss?ProjectRSSFeed=codeplex%3A%2F%2Frelease%2FTerminals&ProjectName=terminals";
 
         /// <summary>
-        /// Check for available application updates
+        /// Check for available application updates.
         /// </summary>
-        internal static void CheckForUpdates(CommandLineArgs commandLine)
+        internal static Task<ReleaseInfo> CheckForUpdates(bool automaticallyUpdate)
         {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(PerformCheck), commandLine);
+            return Task<ReleaseInfo>.Factory.StartNew((autoUpdate) => PerformCheck((bool)autoUpdate), automaticallyUpdate);
         }
 
-        private static void PerformCheck(object state)
+        private static ReleaseInfo PerformCheck(bool automaticallyUpdate)
         {
-            CheckForCodeplexRelease(Program.Info.BuildDate);
+            ReleaseInfo downLoaded = CheckForCodeplexRelease(Program.Info.BuildDate);
 
-            try
+            // todo the automatic updates point to wrong URL this feature is not working
+            bool autoUpdate = automaticallyUpdate; // obtain from command line arguments
+            if (autoUpdate)
             {
-                bool autoUpdate = (state as CommandLineArgs).AutomaticallyUpdate;
-                if (autoUpdate)
-                {
-                    {
-                        String url = Settings.UpdateSource;
-                        String contents = Web.HTTPAsString(url);
-
-                        if (!String.IsNullOrEmpty(contents))
-                        {
-                            TerminalsUpdates updates = (TerminalsUpdates)Serialize.DeSerializeXML(contents, typeof(TerminalsUpdates));
-                            if (updates != null)
-                            {
-                                String currentMd5 = GetMd5HashFromFile("Terminals.exe");
-                                if (currentMd5 != null)
-                                {
-                                    //get the latest build
-                                    System.Data.DataRow row = updates.Tables[0].Rows[0];
-                                    String md5 = (row["MD5"] as string);
-                                    if (!md5.Equals(currentMd5))
-                                    {
-                                        String version = (row["version"] as String);
-                                        if (!Directory.Exists("Builds")) 
-                                            Directory.CreateDirectory("Builds");
-
-                                        String finalFolder = @"Builds\" + version;
-                                        if (!Directory.Exists(finalFolder)) 
-                                            Directory.CreateDirectory(finalFolder);
-
-                                        String filename = String.Format("{0}.zip", version);
-                                        filename = @"Builds\" + filename;
-                                        Boolean downloaded = true;
-
-                                        if (!File.Exists(filename)) 
-                                            downloaded = Web.SaveHTTPToFile((row["Url"] as String), filename); 
-
-                                        if (downloaded && File.Exists(filename))
-                                        {
-                                            //ICSharpCode.SharpZipLib.Zip.FastZipEvents evts = new ICSharpCode.SharpZipLib.Zip.FastZipEvents();
-                                            FastZip fz = new FastZip();
-                                            fz.ExtractZip(filename, finalFolder, null);
-
-                                            if (MessageBox.Show("A new build is available, would you like to install it now", "New Build", MessageBoxButtons.OKCancel) == DialogResult.OK) {
-
-                                                DirectoryInfo parent = FindFileInFolder(new DirectoryInfo(finalFolder), "Terminals.exe");
-                                                if (parent == null)
-                                                    return;
-
-                                                finalFolder = parent.FullName;
-
-                                                File.Copy(FileLocations.CONFIG_FILENAME, Path.Combine(finalFolder, FileLocations.CONFIG_FILENAME), true);
-                                                File.Copy("Terminals.log4net.config", Path.Combine(finalFolder, "Terminals.log4net.config"), true);
-
-                                                String temp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-                                                String updaterExe = Path.Combine(temp, "TerminalsUpdater.exe");
-                                                if (File.Exists(Path.Combine(finalFolder, "TerminalsUpdater.exe"))) {
-                                                    File.Copy(Path.Combine(finalFolder, "TerminalsUpdater.exe"), updaterExe, true);
-                                                }
-
-                                                //updaterExe = @"C:\Source\Terminals\Terminals\bin\Debug\";
-
-                                                if (File.Exists(updaterExe))
-                                                {
-                                                    //String args = "\"" + finalFolder + "\" \"" + Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\"";
-                                                    String args = String.Format("\"{0}\" \"{1}\"", finalFolder, Program.Info.Location);
-                                                    System.Diagnostics.Process.Start(updaterExe, args);
-                                                    Application.Exit();
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                DownloadLatestRelease();
             }
-            catch(Exception exc)
-            {
-                Logging.Log.Error("Failed during update.", exc);
-            }
+
+            return downLoaded;
         }
 
         private static ReleaseInfo CheckForCodeplexRelease(DateTime buildDate)
@@ -161,25 +86,104 @@ namespace Terminals.Updates
 
         private static RssItem SelectNewvestRssRssItem(RssFeed feed, DateTime buildDate)
         {
-             return feed.Channels.OfType<RssChannel>()
-                            .SelectMany(chanel => chanel.Items.OfType<RssItem>())
-                            .Where(item => item.PubDate > buildDate)
-                            .OrderByDescending(selected => selected.PubDate)
-                            .FirstOrDefault();
+            return feed.Channels.OfType<RssChannel>()
+                       .SelectMany(chanel => chanel.Items.OfType<RssItem>())
+                       .Where(item => item.PubDate > buildDate)
+                       .OrderByDescending(selected => selected.PubDate)
+                       .FirstOrDefault();
+        }
+
+        private static void DownloadLatestRelease()
+        {
+            try
+            {
+                String url = Settings.UpdateSource;
+                String contents = Web.HTTPAsString(url);
+
+                if (!String.IsNullOrEmpty(contents))
+                {
+                    TerminalsUpdates updates = (TerminalsUpdates)Serialize.DeSerializeXML(contents, typeof (TerminalsUpdates));
+                    if (updates != null)
+                    {
+                        String currentMd5 = GetMd5HashFromFile("Terminals.exe");
+                        if (currentMd5 != null)
+                        {
+                            //get the latest build
+                            System.Data.DataRow row = updates.Tables[0].Rows[0];
+                            String md5 = (row["MD5"] as string);
+                            if (!md5.Equals(currentMd5))
+                            {
+                                String version = (row["version"] as String);
+                                if (!Directory.Exists("Builds"))
+                                    Directory.CreateDirectory("Builds");
+
+                                String finalFolder = @"Builds\" + version;
+                                if (!Directory.Exists(finalFolder))
+                                    Directory.CreateDirectory(finalFolder);
+
+                                String filename = String.Format("{0}.zip", version);
+                                filename = @"Builds\" + filename;
+                                Boolean downloaded = true;
+
+                                if (!File.Exists(filename))
+                                    downloaded = Web.SaveHTTPToFile((row["Url"] as String), filename);
+
+                                if (downloaded && File.Exists(filename))
+                                {
+                                    //ICSharpCode.SharpZipLib.Zip.FastZipEvents evts = new ICSharpCode.SharpZipLib.Zip.FastZipEvents();
+                                    FastZip fz = new FastZip();
+                                    fz.ExtractZip(filename, finalFolder, null);
+
+                                    if (MessageBox.Show("A new build is available, would you like to install it now", "New Build", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                                    {
+                                        DirectoryInfo parent = FindFileInFolder(new DirectoryInfo(finalFolder), "Terminals.exe");
+                                        if (parent == null)
+                                            return;
+
+                                        finalFolder = parent.FullName;
+
+                                        File.Copy(FileLocations.CONFIG_FILENAME, Path.Combine(finalFolder, FileLocations.CONFIG_FILENAME), true);
+                                        File.Copy("Terminals.log4net.config", Path.Combine(finalFolder, "Terminals.log4net.config"), true);
+
+                                        String temp = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+                                        String updaterExe = Path.Combine(temp, "TerminalsUpdater.exe");
+                                        if (File.Exists(Path.Combine(finalFolder, "TerminalsUpdater.exe")))
+                                            File.Copy(Path.Combine(finalFolder, "TerminalsUpdater.exe"), updaterExe, true);
+
+                                        //updaterExe = @"C:\Source\Terminals\Terminals\bin\Debug\";
+
+                                        if (File.Exists(updaterExe))
+                                        {
+                                            //String args = "\"" + finalFolder + "\" \"" + Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\"";
+                                            String args = String.Format("\"{0}\" \"{1}\"", finalFolder, Program.Info.Location);
+                                            System.Diagnostics.Process.Start(updaterExe, args);
+                                            Application.Exit();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                Logging.Log.Error("Failed during update.", exc);
+            }
         }
 
         private static DirectoryInfo FindFileInFolder(DirectoryInfo path, String filename)
         {
-            if (path.GetFiles(filename).Length > 0) 
+            if (path.GetFiles(filename).Length > 0)
                 return path;
 
             foreach (DirectoryInfo dir in path.GetDirectories())
             {
                 DirectoryInfo found = FindFileInFolder(dir, filename);
-                if (found != null) 
+                if (found != null)
                     return found;
             }
-            
+
             return null;
         }
 

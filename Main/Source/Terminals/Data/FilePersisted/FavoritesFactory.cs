@@ -9,10 +9,16 @@ namespace Terminals.Data
     {
         private const string DISCOVERED_CONNECTIONS = "Discovered Connections";
         private static readonly String terminalsReleasesFavoriteName = Program.Resources.GetString("TerminalsNews");
+        private static readonly String terminalsReleasesUrl = Program.Resources.GetString("TerminalsURL");
 
         internal static string TerminalsReleasesFavoriteName
         {
             get { return terminalsReleasesFavoriteName; }
+        }
+
+        internal static string TerminalsReleasesUrl
+        {
+            get { return terminalsReleasesUrl; }
         }
 
         private static IFavorites PersistedFavorites
@@ -126,26 +132,17 @@ namespace Terminals.Data
         }
 
         /// <summary>
-        /// Gets connection favorite, with name of Terminals release constant.
+        /// Gets newly created connection favorite, with name of Terminals release constant.
         /// </summary>
         /// <returns>Not null, configured instance of connection favorite,
         /// which points to the terminals web site</returns>
-        [Obsolete("Because nobody likes this favorite, it will be created only manually")]
-        internal static IFavorite GetOrCreateReleaseFavorite()
+        internal static IFavorite CreateReleaseFavorite()
         {
-            IFavorite release = PersistedFavorites[TerminalsReleasesFavoriteName];
-            if (release == null)
-            {
-                release = PersistenceFactory.CreateFavorite();
-                release.Name = TerminalsReleasesFavoriteName;
-                release.ServerName = "terminals.codeplex.com";
-                release.Protocol = ConnectionManager.HTTP;
-                PersistedFavorites.Add(release);
-
-                string terminalsGroupName = Program.Resources.GetString("Terminals");
-                IGroup group = GetOrAddNewGroup(terminalsGroupName);
-                group.AddFavorite(release);
-            }
+            IFavorite release = PersistenceFactory.CreateFavorite();
+            release.Name = TerminalsReleasesFavoriteName;
+            release.ServerName = TerminalsReleasesUrl;
+            release.Protocol = ConnectionManager.HTTP;
+            release.Port = ConnectionManager.HTTPPort;
             return release;
         }
 
