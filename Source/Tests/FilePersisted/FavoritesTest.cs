@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Connections;
 using Terminals.Data;
 
@@ -7,6 +8,24 @@ namespace Tests.FilePersisted
     [TestClass]
     public class FavoritesTest : FilePersistedTestLab
     {
+        public TestContext TestContext { get; set; }
+
+        /// <summary>
+        /// Notes property can store special characters, so it is Base64 encoded.
+        /// </summary>
+        [TestMethod]
+        public void SaveLoadNotesTest()
+        {
+            IFavorite favorite = this.AddFavorite();
+            const string SPECIAL_CHARACTERS = "čočka\r\nčočka"; // some example special characters
+            favorite.Notes = SPECIAL_CHARACTERS;
+            this.Persistence.Favorites.Update(favorite);
+            var secondary = new FilePersistence();
+            secondary.Initialize();
+            IFavorite checkfavorite = secondary.Favorites.FirstOrDefault();
+            Assert.AreEqual(SPECIAL_CHARACTERS, checkfavorite.Notes, "favorite notes were not saved properly");
+        }
+
         /// <summary>
         /// Checks, if we are still able to manipulate passwords after protocol update.
         /// This is a special case for RdpOptions, which need persistence to handle Gateway credentials

@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.IO;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
 
@@ -12,7 +13,9 @@ namespace Tests.FilePersisted
         public void InitializeTestLab()
         {
             SetDefaultFileLocations();
+            File.Delete(Settings.FileLocations.Favorites);
             this.Persistence = new FilePersistence();
+            this.Persistence.Initialize();
         }
 
         internal static void SetDefaultFileLocations()

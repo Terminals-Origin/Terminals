@@ -205,16 +205,24 @@ namespace Terminals.Data
         }
 
         private string notes;
+        string IFavorite.Notes
+        {
+            get { return this.notes; }
+            set { this.notes = value; }
+        }
 
+        /// <summary>
+        /// Gets or sets the notes property as Base64 encoded string. This is used only for xml serialization.
+        /// </summary>
         public String Notes
         {
             get
             {
-                return DecodeFrom64(notes);
+                return EncodeTo64(this.notes);
             }
             set
             {
-                notes = EncodeTo64(value);
+                this.notes = DecodeFrom64(value);
             }
         }
 
@@ -242,7 +250,7 @@ namespace Terminals.Data
             if (toEncode == null)
                 return null;
 
-            Byte[] toEncodeAsBytes = Encoding.ASCII.GetBytes(toEncode);
+            Byte[] toEncodeAsBytes = Encoding.Unicode.GetBytes(toEncode);
             String returnValue = Convert.ToBase64String(toEncodeAsBytes);
             return returnValue;
         }
@@ -253,7 +261,7 @@ namespace Terminals.Data
                 return null;
 
             Byte[] encodedDataAsBytes = Convert.FromBase64String(encodedData);
-            String returnValue = Encoding.ASCII.GetString(encodedDataAsBytes);
+            String returnValue = Encoding.Unicode.GetString(encodedDataAsBytes);
             return returnValue;
         }
 
