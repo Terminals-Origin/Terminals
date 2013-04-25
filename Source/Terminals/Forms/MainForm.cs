@@ -203,7 +203,7 @@ namespace Terminals
             this.pnlTagsFavorites.Controls.Add(this.favsList1);
             this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favsList1.Location = new System.Drawing.Point(5, 0);
-            this.favsList1.Margin = new System.Windows.Forms.Padding(4);
+            this.favsList1.Padding = new System.Windows.Forms.Padding(4,4,4,4);
             this.favsList1.Name = "favsList1";
             this.favsList1.Size = new System.Drawing.Size(200, 497);
             this.favsList1.TabIndex = 2;
@@ -673,8 +673,8 @@ namespace Terminals
                 }
                 else
                 {
-                    splitContainer1.Panel1MinSize = 5;
-                    splitContainer1.SplitterDistance = 5;
+                    splitContainer1.Panel1MinSize = 6;
+                    splitContainer1.SplitterDistance = 6;
                     splitContainer1.IsSplitterFixed = true;
                     pnlHideTagsFavorites.Hide();
                     pnlShowTagsFavorites.Show();
