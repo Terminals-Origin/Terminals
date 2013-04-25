@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -37,8 +38,7 @@ namespace Terminals
                 dataGridFavorites.Rows[0].Selected = true;
         }
 
-
-        private void OrganizeFavoritesForm_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        private void OrganizeFavoritesForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
                 this.Close();
@@ -47,11 +47,19 @@ namespace Terminals
         private void InitializeDataGrid()
         {
             this.dataGridFavorites.AutoGenerateColumns = false; // because of designer
-            this.bsFavorites.DataSource = PersistedFavorites.ToListOrderedByDefaultSorting();
+            this.bsFavorites.DataSource = ConvertFavoritesToViewModel();
             string sortingProperty = FavoriteConfigurationElement.GetDefaultSortPropertyName();
             DataGridViewColumn sortedColumn = this.dataGridFavorites.FindColumnByPropertyName(sortingProperty);
             sortedColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
             this.dataGridFavorites.DataSource = this.bsFavorites;
+        }
+
+        private static SortableList<FavoriteViewModel> ConvertFavoritesToViewModel()
+        {
+            ICredentials storedCredentials = Persistence.Instance.Credentials;
+            IEnumerable<FavoriteViewModel> sortedFavorites = PersistedFavorites.ToListOrderedByDefaultSorting()
+                .Select(favorite => new FavoriteViewModel(favorite, storedCredentials));
+            return new SortableList<FavoriteViewModel>(sortedFavorites); 
         }
 
         private void UpdateCountLabels()
@@ -73,7 +81,10 @@ namespace Terminals
         private IFavorite GetSelectedFavorite()
         {
             if (dataGridFavorites.SelectedRows.Count > 0)
-                return dataGridFavorites.SelectedRows[0].DataBoundItem as IFavorite;
+            {
+                var viewModelItem = dataGridFavorites.SelectedRows[0].DataBoundItem as FavoriteViewModel;
+                return viewModelItem.Favorite;
+            }
             return null;
         }
 
@@ -97,7 +108,7 @@ namespace Terminals
 
         private void dataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            this.editedFavorite = this.dataGridFavorites.SelectedRows[0].DataBoundItem as IFavorite;
+            this.editedFavorite = this.GetSelectedFavorite();
             this.editedFavoriteName = this.editedFavorite.Name;
         }
 
@@ -194,15 +205,13 @@ namespace Terminals
         /// </summary>
         private void UpdateFavoritesBindingSource()
         {
-            var data = PersistedFavorites.ToListOrderedByDefaultSorting();
+            SortableList<FavoriteViewModel> data = ConvertFavoritesToViewModel();
 
             DataGridViewColumn lastSortedColumn = this.dataGridFavorites.FindLastSortedColumn();
             if (lastSortedColumn != null) // keep last ordered column
             {
-                var backupGliph = lastSortedColumn.HeaderCell.SortGlyphDirection;
-                this.bsFavorites.DataSource = data.SortByProperty(lastSortedColumn.DataPropertyName,
-                    lastSortedColumn.HeaderCell.SortGlyphDirection);
-
+                SortOrder backupGliph = lastSortedColumn.HeaderCell.SortGlyphDirection;
+                this.bsFavorites.DataSource = data.SortByProperty(lastSortedColumn.DataPropertyName, backupGliph);
                 lastSortedColumn.HeaderCell.SortGlyphDirection = backupGliph;
             }
             else
@@ -222,7 +231,7 @@ namespace Terminals
             DataGridViewColumn column = this.dataGridFavorites.Columns[e.ColumnIndex];
 
             SortOrder newSortDirection = SortableUnboundGrid.GetNewSortDirection(lastSortedColumn, column);
-            var data = this.bsFavorites.DataSource as SortableList<IFavorite>;
+            var data = this.bsFavorites.DataSource as SortableList<FavoriteViewModel>;
             this.bsFavorites.DataSource = data.SortByProperty(column.DataPropertyName, newSortDirection);
             column.HeaderCell.SortGlyphDirection = newSortDirection;
         }
@@ -276,13 +285,10 @@ namespace Terminals
 
         private List<IFavorite> GetSelectedFavorites()
         {
-            var selectedFavorites = new List<IFavorite>();
-            foreach (DataGridViewRow selectedRow in this.dataGridFavorites.SelectedRows)
-            {
-                var selectedFavorite = selectedRow.DataBoundItem as IFavorite;
-                selectedFavorites.Add(selectedFavorite);
-            }
-            return selectedFavorites;
+            return this.dataGridFavorites.SelectedRows
+                .Cast<DataGridViewRow>()
+                .Select(row => ((FavoriteViewModel)row.DataBoundItem).Favorite)
+                .ToList();
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)

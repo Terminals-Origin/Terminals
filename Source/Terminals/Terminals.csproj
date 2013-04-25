@@ -178,6 +178,7 @@
     <Compile Include="Data\DB\CacheConnector.cs" />
     <Compile Include="Data\DB\ChangedVersionComparer.cs" />
     <Compile Include="Data\DB\FavoritesBatchActions.cs" />
+    <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Forms\UnhandledTerminationForm.cs">
       <SubType>Form</SubType>
     </Compile>
