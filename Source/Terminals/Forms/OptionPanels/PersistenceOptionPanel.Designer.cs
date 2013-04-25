@@ -116,7 +116,7 @@ namespace Terminals.Forms
             // lblDbMasterPassword
             // 
             this.lblDbMasterPassword.AutoSize = true;
-            this.lblDbMasterPassword.Location = new System.Drawing.Point(38, 155);
+            this.lblDbMasterPassword.Location = new System.Drawing.Point(29, 155);
             this.lblDbMasterPassword.Name = "lblDbMasterPassword";
             this.lblDbMasterPassword.Size = new System.Drawing.Size(104, 13);
             this.lblDbMasterPassword.TabIndex = 27;
@@ -220,7 +220,7 @@ namespace Terminals.Forms
             // lblDatabase
             // 
             this.lblDatabase.AutoSize = true;
-            this.lblDatabase.Location = new System.Drawing.Point(86, 128);
+            this.lblDatabase.Location = new System.Drawing.Point(77, 128);
             this.lblDatabase.Name = "lblDatabase";
             this.lblDatabase.Size = new System.Drawing.Size(56, 13);
             this.lblDatabase.TabIndex = 16;
@@ -241,7 +241,7 @@ namespace Terminals.Forms
             // lblServerName
             // 
             this.lblServerName.AutoSize = true;
-            this.lblServerName.Location = new System.Drawing.Point(70, 15);
+            this.lblServerName.Location = new System.Drawing.Point(61, 15);
             this.lblServerName.Name = "lblServerName";
             this.lblServerName.Size = new System.Drawing.Size(72, 13);
             this.lblServerName.TabIndex = 8;
@@ -263,7 +263,7 @@ namespace Terminals.Forms
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(78, 7);
+            this.lblUserName.Location = new System.Drawing.Point(69, 7);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(61, 13);
             this.lblUserName.TabIndex = 12;
@@ -288,7 +288,7 @@ namespace Terminals.Forms
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(83, 33);
+            this.lblPassword.Location = new System.Drawing.Point(74, 33);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(56, 13);
             this.lblPassword.TabIndex = 14;
@@ -298,7 +298,7 @@ namespace Terminals.Forms
             // lblAuthentication
             // 
             this.lblAuthentication.AutoSize = true;
-            this.lblAuthentication.Location = new System.Drawing.Point(64, 42);
+            this.lblAuthentication.Location = new System.Drawing.Point(55, 42);
             this.lblAuthentication.Name = "lblAuthentication";
             this.lblAuthentication.Size = new System.Drawing.Size(78, 13);
             this.lblAuthentication.TabIndex = 9;
