@@ -106,7 +106,7 @@ namespace Terminals.Forms
 
         private void lblPrompt_TextChanged(object sender, EventArgs e)
         {
-            this.lblPrompt.Height = this.MessureControlHeightByText(this.lblPrompt) + 2; // 2 = border
+            this.lblPrompt.Height = this.MessureControlHeightByText(this.lblPrompt) + 4; // 2 = border
             this.UpdateFormHeight();
         }
 
@@ -122,7 +122,7 @@ namespace Terminals.Forms
             // Calculated from default Form size 410x130
             // and lbl, txt size 380x 18(20)
             // 92 = default form height - lbl.height - txt.height
-            this.Height = 92 + this.lblPrompt.Height + this.txtInput.Height;
+            this.Height = 105 + this.lblPrompt.Height + this.txtInput.Height;
         }
 
         #endregion
