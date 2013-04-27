@@ -98,7 +98,9 @@ namespace Terminals.Data
 
         internal static DateTime GetEveryTime()
         {
-            return new DateTime();
+            // prevent system specific (MS SQL) date range,
+            // limit older item to this century (longer before first release)
+            return new DateTime(2000,1,1);
         }
     }
 }
