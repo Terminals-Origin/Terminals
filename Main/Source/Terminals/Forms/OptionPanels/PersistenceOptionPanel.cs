@@ -109,9 +109,18 @@ namespace Terminals.Forms
         private void OnBntTestSqlConnectionClick(object sender, EventArgs e)
         {
             this.testLabel.Visible = true;
-            var connectionProperties = new Tuple<string, string>(this.ConnectionString, this.txtDbPassword.Text);
+            string databasePassword = this.GetFilledDatabasePassword();
+            var connectionProperties = new Tuple<string, string>(this.ConnectionString, databasePassword);
             var t = Task<DatabaseValidationResult>.Factory.StartNew(TryTestDatabaseConnection, connectionProperties);
             t.ContinueWith(this.ShowConnectionTestResult, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private string GetFilledDatabasePassword()
+        {
+            if (this.txtDbPassword.Text != NewTerminalForm.HIDDEN_PASSWORD)
+                return this.txtDbPassword.Text;
+
+            return Settings.DatabaseMasterPassword;
         }
 
         private static DatabaseValidationResult TryTestDatabaseConnection(object objectState)
