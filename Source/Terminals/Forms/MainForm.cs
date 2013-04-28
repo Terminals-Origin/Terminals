@@ -776,9 +776,21 @@ namespace Terminals
         {
             ReleaseInfo downloaded = downloadTask.Result;
             if (downloaded.NewAvailable && !Settings.NeverShowTerminalsWindow)
-                this.CreateTerminalTab(FavoritesFactory.CreateReleaseFavorite());
+                this.AskIfShowReleasePage(downloaded);
 
             this.UpdateReleaseToolStripItem(downloaded);
+        }
+
+        private void AskIfShowReleasePage(ReleaseInfo releaseInfo)
+        {
+            string message = string.Format("Version:{0}\r\nPublished:{1}\r\nDo you want to show the Terminals home page?",
+                                            releaseInfo.Version, releaseInfo.Published);
+            YesNoDisableResult answer = YesNoDisableForm.ShowDialog("New release is available", message);
+            if (answer.Result == DialogResult.Yes)
+               this.CreateTerminalTab(FavoritesFactory.CreateReleaseFavorite());
+
+            if (answer.Disable)
+                Settings.NeverShowTerminalsWindow = true;
         }
 
         #endregion
@@ -1745,7 +1757,6 @@ namespace Terminals
 
         private void UpdateReleaseToolStripItem(ReleaseInfo downloaded)
         {
-            // todo the updateToolStripItem doesn't have assigned click event handler
             if (this.updateToolStripItem != null && !this.updateToolStripItem.Visible)
             {
                 if (downloaded.NewAvailable)
@@ -1865,6 +1876,11 @@ namespace Terminals
             this.Height = Screen.PrimaryScreen.Bounds.Height;
             this.Width = with;
             this._allScreens = !this._allScreens;
+        }
+
+        private void updateToolStripItem_Click(object sender, EventArgs e)
+        {
+            this.CreateTerminalTab(FavoritesFactory.CreateReleaseFavorite());
         }
 
         #endregion

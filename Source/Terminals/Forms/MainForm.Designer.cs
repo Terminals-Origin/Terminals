@@ -350,7 +350,7 @@ namespace Terminals
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(3, 0);
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(317, 24);
+            this.menuStrip.Size = new System.Drawing.Size(466, 24);
             this.menuStrip.Stretch = false;
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip1";
@@ -764,6 +764,7 @@ namespace Terminals
             this.updateToolStripItem.Text = "New Release Available";
             this.updateToolStripItem.ToolTipText = "Check if New Release is Available";
             this.updateToolStripItem.Visible = false;
+            this.updateToolStripItem.Click += new System.EventHandler(this.updateToolStripItem_Click);
             // 
             // favoriteToolBar
             // 
