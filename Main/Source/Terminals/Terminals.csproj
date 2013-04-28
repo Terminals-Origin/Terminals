@@ -191,6 +191,13 @@
     <Compile Include="Forms\PersistenceErrorForm.Designer.cs">
       <DependentUpon>PersistenceErrorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\YesNoDisableForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\YesNoDisableForm.Designer.cs">
+      <DependentUpon>YesNoDisableForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\YesNoDisableResult.cs" />
     <Compile Include="Properties\Common.AssemblyInfo.cs" />
     <Compile Include="Configuration\FormsCollection.cs" />
     <Compile Include="Configuration\FormsSection.cs" />
@@ -1028,6 +1035,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SqlConnectionForm.resx">
       <DependentUpon>SqlConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\YesNoDisableForm.resx">
+      <DependentUpon>YesNoDisableForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Network\PortScanner\NetworkScanner.resx">
       <SubType>Designer</SubType>
