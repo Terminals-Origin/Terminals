@@ -8,13 +8,26 @@ namespace Terminals.Data
     /// Temporary used also to support imports and export using old data model, 
     /// before they will be updated.
     /// </summary>
-    internal static class ModelConverterV2ToV1
+    internal class ModelConverterV2ToV1
     {
-        internal static FavoriteConfigurationElement ConvertToFavorite(IFavorite sourceFavorite)
+        private readonly IPersistence persistence;
+
+        private ModelConverterV2ToV1(IPersistence persistence)
+        {
+            this.persistence = persistence;
+        }
+
+        internal static FavoriteConfigurationElement ConvertToFavorite(IFavorite sourceFavorite, IPersistence persistence)
+        {
+            var converter = new ModelConverterV2ToV1(persistence);
+            return converter.ConvertToFavorite(sourceFavorite);
+        }
+
+        private FavoriteConfigurationElement ConvertToFavorite(IFavorite sourceFavorite)
         {
             var result = new FavoriteConfigurationElement();
             ConvertGeneralProperties(result, sourceFavorite);
-            ConvertSecurity(result, sourceFavorite);
+            this.ConvertSecurity(result, sourceFavorite);
             ConvertBeforeConnetExecute(result, sourceFavorite);
             ConvertDisplay(result, sourceFavorite);
             sourceFavorite.ProtocolProperties.ToConfigFavorite(sourceFavorite, result);
@@ -42,14 +55,14 @@ namespace Terminals.Data
             result.Notes = sourceFavorite.Notes;
         }
 
-        private static void ConvertSecurity(FavoriteConfigurationElement result, IFavorite sourceFavorite)
+        private void ConvertSecurity(FavoriteConfigurationElement result, IFavorite sourceFavorite)
         {
             ISecurityOptions security = sourceFavorite.Security;
             result.DomainName = security.Domain;
             result.UserName = security.UserName;
             result.EncryptedPassword = security.EncryptedPassword;
             
-            ICredentialSet credential = Persistence.Instance.Credentials[security.Credential];
+            ICredentialSet credential = this.persistence.Credentials[security.Credential];
             if(credential != null)
                 result.Credential = credential.Name;
         }

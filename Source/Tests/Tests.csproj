@@ -121,7 +121,7 @@
     <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
     <Compile Include="FilePersisted\FilesHistoryTest.cs" />
     <Compile Include="FilePersisted\InjectionDateTime.cs" />
-    <Compile Include="ImportsTest.cs" />
+    <Compile Include="FilePersisted\ImportsTest.cs" />
     <Compile Include="Passwords\PasswordTests.cs" />
     <Compile Include="SqlPersisted\ConcurentUpdatesTest.cs" />
     <Compile Include="SqlPersisted\ConnectionsHistoryTest.cs" />

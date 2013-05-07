@@ -1108,7 +1108,7 @@ namespace Terminals
                 rdpOptions.FullScreen = false;
             }
 
-            var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(this.Favorite);
+            var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(this.Favorite, Persistence.Instance);
             Settings.SaveDefaultFavorite(defaultFavorite);
         }
 

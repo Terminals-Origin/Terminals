@@ -63,11 +63,13 @@ namespace Terminals.Network
 
         private static ArrayList FavoritesToSharedList()
         {
-            var favoritesToShare = Persistence.Instance.Favorites;
+            var persistence = Persistence.Instance;
+            var favoritesToShare = persistence.Favorites;
+            
             ArrayList list = new ArrayList();
             foreach (IFavorite favorite in favoritesToShare)
             {
-                FavoriteConfigurationElement configFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite);
+                FavoriteConfigurationElement configFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, persistence);
                 list.Add(SharedFavorite.ConvertFromFavorite(configFavorite));
             }
             return list;

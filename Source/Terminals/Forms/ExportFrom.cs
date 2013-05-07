@@ -67,6 +67,7 @@ namespace Terminals.Forms
 
         private static void FindSelectedGroupFavorites(List<FavoriteConfigurationElement> favorites, GroupTreeNode groupNode)
         {
+            var persistence = Persistence.Instance;
             // dont expect only Favorite nodes, because dummy nodes arent
             foreach (TreeNode childNode in groupNode.Nodes) 
             {
@@ -75,7 +76,7 @@ namespace Terminals.Forms
                     var favoriteNode = childNode as FavoriteTreeNode;
                     if (favoriteNode != null)
                     {
-                        FavoriteConfigurationElement favoriteConfig = ModelConverterV2ToV1.ConvertToFavorite(favoriteNode.Favorite);
+                        FavoriteConfigurationElement favoriteConfig = ModelConverterV2ToV1.ConvertToFavorite(favoriteNode.Favorite, persistence);
                         // Check for duplicate item before adding
                         if (favorites.IndexOf(favoriteConfig) < 0)
                             favorites.Add(favoriteConfig);
