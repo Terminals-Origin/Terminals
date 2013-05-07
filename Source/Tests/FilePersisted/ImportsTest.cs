@@ -29,8 +29,8 @@ namespace Tests.FilePersisted
         public TestContext TestContext { get; set; }
 
         // following functions simulate the answer usually provided by user in UI
-        private readonly Func<int, DialogResult> rename = itemsCount => DialogResult.Yes;
-        private readonly Func<int, DialogResult> overwrite = itemsCount => DialogResult.No;
+        private static readonly Func<int, DialogResult> rename = itemsCount => DialogResult.Yes;
+        private static readonly Func<int, DialogResult> overwrite = itemsCount => DialogResult.No;
 
         private int PersistenceFavoritesCount
         {
@@ -55,35 +55,44 @@ namespace Tests.FilePersisted
         [TestMethod]
         public void ExportImportFavoriteTest()
         {
-            IFavorite favorite = this.CreateTestFavorite();
-            this.ExportFavorite(favorite);
+            IPersistence persistence = this.Persistence;
+            ExportImportFavorite(persistence, this.TestContext.DeploymentDirectory);
+        }
+
+        /// <summary>
+        /// More regression test than unit test
+        /// </summary>
+        internal static void ExportImportFavorite(IPersistence persistence, string path)
+        {
+            IFavorite favorite = CreateTestFavorite(persistence);
+            ExportFavorite(favorite, persistence);
             // to preserve test against identical favorite
-            this.Persistence.Favorites.Delete(favorite);
-            List<FavoriteConfigurationElement> toImport = this.ImportItemsFromFile(TEST_FILE);
+            persistence.Favorites.Delete(favorite);
+            List<FavoriteConfigurationElement> toImport = ImportItemsFromFile(path, TEST_FILE);
             // persisted favorites are empty, strategy doesnt matter
-            this.InvokeTheImport(toImport, this.rename);
-            var importedSecurity = this.Persistence.Favorites.First().Security;
+            InvokeTheImport(toImport, persistence, rename);
+            var importedSecurity = persistence.Favorites.First().Security;
             Assert.AreEqual(TEST_USERNAME, importedSecurity.UserName);
             Assert.AreEqual(TEST_DOMAIN, importedSecurity.Domain);
             Assert.AreEqual(TEST_PASSWORD, importedSecurity.Password);
         }
 
-        private IFavorite CreateTestFavorite()
+        private static IFavorite CreateTestFavorite(IPersistence persistence)
         {
-            IFavorite favorite = this.AddFavorite();
+            IFavorite favorite = persistence.Factory.CreateFavorite();
             favorite.Name = "testFavorite";
             favorite.ServerName = favorite.Name;
             var security = favorite.Security;
             security.UserName = TEST_USERNAME;
             security.Domain = TEST_DOMAIN;
             security.Password = TEST_PASSWORD;
-            this.Persistence.Favorites.Update(favorite);
+            persistence.Favorites.Add(favorite);
             return favorite;
         }
 
-        private void ExportFavorite(IFavorite favorite)
+        private static void ExportFavorite(IFavorite favorite, IPersistence persistence)
         {
-            FavoriteConfigurationElement favoriteElement = ModelConverterV2ToV1.ConvertToFavorite(favorite, this.Persistence);
+            FavoriteConfigurationElement favoriteElement = ModelConverterV2ToV1.ConvertToFavorite(favorite, persistence);
 
             ExportOptions options = new ExportOptions
                 {
@@ -101,7 +110,7 @@ namespace Tests.FilePersisted
         [TestMethod]
         public void ImportRenamingDuplicitFavoritesTest()
         {
-            this.ImportDuplicitFavoritesTest(this.rename, 2);
+            this.ImportDuplicitFavoritesTest(rename, 2);
         }
 
         /// <summary>
@@ -110,30 +119,31 @@ namespace Tests.FilePersisted
         [TestMethod]
         public void ImportOverwritingDuplicitFavoritesTest()
         {
-            this.ImportDuplicitFavoritesTest(this.overwrite, 1);
+            this.ImportDuplicitFavoritesTest(overwrite, 1);
         }
 
         private void ImportDuplicitFavoritesTest(Func<int, DialogResult> strategy, int expectedSecondImportCount)
         {
             // call import first to force the persistence initialization
-            List<FavoriteConfigurationElement> toImport = this.ImportItemsFromFile();
+            List<FavoriteConfigurationElement> toImport = ImportItemsFromFile(this.TestContext.DeploymentDirectory);
 
             // 887 obtained by manual check of the xml elements
             Assert.AreEqual(887, toImport.Count, "Some items from Import file were not identified");
-            object result = this.InvokeTheImport(toImport, strategy);
+            object result = InvokeTheImport(toImport, this.Persistence, strategy);
             Assert.AreEqual(true, result, "Import wasn't successful");
             int expected = ExpectedFavoritesCount(toImport);
             Assert.AreEqual(expected, this.PersistenceFavoritesCount, "Imported favorites count doesn't match.");
-            this.InvokeTheImport(toImport, strategy);
+            InvokeTheImport(toImport, this.Persistence, strategy);
             Assert.AreEqual(expected * expectedSecondImportCount, this.PersistenceFavoritesCount,
                 "Imported favorites count doesn't match after second import");
             int expectedGroups = this.Persistence.Groups.Count();
             Assert.AreEqual(expectedGroups, this.ImportedGroupsCount, "Imported groups count doesn't match.");
         }
 
-        private object InvokeTheImport(List<FavoriteConfigurationElement> toImport, Func<int, DialogResult> strategy)
+        private static object InvokeTheImport(List<FavoriteConfigurationElement> toImport, IPersistence persistence,
+            Func<int, DialogResult> strategy)
         {
-            var managedImport = new ImportWithDialogs(null, this.Persistence);
+            var managedImport = new ImportWithDialogs(null, persistence);
             var privateObject = new PrivateObject(managedImport);
             return privateObject.Invoke("ImportPreservingNames", new object[] { toImport, strategy });
         }
@@ -145,9 +155,10 @@ namespace Tests.FilePersisted
                            .Count();
         }
 
-        private List<FavoriteConfigurationElement> ImportItemsFromFile(string fileName = DUPLICIT_ITEMS_FILE)
+        private static List<FavoriteConfigurationElement> ImportItemsFromFile(string path, 
+            string fileName = DUPLICIT_ITEMS_FILE)
         {
-            string fullFileName = Path.Combine(this.TestContext.DeploymentDirectory, fileName);
+            string fullFileName = Path.Combine(path, fileName);
             return Integrations.Importers.ImportFavorites(fullFileName);
         }
     }
