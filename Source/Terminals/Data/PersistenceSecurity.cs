@@ -85,21 +85,33 @@ namespace Terminals.Data
             this.KeyMaterial = newMasterKey;
         }
 
+        /// <summary>
+        /// Use only to resolve settings file passwords
+        /// </summary>
         internal string DecryptPassword(string encryptedPassword)
         {
             return PasswordFunctions2.DecryptPassword(encryptedPassword, this.KeyMaterial);
         }
 
+        /// <summary>
+        /// Use only to store settings file passwords
+        /// </summary>
         internal string EncryptPassword(string decryptedPassword)
         {
             return PasswordFunctions2.EncryptPassword(decryptedPassword, this.KeyMaterial);
         }
 
+        /// <summary>
+        /// Use only to resolve all other passwords except settings file passwords
+        /// </summary>
         internal string DecryptPersistencePassword(string encryptedPassword)
         {
             return PasswordFunctions2.DecryptPassword(encryptedPassword, this.PersistenceKeyMaterial);
         }
 
+        /// <summary>
+        /// Use only to store all other passwords except settings file passwords
+        /// </summary>
         internal string EncryptPersistencePassword(string decryptedPassword)
         {
             return PasswordFunctions2.EncryptPassword(decryptedPassword, this.PersistenceKeyMaterial);

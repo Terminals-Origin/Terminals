@@ -19,15 +19,6 @@
         /// Doesn't convert Tags to groups, it has to be handled manually, 
         /// when adding Favorite into Persistence
         /// </summary>
-        internal static IFavorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite)
-        {
-            return ConvertToFavorite(sourceFavorite, Persistence.Instance);
-        }
-
-        /// <summary>
-        /// Doesn't convert Tags to groups, it has to be handled manually, 
-        /// when adding Favorite into Persistence
-        /// </summary>
         internal static IFavorite ConvertToFavorite(FavoriteConfigurationElement sourceFavorite, IPersistence persistence)
         {
             var converter = new ModelConverterV1ToV2(persistence);

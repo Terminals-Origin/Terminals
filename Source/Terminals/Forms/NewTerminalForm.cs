@@ -470,7 +470,7 @@ namespace Terminals
                 var defaultSavedFavorite = Settings.GetDefaultFavorite();
                 if (defaultSavedFavorite != null)
                 {
-                    var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite);
+                    var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite, Persistence.Instance);
                     this.FillControls(defaultFavorite);
                 }
                 else

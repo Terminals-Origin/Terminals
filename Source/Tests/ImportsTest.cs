@@ -23,21 +23,23 @@ namespace Tests
         private readonly Func<int, DialogResult> rename = itemsCount => DialogResult.Yes;
         private readonly Func<int, DialogResult> overwrite = itemsCount => DialogResult.No;
 
-        private static int PersistenceFavoritesCount
+        private IPersistence persistence;
+
+        private int PersistenceFavoritesCount
         {
             get
             {
-                return Persistence.Instance.Favorites.Select(favorite => favorite.Name)
+                return this.persistence.Favorites.Select(favorite => favorite.Name)
                     .Distinct(StringComparer.CurrentCultureIgnoreCase)
                     .Count();
             }
         }
 
-        private static int ImportedGroupsCount
+        private int ImportedGroupsCount
         {
             get
             {
-                return Persistence.Instance.Groups.Select(favorite => favorite.Name)
+                return this.persistence.Groups.Select(favorite => favorite.Name)
                     .Distinct(StringComparer.CurrentCultureIgnoreCase)
                     .Count();
             }
@@ -47,8 +49,9 @@ namespace Tests
         public void TestInitialize()
         {
             FilePersistedTestLab.SetDefaultFileLocations();
-            List<IFavorite> current = Persistence.Instance.Favorites.ToList();
-            Persistence.Instance.Favorites.Delete(current);
+            this.persistence = new FilePersistence();
+            List<IFavorite> current = this.persistence.Favorites.ToList();
+            this.persistence.Favorites.Delete(current);
         }
 
         /// <summary>
@@ -83,13 +86,13 @@ namespace Tests
             this.InvokeTheImport(toImport, strategy);
             Assert.AreEqual(expected * expectedSecondImportCount, PersistenceFavoritesCount,
                 "Imported favorites count doesn't match after second import");
-            int expectedGroups = Persistence.Instance.Groups.Count();
+            int expectedGroups = this.persistence.Groups.Count();
             Assert.AreEqual(expectedGroups, ImportedGroupsCount, "Imported groups count doesn't match.");
         }
 
         private object InvokeTheImport(List<FavoriteConfigurationElement> toImport, Func<int, DialogResult> strategy)
         {
-            var managedImport = new ImportWithDialogs(null);
+            var managedImport = new ImportWithDialogs(null, this.persistence);
             var privateObject = new PrivateObject(managedImport);
             return privateObject.Invoke("ImportPreservingNames", new object[] { toImport, strategy });
         }
