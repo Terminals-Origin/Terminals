@@ -1372,14 +1372,18 @@ namespace Terminals
 
         public static String EncodeTo64(String toEncode)
         {
+            if (string.IsNullOrEmpty(toEncode))
+                return string.Empty;
             Byte[] toEncodeAsBytes = System.Text.ASCIIEncoding.ASCII.GetBytes(toEncode);
-            String returnValue = System.Convert.ToBase64String(toEncodeAsBytes);
+            String returnValue = Convert.ToBase64String(toEncodeAsBytes);
             return returnValue;
         }
 
         public static String DecodeFrom64(String encodedData)
         {
-            Byte[] encodedDataAsBytes = System.Convert.FromBase64String(encodedData);
+            if (string.IsNullOrEmpty(encodedData))
+                return string.Empty;
+            Byte[] encodedDataAsBytes = Convert.FromBase64String(encodedData);
             String returnValue = System.Text.ASCIIEncoding.ASCII.GetString(encodedDataAsBytes);
             return returnValue;
         }
