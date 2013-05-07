@@ -14,17 +14,23 @@ namespace Terminals.Forms.Controls
     {
         private const String IMPORT_SUFFIX = "_(imported)";
         private readonly Form sourceForm;
+        private readonly IPersistence persistence;
 
-        private static IFavorites PersistedFavorites
+        private IFavorites PersistedFavorites
         {
-            get { return Persistence.Instance.Favorites; }
+            get { return this.persistence.Favorites; }
         }
 
         internal ImportWithDialogs(Form sourceForm)
+            : this(sourceForm, Persistence.Instance)
+        {
+        }
+        
+        internal ImportWithDialogs(Form sourceForm, IPersistence persistence)
         {
             this.sourceForm = sourceForm;
+            this.persistence = persistence;
         }
-
         internal Boolean Import(List<FavoriteConfigurationElement> favoritesToImport)
         {
             this.sourceForm.Cursor = Cursors.WaitCursor;
@@ -63,10 +69,10 @@ namespace Terminals.Forms.Controls
             return false;
         }
 
-        private static List<FavoriteConfigurationElement> GetConflictingFavorites(List<FavoriteConfigurationElement> favorites)
+        private List<FavoriteConfigurationElement> GetConflictingFavorites(List<FavoriteConfigurationElement> favorites)
         {
             // an item may appear more then once in persistence and also in the import file
-            return favorites.Where(favorite => NotUniqueInPersistence(favorite.Name))
+            return favorites.Where(favorite => this.NotUniqueInPersistence(favorite.Name))
                 .ToList();
         }
 
@@ -78,17 +84,17 @@ namespace Terminals.Forms.Controls
                 .ToList();
         }
 
-        private static void PerformImport(List<FavoriteConfigurationElement> configFavoritesToImport)
+        private void PerformImport(List<FavoriteConfigurationElement> configFavoritesToImport)
         {
-            Persistence.Instance.StartDelayedUpdate();
+            this.persistence.StartDelayedUpdate();
 
             foreach (FavoriteConfigurationElement configFavorite in configFavoritesToImport)
             {
-                IFavorite favorite = PrepareFavoriteToImport(configFavorite);
+                IFavorite favorite = this.PrepareFavoriteToImport(configFavorite);
                 AddFavoriteIntoGroups(configFavorite, favorite);
             }
 
-            Persistence.Instance.SaveAndFinishDelayedUpdate();
+            this.persistence.SaveAndFinishDelayedUpdate();
         }
 
         internal static void AddFavoriteIntoGroups(FavoriteConfigurationElement configFavorite, IFavorite favorite)
@@ -100,18 +106,18 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        private static IFavorite PrepareFavoriteToImport(FavoriteConfigurationElement configFavorite)
+        private IFavorite PrepareFavoriteToImport(FavoriteConfigurationElement configFavorite)
         {
-            var favorite = ModelConverterV1ToV2.ConvertToFavorite(configFavorite);
-            var oldFavorite = PersistedFavorites[favorite.Name];
+            var favorite = ModelConverterV1ToV2.ConvertToFavorite(configFavorite, this.persistence);
+            var oldFavorite = this.PersistedFavorites[favorite.Name];
             if (oldFavorite != null) // force to override old favorite
             {
                 oldFavorite.UpdateFrom(favorite);
-                PersistedFavorites.Update(oldFavorite);
+                this.PersistedFavorites.Update(oldFavorite);
             }
             else
             {
-                PersistedFavorites.Add(favorite);
+                this.PersistedFavorites.Add(favorite);
             }
             
             return favorite;
@@ -132,9 +138,9 @@ namespace Terminals.Forms.Controls
                 this.AddImportSuffixToFavorite(favoriteToRename);
         }
 
-        private static bool NotUniqueInPersistence(string favoriteName)
+        private bool NotUniqueInPersistence(string favoriteName)
         {
-            return PersistedFavorites[favoriteName] != null;
+            return this.PersistedFavorites[favoriteName] != null;
         }
 
         private static DialogResult AskIfOverwriteOrRename(Int32 conflictingFavoritesCount)
