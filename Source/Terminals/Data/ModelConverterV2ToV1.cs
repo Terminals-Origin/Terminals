@@ -60,7 +60,8 @@ namespace Terminals.Data
             ISecurityOptions security = sourceFavorite.Security;
             result.DomainName = security.Domain;
             result.UserName = security.UserName;
-            result.EncryptedPassword = security.EncryptedPassword;
+            // because persistence and application masterpassword may differ, we have to go through encryption
+            result.Password = security.Password;
             
             ICredentialSet credential = this.persistence.Credentials[security.Credential];
             if(credential != null)
