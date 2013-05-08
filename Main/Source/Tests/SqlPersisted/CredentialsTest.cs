@@ -97,7 +97,7 @@ namespace Tests.SqlPersisted
             // this is the only one test, which plays with different master passwords
             Settings.PersistenceSecurity = this.PrimaryPersistence.Security;
             this.AddTestCredentialsToDatabase();
-            this.PrimaryPersistence.Security.UpdateMasterPassword(String.Empty);
+            this.PrimaryPersistence.Security.UpdateMasterPassword(VALIDATION_VALUE_B);
 
             ICredentialSet checkCredentials = this.SecondaryPersistence.Credentials.FirstOrDefault();
             Assert.AreEqual(VALIDATION_VALUE, checkCredentials.Password, "Password lost after update of key material");

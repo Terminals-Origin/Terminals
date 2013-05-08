@@ -52,11 +52,15 @@
         private void ConvertSecurity(IFavorite result, FavoriteConfigurationElement sourceFavorite)
         {
             ISecurityOptions security = result.Security;
-            // during upgrade don't use directly build-in property, because it access the Persistence.Instance.
+            // during upgrade don't use directly build-in property (without "Plain prefix"),
+            // because it access the Persistence.Instance.
             // Because it is used also by upgrade from old version, persistence doesn't have to be initialized yet.
             security.Domain = sourceFavorite.PlainDomainName;
             security.UserName = sourceFavorite.PlainUserName;
-            security.EncryptedPassword = sourceFavorite.EncryptedPassword;
+            // because persistence and application masterpassword may differ,
+            // we have to go through encryption without credential resolution
+            security.Password = persistence.Security.DecryptPassword(sourceFavorite.EncryptedPassword);
+            
             ICredentialSet credential = persistence.Credentials[sourceFavorite.Credential];
             if (credential != null)
                 security.Credential = credential.Id;
