@@ -11,7 +11,7 @@ namespace Terminals.Network
     {
         internal event ListComputersDoneDelegate ListComputersDone;
         internal event ComputerFoundDelegate ComputerFound;
-        private object runLock = new object();
+        private readonly object runLock = new object();
         
         private Boolean isRunning;
         internal Boolean IsRunning
@@ -86,11 +86,9 @@ namespace Terminals.Network
         {
             using (DirectoryEntry entry = new DirectoryEntry(string.Format("LDAP://{0}", domain)))
             {
-                using (DirectorySearcher mySearcher = new DirectorySearcher(entry))
+                using (DirectorySearcher searcher = CreateSearcher(entry))
                 {
-                    mySearcher.Asynchronous = true;
-                    mySearcher.Filter = ("(objectClass=computer)");
-                    foreach (SearchResult result in mySearcher.FindAll())
+                    foreach (SearchResult result in searcher.FindAll())
                     {
                         if (this.CancelationPending)
                             return;
@@ -100,6 +98,17 @@ namespace Terminals.Network
                     }
                 }
             }
+        }
+
+        private static DirectorySearcher CreateSearcher(DirectoryEntry entry)
+        {
+            var searcher = new DirectorySearcher(entry);
+            searcher.Asynchronous = true;
+            searcher.Filter = ("(objectClass=computer)");
+            // extend default maximum number of returned results
+            searcher.PageSize = 1000;
+            searcher.SizeLimit = 5000;
+            return searcher;
         }
 
         private void FireListComputersDone(Boolean success)
