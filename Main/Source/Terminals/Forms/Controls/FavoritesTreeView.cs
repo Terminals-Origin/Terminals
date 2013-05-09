@@ -9,14 +9,7 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal partial class FavoritesTreeView : TreeView
     {
-        private FavoriteTreeListLoader loader;
-
-        public FavoritesTreeView()
-        {
-            InitializeComponent();
-
-            loader = new FavoriteTreeListLoader(this);
-        }
+        private readonly FavoriteTreeListLoader loader;
 
         internal IFavorite SelectedFavorite
         {
@@ -28,6 +21,13 @@ namespace Terminals.Forms.Controls
 
                 return null;
             }
+        }
+
+        public FavoritesTreeView()
+        {
+            InitializeComponent();
+
+            this.loader = new FavoriteTreeListLoader(this);
         }
 
         /// <summary>
@@ -54,23 +54,30 @@ namespace Terminals.Forms.Controls
 
         internal GroupTreeNode FindSelectedGroupNode()
         {
-            if (this.SelectedNode == null || this.SelectedNode.Parent == null)
-                return null;
+            var groupNode = this.SelectedNode as GroupTreeNode; // because first level nodes are Groups
+            if (groupNode != null)
+                return groupNode;
 
-            var groupNode = this.SelectedNode.Parent as GroupTreeNode; // because first level nodes are Groups
-            return groupNode;
+            return this.SelectedNode.Parent as GroupTreeNode;
         }
 
         internal void RestoreSelectedFavorite(TreeNode groupNode, IFavorite favorite)
         {
-            if (groupNode != null || favorite == null)
+            if (favorite == null)
                 return;
 
+            TreeNode nodeToRestore = this.FindNoteToRestore(groupNode, favorite);
+            if (nodeToRestore != null)
+                this.SelectedNode = nodeToRestore;
+        }
+
+        private TreeNode FindNoteToRestore(TreeNode groupNode, IFavorite favorite)
+        {
             TreeNode favoriteNode = FindFavoriteNodeByName(groupNode, favorite);
-            if (favoriteNode == null) // tag node was removed, try find another one
+            if (favoriteNode == null) // group node was removed, try find another one
                 groupNode = this.FindFirstGroupNodeContainingFavorite(favorite);
 
-            this.SelectedNode = FindFavoriteNodeByName(groupNode, favorite);
+            return FindFavoriteNodeByName(groupNode, favorite);
         }
 
         private TreeNode FindFirstGroupNodeContainingFavorite(IFavorite favorite)
@@ -90,7 +97,7 @@ namespace Terminals.Forms.Controls
             if (groupNode == null)
                 return null;
 
-            return groupNode.Nodes.Cast<FavoriteTreeNode>()
+            return groupNode.Nodes.OfType<FavoriteTreeNode>()
                 .FirstOrDefault(favoriteNode => favoriteNode.Favorite.StoreIdEquals(favorite));
         }
     }
