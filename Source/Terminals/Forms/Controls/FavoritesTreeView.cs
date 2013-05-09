@@ -54,6 +54,9 @@ namespace Terminals.Forms.Controls
 
         internal GroupTreeNode FindSelectedGroupNode()
         {
+            if (this.SelectedNode == null)
+                return null;
+
             var groupNode = this.SelectedNode as GroupTreeNode; // because first level nodes are Groups
             if (groupNode != null)
                 return groupNode;
