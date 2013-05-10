@@ -8,7 +8,9 @@ namespace Terminals.Network
 {
     internal partial class ImportFromAD : Form
     {
-        private ActiveDirectoryClient adClient;
+        private readonly ActiveDirectoryClient adClient;
+
+        private string defautlDomainName;
 
         public ImportFromAD()
         {
@@ -27,15 +29,16 @@ namespace Terminals.Network
         {
             this.progressBar1.Visible = false;
             this.lblProgressStatus.Text = String.Empty;
+            this.defautlDomainName = this.ResolveDomainName();
+            this.domainTextbox.Text = this.defautlDomainName;
+        }
 
+        private string ResolveDomainName()
+        {
             if (!String.IsNullOrEmpty(Settings.DefaultDomain))
-            {
-                this.domainTextbox.Text = Settings.DefaultDomain;
-            }
-            else
-            {
-                this.domainTextbox.Text = Environment.UserDomainName;
-            }
+                return Settings.DefaultDomain;
+                
+            return Environment.UserDomainName;
         }
 
         private void ScanADButton_Click(object sender, EventArgs e)
@@ -43,7 +46,9 @@ namespace Terminals.Network
             if (!this.adClient.IsRunning)
             {
                 this.bsComputers.Clear();
-                adClient.FindComputers(this.domainTextbox.Text);
+                var searchParams = new ActiveDirectorySearchParams(this.domainTextbox.Text,
+                    this.ldapFilterTextbox.Text, this.maxResultsTextBox.Text);
+                adClient.FindComputers(searchParams);
                 this.lblProgressStatus.Text = "Contacting domain...";
                 this.SwitchToRunningMode();
             }
@@ -158,6 +163,13 @@ namespace Terminals.Network
             var data = this.bsComputers.DataSource as SortableList<ActiveDirectoryComputer>;
             this.bsComputers.DataSource = data.SortByProperty(column.DataPropertyName, newSortDirection);
             column.HeaderCell.SortGlyphDirection = newSortDirection;
+        }
+
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            this.ldapFilterTextbox.Text = ActiveDirectorySearchParams.DEFAULT_FILTER;
+            this.maxResultsTextBox.Text = ActiveDirectorySearchParams.DEFAULT_MAX_RESULTS.ToString();
+            this.domainTextbox.Text = this.defautlDomainName;
         }
     }
 }
