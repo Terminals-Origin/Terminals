@@ -10,6 +10,14 @@ namespace Terminals.Network
         private const string OS = "operatingSystem";
         private const string DN = "distinguishedName";
 
+        // public required by databinding
+        public String ComputerName { get; set; }
+        public String OperatingSystem { get; set; }
+        
+        internal String Protocol { get; set; }
+        internal String Tags { get; set; }
+        internal String Notes { get; set; }
+
         internal ActiveDirectoryComputer()
         {
             this.Protocol = ConnectionManager.RDP;
@@ -18,14 +26,6 @@ namespace Terminals.Network
             this.Tags = String.Empty;
             this.Notes = String.Empty;
         }
-
-        // public required by databinding
-        public String ComputerName { get; set; }
-        public String OperatingSystem { get; set; }
-        
-        internal String Protocol { get; set; }
-        internal String Tags { get; set; }
-        internal String Notes { get; set; }
 
         internal static ActiveDirectoryComputer FromDirectoryEntry(String domain, DirectoryEntry computer)
         {
@@ -58,7 +58,7 @@ namespace Terminals.Network
             PropertyValueCollection osValues = computer.Properties[OS];
             if (osValues != null && osValues.Count > 0)
             {
-                this.Tags += "," + osValues[0].ToString();
+                this.Tags += "," + osValues[0];
                 this.OperatingSystem = osValues[0].ToString();
             }
         }
