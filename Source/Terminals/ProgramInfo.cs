@@ -14,6 +14,8 @@ namespace Terminals
         {
             private static readonly Assembly aAssembly = Assembly.GetExecutingAssembly();
 
+            private static string aboutText;
+
             /// <summary>
             /// Gets full path to the executing assembly location without last backslash
             /// </summary>
@@ -26,14 +28,7 @@ namespace Terminals
             {
                 get
                 {
-                    return aAssembly.GetName().Version.ToString(); ;
-                }
-            }
-            public static string AboutText
-            {
-                get
-                {
-                    return String.Format("{0} ({1}) - {2}", TitleVersion, Description, BuildDate.ToShortDateString());
+                    return aAssembly.GetName().Version.ToString();
                 }
             }
 
@@ -127,6 +122,7 @@ namespace Terminals
 
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
                 VersionString = String.Format("{0}.{1}.{2}", version.Major, version.Minor, version.Build);
+                aboutText = TitleVersion;
                 SetDebugBuild(version);
             }
 
@@ -135,7 +131,13 @@ namespace Terminals
             {
                 // debug builds, to keep track of minor/revisions, etc..
                 // Adds also the revision
-                VersionString = version.ToString(); 
+                VersionString = version.ToString();
+                aboutText = String.Format("{0} - {1}", TitleVersion, BuildDate.ToShortDateString());
+            }
+
+            internal static string GetAboutText(string persistenceId)
+            {
+                return string.Format("{0} ({1} store)", aboutText, persistenceId);
             }
         }
     }

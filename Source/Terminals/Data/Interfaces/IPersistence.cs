@@ -9,6 +9,8 @@ namespace Terminals.Data
     /// </summary>
     internal interface IPersistence
     {
+        string Id { get; }
+
         IFavorites Favorites { get; }
         
         IGroups Groups { get; }

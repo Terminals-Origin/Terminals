@@ -6,13 +6,14 @@ using System.Linq;
 using System.Threading;
 using Terminals.Configuration;
 using Terminals.History;
-using Terminals.Security;
 using Unified;
 
 namespace Terminals.Data
 {
     internal class FilePersistence : IPersistence, IPersistedSecurity
     {
+        public string Id { get { return "Files"; } }
+
         private readonly Favorites favorites;
         public IFavorites Favorites
         {
