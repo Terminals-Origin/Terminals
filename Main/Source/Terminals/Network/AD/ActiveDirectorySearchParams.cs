@@ -7,7 +7,7 @@ namespace Terminals.Network
     /// </summary>
     internal class ActiveDirectorySearchParams
     {
-        internal const  string DEFAULT_FILTER = "(objectclass=computer)";
+        internal const  string DEFAULT_FILTER = "(&(objectclass=computer)(name=*))";
 
         internal const int DEFAULT_MAX_RESULTS = 1000;
 
@@ -19,6 +19,8 @@ namespace Terminals.Network
         internal string Filter { get; private set; }
 
         internal string Domain { get; private set; }
+
+        internal string Searchbase { get; private set; }
         
         /// <summary>
         /// Gets maximum number of results parsed from constructor parameter.
@@ -26,11 +28,12 @@ namespace Terminals.Network
         /// </summary>
         internal int MaximumResults { get; private set; }
 
-        internal ActiveDirectorySearchParams(string domain, string filter, string maximumResults)
+        internal ActiveDirectorySearchParams(string domain, string filter, string maximumResults, string searchbase)
         {
             this.Domain = domain;
             this.ParseFilter(filter);
             this.ParseMaximumResults(maximumResults);
+            this.ParseSearchBase(searchbase);
         }
 
         private void ParseFilter(string filter)
@@ -53,10 +56,18 @@ namespace Terminals.Network
                 this.MaximumResults = MAXIMUM_MAXRESULTS;
         }
 
+        private void ParseSearchBase(string searchbase)
+        {
+            if (string.IsNullOrEmpty(searchbase))
+                this.Searchbase = this.Domain;
+            else
+                this.Searchbase = searchbase;
+        }
+
         public override string ToString()
         {
-            return string.Format("ActiveDirectorySearchParams:Domain={0},Filter='{1}',MaximumResults={2}",
-                                 this.Domain, this.Filter, this.MaximumResults);
+            return string.Format("ActiveDirectorySearchParams:Domain={0},Filter='{1}',MaximumResults={2},Searchbase={3}",
+                                 this.Domain, this.Filter, this.MaximumResults, this.Searchbase);
         }
     }
 }

@@ -120,6 +120,11 @@
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>141, 17</value>
   </metadata>
+  <data name="searchbaseTextbox.ToolTip" xml:space="preserve">
+    <value>LDAP search root to use. For the ou 'servers' under the root of the domain 'mydomain.local', 
+you have to fill in 'ou=servers,dc=mydomain,dc=local' to start searching from there.
+Leave empty to search in whole domain.</value>
+  </data>
   <metadata name="bsComputers.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
