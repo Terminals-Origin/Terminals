@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AxMSTSCLib;
@@ -267,7 +266,7 @@ namespace Terminals
 
         private void LoadWindowState()
         {
-            this.Text = Program.Info.AboutText.ToString();
+            this.AssingTitle();
             this.HideShowFavoritesPanel(Settings.ShowFavoritePanel);
             this.toolStripContainer.LoadToolStripsState();
         }
@@ -453,8 +452,6 @@ namespace Terminals
 
         private void CloseTabControlItem()
         {
-            this.Text = Program.Info.AboutText;
-
             if (Settings.RestoreWindowOnLastTerminalDisconnect)
             {
                 if (this.tcTerminals.Items.Count == 0)
@@ -799,7 +796,7 @@ namespace Terminals
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.Text = Program.Info.AboutText;
+            this.AssingTitle();
             this.CheckForNewRelease();
             this.OpenSavedConnections();
         }
@@ -1221,8 +1218,6 @@ namespace Terminals
                         // Close tabitem functions handled under each connection disconnect methods.
                         cancel = true;
                     }
-
-                    this.Text = Program.Info.AboutText;
                 }
                 else
                 {
@@ -1236,15 +1231,23 @@ namespace Terminals
         private void tcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e)
         {
             this.UpdateControls();
+            this.AssingTitle();
+            
             if (this.tcTerminals.Items.Count > 0)
             {
                 this.tsbDisconnect.Enabled = e.Item != null;
                 this.disconnectToolStripMenuItem.Enabled = e.Item != null;
                 this.SetGrabInput(true);
-
-                if (e.Item.Selected && Settings.ShowInformationToolTips)
-                    this.Text = e.Item.ToolTipText.Replace("\r\n", "; ");
             }
+        }
+
+        private void AssingTitle()
+        {
+            TabControlItem selectedTab = this.tcTerminals.SelectedItem;
+            if (Settings.ShowInformationToolTips && selectedTab != null)
+                this.Text = selectedTab.ToolTipText.Replace("\r\n", "; ");
+            else
+                this.Text = Program.Info.GetAboutText(Persistence.Instance.Id);
         }
 
         private void tscConnectTo_TextChanged(object sender, EventArgs e)

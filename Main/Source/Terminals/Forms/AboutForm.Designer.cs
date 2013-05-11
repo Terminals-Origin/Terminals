@@ -29,7 +29,7 @@ namespace Terminals
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
-            this.label1 = new System.Windows.Forms.Label();
+            this.titleLabel = new System.Windows.Forms.Label();
             this.lblTerminals = new System.Windows.Forms.LinkLabel();
             this.btnClose = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -41,15 +41,15 @@ namespace Terminals
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // titleLabel
             // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Location = new System.Drawing.Point(0, 147);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(486, 30);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Terminals is a multi tab terminal services/remote desktop client.";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.titleLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.titleLabel.Location = new System.Drawing.Point(0, 147);
+            this.titleLabel.Name = "titleLabel";
+            this.titleLabel.Size = new System.Drawing.Size(486, 30);
+            this.titleLabel.TabIndex = 0;
+            this.titleLabel.Text = "Terminals is a multi tab terminal services/remote desktop client.\r\n";
+            this.titleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblTerminals
             // 
@@ -161,7 +161,7 @@ namespace Terminals
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.titleLabel);
             this.Controls.Add(this.pictureBox1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -181,7 +181,7 @@ namespace Terminals
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label titleLabel;
         private System.Windows.Forms.LinkLabel lblTerminals;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label label3;

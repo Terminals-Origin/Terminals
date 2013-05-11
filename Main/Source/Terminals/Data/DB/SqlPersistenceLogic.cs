@@ -27,6 +27,8 @@ namespace Terminals.Data.DB
             set { this.reLoadClock.Interval = 1000 * value; }
         }
 
+        public string Id { get { return "Database"; } }
+
         private Favorites favorites;
         public IFavorites Favorites
         {
