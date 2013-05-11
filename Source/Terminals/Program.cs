@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Resources;
 using System.Threading;
@@ -11,7 +9,6 @@ using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Security;
 using Terminals.Updates;
-using System.Security.Principal;
 
 namespace Terminals
 {
@@ -51,6 +48,8 @@ namespace Terminals
                 return;
             Logging.Log.Info("Start state 6 Complete: Set Single instance mode");
 
+            // do it before config update, because it may import favorites from previous version
+            Persistence.AssignFallbackPrompt(PersistenceFallback);
             UpdateConfig.CheckConfigVersionUpdate();
             Logging.Log.Info("Start state 7 Complete: Configuration upgrade");
 
@@ -158,6 +157,17 @@ namespace Terminals
             Settings.FileLocations.AssignCustomFileLocations(commandline.configFile,
                 commandline.favoritesFile, commandline.credentialsFile);
             return commandline;
+        }
+
+        private static void PersistenceFallback()
+        {
+            const string MESSAGE = "Do you wan't to start with local files store?\r\n" +
+                                   "Yes - start with files store (You will be able to fix the configuration.)\r\n" +
+                                   "No - Exit application";
+            DialogResult fallback = MessageBox.Show(MESSAGE, "Terminals database connection failed",
+                                                    MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            if (fallback == DialogResult.No)
+                Environment.Exit(-1);
         }
     }
 }

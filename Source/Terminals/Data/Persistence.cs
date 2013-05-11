@@ -6,6 +6,7 @@ namespace Terminals.Data
 {
     internal class Persistence
     {
+        private static Action fallbackPrompt; 
         private IPersistence persistence;
      
         private Persistence()
@@ -35,11 +36,23 @@ namespace Terminals.Data
         /// </summary>
         internal static void FallBackToPrimaryPersistence(PersistenceSecurity security)
         {
+            PromptForFallback();
             var newSecurity = new PersistenceSecurity(security);
             var persistence = new FilePersistence(newSecurity);
             Settings.PersistenceSecurity = newSecurity;
             Nested.instance.persistence = persistence;
             persistence.Initialize();
+        }
+
+        private static void PromptForFallback()
+        {
+            if (fallbackPrompt != null)
+                fallbackPrompt();
+        }
+
+        internal static void AssignFallbackPrompt(Action newPrompt)
+        {
+            fallbackPrompt = newPrompt;
         }
 
         #region Thread safe singleton with lazy loading
