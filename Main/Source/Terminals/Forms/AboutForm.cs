@@ -13,34 +13,14 @@ namespace Terminals
             InitializeComponent();            
         }
 
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
         private void lblTerminals_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Process.Start("http://" + FavoritesFactory.TerminalsReleasesUrl);
-        }
-
-        private void lblEyal_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://www.epocalipse.com/blog/");
-        }
-
-        private void lblDudu_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://notsosmartbuilder.blogspot.com/");
-        }
-
-        private void linkHiro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://www.nbc.com/Heroes/cast/hiro.shtml");
-        }
-
-        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://www.nbc.com/Heroes/cast/peter.shtml");
-        }
-
-        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start("http://www.epocalipse.com/blog/");
         }
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
@@ -51,28 +31,43 @@ namespace Terminals
         {
             this.titleLabel.Text += string.Format("({0})", Program.Info.Description);
             this.lblVersion.Text = Program.Info.GetAboutText(Persistence.Instance.Id);
-            DateTime dt = Program.Info.BuildDate;
-            this.textBox1.Text = string.Format("{0}\r\nConfig File:\r\n{1}\r\n\r\n{2}\r\n\r\nVersion: {3}\r\n{4}\r\n{5}\r\n{6}\r\n{7}\r\n{8}\r\n{9}\r\n{10}\r\n{11}\r\n{12}\r\n{13}\r\n\r\n",
-                this.textBox1.Text, Settings.FileLocations.Configuration,
-                string.Format("This version of terminals was build for you on {0} at {1}", dt.ToLongDateString(), dt.ToLongTimeString()),
-                Program.Info.DLLVersion,
-                String.Format("CommandLine:{0}", Environment.CommandLine),
-                String.Format("CurrentDirectory:{0}", Environment.CurrentDirectory),
-                String.Format("MachineName:{0}", Environment.MachineName),
-                String.Format("OSVersion:{0}", Environment.OSVersion),
-                String.Format("ProcessorCount:{0}", Environment.ProcessorCount),
-                String.Format("UserInteractive:{0}", Environment.UserInteractive),
-                String.Format("Framework Version:{0}", Environment.Version),
-                String.Format("WorkingSet:{0}", Environment.WorkingSet),
-                String.Format("Is 64bit OS:{0}", Native.Wow.Is64BitOperatingSystem),
-                String.Format("Is 64bit Proces:{0}", Native.Wow.Is64BitProcess)
-
-                );
+            this.textBox1.Text = this.FormatDetails();
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private string FormatDetails()
         {
-            this.Close();
+            DateTime dt = Program.Info.BuildDate;
+            const string DETAILS = "{0}\r\n" +
+                                   "Config File:\r\n{1}\r\n\r\n" +
+                                   "This version of terminals was build for you on {2} at {3}\r\n\r\n" +
+                                   "Version: {4}\r\n" +
+                                   "CommandLine: {5}\r\n" +
+                                   "CurrentDirectory: {6}\r\n" +
+                                   "MachineName: {7}\r\n" +
+                                   "OSVersion: {8}\r\n" +
+                                   "ProcessorCount: {9}\r\n" +
+                                   "UserInteractive: {10}\r\n" +
+                                   "Framework Version: {11}\r\n" +
+                                   "WorkingSet: {12}\r\n" +
+                                   "Is 64bit OS: {13}\r\n" +
+                                   "Is 64bit Proces: {14}\r\n\r\n";
+
+            return string.Format(DETAILS,
+                                    this.textBox1.Text,
+                                    Settings.FileLocations.Configuration,
+                                    dt.ToLongDateString(),
+                                    dt.ToLongTimeString(),
+                                    Program.Info.DLLVersion,
+                                    Environment.CommandLine,
+                                    Environment.CurrentDirectory,
+                                    Environment.MachineName,
+                                    Environment.OSVersion,
+                                    Environment.ProcessorCount,
+                                    Environment.UserInteractive,
+                                    Environment.Version,
+                                    Environment.WorkingSet,
+                                    Native.Wow.Is64BitOperatingSystem,
+                                    Native.Wow.Is64BitProcess);
         }
     }
 }
