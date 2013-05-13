@@ -39,6 +39,12 @@ namespace Terminals.Data
             set { security = value; }
         }
 
+        public TsGwOptions()
+        {
+            // RDP ActiveX user control doesnt like null strings, it throws an exception in Connect method
+            this.hostName = string.Empty;
+        }
+
         internal TsGwOptions Copy()
         {
             return new TsGwOptions

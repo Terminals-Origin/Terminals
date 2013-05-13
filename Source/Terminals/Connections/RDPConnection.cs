@@ -78,6 +78,8 @@ namespace Terminals.Connections
                 {
                     Logging.Log.Info("There was an exception setting an RDP Value.", exc);
                 }
+                // if next line fails on Protected memory access exception,
+                // some string property is set to null, which leads to this exception
                 this.client.Connect();
                 return true;
             }
