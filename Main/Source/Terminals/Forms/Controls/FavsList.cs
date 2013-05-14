@@ -40,7 +40,7 @@ namespace Terminals
         }
 
         #region Private methods
-        
+
         private MainForm GetMainForm()
         {
             if (this._mainForm == null)
@@ -306,11 +306,13 @@ namespace Terminals
             return this.GetSelectedFavorites();
         }
 
-        private List<IFavorite> GetSelectedFavorites()
+        internal List<IFavorite> GetSelectedFavorites()
         {
-            return this.favsTree.SelectedNode.Nodes.Cast<FavoriteTreeNode>()
-                .Select(node => node.Favorite)
-                .ToList();
+            var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
+            if (groupNode == null)
+                return new List<IFavorite>();
+            
+            return groupNode.Group.Favorites;
         }
 
         private void FinishBatchUpdate(string variable)
