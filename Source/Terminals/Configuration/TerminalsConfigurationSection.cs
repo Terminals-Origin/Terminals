@@ -783,21 +783,17 @@ namespace Terminals
             }
         }
 
-
-        [ConfigurationProperty("expandedHistoryNodes", IsRequired = false)]
+        private const string EXPANDED_HISTORY_SEETINGS = "expandedHistoryNodes";
+        [ConfigurationProperty(EXPANDED_HISTORY_SEETINGS, IsRequired = false)]
         public string ExpandedHistoryNodes
         {
             get
             {
-                if (this["expandedHistoryNodes"] == null || (this["expandedHistoryNodes"] as string) == "")
-                {
-                    this["expandedHistoryNodes"] = @"Today";
-                }
-                return (string)this["expandedHistoryNodes"];
+                return (string)this[EXPANDED_HISTORY_SEETINGS];
             }
             set
             {
-                this["expandedHistoryNodes"] = value;
+                this[EXPANDED_HISTORY_SEETINGS] = value;
             }
         }
 

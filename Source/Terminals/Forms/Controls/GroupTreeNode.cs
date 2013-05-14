@@ -62,7 +62,7 @@ namespace Terminals.Forms.Controls
 
         internal bool ContainsFavoriteNode(IFavorite favorite)
         {
-            return this.Nodes.Cast<FavoriteTreeNode>()
+            return this.Nodes.OfType<FavoriteTreeNode>()
                 .Any(treeNode => treeNode.Favorite.StoreIdEquals(favorite));
         }
 
