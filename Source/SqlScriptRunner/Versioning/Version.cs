@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SqlScriptRunner.Versioning
 {
@@ -11,17 +8,29 @@ namespace SqlScriptRunner.Versioning
         public int Minor { get; set; }
         public int Build { get; set; }
         public string Description { get; set; }
-        public DateTime DateTime { get; set; }        
+        public DateTime DateTime { get; set; }
 
-        public override string ToString()
+        public static Versioning.Version Max
         {
-            return string.Format("{0}.{1}.{2}", Major, Minor, Build);
+            get
+            {
+                return new Version() { Major = int.MaxValue, Minor = int.MinValue, Description = "Max Version" };
+            }
+        }
+
+        public static Versioning.Version Min
+        {
+            get
+            {
+                return new Version() { Major = int.MinValue, Minor = int.MinValue, Description = "Min Version" };
+            }
         }
 
         public static bool operator ==(Version c1, Version c2)
         {
             return (c1.Major == c2.Major && c1.Minor == c2.Minor && c1.Build == c2.Build);
         }
+
         public static bool operator !=(Version c1, Version c2)
         {
             return !(c1 == c2);
@@ -61,20 +70,27 @@ namespace SqlScriptRunner.Versioning
             return (c1 == c2 || c1 < c2);
         }
 
-        public static Versioning.Version Max
+        public override bool Equals(object obj)
         {
-            get
-            {
-                return new Version() { Major = int.MaxValue, Minor = int.MinValue, Description = "Max Version" };
-            }
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            var that = obj as Version;
+
+            if (ReferenceEquals(that, null))
+                return false;
+
+            return that == this;
         }
 
-        public static Versioning.Version Min
+        public override int GetHashCode()
         {
-            get
-            {
-                return new Version() { Major = int.MinValue, Minor = int.MinValue, Description = "Min Version" };
-            }
+            return (Major * 37 + Minor) * 37 + Build;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0}.{1}.{2}", this.Major, this.Minor, this.Build);
         }
     }
 }
