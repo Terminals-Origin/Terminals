@@ -257,6 +257,19 @@ namespace Terminals.Data
 
         private static String DecodeFrom64(String encodedData)
         {
+            try
+            {
+                return TryDecodeFrom64(encodedData);
+            }
+            catch (FormatException)
+            {
+                // the text wasnt encoded, so the original (issue when upgrading from older file)
+                return encodedData;
+            }
+        }
+
+        private static string TryDecodeFrom64(string encodedData)
+        {
             if (encodedData == null)
                 return null;
 
