@@ -109,8 +109,6 @@ namespace Terminals.Network
             searcher.Asynchronous = true;
             searcher.Filter = searchParams.Filter;
             searcher.SearchRoot = new DirectoryEntry("LDAP://"+searchParams.Searchbase); 
-            // extend default maximum number of returned results
-            searcher.PageSize = 1000;
             searcher.SizeLimit = searchParams.MaximumResults;
             return searcher;
         }
