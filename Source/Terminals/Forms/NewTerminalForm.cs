@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -819,29 +820,34 @@ namespace Terminals
         {
             try
             {
-                if (!this.IsServerNameValid() || !this.IsPortValid())
-                    return false;
+              if (!this.IsServerNameValid() || !this.IsPortValid())
+                return false;
 
-                ResolveFavortie();
+              ResolveFavortie();
 
-                FillGeneralProrperties();
-                FillDescriptionProperties();
-                FillFavoriteSecurity();
-                FillFavoriteDisplayOptions();
-                FillFavoriteExecuteBeforeOptions();
-                this.consolePreferences.FillFavorite(this.Favorite);
-                this.FillFavoriteVmrcOptions();
-                this.FillFavoriteVncOptions();
-                FillFavoriteICAOPtions();
-                FillFavoriteSSHOptions();
-                FillFavoriteRdpOptions();
+              FillGeneralProrperties();
+              FillDescriptionProperties();
+              FillFavoriteSecurity();
+              FillFavoriteDisplayOptions();
+              FillFavoriteExecuteBeforeOptions();
+              this.consolePreferences.FillFavorite(this.Favorite);
+              this.FillFavoriteVmrcOptions();
+              this.FillFavoriteVncOptions();
+              FillFavoriteICAOPtions();
+              FillFavoriteSSHOptions();
+              FillFavoriteRdpOptions();
 
-                if (defaultFav)
-                    SaveDefaultFavorite();
-                else
-                    this.CommitFavoriteChanges();
+              if (defaultFav)
+                SaveDefaultFavorite();
+              else
+                this.CommitFavoriteChanges();
 
-                return true;
+              return true;
+            }
+            catch (DbEntityValidationException entityValidation)
+            {
+              EntityLogValidationErrors(entityValidation);
+              return false;
             }
             catch (Exception e)
             {
@@ -851,7 +857,19 @@ namespace Terminals
             }
         }
 
-        /// <summary>
+      private static void EntityLogValidationErrors(DbEntityValidationException entityValidation)
+      {
+        Logging.Log.Error("Entity exception", entityValidation);
+        foreach (DbEntityValidationResult validationResult in entityValidation.EntityValidationErrors)
+        {
+          foreach (DbValidationError propertyError in validationResult.ValidationErrors)
+          {
+            Logging.Log.Error(string.Format("Validation error '{0}': {1}", propertyError.PropertyName, propertyError.ErrorMessage));
+          }
+        }
+      }
+
+      /// <summary>
         /// Overwrites favortie property by favorite stored in persistence
         /// or newly created one
         /// </summary>
