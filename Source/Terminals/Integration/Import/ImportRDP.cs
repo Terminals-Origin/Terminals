@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Terminals.Integration.Import
 {
@@ -89,9 +90,9 @@ namespace Terminals.Integration.Import
         {
             foreach (string line in lines)
             {
-                int valueStartIndex = line.LastIndexOf(":") + 1;
-                string propertyName = line.Substring(0, valueStartIndex);
-                string propertyValue = line.Substring(valueStartIndex);
+                Match result = Regex.Match(line, "(?<propertyName>(?<varName>[^:]+):(?<varType>[^:]+):)(?<value>.*)");
+                string propertyName = result.Groups["propertyName"].Value;
+                string propertyValue = result.Groups["value"].Value;
                 ImportProperty(favorite, propertyName, propertyValue);
             }
         }
@@ -101,12 +102,10 @@ namespace Terminals.Integration.Import
             switch (propertyName)
             {
                 case FULLADDRES:
-                    favorite.ServerName = propertyValue;
+                    FillServerName(favorite, propertyValue);
                     break;
                 case SERVERPORT:
-                    int port = 3389;
-                    int.TryParse(propertyValue, out port);
-                    favorite.Port = port;
+                    FillPort(favorite, propertyValue);
                     break;
                 case USERNAME:
                     favorite.UserName = propertyValue;
@@ -189,6 +188,21 @@ namespace Terminals.Integration.Import
                     favorite.TsgwCredsSource = tsgwCredsSource;
                     break;
             }
+        }
+
+        private static void FillServerName(FavoriteConfigurationElement favorite, string propertyValue)
+        {
+            string[] parts = propertyValue.Split(':');
+            favorite.ServerName = parts[0];
+            if (parts.Length == 2)
+                FillPort(favorite, parts[1]);
+        }
+
+        private static void FillPort(FavoriteConfigurationElement favorite, string propertyValue)
+        {
+            int port = 3389;
+            int.TryParse(propertyValue, out port);
+            favorite.Port = port;
         }
 
         private static DesktopSize ConvertToDesktopSize(string propertyValue)
