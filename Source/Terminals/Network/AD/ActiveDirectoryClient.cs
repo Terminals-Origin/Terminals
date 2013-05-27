@@ -91,15 +91,23 @@ namespace Terminals.Network
             {
                 using (DirectorySearcher searcher = CreateSearcher(entry, searchParams))
                 {
-                    foreach (SearchResult result in searcher.FindAll())
+                    using (SearchResultCollection found = searcher.FindAll())
                     {
-                        if (this.CancelationPending)
-                            return;
-                        DirectoryEntry computer = result.GetDirectoryEntry();
-                        var comp = ActiveDirectoryComputer.FromDirectoryEntry(searchParams.Domain, computer);
-                        FireComputerFound(comp);
+                        this.ImportResults(searchParams, found);
                     }
                 }
+            }
+        }
+
+        private void ImportResults(ActiveDirectorySearchParams searchParams, SearchResultCollection found)
+        {
+            foreach (SearchResult result in found)
+            {
+                if (this.CancelationPending)
+                    return;
+                DirectoryEntry computer = result.GetDirectoryEntry();
+                var comp = ActiveDirectoryComputer.FromDirectoryEntry(searchParams.Domain, computer);
+                this.FireComputerFound(comp);
             }
         }
 
