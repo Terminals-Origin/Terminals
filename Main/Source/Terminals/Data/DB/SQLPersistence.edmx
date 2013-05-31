@@ -63,8 +63,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="255" />
-          <Property Name="Domain" Type="nvarchar" MaxLength="255" />
+          <Property Name="EncryptedUserName" Type="nvarchar(max)" />
+          <Property Name="EncryptedDomain" Type="nvarchar(max)" />
           <Property Name="EncryptedPassword" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Credentials">
@@ -288,14 +288,14 @@
           <Parameter Name="WaitForExit" Type="bit" Mode="In" />
         </Function>
         <Function Name="InsertCredentialBase" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
-          <Parameter Name="Domain" Type="nvarchar" Mode="In" />
+          <Parameter Name="EncryptedUserName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedDomain" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="EncryptedPassword" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="InsertCredentials" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Name" Type="nvarchar" Mode="In" />
-          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
-          <Parameter Name="Domain" Type="nvarchar" Mode="In" />
+          <Parameter Name="EncryptedUserName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedDomain" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="EncryptedPassword" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="InsertDisplayOptions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -346,15 +346,15 @@
         </Function>
         <Function Name="UpdateCredentialBase" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
-          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
-          <Parameter Name="Domain" Type="nvarchar" Mode="In" />
+          <Parameter Name="EncryptedUserName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedDomain" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="EncryptedPassword" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="UpdateCredentials" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Id" Type="int" Mode="In" />
           <Parameter Name="Name" Type="nvarchar" Mode="In" />
-          <Parameter Name="UserName" Type="nvarchar" Mode="In" />
-          <Parameter Name="Domain" Type="nvarchar" Mode="In" />
+          <Parameter Name="EncryptedUserName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EncryptedDomain" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="EncryptedPassword" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="UpdateDisplayOptions" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -489,8 +489,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-          <Property Type="String" Name="EncryptedUserName" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="EncryptedDomain" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EncryptedUserName" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="EncryptedDomain" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="EncryptedPassword" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Security" Relationship="Terminals.Data.DB.FK_Security_CredentialBase" FromRole="CredentialBase" ToRole="SecurityOptions" />
         </EntityType>
@@ -651,15 +651,15 @@
             <EntityTypeMapping TypeName="Terminals.Data.DB.DbCredentialBase">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertCredentialBase">
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="EncryptedDomain" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="EncryptedUserName" />
                   <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" />
-                  <ScalarProperty Name="EncryptedDomain" ParameterName="Domain" />
-                  <ScalarProperty Name="EncryptedUserName" ParameterName="UserName" />
                   <ResultBinding Name="Id" ColumnName="Id" />
                 </InsertFunction>
                 <UpdateFunction FunctionName="Model1.Store.UpdateCredentialBase">
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="EncryptedDomain" Version="Current" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="EncryptedUserName" Version="Current" />
                   <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" Version="Current" />
-                  <ScalarProperty Name="EncryptedDomain" ParameterName="Domain" Version="Current" />
-                  <ScalarProperty Name="EncryptedUserName" ParameterName="UserName" Version="Current" />
                   <ScalarProperty Name="Id" ParameterName="Id" Version="Current" />
                 </UpdateFunction>
                 <DeleteFunction FunctionName="Model1.Store.DeleteCredentialBase">
@@ -670,16 +670,16 @@
             <EntityTypeMapping TypeName="Terminals.Data.DB.DbCredentialSet" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
               <ModificationFunctionMapping>
                 <InsertFunction FunctionName="Model1.Store.InsertCredentials">
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="EncryptedDomain" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="EncryptedUserName" />
                   <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" />
-                  <ScalarProperty Name="EncryptedUserName" ParameterName="UserName" />
-                  <ScalarProperty Name="EncryptedDomain" ParameterName="Domain" />
                   <ScalarProperty Name="Name" ParameterName="Name" />
                   <ResultBinding Name="Id" ColumnName="Id" />
                 </InsertFunction>
                 <UpdateFunction FunctionName="Model1.Store.UpdateCredentials">
+                  <ScalarProperty Name="EncryptedDomain" ParameterName="EncryptedDomain" Version="Current" />
+                  <ScalarProperty Name="EncryptedUserName" ParameterName="EncryptedUserName" Version="Current" />
                   <ScalarProperty Name="EncryptedPassword" ParameterName="EncryptedPassword" Version="Current" />
-                  <ScalarProperty Name="EncryptedDomain" ParameterName="Domain" Version="Current" />
-                  <ScalarProperty Name="EncryptedUserName" ParameterName="UserName" Version="Current" />
                   <ScalarProperty Name="Id" ParameterName="Id" Version="Current" />
                   <ScalarProperty Name="Name" ParameterName="Name" Version="Current" />
                 </UpdateFunction>
@@ -690,9 +690,9 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(Terminals.Data.DB.DbCredentialBase)">
               <MappingFragment StoreEntitySet="CredentialBase">
+                <ScalarProperty Name="EncryptedDomain" ColumnName="EncryptedDomain" />
+                <ScalarProperty Name="EncryptedUserName" ColumnName="EncryptedUserName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="EncryptedUserName" ColumnName="UserName" />
-                <ScalarProperty Name="EncryptedDomain" ColumnName="Domain" />
                 <ScalarProperty Name="EncryptedPassword" ColumnName="EncryptedPassword" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -919,7 +919,7 @@
     <edmx:Diagrams>
       <Diagram Name="Model1" xmlns="http://schemas.microsoft.com/ado/2008/10/edmx" ZoomLevel="108">
         <EntityTypeShape EntityType="Terminals.Data.DB.DbBeforeConnectExecute" Width="2" PointX="4.625" PointY="4.125" Height="2.0853483072916674" />
-        <EntityTypeShape EntityType="Terminals.Data.DB.DbCredentialBase" Width="1.5" PointX="0.5" PointY="4" Height="1.7566536458333335" />
+        <EntityTypeShape EntityType="Terminals.Data.DB.DbCredentialBase" Width="1.75" PointX="0.5" PointY="4" Height="1.9802864583333335" />
         <EntityTypeShape EntityType="Terminals.Data.DB.DbCredentialSet" Width="1.5" PointX="0.625" PointY="0.5" Height="1.0992643229166668" />
         <EntityTypeShape EntityType="Terminals.Data.DB.DbDisplayOptions" Width="1.5" PointX="6.875" PointY="4.125" Height="1.9210009765625031" />
         <EntityTypeShape EntityType="Terminals.Data.DB.DbFavorite" Width="1.75" PointX="4.625" PointY="0.5" Height="3.2357796223958331" />
@@ -955,12 +955,12 @@
           <ConnectorPoint PointX="6.875" PointY="1.3783268229166668" />
         </AssociationConnector>
         <InheritanceConnector EntityType="Terminals.Data.DB.DbCredentialSet" ManuallyRouted="false" >
-          <ConnectorPoint PointX="1.25" PointY="4" />
-          <ConnectorPoint PointX="1.2462687477508798" PointY="1.5992643229166668" />
+          <ConnectorPoint PointX="1.375" PointY="4" />
+          <ConnectorPoint PointX="1.375" PointY="1.7110807291666668" />
         </InheritanceConnector>
         <AssociationConnector Association="Terminals.Data.DB.FK_Security_CredentialBase" >
-          <ConnectorPoint PointX="2" PointY="4.9211531575520837" />
-          <ConnectorPoint PointX="2.75" PointY="4.9211531575520837" />
+          <ConnectorPoint PointX="2.25" PointY="5.0189925130208337" />
+          <ConnectorPoint PointX="2.75" PointY="5.0189925130208337" />
         </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>
