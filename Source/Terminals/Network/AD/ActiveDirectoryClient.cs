@@ -117,8 +117,7 @@ namespace Terminals.Network
             searcher.Asynchronous = true;
             searcher.Filter = searchParams.Filter;
             searcher.SearchRoot = new DirectoryEntry("LDAP://"+searchParams.Searchbase);
-            // http://stackoverflow.com/questions/90652/can-i-get-more-than-1000-records-from-a-directorysearcher-in-asp-net
-            searcher.SizeLimit = searchParams.MaximumResults;
+            searcher.PageSize = searchParams.PageSize;
             return searcher;
         }
 

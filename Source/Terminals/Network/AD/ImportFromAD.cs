@@ -47,7 +47,7 @@ namespace Terminals.Network
             {
                 this.bsComputers.Clear();
                 var searchParams = new ActiveDirectorySearchParams(this.domainTextbox.Text,
-                    this.ldapFilterTextbox.Text, this.maxResultsTextBox.Text,this.searchbaseTextbox.Text);
+                    this.ldapFilterTextbox.Text, this.searchbaseTextbox.Text);
                 adClient.FindComputers(searchParams);
                 this.lblProgressStatus.Text = "Contacting domain...";
                 this.SwitchToRunningMode();
@@ -168,7 +168,6 @@ namespace Terminals.Network
         private void resetButton_Click(object sender, EventArgs e)
         {
             this.ldapFilterTextbox.Text = ActiveDirectorySearchParams.DEFAULT_FILTER;
-            this.maxResultsTextBox.Text = ActiveDirectorySearchParams.DEFAULT_MAX_RESULTS.ToString();
             this.searchbaseTextbox.Text = string.Empty;
             this.domainTextbox.Text = this.defautlDomainName;
         }
