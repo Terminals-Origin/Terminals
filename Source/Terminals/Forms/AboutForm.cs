@@ -30,7 +30,7 @@ namespace Terminals
         private void AboutForm_Load(object sender, EventArgs e)
         {
             this.titleLabel.Text += string.Format("({0})", Program.Info.Description);
-            this.lblVersion.Text = Program.Info.GetAboutText(Persistence.Instance.Id);
+            this.lblVersion.Text = Program.Info.GetAboutText(Persistence.Instance.Name);
             this.textBox1.Text = this.FormatDetails();
         }
 

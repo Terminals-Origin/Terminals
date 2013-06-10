@@ -1247,7 +1247,7 @@ namespace Terminals
             if (Settings.ShowInformationToolTips && selectedTab != null)
                 this.Text = selectedTab.ToolTipText.Replace("\r\n", "; ");
             else
-                this.Text = Program.Info.GetAboutText(Persistence.Instance.Id);
+                this.Text = Program.Info.GetAboutText(Persistence.Instance.Name);
         }
 
         private void tscConnectTo_TextChanged(object sender, EventArgs e)

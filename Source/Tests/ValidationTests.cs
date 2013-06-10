@@ -24,7 +24,7 @@ namespace Tests
         }
 
         [TestMethod]
-        public void FavoriteValidationTest()
+        public void DbFavoriteValidationTest()
         {
             var favorite = new DbFavorite();
             favorite.Protocol = "12345678901";

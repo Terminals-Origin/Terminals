@@ -10,7 +10,7 @@ namespace Tests.SqlPersisted
     [TestClass]
     public class FavoriteCopiesTest : TestsLab
     {
-        private const string FAVORITE_SERVERNAME2 = "Second server";
+        private const string FAVORITE_SERVERNAME2 = "Second_server";
 
         [TestInitialize]
         public void TestInitialize()
