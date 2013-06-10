@@ -161,5 +161,23 @@ namespace Terminals.Connections
         {
             return protocol == HTTP || protocol == HTTPS;
         }
+
+        internal static bool IsKnownProtocol(string protocol)
+        {
+            switch (protocol)
+            {
+                case VNC:
+                case VMRC:
+                case TELNET:
+                case SSH:
+                case RDP:
+                case ICA_CITRIX:
+                case HTTP:
+                case HTTPS:
+                    return true;
+                default:
+                    return false;
+            } 
+        }
     }
 }
