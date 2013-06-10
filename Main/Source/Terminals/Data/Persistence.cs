@@ -25,7 +25,7 @@ namespace Terminals.Data
 
         private void InitializePersistence()
         {
-            if (Settings.PersistenceType == 0)
+            if (Settings.PersistenceType == FilePersistence.TYPE_ID)
                 this.persistence = new FilePersistence();
             else
                 this.persistence = new SqlPersistence();

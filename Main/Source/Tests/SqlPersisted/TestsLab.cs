@@ -18,7 +18,7 @@ namespace Tests.SqlPersisted
 
         protected const string FAVORITE_NAME = "test";
 
-        protected const string FAVORITE_SERVERNAME = "test server";
+        protected const string FAVORITE_SERVERNAME = "test_server";
 
         /// <summary>
         /// Gets sample text value to be checked in tests when used as password, user name or another tested value

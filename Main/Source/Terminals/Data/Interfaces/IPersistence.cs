@@ -9,7 +9,15 @@ namespace Terminals.Data
     /// </summary>
     internal interface IPersistence
     {
-        string Id { get; }
+        /// <summary>
+        /// Gets number identifying the persistence type to distinguish target stores by selected configuration
+        /// </summary>
+        int TypeId { get; }
+        
+        /// <summary>
+        /// Gets friendly name of the persistence. Used to present current persistence to the user
+        /// </summary>
+        string Name { get; }
 
         IFavorites Favorites { get; }
         

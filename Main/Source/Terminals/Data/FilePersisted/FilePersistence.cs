@@ -12,7 +12,14 @@ namespace Terminals.Data
 {
     internal class FilePersistence : IPersistence, IPersistedSecurity
     {
-        public string Id { get { return "Files"; } }
+        /// <summary>
+        /// Gets unique id of the persistence to be stored in settings (0)
+        /// </summary>
+        internal const int TYPE_ID = 0;
+
+        public int TypeId { get { return TYPE_ID; } }
+
+        public string Name { get { return "Files"; } }
 
         private readonly Favorites favorites;
         public IFavorites Favorites

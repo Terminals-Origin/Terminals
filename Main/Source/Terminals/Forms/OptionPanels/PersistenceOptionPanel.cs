@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Terminals.Configuration;
+using Terminals.Data;
 using Terminals.Data.DB;
 using System.Collections.Generic;
 
@@ -13,8 +14,6 @@ namespace Terminals.Forms
 {
     internal partial class PersistenceOptionPanel : UserControl, IOptionPanel
     {
-        private readonly bool filePersistence = Settings.PersistenceType == 0;
-
         /// <summary>
         /// don't depend only on the user control properties.
         /// Using this instance we are able to update all connections string properties,
@@ -67,6 +66,7 @@ namespace Terminals.Forms
         private void ActivateCheckBoxes()
         {
             // we have to check both, because when false, the user control only uncheck
+            bool filePersistence = Settings.PersistenceType == FilePersistence.TYPE_ID;
             this.rbtnSqlPersistence.Checked = !filePersistence;
             this.rbtnFilePersistence.Checked = filePersistence;
         }
@@ -84,15 +84,16 @@ namespace Terminals.Forms
 
         public void SaveSettings()
         {
-            Settings.PersistenceType = Convert.ToByte(this.rbtnSqlPersistence.Checked);
             if (this.rbtnSqlPersistence.Checked)
             {
-                Settings.ConnectionString = ConnectionString;
+                Settings.PersistenceType = SqlPersistence.TYPE_ID;
+                Settings.ConnectionString = this.ConnectionString;
                 if (this.txtDbPassword.Text != NewTerminalForm.HIDDEN_PASSWORD)
                     Settings.DatabaseMasterPassword = this.txtDbPassword.Text;
             }
             else
             {
+                Settings.PersistenceType = FilePersistence.TYPE_ID;
                 Settings.ConnectionString = string.Empty;
                 Settings.DatabaseMasterPassword = string.Empty;
             }

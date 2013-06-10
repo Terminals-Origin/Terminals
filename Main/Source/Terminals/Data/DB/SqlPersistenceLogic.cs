@@ -27,7 +27,14 @@ namespace Terminals.Data.DB
             set { this.reLoadClock.Interval = 1000 * value; }
         }
 
-        public string Id { get { return "Database"; } }
+        /// <summary>
+        /// Gets unique id of the persistence to be stored in settings (1)
+        /// </summary>
+        internal const int TYPE_ID = 1;
+
+        public int TypeId { get { return TYPE_ID; } }
+
+        public string Name { get { return "Database"; } }
 
         private Favorites favorites;
         public IFavorites Favorites
