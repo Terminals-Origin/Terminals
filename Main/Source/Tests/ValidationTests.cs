@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Terminals.Data;
 using Terminals.Data.DB;
 using Terminals.Data.Validation;
 
@@ -21,6 +22,16 @@ namespace Tests
             }
 
             longText = longTextBuilder.ToString();
+        }
+
+        [TestMethod]
+        public void FavoriteValidationTest()
+        {
+            var favorite = new Favorite();
+            favorite.Protocol = longText.Substring(0, 11);
+            favorite.ServerName = longText;
+            var results = Validations.Validate(favorite);
+            Assert.AreEqual(results.Count, 3, "Some properties arent validated properly for Favorite");
         }
 
         [TestMethod]
@@ -46,7 +57,7 @@ namespace Tests
             var serverNameErrors = results.Count(result => result.PropertyName == "ServerName");
             Assert.AreEqual(serverNameErrors, 2, "DbFavorite ServerName wasnt validated properly");
             var protocolErrors = results.Count(result => result.PropertyName == "Protocol");
-            Assert.AreEqual(protocolErrors, 2, "DbFavorite ServerName wasnt validated properly");
+            Assert.AreEqual(protocolErrors, 2, "DbFavorite protocol wasnt validated properly");
         }
 
         [TestMethod]

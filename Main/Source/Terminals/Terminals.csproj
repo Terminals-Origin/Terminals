@@ -183,6 +183,7 @@
     <Compile Include="Data\Validation\DbFavoriteMetadata.cs" />
     <Compile Include="Data\DB\FavoritesBatchActions.cs" />
     <Compile Include="Data\Validation\DbGroupMetadata.cs" />
+    <Compile Include="Data\Validation\FavoriteMetadata.cs" />
     <Compile Include="Data\Validation\ValidationState.cs" />
     <Compile Include="Data\Validation\Validations.cs" />
     <Compile Include="Forms\FavoriteViewModel.cs" />
