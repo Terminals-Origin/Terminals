@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,26 +18,44 @@ namespace Terminals.Data.Validation
 
         static Validations()
         {
-            var favorteAssociation = new AssociatedMetadataTypeTypeDescriptionProvider(typeof(DbFavorite), typeof(DbFavoriteMetadata));
-            TypeDescriptor.AddProviderTransparent(favorteAssociation, typeof(DbFavorite));
-            var executeAssociation = new AssociatedMetadataTypeTypeDescriptionProvider(typeof(DbBeforeConnectExecute), typeof(DbBeforeConnectExecuteMetadata));
-            TypeDescriptor.AddProviderTransparent(executeAssociation, typeof(DbBeforeConnectExecute));
-            var groupAssociation = new AssociatedMetadataTypeTypeDescriptionProvider(typeof(DbGroup), typeof(DbGroupMetadata));
-            TypeDescriptor.AddProviderTransparent(groupAssociation, typeof(DbGroup));
-            var credentialsAssociation = new AssociatedMetadataTypeTypeDescriptionProvider(typeof(DbCredentialSet), typeof(DbCredentialSetMetadata));
-            TypeDescriptor.AddProviderTransparent(credentialsAssociation, typeof(DbCredentialSet));
+            RegisterProvider(typeof(DbFavorite), typeof(DbFavoriteMetadata));
+            RegisterProvider(typeof(DbBeforeConnectExecute), typeof(DbBeforeConnectExecuteMetadata));
+            RegisterProvider(typeof(DbGroup), typeof(DbGroupMetadata));
+            RegisterProvider(typeof(DbCredentialSet), typeof(DbCredentialSetMetadata));
 
             // todo replace the validation in NewFavorite Form
             // todo add file persisted favorite validations
         }
 
-        internal static List<ValidationState> ValidateFavorite(IFavorite favorite)
+        private static void RegisterProvider(Type itemType, Type metadataType)
+        {
+            var association = new AssociatedMetadataTypeTypeDescriptionProvider(itemType, metadataType);
+            TypeDescriptor.AddProviderTransparent(association, itemType);
+        }
+
+        internal static List<ValidationState> Validate(IFavorite favorite)
+        {
+            List<ValidationState> results = ValidateObject(favorite);
+            var executeResults = ValidateObject(favorite.ExecuteBeforeConnect);
+            results.AddRange(executeResults);
+            return results;
+        }
+
+        internal static List<ValidationState> Validate(ICredentialSet credentialSet)
+        {
+            return ValidateObject(credentialSet);
+        }
+
+        internal static List<ValidationState> Validate(IGroup group)
+        {
+            return ValidateObject(group);
+        }
+
+        private static List<ValidationState> ValidateObject(object toValidate)
         {
             var results = new List<ValidationResult>();
-            Validator.TryValidateObject(favorite, new ValidationContext(favorite, null, null), results, true);
-            var beforeExcute = favorite.ExecuteBeforeConnect;
-            Validator.TryValidateObject(beforeExcute, new ValidationContext(beforeExcute, null, null), results, true);
-            return ConvertResultsToStates(results);
+            Validator.TryValidateObject(toValidate, new ValidationContext(toValidate, null, null), results, true);
+            return ConvertResultsToStates(results); 
         }
 
         private static List<ValidationState> ConvertResultsToStates(List<ValidationResult> results)
