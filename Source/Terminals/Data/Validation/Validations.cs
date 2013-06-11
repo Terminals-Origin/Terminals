@@ -17,18 +17,20 @@ namespace Terminals.Data.Validation
 
         static Validations()
         {
-            var favorteAssociation = new AssociatedMetadataTypeTypeDescriptionProvider(typeof(DbFavorite), typeof(DbFavoriteMetaData));
+            var favorteAssociation = new AssociatedMetadataTypeTypeDescriptionProvider(typeof(DbFavorite), typeof(DbFavoriteMetadata));
             TypeDescriptor.AddProviderTransparent(favorteAssociation, typeof(DbFavorite));
             var executeAssociation = new AssociatedMetadataTypeTypeDescriptionProvider(typeof(DbBeforeConnectExecute), typeof(DbBeforeConnectExecuteMetadata));
             TypeDescriptor.AddProviderTransparent(executeAssociation, typeof(DbBeforeConnectExecute));
+            var groupAssociation = new AssociatedMetadataTypeTypeDescriptionProvider(typeof(DbGroup), typeof(DbGroupMetadata));
+            TypeDescriptor.AddProviderTransparent(groupAssociation, typeof(DbGroup));
+            var credentialsAssociation = new AssociatedMetadataTypeTypeDescriptionProvider(typeof(DbCredentialSet), typeof(DbCredentialSetMetadata));
+            TypeDescriptor.AddProviderTransparent(credentialsAssociation, typeof(DbCredentialSet));
 
-            // todo add other properties validation:
-            // - Group max lenght
-            // - Credential name max. lenght
             // todo replace the validation in NewFavorite Form
+            // todo add file persisted favorite validations
         }
 
-        internal static List<ValidationState> ValidateFavorite(DbFavorite favorite)
+        internal static List<ValidationState> ValidateFavorite(IFavorite favorite)
         {
             var results = new List<ValidationResult>();
             Validator.TryValidateObject(favorite, new ValidationContext(favorite, null, null), results, true);

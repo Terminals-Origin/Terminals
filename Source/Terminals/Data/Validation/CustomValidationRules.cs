@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using Terminals.Configuration;
 using Terminals.Connections;
-using Terminals.Data.DB;
 
 namespace Terminals.Data.Validation
 {

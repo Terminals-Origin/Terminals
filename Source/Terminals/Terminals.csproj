@@ -179,8 +179,10 @@
     <Compile Include="Data\DB\ChangedVersionComparer.cs" />
     <Compile Include="Data\Validation\CustomValidationRules.cs" />
     <Compile Include="Data\Validation\DbBeforeConnectExecuteMetadata.cs" />
-    <Compile Include="Data\Validation\DbFavoriteMetaData.cs" />
+    <Compile Include="Data\Validation\DbCredentialSetMetadata.cs" />
+    <Compile Include="Data\Validation\DbFavoriteMetadata.cs" />
     <Compile Include="Data\DB\FavoritesBatchActions.cs" />
+    <Compile Include="Data\Validation\DbGroupMetadata.cs" />
     <Compile Include="Data\Validation\ValidationState.cs" />
     <Compile Include="Data\Validation\Validations.cs" />
     <Compile Include="Forms\FavoriteViewModel.cs" />

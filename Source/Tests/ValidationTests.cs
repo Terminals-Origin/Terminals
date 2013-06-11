@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Terminals.Configuration;
 using Terminals.Data.DB;
 using Terminals.Data.Validation;
+using Tests.FilePersisted;
 
 namespace Tests
 {
@@ -26,13 +28,17 @@ namespace Tests
         [TestMethod]
         public void DbFavoriteValidationTest()
         {
+            // created dbfavorite is not compleate, only necessary to make validable using IFavorite
             var favorite = new DbFavorite();
-            favorite.Protocol = "12345678901";
+            favorite.ExecuteBeforeConnect = new DbBeforeConnectExecute();
+            favorite.Security = new DbSecurityOptions();
+            favorite.Details.LoadFieldsFromReferences();
+            
+            favorite.Protocol = longText.Substring(0, 11);
             favorite.ServerName = longText;
             favorite.Name = longText;
             favorite.Notes = longText;
-
-            favorite.ExecuteBeforeConnect = new DbBeforeConnectExecute();
+            
             favorite.ExecuteBeforeConnect.Command = longText;
             favorite.ExecuteBeforeConnect.CommandArguments = longText;
             favorite.ExecuteBeforeConnect.InitialDirectory = longText;
