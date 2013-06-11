@@ -16,15 +16,22 @@ namespace Terminals.Data.Validation
 
         internal const string UNKNOWN_PROTOCOL = "Protocol is unknown";
 
+        internal const string PORT_RANGE = "Port has to be a number in range 0-65535.";
+
         static Validations()
         {
-            RegisterProvider(typeof(DbFavorite), typeof(DbFavoriteMetadata));
-            RegisterProvider(typeof(DbBeforeConnectExecute), typeof(DbBeforeConnectExecuteMetadata));
-            RegisterProvider(typeof(DbGroup), typeof(DbGroupMetadata));
-            RegisterProvider(typeof(DbCredentialSet), typeof(DbCredentialSetMetadata));
+            RegisterSqlValidations();
+            RegisterProvider(typeof(Favorite), typeof(FavoriteMetadata));
 
             // todo replace the validation in NewFavorite Form
-            // todo add file persisted favorite validations
+        }
+
+        private static void RegisterSqlValidations()
+        {
+            RegisterProvider(typeof (DbFavorite), typeof (DbFavoriteMetadata));
+            RegisterProvider(typeof (DbBeforeConnectExecute), typeof (DbBeforeConnectExecuteMetadata));
+            RegisterProvider(typeof (DbGroup), typeof (DbGroupMetadata));
+            RegisterProvider(typeof (DbCredentialSet), typeof (DbCredentialSetMetadata));
         }
 
         private static void RegisterProvider(Type itemType, Type metadataType)

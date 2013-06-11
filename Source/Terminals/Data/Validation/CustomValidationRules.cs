@@ -7,6 +7,10 @@ namespace Terminals.Data.Validation
 {
     public class CustomValidationRules
     {
+        internal const string METHOD_ISVALIDSERVERNAME = "IsValidServerName";
+
+        internal const string METHOD_ISKNOWNPROTOCOL = "IsKnownProtocol";
+
         public static ValidationResult IsValidServerName(string serverName)
         {
             // todo add ConnectionManager.IsProtocolWebBased(protocol)
