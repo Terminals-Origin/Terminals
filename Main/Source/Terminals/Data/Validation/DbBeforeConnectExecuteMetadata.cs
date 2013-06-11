@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Terminals.Data.DB;
 
 namespace Terminals.Data.Validation
 {

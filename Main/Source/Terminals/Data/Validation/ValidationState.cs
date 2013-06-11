@@ -12,5 +12,10 @@
         /// Gets or sets a localized message to be shown as validation result
         /// </summary>
         internal string Message { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("ValidationState:{0}=>{1}", this.PropertyName, this.Message);
+        }
     }
 }
