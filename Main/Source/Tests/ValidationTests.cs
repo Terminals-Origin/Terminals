@@ -1,10 +1,8 @@
 ﻿using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Terminals.Configuration;
 using Terminals.Data.DB;
 using Terminals.Data.Validation;
-using Tests.FilePersisted;
 
 namespace Tests
 {
@@ -42,13 +40,31 @@ namespace Tests
             favorite.ExecuteBeforeConnect.Command = longText;
             favorite.ExecuteBeforeConnect.CommandArguments = longText;
             favorite.ExecuteBeforeConnect.InitialDirectory = longText;
-            var results = Validations.ValidateFavorite(favorite);
+            var results = Validations.Validate(favorite);
 
             Assert.AreEqual(results.Count, 9, "Some properties arent validated properly for DbFavorite");
             var serverNameErrors = results.Count(result => result.PropertyName == "ServerName");
             Assert.AreEqual(serverNameErrors, 2, "DbFavorite ServerName wasnt validated properly");
             var protocolErrors = results.Count(result => result.PropertyName == "Protocol");
             Assert.AreEqual(protocolErrors, 2, "DbFavorite ServerName wasnt validated properly");
+        }
+
+        [TestMethod]
+        public void DbGroupValidationTest()
+        {
+            var group = new DbGroup();
+            group.Name = longText;
+            var results = Validations.Validate(group);
+            Assert.AreEqual(results.Count, 1, "Group name validation failed");
+        }
+
+        [TestMethod]
+        public void DbCredentialsetValidationTest()
+        {
+            var credentailSet = new DbCredentialSet();
+            credentailSet.Name = longText;
+            var results = Validations.Validate(credentailSet);
+            Assert.AreEqual(results.Count, 1, "CredentailSet name validation failed");
         }
     }
 }
