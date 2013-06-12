@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Drawing;
@@ -11,6 +12,7 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Data;
+using Terminals.Data.Validation;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Network.Servers;
@@ -20,6 +22,7 @@ namespace Terminals
 {
     internal partial class NewTerminalForm : Form
     {
+        private NewTerminalFormValidator validator;
         private TerminalServerManager _terminalServerManager = new TerminalServerManager();
         private Dictionary<string, RASENTRY> _dialupList = new Dictionary<string, RASENTRY>();
         private String _currentToolBarFileName;
@@ -38,6 +41,12 @@ namespace Terminals
         {
             get { return Persistence.Instance.Favorites; }
         }
+
+        internal string ServerNameText { get { return this.cmbServers.Text; } }
+
+        internal string ProtocolText { get { return this.ProtocolComboBox.Text; } }
+
+        internal string PortText { get { return this.txtPort.Text; } }
 
         #region Constructors
 
@@ -58,6 +67,7 @@ namespace Terminals
             this.InitializeComponent();
             this.RedirectedDrives = new List<String>();
             this.RedirectDevices = false;
+            this.validator = new NewTerminalFormValidator(this);
         }
 
         #endregion
@@ -524,7 +534,7 @@ namespace Terminals
             this._terminalServerManager.Name = "terminalServerManager1";
             this._terminalServerManager.Size = new Size(748, 309);
             this._terminalServerManager.TabIndex = 0;
-            this._terminalServerManager.HostName = (!String.IsNullOrEmpty(this.cmbServers.Text)) ? this.cmbServers.Text : "localhost";
+            this._terminalServerManager.HostName = (!this.IsServerNameEmpty()) ? this.cmbServers.Text : "localhost";
             this.RdpSessionTabPage.Controls.Add(this._terminalServerManager);
         }
 
@@ -820,34 +830,34 @@ namespace Terminals
         {
             try
             {
-              if (!this.IsServerNameValid() || !this.IsPortValid())
-                return false;
+                if (this.validator.HasErrors())
+                    return false;
 
-              ResolveFavortie();
+                ResolveFavortie();
 
-              FillGeneralProrperties();
-              FillDescriptionProperties();
-              FillFavoriteSecurity();
-              FillFavoriteDisplayOptions();
-              FillFavoriteExecuteBeforeOptions();
-              this.consolePreferences.FillFavorite(this.Favorite);
-              this.FillFavoriteVmrcOptions();
-              this.FillFavoriteVncOptions();
-              FillFavoriteICAOPtions();
-              FillFavoriteSSHOptions();
-              FillFavoriteRdpOptions();
+                FillGeneralProrperties();
+                FillDescriptionProperties();
+                FillFavoriteSecurity();
+                FillFavoriteDisplayOptions();
+                FillFavoriteExecuteBeforeOptions();
+                this.consolePreferences.FillFavorite(this.Favorite);
+                this.FillFavoriteVmrcOptions();
+                this.FillFavoriteVncOptions();
+                FillFavoriteICAOPtions();
+                FillFavoriteSSHOptions();
+                FillFavoriteRdpOptions();
 
-              if (defaultFav)
-                SaveDefaultFavorite();
-              else
-                this.CommitFavoriteChanges();
+                if (defaultFav)
+                    SaveDefaultFavorite();
+                else
+                    this.CommitFavoriteChanges();
 
-              return true;
+                return true;
             }
             catch (DbEntityValidationException entityValidation)
             {
-              EntityLogValidationErrors(entityValidation);
-              return false;
+                EntityLogValidationErrors(entityValidation);
+                return false;
             }
             catch (Exception e)
             {
@@ -857,19 +867,19 @@ namespace Terminals
             }
         }
 
-      private static void EntityLogValidationErrors(DbEntityValidationException entityValidation)
-      {
-        Logging.Log.Error("Entity exception", entityValidation);
-        foreach (DbEntityValidationResult validationResult in entityValidation.EntityValidationErrors)
+        private static void EntityLogValidationErrors(DbEntityValidationException entityValidation)
         {
-          foreach (DbValidationError propertyError in validationResult.ValidationErrors)
-          {
-            Logging.Log.Error(string.Format("Validation error '{0}': {1}", propertyError.PropertyName, propertyError.ErrorMessage));
-          }
+            Logging.Log.Error("Entity exception", entityValidation);
+            foreach (DbEntityValidationResult validationResult in entityValidation.EntityValidationErrors)
+            {
+                foreach (DbValidationError propertyError in validationResult.ValidationErrors)
+                {
+                    Logging.Log.Error(string.Format("Validation error '{0}': {1}", propertyError.PropertyName, propertyError.ErrorMessage));
+                }
+            }
         }
-      }
 
-      /// <summary>
+        /// <summary>
         /// Overwrites favortie property by favorite stored in persistence
         /// or newly created one
         /// </summary>
@@ -896,7 +906,7 @@ namespace Terminals
             this.Favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
             this.Favorite.ServerName = this.cmbServers.Text;
             this.Favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
-            this.Favorite.Port = Int32.Parse(this.txtPort.Text);
+            this.Favorite.Port = Int32.Parse(this.PortText);
             this.FillWebProperties();
         }
 
@@ -1152,9 +1162,9 @@ namespace Terminals
             Settings.SaveAndFinishDelayedUpdate();
         }
 
-        private void ShowErrorMessageBox(string message)
+        internal void ShowErrorMessageBox(string message)
         {
-            MessageBox.Show(this, message, Terminals.Program.Info.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, message, Program.Info.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
@@ -1167,61 +1177,27 @@ namespace Terminals
                  .ToList();
         }
 
-        private bool IsServerNameValid()
-        {
-            if (ConnectionManager.IsProtocolWebBased(this.ProtocolComboBox.Text))
-                return true;
-
-            string serverName = this.cmbServers.Text.Trim();
-            return this.IsServerNameValid(serverName);
-        }
-
-        private bool IsServerNameValid(string serverName)
-        {
-            if (String.IsNullOrEmpty(serverName))
-            {
-                this.RerportErrorInServerName("Server name was not specified.");
-                return false;
-            }
-
-            if (Settings.ForceComputerNamesAsURI &&
-                Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
-            {
-                this.RerportErrorInServerName("Server name is not in the correct format.");
-                return false;
-            }
-
-            return true;
-        }
-
-        private void RerportErrorInServerName(string message)
+        internal void RerportErrorInServerName(string message)
         {
             ShowErrorMessageBox(message);
             this.cmbServers.Focus();
-        }
-
-        private bool IsPortValid()
-        {
-            Int32 result;
-            if (Int32.TryParse(this.txtPort.Text, out result) && result >= 0 && result < 65536)
-                return true;
-
-            ShowErrorMessageBox("Port must be a number between 0 and 65535");
-            this.txtPort.Focus();
-            return false;
         }
 
         private void SetOkButtonState()
         {
             if (this.httpUrlTextBox.Visible)
             {
-                Uri testUri = GetFullUrlFromHttpTextBox();
-                this.btnSave.Enabled = testUri != null;
+                this.btnSave.Enabled = this.validator.IsUrlValid();
             }
             else
             {
-                this.btnSave.Enabled = this.cmbServers.Text != String.Empty;
+                this.btnSave.Enabled = !this.IsServerNameEmpty();
             }
+        }
+
+        private bool IsServerNameEmpty()
+        {
+            return this.validator.IsServerNameEmpty(this.cmbServers.Text);
         }
 
         private static void GetServerAndPort(String Connection, out String Server, out Int32 Port)
@@ -1374,10 +1350,11 @@ namespace Terminals
             return openFileDialog;
         }
 
-        private Uri GetFullUrlFromHttpTextBox()
+        internal Uri GetFullUrlFromHttpTextBox()
         {
             string newUrlText = this.httpUrlTextBox.Text.ToLower();
             string protocolPrefix = this.ProtocolComboBox.Text.ToLower();
+
             if (!newUrlText.StartsWith(ConnectionManager.HTTP.ToLower()) &&
                 !newUrlText.StartsWith(ConnectionManager.HTTPS.ToLower()))
                 newUrlText = String.Format("{0}://{1}", protocolPrefix, newUrlText);
