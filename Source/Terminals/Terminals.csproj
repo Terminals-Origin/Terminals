@@ -187,6 +187,7 @@
     <Compile Include="Data\Validation\ValidationState.cs" />
     <Compile Include="Data\Validation\Validations.cs" />
     <Compile Include="Forms\FavoriteViewModel.cs" />
+    <Compile Include="Forms\NewTerminalFormValidator.cs" />
     <Compile Include="Forms\UnhandledTerminationForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -13,7 +13,6 @@ namespace Terminals.Data.Validation
 
         public static ValidationResult IsValidServerName(string serverName)
         {
-            // todo add ConnectionManager.IsProtocolWebBased(protocol)
             if (Settings.ForceComputerNamesAsURI && Uri.CheckHostName(serverName) == UriHostNameType.Unknown)
                 return new ValidationResult("Server name is not in the correct format.", new string[] { "ServerName" });
 
