@@ -52,7 +52,7 @@
       this.messageLabel.Name = "messageLabel";
       this.messageLabel.Size = new System.Drawing.Size(338, 38);
       this.messageLabel.TabIndex = 2;
-      this.messageLabel.Text = "Terminals has encountered a problem and needs to close.\r\nForm more details see lo" +
+      this.messageLabel.Text = "Terminals has encountered a problem and needs to close.\r\nFor more details see lo" +
     "g files.";
       // 
       // logoPictureBox
