@@ -42,7 +42,7 @@ namespace Terminals
             get { return Persistence.Instance.Favorites; }
         }
 
-        internal string ServerNameText { get { return this.cmbServers.Text; } }
+        internal string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
 
         internal string ProtocolText { get { return this.ProtocolComboBox.Text; } }
 
@@ -68,6 +68,11 @@ namespace Terminals
             this.RedirectedDrives = new List<String>();
             this.RedirectDevices = false;
             this.validator = new NewTerminalFormValidator(this);
+            this.txtPort.Validating += this.validator.OnPortValidating;
+            this.cmbServers.Validating += this.validator.OnServerNameValidating;
+            this.httpUrlTextBox.Validating += this.validator.OnUrlValidating;
+            this.errorProvider.SetIconAlignment(this.cmbServers, ErrorIconAlignment.MiddleLeft);
+            this.errorProvider.SetIconAlignment(this.httpUrlTextBox, ErrorIconAlignment.MiddleLeft);
         }
 
         #endregion
@@ -534,7 +539,7 @@ namespace Terminals
             this._terminalServerManager.Name = "terminalServerManager1";
             this._terminalServerManager.Size = new Size(748, 309);
             this._terminalServerManager.TabIndex = 0;
-            this._terminalServerManager.HostName = (!this.IsServerNameEmpty()) ? this.cmbServers.Text : "localhost";
+            this._terminalServerManager.HostName = !this.validator.IsServerNameEmpty() ? this.cmbServers.Text : "localhost";
             this.RdpSessionTabPage.Controls.Add(this._terminalServerManager);
         }
 
@@ -830,7 +835,7 @@ namespace Terminals
         {
             try
             {
-                if (this.validator.HasErrors())
+                if (!this.Validate())
                     return false;
 
                 ResolveFavortie();
@@ -857,12 +862,13 @@ namespace Terminals
             catch (DbEntityValidationException entityValidation)
             {
                 EntityLogValidationErrors(entityValidation);
+                this.ShowErrorMessageBox("Unable to save favorite, because database constrains are not satisfied");
                 return false;
             }
             catch (Exception e)
             {
                 Logging.Log.Info("Fill Favorite Failed", e);
-                ShowErrorMessageBox(e.Message);
+                this.ShowErrorMessageBox(e.Message);
                 return false;
             }
         }
@@ -1177,10 +1183,11 @@ namespace Terminals
                  .ToList();
         }
 
-        internal void RerportErrorInServerName(string message)
+        internal void SetErrorInfo(object target, string message)
         {
-            ShowErrorMessageBox(message);
-            this.cmbServers.Focus();
+            var control = target as Control;
+            if (control != null)
+                this.errorProvider.SetError(control, message);
         }
 
         private void SetOkButtonState()
@@ -1191,13 +1198,8 @@ namespace Terminals
             }
             else
             {
-                this.btnSave.Enabled = !this.IsServerNameEmpty();
+                this.btnSave.Enabled = !this.validator.IsServerNameEmpty();
             }
-        }
-
-        private bool IsServerNameEmpty()
-        {
-            return this.validator.IsServerNameEmpty(this.cmbServers.Text);
         }
 
         private static void GetServerAndPort(String Connection, out String Server, out Int32 Port)

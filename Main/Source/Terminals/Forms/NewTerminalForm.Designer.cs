@@ -32,9 +32,9 @@ namespace Terminals
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewTerminalForm));
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources4 = new Terminals.TerminalServices.GatewayCredentialsSources();
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources5 = new Terminals.TerminalServices.GatewayCredentialsSources();
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources6 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources1 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources2 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources3 = new Terminals.TerminalServices.GatewayCredentialsSources();
             this.btnCancel = new System.Windows.Forms.Button();
             this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -227,6 +227,7 @@ namespace Terminals
             this.label5 = new System.Windows.Forms.Label();
             this.lblServerName = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.heightUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
@@ -277,6 +278,7 @@ namespace Terminals
             this.GeneralGroupBox.SuspendLayout();
             this.CredentialsPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCancel
@@ -2109,16 +2111,16 @@ namespace Terminals
             // 
             this.cmbTSGWLogonMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTSGWLogonMethod.FormattingEnabled = true;
-            gatewayCredentialsSources4.DisplayName = "Ask for Password (NTLM)";
-            gatewayCredentialsSources4.ID = 0;
-            gatewayCredentialsSources5.DisplayName = "Smart Card";
-            gatewayCredentialsSources5.ID = 1;
-            gatewayCredentialsSources6.DisplayName = "Allow user to select later";
-            gatewayCredentialsSources6.ID = 4;
+            gatewayCredentialsSources1.DisplayName = "Ask for Password (NTLM)";
+            gatewayCredentialsSources1.ID = 0;
+            gatewayCredentialsSources2.DisplayName = "Smart Card";
+            gatewayCredentialsSources2.ID = 1;
+            gatewayCredentialsSources3.DisplayName = "Allow user to select later";
+            gatewayCredentialsSources3.ID = 4;
             this.cmbTSGWLogonMethod.Items.AddRange(new object[] {
-            gatewayCredentialsSources4,
-            gatewayCredentialsSources5,
-            gatewayCredentialsSources6});
+            gatewayCredentialsSources1,
+            gatewayCredentialsSources2,
+            gatewayCredentialsSources3});
             this.cmbTSGWLogonMethod.Location = new System.Drawing.Point(113, 30);
             this.cmbTSGWLogonMethod.Name = "cmbTSGWLogonMethod";
             this.cmbTSGWLogonMethod.Size = new System.Drawing.Size(224, 21);
@@ -2366,6 +2368,10 @@ namespace Terminals
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
+            // 
             // NewTerminalForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2457,6 +2463,7 @@ namespace Terminals
             this.CredentialsPanel.ResumeLayout(false);
             this.CredentialsPanel.PerformLayout();
             this.tabControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2658,5 +2665,6 @@ namespace Terminals
         private System.Windows.Forms.TextBox txtTag;
         private System.Windows.Forms.Button btnAddNewTag;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ErrorProvider errorProvider;
     }
 }
