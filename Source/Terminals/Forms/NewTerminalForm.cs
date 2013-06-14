@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
@@ -331,37 +332,35 @@ namespace Terminals
         private void ProtocolComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.SetControlsProtocolIndependent();
+            this.validator.OnServerNameValidating(this.cmbServers, new CancelEventArgs());
 
-            if (this.ProtocolComboBox.Text == ConnectionManager.RDP)
+            switch (this.ProtocolComboBox.Text)
             {
-                this.SetControlsForRdp();
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.VMRC)
-            {
-                this.VmrcGroupBox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.RAS)
-            {
-                this.SetControlsForRas();
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.VNC)
-            {
-                this.VncGroupBox.Enabled = true;
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.ICA_CITRIX)
-            {
-                this.IcaGroupBox.Enabled = true;
-            }
-            else if (ConnectionManager.IsProtocolWebBased(this.ProtocolComboBox.Text))
-            {
-                this.SetControlsForWeb();
-            }
-            else if (this.ProtocolComboBox.Text == ConnectionManager.SSH || this.ProtocolComboBox.Text == ConnectionManager.TELNET)
-            {
-                this.ConsoleGroupBox.Enabled = true;
-
-                if (this.ProtocolComboBox.Text == ConnectionManager.SSH)
-                    this.SshGroupBox.Enabled = true;
+                case ConnectionManager.RDP:
+                    this.SetControlsForRdp();
+                    break;
+                case ConnectionManager.VMRC:
+                    this.VmrcGroupBox.Enabled = true;
+                    break;
+                case ConnectionManager.RAS:
+                    this.SetControlsForRas();
+                    break;
+                case ConnectionManager.VNC:
+                    this.VncGroupBox.Enabled = true;
+                    break;
+                case ConnectionManager.ICA_CITRIX:
+                    this.IcaGroupBox.Enabled = true;
+                    break;
+                case ConnectionManager.HTTP:
+                case ConnectionManager.HTTPS:
+                    this.SetControlsForWeb();
+                    break;
+                case ConnectionManager.SSH:
+                case ConnectionManager.TELNET:
+                        this.ConsoleGroupBox.Enabled = true;
+                        if (this.ProtocolComboBox.Text == ConnectionManager.SSH)
+                            this.SshGroupBox.Enabled = true;
+                    break;
             }
 
             int defaultPort = ConnectionManager.GetPort(this.ProtocolComboBox.Text);
