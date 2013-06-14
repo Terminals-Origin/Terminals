@@ -55,11 +55,10 @@ namespace Terminals.Credentials
         private bool UpdateCredential()
         {
             ICredentialSet conflicting = Credentials[this.NameTextbox.Text];
-            if (conflicting != null && !conflicting.Equals(this.editedCredential) &&
-                EditedNameHasChanged())
-            {
+            bool hasConflicting = conflicting != null && !conflicting.Equals(this.editedCredential);
+            
+            if (hasConflicting && this.EditedNameHasChanged())
                 return UpdateConflicting(conflicting, this.editedCredential);
-            }
 
             UpdateOldOrCreateNew();
             return true;
@@ -67,17 +66,14 @@ namespace Terminals.Credentials
 
         private void UpdateOldOrCreateNew()
         {
-            bool nameChanded = EditedNameHasChanged();
-            if (this.editedCredential == null || nameChanded)
+            if (this.editedCredential != null)
             {
-                ICredentialSet newCredential = this.CreateNewCredential();
-                Credentials.Add(newCredential);
+                this.Update(this.editedCredential);
+                return;
             }
-            else
-            {
-                this.UpdateFromControls(this.editedCredential);
-                Credentials.Update(this.editedCredential);
-            }
+            
+            ICredentialSet newCredential = this.CreateNewCredential();
+            Credentials.Add(newCredential);
         }
 
         private bool EditedNameHasChanged()
@@ -95,12 +91,16 @@ namespace Terminals.Credentials
                 return false;
 
             if (oldItem != null)
-            {
                 Credentials.Remove(oldItem);
-            }
 
-            this.UpdateFromControls(conflicting);
+            this.Update(conflicting);
             return true;
+        }
+
+        private void Update(ICredentialSet conflicting)
+        {
+            this.UpdateFromControls(conflicting);
+            Credentials.Update(conflicting);
         }
 
         private void UpdateFromControls(ICredentialSet toUpdate)
