@@ -92,18 +92,10 @@ namespace Terminals.Data.DB
         {
             // not added groups don't have an identifier obtained from database
             List<IGroup> added = groups.Where(candidate => ((DbGroup)candidate).Id == 0).ToList();
-            AddAllToDatabase(database, added);
+            database.AddAll(added);
             List<DbGroup> toAttach = groups.Where(candidate => ((DbGroup)candidate).Id != 0).Cast<DbGroup>().ToList();
             database.Cache.AttachAll(toAttach);
             return added;
-        }
-
-        private static void AddAllToDatabase(Database database, List<IGroup> added)
-        {
-            foreach (DbGroup group in added)
-            {
-                database.Groups.Add(group);
-            }
         }
 
         public void Delete(IGroup group)
@@ -185,16 +177,8 @@ namespace Terminals.Data.DB
         {
             List<DbGroup> emptyGroups = this.GetEmptyGroups();
             database.Cache.AttachAll(emptyGroups);
-            DeleteFromDatabase(database, emptyGroups);
+            database.DeleteAll(emptyGroups);
             return emptyGroups;
-        }
-
-        private void DeleteFromDatabase(Database database, IEnumerable<DbGroup> groups)
-        {
-            foreach (DbGroup group in groups)
-            {
-                database.Groups.Remove(group);
-            }
         }
 
         private List<DbGroup> GetEmptyGroups()

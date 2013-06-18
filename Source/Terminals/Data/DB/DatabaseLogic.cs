@@ -96,5 +96,49 @@ namespace Terminals.Data.DB
             return this.Favorites.Where(candidate => candidate.Protocol == ConnectionManager.RDP)
                        .Select(rdpFavorite => rdpFavorite.Id).ToList();
         }
+
+        internal void AddAll(IEnumerable<DbFavorite> favorites)
+        {
+            foreach (DbFavorite favorite in favorites)
+            {
+                this.Favorites.Add(favorite);
+            }
+        }
+
+        /// <summary>
+        /// we have to delete the credentials base manually, this property uses lazy creation 
+        /// and therefore there is no database constraint
+        /// </summary>
+        internal void RemoveRedundantCredentialBase(List<DbCredentialBase> redundantCredentialBase)
+        {
+            foreach (DbCredentialBase credentialBase in redundantCredentialBase)
+            {
+                this.CredentialBase.Remove(credentialBase);
+            }
+        }
+
+        internal void DeleteAll(IEnumerable<DbFavorite> favorites)
+        {
+            foreach (DbFavorite favorite in favorites)
+            {
+                this.Favorites.Remove(favorite);
+            }
+        }
+
+        internal void AddAll(List<IGroup> added)
+        {
+            foreach (DbGroup group in added)
+            {
+                this.Groups.Add(group);
+            }
+        }
+
+        internal void DeleteAll(IEnumerable<DbGroup> groups)
+        {
+            foreach (DbGroup group in groups)
+            {
+                this.Groups.Remove(group);
+            }
+        }
     }
 }
