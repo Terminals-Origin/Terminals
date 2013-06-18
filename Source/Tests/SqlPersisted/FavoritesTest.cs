@@ -66,6 +66,9 @@ namespace Tests.SqlPersisted
         public void DeleteFavoriteTest()
         {
             DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
+            // force the password to be stored to ensure
+            ((IFavorite)favorite).Security.EncryptedPassword = VALIDATION_VALUE;
+            this.PrimaryFavorites.Update(favorite);
             this.PrimaryFavorites.Delete(favorite);
 
             int after = this.CheckFavorites.Count();
@@ -76,6 +79,8 @@ namespace Tests.SqlPersisted
             Assert.AreEqual(0, security, "Security wasn't deleted");
             int execute = this.CheckDatabase.BeforeConnectExecute.Count();
             Assert.AreEqual(0, execute, "BeforeConnectExecute wasn't deleted");
+            int credentialBase = this.CheckDatabase.CredentialBase.Count();
+            Assert.AreEqual(0, credentialBase, "CredentialBase wasn't deleted");
             Assert.AreEqual(1, this.deletedCount, "Event wasn't delivered");
         }
 

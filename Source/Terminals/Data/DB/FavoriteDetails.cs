@@ -40,6 +40,17 @@ namespace Terminals.Data.DB
                 }
             }
 
+            public DbCredentialBase CredentialBaseToRemove
+            {
+                get
+                {
+                    // dont return credential base, if if wasnt saved yet
+                    if (this.Loaded && !this.Security.NewCachedCredentials)
+                        return this.Security.CachedCredentials;
+                    return null;
+                }
+            }
+
             internal FavoriteDetails(DbFavorite favorite)
             {
                 this.favorite = favorite;
