@@ -75,7 +75,7 @@ namespace Terminals.Data.DB
             }
             catch (EntityException exception)
             {
-                this.dispatcher.ReportActionError(Add, favorites, this, exception, 
+                this.dispatcher.ReportActionError(Add, favorites, this, exception,
                     "Unable to add favorite to database.");
             }
         }
@@ -109,7 +109,7 @@ namespace Terminals.Data.DB
             }
             catch (EntityException exception)
             {
-                this.dispatcher.ReportActionError(Update, favorite, this, exception, 
+                this.dispatcher.ReportActionError(Update, favorite, this, exception,
                     "Unable to update favorite in database");
             }
         }
@@ -137,7 +137,7 @@ namespace Terminals.Data.DB
             }
             catch (EntityException exception)
             {
-                this.dispatcher.ReportActionError(UpdateFavorite, favorite, newGroups, this, exception, 
+                this.dispatcher.ReportActionError(UpdateFavorite, favorite, newGroups, this, exception,
                     "Unable to update favorite and its groups in database.");
             }
         }
@@ -191,7 +191,7 @@ namespace Terminals.Data.DB
                 this.SaveAndReportFavoriteUpdated(database, toUpdate);
             }
             catch (InvalidOperationException)
-            {   
+            {
                 this.cache.Delete(toUpdate);
                 this.dispatcher.ReportFavoriteDeleted(toUpdate);
             }
@@ -244,7 +244,10 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 List<DbFavorite> favoritesToDelete = favorites.Cast<DbFavorite>().ToList();
+                List<DbCredentialBase> redundantCredentialBase = SelectRedundantCredentialBase(favoritesToDelete);
                 this.DeleteFavoritesFromDatabase(database, favoritesToDelete);
+                database.SaveImmediatelyIfRequested();
+                RemoveRedundantCredentialBase(database, redundantCredentialBase);
                 database.SaveImmediatelyIfRequested();
                 this.groups.RefreshCache();
                 List<DbGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
@@ -252,6 +255,25 @@ namespace Terminals.Data.DB
                 List<IGroup> groupsToReport = this.groups.DeleteFromCache(deletedGroups);
                 this.dispatcher.ReportGroupsDeleted(groupsToReport);
                 this.FinishRemove(favorites, favoritesToDelete);
+            }
+        }
+
+        private static List<DbCredentialBase> SelectRedundantCredentialBase(IEnumerable<DbFavorite> favorites)
+        {
+            return favorites.Where(f => f.Details.CredentialBaseToRemove != null)
+                            .Select(f => f.Details.CredentialBaseToRemove)
+                            .ToList();
+        }
+
+        /// <summary>
+        /// we have to delete the credentials base manually, this property uses lazy creation 
+        /// and therefore there is no database constraint
+        /// </summary>
+        private void RemoveRedundantCredentialBase(Database database, List<DbCredentialBase> redundantCredentialBase)
+        {
+            foreach (DbCredentialBase credentialBase in redundantCredentialBase)
+            {
+                database.CredentialBase.Remove(credentialBase);
             }
         }
 
@@ -326,7 +348,7 @@ namespace Terminals.Data.DB
         {
             var values = new ApplyValueParams(Data.Favorites.ApplyUserNameToFavorites,
                                                       selectedFavorites, newUserName, "UserName");
-            this.batchActions.ApplyValue(values); 
+            this.batchActions.ApplyValue(values);
         }
 
         private void EnsureCache()
@@ -351,7 +373,7 @@ namespace Terminals.Data.DB
             this.cache.Delete(redundant);
             this.cache.Update(toUpdate);
             this.RefreshCachedItems();
-            
+
             var missingToReport = missing.Cast<IFavorite>().ToList();
             var redundantToReport = redundant.Cast<IFavorite>().ToList();
             var updatedToReport = toUpdate.Cast<IFavorite>().ToList();
@@ -377,7 +399,7 @@ namespace Terminals.Data.DB
             }
             catch (EntityException exception)
             {
-                return this.dispatcher.ReportFunctionError(LoadFromDatabase, this, exception, 
+                return this.dispatcher.ReportFunctionError(LoadFromDatabase, this, exception,
                     "Unable to load favorites from database.");
             }
         }
