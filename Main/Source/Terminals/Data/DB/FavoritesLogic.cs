@@ -85,19 +85,11 @@ namespace Terminals.Data.DB
             using (Database database = DatabaseConnections.CreateInstance())
             {
                 List<DbFavorite> toAdd = favorites.Cast<DbFavorite>().ToList();
-                this.AddAllToDatabase(database, toAdd);
+                database.AddAll(toAdd);
                 database.SaveImmediatelyIfRequested();
                 database.Cache.DetachAll(toAdd);
                 this.cache.Add(toAdd);
                 this.dispatcher.ReportFavoritesAdded(favorites);
-            }
-        }
-
-        private void AddAllToDatabase(Database database, IEnumerable<DbFavorite> favorites)
-        {
-            foreach (DbFavorite favorite in favorites)
-            {
-                database.Favorites.Add(favorite);
             }
         }
 
@@ -247,7 +239,7 @@ namespace Terminals.Data.DB
                 List<DbCredentialBase> redundantCredentialBase = SelectRedundantCredentialBase(favoritesToDelete);
                 this.DeleteFavoritesFromDatabase(database, favoritesToDelete);
                 database.SaveImmediatelyIfRequested();
-                RemoveRedundantCredentialBase(database, redundantCredentialBase);
+                database.RemoveRedundantCredentialBase(redundantCredentialBase);
                 database.SaveImmediatelyIfRequested();
                 this.groups.RefreshCache();
                 List<DbGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
@@ -265,18 +257,6 @@ namespace Terminals.Data.DB
                             .ToList();
         }
 
-        /// <summary>
-        /// we have to delete the credentials base manually, this property uses lazy creation 
-        /// and therefore there is no database constraint
-        /// </summary>
-        private void RemoveRedundantCredentialBase(Database database, List<DbCredentialBase> redundantCredentialBase)
-        {
-            foreach (DbCredentialBase credentialBase in redundantCredentialBase)
-            {
-                database.CredentialBase.Remove(credentialBase);
-            }
-        }
-
         private void FinishRemove(List<IFavorite> favorites, List<DbFavorite> favoritesToDelete)
         {
             this.cache.Delete(favoritesToDelete);
@@ -287,15 +267,7 @@ namespace Terminals.Data.DB
         {
             // we don't have to attach the details, because they will be deleted by reference constraints
             database.Cache.AttachAll(favorites);
-            DeleteAllFromDatabase(database, favorites);
-        }
-
-        private void DeleteAllFromDatabase(Database database, IEnumerable<DbFavorite> favorites)
-        {
-            foreach (DbFavorite favorite in favorites)
-            {
-                database.Favorites.Remove(favorite);
-            }
+            database.DeleteAll(favorites);
         }
 
         public SortableList<IFavorite> ToListOrderedByDefaultSorting()
