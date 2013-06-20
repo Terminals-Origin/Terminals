@@ -342,7 +342,7 @@ namespace Terminals
             this.cmbResolution.Size = new System.Drawing.Size(133, 21);
             this.cmbResolution.TabIndex = 1;
             this.toolTip1.SetToolTip(this.cmbResolution, resources.GetString("cmbResolution.ToolTip"));
-            this.cmbResolution.SelectedIndexChanged += new System.EventHandler(this.cmbResolution_SelectedIndexChanged);
+            this.cmbResolution.SelectedIndexChanged += new System.EventHandler(this.CmbResolution_SelectedIndexChanged);
             // 
             // heightUpDown
             // 
@@ -624,7 +624,7 @@ namespace Terminals
             this.pictureBox2.TabStop = false;
             this.toolTip1.SetToolTip(this.pictureBox2, "Select your custom icon for this shortcut using custom image, \r\nwhich will be sho" +
         "wn in the shortcuts menu.");
-            this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
+            this.pictureBox2.Click += new System.EventHandler(this.PictureBox2_Click);
             // 
             // ProtocolComboBox
             // 
@@ -658,9 +658,9 @@ namespace Terminals
             this.cmbServers.Size = new System.Drawing.Size(265, 21);
             this.cmbServers.TabIndex = 24;
             this.toolTip1.SetToolTip(this.cmbServers, "Here you can define the IP address of the server or its host name.");
-            this.cmbServers.SelectedIndexChanged += new System.EventHandler(this.cmbServers_SelectedIndexChanged);
-            this.cmbServers.TextChanged += new System.EventHandler(this.cmbServers_TextChanged);
-            this.cmbServers.Leave += new System.EventHandler(this.cmbServers_Leave);
+            this.cmbServers.SelectedIndexChanged += new System.EventHandler(this.CmbServers_SelectedIndexChanged);
+            this.cmbServers.TextChanged += new System.EventHandler(this.CmbServers_TextChanged);
+            this.cmbServers.Leave += new System.EventHandler(this.CmbServers_Leave);
             // 
             // btnAddNewTag
             // 
@@ -671,7 +671,7 @@ namespace Terminals
             this.btnAddNewTag.TabIndex = 2;
             this.toolTip1.SetToolTip(this.btnAddNewTag, "Add new Group to Connection Groups list.\r\n");
             this.btnAddNewTag.UseVisualStyleBackColor = true;
-            this.btnAddNewTag.Click += new System.EventHandler(this.btnAddNewTag_Click);
+            this.btnAddNewTag.Click += new System.EventHandler(this.BtnAddNewTag_Click);
             // 
             // AllTagsAddButton
             // 
@@ -698,7 +698,7 @@ namespace Terminals
         "n shortcuts tree.");
             this.lvConnectionTags.UseCompatibleStateImageBehavior = false;
             this.lvConnectionTags.View = System.Windows.Forms.View.List;
-            this.lvConnectionTags.DoubleClick += new System.EventHandler(this.lvConnectionTags_DoubleClick);
+            this.lvConnectionTags.DoubleClick += new System.EventHandler(this.LvConnectionTags_DoubleClick);
             // 
             // btnRemoveTag
             // 
@@ -709,7 +709,7 @@ namespace Terminals
             this.btnRemoveTag.TabIndex = 1;
             this.toolTip1.SetToolTip(this.btnRemoveTag, "Remove Connection Group");
             this.btnRemoveTag.UseVisualStyleBackColor = true;
-            this.btnRemoveTag.Click += new System.EventHandler(this.btnRemoveTag_Click);
+            this.btnRemoveTag.Click += new System.EventHandler(this.BtnRemoveTag_Click);
             // 
             // pictureBox1
             // 
@@ -786,14 +786,14 @@ namespace Terminals
             this.saveCurrentSettingsAsDefaultToolStripMenuItem.Name = "saveCurrentSettingsAsDefaultToolStripMenuItem";
             this.saveCurrentSettingsAsDefaultToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.saveCurrentSettingsAsDefaultToolStripMenuItem.Text = "Save Current Settings as Default";
-            this.saveCurrentSettingsAsDefaultToolStripMenuItem.Click += new System.EventHandler(this.saveCurrentSettingsAsDefaultToolStripMenuItem_Click);
+            this.saveCurrentSettingsAsDefaultToolStripMenuItem.Click += new System.EventHandler(this.SaveCurrentSettingsAsDefaultToolStripMenuItem_Click);
             // 
             // removeSavedDefaultsToolStripMenuItem
             // 
             this.removeSavedDefaultsToolStripMenuItem.Name = "removeSavedDefaultsToolStripMenuItem";
             this.removeSavedDefaultsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.removeSavedDefaultsToolStripMenuItem.Text = "Remove Saved Defaults";
-            this.removeSavedDefaultsToolStripMenuItem.Click += new System.EventHandler(this.removeSavedDefaultsToolStripMenuItem_Click);
+            this.removeSavedDefaultsToolStripMenuItem.Click += new System.EventHandler(this.RemoveSavedDefaultsToolStripMenuItem_Click);
             // 
             // contextMenuStripSave
             // 
@@ -811,21 +811,21 @@ namespace Terminals
             this.saveConnectToolStripMenuItem.Name = "saveConnectToolStripMenuItem";
             this.saveConnectToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.saveConnectToolStripMenuItem.Text = "Save && Connect";
-            this.saveConnectToolStripMenuItem.Click += new System.EventHandler(this.saveConnectToolStripMenuItem_Click);
+            this.saveConnectToolStripMenuItem.Click += new System.EventHandler(this.SaveConnectToolStripMenuItem_Click);
             // 
             // saveNewToolStripMenuItem
             // 
             this.saveNewToolStripMenuItem.Name = "saveNewToolStripMenuItem";
             this.saveNewToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.saveNewToolStripMenuItem.Text = "Save && New";
-            this.saveNewToolStripMenuItem.Click += new System.EventHandler(this.saveNewToolStripMenuItem_Click);
+            this.saveNewToolStripMenuItem.Click += new System.EventHandler(this.SaveNewToolStripMenuItem_Click);
             // 
             // saveCopyToolStripMenuItem
             // 
             this.saveCopyToolStripMenuItem.Name = "saveCopyToolStripMenuItem";
             this.saveCopyToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.saveCopyToolStripMenuItem.Text = "Save && Copy";
-            this.saveCopyToolStripMenuItem.Click += new System.EventHandler(this.saveCopyToolStripMenuItem_Click);
+            this.saveCopyToolStripMenuItem.Click += new System.EventHandler(this.SaveCopyToolStripMenuItem_Click);
             // 
             // groupBox7
             // 
@@ -854,7 +854,7 @@ namespace Terminals
             this.btnSaveDefault.TabIndex = 5;
             this.btnSaveDefault.Text = "Defaults";
             this.btnSaveDefault.UseVisualStyleBackColor = true;
-            this.btnSaveDefault.Click += new System.EventHandler(this.btnSaveDefault_Click);
+            this.btnSaveDefault.Click += new System.EventHandler(this.BtnSaveDefault_Click);
             // 
             // btnSave
             // 
@@ -869,7 +869,7 @@ namespace Terminals
             this.btnSave.Text = "Save && Close";
             this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // ExecuteTabPage
             // 
@@ -1169,7 +1169,7 @@ namespace Terminals
             this.appPathBrowseButton.TabIndex = 28;
             this.appPathBrowseButton.Text = "...";
             this.appPathBrowseButton.UseVisualStyleBackColor = true;
-            this.appPathBrowseButton.Click += new System.EventHandler(this.appPathBrowseButton_Click);
+            this.appPathBrowseButton.Click += new System.EventHandler(this.AppPathBrowseButton_Click);
             // 
             // ICAEncryptionLevelCombobox
             // 
@@ -1678,7 +1678,7 @@ namespace Terminals
             this.btnDrives.TabIndex = 12;
             this.btnDrives.Text = "&Disk Drives && Plug and Play Devices...";
             this.btnDrives.UseVisualStyleBackColor = true;
-            this.btnDrives.Click += new System.EventHandler(this.btnDrives_Click);
+            this.btnDrives.Click += new System.EventHandler(this.BtnDrives_Click);
             // 
             // cmbSounds
             // 
@@ -1741,7 +1741,7 @@ namespace Terminals
             this.btnBrowseShare.Size = new System.Drawing.Size(21, 21);
             this.btnBrowseShare.TabIndex = 11;
             this.btnBrowseShare.UseVisualStyleBackColor = true;
-            this.btnBrowseShare.Click += new System.EventHandler(this.btnBrowseShare_Click);
+            this.btnBrowseShare.Click += new System.EventHandler(this.BtnBrowseShare_Click);
             // 
             // chkPrinters
             // 
@@ -2046,7 +2046,7 @@ namespace Terminals
             this.chkTSGWlogin.TabIndex = 0;
             this.chkTSGWlogin.Text = "Use Separate Login Credentials";
             this.chkTSGWlogin.UseVisualStyleBackColor = true;
-            this.chkTSGWlogin.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.chkTSGWlogin.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
             // 
             // TerminalGwSettingsGroupBox
             // 
@@ -2071,7 +2071,7 @@ namespace Terminals
             this.radTSGWenable.TabIndex = 2;
             this.radTSGWenable.Text = "Use the following TS Gateway settings:";
             this.radTSGWenable.UseVisualStyleBackColor = true;
-            this.radTSGWenable.CheckedChanged += new System.EventHandler(this.radTSGWenable_CheckedChanged);
+            this.radTSGWenable.CheckedChanged += new System.EventHandler(this.RadTsgWenable_CheckedChanged);
             // 
             // radTSGWdisable
             // 
@@ -2196,7 +2196,7 @@ namespace Terminals
             this.httpUrlTextBox.TabIndex = 38;
             this.httpUrlTextBox.Text = "http://terminals.codeplex.com";
             this.httpUrlTextBox.Visible = false;
-            this.httpUrlTextBox.TextChanged += new System.EventHandler(this.httpUrlTextBox_TextChanged);
+            this.httpUrlTextBox.TextChanged += new System.EventHandler(this.HttpUrlTextBox_TextChanged);
             // 
             // NotesTextbox
             // 
@@ -2291,7 +2291,7 @@ namespace Terminals
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(334, 21);
             this.txtPassword.TabIndex = 5;
-            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
+            this.txtPassword.TextChanged += new System.EventHandler(this.TxtPassword_TextChanged);
             // 
             // chkSavePassword
             // 
@@ -2366,7 +2366,7 @@ namespace Terminals
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(495, 396);
             this.tabControl1.TabIndex = 0;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.TabControl1_SelectedIndexChanged);
             // 
             // errorProvider
             // 

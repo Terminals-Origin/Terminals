@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -23,10 +25,10 @@ namespace Terminals
 {
     internal partial class NewTerminalForm : Form
     {
-        private NewTerminalFormValidator validator;
-        private TerminalServerManager _terminalServerManager = new TerminalServerManager();
-        private Dictionary<string, RASENTRY> _dialupList = new Dictionary<string, RASENTRY>();
-        private String _currentToolBarFileName;
+        private readonly NewTerminalFormValidator validator;
+        private readonly TerminalServerManager terminalServerManager = new TerminalServerManager();
+        private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
+        private String currentToolBarFileName;
         private Guid editedId;
         private string oldName;
 
@@ -132,7 +134,7 @@ namespace Terminals
             this.AddGroupsToFavorite();
         }
 
-        private void appPathBrowseButton_Click(object sender, EventArgs e)
+        private void AppPathBrowseButton_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog d = new FolderBrowserDialog();
 
@@ -154,12 +156,12 @@ namespace Terminals
             }
         }
 
-        private void btnAddNewTag_Click(object sender, EventArgs e)
+        private void BtnAddNewTag_Click(object sender, EventArgs e)
         {
             this.AddGroup();
         }
 
-        private void btnBrowseShare_Click(object sender, EventArgs e)
+        private void BtnBrowseShare_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog dialog = new FolderBrowserDialog())
             {
@@ -171,13 +173,13 @@ namespace Terminals
             }
         }
 
-        private void btnDrives_Click(object sender, EventArgs e)
+        private void BtnDrives_Click(object sender, EventArgs e)
         {
             DiskDrivesForm drivesForm = new DiskDrivesForm(this);
             drivesForm.ShowDialog(this);
         }
 
-        private void btnRemoveTag_Click(object sender, EventArgs e)
+        private void BtnRemoveTag_Click(object sender, EventArgs e)
         {
             this.DeleteGroup();
         }
@@ -185,7 +187,7 @@ namespace Terminals
         /// <summary>
         /// Save favorite and close form. If the form isnt valid the form control is focused.
         /// </summary>
-        private void btnSave_Click(object sender, EventArgs e)
+        private void BtnSave_Click(object sender, EventArgs e)
         {
             this.SaveMRUs();
             if (this.FillFavorite(false))
@@ -195,12 +197,12 @@ namespace Terminals
             }
         }
 
-        private void btnSaveDefault_Click(object sender, EventArgs e)
+        private void BtnSaveDefault_Click(object sender, EventArgs e)
         {
             this.contextMenuStripDefaults.Show(this.btnSaveDefault, 0, this.btnSaveDefault.Height);
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
             this.pnlTSGWlogon.Enabled = this.chkTSGWlogin.Checked;
         }
@@ -218,7 +220,7 @@ namespace Terminals
             }
         }
 
-        private void cmbResolution_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbResolution_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.cmbResolution.Text == "Custom" || this.cmbResolution.Text == "Auto Scale")
                 this.customSizePanel.Visible = true;
@@ -226,7 +228,7 @@ namespace Terminals
                 this.customSizePanel.Visible = false;
         }
 
-        private void cmbServers_Leave(object sender, EventArgs e)
+        private void CmbServers_Leave(object sender, EventArgs e)
         {
             if (this.txtName.Text == String.Empty)
             {
@@ -236,7 +238,7 @@ namespace Terminals
                     int port;
                     GetServerAndPort(this.cmbServers.Text, out server, out port);
                     this.cmbServers.Text = server;
-                    this.txtPort.Text = port.ToString();
+                    this.txtPort.Text = port.ToString(CultureInfo.InvariantCulture);
                     this.cmbServers.Text = server;
                 }
 
@@ -244,15 +246,15 @@ namespace Terminals
             }
         }
 
-        private void cmbServers_SelectedIndexChanged(object sender, EventArgs e)
+        private void CmbServers_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ProtocolComboBox.Text == ConnectionManager.RAS)
             {
                 this.LoadDialupConnections();
                 this.RASDetailsListBox.Items.Clear();
-                if (this._dialupList != null && this._dialupList.ContainsKey(cmbServers.Text))
+                if (this.dialupList != null && this.dialupList.ContainsKey(cmbServers.Text))
                 {
-                    RASENTRY selectedRAS = this._dialupList[this.cmbServers.Text];
+                    RASENTRY selectedRAS = this.dialupList[this.cmbServers.Text];
                     this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Connection", this.cmbServers.Text));
                     this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Area Code", selectedRAS.AreaCode));
                     this.RASDetailsListBox.Items.Add(String.Format("{0}:{1}", "Country Code", selectedRAS.CountryCode));
@@ -263,7 +265,7 @@ namespace Terminals
             }
         }
 
-        private void cmbServers_TextChanged(object sender, EventArgs e)
+        private void CmbServers_TextChanged(object sender, EventArgs e)
         {
             this.SetOkButtonState();
         }
@@ -295,7 +297,7 @@ namespace Terminals
             this.FillCredentialsCombobox(selectedCredentialId);
         }
 
-        private void httpUrlTextBox_TextChanged(object sender, EventArgs e)
+        private void HttpUrlTextBox_TextChanged(object sender, EventArgs e)
         {
             if (ConnectionManager.IsProtocolWebBased(this.ProtocolComboBox.Text))
             {
@@ -303,7 +305,7 @@ namespace Terminals
                 if (newUrl != null)
                 {
                     this.cmbServers.Text = newUrl.Host;
-                    this.txtPort.Text = newUrl.Port.ToString();
+                    this.txtPort.Text = newUrl.Port.ToString(CultureInfo.InvariantCulture);
                 }
                 SetOkButtonState();
             }
@@ -314,12 +316,12 @@ namespace Terminals
             this.ICAEncryptionLevelCombobox.Enabled = this.ICAEnableEncryptionCheckbox.Checked;
         }
 
-        private void lvConnectionTags_DoubleClick(object sender, EventArgs e)
+        private void LvConnectionTags_DoubleClick(object sender, EventArgs e)
         {
             this.DeleteGroup();
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void PictureBox2_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFileDialog = CreateIconSelectionDialog();
 
@@ -364,11 +366,11 @@ namespace Terminals
             }
 
             int defaultPort = ConnectionManager.GetPort(this.ProtocolComboBox.Text);
-            this.txtPort.Text = defaultPort.ToString();
+            this.txtPort.Text = defaultPort.ToString(CultureInfo.InvariantCulture);
             this.SetOkButtonState();
         }
 
-        private void radTSGWenable_CheckedChanged(object sender, EventArgs e)
+        private void RadTsgWenable_CheckedChanged(object sender, EventArgs e)
         {
             this.pnlTSGWsettings.Enabled = this.radTSGWenable.Checked;
         }
@@ -383,7 +385,7 @@ namespace Terminals
             }
         }
 
-        private void removeSavedDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RemoveSavedDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings.RemoveDefaultFavorite();
         }
@@ -391,7 +393,7 @@ namespace Terminals
         /// <summary>
         /// Save favorite, close form and immediatly connect to the favorite.
         /// </summary>
-        private void saveConnectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.SaveMRUs();
 
@@ -404,7 +406,7 @@ namespace Terminals
         /// <summary>
         /// Save favorite and copy the current favorite settings, except favorite and connection name.
         /// </summary>
-        private void saveCopyToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveCopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.SaveMRUs();
             if (this.FillFavorite(false))
@@ -416,7 +418,7 @@ namespace Terminals
             }
         }
 
-        private void saveCurrentSettingsAsDefaultToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveCurrentSettingsAsDefaultToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.FillFavorite(true);
         }
@@ -424,7 +426,7 @@ namespace Terminals
         /// <summary>
         /// Save favorite and clear form for a new favorite.
         /// </summary>
-        private void saveNewToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveNewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.SaveMRUs();
             if (this.FillFavorite(false))
@@ -452,7 +454,7 @@ namespace Terminals
             }
         }
 
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.tabControl1.SelectedTab == this.RDPTabPage)
             {
@@ -460,7 +462,7 @@ namespace Terminals
             }
         }
 
-        private void txtPassword_TextChanged(object sender, EventArgs e)
+        private void TxtPassword_TextChanged(object sender, EventArgs e)
         {
             this.SetOkButtonState();
         }
@@ -500,7 +502,7 @@ namespace Terminals
                 Int32 port;
                 GetServerAndPort(serverName, out server, out port);
                 this.cmbServers.Text = server;
-                this.txtPort.Text = port.ToString();
+                this.txtPort.Text = port.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
@@ -533,25 +535,25 @@ namespace Terminals
 
         private void LoadCustomControlsState()
         {
-            this._terminalServerManager.Dock = DockStyle.Fill;
-            this._terminalServerManager.Location = new Point(0, 0);
-            this._terminalServerManager.Name = "terminalServerManager1";
-            this._terminalServerManager.Size = new Size(748, 309);
-            this._terminalServerManager.TabIndex = 0;
-            this._terminalServerManager.HostName = !this.validator.IsServerNameEmpty() ? this.cmbServers.Text : "localhost";
-            this.RdpSessionTabPage.Controls.Add(this._terminalServerManager);
+            this.terminalServerManager.Dock = DockStyle.Fill;
+            this.terminalServerManager.Location = new Point(0, 0);
+            this.terminalServerManager.Name = "terminalServerManager1";
+            this.terminalServerManager.Size = new Size(748, 309);
+            this.terminalServerManager.TabIndex = 0;
+            this.terminalServerManager.HostName = !this.validator.IsServerNameEmpty() ? this.cmbServers.Text : "localhost";
+            this.RdpSessionTabPage.Controls.Add(this.terminalServerManager);
         }
 
         private void LoadDialupConnections()
         {
-            this._dialupList = new Dictionary<String, RASENTRY>();
-            System.Collections.ArrayList rasEntries = new System.Collections.ArrayList();
-            RasError error = ras1.ListEntries(ref rasEntries);
+            this.dialupList = new Dictionary<String, RASENTRY>();
+            var rasEntries = new ArrayList();
+            ras1.ListEntries(ref rasEntries);
             foreach (String item in rasEntries)
             {
                 RASENTRY details = new RASENTRY();
                 ras1.GetEntry(item, ref details);
-                this._dialupList.Add(item, details);
+                this.dialupList.Add(item, details);
 
                 if (!cmbServers.Items.Contains(item))
                     this.cmbServers.Items.Add(item);
@@ -625,7 +627,7 @@ namespace Terminals
             this.txtDesktopShare.Text = favorite.DesktopShare;
             this.chkAddtoToolbar.Checked = Settings.HasToolbarButton(favorite.Id);
             this.pictureBox2.Image = favorite.ToolBarIconImage;
-            this._currentToolBarFileName = favorite.ToolBarIconFile;
+            this.currentToolBarFileName = favorite.ToolBarIconFile;
             this.NotesTextbox.Text = favorite.Notes;
         }
 
@@ -634,7 +636,7 @@ namespace Terminals
             this.txtName.Text = favorite.Name;
             this.cmbServers.Text = favorite.ServerName;
             this.ProtocolComboBox.SelectedItem = favorite.Protocol;
-            this.txtPort.Text = favorite.Port.ToString();
+            this.txtPort.Text = favorite.Port.ToString(CultureInfo.InvariantCulture);
             this.httpUrlTextBox.Text = WebOptions.ExtractAbsoluteUrl(favorite);
         }
 
@@ -748,10 +750,10 @@ namespace Terminals
 
         private void FillRdpTimeOutControls(RdpOptions rdpOptions)
         {
-            this.ShutdownTimeoutTextBox.Text = rdpOptions.TimeOuts.ShutdownTimeout.ToString();
-            this.OverallTimeoutTextbox.Text = rdpOptions.TimeOuts.OverallTimeout.ToString();
-            this.SingleTimeOutTextbox.Text = rdpOptions.TimeOuts.ConnectionTimeout.ToString();
-            this.IdleTimeoutMinutesTextBox.Text = rdpOptions.TimeOuts.IdleTimeout.ToString();
+            this.ShutdownTimeoutTextBox.Text = rdpOptions.TimeOuts.ShutdownTimeout.ToString(CultureInfo.InvariantCulture);
+            this.OverallTimeoutTextbox.Text = rdpOptions.TimeOuts.OverallTimeout.ToString(CultureInfo.InvariantCulture);
+            this.SingleTimeOutTextbox.Text = rdpOptions.TimeOuts.ConnectionTimeout.ToString(CultureInfo.InvariantCulture);
+            this.IdleTimeoutMinutesTextBox.Text = rdpOptions.TimeOuts.IdleTimeout.ToString(CultureInfo.InvariantCulture);
         }
 
         private void FillTsGatewayControls(RdpOptions rdpOptions)
@@ -902,7 +904,7 @@ namespace Terminals
             this.Favorite.NewWindow = this.NewWindowCheckbox.Checked;
             this.Favorite.DesktopShare = this.txtDesktopShare.Text;
             this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
-            this.Favorite.ToolBarIconFile = this._currentToolBarFileName;
+            this.Favorite.ToolBarIconFile = this.currentToolBarFileName;
             this.Favorite.Notes = this.NotesTextbox.Text;
         }
 
@@ -1201,23 +1203,24 @@ namespace Terminals
             }
         }
 
-        private static void GetServerAndPort(String Connection, out String Server, out Int32 Port)
+        private static void GetServerAndPort(String connection, out String server, out Int32 port)
         {
-            Server = Connection;
-            Port = ConnectionManager.RDPPort;
-            if (Connection != null && Connection.Trim() != String.Empty && Connection.Contains(":"))
+            server = connection;
+            port = ConnectionManager.RDPPort;
+            if (connection != null && connection.Trim() != String.Empty && connection.Contains(":"))
             {
-                String server = Connection.Substring(0, Connection.IndexOf(":"));
-                String rawPort = Connection.Substring(Connection.IndexOf(":") + 1);
-                Int32 port = ConnectionManager.RDPPort;
-                if (rawPort != null && rawPort.Trim() != String.Empty)
+                int separatorIndex = connection.IndexOf(":", StringComparison.Ordinal);
+                String parsedServer = connection.Substring(0, separatorIndex);
+                String rawPort = connection.Substring(separatorIndex + 1);
+                Int32 parsedPort = ConnectionManager.RDPPort;
+                if (rawPort.Trim() != String.Empty)
                 {
                     rawPort = rawPort.Trim();
-                    Int32.TryParse(rawPort, out port);
+                    Int32.TryParse(rawPort, out parsedPort);
                 }
 
-                Server = server;
-                Port = port;
+                server = parsedServer;
+                port = parsedPort;
             }
         }
 
@@ -1328,7 +1331,7 @@ namespace Terminals
             catch (Exception exception)
             {
                 Logging.Log.Info("Set Terminal Image Failed", exception);
-                this._currentToolBarFileName = String.Empty;
+                this.currentToolBarFileName = String.Empty;
                 MessageBox.Show("You have chosen an invalid image. Try again.");
             }
         }
@@ -1337,7 +1340,7 @@ namespace Terminals
         {
             string newFileInThumbsDir = FavoriteIcons.CopySelectedImageToThumbsDir(newImagefilePath);
             this.pictureBox2.Image = Image.FromFile(newImagefilePath);
-            this._currentToolBarFileName = newFileInThumbsDir;
+            this.currentToolBarFileName = newFileInThumbsDir;
         }
 
         private static OpenFileDialog CreateIconSelectionDialog()
