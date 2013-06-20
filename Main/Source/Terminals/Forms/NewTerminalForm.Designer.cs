@@ -32,9 +32,9 @@ namespace Terminals
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewTerminalForm));
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources1 = new Terminals.TerminalServices.GatewayCredentialsSources();
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources2 = new Terminals.TerminalServices.GatewayCredentialsSources();
-            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources3 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources4 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources5 = new Terminals.TerminalServices.GatewayCredentialsSources();
+            Terminals.TerminalServices.GatewayCredentialsSources gatewayCredentialsSources6 = new Terminals.TerminalServices.GatewayCredentialsSources();
             this.btnCancel = new System.Windows.Forms.Button();
             this.chkAddtoToolbar = new System.Windows.Forms.CheckBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
@@ -85,8 +85,6 @@ namespace Terminals
             this.saveNewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveCopyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.btnSaveDefault = new Terminals.Forms.Controls.SplitButton();
-            this.btnSave = new Terminals.Forms.Controls.SplitButton();
             this.ExecuteTabPage = new System.Windows.Forms.TabPage();
             this.ExecuteGroupBox = new System.Windows.Forms.GroupBox();
             this.txtInitialDirectory = new System.Windows.Forms.TextBox();
@@ -136,7 +134,6 @@ namespace Terminals
             this.SSHPreferences = new SSHClient.Preferences();
             this.ConsoleTabPage = new System.Windows.Forms.TabPage();
             this.ConsoleGroupBox = new System.Windows.Forms.GroupBox();
-            this.consolePreferences = new Terminals.ConsolePreferences();
             this.VNCTabPage = new System.Windows.Forms.TabPage();
             this.VncGroupBox = new System.Windows.Forms.GroupBox();
             this.VncViewOnlyCheckbox = new System.Windows.Forms.CheckBox();
@@ -228,6 +225,9 @@ namespace Terminals
             this.lblServerName = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.consolePreferences = new Terminals.ConsolePreferences();
+            this.btnSaveDefault = new Terminals.Forms.Controls.SplitButton();
+            this.btnSave = new Terminals.Forms.Controls.SplitButton();
             ((System.ComponentModel.ISupportInitialize)(this.heightUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
@@ -653,6 +653,7 @@ namespace Terminals
             // 
             this.cmbServers.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.cmbServers.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.errorProvider.SetIconAlignment(this.cmbServers, System.Windows.Forms.ErrorIconAlignment.MiddleLeft);
             this.cmbServers.Location = new System.Drawing.Point(105, 43);
             this.cmbServers.Name = "cmbServers";
             this.cmbServers.Size = new System.Drawing.Size(265, 21);
@@ -841,35 +842,6 @@ namespace Terminals
             this.groupBox7.Size = new System.Drawing.Size(579, 78);
             this.groupBox7.TabIndex = 10;
             this.groupBox7.TabStop = false;
-            // 
-            // btnSaveDefault
-            // 
-            this.btnSaveDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveDefault.AutoSize = true;
-            this.btnSaveDefault.ContextMenuStrip = this.contextMenuStripDefaults;
-            this.btnSaveDefault.Location = new System.Drawing.Point(277, 41);
-            this.btnSaveDefault.Name = "btnSaveDefault";
-            this.btnSaveDefault.Size = new System.Drawing.Size(88, 27);
-            this.btnSaveDefault.SplitMenuStrip = this.contextMenuStripDefaults;
-            this.btnSaveDefault.TabIndex = 5;
-            this.btnSaveDefault.Text = "Defaults";
-            this.btnSaveDefault.UseVisualStyleBackColor = true;
-            this.btnSaveDefault.Click += new System.EventHandler(this.BtnSaveDefault_Click);
-            // 
-            // btnSave
-            // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.AutoSize = true;
-            this.btnSave.ContextMenuStrip = this.contextMenuStripSave;
-            this.btnSave.Location = new System.Drawing.Point(371, 41);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(120, 27);
-            this.btnSave.SplitMenuStrip = this.contextMenuStripSave;
-            this.btnSave.TabIndex = 1;
-            this.btnSave.Text = "Save && Close";
-            this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSave.UseVisualStyleBackColor = true;
-            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // ExecuteTabPage
             // 
@@ -1373,14 +1345,6 @@ namespace Terminals
             this.ConsoleGroupBox.Size = new System.Drawing.Size(481, 364);
             this.ConsoleGroupBox.TabIndex = 1;
             this.ConsoleGroupBox.TabStop = false;
-            // 
-            // consolePreferences
-            // 
-            this.consolePreferences.Location = new System.Drawing.Point(3, 8);
-            this.consolePreferences.Margin = new System.Windows.Forms.Padding(4);
-            this.consolePreferences.Name = "consolePreferences";
-            this.consolePreferences.Size = new System.Drawing.Size(285, 210);
-            this.consolePreferences.TabIndex = 0;
             // 
             // VNCTabPage
             // 
@@ -2111,16 +2075,16 @@ namespace Terminals
             // 
             this.cmbTSGWLogonMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTSGWLogonMethod.FormattingEnabled = true;
-            gatewayCredentialsSources1.DisplayName = "Ask for Password (NTLM)";
-            gatewayCredentialsSources1.ID = 0;
-            gatewayCredentialsSources2.DisplayName = "Smart Card";
-            gatewayCredentialsSources2.ID = 1;
-            gatewayCredentialsSources3.DisplayName = "Allow user to select later";
-            gatewayCredentialsSources3.ID = 4;
+            gatewayCredentialsSources4.DisplayName = "Ask for Password (NTLM)";
+            gatewayCredentialsSources4.ID = 0;
+            gatewayCredentialsSources5.DisplayName = "Smart Card";
+            gatewayCredentialsSources5.ID = 1;
+            gatewayCredentialsSources6.DisplayName = "Allow user to select later";
+            gatewayCredentialsSources6.ID = 4;
             this.cmbTSGWLogonMethod.Items.AddRange(new object[] {
-            gatewayCredentialsSources1,
-            gatewayCredentialsSources2,
-            gatewayCredentialsSources3});
+            gatewayCredentialsSources4,
+            gatewayCredentialsSources5,
+            gatewayCredentialsSources6});
             this.cmbTSGWLogonMethod.Location = new System.Drawing.Point(113, 30);
             this.cmbTSGWLogonMethod.Name = "cmbTSGWLogonMethod";
             this.cmbTSGWLogonMethod.Size = new System.Drawing.Size(224, 21);
@@ -2190,6 +2154,7 @@ namespace Terminals
             // 
             // httpUrlTextBox
             // 
+            this.errorProvider.SetIconAlignment(this.httpUrlTextBox, System.Windows.Forms.ErrorIconAlignment.MiddleLeft);
             this.httpUrlTextBox.Location = new System.Drawing.Point(105, 43);
             this.httpUrlTextBox.Name = "httpUrlTextBox";
             this.httpUrlTextBox.Size = new System.Drawing.Size(356, 21);
@@ -2200,6 +2165,7 @@ namespace Terminals
             // 
             // NotesTextbox
             // 
+            this.errorProvider.SetIconAlignment(this.NotesTextbox, System.Windows.Forms.ErrorIconAlignment.TopRight);
             this.NotesTextbox.Location = new System.Drawing.Point(105, 233);
             this.NotesTextbox.Multiline = true;
             this.NotesTextbox.Name = "NotesTextbox";
@@ -2372,10 +2338,48 @@ namespace Terminals
             // 
             this.errorProvider.ContainerControl = this;
             // 
+            // consolePreferences
+            // 
+            this.consolePreferences.Location = new System.Drawing.Point(3, 8);
+            this.consolePreferences.Margin = new System.Windows.Forms.Padding(4);
+            this.consolePreferences.Name = "consolePreferences";
+            this.consolePreferences.Size = new System.Drawing.Size(285, 210);
+            this.consolePreferences.TabIndex = 0;
+            // 
+            // btnSaveDefault
+            // 
+            this.btnSaveDefault.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveDefault.AutoSize = true;
+            this.btnSaveDefault.ContextMenuStrip = this.contextMenuStripDefaults;
+            this.btnSaveDefault.Location = new System.Drawing.Point(277, 41);
+            this.btnSaveDefault.Name = "btnSaveDefault";
+            this.btnSaveDefault.Size = new System.Drawing.Size(88, 27);
+            this.btnSaveDefault.SplitMenuStrip = this.contextMenuStripDefaults;
+            this.btnSaveDefault.TabIndex = 5;
+            this.btnSaveDefault.Text = "Defaults";
+            this.btnSaveDefault.UseVisualStyleBackColor = true;
+            this.btnSaveDefault.Click += new System.EventHandler(this.BtnSaveDefault_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.AutoSize = true;
+            this.btnSave.ContextMenuStrip = this.contextMenuStripSave;
+            this.btnSave.Location = new System.Drawing.Point(371, 41);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(120, 27);
+            this.btnSave.SplitMenuStrip = this.contextMenuStripSave;
+            this.btnSave.TabIndex = 1;
+            this.btnSave.Text = "Save && Close";
+            this.btnSave.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            // 
             // NewTerminalForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(579, 474);
             this.Controls.Add(this.tabControl1);

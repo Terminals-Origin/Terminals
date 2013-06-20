@@ -25,7 +25,7 @@ namespace Terminals
 {
     internal partial class NewTerminalForm : Form
     {
-        private readonly NewTerminalFormValidator validator;
+        private NewTerminalFormValidator validator;
         private readonly TerminalServerManager terminalServerManager = new TerminalServerManager();
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
         private String currentToolBarFileName;
@@ -70,12 +70,45 @@ namespace Terminals
             this.InitializeComponent();
             this.RedirectedDrives = new List<String>();
             this.RedirectDevices = false;
+            this.InitializeValidations();
+        }
+
+        private void InitializeValidations()
+        {
             this.validator = new NewTerminalFormValidator(this);
+            this.AssignValidatingEvents();
+            this.SetErrorProviderIconsAlignment();
+            this.RegisterValiationControls();
+        }
+
+        private void AssignValidatingEvents()
+        {
             this.txtPort.Validating += this.validator.OnPortValidating;
             this.cmbServers.Validating += this.validator.OnServerNameValidating;
             this.httpUrlTextBox.Validating += this.validator.OnUrlValidating;
+            this.ShutdownTimeoutTextBox.Validating += this.validator.OnValidateInteger;
+            this.OverallTimeoutTextbox.Validating += this.validator.OnValidateInteger;
+            this.SingleTimeOutTextbox.Validating += this.validator.OnValidateInteger;
+            this.IdleTimeoutMinutesTextBox.Validating += this.validator.OnValidateInteger;
+        }
+
+        private void SetErrorProviderIconsAlignment()
+        {
             this.errorProvider.SetIconAlignment(this.cmbServers, ErrorIconAlignment.MiddleLeft);
             this.errorProvider.SetIconAlignment(this.httpUrlTextBox, ErrorIconAlignment.MiddleLeft);
+            this.errorProvider.SetIconAlignment(this.NotesTextbox, ErrorIconAlignment.TopLeft);
+        }
+
+        private void RegisterValiationControls()
+        {
+            this.validator.RegisterValidationControl("ServerName", this.cmbServers);
+            this.validator.RegisterValidationControl("Name", this.txtName);
+            this.validator.RegisterValidationControl("Port", this.txtPort);
+            this.validator.RegisterValidationControl("Protocol", this.ProtocolComboBox);
+            this.validator.RegisterValidationControl("Notes", this.NotesTextbox);
+            this.validator.RegisterValidationControl("Command", this.txtCommand);
+            this.validator.RegisterValidationControl("CommandArguments", this.txtArguments);
+            this.validator.RegisterValidationControl("InitialDirectory", this.txtInitialDirectory);
         }
 
         #endregion
@@ -836,27 +869,17 @@ namespace Terminals
         {
             try
             {
-                if (!this.Validate())
+                var isValid = this.validator.Validate();
+                if (isValid)
                     return false;
 
-                ResolveFavortie();
-
-                FillGeneralProrperties();
-                FillDescriptionProperties();
-                FillFavoriteSecurity();
-                FillFavoriteDisplayOptions();
-                FillFavoriteExecuteBeforeOptions();
-                this.consolePreferences.FillFavorite(this.Favorite);
-                this.FillFavoriteVmrcOptions();
-                this.FillFavoriteVncOptions();
-                FillFavoriteICAOPtions();
-                FillFavoriteSSHOptions();
-                FillFavoriteRdpOptions();
+                IFavorite favorite = ResolveFavortie();
+                this.FillFavoriteFromControls(favorite);
 
                 if (defaultFav)
-                    SaveDefaultFavorite();
+                    SaveDefaultFavorite(favorite);
                 else
-                    this.CommitFavoriteChanges();
+                    this.CommitFavoriteChanges(favorite);
 
                 return true;
             }
@@ -874,6 +897,21 @@ namespace Terminals
             }
         }
 
+        internal void FillFavoriteFromControls(IFavorite favorite)
+        {
+            this.FillGeneralProrperties(favorite);
+            this.FillDescriptionProperties(favorite);
+            this.FillFavoriteSecurity(favorite);
+            this.FillFavoriteDisplayOptions(favorite);
+            this.FillFavoriteExecuteBeforeOptions(favorite);
+            this.consolePreferences.FillFavorite(favorite);
+            this.FillFavoriteVmrcOptions(favorite);
+            this.FillFavoriteVncOptions(favorite);
+            this.FillFavoriteICAOPtions(favorite);
+            this.FillFavoriteSSHOptions(favorite);
+            this.FillFavoriteRdpOptions(favorite);
+        }
+        
         private static void EntityLogValidationErrors(DbEntityValidationException entityValidation)
         {
             Logging.Log.Error("Entity exception", entityValidation);
@@ -890,44 +928,47 @@ namespace Terminals
         /// Overwrites favortie property by favorite stored in persistence
         /// or newly created one
         /// </summary>
-        private void ResolveFavortie()
+        private IFavorite ResolveFavortie()
         {
-            this.Favorite = null; // force favorite property reset
+            IFavorite favorite = null; // force favorite property reset
             if (!this.editedId.Equals(Guid.Empty))
-                this.Favorite = PersistedFavorites[this.editedId];
-            if (this.Favorite == null)
-                this.Favorite = Persistence.Instance.Factory.CreateFavorite();
+                favorite = PersistedFavorites[this.editedId];
+            if (favorite == null)
+                favorite = Persistence.Instance.Factory.CreateFavorite();
+            this.Favorite = favorite;
+            return favorite;
         }
 
-        private void FillDescriptionProperties()
+        private void FillDescriptionProperties(IFavorite favorite)
         {
-            this.Favorite.NewWindow = this.NewWindowCheckbox.Checked;
-            this.Favorite.DesktopShare = this.txtDesktopShare.Text;
+            favorite.NewWindow = this.NewWindowCheckbox.Checked;
+            favorite.DesktopShare = this.txtDesktopShare.Text;
+            favorite.ToolBarIconFile = this.currentToolBarFileName;
+            favorite.Notes = this.NotesTextbox.Text;
             this.ShowOnToolbar = this.chkAddtoToolbar.Checked;
-            this.Favorite.ToolBarIconFile = this.currentToolBarFileName;
-            this.Favorite.Notes = this.NotesTextbox.Text;
         }
 
-        private void FillGeneralProrperties()
+        private void FillGeneralProrperties(IFavorite favorite)
         {
-            this.Favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
-            this.Favorite.ServerName = this.cmbServers.Text;
-            this.Favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
-            this.Favorite.Port = Int32.Parse(this.PortText);
-            this.FillWebProperties();
+            favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
+            favorite.ServerName = this.cmbServers.Text;
+            favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
+            favorite.Port = Int32.Parse(this.PortText);
+            this.FillWebProperties(favorite);
         }
 
-        private void FillWebProperties()
+        private void FillWebProperties(IFavorite favorite)
         {
-            WebOptions.UpdateFavoriteUrl(this.Favorite, this.httpUrlTextBox.Text);
+            WebOptions.UpdateFavoriteUrl(favorite, this.httpUrlTextBox.Text);
         }
 
-        private void FillFavoriteDisplayOptions()
+        private void FillFavoriteDisplayOptions(IFavorite favorite)
         {
-            this.Favorite.Display.DesktopSize = (DesktopSize)this.cmbResolution.SelectedIndex;
-            this.Favorite.Display.Colors = (Colors)this.cmbColors.SelectedIndex;
-            this.Favorite.Display.Width = (Int32)this.widthUpDown.Value;
-            this.Favorite.Display.Height = (Int32)this.heightUpDown.Value;
+            IDisplayOptions display = favorite.Display;
+            display.DesktopSize = (DesktopSize)this.cmbResolution.SelectedIndex;
+            display.Colors = (Colors)this.cmbColors.SelectedIndex;
+            display.Width = (Int32)this.widthUpDown.Value;
+            display.Height = (Int32)this.heightUpDown.Value;
         }
 
         private void FillFavoriteRdpSecurity(RdpOptions rdpOptions)
@@ -946,25 +987,17 @@ namespace Terminals
 
         private void FillFavoriteRdpTimeOutOptions(RdpOptions rdpOptions)
         {
-            if (this.ShutdownTimeoutTextBox.Text.Trim() != String.Empty)
-            {
-                rdpOptions.TimeOuts.ShutdownTimeout = Convert.ToInt32(this.ShutdownTimeoutTextBox.Text.Trim());
-            }
+            rdpOptions.TimeOuts.ShutdownTimeout = ParseInteger(this.ShutdownTimeoutTextBox);
+            rdpOptions.TimeOuts.OverallTimeout = ParseInteger(this.OverallTimeoutTextbox);
+            rdpOptions.TimeOuts.ConnectionTimeout = ParseInteger(this.SingleTimeOutTextbox);
+            rdpOptions.TimeOuts.IdleTimeout = ParseInteger(this.IdleTimeoutMinutesTextBox);
+        }
 
-            if (this.OverallTimeoutTextbox.Text.Trim() != String.Empty)
-            {
-                rdpOptions.TimeOuts.OverallTimeout = Convert.ToInt32(this.OverallTimeoutTextbox.Text.Trim());
-            }
-
-            if (this.SingleTimeOutTextbox.Text.Trim() != String.Empty)
-            {
-                rdpOptions.TimeOuts.ConnectionTimeout = Convert.ToInt32(this.SingleTimeOutTextbox.Text.Trim());
-            }
-
-            if (this.IdleTimeoutMinutesTextBox.Text.Trim() != String.Empty)
-            {
-                rdpOptions.TimeOuts.IdleTimeout = Convert.ToInt32(this.IdleTimeoutMinutesTextBox.Text.Trim());
-            }
+        private static int ParseInteger(TextBox textBox)
+        {
+            int parsed;
+            int.TryParse(textBox.Text, out parsed);
+            return parsed;
         }
 
         private void FillFavoriteRdpInterfaceOptions(RdpOptions rdpOptions)
@@ -983,9 +1016,9 @@ namespace Terminals
             userInterface.EnableDesktopComposition = this.AllowDesktopCompositionCheckbox.Checked;
         }
 
-        private void FillFavoriteExecuteBeforeOptions()
+        private void FillFavoriteExecuteBeforeOptions(IFavorite favorite)
         {
-            var exucutionOptions = this.Favorite.ExecuteBeforeConnect;
+            IBeforeConnectExecuteOptions exucutionOptions = favorite.ExecuteBeforeConnect;
             exucutionOptions.Execute = this.chkExecuteBeforeConnect.Checked;
             exucutionOptions.Command = this.txtCommand.Text;
             exucutionOptions.CommandArguments = this.txtArguments.Text;
@@ -993,9 +1026,9 @@ namespace Terminals
             exucutionOptions.WaitForExit = this.chkWaitForExit.Checked;
         }
 
-        private void FillFavoriteSSHOptions()
+        private void FillFavoriteSSHOptions(IFavorite favorite)
         {
-            var sshOptions = this.Favorite.ProtocolProperties as SshOptions;
+            var sshOptions = favorite.ProtocolProperties as SshOptions;
             if (sshOptions == null)
                 return;
 
@@ -1004,9 +1037,9 @@ namespace Terminals
             sshOptions.SSH1 = this.SSHPreferences.SSH1;
         }
 
-        private void FillFavoriteICAOPtions()
+        private void FillFavoriteICAOPtions(IFavorite favorite)
         {
-            var icaOptions = this.Favorite.ProtocolProperties as ICAOptions;
+            var icaOptions = favorite.ProtocolProperties as ICAOptions;
             if (icaOptions == null)
                 return;
 
@@ -1048,9 +1081,9 @@ namespace Terminals
             }
         }
 
-        private void FillFavoriteRdpOptions()
+        private void FillFavoriteRdpOptions(IFavorite favorite)
         {
-            var rdpOptions = this.Favorite.ProtocolProperties as RdpOptions;
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
             if (rdpOptions == null)
                 return;
 
@@ -1084,29 +1117,30 @@ namespace Terminals
             rdpOptions.Redirect.Sounds = (RemoteSounds)this.cmbSounds.SelectedIndex;
         }
 
-        private void FillFavoriteSecurity()
+        private void FillFavoriteSecurity(IFavorite favorite)
         {
             ICredentialSet selectedCredential = this.CredentialDropdown.SelectedItem as ICredentialSet;
-            this.Favorite.Security.Credential = selectedCredential == null ? Guid.Empty : selectedCredential.Id;
+            ISecurityOptions security = favorite.Security;
+            security.Credential = selectedCredential == null ? Guid.Empty : selectedCredential.Id;
 
-            this.Favorite.Security.Domain = this.cmbDomains.Text;
-            this.Favorite.Security.UserName = this.cmbUsers.Text;
+            security.Domain = this.cmbDomains.Text;
+            security.UserName = this.cmbUsers.Text;
             if (this.chkSavePassword.Checked)
             {
                 if (this.txtPassword.Text != HIDDEN_PASSWORD)
-                    this.Favorite.Security.Password = this.txtPassword.Text;
+                    security.Password = this.txtPassword.Text;
                 else
-                    this.Favorite.Security.Password = this.favoritePassword;
+                    security.Password = this.favoritePassword;
             }
             else
             {
-                this.Favorite.Security.Password = String.Empty;
+                security.Password = String.Empty;
             }
         }
 
-        private void FillFavoriteVncOptions()
+        private void FillFavoriteVncOptions(IFavorite favorite)
         {
-            var vncOptions = this.Favorite.ProtocolProperties as VncOptions;
+            var vncOptions = favorite.ProtocolProperties as VncOptions;
             if (vncOptions == null)
                 return;
 
@@ -1115,9 +1149,9 @@ namespace Terminals
             vncOptions.ViewOnly = this.VncViewOnlyCheckbox.Checked;
         }
 
-        private void FillFavoriteVmrcOptions()
+        private void FillFavoriteVmrcOptions(IFavorite favorite)
         {
-            var vmrcOptions = this.Favorite.ProtocolProperties as VMRCOptions;
+            var vmrcOptions = favorite.ProtocolProperties as VMRCOptions;
             if (vmrcOptions == null)
                 return;
 
@@ -1125,16 +1159,16 @@ namespace Terminals
             vmrcOptions.ReducedColorsMode = this.VMRCReducedColorsCheckbox.Checked;
         }
 
-        private void SaveDefaultFavorite()
+        private void SaveDefaultFavorite(IFavorite favorite)
         {
-            this.Favorite.Name = String.Empty;
-            this.Favorite.ServerName = String.Empty;
-            this.Favorite.Notes = String.Empty;
-            this.Favorite.Security.Domain = String.Empty;
-            this.Favorite.Security.UserName = String.Empty;
-            this.Favorite.Security.Password = String.Empty;
+            favorite.Name = String.Empty;
+            favorite.ServerName = String.Empty;
+            favorite.Notes = String.Empty;
+            favorite.Security.Domain = String.Empty;
+            favorite.Security.UserName = String.Empty;
+            favorite.Security.Password = String.Empty;
 
-            var rdpOptions = this.Favorite.ProtocolProperties as RdpOptions;
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
             if (rdpOptions != null)
             {
                 rdpOptions.Security.Enabled = false;
@@ -1143,28 +1177,28 @@ namespace Terminals
                 rdpOptions.FullScreen = false;
             }
 
-            var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(this.Favorite, Persistence.Instance);
+            var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, Persistence.Instance);
             Settings.SaveDefaultFavorite(defaultFavorite);
         }
 
-        private void CommitFavoriteChanges()
+        private void CommitFavoriteChanges(IFavorite favorite)
         {
             Settings.StartDelayedUpdate();
             Persistence.Instance.StartDelayedUpdate();
             if (this.editedId == Guid.Empty)
             {
-                PersistedFavorites.Add(this.Favorite);
+                PersistedFavorites.Add(favorite);
                 if (this.ShowOnToolbar)
-                    Settings.AddFavoriteButton(this.Favorite.Id);
+                    Settings.AddFavoriteButton(favorite.Id);
             }
             else
             {
-                OrganizeFavoritesForm.UpdateFavoritePreservingDuplicitNames(this.oldName, this.Favorite.Name, this.Favorite);
-                Settings.EditFavoriteButton(this.editedId, this.Favorite.Id, this.ShowOnToolbar);
+                OrganizeFavoritesForm.UpdateFavoritePreservingDuplicitNames(this.oldName, favorite.Name, favorite);
+                Settings.EditFavoriteButton(this.editedId, favorite.Id, this.ShowOnToolbar);
             }
 
             List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
-            PersistedFavorites.UpdateFavorite(this.Favorite, updatedGroups);
+            PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
             Persistence.Instance.SaveAndFinishDelayedUpdate();
             Settings.SaveAndFinishDelayedUpdate();
         }
@@ -1184,11 +1218,12 @@ namespace Terminals
                  .ToList();
         }
 
-        internal void SetErrorInfo(object target, string message)
+        internal void SetErrorInfo(Control target, string message)
         {
-            var control = target as Control;
-            if (control != null)
-                this.errorProvider.SetError(control, message);
+            if (target == null)
+                return;
+
+            this.errorProvider.SetError(target, message);
         }
 
         private void SetOkButtonState()
