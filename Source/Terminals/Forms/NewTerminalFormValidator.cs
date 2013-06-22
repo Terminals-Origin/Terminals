@@ -144,11 +144,9 @@ namespace Terminals.Forms
 
         internal bool ValidateGrouName(TextBox txtGroupName)
         {
-            var group = Persistence.Instance.Factory.CreateGroup(txtGroupName.Text);
-            string message = !String.IsNullOrEmpty(txtGroupName.Text) ? string.Empty : "Name is required.";
-            var results = Validations.ValidateGroupName(group);
-            var resultMessage = SelectMessage(results, Validations.GROUP_NAME);
-            message = string.Concat(message, resultMessage);
+            IGroup group = Persistence.Instance.Factory.CreateGroup(txtGroupName.Text);
+            List<ValidationState> results = Validations.ValidateGroupName(group);
+            string message = SelectMessage(results, Validations.GROUP_NAME);
             this.form.SetErrorInfo(txtGroupName, message);
             return string.IsNullOrEmpty(message);
         }

@@ -76,8 +76,7 @@ namespace Tests
             var credentailSet = new DbCredentialSet();
             credentailSet.Name = longText;
             var results = Validations.Validate(credentailSet);
-            Assert.AreEqual(results.Count, 1, "CredentailSet name validation failed");
-
+            Assert.AreEqual(results.Count, 2, "CredentailSet validation failed");
         }
 
         [TestMethod]
@@ -85,13 +84,16 @@ namespace Tests
         {
             var group = new DbGroup();
             group.Name = longText;
+            AssertGroupValidation(group);
+            group.Name = string.Empty;
+            AssertGroupValidation(group);
+        }
+
+        private static void AssertGroupValidation(DbGroup group)
+        {
             List<ValidationState> results = Validations.ValidateGroupName(group);
             Assert.AreEqual(results.Count, 1, "Group name validation failed");
             Assert.AreEqual(results[0].PropertyName, "Name", "Failed property is not a 'Name'");
-            
-            group.Name = "aaa";
-            results = Validations.ValidateGroupName(group);
-            Assert.AreEqual(results.Count, 0, "Group name should be OK");
         }
     }
 }
