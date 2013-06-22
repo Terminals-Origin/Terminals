@@ -41,12 +41,14 @@
             this.DomainTextbox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // CancelButton_cred
             // 
             this.CancelButton_cred.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton_cred.Location = new System.Drawing.Point(199, 116);
+            this.CancelButton_cred.Location = new System.Drawing.Point(215, 116);
             this.CancelButton_cred.Name = "CancelButton_cred";
             this.CancelButton_cred.Size = new System.Drawing.Size(75, 23);
             this.CancelButton_cred.TabIndex = 5;
@@ -55,7 +57,7 @@
             // 
             // SaveButton_cred
             // 
-            this.SaveButton_cred.Location = new System.Drawing.Point(118, 116);
+            this.SaveButton_cred.Location = new System.Drawing.Point(134, 116);
             this.SaveButton_cred.Name = "SaveButton_cred";
             this.SaveButton_cred.Size = new System.Drawing.Size(75, 23);
             this.SaveButton_cred.TabIndex = 4;
@@ -74,7 +76,8 @@
             // 
             // NameTextbox
             // 
-            this.NameTextbox.Location = new System.Drawing.Point(70, 12);
+            this.errorProvider.SetIconAlignment(this.NameTextbox, System.Windows.Forms.ErrorIconAlignment.MiddleLeft);
+            this.NameTextbox.Location = new System.Drawing.Point(86, 12);
             this.NameTextbox.Name = "NameTextbox";
             this.NameTextbox.Size = new System.Drawing.Size(204, 20);
             this.NameTextbox.TabIndex = 0;
@@ -82,14 +85,14 @@
             // 
             // PasswordTextbox
             // 
-            this.PasswordTextbox.Location = new System.Drawing.Point(70, 64);
+            this.PasswordTextbox.Location = new System.Drawing.Point(86, 64);
             this.PasswordTextbox.Name = "PasswordTextbox";
             this.PasswordTextbox.PasswordChar = '*';
             this.PasswordTextbox.Size = new System.Drawing.Size(204, 20);
             this.PasswordTextbox.TabIndex = 2;
             this.toolTip1.SetToolTip(this.PasswordTextbox, "User password associated with the user name.\r\nThis is an optional field. If you d" +
-                    "on\'t type, an empty password will be used.\r\nStored passwords are encrypted, so n" +
-                    "obody can read them.");
+        "on\'t type, an empty password will be used.\r\nStored passwords are encrypted, so n" +
+        "obody can read them.");
             // 
             // label2
             // 
@@ -102,7 +105,8 @@
             // 
             // UsernameTextbox
             // 
-            this.UsernameTextbox.Location = new System.Drawing.Point(70, 38);
+            this.errorProvider.SetIconAlignment(this.UsernameTextbox, System.Windows.Forms.ErrorIconAlignment.MiddleLeft);
+            this.UsernameTextbox.Location = new System.Drawing.Point(86, 38);
             this.UsernameTextbox.Name = "UsernameTextbox";
             this.UsernameTextbox.Size = new System.Drawing.Size(204, 20);
             this.UsernameTextbox.TabIndex = 1;
@@ -119,13 +123,13 @@
             // 
             // DomainTextbox
             // 
-            this.DomainTextbox.Location = new System.Drawing.Point(70, 90);
+            this.DomainTextbox.Location = new System.Drawing.Point(86, 90);
             this.DomainTextbox.Name = "DomainTextbox";
             this.DomainTextbox.Size = new System.Drawing.Size(204, 20);
             this.DomainTextbox.TabIndex = 3;
             this.toolTip1.SetToolTip(this.DomainTextbox, "Windows domain name.\r\nThis is an optional fiedl. It isn\'t necessary, \r\nif all you" +
-                    "r computers are on the same network\r\nor if you don\'t use Windows authentication." +
-                    "");
+        "r computers are on the same network\r\nor if you don\'t use Windows authentication." +
+        "");
             // 
             // label4
             // 
@@ -136,13 +140,17 @@
             this.label4.TabIndex = 11;
             this.label4.Text = "Domain:";
             // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
+            // 
             // ManageCredentialForm
             // 
             this.AcceptButton = this.SaveButton_cred;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelButton_cred;
-            this.ClientSize = new System.Drawing.Size(284, 145);
+            this.ClientSize = new System.Drawing.Size(302, 145);
             this.Controls.Add(this.DomainTextbox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.UsernameTextbox);
@@ -160,6 +168,7 @@
             this.Name = "ManageCredentialForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Terminals - Manage Credential";
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -178,5 +187,6 @@
         private System.Windows.Forms.TextBox DomainTextbox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ErrorProvider errorProvider;
     }
 }
