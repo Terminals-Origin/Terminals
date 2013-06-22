@@ -18,12 +18,15 @@ namespace Terminals.Data.Validation
 
         internal const string PORT_RANGE = "Port has to be a number in range 0-65535.";
 
+        /// <summary>
+        /// Gets name of the groups Name property
+        /// </summary>
+        internal const string GROUP_NAME = "Name";
+
         static Validations()
         {
             RegisterSqlValidations();
             RegisterProvider(typeof(Favorite), typeof(FavoriteMetadata));
-
-            // todo replace the validation in NewFavorite Form
         }
 
         private static void RegisterSqlValidations()
@@ -62,6 +65,15 @@ namespace Terminals.Data.Validation
         {
             var results = new List<ValidationResult>();
             Validator.TryValidateObject(toValidate, new ValidationContext(toValidate, null, null), results, true);
+            return ConvertResultsToStates(results); 
+        }
+
+        internal static List<ValidationState> ValidateGroupName(IGroup toValidate)
+        {
+            var results = new List<ValidationResult>();
+            var context = new ValidationContext(toValidate, null, null);
+            context.MemberName = GROUP_NAME;
+            Validator.TryValidateProperty(toValidate.Name, context, results);
             return ConvertResultsToStates(results); 
         }
 

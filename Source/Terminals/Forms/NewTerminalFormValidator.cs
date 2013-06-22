@@ -67,10 +67,9 @@ namespace Terminals.Forms
 
         private static string SelectMessage(List<ValidationState> results, string propertyName)
         {
-            string message = results.Where(result => result.PropertyName == propertyName)
-                                    .Select(result => result.Message)
-                                    .FirstOrDefault();
-            return message;
+            IEnumerable<string> messages = results.Where(result => result.PropertyName == propertyName)
+                                                  .Select(result => result.Message);
+            return string.Concat(messages);
         }
 
         internal void OnServerNameValidating(object sender, CancelEventArgs eventArgs)
@@ -141,6 +140,17 @@ namespace Terminals.Forms
             string errorMessage = isPared ? string.Empty : "Is not a valid integer.";
             eventArgs.Cancel = !isPared;
             this.form.SetErrorInfo(textBox, errorMessage);
+        }
+
+        internal bool ValidateGrouName(TextBox txtGroupName)
+        {
+            var group = Persistence.Instance.Factory.CreateGroup(txtGroupName.Text);
+            string message = !String.IsNullOrEmpty(txtGroupName.Text) ? string.Empty : "Name is required.";
+            var results = Validations.ValidateGroupName(group);
+            var resultMessage = SelectMessage(results, Validations.GROUP_NAME);
+            message = string.Concat(message, resultMessage);
+            this.form.SetErrorInfo(txtGroupName, message);
+            return string.IsNullOrEmpty(message);
         }
     }
 }
