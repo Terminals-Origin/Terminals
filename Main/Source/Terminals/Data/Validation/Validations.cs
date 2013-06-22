@@ -26,15 +26,22 @@ namespace Terminals.Data.Validation
         static Validations()
         {
             RegisterSqlValidations();
-            RegisterProvider(typeof(Favorite), typeof(FavoriteMetadata));
+            RegisterFilePersistedValidations();
         }
 
         private static void RegisterSqlValidations()
         {
-            RegisterProvider(typeof (DbFavorite), typeof (DbFavoriteMetadata));
-            RegisterProvider(typeof (DbBeforeConnectExecute), typeof (DbBeforeConnectExecuteMetadata));
-            RegisterProvider(typeof (DbGroup), typeof (DbGroupMetadata));
-            RegisterProvider(typeof (DbCredentialSet), typeof (DbCredentialSetMetadata));
+            RegisterProvider(typeof(DbFavorite), typeof(DbFavoriteMetadata));
+            RegisterProvider(typeof(DbBeforeConnectExecute), typeof(DbBeforeConnectExecuteMetadata));
+            RegisterProvider(typeof(DbGroup), typeof(DbGroupMetadata));
+            RegisterProvider(typeof(DbCredentialSet), typeof(DbCredentialSetMetadata));
+        }
+
+        private static void RegisterFilePersistedValidations()
+        {
+            RegisterProvider(typeof(Favorite), typeof(FavoriteMetadata));
+            RegisterProvider(typeof(Group), typeof(GroupMetadata));
+            RegisterProvider(typeof(CredentialSet), typeof(CredentialSetMetadata));
         }
 
         private static void RegisterProvider(Type itemType, Type metadataType)
@@ -65,7 +72,7 @@ namespace Terminals.Data.Validation
         {
             var results = new List<ValidationResult>();
             Validator.TryValidateObject(toValidate, new ValidationContext(toValidate, null, null), results, true);
-            return ConvertResultsToStates(results); 
+            return ConvertResultsToStates(results);
         }
 
         internal static List<ValidationState> ValidateGroupName(IGroup toValidate)
@@ -74,7 +81,7 @@ namespace Terminals.Data.Validation
             var context = new ValidationContext(toValidate, null, null);
             context.MemberName = GROUP_NAME;
             Validator.TryValidateProperty(toValidate.Name, context, results);
-            return ConvertResultsToStates(results); 
+            return ConvertResultsToStates(results);
         }
 
         private static List<ValidationState> ConvertResultsToStates(List<ValidationResult> results)
