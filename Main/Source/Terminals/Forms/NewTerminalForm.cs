@@ -599,7 +599,7 @@ namespace Terminals
             this.cmbDomains.Items.AddRange(Settings.MRUDomainNames);
             this.cmbUsers.Items.AddRange(Settings.MRUUserNames);
             string[] groupNames = PersistedGroups.Select(group => group.Name).ToArray();
-            this.txtTag.AutoCompleteCustomSource.AddRange(groupNames);
+            this.txtGroupName.AutoCompleteCustomSource.AddRange(groupNames);
         }
 
         private void SaveMRUs()
@@ -1263,12 +1263,12 @@ namespace Terminals
 
         private void AddGroup()
         {
-            string newGroupName = this.txtTag.Text;
-            if (!String.IsNullOrEmpty(newGroupName))
-            {
-                IGroup candidate = FavoritesFactory.GetOrCreateNewGroup(newGroupName);
-                this.AddGroupIfNotAlreadyThere(candidate);
-            }
+            string newGroupName = this.txtGroupName.Text;
+            if (!this.validator.ValidateGrouName(this.txtGroupName))
+                return;
+
+            IGroup candidate = FavoritesFactory.GetOrCreateNewGroup(newGroupName);
+            this.AddGroupIfNotAlreadyThere(candidate);
         }
 
         private void AddGroupsToFavorite()

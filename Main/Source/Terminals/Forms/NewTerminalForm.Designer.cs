@@ -102,7 +102,7 @@ namespace Terminals
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.txtTag = new System.Windows.Forms.TextBox();
+            this.txtGroupName = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.RAStabPage = new System.Windows.Forms.TabPage();
             this.RASGroupBox = new System.Windows.Forms.GroupBox();
@@ -1010,7 +1010,7 @@ namespace Terminals
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.txtTag);
+            this.panel3.Controls.Add(this.txtGroupName);
             this.panel3.Controls.Add(this.btnAddNewTag);
             this.panel3.Controls.Add(this.label14);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1021,12 +1021,12 @@ namespace Terminals
             // 
             // txtTag
             // 
-            this.txtTag.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.txtTag.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.txtTag.Location = new System.Drawing.Point(70, 19);
-            this.txtTag.Name = "txtTag";
-            this.txtTag.Size = new System.Drawing.Size(332, 21);
-            this.txtTag.TabIndex = 1;
+            this.txtGroupName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txtGroupName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.txtGroupName.Location = new System.Drawing.Point(70, 19);
+            this.txtGroupName.Name = "txtGroupName";
+            this.txtGroupName.Size = new System.Drawing.Size(332, 21);
+            this.txtGroupName.TabIndex = 1;
             // 
             // label14
             // 
@@ -2666,7 +2666,7 @@ namespace Terminals
         private System.Windows.Forms.Button btnRemoveTag;
         private System.Windows.Forms.ListView lvConnectionTags;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.TextBox txtTag;
+        private System.Windows.Forms.TextBox txtGroupName;
         private System.Windows.Forms.Button btnAddNewTag;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ErrorProvider errorProvider;

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
@@ -76,6 +77,21 @@ namespace Tests
             credentailSet.Name = longText;
             var results = Validations.Validate(credentailSet);
             Assert.AreEqual(results.Count, 1, "CredentailSet name validation failed");
+
+        }
+
+        [TestMethod]
+        public void DbGroupNamePropertyValidationTest()
+        {
+            var group = new DbGroup();
+            group.Name = longText;
+            List<ValidationState> results = Validations.ValidateGroupName(group);
+            Assert.AreEqual(results.Count, 1, "Group name validation failed");
+            Assert.AreEqual(results[0].PropertyName, "Name", "Failed property is not a 'Name'");
+            
+            group.Name = "aaa";
+            results = Validations.ValidateGroupName(group);
+            Assert.AreEqual(results.Count, 0, "Group name should be OK");
         }
     }
 }
