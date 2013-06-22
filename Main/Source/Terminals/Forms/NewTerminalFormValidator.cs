@@ -17,7 +17,7 @@ namespace Terminals.Forms
     {
         private readonly NewTerminalForm form;
 
-        private readonly Dictionary<string, Control> validationBindings = new Dictionary<string, Control>(); 
+        private readonly Dictionary<string, Control> validationBindings = new Dictionary<string, Control>();
 
         public NewTerminalFormValidator(NewTerminalForm form)
         {
@@ -31,46 +31,78 @@ namespace Terminals.Forms
 
         internal bool Validate()
         {
-            bool isValid = this.form.Validate();
+            // once the save button is clicked, force the validation of all controls, 
+            // even, if they were already validated, to be able to cancel the save
+            bool isValid = this.form.ValidateChildren();
             if (!isValid)
                 return false;
 
-            // call aditional persistence validation
+            return this.ValidatePersistenceConstraints();
+        }
+
+        /// <summary>
+        /// call aditional persistence validation, depending on persistence type.
+        /// here we do some validations again, may be considered to be improved.
+        /// Returns true, if persistence is satisfied; ohterwise false.
+        /// </summary>
+        private bool ValidatePersistenceConstraints()
+        {
             IFavorite favorite = Persistence.Instance.Factory.CreateFavorite();
             this.form.FillFavoriteFromControls(favorite);
-            var results = Validations.Validate(favorite);
+            List<ValidationState> results = Validations.Validate(favorite);
+            this.UpdateControlsErrorByResults(results);
+            // check the results, not the bindings to be able to identify unbound property errors
             return !results.Any();
+        }
+
+        private void UpdateControlsErrorByResults(List<ValidationState> results)
+        {
+            // loop through bindings to be able to reset the validaiton state for valid controls
+            foreach (KeyValuePair<string, Control> binding in this.validationBindings)
+            {
+                string message = SelectMessage(results, binding.Key);
+                this.form.SetErrorInfo(binding.Value, message);
+            }
+        }
+
+        private static string SelectMessage(List<ValidationState> results, string propertyName)
+        {
+            string message = results.Where(result => result.PropertyName == propertyName)
+                                    .Select(result => result.Message)
+                                    .FirstOrDefault();
+            return message;
         }
 
         internal void OnServerNameValidating(object sender, CancelEventArgs eventArgs)
         {
             const string MESSAGE = "Server name is required and has to be valid computer name or IP adress.";
-            this.IsValid(this.IsServerNameValid, sender, MESSAGE);
+            this.IsValid(sender, eventArgs, this.IsServerNameValid, MESSAGE);
         }
 
         internal void OnUrlValidating(object sender, CancelEventArgs eventArgs)
         {
-            this.IsValid(this.IsUrlValid, sender, "Server URL isnt in valid format.");
+            this.IsValid(sender, eventArgs, this.IsUrlValid, "Server URL isnt in valid format.");
         }
 
         internal void OnPortValidating(object sender, CancelEventArgs eventArgs)
         {
-           this.IsValid(this.IsPortValid, sender, "Port must be a number between 0 and 65535");
+            this.IsValid(sender, eventArgs, this.IsPortValid, "Port must be a number between 0 and 65535");
         }
 
-        private void IsValid(Func<bool> isValid, object sender, string message)
+        private void IsValid(object sender, CancelEventArgs eventArgs, Func<bool> isValid, string message)
         {
-            string errorMessage = isValid() ? string.Empty : message;
+            eventArgs.Cancel = !isValid();
+            string errorMessage = eventArgs.Cancel ? message : string.Empty;
             var control = sender as Control;
             this.form.SetErrorInfo(control, errorMessage);
         }
 
-        internal bool IsServerNameValid()
+        private bool IsServerNameValid()
         {
             string protocol = this.form.ProtocolText;
-            if(ConnectionManager.IsProtocolWebBased(protocol))
+            if (ConnectionManager.IsProtocolWebBased(protocol))
                 return true;
-            
+
             return this.ServerNameInvalid();
         }
 
@@ -107,6 +139,7 @@ namespace Terminals.Forms
             int parsedValue;
             bool isPared = int.TryParse(textBox.Text, out parsedValue);
             string errorMessage = isPared ? string.Empty : "Is not a valid integer.";
+            eventArgs.Cancel = !isPared;
             this.form.SetErrorInfo(textBox, errorMessage);
         }
     }

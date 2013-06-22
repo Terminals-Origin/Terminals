@@ -115,9 +115,9 @@ namespace Terminals
 
         #region Properties
 
-        public new TerminalFormDialogResult DialogResult { get; private set; }
+        private new TerminalFormDialogResult DialogResult { get; set; }
         internal IFavorite Favorite { get; private set; }
-        internal bool ShowOnToolbar { get; private set; }
+        private bool ShowOnToolbar { get; set; }
         internal List<string> RedirectedDrives { get; set; }
         internal bool RedirectDevices { get; set; }
 
@@ -870,7 +870,7 @@ namespace Terminals
             try
             {
                 var isValid = this.validator.Validate();
-                if (isValid)
+                if (!isValid)
                     return false;
 
                 IFavorite favorite = ResolveFavortie();
@@ -953,7 +953,9 @@ namespace Terminals
             favorite.Name = (String.IsNullOrEmpty(this.txtName.Text) ? this.cmbServers.Text : this.txtName.Text);
             favorite.ServerName = this.cmbServers.Text;
             favorite.Protocol = this.ProtocolComboBox.SelectedItem.ToString();
-            favorite.Port = Int32.Parse(this.PortText);
+            Int32 port;
+            Int32.TryParse(this.PortText, out port);
+            favorite.Port = port;
             this.FillWebProperties(favorite);
         }
 
@@ -1203,7 +1205,7 @@ namespace Terminals
             Settings.SaveAndFinishDelayedUpdate();
         }
 
-        internal void ShowErrorMessageBox(string message)
+        private void ShowErrorMessageBox(string message)
         {
             MessageBox.Show(this, message, Program.Info.Title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
