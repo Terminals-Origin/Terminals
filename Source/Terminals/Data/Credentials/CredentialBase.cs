@@ -21,8 +21,9 @@ namespace Terminals.Data
 
         // Not everything is access using interface, e.g. TSGW options inside RdpOptions,
         // so we encapsulate the internal properties UserName, Domain and Password
+        // this property needs to be public, because it is required by the validation
         [XmlIgnore]
-        internal string UserName
+        public string UserName
         {
             get
             {

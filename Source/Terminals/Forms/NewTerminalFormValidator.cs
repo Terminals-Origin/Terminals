@@ -65,7 +65,7 @@ namespace Terminals.Forms
             }
         }
 
-        private static string SelectMessage(List<ValidationState> results, string propertyName)
+        internal static string SelectMessage(List<ValidationState> results, string propertyName)
         {
             IEnumerable<string> messages = results.Where(result => result.PropertyName == propertyName)
                                                   .Select(result => result.Message);

@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Data.Validation;
+using Terminals.Forms;
 
 namespace Terminals.Credentials
 {
@@ -37,19 +41,25 @@ namespace Terminals.Credentials
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(NameTextbox.Text) || string.IsNullOrEmpty(UsernameTextbox.Text))
-            {
-                MessageBox.Show("You must enter both a Name and User Name for the credential",
-                                "Credentail manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.NameTextbox.Focus();
+            if (!this.ValidateNameAndUserName())
                 return;
-            }
 
             if (UpdateCredential())
             {
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
+        }
+
+        private bool ValidateNameAndUserName()
+        {
+            ICredentialSet prototype = this.CreateNewCredential();
+            var results = Validations.Validate(prototype);
+            string nameErrorMessage = NewTerminalFormValidator.SelectMessage(results, "Name");
+            this.errorProvider.SetError(this.NameTextbox, nameErrorMessage);
+            string userNameErrorMessage = NewTerminalFormValidator.SelectMessage(results, "UserName");
+            this.errorProvider.SetError(this.UsernameTextbox, userNameErrorMessage);
+            return !results.Any();
         }
 
         private bool UpdateCredential()
