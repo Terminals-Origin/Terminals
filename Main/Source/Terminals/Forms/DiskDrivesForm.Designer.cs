@@ -49,7 +49,7 @@
             treeNode2});
             this.treeView1.Size = new System.Drawing.Size(260, 240);
             this.treeView1.TabIndex = 0;
-            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterCheck);
+            this.treeView1.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.TreeView_AfterCheck);
             // 
             // DiskDrivesForm
             // 

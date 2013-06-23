@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 
@@ -7,13 +8,24 @@ namespace Terminals
 {
     internal partial class DiskDrivesForm : Form
     {
-        private NewTerminalForm _parentForm;
-        private bool updatingState = false;
+        private readonly NewTerminalForm parentForm;
+
+        private bool updatingState;
+
+        private TreeNode DevicesNode
+        {
+            get { return treeView1.Nodes["NodeDevices"]; }   
+        }
+
+        private TreeNode DrivesNode
+        {
+            get { return treeView1.Nodes["NodeDrives"]; }
+        }
 
         public DiskDrivesForm(NewTerminalForm parentForm)
         {
             InitializeComponent();
-            _parentForm = parentForm;
+            this.parentForm = parentForm;
             LoadDevices();
         }
 
@@ -21,59 +33,65 @@ namespace Terminals
         {
             try
             {
-                treeView1.Nodes["NodeDevices"].Checked = this._parentForm.RedirectDevices;
+                this.DevicesNode.Checked = this.parentForm.RedirectDevices;
 
-                DriveInfo[] drives = DriveInfo.GetDrives();
-                List<string> _redirectedDrives = this._parentForm.RedirectedDrives;
+                List<string> redirectedDrives = this.parentForm.RedirectedDrives;
+                if (redirectedDrives == null)
+                    redirectedDrives = new List<string>();
 
-                foreach (DriveInfo drive in drives)
+                foreach (DriveInfo drive in DriveInfo.GetDrives())
                 {
-                    try
-                    {
-                        string name = drive.Name.TrimEnd("\\".ToCharArray());
-                        TreeNode tn = new TreeNode(name + " (" + drive.VolumeLabel + ")");
-                        tn.Name = name;
-                        if (_redirectedDrives != null && _redirectedDrives.Contains(name))
-                            tn.Checked = true;
-                        treeView1.Nodes["NodeDrives"].Nodes.Add(tn);
-                    }
-                    catch (Exception e)
-                    {
-                        Terminals.Logging.Log.Error("Error loading a drive into the tree", e);
-                    }
+                    this.TryAddDrive(drive, redirectedDrives);
                 }
 
-                if (_redirectedDrives != null && _redirectedDrives.Count > 0 && _redirectedDrives[0].Equals("true"))
-                    treeView1.Nodes["NodeDrives"].Checked = true;
+                if (redirectedDrives.Count > 0 && redirectedDrives[0].Equals("true"))
+                    this.DevicesNode.Checked = true;
 
                 treeView1.ExpandAll();
             }
             catch (Exception exc)
             {
                 Logging.Log.Error("Failed to load Disk Drive devices.", exc);
-                throw;
             }
+        }
 
+        private void TryAddDrive(DriveInfo drive, List<string> redirectedDrives)
+        {
+            try
+            {
+                string name = drive.Name.TrimEnd("\\".ToCharArray());
+                string nodeName = string.Format("{0} ({1})", name, drive.VolumeLabel);
+                var tn = new TreeNode(nodeName);
+                tn.Name = name;
+                if (redirectedDrives.Contains(name))
+                    tn.Checked = true;
+                this.DrivesNode.Nodes.Add(tn);
+            }
+            catch (Exception e)
+            {
+                Logging.Log.Error("Error loading a drive into the tree", e);
+            }
         }
 
         private void DiskDrivesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            List<string> _redirectedDrives = new List<string>();
-            if (treeView1.Nodes["NodeDrives"].Checked)
+            List<string> redirectedDrives = new List<string>();
+            if (this.DevicesNode.Checked)
             {
-                _redirectedDrives.Add("true");
+                redirectedDrives.Add("true");
             }
             else
             {
-                foreach (TreeNode tn in treeView1.Nodes["NodeDrives"].Nodes)
-                    if (tn.Checked)
-                        _redirectedDrives.Add(tn.Name);
+                IEnumerable<string> checkedNodes = this.DrivesNode.Nodes.Cast<TreeNode>()
+                    .Where(tn => tn.Checked)
+                    .Select(tn => tn.Name);
+                redirectedDrives.AddRange(checkedNodes);
             }
-            this._parentForm.RedirectedDrives = _redirectedDrives;
-            this._parentForm.RedirectDevices = treeView1.Nodes["NodeDevices"].Checked;
+            this.parentForm.RedirectedDrives = redirectedDrives;
+            this.parentForm.RedirectDevices = this.DevicesNode.Checked;
         }
 
-        private void treeView1_AfterCheck(object sender, TreeViewEventArgs e)
+        private void TreeView_AfterCheck(object sender, TreeViewEventArgs e)
         {
             if (updatingState)
                 return;
