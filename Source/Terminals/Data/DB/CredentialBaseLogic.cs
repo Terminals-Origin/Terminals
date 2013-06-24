@@ -60,11 +60,11 @@ namespace Terminals.Data.DB
 
             string userName = this.GetDecryptedUserName();
             if (!string.IsNullOrEmpty(userName))
-                this.EncryptedPassword = PasswordFunctions2.EncryptPassword(userName, newKeymaterial);
+                this.EncryptedUserName = PasswordFunctions2.EncryptPassword(userName, newKeymaterial);
 
             string domain = this.GetDecryptedDomain();
             if (!string.IsNullOrEmpty(domain))
-                this.EncryptedPassword = PasswordFunctions2.EncryptPassword(domain, newKeymaterial);
+                this.EncryptedDomain = PasswordFunctions2.EncryptPassword(domain, newKeymaterial);
         }
 
         private string GetDecryptedUserName()
