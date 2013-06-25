@@ -24,37 +24,38 @@ namespace Terminals.Data.DB
         {
         }
 
-        internal static void UpdateMastrerPassord(string connectionString, string oldPassword, string newPassword)
-        {
-            var update = new DatabasePasswordUpdate();
-            update.Run(connectionString, oldPassword, newPassword);
-        }
-
-        private void Run(string connectionString, string oldPassword, string newPassword)
+        internal static TestConnectionResult UpdateMastrerPassord(string connectionString, string oldPassword, string newPassword)
         {
             TestConnectionResult oldPasswordCheck = DatabaseConnections.TestConnection(connectionString, oldPassword);
             if (!oldPasswordCheck.Successful)
-                return;
+                return oldPasswordCheck;
 
-            this.Configure(connectionString, oldPassword, newPassword);
-            this.CommitMasterPasswordInTransaction(connectionString);
-
+            var update = new DatabasePasswordUpdate();
+            return update.Run(connectionString, oldPassword, newPassword);
         }
 
-        private void CommitMasterPasswordInTransaction(string connectionString)
+        private TestConnectionResult Run(string connectionString, string oldPassword, string newPassword)
         {
             try
             {
-                using (var transaction = new TransactionScope())
-                {
-                    // dangerous operation, which may break all stored passwords or database access
-                    this.CommitNewMastrerPassord(connectionString);
-                    transaction.Complete();
-                }
+                this.Configure(connectionString, oldPassword, newPassword);
+                this.CommitMasterPasswordInTransaction(connectionString);
+                return new TestConnectionResult();
             }
             catch (Exception ex)
             {
                 Logging.Log.Error("Unable to update the database master password", ex);
+                return new TestConnectionResult(ex.Message);
+            }
+        }
+
+        private void CommitMasterPasswordInTransaction(string connectionString)
+        {
+            using (var transaction = new TransactionScope())
+            {
+                // dangerous operation, which may break all stored passwords or database access
+                this.CommitNewMastrerPassord(connectionString);
+                transaction.Complete();
             }
         }
 

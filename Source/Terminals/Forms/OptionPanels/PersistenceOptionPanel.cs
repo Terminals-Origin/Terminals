@@ -304,7 +304,31 @@ namespace Terminals.Forms
                 return;
 
             this.Cursor = Cursors.WaitCursor;
-            DatabasePasswordUpdate.UpdateMastrerPassord(this.ConnectionString, passwordPrompt.Item2, passwordPrompt.Item3);
+            var connectionProperties = new Tuple<string, string, string>(this.ConnectionString, passwordPrompt.Item2, passwordPrompt.Item3);
+            Task<TestConnectionResult> t = Task<TestConnectionResult>.Factory.StartNew(TrySetNewDatabasePassword, connectionProperties);
+            t.ContinueWith(this.ShowPasswordSetResult, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private TestConnectionResult TrySetNewDatabasePassword(object state)
+        {
+            var connectionProperties = state as Tuple<string, string, string>;
+            return DatabasePasswordUpdate.UpdateMastrerPassord(connectionProperties.Item1,
+                connectionProperties.Item2, connectionProperties.Item3);
+        }
+
+        private void ShowPasswordSetResult(Task<TestConnectionResult> task)
+        {
+            const string header = "Set new database password";
+            var result = task.Result;
+            if (result.Successful)
+            {
+                MessageBox.Show("Password was applied successfuly.", header, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                string messsage = string.Format("There was an error, when setting new password:\r\n{0}", result.ErroMessage);
+                MessageBox.Show(messsage, header, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             this.Cursor = Cursors.Default;
         }
 
