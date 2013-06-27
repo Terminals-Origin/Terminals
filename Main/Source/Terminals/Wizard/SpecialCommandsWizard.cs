@@ -25,7 +25,7 @@ namespace Terminals.Wizard
              {"intl.cpl", "Regional and language options"},
              {"irprops.cpl", "IR options"},
              {"joy.cpl", "Game controllers"},
-             {"main.cpl", "Mause properties"},
+             {"main.cpl", "Mouse properties"},
              {"mmsys.cpl", "Sounds and audio devices"},
              {"ncpa.cpl", "Network connections"},
              {"netsetup.cpl", "Wireless network setup wizard"},
