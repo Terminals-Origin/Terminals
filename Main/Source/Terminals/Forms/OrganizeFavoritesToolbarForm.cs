@@ -9,19 +9,26 @@ namespace Terminals
 {
     internal partial class OrganizeFavoritesToolbarForm : Form
     {
+        private ListViewItem SelectedItem
+        {
+            get
+            {
+                return this.lvFavoriteButtons.SelectedItems[0];
+            }
+        }
+
         public OrganizeFavoritesToolbarForm()
         {
             InitializeComponent();
 
-            var favoritesWithButton = Persistence.Instance.Favorites
-                .Where(candidate => Settings.FavoritesToolbarButtons.Contains(candidate.Id));
+            IFavorites persistedFavorites = Persistence.Instance.Favorites;
+            ListViewItem[] listViewItems = Settings.FavoritesToolbarButtons
+                .Select(id => persistedFavorites[id])
+                .Where(candidate => candidate != null)
+                .Select(favorite => new ListViewItem(favorite.Name) { Tag = favorite.Id })
+                .ToArray();
 
-            foreach (IFavorite favoriteWithButton in favoritesWithButton)
-            {
-                ListViewItem favoriteItem = new ListViewItem(favoriteWithButton.Name);
-                favoriteItem.Tag = favoriteWithButton.Id;
-                lvFavoriteButtons.Items.Add(favoriteItem);
-            }
+            lvFavoriteButtons.Items.AddRange(listViewItems);
         }
 
         private void lvFavoriteButtons_SelectedIndexChanged(object sender, EventArgs e)
@@ -38,47 +45,47 @@ namespace Terminals
             tsbMoveToLast.Enabled = (isSelected && selectedItem.Index < lvFavoriteButtons.Items.Count - 1);
         }
 
-        private void tsbMoveToFirst_Click(object sender, EventArgs e)
-        {
-            string name = lvFavoriteButtons.SelectedItems[0].Text;
-            lvFavoriteButtons.SelectedItems[0].Remove();
-            ListViewItem listViewItem = lvFavoriteButtons.Items.Insert(0, name);
-            listViewItem.Selected = true;
-        }
-
         private void tsbMoveUp_Click(object sender, EventArgs e)
         {
-            string name = lvFavoriteButtons.SelectedItems[0].Text;
-            int index = lvFavoriteButtons.SelectedItems[0].Index;
-            lvFavoriteButtons.SelectedItems[0].Remove();
-            ListViewItem listViewItem = lvFavoriteButtons.Items.Insert(index - 1, name);
-            listViewItem.Selected = true;
+            this.MoveToIndex(this.SelectedItem.Index - 1);
         }
 
         private void tsbMoveDown_Click(object sender, EventArgs e)
         {
-            string name = lvFavoriteButtons.SelectedItems[0].Text;
-            int index = lvFavoriteButtons.SelectedItems[0].Index;
-            lvFavoriteButtons.SelectedItems[0].Remove();
-            ListViewItem listViewItem = lvFavoriteButtons.Items.Insert(index + 1, name);
-            listViewItem.Selected = true;
+            this.MoveToIndex(this.SelectedItem.Index + 1);
+        }
+
+        private void tsbMoveToFirst_Click(object sender, EventArgs e)
+        {
+          this.MoveToIndex(0);
         }
 
         private void tsbMoveToLast_Click(object sender, EventArgs e)
         {
-            string name = lvFavoriteButtons.SelectedItems[0].Text;
-            lvFavoriteButtons.SelectedItems[0].Remove();
-            ListViewItem listViewItem = lvFavoriteButtons.Items.Add(name);
-            listViewItem.Selected = true;
+            Action<ListViewItem, int> insertAction = (item, index) => this.lvFavoriteButtons.Items.Add(item);
+            this.MoveToIndex(insertAction); // index is ignored
+        }
+
+        private void MoveToIndex(int newIndex)
+        {
+            Action<ListViewItem, int> insertAction = (item, index) => this.lvFavoriteButtons.Items.Insert(index, item);
+            this.MoveToIndex(insertAction, newIndex);
+        }
+
+        private void MoveToIndex(Action<ListViewItem, int> insertAction, int newIndex = 0)
+        {
+            ListViewItem selectedItem = this.SelectedItem;
+            this.lvFavoriteButtons.Items.Remove(selectedItem);
+            insertAction(selectedItem, newIndex);
+            selectedItem.Selected = true;
         }
 
         private void btnOk_Click(object sender, EventArgs e)
         {
-            var favoriteIds = new List<Guid>();
-            foreach (ListViewItem item in lvFavoriteButtons.Items)
-            {
-                favoriteIds.Add((Guid)item.Tag);
-            }
+            List<Guid> favoriteIds = lvFavoriteButtons.Items.Cast<ListViewItem>()
+                .Select(item => item.Tag)
+                .OfType<Guid>()
+                .ToList();
             Settings.UpdateFavoritesToolbarButtons(favoriteIds);
         }
     }
