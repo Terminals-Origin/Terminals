@@ -306,13 +306,13 @@ namespace Terminals
             return this.GetSelectedFavorites();
         }
 
-        internal List<IFavorite> GetSelectedFavorites()
+        private List<IFavorite> GetSelectedFavorites()
         {
             var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
             if (groupNode == null)
                 return new List<IFavorite>();
             
-            return groupNode.Group.Favorites;
+            return groupNode.Favorites;
         }
 
         private void FinishBatchUpdate(string variable)

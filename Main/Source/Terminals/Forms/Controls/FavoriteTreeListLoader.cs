@@ -235,7 +235,7 @@ namespace Terminals.Forms.Controls
         private List<GroupTreeNode> GetAffectedNodes(List<IGroup> requiredGroups)
         {
             return this.treeList.Nodes.Cast<GroupTreeNode>()
-                .Where(candidate => requiredGroups.Any(required => required.StoreIdEquals(candidate.Group)))
+                .Where(candidate => candidate.HasGroupIn(requiredGroups))
                 .ToList();
         }
 

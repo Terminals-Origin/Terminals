@@ -21,11 +21,11 @@ namespace Terminals.Forms.Controls
         {
             get
             {
-                return Data.Favorites.OrderByDefaultSorting(this.Group.Favorites);
+                return Data.Favorites.OrderByDefaultSorting(this.group.Favorites);
             }
         }
 
-        internal IGroup Group { get; private set; }
+        private readonly IGroup group;
 
         /// <summary>
         /// Gets the value indicating lazy loading not performed yet,
@@ -50,7 +50,7 @@ namespace Terminals.Forms.Controls
         internal GroupTreeNode(IGroup group)
             : this(group.Name)
         {
-            this.Group = group;
+            this.group = group;
         }
 
         protected GroupTreeNode(string groupName)
@@ -68,7 +68,12 @@ namespace Terminals.Forms.Controls
 
         internal virtual void UpdateByGroupName()
         {
-            this.Text = this.Group.Name;
+            this.Text = this.group.Name;
+        }
+
+        internal virtual bool HasGroupIn(IEnumerable<IGroup> requiredGroups)
+        {
+            return requiredGroups.Any(required => required.StoreIdEquals(this.group));
         }
     }
 }
