@@ -38,12 +38,6 @@ namespace Terminals
                 dataGridFavorites.Rows[0].Selected = true;
         }
 
-        private void OrganizeFavoritesForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-                this.Close();
-        }
-
         private void InitializeDataGrid()
         {
             this.dataGridFavorites.AutoGenerateColumns = false; // because of designer
@@ -94,16 +88,21 @@ namespace Terminals
                 EditFavorite();
         }
 
-        /// <summary>
-        /// Delete key press in grid.
-        /// </summary>
-        private void dataGridFavorites_KeyDown(object sender, KeyEventArgs e)
+        private void OrganizeFavoritesForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.C)
-                CopySelectedFavorite();
-
-            if (e.KeyCode == Keys.Delete)
-                DeleteSelectedFavorites();
+            switch (e.KeyCode)
+            {
+                case Keys.Escape:
+                    this.Close();
+                    break;
+                case Keys.C:
+                    if (e.Control)
+                        CopySelectedFavorite();
+                    break;
+                case Keys.Delete:
+                    DeleteSelectedFavorites();
+                    break;
+            }
         }
 
         private void dataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
