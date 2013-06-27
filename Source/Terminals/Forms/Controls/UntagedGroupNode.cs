@@ -37,5 +37,10 @@ namespace Terminals.Forms.Controls
         {
             // nothing to do here, this node name is fixed
         }
+
+        internal override bool HasGroupIn(IEnumerable<IGroup> requiredGroups)
+        {
+            return false; // no associated group
+        }
     }
 }
