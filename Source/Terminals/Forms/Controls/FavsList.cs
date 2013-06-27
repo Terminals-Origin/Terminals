@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Management;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -35,8 +34,6 @@ namespace Terminals
             Native.Methods.SetWindowTheme(this.historyTreeView.Handle, "Explorer", null);
 
             this.historyTreeView.DoubleClick += new EventHandler(this.HistoryTreeView_DoubleClick);
-            this.favsTree.Load();
-            LoadState();
         }
 
         #region Private methods
@@ -81,6 +78,9 @@ namespace Terminals
 
         private void FavsList_Load(object sender, EventArgs e)
         {
+            this.favsTree.Load();
+            this.historyTreeView.Load();
+            this.LoadState();
             this.favsTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.FavsTree_NodeMouseClick);
         }
 
@@ -338,9 +338,9 @@ namespace Terminals
         {
             String groupName = this.favsTree.SelectedNode.Text;
             string title = "Delete all Favorites by group - " + groupName;
-            const string prompt = "This will DELETE all Favorites within this group.\r\nUse at your own risk!\r\n\r\nDo you realy want to delete them?";
-            DialogResult result = MessageBox.Show(prompt, title, MessageBoxButtons.OKCancel);
-            if (result == DialogResult.OK)
+            const string PROMPT = "This will DELETE all Favorites within this group.\r\nUse at your own risk!\r\n\r\nDo you realy want to delete them?";
+            DialogResult result = MessageBox.Show(PROMPT, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
             {
                 List<IFavorite> selectedFavorites = this.StartBatchUpdate();
                 Persistence.Instance.Favorites.Delete(selectedFavorites);

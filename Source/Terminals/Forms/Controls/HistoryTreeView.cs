@@ -11,12 +11,18 @@ namespace Terminals.Forms.Controls
         public HistoryTreeView()
         {
             InitializeComponent();
+        }
 
-            // init groups before loading the history to prevent to run the callback earlier
-            InitializeTimeLineTreeNodes();
-
+        /// <summary>
+        /// Dont call from constructor to support designer
+        /// </summary>
+        internal void Load()
+        {
             var connectionHistory = Persistence.Instance.ConnectionHistory;
             connectionHistory.OnHistoryRecorded += new HistoryRecorded(this.OnHistoryRecorded);
+            
+            // init groups before loading the history to prevent to run the callback earlier
+            InitializeTimeLineTreeNodes();
         }
 
         /// <summary>

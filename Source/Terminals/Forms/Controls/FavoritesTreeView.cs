@@ -9,7 +9,7 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal partial class FavoritesTreeView : TreeView
     {
-        private readonly FavoriteTreeListLoader loader;
+        private FavoriteTreeListLoader loader;
 
         internal IFavorite SelectedFavorite
         {
@@ -26,8 +26,6 @@ namespace Terminals.Forms.Controls
         public FavoritesTreeView()
         {
             InitializeComponent();
-
-            this.loader = new FavoriteTreeListLoader(this);
         }
 
         /// <summary>
@@ -35,6 +33,7 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal void Load()
         {
+            this.loader = new FavoriteTreeListLoader(this);
             this.loader.LoadGroups();            
         }
 
