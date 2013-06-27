@@ -188,6 +188,12 @@
     <Compile Include="Data\Validation\GroupMetadata.cs" />
     <Compile Include="Data\Validation\ValidationState.cs" />
     <Compile Include="Data\Validation\Validations.cs" />
+    <Compile Include="Forms\Controls\ReconnectingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\ReconnectingControl.Designer.cs">
+      <DependentUpon>ReconnectingControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Forms\NewTerminalFormValidator.cs" />
     <Compile Include="Forms\UnhandledTerminationForm.cs">
@@ -1015,6 +1021,9 @@
     <EmbeddedResource Include="Forms\ChangePassword.resx">
       <DependentUpon>ChangePassword.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Controls\ReconnectingControl.resx">
+      <DependentUpon>ReconnectingControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\UnhandledTerminationForm.resx">
       <DependentUpon>UnhandledTerminationForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -1308,6 +1317,7 @@
     <None Include="Resources\treeIcon_http.png" />
     <None Include="Resources\treeIcon_rdp.png" />
     <None Include="Resources\RotatedHeaderForWizard.png" />
+    <None Include="Resources\Progress.gif" />
     <Content Include="Resources\terminalsbanner-install.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
