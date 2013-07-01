@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ICSharpCode.SharpZipLib.Zip;
@@ -88,9 +89,28 @@ namespace Terminals.Updates
         {
             return feed.Channels.OfType<RssChannel>()
                        .SelectMany(chanel => chanel.Items.OfType<RssItem>())
-                       .Where(item => item.PubDate > buildDate)
+                       .Where(item => IsNewerThanCurrent(item, buildDate))
                        .OrderByDescending(selected => selected.PubDate)
                        .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Inteligent resolution of latest build by real "release date", not only by the date used to publish the feed.
+        /// This filters the updates on release page after the release was published.
+        /// Obtains the real date from the title.
+        /// </summary>
+        private static bool IsNewerThanCurrent(RssItem item, DateTime buildDate)
+        {
+            // rss item published date
+            if (item.PubDate < buildDate)
+                return false;
+
+            const string DATE_FILTER = @"([^\(]+)\((?<Date>[^\(\)]+)\)"; // Select string iside brackets as "Date" group
+            string titleDate = Regex.Match(item.Title, DATE_FILTER).Groups["Date"].Value;
+            DateTime releaseDate;
+            // there is no culture specification when downloading the feed, so it is always EN
+            DateTime.TryParse(titleDate, out releaseDate);
+            return releaseDate > buildDate;
         }
 
         private static void DownloadLatestRelease()
