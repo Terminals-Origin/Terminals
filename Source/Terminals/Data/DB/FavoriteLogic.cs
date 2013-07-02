@@ -208,6 +208,8 @@ namespace Terminals.Data.DB
             // force load first to fill the content, otherwise we don't have to able to copy
             this.Details.Load();
             source.Details.Load();
+            // force the protocol to be loaded, in case the source wasnt accessed yet.
+            source.Details.LoadProtocolProperties();
 
             this.DesktopShare = source.DesktopShare;
             // we cant copy the fields, because they are also dependent on the favorite Id
