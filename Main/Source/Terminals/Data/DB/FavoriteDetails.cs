@@ -56,6 +56,10 @@ namespace Terminals.Data.DB
                 this.favorite = favorite;
             }
 
+            /// <summary>
+            /// Loads security, Execute and display options from database.
+            /// Doesnt load protocol properties or icon
+            /// </summary>
             internal void Load()
             {
                 if (!this.Loaded && !this.favorite.isNewlyCreated)
@@ -262,6 +266,9 @@ namespace Terminals.Data.DB
                 this.ExecuteBeforeConnect = null;
             }
 
+            /// <summary>
+            /// Doesnt copy intern flags, about loaded state of protocol properties and details
+            /// </summary>
             internal void UpdateFrom(FavoriteDetails source)
             {
                 this.Security.UpdateFrom(source.Security);
