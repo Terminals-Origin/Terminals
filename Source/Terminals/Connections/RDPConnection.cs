@@ -6,6 +6,7 @@ using AxMSTSCLib;
 using System.IO;
 using System.Runtime.InteropServices;
 using Terminals.Data;
+using Terminals.Forms.Controls;
 
 //http://msdn.microsoft.com/en-us/library/aa381172(v=vs.85).aspx
 //http://msdn.microsoft.com/en-us/library/aa380838(v=VS.85).aspx
@@ -18,6 +19,9 @@ namespace Terminals.Connections
 {
     internal class RDPConnection : Connection
     {
+        private readonly ReconnectingControl reconecting = new ReconnectingControl();
+        private readonly ConnectionStateDetector connectionStateDetector = new ConnectionStateDetector();
+
         private MSTSCLib.IMsRdpClientNonScriptable4 nonScriptable;
         private AxMsRdpClient6NotSafeForScripting client = null;
 
@@ -40,7 +44,8 @@ namespace Terminals.Connections
         {
             get
             {
-                return Convert.ToBoolean(this.client.Connected);
+                // dont let the connection to close with running reconnection
+                return Convert.ToBoolean(this.client.Connected) || this.connectionStateDetector.IsRunning;
             }
         }
 
@@ -118,6 +123,57 @@ namespace Terminals.Connections
             this.Parent = this.TerminalTabPage;
             this.client.AllowDrop = true;
             this.client.Dock = DockStyle.Fill;
+            this.ConfigureReconnect();
+        }
+
+        private void ConfigureReconnect()
+        {
+            // if not added to the client control controls collection, then it isnt visible
+            var clientControl = (Control)this.client;
+            clientControl.Controls.Add(this.reconecting);
+            this.reconecting.Hide();
+            this.reconecting.AbortReconnectRequested += new EventHandler(this.Recoonecting_AbortReconnectRequested);
+            this.connectionStateDetector.AssignFavorite(this.Favorite);
+            this.connectionStateDetector.ReconnectExpired += ConnectionStateDetectorOnReconnectExpired;
+            this.connectionStateDetector.Reconnected += ConnectionStateDetectorOnReconnected;
+        }
+
+        private void ConnectionStateDetectorOnReconnected(object sender, EventArgs eventArgs)
+        {
+            if (this.reconecting.InvokeRequired)
+            {
+                this.reconecting.Invoke(new EventHandler(this.ConnectionStateDetectorOnReconnected), new object[] { sender, eventArgs });
+            }
+            else
+            {
+                this.connectionStateDetector.Stop();
+                this.reconecting.Hide();
+                this.client.Connect();
+            }
+        }
+
+        private void ConnectionStateDetectorOnReconnectExpired(object sender, EventArgs eventArgs)
+        {
+            this.CancelReconnect();
+        }
+
+        private void Recoonecting_AbortReconnectRequested(object sender, EventArgs e)
+        {
+            this.CancelReconnect();
+        }
+
+        private void CancelReconnect()
+        {
+            if (this.reconecting.InvokeRequired)
+            {
+                this.reconecting.Invoke(new Action(this.CancelReconnect));
+            }
+            else
+            {
+                this.connectionStateDetector.Stop();
+                this.reconecting.Hide();
+                this.FinishDisconnect();    
+            }
         }
 
         public override void ChangeDesktopSize(DesktopSize desktopSize)
@@ -213,6 +269,15 @@ namespace Terminals.Connections
 
             if (rdpOptions.Security.EnableEncryption)
                 this.client.AdvancedSettings2.EncryptionEnabled = -1;
+
+            this.ConfigureCustomReconnect();
+        }
+
+        private void ConfigureCustomReconnect()
+        {
+            this.client.AdvancedSettings3.EnableAutoReconnect = false;
+            this.client.AdvancedSettings3.MaxReconnectAttempts = 0;
+            this.client.AdvancedSettings3.keepAliveInterval = 0;
         }
 
         private void ConfigureStartBehaviour(RdpOptions rdpOptions)
@@ -357,6 +422,7 @@ namespace Terminals.Connections
         {
             try
             {
+                this.connectionStateDetector.Disable();
                 this.client.Disconnect();
             }
             catch (Exception e)
@@ -431,7 +497,24 @@ namespace Terminals.Connections
 
         private void client_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            this.ShowDisconnetMessageBox(e);
+            // 516 reason in case of reconnect expired
+            // 2308 connection lost
+            // 2 - reboot or shutdown
+            if (e.discReason == 2308)
+            {
+                this.reconecting.Show();
+                this.reconecting.BringToFront();
+                this.connectionStateDetector.Start();
+            }
+            else
+            {
+                this.ShowDisconnetMessageBox(e);
+                this.FinishDisconnect();
+            }
+        }
+
+        private void FinishDisconnect()
+        {
             this.CloseTabPageOnParent();
             this.FireDisconnected();
         }
