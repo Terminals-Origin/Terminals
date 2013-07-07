@@ -1196,16 +1196,7 @@ namespace Terminals
             Boolean cancel = false;
             if (this.CurrentConnection != null && this.CurrentConnection.Connected)
             {
-                Boolean close = false;
-                if (Settings.WarnOnConnectionClose)
-                {
-                    close = (MessageBox.Show(this, Program.Resources.GetString("Areyousurethatyouwanttodisconnectfromtheactiveterminal"),
-                    Program.Resources.GetString("Terminals"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes);
-                }
-                else
-                {
-                    close = true;
-                }
+                Boolean close = AskToClose();
 
                 if (close)
                 {
@@ -1228,7 +1219,23 @@ namespace Terminals
             e.Cancel = cancel;
         }
 
-        private void tcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e)
+      private static bool AskToClose()
+      {
+        if (Settings.WarnOnConnectionClose)
+        {
+          string message = Program.Resources.GetString("Areyousurethatyouwanttodisconnectfromtheactiveterminal");
+          string title = Program.Resources.GetString("Terminals");
+          YesNoDisableResult answer = YesNoDisableForm.ShowDialog(title, message);
+          if (answer.Disable)
+            Settings.WarnOnConnectionClose = false;
+          
+          return answer.Result == DialogResult.Yes;
+        }
+        
+        return true;
+      }
+
+      private void tcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e)
         {
             this.UpdateControls();
             this.AssingTitle();
