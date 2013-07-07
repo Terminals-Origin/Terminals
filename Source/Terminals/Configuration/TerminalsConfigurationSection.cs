@@ -104,6 +104,19 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("tryReconnect")]
+        public bool TryReconnect
+        {
+            get
+            {
+                return (bool)this["tryReconnect"];
+            }
+            set
+            {
+                this["tryReconnect"] = value;
+            }
+        }
+
         [ConfigurationProperty("saveConnectionsOnClose")]
         public bool SaveConnectionsOnClose
         {
@@ -389,7 +402,7 @@ namespace Terminals
         #endregion
 
         #region Flickr section
-        
+
         [ConfigurationProperty("flickrToken", DefaultValue = "")]
         public string FlickrToken
         {
@@ -930,7 +943,7 @@ namespace Terminals
                 this["savedConnectionsList"] = value;
             }
         }
-        
+
         [ConfigurationProperty("savedCredentials", DefaultValue = "")]
         public string SavedCredentialsLocation
         {

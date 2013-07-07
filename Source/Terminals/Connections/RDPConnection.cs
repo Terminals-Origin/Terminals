@@ -5,7 +5,9 @@ using System.Windows.Forms;
 using AxMSTSCLib;
 using System.IO;
 using System.Runtime.InteropServices;
+using Terminals.Configuration;
 using Terminals.Data;
+using Terminals.Forms;
 using Terminals.Forms.Controls;
 
 //http://msdn.microsoft.com/en-us/library/aa381172(v=vs.85).aspx
@@ -54,15 +56,15 @@ namespace Terminals.Connections
             try
             {
                 if (!this.InitializeClientControl())
-                  return false;
+                    return false;
                 this.ConfigureCientUserControl();
                 ChangeDesktopSize(Favorite.Display.DesktopSize);
-                
+
                 try
                 {
                     this.client.ConnectingText = "Connecting. Please wait...";
                     this.client.DisconnectedText = "Disconnecting...";
-                    
+
                     var rdpOptions = this.Favorite.ProtocolProperties as RdpOptions;
                     this.ConfigureColorsDepth();
                     this.ConfigureRedirectedDrives(rdpOptions);
@@ -172,7 +174,7 @@ namespace Terminals.Connections
             {
                 this.connectionStateDetector.Stop();
                 this.reconecting.Hide();
-                this.FinishDisconnect();    
+                this.FinishDisconnect();
             }
         }
 
@@ -497,20 +499,45 @@ namespace Terminals.Connections
 
         private void client_OnDisconnected(object sender, IMsTscAxEvents_OnDisconnectedEvent e)
         {
-            // 516 reason in case of reconnect expired
-            // 2308 connection lost
-            // 2 - reboot or shutdown
-            if (e.discReason == 2308)
+            if (DecideToReconnect(e))
             {
-                this.reconecting.Show();
-                this.reconecting.BringToFront();
-                this.connectionStateDetector.Start();
+                this.Reconnect();
             }
             else
             {
                 this.ShowDisconnetMessageBox(e);
                 this.FinishDisconnect();
             }
+        }
+
+        private static bool DecideToReconnect(IMsTscAxEvents_OnDisconnectedEvent e)
+        {
+            // 516 reason in case of reconnect expired
+            // 2308 connection lost
+            // 2 - reboot or shutdown
+            if (e.discReason != 2308 && e.discReason != 2)
+                return false;
+
+            if (Settings.TryReconnect)
+                return true;
+
+            return AskToReconnect();
+        }
+
+        private static bool AskToReconnect()
+        {
+            const string MESSAGE = "Do you want to try reconnect?";
+            YesNoDisableResult answer = YesNoDisableForm.ShowDialog("Connection to server lost", MESSAGE);
+            if (answer.Disable)
+                Settings.TryReconnect = true;
+            return answer.Result == DialogResult.Yes;
+        }
+
+        private void Reconnect()
+        {
+            this.reconecting.Show();
+            this.reconecting.BringToFront();
+            this.connectionStateDetector.Start();
         }
 
         private void FinishDisconnect()
@@ -523,7 +550,7 @@ namespace Terminals.Connections
         {
             int reason = e.discReason;
             string error = RdpClientErrorMessages.ToDisconnectMessage(this.client, reason);
-            
+
             if (!string.IsNullOrEmpty(error))
             {
                 string message = String.Format("Error connecting to {0}\n\n{1}", this.client.Server, error);
@@ -535,7 +562,7 @@ namespace Terminals.Connections
         {
             if (this.ParentForm.InvokeRequired)
             {
-                this.Invoke(new InvokeCloseTabPage(this.CloseTabPage), new object[] { this.client.Parent});
+                this.Invoke(new InvokeCloseTabPage(this.CloseTabPage), new object[] { this.client.Parent });
             }
             else
             {

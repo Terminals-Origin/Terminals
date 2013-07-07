@@ -301,7 +301,7 @@ namespace Terminals.Configuration
         {
             get
             {
-                return GetSection().TerminalsPassword; 
+                return GetSection().TerminalsPassword;
             }
             private set
             {
@@ -930,7 +930,7 @@ namespace Terminals.Configuration
         #endregion
 
         #region Tags/Favorite lists Settings
-        
+
         public static string ExpandedFavoriteNodes
         {
             get
@@ -968,8 +968,8 @@ namespace Terminals.Configuration
         {
             get
             {
-              string encryptedConnectionString = GetSection().EncryptedConnectionString;
-              return PersistenceSecurity.DecryptPassword(encryptedConnectionString);
+                string encryptedConnectionString = GetSection().EncryptedConnectionString;
+                return PersistenceSecurity.DecryptPassword(encryptedConnectionString);
             }
 
             set
@@ -1126,5 +1126,18 @@ namespace Terminals.Configuration
         }
 
         #endregion
+
+        internal static bool TryReconnect
+        {
+            get
+            {
+                return GetSection().TryReconnect;
+            }
+            set
+            {
+                GetSection().TryReconnect = value;
+                SaveImmediatelyIfRequested();
+            }
+        }
     }
 }
