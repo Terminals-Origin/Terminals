@@ -1127,15 +1127,15 @@ namespace Terminals.Configuration
 
         #endregion
 
-        internal static bool TryReconnect
+        internal static bool AskToReconnect
         {
             get
             {
-                return GetSection().TryReconnect;
+                return GetSection().AskToReconnect;
             }
             set
             {
-                GetSection().TryReconnect = value;
+                GetSection().AskToReconnect = value;
                 SaveImmediatelyIfRequested();
             }
         }

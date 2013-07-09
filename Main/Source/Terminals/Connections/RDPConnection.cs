@@ -518,7 +518,7 @@ namespace Terminals.Connections
             if (e.discReason != 2308 && e.discReason != 2)
                 return false;
 
-            if (Settings.TryReconnect)
+            if (!Settings.AskToReconnect)
                 return true;
 
             return AskToReconnect();
@@ -529,7 +529,7 @@ namespace Terminals.Connections
             const string MESSAGE = "Do you want to try reconnect?";
             YesNoDisableResult answer = YesNoDisableForm.ShowDialog("Connection to server lost", MESSAGE);
             if (answer.Disable)
-                Settings.TryReconnect = true;
+                Settings.AskToReconnect = false;
             return answer.Result == DialogResult.Yes;
         }
 
