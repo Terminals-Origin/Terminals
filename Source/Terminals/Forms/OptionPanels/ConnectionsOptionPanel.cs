@@ -19,6 +19,7 @@ namespace Terminals.Forms
         {
             this.validateServerNamesCheckbox.Checked = Settings.ForceComputerNamesAsURI;
             this.warnDisconnectCheckBox.Checked = Settings.WarnOnConnectionClose;
+            this.tryReconnectCheckBox.Checked = Settings.AskToReconnect;
             this.txtDefaultDesktopShare.Text = Settings.DefaultDesktopShare;
             this.PortscanTimeoutTextBox.Text = Settings.PortScanTimeoutSeconds.ToString();
             this.restoreWindowCheckbox.Checked = Settings.RestoreWindowOnLastTerminalDisconnect;
@@ -28,6 +29,7 @@ namespace Terminals.Forms
         {
             Settings.ForceComputerNamesAsURI = this.validateServerNamesCheckbox.Checked;
             Settings.WarnOnConnectionClose = this.warnDisconnectCheckBox.Checked;
+            Settings.AskToReconnect = this.tryReconnectCheckBox.Checked;
             Settings.DefaultDesktopShare = this.txtDefaultDesktopShare.Text;
             Settings.RestoreWindowOnLastTerminalDisconnect = this.restoreWindowCheckbox.Checked;
             Int32.TryParse(this.PortscanTimeoutTextBox.Text, out timeout);

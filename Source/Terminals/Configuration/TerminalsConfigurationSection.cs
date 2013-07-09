@@ -104,16 +104,16 @@ namespace Terminals
             }
         }
 
-        [ConfigurationProperty("tryReconnect")]
-        public bool TryReconnect
+        [ConfigurationProperty("askToReconnect", DefaultValue = true)]
+        public bool AskToReconnect
         {
             get
             {
-                return (bool)this["tryReconnect"];
+                return (bool)this["askToReconnect"];
             }
             set
             {
-                this["tryReconnect"] = value;
+                this["askToReconnect"] = value;
             }
         }
 
