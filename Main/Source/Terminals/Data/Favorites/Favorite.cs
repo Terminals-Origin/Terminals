@@ -406,6 +406,11 @@ namespace Terminals.Data
             return oponentFavorite.Id == this.Id;
         }
 
+        public int GetStoreIdHash()
+        {
+            return this.Id.GetHashCode();
+        }
+
         internal void AssignStores(PersistenceSecurity persistenceSecurity, Groups groups)
         {
             this.persistenceSecurity = persistenceSecurity;

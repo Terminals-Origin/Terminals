@@ -5,22 +5,23 @@ namespace Terminals.Data.DB
     /// <summary>
     /// Comparer implementation, to check two Favorite items by their Ids
     /// </summary>
-    internal class ByIdComparer : EqualityComparer<DbFavorite>
+    internal class ByIdComparer<TItem> : EqualityComparer<TItem>
+        where TItem : class, IStoreIdEquals<TItem>
     {
-        public override bool Equals(DbFavorite source, DbFavorite target)
+        public override bool Equals(TItem source, TItem target)
         {
             if (source == null || target == null)
                 return false;
 
-            return source.Id == target.Id;
+            return source.StoreIdEquals(target);
         }
 
-        public override int GetHashCode(DbFavorite favorite)
+        public override int GetHashCode(TItem favorite)
         {
             if (favorite == null)
                 return 0;
 
-            return favorite.Id;
+            return favorite.GetStoreIdHash();
         }
     }
 }

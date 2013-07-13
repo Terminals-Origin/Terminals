@@ -5,7 +5,7 @@ namespace Terminals.Data.DB
     /// <summary>
     /// Checks, whether favorites have identical Ids, but version has changed
     /// </summary>
-    internal class ChangedVersionComparer : ByIdComparer
+    internal class ChangedVersionComparer : ByIdComparer<DbFavorite>
     {
         public override bool Equals(DbFavorite source, DbFavorite target)
         {

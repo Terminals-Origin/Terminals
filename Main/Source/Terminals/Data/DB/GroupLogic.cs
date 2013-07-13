@@ -277,6 +277,11 @@ namespace Terminals.Data.DB
             return oponentGroup.Id == this.Id;
         }
 
+        public int GetStoreIdHash()
+        {
+            return this.Id.GetHashCode();
+        }
+
         public override string ToString()
         {
             return Group.ToString(this, this.Id.ToString());

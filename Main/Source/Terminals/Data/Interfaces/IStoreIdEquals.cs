@@ -14,5 +14,7 @@ namespace Terminals.Data
         /// <param name="oponent">Not null object of the same implementation like this item to compare with.</param>
         /// <returns>True, if the unique identifier used in store equals; otherwise false</returns>
         bool StoreIdEquals(TItemType oponent);
+
+        int GetStoreIdHash();
     }
 }

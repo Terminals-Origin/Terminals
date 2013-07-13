@@ -67,7 +67,7 @@ namespace Terminals.Data
         public PersistenceSecurity Security { get; private set; }
 
         private readonly Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.FilePersistence");
-        private DataFileWatcher fileWatcher;
+        private IDataFileWatcher fileWatcher;
         private bool delaySave;
 
         internal FilePersistence() : this(new PersistenceSecurity())
@@ -77,6 +77,13 @@ namespace Terminals.Data
         /// Try to reuse current security in case of changing persistence, because user is already authenticated
         /// </summary>
         internal FilePersistence(PersistenceSecurity security)
+            : this(security, new DataFileWatcher(Settings.FileLocations.Favorites))
+        {}
+
+        /// <summary>
+        /// For testing purpose allowes to inject internaly used services
+        /// </summary>
+        internal FilePersistence(PersistenceSecurity security, IDataFileWatcher fileWatcher)
         {
             this.InitializeSecurity(security);
             this.Dispatcher = new DataDispatcher();
@@ -85,7 +92,7 @@ namespace Terminals.Data
             this.favorites = new Favorites(this);
             this.connectionHistory = new ConnectionHistory(this.favorites);
             this.factory = new Factory(security, this.groups, this.Dispatcher);
-            this.InitializeFileWatch();
+            this.InitializeFileWatch(fileWatcher);
         }
 
         private void InitializeSecurity(PersistenceSecurity security)
@@ -94,9 +101,9 @@ namespace Terminals.Data
             this.Security.AssignPersistence(this);
         }
 
-        private void InitializeFileWatch()
+        private void InitializeFileWatch(IDataFileWatcher fileWatcher)
         {
-            this.fileWatcher = new DataFileWatcher(Settings.FileLocations.Favorites);
+            this.fileWatcher = fileWatcher;
             this.fileWatcher.FileChanged += new EventHandler(this.FavoritesFileChanged);
             this.fileWatcher.StartObservation();
         }
@@ -110,8 +117,6 @@ namespace Terminals.Data
             // than send the favorite update also for present favorites
             IList<IGroup> updated = this.UpdateFavoritesInGroups(file.FavoritesInGroups);
             this.Dispatcher.ReportGroupsUpdated(updated);
-            // Simple update without ensuring, if the favorite was changes or not - possible performance issue);
-            this.Dispatcher.ReportFavoritesUpdated(new List<IFavorite>(this.favorites));
         }
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
@@ -139,7 +144,7 @@ namespace Terminals.Data
         {
             this.storedCredentials.Initialize();
             FavoritesFile file = this.LoadFile();
-            this.groups.Add(file.Groups.Cast<IGroup>().ToList());
+            this.groups.AddAllToCache(file.Groups.Cast<IGroup>().ToList());
             this.favorites.AddAllToCache(file.Favorites.Cast<IFavorite>().ToList());
             this.UpdateFavoritesInGroups(file.FavoritesInGroups);
         }

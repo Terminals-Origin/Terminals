@@ -31,7 +31,7 @@ namespace Terminals.Data
             return true;
         }
 
-        internal List<IGroup> Add(List<IGroup> groups)
+        internal List<IGroup> AddAllToCache(List<IGroup> groups)
         {
             var added = new List<IGroup>();
             if (groups == null)
@@ -46,7 +46,7 @@ namespace Terminals.Data
             return added;
         }
 
-        private List<IGroup> Delete(List<IGroup> groups)
+        private List<IGroup> DeleteFromCache(List<IGroup> groups)
         {
             var deleted = new List<IGroup>();
             if (groups == null)
@@ -73,7 +73,7 @@ namespace Terminals.Data
         internal List<IGroup> DeleteEmptyGroupsFromCache()
         {
             List<IGroup> emptyGroups = this.GetEmptyGroups();
-            Delete(emptyGroups);
+            this.DeleteFromCache(emptyGroups);
             return emptyGroups;
         }
 
@@ -89,9 +89,9 @@ namespace Terminals.Data
             List<IGroup> oldGroups = this.ToList();
             List<IGroup> addedGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, oldGroups);
             List<IGroup> deletedGroups = ListsHelper.GetMissingSourcesInTarget(oldGroups, newGroups);
-            addedGroups = Add(addedGroups);
+            addedGroups = this.AddAllToCache(addedGroups);
             this.dispatcher.ReportGroupsAdded(addedGroups);
-            deletedGroups = Delete(deletedGroups);
+            deletedGroups = this.DeleteFromCache(deletedGroups);
             this.dispatcher.ReportGroupsDeleted(deletedGroups);
         }
 

@@ -337,8 +337,8 @@ namespace Terminals.Data.DB
         {
             List<DbFavorite> newlyLoaded = LoadFromDatabase();
             List<DbFavorite> oldFavorites = this.Cached;
-            List<DbFavorite> missing = ListsHelper.GetMissingSourcesInTarget(newlyLoaded, oldFavorites, new ByIdComparer());
-            List<DbFavorite> redundant = ListsHelper.GetMissingSourcesInTarget(oldFavorites, newlyLoaded, new ByIdComparer());
+            List<DbFavorite> missing = ListsHelper.GetMissingSourcesInTarget(newlyLoaded, oldFavorites, new ByIdComparer<DbFavorite>());
+            List<DbFavorite> redundant = ListsHelper.GetMissingSourcesInTarget(oldFavorites, newlyLoaded, new ByIdComparer<DbFavorite>());
             List<DbFavorite> toUpdate = newlyLoaded.Intersect(oldFavorites, new ChangedVersionComparer()).ToList();
 
             this.cache.Add(missing);

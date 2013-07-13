@@ -46,8 +46,6 @@ namespace Terminals.Data.DB
             get { return this.Guid; }
         }
 
-        
-
         IBeforeConnectExecuteOptions IFavorite.ExecuteBeforeConnect
         {
             get
@@ -243,6 +241,11 @@ namespace Terminals.Data.DB
                 return false;
 
             return oponentFavorite.Id == this.Id;
+        }
+
+        public int GetStoreIdHash()
+        {
+            return this.Id.GetHashCode();
         }
 
         private List<IGroup> GetInvariantGroups()
