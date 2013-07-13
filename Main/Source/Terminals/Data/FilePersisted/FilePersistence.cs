@@ -111,11 +111,12 @@ namespace Terminals.Data
         private void FavoritesFileChanged(object sender, EventArgs e)
         {
             FavoritesFile file = this.LoadFile();
-            this.groups.Merge(file.Groups.Cast<IGroup>().ToList());
+            List<IGroup> addedGroups = this.groups.Merge(file.Groups.Cast<IGroup>().ToList());
             this.favorites.Merge(file.Favorites.Cast<IFavorite>().ToList());
             // first update also present groups assignment,
             // than send the favorite update also for present favorites
-            IList<IGroup> updated = this.UpdateFavoritesInGroups(file.FavoritesInGroups);
+            List<IGroup> updated = this.UpdateFavoritesInGroups(file.FavoritesInGroups);
+            updated = ListsHelper.GetMissingSourcesInTarget(updated, addedGroups);
             this.Dispatcher.ReportGroupsUpdated(updated);
         }
 

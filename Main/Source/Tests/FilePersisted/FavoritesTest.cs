@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -10,9 +11,12 @@ namespace Tests.FilePersisted
     [TestClass]
     public class FavoritesTest : FilePersistedTestLab
     {
-        private Guid addedId;
-        private Guid updatedId;
-        private Guid deletedId;
+        private Guid addedFavoriteId;
+        private Guid updatedFavoriteId;
+        private Guid deletedFavoriteId;
+        private Guid addedGroupId;
+        private Guid updatedGroupId;
+        private Guid deletedGroupId;
 
         /// <summary>
         /// Notes property can store special characters, so it is Base64 encoded.
@@ -55,11 +59,14 @@ namespace Tests.FilePersisted
             rdpOptions.TsGateway.Security.Password = "aaa";
         }
 
+        /// <summary>
+        /// Focus on both favorites changes (add, remove, delete) and group memberschip changes.
+        /// </summary>
         [TestMethod]
-        public void ConcurentFileUpdateTest()
+        public void FavoritesAndGroupsReloadTest()
         {
-            IFavorite toRemove = this.AddFavorite();
-            IFavorite toUpdate = this.AddFavorite();
+            Tuple<IFavorite, IGroup> toRemove = this.AddFavoriteWithGroup("GroupToUpdate");
+            Tuple<IFavorite, IGroup> toUpdate = this.AddFavoriteWithGroup("GroupToRemove");
             
             var testFileWatch = new TestFileWatch();
             var secondaryPersistence = this.InitializeSecondaryPersistence(testFileWatch);
@@ -69,7 +76,7 @@ namespace Tests.FilePersisted
             ThreadPool.QueueUserWorkItem(new WaitCallback((state) => testFileWatch.FireFileChanged()));
 
             //2. do the changes in primary persistence, this is not noticed in secondary persistence yet
-            IFavorite added = this.UpdatePrimaryPersistence(toUpdate, toRemove);
+            Tuple<IFavorite, IGroup> added = this.UpdatePrimaryPersistenceFavorites(toUpdate, toRemove);
 
             testFileWatch.ObservationWatch.Set(); // signal secondary persistence, that changes are ready to reload
 
@@ -79,9 +86,14 @@ namespace Tests.FilePersisted
             //4. assert the results in secondary persistence
             int secondaryFavoritesCount = secondaryPersistence.Favorites.Count();
             Assert.AreEqual(2, secondaryFavoritesCount); // one updated and one added
-            Assert.AreEqual(this.addedId, added.Id, "Didnt receive favorite add event");
-            Assert.AreEqual(this.updatedId, toUpdate.Id, "Didnt receive favorite update event");
-            Assert.AreEqual(this.deletedId, toRemove.Id, "Didnt receive favorite add event");
+            Assert.AreEqual(this.addedFavoriteId, added.Item1.Id, "Didnt receive favorite add event");
+            Assert.AreEqual(this.updatedFavoriteId, toUpdate.Item1.Id, "Didnt receive favorite update event");
+            Assert.AreEqual(this.deletedFavoriteId, toRemove.Item1.Id, "Didnt receive favorite removed event");
+            int secondaryGroupsCount = secondaryPersistence.Groups.Count();
+            Assert.AreEqual(2, secondaryGroupsCount); // one updated and one added
+            Assert.AreEqual(this.addedGroupId, ((Group)added.Item2).Id, "Didnt receive group added event");
+            Assert.AreEqual(this.updatedGroupId, ((Group)toRemove.Item2).Id, "Didnt receive group updated event");
+            Assert.AreEqual(this.deletedGroupId, ((Group)toUpdate.Item2).Id, "Didnt receive group removed event");
         }
 
         private FilePersistence InitializeSecondaryPersistence(TestFileWatch testFileWatch)
@@ -90,27 +102,51 @@ namespace Tests.FilePersisted
             // let the persistence load initial state
             secondaryPersistence.Initialize();
             secondaryPersistence.Dispatcher.FavoritesChanged += this.DispatcherOnFavoritesChanged;
+            secondaryPersistence.Dispatcher.GroupsChanged += this.DispatcherOnGroupsChanged;
             return secondaryPersistence;
-        }
-
-        private IFavorite UpdatePrimaryPersistence(IFavorite toUpdate, IFavorite toRemove)
-        {
-            toUpdate.Name = "some other value";
-            IFavorites primaryFavorites = this.Persistence.Favorites;
-            primaryFavorites.Update(toUpdate);
-            primaryFavorites.Delete(toRemove);
-            IFavorite added = this.AddFavorite();
-            return added;
         }
 
         private void DispatcherOnFavoritesChanged(FavoritesChangedEventArgs args)
         {
             if (args.Added.Count == 1)
-                this.addedId = args.Added[0].Id;
+                this.addedFavoriteId = args.Added[0].Id;
             if (args.Removed.Count == 1)
-                this.deletedId = args.Removed[0].Id;
+                this.deletedFavoriteId = args.Removed[0].Id;
             if (args.Updated.Count == 1)
-                this.updatedId = args.Updated[0].Id;
+                this.updatedFavoriteId = args.Updated[0].Id;
+        }
+
+        private void DispatcherOnGroupsChanged(GroupsChangedArgs args)
+        {
+            if (args.Added.Count == 1)
+                this.addedGroupId = ((Group)args.Added[0]).Id;
+            if (args.Removed.Count == 1)
+                this.deletedGroupId = ((Group)args.Removed[0]).Id;
+            if (args.Updated.Count == 1)
+                this.updatedGroupId = ((Group)args.Updated[0]).Id;
+        }
+
+        private Tuple<IFavorite, IGroup> UpdatePrimaryPersistenceFavorites(Tuple<IFavorite, IGroup> toUpdate,
+            Tuple<IFavorite, IGroup> toRemove)
+        {
+            IFavorites primaryFavorites = this.Persistence.Favorites;
+            var favoriteToUpdate = toUpdate.Item1;
+            favoriteToUpdate.Name = "some other value";
+            // we need to have one removed group and one deleted,
+            // so we exchange their favorite to simulate only one operation for groups
+            primaryFavorites.UpdateFavorite(favoriteToUpdate, new List<IGroup>() { toRemove.Item2 });
+            primaryFavorites.Delete(toRemove.Item1);
+            Tuple<IFavorite, IGroup> added = this.AddFavoriteWithGroup("GroupToAdd");
+            return added;
+        }
+
+        private Tuple<IFavorite, IGroup> AddFavoriteWithGroup(string groupName)
+        {
+            IFavorite favorite = this.AddFavorite();
+            IGroup group = this.Persistence.Factory.CreateGroup(groupName);
+            group.AddFavorite(favorite);
+            this.Persistence.Favorites.UpdateFavorite(favorite, new List<IGroup>() { group });
+            return new Tuple<IFavorite, IGroup>(favorite, group);
         }
     }
 }
