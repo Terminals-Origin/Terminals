@@ -178,6 +178,7 @@
     <Compile Include="Data\DB\ByIdComparer.cs" />
     <Compile Include="Data\DB\CacheConnector.cs" />
     <Compile Include="Data\DB\ChangedVersionComparer.cs" />
+    <Compile Include="Data\IDataFileWatcher.cs" />
     <Compile Include="Data\Validation\CredentialSetMetadata.cs" />
     <Compile Include="Data\Validation\CustomValidationRules.cs" />
     <Compile Include="Data\Validation\DbBeforeConnectExecuteMetadata.cs" />

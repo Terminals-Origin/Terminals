@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Terminals.Data.DB;
 
 namespace Terminals.Data
 {
@@ -11,20 +12,12 @@ namespace Terminals.Data
     {
         /// <summary>
         /// Finds all items from source list, which are not in destination list.
-        /// Returns not null collection of differences. Compares ignoring case.
-        /// </summary>
-        internal static List<String> GetMissingSourcesInTarget(List<String> sourceItems, List<String> targetItems)
-        {
-            return sourceItems.Except(targetItems, StringComparer.CurrentCultureIgnoreCase).ToList();
-        }
-
-        /// <summary>
-        /// Finds all items from source list, which are not in destination list.
         /// Returns not null collection of differences.
         /// </summary>
         internal static List<TType> GetMissingSourcesInTarget<TType>(List<TType> sourceItems, List<TType> targetItems)
+            where TType : class, IStoreIdEquals<TType>
         {
-            return sourceItems.Except(targetItems).ToList();
+            return sourceItems.Except(targetItems, new ByIdComparer<TType>()).ToList();
         }
 
         /// <summary>

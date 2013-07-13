@@ -33,7 +33,7 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void CompareByIdTest()
         {  
-            var comparer = new ByIdComparer();
+            var comparer = new ByIdComparer<DbFavorite>();
             bool identical = comparer.Equals(favoriteA, favoriteA);
             Assert.IsTrue(identical, "By Id compare failed");
 

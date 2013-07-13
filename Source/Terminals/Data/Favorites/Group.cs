@@ -211,5 +211,10 @@ namespace Terminals.Data
 
             return oponentGroup.Id == this.Id;
         }
+
+        public int GetStoreIdHash()
+        {
+            return this.Id.GetHashCode();
+        }
     }
 }
