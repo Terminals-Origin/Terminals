@@ -84,7 +84,7 @@ namespace Terminals.Data
                 .ToList();
         }
 
-        internal void Merge(List<IGroup> newGroups)
+        internal List<IGroup> Merge(List<IGroup> newGroups)
         {
             List<IGroup> oldGroups = this.ToList();
             List<IGroup> addedGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, oldGroups);
@@ -93,6 +93,7 @@ namespace Terminals.Data
             this.dispatcher.ReportGroupsAdded(addedGroups);
             deletedGroups = this.DeleteFromCache(deletedGroups);
             this.dispatcher.ReportGroupsDeleted(deletedGroups);
+            return addedGroups;
         }
 
         /// <summary>

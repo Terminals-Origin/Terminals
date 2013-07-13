@@ -81,7 +81,9 @@ namespace Terminals.Data
             List<IFavorite> missingFavorites = ListsHelper.GetMissingSourcesInTarget(newFavorites, oldFavorites);
             List<IFavorite> redundantFavorites = ListsHelper.GetMissingSourcesInTarget(oldFavorites, newFavorites);
             this.AddToCacheAndReport(missingFavorites);
-            this.DeleteFromCacheAndReport(redundantFavorites);
+            List<IFavorite> deleted = this.DeleteAllFavoritesFromCache(redundantFavorites);
+            // dont remove favorites from groups, because we are expecting, that the loaded file already contains correct membership
+            this.dispatcher.ReportFavoritesDeleted(deleted);
             // Simple update without ensuring, if the favorite was changes or not - possible performance issue);
             List<IFavorite> notReported = ListsHelper.GetMissingSourcesInTarget(this.ToList(), missingFavorites);
             this.dispatcher.ReportFavoritesUpdated(notReported);
