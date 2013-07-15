@@ -111,6 +111,8 @@ namespace Terminals.Data
         private void FavoritesFileChanged(object sender, EventArgs e)
         {
             FavoritesFile file = this.LoadFile();
+            // dont report changes immediately, we have to wait till memberships are refreshed properly
+            this.Dispatcher.StartDelayedUpdate();
             List<IGroup> addedGroups = this.groups.Merge(file.Groups.Cast<IGroup>().ToList());
             this.favorites.Merge(file.Favorites.Cast<IFavorite>().ToList());
             // first update also present groups assignment,
@@ -118,6 +120,7 @@ namespace Terminals.Data
             List<IGroup> updated = this.UpdateFavoritesInGroups(file.FavoritesInGroups);
             updated = ListsHelper.GetMissingSourcesInTarget(updated, addedGroups);
             this.Dispatcher.ReportGroupsUpdated(updated);
+            this.Dispatcher.EndDelayedUpdate();
         }
 
         public void AssignSynchronizationObject(ISynchronizeInvoke synchronizer)
