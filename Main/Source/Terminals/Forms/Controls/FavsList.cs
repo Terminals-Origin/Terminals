@@ -18,7 +18,7 @@ namespace Terminals
 {
     internal partial class FavsList : UserControl
     {
-        private MainForm _mainForm;
+        private MainForm mainForm;
 
         private static IFavorites PersistedFavorites
         {
@@ -40,22 +40,22 @@ namespace Terminals
 
         private MainForm GetMainForm()
         {
-            if (this._mainForm == null)
-                this._mainForm = MainForm.GetMainForm();
+            if (this.mainForm == null)
+                this.mainForm = MainForm.GetMainForm();
 
-            return this._mainForm;
+            return this.mainForm;
         }
 
-        private void Connect(TreeNode SelectedNode, bool AllChildren, bool Console, bool NewWindow)
+        private void Connect(TreeNode selectedNode, bool allChildren, bool console, bool newWindow)
         {
-            if (AllChildren)
+            if (allChildren)
             {
-                foreach (TreeNode node in SelectedNode.Nodes)
+                foreach (TreeNode node in selectedNode.Nodes)
                 {
                     var fav = node.Tag as IFavorite;
                     if (fav != null)
                     {
-                        this.GetMainForm().Connect(fav.Name, Console, NewWindow);
+                        this.GetMainForm().Connect(fav.Name, console, newWindow);
                     }
                 }
             }
@@ -64,7 +64,7 @@ namespace Terminals
                 IFavorite fav = this.favsTree.SelectedFavorite;
                 if (fav != null)
                 {
-                    this.GetMainForm().Connect(fav.Name, Console, NewWindow);
+                    this.GetMainForm().Connect(fav.Name, console, newWindow);
                 }
             }
 
@@ -89,35 +89,35 @@ namespace Terminals
             this.StartConnection(this.historyTreeView);
         }
 
-        private void pingToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("Ping", fav.ServerName);
         }
 
-        private void dNSToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DNsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("DNS", fav.ServerName);
         }
 
-        private void traceRouteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void TraceRouteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("Trace", fav.ServerName);
         }
 
-        private void tSAdminToolStripMenuItem_Click(object sender, EventArgs e)
+        private void TsAdminToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
                 this.GetMainForm().OpenNetworkingTools("TSAdmin", fav.ServerName);
         }
 
-        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
@@ -128,11 +128,11 @@ namespace Terminals
         {
             ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
             String msg = String.Empty;
-            NetTools.MagicPacket.ShutdownCommands shutdownStyle;
 
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
+                NetTools.MagicPacket.ShutdownCommands shutdownStyle;
                 if (menuItem.Equals(this.shutdownToolStripMenuItem))
                 {
                     msg = String.Format("Are you sure you want to shutdown this machine: {0}", fav.ServerName);
@@ -158,7 +158,6 @@ namespace Terminals
                         if (NetTools.MagicPacket.ForceShutdown(fav.ServerName, shutdownStyle, credentials) == 0)
                         {
                             MessageBox.Show("Terminals successfully sent the shutdown command.");
-                            return;
                         }
                     }
                     catch (ManagementException ex)
@@ -169,7 +168,6 @@ namespace Terminals
                     catch (UnauthorizedAccessException)
                     {
                         MessageBox.Show(Program.Resources.GetString("UnableToRemoteShutdown") + "\r\n\r\nAccess is Denied.");
-                        return;
                     }
                 }
             }
@@ -179,8 +177,10 @@ namespace Terminals
             }
         }
 
-        private void enableRDPToolStripMenuItem_Click(object sender, EventArgs e)
+        private void EnableRDPToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // todo needs admin priviledges
+            // todo needs exception handling
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
             {
@@ -210,17 +210,17 @@ namespace Terminals
             MessageBox.Show("Terminals was not able to enable RDP remotely.");
         }
 
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Connect(this.favsTree.SelectedNode, false, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked);
         }
 
-        private void connectToAllToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ConnectToAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Connect(this.favsTree.SelectedNode, true, this.consoleAllToolStripMenuItem.Checked, this.newWindowAllToolStripMenuItem.Checked);
         }
 
-        private void computerManagementMMCToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ComputerManagementMmcToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
@@ -230,7 +230,7 @@ namespace Terminals
 
         }
 
-        private void systemInformationToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SystemInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
@@ -245,10 +245,10 @@ namespace Terminals
             }
         }
 
-        private void setCredentialByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SetCredentialByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            const string variable = "Credential";
-            InputBoxResult result = this.PromptForVariableChange(variable);
+            const string VARIABLE = "Credential";
+            InputBoxResult result = this.PromptForVariableChange(VARIABLE);
             if (result.ReturnCode == DialogResult.OK)
             {
                 ICredentialSet credential = Persistence.Instance.Credentials[result.Text];
@@ -260,43 +260,43 @@ namespace Terminals
 
                 List<IFavorite> selectedFavorites = this.StartBatchUpdate();
                 PersistedFavorites.ApplyCredentialsToAllFavorites(selectedFavorites, credential);
-                this.FinishBatchUpdate(variable);
+                this.FinishBatchUpdate(VARIABLE);
             }
         }
 
-        private void setPasswordByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SetPasswordByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            const string variable = "Password";
-            InputBoxResult result = this.PromptForVariableChange(variable, '*');
+            const string VARIABLE = "Password";
+            InputBoxResult result = this.PromptForVariableChange(VARIABLE, '*');
             if (result.ReturnCode == DialogResult.OK)
             {
                 List<IFavorite> selectedFavorites = this.StartBatchUpdate();
                 PersistedFavorites.SetPasswordToAllFavorites(selectedFavorites, result.Text);
-                this.FinishBatchUpdate(variable);
+                this.FinishBatchUpdate(VARIABLE);
             }
         }
 
-        private void setDomainByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SetDomainByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            const string variable = "Domain name";
-            InputBoxResult result = this.PromptForVariableChange(variable);
+            const string VARIABLE = "Domain name";
+            InputBoxResult result = this.PromptForVariableChange(VARIABLE);
             if (result.ReturnCode == DialogResult.OK)
             {
                 List<IFavorite> selectedFavorites = this.StartBatchUpdate();
                 PersistedFavorites.ApplyDomainNameToAllFavorites(selectedFavorites, result.Text);
-                this.FinishBatchUpdate(variable);
+                this.FinishBatchUpdate(VARIABLE);
             }
         }
 
-        private void setUsernameByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SetUsernameByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            const string variable = "User name";
-            InputBoxResult result = this.PromptForVariableChange(variable);
+            const string VARIABLE = "User name";
+            InputBoxResult result = this.PromptForVariableChange(VARIABLE);
             if (result.ReturnCode == DialogResult.OK)
             {
                 List<IFavorite> selectedFavorites = this.StartBatchUpdate();
                 PersistedFavorites.ApplyUserNameToAllFavorites(selectedFavorites, result.Text);
-                this.FinishBatchUpdate(variable);
+                this.FinishBatchUpdate(VARIABLE);
             }
         }
 
@@ -334,7 +334,7 @@ namespace Terminals
             return InputBox.Show(prompt, title);
         }
 
-        private void deleteAllFavoritesByTagToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteAllFavoritesByTagToolStripMenuItem_Click(object sender, EventArgs e)
         {
             String groupName = this.favsTree.SelectedNode.Text;
             string title = "Delete all Favorites by group - " + groupName;
@@ -349,7 +349,7 @@ namespace Terminals
             }
         }
 
-        private void removeSelectedToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RemoveSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite favorite = this.favsTree.SelectedFavorite;
             if (favorite != null)
@@ -381,13 +381,13 @@ namespace Terminals
             this.StartConnection(favsTree);
         }
 
-        private void favsTree_DragEnter(object sender, DragEventArgs e)
+        private void FavsTree_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
                 e.Effect = DragDropEffects.All;
         }
 
-        private void favsTree_DragDrop(object sender, DragEventArgs e)
+        private void FavsTree_DragDrop(object sender, DragEventArgs e)
         {
             String[] files = e.Data.GetData(DataFormats.FileDrop) as String[];
             if (files != null)
@@ -403,18 +403,18 @@ namespace Terminals
             // connections are always under some parent node in History and in Favorites
             if (tv.SelectedNode != null && tv.SelectedNode.Level > 0)
             {
-                MainForm mainForm = this.GetMainForm();
-                mainForm.Connect(tv.SelectedNode.Text, false, false);
+                MainForm main = this.GetMainForm();
+                main.Connect(tv.SelectedNode.Text, false, false);
             }
         }
 
-        private void historyTreeView_KeyUp(object sender, KeyEventArgs e)
+        private void HistoryTreeView_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
                 this.StartConnection(historyTreeView);
         }
 
-        private void connectAsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        private void ConnectAsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             this.connectAsToolStripMenuItem.DropDownItems.Clear();
             this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
@@ -422,13 +422,13 @@ namespace Terminals
             IEnumerable<ICredentialSet> credentials = Persistence.Instance.Credentials;
             foreach (ICredentialSet credential in credentials)
             {
-                var menuItem = new ToolStripMenuItem(credential.Name, null, new EventHandler(this.connectAsCred_Click));
+                var menuItem = new ToolStripMenuItem(credential.Name, null, new EventHandler(this.ConnectAsCred_Click));
                 menuItem.Tag = credential.Id;
                 this.connectAsToolStripMenuItem.DropDownItems.Add(menuItem);
             }
         }
 
-        private void connectAsCred_Click(object sender, EventArgs e)
+        private void ConnectAsCred_Click(object sender, EventArgs e)
         {
             IFavorite favorite = this.favsTree.SelectedFavorite;
             if (favorite != null)
@@ -440,7 +440,7 @@ namespace Terminals
             }
         }
 
-        private void userConnectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UserConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var usrForm = new UserSelectForm();
             if (usrForm.ShowDialog() == DialogResult.OK)
@@ -454,12 +454,12 @@ namespace Terminals
             }
         }
 
-        private void displayWindow_Click(object sender, EventArgs e)
+        private void DisplayWindow_Click(object sender, EventArgs e)
         {
             this.contextMenuStrip1.Show();
         }
 
-        private void displayAllWindow_Click(object sender, EventArgs e)
+        private void DisplayAllWindow_Click(object sender, EventArgs e)
         {
             this.contextMenuStrip2.Show();
         }
@@ -485,7 +485,7 @@ namespace Terminals
             return string.Join("%%", expandedNodes.ToArray());
         }
 
-        public void LoadState()
+        private void LoadState()
         {
             ExpandTreeView(Settings.ExpandedFavoriteNodes, this.favsTree);
             ExpandTreeView(Settings.ExpandedHistoryNodes, this.historyTreeView);
@@ -493,11 +493,11 @@ namespace Terminals
 
         private static void ExpandTreeView(string savedNodesToExpand, TreeView treeView)
         {
-            List<string> nodesToExpand = new List<string>();
+            var nodesToExpand = new List<string>();
             if (!string.IsNullOrEmpty(savedNodesToExpand))
                 nodesToExpand.AddRange(Regex.Split(savedNodesToExpand, "%%"));
 
-            if (nodesToExpand != null && nodesToExpand.Count > 0)
+            if (nodesToExpand.Count > 0)
             {
                 foreach (TreeNode treeNode in treeView.Nodes)
                 {
