@@ -88,8 +88,8 @@
             this.favsTree.ShowNodeToolTips = true;
             this.favsTree.Size = new System.Drawing.Size(136, 118);
             this.favsTree.TabIndex = 0;
-            this.favsTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.favsTree_DragDrop);
-            this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.favsTree_DragEnter);
+            this.favsTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragDrop);
+            this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragEnter);
             this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
             // 
             // contextMenuStrip1
@@ -125,7 +125,7 @@
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
             this.connectToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.connectToolStripMenuItem.Text = "Connect";
-            this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+            this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
             // 
             // consoleToolStripMenuItem
             // 
@@ -133,7 +133,7 @@
             this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
             this.consoleToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.consoleToolStripMenuItem.Text = "Console";
-            this.consoleToolStripMenuItem.Click += new System.EventHandler(this.displayWindow_Click);
+            this.consoleToolStripMenuItem.Click += new System.EventHandler(this.DisplayWindow_Click);
             // 
             // newWindowToolStripMenuItem
             // 
@@ -141,7 +141,7 @@
             this.newWindowToolStripMenuItem.Name = "newWindowToolStripMenuItem";
             this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.newWindowToolStripMenuItem.Text = "New Window";
-            this.newWindowToolStripMenuItem.Click += new System.EventHandler(this.displayWindow_Click);
+            this.newWindowToolStripMenuItem.Click += new System.EventHandler(this.DisplayWindow_Click);
             // 
             // toolStripSeparator2
             // 
@@ -155,14 +155,14 @@
             this.connectAsToolStripMenuItem.Name = "connectAsToolStripMenuItem";
             this.connectAsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.connectAsToolStripMenuItem.Text = "Connect As";
-            this.connectAsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.connectAsToolStripMenuItem_DropDownOpening);
+            this.connectAsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.ConnectAsToolStripMenuItem_DropDownOpening);
             // 
             // userConnectToolStripMenuItem
             // 
             this.userConnectToolStripMenuItem.Name = "userConnectToolStripMenuItem";
             this.userConnectToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
             this.userConnectToolStripMenuItem.Text = "User...";
-            this.userConnectToolStripMenuItem.Click += new System.EventHandler(this.userConnectToolStripMenuItem_Click);
+            this.userConnectToolStripMenuItem.Click += new System.EventHandler(this.UserConnectToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -174,28 +174,28 @@
             this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
             this.pingToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.pingToolStripMenuItem.Text = "Ping";
-            this.pingToolStripMenuItem.Click += new System.EventHandler(this.pingToolStripMenuItem_Click);
+            this.pingToolStripMenuItem.Click += new System.EventHandler(this.PingToolStripMenuItem_Click);
             // 
             // dNSToolStripMenuItem
             // 
             this.dNSToolStripMenuItem.Name = "dNSToolStripMenuItem";
             this.dNSToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.dNSToolStripMenuItem.Text = "DNS";
-            this.dNSToolStripMenuItem.Click += new System.EventHandler(this.dNSToolStripMenuItem_Click);
+            this.dNSToolStripMenuItem.Click += new System.EventHandler(this.DNsToolStripMenuItem_Click);
             // 
             // traceRouteToolStripMenuItem
             // 
             this.traceRouteToolStripMenuItem.Name = "traceRouteToolStripMenuItem";
             this.traceRouteToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.traceRouteToolStripMenuItem.Text = "Trace Route";
-            this.traceRouteToolStripMenuItem.Click += new System.EventHandler(this.traceRouteToolStripMenuItem_Click);
+            this.traceRouteToolStripMenuItem.Click += new System.EventHandler(this.TraceRouteToolStripMenuItem_Click);
             // 
             // tSAdminToolStripMenuItem
             // 
             this.tSAdminToolStripMenuItem.Name = "tSAdminToolStripMenuItem";
             this.tSAdminToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.tSAdminToolStripMenuItem.Text = "TS Admin";
-            this.tSAdminToolStripMenuItem.Click += new System.EventHandler(this.tSAdminToolStripMenuItem_Click);
+            this.tSAdminToolStripMenuItem.Click += new System.EventHandler(this.TsAdminToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -208,7 +208,7 @@
             this.removeSelectedToolStripMenuItem.Name = "removeSelectedToolStripMenuItem";
             this.removeSelectedToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.removeSelectedToolStripMenuItem.Text = "Remove Selected";
-            this.removeSelectedToolStripMenuItem.Click += new System.EventHandler(this.removeSelectedToolStripMenuItem_Click);
+            this.removeSelectedToolStripMenuItem.Click += new System.EventHandler(this.RemoveSelectedToolStripMenuItem_Click);
             // 
             // rebootToolStripMenuItem
             // 
@@ -234,21 +234,21 @@
             this.computerManagementMMCToolStripMenuItem.Name = "computerManagementMMCToolStripMenuItem";
             this.computerManagementMMCToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.computerManagementMMCToolStripMenuItem.Text = "Computer Management (MMC)";
-            this.computerManagementMMCToolStripMenuItem.Click += new System.EventHandler(this.computerManagementMMCToolStripMenuItem_Click);
+            this.computerManagementMMCToolStripMenuItem.Click += new System.EventHandler(this.ComputerManagementMmcToolStripMenuItem_Click);
             // 
             // systemInformationToolStripMenuItem
             // 
             this.systemInformationToolStripMenuItem.Name = "systemInformationToolStripMenuItem";
             this.systemInformationToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.systemInformationToolStripMenuItem.Text = "System Information";
-            this.systemInformationToolStripMenuItem.Click += new System.EventHandler(this.systemInformationToolStripMenuItem_Click);
+            this.systemInformationToolStripMenuItem.Click += new System.EventHandler(this.SystemInformationToolStripMenuItem_Click);
             // 
             // enableRDPToolStripMenuItem
             // 
             this.enableRDPToolStripMenuItem.Name = "enableRDPToolStripMenuItem";
             this.enableRDPToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.enableRDPToolStripMenuItem.Text = "Enable RDP";
-            this.enableRDPToolStripMenuItem.Click += new System.EventHandler(this.enableRDPToolStripMenuItem_Click);
+            this.enableRDPToolStripMenuItem.Click += new System.EventHandler(this.EnableRDPToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
@@ -261,7 +261,7 @@
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
-            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -307,7 +307,7 @@
             this.historyTreeView.ShowNodeToolTips = true;
             this.historyTreeView.Size = new System.Drawing.Size(136, 118);
             this.historyTreeView.TabIndex = 0;
-            this.historyTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.historyTreeView_KeyUp);
+            this.historyTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HistoryTreeView_KeyUp);
             // 
             // contextMenuStrip2
             // 
@@ -331,7 +331,7 @@
             this.connectToAllToolStripMenuItem.Name = "connectToAllToolStripMenuItem";
             this.connectToAllToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.connectToAllToolStripMenuItem.Text = "Connect to All";
-            this.connectToAllToolStripMenuItem.Click += new System.EventHandler(this.connectToAllToolStripMenuItem_Click);
+            this.connectToAllToolStripMenuItem.Click += new System.EventHandler(this.ConnectToAllToolStripMenuItem_Click);
             // 
             // consoleAllToolStripMenuItem
             // 
@@ -339,7 +339,7 @@
             this.consoleAllToolStripMenuItem.Name = "consoleAllToolStripMenuItem";
             this.consoleAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.consoleAllToolStripMenuItem.Text = "Console";
-            this.consoleAllToolStripMenuItem.Click += new System.EventHandler(this.displayAllWindow_Click);
+            this.consoleAllToolStripMenuItem.Click += new System.EventHandler(this.DisplayAllWindow_Click);
             // 
             // newWindowAllToolStripMenuItem
             // 
@@ -347,7 +347,7 @@
             this.newWindowAllToolStripMenuItem.Name = "newWindowAllToolStripMenuItem";
             this.newWindowAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
             this.newWindowAllToolStripMenuItem.Text = "New Window";
-            this.newWindowAllToolStripMenuItem.Click += new System.EventHandler(this.displayAllWindow_Click);
+            this.newWindowAllToolStripMenuItem.Click += new System.EventHandler(this.DisplayAllWindow_Click);
             // 
             // toolStripSeparator1
             // 
@@ -359,28 +359,28 @@
             this.setCredentialByTagToolStripMenuItem.Name = "setCredentialByTagToolStripMenuItem";
             this.setCredentialByTagToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.setCredentialByTagToolStripMenuItem.Text = "Set Credential to all in Group...";
-            this.setCredentialByTagToolStripMenuItem.Click += new System.EventHandler(this.setCredentialByTagToolStripMenuItem_Click);
+            this.setCredentialByTagToolStripMenuItem.Click += new System.EventHandler(this.SetCredentialByTagToolStripMenuItem_Click);
             // 
             // setUsernameByTagToolStripMenuItem
             // 
             this.setUsernameByTagToolStripMenuItem.Name = "setUsernameByTagToolStripMenuItem";
             this.setUsernameByTagToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.setUsernameByTagToolStripMenuItem.Text = "Set Username to all in Group...";
-            this.setUsernameByTagToolStripMenuItem.Click += new System.EventHandler(this.setUsernameByTagToolStripMenuItem_Click);
+            this.setUsernameByTagToolStripMenuItem.Click += new System.EventHandler(this.SetUsernameByTagToolStripMenuItem_Click);
             // 
             // setDomainByTagToolStripMenuItem
             // 
             this.setDomainByTagToolStripMenuItem.Name = "setDomainByTagToolStripMenuItem";
             this.setDomainByTagToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.setDomainByTagToolStripMenuItem.Text = "Set Domain to all in Group...";
-            this.setDomainByTagToolStripMenuItem.Click += new System.EventHandler(this.setDomainByTagToolStripMenuItem_Click);
+            this.setDomainByTagToolStripMenuItem.Click += new System.EventHandler(this.SetDomainByTagToolStripMenuItem_Click);
             // 
             // setPasswordByTagToolStripMenuItem
             // 
             this.setPasswordByTagToolStripMenuItem.Name = "setPasswordByTagToolStripMenuItem";
             this.setPasswordByTagToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.setPasswordByTagToolStripMenuItem.Text = "Set Password to all in Group...";
-            this.setPasswordByTagToolStripMenuItem.Click += new System.EventHandler(this.setPasswordByTagToolStripMenuItem_Click);
+            this.setPasswordByTagToolStripMenuItem.Click += new System.EventHandler(this.SetPasswordByTagToolStripMenuItem_Click);
             // 
             // deleteAllFavoritesByTagToolStripMenuItem
             // 
@@ -388,7 +388,7 @@
             this.deleteAllFavoritesByTagToolStripMenuItem.Name = "deleteAllFavoritesByTagToolStripMenuItem";
             this.deleteAllFavoritesByTagToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.deleteAllFavoritesByTagToolStripMenuItem.Text = "Delete all Favorites in Group...";
-            this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.deleteAllFavoritesByTagToolStripMenuItem_Click);
+            this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.DeleteAllFavoritesByTagToolStripMenuItem_Click);
             // 
             // FavsList
             // 
