@@ -46,30 +46,16 @@ namespace Terminals
             return this.mainForm;
         }
 
-        private void Connect(TreeNode selectedNode, bool allChildren, bool console, bool newWindow)
+        private void CloseMenuStrips()
         {
-            if (allChildren)
-            {
-                foreach (TreeNode node in selectedNode.Nodes)
-                {
-                    var fav = node.Tag as IFavorite;
-                    if (fav != null)
-                    {
-                        this.GetMainForm().Connect(fav.Name, console, newWindow);
-                    }
-                }
-            }
-            else
-            {
-                IFavorite fav = this.favsTree.SelectedFavorite;
-                if (fav != null)
-                {
-                    this.GetMainForm().Connect(fav.Name, console, newWindow);
-                }
-            }
-
             this.contextMenuStrip1.Close();
             this.contextMenuStrip2.Close();
+        }
+
+        private void ConnectToFavorite(IFavorite favorite, bool console, bool newWindow)
+        {
+            if (favorite != null)
+                this.GetMainForm().Connect(favorite.Name, console, newWindow);
         }
 
         #endregion
@@ -212,12 +198,20 @@ namespace Terminals
 
         private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Connect(this.favsTree.SelectedNode, false, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked);
+            IFavorite fav = this.favsTree.SelectedFavorite;
+            this.ConnectToFavorite(fav, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked);
+            this.CloseMenuStrips();
         }
 
         private void ConnectToAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Connect(this.favsTree.SelectedNode, true, this.consoleAllToolStripMenuItem.Checked, this.newWindowAllToolStripMenuItem.Checked);
+            foreach (TreeNode node in this.favsTree.SelectedNode.Nodes)
+            {
+                var fav = node.Tag as IFavorite;
+                this.ConnectToFavorite(fav, this.consoleAllToolStripMenuItem.Checked, this.newWindowAllToolStripMenuItem.Checked);
+            }
+
+            this.CloseMenuStrips();
         }
 
         private void ComputerManagementMmcToolStripMenuItem_Click(object sender, EventArgs e)
