@@ -5,7 +5,7 @@ namespace Terminals.Connections
 {
     internal partial class TabbedTools : UserControl
     {
-        private PacketCapture packetCapture1;
+        private readonly PacketCapture packetCapture1;
         public delegate void TabChanged(object sender, TabControlEventArgs e);
         public event TabChanged OnTabChanged;
 
@@ -23,7 +23,7 @@ namespace Terminals.Connections
                 this.PcapTabPage.Controls.Add(packetCapture1);
                 this.PcapTabPage.Location = new System.Drawing.Point(4, 22);
                 this.PcapTabPage.Name = "PcapTabPage";
-                this.PcapTabPage.Padding = new System.Windows.Forms.Padding(3);
+                this.PcapTabPage.Padding = new Padding(3);
                 this.PcapTabPage.Size = new System.Drawing.Size(886, 309);
                 this.PcapTabPage.TabIndex = 15;
                 this.PcapTabPage.Text = "Packets";
@@ -31,7 +31,7 @@ namespace Terminals.Connections
                 // 
                 // packetCapture1
                 // 
-                this.packetCapture1.Dock = System.Windows.Forms.DockStyle.Fill;
+                this.packetCapture1.Dock = DockStyle.Fill;
                 this.packetCapture1.Location = new System.Drawing.Point(3, 3);
                 this.packetCapture1.Name = "packetCapture1";
                 this.packetCapture1.Size = new System.Drawing.Size(880, 303);
@@ -44,11 +44,11 @@ namespace Terminals.Connections
                 this.PcapTabPage.Controls.Add(l);
                 l.Text = "Packet Capture is either not install or not supported on this version of windows.";
                 l.Dock = DockStyle.Top;
-                Terminals.Logging.Log.Info(l.Text, e);
+                Logging.Log.Info(l.Text, e);
             }
         }
 
-        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        private void TabControl1_Selected(object sender, TabControlEventArgs e)
         {
             if (this.OnTabChanged != null) 
                 this.OnTabChanged(sender, e);
@@ -60,31 +60,28 @@ namespace Terminals.Connections
                 this.tabControl1.TabPages[index].Hide();
         }
 
-        public void Execute(String action, String host)
+        public void Execute(NettworkingTools action, String host)
         {
             switch (action)
             {
-                case "Ping":
+                case NettworkingTools.Ping:
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[0];
                     ping1.ForcePing(host);
 
                     break;
-                case "DNS":
+                case NettworkingTools.Dns:
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[6];
                     this.dnsLookup1.ForceDNS(host);
                     break;
 
-                case "Trace":
+                case NettworkingTools.Trace:
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[1];
                     traceRoute1.ForceTrace(host);
                     break;
 
-                case "TSAdmin":
+                case NettworkingTools.TsAdmin:
                     this.tabControl1.SelectedTab = this.tabControl1.TabPages[10];
                     this.terminalServerManager1.ForceTSAdmin(host);
-                    break;
-
-                default:
                     break;
             }
         }

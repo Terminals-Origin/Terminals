@@ -1,11 +1,9 @@
-using System;
 using System.Windows.Forms;
 
 namespace Terminals.Connections
 {
     internal class NetworkingToolsConnection : Connection
     {
-
         public NetworkingToolsConnection()
         {
             InitializeComponent();
@@ -14,8 +12,8 @@ namespace Terminals.Connections
         private NetworkingToolsLayout networkingToolsLayout1;
 
         #region IConnection Members
-        private bool connected = false;
-        public override void ChangeDesktopSize(DesktopSize Size)
+        private bool connected;
+        public override void ChangeDesktopSize(DesktopSize size)
         {
         }
 
@@ -25,8 +23,9 @@ namespace Terminals.Connections
         public override bool Connect()
         {
             networkingToolsLayout1.OnTabChanged += new NetworkingToolsLayout.TabChanged(networkingToolsLayout1_OnTabChanged);
-            networkingToolsLayout1.Parent = base.TerminalTabPage;
+            networkingToolsLayout1.Parent = this.TerminalTabPage;
             this.Parent = TerminalTabPage;
+            this.connected = true;
             return true;
         }
 
@@ -37,14 +36,8 @@ namespace Terminals.Connections
 
         public override void Disconnect()
         {
-            try
-            {
-                connected = false;
-            }
-            catch (Exception e)
-            {
-                Logging.Log.Error("Error on Disconnect", e);
-            }
+            // nothing to do here
+            this.connected = false;
         }
 
         #endregion
@@ -64,9 +57,10 @@ namespace Terminals.Connections
             this.ResumeLayout(false);
 
         }
-        public void Execute(string Action, string Host)
+
+        internal void Execute(NettworkingTools action, string host)
         {
-            this.networkingToolsLayout1.Execute(Action, Host);
+            this.networkingToolsLayout1.Execute(action, host);
         }
     }
 }
