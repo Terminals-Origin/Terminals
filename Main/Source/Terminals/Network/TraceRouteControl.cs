@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Net;
 using System.Windows.Forms;
 using ZedGraph;
 
@@ -11,25 +10,21 @@ namespace Terminals.Network
     {
         #region Fields
         
-        private Boolean traceRunning = false;
+        private Boolean traceRunning;
         private TraceRoute tracert;
         private List<TraceRouteHopData> hopList = new List<TraceRouteHopData>();
-        private MethodInvoker DoUpdateForm;
+        private readonly MethodInvoker doUpdateForm;
         private GraphPane myPane;
 
         #endregion
 
-        #region Constructors
-        
         public TraceRouteControl()
         {
             InitializeComponent();
-            this.DoUpdateForm = new MethodInvoker(this.UpdateForm);
+            this.doUpdateForm = new MethodInvoker(this.UpdateForm);
 
             this.InitializeGraph();
         }
-
-        #endregion
 
         #region Form Events
 
@@ -50,22 +45,18 @@ namespace Terminals.Network
                 this.TextHost.Focus();
                 return;
             }
-            else
-            {
-                this.TextHost.Text = this.TextHost.Text.Trim();
-            }
-
+            
+            this.TextHost.Text = this.TextHost.Text.Trim();
             this.ButtonStart.Enabled = false;
             this.TextHost.Enabled = false;
-            Application.DoEvents();
 
             if (!this.traceRunning)
             {
                 if (this.tracert == null)
                 {
                     this.tracert = new TraceRoute();
-                    this.tracert.Completed += new EventHandler(tracert_Completed);
-                    this.tracert.RouteHopFound += new EventHandler<RouteHopFoundEventArgs>(tracert_RouteHopFound);
+                    this.tracert.Completed += new EventHandler(this.Tracert_Completed);
+                    this.tracert.RouteHopFound += new EventHandler<RouteHopFoundEventArgs>(this.Tracert_RouteHopFound);
                 }
 
                 tracert.Destination = this.TextHost.Text;
@@ -83,7 +74,7 @@ namespace Terminals.Network
             this.ResetForm();
         }
 
-        private void TextHost_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        private void TextHost_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '\r')
             {
@@ -97,16 +88,16 @@ namespace Terminals.Network
 
         #region Developer made methods
 
-        private void tracert_Completed(object sender, EventArgs e)
+        private void Tracert_Completed(object sender, EventArgs e)
         {
             this.traceRunning = false;
             this.ResetForm();
         }
 
-        private void tracert_RouteHopFound(object sender, RouteHopFoundEventArgs e)
+        private void Tracert_RouteHopFound(object sender, RouteHopFoundEventArgs e)
         {
             hopList = this.tracert.Hops;
-            this.Invoke(this.DoUpdateForm);
+            this.Invoke(this.doUpdateForm);
         }
 
         /// <summary>
@@ -261,7 +252,7 @@ namespace Terminals.Network
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Error(ex);
+                Logging.Log.Error(ex);
             }
 
             return String.Empty;
