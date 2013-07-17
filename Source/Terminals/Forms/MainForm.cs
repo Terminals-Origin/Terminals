@@ -372,7 +372,7 @@ namespace Terminals
             }
         }
 
-        public void OpenNetworkingTools(string action, string host)
+        public void OpenNetworkingTools(NettworkingTools action, string host)
         {
             var terminalTabPage = new TerminalTabControlItem(Program.Resources.GetString("NetworkingTools"));
             try
@@ -1673,7 +1673,7 @@ namespace Terminals
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            this.OpenNetworkingTools(null, null);
+            this.OpenNetworkingTools(NettworkingTools.None, string.Empty);
         }
 
         private void networkingToolsToolStripMenuItem_Click(object sender, EventArgs e)

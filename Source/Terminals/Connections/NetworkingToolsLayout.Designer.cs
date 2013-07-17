@@ -38,7 +38,7 @@ namespace Terminals.Connections
             this.tabbedTools1.Name = "tabbedTools1";
             this.tabbedTools1.Size = new System.Drawing.Size(808, 500);
             this.tabbedTools1.TabIndex = 1;
-            this.tabbedTools1.Load += new System.EventHandler(this.tabbedTools1_Load);
+            this.tabbedTools1.Load += new System.EventHandler(this.TabbedTools1_Load);
             // 
             // NetworkingToolsLayout
             // 

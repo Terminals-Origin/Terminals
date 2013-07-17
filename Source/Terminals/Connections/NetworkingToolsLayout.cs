@@ -5,24 +5,29 @@ namespace Terminals.Connections
 {
     internal partial class NetworkingToolsLayout : UserControl
     {
+        public delegate void TabChanged(object sender, TabControlEventArgs e);
+
+        public event TabChanged OnTabChanged;
+
         public NetworkingToolsLayout()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
-        public delegate void TabChanged(object sender, TabControlEventArgs e);
-        public event TabChanged OnTabChanged;
-        private void tabbedTools1_Load(object sender, EventArgs e)
+
+        private void TabbedTools1_Load(object sender, EventArgs e)
         {
             this.tabbedTools1.OnTabChanged += new TabbedTools.TabChanged(tabbedTools1_OnTabChanged);
         }
-        public void Execute(string Action, string Host)
+
+        public void Execute(NettworkingTools action, string host)
         {
-            this.tabbedTools1.Execute(Action, Host);
+            this.tabbedTools1.Execute(action, host);
         }
 
-        void tabbedTools1_OnTabChanged(object sender, TabControlEventArgs e)
+        private void tabbedTools1_OnTabChanged(object sender, TabControlEventArgs e)
         {
-            if(OnTabChanged != null) OnTabChanged(sender, e);
+            if(OnTabChanged != null)
+                OnTabChanged(sender, e);
         }
     }
 }

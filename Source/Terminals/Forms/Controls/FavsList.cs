@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using Terminals.Configuration;
+using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Data;
 using Terminals.Forms;
@@ -77,30 +78,29 @@ namespace Terminals
 
         private void PingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
-            if (fav != null)
-                this.GetMainForm().OpenNetworkingTools("Ping", fav.ServerName);
+            this.OpenNetworkingTool(NettworkingTools.Ping);
         }
 
         private void DNsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
-            if (fav != null)
-                this.GetMainForm().OpenNetworkingTools("DNS", fav.ServerName);
+            this.OpenNetworkingTool(NettworkingTools.Dns);
         }
 
         private void TraceRouteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
-            if (fav != null)
-                this.GetMainForm().OpenNetworkingTools("Trace", fav.ServerName);
+            this.OpenNetworkingTool(NettworkingTools.Trace);
         }
 
         private void TsAdminToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.OpenNetworkingTool(NettworkingTools.TsAdmin);
+        }
+
+        private void OpenNetworkingTool(NettworkingTools toolName)
+        {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
-                this.GetMainForm().OpenNetworkingTools("TSAdmin", fav.ServerName);
+                this.GetMainForm().OpenNetworkingTools(toolName, fav.ServerName);
         }
 
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -410,6 +410,7 @@ namespace Terminals
 
         private void ConnectAsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
+            // todo performance problem, not released context menu event handlers
             this.connectAsToolStripMenuItem.DropDownItems.Clear();
             this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
 
