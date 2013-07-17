@@ -30,7 +30,7 @@ namespace Terminals.Network
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.wmiServerCredentials1 = new Terminals.Network.WMI.WMIServerCredentials();
-            this.button1 = new System.Windows.Forms.Button();
+            this.connectButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -56,23 +56,23 @@ namespace Terminals.Network
             this.wmiServerCredentials1.Size = new System.Drawing.Size(399, 83);
             this.wmiServerCredentials1.TabIndex = 0;
             this.wmiServerCredentials1.Username = "COGENT\\rob.chartier";
-            this.wmiServerCredentials1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.wmiServerCredentials1_KeyUp);
+            this.wmiServerCredentials1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.WmiServerCredentials1_KeyUp);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(194, 54);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Connect";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.connectButton.Location = new System.Drawing.Point(194, 54);
+            this.connectButton.Name = "connectButton";
+            this.connectButton.Size = new System.Drawing.Size(75, 23);
+            this.connectButton.TabIndex = 1;
+            this.connectButton.Text = "Connect";
+            this.connectButton.UseVisualStyleBackColor = true;
+            this.connectButton.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
             // NetworkShares
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.connectButton);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.wmiServerCredentials1);
             this.Name = "NetworkShares";
@@ -87,6 +87,6 @@ namespace Terminals.Network
 
         private System.Windows.Forms.DataGridView dataGridView1;
         private Terminals.Network.WMI.WMIServerCredentials wmiServerCredentials1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button connectButton;
     }
 }
