@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Terminals.Network
 {
-    internal class TraceRoute : Component
+    internal sealed class TraceRoute : Component
     {
         #region Fields
 
@@ -16,7 +16,7 @@ namespace Terminals.Network
         private IPAddress destinationIP;
         private PingOptions pingOptions;
         private Byte[] buffer;
-        private Boolean cancel = false;
+        private Boolean cancel;
         private Byte counter;
 
         #endregion
@@ -115,17 +115,25 @@ namespace Terminals.Network
         /// </summary>
         public void Start()
         {
+            try
+            {
+                this.TryStart();
+            }
+            catch
+            {
+               this.Cancel();
+            }
+        }
+
+        private void TryStart()
+        {
             this.hopList = new List<TraceRouteHopData>();
             this.destinationIP = Dns.GetHostEntry(this.Destination).AddressList[0];
 
             if (IPAddress.IsLoopback(this.destinationIP))
-            {
                 this.ProcessHop(this.destinationIP, IPStatus.Success);
-            }
             else
-            {
                 this.StartPing();
-            }
         }
 
         public void Cancel()
@@ -171,54 +179,15 @@ namespace Terminals.Network
 
         private void ProcessHop(IPAddress address, IPStatus status)
         {
-            Int64 roundTripTime = 0;
-
-            if (status == IPStatus.Success || status == IPStatus.TtlExpired)
-            {
-                System.Net.NetworkInformation.Ping ping2 = new System.Net.NetworkInformation.Ping();
-
-                try
-                {
-                    // Do another ping to get the roundtrip time per address.
-                    PingReply reply = ping2.Send(address, this.HopTimeOut);
-                    roundTripTime = reply.RoundtripTime;
-                    status = reply.Status;
-                }
-                catch (Exception ex)
-                {
-                     Terminals.Logging.Log.Info(String.Empty, ex);
-                }
-                finally
-                {
-                    ping2.Dispose();
-                    ping2 = null;
-                }
-            }
+            Int64 roundTripTime = this.GetRoundtripTime(address, ref status);
 
             if (this.cancel)
                 return;
 
-            TraceRouteHopData hop = new TraceRouteHopData(counter++, address, roundTripTime, status);
-            try
-            {
-                if (status == IPStatus.Success && this.ResolveNames)
-                {
-                    IPHostEntry entry = Dns.GetHostEntry(address);
-                    hop.HostName = entry.HostName;
-                }
-            }
-            catch (System.Net.Sockets.SocketException)
-            {
-                // No such host is known error.
-                hop.HostName = String.Empty;
-            }
-
+            var hop = new TraceRouteHopData(counter++, address, roundTripTime, status, this.ResolveNames);
             lock (this.hopList)
                 this.hopList.Add(hop);
-
-            if (RouteHopFound != null)
-                RouteHopFound(this, new RouteHopFoundEventArgs(hop, this.Idle));
-
+            this.OnRouteHopFound(hop);
             this.Idle = address.Equals(this.destinationIP);
 
             lock (this.hopList)
@@ -234,7 +203,37 @@ namespace Terminals.Network
             }
         }
 
-        protected virtual void OnCompleted()
+        private void OnRouteHopFound(TraceRouteHopData hop)
+        {
+            if (this.RouteHopFound != null)
+                this.RouteHopFound(this, new RouteHopFoundEventArgs(hop, this.Idle));
+        }
+
+        /// <summary>
+        /// Do another ping to get the roundtrip time per address
+        /// </summary>
+        private long GetRoundtripTime(IPAddress address, ref IPStatus status)
+        {
+            try
+            {
+                if (status != IPStatus.Success && status != IPStatus.TtlExpired)
+                    return 0;
+
+                using (var ping2 = new System.Net.NetworkInformation.Ping())
+                {
+                    PingReply reply = ping2.Send(address, this.HopTimeOut);
+                    status = reply.Status;
+                    return reply.RoundtripTime;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.Log.Info(String.Empty, ex);
+                return 0;
+            }
+        }
+
+        private void OnCompleted()
         {
             this.Completed(this, EventArgs.Empty);
         }

@@ -10,20 +10,6 @@ namespace Terminals.Network
     internal class TraceRouteHopData
     {
         /// <summary>
-        /// Constructs a new object from the IPAddress of the node and the round trip time taken
-        /// </summary>
-        /// <param name="address">The IP address of the hop.</param>
-        /// <param name="roundTripTime">The roundtriptime it takes to the hop.</param>
-        /// <param name="status">The hop IP status.</param>
-        public TraceRouteHopData(Byte count, IPAddress address, Int64 roundTripTime, IPStatus status)
-        {
-            this.Count = count;
-            this.Address = address;
-            this.RoundTripTime = roundTripTime;
-            this.Status = status;
-        }
-
-        /// <summary>
         /// Gets or sets the hop count.
         /// </summary>
         public Byte Count { get; set; }
@@ -47,6 +33,38 @@ namespace Terminals.Network
         /// Gets or sets the resolved hostname for the IP address of the hop.
         /// </summary>
         public String HostName { get; set; }
+
+        /// <summary>
+        /// Constructs a new object from the IPAddress of the node and the round trip time taken
+        /// </summary>
+        /// <param name="hopCount">Number of hops to the destination</param>
+        /// <param name="address">The IP address of the hop</param>
+        /// <param name="roundTripTime">The roundtriptime it takes to the hop</param>
+        /// <param name="status">The hop IP status</param>
+        public TraceRouteHopData(Byte hopCount, IPAddress address, Int64 roundTripTime, IPStatus status, bool resolveNames)
+        {
+            this.Count = hopCount;
+            this.Address = address;
+            this.RoundTripTime = roundTripTime;
+            this.Status = status;
+            this.TryToResolveHostName(resolveNames);
+        }
+
+        private void TryToResolveHostName(bool resolveNames)
+        {
+            try
+            {
+                if (this.Status != IPStatus.Success || !resolveNames)
+                    return;
+                IPHostEntry entry = Dns.GetHostEntry(this.Address);
+                this.HostName = entry.HostName;
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                // No such host is known error.
+                this.HostName = String.Empty;
+            }
+        }
     }
 }
 
