@@ -14,7 +14,27 @@ namespace Terminals.Network
 
         private void LoadShares(string username, string password, string computer)
         {
-            List<Share> shares = new List<Share>();
+            try
+            {
+                this.connectButton.Enabled = false;
+                this.connectButton.Text = "Connecting...";
+                this.dataGridView1.DataSource = TryLoadShares(username, password, computer);
+            }
+            catch
+            {
+                MessageBox.Show("Unable to loads shares for remote compuer.", "Loading shares",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.connectButton.Enabled = true;
+                this.connectButton.Text = "Connect";
+            }
+        }
+
+        private static List<Share> TryLoadShares(string username, string password, string computer)
+        {
+            var shares = new List<Share>();
             ManagementObjectSearcher searcher = CreateSearcher(username, password, computer);
 
             foreach (ManagementObject share in searcher.Get())
@@ -23,8 +43,7 @@ namespace Terminals.Network
                 FillShareByManagementObject(share, s);
                 shares.Add(s);
             }
-
-            this.dataGridView1.DataSource = shares;
+            return shares;
         }
 
         private static void FillShareByManagementObject(ManagementObject share, Share s)
