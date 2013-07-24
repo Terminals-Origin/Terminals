@@ -38,7 +38,7 @@
             // buttonYes
             // 
             this.buttonYes.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this.buttonYes.Location = new System.Drawing.Point(98, 102);
+            this.buttonYes.Location = new System.Drawing.Point(203, 71);
             this.buttonYes.Name = "buttonYes";
             this.buttonYes.Size = new System.Drawing.Size(75, 23);
             this.buttonYes.TabIndex = 0;
@@ -48,7 +48,7 @@
             // buttonNo
             // 
             this.buttonNo.DialogResult = System.Windows.Forms.DialogResult.No;
-            this.buttonNo.Location = new System.Drawing.Point(179, 102);
+            this.buttonNo.Location = new System.Drawing.Point(284, 71);
             this.buttonNo.Name = "buttonNo";
             this.buttonNo.Size = new System.Drawing.Size(75, 23);
             this.buttonNo.TabIndex = 1;
@@ -58,7 +58,7 @@
             // checkBoxDisable
             // 
             this.checkBoxDisable.AutoSize = true;
-            this.checkBoxDisable.Location = new System.Drawing.Point(15, 71);
+            this.checkBoxDisable.Location = new System.Drawing.Point(13, 75);
             this.checkBoxDisable.Name = "checkBoxDisable";
             this.checkBoxDisable.Size = new System.Drawing.Size(125, 17);
             this.checkBoxDisable.TabIndex = 2;
@@ -79,7 +79,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(371, 137);
+            this.ClientSize = new System.Drawing.Size(371, 104);
             this.Controls.Add(this.textBoxMessage);
             this.Controls.Add(this.checkBoxDisable);
             this.Controls.Add(this.buttonNo);
@@ -91,6 +91,7 @@
             this.Name = "YesNoDisableForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Prompt";
+            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -6,7 +6,7 @@ namespace Terminals.Connections
     /// <summary>
     /// Translates error codes to client messages
     /// </summary>
-    internal class RdpClientErrorMessages
+    internal static class RdpClientErrorMessages
     {
         internal static string ToDisconnectMessage(AxMsRdpClient6NotSafeForScripting client, int reason)
         {
