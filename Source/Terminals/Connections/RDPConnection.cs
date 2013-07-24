@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using AxMSTSCLib;
@@ -143,15 +144,18 @@ namespace Terminals.Connections
         private void ConnectionStateDetectorOnReconnected(object sender, EventArgs eventArgs)
         {
             if (this.reconecting.InvokeRequired)
-            {
                 this.reconecting.Invoke(new EventHandler(this.ConnectionStateDetectorOnReconnected), new object[] { sender, eventArgs });
-            }
             else
-            {
-                this.connectionStateDetector.Stop();
-                this.reconecting.Hide();
-                this.client.Connect();
-            }
+                this.Reconnect();
+        }
+
+        private void Reconnect()
+        {
+            if (!this.reconecting.Reconnect)
+                return;
+            this.StopReconnect();
+            this.reconecting.Reconnect = false;
+            this.client.Connect();
         }
 
         private void ConnectionStateDetectorOnReconnectExpired(object sender, EventArgs eventArgs)
@@ -172,10 +176,17 @@ namespace Terminals.Connections
             }
             else
             {
-                this.connectionStateDetector.Stop();
-                this.reconecting.Hide();
+                this.StopReconnect();
                 this.FinishDisconnect();
             }
+        }
+
+        private void StopReconnect()
+        {
+            this.connectionStateDetector.Stop();
+            this.reconecting.Hide();
+            if (this.reconecting.Disable)
+                Settings.AskToReconnect = false;
         }
 
         public override void ChangeDesktopSize(DesktopSize desktopSize)
@@ -501,7 +512,7 @@ namespace Terminals.Connections
         {
             if (DecideToReconnect(e))
             {
-                this.Reconnect();
+                this.TryReconnect();
             }
             else
             {
@@ -514,26 +525,14 @@ namespace Terminals.Connections
         {
             // 516 reason in case of reconnect expired
             // 2308 connection lost
-            // 2 - reboot or shutdown
+            // 2 - regular logof also in case of forced reboot or shutdown
             if (e.discReason != 2308 && e.discReason != 2)
                 return false;
 
-            if (!Settings.AskToReconnect)
-                return true;
-
-            return AskToReconnect();
+            return Settings.AskToReconnect;
         }
 
-        private static bool AskToReconnect()
-        {
-            const string MESSAGE = "Do you want to try reconnect?";
-            YesNoDisableResult answer = YesNoDisableForm.ShowDialog("Connection to server lost", MESSAGE);
-            if (answer.Disable)
-                Settings.AskToReconnect = false;
-            return answer.Result == DialogResult.Yes;
-        }
-
-        private void Reconnect()
+        private void TryReconnect()
         {
             this.reconecting.Show();
             this.reconecting.BringToFront();
