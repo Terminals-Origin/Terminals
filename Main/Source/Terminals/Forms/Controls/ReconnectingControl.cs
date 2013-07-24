@@ -14,6 +14,23 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal event EventHandler AbortReconnectRequested;
 
+        /// <summary>
+        /// Gets or sets the state of the "Reconnect when ready" checkbox.
+        /// </summary>
+        internal bool Reconnect 
+        {
+            get { return this.reconnectCheckBox.Checked; }
+            set { this.reconnectCheckBox.Checked = value; }
+        }
+
+        /// <summary>
+        /// Gets a flag identifiyng, that the user wants to disable this feature
+        /// </summary>
+        internal bool Disable
+        {
+            get { return this.dotAskCheckBox.Checked; }
+        }
+
         private Control oldParent;
 
         public ReconnectingControl()
