@@ -6,7 +6,7 @@ namespace Terminals.Forms
 {
     internal partial class PersistenceErrorForm : Form
     {
-        internal PersistenceErrorForm()
+        private PersistenceErrorForm()
         {
             InitializeComponent();
         }
