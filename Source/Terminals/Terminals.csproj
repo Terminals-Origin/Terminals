@@ -197,6 +197,12 @@
     <Compile Include="Forms\Controls\ReconnectingControl.Designer.cs">
       <DependentUpon>ReconnectingControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Controls\TreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\TreeView.Designer.cs">
+      <DependentUpon>TreeView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Forms\NewTerminalFormValidator.cs" />
     <Compile Include="Forms\UnhandledTerminationForm.cs">

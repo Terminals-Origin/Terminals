@@ -6,7 +6,6 @@ using System.Management;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Win32;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
@@ -15,6 +14,7 @@ using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Integration;
 using Terminals.Network;
+using TreeView = Terminals.Forms.Controls.TreeView;
 
 namespace Terminals
 {
@@ -493,42 +493,15 @@ namespace Terminals
         public void SaveState()
         {
             Settings.StartDelayedUpdate();
-            Settings.ExpandedFavoriteNodes = GetExpandedFavoriteNodes(this.favsTree);
-            Settings.ExpandedHistoryNodes = GetExpandedFavoriteNodes(this.historyTreeView);
+            Settings.ExpandedFavoriteNodes = this.favsTree.ExpandedNodes;
+            Settings.ExpandedHistoryNodes = this.historyTreeView.ExpandedNodes;
             Settings.SaveAndFinishDelayedUpdate();
-        }
-
-        private static string GetExpandedFavoriteNodes(TreeView treeView)
-        {
-            List<string> expandedNodes = new List<string>();
-            foreach (TreeNode treeNode in treeView.Nodes)
-            {
-                if (treeNode.IsExpanded)
-                    expandedNodes.Add(treeNode.Text);
-            }
-            return string.Join("%%", expandedNodes.ToArray());
         }
 
         private void LoadState()
         {
-            ExpandTreeView(Settings.ExpandedFavoriteNodes, this.favsTree);
-            ExpandTreeView(Settings.ExpandedHistoryNodes, this.historyTreeView);
-        }
-
-        private static void ExpandTreeView(string savedNodesToExpand, TreeView treeView)
-        {
-            var nodesToExpand = new List<string>();
-            if (!string.IsNullOrEmpty(savedNodesToExpand))
-                nodesToExpand.AddRange(Regex.Split(savedNodesToExpand, "%%"));
-
-            if (nodesToExpand.Count > 0)
-            {
-                foreach (TreeNode treeNode in treeView.Nodes)
-                {
-                    if (nodesToExpand.Contains(treeNode.Text))
-                        treeNode.Expand();
-                }
-            }
+            this.favsTree.ExpandedNodes = Settings.ExpandedFavoriteNodes;
+            this.historyTreeView.ExpandedNodes = Settings.ExpandedHistoryNodes;
         }
     }
 }
