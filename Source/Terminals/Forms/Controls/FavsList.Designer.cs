@@ -98,8 +98,8 @@
             this.connectToolStripMenuItem,
             this.toolStripMenuItem2,
             this.pingToolStripMenuItem,
-            this.dNSToolStripMenuItem,
             this.traceRouteToolStripMenuItem,
+            this.dNSToolStripMenuItem,
             this.tSAdminToolStripMenuItem,
             this.toolStripMenuItem1,
             this.removeSelectedToolStripMenuItem,
@@ -174,6 +174,7 @@
             this.pingToolStripMenuItem.Name = "pingToolStripMenuItem";
             this.pingToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.pingToolStripMenuItem.Text = "Ping";
+            this.pingToolStripMenuItem.ToolTipText = "Opens networking tool and starts PING the target machine.";
             this.pingToolStripMenuItem.Click += new System.EventHandler(this.PingToolStripMenuItem_Click);
             // 
             // dNSToolStripMenuItem
@@ -181,6 +182,7 @@
             this.dNSToolStripMenuItem.Name = "dNSToolStripMenuItem";
             this.dNSToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.dNSToolStripMenuItem.Text = "DNS";
+            this.dNSToolStripMenuItem.ToolTipText = "Opens networking tool and tries to resolve DNS name of the target machine.";
             this.dNSToolStripMenuItem.Click += new System.EventHandler(this.DNsToolStripMenuItem_Click);
             // 
             // traceRouteToolStripMenuItem
@@ -188,6 +190,7 @@
             this.traceRouteToolStripMenuItem.Name = "traceRouteToolStripMenuItem";
             this.traceRouteToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.traceRouteToolStripMenuItem.Text = "Trace Route";
+            this.traceRouteToolStripMenuItem.ToolTipText = "Opens networking tool and starts TRACE the target machine.";
             this.traceRouteToolStripMenuItem.Click += new System.EventHandler(this.TraceRouteToolStripMenuItem_Click);
             // 
             // tSAdminToolStripMenuItem
@@ -195,6 +198,8 @@
             this.tSAdminToolStripMenuItem.Name = "tSAdminToolStripMenuItem";
             this.tSAdminToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.tSAdminToolStripMenuItem.Text = "TS Admin";
+            this.tSAdminToolStripMenuItem.ToolTipText = "Tries to open the Terminals services configuration of the target machine.\r\nRequir" +
+    "es admin privileges on the target machine.";
             this.tSAdminToolStripMenuItem.Click += new System.EventHandler(this.TsAdminToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
@@ -215,6 +220,9 @@
             this.rebootToolStripMenuItem.Name = "rebootToolStripMenuItem";
             this.rebootToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.rebootToolStripMenuItem.Text = "Reboot";
+            this.rebootToolStripMenuItem.ToolTipText = "Forces reboot of the computer. Forces all users to log off.\r\nRequires admin acces" +
+    "s (used favorite credentials).\r\nRemote management has to be enabled on the targe" +
+    "t machine.\r\n";
             this.rebootToolStripMenuItem.Click += new System.EventHandler(this.RebootToolStripMenuItem_Click);
             // 
             // shutdownToolStripMenuItem
@@ -222,6 +230,9 @@
             this.shutdownToolStripMenuItem.Name = "shutdownToolStripMenuItem";
             this.shutdownToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.shutdownToolStripMenuItem.Text = "Shutdown";
+            this.shutdownToolStripMenuItem.ToolTipText = "Forces shutdown of the computer. Forces all users to log off.\r\nRequires admin acc" +
+    "ess (used favorite credentials).\r\nRemote management has to be enabled on the tar" +
+    "get machine.";
             this.shutdownToolStripMenuItem.Click += new System.EventHandler(this.ShutdownToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
@@ -248,6 +259,9 @@
             this.enableRDPToolStripMenuItem.Name = "enableRDPToolStripMenuItem";
             this.enableRDPToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.enableRDPToolStripMenuItem.Text = "Enable RDP";
+            this.enableRDPToolStripMenuItem.ToolTipText = "Enable RDP service on target computer.\r\nRequires admin access to the computer (us" +
+    "ed favorite credentials).\r\nThe computer also needs to have enabled remote access" +
+    " to the registry.";
             this.enableRDPToolStripMenuItem.Click += new System.EventHandler(this.EnableRDPToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
@@ -261,6 +275,7 @@
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
+            this.propertiesToolStripMenuItem.ToolTipText = "Edit this favorite properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
             // 
             // tabControl1
@@ -419,7 +434,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem rebootToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem shutdownToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem enableRDPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem consoleToolStripMenuItem;
@@ -445,5 +459,6 @@
         private System.Windows.Forms.ToolStripMenuItem connectAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem userConnectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem shutdownToolStripMenuItem;
     }
 }
