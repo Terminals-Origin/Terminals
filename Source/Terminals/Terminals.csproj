@@ -219,6 +219,7 @@
     </Compile>
     <Compile Include="Forms\YesNoDisableResult.cs" />
     <Compile Include="Network\AD\ActiveDirectorySearchParams.cs" />
+    <Compile Include="Network\RemoteManagement.cs" />
     <Compile Include="Network\WMI\Share.cs" />
     <Compile Include="Properties\Common.AssemblyInfo.cs" />
     <Compile Include="Configuration\FormsCollection.cs" />

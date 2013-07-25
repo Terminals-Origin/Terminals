@@ -5,8 +5,10 @@ using System.IO;
 using System.Management;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
+using NetTools;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
@@ -14,11 +16,13 @@ using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Integration;
+using Terminals.Network;
 
 namespace Terminals
 {
     internal partial class FavsList : UserControl
     {
+        private static readonly string shutdownFailMessage = Program.Resources.GetString("UnableToRemoteShutdown");
         private MainForm mainForm;
 
         private static IFavorites PersistedFavorites
@@ -49,8 +53,8 @@ namespace Terminals
 
         private void CloseMenuStrips()
         {
-            this.contextMenuStrip1.Close();
-            this.contextMenuStrip2.Close();
+            this.favoritesContextMenu.Close();
+            this.groupsContextMenu.Close();
         }
 
         private void ConnectToFavorite(IFavorite favorite, bool console, bool newWindow)
@@ -110,56 +114,58 @@ namespace Terminals
                 this.GetMainForm().ShowManageTerminalForm(fav);
         }
 
+        private void RebootToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.ProcessRemoteShutdownOpearation("reboot", ShutdownCommands.ForcedReboot);
+        }
+
         private void ShutdownToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ToolStripMenuItem menuItem = (ToolStripMenuItem)sender;
-            String msg = String.Empty;
+            this.ProcessRemoteShutdownOpearation("shutdown", ShutdownCommands.ForcedShutdown);
+        }
 
+        private void ProcessRemoteShutdownOpearation(string operationName, ShutdownCommands shutdownStyle)
+        {
             IFavorite fav = this.favsTree.SelectedFavorite;
-            if (fav != null)
+            if (fav == null)
+                return;
+
+            const string QUESTION_TEMPLATE = "Are you sure you want to {0} this machine: {1}\r\n" +
+                                             "Operation requires administrator priviledges and can take a while.";
+            var question = String.Format(QUESTION_TEMPLATE, operationName, fav.ServerName);
+            string title = Program.Resources.GetString("Confirmation");
+            var confirmResult = MessageBox.Show(question, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirmResult != DialogResult.Yes)
+                return;
+
+            var options = new Tuple<ShutdownCommands, IFavorite>(shutdownStyle, fav);
+            var shutdownTask = Task.Factory.StartNew(new Func<object, string>(TryPerformRemoteShutdown), options);
+            shutdownTask.ContinueWith(new Action<Task<string>>(ShowRebootResult), TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private void ShowRebootResult(Task<string> shutdownTask)
+        {
+            MessageBox.Show(shutdownTask.Result, "Remote action result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private static string TryPerformRemoteShutdown(object state)
+        {
+            try
             {
-                NetTools.MagicPacket.ShutdownCommands shutdownStyle;
-                if (menuItem.Equals(this.shutdownToolStripMenuItem))
-                {
-                    msg = String.Format("Are you sure you want to shutdown this machine: {0}", fav.ServerName);
-                    shutdownStyle = NetTools.MagicPacket.ShutdownCommands.ForcedShutdown;
-                }
-                else if (menuItem.Equals(this.rebootToolStripMenuItem))
-                {
-                    msg = String.Format("Are you sure you want to reboot this machine: {0}", fav.ServerName);
-                    shutdownStyle = NetTools.MagicPacket.ShutdownCommands.ForcedReboot;
-                }
-                else
-                {
-                    return;
-                }
+                var options = state as Tuple<ShutdownCommands, IFavorite>;
+                if (options != null && RemoteManagement.ForceShutdown(options.Item2, options.Item1))
+                    return "Terminals successfully sent the shutdown command.";
 
-                if (MessageBox.Show(msg, Program.Resources.GetString("Confirmation"), MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    ISecurityOptions security = fav.Security.GetResolvedCredentials();
-                    NetworkCredential credentials = new NetworkCredential(security.UserName, security.Password, security.Domain);
-
-                    try
-                    {
-                        if (NetTools.MagicPacket.ForceShutdown(fav.ServerName, shutdownStyle, credentials) == 0)
-                        {
-                            MessageBox.Show("Terminals successfully sent the shutdown command.");
-                        }
-                    }
-                    catch (ManagementException ex)
-                    {
-                        Logging.Log.Info(ex.ToString(), ex);
-                        MessageBox.Show(Program.Resources.GetString("UnableToRemoteShutdown") + "\r\nPlease check the log file.");
-                    }
-                    catch (UnauthorizedAccessException)
-                    {
-                        MessageBox.Show(Program.Resources.GetString("UnableToRemoteShutdown") + "\r\n\r\nAccess is Denied.");
-                    }
-                }
+                return shutdownFailMessage;
             }
-            else
+            catch (ManagementException ex)
             {
-                MessageBox.Show(Program.Resources.GetString("UnableToRemoteShutdown"));
+                Logging.Log.Info(ex.ToString(), ex);
+                return shutdownFailMessage + "\r\nPlease check the log file for more details.";
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return shutdownFailMessage + "\r\n\r\nAccess is Denied.";
             }
         }
 
@@ -364,9 +370,9 @@ namespace Terminals
                 this.favsTree.SelectedNode = e.Node;
 
                 if (this.favsTree.SelectedFavorite != null)
-                    this.favsTree.ContextMenuStrip = this.contextMenuStrip1;
+                    this.favsTree.ContextMenuStrip = this.favoritesContextMenu;
                 else
-                    this.favsTree.ContextMenuStrip = this.contextMenuStrip2;
+                    this.favsTree.ContextMenuStrip = this.groupsContextMenu;
             }
         }
 
@@ -451,12 +457,12 @@ namespace Terminals
 
         private void DisplayWindow_Click(object sender, EventArgs e)
         {
-            this.contextMenuStrip1.Show();
+            this.favoritesContextMenu.Show();
         }
 
         private void DisplayAllWindow_Click(object sender, EventArgs e)
         {
-            this.contextMenuStrip2.Show();
+            this.groupsContextMenu.Show();
         }
 
         #endregion

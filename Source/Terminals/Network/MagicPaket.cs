@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
-using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Net;
 using System.Net.Sockets;
-using System.Management;
 
 /* (c)2003 M.Kruppa */
 namespace NetTools
@@ -20,18 +17,6 @@ namespace NetTools
         private IPEndPoint wolEndPoint;				
         private byte[] wolMacAddr;
         private byte[] magicPacketPayload;
-
-        public enum ShutdownCommands
-        {
-            LogOff = 0,
-            ForcedLogOff = 4,
-            Shutdown = 1,
-            ForcedShutdown = 5,
-            Reboot = 2,
-            ForcedReboot = 6,
-            PowerOff = 8,
-            ForcedPowerOff = 12
-        }
 
         public MagicPacket(String macAddress)
         {
@@ -126,77 +111,5 @@ namespace NetTools
 
             return byteSend;
         }
-
-        /// <summary>
-        /// Send a shutdown command to a (remote) computer.
-        /// </summary>
-        /// <param name="machineName">The machinename or ip-address of computer to send shutdown command to.</param>
-        /// <param name="shutdownCommand">Shutdown type command.</param>
-        /// <param name="credentials">Optional network credentials for the (remote) computer.</param>
-        /// <returns>0 if the shutdown was succesfully send, else another integer value.</returns>
-        /// <exception cref="ManagementException">An unhandled managed error occured.</exception>
-        /// <exception cref="UnauthorizedAccessException">Access was denied.</exception>
-        public static Int32 ForceShutdown(String machineName, ShutdownCommands shutdownCommand, NetworkCredential credentials = null)
-        {
-            Int32 result = -1;
-
-            ConnectionOptions options = new ConnectionOptions();
-            if (credentials != null)
-            {
-                options.EnablePrivileges = true;
-                options.Username = (String.IsNullOrEmpty(credentials.Domain)) ? credentials.UserName : String.Format("{0}\\{1}", credentials.Domain, credentials.UserName);
-                options.Password = credentials.Password;
-            }
-
-            ManagementScope scope = new ManagementScope(String.Format("\\\\{0}\\root\\cimv2", machineName), options);
-            scope.Connect();
-
-            SelectQuery query = new SelectQuery("Win32_OperatingSystem");
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
-
-            foreach (ManagementObject os in searcher.Get())
-            {
-                ManagementBaseObject inParams = os.GetMethodParameters("Win32Shutdown");
-                inParams["Flags"] = (Int32)shutdownCommand;
-
-                ManagementBaseObject outParams = os.InvokeMethod("Win32Shutdown", inParams, null);
-                result = Convert.ToInt32(outParams.Properties["returnValue"].Value);
-
-                return result;
-            }
-
-            return result;
-        }
-
-        //public static int ForceReboot(string MachineName, ShutdownStyles ShutdownStyle)
-        //{
-
-        //    int result = -1;
-        //    try
-        //    {
-
-        //        ObjectGetOptions options = new ObjectGetOptions();
-        //        ManagementClass WMI_W32_OS = new ManagementClass(string.Format(@"\\{0}\root\cimv2", MachineName), "Win32_OperatingSystem", options);
-        //        ManagementBaseObject inputParams, outputParams;
-        //        foreach(ManagementObject oneInstance in WMI_W32_OS.GetInstances())
-        //        {
-        //            inputParams = oneInstance.GetMethodParameters("Win32Shutdown");
-        //            inputParams["Flags"] = (int)ShutdownStyle;
-        //            inputParams["Reserved"] = 0;
-
-        //            outputParams = oneInstance.InvokeMethod("Win32Shutdown", inputParams, null);
-
-        //            result = Convert.ToInt32(outputParams["returnValue"]);
-        //            break;
-        //        }
-        //    }
-        //    catch(Exception exc)
-        //    {
-        //        Terminals.Logging.Log.Info("Terminals was not able to reboot the remote machine.", exc);
-        //        System.Windows.Forms.MessageBox.Show("Terminals was not able to reboot the remote machine.  Reason:\r\n" + exc.Message);
-        //    }
-        //    return result;
-        //}
-
     }
 }
