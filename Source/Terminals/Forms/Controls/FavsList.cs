@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Management;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using NetTools;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
@@ -416,8 +414,7 @@ namespace Terminals
 
         private void ConnectAsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
-            // todo performance problem, not released context menu event handlers
-            this.connectAsToolStripMenuItem.DropDownItems.Clear();
+            this.ReleaseOldContextMenu();
             this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
 
             IEnumerable<ICredentialSet> credentials = Persistence.Instance.Credentials;
@@ -427,6 +424,15 @@ namespace Terminals
                 menuItem.Tag = credential.Id;
                 this.connectAsToolStripMenuItem.DropDownItems.Add(menuItem);
             }
+        }
+
+        private void ReleaseOldContextMenu()
+        {
+            foreach (ToolStripMenuItem dropDownItem in this.connectAsToolStripMenuItem.DropDownItems)
+            {
+                dropDownItem.Click -= this.ConnectAsCred_Click;
+            }
+            this.connectAsToolStripMenuItem.DropDownItems.Clear();
         }
 
         private void ConnectAsCred_Click(object sender, EventArgs e)
