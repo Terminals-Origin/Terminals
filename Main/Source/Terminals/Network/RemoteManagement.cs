@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Management;
 using System.Net;
+using Microsoft.Win32;
 using Terminals.Data;
 
 namespace Terminals.Network
@@ -77,6 +78,34 @@ namespace Terminals.Network
         private static string FormatUserName(NetworkCredential credentials)
         {
             return String.Format("{0}\\{1}", credentials.Domain, credentials.UserName);
+        }
+
+        /// <summary>
+        /// Tryes to enable the RDP protocol on remote computer.
+        /// This action requires remote access to the registry and admin priviledges.
+        /// </summary>
+        /// <param name="favorite">Not null favorite to use as target machine of the operation</param>
+        /// <returns>Null, if was not able to perform the action, True in case of success, False when the protocol is already enabled.</returns>
+        internal static bool? EnableRdp(IFavorite favorite)
+        {
+            using (var reg = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, favorite.ServerName))
+            {
+                RegistryKey ts = reg.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Terminal Server", true);
+                Object denyValue = ts.GetValue("fDenyTSConnections");
+                if (denyValue != null)
+                {
+                    Int32 isdenied = Convert.ToInt32(denyValue);
+                    if (isdenied == 1)
+                    {
+                        ts.SetValue("fDenyTSConnections", 0);
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                return null;
+            }
         }
     }
 }
