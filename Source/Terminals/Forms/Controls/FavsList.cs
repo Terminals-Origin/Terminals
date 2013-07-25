@@ -114,6 +114,11 @@ namespace Terminals
 
         private void RebootToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            this.Reboot();
+        }
+
+        private void Reboot()
+        {
             this.ProcessRemoteShutdownOpearation("reboot", ShutdownCommands.ForcedReboot);
         }
 
@@ -169,35 +174,48 @@ namespace Terminals
 
         private void EnableRDPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // todo needs admin priviledges
-            // todo needs exception handling
             IFavorite fav = this.favsTree.SelectedFavorite;
-            if (fav != null)
+            Task<bool?> enableRdpTask = Task.Factory.StartNew(new Func<object, bool?>(TryEnableRdp), fav);
+            enableRdpTask.ContinueWith(this.ShowEnableRdpResult, TaskScheduler.FromCurrentSynchronizationContext());
+        }
+
+        private void ShowEnableRdpResult(Task<bool?> enableRdpTask)
+        {
+            bool? operationResult = enableRdpTask.Result;
+            if (operationResult.HasValue)
+                this.ShowEnableRdpResult(operationResult.Value);
+            else
+                MessageBox.Show("Terminals was not able to enable RDP remotely.");
+        }
+
+        private void ShowEnableRdpResult(bool operationResult)
+        {
+            if (operationResult)
             {
-                RegistryKey reg = RegistryKey.OpenRemoteBaseKey(RegistryHive.LocalMachine, fav.ServerName);
-                RegistryKey ts = reg.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Terminal Server", true);
-                Object deny = ts.GetValue("fDenyTSConnections");
-                if (deny != null)
-                {
-                    Int32 d = Convert.ToInt32(deny);
-                    if (d == 1)
-                    {
-                        ts.SetValue("fDenyTSConnections", 0);
-                        if (MessageBox.Show("Terminals was able to enable the RDP on the remote machine, would you like to reboot that machine for the change to take effect?", "Reboot Required", MessageBoxButtons.YesNo) == DialogResult.OK)
-                        {
-                            this.ShutdownToolStripMenuItem_Click(this.rebootToolStripMenuItem, null);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Terminals did not need to enable RDP because it was already set.");
-                    }
-
-                    return;
-                }
+                const string MESSAGE = "Terminals enabled the RDP on the remote machine, " +
+                                       "would you like to reboot that machine for the change to take effect?";
+                if (MessageBox.Show(MESSAGE, "Reboot Required", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.OK)
+                    this.Reboot();
             }
+            else
+            {
+                MessageBox.Show("RDP is already enabled.");
+            }
+        }
 
-            MessageBox.Show("Terminals was not able to enable RDP remotely.");
+        private static bool? TryEnableRdp(object state)
+        {
+            try
+            {
+                IFavorite fav = state as IFavorite;
+                if (fav == null)
+                    return null;
+                return RemoteManagement.EnableRdp(fav);
+            }
+            catch // dont need to recover (registry problem, RPC problem, UAC not happy)
+            {
+                return null;
+            }
         }
 
         private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -225,7 +243,6 @@ namespace Terminals
             {
                 Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + fav.ServerName);
             }
-
         }
 
         private void SystemInformationToolStripMenuItem_Click(object sender, EventArgs e)
