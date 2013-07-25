@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.favoritesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +56,7 @@
             this.FavoritesTabPage = new System.Windows.Forms.TabPage();
             this.HistoryTabPage = new System.Windows.Forms.TabPage();
             this.historyTreeView = new Terminals.Forms.Controls.HistoryTreeView();
-            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.groupsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.connectToAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newWindowAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,18 +66,18 @@
             this.setDomainByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setPasswordByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip1.SuspendLayout();
+            this.favoritesContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.FavoritesTabPage.SuspendLayout();
             this.HistoryTabPage.SuspendLayout();
-            this.contextMenuStrip2.SuspendLayout();
+            this.groupsContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // favsTree
             // 
             this.favsTree.AllowDrop = true;
             this.favsTree.CausesValidation = false;
-            this.favsTree.ContextMenuStrip = this.contextMenuStrip1;
+            this.favsTree.ContextMenuStrip = this.favoritesContextMenu;
             this.favsTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favsTree.HideSelection = false;
             this.favsTree.HotTracking = true;
@@ -92,9 +92,9 @@
             this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragEnter);
             this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
             // 
-            // contextMenuStrip1
+            // favoritesContextMenu
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.favoritesContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.connectToolStripMenuItem,
             this.toolStripMenuItem2,
             this.pingToolStripMenuItem,
@@ -111,8 +111,8 @@
             this.enableRDPToolStripMenuItem,
             this.toolStripMenuItem3,
             this.propertiesToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(244, 292);
+            this.favoritesContextMenu.Name = "contextMenuStrip1";
+            this.favoritesContextMenu.Size = new System.Drawing.Size(244, 314);
             // 
             // connectToolStripMenuItem
             // 
@@ -215,7 +215,7 @@
             this.rebootToolStripMenuItem.Name = "rebootToolStripMenuItem";
             this.rebootToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.rebootToolStripMenuItem.Text = "Reboot";
-            this.rebootToolStripMenuItem.Click += new System.EventHandler(this.ShutdownToolStripMenuItem_Click);
+            this.rebootToolStripMenuItem.Click += new System.EventHandler(this.RebootToolStripMenuItem_Click);
             // 
             // shutdownToolStripMenuItem
             // 
@@ -309,9 +309,9 @@
             this.historyTreeView.TabIndex = 0;
             this.historyTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HistoryTreeView_KeyUp);
             // 
-            // contextMenuStrip2
+            // groupsContextMenu
             // 
-            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.groupsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.connectToAllToolStripMenuItem,
             this.toolStripSeparator1,
             this.setCredentialByTagToolStripMenuItem,
@@ -319,8 +319,8 @@
             this.setDomainByTagToolStripMenuItem,
             this.setPasswordByTagToolStripMenuItem,
             this.deleteAllFavoritesByTagToolStripMenuItem});
-            this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(235, 164);
+            this.groupsContextMenu.Name = "contextMenuStrip2";
+            this.groupsContextMenu.Size = new System.Drawing.Size(235, 142);
             // 
             // connectToAllToolStripMenuItem
             // 
@@ -397,11 +397,11 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "FavsList";
             this.Load += new System.EventHandler(this.FavsList_Load);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.favoritesContextMenu.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.FavoritesTabPage.ResumeLayout(false);
             this.HistoryTabPage.ResumeLayout(false);
-            this.contextMenuStrip2.ResumeLayout(false);
+            this.groupsContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -409,7 +409,7 @@
         #endregion
 
         private Terminals.Forms.Controls.FavoritesTreeView favsTree;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ContextMenuStrip favoritesContextMenu;
         private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dNSToolStripMenuItem;
@@ -432,7 +432,7 @@
         private System.Windows.Forms.TabPage HistoryTabPage;
         private Terminals.Forms.Controls.HistoryTreeView historyTreeView;
         private System.Windows.Forms.ToolStripMenuItem removeSelectedToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ContextMenuStrip groupsContextMenu;
         private System.Windows.Forms.ToolStripMenuItem connectToAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem consoleAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newWindowAllToolStripMenuItem;
