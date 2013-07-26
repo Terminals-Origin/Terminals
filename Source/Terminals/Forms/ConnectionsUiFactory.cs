@@ -24,62 +24,42 @@ namespace Terminals.Forms
 
         internal void CreateCaptureManagerTab()
         {
-            string captureTitle = Program.Resources.GetString("CaptureManager");
-            TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(captureTitle);
+            Action<Connection> executeExtra = (connection) => { };
+            this.OpenConenction<CaptureManagerConnection>("CaptureManager", "Error loading the Capture Manager Tab Page", executeExtra);
+        }
+
+        internal void OpenNetworkingTools(NettworkingTools action, string host)
+        {
+            Action<NetworkingToolsConnection> executeExtra = (connection) => connection.Execute(action, host);
+            this.OpenConenction("NetworkingTools", "Open Networking Tools Failure", executeExtra);
+        }
+
+        private void OpenConenction<TConnection>(string titleResourceKey, string openErrorMessage, Action<TConnection> executeExtra)
+            where TConnection : Connection
+        {
+            string title = Program.Resources.GetString(titleResourceKey);
+            var terminalTabPage = new TerminalTabControlItem(title);
             try
             {
-                terminalTabPage.AllowDrop = false;
-                terminalTabPage.ToolTipText = captureTitle;
-                terminalTabPage.Favorite = null;
-                this.mainForm.AssingDoubleClickEventHandler(terminalTabPage);
-                this.terminalsControler.AddAndSelect(terminalTabPage);
-                this.mainForm.UpdateControls();
-
-                IConnection conn = new CaptureManagerConnection();
-                conn.TerminalTabPage = terminalTabPage;
-                conn.ParentForm = this.mainForm;
-                conn.Connect();
-                (conn as Control).BringToFront();
-                (conn as Control).Update();
-
-                this.mainForm.UpdateControls();
+                this.ConfigureTabPage(terminalTabPage, title);
+                var conn = Activator.CreateInstance<TConnection>();
+                this.ConfigureConnection(conn, terminalTabPage);
+                executeExtra(conn);
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Error loading the Capture Manager Tab Page", exc);
+                Logging.Log.Error(openErrorMessage, exc);
                 this.terminalsControler.RemoveAndUnSelect(terminalTabPage);
                 terminalTabPage.Dispose();
             }
         }
 
-        internal void OpenNetworkingTools(NettworkingTools action, string host)
+        private void ConfigureConnection(Connection conn, TerminalTabControlItem terminalTabPage)
         {
-            var terminalTabPage = new TerminalTabControlItem(Program.Resources.GetString("NetworkingTools"));
-            try
-            {
-                terminalTabPage.AllowDrop = false;
-                terminalTabPage.ToolTipText = Program.Resources.GetString("NetworkingTools");
-                terminalTabPage.Favorite = null;
-                this.mainForm.AssingDoubleClickEventHandler(terminalTabPage);
-                this.terminalsControler.AddAndSelect(terminalTabPage);
-                this.mainForm.UpdateControls();
-                using (var conn = new NetworkingToolsConnection())
-                {
-                    conn.TerminalTabPage = terminalTabPage;
-                    conn.ParentForm = this.mainForm;
-                    conn.Connect();
-                    conn.BringToFront();
-                    conn.Update();
-                    this.mainForm.UpdateControls();
-                    conn.Execute(action, host);
-                }
-            }
-            catch (Exception exc)
-            {
-                Logging.Log.Error("Open Networking Tools Failure", exc);
-                this.terminalsControler.RemoveAndUnSelect(terminalTabPage);
-                terminalTabPage.Dispose();
-            }
+            conn.TerminalTabPage = terminalTabPage;
+            conn.ParentForm = this.mainForm;
+            conn.Connect();
+            this.BringToFrontOnMainForm(conn);
         }
 
         internal void Connect(String connectionName, Boolean forceConsole, Boolean forceNewWindow, ICredentialSet credential = null)
@@ -174,7 +154,9 @@ namespace Terminals.Forms
         {
             try
             {
-                this.mainForm.AssignEventsToConnectionTab(favorite, terminalTabPage);
+                this.mainForm.AssignEventsToConnectionTab(terminalTabPage);
+                this.ConfigureTabPage(terminalTabPage, favorite.GetToolTipText(), true, favorite);
+
                 IConnection conn = ConnectionManager.CreateConnection(favorite, terminalTabPage, this.mainForm);
                 this.UpdateConnectionTabPageByConnectionState(favorite, terminalTabPage, conn);
 
@@ -190,13 +172,22 @@ namespace Terminals.Forms
             }
         }
 
+        private void ConfigureTabPage(TerminalTabControlItem terminalTabPage, string captureTitle,
+            bool allowDrop = false, IFavorite favorite = null)
+        {
+            terminalTabPage.AllowDrop = allowDrop;
+            terminalTabPage.ToolTipText = captureTitle;
+            terminalTabPage.Favorite = favorite;
+            this.mainForm.AssingDoubleClickEventHandler(terminalTabPage);
+            this.terminalsControler.AddAndSelect(terminalTabPage);
+            this.mainForm.UpdateControls();
+        }
+
         private void UpdateConnectionTabPageByConnectionState(IFavorite favorite, TerminalTabControlItem terminalTabPage, IConnection conn)
         {
             if (conn.Connect())
             {
-                (conn as Control).BringToFront();
-                (conn as Control).Update();
-                this.mainForm.UpdateControls();
+                this.BringToFrontOnMainForm(conn as Control);
                 if (favorite.Display.DesktopSize == DesktopSize.FullScreen)
                     this.mainForm.FullScreen = true;
 
@@ -211,6 +202,13 @@ namespace Terminals.Forms
                 MessageBox.Show(msg);
                 this.terminalsControler.RemoveAndUnSelect(terminalTabPage);
             }
+        }
+
+        private void BringToFrontOnMainForm(Control conn)
+        {
+            conn.BringToFront();
+            conn.Update();
+            this.mainForm.UpdateControls();
         }
     }
 }
