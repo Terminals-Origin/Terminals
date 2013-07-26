@@ -17,6 +17,7 @@ using Terminals.CommandLine;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
+using Terminals.Native;
 using Terminals.Network.Servers;
 using Terminals.Updates;
 using Unified.Rss;
@@ -28,7 +29,6 @@ namespace Terminals
     {
         #region Declarations
 
-        public const Int32 WM_LEAVING_FULLSCREEN = 0x4ff;
         private const String FULLSCREEN_ERROR_MSG = "Screen properties not available for RDP";
 
         private FavsList favsList1;
@@ -128,7 +128,7 @@ namespace Terminals
                         SetGrabInput(false);
                     }
                 }
-                else if (msg.Msg == WM_LEAVING_FULLSCREEN)
+                else if (msg.Msg == Methods.WM_LEAVING_FULLSCREEN)
                 {
                     if (CurrentTerminal != null)
                     {

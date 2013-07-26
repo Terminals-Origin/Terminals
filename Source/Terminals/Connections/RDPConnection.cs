@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using AxMSTSCLib;
 using System.IO;
-using System.Runtime.InteropServices;
 using Terminals.Configuration;
 using Terminals.Data;
-using Terminals.Forms;
 using Terminals.Forms.Controls;
+using Terminals.Native;
 
 //http://msdn.microsoft.com/en-us/library/aa381172(v=vs.85).aspx
 //http://msdn.microsoft.com/en-us/library/aa380838(v=VS.85).aspx
@@ -499,7 +497,7 @@ namespace Terminals.Connections
         {
             ParentForm.tsbGrabInput.Checked = false;
             ParentForm.UpdateControls();
-            Native.Methods.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+            Methods.PostLeavingFullScreenMessage(this);
         }
 
         private void client_OnRequestGoFullScreen(object sender, EventArgs e)

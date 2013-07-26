@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using TabControl;
 using System.Runtime.InteropServices;
 using Terminals.Data;
+using Terminals.Native;
 using Terminals.TerminalServices;
 
 namespace Terminals.Connections
@@ -142,18 +143,18 @@ namespace Terminals.Connections
 
         internal void CloseTabPage(object tabObject)
         {
-            if (!(tabObject is TabControlItem))
+            var tabPage = tabObject as TabControlItem;
+            if (tabPage == null)
                 return;
-
-            TabControlItem tabPage = (TabControlItem)tabObject;
+            
             bool wasSelected = tabPage.Selected;
             this.ParentForm.RemoveTabPage(tabPage);
             if (wasSelected)
-                Native.Methods.PostMessage(new HandleRef(this, this.Handle), MainForm.WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+                Methods.PostLeavingFullScreenMessage(this);
 
             this.ParentForm.UpdateControls();
         }
-        
+
         #endregion
     }
 }
