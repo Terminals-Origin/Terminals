@@ -157,7 +157,7 @@ namespace Terminals.Forms
                 this.mainForm.AssignEventsToConnectionTab(terminalTabPage);
                 this.ConfigureTabPage(terminalTabPage, favorite.GetToolTipText(), true, favorite);
 
-                IConnection conn = ConnectionManager.CreateConnection(favorite, terminalTabPage, this.mainForm);
+                Connection conn = CreateConnection(favorite, terminalTabPage, this.mainForm);
                 this.UpdateConnectionTabPageByConnectionState(favorite, terminalTabPage, conn);
 
                 if (conn.Connected && favorite.NewWindow)
@@ -172,6 +172,16 @@ namespace Terminals.Forms
             }
         }
 
+        private static Connection CreateConnection(IFavorite favorite, TerminalTabControlItem terminalTabPage, MainForm parentForm)
+        {
+            Connection conn = ConnectionManager.CreateConnection(favorite);
+            conn.Favorite = favorite;
+            terminalTabPage.Connection = conn;
+            conn.TerminalTabPage = terminalTabPage;
+            conn.ParentForm = parentForm;
+            return conn;
+        }
+
         private void ConfigureTabPage(TerminalTabControlItem terminalTabPage, string captureTitle,
             bool allowDrop = false, IFavorite favorite = null)
         {
@@ -183,18 +193,15 @@ namespace Terminals.Forms
             this.mainForm.UpdateControls();
         }
 
-        private void UpdateConnectionTabPageByConnectionState(IFavorite favorite, TerminalTabControlItem terminalTabPage, IConnection conn)
+        private void UpdateConnectionTabPageByConnectionState(IFavorite favorite, TerminalTabControlItem terminalTabPage, Connection conn)
         {
             if (conn.Connect())
             {
-                this.BringToFrontOnMainForm(conn as Control);
+                this.BringToFrontOnMainForm(conn);
                 if (favorite.Display.DesktopSize == DesktopSize.FullScreen)
                     this.mainForm.FullScreen = true;
 
-                var b = conn as Connection;
-                //b.OnTerminalServerStateDiscovery += new Connection.TerminalServerStateDiscovery(this.b_OnTerminalServerStateDiscovery);
-                if (b != null)
-                    b.CheckForTerminalServer(favorite);
+                 conn.CheckForTerminalServer(favorite);
             }
             else
             {
