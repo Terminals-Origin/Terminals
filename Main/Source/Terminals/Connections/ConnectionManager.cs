@@ -5,7 +5,7 @@ using Terminals.Data;
 
 namespace Terminals.Connections
 {
-    internal class ConnectionManager
+    internal static class ConnectionManager
     {
         internal const int RDPPort = 3389;
         internal const int VNCVMRCPort = 5900;
@@ -28,7 +28,7 @@ namespace Terminals.Connections
         private const int MAX_WIDTH = 4096;
         private const int MAX_HEIGHT = 2048;
 
-        public static Size GetSize(Connection Connection, IFavorite favorite)
+        public static Size GetSize(Connection connection, IFavorite favorite)
         {
             int height = favorite.Display.Height;
             int width = favorite.Display.Width;
@@ -46,13 +46,13 @@ namespace Terminals.Connections
                 case DesktopSize.x1280:
                     return new Size(1280, 1024);
                 case DesktopSize.FullScreen:
-                    width = Screen.FromControl(Connection).Bounds.Width - 13;
-                    height = Screen.FromControl(Connection).Bounds.Height - 1;
+                    width = Screen.FromControl(connection).Bounds.Width - 13;
+                    height = Screen.FromControl(connection).Bounds.Height - 1;
                     return GetMaxAvailableSize(width, height);
                 case DesktopSize.FitToWindow:
                 case DesktopSize.AutoScale:
-                    width = Connection.TerminalTabPage.Width;
-                    height = Connection.TerminalTabPage.Height;
+                    width = connection.TerminalTabPage.Width;
+                    height = connection.TerminalTabPage.Height;
                     return GetMaxAvailableSize(width, height);
                 default:
                     return new Size(width, height);
@@ -66,20 +66,9 @@ namespace Terminals.Connections
             return new Size(width, height);
         }
 
-        internal static IConnection CreateConnection(IFavorite favorite,
-          TerminalTabControlItem TerminalTabPage, MainForm parentForm)
+        internal static Connection CreateConnection(IFavorite favorite)
         {
-            IConnection conn = CreateConnection(favorite);
-            conn.Favorite = favorite;
-            TerminalTabPage.Connection = conn;
-            conn.TerminalTabPage = TerminalTabPage;
-            conn.ParentForm = parentForm;
-            return conn;
-        }
-
-        private static IConnection CreateConnection(IFavorite Favorite)
-        {
-            switch (Favorite.Protocol)
+            switch (favorite.Protocol)
             {
                 case VNC:
                     return new VNCConnection();
@@ -102,9 +91,9 @@ namespace Terminals.Connections
             }
         }
 
-        internal static int GetPort(string Name)
+        internal static int GetPort(string name)
         {
-            switch (Name)
+            switch (name)
             {
                 case VNC:
                     return VNCVMRCPort;
@@ -127,9 +116,9 @@ namespace Terminals.Connections
             }
         }
 
-        internal static string GetPortName(int Port, bool isVMRC)
+        internal static string GetPortName(int port, bool isVMRC)
         {
-            switch (Port)
+            switch (port)
             {
                 case VNCVMRCPort:
                     if (isVMRC)
