@@ -399,17 +399,11 @@ namespace Terminals
             this.CloseTabControlItem();
         }
 
-        internal void AssignEventsToConnectionTab(IFavorite favorite, TerminalTabControlItem terminalTabPage)
+        internal void AssignEventsToConnectionTab(TerminalTabControlItem terminalTabPage)
         {
-            terminalTabPage.AllowDrop = true;
             terminalTabPage.DragOver += this.terminalTabPage_DragOver;
             terminalTabPage.DragEnter += new DragEventHandler(this.terminalTabPage_DragEnter);
             terminalTabPage.Resize += new EventHandler(terminalTabPage_Resize);
-            terminalTabPage.ToolTipText = favorite.GetToolTipText();
-            terminalTabPage.Favorite = favorite;
-            this.AssingDoubleClickEventHandler(terminalTabPage);
-            this.terminalsControler.AddAndSelect(terminalTabPage);
-            this.UpdateControls();
         }
 
         internal void AssingDoubleClickEventHandler(TerminalTabControlItem terminalTabPage)
