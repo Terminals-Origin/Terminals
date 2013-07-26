@@ -97,6 +97,19 @@ namespace Terminals
                 this.ConnectionsUiFactory.OpenNetworkingTools(toolName, fav.ServerName);
         }
 
+        private void CreateFavoriteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var frmNewTerminal = new NewTerminalForm(string.Empty))
+            {
+                var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
+                if (groupNode != null)
+                {
+                    frmNewTerminal.AssingSelectedGroup(groupNode.Group);
+                    frmNewTerminal.ShowDialog();
+                }
+            }
+        }
+
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
