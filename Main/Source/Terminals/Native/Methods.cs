@@ -1,14 +1,23 @@
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Terminals.Native
 {
-    [System.Security.SuppressUnmanagedCodeSecurity()]
-    [System.Runtime.InteropServices.ComVisible(false)]
+    [SuppressUnmanagedCodeSecurity()]
+    [ComVisible(false)]
     internal class Methods
     {
+        internal const Int32 WM_LEAVING_FULLSCREEN = 0x4ff;
+
+        internal static void PostLeavingFullScreenMessage(Control source)
+        {
+            PostMessage(new HandleRef(source, source.Handle), WM_LEAVING_FULLSCREEN, IntPtr.Zero, IntPtr.Zero);
+        }
+
         #region User32.dll
 
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
