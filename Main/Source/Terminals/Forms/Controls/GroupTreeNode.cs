@@ -40,6 +40,8 @@ namespace Terminals.Forms.Controls
             }
         }
 
+        public IGroup Group { get { return this.group; } }
+
         internal GroupTreeNode(IGroup group, string imageKey)
             : this(group)
         {

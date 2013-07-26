@@ -1403,5 +1403,11 @@ namespace Terminals
         }
 
         #endregion
+
+        internal void AssingSelectedGroup(IGroup group)
+        {
+            if (group != null)
+                BindGroupsToListView(this.lvConnectionTags, new[] { group });
+        }
     }
 }

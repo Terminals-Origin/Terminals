@@ -39,8 +39,8 @@
             this.userConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dNSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.traceRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dNSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tSAdminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.removeSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -57,6 +57,7 @@
             this.HistoryTabPage = new System.Windows.Forms.TabPage();
             this.historyTreeView = new Terminals.Forms.Controls.HistoryTreeView();
             this.groupsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.createFavoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.consoleAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newWindowAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,7 +113,7 @@
             this.toolStripMenuItem3,
             this.propertiesToolStripMenuItem});
             this.favoritesContextMenu.Name = "contextMenuStrip1";
-            this.favoritesContextMenu.Size = new System.Drawing.Size(244, 314);
+            this.favoritesContextMenu.Size = new System.Drawing.Size(244, 292);
             // 
             // connectToolStripMenuItem
             // 
@@ -177,14 +178,6 @@
             this.pingToolStripMenuItem.ToolTipText = "Opens networking tool and starts PING the target machine.";
             this.pingToolStripMenuItem.Click += new System.EventHandler(this.PingToolStripMenuItem_Click);
             // 
-            // dNSToolStripMenuItem
-            // 
-            this.dNSToolStripMenuItem.Name = "dNSToolStripMenuItem";
-            this.dNSToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
-            this.dNSToolStripMenuItem.Text = "DNS";
-            this.dNSToolStripMenuItem.ToolTipText = "Opens networking tool and tries to resolve DNS name of the target machine.";
-            this.dNSToolStripMenuItem.Click += new System.EventHandler(this.DNsToolStripMenuItem_Click);
-            // 
             // traceRouteToolStripMenuItem
             // 
             this.traceRouteToolStripMenuItem.Name = "traceRouteToolStripMenuItem";
@@ -192,6 +185,14 @@
             this.traceRouteToolStripMenuItem.Text = "Trace Route";
             this.traceRouteToolStripMenuItem.ToolTipText = "Opens networking tool and starts TRACE the target machine.";
             this.traceRouteToolStripMenuItem.Click += new System.EventHandler(this.TraceRouteToolStripMenuItem_Click);
+            // 
+            // dNSToolStripMenuItem
+            // 
+            this.dNSToolStripMenuItem.Name = "dNSToolStripMenuItem";
+            this.dNSToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.dNSToolStripMenuItem.Text = "DNS";
+            this.dNSToolStripMenuItem.ToolTipText = "Opens networking tool and tries to resolve DNS name of the target machine.";
+            this.dNSToolStripMenuItem.Click += new System.EventHandler(this.DNsToolStripMenuItem_Click);
             // 
             // tSAdminToolStripMenuItem
             // 
@@ -327,6 +328,7 @@
             // groupsContextMenu
             // 
             this.groupsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createFavoriteToolStripMenuItem,
             this.connectToAllToolStripMenuItem,
             this.toolStripSeparator1,
             this.setCredentialByTagToolStripMenuItem,
@@ -335,7 +337,15 @@
             this.setPasswordByTagToolStripMenuItem,
             this.deleteAllFavoritesByTagToolStripMenuItem});
             this.groupsContextMenu.Name = "contextMenuStrip2";
-            this.groupsContextMenu.Size = new System.Drawing.Size(235, 142);
+            this.groupsContextMenu.Size = new System.Drawing.Size(235, 186);
+            // 
+            // createFavoriteToolStripMenuItem
+            // 
+            this.createFavoriteToolStripMenuItem.Image = global::Terminals.Properties.Resources.add;
+            this.createFavoriteToolStripMenuItem.Name = "createFavoriteToolStripMenuItem";
+            this.createFavoriteToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.createFavoriteToolStripMenuItem.Text = "New Connection";
+            this.createFavoriteToolStripMenuItem.Click += new System.EventHandler(this.CreateFavoriteToolStripMenuItem_Click);
             // 
             // connectToAllToolStripMenuItem
             // 
@@ -352,7 +362,7 @@
             // 
             this.consoleAllToolStripMenuItem.CheckOnClick = true;
             this.consoleAllToolStripMenuItem.Name = "consoleAllToolStripMenuItem";
-            this.consoleAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.consoleAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.consoleAllToolStripMenuItem.Text = "Console";
             this.consoleAllToolStripMenuItem.Click += new System.EventHandler(this.DisplayAllWindow_Click);
             // 
@@ -360,7 +370,7 @@
             // 
             this.newWindowAllToolStripMenuItem.CheckOnClick = true;
             this.newWindowAllToolStripMenuItem.Name = "newWindowAllToolStripMenuItem";
-            this.newWindowAllToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
+            this.newWindowAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newWindowAllToolStripMenuItem.Text = "New Window";
             this.newWindowAllToolStripMenuItem.Click += new System.EventHandler(this.DisplayAllWindow_Click);
             // 
@@ -460,5 +470,6 @@
         private System.Windows.Forms.ToolStripMenuItem userConnectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem shutdownToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createFavoriteToolStripMenuItem;
     }
 }
