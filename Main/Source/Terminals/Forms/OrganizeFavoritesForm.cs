@@ -16,7 +16,7 @@ namespace Terminals
     {
         private string editedFavoriteName = String.Empty;
         private IFavorite editedFavorite;
-        internal MainForm MainForm { get; set; }
+        private ConnectionsUiFactory connectionsUiFactory;
 
         private static IFavorites PersistedFavorites
         {
@@ -30,6 +30,11 @@ namespace Terminals
             InitializeDataGrid();
             ImportOpenFileDialog.Filter = Integrations.Importers.GetProvidersDialogFilter();
             UpdateCountLabels();
+        }
+
+        internal void AssignConnectionsUiFactory(ConnectionsUiFactory connectionsUiFactory)
+        {
+            this.connectionsUiFactory = connectionsUiFactory;
         }
 
         private void OrganizeFavoritesForm_Shown(object sender, EventArgs e)
@@ -368,15 +373,12 @@ namespace Terminals
 
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MainForm != null)
-            {
-                IFavorite favorite = GetSelectedFavorite();
-                bool console = false;
-                RdpOptions rdpOptions = favorite.ProtocolProperties as RdpOptions;
-                if (rdpOptions != null)
-                    console = rdpOptions.ConnectToConsole;
-                MainForm.Connect(favorite.Name, console, favorite.NewWindow);
-            }
+            IFavorite favorite = GetSelectedFavorite();
+            bool console = false;
+            RdpOptions rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions != null)
+                console = rdpOptions.ConnectToConsole;
+            this.connectionsUiFactory.Connect(favorite.Name, console, favorite.NewWindow);
         }
     }
 }

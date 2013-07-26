@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using TabControl;
 using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Data;
+using Terminals.Forms;
 
 namespace Terminals
 {
@@ -14,15 +14,37 @@ namespace Terminals
     /// </summary>
     internal class TerminalTabsSelectionControler
     {
-        private TabControl.TabControl mainTabControl;
-        private MainForm mainForm;
-        private List<PopupTerminal> detachedWindows = new List<PopupTerminal>();
+        private readonly List<PopupTerminal> detachedWindows = new List<PopupTerminal>();
+        private readonly TabControl.TabControl mainTabControl;
+        private ConnectionsUiFactory connectionsUiFactory;
 
-        internal TerminalTabsSelectionControler(MainForm mainForm, TabControl.TabControl tabControl)
+        /// <summary>
+        /// Gets the actualy selected TabControl even if it is not in main window
+        /// </summary>
+        internal TerminalTabControlItem Selected
+        {
+            get
+            {
+                return this.mainTabControl.SelectedItem as TerminalTabControlItem;
+            }
+        }
+        internal bool HasSelected
+        {
+            get
+            {
+                return this.mainTabControl.SelectedItem != null;
+            }
+        }
+
+        internal TerminalTabsSelectionControler(TabControl.TabControl tabControl)
         {
             this.mainTabControl = tabControl;
-            this.mainForm = mainForm;
             Persistence.Instance.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesChanged);
+        }
+
+        internal void AssingUiFactory(ConnectionsUiFactory connectionsUiFactory)
+        {
+            this.connectionsUiFactory = connectionsUiFactory;
         }
 
         private void OnFavoritesChanged(FavoritesChangedEventArgs args)
@@ -92,25 +114,6 @@ namespace Terminals
         }
 
         /// <summary>
-        /// Gets the actualy selected TabControl even if it is not in main window
-        /// </summary>
-        internal TerminalTabControlItem Selected
-        {
-            get
-            {
-                return this.mainTabControl.SelectedItem as TerminalTabControlItem;
-            }
-        }
-
-        internal bool HasSelected
-        {
-            get
-            {
-                return this.mainTabControl.SelectedItem != null;
-            }
-        }
-
-        /// <summary>
         /// Releases actualy selected tab to the new window
         /// </summary>
         internal void DetachTabToNewWindow()
@@ -164,7 +167,7 @@ namespace Terminals
 
             if (createNew)
             {
-                this.CreateCaptureManagerTab();
+                this.connectionsUiFactory.CreateCaptureManagerTab();
             }
         }
 
@@ -193,36 +196,6 @@ namespace Terminals
             }
 
             return false;
-        }
-
-        private void CreateCaptureManagerTab()
-        {
-            string captureTitle = Program.Resources.GetString("CaptureManager");
-            TerminalTabControlItem terminalTabPage = new TerminalTabControlItem(captureTitle);
-            try
-            {
-                terminalTabPage.AllowDrop = false;
-                terminalTabPage.ToolTipText = captureTitle;
-                terminalTabPage.Favorite = null;
-                terminalTabPage.DoubleClick += new EventHandler(this.mainForm.terminalTabPage_DoubleClick);
-                this.AddAndSelect(terminalTabPage);
-                this.mainForm.UpdateControls();
-
-                IConnection conn = new CaptureManagerConnection();
-                conn.TerminalTabPage = terminalTabPage;
-                conn.ParentForm = this.mainForm;
-                conn.Connect();
-                (conn as Control).BringToFront();
-                (conn as Control).Update();
-
-                this.mainForm.UpdateControls();
-            }
-            catch (Exception exc)
-            {
-                Logging.Log.Error("Error loading the Capture Manager Tab Page", exc);
-                this.RemoveAndUnSelect(terminalTabPage);
-                terminalTabPage.Dispose();
-            }
         }
 
         internal void UpdateCaptureButtonOnDetachedPopUps()

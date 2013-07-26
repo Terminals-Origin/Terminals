@@ -21,7 +21,7 @@ namespace Terminals
     internal partial class FavsList : UserControl
     {
         private static readonly string shutdownFailMessage = Program.Resources.GetString("UnableToRemoteShutdown");
-        private MainForm mainForm;
+        internal ConnectionsUiFactory ConnectionsUiFactory { get; set; }
 
         private static IFavorites PersistedFavorites
         {
@@ -41,14 +41,6 @@ namespace Terminals
 
         #region Private methods
 
-        private MainForm GetMainForm()
-        {
-            if (this.mainForm == null)
-                this.mainForm = MainForm.GetMainForm();
-
-            return this.mainForm;
-        }
-
         private void CloseMenuStrips()
         {
             this.favoritesContextMenu.Close();
@@ -58,7 +50,7 @@ namespace Terminals
         private void ConnectToFavorite(IFavorite favorite, bool console, bool newWindow)
         {
             if (favorite != null)
-                this.GetMainForm().Connect(favorite.Name, console, newWindow);
+                this.ConnectionsUiFactory.Connect(favorite.Name, console, newWindow);
         }
 
         #endregion
@@ -102,14 +94,28 @@ namespace Terminals
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
-                this.GetMainForm().OpenNetworkingTools(toolName, fav.ServerName);
+                this.ConnectionsUiFactory.OpenNetworkingTools(toolName, fav.ServerName);
         }
 
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
-                this.GetMainForm().ShowManageTerminalForm(fav);
+                this.ShowManageTerminalForm(fav);
+        }
+
+        private void ShowManageTerminalForm(IFavorite favorite)
+        {
+            using (var frmNewTerminal = new NewTerminalForm(favorite))
+            {
+                TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
+
+                if (result != TerminalFormDialogResult.Cancel)
+                {
+                    if (result == TerminalFormDialogResult.SaveAndConnect)
+                        this.ConnectionsUiFactory.CreateTerminalTab(frmNewTerminal.Favorite);
+                }
+            }
         }
 
         private void RebootToolStripMenuItem_Click(object sender, EventArgs e)
@@ -317,7 +323,8 @@ namespace Terminals
 
         private List<IFavorite> StartBatchUpdate()
         {
-            this.GetMainForm().Cursor = Cursors.WaitCursor;
+            if (this.ParentForm != null)
+                this.ParentForm.Cursor = Cursors.WaitCursor;
             return this.GetSelectedFavorites();
         }
 
@@ -332,7 +339,8 @@ namespace Terminals
 
         private void FinishBatchUpdate(string variable)
         {
-            this.GetMainForm().Cursor = Cursors.Default;
+            if (this.ParentForm != null)
+                this.ParentForm.Cursor = Cursors.Default;
             string message = string.Format("Set {0} by group Complete.", variable);
             MessageBox.Show(message);
         }
@@ -359,7 +367,8 @@ namespace Terminals
             {
                 List<IFavorite> selectedFavorites = this.StartBatchUpdate();
                 Persistence.Instance.Favorites.Delete(selectedFavorites);
-                this.GetMainForm().Cursor = Cursors.Default;
+                if (this.ParentForm != null)
+                    this.ParentForm.Cursor = Cursors.Default;
                 MessageBox.Show("Delete all Favorites by group Complete.");
             }
         }
@@ -418,8 +427,7 @@ namespace Terminals
             // connections are always under some parent node in History and in Favorites
             if (tv.SelectedNode != null && tv.SelectedNode.Level > 0)
             {
-                MainForm main = this.GetMainForm();
-                main.Connect(tv.SelectedNode.Text, false, false);
+                this.ConnectionsUiFactory.Connect(tv.SelectedNode.Text, false, false);
             }
         }
 
@@ -459,7 +467,7 @@ namespace Terminals
             {
                 var menuItem = sender as ToolStripItem;
                 var credential = Persistence.Instance.Credentials[(Guid)menuItem.Tag];
-                this.GetMainForm().Connect(favorite.Name, this.consoleToolStripMenuItem.Checked,
+                this.ConnectionsUiFactory.Connect(favorite.Name, this.consoleToolStripMenuItem.Checked,
                                            this.newWindowToolStripMenuItem.Checked, credential);
             }
         }
@@ -472,7 +480,7 @@ namespace Terminals
                 IFavorite selectedFavorite = this.favsTree.SelectedFavorite;
                 if (selectedFavorite != null)
                 {
-                    this.GetMainForm().Connect(selectedFavorite.Name, this.consoleToolStripMenuItem.Checked,
+                    this.ConnectionsUiFactory.Connect(selectedFavorite.Name, this.consoleToolStripMenuItem.Checked,
                         this.newWindowToolStripMenuItem.Checked, usrForm.Credentials);
                 }
             }
