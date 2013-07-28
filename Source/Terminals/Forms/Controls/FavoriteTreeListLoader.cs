@@ -139,6 +139,10 @@ namespace Terminals.Forms.Controls
         {
             if (groupNode != null && !groupNode.NotLoadedYet) // add only to expanded nodes
             {
+                bool alreadyThere = groupNode.ContainsFavoriteNode(favorite);
+                if (alreadyThere)
+                    return;
+
                 var favoriteTreeNode = new FavoriteTreeNode(favorite);
                 int index = FindFavoriteNodeInsertIndex(groupNode.Nodes, favorite);
                 InsertNodePreservingOrder(groupNode.Nodes, index, favoriteTreeNode);
@@ -158,7 +162,7 @@ namespace Terminals.Forms.Controls
             for (int index = 0; index < nodes.Count; index++)
             {
                 var comparedNode = nodes[index] as FavoriteTreeNode;
-                if (comparedNode.CompareByDefaultFavoriteSorting(favorite) > 0)
+                if (comparedNode != null && comparedNode.CompareByDefaultFavoriteSorting(favorite) > 0)
                     return index;
             }
 
@@ -247,11 +251,10 @@ namespace Terminals.Forms.Controls
         /// <param name="index">The index on which node would be inserted.
         /// If negative number, than it is added to the end.</param>
         /// <returns>Not null, newly creted node</returns>
-        private GroupTreeNode CreateAndAddGroupNode(IGroup group, int index = -1)
+        private void CreateAndAddGroupNode(IGroup group, int index = -1)
         {
             GroupTreeNode groupNode = new GroupTreeNode(group);
             InsertNodePreservingOrder(this.treeList.Nodes, index, groupNode);
-            return groupNode;
         }
 
         private static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode groupNode)
@@ -275,7 +278,7 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        internal void CreateUntagedVirtualGroupNode()
+        private void CreateUntagedVirtualGroupNode()
         {
             this.unTaggedNode = new UntagedGroupNode();
             InsertNodePreservingOrder(this.treeList.Nodes, -1, this.unTaggedNode);
