@@ -26,9 +26,48 @@
 
   <Fragment>
     <ComponentGroup Id="MainComponents" Directory="INSTALLFOLDER">
-      <!--<Component Id="TerminalsExe" Guid="31F8007A-749F-4A74-AB3B-1F80813CEA32">
+      <Component Id="TerminalsExe" Guid="31F8007A-749F-4A74-AB3B-1F80813CEA32">
         <File Source="$(var.Terminals.TargetPath)" KeyPath="yes" Checksum="yes"/>
-      </Component>-->
+      </Component>
+      <Component Id="GranadosDll" Guid="9748FD50-3853-4FF5-AC40-4F737F4A261A">
+        <File Source="$(var.Granados.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="HexEditorDll" Guid="A280B61A-9FA2-469C-9DC0-1D356FA35603">
+        <File Source="$(var.HexEditor.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="MetroDll" Guid="8737AA17-03D4-4E4E-81F9-734029698ECF">
+        <File Source="$(var.Metro.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>
+      <Component Id="SharpPcapDll" Guid="29188BD1-307E-4CD0-9750-BF294FD0E902">
+        <File Source="$(var.SharpPcap.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>   
+      <Component Id="SqlScriptRunnerDll" Guid="88E4FB8E-9517-4BEE-9974-B7A1316F78B4">
+        <File Source="$(var.SqlScriptRunner.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>   
+      <Component Id="SSHClientDll" Guid="DF5AEE72-4C84-49EF-A59E-2664AA51685D">
+        <File Source="$(var.SSHClient.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component> 
+      <Component Id="TabControlDll" Guid="97B4B57A-C0D8-49D2-B75F-9B2B8F253A65">
+        <File Source="$(var.TabControl.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>       
+      <Component Id="TerminalEmulatorDll" Guid="61B42519-1D0B-4012-8095-F0D7D04A6566">
+        <File Source="$(var.TerminalEmulator.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>   
+      <Component Id="VncSharpDll" Guid="C15DFED3-F776-43BE-90BE-483DE2D2E86E">
+        <File Source="$(var.VncSharp.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component> 
+      <Component Id="zlibNetDll" Guid="3D6ADB9B-B6B1-4D4D-964D-6EE4B261720A">
+        <File Source="$(var.zlib.net.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component> 
+      <Component Id="ZedGraphDll" Guid="AA750DC1-73E6-4EEE-9BA4-E4CE495FA721">
+        <File Source="..\..\Resources\Libraries\ZedGraph\ZedGraph.dll" KeyPath="yes" Checksum="yes"/>
+      </Component> 
+      <!-- TODO missing libraries to add: AWSSDK, AxSficallib,FlickrNet, EntityFramework,
+      Log4Net, SharpZipLib, VMRCClientControlLib, Transport2006 -->
+      <!-- TODO add missing config and xml files -->
+      
+      
+  
       <Component Id="MainIcon" Guid="77AAEF17-7034-441B-B853-879DA390251C">
         <File Source="..\Terminals\terminalsicon.ico" KeyPath="yes"/>
       </Component>
