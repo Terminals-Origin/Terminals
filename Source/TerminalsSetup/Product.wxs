@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Product Id="*" Name="Terminals" Language="1033" Version="3.2.0.0" Manufacturer="Robert Chartier"
+           UpgradeCode="1010280c-d106-47d5-abea-630ebe57887d">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of Terminals is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="Terminals" Level="1">
+			<ComponentGroupRef Id="MainComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLFOLDER" Name="Terminals" />
+			</Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="TerminalsProgramsFolder" Name="Terminals"/>
+      </Directory>
+		</Directory>
+	</Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="MainComponents" Directory="INSTALLFOLDER">
+      <!--<Component Id="TerminalsExe" Guid="31F8007A-749F-4A74-AB3B-1F80813CEA32">
+        <File Source="$(var.Terminals.TargetPath)" KeyPath="yes" Checksum="yes"/>
+      </Component>-->
+      <Component Id="MainIcon" Guid="77AAEF17-7034-441B-B853-879DA390251C">
+        <File Source="..\Terminals\terminalsicon.ico" KeyPath="yes"/>
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="TerminalsProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="42B36D8B-C5D6-493C-A794-D158800D9229">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+             Name="Terminals" Description="Terminals is a secure, multi tab terminal services/remote desktop client."
+             Target="[INSTALLFOLDER]Terminals.exe" WorkingDirectory="INSTALLFOLDER">
+          <Icon Id="terminalsicon.ico" SourceFile="..\Terminals\terminalsicon.ico"/>
+        </Shortcut>
+        <RemoveFolder Id="TerminalsProgramsFolder" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\Robert Chartier\Terminals" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+</Wix>
