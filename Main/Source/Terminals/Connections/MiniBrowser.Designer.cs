@@ -66,7 +66,7 @@
             this.backButton.Name = "backButton";
             this.backButton.Size = new System.Drawing.Size(60, 28);
             this.backButton.Text = "Back";
-            this.backButton.Click += new System.EventHandler(this.backButton_Click);
+            this.backButton.Click += new System.EventHandler(this.BackButton_Click);
             // 
             // homeButton
             // 
@@ -75,7 +75,7 @@
             this.homeButton.Name = "homeButton";
             this.homeButton.Size = new System.Drawing.Size(68, 28);
             this.homeButton.Text = "Home";
-            this.homeButton.Click += new System.EventHandler(this.homeButton_Click);
+            this.homeButton.Click += new System.EventHandler(this.HomeButton_Click);
             // 
             // forwardButton
             // 
@@ -84,7 +84,7 @@
             this.forwardButton.Name = "forwardButton";
             this.forwardButton.Size = new System.Drawing.Size(78, 28);
             this.forwardButton.Text = "Forward";
-            this.forwardButton.Click += new System.EventHandler(this.forwardButton_Click);
+            this.forwardButton.Click += new System.EventHandler(this.ForwardButton_Click);
             // 
             // MiniBrowser
             // 

@@ -7,11 +7,26 @@ namespace Terminals.Connections
 {
     internal class HTTPConnection : Connection
     {
-        private MiniBrowser browser = new MiniBrowser();
+        private readonly MiniBrowser browser = new MiniBrowser();
         public override bool Connected
         {
             get { return true; }
         }
+
+        internal HTTPConnection()
+        {
+            this.InitializeComponent();
+        }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            this.Controls.Add(this.browser);
+            this.browser.Dock = DockStyle.Fill;
+            this.browser.Parent = this;
+            this.ResumeLayout(false);
+        }
+
         public override void ChangeDesktopSize(DesktopSize Size)
         {
         }
@@ -21,7 +36,7 @@ namespace Terminals.Connections
             try
             {
                 this.Dock = DockStyle.Fill;
-                this.browser.Home = WebOptions.ExtractAbsoluteUrl(this.Favorite);
+                string url = WebOptions.ExtractAbsoluteUrl(this.Favorite);
                 ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
 
                 if (!String.IsNullOrEmpty(security.UserName) && !String.IsNullOrEmpty(security.Password))
@@ -29,16 +44,13 @@ namespace Terminals.Connections
                     string securityValues = string.Format("{0}: {1}", security.UserName, security.Password);
                     string securityHeader = Convert.ToBase64String(Encoding.ASCII.GetBytes(securityValues));
                     string additionalHeaders = string.Format("Authorization: Basic {0}{1}", securityHeader, Environment.NewLine);
-                    this.browser.Browser.Navigate(this.browser.Home, null, null, additionalHeaders);
+                    this.browser.Navigate(url, additionalHeaders);
                 }
                 else
                 {
-                    this.browser.Browser.Navigate(this.browser.Home);
+                    this.browser.Navigate(url);
                 }
 
-                this.Controls.Add(this.browser);
-                this.browser.Dock = DockStyle.Fill;
-                this.browser.Parent = this;
                 this.Parent = TerminalTabPage;
                 this.BringToFront();
                 this.browser.BringToFront();
@@ -60,12 +72,6 @@ namespace Terminals.Connections
             }
             else
                 CloseTabPage(this.Parent);
-        }
-
-        private void InitializeComponent()
-        {
-            this.SuspendLayout();
-            this.ResumeLayout(false);
         }
     }
 }
