@@ -38,13 +38,12 @@ namespace Terminals.Forms
             this.lblDefaultDesktopShare = new System.Windows.Forms.Label();
             this.txtDefaultDesktopShare = new System.Windows.Forms.TextBox();
             this.lblEvaluatedDesktopShare = new System.Windows.Forms.Label();
-            this.lblSeconds = new System.Windows.Forms.Label();
             this.lblPortScannerTimeout = new System.Windows.Forms.Label();
             this.groupBoxConnections = new System.Windows.Forms.GroupBox();
+            this.tryReconnectCheckBox = new System.Windows.Forms.CheckBox();
             this.restoreWindowCheckbox = new System.Windows.Forms.CheckBox();
             this.validateServerNamesCheckbox = new System.Windows.Forms.CheckBox();
             this.warnDisconnectCheckBox = new System.Windows.Forms.CheckBox();
-            this.tryReconnectCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.groupBox12.SuspendLayout();
             this.groupBoxConnections.SuspendLayout();
@@ -67,7 +66,6 @@ namespace Terminals.Forms
             this.groupBox12.Controls.Add(this.lblDefaultDesktopShare);
             this.groupBox12.Controls.Add(this.txtDefaultDesktopShare);
             this.groupBox12.Controls.Add(this.lblEvaluatedDesktopShare);
-            this.groupBox12.Controls.Add(this.lblSeconds);
             this.groupBox12.Controls.Add(this.lblPortScannerTimeout);
             this.groupBox12.Location = new System.Drawing.Point(6, 132);
             this.groupBox12.Name = "groupBox12";
@@ -80,7 +78,7 @@ namespace Terminals.Forms
             // 
             this.EvaluatedDesktopShareLabel.AutoSize = true;
             this.EvaluatedDesktopShareLabel.ForeColor = System.Drawing.Color.Blue;
-            this.EvaluatedDesktopShareLabel.Location = new System.Drawing.Point(6, 59);
+            this.EvaluatedDesktopShareLabel.Location = new System.Drawing.Point(3, 80);
             this.EvaluatedDesktopShareLabel.Name = "EvaluatedDesktopShareLabel";
             this.EvaluatedDesktopShareLabel.Size = new System.Drawing.Size(146, 13);
             this.EvaluatedDesktopShareLabel.TabIndex = 23;
@@ -88,7 +86,7 @@ namespace Terminals.Forms
             // 
             // PortscanTimeoutTextBox
             // 
-            this.PortscanTimeoutTextBox.Location = new System.Drawing.Point(123, 94);
+            this.PortscanTimeoutTextBox.Location = new System.Drawing.Point(207, 113);
             this.PortscanTimeoutTextBox.Name = "PortscanTimeoutTextBox";
             this.PortscanTimeoutTextBox.Size = new System.Drawing.Size(58, 20);
             this.PortscanTimeoutTextBox.TabIndex = 22;
@@ -96,7 +94,7 @@ namespace Terminals.Forms
             // lblDefaultDesktopShare
             // 
             this.lblDefaultDesktopShare.AutoSize = true;
-            this.lblDefaultDesktopShare.Location = new System.Drawing.Point(3, 17);
+            this.lblDefaultDesktopShare.Location = new System.Drawing.Point(3, 19);
             this.lblDefaultDesktopShare.Name = "lblDefaultDesktopShare";
             this.lblDefaultDesktopShare.Size = new System.Drawing.Size(279, 13);
             this.lblDefaultDesktopShare.TabIndex = 17;
@@ -104,7 +102,7 @@ namespace Terminals.Forms
             // 
             // txtDefaultDesktopShare
             // 
-            this.txtDefaultDesktopShare.Location = new System.Drawing.Point(6, 33);
+            this.txtDefaultDesktopShare.Location = new System.Drawing.Point(6, 35);
             this.txtDefaultDesktopShare.Name = "txtDefaultDesktopShare";
             this.txtDefaultDesktopShare.Size = new System.Drawing.Size(360, 20);
             this.txtDefaultDesktopShare.TabIndex = 18;
@@ -113,29 +111,20 @@ namespace Terminals.Forms
             // lblEvaluatedDesktopShare
             // 
             this.lblEvaluatedDesktopShare.AutoSize = true;
-            this.lblEvaluatedDesktopShare.Location = new System.Drawing.Point(3, 78);
+            this.lblEvaluatedDesktopShare.Location = new System.Drawing.Point(3, 61);
             this.lblEvaluatedDesktopShare.Name = "lblEvaluatedDesktopShare";
             this.lblEvaluatedDesktopShare.Size = new System.Drawing.Size(317, 13);
             this.lblEvaluatedDesktopShare.TabIndex = 19;
             this.lblEvaluatedDesktopShare.Text = "Evaluated Desktop Share (according to selected connection tab):";
             // 
-            // lblSeconds
-            // 
-            this.lblSeconds.AutoSize = true;
-            this.lblSeconds.Location = new System.Drawing.Point(187, 97);
-            this.lblSeconds.Name = "lblSeconds";
-            this.lblSeconds.Size = new System.Drawing.Size(49, 13);
-            this.lblSeconds.TabIndex = 21;
-            this.lblSeconds.Text = "Seconds";
-            // 
             // lblPortScannerTimeout
             // 
             this.lblPortScannerTimeout.AutoSize = true;
-            this.lblPortScannerTimeout.Location = new System.Drawing.Point(3, 97);
+            this.lblPortScannerTimeout.Location = new System.Drawing.Point(6, 116);
             this.lblPortScannerTimeout.Name = "lblPortScannerTimeout";
-            this.lblPortScannerTimeout.Size = new System.Drawing.Size(113, 13);
+            this.lblPortScannerTimeout.Size = new System.Drawing.Size(186, 13);
             this.lblPortScannerTimeout.TabIndex = 20;
-            this.lblPortScannerTimeout.Text = "Port Scanner Timeout:";
+            this.lblPortScannerTimeout.Text = "Port Scanner Timeout (0-60 seconds):";
             // 
             // groupBoxConnections
             // 
@@ -148,6 +137,16 @@ namespace Terminals.Forms
             this.groupBoxConnections.Size = new System.Drawing.Size(500, 120);
             this.groupBoxConnections.TabIndex = 4;
             this.groupBoxConnections.TabStop = false;
+            // 
+            // tryReconnectCheckBox
+            // 
+            this.tryReconnectCheckBox.AutoSize = true;
+            this.tryReconnectCheckBox.Location = new System.Drawing.Point(6, 66);
+            this.tryReconnectCheckBox.Name = "tryReconnectCheckBox";
+            this.tryReconnectCheckBox.Size = new System.Drawing.Size(392, 17);
+            this.tryReconnectCheckBox.TabIndex = 21;
+            this.tryReconnectCheckBox.Text = "Ask to reconnect when connection is lost due Shutdown or reboot (RDP only)";
+            this.tryReconnectCheckBox.UseVisualStyleBackColor = true;
             // 
             // restoreWindowCheckbox
             // 
@@ -183,16 +182,6 @@ namespace Terminals.Forms
             this.warnDisconnectCheckBox.Text = "Show confirm dialog on close or warn on disconnect";
             this.warnDisconnectCheckBox.UseVisualStyleBackColor = true;
             // 
-            // tryReconnectCheckBox
-            // 
-            this.tryReconnectCheckBox.AutoSize = true;
-            this.tryReconnectCheckBox.Location = new System.Drawing.Point(6, 66);
-            this.tryReconnectCheckBox.Name = "tryReconnectCheckBox";
-            this.tryReconnectCheckBox.Size = new System.Drawing.Size(392, 17);
-            this.tryReconnectCheckBox.TabIndex = 21;
-            this.tryReconnectCheckBox.Text = "Ask to reconnect when connection is lost due Shutdown or reboot (RDP only)";
-            this.tryReconnectCheckBox.UseVisualStyleBackColor = true;
-            // 
             // ConnectionsOptionPanel
             // 
             this.Controls.Add(this.panel1);
@@ -216,7 +205,6 @@ namespace Terminals.Forms
         private Label lblDefaultDesktopShare;
         private TextBox txtDefaultDesktopShare;
         private Label lblEvaluatedDesktopShare;
-        private Label lblSeconds;
         private Label lblPortScannerTimeout;
         private GroupBox groupBoxConnections;
         private CheckBox validateServerNamesCheckbox;
