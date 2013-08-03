@@ -8,7 +8,6 @@ namespace Terminals.Forms
     internal partial class ConnectionsOptionPanel : UserControl, IOptionPanel
     {
         internal AxMsRdpClient6 CurrentTerminal { get; set; }
-        private Int32 timeout = 5;
 
         public ConnectionsOptionPanel()
         {
@@ -32,10 +31,16 @@ namespace Terminals.Forms
             Settings.AskToReconnect = this.tryReconnectCheckBox.Checked;
             Settings.DefaultDesktopShare = this.txtDefaultDesktopShare.Text;
             Settings.RestoreWindowOnLastTerminalDisconnect = this.restoreWindowCheckbox.Checked;
+            Settings.PortScanTimeoutSeconds = this.ResolveTimeOut();
+        }
+
+        private int ResolveTimeOut()
+        {
+            Int32 timeout = 5;
             Int32.TryParse(this.PortscanTimeoutTextBox.Text, out timeout);
-            if (Settings.PortScanTimeoutSeconds <= 0 || Settings.PortScanTimeoutSeconds >= 60)
+            if (timeout <= 0 || timeout >= 60)
                 timeout = 5;
-            Settings.PortScanTimeoutSeconds = timeout;
+            return timeout;
         }
 
         private void txtDefaultDesktopShare_TextChanged(object sender, EventArgs e)
