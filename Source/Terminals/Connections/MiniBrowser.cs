@@ -5,31 +5,38 @@ namespace Terminals.Connections
 {
     internal partial class MiniBrowser : UserControl
     {
+        private string homeUrl;
+
         public MiniBrowser()
         {
             InitializeComponent();            
         }
-        public WebBrowser Browser
+
+        private void BackButton_Click(object sender, EventArgs e)
         {
-            get
-            {
-                return this.webBrowser1;
-            }
-        }
-        public string Home { get; set; }
-        private void backButton_Click(object sender, EventArgs e)
-        {
-            Browser.GoBack();
+            this.webBrowser1.GoBack();
         }
 
-        private void homeButton_Click(object sender, EventArgs e)
+        private void HomeButton_Click(object sender, EventArgs e)
         {
-            Browser.Navigate(Home);
+            this.webBrowser1.Navigate(homeUrl);
         }
 
-        private void forwardButton_Click(object sender, EventArgs e)
+        private void ForwardButton_Click(object sender, EventArgs e)
         {
-            Browser.GoForward();
+            this.webBrowser1.GoForward();
+        }
+
+        internal void Navigate(string url, string additionalHeaders)
+        {
+            this.homeUrl = url;
+            this.webBrowser1.Navigate(this.homeUrl, null, null, additionalHeaders);
+        }
+
+        internal void Navigate(string url)
+        {
+            this.homeUrl = url;
+            this.webBrowser1.Navigate(this.homeUrl);
         }
     }
 }

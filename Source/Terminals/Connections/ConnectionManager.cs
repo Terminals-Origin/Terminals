@@ -83,7 +83,6 @@ namespace Terminals.Connections
                 case ICA_CITRIX:
                     return new ICAConnection();
                 case HTTP:
-                    return new HTTPConnection();
                 case HTTPS:
                     return new HTTPConnection();
                 default:
