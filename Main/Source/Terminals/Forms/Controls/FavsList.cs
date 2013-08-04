@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Management;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Terminals.Configuration;
@@ -45,12 +44,6 @@ namespace Terminals
         {
             this.favoritesContextMenu.Close();
             this.groupsContextMenu.Close();
-        }
-
-        private void ConnectToFavorite(IFavorite favorite, bool console, bool newWindow)
-        {
-            if (favorite != null)
-                this.ConnectionsUiFactory.Connect(favorite.Name, console, newWindow);
         }
 
         #endregion
@@ -239,20 +232,58 @@ namespace Terminals
 
         private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
-            this.ConnectToFavorite(fav, this.consoleToolStripMenuItem.Checked, this.newWindowToolStripMenuItem.Checked);
+            IFavorite favorite = this.favsTree.SelectedFavorite;
+            if (favorite == null)
+                return;
+
+            var selectedFavorites = new List<IFavorite>() { favorite };
+            this.ConnectToFavorites(selectedFavorites);
             this.CloseMenuStrips();
         }
 
         private void ConnectToAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (TreeNode node in this.favsTree.SelectedNode.Nodes)
-            {
-                var fav = node.Tag as IFavorite;
-                this.ConnectToFavorite(fav, this.consoleAllToolStripMenuItem.Checked, this.newWindowAllToolStripMenuItem.Checked);
-            }
-
+            List<IFavorite> favorites = this.GetSelectedFavorites();
+            this.ConnectToFavorites(favorites);
             this.CloseMenuStrips();
+        }
+
+        private void ExtraConnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IFavorite selectedFavorite = this.favsTree.SelectedFavorite;
+            if (selectedFavorite == null)
+                return;
+
+            var selectedFavorites = new List<IFavorite>() { selectedFavorite };
+            this.ConnectToFavoritesExtra(selectedFavorites);
+            this.CloseMenuStrips();
+        }
+
+        private void ConnectToAllExtraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<IFavorite> selectedFavorites = this.GetSelectedFavorites();
+            this.ConnectToFavoritesExtra(selectedFavorites);
+            this.CloseMenuStrips();
+        }
+
+        private void ConnectToFavoritesExtra(List<IFavorite> selectedFavorites)
+        {
+            using (var usrForm = new ConnectExtraForm())
+            {
+                if (usrForm.ShowDialog() != DialogResult.OK)
+                    return;
+
+                this.ConnectToFavorites(selectedFavorites, usrForm.Console, usrForm.NewWindow, usrForm.Credentials);
+            }
+        }
+
+        private void ConnectToFavorites(List<IFavorite> favorites, bool? console = null,
+            bool? newWindow = null, ICredentialSet credentials = null)
+        {
+            foreach (IFavorite favorite in favorites)
+            {
+                this.ConnectionsUiFactory.Connect(favorite.Name, console, newWindow, credentials);
+            }
         }
 
         private void ComputerManagementMmcToolStripMenuItem_Click(object sender, EventArgs e)
@@ -346,7 +377,7 @@ namespace Terminals
             var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
             if (groupNode == null)
                 return new List<IFavorite>();
-            
+
             return groupNode.Favorites;
         }
 
@@ -399,11 +430,6 @@ namespace Terminals
         {
             if (e.Button == MouseButtons.Right)
             {
-                this.consoleToolStripMenuItem.Checked = false;
-                this.newWindowToolStripMenuItem.Checked = false;
-                this.consoleAllToolStripMenuItem.Checked = false;
-                this.newWindowAllToolStripMenuItem.Checked = false;
-
                 this.favsTree.SelectedNode = e.Node;
 
                 if (this.favsTree.SelectedFavorite != null)
@@ -448,65 +474,6 @@ namespace Terminals
         {
             if (e.KeyCode == Keys.Enter)
                 this.StartConnection(historyTreeView);
-        }
-
-        private void ConnectAsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
-        {
-            this.ReleaseOldContextMenu();
-            this.connectAsToolStripMenuItem.DropDownItems.Add(this.userConnectToolStripMenuItem);
-
-            IEnumerable<ICredentialSet> credentials = Persistence.Instance.Credentials;
-            foreach (ICredentialSet credential in credentials)
-            {
-                var menuItem = new ToolStripMenuItem(credential.Name, null, new EventHandler(this.ConnectAsCred_Click));
-                menuItem.Tag = credential.Id;
-                this.connectAsToolStripMenuItem.DropDownItems.Add(menuItem);
-            }
-        }
-
-        private void ReleaseOldContextMenu()
-        {
-            foreach (ToolStripMenuItem dropDownItem in this.connectAsToolStripMenuItem.DropDownItems)
-            {
-                dropDownItem.Click -= this.ConnectAsCred_Click;
-            }
-            this.connectAsToolStripMenuItem.DropDownItems.Clear();
-        }
-
-        private void ConnectAsCred_Click(object sender, EventArgs e)
-        {
-            IFavorite favorite = this.favsTree.SelectedFavorite;
-            if (favorite != null)
-            {
-                var menuItem = sender as ToolStripItem;
-                var credential = Persistence.Instance.Credentials[(Guid)menuItem.Tag];
-                this.ConnectionsUiFactory.Connect(favorite.Name, this.consoleToolStripMenuItem.Checked,
-                                           this.newWindowToolStripMenuItem.Checked, credential);
-            }
-        }
-
-        private void UserConnectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var usrForm = new UserSelectForm();
-            if (usrForm.ShowDialog() == DialogResult.OK)
-            {
-                IFavorite selectedFavorite = this.favsTree.SelectedFavorite;
-                if (selectedFavorite != null)
-                {
-                    this.ConnectionsUiFactory.Connect(selectedFavorite.Name, this.consoleToolStripMenuItem.Checked,
-                        this.newWindowToolStripMenuItem.Checked, usrForm.Credentials);
-                }
-            }
-        }
-
-        private void DisplayWindow_Click(object sender, EventArgs e)
-        {
-            this.favoritesContextMenu.Show();
-        }
-
-        private void DisplayAllWindow_Click(object sender, EventArgs e)
-        {
-            this.groupsContextMenu.Show();
         }
 
         #endregion

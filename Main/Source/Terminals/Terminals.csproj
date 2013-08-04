@@ -521,11 +521,11 @@
       <DependentUpon>CredentialManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\Credentials\CredentialSet.cs" />
-    <Compile Include="Credentials\UserSelectForm.cs">
+    <Compile Include="Credentials\ConnectExtraForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Credentials\UserSelectForm.Designer.cs">
-      <DependentUpon>UserSelectForm.cs</DependentUpon>
+    <Compile Include="Credentials\ConnectExtraForm.Designer.cs">
+      <DependentUpon>ConnectExtraForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\DataDispatcher.cs" />
     <Compile Include="Data\FavoritesChangedEventArgs.cs" />
@@ -1397,8 +1397,8 @@
       <DependentUpon>ManageCredentialForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Credentials\UserSelectForm.resx">
-      <DependentUpon>UserSelectForm.cs</DependentUpon>
+    <EmbeddedResource Include="Credentials\ConnectExtraForm.resx">
+      <DependentUpon>ConnectExtraForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DiskDrivesForm.resx">
       <DependentUpon>DiskDrivesForm.cs</DependentUpon>
