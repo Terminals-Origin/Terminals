@@ -109,7 +109,7 @@ namespace Terminals.Data
         }
 
         internal static IFavorite GetFavoriteUpdatedCopy(String connectionName,
-            Boolean forceConsole, Boolean forceNewWindow, ICredentialSet credential)
+            Boolean? forceConsole, Boolean? forceNewWindow, ICredentialSet credential)
         {
             IFavorite favorite = PersistedFavorites[connectionName];
             if (favorite == null)
@@ -117,15 +117,15 @@ namespace Terminals.Data
 
             favorite = favorite.Copy();
 
-            if (forceConsole)
+            if (forceConsole.HasValue)
             {
                 var rdpOptions = favorite.ProtocolProperties as RdpOptions;
                 if (rdpOptions != null)
-                    rdpOptions.ConnectToConsole = true;
+                    rdpOptions.ConnectToConsole = forceConsole.Value;
             }
 
-            if (forceNewWindow)
-                favorite.NewWindow = true;
+            if (forceNewWindow.HasValue)
+                favorite.NewWindow = forceNewWindow.Value;
 
             favorite.Security.UpdateFromCredential(credential);
             return favorite;

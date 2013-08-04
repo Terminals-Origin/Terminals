@@ -62,7 +62,8 @@ namespace Terminals.Forms
             this.BringToFrontOnMainForm(conn);
         }
 
-        internal void Connect(String connectionName, Boolean forceConsole, Boolean forceNewWindow, ICredentialSet credential = null)
+        internal void Connect(String connectionName, Boolean? forceConsole = null, 
+            Boolean? forceNewWindow = null, ICredentialSet credential = null)
         {
             IFavorite existingFavorite = Persistence.Instance.Favorites[connectionName];
             IFavorite favorite = FavoritesFactory.GetFavoriteUpdatedCopy(connectionName,

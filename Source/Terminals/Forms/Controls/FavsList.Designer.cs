@@ -29,14 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
             this.favoritesContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.connectAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.userConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extraConnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.pingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.traceRouteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,13 +49,13 @@
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.FavoritesTabPage = new System.Windows.Forms.TabPage();
+            this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
             this.HistoryTabPage = new System.Windows.Forms.TabPage();
             this.historyTreeView = new Terminals.Forms.Controls.HistoryTreeView();
             this.groupsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.createFavoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.connectToAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.consoleAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newWindowAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectToAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectToAllExtraMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.setCredentialByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setUsernameByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,29 +69,11 @@
             this.groupsContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
-            // favsTree
-            // 
-            this.favsTree.AllowDrop = true;
-            this.favsTree.CausesValidation = false;
-            this.favsTree.ContextMenuStrip = this.favoritesContextMenu;
-            this.favsTree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.favsTree.HideSelection = false;
-            this.favsTree.HotTracking = true;
-            this.favsTree.ImageIndex = 0;
-            this.favsTree.Location = new System.Drawing.Point(3, 3);
-            this.favsTree.Name = "favsTree";
-            this.favsTree.SelectedImageIndex = 0;
-            this.favsTree.ShowNodeToolTips = true;
-            this.favsTree.Size = new System.Drawing.Size(136, 118);
-            this.favsTree.TabIndex = 0;
-            this.favsTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragDrop);
-            this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragEnter);
-            this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
-            // 
             // favoritesContextMenu
             // 
             this.favoritesContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.connectToolStripMenuItem,
+            this.extraConnectToolStripMenuItem,
             this.toolStripMenuItem2,
             this.pingToolStripMenuItem,
             this.traceRouteToolStripMenuItem,
@@ -113,57 +90,22 @@
             this.toolStripMenuItem3,
             this.propertiesToolStripMenuItem});
             this.favoritesContextMenu.Name = "contextMenuStrip1";
-            this.favoritesContextMenu.Size = new System.Drawing.Size(244, 292);
+            this.favoritesContextMenu.Size = new System.Drawing.Size(244, 314);
             // 
             // connectToolStripMenuItem
             // 
-            this.connectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.consoleToolStripMenuItem,
-            this.newWindowToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.connectAsToolStripMenuItem});
             this.connectToolStripMenuItem.Image = global::Terminals.Properties.Resources.application_lightning;
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
             this.connectToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.connectToolStripMenuItem.Text = "Connect";
             this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
             // 
-            // consoleToolStripMenuItem
+            // extraConnectToolStripMenuItem
             // 
-            this.consoleToolStripMenuItem.CheckOnClick = true;
-            this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
-            this.consoleToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.consoleToolStripMenuItem.Text = "Console";
-            this.consoleToolStripMenuItem.Click += new System.EventHandler(this.DisplayWindow_Click);
-            // 
-            // newWindowToolStripMenuItem
-            // 
-            this.newWindowToolStripMenuItem.CheckOnClick = true;
-            this.newWindowToolStripMenuItem.Name = "newWindowToolStripMenuItem";
-            this.newWindowToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.newWindowToolStripMenuItem.Text = "New Window";
-            this.newWindowToolStripMenuItem.Click += new System.EventHandler(this.DisplayWindow_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(142, 6);
-            // 
-            // connectAsToolStripMenuItem
-            // 
-            this.connectAsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.userConnectToolStripMenuItem});
-            this.connectAsToolStripMenuItem.Name = "connectAsToolStripMenuItem";
-            this.connectAsToolStripMenuItem.Size = new System.Drawing.Size(145, 22);
-            this.connectAsToolStripMenuItem.Text = "Connect As";
-            this.connectAsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.ConnectAsToolStripMenuItem_DropDownOpening);
-            // 
-            // userConnectToolStripMenuItem
-            // 
-            this.userConnectToolStripMenuItem.Name = "userConnectToolStripMenuItem";
-            this.userConnectToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
-            this.userConnectToolStripMenuItem.Text = "User...";
-            this.userConnectToolStripMenuItem.Click += new System.EventHandler(this.UserConnectToolStripMenuItem_Click);
+            this.extraConnectToolStripMenuItem.Name = "extraConnectToolStripMenuItem";
+            this.extraConnectToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.extraConnectToolStripMenuItem.Text = "Connect with...";
+            this.extraConnectToolStripMenuItem.Click += new System.EventHandler(this.ExtraConnectToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -301,6 +243,25 @@
             this.FavoritesTabPage.Text = "Favorites";
             this.FavoritesTabPage.UseVisualStyleBackColor = true;
             // 
+            // favsTree
+            // 
+            this.favsTree.AllowDrop = true;
+            this.favsTree.CausesValidation = false;
+            this.favsTree.ContextMenuStrip = this.favoritesContextMenu;
+            this.favsTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.favsTree.HideSelection = false;
+            this.favsTree.HotTracking = true;
+            this.favsTree.ImageIndex = 0;
+            this.favsTree.Location = new System.Drawing.Point(3, 3);
+            this.favsTree.Name = "favsTree";
+            this.favsTree.SelectedImageIndex = 0;
+            this.favsTree.ShowNodeToolTips = true;
+            this.favsTree.Size = new System.Drawing.Size(136, 118);
+            this.favsTree.TabIndex = 0;
+            this.favsTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragDrop);
+            this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragEnter);
+            this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
+            // 
             // HistoryTabPage
             // 
             this.HistoryTabPage.Controls.Add(this.historyTreeView);
@@ -329,7 +290,8 @@
             // 
             this.groupsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createFavoriteToolStripMenuItem,
-            this.connectToAllToolStripMenuItem,
+            this.connectToAllMenuItem,
+            this.connectToAllExtraMenuItem,
             this.toolStripSeparator1,
             this.setCredentialByTagToolStripMenuItem,
             this.setUsernameByTagToolStripMenuItem,
@@ -347,32 +309,20 @@
             this.createFavoriteToolStripMenuItem.Text = "New Connection";
             this.createFavoriteToolStripMenuItem.Click += new System.EventHandler(this.CreateFavoriteToolStripMenuItem_Click);
             // 
-            // connectToAllToolStripMenuItem
+            // connectToAllMenuItem
             // 
-            this.connectToAllToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.consoleAllToolStripMenuItem,
-            this.newWindowAllToolStripMenuItem});
-            this.connectToAllToolStripMenuItem.Image = global::Terminals.Properties.Resources.application_lightning;
-            this.connectToAllToolStripMenuItem.Name = "connectToAllToolStripMenuItem";
-            this.connectToAllToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.connectToAllToolStripMenuItem.Text = "Connect to All";
-            this.connectToAllToolStripMenuItem.Click += new System.EventHandler(this.ConnectToAllToolStripMenuItem_Click);
+            this.connectToAllMenuItem.Image = global::Terminals.Properties.Resources.application_lightning;
+            this.connectToAllMenuItem.Name = "connectToAllMenuItem";
+            this.connectToAllMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.connectToAllMenuItem.Text = "Connect to All";
+            this.connectToAllMenuItem.Click += new System.EventHandler(this.ConnectToAllToolStripMenuItem_Click);
             // 
-            // consoleAllToolStripMenuItem
+            // connectToAllExtraMenuItem
             // 
-            this.consoleAllToolStripMenuItem.CheckOnClick = true;
-            this.consoleAllToolStripMenuItem.Name = "consoleAllToolStripMenuItem";
-            this.consoleAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.consoleAllToolStripMenuItem.Text = "Console";
-            this.consoleAllToolStripMenuItem.Click += new System.EventHandler(this.DisplayAllWindow_Click);
-            // 
-            // newWindowAllToolStripMenuItem
-            // 
-            this.newWindowAllToolStripMenuItem.CheckOnClick = true;
-            this.newWindowAllToolStripMenuItem.Name = "newWindowAllToolStripMenuItem";
-            this.newWindowAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.newWindowAllToolStripMenuItem.Text = "New Window";
-            this.newWindowAllToolStripMenuItem.Click += new System.EventHandler(this.DisplayAllWindow_Click);
+            this.connectToAllExtraMenuItem.Name = "connectToAllExtraMenuItem";
+            this.connectToAllExtraMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.connectToAllExtraMenuItem.Text = "Connect to All with...";
+            this.connectToAllExtraMenuItem.Click += new System.EventHandler(this.ConnectToAllExtraToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -435,7 +385,6 @@
 
         private Terminals.Forms.Controls.FavoritesTreeView favsTree;
         private System.Windows.Forms.ContextMenuStrip favoritesContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dNSToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tSAdminToolStripMenuItem;
@@ -446,8 +395,6 @@
         private System.Windows.Forms.ToolStripMenuItem rebootToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem enableRDPToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem consoleToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem computerManagementMMCToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem systemInformationToolStripMenuItem;
@@ -457,19 +404,17 @@
         private Terminals.Forms.Controls.HistoryTreeView historyTreeView;
         private System.Windows.Forms.ToolStripMenuItem removeSelectedToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip groupsContextMenu;
-        private System.Windows.Forms.ToolStripMenuItem connectToAllToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem consoleAllToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newWindowAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem connectToAllExtraMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem setCredentialByTagToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setUsernameByTagToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setDomainByTagToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem setPasswordByTagToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteAllFavoritesByTagToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem connectAsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem userConnectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem shutdownToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createFavoriteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extraConnectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem connectToAllMenuItem;
     }
 }
