@@ -64,7 +64,7 @@
             this.AttachToolStripButton.Name = "AttachToolStripButton";
             this.AttachToolStripButton.Size = new System.Drawing.Size(135, 22);
             this.AttachToolStripButton.Text = "Attach to main window";
-            this.AttachToolStripButton.Click += new System.EventHandler(this.attachToTerminalsToolStripMenuItem_Click);
+            this.AttachToolStripButton.Click += new System.EventHandler(this.AttachToTerminalsToolStripMenuItem_Click);
             // 
             // CaptureToolStripButton
             // 
@@ -84,7 +84,7 @@
             this.toolStripButtonFullScreen.Name = "toolStripButtonFullScreen";
             this.toolStripButtonFullScreen.Size = new System.Drawing.Size(83, 22);
             this.toolStripButtonFullScreen.Text = "Full screen";
-            this.toolStripButtonFullScreen.Click += new System.EventHandler(this.toolStripButtonFullScreen_Click);
+            this.toolStripButtonFullScreen.Click += new System.EventHandler(this.ToolStripButtonFullScreen_Click);
             // 
             // PopupTerminal
             // 
