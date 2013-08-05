@@ -658,11 +658,10 @@ namespace Terminals
         }
         private void ShowQuickConnect()
         {
-            QuickConnect qc = new QuickConnect();
-            qc.StartPosition = FormStartPosition.CenterParent;
-            if (qc.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
+            using (var qc = new QuickConnect())
             {
-                this.connectionsUiFactory.Connect(qc.ConnectionName);
+                if (qc.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
+                    this.connectionsUiFactory.Connect(qc.ConnectionName);
             }
         }
 

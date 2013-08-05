@@ -26,7 +26,7 @@ namespace Terminals {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(QuickConnect));
             this.ButtonConnect = new System.Windows.Forms.Button();
             this.ButtonCancel = new System.Windows.Forms.Button();
-            this.InputTextbox = new System.Windows.Forms.TextBox();
+            this.inputTextbox = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -54,15 +54,15 @@ namespace Terminals {
             this.ButtonCancel.Click += new System.EventHandler(this.CancelButton_Click);
             this.ButtonCancel.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ButtonCancel_KeyUp);
             // 
-            // InputTextbox
+            // inputTextbox
             // 
-            this.InputTextbox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.InputTextbox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.InputTextbox.Location = new System.Drawing.Point(35, 8);
-            this.InputTextbox.Name = "InputTextbox";
-            this.InputTextbox.Size = new System.Drawing.Size(158, 20);
-            this.InputTextbox.TabIndex = 0;
-            this.InputTextbox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.InputTextbox_KeyUp);
+            this.inputTextbox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.inputTextbox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
+            this.inputTextbox.Location = new System.Drawing.Point(35, 8);
+            this.inputTextbox.Name = "inputTextbox";
+            this.inputTextbox.Size = new System.Drawing.Size(158, 20);
+            this.inputTextbox.TabIndex = 0;
+            this.inputTextbox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.InputTextbox_KeyUp);
             // 
             // pictureBox1
             // 
@@ -82,7 +82,7 @@ namespace Terminals {
             this.CancelButton = this.ButtonCancel;
             this.ClientSize = new System.Drawing.Size(335, 39);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.InputTextbox);
+            this.Controls.Add(this.inputTextbox);
             this.Controls.Add(this.ButtonCancel);
             this.Controls.Add(this.ButtonConnect);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -90,6 +90,7 @@ namespace Terminals {
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "QuickConnect";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Quick Connect...";
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.QuickConnect_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -102,7 +103,7 @@ namespace Terminals {
 
         private System.Windows.Forms.Button ButtonConnect;
         private System.Windows.Forms.Button ButtonCancel;
-        private System.Windows.Forms.TextBox InputTextbox;
+        private System.Windows.Forms.TextBox inputTextbox;
         private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
