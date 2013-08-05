@@ -339,13 +339,13 @@ namespace Terminals
             {
                 this.Show();
                 if (this.WindowState == FormWindowState.Minimized)
-                    Native.Methods.ShowWindow(new HandleRef(this, this.Handle), 9);
+                    Methods.ShowWindow(new HandleRef(this, this.Handle), 9);
 
-                Native.Methods.SetForegroundWindow(new HandleRef(this, this.Handle));
+                Methods.SetForegroundWindow(new HandleRef(this, this.Handle));
             }
         }
 
-        public void ToggleGrabInput()
+        private void ToggleGrabInput()
         {
             if (CurrentTerminal != null)
             {
