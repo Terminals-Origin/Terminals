@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -236,26 +237,31 @@ namespace Terminals
             if (favorite == null)
                 return;
 
-            var selectedFavorites = new List<IFavorite>() { favorite };
-            this.ConnectToFavorites(selectedFavorites);
-            this.CloseMenuStrips();
+            var favorites = new List<IFavorite>() { favorite };
+            this.ConnectFromContextMenu(favorites);
         }
 
         private void ConnectToAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<IFavorite> favorites = this.GetSelectedFavorites();
-            this.ConnectToFavorites(favorites);
+            this.ConnectFromContextMenu(favorites);
+        }
+
+        private void ConnectFromContextMenu(List<IFavorite> favorites)
+        {
+            var definition = new ConnectionDefinition(favorites);
+            this.ConnectionsUiFactory.Connect(definition);
             this.CloseMenuStrips();
         }
 
         private void ExtraConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite selectedFavorite = this.favsTree.SelectedFavorite;
-            if (selectedFavorite == null)
+            IFavorite favorite = this.favsTree.SelectedFavorite;
+            if (favorite == null)
                 return;
 
-            var selectedFavorites = new List<IFavorite>() { selectedFavorite };
-            this.ConnectToFavoritesExtra(selectedFavorites);
+            var favorites = new List<IFavorite>() { favorite };
+            this.ConnectToFavoritesExtra(favorites);
             this.CloseMenuStrips();
         }
 
@@ -273,16 +279,8 @@ namespace Terminals
                 if (usrForm.ShowDialog() != DialogResult.OK)
                     return;
 
-                this.ConnectToFavorites(selectedFavorites, usrForm.Console, usrForm.NewWindow, usrForm.Credentials);
-            }
-        }
-
-        private void ConnectToFavorites(List<IFavorite> favorites, bool? console = null,
-            bool? newWindow = null, ICredentialSet credentials = null)
-        {
-            foreach (IFavorite favorite in favorites)
-            {
-                this.ConnectionsUiFactory.Connect(favorite.Name, console, newWindow, credentials);
+                var definition = new ConnectionDefinition(selectedFavorites, usrForm.Console, usrForm.NewWindow, usrForm.Credentials);
+                this.ConnectionsUiFactory.Connect(definition);
             }
         }
 
@@ -466,7 +464,7 @@ namespace Terminals
             // connections are always under some parent node in History and in Favorites
             if (tv.SelectedNode != null && tv.SelectedNode.Level > 0)
             {
-                this.ConnectionsUiFactory.Connect(tv.SelectedNode.Text, false, false);
+                this.ConnectionsUiFactory.Connect(tv.SelectedNode.Text);
             }
         }
 
