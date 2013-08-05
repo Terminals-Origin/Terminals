@@ -99,7 +99,7 @@ namespace Terminals
             {
                 this.favoritesToolStripMenuItem = mainForm.favoritesToolStripMenuItem;
                 this.tscConnectTo = mainForm.tscConnectTo;
-                this.serverToolStripMenuItemClick = mainForm.serverToolStripMenuItem_Click;
+                this.serverToolStripMenuItemClick = mainForm.ServerToolStripMenuItem_Click;
                 this.favoriteToolBar = mainForm.favoriteToolBar;
                 this.quickContextMenu = mainForm.QuickContextMenu;
                 this.quickContextMenuItemClicked = mainForm.QuickContextMenu_ItemClicked;
@@ -107,8 +107,8 @@ namespace Terminals
                 this.groupsSeparator = mainForm.groupsSeparator;
                 this.addTerminalToGroupToolStripMenuItem = mainForm.addTerminalToGroupToolStripMenuItem;
                 this.saveTerminalsAsGroupToolStripMenuItem = mainForm.saveTerminalsAsGroupToolStripMenuItem;
-                this.groupToolStripMenuItemClick = mainForm.groupToolStripMenuItem_Click;
-                this.groupAddToolStripMenuItemClick = mainForm.groupAddToolStripMenuItem_Click;
+                this.groupToolStripMenuItemClick = mainForm.GroupToolStripMenuItem_Click;
+                this.groupAddToolStripMenuItemClick = mainForm.GroupAddToolStripMenuItem_Click;
             }
 
             private void OnDataChanged(EventArgs args)
@@ -227,7 +227,7 @@ namespace Terminals
             /// </summary>
             private void OnTagMenuDropDownOpening(object sender, EventArgs e)
             {
-                GroupMenuItem groupMenu = sender as GroupMenuItem;
+                var groupMenu = (GroupMenuItem)sender;
                 if (groupMenu.IsEmpty)
                 {
                     groupMenu.DropDown.Items.Clear();
@@ -321,7 +321,7 @@ namespace Terminals
                 while (startIndex < this.AlphabeticalMenuItemIndex)
                 {
                     // unregister event handler to release the menu item
-                    ToolStripMenuItem tagItem = this.quickContextMenu.Items[startIndex] as ToolStripMenuItem;
+                    var tagItem = (ToolStripMenuItem)this.quickContextMenu.Items[startIndex];
                     tagItem.DropDownItemClicked -= this.quickContextMenuItemClicked;
                     tagItem.DropDownOpening -= OnTagTrayMenuItemDropDownOpening;
                     this.quickContextMenu.Items.RemoveAt(startIndex);
@@ -341,7 +341,7 @@ namespace Terminals
 
             private static void OnTagTrayMenuItemDropDownOpening(object sender, EventArgs e)
             {
-                GroupMenuItem groupMenu = sender as GroupMenuItem;
+                var groupMenu = (GroupMenuItem)sender;
                 if (groupMenu.IsEmpty)
                 {
                     groupMenu.DropDown.Items.Clear();
@@ -400,8 +400,8 @@ namespace Terminals
 
             private static void SpecialItem_Click(object sender, EventArgs e)
             {
-                ToolStripItem specialItem = sender as ToolStripItem;
-                var elm = specialItem.Tag as SpecialCommandConfigurationElement;
+                ToolStripItem specialItem = (ToolStripItem)sender;
+                var elm = (SpecialCommandConfigurationElement)specialItem.Tag;
                 elm.Launch();
             }
 
@@ -493,7 +493,7 @@ namespace Terminals
                 var dropDowns = this.addTerminalToGroupToolStripMenuItem.DropDownItems;
                 for (int index = dropDowns.Count -1; 0 <= index; index--)
                 {
-                    ToolStripMenuItem menuItem = dropDowns[index] as ToolStripMenuItem;
+                    var menuItem = (ToolStripMenuItem)dropDowns[index];
                     menuItem.Click -= this.groupAddToolStripMenuItemClick;
                     this.addTerminalToGroupToolStripMenuItem.DropDownItems.Remove(menuItem);
                 }

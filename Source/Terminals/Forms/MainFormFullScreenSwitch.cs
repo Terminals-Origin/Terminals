@@ -7,17 +7,17 @@ namespace Terminals
 {
     internal partial class MainForm
     {
-        internal class MainFormFullScreenSwitch
+        private class MainFormFullScreenSwitch
         {
-            private MainForm mainForm;
+            private readonly MainForm mainForm;
             // restore properties after return from FullScreen
-            private Boolean _fullScreen;
-            private Point _lastLocation;
-            private Size _lastSize;
-            private Boolean _stdToolbarState = true;
-            private Boolean _specialToolbarState = true;
-            private Boolean _favToolbarState = true;
-            private FormWindowState _lastState;
+            private Boolean fullScreen;
+            private Point lastLocation;
+            private Size lastSize;
+            private Boolean stdToolbarState = true;
+            private Boolean specialToolbarState = true;
+            private Boolean favToolbarState = true;
+            private FormWindowState lastState;
 
             internal MainFormFullScreenSwitch(MainForm mainForm)
             {
@@ -28,7 +28,7 @@ namespace Terminals
             {
                 get
                 {
-                    return this._fullScreen;
+                    return this.fullScreen;
                 }
                 set
                 {
@@ -44,12 +44,12 @@ namespace Terminals
                     mainForm.toolStripContainer.SaveLayout(); //Save windows state before we do a fullscreen so we can restore it
 
                 this.SetFullScreen(newfullScreen);
-                mainForm.menuLoader.UpdateSwitchFullScreenMenuItemsVisibility(_fullScreen);
+                mainForm.menuLoader.UpdateSwitchFullScreenMenuItemsVisibility(this.fullScreen);
 
                 if (!newfullScreen)
                     mainForm.LoadWindowState();
 
-                this._fullScreen = newfullScreen;
+                this.fullScreen = newfullScreen;
                 mainForm.ResumeLayout();
             }
 
@@ -72,21 +72,21 @@ namespace Terminals
             private void StoreMainFormState()
             {
                 this.mainForm.menuStrip.Visible = false;
-                this._lastLocation = this.mainForm.Location;
-                this._lastSize = this.mainForm.Size;
+                this.lastLocation = this.mainForm.Location;
+                this.lastSize = this.mainForm.Size;
 
                 if (this.mainForm.WindowState == FormWindowState.Minimized)
-                    this._lastState = FormWindowState.Normal;
+                    this.lastState = FormWindowState.Normal;
                 else
-                    this._lastState = this.mainForm.WindowState;
+                    this.lastState = this.mainForm.WindowState;
 
                 this.mainForm.FormBorderStyle = FormBorderStyle.None;
                 this.mainForm.WindowState = FormWindowState.Normal;
-                if (this.mainForm._allScreens)
+                if (this.mainForm.allScreens)
                 {
                     Screen[] screenArr = Screen.AllScreens;
                     Int32 with = 0;
-                    if (this.mainForm._allScreens)
+                    if (this.mainForm.allScreens)
                     {
                         foreach (Screen screen in screenArr)
                         {
@@ -113,15 +113,15 @@ namespace Terminals
             {
                 this.mainForm.TopMost = false;
                 this.mainForm.FormBorderStyle = FormBorderStyle.Sizable;
-                this.mainForm.WindowState = this._lastState;
-                if (this._lastState != FormWindowState.Minimized)
+                this.mainForm.WindowState = this.lastState;
+                if (this.lastState != FormWindowState.Minimized)
                 {
                     // initial location and size isn't set yet
-                    if (this._lastState == FormWindowState.Normal && this._lastLocation != Point.Empty)
-                        this.mainForm.Location = this._lastLocation;
+                    if (this.lastState == FormWindowState.Normal && this.lastLocation != Point.Empty)
+                        this.mainForm.Location = this.lastLocation;
 
-                    if (this._lastSize != Size.Empty)
-                       this.mainForm.Size = this._lastSize;
+                    if (this.lastSize != Size.Empty)
+                       this.mainForm.Size = this.lastSize;
                 }
 
                 this.mainForm.menuStrip.Visible = true;
@@ -131,9 +131,9 @@ namespace Terminals
             {
                 if (fullScreen)
                 {
-                    this._stdToolbarState = this.mainForm.toolbarStd.Visible;
-                    this._specialToolbarState = this.mainForm.SpecialCommandsToolStrip.Visible;
-                    this._favToolbarState = this.mainForm.favoriteToolBar.Visible;
+                    this.stdToolbarState = this.mainForm.toolbarStd.Visible;
+                    this.specialToolbarState = this.mainForm.SpecialCommandsToolStrip.Visible;
+                    this.favToolbarState = this.mainForm.favoriteToolBar.Visible;
                 }
             }
 
@@ -141,9 +141,9 @@ namespace Terminals
             {
                 if (!fullScreen)
                 {
-                    mainForm.toolbarStd.Visible = _stdToolbarState;
-                    mainForm.SpecialCommandsToolStrip.Visible = _specialToolbarState;
-                    mainForm.favoriteToolBar.Visible = _favToolbarState;
+                    mainForm.toolbarStd.Visible = this.stdToolbarState;
+                    mainForm.SpecialCommandsToolStrip.Visible = this.specialToolbarState;
+                    mainForm.favoriteToolBar.Visible = this.favToolbarState;
                 }
                 else
                 {
