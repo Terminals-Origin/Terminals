@@ -7,8 +7,8 @@ namespace Terminals
     internal partial class PopupTerminal : Form
     {
         private Timer closeTimer;
-        private TerminalTabsSelectionControler mainTabsControler;
-        private bool fullScreen = false;
+        private readonly TerminalTabsSelectionControler mainTabsControler;
+        private bool fullScreen;
 
         internal PopupTerminal()
         {
@@ -25,15 +25,15 @@ namespace Terminals
         {
             get
             {
-                var tabControl = this.tabControl1.Items[0] as TerminalTabControlItem;
+                var tabControl = (TerminalTabControlItem)this.tabControl1.Items[0];
                 return tabControl.Connection.Favorite;
             }
         }
 
-        internal void AddTerminal(TerminalTabControlItem TabControlItem)
+        internal void AddTerminal(TerminalTabControlItem tabControlItem)
         {
-            this.tabControl1.AddTab(TabControlItem);
-            this.Text = TabControlItem.Connection.Favorite.Name;
+            this.tabControl1.AddTab(tabControlItem);
+            this.Text = tabControlItem.Connection.Favorite.Name;
         }
 
         internal void UpdateTitle()
@@ -46,14 +46,14 @@ namespace Terminals
         {
             closeTimer = new Timer();
             closeTimer.Interval = 500;
-            closeTimer.Tick += new EventHandler(closeTimer_Tick);
+            closeTimer.Tick += new EventHandler(this.CloseTimer_Tick);
             closeTimer.Start();
         }
 
         /// <summary>
         /// Check every 500 ms, to automaticaly close form, if connection is lost
         /// </summary>
-        private void closeTimer_Tick(object sender, EventArgs e)
+        private void CloseTimer_Tick(object sender, EventArgs e)
         {
             TerminalTabControlItem activeTab = this.tabControl1.SelectedItem as TerminalTabControlItem;
             if (activeTab != null && !activeTab.Connection.Connected)
@@ -63,7 +63,7 @@ namespace Terminals
             }
         }
 
-        private void attachToTerminalsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AttachToTerminalsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TerminalTabControlItem activeTab = this.tabControl1.SelectedItem as TerminalTabControlItem;
             if (activeTab != null)
@@ -110,7 +110,7 @@ namespace Terminals
                 this.SwithFullScreen();
         }
 
-        private void toolStripButtonFullScreen_Click(object sender, EventArgs e)
+        private void ToolStripButtonFullScreen_Click(object sender, EventArgs e)
         {
             this.SwithFullScreen();
         }
