@@ -373,12 +373,8 @@ namespace Terminals
 
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite favorite = GetSelectedFavorite();
-            bool console = false;
-            RdpOptions rdpOptions = favorite.ProtocolProperties as RdpOptions;
-            if (rdpOptions != null)
-                console = rdpOptions.ConnectToConsole;
-            this.connectionsUiFactory.Connect(favorite.Name, console, favorite.NewWindow);
+            IFavorite favorite = this.GetSelectedFavorite();
+            this.connectionsUiFactory.Connect(favorite.Name);
         }
     }
 }

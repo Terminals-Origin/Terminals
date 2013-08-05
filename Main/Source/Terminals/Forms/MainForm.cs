@@ -178,7 +178,7 @@ namespace Terminals
                 this.menuLoader = new FavoritesMenuLoader(this);
                 this.favoriteToolBar.Visible = this.toolStripMenuItemShowHideFavoriteToolbar.Checked;
                 this.fullScreenSwitch = new MainFormFullScreenSwitch(this);
-                
+
                 this.AssignToolStripsToContainer();
 
                 this.ApplyControlsEnableAndVisibleState();
@@ -209,7 +209,7 @@ namespace Terminals
             this.pnlTagsFavorites.Controls.Add(this.favsList1);
             this.favsList1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favsList1.Location = new System.Drawing.Point(5, 0);
-            this.favsList1.Padding = new System.Windows.Forms.Padding(4,4,4,4);
+            this.favsList1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.favsList1.Name = "favsList1";
             this.favsList1.Size = new System.Drawing.Size(200, 497);
             this.favsList1.TabIndex = 2;
@@ -494,11 +494,7 @@ namespace Terminals
 
         private void OpenSavedConnections()
         {
-            foreach (string name in Settings.SavedConnections)
-            {
-                this.connectionsUiFactory.Connect(name, false, false);
-            }
-
+            this.connectionsUiFactory.Connect(new ConnectionDefinition(Settings.SavedConnections));
             Settings.ClearSavedConnectionsList();
         }
 
@@ -582,10 +578,8 @@ namespace Terminals
         {
             if (commandLineArgs.Favorites.Length > 0)
             {
-                foreach (String favoriteName in commandLineArgs.Favorites)
-                {
-                    this.connectionsUiFactory.Connect(favoriteName, connectToConsole, false);
-                }
+                var definition = new ConnectionDefinition(commandLineArgs.Favorites, connectToConsole, false);
+                this.connectionsUiFactory.Connect(definition);
             }
         }
 
@@ -668,7 +662,7 @@ namespace Terminals
             qc.StartPosition = FormStartPosition.CenterParent;
             if (qc.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
             {
-                this.connectionsUiFactory.Connect(qc.ConnectionName, false, false, null);
+                this.connectionsUiFactory.Connect(qc.ConnectionName);
             }
         }
 
@@ -822,7 +816,7 @@ namespace Terminals
             {
                 String itemName = e.ClickedItem.Text;
                 if (tag == FavoritesMenuLoader.FAVORITE)
-                    this.connectionsUiFactory.Connect(itemName, false, false);
+                    this.connectionsUiFactory.Connect(itemName);
 
                 if (tag == GroupMenuItem.TAG)
                 {
@@ -839,10 +833,9 @@ namespace Terminals
                 DialogResult result = this.AskUserIfWantsConnectToAll(parent);
                 if (result == DialogResult.OK)
                 {
-                    foreach (ToolStripMenuItem button in parent.DropDownItems)
-                    {
-                        this.connectionsUiFactory.Connect(button.Text, false, false);
-                    }
+                    IEnumerable<string> connectionNames = parent.DropDownItems.Cast<ToolStripMenuItem>()
+                                                                              .Select(menuItem => menuItem.Text);
+                    this.connectionsUiFactory.Connect(new ConnectionDefinition(connectionNames));
                 }
             }
         }
@@ -972,7 +965,10 @@ namespace Terminals
         {
             string connectionName = this.tscConnectTo.Text;
             if (connectionName != String.Empty)
-                this.connectionsUiFactory.Connect(connectionName, forceConsole, false);
+            {
+                var definition = new ConnectionDefinition(connectionName, forceConsole, false);
+                this.connectionsUiFactory.Connect(definition);
+            }
         }
 
         private void tscConnectTo_KeyDown(object sender, KeyEventArgs e)
@@ -1055,27 +1051,27 @@ namespace Terminals
             e.Cancel = cancel;
         }
 
-      private static bool AskToClose()
-      {
-        if (Settings.WarnOnConnectionClose)
+        private static bool AskToClose()
         {
-          string message = Program.Resources.GetString("Areyousurethatyouwanttodisconnectfromtheactiveterminal");
-          string title = Program.Resources.GetString("Terminals");
-          YesNoDisableResult answer = YesNoDisableForm.ShowDialog(title, message);
-          if (answer.Disable)
-            Settings.WarnOnConnectionClose = false;
-          
-          return answer.Result == DialogResult.Yes;
-        }
-        
-        return true;
-      }
+            if (Settings.WarnOnConnectionClose)
+            {
+                string message = Program.Resources.GetString("Areyousurethatyouwanttodisconnectfromtheactiveterminal");
+                string title = Program.Resources.GetString("Terminals");
+                YesNoDisableResult answer = YesNoDisableForm.ShowDialog(title, message);
+                if (answer.Disable)
+                    Settings.WarnOnConnectionClose = false;
 
-      private void tcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e)
+                return answer.Result == DialogResult.Yes;
+            }
+
+            return true;
+        }
+
+        private void tcTerminals_TabControlItemSelectionChanged(TabControlItemChangedEventArgs e)
         {
             this.UpdateControls();
             this.AssingTitle();
-            
+
             if (this.tcTerminals.Items.Count > 0)
             {
                 this.tsbDisconnect.Enabled = e.Item != null;

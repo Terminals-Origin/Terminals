@@ -62,21 +62,57 @@ namespace Terminals.Forms
             this.BringToFrontOnMainForm(conn);
         }
 
-        internal void Connect(String connectionName, Boolean? forceConsole = null, 
-            Boolean? forceNewWindow = null, ICredentialSet credential = null)
+        internal void Connect(string favoriteName)
         {
-            IFavorite existingFavorite = Persistence.Instance.Favorites[connectionName];
-            IFavorite favorite = FavoritesFactory.GetFavoriteUpdatedCopy(connectionName,
-                forceConsole, forceNewWindow, credential);
-
-            if (favorite != null)
-            {
-                Persistence.Instance.ConnectionHistory.RecordHistoryItem(existingFavorite);
-                this.mainForm.SendNativeMessageToFocus();
-                this.CreateTerminalTab(favorite);
-            }
+            var definition = new ConnectionDefinition(favoriteName);
+            if (definition.HasFavorites) // only one in this case
+                this.Connect(definition);
             else
-                this.CreateNewTerminal(connectionName);
+                this.CreateNewTerminal(favoriteName);
+        }
+
+        internal void Connect(ConnectionDefinition connectionDefinition)
+        {
+            foreach (IFavorite favorite in connectionDefinition.Favorites)
+            {
+                this.Connect(favorite, connectionDefinition);
+            }
+        }
+
+        private void Connect(IFavorite favorite, ConnectionDefinition definition)
+        {
+            IFavorite favoriteCopy = GetFavoriteUpdatedCopy(favorite, definition);
+            if (favoriteCopy == null)
+                return;
+            
+            Persistence.Instance.ConnectionHistory.RecordHistoryItem(favoriteCopy);
+            this.mainForm.SendNativeMessageToFocus();
+            this.CreateTerminalTab(favoriteCopy);
+        }
+
+        private static IFavorite GetFavoriteUpdatedCopy(IFavorite favorite, ConnectionDefinition definition)
+        {
+            if (favorite == null)
+                return null;
+
+            IFavorite favoriteCopy = favorite.Copy();
+            UpdateForceConsole(favoriteCopy, definition);
+            
+            if (definition.ForceNewWindow.HasValue)
+                favoriteCopy.NewWindow = definition.ForceNewWindow.Value;
+            
+            favoriteCopy.Security.UpdateFromCredential(definition.Credentials);
+            return favoriteCopy;
+        }
+
+        private static void UpdateForceConsole(IFavorite favorite, ConnectionDefinition definition)
+        {
+            if (!definition.ForceConsole.HasValue)
+                return;
+
+            var rdpOptions = favorite.ProtocolProperties as RdpOptions;
+            if (rdpOptions != null)
+                rdpOptions.ConnectToConsole = definition.ForceConsole.Value;
         }
 
         internal void CreateNewTerminal(String name = null)

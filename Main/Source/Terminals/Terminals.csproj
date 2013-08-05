@@ -191,6 +191,7 @@
     <Compile Include="Data\Validation\GroupMetadata.cs" />
     <Compile Include="Data\Validation\ValidationState.cs" />
     <Compile Include="Data\Validation\Validations.cs" />
+    <Compile Include="Forms\ConnectionDefinition.cs" />
     <Compile Include="Forms\ConnectionsUiFactory.cs" />
     <Compile Include="Forms\Controls\ReconnectingControl.cs">
       <SubType>UserControl</SubType>

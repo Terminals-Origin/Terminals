@@ -108,29 +108,6 @@ namespace Terminals.Data
             return favorite;
         }
 
-        internal static IFavorite GetFavoriteUpdatedCopy(String connectionName,
-            Boolean? forceConsole, Boolean? forceNewWindow, ICredentialSet credential)
-        {
-            IFavorite favorite = PersistedFavorites[connectionName];
-            if (favorite == null)
-                return null;
-
-            favorite = favorite.Copy();
-
-            if (forceConsole.HasValue)
-            {
-                var rdpOptions = favorite.ProtocolProperties as RdpOptions;
-                if (rdpOptions != null)
-                    rdpOptions.ConnectToConsole = forceConsole.Value;
-            }
-
-            if (forceNewWindow.HasValue)
-                favorite.NewWindow = forceNewWindow.Value;
-
-            favorite.Security.UpdateFromCredential(credential);
-            return favorite;
-        }
-
         /// <summary>
         /// Gets newly created connection favorite, with name of Terminals release constant.
         /// </summary>
