@@ -268,12 +268,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_648C6A25101B4F1C86C6D96204286A14"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_6DD1358093B36521D48D3D581B762584"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -316,24 +310,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_254F83224F1907EBDBC0A1CF0A80EF0E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B2A34A09509BDF7276BBEAD79CB39C36"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_22DB0007A9F4058428011A8C397CF482"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_0298261CEB3C750E86AD8086AA7E5C95"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -347,6 +323,30 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_6B3169ABF6ACD1EC139D2760C2CC23F0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_648C6A25101B4F1C86C6D96204286A14"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_254F83224F1907EBDBC0A1CF0A80EF0E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B2A34A09509BDF7276BBEAD79CB39C36"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_22DB0007A9F4058428011A8C397CF482"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1464,7 +1464,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SSHClient, Version=1.0.4945.35066, Culture=neutral, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:SSHClient, Version=1.0.4967.29761, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_F09898E68D24CEA0A77C5C7B8A2F493B"
@@ -1547,19 +1547,19 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Terminals"
-        "ProductCode" = "8:{29294924-A6BA-4DA2-A4BE-E53E906F25E9}"
-        "PackageCode" = "8:{281B149B-7FB0-426E-9F4A-2AC5DA3387ED}"
+        "ProductCode" = "8:{F7A53AB4-8D97-400F-890C-C61F82295190}"
+        "PackageCode" = "8:{2CBFEA20-08AA-4871-B4EB-23101F376BB4}"
         "UpgradeCode" = "8:{DD0D31A2-2E86-4F3F-98CE-6AED37FF24CD}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:3.1.0"
+        "ProductVersion" = "8:3.2.0"
         "Manufacturer" = "8:Robert Chartier"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://terminals.codeplex.com"
-        "Title" = "8:Terminals v3.1"
+        "Title" = "8:Terminals v3.2"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Robert Chartier"
         "Keywords" = "8:"
@@ -2322,7 +2322,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3161AAC887024CD69FD18FC7ED12824D"
             {
-            "SourcePath" = "8:..\\Terminals\\obj\\Release\\Terminals.exe"
+            "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E147B34F8EC64C4EAA693E7BB1969F43"
@@ -2350,7 +2350,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_648C6A25101B4F1C86C6D96204286A14"
             {
-            "SourcePath" = "8:..\\CustomInstaller\\obj\\Release\\CustomInstaller.dll"
+            "SourcePath" = "8:..\\CustomInstaller\\obj\\Debug\\CustomInstaller.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E147B34F8EC64C4EAA693E7BB1969F43"
