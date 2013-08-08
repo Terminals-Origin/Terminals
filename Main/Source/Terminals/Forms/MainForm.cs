@@ -1445,15 +1445,9 @@ namespace Terminals
 
         private void AddShowStrip(ToolStrip strip, ToolStripMenuItem menu, Boolean visible)
         {
-            if (!Settings.ToolbarsLocked)
-            {
-                strip.Visible = visible;
-                menu.Checked = visible;
-            }
-            else
-            {
-                MessageBox.Show(Program.Resources.GetString("Inordertochangethetoolbarsyoumustfirstunlockthem"));
-            }
+            strip.Visible = visible;
+            menu.Checked = visible;
+            this.toolStripContainer.SaveLayout();
         }
 
         private void ToolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
