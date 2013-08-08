@@ -2,12 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Validation;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using FalafelSoftware.TransPort;
@@ -15,11 +12,9 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Data;
-using Terminals.Data.Validation;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Network.Servers;
-using Terminals.TerminalServices;
 
 namespace Terminals
 {
