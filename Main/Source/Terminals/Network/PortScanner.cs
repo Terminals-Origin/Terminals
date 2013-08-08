@@ -96,9 +96,14 @@ namespace Terminals.Network
                 scanner.StartScan(address, ports, 1000, 100, true);
                 Counter = Counter + ports.Length;
             }
-            catch (Exception e)
+            catch (NotSupportedException) // thrown by constructor of packet sniffer
             {
-                Terminals.Logging.Log.Info("Scanner caught an exception", e);
+                MessageBox.Show("Port scanner requires administrative priviledges to run!", "Terminals - port scanner",
+                                MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            catch (Exception exception)
+            {
+                Logging.Log.Info("Scanner caught an exception", exception);
             }
             if (!this.IsDisposed) this.Invoke(miv);
             Application.DoEvents();
