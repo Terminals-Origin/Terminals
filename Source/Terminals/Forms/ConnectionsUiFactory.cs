@@ -85,19 +85,13 @@ namespace Terminals.Forms
         private void Connect(IFavorite favorite, ConnectionDefinition definition)
         {
             IFavorite favoriteCopy = GetFavoriteUpdatedCopy(favorite, definition);
-            if (favoriteCopy == null)
-                return;
-            
-            Persistence.Instance.ConnectionHistory.RecordHistoryItem(favoriteCopy);
+            Persistence.Instance.ConnectionHistory.RecordHistoryItem(favorite);
             this.mainForm.SendNativeMessageToFocus();
             this.CreateTerminalTab(favoriteCopy);
         }
 
         private static IFavorite GetFavoriteUpdatedCopy(IFavorite favorite, ConnectionDefinition definition)
         {
-            if (favorite == null)
-                return null;
-
             IFavorite favoriteCopy = favorite.Copy();
             UpdateForceConsole(favoriteCopy, definition);
             
