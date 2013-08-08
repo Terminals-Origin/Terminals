@@ -80,7 +80,7 @@ namespace Terminals.Network {
             this.pb.Size = new System.Drawing.Size(27, 20);
             this.pb.TabIndex = 6;
             this.pb.Text = "10";
-            this.pb.KeyUp += new System.Windows.Forms.KeyEventHandler(this.pb_KeyUp);
+            this.pb.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Pb_KeyUp);
             // 
             // pa
             // 
@@ -89,7 +89,7 @@ namespace Terminals.Network {
             this.pa.Size = new System.Drawing.Size(27, 20);
             this.pa.TabIndex = 5;
             this.pa.Text = "1";
-            this.pa.KeyUp += new System.Windows.Forms.KeyEventHandler(this.pa_KeyUp);
+            this.pa.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Pa_KeyUp);
             // 
             // label2
             // 
@@ -137,7 +137,7 @@ namespace Terminals.Network {
             this.e.Size = new System.Drawing.Size(27, 20);
             this.e.TabIndex = 4;
             this.e.Text = "10";
-            this.e.KeyUp += new System.Windows.Forms.KeyEventHandler(this.e_KeyUp);
+            this.e.KeyUp += new System.Windows.Forms.KeyEventHandler(this.E_KeyUp);
             // 
             // d
             // 
@@ -147,7 +147,7 @@ namespace Terminals.Network {
             this.d.Size = new System.Drawing.Size(27, 20);
             this.d.TabIndex = 3;
             this.d.Text = "1";
-            this.d.KeyUp += new System.Windows.Forms.KeyEventHandler(this.d_KeyUp);
+            this.d.KeyUp += new System.Windows.Forms.KeyEventHandler(this.D_KeyUp);
             // 
             // c
             // 
@@ -157,7 +157,7 @@ namespace Terminals.Network {
             this.c.Size = new System.Drawing.Size(27, 20);
             this.c.TabIndex = 2;
             this.c.Text = "0";
-            this.c.KeyUp += new System.Windows.Forms.KeyEventHandler(this.c_KeyUp);
+            this.c.KeyUp += new System.Windows.Forms.KeyEventHandler(this.C_KeyUp);
             // 
             // b
             // 
@@ -167,7 +167,7 @@ namespace Terminals.Network {
             this.b.Size = new System.Drawing.Size(27, 20);
             this.b.TabIndex = 1;
             this.b.Text = "0";
-            this.b.KeyUp += new System.Windows.Forms.KeyEventHandler(this.b_KeyUp);
+            this.b.KeyUp += new System.Windows.Forms.KeyEventHandler(this.B_KeyUp);
             // 
             // a
             // 
@@ -177,7 +177,7 @@ namespace Terminals.Network {
             this.a.Size = new System.Drawing.Size(27, 20);
             this.a.TabIndex = 0;
             this.a.Text = "10";
-            this.a.KeyUp += new System.Windows.Forms.KeyEventHandler(this.a_KeyUp);
+            this.a.KeyUp += new System.Windows.Forms.KeyEventHandler(this.A_KeyUp);
             // 
             // resultsGridView
             // 
@@ -202,7 +202,7 @@ namespace Terminals.Network {
             this.copyRemoteAddressToolStripMenuItem.Name = "copyRemoteAddressToolStripMenuItem";
             this.copyRemoteAddressToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
             this.copyRemoteAddressToolStripMenuItem.Text = "Copy Remote Address";
-            this.copyRemoteAddressToolStripMenuItem.Click += new System.EventHandler(this.copyRemoteAddressToolStripMenuItem_Click);
+            this.copyRemoteAddressToolStripMenuItem.Click += new System.EventHandler(this.CopyRemoteAddressToolStripMenuItem_Click);
             // 
             // PortScanner
             // 
