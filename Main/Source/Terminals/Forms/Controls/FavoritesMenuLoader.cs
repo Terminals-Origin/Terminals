@@ -67,9 +67,9 @@ namespace Terminals
                 get { return this.quickContextMenu.Items.IndexOf(this.alphabeticalMenu); }
             }
 
-            private static IGroups PersistedGroups
+            private static IOrderedEnumerable<IGroup>  PersistedGroups
             {
-                get { return Persistence.Instance.Groups; }
+                get { return Persistence.Instance.Groups.OrderBy(group => group.Name); }
             }
 
             private static IFavorites PersistedFavorites

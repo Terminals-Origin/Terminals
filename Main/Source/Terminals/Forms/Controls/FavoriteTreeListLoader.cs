@@ -271,8 +271,9 @@ namespace Terminals.Forms.Controls
                 return;
 
             this.CreateUntagedVirtualGroupNode();
+            var sortedGroups = PersistedGroups.OrderBy(group => group.Name);
 
-            foreach (IGroup group in PersistedGroups)
+            foreach (IGroup group in sortedGroups)
             {
                 this.CreateAndAddGroupNode(group);
             }
