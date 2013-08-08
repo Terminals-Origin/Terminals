@@ -967,8 +967,12 @@ namespace Terminals
         private void FillFavoriteDisplayOptions(IFavorite favorite)
         {
             IDisplayOptions display = favorite.Display;
-            display.DesktopSize = (DesktopSize)this.cmbResolution.SelectedIndex;
-            display.Colors = (Colors)this.cmbColors.SelectedIndex;
+            if (this.cmbResolution.SelectedIndex >= 0)
+                display.DesktopSize = (DesktopSize)this.cmbResolution.SelectedIndex;
+
+            if (this.cmbColors.SelectedIndex >= 0)
+                display.Colors = (Colors)this.cmbColors.SelectedIndex;
+
             display.Width = (Int32)this.widthUpDown.Value;
             display.Height = (Int32)this.heightUpDown.Value;
         }
@@ -1116,7 +1120,10 @@ namespace Terminals
             rdpOptions.Redirect.Clipboard = this.chkRedirectClipboard.Checked;
             rdpOptions.Redirect.Devices = this.RedirectDevices;
             rdpOptions.Redirect.SmartCards = this.chkRedirectSmartcards.Checked;
-            rdpOptions.Redirect.Sounds = (RemoteSounds)this.cmbSounds.SelectedIndex;
+
+            // because of changing protocol the value of the combox doesnt have to be selected
+            if(this.cmbSounds.SelectedIndex >= 0)
+                rdpOptions.Redirect.Sounds = (RemoteSounds)this.cmbSounds.SelectedIndex;
         }
 
         private void FillFavoriteSecurity(IFavorite favorite)
