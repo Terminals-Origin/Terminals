@@ -374,7 +374,8 @@ namespace Terminals
         private void connectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            this.connectionsUiFactory.Connect(favorite.Name);
+            var definition = new ConnectionDefinition(new List<IFavorite>() {favorite});
+            this.connectionsUiFactory.Connect(definition);
         }
     }
 }

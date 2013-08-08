@@ -488,7 +488,8 @@ namespace Terminals
 
         private void OpenSavedConnections()
         {
-            this.connectionsUiFactory.Connect(new ConnectionDefinition(Settings.SavedConnections));
+            var definition = new ConnectionDefinition(Settings.SavedConnections);
+            this.connectionsUiFactory.Connect(definition);
             Settings.ClearSavedConnectionsList();
         }
 
@@ -655,7 +656,7 @@ namespace Terminals
             using (var qc = new QuickConnect())
             {
                 if (qc.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(qc.ConnectionName))
-                    this.connectionsUiFactory.Connect(qc.ConnectionName);
+                    this.connectionsUiFactory.Connect(new ConnectionDefinition(qc.ConnectionName));
             }
         }
 
@@ -809,7 +810,7 @@ namespace Terminals
             {
                 String itemName = e.ClickedItem.Text;
                 if (tag == FavoritesMenuLoader.FAVORITE)
-                    this.connectionsUiFactory.Connect(itemName);
+                    this.connectionsUiFactory.Connect(new ConnectionDefinition(itemName));
 
                 if (tag == GroupMenuItem.TAG)
                 {
@@ -958,7 +959,7 @@ namespace Terminals
         private void ConnectFromQuickCombobox(bool forceConsole)
         {
             string connectionName = this.tscConnectTo.Text;
-            if (connectionName != String.Empty)
+            if (!string.IsNullOrEmpty(connectionName))
             {
                 var definition = new ConnectionDefinition(connectionName, forceConsole, false);
                 this.connectionsUiFactory.Connect(definition);
