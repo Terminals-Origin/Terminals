@@ -464,7 +464,7 @@ namespace Terminals
             // connections are always under some parent node in History and in Favorites
             if (tv.SelectedNode != null && tv.SelectedNode.Level > 0)
             {
-                this.ConnectionsUiFactory.Connect(tv.SelectedNode.Text);
+                this.ConnectionsUiFactory.Connect(new ConnectionDefinition(tv.SelectedNode.Text));
             }
         }
 

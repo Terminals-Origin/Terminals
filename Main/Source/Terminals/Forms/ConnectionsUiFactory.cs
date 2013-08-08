@@ -62,16 +62,19 @@ namespace Terminals.Forms
             this.BringToFrontOnMainForm(conn);
         }
 
-        internal void Connect(string favoriteName)
+        /// <summary>
+        /// Connects to all favorites required by definition.
+        /// </summary>
+        /// <param name="definition">not null definition of the connection behavior</param>
+        internal void Connect(ConnectionDefinition definition)
         {
-            var definition = new ConnectionDefinition(favoriteName);
-            if (definition.HasFavorites) // only one in this case
-                this.Connect(definition);
+            if (string.IsNullOrEmpty(definition.NewFavorite)) // only one in this case
+                this.ConnectToAll(definition);
             else
-                this.CreateNewTerminal(favoriteName);
+                this.CreateNewTerminal(definition.NewFavorite);
         }
 
-        internal void Connect(ConnectionDefinition connectionDefinition)
+        private void ConnectToAll(ConnectionDefinition connectionDefinition)
         {
             foreach (IFavorite favorite in connectionDefinition.Favorites)
             {
