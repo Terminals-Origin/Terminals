@@ -15,15 +15,16 @@ namespace Terminals.History
     internal sealed class ConnectionHistory : IConnectionHistory
     {
         private readonly Favorites favorites;
-        private ManualResetEvent loadingGate = new ManualResetEvent(false);
-        private DataFileWatcher fileWatcher;
-        private HistoryByFavorite currentHistory = null;
-        public event HistoryRecorded OnHistoryRecorded;
+        private readonly ManualResetEvent loadingGate = new ManualResetEvent(false);
+        private readonly DataFileWatcher fileWatcher;
+        private HistoryByFavorite currentHistory;
+        public event HistoryRecorded HistoryRecorded;
+        public event Action HistoryClear;
 
         /// <summary>
         /// Prevent concurrent updates on History file by another program
         /// </summary>
-        private Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.History");
+        private readonly Mutex fileLock = new Mutex(false, "Terminals.CodePlex.com.History");
 
         internal ConnectionHistory(Favorites favorites)
         {
@@ -189,11 +190,19 @@ namespace Terminals.History
 
         private void FireOnHistoryRecorded(IFavorite favorite)
         {
-            if (this.OnHistoryRecorded != null)
+            if (this.HistoryRecorded != null)
             {
                 var args = new HistoryRecordedEventArgs(favorite);
-                this.OnHistoryRecorded(args);
+                this.HistoryRecorded(args);
             }
+        }
+
+        public void Clear()
+        {
+            this.currentHistory.Clear();
+            this.SaveHistory();
+            if (HistoryClear != null)
+                HistoryClear();
         }
 
         private List<HistoryItem> GetFavoriteHistoryList(Guid favoriteId)

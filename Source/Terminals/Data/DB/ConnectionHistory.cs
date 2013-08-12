@@ -28,7 +28,9 @@ namespace Terminals.Data.DB
         private readonly Dictionary<string, SortableList<IFavorite>> cache =
             new Dictionary<string, SortableList<IFavorite>>();
 
-        public event HistoryRecorded OnHistoryRecorded;
+        public event HistoryRecorded HistoryRecorded;
+
+        public event Action HistoryClear;
 
         internal ConnectionHistory(Favorites favorites, DataDispatcher dispatcher)
         {
@@ -119,10 +121,33 @@ namespace Terminals.Data.DB
 
         private void FireOnHistoryRecorded(IFavorite favorite)
         {
-            if (this.OnHistoryRecorded != null)
+            if (this.HistoryRecorded != null)
             {
                 var args = new HistoryRecordedEventArgs(favorite);
-                this.OnHistoryRecorded(args);
+                this.HistoryRecorded(args);
+            }
+        }
+
+        public void Clear()
+        {
+            try
+            {
+                TryClearHistory();
+                if (HistoryClear != null)
+                    HistoryClear();
+            }
+            catch (EntityException exception)
+            {
+                this.dispatcher.ReportActionError(this.Clear, this, exception,
+                         "Unable to clear history.\r\nDatabase connection lost.");
+            }
+        }
+
+        private static void TryClearHistory()
+        {
+            using (var database = DatabaseConnections.CreateInstance())
+            {
+                database.ClearHistory();
             }
         }
 

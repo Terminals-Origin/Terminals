@@ -471,6 +471,7 @@
             <Parameter Name="FavoriteId" Mode="In" Type="Int32" />
             <Parameter Name="GroupId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="ClearHistory" />
         </EntityContainer>
         <EntityType Name="DbBeforeConnectExecute" cg:TypeAccess="Internal" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <Key>
@@ -896,6 +897,7 @@
           <FunctionImportMapping FunctionImportName="GetFavoriteGroups" FunctionName="Model1.Store.GetFavoriteGroups" />
           <FunctionImportMapping FunctionImportName="InsertFavoritesInGroup" FunctionName="Model1.Store.InsertFavoritesInGroup" />
           <FunctionImportMapping FunctionImportName="DeleteFavoritesInGroup" FunctionName="Model1.Store.DeleteFavoritesInGroup" />
+          <FunctionImportMapping FunctionImportName="ClearHistory" FunctionName="Model1.Store.ClearHistory" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

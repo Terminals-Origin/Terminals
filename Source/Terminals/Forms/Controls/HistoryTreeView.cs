@@ -19,10 +19,15 @@ namespace Terminals.Forms.Controls
         internal void Load()
         {
             var connectionHistory = Persistence.Instance.ConnectionHistory;
-            connectionHistory.OnHistoryRecorded += new HistoryRecorded(this.OnHistoryRecorded);
-            
+            connectionHistory.HistoryRecorded += new HistoryRecorded(this.HistoryRecorded);
+            connectionHistory.HistoryClear += new Action(this.ConnectionHistory_HistoryClear);
             // init groups before loading the history to prevent to run the callback earlier
             InitializeTimeLineTreeNodes();
+        }
+
+        private void ConnectionHistory_HistoryClear()
+        {
+            RefreshAllExpanded();
         }
 
         /// <summary>
@@ -58,7 +63,7 @@ namespace Terminals.Forms.Controls
         /// add new history item in todays list and/or perform full refresh,
         /// if day has changed since last refresh
         /// </summary>
-        private void OnHistoryRecorded(HistoryRecordedEventArgs args)
+        private void HistoryRecorded(HistoryRecordedEventArgs args)
         {
             if (IsDayGone())
                 RefreshAllExpanded();

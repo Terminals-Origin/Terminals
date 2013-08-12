@@ -161,5 +161,10 @@ namespace Terminals.Data.DB
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteFavoritesInGroup", favoriteIdParameter, groupIdParameter);
         }
+    
+        public virtual int ClearHistory()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ClearHistory");
+        }
     }
 }
