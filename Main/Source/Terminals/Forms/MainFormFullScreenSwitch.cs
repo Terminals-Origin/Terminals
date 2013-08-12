@@ -55,7 +55,6 @@ namespace Terminals
 
             private void SetFullScreen(Boolean fullScreen)
             {
-                mainForm.Visible = false;
                 BackUpToolBarsVisibility(fullScreen);
                 HideToolBar(fullScreen);
 
