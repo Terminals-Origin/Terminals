@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml.Serialization;
 using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Converters;
 using Terminals.Network;
 
 namespace Terminals.Data
@@ -27,10 +28,11 @@ namespace Terminals.Data
             }
         }
 
+
         /// <summary>
         /// Gets or sets its associated groups container. Used to resolve associated groups membership.
         /// </summary>
-        internal Groups Groups { get; set; }
+        private Groups groups;
 
         public string Name { get; set; }
 
@@ -205,6 +207,7 @@ namespace Terminals.Data
         }
 
         private string notes;
+
         string IFavorite.Notes
         {
             get { return this.notes; }
@@ -218,11 +221,11 @@ namespace Terminals.Data
         {
             get
             {
-                return EncodeTo64(this.notes);
+                return TextConverter.EncodeTo64(this.notes);
             }
             set
             {
-                this.notes = DecodeFrom64(value);
+                this.notes = TextConverter.DecodeFrom64(value);
             }
         }
 
@@ -245,42 +248,9 @@ namespace Terminals.Data
             return string.Join(",", groupNames);
         }
 
-        private static String EncodeTo64(String toEncode)
-        {
-            if (toEncode == null)
-                return null;
-
-            Byte[] toEncodeAsBytes = Encoding.Unicode.GetBytes(toEncode);
-            String returnValue = Convert.ToBase64String(toEncodeAsBytes);
-            return returnValue;
-        }
-
-        private static String DecodeFrom64(String encodedData)
-        {
-            try
-            {
-                return TryDecodeFrom64(encodedData);
-            }
-            catch (FormatException)
-            {
-                // the text wasnt encoded, so the original (issue when upgrading from older file)
-                return encodedData;
-            }
-        }
-
-        private static string TryDecodeFrom64(string encodedData)
-        {
-            if (encodedData == null)
-                return null;
-
-            Byte[] encodedDataAsBytes = Convert.FromBase64String(encodedData);
-            String returnValue = Encoding.Unicode.GetString(encodedDataAsBytes);
-            return returnValue;
-        }
-
         private List<IGroup> GetGroups()
         {
-            return this.Groups.GetGroupsContainingFavorite(this.Id);
+            return this.groups.GetGroupsContainingFavorite(this.Id);
         }
 
         public String GetToolTipText()
@@ -335,7 +305,7 @@ namespace Terminals.Data
         private void UpdateFrom(Favorite source)
         {
             // we do not call AssignStores here, because they will be copied together with the child properties
-            this.Groups = source.Groups;
+            this.groups = source.groups;
             this.DesktopShare = source.DesktopShare;
             this.Display = source.Display.Copy();
             this.ExecuteBeforeConnect = source.ExecuteBeforeConnect.Copy();
@@ -387,7 +357,7 @@ namespace Terminals.Data
             UpdatePasswordsInProtocolProperties(this.protocolProperties, newKeyMaterial);
         }
 
-        internal static void UpdatePasswordsInProtocolProperties(ProtocolOptions protocolProperties, string newKeyMaterial)
+        private static void UpdatePasswordsInProtocolProperties(ProtocolOptions protocolProperties, string newKeyMaterial)
         {
             RdpOptions rdpOptions = protocolProperties as RdpOptions;
             if (rdpOptions != null)
@@ -414,7 +384,7 @@ namespace Terminals.Data
         internal void AssignStores(PersistenceSecurity persistenceSecurity, Groups groups)
         {
             this.persistenceSecurity = persistenceSecurity;
-            this.Groups = groups;
+            this.groups = groups;
             this.Security.AssignStore(persistenceSecurity);
             AssignStoreToRdpOptions(this.ProtocolProperties, persistenceSecurity);
         }

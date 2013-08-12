@@ -174,6 +174,7 @@
     <Compile Include="Connections\ConnectionStateDetector.cs" />
     <Compile Include="Connections\NettworkingTools.cs" />
     <Compile Include="Connections\RdpClientErrorMessages.cs" />
+    <Compile Include="Converters\TextConverter.cs" />
     <Compile Include="Data\DataErrorEventArgs.cs" />
     <Compile Include="Data\DB\ApplyValueParams.cs" />
     <Compile Include="Data\DB\ByIdComparer.cs" />
