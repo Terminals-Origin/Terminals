@@ -12,7 +12,7 @@ namespace Terminals.Data
     {
         /// <summary>
         /// Gets or sets the Url relative part of Url defined for web based connections.
-        /// Null by default, to obtain full path use static method
+        /// Null by default, to obtain full path use static method.
         /// </summary>
         public string RelativeUrl { get; set; }
 
@@ -54,8 +54,9 @@ namespace Terminals.Data
           relativeUrl = webOptions.RelativeUrl;
 
         string protocol = source.Protocol.ToLower();
-        var uriBuilder = new UriBuilder(protocol, source.ServerName, source.Port, relativeUrl);
-        return uriBuilder.ToString();
+        var uriBuilder = new UriBuilder(protocol, source.ServerName, source.Port);
+        // using relative url in uriBuilder constructor encodes ? character. So we have to make an workaround
+        return uriBuilder + relativeUrl;
       }
 
       internal static void UpdateFavoriteUrl(IFavorite destination, string newAbsoluteUrl)
