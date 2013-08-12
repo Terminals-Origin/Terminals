@@ -1,4 +1,5 @@
-﻿using Terminals.History;
+﻿using System;
+using Terminals.History;
 
 namespace Terminals.Data
 {
@@ -11,7 +12,12 @@ namespace Terminals.Data
         /// Reports visited favorite immediately, when connection 
         /// is opened and its time stamp is added to the history.
         /// </summary>
-        event HistoryRecorded OnHistoryRecorded;
+        event HistoryRecorded HistoryRecorded;
+
+        /// <summary>
+        /// Reports that all entries from history were released.
+        /// </summary>
+        event Action HistoryClear;
 
         /// <summary>
         /// Gets not null distinct collection of favorites, which were visited in selected time interval
@@ -26,5 +32,10 @@ namespace Terminals.Data
         /// </summary>
         /// <param name="favorite">favorite to remember</param>
         void RecordHistoryItem(IFavorite favorite);
+
+        /// <summary>
+        /// Removes all entries for all favorites from connection history.
+        /// </summary>
+        void Clear();
     }
 }

@@ -130,6 +130,7 @@ namespace Terminals
             this.sentCTRLALTDELETEKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TerminalServerMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+            this.clearHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ShortcutsContextMenu.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -229,8 +230,8 @@ namespace Terminals
             // toolStripContainer.TopToolStripPanel
             // 
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.menuStrip);
-            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.favoriteToolBar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.tsRemoteToolbar);
+            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.favoriteToolBar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.SpecialCommandsToolStrip);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.toolbarStd);
             // 
@@ -613,6 +614,7 @@ namespace Terminals
             this.rebuildTagsIndexToolStripMenuItem,
             this.rebuildShortcutsToolStripMenuItem,
             this.rebuildToolbarsToolStripMenuItem,
+            this.clearHistoryToolStripMenuItem,
             this.toolStripMenuItem6,
             this.openLogFolderToolStripMenuItem,
             this.toolStripMenuItem2,
@@ -691,7 +693,8 @@ namespace Terminals
             this.rebuildTagsIndexToolStripMenuItem.Name = "rebuildTagsIndexToolStripMenuItem";
             this.rebuildTagsIndexToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.rebuildTagsIndexToolStripMenuItem.Text = "Rebuild Groups Index";
-            this.rebuildTagsIndexToolStripMenuItem.ToolTipText = "Recreates connection \"Groups\" list used by all connections.";
+            this.rebuildTagsIndexToolStripMenuItem.ToolTipText = "Recreates connection \"Groups\" list used by all connections.\r\nRemoves all unused g" +
+    "roups.";
             this.rebuildTagsIndexToolStripMenuItem.Click += new System.EventHandler(this.RebuildTagsIndexToolStripMenuItem_Click);
             // 
             // rebuildShortcutsToolStripMenuItem
@@ -1136,6 +1139,13 @@ namespace Terminals
             this.toolStripButton5.Text = "Computer Management (MMC)";
             this.toolStripButton5.Click += new System.EventHandler(this.ToolStripButton5_Click);
             // 
+            // clearHistoryToolStripMenuItem
+            // 
+            this.clearHistoryToolStripMenuItem.Name = "clearHistoryToolStripMenuItem";
+            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.clearHistoryToolStripMenuItem.Text = "Clear History";
+            this.clearHistoryToolStripMenuItem.Click += new System.EventHandler(this.ClearHistoryToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1284,5 +1294,6 @@ namespace Terminals
         private System.Windows.Forms.PictureBox pbHideTagsFavorites;
         private System.Windows.Forms.Panel pnlShowTagsFavorites;
         private System.Windows.Forms.PictureBox pbShowTagsFavorites;
+        private System.Windows.Forms.ToolStripMenuItem clearHistoryToolStripMenuItem;
     }
 }

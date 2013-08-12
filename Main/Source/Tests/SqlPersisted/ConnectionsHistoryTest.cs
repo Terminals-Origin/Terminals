@@ -17,12 +17,14 @@ namespace Tests.SqlPersisted
     {
         private int historyRecordedCount;
 
+        private int historyClearReported;
+
         [TestInitialize]
         public void TestInitialize()
         {
             this.InitializeTestLab();
             this.historyRecordedCount = 0;
-            this.PrimaryHistory.OnHistoryRecorded += new HistoryRecorded(this.ConnectionHistory_OnHistoryRecorded);
+            this.PrimaryHistory.HistoryRecorded += new HistoryRecorded(this.ConnectionHistory_OnHistoryRecorded);
         }
 
         private IConnectionHistory PrimaryHistory { get { return this.PrimaryPersistence.ConnectionHistory; } }
@@ -68,9 +70,7 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void HistoryEqualsOnDifferentTimeZones()
         {
-            InjectionDateTime.SetTestDateTime();
-            DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
-            this.PrimaryHistory.RecordHistoryItem(favorite);
+            this.RecordHistory();
             // may fail about midnight, ignore this case
             IFavorite resultFavorite = this.SecondaryPersistence.ConnectionHistory
                 .GetDateItems(HistoryIntervals.TODAY)
@@ -80,6 +80,30 @@ namespace Tests.SqlPersisted
             var recordedHistory = this.CheckDatabase.Database.SqlQuery<DateTime>("select Date from History")
                 .First();
             Assert.AreEqual(recordedHistory, Moment.Now, "Correct date wasn't delivered to the store");
+        }
+
+        [TestMethod]
+        public void ClearHistoryTest()
+        {
+            this.PrimaryHistory.HistoryClear += new Action(PrimaryHistory_HistoryClear);
+            this.RecordHistory();
+            this.PrimaryHistory.Clear();
+            int historyItems = this.PrimaryPersistence.ConnectionHistory.
+                GetDateItems(HistoryIntervals.TODAY).Count;
+            Assert.AreEqual(0, historyItems, "SQL history wasnt clear properly");
+            Assert.AreEqual(1, historyClearReported, "History clear wasnt reported properly");
+        }
+        
+        private void RecordHistory()
+        {
+            InjectionDateTime.SetTestDateTime();
+            DbFavorite favorite = this.AddFavoriteToPrimaryPersistence();
+            this.PrimaryHistory.RecordHistoryItem(favorite);
+        }
+
+        private void PrimaryHistory_HistoryClear()
+        {
+            historyClearReported++;
         }
     }
 }

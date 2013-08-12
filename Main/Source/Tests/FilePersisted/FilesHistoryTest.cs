@@ -10,6 +10,8 @@ namespace Tests.FilePersisted
     [TestClass]
     public class FilesHistoryTest : FilePersistedTestLab
     {
+        private int historyClearReported;
+
         [TestMethod]
         public void HistoryDateTimeIsInUtcTest()
         {
@@ -33,6 +35,23 @@ namespace Tests.FilePersisted
             var recordedItems = historyAccesor.Invoke("GetGroupedByDate") as SerializableDictionary<string, SortableList<IHistoryItem>>;
             var foundItem = recordedItems.SelectMany(group => group.Value).First();
             return foundItem.Date.ToUniversalTime();
+        }
+        
+        [TestMethod]
+        public void ClearHistoryTest()
+        {
+            this.Persistence.ConnectionHistory.HistoryClear += new Action(PrimaryHistory_HistoryClear);
+            InjectionDateTime.SetTestDateTime();
+            IConnectionHistory history = RecordHistoryItemToFilePersistence();
+            history.Clear();
+            int historyItems = history.GetDateItems(HistoryIntervals.TODAY).Count;
+            Assert.AreEqual(0, historyItems, "File history wasnt clear properly");
+            Assert.AreEqual(1, historyClearReported, "History clear wasnt reported properly");
+        }
+
+        private void PrimaryHistory_HistoryClear()
+        {
+            this.historyClearReported++;
         }
     }
 }

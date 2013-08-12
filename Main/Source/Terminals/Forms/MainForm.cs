@@ -1724,6 +1724,13 @@ namespace Terminals
             this.connectionsUiFactory.CreateReleaseTab();
         }
 
+        private void ClearHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.WaitCursor;
+            Persistence.Instance.ConnectionHistory.Clear();
+            this.Cursor = Cursors.Default;
+        }
+
         #endregion
     }
 }
