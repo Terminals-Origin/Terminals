@@ -7,7 +7,7 @@ namespace Terminals.Forms
 {
     internal partial class ConnectionsOptionPanel : UserControl, IOptionPanel
     {
-        internal AxMsRdpClient6 CurrentTerminal { get; set; }
+        internal AxMsRdpClient6NotSafeForScripting CurrentTerminal { get; set; }
 
         public ConnectionsOptionPanel()
         {

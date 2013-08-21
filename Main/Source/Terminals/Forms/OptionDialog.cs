@@ -12,7 +12,7 @@ namespace Terminals.Forms
     {
         private UserControl currentPanel = null;
 
-        public OptionDialog(AxMsRdpClient6 terminal)
+        public OptionDialog(AxMsRdpClient6NotSafeForScripting terminal)
         {
             this.ApplySystemFont();
 
@@ -31,7 +31,7 @@ namespace Terminals.Forms
             LoadSettings();
         }
 
-        private void UpdateLookAndFeel(AxMsRdpClient6 terminal)
+        private void UpdateLookAndFeel(AxMsRdpClient6NotSafeForScripting terminal)
         {
             // Update the old treeview theme to the new theme
             Native.Methods.SetWindowTheme(this.OptionsTreeView.Handle, "Explorer", null);
