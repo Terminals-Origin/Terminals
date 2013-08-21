@@ -70,7 +70,7 @@ namespace Terminals
             set { this.fullScreenSwitch.FullScreen = value; }
         }
 
-        private AxMsRdpClient6 CurrentTerminal
+        private AxMsRdpClient6NotSafeForScripting CurrentTerminal
         {
             get
             {

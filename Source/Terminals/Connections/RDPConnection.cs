@@ -32,11 +32,11 @@ namespace Terminals.Connections
         public delegate void ConnectionEstablish(RDPConnection Connection);
         public event ConnectionEstablish OnConnected;
 
-        public AxMsRdpClient6 AxMsRdpClient
+        public AxMsRdpClient6NotSafeForScripting AxMsRdpClient
         {
             get
             {
-                return null;
+                return this.client;
             }
         }
 
