@@ -8,6 +8,7 @@ using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms.Controls;
 using Terminals.Native;
+using System.Text;
 
 //http://msdn.microsoft.com/en-us/library/aa381172(v=vs.85).aspx
 //http://msdn.microsoft.com/en-us/library/aa380838(v=VS.85).aspx
@@ -280,6 +281,53 @@ namespace Terminals.Connections
 
             if (rdpOptions.Security.EnableEncryption)
                 this.client.AdvancedSettings2.EncryptionEnabled = -1;
+
+            if (!string.IsNullOrEmpty(rdpOptions.UserInterface.LoadBalanceInfo))
+            {
+                /*
+                 * mellamokb 2013-08-13:
+                 * 
+                 * The ActiveX component requires a UTF-8 encoded string, but .NET uses
+                 * UTF-16 encoded strings by default.  The following code converts
+                 * the UTF-16 encoded string so that the byte-representation of the
+                 * LoadBalanceInfo string object will "appear" as UTF-8 to the ActiveX
+                 * component.
+                 * 
+                 * Furthermore, since the final string still has to be shoehorned into
+                 * a UTF-16 encoded string, I pad an extra space in case the number of
+                 * bytes would be odd, in order to prevent the byte conversion from
+                 * mangling the string at the end.  The space is ignored by the RDP
+                 * protocol as long as it is inserted at the end.
+                 * 
+                 * Finally, it is required that the LoadBalanceInfo setting is postfixed
+                 * with \r\n in order to work properly.  Note also that \r\n MUST be
+                 * the last two characters, so the space padding has to be inserted
+                 * first.
+                 * 
+                 * The following code has been tested with Windows Azure connections
+                 * only - I am aware there are other types of RDP connections that
+                 * require the LoadBalanceInfo parameter which I have not tested
+                 * (e.g., Multi-Server Terminal Services Gateway), that may or may not
+                 * work properly.
+                 * 
+                 * Sources:
+                 *  1. http://stackoverflow.com/questions/13536267/how-to-connect-to-azure-vm-with-remote-desktop-activex
+                 *  2. http://social.technet.microsoft.com/Forums/windowsserver/en-US/e68d4e9a-1c8a-4e55-83b3-e3b726ff5346/issue-with-using-advancedsettings2loadbalanceinfo
+                 *  3. Manual comparison of raw packets between Windows RDP client and Terminals using WireShark.
+                 *
+                 */
+
+                var lbTemp = rdpOptions.UserInterface.LoadBalanceInfo;
+
+                if (lbTemp.Length % 2 == 1)
+                    lbTemp += " ";
+                
+                lbTemp += "\r\n";
+
+                var b = Encoding.UTF8.GetBytes(lbTemp);
+                var lbFinal = Encoding.Unicode.GetString(b);
+                this.client.AdvancedSettings2.LoadBalanceInfo = lbFinal;
+            }
 
             this.ConfigureCustomReconnect();
         }

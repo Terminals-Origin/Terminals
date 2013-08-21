@@ -91,6 +91,7 @@ namespace Terminals.Integration.Export
             AppendPropertyLine(fileContent, ImportRDP.BITMAPPERISTENCE, ConvertToString(favorite.BitmapPeristence));
             AppendPropertyLine(fileContent, ImportRDP.REDIRECTDEVICES, ConvertToString(favorite.RedirectDevices));
             AppendPropertyLine(fileContent, ImportRDP.TSGWCREDSSOURCE, favorite.TsgwCredsSource.ToString());
+            AppendPropertyLine(fileContent, ImportRDP.LOADBALANCEINFO, favorite.LoadBalanceInfo);
 
             return fileContent.ToString();
         }

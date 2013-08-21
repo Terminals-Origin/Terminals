@@ -774,6 +774,7 @@ namespace Terminals
             this.AllowBackgroundInputCheckBox.Checked = userInterface.AllowBackgroundInput;
             this.AllowFontSmoothingCheckbox.Checked = userInterface.EnableFontSmoothing;
             this.AllowDesktopCompositionCheckbox.Checked = userInterface.EnableDesktopComposition;
+            this.txtLoadBalanceInfo.Text = userInterface.LoadBalanceInfo;
         }
 
         private void FillRdpTimeOutControls(RdpOptions rdpOptions)
@@ -1105,6 +1106,7 @@ namespace Terminals
             rdpOptions.UserInterface.DisableFullWindowDrag = this.chkDisableFullWindowDrag.Checked;
             rdpOptions.UserInterface.DisableMenuAnimations = this.chkDisableMenuAnimations.Checked;
             rdpOptions.UserInterface.DisableTheming = this.chkDisableThemes.Checked;
+            rdpOptions.UserInterface.LoadBalanceInfo = this.txtLoadBalanceInfo.Text;
         }
 
         private void FillFavoriteRdpRedirectOptions(RdpOptions rdpOptions)

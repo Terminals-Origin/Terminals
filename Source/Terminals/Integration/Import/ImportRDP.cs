@@ -46,6 +46,7 @@ namespace Terminals.Integration.Import
         internal const string TSGHOSTNAME = "gatewayhostname:s:";
         internal const string TSGUSAGEMETHOD = "gatewayusagemethod:i:";
         internal const string USERNAME = "username:s:";
+        internal const string LOADBALANCEINFO = "LoadBalanceInfo:s:";
 
         #endregion
 
@@ -186,6 +187,9 @@ namespace Terminals.Integration.Import
                     int tsgwCredsSource = 0;
                     int.TryParse(propertyValue, out tsgwCredsSource);
                     favorite.TsgwCredsSource = tsgwCredsSource;
+                    break;
+                case LOADBALANCEINFO:
+                    favorite.LoadBalanceInfo = propertyValue;
                     break;
             }
         }

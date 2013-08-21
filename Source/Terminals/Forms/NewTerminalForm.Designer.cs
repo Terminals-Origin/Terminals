@@ -228,6 +228,8 @@ namespace Terminals
             this.consolePreferences = new Terminals.ConsolePreferences();
             this.btnSaveDefault = new Terminals.Forms.Controls.SplitButton();
             this.btnSave = new Terminals.Forms.Controls.SplitButton();
+            this.txtLoadBalanceInfo = new System.Windows.Forms.TextBox();
+            this.lblLoadBalanceInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.heightUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.widthUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CredentialManagerPicturebox)).BeginInit();
@@ -1743,6 +1745,8 @@ namespace Terminals
             // 
             this.ExtendedSettingsGgroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.ExtendedSettingsGgroupBox.Controls.Add(this.lblLoadBalanceInfo);
+            this.ExtendedSettingsGgroupBox.Controls.Add(this.txtLoadBalanceInfo);
             this.ExtendedSettingsGgroupBox.Controls.Add(this.EnableNLAAuthenticationCheckbox);
             this.ExtendedSettingsGgroupBox.Controls.Add(this.EnableTLSAuthenticationCheckbox);
             this.ExtendedSettingsGgroupBox.Controls.Add(this.label29);
@@ -2375,6 +2379,22 @@ namespace Terminals
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
+            // txtLoadBalanceInfo
+            // 
+            this.txtLoadBalanceInfo.Location = new System.Drawing.Point(6, 205);
+            this.txtLoadBalanceInfo.Name = "txtLoadBalanceInfo";
+            this.txtLoadBalanceInfo.Size = new System.Drawing.Size(227, 21);
+            this.txtLoadBalanceInfo.TabIndex = 41;
+            // 
+            // lblLoadBalanceInfo
+            // 
+            this.lblLoadBalanceInfo.AutoSize = true;
+            this.lblLoadBalanceInfo.Location = new System.Drawing.Point(6, 189);
+            this.lblLoadBalanceInfo.Name = "label2";
+            this.lblLoadBalanceInfo.Size = new System.Drawing.Size(97, 13);
+            this.lblLoadBalanceInfo.TabIndex = 42;
+            this.lblLoadBalanceInfo.Text = "Load Balance Info:";
+            // 
             // NewTerminalForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2670,5 +2690,7 @@ namespace Terminals
         private System.Windows.Forms.Button btnAddNewTag;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ErrorProvider errorProvider;
+        private System.Windows.Forms.Label lblLoadBalanceInfo;
+        private System.Windows.Forms.TextBox txtLoadBalanceInfo;
     }
 }

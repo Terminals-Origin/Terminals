@@ -1627,6 +1627,19 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("LoadBalanceInfo")]
+        public string LoadBalanceInfo
+        {
+            get
+            {
+                return (string)this["LoadBalanceInfo"];
+            }
+            set
+            {
+                this["LoadBalanceInfo"] = value;
+            }
+        }
+
         /// <summary>
         /// Gets or sets comma delimeted names of groups
         /// </summary>
