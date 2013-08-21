@@ -22,6 +22,7 @@ namespace Terminals.Data
         public Boolean EnableFontSmoothing { get; set; }
         public Boolean DisableCursorShadow { get; set; }
         public Boolean DisableWallPaper { get; set; }
+        public String LoadBalanceInfo { get; set; }
 
         [XmlIgnore]
         public Int32 PerformanceFlags
@@ -62,7 +63,8 @@ namespace Terminals.Data
                     EnableDesktopComposition = this.EnableDesktopComposition,
                     EnableFontSmoothing = this.EnableFontSmoothing,
                     DisableCursorShadow = this.DisableCursorShadow,
-                    DisableWallPaper = this.DisableWallPaper
+                    DisableWallPaper = this.DisableWallPaper,
+                    LoadBalanceInfo = this.LoadBalanceInfo,
                 };
         }
 
@@ -84,6 +86,7 @@ namespace Terminals.Data
             this.EnableCompression = favorite.EnableCompression;
             this.EnableDesktopComposition = favorite.EnableDesktopComposition;
             this.EnableFontSmoothing = favorite.EnableFontSmoothing;
+            this.LoadBalanceInfo = favorite.LoadBalanceInfo;
         }
 
         internal void ToConfigFavorite(FavoriteConfigurationElement favorite)
@@ -104,6 +107,7 @@ namespace Terminals.Data
             favorite.EnableCompression = this.EnableCompression;
             favorite.EnableDesktopComposition = this.EnableDesktopComposition;
             favorite.EnableFontSmoothing = this.EnableFontSmoothing;
+            favorite.LoadBalanceInfo = this.LoadBalanceInfo;
         }
     }
 }
