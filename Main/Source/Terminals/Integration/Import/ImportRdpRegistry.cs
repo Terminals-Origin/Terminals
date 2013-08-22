@@ -25,15 +25,17 @@ namespace Terminals.Integration.Import
         {
             try
             {
-                RegistryKey favoritesKey = Registry.CurrentUser.OpenSubKey(REGISTRY_KEY);
-                if (favoritesKey != null)
-                    return ImportFavoritesFromSubKeys(favoritesKey);
+                using (RegistryKey favoritesKey = Registry.CurrentUser.OpenSubKey(REGISTRY_KEY))
+                {
+                   if (favoritesKey != null)
+                    return ImportFavoritesFromSubKeys(favoritesKey); 
+                }
             }
             catch (Exception e)
             {
                 Logging.Log.Error("Registry Import", e);
             }
-
+            
             return new List<FavoriteConfigurationElement>();
         }
 
@@ -42,11 +44,13 @@ namespace Terminals.Integration.Import
             var registryFavorites = new List<FavoriteConfigurationElement>();
             foreach (string favoriteKeyName in favoritesKey.GetSubKeyNames())
             {
-                RegistryKey favoriteKey = favoritesKey.OpenSubKey(favoriteKeyName);
-                if (favoriteKey == null)
-                    continue;
+                using (RegistryKey favoriteKey = favoritesKey.OpenSubKey(favoriteKeyName))
+                {
+                    if (favoriteKey == null)
+                        continue;
 
-                registryFavorites.Add(ImportRdpKey(favoriteKey, favoriteKeyName));
+                    registryFavorites.Add(ImportRdpKey(favoriteKey, favoriteKeyName));
+                }
             }
 
             return registryFavorites;
@@ -54,10 +58,16 @@ namespace Terminals.Integration.Import
 
         private static FavoriteConfigurationElement ImportRdpKey(RegistryKey favoriteKey, string favoriteName)
         {
-            string userKey = favoriteKey.GetValue("UsernameHint").ToString();
+            string userKey = favoriteKey.GetValue("UsernameHint", string.Empty).ToString();
+            string domainName = string.Empty;
+            string userName = string.Empty;
             int slashIndex = userKey.LastIndexOf('\\');
-            string domainName = userKey.Substring(0, slashIndex);
-            string userName = userKey.Substring(slashIndex + 1, userKey.Length - slashIndex - 1);
+            if (slashIndex > 0)
+            {
+                domainName = userKey.Substring(0, slashIndex);
+                userName = userKey.Substring(slashIndex + 1, userKey.Length - slashIndex - 1);   
+            }
+
             return FavoritesFactory.CreateNewFavorite(favoriteName, favoriteName,
                 ConnectionManager.RDPPort, domainName, userName);
         }
