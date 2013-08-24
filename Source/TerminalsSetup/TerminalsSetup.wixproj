@@ -25,6 +25,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Components.wxs" />
     <Compile Include="InstallTypeDlg.wxs" />
     <Compile Include="Product.wxs" />
     <Compile Include="UI.wxs" />
