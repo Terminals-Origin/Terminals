@@ -31,6 +31,14 @@
     <Compile Include="UI.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomSetupAction\CustomSetupAction.csproj">
+      <Name>CustomSetupAction</Name>
+      <Project>{a74a4fe1-d67a-4c9d-847a-5e3708b61ba8}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Granados\Granados.csproj">
       <Name>Granados</Name>
       <Project>{9780d85d-2e12-4747-9e08-dedb95a71fc3}</Project>
