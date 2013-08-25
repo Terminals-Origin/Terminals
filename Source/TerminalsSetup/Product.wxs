@@ -23,12 +23,11 @@
       <ComponentRef Id="ApplicationShortcut" />
     </Feature>
 
-    <!--TODO custom action
-    <Binary Id="WixCustomAction.CA.dll" src="..\WixCustomAction\bin\$(var.Configuration)\WixCustomAction.CA.dll" />
-    <CustomAction Id="FinalizeCustomAction" Return="check" Execute="immediate" BinaryKey="WixCustomAction.CA.dll" DllEntry="CustomActionEntry" />
+    <Binary Id="CustomSetupAction.CA.dll" src="..\CustomSetupAction\bin\$(var.Configuration)\CustomSetupAction.CA.dll" />
+    <CustomAction Id="FinalizeCustomAction" Return="check" Execute="immediate" BinaryKey="CustomSetupAction.CA.dll" DllEntry="UpgradeLog4NetConfig" />
     <InstallExecuteSequence>
       <Custom Action="FinalizeCustomAction" After="InstallFinalize">NOT Installed</Custom>
-    </InstallExecuteSequence>-->
+    </InstallExecuteSequence>
   </Product>
 
   <Fragment>

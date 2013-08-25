@@ -25,9 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VncSharp", "VncSharp\VncSha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zlib.net", "zlib.net\zlib.net.csproj", "{0C89B7A2-A218-49E4-B545-5B044A45F977}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomSetupAction", "CustomSetupAction\CustomSetupAction.csproj", "{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 13
+		SccNumberOfProjects = 14
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs01
 		SccLocalPath0 = .
@@ -70,6 +72,9 @@ Global
 		SccProjectUniqueName12 = zlib.net\\zlib.net.csproj
 		SccProjectName12 = zlib.net
 		SccLocalPath12 = zlib.net
+		SccProjectUniqueName13 = CustomSetupAction\\CustomSetupAction.csproj
+		SccProjectName13 = CustomSetupAction
+		SccLocalPath13 = CustomSetupAction
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -278,6 +283,21 @@ Global
 		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0C89B7A2-A218-49E4-B545-5B044A45F977}.Release|x86.ActiveCfg = Release|Any CPU
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Debug|x86.ActiveCfg = Debug|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Debug|x86.Build.0 = Debug|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Distribution Release|Any CPU.ActiveCfg = Release|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Distribution Release|Mixed Platforms.ActiveCfg = Release|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Distribution Release|Mixed Platforms.Build.0 = Release|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Distribution Release|x86.ActiveCfg = Release|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Distribution Release|x86.Build.0 = Release|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Release|Any CPU.ActiveCfg = Release|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Release|Mixed Platforms.Build.0 = Release|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Release|x86.ActiveCfg = Release|x86
+		{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
