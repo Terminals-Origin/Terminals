@@ -9,6 +9,8 @@
 
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
     <Property Id="INSTALLTYPE" Secure="yes" Value="0"></Property>
+    <Icon Id="TerminalsSetupIcon" SourceFile="..\Terminals\terminalsicon.ico"/>
+    <Property Id="ARPPRODUCTICON" Value="TerminalsSetupIcon" />
 
     <WixVariable Id="WixUIBannerBmp" Value="WixUIBannerBmp.bmp" />
     <WixVariable Id="WixUIDialogBmp" Value="WixUIDialogBmp.bmp" />
