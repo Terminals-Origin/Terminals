@@ -22,8 +22,7 @@ namespace Terminals.Forms
         {
             Settings.DefaultDomain = this.domainTextbox.Text;
             Settings.DefaultUsername = this.usernameTextbox.Text;
-            if (!String.IsNullOrEmpty(this.passwordTextBox.Text))
-                Settings.DefaultPassword = this.passwordTextBox.Text;
+            Settings.DefaultPassword = this.passwordTextBox.Text;
         }
     }
 }
