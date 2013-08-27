@@ -8,7 +8,7 @@
     <MajorUpgrade DowngradeErrorMessage="A newer version of Terminals is already installed." />
 
     <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />
-    <Property Id="INSTALLTYPE" Secure="yes" Value="0"></Property>
+    <Property Id="INSTALLTYPE" Secure="yes" Value="1"></Property>
     <Icon Id="TerminalsSetupIcon" SourceFile="..\Terminals\terminalsicon.ico"/>
     <Property Id="ARPPRODUCTICON" Value="TerminalsSetupIcon" />
 
