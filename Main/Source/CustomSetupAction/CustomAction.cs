@@ -6,12 +6,12 @@ namespace CustomSetupAction
   public static class CustomActions
   {
     [CustomAction]
-    public static ActionResult UpgradeLog4NetConfig(Session session)
+    public static ActionResult UpgradeConfigFiles(Session session)
     {
       try
       {
         session.Log("Starting CustomAction");
-        CustomMethodInCustomAction(session);
+        TryUpgrade(session);
         return ActionResult.Success;
       }
       catch (Exception exception)
@@ -25,11 +25,11 @@ namespace CustomSetupAction
       }
     }
 
-    private static void CustomMethodInCustomAction(Session session)
+    private static void TryUpgrade(Session session)
     {
-      int numericValue = Convert.ToInt32(session["INSTALLTYPE"]);
+      int numericValue = Convert.ToInt32(session.CustomActionData["TYPE"]);
       bool installToUserProfile = Convert.ToBoolean(numericValue);
-      string targetDir = session["INSTALLFOLDER"];
+      string targetDir = session.CustomActionData["LOCATION"]; ;
       Terminals.UpgradeConfigFiles.CheckPortableInstallType(targetDir, installToUserProfile);
     }
   }
