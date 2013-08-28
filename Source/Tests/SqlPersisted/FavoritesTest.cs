@@ -140,7 +140,7 @@ namespace Tests.SqlPersisted
             IGroup group = checkFavorite.Groups.FirstOrDefault();
             Assert.IsTrue(group.Name == "TestGroupToAdd", "wrong merge of groups");
             int targetGroupsCount = this.CheckDatabase.Groups.Count();
-            Assert.AreEqual(1, targetGroupsCount, "Empty groups weren't deleted");
+            Assert.AreEqual(2, targetGroupsCount, "Groups count was changed");
             Assert.AreEqual(2, this.updatedCount, "Event wasn't delivered");
         }
 
