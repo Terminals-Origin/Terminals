@@ -139,14 +139,5 @@ namespace Tests.FilePersisted
             Tuple<IFavorite, IGroup> added = this.AddFavoriteWithGroup("GroupToAdd");
             return added;
         }
-
-        private Tuple<IFavorite, IGroup> AddFavoriteWithGroup(string groupName)
-        {
-            IFavorite favorite = this.AddFavorite();
-            IGroup group = this.Persistence.Factory.CreateGroup(groupName);
-            group.AddFavorite(favorite);
-            this.Persistence.Favorites.UpdateFavorite(favorite, new List<IGroup>() { group });
-            return new Tuple<IFavorite, IGroup>(favorite, group);
-        }
     }
 }
