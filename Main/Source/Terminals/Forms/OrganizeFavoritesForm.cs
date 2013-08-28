@@ -304,26 +304,41 @@ namespace Terminals
         private void CopySelectedFavorite()
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            if (favorite != null)
-            {
-                InputBoxResult result = InputBox.Show("Enter new name:", "Copy selected favorite as ...");
-                if (result.ReturnCode == DialogResult.OK && !string.IsNullOrEmpty(result.Text))
-                {
-                    this.CopySelectedFavorite(favorite, result.Text);
-                }
-            }
+            bool success = CopyFavorite(favorite);
+            if (success)
+                this.UpdateFavoritesBindingSource();
         }
 
-        private void CopySelectedFavorite(IFavorite favorite, string newName)
+        /// <summary>
+        /// Creates deep copy of provided favorite in persistence including its toolbar button and groups memebership.
+        /// Returns true if operation was successfull; otherwise false.
+        /// </summary>
+        internal static bool CopyFavorite(IFavorite favorite)
+        {
+            if (favorite != null)
+            {
+                InputBoxResult result = InputBox.Show("Enter new name:", "Duplicate selected favorite as ...");
+                if (result.ReturnCode == DialogResult.OK && !string.IsNullOrEmpty(result.Text))
+                {
+                    return CopySelectedFavorite(favorite, result.Text);
+                }
+            }
+
+            return false;
+        }
+
+        private static bool CopySelectedFavorite(IFavorite favorite, string newName)
         {
             IFavorite copy = favorite.Copy();
             copy.Name = newName;
+            // todo validate the favorite name
             PersistedFavorites.Add(copy);
             PersistedFavorites.UpdateFavorite(copy, favorite.Groups);
             
             if (Settings.HasToolbarButton(favorite.Id))
                 Settings.AddFavoriteButton(copy.Id);
-            this.UpdateFavoritesBindingSource();
+
+            return true;
         }
 
         private void renameToolStripMenuItem_Click(object sender, EventArgs e)
