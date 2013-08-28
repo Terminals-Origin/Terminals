@@ -1164,7 +1164,7 @@ namespace Terminals
             {
                 if (frmNewGroup.ShowDialog() == DialogResult.OK)
                 {
-                    string newGroupName = frmNewGroup.txtGroupName.Text;
+                    string newGroupName = frmNewGroup.GroupName;
                     IGroup group = FavoritesFactory.GetOrAddNewGroup(newGroupName);
                     foreach (TerminalTabControlItem tabControlItem in this.tcTerminals.Items)
                     {
