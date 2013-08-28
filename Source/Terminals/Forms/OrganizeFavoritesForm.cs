@@ -81,13 +81,13 @@ namespace Terminals
         {
             if (dataGridFavorites.SelectedRows.Count > 0)
             {
-                var viewModelItem = dataGridFavorites.SelectedRows[0].DataBoundItem as FavoriteViewModel;
+                var viewModelItem = (FavoriteViewModel)dataGridFavorites.SelectedRows[0].DataBoundItem;
                 return viewModelItem.Favorite;
             }
             return null;
         }
 
-        private void dataGridFavorites_DoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void DataGridFavorites_DoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0) // dont allow double click on column row
                 EditFavorite();
@@ -110,7 +110,7 @@ namespace Terminals
             }
         }
 
-        private void dataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        private void DataGridFavorites_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             this.editedFavorite = this.GetSelectedFavorite();
             this.editedFavoriteName = this.editedFavorite.Name;
@@ -119,7 +119,7 @@ namespace Terminals
         /// <summary>
         /// Rename favorite directly in a cell has to be confirmed into the Settings
         /// </summary>
-        private void dataGridFavorites_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        private void DataGridFavorites_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             if (String.IsNullOrEmpty(this.editedFavorite.Name)) // cancel or nothing changed
                 editedFavorite.Name = this.editedFavoriteName;
@@ -229,23 +229,23 @@ namespace Terminals
         /// <summary>
         /// Sort columns
         /// </summary>
-        private void dataGridFavorites_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        private void DataGridFavorites_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             DataGridViewColumn lastSortedColumn = this.dataGridFavorites.FindLastSortedColumn();
             DataGridViewColumn column = this.dataGridFavorites.Columns[e.ColumnIndex];
 
             SortOrder newSortDirection = SortableUnboundGrid.GetNewSortDirection(lastSortedColumn, column);
-            var data = this.bsFavorites.DataSource as SortableList<FavoriteViewModel>;
+            var data = (SortableList<FavoriteViewModel>)this.bsFavorites.DataSource;
             this.bsFavorites.DataSource = data.SortByProperty(column.DataPropertyName, newSortDirection);
             column.HeaderCell.SortGlyphDirection = newSortDirection;
         }
 
-        private void dataGridFavorites_SelectionChanged(object sender, EventArgs e)
+        private void DataGridFavorites_SelectionChanged(object sender, EventArgs e)
         {
             UpdateCountLabels();
         }
 
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (NewTerminalForm frmNewTerminal = new NewTerminalForm(String.Empty))
             {
@@ -256,7 +256,7 @@ namespace Terminals
             }
         }
 
-        private void editConnectinoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void EditConnectinoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EditFavorite();
         }
@@ -268,7 +268,7 @@ namespace Terminals
                 this.EditFavorite(favorite);
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DeleteSelectedFavorites();
         }
@@ -295,7 +295,7 @@ namespace Terminals
                 .ToList();
         }
 
-        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!this.dataGridFavorites.IsCurrentCellInEditMode)
                 CopySelectedFavorite();
@@ -341,7 +341,7 @@ namespace Terminals
             return true;
         }
 
-        private void renameToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (this.dataGridFavorites.SelectedRows.Count > 0)
             {
@@ -350,43 +350,43 @@ namespace Terminals
             }
         }
 
-        private void scanActiveDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ScanActiveDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ImportFromAD activeDirectoryForm = new ImportFromAD();
             activeDirectoryForm.ShowDialog();
             this.UpdateFavoritesBindingSource();
         }
 
-        private void scanNetworkToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ScanNetworkToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NetworkScanner networkScanForm = new NetworkScanner();
             networkScanForm.ShowDialog();
             this.UpdateFavoritesBindingSource();
         }
 
-        private void scanRegistryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ScanRegistryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<FavoriteConfigurationElement> favoritesToImport = ImportRdpRegistry.Import();
             ImportFavoritesWithManagerImport(favoritesToImport);
         }
 
-        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CloseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void importFromFileToolStripMenuItem_Click_1(object sender, EventArgs e)
+        private void ImportFromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CallImport();
         }
 
-        private void exportToAFileToolStripMenuItem_Click_1(object sender, EventArgs e)
+        private void ExportToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ExportFrom exportFrom = new ExportFrom();
             exportFrom.Show();
         }
 
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite favorite = this.GetSelectedFavorite();
             var definition = new ConnectionDefinition(new List<IFavorite>() {favorite});

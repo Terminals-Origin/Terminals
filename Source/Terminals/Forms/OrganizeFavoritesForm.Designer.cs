@@ -874,7 +874,7 @@ namespace Terminals
             this.importFromFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.I)));
             this.importFromFileToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.importFromFileToolStripMenuItem.Text = "&Import From A File";
-            this.importFromFileToolStripMenuItem.Click += new System.EventHandler(this.importFromFileToolStripMenuItem_Click_1);
+            this.importFromFileToolStripMenuItem.Click += new System.EventHandler(this.ImportFromFileToolStripMenuItem_Click);
             // 
             // exportToAFileToolStripMenuItem
             // 
@@ -882,7 +882,7 @@ namespace Terminals
             this.exportToAFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
             this.exportToAFileToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.exportToAFileToolStripMenuItem.Text = "&Export To A File";
-            this.exportToAFileToolStripMenuItem.Click += new System.EventHandler(this.exportToAFileToolStripMenuItem_Click_1);
+            this.exportToAFileToolStripMenuItem.Click += new System.EventHandler(this.ExportToFileToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -895,7 +895,7 @@ namespace Terminals
             this.closeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(210, 22);
             this.closeToolStripMenuItem.Text = "C&lose";
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.CloseToolStripMenuItem_Click);
             // 
             // importExportToolStripMenuItem
             // 
@@ -917,7 +917,7 @@ namespace Terminals
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.newToolStripMenuItem.Text = "&New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
@@ -926,7 +926,7 @@ namespace Terminals
             this.deleteToolStripMenuItem.ShortcutKeyDisplayString = "Del";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.deleteToolStripMenuItem.Text = "&Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
             // connectToolStripMenuItem
             // 
@@ -935,7 +935,7 @@ namespace Terminals
             this.connectToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.connectToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.connectToolStripMenuItem.Text = "C&onnect";
-            this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+            this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
             // 
             // renameToolStripMenuItem
             // 
@@ -943,7 +943,7 @@ namespace Terminals
             this.renameToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F2)));
             this.renameToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.renameToolStripMenuItem.Text = "&Rename";
-            this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
+            this.renameToolStripMenuItem.Click += new System.EventHandler(this.RenameToolStripMenuItem_Click);
             // 
             // copyToolStripMenuItem
             // 
@@ -952,7 +952,7 @@ namespace Terminals
             this.copyToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.copyToolStripMenuItem.Text = "&Duplicate";
             this.copyToolStripMenuItem.ToolTipText = "Creates copy of first selected favorite including its group assignment";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
             // editConnectinoToolStripMenuItem
             // 
@@ -961,7 +961,7 @@ namespace Terminals
             this.editConnectinoToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
             this.editConnectinoToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.editConnectinoToolStripMenuItem.Text = "&Edit Connection";
-            this.editConnectinoToolStripMenuItem.Click += new System.EventHandler(this.editConnectinoToolStripMenuItem_Click);
+            this.editConnectinoToolStripMenuItem.Click += new System.EventHandler(this.EditConnectinoToolStripMenuItem_Click);
             // 
             // manageToolStripMenuItem
             // 
@@ -982,7 +982,7 @@ namespace Terminals
             | System.Windows.Forms.Keys.A)));
             this.scanActiveDirectoryToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.scanActiveDirectoryToolStripMenuItem.Text = "Scan &Active Directory";
-            this.scanActiveDirectoryToolStripMenuItem.Click += new System.EventHandler(this.scanActiveDirectoryToolStripMenuItem_Click);
+            this.scanActiveDirectoryToolStripMenuItem.Click += new System.EventHandler(this.ScanActiveDirectoryToolStripMenuItem_Click);
             // 
             // scanNetworkToolStripMenuItem
             // 
@@ -991,7 +991,7 @@ namespace Terminals
             | System.Windows.Forms.Keys.N)));
             this.scanNetworkToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.scanNetworkToolStripMenuItem.Text = "Scan &Network";
-            this.scanNetworkToolStripMenuItem.Click += new System.EventHandler(this.scanNetworkToolStripMenuItem_Click);
+            this.scanNetworkToolStripMenuItem.Click += new System.EventHandler(this.ScanNetworkToolStripMenuItem_Click);
             // 
             // scanRegistryToolStripMenuItem
             // 
@@ -1000,7 +1000,7 @@ namespace Terminals
             | System.Windows.Forms.Keys.R)));
             this.scanRegistryToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.scanRegistryToolStripMenuItem.Text = "Scan &Registry";
-            this.scanRegistryToolStripMenuItem.Click += new System.EventHandler(this.scanRegistryToolStripMenuItem_Click);
+            this.scanRegistryToolStripMenuItem.Click += new System.EventHandler(this.ScanRegistryToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -1039,11 +1039,11 @@ namespace Terminals
             this.dataGridFavorites.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridFavorites.Size = new System.Drawing.Size(866, 443);
             this.dataGridFavorites.TabIndex = 12;
-            this.dataGridFavorites.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridFavorites_CellBeginEdit);
-            this.dataGridFavorites.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridFavorites_DoubleClick);
-            this.dataGridFavorites.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridFavorites_CellEndEdit);
-            this.dataGridFavorites.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridFavorites_ColumnHeaderMouseClick);
-            this.dataGridFavorites.SelectionChanged += new System.EventHandler(this.dataGridFavorites_SelectionChanged);
+            this.dataGridFavorites.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.DataGridFavorites_CellBeginEdit);
+            this.dataGridFavorites.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridFavorites_DoubleClick);
+            this.dataGridFavorites.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridFavorites_CellEndEdit);
+            this.dataGridFavorites.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.DataGridFavorites_ColumnHeaderMouseClick);
+            this.dataGridFavorites.SelectionChanged += new System.EventHandler(this.DataGridFavorites_SelectionChanged);
             // 
             // colName
             // 
@@ -1117,7 +1117,7 @@ namespace Terminals
             this.newToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
             this.newToolStripMenuItem1.Text = "New";
-            this.newToolStripMenuItem1.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            this.newToolStripMenuItem1.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem1
             // 
@@ -1126,7 +1126,7 @@ namespace Terminals
             this.deleteToolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
             this.deleteToolStripMenuItem1.Text = "Delete";
-            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
             // connectToolStripMenuItem1
             // 
@@ -1135,7 +1135,7 @@ namespace Terminals
             this.connectToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.connectToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
             this.connectToolStripMenuItem1.Text = "Connect";
-            this.connectToolStripMenuItem1.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+            this.connectToolStripMenuItem1.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
             // 
             // renameToolStripMenuItem1
             // 
@@ -1143,7 +1143,7 @@ namespace Terminals
             this.renameToolStripMenuItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F2)));
             this.renameToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
             this.renameToolStripMenuItem1.Text = "Rename";
-            this.renameToolStripMenuItem1.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
+            this.renameToolStripMenuItem1.Click += new System.EventHandler(this.RenameToolStripMenuItem_Click);
             // 
             // copyToolStripMenuItem1
             // 
@@ -1152,7 +1152,7 @@ namespace Terminals
             this.copyToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
             this.copyToolStripMenuItem1.Text = "Duplicate";
             this.copyToolStripMenuItem1.ToolTipText = "Creates copy of first selected favorite including its group assignment";
-            this.copyToolStripMenuItem1.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
+            this.copyToolStripMenuItem1.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
             // propertiesToolStripMenuItem
             // 
@@ -1161,7 +1161,7 @@ namespace Terminals
             this.propertiesToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
-            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.editConnectinoToolStripMenuItem_Click);
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.EditConnectinoToolStripMenuItem_Click);
             // 
             // panel2
             // 
