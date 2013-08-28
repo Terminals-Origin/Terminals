@@ -120,7 +120,7 @@ namespace Terminals
             this.gridGroups.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridGroups.Size = new System.Drawing.Size(180, 322);
             this.gridGroups.TabIndex = 4;
-            this.gridGroups.SelectionChanged += new System.EventHandler(this.gridGroups_SelectedRowChanged);
+            this.gridGroups.SelectionChanged += new System.EventHandler(this.GridGroups_SelectedRowChanged);
             // 
             // colGroupName
             // 
@@ -149,7 +149,7 @@ namespace Terminals
             this.tsbAddGroup.Name = "tsbAddGroup";
             this.tsbAddGroup.Size = new System.Drawing.Size(23, 22);
             this.tsbAddGroup.Text = "Add new Group";
-            this.tsbAddGroup.Click += new System.EventHandler(this.tsbAddGroup_Click);
+            this.tsbAddGroup.Click += new System.EventHandler(this.TsbAddGroup_Click);
             // 
             // tsbDeleteGroup
             // 
@@ -159,7 +159,7 @@ namespace Terminals
             this.tsbDeleteGroup.Name = "tsbDeleteGroup";
             this.tsbDeleteGroup.Size = new System.Drawing.Size(23, 22);
             this.tsbDeleteGroup.ToolTipText = "Delete Group";
-            this.tsbDeleteGroup.Click += new System.EventHandler(this.tsbDeleteGroup_Click);
+            this.tsbDeleteGroup.Click += new System.EventHandler(this.TsbDeleteGroup_Click);
             // 
             // panel1
             // 
@@ -215,7 +215,7 @@ namespace Terminals
             this.tsbAddConnection.Name = "tsbAddConnection";
             this.tsbAddConnection.Size = new System.Drawing.Size(23, 22);
             this.tsbAddConnection.ToolTipText = "Select favorites for selected group";
-            this.tsbAddConnection.Click += new System.EventHandler(this.tsbAddConnection_Click);
+            this.tsbAddConnection.Click += new System.EventHandler(this.TsbAddConnection_Click);
             // 
             // tsbDeleteConnection
             // 
@@ -225,7 +225,7 @@ namespace Terminals
             this.tsbDeleteConnection.Name = "tsbDeleteConnection";
             this.tsbDeleteConnection.Size = new System.Drawing.Size(23, 22);
             this.tsbDeleteConnection.ToolTipText = "Remove selected favorites from selected group";
-            this.tsbDeleteConnection.Click += new System.EventHandler(this.tsbDeleteConnection_Click);
+            this.tsbDeleteConnection.Click += new System.EventHandler(this.TsbDeleteConnection_Click);
             // 
             // OrganizeGroupsForm
             // 

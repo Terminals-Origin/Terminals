@@ -39,12 +39,12 @@ namespace Terminals
             }
         }
 
-        private void gridGroups_SelectedRowChanged(object sender, EventArgs e)
+        private void GridGroups_SelectedRowChanged(object sender, EventArgs e)
         {
             LoadSelectedGroupFavorites();
         }
 
-        private void tsbAddGroup_Click(object sender, EventArgs e)
+        private void TsbAddGroup_Click(object sender, EventArgs e)
         {
             using (NewGroupForm frmNewGroup = new NewGroupForm())
             {
@@ -61,7 +61,7 @@ namespace Terminals
             this.LoadGroups();
         }
 
-        private void tsbDeleteGroup_Click(object sender, EventArgs e)
+        private void TsbDeleteGroup_Click(object sender, EventArgs e)
         {
             IGroup group = GetSelectedGroup();
             if (group != null)
@@ -71,7 +71,7 @@ namespace Terminals
             }
         }
 
-        private void tsbAddConnection_Click(object sender, EventArgs e)
+        private void TsbAddConnection_Click(object sender, EventArgs e)
         {
             IGroup group = GetSelectedGroup();
             if (group != null)
@@ -86,7 +86,7 @@ namespace Terminals
             }
         }
 
-        private void tsbDeleteConnection_Click(object sender, EventArgs e)
+        private void TsbDeleteConnection_Click(object sender, EventArgs e)
         {
             IGroup group = GetSelectedGroup();
             if (group != null)
