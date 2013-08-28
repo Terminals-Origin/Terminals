@@ -38,7 +38,6 @@
             this.dNSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tSAdminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.removeSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shutdownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
@@ -46,6 +45,8 @@
             this.systemInformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enableRDPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.removeSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.duplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.FavoritesTabPage = new System.Windows.Forms.TabPage();
@@ -54,6 +55,7 @@
             this.historyTreeView = new Terminals.Forms.Controls.HistoryTreeView();
             this.defaultContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.createGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createFavoriteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.groupsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.createFavoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,7 +67,6 @@
             this.setDomainByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setPasswordByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.duplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.FavoritesTabPage.SuspendLayout();
@@ -156,14 +157,6 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(240, 6);
             // 
-            // removeSelectedToolStripMenuItem
-            // 
-            this.removeSelectedToolStripMenuItem.Image = global::Terminals.Properties.Resources.delete;
-            this.removeSelectedToolStripMenuItem.Name = "removeSelectedToolStripMenuItem";
-            this.removeSelectedToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
-            this.removeSelectedToolStripMenuItem.Text = "Remove";
-            this.removeSelectedToolStripMenuItem.Click += new System.EventHandler(this.RemoveSelectedToolStripMenuItem_Click);
-            // 
             // rebootToolStripMenuItem
             // 
             this.rebootToolStripMenuItem.Name = "rebootToolStripMenuItem";
@@ -217,6 +210,22 @@
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(240, 6);
+            // 
+            // removeSelectedToolStripMenuItem
+            // 
+            this.removeSelectedToolStripMenuItem.Image = global::Terminals.Properties.Resources.delete;
+            this.removeSelectedToolStripMenuItem.Name = "removeSelectedToolStripMenuItem";
+            this.removeSelectedToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.removeSelectedToolStripMenuItem.Text = "Remove";
+            this.removeSelectedToolStripMenuItem.Click += new System.EventHandler(this.RemoveSelectedToolStripMenuItem_Click);
+            // 
+            // duplicateToolStripMenuItem
+            // 
+            this.duplicateToolStripMenuItem.Name = "duplicateToolStripMenuItem";
+            this.duplicateToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
+            this.duplicateToolStripMenuItem.Text = "Duplicate";
+            this.duplicateToolStripMenuItem.ToolTipText = "Creates copy of first selected favorite including its group assignment";
+            this.duplicateToolStripMenuItem.Click += new System.EventHandler(this.DuplicateToolStripMenuItem_Click);
             // 
             // propertiesToolStripMenuItem
             // 
@@ -294,16 +303,25 @@
             // defaultContextMenu
             // 
             this.defaultContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createGroupToolStripMenuItem});
+            this.createGroupToolStripMenuItem,
+            this.createFavoriteToolStripMenuItem1});
             this.defaultContextMenu.Name = "defaultContextMenu";
-            this.defaultContextMenu.Size = new System.Drawing.Size(145, 26);
+            this.defaultContextMenu.Size = new System.Drawing.Size(164, 48);
             // 
             // createGroupToolStripMenuItem
             // 
             this.createGroupToolStripMenuItem.Name = "createGroupToolStripMenuItem";
-            this.createGroupToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.createGroupToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.createGroupToolStripMenuItem.Text = "Create Group";
             this.createGroupToolStripMenuItem.Click += new System.EventHandler(this.CreateGroupToolStripMenuItem_Click);
+            // 
+            // createFavoriteToolStripMenuItem1
+            // 
+            this.createFavoriteToolStripMenuItem1.Image = global::Terminals.Properties.Resources.add;
+            this.createFavoriteToolStripMenuItem1.Name = "createFavoriteToolStripMenuItem1";
+            this.createFavoriteToolStripMenuItem1.Size = new System.Drawing.Size(163, 22);
+            this.createFavoriteToolStripMenuItem1.Text = "New Connection";
+            this.createFavoriteToolStripMenuItem1.Click += new System.EventHandler(this.CreateFavoriteToolStripMenuItem_Click);
             // 
             // groupsContextMenu
             // 
@@ -392,14 +410,6 @@
             this.deleteAllFavoritesByTagToolStripMenuItem.Text = "Delete all Favorites in Group...";
             this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.DeleteAllFavoritesByTagToolStripMenuItem_Click);
             // 
-            // duplicateToolStripMenuItem
-            // 
-            this.duplicateToolStripMenuItem.Name = "duplicateToolStripMenuItem";
-            this.duplicateToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
-            this.duplicateToolStripMenuItem.Text = "Duplicate";
-            this.duplicateToolStripMenuItem.ToolTipText = "Creates copy of first selected favorite including its group assignment";
-            this.duplicateToolStripMenuItem.Click += new System.EventHandler(this.DuplicateToolStripMenuItem_Click);
-            // 
             // FavsList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -456,5 +466,6 @@
         private System.Windows.Forms.ToolStripMenuItem createGroupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem duplicateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createFavoriteToolStripMenuItem1;
     }
 }
