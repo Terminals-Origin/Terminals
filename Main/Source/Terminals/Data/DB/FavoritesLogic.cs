@@ -143,23 +143,20 @@ namespace Terminals.Data.DB
                 List<IGroup> addedGroups = this.groups.AddToDatabase(database, newGroups);
                 // commit newly created groups, otherwise we cant add into them
                 database.SaveImmediatelyIfRequested();
-                List<DbGroup> removedGroups = this.UpdateGroupsMembership(favorite, newGroups, database);
+                UpdateGroupsMembership(favorite, newGroups);
                 database.SaveImmediatelyIfRequested();
 
-                List<IGroup> removedToReport = this.groups.DeleteFromCache(removedGroups);
-                this.dispatcher.ReportGroupsRecreated(addedGroups, removedToReport);
+                this.dispatcher.ReportGroupsAdded(addedGroups);
                 this.TrySaveAndReportFavoriteUpdate(toUpdate, database);
             }
         }
 
-        private List<DbGroup> UpdateGroupsMembership(IFavorite favorite, List<IGroup> newGroups, Database database)
+        private static void UpdateGroupsMembership(IFavorite favorite, List<IGroup> newGroups)
         {
             List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(favorite.Groups, newGroups);
             List<IGroup> missingGroups = ListsHelper.GetMissingSourcesInTarget(newGroups, favorite.Groups);
             Data.Favorites.AddIntoMissingGroups(favorite, missingGroups);
             Data.Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
-            List<DbGroup> removedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
-            return removedGroups;
         }
 
         private void TrySaveAndReportFavoriteUpdate(DbFavorite toUpdate, Database database)
@@ -242,10 +239,6 @@ namespace Terminals.Data.DB
                 database.RemoveRedundantCredentialBase(redundantCredentialBase);
                 database.SaveImmediatelyIfRequested();
                 this.groups.RefreshCache();
-                List<DbGroup> deletedGroups = this.groups.DeleteEmptyGroupsFromDatabase(database);
-                database.SaveImmediatelyIfRequested();
-                List<IGroup> groupsToReport = this.groups.DeleteFromCache(deletedGroups);
-                this.dispatcher.ReportGroupsDeleted(groupsToReport);
                 this.FinishRemove(favorites, favoritesToDelete);
             }
         }

@@ -21,7 +21,7 @@ namespace Terminals.Data.DB
 
         private bool isLoaded;
 
-        internal List<DbGroup> Cached
+        private List<DbGroup> Cached
         {
             get
             {
@@ -164,16 +164,16 @@ namespace Terminals.Data.DB
         /// Call this method after the changes were committed into database, 
         /// to let the cache in last state as long as possible and ensure, that the commit didn't fail.
         /// </summary>
-        internal List<IGroup> DeleteFromCache(List<DbGroup> emptyGroups)
+        private List<IGroup> DeleteFromCache(List<DbGroup> emptyGroups)
         {
             this.cache.Delete(emptyGroups);
             return emptyGroups.Cast<IGroup>().ToList();
         }
 
         /// <summary>
-        /// Doesn't remove them from cache, only fro database
+        /// Doesn't remove them from cache, only from database
         /// </summary>
-        internal List<DbGroup> DeleteEmptyGroupsFromDatabase(Database database)
+        private List<DbGroup> DeleteEmptyGroupsFromDatabase(Database database)
         {
             List<DbGroup> emptyGroups = this.GetEmptyGroups();
             database.Cache.AttachAll(emptyGroups);
