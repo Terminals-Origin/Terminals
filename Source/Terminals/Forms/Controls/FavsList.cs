@@ -288,9 +288,7 @@ namespace Terminals
         {
             IFavorite fav = this.favsTree.SelectedFavorite;
             if (fav != null)
-            {
                 Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + fav.ServerName);
-            }
         }
 
         private void SystemInformationToolStripMenuItem_Click(object sender, EventArgs e)
@@ -419,9 +417,7 @@ namespace Terminals
         {
             IFavorite favorite = this.favsTree.SelectedFavorite;
             if (favorite != null)
-            {
                 PersistedFavorites.Delete(favorite);
-            }
         }
 
         private void FavsTree_MouseUp(object sender, MouseEventArgs e)
@@ -493,6 +489,24 @@ namespace Terminals
             FavoritesFactory.GetOrAddNewGroup(newGroupName);
         }
 
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var untagged = this.favsTree.SelectedNode as UntagedGroupNode;
+            if (untagged != null)
+                return;
+
+            var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
+            if (groupNode != null)
+                Persistence.Instance.Groups.Delete(groupNode.Group);
+        }
+
+        private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IFavorite selected = this.favsTree.SelectedFavorite;
+            if (selected != null)
+                OrganizeFavoritesForm.CopyFavorite(selected);
+        }
+
         #endregion
 
         public void SaveState()
@@ -507,17 +521,6 @@ namespace Terminals
         {
             this.favsTree.ExpandedNodes = Settings.ExpandedFavoriteNodes;
             this.historyTreeView.ExpandedNodes = Settings.ExpandedHistoryNodes;
-        }
-
-        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var untagged = this.favsTree.SelectedNode as UntagedGroupNode;
-            if (untagged != null)
-                return;
-
-            var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
-            if (groupNode != null)
-                Persistence.Instance.Groups.Delete(groupNode.Group);
         }
     }
 }
