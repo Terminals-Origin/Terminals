@@ -52,6 +52,8 @@
             this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
             this.HistoryTabPage = new System.Windows.Forms.TabPage();
             this.historyTreeView = new Terminals.Forms.Controls.HistoryTreeView();
+            this.defaultContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.createGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.createFavoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,6 +68,7 @@
             this.tabControl1.SuspendLayout();
             this.FavoritesTabPage.SuspendLayout();
             this.HistoryTabPage.SuspendLayout();
+            this.defaultContextMenu.SuspendLayout();
             this.groupsContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -247,7 +250,6 @@
             // 
             this.favsTree.AllowDrop = true;
             this.favsTree.CausesValidation = false;
-            this.favsTree.ContextMenuStrip = this.favoritesContextMenu;
             this.favsTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.favsTree.HideSelection = false;
             this.favsTree.HotTracking = true;
@@ -285,6 +287,20 @@
             this.historyTreeView.Size = new System.Drawing.Size(136, 118);
             this.historyTreeView.TabIndex = 0;
             this.historyTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HistoryTreeView_KeyUp);
+            // 
+            // defaultContextMenu
+            // 
+            this.defaultContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createGroupToolStripMenuItem});
+            this.defaultContextMenu.Name = "defaultContextMenu";
+            this.defaultContextMenu.Size = new System.Drawing.Size(153, 48);
+            // 
+            // createGroupToolStripMenuItem
+            // 
+            this.createGroupToolStripMenuItem.Name = "createGroupToolStripMenuItem";
+            this.createGroupToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.createGroupToolStripMenuItem.Text = "Create Group";
+            this.createGroupToolStripMenuItem.Click += new System.EventHandler(this.CreateGroupToolStripMenuItem_Click);
             // 
             // groupsContextMenu
             // 
@@ -376,6 +392,7 @@
             this.tabControl1.ResumeLayout(false);
             this.FavoritesTabPage.ResumeLayout(false);
             this.HistoryTabPage.ResumeLayout(false);
+            this.defaultContextMenu.ResumeLayout(false);
             this.groupsContextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -416,5 +433,7 @@
         private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem extraConnectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectToAllMenuItem;
+        private System.Windows.Forms.ContextMenuStrip defaultContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem createGroupToolStripMenuItem;
     }
 }
