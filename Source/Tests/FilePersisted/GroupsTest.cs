@@ -38,8 +38,8 @@ namespace Tests.FilePersisted
             // redundant check, should be also tested in favorites test
             Assert.AreEqual(0, favoritesCount, "Favorite wasnt removed properly");
             int groupsCount = this.PersistedGroups.Count();
-            Assert.AreEqual(0, groupsCount, "Groups arent empty");
-            Assert.AreEqual(1, this.removedReported, "Removed group wasnt reported");
+            Assert.AreEqual(1, groupsCount, "Groups arent empty");
+            Assert.AreEqual(0, this.removedReported, "Removed group wasnt reported");
         }
 
         [TestMethod]

@@ -31,7 +31,7 @@ namespace Terminals.Data
             return true;
         }
 
-        internal List<IGroup> AddAllToCache(List<IGroup> groups)
+        internal List<IGroup> AddAllToCache(IEnumerable<IGroup> groups)
         {
             var added = new List<IGroup>();
             if (groups == null)
@@ -70,13 +70,6 @@ namespace Terminals.Data
             return true;
         }
 
-        internal List<IGroup> DeleteEmptyGroupsFromCache()
-        {
-            List<IGroup> emptyGroups = this.GetEmptyGroups();
-            this.DeleteFromCache(emptyGroups);
-            return emptyGroups;
-        }
-
         private List<IGroup> GetEmptyGroups()
         {
             return this.cache.Values
@@ -106,7 +99,6 @@ namespace Terminals.Data
                 return;
 
             RemoveFavoritesFromGroups(favoritesToRemove, this);
-            DeleteEmptyGroups();
         }
 
         internal static void RemoveFavoritesFromGroups(List<IFavorite> favoritesToRemove, IEnumerable<IGroup> groups)
@@ -115,12 +107,6 @@ namespace Terminals.Data
             {
                 group.RemoveFavorites(favoritesToRemove);
             }
-        }
-
-        private void DeleteEmptyGroups()
-        {
-            var emptyGroups = this.DeleteEmptyGroupsFromCache();
-            this.dispatcher.ReportGroupsDeleted(emptyGroups);
         }
 
         #region IGroups members
@@ -182,7 +168,9 @@ namespace Terminals.Data
 
         public void Rebuild()
         {
-            DeleteEmptyGroups();
+            List<IGroup> emptyGroups = this.GetEmptyGroups();
+            this.DeleteFromCache(emptyGroups);
+            this.dispatcher.ReportGroupsDeleted(emptyGroups);
             this.persistence.SaveImmediatelyIfRequested();
         }
 
