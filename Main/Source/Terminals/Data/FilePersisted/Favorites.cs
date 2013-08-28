@@ -117,8 +117,9 @@ namespace Terminals.Data
         {
             var oldGroups = this.groups.GetGroupsContainingFavorite(favorite.Id);
             List<IGroup> addedGroups = this.AddIntoMissingGroups(favorite, newGroups, oldGroups);
-            List<IGroup> removedGroups = this.RemoveFromRedundantGroups(favorite, newGroups, oldGroups);
-            this.dispatcher.ReportGroupsRecreated(addedGroups, removedGroups);
+            List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(oldGroups, newGroups);
+            Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
+            this.dispatcher.ReportGroupsAdded(addedGroups);
         }
 
         private List<IGroup> AddIntoMissingGroups(IFavorite favorite, List<IGroup> newGroups, List<IGroup> oldGroups)
@@ -136,14 +137,6 @@ namespace Terminals.Data
             {
                 group.AddFavorite(favorite);
             }
-        }
-
-        private List<IGroup> RemoveFromRedundantGroups(IFavorite favorite,
-            List<IGroup> newGroups, List<IGroup> oldGroups)
-        {
-            List<IGroup> redundantGroups = ListsHelper.GetMissingSourcesInTarget(oldGroups, newGroups);
-            Groups.RemoveFavoritesFromGroups(new List<IFavorite> { favorite }, redundantGroups);
-            return groups.DeleteEmptyGroupsFromCache();
         }
 
         internal void UpdatePasswordsByNewMasterPassword(string newKeyMaterial)

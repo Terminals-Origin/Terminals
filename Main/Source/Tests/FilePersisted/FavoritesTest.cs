@@ -65,8 +65,12 @@ namespace Tests.FilePersisted
         [TestMethod]
         public void FavoritesAndGroupsReloadTest()
         {
-            Tuple<IFavorite, IGroup> toRemove = this.AddFavoriteWithGroup("GroupToUpdate");
-            Tuple<IFavorite, IGroup> toUpdate = this.AddFavoriteWithGroup("GroupToRemove");
+            IFavorite favToRemove = this.AddFavorite();
+            IGroup groupToRemove = this.Persistence.Factory.CreateGroup("GroupToRemove");
+            this.Persistence.Groups.Add(groupToRemove);
+            // not connected each other
+            Tuple<IFavorite, IGroup> toRemove = new Tuple<IFavorite, IGroup>(favToRemove, groupToRemove);
+            Tuple<IFavorite, IGroup> toUpdate = this.AddFavoriteWithGroup("GroupToUpdate");
             
             var testFileWatch = new TestFileWatch();
             var secondaryPersistence = this.InitializeSecondaryPersistence(testFileWatch);
@@ -92,8 +96,8 @@ namespace Tests.FilePersisted
             int secondaryGroupsCount = secondaryPersistence.Groups.Count();
             Assert.AreEqual(2, secondaryGroupsCount); // one updated and one added
             Assert.AreEqual(this.addedGroupId, ((Group)added.Item2).Id, "Didnt receive group added event");
-            Assert.AreEqual(this.updatedGroupId, ((Group)toRemove.Item2).Id, "Didnt receive group updated event");
-            Assert.AreEqual(this.deletedGroupId, ((Group)toUpdate.Item2).Id, "Didnt receive group removed event");
+            Assert.AreEqual(this.deletedGroupId, ((Group)toRemove.Item2).Id, "Didnt receive group removed event");
+            Assert.AreEqual(this.updatedGroupId, ((Group)toUpdate.Item2).Id, "Didnt receive group updated event");
         }
 
         private FilePersistence InitializeSecondaryPersistence(TestFileWatch testFileWatch)
@@ -132,10 +136,10 @@ namespace Tests.FilePersisted
             IFavorites primaryFavorites = this.Persistence.Favorites;
             var favoriteToUpdate = toUpdate.Item1;
             favoriteToUpdate.Name = "some other value";
-            // we need to have one removed group and one deleted,
-            // so we exchange their favorite to simulate only one operation for groups
-            primaryFavorites.UpdateFavorite(favoriteToUpdate, new List<IGroup>() { toRemove.Item2 });
+            // simulates group update by removing its favorite
+            primaryFavorites.UpdateFavorite(favoriteToUpdate, new List<IGroup>());
             primaryFavorites.Delete(toRemove.Item1);
+            this.Persistence.Groups.Delete(toRemove.Item2);
             Tuple<IFavorite, IGroup> added = this.AddFavoriteWithGroup("GroupToAdd");
             return added;
         }
