@@ -50,7 +50,7 @@ namespace Terminals
       this.txtGroupName.Name = "txtGroupName";
       this.txtGroupName.Size = new System.Drawing.Size(328, 21);
       this.txtGroupName.TabIndex = 1;
-      this.txtGroupName.TextChanged += new System.EventHandler(this.txtGroupName_TextChanged);
+      this.txtGroupName.TextChanged += new System.EventHandler(this.TxtGroupName_TextChanged);
       // 
       // btnCancel
       // 
@@ -105,6 +105,6 @@ namespace Terminals
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOk;
-        internal System.Windows.Forms.TextBox txtGroupName;
+        private System.Windows.Forms.TextBox txtGroupName;
     }
 }

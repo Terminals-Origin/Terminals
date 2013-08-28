@@ -50,7 +50,7 @@ namespace Terminals
             {
                 if (frmNewGroup.ShowDialog() == DialogResult.OK)
                 {
-                  this.CreateNewGroupIfDoesntExist(frmNewGroup.txtGroupName.Text);
+                    this.CreateNewGroupIfDoesntExist(frmNewGroup.GroupName);
                 }
             }
         }

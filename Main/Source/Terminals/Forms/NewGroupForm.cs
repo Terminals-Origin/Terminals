@@ -5,14 +5,19 @@ namespace Terminals
 {
     internal partial class NewGroupForm : Form
     {
+        /// <summary>
+        /// Gets the entered name of a required group
+        /// </summary>
+        internal string GroupName { get { return this.txtGroupName.Text; }}
+
         public NewGroupForm()
         {
             InitializeComponent();
         }
 
-        private void txtGroupName_TextChanged(object sender, EventArgs e)
+        private void TxtGroupName_TextChanged(object sender, EventArgs e)
         {
-            btnOk.Enabled = !string.IsNullOrEmpty(txtGroupName.Text);
+            this.btnOk.Enabled = !string.IsNullOrEmpty(txtGroupName.Text);
         }
     }
 }
