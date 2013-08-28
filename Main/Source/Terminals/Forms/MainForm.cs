@@ -1160,20 +1160,17 @@ namespace Terminals
 
         private void SaveTerminalsAsGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewGroup = new NewGroupForm())
-            {
-                if (frmNewGroup.ShowDialog() == DialogResult.OK)
-                {
-                    string newGroupName = frmNewGroup.GroupName;
-                    IGroup group = FavoritesFactory.GetOrAddNewGroup(newGroupName);
-                    foreach (TerminalTabControlItem tabControlItem in this.tcTerminals.Items)
-                    {
-                        group.AddFavorite(tabControlItem.Favorite);
-                    }
+            string newGroupName = NewGroupForm.AskFroGroupName();
+            if (string.IsNullOrEmpty(newGroupName))
+                return;
 
-                    this.menuLoader.LoadGroups();
-                }
+            IGroup group = FavoritesFactory.GetOrAddNewGroup(newGroupName);
+            foreach (TerminalTabControlItem tabControlItem in this.tcTerminals.Items)
+            {
+                group.AddFavorite(tabControlItem.Favorite);
             }
+
+            this.menuLoader.LoadGroups();
         }
 
         private void OrganizeGroupsToolStripMenuItem_Click(object sender, EventArgs e)

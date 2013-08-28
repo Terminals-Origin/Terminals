@@ -220,7 +220,7 @@ namespace Terminals
         {
             try
             {
-                IFavorite fav = state as IFavorite;
+                var fav = state as IFavorite;
                 if (fav == null)
                     return null;
                 return RemoteManagement.EnableRdp(fav);
@@ -460,7 +460,7 @@ namespace Terminals
 
         private void FavsTree_DragDrop(object sender, DragEventArgs e)
         {
-            String[] files = e.Data.GetData(DataFormats.FileDrop) as String[];
+            var files = e.Data.GetData(DataFormats.FileDrop) as String[];
             if (files != null)
             {
                 List<FavoriteConfigurationElement> favoritesToImport = Integrations.Importers.ImportFavorites(files);
@@ -486,14 +486,11 @@ namespace Terminals
 
         private void CreateGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (NewGroupForm frmNewGroup = new NewGroupForm())
-            {
-                if (frmNewGroup.ShowDialog() == DialogResult.OK)
-                {
-                    IGroup createdGroup = Persistence.Instance.Factory.CreateGroup(frmNewGroup.GroupName);
-                    Persistence.Instance.Groups.Add(createdGroup);
-                }
-            }
+            string newGroupName = NewGroupForm.AskFroGroupName();
+            if (string.IsNullOrEmpty(newGroupName))
+                return;
+            IGroup createdGroup = Persistence.Instance.Factory.CreateGroup(newGroupName);
+            Persistence.Instance.Groups.Add(createdGroup);
         }
 
         #endregion

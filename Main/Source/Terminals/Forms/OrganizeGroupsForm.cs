@@ -46,17 +46,10 @@ namespace Terminals
 
         private void TsbAddGroup_Click(object sender, EventArgs e)
         {
-            using (NewGroupForm frmNewGroup = new NewGroupForm())
-            {
-                if (frmNewGroup.ShowDialog() == DialogResult.OK)
-                {
-                    this.CreateNewGroupIfDoesntExist(frmNewGroup.GroupName);
-                }
-            }
-        }
-
-        private void CreateNewGroupIfDoesntExist(string newGroupName)
-        {
+            string newGroupName = NewGroupForm.AskFroGroupName();
+            if (string.IsNullOrEmpty(newGroupName))
+                return;
+            
             FavoritesFactory.GetOrAddNewGroup(newGroupName);   
             this.LoadGroups();
         }
