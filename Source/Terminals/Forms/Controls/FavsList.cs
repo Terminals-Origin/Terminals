@@ -97,10 +97,9 @@ namespace Terminals
             {
                 var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
                 if (groupNode != null)
-                {
                     frmNewTerminal.AssingSelectedGroup(groupNode.Group);
-                    frmNewTerminal.ShowDialog();
-                }
+                
+                frmNewTerminal.ShowDialog();
             }
         }
 
