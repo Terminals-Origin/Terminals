@@ -144,11 +144,21 @@ namespace Terminals.Forms
 
         internal bool ValidateGrouName(TextBox txtGroupName)
         {
-            IGroup group = Persistence.Instance.Factory.CreateGroup(txtGroupName.Text);
-            List<ValidationState> results = Validations.ValidateGroupName(group);
-            string message = SelectMessage(results, Validations.GROUP_NAME);
+            string groupName = txtGroupName.Text;
+            string message = ValidateGroupName(groupName);
             this.form.SetErrorInfo(txtGroupName, message);
             return string.IsNullOrEmpty(message);
+        }
+
+        /// <summary>
+        /// Returns error mesages obtained from validator
+        /// or empty string, if group name is valid in current persistence.
+        /// </summary>
+        internal static string ValidateGroupName(string groupName)
+        {
+            IGroup group = Persistence.Instance.Factory.CreateGroup(groupName);
+            List<ValidationState> results = Validations.ValidateGroupName(@group);
+            return SelectMessage(results, Validations.GROUP_NAME);
         }
     }
 }

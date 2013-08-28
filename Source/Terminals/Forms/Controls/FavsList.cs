@@ -489,8 +489,8 @@ namespace Terminals
             string newGroupName = NewGroupForm.AskFroGroupName();
             if (string.IsNullOrEmpty(newGroupName))
                 return;
-            IGroup createdGroup = Persistence.Instance.Factory.CreateGroup(newGroupName);
-            Persistence.Instance.Groups.Add(createdGroup);
+            
+            FavoritesFactory.GetOrAddNewGroup(newGroupName);
         }
 
         #endregion
@@ -507,6 +507,17 @@ namespace Terminals
         {
             this.favsTree.ExpandedNodes = Settings.ExpandedFavoriteNodes;
             this.historyTreeView.ExpandedNodes = Settings.ExpandedHistoryNodes;
+        }
+
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var untagged = this.favsTree.SelectedNode as UntagedGroupNode;
+            if (untagged != null)
+                return;
+
+            var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
+            if (groupNode != null)
+                Persistence.Instance.Groups.Delete(groupNode.Group);
         }
     }
 }
