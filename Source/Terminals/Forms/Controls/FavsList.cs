@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -56,7 +56,7 @@ namespace Terminals
             this.favsTree.Load();
             this.historyTreeView.Load();
             this.LoadState();
-            this.favsTree.NodeMouseClick += new TreeNodeMouseClickEventHandler(this.FavsTree_NodeMouseClick);
+            this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
         }
 
         private void HistoryTreeView_DoubleClick(object sender, EventArgs e)
@@ -424,17 +424,27 @@ namespace Terminals
             }
         }
 
-        private void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void FavsTree_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-                this.favsTree.SelectedNode = e.Node;
+            if (e.Button != MouseButtons.Right)
+                return;
 
-                if (this.favsTree.SelectedFavorite != null)
-                    this.favsTree.ContextMenuStrip = this.favoritesContextMenu;
-                else
-                    this.favsTree.ContextMenuStrip = this.groupsContextMenu;
-            }
+            var clickedPoint = new Point(e.X, e.Y);
+            TreeNode clickedNode = this.favsTree.GetNodeAt(clickedPoint);
+            this.favsTree.SelectedNode = clickedNode;
+
+            if (clickedNode != null)
+                this.FavsTreeNodeMenuOpening(clickedPoint);
+            else
+                this.defaultContextMenu.Show(this.favsTree, clickedPoint);
+        }
+
+        private void FavsTreeNodeMenuOpening(Point clickedPoint)
+        {
+            if (this.favsTree.SelectedFavorite != null)
+                this.favoritesContextMenu.Show(this.favsTree, clickedPoint);
+            else
+                this.groupsContextMenu.Show(this.favsTree, clickedPoint);
         }
 
         private void FavsTree_DoubleClick(object sender, EventArgs e)
@@ -472,6 +482,18 @@ namespace Terminals
         {
             if (e.KeyCode == Keys.Enter)
                 this.StartConnection(historyTreeView);
+        }
+
+        private void CreateGroupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (NewGroupForm frmNewGroup = new NewGroupForm())
+            {
+                if (frmNewGroup.ShowDialog() == DialogResult.OK)
+                {
+                    IGroup createdGroup = Persistence.Instance.Factory.CreateGroup(frmNewGroup.GroupName);
+                    Persistence.Instance.Groups.Add(createdGroup);
+                }
+            }
         }
 
         #endregion
