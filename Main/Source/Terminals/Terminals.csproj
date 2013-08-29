@@ -1320,6 +1320,7 @@
     <None Include="Resources\collapse_all.gif" />
     <Content Include="Resources\forward.png" />
     <None Include="Resources\green.png" />
+    <None Include="Resources\history_icon_today.png" />
     <Content Include="Resources\home.png" />
     <None Include="Resources\NewFolderHS.png" />
     <None Include="Resources\polarized-glasses.png" />

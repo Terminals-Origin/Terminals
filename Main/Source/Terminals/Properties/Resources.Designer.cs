@@ -359,6 +359,16 @@ namespace Terminals.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap history_icon_today {
+            get {
+                object obj = ResourceManager.GetObject("history_icon_today", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap ico_scapture {
             get {
                 object obj = ResourceManager.GetObject("ico_scapture", resourceCulture);

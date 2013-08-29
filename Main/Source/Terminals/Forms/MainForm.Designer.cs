@@ -86,6 +86,7 @@ namespace Terminals
             this.rebuildTagsIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildShortcutsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rebuildToolbarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.openLogFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
@@ -93,10 +94,10 @@ namespace Terminals
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.favoriteToolBar = new System.Windows.Forms.ToolStrip();
             this.tsRemoteToolbar = new System.Windows.Forms.ToolStrip();
             this.tsbCMD = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.favoriteToolBar = new System.Windows.Forms.ToolStrip();
             this.SpecialCommandsToolStrip = new System.Windows.Forms.ToolStrip();
             this.toolbarStd = new System.Windows.Forms.ToolStrip();
             this.tsbNewTerminal = new System.Windows.Forms.ToolStripButton();
@@ -130,7 +131,6 @@ namespace Terminals
             this.sentCTRLALTDELETEKeysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TerminalServerMenuButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
-            this.clearHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ShortcutsContextMenu.SuspendLayout();
             this.toolStripContainer.ContentPanel.SuspendLayout();
             this.toolStripContainer.TopToolStripPanel.SuspendLayout();
@@ -230,8 +230,8 @@ namespace Terminals
             // toolStripContainer.TopToolStripPanel
             // 
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.menuStrip);
-            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.tsRemoteToolbar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.favoriteToolBar);
+            this.toolStripContainer.TopToolStripPanel.Controls.Add(this.tsRemoteToolbar);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.SpecialCommandsToolStrip);
             this.toolStripContainer.TopToolStripPanel.Controls.Add(this.toolbarStd);
             // 
@@ -713,6 +713,14 @@ namespace Terminals
             this.rebuildToolbarsToolStripMenuItem.ToolTipText = "Restores last saved position of all Toolbars in main window";
             this.rebuildToolbarsToolStripMenuItem.Click += new System.EventHandler(this.RebuildToolbarsToolStripMenuItem_Click);
             // 
+            // clearHistoryToolStripMenuItem
+            // 
+            this.clearHistoryToolStripMenuItem.Image = global::Terminals.Properties.Resources.history_icon_today;
+            this.clearHistoryToolStripMenuItem.Name = "clearHistoryToolStripMenuItem";
+            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.clearHistoryToolStripMenuItem.Text = "Clear History";
+            this.clearHistoryToolStripMenuItem.Click += new System.EventHandler(this.ClearHistoryToolStripMenuItem_Click);
+            // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
@@ -769,14 +777,6 @@ namespace Terminals
             this.updateToolStripItem.Visible = false;
             this.updateToolStripItem.Click += new System.EventHandler(this.UpdateToolStripItem_Click);
             // 
-            // favoriteToolBar
-            // 
-            this.favoriteToolBar.Dock = System.Windows.Forms.DockStyle.None;
-            this.favoriteToolBar.Location = new System.Drawing.Point(3, 24);
-            this.favoriteToolBar.Name = "favoriteToolBar";
-            this.favoriteToolBar.Size = new System.Drawing.Size(111, 25);
-            this.favoriteToolBar.TabIndex = 4;
-            // 
             // tsRemoteToolbar
             // 
             this.tsRemoteToolbar.Dock = System.Windows.Forms.DockStyle.None;
@@ -808,6 +808,14 @@ namespace Terminals
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.Click += new System.EventHandler(this.ToolStripButton1_Click);
+            // 
+            // favoriteToolBar
+            // 
+            this.favoriteToolBar.Dock = System.Windows.Forms.DockStyle.None;
+            this.favoriteToolBar.Location = new System.Drawing.Point(3, 24);
+            this.favoriteToolBar.Name = "favoriteToolBar";
+            this.favoriteToolBar.Size = new System.Drawing.Size(111, 25);
+            this.favoriteToolBar.TabIndex = 4;
             // 
             // SpecialCommandsToolStrip
             // 
@@ -1138,13 +1146,6 @@ namespace Terminals
             this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton5.Text = "Computer Management (MMC)";
             this.toolStripButton5.Click += new System.EventHandler(this.ToolStripButton5_Click);
-            // 
-            // clearHistoryToolStripMenuItem
-            // 
-            this.clearHistoryToolStripMenuItem.Name = "clearHistoryToolStripMenuItem";
-            this.clearHistoryToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
-            this.clearHistoryToolStripMenuItem.Text = "Clear History";
-            this.clearHistoryToolStripMenuItem.Click += new System.EventHandler(this.ClearHistoryToolStripMenuItem_Click);
             // 
             // MainForm
             // 
