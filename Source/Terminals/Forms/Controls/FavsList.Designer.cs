@@ -50,12 +50,18 @@
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.FavoritesTabPage = new System.Windows.Forms.TabPage();
-            this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
+            this.favoritesTreeMenu = new System.Windows.Forms.ToolStrip();
+            this.addButton = new System.Windows.Forms.ToolStripButton();
+            this.removeButton = new System.Windows.Forms.ToolStripButton();
+            this.addGroupButton = new System.Windows.Forms.ToolStripButton();
+            this.removeGroupButton = new System.Windows.Forms.ToolStripButton();
+            this.connectButton = new System.Windows.Forms.ToolStripButton();
+            this.collapseButton = new System.Windows.Forms.ToolStripButton();
             this.HistoryTabPage = new System.Windows.Forms.TabPage();
-            this.historyTreeView = new Terminals.Forms.Controls.HistoryTreeView();
             this.defaultContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.createGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createFavoriteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.collapseAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupsContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.createFavoriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToAllMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -67,9 +73,12 @@
             this.setDomainByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setPasswordByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.favsTree = new Terminals.Forms.Controls.FavoritesTreeView();
+            this.historyTreeView = new Terminals.Forms.Controls.HistoryTreeView();
             this.favoritesContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.FavoritesTabPage.SuspendLayout();
+            this.favoritesTreeMenu.SuspendLayout();
             this.HistoryTabPage.SuspendLayout();
             this.defaultContextMenu.SuspendLayout();
             this.groupsContextMenu.SuspendLayout();
@@ -105,7 +114,7 @@
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
             this.connectToolStripMenuItem.Size = new System.Drawing.Size(243, 22);
             this.connectToolStripMenuItem.Text = "Connect";
-            this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
+            this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
             // extraConnectToolStripMenuItem
             // 
@@ -244,37 +253,97 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(150, 150);
+            this.tabControl1.Size = new System.Drawing.Size(173, 179);
             this.tabControl1.TabIndex = 1;
             // 
             // FavoritesTabPage
             // 
             this.FavoritesTabPage.Controls.Add(this.favsTree);
+            this.FavoritesTabPage.Controls.Add(this.favoritesTreeMenu);
             this.FavoritesTabPage.Location = new System.Drawing.Point(4, 22);
             this.FavoritesTabPage.Name = "FavoritesTabPage";
             this.FavoritesTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.FavoritesTabPage.Size = new System.Drawing.Size(142, 124);
+            this.FavoritesTabPage.Size = new System.Drawing.Size(165, 153);
             this.FavoritesTabPage.TabIndex = 0;
             this.FavoritesTabPage.Text = "Favorites";
             this.FavoritesTabPage.UseVisualStyleBackColor = true;
             // 
-            // favsTree
+            // favoritesTreeMenu
             // 
-            this.favsTree.AllowDrop = true;
-            this.favsTree.CausesValidation = false;
-            this.favsTree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.favsTree.HideSelection = false;
-            this.favsTree.HotTracking = true;
-            this.favsTree.ImageIndex = 0;
-            this.favsTree.Location = new System.Drawing.Point(3, 3);
-            this.favsTree.Name = "favsTree";
-            this.favsTree.SelectedImageIndex = 0;
-            this.favsTree.ShowNodeToolTips = true;
-            this.favsTree.Size = new System.Drawing.Size(136, 118);
-            this.favsTree.TabIndex = 0;
-            this.favsTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragDrop);
-            this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragEnter);
-            this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
+            this.favoritesTreeMenu.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.favoritesTreeMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addButton,
+            this.removeButton,
+            this.addGroupButton,
+            this.removeGroupButton,
+            this.connectButton,
+            this.collapseButton});
+            this.favoritesTreeMenu.Location = new System.Drawing.Point(3, 3);
+            this.favoritesTreeMenu.Name = "favoritesTreeMenu";
+            this.favoritesTreeMenu.Size = new System.Drawing.Size(159, 25);
+            this.favoritesTreeMenu.TabIndex = 1;
+            this.favoritesTreeMenu.Text = "Favorites tree menu";
+            // 
+            // addButton
+            // 
+            this.addButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.addButton.Image = global::Terminals.Properties.Resources.add;
+            this.addButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.addButton.Name = "addButton";
+            this.addButton.Size = new System.Drawing.Size(23, 22);
+            this.addButton.Text = "New Connection";
+            this.addButton.Click += new System.EventHandler(this.CreateFavoriteToolStripMenuItem_Click);
+            // 
+            // removeButton
+            // 
+            this.removeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.removeButton.Image = global::Terminals.Properties.Resources.delete;
+            this.removeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.removeButton.Name = "removeButton";
+            this.removeButton.Size = new System.Drawing.Size(23, 22);
+            this.removeButton.Text = "Remove favorite";
+            this.removeButton.Click += new System.EventHandler(this.RemoveSelectedToolStripMenuItem_Click);
+            // 
+            // addGroupButton
+            // 
+            this.addGroupButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.addGroupButton.Image = global::Terminals.Properties.Resources.tag_blue_add;
+            this.addGroupButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.addGroupButton.Name = "addGroupButton";
+            this.addGroupButton.Size = new System.Drawing.Size(23, 22);
+            this.addGroupButton.Text = "Create Group";
+            this.addGroupButton.Click += new System.EventHandler(this.CreateGroupToolStripMenuItem_Click);
+            // 
+            // removeGroupButton
+            // 
+            this.removeGroupButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.removeGroupButton.Image = global::Terminals.Properties.Resources.tag_blue_delete;
+            this.removeGroupButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.removeGroupButton.Name = "removeGroupButton";
+            this.removeGroupButton.Size = new System.Drawing.Size(23, 22);
+            this.removeGroupButton.Text = "Delete Group";
+            this.removeGroupButton.Click += new System.EventHandler(this.DeleteGroupToolStripMenuItem_Click);
+            // 
+            // connectButton
+            // 
+            this.connectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.connectButton.Image = global::Terminals.Properties.Resources.application_lightning;
+            this.connectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.connectButton.Name = "connectButton";
+            this.connectButton.Size = new System.Drawing.Size(23, 22);
+            this.connectButton.Text = "Connect";
+            this.connectButton.Click += new System.EventHandler(this.ConnectButton_Click);
+            // 
+            // collapseButton
+            // 
+            this.collapseButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.collapseButton.Image = global::Terminals.Properties.Resources.collapse_all;
+            this.collapseButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.collapseButton.Name = "collapseButton";
+            this.collapseButton.Size = new System.Drawing.Size(23, 22);
+            this.collapseButton.Text = "Collapse";
+            this.collapseButton.ToolTipText = "Collapse favorites tree";
+            this.collapseButton.Click += new System.EventHandler(this.CollapseAllToolStripMenuItem_Click);
             // 
             // HistoryTabPage
             // 
@@ -282,31 +351,19 @@
             this.HistoryTabPage.Location = new System.Drawing.Point(4, 22);
             this.HistoryTabPage.Name = "HistoryTabPage";
             this.HistoryTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.HistoryTabPage.Size = new System.Drawing.Size(142, 124);
+            this.HistoryTabPage.Size = new System.Drawing.Size(165, 153);
             this.HistoryTabPage.TabIndex = 1;
             this.HistoryTabPage.Text = "History";
             this.HistoryTabPage.UseVisualStyleBackColor = true;
-            // 
-            // historyTreeView
-            // 
-            this.historyTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.historyTreeView.HotTracking = true;
-            this.historyTreeView.ImageIndex = 0;
-            this.historyTreeView.Location = new System.Drawing.Point(3, 3);
-            this.historyTreeView.Name = "historyTreeView";
-            this.historyTreeView.SelectedImageIndex = 0;
-            this.historyTreeView.ShowNodeToolTips = true;
-            this.historyTreeView.Size = new System.Drawing.Size(136, 118);
-            this.historyTreeView.TabIndex = 0;
-            this.historyTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HistoryTreeView_KeyUp);
             // 
             // defaultContextMenu
             // 
             this.defaultContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createGroupToolStripMenuItem,
-            this.createFavoriteToolStripMenuItem1});
+            this.createFavoriteToolStripMenuItem1,
+            this.collapseAllToolStripMenuItem});
             this.defaultContextMenu.Name = "defaultContextMenu";
-            this.defaultContextMenu.Size = new System.Drawing.Size(164, 48);
+            this.defaultContextMenu.Size = new System.Drawing.Size(164, 70);
             // 
             // createGroupToolStripMenuItem
             // 
@@ -324,6 +381,15 @@
             this.createFavoriteToolStripMenuItem1.Text = "New Connection";
             this.createFavoriteToolStripMenuItem1.Click += new System.EventHandler(this.CreateFavoriteToolStripMenuItem_Click);
             // 
+            // collapseAllToolStripMenuItem
+            // 
+            this.collapseAllToolStripMenuItem.Image = global::Terminals.Properties.Resources.collapse_all;
+            this.collapseAllToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.collapseAllToolStripMenuItem.Name = "collapseAllToolStripMenuItem";
+            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.collapseAllToolStripMenuItem.Text = "Collapse all";
+            this.collapseAllToolStripMenuItem.Click += new System.EventHandler(this.CollapseAllToolStripMenuItem_Click);
+            // 
             // groupsContextMenu
             // 
             this.groupsContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -338,7 +404,7 @@
             this.setPasswordByTagToolStripMenuItem,
             this.deleteAllFavoritesByTagToolStripMenuItem});
             this.groupsContextMenu.Name = "contextMenuStrip2";
-            this.groupsContextMenu.Size = new System.Drawing.Size(235, 230);
+            this.groupsContextMenu.Size = new System.Drawing.Size(235, 208);
             // 
             // createFavoriteToolStripMenuItem
             // 
@@ -354,7 +420,7 @@
             this.connectToAllMenuItem.Name = "connectToAllMenuItem";
             this.connectToAllMenuItem.Size = new System.Drawing.Size(234, 22);
             this.connectToAllMenuItem.Text = "Connect to All";
-            this.connectToAllMenuItem.Click += new System.EventHandler(this.ConnectToAllToolStripMenuItem_Click);
+            this.connectToAllMenuItem.Click += new System.EventHandler(this.ConnectButton_Click);
             // 
             // connectToAllExtraMenuItem
             // 
@@ -369,7 +435,7 @@
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteGroupToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -412,16 +478,51 @@
             this.deleteAllFavoritesByTagToolStripMenuItem.Text = "Delete all Favorites in Group...";
             this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.DeleteAllFavoritesByTagToolStripMenuItem_Click);
             // 
+            // favsTree
+            // 
+            this.favsTree.AllowDrop = true;
+            this.favsTree.CausesValidation = false;
+            this.favsTree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.favsTree.HideSelection = false;
+            this.favsTree.HotTracking = true;
+            this.favsTree.ImageIndex = 0;
+            this.favsTree.Location = new System.Drawing.Point(3, 28);
+            this.favsTree.Name = "favsTree";
+            this.favsTree.SelectedImageIndex = 0;
+            this.favsTree.ShowNodeToolTips = true;
+            this.favsTree.Size = new System.Drawing.Size(159, 122);
+            this.favsTree.TabIndex = 2;
+            this.favsTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragDrop);
+            this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragEnter);
+            this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
+            // 
+            // historyTreeView
+            // 
+            this.historyTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.historyTreeView.HotTracking = true;
+            this.historyTreeView.ImageIndex = 0;
+            this.historyTreeView.Location = new System.Drawing.Point(3, 3);
+            this.historyTreeView.Name = "historyTreeView";
+            this.historyTreeView.SelectedImageIndex = 0;
+            this.historyTreeView.ShowNodeToolTips = true;
+            this.historyTreeView.Size = new System.Drawing.Size(159, 147);
+            this.historyTreeView.TabIndex = 0;
+            this.historyTreeView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.HistoryTreeView_KeyUp);
+            // 
             // FavsList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tabControl1);
             this.Name = "FavsList";
+            this.Size = new System.Drawing.Size(173, 179);
             this.Load += new System.EventHandler(this.FavsList_Load);
             this.favoritesContextMenu.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.FavoritesTabPage.ResumeLayout(false);
+            this.FavoritesTabPage.PerformLayout();
+            this.favoritesTreeMenu.ResumeLayout(false);
+            this.favoritesTreeMenu.PerformLayout();
             this.HistoryTabPage.ResumeLayout(false);
             this.defaultContextMenu.ResumeLayout(false);
             this.groupsContextMenu.ResumeLayout(false);
@@ -431,7 +532,6 @@
 
         #endregion
 
-        private Terminals.Forms.Controls.FavoritesTreeView favsTree;
         private System.Windows.Forms.ContextMenuStrip favoritesContextMenu;
         private System.Windows.Forms.ToolStripMenuItem pingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dNSToolStripMenuItem;
@@ -469,5 +569,14 @@
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem duplicateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createFavoriteToolStripMenuItem1;
+        private Forms.Controls.FavoritesTreeView favsTree;
+        private System.Windows.Forms.ToolStrip favoritesTreeMenu;
+        private System.Windows.Forms.ToolStripButton addButton;
+        private System.Windows.Forms.ToolStripButton removeButton;
+        private System.Windows.Forms.ToolStripButton addGroupButton;
+        private System.Windows.Forms.ToolStripButton removeGroupButton;
+        private System.Windows.Forms.ToolStripButton connectButton;
+        private System.Windows.Forms.ToolStripMenuItem collapseAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripButton collapseButton;
     }
 }

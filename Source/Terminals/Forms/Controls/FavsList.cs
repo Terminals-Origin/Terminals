@@ -21,7 +21,7 @@ namespace Terminals
     internal partial class FavsList : UserControl
     {
         private static readonly string shutdownFailMessage = Program.Resources.GetString("UnableToRemoteShutdown");
-        internal ConnectionsUiFactory ConnectionsUiFactory { get; set; }
+        internal ConnectionsUiFactory ConnectionsUiFactory { private get; set; }
 
         private static IFavorites PersistedFavorites
         {
@@ -230,22 +230,6 @@ namespace Terminals
             }
         }
 
-        private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            IFavorite favorite = this.favsTree.SelectedFavorite;
-            if (favorite == null)
-                return;
-
-            var favorites = new List<IFavorite>() { favorite };
-            this.ConnectFromContextMenu(favorites);
-        }
-
-        private void ConnectToAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            List<IFavorite> favorites = this.GetSelectedFavorites();
-            this.ConnectFromContextMenu(favorites);
-        }
-
         private void ConnectFromContextMenu(List<IFavorite> favorites)
         {
             var definition = new ConnectionDefinition(favorites);
@@ -266,7 +250,7 @@ namespace Terminals
 
         private void ConnectToAllExtraToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<IFavorite> selectedFavorites = this.GetSelectedFavorites();
+            List<IFavorite> selectedFavorites = this.GetSelectedGroupFavorites();
             this.ConnectToFavoritesExtra(selectedFavorites);
             this.CloseMenuStrips();
         }
@@ -364,16 +348,7 @@ namespace Terminals
         {
             if (this.ParentForm != null)
                 this.ParentForm.Cursor = Cursors.WaitCursor;
-            return this.GetSelectedFavorites();
-        }
-
-        private List<IFavorite> GetSelectedFavorites()
-        {
-            var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
-            if (groupNode == null)
-                return new List<IFavorite>();
-
-            return groupNode.Favorites;
+            return this.GetSelectedGroupFavorites();
         }
 
         private void FinishBatchUpdate(string variable)
@@ -488,7 +463,7 @@ namespace Terminals
             FavoritesFactory.GetOrAddNewGroup(newGroupName);
         }
 
-        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var untagged = this.favsTree.SelectedNode as UntagedGroupNode;
             if (untagged != null)
@@ -504,6 +479,35 @@ namespace Terminals
             IFavorite selected = this.favsTree.SelectedFavorite;
             if (selected != null)
                 OrganizeFavoritesForm.CopyFavorite(selected);
+        }
+
+        private void ConnectButton_Click(object sender, EventArgs e)
+        {
+            List<IFavorite> favorites = this.GetSelectedFavorites();
+            this.ConnectFromContextMenu(favorites);
+        }
+
+        private List<IFavorite> GetSelectedFavorites()
+        {
+            IFavorite selected = this.favsTree.SelectedFavorite;
+            if (selected != null)
+                return new List<IFavorite>() {selected};
+
+            return this.GetSelectedGroupFavorites();
+        }
+
+        private List<IFavorite> GetSelectedGroupFavorites()
+        {
+            var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
+            if (groupNode == null)
+                return new List<IFavorite>();
+
+            return groupNode.Favorites;
+        }
+
+        private void CollapseAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.favsTree.CollapseAll();
         }
 
         #endregion
