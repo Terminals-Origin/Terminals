@@ -1316,6 +1316,8 @@
     <None Include="Resources\ControlPanel.png" />
     <None Include="Resources\DeleteFolderHS.png" />
     <None Include="Resources\DeleteHS.png" />
+    <None Include="Resources\Expanded.bmp" />
+    <None Include="Resources\collapse_all.gif" />
     <Content Include="Resources\forward.png" />
     <None Include="Resources\green.png" />
     <Content Include="Resources\home.png" />
