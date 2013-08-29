@@ -44,6 +44,7 @@ namespace Terminals
             this.tsbAddConnection = new System.Windows.Forms.ToolStripButton();
             this.tsbDeleteConnection = new System.Windows.Forms.ToolStripButton();
             this.panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -144,7 +145,7 @@ namespace Terminals
             // tsbAddGroup
             // 
             this.tsbAddGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbAddGroup.Image = global::Terminals.Properties.Resources.add;
+            this.tsbAddGroup.Image = global::Terminals.Properties.Resources.tag_blue_add;
             this.tsbAddGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbAddGroup.Name = "tsbAddGroup";
             this.tsbAddGroup.Size = new System.Drawing.Size(23, 22);
@@ -154,7 +155,7 @@ namespace Terminals
             // tsbDeleteGroup
             // 
             this.tsbDeleteGroup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbDeleteGroup.Image = global::Terminals.Properties.Resources.delete;
+            this.tsbDeleteGroup.Image = global::Terminals.Properties.Resources.tag_blue_delete;
             this.tsbDeleteGroup.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbDeleteGroup.Name = "tsbDeleteGroup";
             this.tsbDeleteGroup.Size = new System.Drawing.Size(23, 22);
@@ -247,6 +248,7 @@ namespace Terminals
             this.panel3.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();

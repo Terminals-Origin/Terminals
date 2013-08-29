@@ -97,7 +97,7 @@
             this.duplicateToolStripMenuItem,
             this.propertiesToolStripMenuItem});
             this.favoritesContextMenu.Name = "contextMenuStrip1";
-            this.favoritesContextMenu.Size = new System.Drawing.Size(244, 358);
+            this.favoritesContextMenu.Size = new System.Drawing.Size(244, 336);
             // 
             // connectToolStripMenuItem
             // 
@@ -310,6 +310,7 @@
             // 
             // createGroupToolStripMenuItem
             // 
+            this.createGroupToolStripMenuItem.Image = global::Terminals.Properties.Resources.tag_blue_add;
             this.createGroupToolStripMenuItem.Name = "createGroupToolStripMenuItem";
             this.createGroupToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.createGroupToolStripMenuItem.Text = "Create Group";
@@ -337,7 +338,7 @@
             this.setPasswordByTagToolStripMenuItem,
             this.deleteAllFavoritesByTagToolStripMenuItem});
             this.groupsContextMenu.Name = "contextMenuStrip2";
-            this.groupsContextMenu.Size = new System.Drawing.Size(235, 208);
+            this.groupsContextMenu.Size = new System.Drawing.Size(235, 230);
             // 
             // createFavoriteToolStripMenuItem
             // 
@@ -364,6 +365,7 @@
             // 
             // deleteToolStripMenuItem
             // 
+            this.deleteToolStripMenuItem.Image = global::Terminals.Properties.Resources.tag_blue_delete;
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
