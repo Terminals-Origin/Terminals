@@ -509,6 +509,18 @@ namespace Terminals
         {
             this.favsTree.CollapseAll();
         }
+        
+        private void CollpseHistoryButton_Click(object sender, EventArgs e)
+        {
+            this.historyTreeView.CollapseAll();
+        }
+
+        private void ClearHistoryButton_Click(object sender, EventArgs e)
+        {
+            this.Cursor = Cursors.WaitCursor;
+            Persistence.Instance.ConnectionHistory.Clear();
+            this.Cursor = Cursors.Default;
+        }
 
         #endregion
 
