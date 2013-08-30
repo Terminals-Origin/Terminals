@@ -18,12 +18,12 @@ namespace Terminals.Forms.Controls
         /// Informs, that user requests new search by changing the text to search or press enter key,
         /// or click on search button. Event is delayed by 250 ms, but fired in GUI thread.
         /// </summary>
-        internal event EventHandler<SearchEventArgs> Start;
+        public event EventHandler<SearchEventArgs> Start;
 
         /// <summary>
         /// User requests to cancel currently running search by click on cancel button or by press of Escape key
         /// </summary>
-        internal event EventHandler Cancel;
+        public event EventHandler Cancel;
 
         public SearchTextBox()
         {
