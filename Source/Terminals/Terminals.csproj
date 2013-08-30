@@ -200,6 +200,13 @@
     <Compile Include="Forms\Controls\ReconnectingControl.Designer.cs">
       <DependentUpon>ReconnectingControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Controls\SearchEventArgs.cs" />
+    <Compile Include="Forms\Controls\SearchTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\SearchTextBox.Designer.cs">
+      <DependentUpon>SearchTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Controls\TreeView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1038,6 +1045,9 @@
     <EmbeddedResource Include="Forms\Controls\ReconnectingControl.resx">
       <DependentUpon>ReconnectingControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Controls\SearchTextBox.resx">
+      <DependentUpon>SearchTextBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\UnhandledTerminationForm.resx">
       <DependentUpon>UnhandledTerminationForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -1318,6 +1328,7 @@
     <None Include="Resources\DeleteHS.png" />
     <None Include="Resources\Expanded.bmp" />
     <None Include="Resources\collapse_all.gif" />
+    <None Include="Resources\escape.png" />
     <Content Include="Resources\forward.png" />
     <None Include="Resources\green.png" />
     <None Include="Resources\history_icon_today.png" />
@@ -1335,6 +1346,7 @@
     <None Include="Resources\treeIcon_rdp.png" />
     <None Include="Resources\RotatedHeaderForWizard.png" />
     <None Include="Resources\Progress.gif" />
+    <None Include="Resources\search_glyph.png" />
     <Content Include="Resources\terminalsbanner-install.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
