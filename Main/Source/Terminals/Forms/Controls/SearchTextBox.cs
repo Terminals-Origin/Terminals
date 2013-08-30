@@ -12,7 +12,26 @@ namespace Terminals.Forms.Controls
     {
         private bool isSearching;
         private bool changingState;
+        private readonly AutoCompleteStringCollection autocompleteSource = new AutoCompleteStringCollection();
         private readonly System.Threading.Timer timer;
+
+        /// <summary>
+        /// Gets or sets current collection of searched texts used as textbox AutoCompleteSource
+        /// </summary>
+        internal string[] SearchedTexts
+        {
+            get
+            {
+                var current = new string[this.autocompleteSource.Count];
+                this.autocompleteSource.CopyTo(current, 0);
+                return current;
+            }
+            set
+            {
+                this.autocompleteSource.Clear();
+                this.autocompleteSource.AddRange(value);
+            }
+        }
 
         /// <summary>
         /// Informs, that user requests new search by changing the text to search or press enter key,
@@ -28,7 +47,16 @@ namespace Terminals.Forms.Controls
         public SearchTextBox()
         {
             this.InitializeComponent();
+
+            this.ConfigureAutoComplete();
             this.timer = new System.Threading.Timer(c => this.StartSearch(), null, Timeout.Infinite, Timeout.Infinite);
+        }
+
+        private void ConfigureAutoComplete()
+        {
+            this.valueTextBox.AutoCompleteCustomSource = this.autocompleteSource;
+            this.valueTextBox.AutoCompleteMode = AutoCompleteMode.Suggest;
+            this.valueTextBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
 
         private void ValueTextBoxTextChanged(object sender, EventArgs e)
@@ -73,13 +101,21 @@ namespace Terminals.Forms.Controls
 
         private void DoSearch()
         {
-            if (string.IsNullOrEmpty(this.valueTextBox.Text))
+            string searchText = this.valueTextBox.Text;
+            if (string.IsNullOrEmpty(searchText))
                 return;
 
             this.isSearching = true;
+            this.AppendAutoComplete(searchText);
             this.searchButton.Image = Resources.escape;
             this.valueTextBox.Focus();
             this.FireStart();
+        }
+
+        private void AppendAutoComplete(string searchText)
+        {
+            if (!this.autocompleteSource.Contains(searchText))
+                this.autocompleteSource.Add(searchText);
         }
 
         private void FireStart()

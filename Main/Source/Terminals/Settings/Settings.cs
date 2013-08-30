@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using SSHClient;
 using Terminals.Data;
@@ -924,6 +925,19 @@ namespace Terminals.Configuration
             get
             {
                 return GetSection().UsersMRU.ToSortedArray();
+            }
+        }
+
+        public static string[] SavedSearches
+        {
+            get
+            {
+                return GetSection().SearchesMRU.ToSortedArray();
+            }
+            set
+            {
+                var newSearches = new MRUItemConfigurationElementCollection(value.Distinct());
+                GetSection().SearchesMRU = newSearches;
             }
         }
 

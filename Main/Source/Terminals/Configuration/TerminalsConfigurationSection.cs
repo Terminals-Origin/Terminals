@@ -912,6 +912,20 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("searchesMRU")]
+        [ConfigurationCollection(typeof(MRUItemConfigurationElementCollection))]
+        public MRUItemConfigurationElementCollection SearchesMRU
+        {
+            get
+            {
+                return (MRUItemConfigurationElementCollection)this["searchesMRU"];
+            }
+            set
+            {
+                this["searchesMRU"] = value;
+            }
+        }
+
         #endregion
 
 

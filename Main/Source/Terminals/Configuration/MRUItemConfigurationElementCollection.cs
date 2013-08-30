@@ -9,6 +9,14 @@ namespace Terminals
     {
         public MRUItemConfigurationElementCollection() { }
 
+        internal MRUItemConfigurationElementCollection(IEnumerable<string> values)
+        {
+            foreach (string newItem in values)
+            {
+                this.AddByName(newItem);
+            }
+        }
+
         public override ConfigurationElementCollectionType CollectionType
         {
             get
