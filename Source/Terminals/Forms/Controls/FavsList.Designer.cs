@@ -79,6 +79,8 @@
             this.setDomainByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setPasswordByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchTabPage = new System.Windows.Forms.TabPage();
+            this.searchPanel1 = new Terminals.Forms.Controls.SearchPanel();
             this.favoritesContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.FavoritesTabPage.SuspendLayout();
@@ -87,6 +89,7 @@
             this.historyTreeMenu.SuspendLayout();
             this.defaultContextMenu.SuspendLayout();
             this.groupsContextMenu.SuspendLayout();
+            this.searchTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // favoritesContextMenu
@@ -252,6 +255,7 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Controls.Add(this.searchTabPage);
             this.tabControl1.Controls.Add(this.FavoritesTabPage);
             this.tabControl1.Controls.Add(this.HistoryTabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -558,6 +562,25 @@
             this.deleteAllFavoritesByTagToolStripMenuItem.Text = "Delete all Favorites in Group...";
             this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.DeleteAllFavoritesByTagToolStripMenuItem_Click);
             // 
+            // searchTabPage
+            // 
+            this.searchTabPage.Controls.Add(this.searchPanel1);
+            this.searchTabPage.Location = new System.Drawing.Point(4, 22);
+            this.searchTabPage.Name = "searchTabPage";
+            this.searchTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.searchTabPage.Size = new System.Drawing.Size(165, 153);
+            this.searchTabPage.TabIndex = 2;
+            this.searchTabPage.Text = "Search";
+            this.searchTabPage.UseVisualStyleBackColor = true;
+            // 
+            // searchPanel1
+            // 
+            this.searchPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.searchPanel1.Location = new System.Drawing.Point(3, 3);
+            this.searchPanel1.Name = "searchPanel1";
+            this.searchPanel1.Size = new System.Drawing.Size(159, 147);
+            this.searchPanel1.TabIndex = 0;
+            // 
             // FavsList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -578,6 +601,7 @@
             this.historyTreeMenu.PerformLayout();
             this.defaultContextMenu.ResumeLayout(false);
             this.groupsContextMenu.ResumeLayout(false);
+            this.searchTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -634,5 +658,7 @@
         private System.Windows.Forms.ToolStripButton connectHistoryButton;
         private System.Windows.Forms.ToolStripButton collpseHistoryButton;
         private System.Windows.Forms.ToolStripButton clearHistoryButton;
+        private System.Windows.Forms.TabPage searchTabPage;
+        private Forms.Controls.SearchPanel searchPanel1;
     }
 }

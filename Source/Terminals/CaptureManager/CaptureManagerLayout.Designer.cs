@@ -57,10 +57,12 @@ namespace Terminals.CaptureManager
             this.lblComments = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.treeContextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
@@ -114,13 +116,13 @@ namespace Terminals.CaptureManager
             this.newFolderToolStripMenuItem,
             this.deleteFolderToolStripMenuItem});
             this.treeContextMenu.Name = "treeContextMenu";
-            this.treeContextMenu.Size = new System.Drawing.Size(150, 48);
+            this.treeContextMenu.Size = new System.Drawing.Size(144, 48);
             // 
             // newFolderToolStripMenuItem
             // 
             this.newFolderToolStripMenuItem.Image = global::Terminals.Properties.Resources.NewFolderHS;
             this.newFolderToolStripMenuItem.Name = "newFolderToolStripMenuItem";
-            this.newFolderToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.newFolderToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.newFolderToolStripMenuItem.Text = "New Folder";
             this.newFolderToolStripMenuItem.Click += new System.EventHandler(this.newFolderToolStripMenuItem_Click);
             // 
@@ -128,7 +130,7 @@ namespace Terminals.CaptureManager
             // 
             this.deleteFolderToolStripMenuItem.Image = global::Terminals.Properties.Resources.DeleteFolderHS;
             this.deleteFolderToolStripMenuItem.Name = "deleteFolderToolStripMenuItem";
-            this.deleteFolderToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.deleteFolderToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
             this.deleteFolderToolStripMenuItem.Text = "Delete Folder";
             this.deleteFolderToolStripMenuItem.Click += new System.EventHandler(this.deleteFolderToolStripMenuItem_Click);
             // 
@@ -182,28 +184,28 @@ namespace Terminals.CaptureManager
             this.copyImageToClipboardToolStripMenuItem,
             this.copyImagePathToClipboardToolStripMenuItem});
             this.thumbsContextMenu.Name = "thumbsContextMenu";
-            this.thumbsContextMenu.Size = new System.Drawing.Size(228, 92);
+            this.thumbsContextMenu.Size = new System.Drawing.Size(233, 70);
             this.thumbsContextMenu.Opening += new System.ComponentModel.CancelEventHandler(this.thumbsContextMenu_Opening);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Image = global::Terminals.Properties.Resources.DeleteHS;
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteFileToolStripMenuItem_Click);
             // 
             // copyImageToClipboardToolStripMenuItem
             // 
             this.copyImageToClipboardToolStripMenuItem.Name = "copyImageToClipboardToolStripMenuItem";
-            this.copyImageToClipboardToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.copyImageToClipboardToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.copyImageToClipboardToolStripMenuItem.Text = "Copy Image to clipboard";
             this.copyImageToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyImageToClipboardToolStripMenuItem_Click);
             // 
             // copyImagePathToClipboardToolStripMenuItem
             // 
             this.copyImagePathToClipboardToolStripMenuItem.Name = "copyImagePathToClipboardToolStripMenuItem";
-            this.copyImagePathToClipboardToolStripMenuItem.Size = new System.Drawing.Size(227, 22);
+            this.copyImagePathToClipboardToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
             this.copyImagePathToClipboardToolStripMenuItem.Text = "Copy Image path to clipboard";
             this.copyImagePathToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyImagePathToClipboardToolStripMenuItem_Click);
             // 
@@ -270,7 +272,7 @@ namespace Terminals.CaptureManager
             this.trackBarZoom.Maximum = 256;
             this.trackBarZoom.Minimum = 25;
             this.trackBarZoom.Name = "trackBarZoom";
-            this.trackBarZoom.Size = new System.Drawing.Size(104, 42);
+            this.trackBarZoom.Size = new System.Drawing.Size(104, 45);
             this.trackBarZoom.SmallChange = 10;
             this.trackBarZoom.TabIndex = 4;
             this.trackBarZoom.TickStyle = System.Windows.Forms.TickStyle.None;
@@ -370,10 +372,12 @@ namespace Terminals.CaptureManager
             this.Load += new System.EventHandler(this.CaptureManagerLayout_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.treeContextMenu.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.thumbsContextMenu.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
