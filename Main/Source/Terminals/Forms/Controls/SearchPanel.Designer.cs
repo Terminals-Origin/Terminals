@@ -37,7 +37,7 @@ namespace Terminals.Forms.Controls
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchPanel));
             this.protocolsImageList = new System.Windows.Forms.ImageList(this.components);
-            this.searchTextBox = new Terminals.Forms.Controls.SearchTextBox();
+            this.searchTextBox = new Terminals.Forms.Controls.FavoritesSearchBox();
             this.resultsListView = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
@@ -55,15 +55,13 @@ namespace Terminals.Forms.Controls
             // searchTextBox
             // 
             this.searchTextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.searchTextBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.searchTextBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.searchTextBox.Location = new System.Drawing.Point(0, 0);
             this.searchTextBox.MinimumSize = new System.Drawing.Size(30, 22);
             this.searchTextBox.Name = "searchTextBox";
             this.searchTextBox.Size = new System.Drawing.Size(218, 22);
             this.searchTextBox.TabIndex = 0;
-            this.searchTextBox.Start += new System.EventHandler<Terminals.Forms.Controls.SearchEventArgs>(this.SearchTextBoxStart);
-            this.searchTextBox.Cancel += new System.EventHandler(this.SearchTextBoxCancel);
+            this.searchTextBox.Found += new System.EventHandler<Terminals.Forms.Controls.FavoritesFoundEventArgs>(this.FavoritesSearchFound);
             // 
             // resultsListView
             // 
@@ -92,7 +90,7 @@ namespace Terminals.Forms.Controls
 
         #endregion
 
-        private SearchTextBox searchTextBox;
+        private FavoritesSearchBox searchTextBox;
         private System.Windows.Forms.ImageList protocolsImageList;
         private System.Windows.Forms.ListView resultsListView;
     }

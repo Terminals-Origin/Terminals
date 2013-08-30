@@ -173,6 +173,7 @@ namespace Terminals
             this.copyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.favoritesSearchBox = new Terminals.Forms.Controls.FavoritesSearchBox();
             this.bsFavorites = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -1165,6 +1166,7 @@ namespace Terminals
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.favoritesSearchBox);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.lblSelectedCount);
             this.panel2.Controls.Add(this.lblConnectionCount);
@@ -1173,6 +1175,15 @@ namespace Terminals
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(866, 22);
             this.panel2.TabIndex = 15;
+            // 
+            // favoritesSearchBox
+            // 
+            this.favoritesSearchBox.Dock = System.Windows.Forms.DockStyle.Right;
+            this.favoritesSearchBox.Location = new System.Drawing.Point(666, 0);
+            this.favoritesSearchBox.Name = "favoritesSearchBox";
+            this.favoritesSearchBox.Size = new System.Drawing.Size(200, 22);
+            this.favoritesSearchBox.TabIndex = 15;
+            this.favoritesSearchBox.Found += new System.EventHandler<Terminals.Forms.Controls.FavoritesFoundEventArgs>(this.FavoritesSearchBoxFound);
             // 
             // bsFavorites
             // 
@@ -1358,5 +1369,6 @@ namespace Terminals
         private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
+        private Forms.Controls.FavoritesSearchBox favoritesSearchBox;
     }
 }

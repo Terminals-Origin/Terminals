@@ -46,18 +46,17 @@ namespace Terminals
         private void InitializeDataGrid()
         {
             this.dataGridFavorites.AutoGenerateColumns = false; // because of designer
-            this.bsFavorites.DataSource = ConvertFavoritesToViewModel();
+            this.bsFavorites.DataSource = ConvertFavoritesToViewModel(PersistedFavorites.ToListOrderedByDefaultSorting());
             string sortingProperty = FavoriteConfigurationElement.GetDefaultSortPropertyName();
             DataGridViewColumn sortedColumn = this.dataGridFavorites.FindColumnByPropertyName(sortingProperty);
             sortedColumn.HeaderCell.SortGlyphDirection = SortOrder.Ascending;
             this.dataGridFavorites.DataSource = this.bsFavorites;
         }
 
-        private static SortableList<FavoriteViewModel> ConvertFavoritesToViewModel()
+        private static SortableList<FavoriteViewModel> ConvertFavoritesToViewModel(SortableList<IFavorite> source)
         {
             ICredentials storedCredentials = Persistence.Instance.Credentials;
-            IEnumerable<FavoriteViewModel> sortedFavorites = PersistedFavorites.ToListOrderedByDefaultSorting()
-                .Select(favorite => new FavoriteViewModel(favorite, storedCredentials));
+            IEnumerable<FavoriteViewModel> sortedFavorites = source.Select(favorite => new FavoriteViewModel(favorite, storedCredentials));
             return new SortableList<FavoriteViewModel>(sortedFavorites); 
         }
 
@@ -204,12 +203,17 @@ namespace Terminals
                 this.UpdateFavoritesBindingSource();
         }
 
+        private void UpdateFavoritesBindingSource()
+        {
+            UpdateFavoritesBindingSource(PersistedFavorites.ToListOrderedByDefaultSorting());
+        }
+
         /// <summary>
         /// Replace the favorites in binding source doesnt affect performance
         /// </summary>
-        private void UpdateFavoritesBindingSource()
+        private void UpdateFavoritesBindingSource(SortableList<IFavorite> newData)
         {
-            SortableList<FavoriteViewModel> data = ConvertFavoritesToViewModel();
+            SortableList<FavoriteViewModel> data = ConvertFavoritesToViewModel(newData);
 
             DataGridViewColumn lastSortedColumn = this.dataGridFavorites.FindLastSortedColumn();
             if (lastSortedColumn != null) // keep last ordered column
@@ -391,6 +395,14 @@ namespace Terminals
             IFavorite favorite = this.GetSelectedFavorite();
             var definition = new ConnectionDefinition(new List<IFavorite>() {favorite});
             this.connectionsUiFactory.Connect(definition);
+        }
+
+        private void FavoritesSearchBoxFound(object sender, FavoritesFoundEventArgs e)
+        {
+            if (e.Favorites.Count == 0)
+                this.UpdateFavoritesBindingSource();
+            else
+                this.UpdateFavoritesBindingSource(new SortableList<IFavorite>(e.Favorites));
         }
     }
 }
