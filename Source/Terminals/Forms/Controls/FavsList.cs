@@ -57,6 +57,7 @@ namespace Terminals
             this.historyTreeView.Load();
             this.LoadState();
             this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
+            this.searchPanel1.SaveSearches = Settings.SavedSearches;
         }
 
         private void HistoryTreeView_DoubleClick(object sender, EventArgs e)
@@ -530,6 +531,7 @@ namespace Terminals
             Settings.ExpandedFavoriteNodes = this.favsTree.ExpandedNodes;
             Settings.ExpandedHistoryNodes = this.historyTreeView.ExpandedNodes;
             Settings.SaveAndFinishDelayedUpdate();
+            Settings.SavedSearches = this.searchPanel1.SaveSearches;
         }
 
         private void LoadState()

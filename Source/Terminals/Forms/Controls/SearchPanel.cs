@@ -12,6 +12,12 @@ namespace Terminals.Forms.Controls
     {
         private CancellationTokenSource cancellationTokenSource;
 
+        internal string[] SaveSearches
+        {
+            get { return this.searchTextBox.SearchedTexts; }
+            set { this.searchTextBox.SearchedTexts = value; }
+        }
+
         public SearchPanel()
         {
             InitializeComponent();
