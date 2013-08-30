@@ -304,6 +304,16 @@ namespace Terminals.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap escape {
+            get {
+                object obj = ResourceManager.GetObject("escape", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.01 Transitional//EN&quot;&gt;
         ///&lt;html&gt;&lt;head&gt;&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html;charset=iso-8859-1&quot;&gt;
         ///&lt;title&gt;WinPcap: Filtering expression syntax&lt;/title&gt;
@@ -482,6 +492,16 @@ namespace Terminals.Properties {
         internal static System.Drawing.Bitmap screen_capture_box {
             get {
                 object obj = ResourceManager.GetObject("screen_capture_box", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap search_glyph {
+            get {
+                object obj = ResourceManager.GetObject("search_glyph", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
