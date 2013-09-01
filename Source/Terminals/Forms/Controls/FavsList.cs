@@ -58,6 +58,7 @@ namespace Terminals
             this.LoadState();
             this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
             this.searchPanel1.SaveSearches = Settings.SavedSearches;
+            this.searchPanel1.RegisterUpdateEvent();
         }
 
         private void HistoryTreeView_DoubleClick(object sender, EventArgs e)

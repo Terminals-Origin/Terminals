@@ -19,17 +19,10 @@ namespace Terminals
         private ConnectionsUiFactory connectionsUiFactory;
         private SortableList<IFavorite> foundFavorites = new SortableList<IFavorite>();
 
-        private bool HasFoundFavorites { get { return this.foundFavorites.Count > 0; } }
-
         private static IFavorites PersistedFavorites
         {
             get { return Persistence.Instance.Favorites; }
         }
-
-        private DataDispatcher Dispatcher
-        {
-            get { return Persistence.Instance.Dispatcher; }
-        } 
 
         internal OrganizeFavoritesForm()
         {
@@ -213,7 +206,7 @@ namespace Terminals
 
         private void UpdateFavoritesBindingSource()
         {
-            if (this.HasFoundFavorites)
+            if (this.foundFavorites.Count > 0)
                 this.UpdateFavoritesBindingSource(this.foundFavorites);
             else
                 UpdateFavoritesBindingSource(PersistedFavorites.ToListOrderedByDefaultSorting());
@@ -418,18 +411,12 @@ namespace Terminals
 
         private void OrganizeFavoritesForm_Load(object sender, EventArgs e)
         {
-            this.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
+            this.favoritesSearchBox.RegisterUpdateEvent();
         }
 
         private void OrganizeFavoritesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
-        }
-
-        private void PersistenceFavoritesChanged(FavoritesChangedEventArgs args)
-        {
-            if (this.HasFoundFavorites)
-                this.favoritesSearchBox.StartSearch();
+            this.favoritesSearchBox.UnRegisterUpdateEvent();
         }
     }
 }
