@@ -17,11 +17,19 @@ namespace Terminals
         private string editedFavoriteName = String.Empty;
         private IFavorite editedFavorite;
         private ConnectionsUiFactory connectionsUiFactory;
+        private SortableList<IFavorite> foundFavorites = new SortableList<IFavorite>();
+
+        private bool HasFoundFavorites { get { return this.foundFavorites.Count > 0; } }
 
         private static IFavorites PersistedFavorites
         {
             get { return Persistence.Instance.Favorites; }
         }
+
+        private DataDispatcher Dispatcher
+        {
+            get { return Persistence.Instance.Dispatcher; }
+        } 
 
         internal OrganizeFavoritesForm()
         {
@@ -205,7 +213,10 @@ namespace Terminals
 
         private void UpdateFavoritesBindingSource()
         {
-            UpdateFavoritesBindingSource(PersistedFavorites.ToListOrderedByDefaultSorting());
+            if (this.HasFoundFavorites)
+                this.UpdateFavoritesBindingSource(this.foundFavorites);
+            else
+                UpdateFavoritesBindingSource(PersistedFavorites.ToListOrderedByDefaultSorting());
         }
 
         /// <summary>
@@ -386,8 +397,10 @@ namespace Terminals
 
         private void ExportToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ExportFrom exportFrom = new ExportFrom();
-            exportFrom.Show();
+            using (var exportFrom = new ExportFrom())
+            {
+                exportFrom.Show();
+            }
         }
 
         private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -399,10 +412,24 @@ namespace Terminals
 
         private void FavoritesSearchBoxFound(object sender, FavoritesFoundEventArgs e)
         {
-            if (e.Favorites.Count == 0)
-                this.UpdateFavoritesBindingSource();
-            else
-                this.UpdateFavoritesBindingSource(new SortableList<IFavorite>(e.Favorites));
+            this.foundFavorites = new SortableList<IFavorite>(e.Favorites);
+            this.UpdateFavoritesBindingSource();
+        }
+
+        private void OrganizeFavoritesForm_Load(object sender, EventArgs e)
+        {
+            this.Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
+        }
+
+        private void OrganizeFavoritesForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
+        }
+
+        private void PersistenceFavoritesChanged(FavoritesChangedEventArgs args)
+        {
+            if (this.HasFoundFavorites)
+                this.favoritesSearchBox.StartSearch();
         }
     }
 }

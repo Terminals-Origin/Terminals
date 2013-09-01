@@ -34,6 +34,17 @@ namespace Terminals.Forms.Controls
         }
 
         /// <summary>
+        /// Gets value of the text to search entered by the user in the text box.
+        /// </summary>
+        internal string SearchText
+        {
+            get
+            {
+                return this.valueTextBox.Text;
+            }
+        }
+
+        /// <summary>
         /// Informs, that user requests new search by changing the text to search or press enter key,
         /// or click on search button. Event is delayed by 250 ms, but fired in GUI thread.
         /// </summary>
@@ -101,12 +112,11 @@ namespace Terminals.Forms.Controls
 
         private void DoSearch()
         {
-            string searchText = this.valueTextBox.Text;
-            if (string.IsNullOrEmpty(searchText))
+            if (string.IsNullOrEmpty(this.SearchText))
                 return;
 
             this.isSearching = true;
-            this.AppendAutoComplete(searchText);
+            this.AppendAutoComplete(this.SearchText);
             this.searchButton.Image = Resources.escape;
             this.valueTextBox.Focus();
             this.FireStart();
@@ -122,7 +132,7 @@ namespace Terminals.Forms.Controls
         {
             if (this.Start != null)
             {
-                var args = new SearchEventArgs(this.valueTextBox.Text);
+                var args = new SearchEventArgs(this.SearchText);
                 this.Start(this, args);
             }
         }

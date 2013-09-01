@@ -29,14 +29,29 @@ namespace Terminals.Forms.Controls
             InitializeComponent();
         }
 
+        /// <summary>
+        /// we dont want to change the search user control state,
+        /// we only want to kick off new search of favorites.
+        /// Using this as an persistence event handler allowes to keep the results list up to date with the cache
+        /// </summary>
+        internal void StartSearch()
+        {
+            this.StartSearch(this.searchTextBox.SearchText);
+        }
+
         private void SearchTextBoxStart(object sender, SearchEventArgs e)
+        {
+            this.StartSearch(e.SearchText);
+        }
+
+        private void StartSearch(string searchText)
         {
             this.Cancel(); // may be previous search
             this.cancellationTokenSource = new CancellationTokenSource();
             CancellationToken token = this.cancellationTokenSource.Token;
-            var criteria = new FavoritesSearch(token, e.SearchText);
+            var criteria = new FavoritesSearch(token, searchText);
             Task<List<IFavorite>> searchTask = criteria.FindAsync();
-            searchTask.ContinueWith(FinishSearch, TaskScheduler.FromCurrentSynchronizationContext());
+            searchTask.ContinueWith(this.FinishSearch, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         private void FinishSearch(Task<List<IFavorite>> searchTask)
