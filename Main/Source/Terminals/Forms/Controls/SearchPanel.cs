@@ -57,6 +57,16 @@ namespace Terminals.Forms.Controls
             InitializeComponent();
         }
 
+        internal void RegisterUpdateEvent()
+        {
+            this.searchTextBox.RegisterUpdateEvent();
+        }
+
+        internal void UnRegisterUpdateEvent()
+        {
+            this.searchTextBox.UnRegisterUpdateEvent();
+        }
+
         private void FavoritesSearchFound(object sender, FavoritesFoundEventArgs args)
         {
             this.resultsListView.Items.Clear();

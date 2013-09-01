@@ -24,9 +24,24 @@ namespace Terminals.Forms.Controls
             set { this.searchTextBox.SearchedTexts = value; }
         }
 
+        private static DataDispatcher Dispatcher
+        {
+            get { return Persistence.Instance.Dispatcher; }
+        }
+
         public FavoritesSearchBox()
         {
             InitializeComponent();
+        }
+
+        internal void RegisterUpdateEvent()
+        {
+            Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
+        }
+
+        internal void UnRegisterUpdateEvent()
+        {
+            Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
         }
 
         /// <summary>
@@ -34,7 +49,7 @@ namespace Terminals.Forms.Controls
         /// we only want to kick off new search of favorites.
         /// Using this as an persistence event handler allowes to keep the results list up to date with the cache
         /// </summary>
-        internal void StartSearch()
+        private void PersistenceFavoritesChanged(FavoritesChangedEventArgs args)
         {
             this.StartSearch(this.searchTextBox.SearchText);
         }
