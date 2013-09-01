@@ -68,7 +68,7 @@ namespace Terminals
             this.gridFavorites.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridFavorites.Size = new System.Drawing.Size(336, 288);
             this.gridFavorites.TabIndex = 0;
-            this.gridFavorites.SelectionChanged += new System.EventHandler(this.gridFavorites_SelectionChanged);
+            this.gridFavorites.SelectionChanged += new System.EventHandler(this.GridFavorites_SelectionChanged);
             // 
             // colFavoriteName
             // 
@@ -99,7 +99,7 @@ namespace Terminals
             this.btnOk.TabIndex = 9;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            this.btnOk.Click += new System.EventHandler(this.BtnOk_Click);
             // 
             // btnCancel
             // 
