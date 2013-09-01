@@ -87,7 +87,7 @@ namespace Terminals
 
         private void OpenNetworkingTool(NettworkingTools toolName)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.GetSelectedFavorite();
             if (fav != null)
                 this.ConnectionsUiFactory.OpenNetworkingTools(toolName, fav.ServerName);
         }
@@ -106,7 +106,7 @@ namespace Terminals
 
         private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.GetSelectedFavorite();
             if (fav != null)
                 this.ShowManageTerminalForm(fav);
         }
@@ -142,7 +142,7 @@ namespace Terminals
 
         private void ProcessRemoteShutdownOpearation(string operationName, ShutdownCommands shutdownStyle)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.GetSelectedFavorite();
             if (fav == null)
                 return;
 
@@ -187,7 +187,7 @@ namespace Terminals
 
         private void EnableRDPToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.GetSelectedFavorite();
             Task<bool?> enableRdpTask = Task.Factory.StartNew(new Func<object, bool?>(TryEnableRdp), fav);
             enableRdpTask.ContinueWith(this.ShowEnableRdpResult, TaskScheduler.FromCurrentSynchronizationContext());
         }
@@ -240,7 +240,7 @@ namespace Terminals
 
         private void ExtraConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite favorite = this.favsTree.SelectedFavorite;
+            IFavorite favorite = this.GetSelectedFavorite();
             if (favorite == null)
                 return;
 
@@ -270,14 +270,14 @@ namespace Terminals
 
         private void ComputerManagementMmcToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.GetSelectedFavorite();
             if (fav != null)
                 Process.Start("mmc.exe", "compmgmt.msc /a /computer=" + fav.ServerName);
         }
 
         private void SystemInformationToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite fav = this.favsTree.SelectedFavorite;
+            IFavorite fav = this.GetSelectedFavorite();
             if (fav != null)
             {
                 String programFiles = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
@@ -390,7 +390,7 @@ namespace Terminals
 
         private void RemoveSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite favorite = this.favsTree.SelectedFavorite;
+            IFavorite favorite = this.GetSelectedFavorite();
             if (favorite != null)
                 PersistedFavorites.Delete(favorite);
         }
@@ -477,24 +477,36 @@ namespace Terminals
 
         private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IFavorite selected = this.favsTree.SelectedFavorite;
+            IFavorite selected = this.GetSelectedFavorite();
             if (selected != null)
                 OrganizeFavoritesForm.CopyFavorite(selected);
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            List<IFavorite> favorites = this.GetSelectedFavorites();
-            this.ConnectFromContextMenu(favorites);
+            this.ConnectToSelectedFavorites();
         }
 
         private List<IFavorite> GetSelectedFavorites()
         {
-            IFavorite selected = this.favsTree.SelectedFavorite;
+            var selected = this.GetSelectedFavorite();
             if (selected != null)
                 return new List<IFavorite>() {selected};
 
             return this.GetSelectedGroupFavorites();
+        }
+
+        /// <summary>
+        /// Because the favorite context menu is shared between tree view and search results list,
+        /// we have to distinguish, from where to obtain the selected favorite.
+        /// </summary>
+        private IFavorite GetSelectedFavorite()
+        {
+            if (this.tabControl1.SelectedTab == this.searchTabPage)
+                return this.searchPanel1.SelectedFavorite;
+            
+            // favorites tree view is selected
+            return this.favsTree.SelectedFavorite;
         }
 
         private List<IFavorite> GetSelectedGroupFavorites()
@@ -521,6 +533,26 @@ namespace Terminals
             this.Cursor = Cursors.WaitCursor;
             Persistence.Instance.ConnectionHistory.Clear();
             this.Cursor = Cursors.Default;
+        }
+
+        private void FavsTree_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                this.StartConnection(this.favsTree);
+        }
+        
+        private void SearchPanel_ResultListKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter)
+                return;
+
+            this.ConnectToSelectedFavorites();
+        }
+
+        private void ConnectToSelectedFavorites()
+        {
+            List<IFavorite> favorites = this.GetSelectedFavorites();
+            this.ConnectFromContextMenu(favorites);
         }
 
         #endregion

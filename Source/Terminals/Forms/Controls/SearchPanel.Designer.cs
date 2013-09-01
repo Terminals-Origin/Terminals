@@ -75,6 +75,7 @@ namespace Terminals.Forms.Controls
             this.resultsListView.TabIndex = 3;
             this.resultsListView.UseCompatibleStateImageBehavior = false;
             this.resultsListView.View = System.Windows.Forms.View.SmallIcon;
+            this.resultsListView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ResultsListView_MouseUp);
             // 
             // SearchPanel
             // 
