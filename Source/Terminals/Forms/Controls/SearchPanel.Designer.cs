@@ -37,8 +37,8 @@ namespace Terminals.Forms.Controls
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SearchPanel));
             this.protocolsImageList = new System.Windows.Forms.ImageList(this.components);
-            this.searchTextBox = new Terminals.Forms.Controls.FavoritesSearchBox();
             this.resultsListView = new System.Windows.Forms.ListView();
+            this.searchTextBox = new Terminals.Forms.Controls.FavoritesSearchBox();
             this.SuspendLayout();
             // 
             // protocolsImageList
@@ -51,17 +51,6 @@ namespace Terminals.Forms.Controls
             this.protocolsImageList.Images.SetKeyName(3, "treeIcon_ssh.png");
             this.protocolsImageList.Images.SetKeyName(4, "treeIcon_telnet.png");
             this.protocolsImageList.Images.SetKeyName(5, "terminalsicon.png");
-            // 
-            // searchTextBox
-            // 
-            this.searchTextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.searchTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.searchTextBox.Location = new System.Drawing.Point(0, 0);
-            this.searchTextBox.MinimumSize = new System.Drawing.Size(30, 22);
-            this.searchTextBox.Name = "searchTextBox";
-            this.searchTextBox.Size = new System.Drawing.Size(218, 22);
-            this.searchTextBox.TabIndex = 0;
-            this.searchTextBox.Found += new System.EventHandler<Terminals.Forms.Controls.FavoritesFoundEventArgs>(this.FavoritesSearchFound);
             // 
             // resultsListView
             // 
@@ -76,6 +65,18 @@ namespace Terminals.Forms.Controls
             this.resultsListView.UseCompatibleStateImageBehavior = false;
             this.resultsListView.View = System.Windows.Forms.View.SmallIcon;
             this.resultsListView.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ResultsListView_MouseUp);
+            // 
+            // searchTextBox
+            // 
+            this.searchTextBox.BackColor = System.Drawing.SystemColors.Window;
+            this.searchTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.searchTextBox.Location = new System.Drawing.Point(0, 0);
+            this.searchTextBox.MinimumSize = new System.Drawing.Size(30, 22);
+            this.searchTextBox.Name = "searchTextBox";
+            this.searchTextBox.Size = new System.Drawing.Size(218, 22);
+            this.searchTextBox.TabIndex = 0;
+            this.searchTextBox.Found += new System.EventHandler<Terminals.Forms.Controls.FavoritesFoundEventArgs>(this.FavoritesSearchFound);
+            this.searchTextBox.Canceled += new System.EventHandler(this.SearchTextBox_Canceled);
             // 
             // SearchPanel
             // 

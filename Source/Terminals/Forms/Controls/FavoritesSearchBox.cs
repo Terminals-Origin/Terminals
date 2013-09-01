@@ -19,6 +19,8 @@ namespace Terminals.Forms.Controls
         /// </summary>
         public event EventHandler<FavoritesFoundEventArgs> Found;
 
+        public event EventHandler Canceled;
+
         private static DataDispatcher Dispatcher
         {
             get { return Persistence.Instance.Dispatcher; }
@@ -91,7 +93,8 @@ namespace Terminals.Forms.Controls
         private void SearchTextBoxCancel(object sender, EventArgs e)
         {
             this.Cancel();
-            this.FireFound(new List<IFavorite>());
+            if (this.Canceled != null)
+                this.Canceled(this, EventArgs.Empty);
         }
 
         private void Cancel()
