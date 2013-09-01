@@ -22,7 +22,7 @@ namespace Terminals.Forms.Controls
             get { return this.SelectedFavorites.FirstOrDefault(); }
         }
 
-        public List<IFavorite> SelectedFavorites
+        internal List<IFavorite> SelectedFavorites
         {
             get
             {
@@ -69,6 +69,7 @@ namespace Terminals.Forms.Controls
         internal void LoadEvents()
         {
             this.searchTextBox.LoadEvents();
+            this.LoadAll();
         }
 
         internal void UnLoadEvents()
@@ -79,7 +80,12 @@ namespace Terminals.Forms.Controls
         private void FavoritesSearchFound(object sender, FavoritesFoundEventArgs args)
         {
             this.resultsListView.Items.Clear();
-            ListViewItem[] transformed = args.Favorites.Select(FavoriteToListViewItem).ToArray();
+            this.LoadFromFavorites(args.Favorites);
+        }
+
+        private void LoadFromFavorites(List<IFavorite> favorites)
+        {
+            ListViewItem[] transformed = favorites.Select(FavoriteToListViewItem).ToArray();
             this.resultsListView.Items.AddRange(transformed);
         }
 
@@ -111,6 +117,20 @@ namespace Terminals.Forms.Controls
 
             clickedItem.Selected = true;
             this.ResultsContextMenu.Show(this.resultsListView, new Point(e.X, e.Y));
+        }
+
+        private void SearchTextBox_Canceled(object sender, EventArgs e)
+        {
+            this.LoadAll();
+        }
+
+        /// <summary>
+        /// Simulation of all favorites loaded by default
+        /// </summary>
+        private void LoadAll()
+        {
+            SortableList<IFavorite> favorites = Persistence.Instance.Favorites.ToListOrderedByDefaultSorting();
+            this.LoadFromFavorites(favorites);
         }
     }
 }
