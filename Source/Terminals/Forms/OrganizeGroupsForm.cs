@@ -68,8 +68,13 @@ namespace Terminals
         {
             IGroup group = GetSelectedGroup();
             if (group != null)
+                this.AddFavoritesToGroup(group);
+        }
+
+        private void AddFavoritesToGroup(IGroup group)
+        {
+            using (var frmAddConnection = new AddConnectionForm())
             {
-                AddConnectionForm frmAddConnection = new AddConnectionForm();
                 if (frmAddConnection.ShowDialog() == DialogResult.OK)
                 {
                     group.AddFavorites(frmAddConnection.SelectedFavorites);
