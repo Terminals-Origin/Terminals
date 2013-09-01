@@ -411,12 +411,12 @@ namespace Terminals
 
         private void OrganizeFavoritesForm_Load(object sender, EventArgs e)
         {
-            this.favoritesSearchBox.RegisterUpdateEvent();
+            this.favoritesSearchBox.LoadEvents();
         }
 
         private void OrganizeFavoritesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.favoritesSearchBox.UnRegisterUpdateEvent();
+            this.favoritesSearchBox.UnloadEvents();
         }
     }
 }
