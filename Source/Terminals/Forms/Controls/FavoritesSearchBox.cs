@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Terminals.Configuration;
 using Terminals.Data;
 
 namespace Terminals.Forms.Controls
@@ -18,12 +19,6 @@ namespace Terminals.Forms.Controls
         /// </summary>
         public event EventHandler<FavoritesFoundEventArgs> Found;
 
-        internal string[] SaveSearches
-        {
-            get { return this.searchTextBox.SearchedTexts; }
-            set { this.searchTextBox.SearchedTexts = value; }
-        }
-
         private static DataDispatcher Dispatcher
         {
             get { return Persistence.Instance.Dispatcher; }
@@ -34,13 +29,15 @@ namespace Terminals.Forms.Controls
             InitializeComponent();
         }
 
-        internal void RegisterUpdateEvent()
+        internal void LoadEvents()
         {
+            this.searchTextBox.SearchedTexts = Settings.SavedSearches;
             Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
         }
 
-        internal void UnRegisterUpdateEvent()
+        internal void UnloadEvents()
         {
+            Settings.SavedSearches = this.searchTextBox.SearchedTexts;
             Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(PersistenceFavoritesChanged);
         }
 
@@ -71,8 +68,16 @@ namespace Terminals.Forms.Controls
 
         private void FinishSearch(Task<List<IFavorite>> searchTask)
         {
-            this.cancellationTokenSource = null;
+            this.ReleaseCancelationTokenSource();
             this.AssignDataSource(searchTask);
+        }
+
+        private void ReleaseCancelationTokenSource()
+        {
+            var backup = this.cancellationTokenSource;
+            this.cancellationTokenSource = null;
+            if (backup != null)
+                backup.Dispose();
         }
 
         private void AssignDataSource(Task<List<IFavorite>> searchTask)

@@ -9,12 +9,6 @@ namespace Terminals.Forms.Controls
 {
     internal partial class SearchPanel : UserControl
     {
-        internal string[] SaveSearches
-        {
-            get { return this.searchTextBox.SaveSearches; }
-            set { this.searchTextBox.SaveSearches = value; }
-        }
-
         /// <summary>
         /// Gets or sets the context menu, which will be shown, when selected item is clicked
         /// </summary>
@@ -72,14 +66,14 @@ namespace Terminals.Forms.Controls
             InitializeComponent();
         }
 
-        internal void RegisterUpdateEvent()
+        internal void LoadEvents()
         {
-            this.searchTextBox.RegisterUpdateEvent();
+            this.searchTextBox.LoadEvents();
         }
 
-        internal void UnRegisterUpdateEvent()
+        internal void UnLoadEvents()
         {
-            this.searchTextBox.UnRegisterUpdateEvent();
+            this.searchTextBox.UnloadEvents();
         }
 
         private void FavoritesSearchFound(object sender, FavoritesFoundEventArgs args)

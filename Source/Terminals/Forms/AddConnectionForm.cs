@@ -26,12 +26,12 @@ namespace Terminals
 
         private void AddConnectionForm_Load(object sender, EventArgs e)
         {
-            this.searchPanel.RegisterUpdateEvent();
+            this.searchPanel.LoadEvents();
         }
 
         private void AddConnectionForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.searchPanel.UnRegisterUpdateEvent();
+            this.searchPanel.UnLoadEvents();
         }
     }
 }
