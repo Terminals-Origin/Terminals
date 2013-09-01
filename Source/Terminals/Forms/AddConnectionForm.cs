@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
 
@@ -13,21 +12,26 @@ namespace Terminals
         public AddConnectionForm()
         {
             InitializeComponent();
-
-            this.gridFavorites.AutoGenerateColumns = false;
-            this.gridFavorites.DataSource = Persistence.Instance.Favorites.ToListOrderedByDefaultSorting();
         }
 
-        private void GridFavorites_SelectionChanged(object sender, EventArgs e)
+        private void SearchPanel_ResultsSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            btnOk.Enabled = this.gridFavorites.SelectedRows.Count > 0;
+            btnOk.Enabled = this.searchPanel.SelectedFavorites.Count > 0;
         }
 
         private void BtnOk_Click(object sender, EventArgs e)
         {
-            var selectedRows = this.gridFavorites.SelectedRows.Cast<DataGridViewRow>();
-            this.SelectedFavorites = selectedRows.Select(row => row.DataBoundItem as IFavorite)
-                .ToList();
+            this.SelectedFavorites = this.searchPanel.SelectedFavorites;
+        }
+
+        private void AddConnectionForm_Load(object sender, EventArgs e)
+        {
+            this.searchPanel.RegisterUpdateEvent();
+        }
+
+        private void AddConnectionForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.searchPanel.UnRegisterUpdateEvent();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -20,16 +21,20 @@ namespace Terminals.Forms.Controls
         public ContextMenuStrip ResultsContextMenu { private get; set; }
 
         /// <summary>
-        /// Gets selected favorite in results list view. Null if nothing is selected.
+        /// Gets first selected favorite in results list view. Null if nothing is selected.
         /// </summary>
         internal IFavorite SelectedFavorite
         {
+            get { return this.SelectedFavorites.FirstOrDefault(); }
+        }
+
+        public List<IFavorite> SelectedFavorites
+        {
             get
             {
-                if (this.resultsListView.SelectedItems.Count > 0)
-                    return this.resultsListView.SelectedItems[0].Tag as IFavorite;
-
-                return null;
+                return this.resultsListView.SelectedItems.Cast<ListViewItem>()
+                    .Select(item => item.Tag as IFavorite)
+                    .ToList();
             }
         }
 
@@ -50,6 +55,16 @@ namespace Terminals.Forms.Controls
         {
             add { this.resultsListView.KeyUp += value; }
             remove { this.resultsListView.KeyUp -= value; }
+        }
+
+        /// <summary>
+        /// Ocures, when selection state of an item in results list changes.
+        /// This only forwards the event to the wrapped control.
+        /// </summary>
+        public event ListViewItemSelectionChangedEventHandler ResultsSelectionChanged
+        {
+            add { this.resultsListView.ItemSelectionChanged += value; }
+            remove { this.resultsListView.ItemSelectionChanged -= value; }
         }
 
         public SearchPanel()
