@@ -63,7 +63,7 @@ namespace Terminals.Data
 
         private bool DeleteFromCache(Group group)
         {
-            if (group == null || !this.cache.ContainsKey(group.Id))
+            if (this.IsNotCached(group))
                 return false;
 
             this.cache.Remove(group.Id);
@@ -148,6 +148,29 @@ namespace Terminals.Data
                 this.dispatcher.ReportGroupsAdded(new List<IGroup> {group});
                 this.persistence.SaveImmediatelyIfRequested();
             }
+        }
+
+        public void Update(IGroup group)
+        {
+            if (this.UpdateInCache(group as Group))
+            {
+                this.dispatcher.ReportGroupsUpdated(new List<IGroup> {group});
+                this.persistence.SaveImmediatelyIfRequested();
+            }
+        }
+
+        private bool UpdateInCache(Group group)
+        {
+            if (this.IsNotCached(group))
+                return false;
+
+            this.cache[group.Id] = group;
+            return true;
+        }
+
+        private bool IsNotCached(Group group)
+        {
+            return group == null || !this.cache.ContainsKey(group.Id);
         }
 
         public void Delete(IGroup group)

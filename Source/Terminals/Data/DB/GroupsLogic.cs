@@ -98,6 +98,12 @@ namespace Terminals.Data.DB
             return added;
         }
 
+        public void Update(IGroup group)
+        {
+            // todo Update group in SQL persistence
+            throw new NotImplementedException("Update group in SQL persistence groups");
+        }
+
         public void Delete(IGroup group)
         {
             try

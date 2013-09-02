@@ -22,6 +22,13 @@ namespace Terminals.Data
         void Add(IGroup group);
 
         /// <summary>
+        /// Commits group changes like rename or assignment of new parent.
+        /// Doesnt handle changes in favorites members chip. For such changes see IFavorites.Update method.
+        /// Saves changes, if delayed save isn't required.
+        /// </summary>
+        void Update(IGroup group);
+
+        /// <summary>
         /// Removes the group from persistence, if it is present.
         /// Saves changes, if delayed save isn't required.
         /// </summary>
