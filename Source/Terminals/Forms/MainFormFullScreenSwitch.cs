@@ -12,12 +12,9 @@ namespace Terminals
             private readonly MainForm mainForm;
             // restore properties after return from FullScreen
             private Boolean fullScreen;
-            private Point lastLocation;
-            private Size lastSize;
             private Boolean stdToolbarState = true;
             private Boolean specialToolbarState = true;
             private Boolean favToolbarState = true;
-            private FormWindowState lastState;
 
             internal MainFormFullScreenSwitch(MainForm mainForm)
             {
@@ -36,9 +33,14 @@ namespace Terminals
                 }
             }
 
+            internal FormWindowState LastWindowState { get; set; }
+            internal Point LastWindowLocation { private get; set; }
+            internal Size LastWindowSize { private get; set; }
+
             private void SwitchFullScreen(Boolean newfullScreen)
             {
                 mainForm.SuspendLayout();
+                this.fullScreen = newfullScreen;
                
                 if (newfullScreen)
                     mainForm.toolStripContainer.SaveLayout(); //Save windows state before we do a fullscreen so we can restore it
@@ -49,7 +51,6 @@ namespace Terminals
                 if (!newfullScreen)
                     mainForm.LoadWindowState();
 
-                this.fullScreen = newfullScreen;
                 mainForm.ResumeLayout();
             }
 
@@ -71,13 +72,13 @@ namespace Terminals
             private void StoreMainFormState()
             {
                 this.mainForm.menuStrip.Visible = false;
-                this.lastLocation = this.mainForm.Location;
-                this.lastSize = this.mainForm.Size;
+                this.LastWindowLocation = this.mainForm.Location;
+                this.LastWindowSize = this.mainForm.Size;
 
                 if (this.mainForm.WindowState == FormWindowState.Minimized)
-                    this.lastState = FormWindowState.Normal;
+                    this.LastWindowState = FormWindowState.Normal;
                 else
-                    this.lastState = this.mainForm.WindowState;
+                    this.LastWindowState = this.mainForm.WindowState;
 
                 this.mainForm.FormBorderStyle = FormBorderStyle.None;
                 this.mainForm.WindowState = FormWindowState.Normal;
@@ -111,16 +112,16 @@ namespace Terminals
             private void RestoreMainFormState()
             {
                 this.mainForm.TopMost = false;
+                this.mainForm.WindowState = this.LastWindowState;
                 this.mainForm.FormBorderStyle = FormBorderStyle.Sizable;
-                this.mainForm.WindowState = this.lastState;
-                if (this.lastState != FormWindowState.Minimized)
+                if (this.LastWindowState != FormWindowState.Minimized)
                 {
                     // initial location and size isn't set yet
-                    if (this.lastState == FormWindowState.Normal && this.lastLocation != Point.Empty)
-                        this.mainForm.Location = this.lastLocation;
+                    if (this.LastWindowState == FormWindowState.Normal && this.LastWindowLocation != Point.Empty)
+                        this.mainForm.Location = this.LastWindowLocation;
 
-                    if (this.lastSize != Size.Empty)
-                       this.mainForm.Size = this.lastSize;
+                    if (this.LastWindowSize != Size.Empty)
+                        this.mainForm.Size = this.LastWindowSize;
                 }
 
                 this.mainForm.menuStrip.Visible = true;
