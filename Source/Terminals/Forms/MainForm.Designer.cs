@@ -1167,6 +1167,7 @@ namespace Terminals
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
+            this.LocationChanged += MainForm_LocationChanged;
             this.ShortcutsContextMenu.ResumeLayout(false);
             this.toolStripContainer.ContentPanel.ResumeLayout(false);
             this.toolStripContainer.TopToolStripPanel.ResumeLayout(false);
