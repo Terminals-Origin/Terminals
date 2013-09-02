@@ -1184,6 +1184,7 @@ namespace Terminals
             this.favoritesSearchBox.Size = new System.Drawing.Size(200, 22);
             this.favoritesSearchBox.TabIndex = 15;
             this.favoritesSearchBox.Found += new System.EventHandler<Terminals.Forms.Controls.FavoritesFoundEventArgs>(this.FavoritesSearchBoxFound);
+            this.favoritesSearchBox.Canceled += new System.EventHandler(this.FavoritesSearchBox_Canceled);
             // 
             // bsFavorites
             // 
