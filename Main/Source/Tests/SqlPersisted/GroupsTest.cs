@@ -56,6 +56,12 @@ namespace Tests.SqlPersisted
             Assert.AreEqual(2, this.addedCount, "Add event wasn't received"); 
         }
 
+        //[TestMethod]
+        //public void UpdateTest()
+        //{
+            // todo SQL group parent is stored directly in setter and also needs to check rename of the group
+        //}
+
         [TestMethod]
         public void LoadGroupFavoritesTest()
         {

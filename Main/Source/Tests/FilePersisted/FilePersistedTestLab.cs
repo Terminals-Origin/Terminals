@@ -40,5 +40,12 @@ namespace Tests.FilePersisted
             this.Persistence.Favorites.Add(favorite);
             return favorite;
         }
+
+        internal IGroup AddNewGroup(string groupName)
+        {
+            IGroup groupToRemove = this.Persistence.Factory.CreateGroup(groupName);
+            this.Persistence.Groups.Add(groupToRemove);
+            return groupToRemove;
+        }
     }
 }

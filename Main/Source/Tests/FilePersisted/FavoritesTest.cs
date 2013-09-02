@@ -66,8 +66,7 @@ namespace Tests.FilePersisted
         public void FavoritesAndGroupsReloadTest()
         {
             IFavorite favToRemove = this.AddFavorite();
-            IGroup groupToRemove = this.Persistence.Factory.CreateGroup("GroupToRemove");
-            this.Persistence.Groups.Add(groupToRemove);
+            IGroup groupToRemove = this.AddNewGroup("GroupToRemove");
             // not connected each other
             Tuple<IFavorite, IGroup> toRemove = new Tuple<IFavorite, IGroup>(favToRemove, groupToRemove);
             Tuple<IFavorite, IGroup> toUpdate = this.AddFavoriteWithGroup("GroupToUpdate");
@@ -85,7 +84,7 @@ namespace Tests.FilePersisted
             testFileWatch.ObservationWatch.Set(); // signal secondary persistence, that changes are ready to reload
 
             //3. wait till secondary persistence is done with reload 
-            testFileWatch.ReleaseWatch.WaitOne(600000);
+            testFileWatch.ReleaseWatch.WaitOne(6000);
 
             //4. assert the results in secondary persistence
             int secondaryFavoritesCount = secondaryPersistence.Favorites.Count();
