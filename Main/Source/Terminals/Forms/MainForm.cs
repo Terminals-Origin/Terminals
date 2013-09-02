@@ -33,12 +33,10 @@ namespace Terminals
         private FavsList favsList1;
 
         private readonly FormSettings formSettings;
-        private FormWindowState originalFormWindowState;
         private TabControlItem currentToolTipItem;
         private ToolTip currentToolTip;
         private Boolean allScreens;
         private readonly TerminalTabsSelectionControler terminalsControler;
-        private Int32 MouseBreakThreshold = 200;
         private readonly FavoritesMenuLoader menuLoader;
         private readonly MainFormFullScreenSwitch fullScreenSwitch;
 
@@ -174,12 +172,11 @@ namespace Terminals
                 this.fullScreenSwitch = new MainFormFullScreenSwitch(this);
 
                 this.AssignToolStripsToContainer();
-
                 this.ApplyControlsEnableAndVisibleState();
-
+                
                 this.menuLoader.LoadGroups();
                 this.UpdateControls();
-                this.LoadWindowState();
+                this.LoadWindowState();                
                 this.CheckForMultiMonitorUse();
 
                 this.tcTerminals.TabControlItemDetach += new TabControlItemChangedHandler(this.TcTerminals_TabDetach);
@@ -712,12 +709,26 @@ namespace Terminals
         {
             if (this.WindowState == FormWindowState.Minimized)
             {
-                if (Settings.MinimizeToTray) this.Visible = false;
+                if (Settings.MinimizeToTray)
+                    this.Visible = false;
             }
             else
             {
-                this.originalFormWindowState = this.WindowState;
+                // Do not change the mainform window information in the switch class,
+                // when going into fullscreen mode. These values are used when restoring
+                // the mainform from fullscreen mode.
+                if (!fullScreenSwitch.FullScreen)
+                {
+                    fullScreenSwitch.LastWindowState = this.WindowState;
+                    fullScreenSwitch.LastWindowSize = this.Size;
+                }
             }
+        }
+
+        private void MainForm_LocationChanged(object sender, System.EventArgs e)
+        {
+            if (!fullScreenSwitch.FullScreen)
+                fullScreenSwitch.LastWindowLocation = this.Location;
         }
 
         #endregion
@@ -1295,7 +1306,7 @@ namespace Terminals
 
         private void Minimize(object sender, EventArgs e)
         {
-            this.originalFormWindowState = this.WindowState;
+            fullScreenSwitch.LastWindowState = this.WindowState;
             this.WindowState = FormWindowState.Minimized;
         }
 
@@ -1307,18 +1318,18 @@ namespace Terminals
                 {
                     this.Visible = !this.Visible;
                     if (this.Visible && this.WindowState == FormWindowState.Minimized)
-                        this.WindowState = this.originalFormWindowState;
+                        this.WindowState = fullScreenSwitch.LastWindowState;
                 }
                 else
                 {
                     if (this.WindowState == FormWindowState.Normal)
                     {
-                        this.originalFormWindowState = this.WindowState;
+                        fullScreenSwitch.LastWindowState = this.WindowState;
                         this.WindowState = FormWindowState.Minimized;
                     }
                     else
                     {
-                        this.WindowState = this.originalFormWindowState;
+                        this.WindowState = fullScreenSwitch.LastWindowState;
                     }
                 }
             }
