@@ -1480,7 +1480,7 @@ namespace Terminals
             this.ToolStripMenuItem3_Click(null, null);
         }
 
-        // todo assign missing SpecialCommandsToolStrip_MouseClick
+        // todo assign missing SpecialCommandsToolStrip_MouseClick to context menu for Organize shortcuts command
         private void SpecialCommandsToolStrip_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
