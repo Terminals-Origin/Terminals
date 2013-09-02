@@ -46,11 +46,13 @@ namespace Tests.FilePersisted
         [TestInitialize]
         public void PrepareTestSet()
         {
+            this.Persistence.StartDelayedUpdate();
             this.favoriteSsh = CreateConfiguredFavorite(f => f.Protocol = PROTOCOL);
             this.favoriteNamed = CreateConfiguredFavorite(f => f.Name = NAME);
             this.favoriteServerName = CreateConfiguredFavorite(f => f.ServerName = SERVER_NAME);
             this.favoritePort = CreateConfiguredFavorite(f => f.Port = PORT);
             this.favoriteNotes = CreateConfiguredFavorite(f => f.Notes = NOTES_A);
+            this.Persistence.SaveAndFinishDelayedUpdate();
         }
 
         private IFavorite CreateConfiguredFavorite(Action<IFavorite> configure)
