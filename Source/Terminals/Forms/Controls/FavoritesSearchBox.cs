@@ -63,7 +63,7 @@ namespace Terminals.Forms.Controls
             this.Cancel(); // may be previous search
             this.cancellationTokenSource = new CancellationTokenSource();
             CancellationToken token = this.cancellationTokenSource.Token;
-            var criteria = new FavoritesSearch(token, searchText);
+            var criteria = new FavoritesSearch(Persistence.Instance.Favorites, token, searchText);
             Task<List<IFavorite>> searchTask = criteria.FindAsync();
             searchTask.ContinueWith(this.FinishSearch, TaskScheduler.FromCurrentSynchronizationContext());
         }

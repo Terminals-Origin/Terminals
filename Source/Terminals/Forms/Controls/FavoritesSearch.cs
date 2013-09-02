@@ -19,9 +19,12 @@ namespace Terminals.Forms.Controls
 
         private readonly string[] criteria;
 
-        public FavoritesSearch(CancellationToken token, string searchText)
+        private readonly IFavorites favoritesSource;
+
+        public FavoritesSearch(IFavorites favoritesSource, CancellationToken token, string searchText)
         {
             this.Token = token;
+            this.favoritesSource = favoritesSource;
             this.criteria = this.ParseSearchText(searchText);
         }
 
@@ -39,7 +42,7 @@ namespace Terminals.Forms.Controls
         private List<IFavorite> Find()
         {
             // already sorted, we dont have to sort the results once again
-            SortableList<IFavorite> all = Persistence.Instance.Favorites.ToListOrderedByDefaultSorting();
+            SortableList<IFavorite> all = this.favoritesSource.ToListOrderedByDefaultSorting();
             return all.AsParallel()
                 .WithCancellation(this.Token)
                 .Where(Meet)

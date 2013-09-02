@@ -118,6 +118,7 @@
     <Compile Include="FilePersisted\GroupsTest.cs" />
     <Compile Include="FilePersisted\TestFileWatch.cs" />
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
+    <Compile Include="FilePersisted\SearchEngineTest.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />
     <Compile Include="SqlPersisted\FavoriteCopiesTest.cs" />
     <Compile Include="SqlPersisted\FavoritesBatchActionsTest.cs" />
