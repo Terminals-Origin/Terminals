@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Configuration;
@@ -65,7 +66,7 @@ namespace Terminals
         {
             Int32 selectedItems = this.dataGridFavorites.SelectedRows.Count;
             this.lblSelectedCount.Text = String.Format("({0} selected)", selectedItems);
-            this.lblConnectionCount.Text = this.bsFavorites.Count.ToString();
+            this.lblConnectionCount.Text = this.bsFavorites.Count.ToString(CultureInfo.InvariantCulture);
         }
 
         private void EditFavorite(IFavorite favorite)
@@ -407,6 +408,12 @@ namespace Terminals
         {
             this.foundFavorites = new SortableList<IFavorite>(e.Favorites);
             this.UpdateFavoritesBindingSource();
+        }
+
+        private void FavoritesSearchBox_Canceled(object sender, EventArgs e)
+        {
+           this.foundFavorites = new SortableList<IFavorite>();
+           this.UpdateFavoritesBindingSource();
         }
 
         private void OrganizeFavoritesForm_Load(object sender, EventArgs e)

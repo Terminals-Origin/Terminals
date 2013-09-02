@@ -15,10 +15,13 @@ namespace Terminals.Forms.Controls
         /// <summary>
         /// Informs, that user requests new search by changing the text to search or press enter key,
         /// or click on search button. Event is delayed by 250 ms, but fired in GUI thread.
-        /// If user cancels the search empty list of favorites is found; otherwise found favorites.
+        /// If user doesnt cancel, returns found favorites.
         /// </summary>
         public event EventHandler<FavoritesFoundEventArgs> Found;
 
+        /// <summary>
+        /// User requests to cancel currently running search by click on cancel button or by press of Escape key.
+        /// </summary>
         public event EventHandler Canceled;
 
         private static DataDispatcher Dispatcher
