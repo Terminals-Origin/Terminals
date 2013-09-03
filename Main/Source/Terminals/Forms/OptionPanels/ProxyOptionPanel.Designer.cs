@@ -68,25 +68,25 @@ namespace Terminals.Forms
             // lblport
             // 
             this.lblport.AutoSize = true;
-            this.lblport.Location = new System.Drawing.Point(258, 70);
+            this.lblport.Location = new System.Drawing.Point(271, 70);
             this.lblport.Name = "lblport";
-            this.lblport.Size = new System.Drawing.Size(29, 13);
+            this.lblport.Size = new System.Drawing.Size(38, 17);
             this.lblport.TabIndex = 9;
             this.lblport.Text = "Port:";
             // 
             // ProxyPortTextbox
             // 
-            this.ProxyPortTextbox.Location = new System.Drawing.Point(295, 67);
+            this.ProxyPortTextbox.Location = new System.Drawing.Point(315, 67);
             this.ProxyPortTextbox.Name = "ProxyPortTextbox";
-            this.ProxyPortTextbox.Size = new System.Drawing.Size(34, 20);
+            this.ProxyPortTextbox.Size = new System.Drawing.Size(34, 22);
             this.ProxyPortTextbox.TabIndex = 8;
             this.ProxyPortTextbox.Text = "80";
             // 
             // ProxyAddressTextbox
             // 
-            this.ProxyAddressTextbox.Location = new System.Drawing.Point(60, 66);
+            this.ProxyAddressTextbox.Location = new System.Drawing.Point(73, 67);
             this.ProxyAddressTextbox.Name = "ProxyAddressTextbox";
-            this.ProxyAddressTextbox.Size = new System.Drawing.Size(192, 20);
+            this.ProxyAddressTextbox.Size = new System.Drawing.Size(192, 22);
             this.ProxyAddressTextbox.TabIndex = 7;
             // 
             // lblAddress
@@ -94,7 +94,7 @@ namespace Terminals.Forms
             this.lblAddress.AutoSize = true;
             this.lblAddress.Location = new System.Drawing.Point(3, 70);
             this.lblAddress.Name = "lblAddress";
-            this.lblAddress.Size = new System.Drawing.Size(48, 13);
+            this.lblAddress.Size = new System.Drawing.Size(64, 17);
             this.lblAddress.TabIndex = 6;
             this.lblAddress.Text = "Address:";
             // 
@@ -103,7 +103,7 @@ namespace Terminals.Forms
             this.AutoProxyRadioButton.AutoSize = true;
             this.AutoProxyRadioButton.Location = new System.Drawing.Point(6, 20);
             this.AutoProxyRadioButton.Name = "AutoProxyRadioButton";
-            this.AutoProxyRadioButton.Size = new System.Drawing.Size(151, 17);
+            this.AutoProxyRadioButton.Size = new System.Drawing.Size(196, 21);
             this.AutoProxyRadioButton.TabIndex = 0;
             this.AutoProxyRadioButton.TabStop = true;
             this.AutoProxyRadioButton.Text = "Automatically Detect Proxy";
@@ -114,7 +114,7 @@ namespace Terminals.Forms
             this.ProxyRadionButton.AutoSize = true;
             this.ProxyRadionButton.Location = new System.Drawing.Point(6, 43);
             this.ProxyRadionButton.Name = "ProxyRadionButton";
-            this.ProxyRadionButton.Size = new System.Drawing.Size(172, 17);
+            this.ProxyRadionButton.Size = new System.Drawing.Size(225, 21);
             this.ProxyRadionButton.TabIndex = 1;
             this.ProxyRadionButton.TabStop = true;
             this.ProxyRadionButton.Text = "Use the following Proxy Server:";

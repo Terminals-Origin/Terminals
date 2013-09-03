@@ -72,31 +72,31 @@ namespace Terminals.Forms
             // 
             // txtInitialDirectory
             // 
-            this.txtInitialDirectory.Location = new System.Drawing.Point(102, 97);
+            this.txtInitialDirectory.Location = new System.Drawing.Point(124, 97);
             this.txtInitialDirectory.Name = "txtInitialDirectory";
-            this.txtInitialDirectory.Size = new System.Drawing.Size(265, 20);
+            this.txtInitialDirectory.Size = new System.Drawing.Size(265, 22);
             this.txtInitialDirectory.TabIndex = 22;
             // 
             // txtArguments
             // 
-            this.txtArguments.Location = new System.Drawing.Point(102, 70);
+            this.txtArguments.Location = new System.Drawing.Point(124, 70);
             this.txtArguments.Name = "txtArguments";
-            this.txtArguments.Size = new System.Drawing.Size(265, 20);
+            this.txtArguments.Size = new System.Drawing.Size(265, 22);
             this.txtArguments.TabIndex = 21;
             // 
             // txtCommand
             // 
-            this.txtCommand.Location = new System.Drawing.Point(102, 43);
+            this.txtCommand.Location = new System.Drawing.Point(124, 43);
             this.txtCommand.Name = "txtCommand";
-            this.txtCommand.Size = new System.Drawing.Size(265, 20);
+            this.txtCommand.Size = new System.Drawing.Size(265, 22);
             this.txtCommand.TabIndex = 20;
             // 
             // lblInitialDirectory
             // 
             this.lblInitialDirectory.AutoSize = true;
             this.lblInitialDirectory.Location = new System.Drawing.Point(3, 100);
-            this.lblInitialDirectory.Name = "label13";
-            this.lblInitialDirectory.Size = new System.Drawing.Size(79, 13);
+            this.lblInitialDirectory.Name = "lblInitialDirectory";
+            this.lblInitialDirectory.Size = new System.Drawing.Size(105, 17);
             this.lblInitialDirectory.TabIndex = 26;
             this.lblInitialDirectory.Text = "Initial Directory:";
             // 
@@ -105,18 +105,18 @@ namespace Terminals.Forms
             this.chkExecuteBeforeConnect.AutoSize = true;
             this.chkExecuteBeforeConnect.Location = new System.Drawing.Point(6, 20);
             this.chkExecuteBeforeConnect.Name = "chkExecuteBeforeConnect";
-            this.chkExecuteBeforeConnect.Size = new System.Drawing.Size(175, 17);
+            this.chkExecuteBeforeConnect.Size = new System.Drawing.Size(226, 21);
             this.chkExecuteBeforeConnect.TabIndex = 19;
             this.chkExecuteBeforeConnect.Text = "Enable execute before connect";
             this.chkExecuteBeforeConnect.UseVisualStyleBackColor = true;
-            this.chkExecuteBeforeConnect.CheckedChanged += new EventHandler(chkExecuteBeforeConnect_CheckedChanged);
+            this.chkExecuteBeforeConnect.CheckedChanged += new System.EventHandler(this.chkExecuteBeforeConnect_CheckedChanged);
             // 
             // lblArguments
             // 
             this.lblArguments.AutoSize = true;
             this.lblArguments.Location = new System.Drawing.Point(3, 73);
-            this.lblArguments.Name = "label12";
-            this.lblArguments.Size = new System.Drawing.Size(57, 13);
+            this.lblArguments.Name = "lblArguments";
+            this.lblArguments.Size = new System.Drawing.Size(76, 17);
             this.lblArguments.TabIndex = 25;
             this.lblArguments.Text = "Arguments";
             // 
@@ -125,7 +125,7 @@ namespace Terminals.Forms
             this.chkWaitForExit.AutoSize = true;
             this.chkWaitForExit.Location = new System.Drawing.Point(6, 124);
             this.chkWaitForExit.Name = "chkWaitForExit";
-            this.chkWaitForExit.Size = new System.Drawing.Size(82, 17);
+            this.chkWaitForExit.Size = new System.Drawing.Size(104, 21);
             this.chkWaitForExit.TabIndex = 24;
             this.chkWaitForExit.Text = "Wait for exit";
             this.chkWaitForExit.UseVisualStyleBackColor = true;
@@ -134,13 +134,14 @@ namespace Terminals.Forms
             // 
             this.lblCommand.AutoSize = true;
             this.lblCommand.Location = new System.Drawing.Point(3, 46);
-            this.lblCommand.Name = "label11";
-            this.lblCommand.Size = new System.Drawing.Size(57, 13);
+            this.lblCommand.Name = "lblCommand";
+            this.lblCommand.Size = new System.Drawing.Size(75, 17);
             this.lblCommand.TabIndex = 23;
             this.lblCommand.Text = "Command:";
             // 
             // ConnectCommandOptionPanel
             // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.panel1);
             this.Name = "ConnectCommandOptionPanel";
             this.Size = new System.Drawing.Size(513, 334);
@@ -148,6 +149,7 @@ namespace Terminals.Forms
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

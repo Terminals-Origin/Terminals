@@ -12,6 +12,7 @@ namespace Terminals.Forms
         public ConnectionsOptionPanel()
         {
             InitializeComponent();
+            this.EvaluatedDesktopShareLabel.Text = String.Empty;
         }
 
         public void LoadSettings()

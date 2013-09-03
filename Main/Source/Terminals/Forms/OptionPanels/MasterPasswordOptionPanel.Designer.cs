@@ -71,9 +71,9 @@ namespace Terminals.Forms
             // 
             this.lblPasswordsMatch.AutoSize = true;
             this.lblPasswordsMatch.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblPasswordsMatch.Location = new System.Drawing.Point(230, 73);
+            this.lblPasswordsMatch.Location = new System.Drawing.Point(251, 81);
             this.lblPasswordsMatch.Name = "lblPasswordsMatch";
-            this.lblPasswordsMatch.Size = new System.Drawing.Size(115, 13);
+            this.lblPasswordsMatch.Size = new System.Drawing.Size(150, 17);
             this.lblPasswordsMatch.TabIndex = 6;
             this.lblPasswordsMatch.Text = "Password Match Label";
             // 
@@ -82,7 +82,7 @@ namespace Terminals.Forms
             this.chkPasswordProtectTerminals.AutoSize = true;
             this.chkPasswordProtectTerminals.Location = new System.Drawing.Point(13, 20);
             this.chkPasswordProtectTerminals.Name = "chkPasswordProtectTerminals";
-            this.chkPasswordProtectTerminals.Size = new System.Drawing.Size(109, 17);
+            this.chkPasswordProtectTerminals.Size = new System.Drawing.Size(140, 21);
             this.chkPasswordProtectTerminals.TabIndex = 0;
             this.chkPasswordProtectTerminals.Text = "Password Protect";
             this.chkPasswordProtectTerminals.UseVisualStyleBackColor = true;
@@ -91,38 +91,38 @@ namespace Terminals.Forms
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(13, 45);
+            this.lblPassword.Location = new System.Drawing.Point(13, 53);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(56, 13);
+            this.lblPassword.Size = new System.Drawing.Size(73, 17);
             this.lblPassword.TabIndex = 3;
             this.lblPassword.Text = "Password:";
             // 
             // PasswordTextbox
             // 
             this.PasswordTextbox.Enabled = false;
-            this.PasswordTextbox.Location = new System.Drawing.Point(77, 42);
+            this.PasswordTextbox.Location = new System.Drawing.Point(98, 50);
             this.PasswordTextbox.Name = "PasswordTextbox";
             this.PasswordTextbox.PasswordChar = '*';
-            this.PasswordTextbox.Size = new System.Drawing.Size(147, 20);
+            this.PasswordTextbox.Size = new System.Drawing.Size(147, 22);
             this.PasswordTextbox.TabIndex = 1;
             this.PasswordTextbox.TextChanged += new System.EventHandler(this.PasswordTextbox_TextChanged);
             // 
             // lblConfirm
             // 
             this.lblConfirm.AutoSize = true;
-            this.lblConfirm.Location = new System.Drawing.Point(13, 73);
+            this.lblConfirm.Location = new System.Drawing.Point(13, 81);
             this.lblConfirm.Name = "lblConfirm";
-            this.lblConfirm.Size = new System.Drawing.Size(45, 13);
+            this.lblConfirm.Size = new System.Drawing.Size(60, 17);
             this.lblConfirm.TabIndex = 4;
             this.lblConfirm.Text = "Confirm:";
             // 
             // ConfirmPasswordTextBox
             // 
             this.ConfirmPasswordTextBox.Enabled = false;
-            this.ConfirmPasswordTextBox.Location = new System.Drawing.Point(77, 70);
+            this.ConfirmPasswordTextBox.Location = new System.Drawing.Point(98, 78);
             this.ConfirmPasswordTextBox.Name = "ConfirmPasswordTextBox";
             this.ConfirmPasswordTextBox.PasswordChar = '*';
-            this.ConfirmPasswordTextBox.Size = new System.Drawing.Size(147, 20);
+            this.ConfirmPasswordTextBox.Size = new System.Drawing.Size(147, 22);
             this.ConfirmPasswordTextBox.TabIndex = 2;
             this.ConfirmPasswordTextBox.TextChanged += new System.EventHandler(this.ConfirmPasswordTextBox_TextChanged);
             // 
