@@ -116,26 +116,26 @@ namespace Terminals.Forms
             // lblDbMasterPassword
             // 
             this.lblDbMasterPassword.AutoSize = true;
-            this.lblDbMasterPassword.Location = new System.Drawing.Point(29, 155);
+            this.lblDbMasterPassword.Location = new System.Drawing.Point(3, 153);
             this.lblDbMasterPassword.Name = "lblDbMasterPassword";
-            this.lblDbMasterPassword.Size = new System.Drawing.Size(104, 13);
+            this.lblDbMasterPassword.Size = new System.Drawing.Size(137, 17);
             this.lblDbMasterPassword.TabIndex = 27;
             this.lblDbMasterPassword.Text = "Database password:";
             this.lblDbMasterPassword.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtDbPassword
             // 
-            this.txtDbPassword.Location = new System.Drawing.Point(148, 152);
+            this.txtDbPassword.Location = new System.Drawing.Point(148, 150);
             this.txtDbPassword.Name = "txtDbPassword";
             this.txtDbPassword.PasswordChar = '*';
-            this.txtDbPassword.Size = new System.Drawing.Size(173, 20);
+            this.txtDbPassword.Size = new System.Drawing.Size(173, 22);
             this.txtDbPassword.TabIndex = 26;
             // 
             // btnSetDatabasePassword
             // 
-            this.btnSetDatabasePassword.Location = new System.Drawing.Point(327, 152);
+            this.btnSetDatabasePassword.Location = new System.Drawing.Point(327, 149);
             this.btnSetDatabasePassword.Name = "btnSetDatabasePassword";
-            this.btnSetDatabasePassword.Size = new System.Drawing.Size(104, 23);
+            this.btnSetDatabasePassword.Size = new System.Drawing.Size(133, 25);
             this.btnSetDatabasePassword.TabIndex = 25;
             this.btnSetDatabasePassword.Text = "Set password";
             this.btnSetDatabasePassword.UseVisualStyleBackColor = true;
@@ -143,9 +143,9 @@ namespace Terminals.Forms
             // 
             // btnAdvanced
             // 
-            this.btnAdvanced.Location = new System.Drawing.Point(205, 181);
+            this.btnAdvanced.Location = new System.Drawing.Point(167, 181);
             this.btnAdvanced.Name = "btnAdvanced";
-            this.btnAdvanced.Size = new System.Drawing.Size(75, 23);
+            this.btnAdvanced.Size = new System.Drawing.Size(95, 25);
             this.btnAdvanced.TabIndex = 24;
             this.btnAdvanced.Text = "Advanced";
             this.btnAdvanced.UseVisualStyleBackColor = true;
@@ -154,17 +154,17 @@ namespace Terminals.Forms
             // databaseCombobox
             // 
             this.databaseCombobox.DropDownWidth = 200;
-            this.databaseCombobox.Location = new System.Drawing.Point(148, 125);
+            this.databaseCombobox.Location = new System.Drawing.Point(148, 120);
             this.databaseCombobox.Name = "databaseCombobox";
-            this.databaseCombobox.Size = new System.Drawing.Size(173, 21);
+            this.databaseCombobox.Size = new System.Drawing.Size(173, 24);
             this.databaseCombobox.TabIndex = 23;
             // 
             // queryLabel
             // 
             this.queryLabel.AutoSize = true;
-            this.queryLabel.Location = new System.Drawing.Point(362, 17);
+            this.queryLabel.Location = new System.Drawing.Point(362, 10);
             this.queryLabel.Name = "queryLabel";
-            this.queryLabel.Size = new System.Drawing.Size(58, 13);
+            this.queryLabel.Size = new System.Drawing.Size(78, 17);
             this.queryLabel.TabIndex = 20;
             this.queryLabel.Text = "Querying...";
             this.queryLabel.Visible = false;
@@ -172,9 +172,9 @@ namespace Terminals.Forms
             // tableQueryLabel
             // 
             this.tableQueryLabel.AutoSize = true;
-            this.tableQueryLabel.Location = new System.Drawing.Point(362, 128);
+            this.tableQueryLabel.Location = new System.Drawing.Point(362, 123);
             this.tableQueryLabel.Name = "tableQueryLabel";
-            this.tableQueryLabel.Size = new System.Drawing.Size(58, 13);
+            this.tableQueryLabel.Size = new System.Drawing.Size(78, 17);
             this.tableQueryLabel.TabIndex = 21;
             this.tableQueryLabel.Text = "Querying...";
             this.tableQueryLabel.Visible = false;
@@ -182,16 +182,16 @@ namespace Terminals.Forms
             // serversComboBox
             // 
             this.serversComboBox.FormattingEnabled = true;
-            this.serversComboBox.Location = new System.Drawing.Point(148, 12);
+            this.serversComboBox.Location = new System.Drawing.Point(148, 7);
             this.serversComboBox.Name = "serversComboBox";
-            this.serversComboBox.Size = new System.Drawing.Size(173, 21);
+            this.serversComboBox.Size = new System.Drawing.Size(173, 24);
             this.serversComboBox.TabIndex = 2;
             // 
             // btnDatabases
             // 
-            this.btnDatabases.Location = new System.Drawing.Point(327, 123);
+            this.btnDatabases.Location = new System.Drawing.Point(327, 120);
             this.btnDatabases.Name = "btnDatabases";
-            this.btnDatabases.Size = new System.Drawing.Size(29, 23);
+            this.btnDatabases.Size = new System.Drawing.Size(29, 25);
             this.btnDatabases.TabIndex = 22;
             this.btnDatabases.Text = "...";
             this.btnDatabases.UseVisualStyleBackColor = true;
@@ -199,9 +199,9 @@ namespace Terminals.Forms
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(327, 12);
+            this.btnSearch.Location = new System.Drawing.Point(327, 6);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(29, 23);
+            this.btnSearch.Size = new System.Drawing.Size(29, 25);
             this.btnSearch.TabIndex = 3;
             this.btnSearch.Text = "...";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -210,9 +210,9 @@ namespace Terminals.Forms
             // testLabel
             // 
             this.testLabel.AutoSize = true;
-            this.testLabel.Location = new System.Drawing.Point(393, 186);
+            this.testLabel.Location = new System.Drawing.Point(375, 184);
             this.testLabel.Name = "testLabel";
-            this.testLabel.Size = new System.Drawing.Size(51, 13);
+            this.testLabel.Size = new System.Drawing.Size(67, 17);
             this.testLabel.TabIndex = 21;
             this.testLabel.Text = "Testing...";
             this.testLabel.Visible = false;
@@ -220,20 +220,20 @@ namespace Terminals.Forms
             // lblDatabase
             // 
             this.lblDatabase.AutoSize = true;
-            this.lblDatabase.Location = new System.Drawing.Point(77, 128);
+            this.lblDatabase.Location = new System.Drawing.Point(3, 123);
             this.lblDatabase.Name = "lblDatabase";
-            this.lblDatabase.Size = new System.Drawing.Size(56, 13);
+            this.lblDatabase.Size = new System.Drawing.Size(73, 17);
             this.lblDatabase.TabIndex = 16;
             this.lblDatabase.Text = "Database:";
             this.lblDatabase.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // btnCreateNew
             // 
-            this.btnCreateNew.Location = new System.Drawing.Point(67, 181);
+            this.btnCreateNew.Location = new System.Drawing.Point(6, 181);
             this.btnCreateNew.Name = "btnCreateNew";
-            this.btnCreateNew.Size = new System.Drawing.Size(132, 23);
+            this.btnCreateNew.Size = new System.Drawing.Size(155, 25);
             this.btnCreateNew.TabIndex = 9;
-            this.btnCreateNew.Text = "Create new database";
+            this.btnCreateNew.Text = "Create new DB";
             this.btnCreateNew.UseVisualStyleBackColor = true;
             this.btnCreateNew.Visible = false;
             this.btnCreateNew.Click += new System.EventHandler(this.ButtonCreateNewDatabaseClick);
@@ -241,9 +241,9 @@ namespace Terminals.Forms
             // lblServerName
             // 
             this.lblServerName.AutoSize = true;
-            this.lblServerName.Location = new System.Drawing.Point(61, 15);
+            this.lblServerName.Location = new System.Drawing.Point(3, 10);
             this.lblServerName.Name = "lblServerName";
-            this.lblServerName.Size = new System.Drawing.Size(72, 13);
+            this.lblServerName.Size = new System.Drawing.Size(95, 17);
             this.lblServerName.TabIndex = 8;
             this.lblServerName.Text = "Server Name:";
             this.lblServerName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -255,17 +255,17 @@ namespace Terminals.Forms
             this.sqlServerAuthPanel.Controls.Add(this.sqlServerUserNameTextBox);
             this.sqlServerAuthPanel.Controls.Add(this.lblPassword);
             this.sqlServerAuthPanel.Enabled = false;
-            this.sqlServerAuthPanel.Location = new System.Drawing.Point(3, 66);
+            this.sqlServerAuthPanel.Location = new System.Drawing.Point(3, 61);
             this.sqlServerAuthPanel.Name = "sqlServerAuthPanel";
-            this.sqlServerAuthPanel.Size = new System.Drawing.Size(327, 55);
+            this.sqlServerAuthPanel.Size = new System.Drawing.Size(366, 55);
             this.sqlServerAuthPanel.TabIndex = 16;
             // 
             // lblUserName
             // 
             this.lblUserName.AutoSize = true;
-            this.lblUserName.Location = new System.Drawing.Point(69, 7);
+            this.lblUserName.Location = new System.Drawing.Point(0, 7);
             this.lblUserName.Name = "lblUserName";
-            this.lblUserName.Size = new System.Drawing.Size(61, 13);
+            this.lblUserName.Size = new System.Drawing.Size(81, 17);
             this.lblUserName.TabIndex = 12;
             this.lblUserName.Text = "User name:";
             this.lblUserName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -275,22 +275,22 @@ namespace Terminals.Forms
             this.sqlServerPasswordTextBox.Location = new System.Drawing.Point(145, 30);
             this.sqlServerPasswordTextBox.Name = "sqlServerPasswordTextBox";
             this.sqlServerPasswordTextBox.PasswordChar = '*';
-            this.sqlServerPasswordTextBox.Size = new System.Drawing.Size(173, 20);
+            this.sqlServerPasswordTextBox.Size = new System.Drawing.Size(208, 22);
             this.sqlServerPasswordTextBox.TabIndex = 6;
             // 
             // sqlServerUserNameTextBox
             // 
             this.sqlServerUserNameTextBox.Location = new System.Drawing.Point(145, 4);
             this.sqlServerUserNameTextBox.Name = "sqlServerUserNameTextBox";
-            this.sqlServerUserNameTextBox.Size = new System.Drawing.Size(173, 20);
+            this.sqlServerUserNameTextBox.Size = new System.Drawing.Size(208, 22);
             this.sqlServerUserNameTextBox.TabIndex = 5;
             // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(74, 33);
+            this.lblPassword.Location = new System.Drawing.Point(0, 33);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(56, 13);
+            this.lblPassword.Size = new System.Drawing.Size(73, 17);
             this.lblPassword.TabIndex = 14;
             this.lblPassword.Text = "Password:";
             this.lblPassword.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -298,9 +298,9 @@ namespace Terminals.Forms
             // lblAuthentication
             // 
             this.lblAuthentication.AutoSize = true;
-            this.lblAuthentication.Location = new System.Drawing.Point(55, 42);
+            this.lblAuthentication.Location = new System.Drawing.Point(3, 38);
             this.lblAuthentication.Name = "lblAuthentication";
-            this.lblAuthentication.Size = new System.Drawing.Size(78, 13);
+            this.lblAuthentication.Size = new System.Drawing.Size(102, 17);
             this.lblAuthentication.TabIndex = 9;
             this.lblAuthentication.Text = "Authentication:";
             this.lblAuthentication.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -308,9 +308,9 @@ namespace Terminals.Forms
             // btnTestSqlConnection
             // 
             this.btnTestSqlConnection.Enabled = false;
-            this.btnTestSqlConnection.Location = new System.Drawing.Point(286, 181);
+            this.btnTestSqlConnection.Location = new System.Drawing.Point(268, 181);
             this.btnTestSqlConnection.Name = "btnTestSqlConnection";
-            this.btnTestSqlConnection.Size = new System.Drawing.Size(101, 23);
+            this.btnTestSqlConnection.Size = new System.Drawing.Size(101, 25);
             this.btnTestSqlConnection.TabIndex = 7;
             this.btnTestSqlConnection.Text = "Test connection";
             this.btnTestSqlConnection.UseVisualStyleBackColor = true;
@@ -323,9 +323,9 @@ namespace Terminals.Forms
             this.sqlServerAuthenticationComboBox.Items.AddRange(new object[] {
             "Windows Authentication",
             "SQL Server Authentication"});
-            this.sqlServerAuthenticationComboBox.Location = new System.Drawing.Point(148, 39);
+            this.sqlServerAuthenticationComboBox.Location = new System.Drawing.Point(148, 35);
             this.sqlServerAuthenticationComboBox.Name = "sqlServerAuthenticationComboBox";
-            this.sqlServerAuthenticationComboBox.Size = new System.Drawing.Size(173, 21);
+            this.sqlServerAuthenticationComboBox.Size = new System.Drawing.Size(208, 24);
             this.sqlServerAuthenticationComboBox.TabIndex = 4;
             this.sqlServerAuthenticationComboBox.SelectedIndexChanged += new System.EventHandler(this.SqlServerAuthenticationComboBoxSelectedIndexChanged);
             // 
@@ -335,7 +335,7 @@ namespace Terminals.Forms
             this.lblRestart.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRestart.Location = new System.Drawing.Point(22, 297);
             this.lblRestart.Name = "lblRestart";
-            this.lblRestart.Size = new System.Drawing.Size(328, 13);
+            this.lblRestart.Size = new System.Drawing.Size(419, 17);
             this.lblRestart.TabIndex = 6;
             this.lblRestart.Text = "To apply this options you have to restart the application!";
             // 
@@ -344,7 +344,7 @@ namespace Terminals.Forms
             this.rbtnSqlPersistence.AutoSize = true;
             this.rbtnSqlPersistence.Location = new System.Drawing.Point(25, 51);
             this.rbtnSqlPersistence.Name = "rbtnSqlPersistence";
-            this.rbtnSqlPersistence.Size = new System.Drawing.Size(174, 17);
+            this.rbtnSqlPersistence.Size = new System.Drawing.Size(229, 21);
             this.rbtnSqlPersistence.TabIndex = 1;
             this.rbtnSqlPersistence.Text = "Microsoft SQL database server:";
             this.rbtnSqlPersistence.UseVisualStyleBackColor = true;
@@ -356,7 +356,7 @@ namespace Terminals.Forms
             this.rbtnFilePersistence.Checked = true;
             this.rbtnFilePersistence.Location = new System.Drawing.Point(25, 28);
             this.rbtnFilePersistence.Name = "rbtnFilePersistence";
-            this.rbtnFilePersistence.Size = new System.Drawing.Size(113, 17);
+            this.rbtnFilePersistence.Size = new System.Drawing.Size(149, 21);
             this.rbtnFilePersistence.TabIndex = 0;
             this.rbtnFilePersistence.TabStop = true;
             this.rbtnFilePersistence.Text = "Files in local profile";

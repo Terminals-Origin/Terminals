@@ -72,48 +72,48 @@ namespace Terminals.Forms
             // 
             this.lblText.Location = new System.Drawing.Point(6, 17);
             this.lblText.Name = "lblText";
-            this.lblText.Size = new System.Drawing.Size(360, 84);
+            this.lblText.Size = new System.Drawing.Size(488, 84);
             this.lblText.TabIndex = 26;
-            this.lblText.Text = "Many times you may find that you are accesing terminals within a Domain, or just use the same credentials for many connections. In this option you can set the default credentials which Terminals will use to initiate connections where no credentials are supplied.\r\n\r\nHere you can set the default user, domain and password.";
+            this.lblText.Text = resources.GetString("lblText.Text");
             // 
             // passwordTextBox
             // 
-            this.passwordTextBox.Location = new System.Drawing.Point(71, 158);
+            this.passwordTextBox.Location = new System.Drawing.Point(98, 160);
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.PasswordChar = '*';
-            this.passwordTextBox.Size = new System.Drawing.Size(149, 20);
+            this.passwordTextBox.Size = new System.Drawing.Size(149, 22);
             this.passwordTextBox.TabIndex = 25;
             // 
             // lblPassword
             // 
             this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(6, 161);
+            this.lblPassword.Location = new System.Drawing.Point(6, 163);
             this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(56, 13);
+            this.lblPassword.Size = new System.Drawing.Size(73, 17);
             this.lblPassword.TabIndex = 24;
             this.lblPassword.Text = "Password:";
             // 
             // usernameTextbox
             // 
-            this.usernameTextbox.Location = new System.Drawing.Point(71, 131);
+            this.usernameTextbox.Location = new System.Drawing.Point(98, 132);
             this.usernameTextbox.Name = "usernameTextbox";
-            this.usernameTextbox.Size = new System.Drawing.Size(149, 20);
+            this.usernameTextbox.Size = new System.Drawing.Size(149, 22);
             this.usernameTextbox.TabIndex = 23;
             // 
             // lblUsername
             // 
             this.lblUsername.AutoSize = true;
-            this.lblUsername.Location = new System.Drawing.Point(6, 134);
+            this.lblUsername.Location = new System.Drawing.Point(6, 135);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(58, 13);
+            this.lblUsername.Size = new System.Drawing.Size(77, 17);
             this.lblUsername.TabIndex = 22;
             this.lblUsername.Text = "Username:";
             // 
             // domainTextbox
             // 
-            this.domainTextbox.Location = new System.Drawing.Point(71, 104);
+            this.domainTextbox.Location = new System.Drawing.Point(98, 104);
             this.domainTextbox.Name = "domainTextbox";
-            this.domainTextbox.Size = new System.Drawing.Size(149, 20);
+            this.domainTextbox.Size = new System.Drawing.Size(149, 22);
             this.domainTextbox.TabIndex = 21;
             // 
             // lblDomain
@@ -121,7 +121,7 @@ namespace Terminals.Forms
             this.lblDomain.AutoSize = true;
             this.lblDomain.Location = new System.Drawing.Point(6, 107);
             this.lblDomain.Name = "lblDomain";
-            this.lblDomain.Size = new System.Drawing.Size(46, 13);
+            this.lblDomain.Size = new System.Drawing.Size(60, 17);
             this.lblDomain.TabIndex = 20;
             this.lblDomain.Text = "Domain:";
             // 

@@ -56,9 +56,10 @@ namespace SSHClient
             // 
             // buttonGenerateKey
             // 
-            this.buttonGenerateKey.Location = new System.Drawing.Point(318, 59);
+            this.buttonGenerateKey.Location = new System.Drawing.Point(350, 73);
+            this.buttonGenerateKey.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonGenerateKey.Name = "buttonGenerateKey";
-            this.buttonGenerateKey.Size = new System.Drawing.Size(48, 23);
+            this.buttonGenerateKey.Size = new System.Drawing.Size(64, 28);
             this.buttonGenerateKey.TabIndex = 4;
             this.buttonGenerateKey.Text = "New";
             this.buttonGenerateKey.UseVisualStyleBackColor = true;
@@ -67,9 +68,10 @@ namespace SSHClient
             // comboBoxKey
             // 
             this.comboBoxKey.FormattingEnabled = true;
-            this.comboBoxKey.Location = new System.Drawing.Point(88, 59);
+            this.comboBoxKey.Location = new System.Drawing.Point(57, 76);
+            this.comboBoxKey.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxKey.Name = "comboBoxKey";
-            this.comboBoxKey.Size = new System.Drawing.Size(169, 21);
+            this.comboBoxKey.Size = new System.Drawing.Size(224, 24);
             this.comboBoxKey.TabIndex = 3;
             this.comboBoxKey.SelectedIndexChanged += new System.EventHandler(this.comboBoxKey_SelectedIndexChanged);
             // 
@@ -78,18 +80,21 @@ namespace SSHClient
             this.groupBox4.Controls.Add(this.buttonKbd);
             this.groupBox4.Controls.Add(this.buttonPublicKey);
             this.groupBox4.Controls.Add(this.buttonPassword);
-            this.groupBox4.Location = new System.Drawing.Point(9, 7);
+            this.groupBox4.Location = new System.Drawing.Point(12, 9);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(357, 49);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox4.Size = new System.Drawing.Size(402, 60);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Authentication Method";
             // 
             // buttonKbd
             // 
-            this.buttonKbd.Location = new System.Drawing.Point(99, 19);
+            this.buttonKbd.Location = new System.Drawing.Point(119, 23);
+            this.buttonKbd.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonKbd.Name = "buttonKbd";
-            this.buttonKbd.Size = new System.Drawing.Size(140, 24);
+            this.buttonKbd.Size = new System.Drawing.Size(164, 30);
             this.buttonKbd.TabIndex = 3;
             this.buttonKbd.TabStop = true;
             this.buttonKbd.Text = "Keyboard Interactive";
@@ -97,9 +102,10 @@ namespace SSHClient
             // 
             // buttonPublicKey
             // 
-            this.buttonPublicKey.Location = new System.Drawing.Point(245, 19);
+            this.buttonPublicKey.Location = new System.Drawing.Point(291, 23);
+            this.buttonPublicKey.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonPublicKey.Name = "buttonPublicKey";
-            this.buttonPublicKey.Size = new System.Drawing.Size(82, 24);
+            this.buttonPublicKey.Size = new System.Drawing.Size(109, 30);
             this.buttonPublicKey.TabIndex = 2;
             this.buttonPublicKey.TabStop = true;
             this.buttonPublicKey.Text = "Public Key";
@@ -107,9 +113,10 @@ namespace SSHClient
             // 
             // buttonPassword
             // 
-            this.buttonPassword.Location = new System.Drawing.Point(16, 19);
+            this.buttonPassword.Location = new System.Drawing.Point(8, 23);
+            this.buttonPassword.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonPassword.Name = "buttonPassword";
-            this.buttonPassword.Size = new System.Drawing.Size(77, 24);
+            this.buttonPassword.Size = new System.Drawing.Size(103, 30);
             this.buttonPassword.TabIndex = 1;
             this.buttonPassword.TabStop = true;
             this.buttonPassword.Text = "Password";
@@ -117,26 +124,32 @@ namespace SSHClient
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(45, 64);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(17, 79);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(36, 23);
+            this.label2.Size = new System.Drawing.Size(32, 17);
             this.label2.TabIndex = 1;
             this.label2.Text = "Key";
             // 
             // groupBox2
             // 
-            this.groupBox2.Location = new System.Drawing.Point(8, 204);
+            this.groupBox2.Location = new System.Drawing.Point(11, 265);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(224, 60);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Size = new System.Drawing.Size(236, 74);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Local Ports Forwarded";
             // 
             // groupBox3
             // 
-            this.groupBox3.Location = new System.Drawing.Point(238, 204);
+            this.groupBox3.Location = new System.Drawing.Point(262, 265);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(222, 60);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox3.Size = new System.Drawing.Size(236, 74);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Remote Ports Forwarded";
@@ -145,16 +158,18 @@ namespace SSHClient
             // 
             this.panel1.Controls.Add(this.buttonSSH2);
             this.panel1.Controls.Add(this.buttonSSH1);
-            this.panel1.Location = new System.Drawing.Point(377, 7);
+            this.panel1.Location = new System.Drawing.Point(422, 9);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(83, 78);
+            this.panel1.Size = new System.Drawing.Size(84, 87);
             this.panel1.TabIndex = 0;
             // 
             // buttonSSH2
             // 
-            this.buttonSSH2.Location = new System.Drawing.Point(16, 44);
+            this.buttonSSH2.Location = new System.Drawing.Point(4, 42);
+            this.buttonSSH2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonSSH2.Name = "buttonSSH2";
-            this.buttonSSH2.Size = new System.Drawing.Size(62, 24);
+            this.buttonSSH2.Size = new System.Drawing.Size(76, 30);
             this.buttonSSH2.TabIndex = 1;
             this.buttonSSH2.TabStop = true;
             this.buttonSSH2.Text = "SSH2";
@@ -162,9 +177,10 @@ namespace SSHClient
             // 
             // buttonSSH1
             // 
-            this.buttonSSH1.Location = new System.Drawing.Point(16, 16);
+            this.buttonSSH1.Location = new System.Drawing.Point(4, 4);
+            this.buttonSSH1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonSSH1.Name = "buttonSSH1";
-            this.buttonSSH1.Size = new System.Drawing.Size(62, 24);
+            this.buttonSSH1.Size = new System.Drawing.Size(76, 30);
             this.buttonSSH1.TabIndex = 0;
             this.buttonSSH1.TabStop = true;
             this.buttonSSH1.Text = "SSH1";
@@ -173,18 +189,20 @@ namespace SSHClient
             // 
             // openSSHTextBox
             // 
-            this.openSSHTextBox.Location = new System.Drawing.Point(9, 86);
+            this.openSSHTextBox.Location = new System.Drawing.Point(12, 106);
+            this.openSSHTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.openSSHTextBox.Multiline = true;
             this.openSSHTextBox.Name = "openSSHTextBox";
             this.openSSHTextBox.ReadOnly = true;
-            this.openSSHTextBox.Size = new System.Drawing.Size(357, 112);
+            this.openSSHTextBox.Size = new System.Drawing.Size(402, 137);
             this.openSSHTextBox.TabIndex = 5;
             // 
             // buttonCopy
             // 
-            this.buttonCopy.Location = new System.Drawing.Point(372, 134);
+            this.buttonCopy.Location = new System.Drawing.Point(422, 165);
+            this.buttonCopy.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonCopy.Name = "buttonCopy";
-            this.buttonCopy.Size = new System.Drawing.Size(88, 23);
+            this.buttonCopy.Size = new System.Drawing.Size(76, 28);
             this.buttonCopy.TabIndex = 6;
             this.buttonCopy.Text = "Copy";
             this.buttonCopy.UseVisualStyleBackColor = true;
@@ -192,7 +210,7 @@ namespace SSHClient
             // 
             // Preferences
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.buttonCopy);
             this.Controls.Add(this.openSSHTextBox);
@@ -203,8 +221,9 @@ namespace SSHClient
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label2);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "Preferences";
-            this.Size = new System.Drawing.Size(466, 267);
+            this.Size = new System.Drawing.Size(510, 349);
             this.groupBox4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);

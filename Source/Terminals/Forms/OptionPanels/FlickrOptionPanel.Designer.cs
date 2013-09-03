@@ -76,49 +76,50 @@ namespace Terminals.Forms
             // 
             // lblText2
             // 
-            this.lblText2.Location = new System.Drawing.Point(87, 133);
-            this.lblText2.Name = "label10";
+            this.lblText2.Location = new System.Drawing.Point(108, 133);
+            this.lblText2.Name = "lblText2";
             this.lblText2.Size = new System.Drawing.Size(301, 66);
             this.lblText2.TabIndex = 20;
-            this.lblText2.Text = "Second you must click the Complete button to finish the process. Only do this AFTER " +
-                                    "you have accepted Terminals access to your account on the Flickr Web Site.";
+            this.lblText2.Text = "Second you must click the Complete button to finish the process. Only do this AFT" +
+    "ER you have accepted Terminals access to your account on the Flickr Web Site.";
             // 
             // lblText1
             // 
-            this.lblText1.Location = new System.Drawing.Point(87, 57);
-            this.lblText1.Name = "label9";
+            this.lblText1.Location = new System.Drawing.Point(108, 57);
+            this.lblText1.Name = "lblText1";
             this.lblText1.Size = new System.Drawing.Size(301, 61);
             this.lblText1.TabIndex = 19;
-            this.lblText1.Text = "First you must first Authorize Terminals with your Flickr account. Press the Authorize " +
-                                    "button now, login to your Flickr Account and allow Terminals limited access to your account.";
+            this.lblText1.Text = "First you must first Authorize Terminals with your Flickr account. Press the Auth" +
+    "orize button now, login to your Flickr Account and allow Terminals limited acces" +
+    "s to your account.";
             // 
             // CompleteAuthButton
             // 
             this.CompleteAuthButton.Enabled = false;
             this.CompleteAuthButton.Location = new System.Drawing.Point(6, 133);
             this.CompleteAuthButton.Name = "CompleteAuthButton";
-            this.CompleteAuthButton.Size = new System.Drawing.Size(75, 23);
+            this.CompleteAuthButton.Size = new System.Drawing.Size(96, 25);
             this.CompleteAuthButton.TabIndex = 18;
             this.CompleteAuthButton.Text = "Complete...";
             this.CompleteAuthButton.UseVisualStyleBackColor = true;
-            this.CompleteAuthButton.Click += new EventHandler(CompleteAuthButton_Click);
+            this.CompleteAuthButton.Click += new System.EventHandler(this.CompleteAuthButton_Click);
             // 
             // AuthorizeFlickrButton
             // 
             this.AuthorizeFlickrButton.Location = new System.Drawing.Point(9, 57);
             this.AuthorizeFlickrButton.Name = "AuthorizeFlickrButton";
-            this.AuthorizeFlickrButton.Size = new System.Drawing.Size(75, 23);
+            this.AuthorizeFlickrButton.Size = new System.Drawing.Size(93, 25);
             this.AuthorizeFlickrButton.TabIndex = 17;
             this.AuthorizeFlickrButton.Text = "Authorize...";
             this.AuthorizeFlickrButton.UseVisualStyleBackColor = true;
-            this.AuthorizeFlickrButton.Click += new EventHandler(AuthorizeFlickrButton_Click);
+            this.AuthorizeFlickrButton.Click += new System.EventHandler(this.AuthorizeFlickrButton_Click);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(218, 76);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(0, 13);
+            this.label8.Size = new System.Drawing.Size(0, 17);
             this.label8.TabIndex = 16;
             // 
             // FlickrOptionPanel
@@ -130,6 +131,7 @@ namespace Terminals.Forms
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

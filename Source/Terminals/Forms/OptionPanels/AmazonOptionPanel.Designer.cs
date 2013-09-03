@@ -83,22 +83,22 @@ namespace Terminals.Forms
             this.label22.AutoSize = true;
             this.label22.Location = new System.Drawing.Point(3, 100);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(72, 13);
+            this.label22.Size = new System.Drawing.Size(92, 17);
             this.label22.TabIndex = 23;
             this.label22.Text = "Bucket Name";
             // 
             // BucketNameTextBox
             // 
-            this.BucketNameTextBox.Location = new System.Drawing.Point(143, 97);
+            this.BucketNameTextBox.Location = new System.Drawing.Point(174, 97);
             this.BucketNameTextBox.Name = "BucketNameTextBox";
-            this.BucketNameTextBox.Size = new System.Drawing.Size(212, 20);
+            this.BucketNameTextBox.Size = new System.Drawing.Size(212, 22);
             this.BucketNameTextBox.TabIndex = 22;
             // 
             // RestoreButton
             // 
             this.RestoreButton.Location = new System.Drawing.Point(87, 184);
             this.RestoreButton.Name = "RestoreButton";
-            this.RestoreButton.Size = new System.Drawing.Size(75, 23);
+            this.RestoreButton.Size = new System.Drawing.Size(75, 25);
             this.RestoreButton.TabIndex = 21;
             this.RestoreButton.Text = "Restore";
             this.RestoreButton.UseVisualStyleBackColor = true;
@@ -106,9 +106,9 @@ namespace Terminals.Forms
             // 
             // BackupButton
             // 
-            this.BackupButton.Location = new System.Drawing.Point(6, 185);
+            this.BackupButton.Location = new System.Drawing.Point(6, 184);
             this.BackupButton.Name = "BackupButton";
-            this.BackupButton.Size = new System.Drawing.Size(75, 23);
+            this.BackupButton.Size = new System.Drawing.Size(75, 25);
             this.BackupButton.TabIndex = 20;
             this.BackupButton.Text = "Backup";
             this.BackupButton.UseVisualStyleBackColor = true;
@@ -124,9 +124,9 @@ namespace Terminals.Forms
             // 
             // TestButton
             // 
-            this.TestButton.Location = new System.Drawing.Point(280, 124);
+            this.TestButton.Location = new System.Drawing.Point(311, 124);
             this.TestButton.Name = "TestButton";
-            this.TestButton.Size = new System.Drawing.Size(75, 23);
+            this.TestButton.Size = new System.Drawing.Size(75, 25);
             this.TestButton.TabIndex = 18;
             this.TestButton.Text = "Test";
             this.TestButton.UseVisualStyleBackColor = true;
@@ -137,7 +137,7 @@ namespace Terminals.Forms
             this.label17.AutoSize = true;
             this.label17.Location = new System.Drawing.Point(3, 73);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(125, 13);
+            this.label17.Size = new System.Drawing.Size(164, 17);
             this.label17.TabIndex = 17;
             this.label17.Text = "Your Secret Access Key:";
             // 
@@ -146,22 +146,22 @@ namespace Terminals.Forms
             this.label16.AutoSize = true;
             this.label16.Location = new System.Drawing.Point(3, 46);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(105, 13);
+            this.label16.Size = new System.Drawing.Size(136, 17);
             this.label16.TabIndex = 16;
             this.label16.Text = "Your Access Key ID:";
             // 
             // SecretKeyTextbox
             // 
-            this.SecretKeyTextbox.Location = new System.Drawing.Point(143, 70);
+            this.SecretKeyTextbox.Location = new System.Drawing.Point(174, 70);
             this.SecretKeyTextbox.Name = "SecretKeyTextbox";
-            this.SecretKeyTextbox.Size = new System.Drawing.Size(212, 20);
+            this.SecretKeyTextbox.Size = new System.Drawing.Size(212, 22);
             this.SecretKeyTextbox.TabIndex = 15;
             // 
             // AccessKeyTextbox
             // 
-            this.AccessKeyTextbox.Location = new System.Drawing.Point(143, 43);
+            this.AccessKeyTextbox.Location = new System.Drawing.Point(174, 43);
             this.AccessKeyTextbox.Name = "AccessKeyTextbox";
-            this.AccessKeyTextbox.Size = new System.Drawing.Size(212, 20);
+            this.AccessKeyTextbox.Size = new System.Drawing.Size(212, 22);
             this.AccessKeyTextbox.TabIndex = 14;
             // 
             // AmazonBackupCheckbox
@@ -169,7 +169,7 @@ namespace Terminals.Forms
             this.AmazonBackupCheckbox.AutoSize = true;
             this.AmazonBackupCheckbox.Location = new System.Drawing.Point(6, 20);
             this.AmazonBackupCheckbox.Name = "AmazonBackupCheckbox";
-            this.AmazonBackupCheckbox.Size = new System.Drawing.Size(222, 17);
+            this.AmazonBackupCheckbox.Size = new System.Drawing.Size(289, 21);
             this.AmazonBackupCheckbox.TabIndex = 13;
             this.AmazonBackupCheckbox.Text = "Backup Favorites to Amazons S3 Service";
             this.AmazonBackupCheckbox.UseVisualStyleBackColor = true;
@@ -178,7 +178,7 @@ namespace Terminals.Forms
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Terminals.Properties.Resources.amazon;
-            this.pictureBox1.Location = new System.Drawing.Point(220, 153);
+            this.pictureBox1.Location = new System.Drawing.Point(251, 153);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(135, 55);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -188,6 +188,7 @@ namespace Terminals.Forms
             // AmazonOptionPanel
             // 
             this.Controls.Add(this.panel1);
+            this.Name = "AmazonOptionPanel";
             this.Size = new System.Drawing.Size(513, 332);
             this.panel1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
