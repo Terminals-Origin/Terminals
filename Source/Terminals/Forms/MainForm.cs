@@ -164,7 +164,7 @@ namespace Terminals
 
                 // Set default font type by Windows theme to use for all controls on form
                 this.Font = SystemFonts.IconTitleFont;
-                
+
                 InitializeComponent(); // main designer procedure
 
                 this.formSettings = new FormSettings(this);
@@ -753,6 +753,11 @@ namespace Terminals
         /// </summary>
         private void SetWindowState()
         {
+            // In a higher DPI mode, the form resize event is called before
+            // the fullScreenSwitch class is initialized.
+            if (fullScreenSwitch == null)
+                return;
+
             // Save window state only when not switching to and from fullscreen mode
             if (fullScreenSwitch.SwitchingFullScreen)
                 return;
