@@ -1,9 +1,7 @@
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
-using Terminals.Properties;
 
 namespace Terminals.Forms
 {
@@ -17,7 +15,6 @@ namespace Terminals.Forms
         private Boolean loadCalled;
         private Size lastNormalSize;
         private Point lastNormalLocation;
-        internal Boolean Enabled { get; set; }
 
         #region Constructors
 
@@ -35,6 +32,8 @@ namespace Terminals.Forms
         #endregion
 
         #region Properties
+
+        internal Boolean Enabled { get; set; }
 
         private FormsSection Settings
         {
@@ -107,7 +106,7 @@ namespace Terminals.Forms
         /// Restores form position to primary screen, if both of its check points 
         /// in window caption is out of visible bounds
         /// </summary>
-        internal void EnsureVisibleScreenArrea()
+        internal void EnsureVisibleScreenArea()
         {
             // because when comming back from minimalized state, this method is called firs yet with this state
             if (this.form.WindowState == FormWindowState.Minimized)
@@ -128,7 +127,13 @@ namespace Terminals.Forms
 
         private void SaveSizeAndLocation()
         {
-            if (this.form.WindowState != FormWindowState.Normal)
+            // If form is MainForm, check if it's switching between fullscreen mode.
+            // Then don't save changes to the form size.
+            Boolean mainFormFullScreen = false;
+            if (form.GetType() == typeof (MainForm))
+                mainFormFullScreen = ((MainForm)form).SwitchingFullScreen;
+
+            if (this.form.WindowState != FormWindowState.Normal || mainFormFullScreen)
                 return;
 
             this.lastNormalSize = this.form.Size;
@@ -154,7 +159,7 @@ namespace Terminals.Forms
                 return;
 
             this.form.Location = lastFormState.Location;
-            this.EnsureVisibleScreenArrea();
+            this.EnsureVisibleScreenArea();
             this.lastNormalLocation = this.form.Location;
         }
 

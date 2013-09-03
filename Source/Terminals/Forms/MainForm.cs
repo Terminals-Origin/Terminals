@@ -62,10 +62,21 @@ namespace Terminals
             }
         }
 
+        /// <summary>
+        /// Get or set wether the MainForm window is in fullscreen mode.
+        /// </summary>
         internal bool FullScreen
         { 
             private get { return this.fullScreenSwitch.FullScreen; }
             set { this.fullScreenSwitch.FullScreen = value; }
+        }
+
+        /// <summary>
+        /// Gets wether the MainForm window is switching to or from fullscreen mode.
+        /// </summary>
+        internal Boolean SwitchingFullScreen
+        {
+            get { return this.fullScreenSwitch.SwitchingFullScreen; } 
         }
 
         private AxMsRdpClient6NotSafeForScripting CurrentTerminal
@@ -153,9 +164,10 @@ namespace Terminals
 
                 // Set default font type by Windows theme to use for all controls on form
                 this.Font = SystemFonts.IconTitleFont;
-                this.formSettings = new FormSettings(this);
-
+                
                 InitializeComponent(); // main designer procedure
+
+                this.formSettings = new FormSettings(this);
 
                 this.terminalsControler = new TerminalTabsSelectionControler(this.tcTerminals);
                 this.connectionsUiFactory = new ConnectionsUiFactory(this, this.terminalsControler);
@@ -624,6 +636,12 @@ namespace Terminals
             this.OpenSavedConnections();
         }
 
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            // Get initial window state, location and after the form has finished loading
+            this.SetWindowState();
+        }
+
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Cancel)
@@ -648,6 +666,7 @@ namespace Terminals
                 this.ShowQuickConnect();
             }
         }
+
         private void ShowQuickConnect()
         {
             using (var qc = new QuickConnect())
@@ -659,7 +678,7 @@ namespace Terminals
 
         private void MainForm_Activated(object sender, EventArgs e)
         {
-            this.formSettings.EnsureVisibleScreenArrea();
+            this.formSettings.EnsureVisibleScreenArea();
 
             if (this.FullScreen)
                 this.tcTerminals.ShowTabs = false;
@@ -714,26 +733,38 @@ namespace Terminals
             }
             else
             {
-                // Do not change the mainform window information in the switch class,
-                // when going into fullscreen mode. These values are used when restoring
-                // the mainform from fullscreen mode.
-                if (!fullScreenSwitch.FullScreen)
-                {
-                    fullScreenSwitch.LastWindowState = this.WindowState;
-                    fullScreenSwitch.LastWindowSize = this.Size;
-                }
+                SetWindowState();
             }
         }
 
-        private void MainForm_LocationChanged(object sender, System.EventArgs e)
+        private void MainForm_Move(object sender, EventArgs e)
         {
-            if (!fullScreenSwitch.FullScreen)
-                fullScreenSwitch.LastWindowLocation = this.Location;
+            if (!fullScreenSwitch.SwitchingFullScreen && this.WindowState == FormWindowState.Normal)
+                fullScreenSwitch.LastWindowStateNormalLocation = this.Location;
         }
 
         #endregion
 
         #region Private events
+
+        /// <summary>
+        /// Save the MainForm windowstate, location and size for reference,
+        /// when restoring from fullscreen mode.
+        /// </summary>
+        private void SetWindowState()
+        {
+            // Save window state only when not switching to and from fullscreen mode
+            if (fullScreenSwitch.SwitchingFullScreen)
+                return;
+
+            this.fullScreenSwitch.LastWindowState = this.WindowState;
+
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                this.fullScreenSwitch.LastWindowStateNormalLocation = this.Location;
+                this.fullScreenSwitch.LastWindowStateNormalSize = this.Size;
+            }
+        }
 
         private void TcTerminals_TabDetach(TabControlItemChangedEventArgs args)
         {
@@ -765,49 +796,41 @@ namespace Terminals
             {
                 this.FullScreen = !this.FullScreen;
             }
-            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_CREDENTIALMANAGER)
+            else switch (clickedItem.Name)
             {
-                this.ShowCredentialsManager();
-            }
-            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_ORGANIZEFAVORITES)
-            {
-                this.ManageConnectionsToolStripMenuItem_Click(null, null);
-            }
-            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_OPTIONS)
-            {
-                this.OptionsToolStripMenuItem_Click(null, null);
-            }
-            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_NETTOOLS)
-            {
-                this.ToolStripButton2_Click(null, null);
-            }
-            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_CAPTUREMANAGER)
-            {
-                this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(true);
-            }
-            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_EXIT)
-            {
-                this.Close();
-            }
-            else if (clickedItem.Name == FavoritesMenuLoader.QUICK_CONNECT)
-            {
-                ShowQuickConnect();
-            }
-
-            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_SHOWMENU)
-            {
-                Boolean visible = !this.menuStrip.Visible;
-                this.menuStrip.Visible = visible;
-                this.menubarToolStripMenuItem.Checked = visible;
-            }
-            else if (clickedItem.Name == FavoritesMenuLoader.COMMAND_SPECIAL)
-            {
-                return;
-            }
-
-            else
-            {
-                OnFavoriteTrayToolsStripClick(e);
+                case FavoritesMenuLoader.COMMAND_CREDENTIALMANAGER:
+                    this.ShowCredentialsManager();
+                    break;
+                case FavoritesMenuLoader.COMMAND_ORGANIZEFAVORITES:
+                    this.ManageConnectionsToolStripMenuItem_Click(null, null);
+                    break;
+                case FavoritesMenuLoader.COMMAND_OPTIONS:
+                    this.OptionsToolStripMenuItem_Click(null, null);
+                    break;
+                case FavoritesMenuLoader.COMMAND_NETTOOLS:
+                    this.ToolStripButton2_Click(null, null);
+                    break;
+                case FavoritesMenuLoader.COMMAND_CAPTUREMANAGER:
+                    this.terminalsControler.RefreshCaptureManagerAndCreateItsTab(true);
+                    break;
+                case FavoritesMenuLoader.COMMAND_EXIT:
+                    this.Close();
+                    break;
+                case FavoritesMenuLoader.QUICK_CONNECT:
+                    this.ShowQuickConnect();
+                    break;
+                case FavoritesMenuLoader.COMMAND_SHOWMENU:
+                    {
+                        Boolean visible = !this.menuStrip.Visible;
+                        this.menuStrip.Visible = visible;
+                        this.menubarToolStripMenuItem.Checked = visible;
+                    }
+                    break;
+                case FavoritesMenuLoader.COMMAND_SPECIAL:
+                    return;
+                default:
+                    this.OnFavoriteTrayToolsStripClick(e);
+                    break;
             }
 
             this.QuickContextMenu.Hide();
@@ -1306,7 +1329,6 @@ namespace Terminals
 
         private void Minimize(object sender, EventArgs e)
         {
-            fullScreenSwitch.LastWindowState = this.WindowState;
             this.WindowState = FormWindowState.Minimized;
         }
 
@@ -1323,14 +1345,9 @@ namespace Terminals
                 else
                 {
                     if (this.WindowState == FormWindowState.Normal)
-                    {
-                        fullScreenSwitch.LastWindowState = this.WindowState;
                         this.WindowState = FormWindowState.Minimized;
-                    }
                     else
-                    {
                         this.WindowState = fullScreenSwitch.LastWindowState;
-                    }
                 }
             }
         }
