@@ -8,9 +8,9 @@ using Terminals.Integration.Export;
 
 namespace Terminals.Forms
 {
-    internal partial class ExportFrom : Form
+    internal partial class ExportForm : Form
     {
-        public ExportFrom()
+        public ExportForm()
         {
             this.InitializeComponent();
 
@@ -134,7 +134,7 @@ namespace Terminals.Forms
             }
         }
 
-        private void ExportFrom_FormClosing(object sender, FormClosingEventArgs e)
+        private void ExportForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.favsTree.UnregisterEvents();
         }        
