@@ -1691,8 +1691,8 @@ namespace Terminals
 
         private void ExportConnectionsListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var ei = new ExportFrom();
-            ei.Show();
+            using (var frm = new ExportForm())
+                frm.ShowDialog();
         }
 
         private void ManageConnectionsToolStripMenuItem_Click(object sender, EventArgs e)

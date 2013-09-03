@@ -391,10 +391,8 @@ namespace Terminals
 
         private void ExportToFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var exportFrom = new ExportFrom())
-            {
-                exportFrom.Show();
-            }
+            using (var frm = new ExportForm())
+                frm.ShowDialog();
         }
 
         private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
