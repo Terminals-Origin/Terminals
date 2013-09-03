@@ -427,7 +427,8 @@ namespace Terminals.Connections
 
             this.nonScriptable.EnableCredSspSupport = rdpOptions.Security.EnableNLAAuthentication;
 
-            this.client.SecuredSettings2.AudioRedirectionMode = (int)rdpOptions.Redirect.Sounds;
+            var audioMode = (int)rdpOptions.Redirect.Sounds;
+            this.client.SecuredSettings2.AudioRedirectionMode = (audioMode >= 0 && audioMode <= 2) ? audioMode : 0;
 
             ISecurityOptions security = this.Favorite.Security.GetResolvedCredentials();
 
