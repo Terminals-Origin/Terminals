@@ -1071,6 +1071,9 @@
     <EmbeddedResource Include="Forms\OptionPanels\DefaultPasswordOptionPanel.resx">
       <DependentUpon>DefaultPasswordOptionPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OptionPanels\StartShutdownOptionPanel.resx">
+      <DependentUpon>StartShutdownOptionPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\UnhandledTerminationForm.resx">
       <DependentUpon>UnhandledTerminationForm.cs</DependentUpon>
     </EmbeddedResource>
