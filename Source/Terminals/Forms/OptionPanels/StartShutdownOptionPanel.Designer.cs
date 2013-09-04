@@ -57,9 +57,9 @@ namespace Terminals.Forms
             // 
             this.groupBoxShutdown.Controls.Add(this.chkSaveConnections);
             this.groupBoxShutdown.Controls.Add(this.chkShowConfirmDialog);
-            this.groupBoxShutdown.Location = new System.Drawing.Point(6, 74);
+            this.groupBoxShutdown.Location = new System.Drawing.Point(6, 89);
             this.groupBoxShutdown.Name = "groupBoxShutdown";
-            this.groupBoxShutdown.Size = new System.Drawing.Size(500, 65);
+            this.groupBoxShutdown.Size = new System.Drawing.Size(500, 80);
             this.groupBoxShutdown.TabIndex = 1;
             this.groupBoxShutdown.TabStop = false;
             this.groupBoxShutdown.Text = "Shutdown";
@@ -71,7 +71,7 @@ namespace Terminals.Forms
             this.chkSaveConnections.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkSaveConnections.Location = new System.Drawing.Point(6, 43);
             this.chkSaveConnections.Name = "chkSaveConnections";
-            this.chkSaveConnections.Size = new System.Drawing.Size(155, 17);
+            this.chkSaveConnections.Size = new System.Drawing.Size(199, 21);
             this.chkSaveConnections.TabIndex = 5;
             this.chkSaveConnections.Text = "Save connections on close";
             this.chkSaveConnections.UseVisualStyleBackColor = true;
@@ -83,7 +83,7 @@ namespace Terminals.Forms
             this.chkShowConfirmDialog.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShowConfirmDialog.Location = new System.Drawing.Point(6, 20);
             this.chkShowConfirmDialog.Name = "chkShowConfirmDialog";
-            this.chkShowConfirmDialog.Size = new System.Drawing.Size(172, 17);
+            this.chkShowConfirmDialog.Size = new System.Drawing.Size(224, 21);
             this.chkShowConfirmDialog.TabIndex = 4;
             this.chkShowConfirmDialog.Text = "Show close confirmation dialog";
             this.chkShowConfirmDialog.UseVisualStyleBackColor = true;
@@ -94,17 +94,17 @@ namespace Terminals.Forms
             this.groupBoxStartup.Controls.Add(this.chkSingleInstance);
             this.groupBoxStartup.Location = new System.Drawing.Point(6, 3);
             this.groupBoxStartup.Name = "groupBoxStartup";
-            this.groupBoxStartup.Size = new System.Drawing.Size(500, 65);
+            this.groupBoxStartup.Size = new System.Drawing.Size(500, 80);
             this.groupBoxStartup.TabIndex = 0;
             this.groupBoxStartup.TabStop = false;
             this.groupBoxStartup.Text = "Startup";
             // 
-            // NeverShowTerminalsCheckbox
+            // chkNeverShowTerminalsCheckbox
             // 
             this.chkNeverShowTerminalsCheckbox.AutoSize = true;
             this.chkNeverShowTerminalsCheckbox.Location = new System.Drawing.Point(6, 42);
-            this.chkNeverShowTerminalsCheckbox.Name = "NeverShowTerminalsCheckbox";
-            this.chkNeverShowTerminalsCheckbox.Size = new System.Drawing.Size(251, 17);
+            this.chkNeverShowTerminalsCheckbox.Name = "chkNeverShowTerminalsCheckbox";
+            this.chkNeverShowTerminalsCheckbox.Size = new System.Drawing.Size(333, 21);
             this.chkNeverShowTerminalsCheckbox.TabIndex = 4;
             this.chkNeverShowTerminalsCheckbox.Text = "Do not keep me up-to-date on Terminals project";
             this.chkNeverShowTerminalsCheckbox.UseVisualStyleBackColor = true;
@@ -116,9 +116,9 @@ namespace Terminals.Forms
             this.chkSingleInstance.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkSingleInstance.Location = new System.Drawing.Point(6, 19);
             this.chkSingleInstance.Name = "chkSingleInstance";
-            this.chkSingleInstance.Size = new System.Drawing.Size(217, 17);
+            this.chkSingleInstance.Size = new System.Drawing.Size(382, 21);
             this.chkSingleInstance.TabIndex = 3;
-            this.chkSingleInstance.Text = "Allow a single instance of the application";
+            this.chkSingleInstance.Text = "Allow a single instance of the application (needs restart)";
             this.chkSingleInstance.UseVisualStyleBackColor = true;
             // 
             // StartShutdownOptionPanel
