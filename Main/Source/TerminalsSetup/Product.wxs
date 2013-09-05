@@ -26,7 +26,7 @@
     <CustomAction Id="FinalizeCustomActionSetProperty" Return="check" Property="FinalizeCustomAction"
                   Value="LOCATION=[INSTALLFOLDER];TYPE=[INSTALLTYPE];"/>
     <!-- The custom action updates the installed files, eg. it needs elevated priviledges -->
-    <Binary Id="CustomSetupAction.CA.dll" src="..\CustomSetupAction\bin\$(var.Configuration)\CustomSetupAction.CA.dll" />
+    <Binary Id="CustomSetupAction.CA.dll" SourceFile="..\CustomSetupAction\bin\$(var.Configuration)\CustomSetupAction.CA.dll" />
     <CustomAction Id="FinalizeCustomAction" Return="check" Execute="commit" Impersonate="no" 
                   BinaryKey="CustomSetupAction.CA.dll" DllEntry="UpgradeConfigFiles" />
     <InstallExecuteSequence>

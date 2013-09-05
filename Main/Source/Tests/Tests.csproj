@@ -140,9 +140,9 @@
     <Compile Include="UpdateManagerTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CustomInstaller\CustomInstaller.csproj">
-      <Project>{0E32FC99-79E4-4C16-827F-232222C494AC}</Project>
-      <Name>CustomInstaller</Name>
+    <ProjectReference Include="..\CustomSetupAction\CustomSetupAction.csproj">
+      <Project>{a74a4fe1-d67a-4c9d-847a-5e3708b61ba8}</Project>
+      <Name>CustomSetupAction</Name>
     </ProjectReference>
     <ProjectReference Include="..\Granados\Granados.csproj">
       <Project>{9780D85D-2E12-4747-9E08-DEDB95A71FC3}</Project>
