@@ -40,27 +40,35 @@ namespace Tests.SqlPersisted
         [TestMethod]
         public void AddGroupTest()
         {
-            DbGroup childGroup = this.CreateTestGroup("TestGroupA");
+            DbGroup childGroup = this.CreateTestGroupA();
+            DbSet<DbGroup> checkedGroups = this.CheckDatabase.Groups;
+            DbGroup checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
+            Assert.IsNotNull(checkedChild, "Group wasn't added to the database");
+            Assert.AreEqual(1, this.addedCount, "Add event wasn't received"); 
+        }
+
+        [TestMethod]
+        public void UpdateTest()
+        {
+            DbGroup childGroup = this.CreateTestGroupA();
             DbGroup parentGroup = this.CreateTestGroup("TestGroupB");
             childGroup.Parent = parentGroup; // don't use entities here, we are testing intern logic
-            IGroup testParent = childGroup.Parent; // dummy test to resolve parent
+            IGroup testParent = childGroup.Parent;
+            const string NEWNAME = "UpdatedName";
+            childGroup.Name = NEWNAME;
+            this.PrimaryPersistence.Groups.Update(childGroup);
 
             Assert.AreEqual(testParent, parentGroup, "Parent group wasn't set properly");
             DbSet<DbGroup> checkedGroups = this.CheckDatabase.Groups;
             DbGroup checkedChild = checkedGroups.FirstOrDefault(group => group.Id == childGroup.Id);
             DbGroup checkedParent = checkedGroups.FirstOrDefault(group => group.Id == parentGroup.Id);
             Assert.IsNotNull(checkedChild, "Group wasn't added to the database");
+            Assert.AreEqual(NEWNAME, checkedChild.Name, "Group name wasnt update properly");
             Assert.IsNotNull(checkedParent, "Group wasn't added to the database");
             Assert.AreEqual(1, checkedParent.ChildGroups.Count, "Group wasn't added as child");
             // only one, because Added event is send once for each group
-            Assert.AreEqual(2, this.addedCount, "Add event wasn't received"); 
+            Assert.AreEqual(2, this.addedCount, "Add event wasn't received");
         }
-
-        //[TestMethod]
-        //public void UpdateTest()
-        //{
-            // todo SQL group parent is stored directly in setter and also needs to check rename of the group
-        //}
 
         [TestMethod]
         public void LoadGroupFavoritesTest()

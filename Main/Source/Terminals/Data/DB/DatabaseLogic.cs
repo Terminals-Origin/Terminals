@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using System.Data.Objects;
 using System.Linq;
 using Terminals.Connections;
 
@@ -139,6 +141,13 @@ namespace Terminals.Data.DB
             {
                 this.Groups.Remove(group);
             }
+        }
+
+        internal void RefreshEntity<TEntity>(TEntity toUpdate)
+            where TEntity: class
+        {
+            this.Entry(toUpdate).Reload();
+            ((IObjectContextAdapter)this).ObjectContext.Refresh(RefreshMode.ClientWins, toUpdate);
         }
     }
 }

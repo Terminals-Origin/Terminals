@@ -24,8 +24,14 @@ namespace Terminals.Data.DB
         {
             foreach (DbGroup group in toAttach)
             {
-                this.database.Groups.Attach(@group);
+                this.Attach(group);
             }
+        }
+
+        internal void Attach(DbGroup group)
+        {
+            group.FieldsToReferences();
+            this.database.Groups.Attach(group);
         }
 
         internal void AttachAll(IEnumerable<DbFavorite> favorites)
@@ -142,8 +148,14 @@ namespace Terminals.Data.DB
         {
             foreach (DbGroup entity in entitiesToDetach)
             {
-                this.Detach(entity);
+                this.DetachGroup(entity);
             }
+        }
+
+        private void DetachGroup(DbGroup group)
+        {
+            group.LoadFieldsFromReferences();
+            this.Detach(group);
         }
 
         internal void Detach<TEntity>(TEntity entity)
