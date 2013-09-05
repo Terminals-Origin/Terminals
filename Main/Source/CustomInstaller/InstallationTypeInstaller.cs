@@ -2,9 +2,6 @@
 using System.Collections;
 using System.ComponentModel;
 using System.Configuration.Install;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
 
 namespace Terminals
 {
@@ -27,7 +24,7 @@ namespace Terminals
             }
             catch (Exception exception)
             {
-                throw new InstallException("Installer was unable to update config file.", exception);
+                throw new InstallException("Installer was unable to update config files.", exception);
             }
         }
 
