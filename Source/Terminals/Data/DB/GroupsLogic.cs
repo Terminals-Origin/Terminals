@@ -100,8 +100,61 @@ namespace Terminals.Data.DB
 
         public void Update(IGroup group)
         {
-            // todo Update group in SQL persistence
-            throw new NotImplementedException("Update group in SQL persistence groups");
+            try
+            {
+                this.TryUpdateGroup(group);
+            }
+            catch (EntityException exception)
+            {
+                this.dispatcher.ReportActionError(Update, group, this, exception,
+                    "Unable to update group in database");
+            }
+
+        }
+
+        private void TryUpdateGroup(IGroup group)
+        {
+            using (Database database = DatabaseConnections.CreateInstance())
+            {
+                var toUpdate = group as DbGroup;
+                database.Cache.Attach(toUpdate);
+                this.TrySaveAndReport(toUpdate, database);
+            }
+        }
+
+        private void TrySaveAndReport(DbGroup toUpdate, Database database)
+        {
+            try
+            {
+                this.SaveAndReportUpdated(database, toUpdate);
+            }
+            catch (DbUpdateException)
+            {
+                this.TryToRefreshUpdated(toUpdate, database);
+            }
+        }
+
+        private void TryToRefreshUpdated(DbGroup toUpdate, Database database)
+        {
+            try
+            {
+                database.RefreshEntity(toUpdate);
+                this.SaveAndReportUpdated(database, toUpdate);
+            }
+            catch (InvalidOperationException)
+            {
+                this.cache.Delete(toUpdate);
+                this.dispatcher.ReportGroupsDeleted(new List<IGroup>(){ toUpdate });
+            }
+        }
+
+        private void SaveAndReportUpdated(Database database, DbGroup toUpdate)
+        {
+            database.Cache.MarkAsModified(toUpdate);
+            database.SaveImmediatelyIfRequested();
+            database.Cache.Detach(toUpdate);
+            this.cache.Update(toUpdate);
+            this.dispatcher.ReportGroupsUpdated(new List<IGroup>() { toUpdate });
         }
 
         public void Delete(IGroup group)
@@ -287,7 +340,7 @@ namespace Terminals.Data.DB
                     database.Cache.AttachAll(toRefresh);
 
                 ((IObjectContextAdapter)database).ObjectContext.Refresh(RefreshMode.StoreWins, database.Groups);
-                List<DbGroup> groups = database.Groups.ToList();
+                List<DbGroup> groups = database.Groups.Include("ParentGroup").ToList();
                 database.Cache.DetachAll(groups);
                 return groups;
             }

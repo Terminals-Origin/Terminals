@@ -7,7 +7,9 @@ namespace Terminals.Data.DB
 {
     internal partial class DbGroup : IGroup, IIntegerKeyEnityty
     {
-        private IGroup parent;
+        // we dont have to release the field, to refrehs the instance, because the value is loaded directly
+        private DbGroup parent;
+
         /// <summary>
         /// Gets or sets the virtual unique identifier. This isn't used, because of internal database identifier.
         /// Only for compatibility with file persistence.
@@ -16,12 +18,11 @@ namespace Terminals.Data.DB
         {
             get
             {
-                this.LoadParent();
                 return this.parent;
             }
             set
             {
-                this.SaveParentToDatabase(value);
+                this.parent = (DbGroup)value;
             }
         }
 
@@ -66,70 +67,6 @@ namespace Terminals.Data.DB
             this.groups = groups;
             this.dispatcher = dispatcher;
             this.favorites = favorites;
-        }
-
-        private void SaveParentToDatabase(IGroup newParent)
-        {
-            try
-            {
-                this.TrySaveParentToDatabase(newParent);
-                this.parent = newParent;
-            }
-            catch (DbUpdateException)
-            {
-                groups.RefreshCache();
-            }
-            catch (EntityException exception)
-            {
-                this.dispatcher.ReportActionError(SaveParentToDatabase, newParent, this, exception,
-                                                  "Unable to save new group parent to database.");
-            }
-        }
-
-        private void TrySaveParentToDatabase(IGroup newParent)
-        {
-            using (Database database = DatabaseConnections.CreateInstance())
-            {
-                database.Groups.Attach(this);
-                this.ParentGroup = newParent as DbGroup;
-                database.SaveImmediatelyIfRequested();
-                database.Cache.Detach(this);
-            }
-        }
-
-        private void LoadParent()
-        {
-            if (this.parent != null)
-                return;
-
-            this.LoadFromDatabase();
-        }
-
-        private void LoadFromDatabase()
-        {
-            try
-            {
-                this.TryLoadFromDatabase();
-            }
-            catch (EntityException exception)
-            {
-                this.dispatcher.ReportActionError(LoadFromDatabase, this, exception, 
-                    "Unable to load group parent from database");
-            }
-        }
-
-        private void TryLoadFromDatabase()
-        {
-            using (Database database = DatabaseConnections.CreateInstance())
-            {
-                database.Groups.Attach(this);
-                database.Entry(this).Reference(g => g.ParentGroup).Load();
-                // pick up the item from cache instead of temporal connection to use only cached items
-                // groups should be already loaded, because this Group was also resolved from cache
-                int parentGroupId = this.ParentGroup != null ? this.ParentGroup.Id : -1;
-                this.parent = this.groups[parentGroupId];
-                database.Cache.Detach(this);
-            }
         }
 
         private void CacheFavoriteIds()
@@ -285,6 +222,17 @@ namespace Terminals.Data.DB
         public override string ToString()
         {
             return Group.ToString(this, this.Id.ToString());
+        }
+
+        internal void LoadFieldsFromReferences()
+        {
+            // loaded at once, so we expect to have the parent group instance also in cache
+            this.parent = this.ParentGroup;
+        }
+
+        internal void FieldsToReferences()
+        {
+            this.ParentGroup = this.parent;
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Infrastructure;
-using System.Data.Objects;
 using System.Linq;
 using System.Transactions;
 
@@ -30,7 +29,7 @@ namespace Terminals.Data.DB
 
         private readonly PersistenceSecurity persistenceSecurity;
 
-        private FavoritesBatchActions batchActions;
+        private readonly FavoritesBatchActions batchActions;
 
         internal Favorites(Groups groups, StoredCredentials credentials,
             PersistenceSecurity persistenceSecurity, DataDispatcher dispatcher)
@@ -175,8 +174,7 @@ namespace Terminals.Data.DB
         {
             try
             {
-                database.Entry(toUpdate).Reload();
-                ((IObjectContextAdapter)database).ObjectContext.Refresh(RefreshMode.ClientWins, toUpdate);
+                database.RefreshEntity(toUpdate);
                 this.SaveAndReportFavoriteUpdated(database, toUpdate);
             }
             catch (InvalidOperationException)
