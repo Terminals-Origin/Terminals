@@ -99,7 +99,7 @@ namespace Terminals
                 var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
                 if (groupNode != null)
                     frmNewTerminal.AssingSelectedGroup(groupNode.Group);
-                
+
                 frmNewTerminal.ShowDialog();
             }
         }
@@ -443,7 +443,8 @@ namespace Terminals
         private void StartConnection(TreeView tv)
         {
             // connections are always under some parent node in History and in Favorites
-            if (tv.SelectedNode != null && tv.SelectedNode.Level > 0)
+            // dont connect in rename in favorites tree
+            if (tv.SelectedNode != null && tv.SelectedNode.Level > 0 && !tv.SelectedNode.IsEditing)
             {
                 this.ConnectionsUiFactory.Connect(new ConnectionDefinition(tv.SelectedNode.Text));
             }
@@ -460,7 +461,7 @@ namespace Terminals
             string newGroupName = NewGroupForm.AskFroGroupName();
             if (string.IsNullOrEmpty(newGroupName))
                 return;
-            
+
             FavoritesFactory.GetOrAddNewGroup(newGroupName);
         }
 
@@ -491,7 +492,7 @@ namespace Terminals
         {
             var selected = this.GetSelectedFavorite();
             if (selected != null)
-                return new List<IFavorite>() {selected};
+                return new List<IFavorite>() { selected };
 
             return this.GetSelectedGroupFavorites();
         }
@@ -504,7 +505,7 @@ namespace Terminals
         {
             if (this.tabControl1.SelectedTab == this.searchTabPage)
                 return this.searchPanel1.SelectedFavorite;
-            
+
             // favorites tree view is selected
             return this.favsTree.SelectedFavorite;
         }
@@ -522,7 +523,7 @@ namespace Terminals
         {
             this.favsTree.CollapseAll();
         }
-        
+
         private void CollpseHistoryButton_Click(object sender, EventArgs e)
         {
             this.historyTreeView.CollapseAll();
@@ -537,70 +538,76 @@ namespace Terminals
 
         private void FavsTree_KeyUp(object sender, KeyEventArgs e)
         {
-          switch (e.KeyCode)
-          {
-            case Keys.Enter:
-              this.StartConnection(this.favsTree);
-              break;
-              case Keys.F2:
-              this.BeginRenameInFavsTree();
-              break;
-          }
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                    this.StartConnection(this.favsTree);
+                    break;
+                case Keys.F2:
+                    this.BeginRenameInFavsTree();
+                    break;
+            }
         }
 
-      private void BeginRenameInFavsTree()
-      {
-          if (this.favsTree.SelectedNode != null)
-            this.favsTree.SelectedNode.BeginEdit();
-      }
 
-      private void FavsTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-      {
-        if (string.IsNullOrEmpty(e.Label))
+        private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-          e.CancelEdit = true;
-          return;
+            this.BeginRenameInFavsTree();
         }
 
-        this.TryRenameFavoriteNode(e);
-        this.TryRenameGroupNode(e);
-      }
-
-      private void TryRenameFavoriteNode(NodeLabelEditEventArgs e)
-      {
-        IFavorite favorite = this.favsTree.SelectedFavorite;
-        if (favorite != null)
+        private void BeginRenameInFavsTree()
         {
-          var favoriteArguments = new object[] {favorite, e.Label};
-          this.favsTree.BeginInvoke(new Action<IFavorite, string>(RenameFavorite), favoriteArguments);
+            if (this.favsTree.SelectedNode != null)
+                this.favsTree.SelectedNode.BeginEdit();
         }
-      }
 
-      private void TryRenameGroupNode(NodeLabelEditEventArgs e)
-      {
-        var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
-        if (groupNode != null)
+        private void FavsTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
-          var groupArguments = new object[] {groupNode.Group, e.Label};
-          this.favsTree.BeginInvoke(new Action<IGroup, string>(RenameGroup), groupArguments);
+            if (string.IsNullOrEmpty(e.Label))
+            {
+                e.CancelEdit = true;
+                return;
+            }
+
+            this.TryRenameFavoriteNode(e);
+            this.TryRenameGroupNode(e);
         }
-      }
 
-      private static void RenameGroup(IGroup group, string newName)
-      {
-        // todo validate the name
-        group.Name = newName;
-        Persistence.Instance.Groups.Update(group);
-      }
+        private void TryRenameFavoriteNode(NodeLabelEditEventArgs e)
+        {
+            IFavorite favorite = this.favsTree.SelectedFavorite;
+            if (favorite != null)
+            {
+                var favoriteArguments = new object[] { favorite, e.Label };
+                this.favsTree.BeginInvoke(new Action<IFavorite, string>(RenameFavorite), favoriteArguments);
+            }
+        }
 
-      private static void RenameFavorite(IFavorite favorite, string newName)
-      {
-        // todo validate the name
-        favorite.Name = newName;
-        PersistedFavorites.Update(favorite);
-      }
+        private void TryRenameGroupNode(NodeLabelEditEventArgs e)
+        {
+            var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
+            if (groupNode != null)
+            {
+                var groupArguments = new object[] { groupNode.Group, e.Label };
+                this.favsTree.BeginInvoke(new Action<IGroup, string>(RenameGroup), groupArguments);
+            }
+        }
 
-      private void SearchPanel_ResultListKeyUp(object sender, KeyEventArgs e)
+        private static void RenameGroup(IGroup group, string newName)
+        {
+            // todo validate the name
+            group.Name = newName;
+            Persistence.Instance.Groups.Update(group);
+        }
+
+        private static void RenameFavorite(IFavorite favorite, string newName)
+        {
+            // todo validate the name
+            favorite.Name = newName;
+            PersistedFavorites.Update(favorite);
+        }
+
+        private void SearchPanel_ResultListKeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter)
                 return;
