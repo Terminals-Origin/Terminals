@@ -537,11 +537,70 @@ namespace Terminals
 
         private void FavsTree_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-                this.StartConnection(this.favsTree);
+          switch (e.KeyCode)
+          {
+            case Keys.Enter:
+              this.StartConnection(this.favsTree);
+              break;
+              case Keys.F2:
+              this.BeginRenameInFavsTree();
+              break;
+          }
         }
-        
-        private void SearchPanel_ResultListKeyUp(object sender, KeyEventArgs e)
+
+      private void BeginRenameInFavsTree()
+      {
+          if (this.favsTree.SelectedNode != null)
+            this.favsTree.SelectedNode.BeginEdit();
+      }
+
+      private void FavsTree_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
+      {
+        if (string.IsNullOrEmpty(e.Label))
+        {
+          e.CancelEdit = true;
+          return;
+        }
+
+        this.TryRenameFavoriteNode(e);
+        this.TryRenameGroupNode(e);
+      }
+
+      private void TryRenameFavoriteNode(NodeLabelEditEventArgs e)
+      {
+        IFavorite favorite = this.favsTree.SelectedFavorite;
+        if (favorite != null)
+        {
+          var favoriteArguments = new object[] {favorite, e.Label};
+          this.favsTree.BeginInvoke(new Action<IFavorite, string>(RenameFavorite), favoriteArguments);
+        }
+      }
+
+      private void TryRenameGroupNode(NodeLabelEditEventArgs e)
+      {
+        var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
+        if (groupNode != null)
+        {
+          var groupArguments = new object[] {groupNode.Group, e.Label};
+          this.favsTree.BeginInvoke(new Action<IGroup, string>(RenameGroup), groupArguments);
+        }
+      }
+
+      private static void RenameGroup(IGroup group, string newName)
+      {
+        // todo validate the name
+        group.Name = newName;
+        Persistence.Instance.Groups.Update(group);
+      }
+
+      private static void RenameFavorite(IFavorite favorite, string newName)
+      {
+        // todo validate the name
+        favorite.Name = newName;
+        PersistedFavorites.Update(favorite);
+      }
+
+      private void SearchPanel_ResultListKeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter)
                 return;

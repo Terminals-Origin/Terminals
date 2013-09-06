@@ -10,9 +10,10 @@ namespace Terminals.Forms.Controls
     internal partial class SearchPanel : UserControl
     {
         /// <summary>
-        /// Gets or sets the context menu, which will be shown, when selected item is clicked
+        /// Gets or sets the context menu, which will be shown, when selected item is clicked.
+        /// Needs to be public get and set to be available in designer.
         /// </summary>
-        public ContextMenuStrip ResultsContextMenu { private get; set; }
+        public ContextMenuStrip ResultsContextMenu { get; set; }
 
         /// <summary>
         /// Gets first selected favorite in results list view. Null if nothing is selected.
