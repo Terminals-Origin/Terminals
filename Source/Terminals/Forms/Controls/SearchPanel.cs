@@ -16,6 +16,16 @@ namespace Terminals.Forms.Controls
         public ContextMenuStrip ResultsContextMenu { get; set; }
 
         /// <summary>
+        /// Gets or sets the value indicating, the the rename of items in results panel is allowed.
+        /// This only wrappes related property in wrapped listview control.
+        /// </summary>
+        public bool LabelEdit
+        {
+            get { return this.resultsListView.LabelEdit; }
+            set { this.resultsListView.LabelEdit = value; }
+        }
+
+        /// <summary>
         /// Gets first selected favorite in results list view. Null if nothing is selected.
         /// </summary>
         internal IFavorite SelectedFavorite
@@ -31,6 +41,16 @@ namespace Terminals.Forms.Controls
                     .Select(item => item.Tag as IFavorite)
                     .ToList();
             }
+        }
+
+        /// <summary>
+        /// Ocures, when the label of an item in results listview is edited by the user.
+        /// This only forwards the event to the wrapped listview control.
+        /// </summary>
+        public event LabelEditEventHandler ResultListAfterLabelEdit
+        {
+            add { this.resultsListView.AfterLabelEdit += value; }
+            remove { this.resultsListView.AfterLabelEdit -= value; }
         }
 
         /// <summary>

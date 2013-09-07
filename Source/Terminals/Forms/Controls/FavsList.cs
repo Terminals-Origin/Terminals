@@ -549,7 +549,6 @@ namespace Terminals
             }
         }
 
-
         private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.BeginRenameInFavsTree();
@@ -557,7 +556,7 @@ namespace Terminals
 
         private void BeginRenameInFavsTree()
         {
-            if (this.favsTree.SelectedNode != null)
+            if (this.tabControl1.SelectedTab == this.FavoritesTabPage && this.favsTree.SelectedNode != null)
                 this.favsTree.SelectedNode.BeginEdit();
         }
 
@@ -600,6 +599,12 @@ namespace Terminals
             // todo validate the name
             group.Name = newName;
             Persistence.Instance.Groups.Update(group);
+        }
+
+        private void SearchPanel1_ResultListAfterLabelEdit(object sender, LabelEditEventArgs e)
+        {
+            var favorite = this.GetSelectedFavorite();
+            RenameFavorite(favorite, e.Label);
         }
 
         private static void RenameFavorite(IFavorite favorite, string newName)
