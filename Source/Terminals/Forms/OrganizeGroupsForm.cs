@@ -57,7 +57,7 @@ namespace Terminals
         private void TsbDeleteGroup_Click(object sender, EventArgs e)
         {
             IGroup group = GetSelectedGroup();
-            if (group != null)
+            if (group != null && OrganizeFavoritesForm.AskIfRealyDelete("group"))
             {
                 Persistence.Instance.Groups.Delete(group);
                 LoadGroups();
