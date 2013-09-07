@@ -53,7 +53,11 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private void PersistenceFavoritesChanged(FavoritesChangedEventArgs args)
         {
-            this.StartSearch(this.searchTextBox.SearchText);
+            string searchText = this.searchTextBox.SearchText;
+            if (string.IsNullOrEmpty(searchText))
+                this.Cancel();
+            else
+                this.StartSearch(this.searchTextBox.SearchText);
         }
 
         private void SearchTextBoxStart(object sender, SearchEventArgs e)
