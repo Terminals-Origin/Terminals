@@ -288,10 +288,22 @@ namespace Terminals
             if (this.dataGridFavorites.IsCurrentCellInEditMode)
                 return;
 
-            this.Cursor = Cursors.WaitCursor;
-            List<IFavorite> selectedFavorites = GetSelectedFavorites();
-            PersistedFavorites.Delete(selectedFavorites);
+            if (AskIfRealyDelete("favorites"))
+                this.PerformDelete();
+        }
 
+        internal static bool AskIfRealyDelete(string target)
+        {
+            string messsage = string.Format("Do your realy want to delete selected {0}?", target);
+            return  MessageBox.Show(messsage, "Terminals - Delete",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+        }
+
+        private void PerformDelete()
+        {
+            this.Cursor = Cursors.WaitCursor;
+            List<IFavorite> selectedFavorites = this.GetSelectedFavorites();
+            PersistedFavorites.Delete(selectedFavorites);
             this.UpdateFavoritesBindingSource();
             this.Cursor = Cursors.Default;
         }

@@ -376,8 +376,8 @@ namespace Terminals
         {
             String groupName = this.favsTree.SelectedNode.Text;
             string title = "Delete all Favorites by group - " + groupName;
-            const string PROMPT = "This will DELETE all Favorites within this group.\r\nUse at your own risk!\r\n\r\nDo you realy want to delete them?";
-            DialogResult result = MessageBox.Show(PROMPT, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            const string PROMPT = "This will DELETE all Favorites within this group.\r\nDo you realy want to delete them?";
+            DialogResult result = MessageBox.Show(PROMPT, title, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 List<IFavorite> selectedFavorites = this.StartBatchUpdate();
@@ -391,7 +391,7 @@ namespace Terminals
         private void RemoveSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            if (favorite != null)
+            if (favorite != null && OrganizeFavoritesForm.AskIfRealyDelete("favorite"))
                 PersistedFavorites.Delete(favorite);
         }
 
@@ -472,7 +472,7 @@ namespace Terminals
                 return;
 
             var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
-            if (groupNode != null)
+            if (groupNode != null && OrganizeFavoritesForm.AskIfRealyDelete("group"))
                 Persistence.Instance.Groups.Delete(groupNode.Group);
         }
 
