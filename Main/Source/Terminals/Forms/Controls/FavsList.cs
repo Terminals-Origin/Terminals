@@ -569,6 +569,8 @@ namespace Terminals
                 return;
             }
 
+            // following methods are called with the beginInvoke to realy perform the action. 
+            // This is a trick how to deal with the WinForms fact, that in this event handler the action isnt realy finished.
             this.TryRenameFavoriteNode(e);
             this.TryRenameGroupNode(e);
         }
