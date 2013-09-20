@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
 using Terminals.Forms.Controls;
@@ -13,6 +14,7 @@ namespace Tests.UserInterface
     /// + GroupD
     /// + GroupG
     ///   + GroupK
+    ///    + FavoriteA
     ///   + GroupM
     ///   + GroupS
     /// + GroupR
@@ -53,6 +55,10 @@ namespace Tests.UserInterface
 
         private IGroup groupM;
 
+        private IGroup groupK;
+
+        private IFavorite favoriteA;
+
         [TestInitialize]
         public void CreateTestTreeStructure()
         {
@@ -76,9 +82,12 @@ namespace Tests.UserInterface
             this.Persistence.StartDelayedUpdate();
             this.AddNewGroup("GroupD");
             this.groupG = this.AddNewGroup("GroupG");
-            this.AddGroupWithParent("GroupK", this.groupG);
+            this.groupK = this.AddGroupWithParent("GroupK", this.groupG);
+            this.favoriteA = this.AddFavorite();
+            this.favoriteA.Name = "FavoriteA";
+            this.Persistence.Favorites.UpdateFavorite(this.favoriteA, new List<IGroup>() { this.groupK });
             this.groupM = this.AddGroupWithParent("GroupM", this.groupG);
-             this.AddGroupWithParent("GroupS", this.groupG);
+            this.AddGroupWithParent("GroupS", this.groupG);
             this.groupR = this.AddNewGroup("GroupR");
             this.AddFavorite();
             this.Persistence.SaveAndFinishDelayedUpdate();
@@ -91,7 +100,7 @@ namespace Tests.UserInterface
         public void LoadingAllGroupsTest()
         {
             // not 4, because all nodes should be expanded
-            Assert.AreEqual(7, this.AllNodesCount, "Not all nodes were loaded properly");
+            Assert.AreEqual(8, this.AllNodesCount, "Not all nodes were loaded properly");
             // dummy nodes may also count to 6, so check also the childs number
             int secondNodeChilds = this.GroupGNodes.Count;
             Assert.AreEqual(3, secondNodeChilds, "Child node of GroupG were not expanded properly");
@@ -125,7 +134,7 @@ namespace Tests.UserInterface
             IGroup group = this.AddGroupWithParent("GroupL", this.groupG);
             Assert.AreEqual(4, this.GroupGNodes.Count, "Group wasnt added to the correct child node");
             AssertTreeNode(group, this.GroupGNodes[1]);
-            this.AssertNodesCount(9, 4); // noting should change on root level
+            this.AssertNodesCount(10, 4); // noting should change on root level
         }
 
         [TestMethod]
@@ -135,7 +144,7 @@ namespace Tests.UserInterface
             this.Persistence.Groups.Update(this.groupG);
             // since now property GroupGNodes points to wrong node
             AssertTreeNode(this.groupG, this.RootNodes[2]);
-            this.AssertNodesCount(7, 4);
+            this.AssertNodesCount(8, 4);
         }
 
         [TestMethod]
@@ -144,8 +153,8 @@ namespace Tests.UserInterface
             this.groupR.Parent = this.groupG;
             this.Persistence.Groups.Update(this.groupR);
             AssertTreeNode(this.groupR, this.GroupGNodes[2]);
-            // 8 - because the moved node isnt expanded in the target parent
-            this.AssertNodesCount(8, 3);
+            // 9 - because the moved node isnt expanded in the target parent
+            this.AssertNodesCount(9, 3);
         }
 
         [TestMethod]
@@ -154,8 +163,8 @@ namespace Tests.UserInterface
             this.groupM.Parent = null;
             this.Persistence.Groups.Update(this.groupM);
             AssertTreeNode(this.groupM, this.RootNodes[2]);
-            // 8 - because the moved node isnt expanded in the target parent 
-            this.AssertNodesCount(8);
+            // 9 - because the moved node isnt expanded in the target parent 
+            this.AssertNodesCount(9);
         }
 
         private IGroup AddGroupWithParent(string groupName, IGroup parent)
@@ -179,9 +188,9 @@ namespace Tests.UserInterface
             Assert.AreEqual(groupA.Name, groupNode.Text, "Tree node wasnt updated with corect name");
         }
 
-        private void AssertNodesCount(int expectedAllNodes = 9, int expectedRootNodes = 5)
+        private void AssertNodesCount(int expectedAllNodes = 10, int expectedRootNodes = 5)
         {
-            // 9 nodes in case of added, one on first position, second as its dummy child
+            // 10 nodes in case of added, one on first position, second as its dummy child
             Assert.AreEqual(expectedAllNodes, this.AllNodesCount, "Not all nodes were updated properly");
             Assert.AreEqual(expectedRootNodes, this.RootNodes.Count, "Nodes were not updated on the root level");
         }
