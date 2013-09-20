@@ -13,7 +13,8 @@ namespace Terminals.Forms.Controls
         {
             get
             {
-                return UntagedGroupNode.GetNotGroupedFavorites();
+                var favorites = Persistence.Instance.Favorites;
+                return FavoriteTreeListLoader.GetUntaggedFavorites(favorites);
             }
         }
 

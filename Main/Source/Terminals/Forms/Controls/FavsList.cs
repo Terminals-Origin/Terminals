@@ -20,6 +20,7 @@ namespace Terminals
 {
     internal partial class FavsList : UserControl
     {
+        private FavoriteTreeListLoader treeLoader;
         private static readonly string shutdownFailMessage = Program.Resources.GetString("UnableToRemoteShutdown");
         internal ConnectionsUiFactory ConnectionsUiFactory { private get; set; }
 
@@ -53,7 +54,8 @@ namespace Terminals
 
         private void FavsList_Load(object sender, EventArgs e)
         {
-            this.favsTree.Load();
+            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, Persistence.Instance);
+            this.treeLoader.LoadGroups();
             this.historyTreeView.Load();
             this.LoadState();
             this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
@@ -643,6 +645,22 @@ namespace Terminals
         {
             this.favsTree.ExpandedNodes = Settings.ExpandedFavoriteNodes;
             this.historyTreeView.ExpandedNodes = Settings.ExpandedHistoryNodes;
+        }
+
+        private void NewGroupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string newGroupName = NewGroupForm.AskFroGroupName();
+            if (string.IsNullOrEmpty(newGroupName))
+                return;
+
+            var newGroup = Persistence.Instance.Factory.CreateGroup(newGroupName);
+            var parentGroupNode = this.favsTree.SelectedNode as GroupTreeNode;
+            if (parentGroupNode != null)
+            {
+                newGroup.Parent = parentGroupNode.Group;
+            }
+
+            Persistence.Instance.Groups.Add(newGroup);
         }
     }
 }

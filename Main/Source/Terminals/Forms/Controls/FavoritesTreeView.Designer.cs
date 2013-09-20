@@ -52,7 +52,6 @@
       this.ImageList = this.imageListIcons;
       this.SelectedImageIndex = 0;
       this.ShowNodeToolTips = true;
-      this.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.OnTreeViewExpand);
       this.ResumeLayout(false);
 
         }

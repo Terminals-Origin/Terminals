@@ -9,8 +9,6 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal partial class FavoritesTreeView : TreeView
     {
-        private FavoriteTreeListLoader loader;
-
         internal IFavorite SelectedFavorite
         {
             get
@@ -26,29 +24,6 @@ namespace Terminals.Forms.Controls
         public FavoritesTreeView()
         {
             InitializeComponent();
-        }
-
-        /// <summary>
-        /// Because of designer, dont call in constructor
-        /// </summary>
-        internal void Load()
-        {
-            this.loader = new FavoriteTreeListLoader(this);
-            this.loader.LoadGroups();            
-        }
-
-        internal void UnregisterEvents()
-        {
-            this.loader.UnregisterEvents();
-        }
-
-        private void OnTreeViewExpand(object sender, TreeViewEventArgs e)
-        {
-            GroupTreeNode groupNode = e.Node as GroupTreeNode;
-            if (groupNode != null)
-            {
-                loader.LoadFavorites(groupNode);
-            }
         }
 
         internal GroupTreeNode FindSelectedGroupNode()

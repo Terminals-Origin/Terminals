@@ -25,7 +25,7 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        private readonly IGroup group;
+        private IGroup group;
 
         /// <summary>
         /// Gets the value indicating lazy loading not performed yet,
@@ -41,6 +41,11 @@ namespace Terminals.Forms.Controls
         }
 
         public IGroup Group { get { return this.group; } }
+
+        public bool IsOrphan
+        {
+            get { return this.TreeView == null; }
+        }
 
         internal GroupTreeNode(IGroup group, string imageKey)
             : this(group)
@@ -68,8 +73,9 @@ namespace Terminals.Forms.Controls
                 .Any(treeNode => treeNode.Favorite.StoreIdEquals(favorite));
         }
 
-        internal virtual void UpdateByGroupName()
+        internal virtual void UpdateByGroup(IGroup group)
         {
+            this.group = group;
             this.Text = this.group.Name;
         }
 

@@ -83,6 +83,7 @@
             this.setDomainByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setPasswordByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAllFavoritesByTagToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesContextMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.searchTabPage.SuspendLayout();
@@ -519,6 +520,7 @@
             this.connectToAllMenuItem,
             this.connectToAllExtraMenuItem,
             this.renameToolStripMenuItem1,
+            this.newGroupToolStripMenuItem,
             this.deleteToolStripMenuItem,
             this.toolStripSeparator1,
             this.setCredentialByTagToolStripMenuItem,
@@ -527,7 +529,7 @@
             this.setPasswordByTagToolStripMenuItem,
             this.deleteAllFavoritesByTagToolStripMenuItem});
             this.groupsContextMenu.Name = "contextMenuStrip2";
-            this.groupsContextMenu.Size = new System.Drawing.Size(235, 230);
+            this.groupsContextMenu.Size = new System.Drawing.Size(235, 274);
             // 
             // createFavoriteToolStripMenuItem
             // 
@@ -535,6 +537,7 @@
             this.createFavoriteToolStripMenuItem.Name = "createFavoriteToolStripMenuItem";
             this.createFavoriteToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.createFavoriteToolStripMenuItem.Text = "New Connection";
+            this.createFavoriteToolStripMenuItem.ToolTipText = "Creates new favorite adding it to the selected group";
             this.createFavoriteToolStripMenuItem.Click += new System.EventHandler(this.CreateFavoriteToolStripMenuItem_Click);
             // 
             // connectToAllMenuItem
@@ -566,6 +569,7 @@
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.ToolTipText = "Removes selected group. Favorites aren\'t deleted";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteGroupToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
@@ -607,7 +611,18 @@
             this.deleteAllFavoritesByTagToolStripMenuItem.Name = "deleteAllFavoritesByTagToolStripMenuItem";
             this.deleteAllFavoritesByTagToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
             this.deleteAllFavoritesByTagToolStripMenuItem.Text = "Delete all Favorites in Group...";
+            this.deleteAllFavoritesByTagToolStripMenuItem.ToolTipText = "Deletes all favorites listed in this group.\r\nThe favorites disapear from all grou" +
+    "ps.";
             this.deleteAllFavoritesByTagToolStripMenuItem.Click += new System.EventHandler(this.DeleteAllFavoritesByTagToolStripMenuItem_Click);
+            // 
+            // newGroupToolStripMenuItem
+            // 
+            this.newGroupToolStripMenuItem.Image = global::Terminals.Properties.Resources.tag_blue_add;
+            this.newGroupToolStripMenuItem.Name = "newGroupToolStripMenuItem";
+            this.newGroupToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.newGroupToolStripMenuItem.Text = "New Group";
+            this.newGroupToolStripMenuItem.ToolTipText = "Adds new group as child of selected group";
+            this.newGroupToolStripMenuItem.Click += new System.EventHandler(this.NewGroupToolStripMenuItem_Click);
             // 
             // FavsList
             // 
@@ -690,5 +705,6 @@
         private Forms.Controls.SearchPanel searchPanel1;
         private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem renameToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem newGroupToolStripMenuItem;
     }
 }
