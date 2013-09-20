@@ -60,7 +60,7 @@
             this.btnExport.TabIndex = 4;
             this.btnExport.Text = "&Export";
             this.btnExport.UseVisualStyleBackColor = true;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            this.btnExport.Click += new System.EventHandler(this.BtnExport_Click);
             // 
             // btnCancel
             // 
@@ -73,7 +73,7 @@
             this.btnCancel.TabIndex = 5;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // saveFileDialog
             // 
@@ -90,7 +90,7 @@
             this.btnSelect.TabIndex = 3;
             this.btnSelect.Text = "&Select all";
             this.btnSelect.UseVisualStyleBackColor = true;
-            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
+            this.btnSelect.Click += new System.EventHandler(this.BtnSelect_Click);
             // 
             // favsTree
             // 
@@ -109,7 +109,7 @@
             this.favsTree.ShowNodeToolTips = true;
             this.favsTree.Size = new System.Drawing.Size(489, 381);
             this.favsTree.TabIndex = 1;
-            this.favsTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.favsTree_NodeMouseClick);
+            this.favsTree.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.FavsTree_NodeMouseClick);
             // 
             // label1
             // 

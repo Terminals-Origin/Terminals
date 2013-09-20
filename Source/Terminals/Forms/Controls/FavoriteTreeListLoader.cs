@@ -7,33 +7,56 @@ using Terminals.Data;
 namespace Terminals.Forms.Controls
 {
     /// <summary>
-    /// Fills tree list with favorites
+    /// Fills tree list with group and favorites.
+    /// Handles Persistence updates.
+    /// Handles expansion request on group tree nodes, which arent loaded yet (tree lazy loading).
     /// </summary>
     internal class FavoriteTreeListLoader
     {
         private readonly FavoritesTreeView treeList;
 
+        private readonly IGroups persistedGroups;
+
+        private readonly DataDispatcher dispatcher;
+
+        private readonly IFavorites favorites;
+
+        private TreeNodeCollection RootNodes
+        {
+            get { return this.treeList.Nodes; }
+        }
+
         /// <summary>
-        /// gets or sets virtual tree node for favorites, which have no Group defined
+        /// This prevents performance problems, when someone forgets to unregister.
+        /// Returns true, if the associated treeview is already dead; otherwise false.
         /// </summary>
-        private GroupTreeNode unTaggedNode;
-
-        private static IGroups PersistedGroups
+        private Boolean IsOrphan
         {
-            get { return Persistence.Instance.Groups; }
+            get
+            {
+                return this.treeList.IsDisposed;
+            }
         }
 
-        private static DataDispatcher Dispatcher
-        {
-            get { return Persistence.Instance.Dispatcher; }
-        }
-
-        internal FavoriteTreeListLoader(FavoritesTreeView treeListToFill)
+        internal FavoriteTreeListLoader(FavoritesTreeView treeListToFill, IPersistence persistence)
         {
             this.treeList = treeListToFill;
+            this.treeList.AfterExpand += new TreeViewEventHandler(this.OnTreeViewExpand);
 
-            Dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.OnGroupsCollectionChanged);
-            Dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
+            this.persistedGroups = persistence.Groups;
+            this.favorites = persistence.Favorites;
+            this.dispatcher = persistence.Dispatcher;
+            this.dispatcher.GroupsChanged += new GroupsChangedEventHandler(this.OnGroupsCollectionChanged);
+            this.dispatcher.FavoritesChanged += new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
+        }
+
+        private void OnTreeViewExpand(object sender, TreeViewEventArgs e)
+        {
+            GroupTreeNode groupNode = e.Node as GroupTreeNode;
+            if (groupNode != null)
+            {
+                this.LoadGroupNode(groupNode);
+            }
         }
 
         /// <summary>
@@ -42,36 +65,27 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal void UnregisterEvents()
         {
-            Dispatcher.GroupsChanged -= new GroupsChangedEventHandler(this.OnGroupsCollectionChanged);
-            Dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
+            this.dispatcher.GroupsChanged -= new GroupsChangedEventHandler(this.OnGroupsCollectionChanged);
+            this.dispatcher.FavoritesChanged -= new FavoritesChangedEventHandler(this.OnFavoritesCollectionChanged);
+            this.treeList.AfterExpand -= new TreeViewEventHandler(this.OnTreeViewExpand);
         }
 
         private void OnFavoritesCollectionChanged(FavoritesChangedEventArgs args)
         {
-            if(IsOrphan())
-              return;
-
-            GroupTreeNode selectedGroup = this.treeList.FindSelectedGroupNode();
-            IFavorite selectedFavorite = this.treeList.SelectedFavorite;
-            AddNewFavorites(args.Added);
-            UpdateFavorites(args.Updated);
-            RemoveFavorites(args.Removed);
-            this.treeList.RestoreSelectedFavorite(selectedGroup, selectedFavorite);
+            if (IsOrphan)
+                this.UnregisterEvents();
+            else
+                this.PerformFavoritesUpdate(args);
         }
 
-        /// <summary>
-        /// This prevents performance problems, when someone forgets to unregister.
-        /// Returns true, if the associated treeview is already dead; otherwise false.
-        /// </summary>
-        private Boolean IsOrphan()
+        private void PerformFavoritesUpdate(FavoritesChangedEventArgs args)
         {
-            if (this.treeList.IsDisposed)
-            {
-                this.UnregisterEvents();
-                return true;
-            }
-
-            return false;
+            GroupTreeNode selectedGroup = this.treeList.FindSelectedGroupNode();
+            IFavorite selectedFavorite = this.treeList.SelectedFavorite;
+            this.AddNewFavorites(args.Added);
+            this.UpdateFavorites(args.Updated);
+            this.RemoveFavorites(args.Removed);
+            this.treeList.RestoreSelectedFavorite(selectedGroup, selectedFavorite);
         }
 
         private void RemoveFavorites(List<IFavorite> removedFavorites)
@@ -79,7 +93,6 @@ namespace Terminals.Forms.Controls
             foreach (IFavorite favorite in removedFavorites)
             {
                 RemoveFavoriteFromAllGroups(favorite);
-                RemoveFavoriteFromGroupNode(this.unTaggedNode, favorite);  
             }
         }
 
@@ -95,9 +108,9 @@ namespace Terminals.Forms.Controls
 
         private void RemoveFavoriteFromAllGroups(IFavorite favorite)
         {
-            foreach (GroupTreeNode groupNode in this.treeList.Nodes)
+            foreach (GroupTreeNode groupNode in this.RootNodes.OfType<GroupTreeNode>())
             {
-                RemoveFavoriteFromGroupNode(groupNode, favorite);  
+                RemoveFavoriteFromGroupNode(groupNode, favorite);
             }
         }
 
@@ -111,15 +124,16 @@ namespace Terminals.Forms.Controls
 
         private void AddFavoriteToAllItsGroupNodes(IFavorite favorite)
         {
+            //todo missing recursion
             foreach (IGroup group in favorite.Groups)
             {
-                GroupTreeNode groupNode = this.treeList.Nodes[group.Name] as GroupTreeNode;
+                var groupNode = this.RootNodes[group.Name] as GroupTreeNode;
                 AddNewFavoriteNodeToGroupNode(favorite, groupNode);
             }
 
             if (favorite.Groups.Count == 0)
             {
-                AddNewFavoriteNodeToGroupNode(favorite, this.unTaggedNode);
+                // todo add to the root favorites
             }
         }
 
@@ -127,10 +141,10 @@ namespace Terminals.Forms.Controls
         {
             if (groupNode != null && !groupNode.NotLoadedYet)
             {
-                var favoriteNode = groupNode.Nodes.Cast<FavoriteTreeNode>()
+                var favoriteNode = groupNode.Nodes.OfType<FavoriteTreeNode>()
                     .FirstOrDefault(candidate => candidate.Favorite.StoreIdEquals(favorite));
 
-                if(favoriteNode != null)
+                if (favoriteNode != null)
                     groupNode.Nodes.Remove(favoriteNode);
             }
         }
@@ -166,98 +180,91 @@ namespace Terminals.Forms.Controls
                     return index;
             }
 
-            return -1;  
+            return -1;
         }
 
         private void OnGroupsCollectionChanged(GroupsChangedArgs args)
         {
-            if (this.IsOrphan())
+            if (IsOrphan)
+            {
+                this.UnregisterEvents();
+            }
+            else
+            {
+                var levelParams = new GroupsLevelUpdate(this.RootNodes, args);
+                levelParams.Run();
+            }
+        }
+
+        internal void LoadGroups()
+        {
+            if (persistedGroups == null) // because of designer
                 return;
 
-            this.AddMissingGroupNodes(args.Added);
-            this.UpdateGroups(args.Updated);
-            this.RemoveUnusedGroupNodes(args.Removed);
+            // dont load everything, it is done by lazy loading after expand
+            IOrderedEnumerable<IGroup> rootGroups = GetSortedRootGroups();
+            AddChildGroupNodes(this.RootNodes, rootGroups);
+            List<IFavorite> untaggedFavorite = GetUntaggedFavorites(this.favorites);
+            AddFavoriteNodes(this.RootNodes, untaggedFavorite);
         }
 
-        private void AddMissingGroupNodes(List<IGroup> newGroups)
+        internal static List<IFavorite> GetUntaggedFavorites(IFavorites favorites)
         {
-            foreach (IGroup newGroup in newGroups)
+            IEnumerable<IFavorite> relevantFavorites = favorites.Where(candidate => candidate.Groups.Count == 0);
+            return Favorites.OrderByDefaultSorting(relevantFavorites);
+        }
+
+        private IOrderedEnumerable<IGroup> GetSortedRootGroups()
+        {
+            return this.persistedGroups.Where(candidate => candidate.Parent == null)
+                                  .OrderBy(group => group.Name);
+        }
+
+        private void LoadGroupNode(GroupTreeNode groupNode)
+        {
+            if (!groupNode.NotLoadedYet)
+                return;
+
+            groupNode.Nodes.Clear();
+            this.AddGroupNodes(groupNode);
+            AddFavoriteNodes(groupNode.Nodes, groupNode.Favorites);
+        }
+
+        private void AddGroupNodes(GroupTreeNode groupNode)
+        {
+            IEnumerable<IGroup> childGroups = this.GetChildGroups(groupNode.Group);
+            AddChildGroupNodes(groupNode.Nodes, childGroups);
+        }
+
+        private IEnumerable<IGroup> GetChildGroups(IGroup current)
+        {
+            return this.persistedGroups.Where(candidate => candidate.Parent != null && candidate.Parent.StoreIdEquals(current))
+                                  .OrderBy(group => group.Name);
+        }
+
+        private static void AddChildGroupNodes(TreeNodeCollection nodes, IEnumerable<IGroup> sortedGroups)
+        {
+            foreach (IGroup group in sortedGroups)
             {
-                int index = FindGroupNodeInsertIndex(this.treeList.Nodes, newGroup);
-                this.CreateAndAddGroupNode(newGroup, index);
+                CreateAndAddGroupNode(nodes, group);
             }
-        }
-
-        /// <summary>
-        /// Finds the index for the node to insert in nodes collection
-        /// and skips nodes before the startIndex.
-        /// </summary>
-        /// <param name="nodes">Not null nodes collection to search in.</param>
-        /// <param name="newGroup">Not empty new Group to add.</param>
-        /// <returns>
-        /// -1, if the Group should be added to the end of Group nodes, otherwise found index.
-        /// </returns>
-        private static int FindGroupNodeInsertIndex(TreeNodeCollection nodes, IGroup newGroup)
-        {
-            // Skips first "Untagged" node to keep it first.
-            for (int index = 1; index < nodes.Count; index++)
-            {
-                if (nodes[index].Text.CompareTo(newGroup.Name) > 0)
-                    return index;
-            }
-
-            return -1;
-        }
-
-        private void UpdateGroups(List<IGroup> updatedGroups)
-        {
-            List<GroupTreeNode> affectedNodes = GetAffectedNodes(updatedGroups);
-            foreach (var groupNode in affectedNodes)
-            {
-                groupNode.UpdateByGroupName();
-                UpdateGroupNodeChilds(groupNode);
-            }
-        }
-
-        private static void UpdateGroupNodeChilds(GroupTreeNode groupNode)
-        {
-            if (groupNode.IsExpanded)
-            {
-                ReLoadFavoriteNodes(groupNode);
-            }
-        }
-
-        private void RemoveUnusedGroupNodes(List<IGroup> removedGroups)
-        {
-            List<GroupTreeNode> affectedNodes = GetAffectedNodes(removedGroups);
-            foreach (GroupTreeNode groupNode in affectedNodes)
-            {
-                this.treeList.Nodes.Remove(groupNode);
-            }
-        }
-
-        private List<GroupTreeNode> GetAffectedNodes(List<IGroup> requiredGroups)
-        {
-            return this.treeList.Nodes.Cast<GroupTreeNode>()
-                .Where(candidate => candidate.HasGroupIn(requiredGroups))
-                .ToList();
         }
 
         /// <summary>
         /// Creates the and add Group node in tree list on proper position defined by index.
         /// This allowes the Group nodes to keep ordered by name.
         /// </summary>
+        /// <param name="nodes">Not null collection of nodes, where to add new child.</param>
         /// <param name="group">The group to create.</param>
         /// <param name="index">The index on which node would be inserted.
         /// If negative number, than it is added to the end.</param>
-        /// <returns>Not null, newly creted node</returns>
-        private void CreateAndAddGroupNode(IGroup group, int index = -1)
+        internal static void CreateAndAddGroupNode(TreeNodeCollection nodes, IGroup group, int index = -1)
         {
-            GroupTreeNode groupNode = new GroupTreeNode(group);
-            InsertNodePreservingOrder(this.treeList.Nodes, index, groupNode);
+            var groupNode = new GroupTreeNode(group);
+            InsertNodePreservingOrder(nodes, index, groupNode);
         }
 
-        private static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode groupNode)
+        internal static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode groupNode)
         {
             if (index < 0)
                 nodes.Add(groupNode);
@@ -265,48 +272,18 @@ namespace Terminals.Forms.Controls
                 nodes.Insert(index, groupNode);
         }
 
-        internal void LoadGroups()
+        private static void AddFavoriteNodes(TreeNodeCollection nodes, List<IFavorite> favorites)
         {
-            if (PersistedGroups == null) // because of designer
-                return;
-
-            this.CreateUntagedVirtualGroupNode();
-            var sortedGroups = PersistedGroups.OrderBy(group => group.Name);
-
-            foreach (IGroup group in sortedGroups)
+            foreach (IFavorite favorite in favorites)
             {
-                this.CreateAndAddGroupNode(group);
+                AddFavoriteNode(nodes, favorite);
             }
         }
 
-        private void CreateUntagedVirtualGroupNode()
+        private static void AddFavoriteNode(TreeNodeCollection nodes, IFavorite favorite)
         {
-            this.unTaggedNode = new UntagedGroupNode();
-            InsertNodePreservingOrder(this.treeList.Nodes, -1, this.unTaggedNode);
-        }
-
-        internal void LoadFavorites(GroupTreeNode groupNode)
-        {
-            if (groupNode.NotLoadedYet)
-            {
-                ReLoadFavoriteNodes(groupNode);
-            }
-        }
-
-        private static void ReLoadFavoriteNodes(GroupTreeNode groupNode) 
-        {
-            groupNode.Nodes.Clear();
-            AddFavoriteNodes(groupNode);
-        }
-
-        private static void AddFavoriteNodes(GroupTreeNode groupNode)
-        {
-            List<IFavorite> favorites = groupNode.Favorites;
-            foreach (var favorite in favorites)
-            {
-                var favoriteTreeNode = new FavoriteTreeNode(favorite);
-                groupNode.Nodes.Add(favoriteTreeNode);
-            }
+            var favoriteTreeNode = new FavoriteTreeNode(favorite);
+            nodes.Add(favoriteTreeNode);
         }
     }
 }

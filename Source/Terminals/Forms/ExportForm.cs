@@ -10,20 +10,23 @@ namespace Terminals.Forms
 {
     internal partial class ExportForm : Form
     {
+        private readonly FavoriteTreeListLoader treeLoader; 
+
         public ExportForm()
         {
             this.InitializeComponent();
 
-            this.favsTree.Load();
+            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, Persistence.Instance);
+            this.treeLoader.LoadGroups();
             this.saveFileDialog.Filter = Integrations.Exporters.GetProvidersDialogFilter();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
         
-        private void btnExport_Click(object sender, EventArgs e)
+        private void BtnExport_Click(object sender, EventArgs e)
         {
             if (this.saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -97,7 +100,7 @@ namespace Terminals.Forms
             }
         }
 
-        private void btnSelect_Click(object sender, EventArgs e)
+        private void BtnSelect_Click(object sender, EventArgs e)
         {
             TreeNodeCollection rootNodes = this.favsTree.Nodes;
             foreach (TreeNode node in rootNodes)
@@ -108,7 +111,7 @@ namespace Terminals.Forms
             }
         }
        
-        private void favsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             TreeNode node = e.Node;
             CheckSubNodes(node, node.Checked);
@@ -136,7 +139,7 @@ namespace Terminals.Forms
 
         private void ExportForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            this.favsTree.UnregisterEvents();
+            this.treeLoader.UnregisterEvents();
         }        
     }
 }

@@ -43,6 +43,8 @@ namespace Terminals.Data
                 var newParent = value as Group;
                 if (newParent != null)
                     this.Parent = newParent.Id;
+                else
+                    this.Parent = Guid.Empty;
             }
         }
 

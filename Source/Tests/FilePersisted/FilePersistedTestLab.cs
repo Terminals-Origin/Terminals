@@ -37,15 +37,16 @@ namespace Tests.FilePersisted
         internal IFavorite AddFavorite()
         {
             IFavorite favorite = this.Persistence.Factory.CreateFavorite();
+            favorite.Name = "Favorite";
             this.Persistence.Favorites.Add(favorite);
             return favorite;
         }
 
         internal IGroup AddNewGroup(string groupName)
         {
-            IGroup groupToRemove = this.Persistence.Factory.CreateGroup(groupName);
-            this.Persistence.Groups.Add(groupToRemove);
-            return groupToRemove;
+            IGroup newGroup = this.Persistence.Factory.CreateGroup(groupName);
+            this.Persistence.Groups.Add(newGroup);
+            return newGroup;
         }
     }
 }

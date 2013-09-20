@@ -10,7 +10,7 @@ namespace Terminals.Data
     {
         /// <summary>
         /// Gets or sets the group in which this group is listed.
-        /// By default empty, which means, that it isn't listed anywhere. 
+        /// By default null, which means, that it isn't listed anywhere. 
         /// and will appear as one of root folders in first level of favorites tree.
         /// </summary>
         IGroup Parent { get; set; }
