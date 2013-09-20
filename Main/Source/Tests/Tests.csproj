@@ -136,10 +136,12 @@
     <Compile Include="SqlPersisted\TestsLab.cs" />
     <Compile Include="SqlPersisted\CredentialsTest.cs" />
     <Compile Include="CustomSetupActionTest.cs" />
+    <Compile Include="UserInterface\FavoritesTreeLoadingTest.cs" />
+    <Compile Include="UserInterface\GroupsTreeLoadingTest.cs" />
     <Compile Include="UserInterface\TestTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UserInterface\TreeListLoaderTest.cs" />
+    <Compile Include="UserInterface\TreeListLoaderTestLab.cs" />
     <Compile Include="ValidationTests.cs" />
     <Compile Include="UpdateManagerTest.cs" />
   </ItemGroup>

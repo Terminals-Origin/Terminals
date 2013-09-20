@@ -34,10 +34,10 @@ namespace Tests.FilePersisted
             return new Tuple<IFavorite, IGroup>(favorite, group);
         }
 
-        internal IFavorite AddFavorite()
+        internal IFavorite AddFavorite(string favoriteName = "Favorite")
         {
             IFavorite favorite = this.Persistence.Factory.CreateFavorite();
-            favorite.Name = "Favorite";
+            favorite.Name = favoriteName;
             this.Persistence.Favorites.Add(favorite);
             return favorite;
         }
