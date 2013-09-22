@@ -82,105 +82,9 @@ namespace Terminals.Forms.Controls
         {
             GroupTreeNode selectedGroup = this.treeList.FindSelectedGroupNode();
             IFavorite selectedFavorite = this.treeList.SelectedFavorite;
-            this.AddNewFavorites(args.Added);
-            this.UpdateFavorites(args.Updated);
-            this.RemoveFavorites(args.Removed);
+            var updater = new FavoritesLevelUpdate(this.RootNodes, args);
+            updater.Run();
             this.treeList.RestoreSelectedFavorite(selectedGroup, selectedFavorite);
-        }
-
-        private void RemoveFavorites(List<IFavorite> removedFavorites)
-        {
-            foreach (IFavorite favorite in removedFavorites)
-            {
-                RemoveFavoriteFromAllGroups(favorite);
-            }
-        }
-
-        private void UpdateFavorites(List<IFavorite> updatedFavorites)
-        {
-            foreach (var favorite in updatedFavorites)
-            {
-                // remove and then insert instead of tree node update to keep default sorting
-                RemoveFavoriteFromAllGroups(favorite);
-                this.AddFavoriteToAllItsGroupNodes(favorite);
-            }
-        }
-
-        private void RemoveFavoriteFromAllGroups(IFavorite favorite)
-        {
-            foreach (GroupTreeNode groupNode in this.RootNodes.OfType<GroupTreeNode>())
-            {
-                RemoveFavoriteFromGroupNode(groupNode, favorite);
-            }
-        }
-
-        private void AddNewFavorites(List<IFavorite> addedFavorites)
-        {
-            foreach (IFavorite favorite in addedFavorites)
-            {
-                this.AddFavoriteToAllItsGroupNodes(favorite);
-            }
-        }
-
-        private void AddFavoriteToAllItsGroupNodes(IFavorite favorite)
-        {
-            //todo missing recursion
-            foreach (IGroup group in favorite.Groups)
-            {
-                var groupNode = this.RootNodes[group.Name] as GroupTreeNode;
-                AddNewFavoriteNodeToGroupNode(favorite, groupNode);
-            }
-
-            if (favorite.Groups.Count == 0)
-            {
-                // todo add to the root favorites
-            }
-        }
-
-        private static void RemoveFavoriteFromGroupNode(GroupTreeNode groupNode, IFavorite favorite)
-        {
-            if (groupNode != null && !groupNode.NotLoadedYet)
-            {
-                var favoriteNode = groupNode.Nodes.OfType<FavoriteTreeNode>()
-                    .FirstOrDefault(candidate => candidate.Favorite.StoreIdEquals(favorite));
-
-                if (favoriteNode != null)
-                    groupNode.Nodes.Remove(favoriteNode);
-            }
-        }
-
-        private static void AddNewFavoriteNodeToGroupNode(IFavorite favorite, GroupTreeNode groupNode)
-        {
-            if (groupNode != null && !groupNode.NotLoadedYet) // add only to expanded nodes
-            {
-                bool alreadyThere = groupNode.ContainsFavoriteNode(favorite);
-                if (alreadyThere)
-                    return;
-
-                var favoriteTreeNode = new FavoriteTreeNode(favorite);
-                int index = FindFavoriteNodeInsertIndex(groupNode.Nodes, favorite);
-                InsertNodePreservingOrder(groupNode.Nodes, index, favoriteTreeNode);
-            }
-        }
-
-        /// <summary>
-        /// Identify favorite index position in nodes collection by default sorting order.
-        /// </summary>
-        /// <param name="nodes">Not null nodes collection of FavoriteTreeNodes to search in.</param>
-        /// <param name="favorite">Not null favorite to identify in nodes collection.</param>
-        /// <returns>
-        /// -1, if the Group should be added to the end of Group nodes, otherwise found index.
-        /// </returns>
-        internal static int FindFavoriteNodeInsertIndex(TreeNodeCollection nodes, IFavorite favorite)
-        {
-            for (int index = 0; index < nodes.Count; index++)
-            {
-                var comparedNode = nodes[index] as FavoriteTreeNode;
-                if (comparedNode != null && comparedNode.CompareByDefaultFavoriteSorting(favorite) > 0)
-                    return index;
-            }
-
-            return -1;
         }
 
         private void OnGroupsCollectionChanged(GroupsChangedArgs args)
@@ -208,7 +112,7 @@ namespace Terminals.Forms.Controls
             AddFavoriteNodes(this.RootNodes, untaggedFavorite);
         }
 
-        internal static List<IFavorite> GetUntaggedFavorites(IFavorites favorites)
+        internal static List<IFavorite> GetUntaggedFavorites(IEnumerable<IFavorite> favorites)
         {
             IEnumerable<IFavorite> relevantFavorites = favorites.Where(candidate => candidate.Groups.Count == 0);
             return Favorites.OrderByDefaultSorting(relevantFavorites);
@@ -264,14 +168,6 @@ namespace Terminals.Forms.Controls
             InsertNodePreservingOrder(nodes, index, groupNode);
         }
 
-        internal static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode groupNode)
-        {
-            if (index < 0)
-                nodes.Add(groupNode);
-            else
-                nodes.Insert(index, groupNode);
-        }
-
         private static void AddFavoriteNodes(TreeNodeCollection nodes, List<IFavorite> favorites)
         {
             foreach (IFavorite favorite in favorites)
@@ -284,6 +180,34 @@ namespace Terminals.Forms.Controls
         {
             var favoriteTreeNode = new FavoriteTreeNode(favorite);
             nodes.Add(favoriteTreeNode);
+        }
+
+        /// <summary>
+        /// Identify favorite index position in nodes collection by default sorting order.
+        /// </summary>
+        /// <param name="nodes">Not null nodes collection of FavoriteTreeNodes to search in.</param>
+        /// <param name="favorite">Not null favorite to identify in nodes collection.</param>
+        /// <returns>
+        /// -1, if the Group should be added to the end of Group nodes, otherwise found index.
+        /// </returns>
+        internal static int FindFavoriteNodeInsertIndex(TreeNodeCollection nodes, IFavorite favorite)
+        {
+            for (int index = 0; index < nodes.Count; index++)
+            {
+                var comparedNode = nodes[index] as FavoriteTreeNode;
+                if (comparedNode != null && comparedNode.CompareByDefaultFavoriteSorting(favorite) > 0)
+                    return index;
+            }
+
+            return -1;
+        }
+
+        internal static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode groupNode)
+        {
+            if (index < 0)
+                nodes.Add(groupNode);
+            else
+                nodes.Insert(index, groupNode);
         }
     }
 }
