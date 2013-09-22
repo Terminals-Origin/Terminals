@@ -78,6 +78,7 @@ namespace Tests
             Assert.AreEqual(log4NetContent, upgradedLog4Net, "Log4net config file is expected default");
         }
 
+        // todo time to time this test failes. Any idea why?
         [TestMethod]
         public void UserProfileVersionAppConfigTest()
         {
