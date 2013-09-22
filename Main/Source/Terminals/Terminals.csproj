@@ -201,6 +201,7 @@
     <Compile Include="Forms\Controls\FavoritesSearchBox.Designer.cs">
       <DependentUpon>FavoritesSearchBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Controls\FavoritesLevelUpdate.cs" />
     <Compile Include="Forms\Controls\GroupsLevelUpdate.cs" />
     <Compile Include="Forms\Controls\ReconnectingControl.cs">
       <SubType>UserControl</SubType>
