@@ -579,11 +579,7 @@ namespace Terminals
         private void TryRenameFavoriteNode(NodeLabelEditEventArgs e)
         {
             IFavorite favorite = this.favsTree.SelectedFavorite;
-            if (favorite != null)
-            {
-                var favoriteArguments = new object[] { favorite, e.Label };
-                this.favsTree.BeginInvoke(new Action<IFavorite, string>(RenameFavorite), favoriteArguments);
-            }
+            this.SheduleFavoriteRename(favorite, e.Label);
         }
 
         private void TryRenameGroupNode(NodeLabelEditEventArgs e)
@@ -605,8 +601,21 @@ namespace Terminals
 
         private void SearchPanel1_ResultListAfterLabelEdit(object sender, LabelEditEventArgs e)
         {
-            var favorite = this.GetSelectedFavorite();
-            RenameFavorite(favorite, e.Label);
+            IFavorite favorite = this.GetSelectedFavorite();
+            // user canceled the rename
+            if (string.IsNullOrEmpty(e.Label))
+                return;
+
+            this.SheduleFavoriteRename(favorite, e.Label);
+        }
+
+        private void SheduleFavoriteRename(IFavorite favorite, string newName)
+        {
+            if (favorite == null)
+                return;
+
+            var favoriteArguments = new object[] { favorite, newName };
+            this.favsTree.BeginInvoke(new Action<IFavorite, string>(RenameFavorite), favoriteArguments);
         }
 
         private static void RenameFavorite(IFavorite favorite, string newName)
