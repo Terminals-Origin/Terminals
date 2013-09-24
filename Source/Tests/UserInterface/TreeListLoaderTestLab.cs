@@ -62,6 +62,8 @@ namespace Tests.UserInterface
 
         internal IFavorite FavoriteC { get; private set; }
 
+        protected const string GROUP_V_NAME = "GroupV";
+
         [TestInitialize]
         public void CreateTestTreeStructure()
         {
@@ -110,11 +112,20 @@ namespace Tests.UserInterface
             Assert.AreEqual(expectedName, treeNode.Text, "Tree node wasnt updated with corect name");
         }
 
-        protected void AssertNodesCount(int expectedAllNodes, int expectedRootNodes = 5)
+        /// <summary>
+        /// By default AllNodes = 8, RootNodes = 4.
+        /// E.g. in case of added group: AllNodes = 10, one on first position, second as its dummy child.
+        /// </summary>
+        protected void AssertNodesCount(int expectedAllNodes, int expectedRootNodes)
         {
-            // 10 nodes in case of added, one on first position, second as its dummy child
             Assert.AreEqual(expectedAllNodes, this.AllNodesCount, "Not all nodes were updated properly");
             Assert.AreEqual(expectedRootNodes, this.RootNodes.Count, "Nodes were not updated on the root level");
+        }
+
+        protected void AssertNotExpandedGroup()
+        {
+            var groupNodeV = (GroupTreeNode)this.RootNodes[3];
+            Assert.IsTrue(groupNodeV.NotLoadedYet, "Not expanded group node cant be expanded after favorites update.");
         }
     }
 }
