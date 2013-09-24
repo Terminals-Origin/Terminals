@@ -100,14 +100,7 @@ namespace Terminals.Forms.Controls
 
         private void FavoritesSearchFound(object sender, FavoritesFoundEventArgs args)
         {
-            this.resultsListView.Items.Clear();
             this.LoadFromFavorites(args.Favorites);
-        }
-
-        private void LoadFromFavorites(List<IFavorite> favorites)
-        {
-            ListViewItem[] transformed = favorites.Select(FavoriteToListViewItem).ToArray();
-            this.resultsListView.Items.AddRange(transformed);
         }
 
         private static ListViewItem FavoriteToListViewItem(IFavorite favorite)
@@ -152,6 +145,13 @@ namespace Terminals.Forms.Controls
         {
             SortableList<IFavorite> favorites = Persistence.Instance.Favorites.ToListOrderedByDefaultSorting();
             this.LoadFromFavorites(favorites);
+        }
+
+        private void LoadFromFavorites(List<IFavorite> favorites)
+        {
+            this.resultsListView.Items.Clear();
+            ListViewItem[] transformed = favorites.Select(FavoriteToListViewItem).ToArray();
+            this.resultsListView.Items.AddRange(transformed);
         }
     }
 }
