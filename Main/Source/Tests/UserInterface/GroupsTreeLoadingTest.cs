@@ -81,13 +81,23 @@ namespace Tests.UserInterface
             this.Persistence.Groups.Update(this.GroupM);
             AssertTreeNode(this.GroupM.Name, this.RootNodes[2]);
             // 9 - because the moved node isnt expanded in the target parent 
-            this.AssertNodesCount(9);
+            this.AssertNodesCount(9, 5);
+        }
+
+        [TestMethod]
+        public void DontAffectNotLoadedGroupTest()
+        {
+            IGroup groupV = this.AddNewGroup(GROUP_V_NAME);
+            this.GroupM.Parent = groupV;
+            this.Persistence.Groups.Update(groupV);
+            this.AssertNodesCount(10, 5);
+            this.AssertNotExpandedGroup();
         }
 
         private void AssertAddedGroupNode(IGroup group, TreeNode addedTreeNode)
         {
             AssertTreeNode(group.Name, addedTreeNode);
-            this.AssertNodesCount(10);
+            this.AssertNodesCount(10, 5);
         }
     }
 }

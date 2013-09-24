@@ -172,34 +172,14 @@ namespace Terminals.Forms.Controls
         {
             foreach (IFavorite favorite in favorites)
             {
-                AddFavoriteNode(nodes, favorite);
+                CreateAndAddFavoriteNode(nodes, favorite);
             }
         }
 
-        private static void AddFavoriteNode(TreeNodeCollection nodes, IFavorite favorite)
+        internal static void CreateAndAddFavoriteNode(TreeNodeCollection nodes, IFavorite favorite, int index = -1)
         {
             var favoriteTreeNode = new FavoriteTreeNode(favorite);
-            nodes.Add(favoriteTreeNode);
-        }
-
-        /// <summary>
-        /// Identify favorite index position in nodes collection by default sorting order.
-        /// </summary>
-        /// <param name="nodes">Not null nodes collection of FavoriteTreeNodes to search in.</param>
-        /// <param name="favorite">Not null favorite to identify in nodes collection.</param>
-        /// <returns>
-        /// -1, if the Group should be added to the end of Group nodes, otherwise found index.
-        /// </returns>
-        internal static int FindFavoriteNodeInsertIndex(TreeNodeCollection nodes, IFavorite favorite)
-        {
-            for (int index = 0; index < nodes.Count; index++)
-            {
-                var comparedNode = nodes[index] as FavoriteTreeNode;
-                if (comparedNode != null && comparedNode.CompareByDefaultFavoriteSorting(favorite) > 0)
-                    return index;
-            }
-
-            return -1;
+            InsertNodePreservingOrder(nodes, index, favoriteTreeNode);
         }
 
         internal static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode groupNode)

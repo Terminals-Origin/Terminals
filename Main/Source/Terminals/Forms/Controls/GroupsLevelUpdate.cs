@@ -203,6 +203,7 @@ namespace Terminals.Forms.Controls
 
         private void UpdateGroupNodeChilds()
         {
+            // take only expanded nodes, for better performance and to protect the lazy loading
             if (this.currentNode.NotLoadedYet)
                 return;
 

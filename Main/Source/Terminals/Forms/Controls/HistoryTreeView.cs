@@ -102,7 +102,7 @@ namespace Terminals.Forms.Controls
             IFavorite favorite = args.Favorite;
             if (favorite != null) // shouldnt happen, because the favorite was actualy processed
             {
-                int insertIndex = FavoriteTreeListLoader.FindFavoriteNodeInsertIndex(todayGroup.Nodes, favorite);
+                int insertIndex = FavoritesLevelUpdate.FindFavoriteNodeInsertIndex(todayGroup.Nodes, favorite);
                 var favoriteNode = new FavoriteTreeNode(favorite);
                 todayGroup.Nodes.Insert(insertIndex, favoriteNode);
             }

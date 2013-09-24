@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 using Terminals.Data;
 
 namespace Terminals.Forms.Controls
@@ -6,16 +8,8 @@ namespace Terminals.Forms.Controls
     internal class FavoriteTreeNode : TreeNode
     {
         internal FavoriteTreeNode(IFavorite favorite)
-            : base(favorite.Name)
         {
-            this.Name = favorite.Name;
-            this.Favorite = favorite;
-            this.Tag = favorite; // temporary solution, for backward compatibility only
-
-            this.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite);
-            this.SelectedImageKey = this.ImageKey;
-            // possible performance hit on SQL persistence, when loading details for each created favorite and also in menu loader
-            this.ToolTipText = favorite.GetToolTipText();
+            this.UpdateByFavorite(favorite);
         }
 
         /// <summary>
@@ -32,6 +26,24 @@ namespace Terminals.Forms.Controls
         internal int CompareByDefaultFavoriteSorting(IFavorite target)
         {
             return this.Favorite.CompareByDefaultSorting(target);
+        }
+
+        internal bool HasFavoriteIn(IEnumerable<IFavorite> target)
+        {
+            return target.Any(required => required.StoreIdEquals(this.Favorite));
+        }
+
+        internal void UpdateByFavorite(IFavorite favorite)
+        {
+            this.Name = favorite.Name;
+            this.Text = favorite.Name;
+            this.Favorite = favorite;
+            this.Tag = favorite; // temporary solution, for backward compatibility only
+
+            this.ImageKey = FavoriteIcons.GetTreeviewImageListKey(favorite);
+            this.SelectedImageKey = this.ImageKey;
+            // possible performance hit on SQL persistence, when loading details for each created favorite and also in menu loader
+            this.ToolTipText = favorite.GetToolTipText();
         }
     }
 }
