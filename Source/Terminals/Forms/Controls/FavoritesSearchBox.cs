@@ -24,6 +24,8 @@ namespace Terminals.Forms.Controls
         /// </summary>
         public event EventHandler Canceled;
 
+        private bool alreadySearched;
+
         private static DataDispatcher Dispatcher
         {
             get { return Persistence.Instance.Dispatcher; }
@@ -53,15 +55,24 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private void PersistenceFavoritesChanged(FavoritesChangedEventArgs args)
         {
+            if (!this.alreadySearched)
+                return;
+
+            this.RefreshSearch();
+        }
+
+        private void RefreshSearch()
+        {
             string searchText = this.searchTextBox.SearchText;
             if (string.IsNullOrEmpty(searchText))
                 this.Cancel();
             else
-                this.StartSearch(this.searchTextBox.SearchText);
+                this.StartSearch(searchText);
         }
 
         private void SearchTextBoxStart(object sender, SearchEventArgs e)
         {
+            this.alreadySearched = true;
             this.StartSearch(e.SearchText);
         }
 
