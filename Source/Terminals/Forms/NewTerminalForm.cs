@@ -853,11 +853,8 @@ namespace Terminals
         {
             foreach (IGroup group in groups)
             {
-                if (group.Name != Settings.UNTAGGED_NODENAME)
-                {
-                    var groupItem = new GroupListViewItem(group);
-                    listViewToFill.Items.Add(groupItem);
-                }
+                var groupItem = new GroupListViewItem(group);
+                listViewToFill.Items.Add(groupItem);
             }
         }
 

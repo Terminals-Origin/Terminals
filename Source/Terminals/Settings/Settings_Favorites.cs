@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SysConfig = System.Configuration;
 
 namespace Terminals.Configuration
 {
     internal static partial class Settings
     {
-        /// <summary>
-        /// Gets the default tag name for favorites without any tag
-        /// </summary>
-        internal const String UNTAGGED_NODENAME = "Not grouped";
-
         /// <summary>
         /// "Since version 2. only for updates. Use new persistence instead."
         /// </summary>
