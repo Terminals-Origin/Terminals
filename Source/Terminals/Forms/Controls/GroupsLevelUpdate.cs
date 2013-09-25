@@ -58,7 +58,7 @@ namespace Terminals.Forms.Controls
 
         private bool NodeAlreadyPresent(IGroup candidate)
         {
-            return this.CurrentNodes.Any(node => node.Group.StoreIdEquals(candidate));
+            return this.GroupNodes.Any(node => node.Group.StoreIdEquals(candidate));
         }
 
         private bool IsThisLevelGroup(IGroup candidate)

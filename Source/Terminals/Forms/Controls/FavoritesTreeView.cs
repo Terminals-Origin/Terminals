@@ -74,8 +74,8 @@ namespace Terminals.Forms.Controls
             if (groupNode == null)
                 return null;
 
-            return groupNode.Nodes.OfType<FavoriteTreeNode>()
-                .FirstOrDefault(favoriteNode => favoriteNode.Favorite.StoreIdEquals(favorite));
+            var nodes = new TreeListNodes(groupNode.Nodes);
+            return nodes.FavoriteNodes.FirstOrDefault(favoriteNode => favoriteNode.Favorite.StoreIdEquals(favorite));
         }
     }
 }
