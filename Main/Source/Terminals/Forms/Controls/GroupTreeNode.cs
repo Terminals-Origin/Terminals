@@ -76,5 +76,46 @@ namespace Terminals.Forms.Controls
         {
             return requiredGroups.Any(required => required.StoreIdEquals(this.Group));
         }
+
+        /// <summary>
+        /// Set the same check state to all childeren like this node has.
+        /// </summary>
+        internal void CheckChildsByParent()
+        {
+            CheckChildNodesRecursive(this.Nodes, this.Checked);
+        }
+
+        internal static void CheckChildNodesRecursive(TreeNodeCollection nodes, bool checkState)
+        {
+            foreach (TreeNode node in nodes)
+            {
+                node.Checked = checkState;
+                CheckChildNodesRecursive(node.Nodes, checkState);
+            }
+        }
+
+        /// <summary>
+        /// because of lazy loading, expand the node, it doesnt have be already loaded
+        /// and check all its child nodes
+        /// </summary>
+        internal void ExpandCheckedGroupNode()
+        {
+            if (this.Checked && this.NotLoadedYet)
+            {
+                this.ExpandAll();
+                this.CheckChilds();
+            }
+        }
+
+        /// <summary>
+        /// Sets all child nodes checked state to true.
+        /// </summary>
+        private void CheckChilds()
+        {
+            foreach (TreeNode node in this.Nodes)
+            {
+                node.Checked = true;
+            }
+        }
     }
 }
