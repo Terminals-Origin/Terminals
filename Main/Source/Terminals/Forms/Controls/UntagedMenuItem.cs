@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Terminals.Configuration;
+﻿using System;
+using System.Collections.Generic;
 using Terminals.Data;
 
 namespace Terminals.Forms.Controls
@@ -9,6 +9,11 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal class UntagedMenuItem : GroupMenuItem
     {
+        /// <summary>
+        /// Gets the default tag name for favorites without any tag
+        /// </summary>
+        private const String UNTAGGED_NODENAME = "Not grouped";
+
         internal override List<IFavorite> Favorites
         {
             get
@@ -19,7 +24,7 @@ namespace Terminals.Forms.Controls
         }
 
         internal UntagedMenuItem()
-            : base(Settings.UNTAGGED_NODENAME, true)
+            : base(UNTAGGED_NODENAME, true)
         {
         }
     }
