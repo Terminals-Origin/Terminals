@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Forms.Controls;
@@ -10,13 +11,14 @@ namespace Terminals.Forms
 {
     internal partial class ExportForm : Form
     {
+        private readonly IPersistence persistence = Persistence.Instance;
         private readonly FavoriteTreeListLoader treeLoader; 
 
         public ExportForm()
         {
             this.InitializeComponent();
 
-            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, Persistence.Instance);
+            this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence);
             this.treeLoader.LoadGroups();
             this.saveFileDialog.Filter = Integrations.Exporters.GetProvidersDialogFilter();
         }
@@ -31,22 +33,21 @@ namespace Terminals.Forms
             if (this.saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 if (this.favsTree.SelectedNode != null)
-                {
                     this.RunExport();
-                }
 
-                MessageBox.Show("Done exporting, you can find your exported file at " + this.saveFileDialog.FileName, "Terminals export");
+                string message = "Done exporting, you can find your exported file at " + this.saveFileDialog.FileName;
+                MessageBox.Show(message, "Terminals export");
                 this.Close();
             }
         }
 
         private void RunExport() 
         {
-            List<FavoriteConfigurationElement> favorites = this.FindSelectedFavorites();
+            List<FavoriteConfigurationElement> favorites = this.GetFavoritesToExport();
             // filter index is 1 based
             int filterSplitIndex = (this.saveFileDialog.FilterIndex - 1) * 2;
             string providerFilter = this.saveFileDialog.Filter.Split('|')[filterSplitIndex];
-            ExportOptions options = new ExportOptions
+            var options = new ExportOptions
                 {
                     ProviderFilter = providerFilter,
                     Favorites = favorites,
@@ -56,36 +57,39 @@ namespace Terminals.Forms
             Integrations.Exporters.Export(options);
         }
 
-        private List<FavoriteConfigurationElement> FindSelectedFavorites()
+        private List<FavoriteConfigurationElement> GetFavoritesToExport()
         {
-            var favorites = new List<FavoriteConfigurationElement>();
-            foreach (GroupTreeNode groupNode in this.favsTree.Nodes)
-            {
-                ExpandCheckedGroupNode(groupNode);
-                FindSelectedGroupFavorites(favorites, groupNode);
-            }
-
-            return favorites;
+            var favorites = new List<IFavorite>();
+            TreeNodeCollection nodes = this.favsTree.Nodes;
+            this.FindAllFavorites(favorites, nodes);
+            return this.ConvertFavoritesToExport(favorites);
         }
 
-        private static void FindSelectedGroupFavorites(List<FavoriteConfigurationElement> favorites, GroupTreeNode groupNode)
+        private void FindAllFavorites(List<IFavorite> favorites, TreeNodeCollection nodes)
         {
-            var persistence = Persistence.Instance;
-            // dont expect only Favorite nodes, because dummy nodes arent
-            foreach (TreeNode childNode in groupNode.Nodes) 
+            var candidates = this.FindCheckedFavorites(nodes);
+            favorites.AddRange(candidates);
+
+            foreach (GroupTreeNode groupNode in nodes.OfType<GroupTreeNode>())
             {
-                if (childNode.Checked)
-                {
-                    var favoriteNode = childNode as FavoriteTreeNode;
-                    if (favoriteNode != null)
-                    {
-                        FavoriteConfigurationElement favoriteConfig = ModelConverterV2ToV1.ConvertToFavorite(favoriteNode.Favorite, persistence);
-                        // Check for duplicate item before adding
-                        if (favorites.IndexOf(favoriteConfig) < 0)
-                            favorites.Add(favoriteConfig);
-                    }  
-                }
+                // dont expect only Favorite nodes, because of group nodes on the same level
+                ExpandCheckedGroupNode(groupNode);
+                this.FindAllFavorites(favorites, groupNode.Nodes);
             }
+        }
+
+        private List<FavoriteConfigurationElement> ConvertFavoritesToExport(List<IFavorite> favorites)
+        {
+            return favorites.Distinct()
+                .Select(favorite => ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence))
+                .ToList();
+        }
+
+        private IEnumerable<IFavorite> FindCheckedFavorites(TreeNodeCollection treeNodes)
+        {
+            return treeNodes.OfType<FavoriteTreeNode>()
+                            .Where(node => node.Checked)
+                            .Select(node => node.Favorite);
         }
 
         /// <summary>
