@@ -27,7 +27,8 @@ namespace Terminals.Forms.Controls
 
                 IEnumerable<IFavorite> moved = this.MovedFavorites();
                 toAdd.AddRange(moved);
-                return toAdd;
+                // select unique favorites, because add new sends at once added and update
+                return toAdd.Distinct();
             }
         }
 
