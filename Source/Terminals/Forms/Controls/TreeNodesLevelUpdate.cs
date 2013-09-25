@@ -21,7 +21,9 @@ namespace Terminals.Forms.Controls
         
         protected GroupTreeNode Parent { get; private set; }
 
-        protected TreeNodeCollection Nodes { get; private set; }
+        private readonly TreeNodeCollection nodes;
+
+        protected TreeListNodes Nodes { get; private set; }
 
         protected abstract bool RemoveCurrent { get; }
 
@@ -32,8 +34,7 @@ namespace Terminals.Forms.Controls
         {
             get
             {
-                var nodes = new TreeListNodes(this.Nodes);
-                return nodes.GroupNodes;
+                return this.Nodes.GroupNodes;
             }
         }
         
@@ -43,14 +44,15 @@ namespace Terminals.Forms.Controls
         /// </summary>
         protected TreeNodesLevelUpdate(TreeNodeCollection nodes, TChanges changes, GroupTreeNode parent = null)
         {
-            this.Nodes = nodes;
+            this.nodes = nodes;
+            this.Nodes = new TreeListNodes(nodes);
             this.Changes = changes;
             this.Parent = parent;
         }
 
         protected void ProcessNodes()
         {
-            foreach (TNode toProcess in this.Nodes.OfType<TNode>())
+            foreach (TNode toProcess in this.nodes.OfType<TNode>())
             {
                 this.CurrentNode = toProcess;
                 this.ProcessCurrentNode();
@@ -60,7 +62,7 @@ namespace Terminals.Forms.Controls
         private void ProcessCurrentNode()
         {
             if (this.RemoveCurrent)
-                this.Nodes.Remove(this.CurrentNode);
+                this.nodes.Remove(this.CurrentNode);
             else
                 this.UpdateCurrent();
         }

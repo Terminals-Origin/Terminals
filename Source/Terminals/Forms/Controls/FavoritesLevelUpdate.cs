@@ -64,8 +64,7 @@ namespace Terminals.Forms.Controls
 
         private bool NodeAlreadyPresent(IFavorite candidate)
         {
-            var nodes = new TreeListNodes(this.Nodes);
-            return nodes.ContainsFavoriteNode(candidate);
+            return this.Nodes.ContainsFavoriteNode(candidate);
         }
 
         private bool IsThisLevelFavorite(IFavorite candidate)
@@ -90,7 +89,7 @@ namespace Terminals.Forms.Controls
         {
             this.ProcessNodes();
             // now it is effective to add the rest
-            this.AddMissingNodes();
+            this.Nodes.InsertFavorites(this.FavoritesToAdd);
             this.UpdateGroupNodeChilds();
         }
 
@@ -110,9 +109,8 @@ namespace Terminals.Forms.Controls
 
         private void UpdateFavoriteByRename(IFavorite updatedFavorite)
         {
-            int index = FindFavoriteNodeInsertIndex(this.Nodes, updatedFavorite);
-            var nodes = new TreeListNodes(this.Nodes);
-            nodes.InsertNodePreservingOrder(index, this.CurrentNode);
+            int index = this.Nodes.FindFavoriteNodeInsertIndex(updatedFavorite);
+            this.Nodes.InsertNodePreservingOrder(index, this.CurrentNode);
 
             // dont apply the name before we fix the position
             this.CurrentNode.UpdateByFavorite(updatedFavorite);
@@ -124,16 +122,6 @@ namespace Terminals.Forms.Controls
             return this.Changes.Updated.FirstOrDefault(candidate => candidate.StoreIdEquals(favorite));
         }
 
-        private void AddMissingNodes()
-        {
-            foreach (IFavorite favorite in this.FavoritesToAdd)
-            {
-                int index = FindFavoriteNodeInsertIndex(this.Nodes, favorite);
-                var nodes = new TreeListNodes(this.Nodes);
-                nodes.CreateAndAddFavoriteNode(favorite, index);
-            }
-        }
-
         private void UpdateGroupNodeChilds()
         {
             // take only expanded nodes, for better performance and to protect the lazy loading
@@ -142,26 +130,6 @@ namespace Terminals.Forms.Controls
                 var levelUpdate = new FavoritesLevelUpdate(groupNode.Nodes, this.Changes, groupNode);
                 levelUpdate.Run();
             }
-        }
-
-        /// <summary>
-        /// Identify favorite index position in nodes collection by default sorting order.
-        /// </summary>
-        /// <param name="nodes">Not null nodes collection of FavoriteTreeNodes to search in.</param>
-        /// <param name="favorite">Not null favorite to identify in nodes collection.</param>
-        /// <returns>
-        /// -1, if the Group should be added to the end of Group nodes, otherwise found index.
-        /// </returns>
-        internal static int FindFavoriteNodeInsertIndex(TreeNodeCollection nodes, IFavorite favorite)
-        {
-            for (int index = 0; index < nodes.Count; index++)
-            {
-                var comparedNode = nodes[index] as FavoriteTreeNode;
-                if (comparedNode != null && comparedNode.CompareByDefaultFavoriteSorting(favorite) > 0)
-                    return comparedNode.Index;
-            }
-
-            return -1;
         }
     }
 }

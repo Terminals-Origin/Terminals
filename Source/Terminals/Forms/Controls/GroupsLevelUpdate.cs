@@ -89,11 +89,10 @@ namespace Terminals.Forms.Controls
 
         private void AddMissingGroupNodes()
         {
-            var nodes = new TreeListNodes(this.Nodes);
             foreach (IGroup newGroup in this.GroupsToAdd)
             {
-                int index = this.FindGroupNodeInsertIndex(newGroup);
-                nodes.CreateAndAddGroupNode(newGroup, index);
+                int index = this.Nodes.FindGroupNodeInsertIndex(newGroup);
+                this.Nodes.InsertGroupNode(newGroup, index);
             }
         }
 
@@ -134,39 +133,10 @@ namespace Terminals.Forms.Controls
 
         private void UpdateGroupByRename(IGroup updatedGroup)
         {
-            int index = this.FindGroupNodeInsertIndex(updatedGroup);
-            var nodes = new TreeListNodes(this.Nodes);
-            nodes.InsertNodePreservingOrder(index, this.CurrentNode);
-            
+            int index = this.Nodes.FindGroupNodeInsertIndex(updatedGroup);
+            this.Nodes.InsertNodePreservingOrder(index, this.CurrentNode);
             // dont apply the name before we fix the position
             this.CurrentNode.UpdateByGroup(updatedGroup);
-        }
-
-        /// <summary>
-        /// Finds the index for the node to insert in nodes collection
-        /// and skips nodes before the startIndex.
-        /// </summary>
-        /// <param name="newGroup">Not empty new Group to add.</param>
-        /// <returns>
-        /// -1, if the Group should be added to the end of Group nodes, otherwise found index.
-        /// </returns>
-        private int FindGroupNodeInsertIndex(IGroup newGroup)
-        {
-            // take all, we have to find place, where favorite Nodes start
-            foreach (TreeNode treeNode in this.Nodes)
-            {
-                // reached end of group nodes, all following are Favorite nodes
-                // or search index between group nodes
-                if (treeNode is FavoriteTreeNode || SortNewBeforeSelected(newGroup, treeNode))
-                    return treeNode.Index;
-            }
-
-            return -1;
-        }
-
-        private static bool SortNewBeforeSelected(IGroup newGroup, TreeNode candidate)
-        {
-            return candidate.Text.CompareTo(newGroup.Name) > 0;
         }
 
         private void UpdateGroupNodeChilds()
