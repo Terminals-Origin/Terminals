@@ -108,7 +108,7 @@ namespace Terminals.Forms.Controls
             var nodes = new TreeListNodes(this.RootNodes);
             // dont load everything, it is done by lazy loading after expand
             IOrderedEnumerable<IGroup> rootGroups = GetSortedRootGroups();
-            nodes.AddChildGroupNodes(rootGroups);
+            nodes.InsertGroupNodes(rootGroups);
             List<IFavorite> untaggedFavorites = GetUntaggedFavorites(this.favorites);
             nodes.AddFavoriteNodes(untaggedFavorites);
         }
@@ -140,7 +140,7 @@ namespace Terminals.Forms.Controls
         {
             IEnumerable<IGroup> childGroups = this.GetChildGroups(groupNode.Group);
             var nodes = new TreeListNodes(groupNode.Nodes);
-            nodes.AddChildGroupNodes(childGroups);
+            nodes.InsertGroupNodes(childGroups);
         }
 
         private IEnumerable<IGroup> GetChildGroups(IGroup current)

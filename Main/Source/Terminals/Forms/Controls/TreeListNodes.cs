@@ -80,11 +80,11 @@ namespace Terminals.Forms.Controls
             return this.FavoriteNodes.Any(node => node.Favorite.StoreIdEquals(favorite));
         }
 
-        internal void AddChildGroupNodes(IEnumerable<IGroup> sortedGroups)
+        internal void InsertGroupNodes(IEnumerable<IGroup> groups)
         {
-            foreach (IGroup group in sortedGroups)
+            foreach (IGroup group in groups)
             {
-                this.CreateAndAddGroupNode(group);
+                this.InsertGroupNode(group);
             }
         }
 
@@ -95,21 +95,35 @@ namespace Terminals.Forms.Controls
         /// <param name="group">The group to create.</param>
         /// <param name="index">The index on which node would be inserted.
         /// If negative number, than it is added to the end.</param>
-        internal void CreateAndAddGroupNode(IGroup group, int index = -1)
+        internal void InsertGroupNode(IGroup group, int index = -1)
         {
             var groupNode = new GroupTreeNode(group);
             this.InsertNodePreservingOrder(index, groupNode);
+        }
+
+        internal void InsertFavorites(IEnumerable<IFavorite> favorites)
+        {
+            foreach (IFavorite favorite in favorites)
+            {
+                this.InsertFavorite(favorite);
+            }
+        }
+
+        internal void InsertFavorite(IFavorite favorite)
+        {
+            int insertIndex = this.FindFavoriteNodeInsertIndex(favorite);
+            this.AddFavoriteNode(favorite, insertIndex);
         }
 
         internal void AddFavoriteNodes(IEnumerable<IFavorite> favorites)
         {
             foreach (IFavorite favorite in favorites)
             {
-                this.CreateAndAddFavoriteNode(favorite);
+                this.AddFavoriteNode(favorite);
             }
         }
 
-        internal void CreateAndAddFavoriteNode(IFavorite favorite, int index = -1)
+        private void AddFavoriteNode(IFavorite favorite, int index = -1)
         {
             var favoriteTreeNode = new FavoriteTreeNode(favorite);
             this.InsertNodePreservingOrder(index, favoriteTreeNode);
@@ -121,6 +135,52 @@ namespace Terminals.Forms.Controls
                 this.nodes.Add(node);
             else
                 this.nodes.Insert(index, node);
+        }
+
+        /// <summary>
+        /// Finds the index for the node to insert in nodes collection
+        /// and skips nodes before the startIndex.
+        /// </summary>
+        /// <param name="group">Not empty new Group to add.</param>
+        /// <returns>
+        /// -1, if the Group should be added to the end of Group nodes, otherwise found index.
+        /// </returns>
+        internal int FindGroupNodeInsertIndex(IGroup group)
+        {
+            // take all, we have to find place, where favorite Nodes start
+            foreach (TreeNode treeNode in this.nodes)
+            {
+                // reached end of group nodes, all following are Favorite nodes
+                // or search index between group nodes
+                if (treeNode is FavoriteTreeNode || SortNewBeforeSelected(group, treeNode))
+                    return treeNode.Index;
+            }
+
+            return -1;
+        }
+
+        private static bool SortNewBeforeSelected(IGroup group, TreeNode candidate)
+        {
+            return candidate.Text.CompareTo(group.Name) > 0;
+        }
+
+        /// <summary>
+        /// Identify favorite index position in nodes collection by default sorting order.
+        /// </summary>
+        /// <param name="favorite">Not null favorite to identify in nodes collection.</param>
+        /// <returns>
+        /// -1, if the Group should be added to the end of Group nodes, otherwise found index.
+        /// </returns>
+        internal int FindFavoriteNodeInsertIndex(IFavorite favorite)
+        {
+            for (int index = 0; index < nodes.Count; index++)
+            {
+                var comparedNode = nodes[index] as FavoriteTreeNode;
+                if (comparedNode != null && comparedNode.CompareByDefaultFavoriteSorting(favorite) > 0)
+                    return comparedNode.Index;
+            }
+
+            return -1;
         }
     }
 }

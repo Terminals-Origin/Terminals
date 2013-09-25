@@ -12,7 +12,9 @@ namespace Terminals.Forms
     internal partial class ExportForm : Form
     {
         private readonly IPersistence persistence = Persistence.Instance;
-        private readonly FavoriteTreeListLoader treeLoader; 
+        private readonly FavoriteTreeListLoader treeLoader;
+
+        private readonly TreeListNodes rootNodes;
 
         public ExportForm()
         {
@@ -21,6 +23,7 @@ namespace Terminals.Forms
             this.treeLoader = new FavoriteTreeListLoader(this.favsTree, this.persistence);
             this.treeLoader.LoadGroups();
             this.saveFileDialog.Filter = Integrations.Exporters.GetProvidersDialogFilter();
+            this.rootNodes = new TreeListNodes(this.favsTree.Nodes);
         }
 
         private void BtnCancel_Click(object sender, EventArgs e)
@@ -59,8 +62,7 @@ namespace Terminals.Forms
 
         private List<FavoriteConfigurationElement> GetFavoritesToExport()
         {
-            var nodes = new TreeListNodes(this.favsTree.Nodes);
-            List<IFavorite> favorites = nodes.FindAllCheckedFavorites();
+            List<IFavorite> favorites = this.rootNodes.FindAllCheckedFavorites();
             return this.ConvertFavoritesToExport(favorites);
         }
 
@@ -80,8 +82,7 @@ namespace Terminals.Forms
 
         private void BtnSelect_Click(object sender, EventArgs e)
         {
-            var nodes = new TreeListNodes(this.favsTree.Nodes);
-            nodes.CheckChildNodesRecursive(true);
+            this.rootNodes.CheckChildNodesRecursive(true);
         }
 
         private void ExportForm_FormClosing(object sender, FormClosingEventArgs e)
