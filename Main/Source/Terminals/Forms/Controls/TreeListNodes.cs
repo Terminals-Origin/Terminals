@@ -67,7 +67,7 @@ namespace Terminals.Forms.Controls
 
         internal void CheckChildNodesRecursive(bool checkState)
         {
-            foreach (TreeNode node in nodes)
+            foreach (TreeNode node in this.nodes)
             {
                 node.Checked = checkState;
                 var childNodes = new TreeListNodes(node.Nodes);
@@ -78,6 +78,49 @@ namespace Terminals.Forms.Controls
         internal bool ContainsFavoriteNode(IFavorite favorite)
         {
             return this.FavoriteNodes.Any(node => node.Favorite.StoreIdEquals(favorite));
+        }
+
+        internal void AddChildGroupNodes(IEnumerable<IGroup> sortedGroups)
+        {
+            foreach (IGroup group in sortedGroups)
+            {
+                this.CreateAndAddGroupNode(group);
+            }
+        }
+
+        /// <summary>
+        /// Creates the and add Group node in tree list on proper position defined by index.
+        /// This allowes the Group nodes to keep ordered by name.
+        /// </summary>
+        /// <param name="group">The group to create.</param>
+        /// <param name="index">The index on which node would be inserted.
+        /// If negative number, than it is added to the end.</param>
+        internal void CreateAndAddGroupNode(IGroup group, int index = -1)
+        {
+            var groupNode = new GroupTreeNode(group);
+            this.InsertNodePreservingOrder(index, groupNode);
+        }
+
+        internal void AddFavoriteNodes(IEnumerable<IFavorite> favorites)
+        {
+            foreach (IFavorite favorite in favorites)
+            {
+                this.CreateAndAddFavoriteNode(favorite);
+            }
+        }
+
+        internal void CreateAndAddFavoriteNode(IFavorite favorite, int index = -1)
+        {
+            var favoriteTreeNode = new FavoriteTreeNode(favorite);
+            this.InsertNodePreservingOrder(index, favoriteTreeNode);
+        }
+
+        internal void InsertNodePreservingOrder(int index, TreeNode node)
+        {
+            if (index < 0)
+                this.nodes.Add(node);
+            else
+                this.nodes.Insert(index, node);
         }
     }
 }

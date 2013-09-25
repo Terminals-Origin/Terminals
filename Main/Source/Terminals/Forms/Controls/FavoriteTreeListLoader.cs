@@ -105,11 +105,12 @@ namespace Terminals.Forms.Controls
             if (persistedGroups == null) // because of designer
                 return;
 
+            var nodes = new TreeListNodes(this.RootNodes);
             // dont load everything, it is done by lazy loading after expand
             IOrderedEnumerable<IGroup> rootGroups = GetSortedRootGroups();
-            AddChildGroupNodes(this.RootNodes, rootGroups);
-            List<IFavorite> untaggedFavorite = GetUntaggedFavorites(this.favorites);
-            AddFavoriteNodes(this.RootNodes, untaggedFavorite);
+            nodes.AddChildGroupNodes(rootGroups);
+            List<IFavorite> untaggedFavorites = GetUntaggedFavorites(this.favorites);
+            nodes.AddFavoriteNodes(untaggedFavorites);
         }
 
         internal static List<IFavorite> GetUntaggedFavorites(IEnumerable<IFavorite> favorites)
@@ -131,63 +132,21 @@ namespace Terminals.Forms.Controls
 
             groupNode.Nodes.Clear();
             this.AddGroupNodes(groupNode);
-            AddFavoriteNodes(groupNode.Nodes, groupNode.Favorites);
+            var nodes = new TreeListNodes(groupNode.Nodes);
+            nodes.AddFavoriteNodes(groupNode.Favorites);
         }
 
         private void AddGroupNodes(GroupTreeNode groupNode)
         {
             IEnumerable<IGroup> childGroups = this.GetChildGroups(groupNode.Group);
-            AddChildGroupNodes(groupNode.Nodes, childGroups);
+            var nodes = new TreeListNodes(groupNode.Nodes);
+            nodes.AddChildGroupNodes(childGroups);
         }
 
         private IEnumerable<IGroup> GetChildGroups(IGroup current)
         {
             return this.persistedGroups.Where(candidate => candidate.Parent != null && candidate.Parent.StoreIdEquals(current))
                                   .OrderBy(group => group.Name);
-        }
-
-        private static void AddChildGroupNodes(TreeNodeCollection nodes, IEnumerable<IGroup> sortedGroups)
-        {
-            foreach (IGroup group in sortedGroups)
-            {
-                CreateAndAddGroupNode(nodes, group);
-            }
-        }
-
-        /// <summary>
-        /// Creates the and add Group node in tree list on proper position defined by index.
-        /// This allowes the Group nodes to keep ordered by name.
-        /// </summary>
-        /// <param name="nodes">Not null collection of nodes, where to add new child.</param>
-        /// <param name="group">The group to create.</param>
-        /// <param name="index">The index on which node would be inserted.
-        /// If negative number, than it is added to the end.</param>
-        internal static void CreateAndAddGroupNode(TreeNodeCollection nodes, IGroup group, int index = -1)
-        {
-            var groupNode = new GroupTreeNode(group);
-            InsertNodePreservingOrder(nodes, index, groupNode);
-        }
-
-        private static void AddFavoriteNodes(TreeNodeCollection nodes, List<IFavorite> favorites)
-        {
-            foreach (IFavorite favorite in favorites)
-            {
-                CreateAndAddFavoriteNode(nodes, favorite);
-            }
-        }
-
-        internal static void CreateAndAddFavoriteNode(TreeNodeCollection nodes, IFavorite favorite, int index = -1)
-        {
-            var favoriteTreeNode = new FavoriteTreeNode(favorite);
-            InsertNodePreservingOrder(nodes, index, favoriteTreeNode);
-        }
-
-        internal static void InsertNodePreservingOrder(TreeNodeCollection nodes, int index, TreeNode groupNode)
-        {
-            if (index < 0)
-                nodes.Add(groupNode);
-            else
-                nodes.Insert(index, groupNode);
         }
     }
 }

@@ -111,7 +111,8 @@ namespace Terminals.Forms.Controls
         private void UpdateFavoriteByRename(IFavorite updatedFavorite)
         {
             int index = FindFavoriteNodeInsertIndex(this.Nodes, updatedFavorite);
-            FavoriteTreeListLoader.InsertNodePreservingOrder(this.Nodes, index, this.CurrentNode);
+            var nodes = new TreeListNodes(this.Nodes);
+            nodes.InsertNodePreservingOrder(index, this.CurrentNode);
 
             // dont apply the name before we fix the position
             this.CurrentNode.UpdateByFavorite(updatedFavorite);
@@ -128,7 +129,8 @@ namespace Terminals.Forms.Controls
             foreach (IFavorite favorite in this.FavoritesToAdd)
             {
                 int index = FindFavoriteNodeInsertIndex(this.Nodes, favorite);
-                FavoriteTreeListLoader.CreateAndAddFavoriteNode(this.Nodes, favorite, index);
+                var nodes = new TreeListNodes(this.Nodes);
+                nodes.CreateAndAddFavoriteNode(favorite, index);
             }
         }
 

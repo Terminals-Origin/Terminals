@@ -31,7 +31,8 @@ namespace Terminals.Forms.Controls
             if (this.SelectedNode == null)
                 return null;
 
-            var groupNode = this.SelectedNode as GroupTreeNode; // because first level nodes are Groups
+            // only leaf nodes arent group nodes
+            var groupNode = this.SelectedNode as GroupTreeNode;
             if (groupNode != null)
                 return groupNode;
 
@@ -43,12 +44,12 @@ namespace Terminals.Forms.Controls
             if (favorite == null)
                 return;
 
-            TreeNode nodeToRestore = this.FindNoteToRestore(groupNode, favorite);
+            TreeNode nodeToRestore = this.FindNodeToRestore(groupNode, favorite);
             if (nodeToRestore != null)
                 this.SelectedNode = nodeToRestore;
         }
 
-        private TreeNode FindNoteToRestore(TreeNode groupNode, IFavorite favorite)
+        private TreeNode FindNodeToRestore(TreeNode groupNode, IFavorite favorite)
         {
             TreeNode favoriteNode = FindFavoriteNodeByName(groupNode, favorite);
             if (favoriteNode == null) // group node was removed, try find another one

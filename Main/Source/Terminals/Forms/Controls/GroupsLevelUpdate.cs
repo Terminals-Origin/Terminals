@@ -89,10 +89,11 @@ namespace Terminals.Forms.Controls
 
         private void AddMissingGroupNodes()
         {
+            var nodes = new TreeListNodes(this.Nodes);
             foreach (IGroup newGroup in this.GroupsToAdd)
             {
                 int index = this.FindGroupNodeInsertIndex(newGroup);
-                FavoriteTreeListLoader.CreateAndAddGroupNode(this.Nodes, newGroup, index);
+                nodes.CreateAndAddGroupNode(newGroup, index);
             }
         }
 
@@ -134,7 +135,8 @@ namespace Terminals.Forms.Controls
         private void UpdateGroupByRename(IGroup updatedGroup)
         {
             int index = this.FindGroupNodeInsertIndex(updatedGroup);
-            FavoriteTreeListLoader.InsertNodePreservingOrder(this.Nodes, index, this.CurrentNode);
+            var nodes = new TreeListNodes(this.Nodes);
+            nodes.InsertNodePreservingOrder(index, this.CurrentNode);
             
             // dont apply the name before we fix the position
             this.CurrentNode.UpdateByGroup(updatedGroup);
