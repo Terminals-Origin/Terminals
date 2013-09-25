@@ -55,10 +55,10 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private void PersistenceFavoritesChanged(FavoritesChangedEventArgs args)
         {
-            if (!this.alreadySearched)
-                return;
-
-            this.RefreshSearch();
+            if (this.alreadySearched)
+                this.RefreshSearch();
+            else
+                this.FireCanceled();
         }
 
         private void RefreshSearch()
@@ -111,6 +111,11 @@ namespace Terminals.Forms.Controls
         private void SearchTextBoxCancel(object sender, EventArgs e)
         {
             this.Cancel();
+            this.FireCanceled();
+        }
+
+        private void FireCanceled()
+        {
             if (this.Canceled != null)
                 this.Canceled(this, EventArgs.Empty);
         }

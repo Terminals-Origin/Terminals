@@ -135,6 +135,7 @@ namespace Terminals.Forms.Controls
 
         private void SearchTextBox_Canceled(object sender, EventArgs e)
         {
+            // this will be reported also in a case the search wasnt peformed yet and we should show all favorites
             this.LoadAll();
         }
 
