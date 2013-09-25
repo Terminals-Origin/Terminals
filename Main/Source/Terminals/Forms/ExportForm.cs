@@ -59,23 +59,9 @@ namespace Terminals.Forms
 
         private List<FavoriteConfigurationElement> GetFavoritesToExport()
         {
-            var favorites = new List<IFavorite>();
-            TreeNodeCollection nodes = this.favsTree.Nodes;
-            this.FindAllFavorites(favorites, nodes);
+            var nodes = new TreeListNodes(this.favsTree.Nodes);
+            List<IFavorite> favorites = nodes.FindAllCheckedFavorites();
             return this.ConvertFavoritesToExport(favorites);
-        }
-
-        private void FindAllFavorites(List<IFavorite> favorites, TreeNodeCollection nodes)
-        {
-            var candidates = this.FindCheckedFavorites(nodes);
-            favorites.AddRange(candidates);
-
-            foreach (GroupTreeNode groupNode in nodes.OfType<GroupTreeNode>())
-            {
-                // dont expect only Favorite nodes, because of group nodes on the same level
-                groupNode.ExpandCheckedGroupNode();
-                this.FindAllFavorites(favorites, groupNode.Nodes);
-            }
         }
 
         private List<FavoriteConfigurationElement> ConvertFavoritesToExport(List<IFavorite> favorites)
@@ -83,13 +69,6 @@ namespace Terminals.Forms
             return favorites.Distinct()
                 .Select(favorite => ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence))
                 .ToList();
-        }
-
-        private IEnumerable<IFavorite> FindCheckedFavorites(TreeNodeCollection treeNodes)
-        {
-            return treeNodes.OfType<FavoriteTreeNode>()
-                            .Where(node => node.Checked)
-                            .Select(node => node.Favorite);
         }
 
         private void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -101,7 +80,8 @@ namespace Terminals.Forms
 
         private void BtnSelect_Click(object sender, EventArgs e)
         {
-            GroupTreeNode.CheckChildNodesRecursive(this.favsTree.Nodes, true);
+            var nodes = new TreeListNodes(this.favsTree.Nodes);
+            nodes.CheckChildNodesRecursive(true);
         }
 
         private void ExportForm_FormClosing(object sender, FormClosingEventArgs e)

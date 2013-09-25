@@ -64,7 +64,8 @@ namespace Terminals.Forms.Controls
 
         private bool NodeAlreadyPresent(IFavorite candidate)
         {
-            return this.CurrentNodes.Any(node => node.Favorite.StoreIdEquals(candidate));
+            var nodes = new TreeListNodes(this.Nodes);
+            return nodes.ContainsFavoriteNode(candidate);
         }
 
         private bool IsThisLevelFavorite(IFavorite candidate)

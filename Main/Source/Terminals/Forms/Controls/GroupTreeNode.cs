@@ -62,8 +62,8 @@ namespace Terminals.Forms.Controls
 
         internal bool ContainsFavoriteNode(IFavorite favorite)
         {
-            return this.Nodes.OfType<FavoriteTreeNode>()
-                .Any(treeNode => treeNode.Favorite.StoreIdEquals(favorite));
+            var nodes = new TreeListNodes(this.Nodes);
+            return nodes.ContainsFavoriteNode(favorite);
         }
 
         internal void UpdateByGroup(IGroup group)
@@ -82,16 +82,8 @@ namespace Terminals.Forms.Controls
         /// </summary>
         internal void CheckChildsByParent()
         {
-            CheckChildNodesRecursive(this.Nodes, this.Checked);
-        }
-
-        internal static void CheckChildNodesRecursive(TreeNodeCollection nodes, bool checkState)
-        {
-            foreach (TreeNode node in nodes)
-            {
-                node.Checked = checkState;
-                CheckChildNodesRecursive(node.Nodes, checkState);
-            }
+            var childNodes = new TreeListNodes(this.Nodes);
+            childNodes.CheckChildNodesRecursive(this.Checked);
         }
 
         /// <summary>

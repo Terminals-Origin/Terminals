@@ -25,15 +25,6 @@ namespace Terminals.Forms.Controls
 
         protected abstract bool RemoveCurrent { get; }
 
-        protected IEnumerable<TNode> CurrentNodes 
-        {
-            get 
-            {
-                return this.Nodes.OfType<TNode>()
-                                 .ToList(); 
-            }
-        }
-
         /// <summary>
         /// Gets group nodes on this level. They always precede favorite nodes.
         /// </summary>
@@ -41,8 +32,8 @@ namespace Terminals.Forms.Controls
         {
             get
             {
-                return this.Nodes.OfType<GroupTreeNode>()
-                           .ToList();
+                var nodes = new TreeListNodes(this.Nodes);
+                return nodes.GroupNodes;
             }
         }
         
@@ -59,7 +50,7 @@ namespace Terminals.Forms.Controls
 
         protected void ProcessNodes()
         {
-            foreach (TNode toProcess in this.CurrentNodes)
+            foreach (TNode toProcess in this.Nodes.OfType<TNode>())
             {
                 this.CurrentNode = toProcess;
                 this.ProcessCurrentNode();
