@@ -73,7 +73,7 @@ namespace Terminals.Forms
             foreach (GroupTreeNode groupNode in nodes.OfType<GroupTreeNode>())
             {
                 // dont expect only Favorite nodes, because of group nodes on the same level
-                ExpandCheckedGroupNode(groupNode);
+                groupNode.ExpandCheckedGroupNode();
                 this.FindAllFavorites(favorites, groupNode.Nodes);
             }
         }
@@ -92,58 +92,21 @@ namespace Terminals.Forms
                             .Select(node => node.Favorite);
         }
 
-        /// <summary>
-        /// because of lazy loading, expand the node, it doesnt have be already loaded
-        /// </summary>
-        private static void ExpandCheckedGroupNode(GroupTreeNode groupNode)
+        private void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (groupNode.Checked && groupNode.NotLoadedYet)
-            {
-                groupNode.ExpandAll();
-                CheckSubNodes(groupNode, true);
-            }
+            var groupNode = e.Node as GroupTreeNode;
+            if (groupNode != null)
+                groupNode.CheckChildsByParent();
         }
 
         private void BtnSelect_Click(object sender, EventArgs e)
         {
-            TreeNodeCollection rootNodes = this.favsTree.Nodes;
-            foreach (TreeNode node in rootNodes)
-            {
-                node.Checked = true;
-                node.ExpandAll();
-                CheckNode(node);
-            }
-        }
-       
-        private void FavsTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            TreeNode node = e.Node;
-            CheckSubNodes(node, node.Checked);
-        }
-
-        private static void CheckSubNodes(TreeNode nodeToCheck, Boolean check)
-        {
-            foreach (TreeNode node in nodeToCheck.Nodes)
-            {
-                node.Checked = check;
-            }
-        }
-
-        private static void CheckNode(TreeNode nodeToCheck)
-        {
-            TreeNodeCollection childNodes = nodeToCheck.Nodes;
-            foreach (TreeNode childNode in childNodes)
-            {
-                childNode.Checked = true;
-                childNode.ExpandAll();
-                if (childNode.GetNodeCount(true) != 0)
-                    CheckNode(childNode);
-            }
+            GroupTreeNode.CheckChildNodesRecursive(this.favsTree.Nodes, true);
         }
 
         private void ExportForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             this.treeLoader.UnregisterEvents();
-        }        
+        }
     }
 }
