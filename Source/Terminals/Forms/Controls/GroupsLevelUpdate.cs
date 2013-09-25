@@ -8,32 +8,13 @@ namespace Terminals.Forms.Controls
     /// <summary>
     /// Process tree view updates for group tree nodes on one level of the tree
     /// </summary>
-    internal class GroupsLevelUpdate
+    internal class GroupsLevelUpdate : TreeNodesLevelUpdate<GroupsChangedArgs, GroupTreeNode>
     {
-        private readonly GroupTreeNode parent;
-
-        private readonly GroupsChangedArgs changes;
-
-        private readonly TreeNodeCollection nodes;
-
-        /// <summary>
-        /// Gets group nodes on this level. They always precede favorite nodes.
-        /// </summary>
-        private List<GroupTreeNode> GroupNodes
-        {
-            get { return this.nodes.OfType<GroupTreeNode>().ToList(); }
-        }
-
-        /// <summary>
-        /// Currently processed tree node.
-        /// </summary>
-        private GroupTreeNode currentNode;
-        
-        private bool RemoveCurrent
+        protected override bool RemoveCurrent
         {
             get
             {
-                return this.currentNode.HasGroupIn(this.changes.Removed);
+                return this.CurrentNode.HasGroupIn(this.Changes.Removed);
             }
         }
 
@@ -41,7 +22,7 @@ namespace Terminals.Forms.Controls
         {
             get
             {
-                List<IGroup> toAdd = this.changes.Added.Where(this.IsThisLevelGroup)
+                List<IGroup> toAdd = this.Changes.Added.Where(this.IsThisLevelGroup)
                                                        .ToList();
 
                 IEnumerable<IGroup> moveCandidates = this.MovedGroups();
@@ -54,18 +35,16 @@ namespace Terminals.Forms.Controls
         /// Create new not root level container
         /// </summary>
         private GroupsLevelUpdate(TreeNodeCollection nodes, GroupsChangedArgs changes, GroupTreeNode parent)
-            : this(nodes, changes)
+            : base(nodes, changes, parent)
         {
-            this.parent = parent;
         }
 
         /// <summary>
         /// Create root level container. Parent is not defined. This is an entry point of the update.
         /// </summary>
         internal GroupsLevelUpdate(TreeNodeCollection nodes, GroupsChangedArgs changes)
+            : base(nodes, changes)
         {
-            this.nodes = nodes;
-            this.changes = changes;
         }
 
         /// <summary>
@@ -73,13 +52,13 @@ namespace Terminals.Forms.Controls
         /// </summary>
         private IEnumerable<IGroup> MovedGroups()
         {
-            return this.changes.Updated.Where(candidate => this.IsThisLevelGroup(candidate) &&
+            return this.Changes.Updated.Where(candidate => this.IsThisLevelGroup(candidate) &&
                                                           !this.NodeAlreadyPresent(candidate));
         }
 
         private bool NodeAlreadyPresent(IGroup candidate)
         {
-            return this.GroupNodes.Any(node => node.Group.StoreIdEquals(candidate));
+            return this.CurrentNodes.Any(node => node.Group.StoreIdEquals(candidate));
         }
 
         private bool IsThisLevelGroup(IGroup candidate)
@@ -90,35 +69,22 @@ namespace Terminals.Forms.Controls
 
         private bool CandidateAndParentAreRoot(IGroup candidate)
         {
-            return this.parent == null && candidate.Parent == null;
+            return this.Parent == null && candidate.Parent == null;
         }
 
         private bool CandidateParentAndParentEquals(IGroup candidate)
         {
             // because we start from the root nodes, the parent is already updated
-            return this.parent != null &&
+            return this.Parent != null &&
                    candidate.Parent != null &&
-                   candidate.Parent.StoreIdEquals(this.parent.Group);
+                   candidate.Parent.StoreIdEquals(this.Parent.Group);
         }
 
         internal void Run()
         {
-            foreach (GroupTreeNode groupNode in this.GroupNodes)
-            {
-                this.currentNode = groupNode;
-                this.ProcessCurrentNode();
-            }
-
+            this.ProcessNodes();
             // now it is effective to add the rest
             this.AddMissingGroupNodes();
-        }
-
-        private void ProcessCurrentNode()
-        {
-            if (this.RemoveCurrent)
-                this.nodes.Remove(this.currentNode);
-            else
-                this.UpdateGroup();
         }
 
         private void AddMissingGroupNodes()
@@ -126,19 +92,19 @@ namespace Terminals.Forms.Controls
             foreach (IGroup newGroup in this.GroupsToAdd)
             {
                 int index = this.FindGroupNodeInsertIndex(newGroup);
-                FavoriteTreeListLoader.CreateAndAddGroupNode(this.nodes, newGroup, index);
+                FavoriteTreeListLoader.CreateAndAddGroupNode(this.Nodes, newGroup, index);
             }
         }
 
         /// <summary>
         /// Always perform recursive update, because udated group may also live deeper in tree structure
         /// </summary>
-        private void UpdateGroup()
+        protected override void UpdateCurrent()
         {
             this.UpdateContent();
             
             // the groupNode has survived the update
-            if (!this.currentNode.IsOrphan)
+            if (!this.CurrentNode.IsOrphan)
                 this.UpdateGroupNodeChilds();
         }
 
@@ -152,7 +118,7 @@ namespace Terminals.Forms.Controls
                 return;
 
             // move or the rename may result in changing of the tree node position => remove always
-            this.currentNode.Remove();
+            this.CurrentNode.Remove();
 
             // if the parent has changed, the tree node should appear on another level
             if (this.IsThisLevelGroup(updatedGroup))
@@ -161,17 +127,17 @@ namespace Terminals.Forms.Controls
 
         private IGroup SelectUpdatedGroup()
         {
-            IGroup currentGroup = this.currentNode.Group;
-            return this.changes.Updated.FirstOrDefault(candidate => candidate.StoreIdEquals(currentGroup));
+            IGroup currentGroup = this.CurrentNode.Group;
+            return this.Changes.Updated.FirstOrDefault(candidate => candidate.StoreIdEquals(currentGroup));
         }
 
         private void UpdateGroupByRename(IGroup updatedGroup)
         {
             int index = this.FindGroupNodeInsertIndex(updatedGroup);
-            FavoriteTreeListLoader.InsertNodePreservingOrder(this.nodes, index, this.currentNode);
+            FavoriteTreeListLoader.InsertNodePreservingOrder(this.Nodes, index, this.CurrentNode);
             
             // dont apply the name before we fix the position
-            this.currentNode.UpdateByGroup(updatedGroup);
+            this.CurrentNode.UpdateByGroup(updatedGroup);
         }
 
         /// <summary>
@@ -185,7 +151,7 @@ namespace Terminals.Forms.Controls
         private int FindGroupNodeInsertIndex(IGroup newGroup)
         {
             // take all, we have to find place, where favorite Nodes start
-            foreach (TreeNode treeNode in this.nodes)
+            foreach (TreeNode treeNode in this.Nodes)
             {
                 // reached end of group nodes, all following are Favorite nodes
                 // or search index between group nodes
@@ -204,10 +170,10 @@ namespace Terminals.Forms.Controls
         private void UpdateGroupNodeChilds()
         {
             // take only expanded nodes, for better performance and to protect the lazy loading
-            if (this.currentNode.NotLoadedYet)
+            if (this.CurrentNode.NotLoadedYet)
                 return;
 
-            var nextLevelUpdate = new GroupsLevelUpdate(this.currentNode.Nodes, this.changes, this.currentNode);
+            var nextLevelUpdate = new GroupsLevelUpdate(this.CurrentNode.Nodes, this.Changes, this.CurrentNode);
             nextLevelUpdate.Run();
         }
     }

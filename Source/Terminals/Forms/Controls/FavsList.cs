@@ -469,10 +469,6 @@ namespace Terminals
 
         private void DeleteGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var untagged = this.favsTree.SelectedNode as UntagedGroupNode;
-            if (untagged != null)
-                return;
-
             var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
             if (groupNode != null && OrganizeFavoritesForm.AskIfRealyDelete("group"))
                 Persistence.Instance.Groups.Delete(groupNode.Group);

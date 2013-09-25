@@ -223,6 +223,7 @@
     <Compile Include="Forms\Controls\SearchTextBox.Designer.cs">
       <DependentUpon>SearchTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Controls\TreeNodesLevelUpdate.cs" />
     <Compile Include="Forms\Controls\TreeView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -402,7 +403,6 @@
       <DependentUpon>ChangePassword.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\GroupListViewItem.cs" />
-    <Compile Include="Forms\Controls\UntagedGroupNode.cs" />
     <Compile Include="Forms\Controls\UntagedMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>

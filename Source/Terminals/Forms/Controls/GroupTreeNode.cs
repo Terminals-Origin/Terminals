@@ -17,15 +17,13 @@ namespace Terminals.Forms.Controls
         /// <summary>
         /// Gets associated data objects, which should be shown in this group
         /// </summary>
-        internal virtual List<IFavorite> Favorites
+        internal List<IFavorite> Favorites
         {
             get
             {
-                return Data.Favorites.OrderByDefaultSorting(this.group.Favorites);
+                return Data.Favorites.OrderByDefaultSorting(this.Group.Favorites);
             }
         }
-
-        private IGroup group;
 
         /// <summary>
         /// Gets the value indicating lazy loading not performed yet,
@@ -40,9 +38,9 @@ namespace Terminals.Forms.Controls
             }
         }
 
-        public IGroup Group { get { return this.group; } }
+        internal IGroup Group { get; private set; }
 
-        public bool IsOrphan
+        internal bool IsOrphan
         {
             get { return this.TreeView == null; }
         }
@@ -55,16 +53,11 @@ namespace Terminals.Forms.Controls
         }
 
         internal GroupTreeNode(IGroup group)
-            : this(group.Name)
+            : base(group.Name, 0, 1)
         {
-            this.group = group;
-        }
-
-        protected GroupTreeNode(string groupName)
-            : base(groupName, 0, 1)
-        {
+            this.Group = group;
             this.Nodes.Add(String.Empty, DUMMY_NODE);
-            this.Name = groupName;
+            this.Name = group.Name;
         }
 
         internal bool ContainsFavoriteNode(IFavorite favorite)
@@ -73,15 +66,15 @@ namespace Terminals.Forms.Controls
                 .Any(treeNode => treeNode.Favorite.StoreIdEquals(favorite));
         }
 
-        internal virtual void UpdateByGroup(IGroup group)
+        internal void UpdateByGroup(IGroup group)
         {
-            this.group = group;
-            this.Text = this.group.Name;
+            this.Group = group;
+            this.Text = this.Group.Name;
         }
 
-        internal virtual bool HasGroupIn(IEnumerable<IGroup> requiredGroups)
+        internal bool HasGroupIn(IEnumerable<IGroup> requiredGroups)
         {
-            return requiredGroups.Any(required => required.StoreIdEquals(this.group));
+            return requiredGroups.Any(required => required.StoreIdEquals(this.Group));
         }
     }
 }
