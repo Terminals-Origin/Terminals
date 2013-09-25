@@ -8,30 +8,13 @@ namespace Terminals.Forms.Controls
     /// <summary>
     /// One level of favorites tree view nodes updated by persistence arguments
     /// </summary>
-    internal class FavoritesLevelUpdate
+    internal class FavoritesLevelUpdate : TreeNodesLevelUpdate<FavoritesChangedEventArgs, FavoriteTreeNode>
     {
-        private readonly GroupTreeNode parent;
-        
-        private readonly TreeNodeCollection nodes;
-
-        private readonly FavoritesChangedEventArgs changes;
-
-        private IEnumerable<FavoriteTreeNode> FavoriteNodes
-        {
-            get 
-            {
-                return this.nodes.OfType<FavoriteTreeNode>()
-                                 .ToList();
-            }
-        }
-
-        private FavoriteTreeNode currentNode;
-
-        private bool RemoveCurrent
+        protected override bool RemoveCurrent
         {
             get
             {
-                return this.currentNode.HasFavoriteIn(this.changes.Removed);
+                return this.CurrentNode.HasFavoriteIn(this.Changes.Removed);
             }
         }
 
@@ -39,7 +22,7 @@ namespace Terminals.Forms.Controls
         {
             get
             {
-                List<IFavorite> toAdd = this.changes.Added.Where(this.IsThisLevelFavorite)
+                List<IFavorite> toAdd = this.Changes.Added.Where(this.IsThisLevelFavorite)
                                          .ToList();
 
                 IEnumerable<IFavorite> moved = this.MovedFavorites();
@@ -52,8 +35,7 @@ namespace Terminals.Forms.Controls
         {
             get
             {
-                return this.nodes.OfType<GroupTreeNode>()
-                                 .Where(groupNode => !groupNode.NotLoadedYet);
+                return this.GroupNodes.Where(groupNode => !groupNode.NotLoadedYet);
             }
         }
 
@@ -61,29 +43,27 @@ namespace Terminals.Forms.Controls
         /// Create new not root level container
         /// </summary>
         private FavoritesLevelUpdate(TreeNodeCollection nodes, FavoritesChangedEventArgs changes, GroupTreeNode parent)
-            : this(nodes, changes)
+            : base(nodes, changes, parent)
         {
-            this.parent = parent;
         }
 
         /// <summary>
         /// Create root level container. Parent is not defined. This is an entry point of the update.
         /// </summary>
         internal FavoritesLevelUpdate(TreeNodeCollection nodes, FavoritesChangedEventArgs changes)
+            : base(nodes, changes)
         {
-            this.nodes = nodes;
-            this.changes = changes;
         }
 
         private IEnumerable<IFavorite> MovedFavorites()
         {
-            return this.changes.Updated.Where(candidate => this.IsThisLevelFavorite(candidate) &&
+            return this.Changes.Updated.Where(candidate => this.IsThisLevelFavorite(candidate) &&
                                                           !this.NodeAlreadyPresent(candidate));
         }
 
         private bool NodeAlreadyPresent(IFavorite candidate)
         {
-            return this.FavoriteNodes.Any(node => node.Favorite.StoreIdEquals(candidate));
+            return this.CurrentNodes.Any(node => node.Favorite.StoreIdEquals(candidate));
         }
 
         private bool IsThisLevelFavorite(IFavorite candidate)
@@ -94,45 +74,32 @@ namespace Terminals.Forms.Controls
 
         private bool CandidateAndParentAreRoot(IFavorite candidate)
         {
-            return this.parent == null && !candidate.Groups.Any();
+            return this.Parent == null && !candidate.Groups.Any();
         }
 
         private bool CandidateParentAndParentEquals(IFavorite candidate)
         {
             // because we start from the root nodes, the parent is already updated
-            return this.parent != null &&
-                   candidate.Groups.Any(group => group.StoreIdEquals(this.parent.Group));
+            return this.Parent != null &&
+                   candidate.Groups.Any(group => group.StoreIdEquals(this.Parent.Group));
         }
 
         internal void Run()
         {
-            foreach (FavoriteTreeNode favoriteNode in this.FavoriteNodes)
-            {
-                this.currentNode = favoriteNode;
-                this.ProcessCurrentNode();
-            }
-
+            this.ProcessNodes();
             // now it is effective to add the rest
             this.AddMissingNodes();
             this.UpdateGroupNodeChilds();
         }
 
-        private void ProcessCurrentNode()
-        {
-            if (this.RemoveCurrent)
-                this.nodes.Remove(this.currentNode);
-            else
-                this.UpdateFavorite();
-        }
-
-        private void UpdateFavorite()
+        protected override void UpdateCurrent()
         {
             IFavorite updatedFavorite = this.SelectUpdatedFavorite();
             if (updatedFavorite == null)
                 return;
 
             // move or the rename may result in changing of the tree node position => remove always
-            this.currentNode.Remove();
+            this.CurrentNode.Remove();
 
             // if the parent has changed, the tree node should appear on another level
             if (this.IsThisLevelFavorite(updatedFavorite))
@@ -141,25 +108,25 @@ namespace Terminals.Forms.Controls
 
         private void UpdateFavoriteByRename(IFavorite updatedFavorite)
         {
-            int index = FindFavoriteNodeInsertIndex(this.nodes, updatedFavorite);
-            FavoriteTreeListLoader.InsertNodePreservingOrder(this.nodes, index, this.currentNode);
+            int index = FindFavoriteNodeInsertIndex(this.Nodes, updatedFavorite);
+            FavoriteTreeListLoader.InsertNodePreservingOrder(this.Nodes, index, this.CurrentNode);
 
             // dont apply the name before we fix the position
-            this.currentNode.UpdateByFavorite(updatedFavorite);
+            this.CurrentNode.UpdateByFavorite(updatedFavorite);
         }
 
         private IFavorite SelectUpdatedFavorite()
         {
-            IFavorite favorite = this.currentNode.Favorite;
-            return this.changes.Updated.FirstOrDefault(candidate => candidate.StoreIdEquals(favorite));
+            IFavorite favorite = this.CurrentNode.Favorite;
+            return this.Changes.Updated.FirstOrDefault(candidate => candidate.StoreIdEquals(favorite));
         }
 
         private void AddMissingNodes()
         {
             foreach (IFavorite favorite in this.FavoritesToAdd)
             {
-                int index = FindFavoriteNodeInsertIndex(this.nodes, favorite);
-                FavoriteTreeListLoader.CreateAndAddFavoriteNode(this.nodes, favorite, index);
+                int index = FindFavoriteNodeInsertIndex(this.Nodes, favorite);
+                FavoriteTreeListLoader.CreateAndAddFavoriteNode(this.Nodes, favorite, index);
             }
         }
 
@@ -168,7 +135,7 @@ namespace Terminals.Forms.Controls
             // take only expanded nodes, for better performance and to protect the lazy loading
             foreach (GroupTreeNode groupNode in this.LoadedGroupNodes)
             {
-                var levelUpdate = new FavoritesLevelUpdate(groupNode.Nodes, this.changes, groupNode);
+                var levelUpdate = new FavoritesLevelUpdate(groupNode.Nodes, this.Changes, groupNode);
                 levelUpdate.Run();
             }
         }
