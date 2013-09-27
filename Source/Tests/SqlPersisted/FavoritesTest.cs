@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Connections;
@@ -144,18 +145,37 @@ namespace Tests.SqlPersisted
             Assert.AreEqual(2, this.updatedCount, "Event wasn't delivered");
         }
 
+        [DeploymentItem(@"Terminals\Resources\ControlPanel.png")]
         [TestMethod]
         public void LoadSaveFavoriteIconsTest()
         {
             IFavorite favorite = this.CreateTestFavorite();
+            const string IMAGE_FILE = "ControlPanel.png";
             // try to access on not saved favorite
-            favorite.ToolBarIconFile = @"Data\ControlPanel.png";
+            favorite.ToolBarIconFile = IMAGE_FILE;
             Image favoriteIcon = favorite.ToolBarIconImage;
             this.PrimaryFavorites.Add(favorite);
             DbFavorite checkFavorite = this.CheckFavorites.FirstOrDefault();
 
             Assert.IsNotNull(favoriteIcon, "Icon wasn't assigned successfully");
             Assert.IsNotNull(checkFavorite.ToolBarIconImage, "Icon didn't reach the database");
+            Image expectedImage = Image.FromFile(Path.Combine(this.TestContext.DeploymentDirectory, IMAGE_FILE));
+            Assert.IsTrue(ImageCompare(expectedImage, favoriteIcon), "The file wasnt assigned properly");
+        }
+
+        private static bool ImageCompare(Image firstImage, Image secondImage)
+        {
+            using (var ms = new MemoryStream())
+            {
+                firstImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                byte[] firstBitmap = ms.ToArray();
+                ms.Position = 0;
+
+                secondImage.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                byte[] secondBitmap = ms.ToArray();
+
+                return firstBitmap.SequenceEqual(secondBitmap);
+            }
         }
 
         [TestMethod]

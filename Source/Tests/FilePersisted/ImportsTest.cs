@@ -14,6 +14,7 @@ using Terminals.Integration.Import;
 namespace Tests.FilePersisted
 {
     [TestClass]
+    [DeploymentItem(@"..\Resources\TestData\" + DUPLICIT_ITEMS_FILE)]
     public class ImportsTest : FilePersistedTestLab
     {
         private const string DUPLICIT_ITEMS_FILE = @"Issue_21279_import_800_items.xml";
