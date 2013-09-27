@@ -217,6 +217,9 @@
       <Link>Data\Terminals.config</Link>
     </None>
     <None Include="App.config" />
+    <None Include="Data\Terminals.exe.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

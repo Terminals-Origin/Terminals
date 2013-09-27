@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals;
 
@@ -9,8 +10,12 @@ namespace Tests
     /// Because this is the only one test set for Setup, we dont create separate Tests assembly for setup.
     /// </summary>
     [TestClass]
+    [DeploymentItem(@"Tests\Data\" + LOG4_NET_FILE)]
+    [DeploymentItem(@"Terminals\" + APPCONFIG_FILE)]
     public class CustomSetupActionTest
     {
+        private const string LOG4_NET_FILE = "Terminals.log4net.config";
+        private const string APPCONFIG_FILE = "Terminals.exe.config";
         private string log4NetFile;
         private string appConfigFile;
         private string targetDir;
@@ -32,25 +37,22 @@ namespace Tests
             this.PrepareTargetDir();
             // we always have to deploy both files, even if we test only one,
             // because the tested method requires both of them
-            this.PrepareLo4NetFile();
-            this.PrepareAppConfigFile();
+            var log4Net = this.PrepareFile(LOG4_NET_FILE);
+            this.log4NetFile = log4Net.Item1;
+            this.log4NetContent = log4Net.Item2;
+
+            var appConfig = this.PrepareFile(APPCONFIG_FILE);
+            this.appConfigFile = appConfig.Item1;
+            this.appConfigContent = appConfig.Item2;
         }
 
-        private void PrepareAppConfigFile()
+        private Tuple<string, string> PrepareFile(string file)
         {
-            this.appConfigFile = Path.Combine(this.targetDir, "Terminals.exe.config");
-            File.Copy(Path.Combine(DeployDirectory, "app.config"), this.appConfigFile);
-            File.SetAttributes(this.appConfigFile, FileAttributes.Normal);
-            this.appConfigContent = File.ReadAllText(this.appConfigFile);
-        }
-
-        private void PrepareLo4NetFile()
-        {
-            const string LO4_NET_FILENAME = "Terminals.log4net.config";
-            this.log4NetFile = Path.Combine(this.targetDir, LO4_NET_FILENAME);
-            File.Copy(Path.Combine(DeployDirectory, LO4_NET_FILENAME), this.log4NetFile);
-            File.SetAttributes(this.log4NetFile, FileAttributes.Normal);
-            this.log4NetContent = File.ReadAllText(this.log4NetFile);
+            string targetFile = Path.Combine(this.targetDir, file);
+            File.Copy(Path.Combine(DeployDirectory, file), targetFile);
+            File.SetAttributes(targetFile, FileAttributes.Normal);
+            string originalContent = File.ReadAllText(targetFile);
+            return new Tuple<string, string>(targetFile, originalContent);
         }
 
         private void PrepareTargetDir()
@@ -77,8 +79,7 @@ namespace Tests
             string upgradedLog4Net = File.ReadAllText(log4NetFile);
             Assert.AreEqual(log4NetContent, upgradedLog4Net, "Log4net config file is expected default");
         }
-
-        // todo time to time this test failes. Any idea why?
+        
         [TestMethod]
         public void UserProfileVersionAppConfigTest()
         {
@@ -89,7 +90,7 @@ namespace Tests
             bool inUserProfile = upgradedAppConfig.Contains("<value>False</value>");
             Assert.IsTrue(inUserProfile, "App config doesnt contain user profile flag");
         }
-
+        
         [TestMethod]
         public void UserProfileVersionLog4NetTest()
         {
