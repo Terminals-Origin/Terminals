@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Integration;
 
 namespace Terminals.Forms.Controls
 {
@@ -18,6 +21,33 @@ namespace Terminals.Forms.Controls
                     return selectedFavoriteNode.Favorite;
 
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets currently selected tree node in case it is a group node, otherwise null.
+        /// </summary>
+        internal GroupTreeNode SelectedGroupNode
+        {
+            get
+            {
+                return this.SelectedNode as GroupTreeNode;
+            }
+        }
+
+        /// <summary>
+        /// Gets never null collection of favorites in selected group.
+        /// If no group node is selected, returns empty collection.
+        /// </summary>
+        internal List<IFavorite> SelectedGroupFavorites
+        {
+            get
+            {
+                var groupNode = this.SelectedGroupNode;
+                if (groupNode == null)
+                    return new List<IFavorite>();
+
+                return groupNode.Favorites;
             }
         }
 
@@ -77,6 +107,23 @@ namespace Terminals.Forms.Controls
 
             var nodes = new TreeListNodes(groupNode.Nodes);
             return nodes.FavoriteNodes.FirstOrDefault(favoriteNode => favoriteNode.Favorite.StoreIdEquals(favorite));
+        }
+
+        private void FavsTree_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
+                e.Effect = DragDropEffects.All;
+        }
+
+        private void FavsTree_DragDrop(object sender, DragEventArgs e)
+        {
+            var files = e.Data.GetData(DataFormats.FileDrop) as String[];
+            if (files != null)
+            {
+                List<FavoriteConfigurationElement> favoritesToImport = Integrations.Importers.ImportFavorites(files);
+                var managedImport = new ImportWithDialogs(this.FindForm());
+                managedImport.Import(favoritesToImport);
+            }
         }
     }
 }

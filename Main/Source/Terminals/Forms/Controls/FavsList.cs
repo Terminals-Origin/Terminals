@@ -12,7 +12,6 @@ using Terminals.Credentials;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
-using Terminals.Integration;
 using Terminals.Network;
 using TreeView = Terminals.Forms.Controls.TreeView;
 
@@ -98,7 +97,7 @@ namespace Terminals
         {
             using (var frmNewTerminal = new NewTerminalForm(string.Empty))
             {
-                var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
+                var groupNode = this.favsTree.SelectedGroupNode;
                 if (groupNode != null)
                     frmNewTerminal.AssingSelectedGroup(groupNode.Group);
 
@@ -253,7 +252,7 @@ namespace Terminals
 
         private void ConnectToAllExtraToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            List<IFavorite> selectedFavorites = this.GetSelectedGroupFavorites();
+            List<IFavorite> selectedFavorites = this.favsTree.SelectedGroupFavorites;
             this.ConnectToFavoritesExtra(selectedFavorites);
             this.CloseMenuStrips();
         }
@@ -351,7 +350,7 @@ namespace Terminals
         {
             if (this.ParentForm != null)
                 this.ParentForm.Cursor = Cursors.WaitCursor;
-            return this.GetSelectedGroupFavorites();
+            return this.favsTree.SelectedGroupFavorites;
         }
 
         private void FinishBatchUpdate(string variable)
@@ -425,23 +424,6 @@ namespace Terminals
             this.StartConnection(favsTree);
         }
 
-        private void FavsTree_DragEnter(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
-                e.Effect = DragDropEffects.All;
-        }
-
-        private void FavsTree_DragDrop(object sender, DragEventArgs e)
-        {
-            var files = e.Data.GetData(DataFormats.FileDrop) as String[];
-            if (files != null)
-            {
-                List<FavoriteConfigurationElement> favoritesToImport = Integrations.Importers.ImportFavorites(files);
-                var managedImport = new ImportWithDialogs(this.ParentForm);
-                managedImport.Import(favoritesToImport);
-            }
-        }
-
         private void StartConnection(TreeView tv)
         {
             // connections are always under some parent node in History and in Favorites
@@ -469,7 +451,7 @@ namespace Terminals
 
         private void DeleteGroupToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
+            var groupNode = this.favsTree.SelectedGroupNode;
             if (groupNode != null && OrganizeFavoritesForm.AskIfRealyDelete("group"))
                 Persistence.Instance.Groups.Delete(groupNode.Group);
         }
@@ -492,7 +474,7 @@ namespace Terminals
             if (selected != null)
                 return new List<IFavorite>() { selected };
 
-            return this.GetSelectedGroupFavorites();
+            return this.favsTree.SelectedGroupFavorites;
         }
 
         /// <summary>
@@ -506,15 +488,6 @@ namespace Terminals
 
             // favorites tree view is selected
             return this.favsTree.SelectedFavorite;
-        }
-
-        private List<IFavorite> GetSelectedGroupFavorites()
-        {
-            var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
-            if (groupNode == null)
-                return new List<IFavorite>();
-
-            return groupNode.Favorites;
         }
 
         private void CollapseAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -580,7 +553,7 @@ namespace Terminals
 
         private void TryRenameGroupNode(NodeLabelEditEventArgs e)
         {
-            var groupNode = this.favsTree.SelectedNode as GroupTreeNode;
+            var groupNode = this.favsTree.SelectedGroupNode;
             if (groupNode != null)
             {
                 var groupArguments = new object[] { groupNode.Group, e.Label };
@@ -659,7 +632,7 @@ namespace Terminals
                 return;
 
             var newGroup = Persistence.Instance.Factory.CreateGroup(newGroupName);
-            var parentGroupNode = this.favsTree.SelectedNode as GroupTreeNode;
+            var parentGroupNode = this.favsTree.SelectedGroupNode;
             if (parentGroupNode != null)
             {
                 newGroup.Parent = parentGroupNode.Group;
