@@ -329,8 +329,6 @@
             this.favsTree.Size = new System.Drawing.Size(159, 122);
             this.favsTree.TabIndex = 2;
             this.favsTree.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.FavsTree_AfterLabelEdit);
-            this.favsTree.DragDrop += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragDrop);
-            this.favsTree.DragEnter += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragEnter);
             this.favsTree.DoubleClick += new System.EventHandler(this.FavsTree_DoubleClick);
             this.favsTree.KeyUp += new System.Windows.Forms.KeyEventHandler(this.FavsTree_KeyUp);
             // 
