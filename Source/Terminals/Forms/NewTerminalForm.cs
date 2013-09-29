@@ -124,7 +124,8 @@ namespace Terminals
         {
             this.SuspendLayout();
             this.LoadCustomControlsState();
-            BindGroupsToListView(this.AllTagsListView, PersistedGroups);
+            IOrderedEnumerable<IGroup> sortedGroups = PersistedGroups.OrderBy(group => group.Name);
+            BindGroupsToListView(this.AllTagsListView, sortedGroups);
             this.ResumeLayout(true);
         }
 
