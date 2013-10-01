@@ -148,7 +148,7 @@ namespace Terminals
             }
             catch (Exception e)
             {
-                Logging.Log.Info("WnProc Failure", e);
+                Logging.Info("WnProc Failure", e);
             }
         }
 
@@ -202,7 +202,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Error loading the Main Form", exc);
+                Logging.Error("Error loading the Main Form", exc);
             }
         }
 
@@ -296,7 +296,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Logging.Log.Error(FULLSCREEN_ERROR_MSG, exc);
+                Logging.Error(FULLSCREEN_ERROR_MSG, exc);
             }
 
             grabInputToolStripMenuItem.Checked = tsbGrabInput.Checked;
@@ -549,7 +549,7 @@ namespace Terminals
                 }
                 catch (Exception exc)
                 {
-                    Logging.Log.Error(FULLSCREEN_ERROR_MSG, exc);
+                    Logging.Error(FULLSCREEN_ERROR_MSG, exc);
                 }
             }
         }
@@ -1038,7 +1038,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Disconnecting a tab threw an exception", exc);
+                Logging.Error("Disconnecting a tab threw an exception", exc);
             }
         }
 

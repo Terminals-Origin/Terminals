@@ -51,7 +51,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Failed to load Disk Drive devices.", exc);
+                Logging.Error("Failed to load Disk Drive devices.", exc);
             }
         }
 
@@ -69,7 +69,7 @@ namespace Terminals
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Error loading a drive into the tree", e);
+                Logging.Error("Error loading a drive into the tree", e);
             }
         }
 

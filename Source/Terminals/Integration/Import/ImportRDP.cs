@@ -70,7 +70,7 @@ namespace Terminals.Integration.Import
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("RDP import failed.", exception);
+                Logging.Error("RDP import failed.", exception);
                 return new List<FavoriteConfigurationElement>();
             }
         }

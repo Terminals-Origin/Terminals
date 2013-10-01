@@ -82,7 +82,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Apply settings in the first run wizard failed.", exc);
+                Logging.Error("Apply settings in the first run wizard failed.", exc);
             }
         }
 

@@ -99,7 +99,7 @@ namespace Terminals
             }
             catch(Exception exc) 
             {
-                Terminals.Logging.Log.Info("", exc);
+                Logging.Info(exc);
                 return String.Empty;
             }
             finally

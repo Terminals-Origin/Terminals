@@ -78,7 +78,7 @@ namespace Bdev.Net.Dns
                 }
                 catch (Exception ex)
                 {
-                    Terminals.Logging.Log.Error("DNS Response Question Failure", ex);
+                    Terminals.Logging.Error("DNS Response Question Failure", ex);
                     // something grim has happened, we can't continue
                     throw new InvalidResponseException(ex);
                 }

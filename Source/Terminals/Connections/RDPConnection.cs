@@ -83,7 +83,7 @@ namespace Terminals.Connections
                 }
                 catch (Exception exc)
                 {
-                    Logging.Log.Info("There was an exception setting an RDP Value.", exc);
+                    Logging.Info("There was an exception setting an RDP Value.", exc);
                 }
                 // if next line fails on Protected memory access exception,
                 // some string property is set to null, which leads to this exception
@@ -92,7 +92,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Log.Fatal("Connecting to RDP", exc);
+                Logging.Fatal("Connecting to RDP", exc);
                 return false;
             }
         }
@@ -106,7 +106,7 @@ namespace Terminals.Connections
             catch (Exception exception)
             {
                 string message = "Please update your RDP client to at least version 6.";
-                Logging.Log.Info(message, exception);
+                Logging.Info(message, exception);
                 MessageBox.Show(message);
                 return false;
             }
@@ -210,7 +210,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Error trying to set the desktop dimensions", exc);
+                Logging.Error("Error trying to set the desktop dimensions", exc);
             }
         }
 
@@ -378,7 +378,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Error when trying to set timeout values.", exc);
+                Logging.Error("Error when trying to set timeout values.", exc);
             }
         }
 
@@ -444,7 +444,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
+                Logging.Error("Error when trying to set the ClearTextPassword on the nonScriptable mstsc object", exc);
             }
         }
 
@@ -482,7 +482,7 @@ namespace Terminals.Connections
             }
             catch (Exception e)
             {
-                Logging.Log.Info("Error on Disconnect RDP", e);
+                Logging.Info("Error on Disconnect RDP", e);
             }
         }
 
@@ -623,7 +623,7 @@ namespace Terminals.Connections
             string message = RdpClientErrorMessages.ToFatalErrorMessage(errorCode);
             string finalMsg = string.Format("There was a fatal error returned from the RDP Connection, details:\n\nError Code:{0}\n\nError Description:{1}", errorCode, message);
             MessageBox.Show(finalMsg);
-            Logging.Log.Fatal(finalMsg);
+            Logging.Fatal(finalMsg);
         }
 
         private void client_OnWarning(object sender, IMsTscAxEvents_OnWarningEvent e)
@@ -631,7 +631,7 @@ namespace Terminals.Connections
             int warningCode = e.warningCode;
             string message = RdpClientErrorMessages.ToWarningMessage(warningCode);
             string finalMsg = string.Format("There was a warning returned from the RDP Connection, details:\n\nWarning Code:{0}\n\nWarning Description:{1}", warningCode, message);
-            Logging.Log.Warn(finalMsg);
+            Logging.Warn(finalMsg);
         }
 
         private void client_OnLogonError(object sender, IMsTscAxEvents_OnLogonErrorEvent e)
@@ -639,7 +639,7 @@ namespace Terminals.Connections
             int errorCode = e.lError;
             string message = RdpClientErrorMessages.ToLogonMessage(errorCode);
             string finalMsg = string.Format("There was a logon error returned from the RDP Connection, details:\n\nLogon Code:{0}\n\nLogon Description:{1}", errorCode, message);
-            Logging.Log.Error(finalMsg);
+            Logging.Error(finalMsg);
         }
 
         #endregion

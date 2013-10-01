@@ -48,7 +48,7 @@ namespace Terminals.Forms
                 // Store this Token for later usage,
                 // or set your Flickr instance to use it.
                 MessageBox.Show("User authenticated successfully");
-                Logging.Log.Info(String.Format("User authenticated successfully. Authentication token is {0}. User id is {1}, username is {2}", auth.Token, auth.User.UserId, auth.User.Username));
+                Logging.Info(String.Format("User authenticated successfully. Authentication token is {0}. User id is {1}, username is {2}", auth.Token, auth.User.UserId, auth.User.Username));
                 flickr.AuthToken = auth.Token;
                 Settings.FlickrToken = auth.Token;
             }
@@ -56,7 +56,7 @@ namespace Terminals.Forms
             {
                 // If user did not authenticat your application
                 // then a FlickrException will be thrown.
-                Logging.Log.Info("User not authenticated successfully", ex);
+                Logging.Info("User not authenticated successfully", ex);
                 MessageBox.Show("User did not authenticate you" + ex.Message);
             }
         }

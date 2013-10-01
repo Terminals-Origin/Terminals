@@ -25,7 +25,7 @@ namespace Terminals.Network
             }
             catch (Exception exception)
             {
-                Logging.Log.Fatal("Client - Stop", exception);
+                Logging.Fatal("Client - Stop", exception);
             }
         }
 
@@ -46,7 +46,7 @@ namespace Terminals.Network
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Could not connect to the remote server.  Make sure the server is online.", exception);
+                Logging.Error("Could not connect to the remote server.  Make sure the server is online.", exception);
                 MessageBox.Show("Could not connect to the remote server.  Make sure the server is online.");
             }
         }

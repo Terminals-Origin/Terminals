@@ -32,7 +32,7 @@ namespace Terminals.Data.DB
             }
             catch
             {
-                Logging.Log.Error("Unable to obtain database key from database");
+                Logging.Error("Unable to obtain database key from database");
                 return false;
             }
         }

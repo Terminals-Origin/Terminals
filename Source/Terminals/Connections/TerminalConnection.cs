@@ -37,7 +37,7 @@ namespace Terminals.Connections
             String protocol = "unknown";
             try
             {
-                Logging.Log.Info(String.Format("Connecting to a {0} Connection", Favorite.Protocol));
+                Logging.Info(String.Format("Connecting to a {0} Connection", Favorite.Protocol));
                 term = new TerminalEmulator();
 
                 Controls.Add(term);
@@ -78,7 +78,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Log.Fatal(String.Format("Connecting to {0} Connection", protocol), exc);
+                Logging.Fatal(String.Format("Connecting to {0} Connection", protocol), exc);
                 return false;
             }
         }
@@ -149,7 +149,7 @@ namespace Terminals.Connections
 
         private void OnDisconnected()
         {
-            Logging.Log.Fatal(String.Format("{0} Connection Lost {1}", this.Favorite.Protocol, this.Favorite.Name));
+            Logging.Fatal(String.Format("{0} Connection Lost {1}", this.Favorite.Protocol, this.Favorite.Name));
             this.connected = false;
             if (this.ParentForm.InvokeRequired)
             {
@@ -172,7 +172,7 @@ namespace Terminals.Connections
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Disconnect", e);
+                Logging.Error("Disconnect", e);
             }
         }
 

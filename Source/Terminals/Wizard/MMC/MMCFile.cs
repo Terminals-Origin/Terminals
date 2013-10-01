@@ -85,7 +85,7 @@ namespace Terminals.Wizard.MMC
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Error("Error parsing MMC File", exc);
+                Logging.Error("Error parsing MMC File", exc);
             }
         }
     }

@@ -40,7 +40,7 @@ namespace Terminals.Wizard
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Could not new up Metro.NetworkInterfaceList in AddExistingRDPConnections", exc);
+                Logging.Error("Could not new up Metro.NetworkInterfaceList in AddExistingRDPConnections", exc);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Terminals.Wizard
                 }
                 catch (Exception e)
                 {
-                    Logging.Log.Error("Port Scan error", e);
+                    Logging.Error("Port Scan error", e);
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace Terminals.Wizard
             }
             catch (Exception e)
             {
-                Logging.Log.Info("Cancel Discovery", e);
+                Logging.Info("Cancel Discovery", e);
             }
         }
 
@@ -118,7 +118,7 @@ namespace Terminals.Wizard
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Scanner Complete Error", e);
+                Logging.Error("Scanner Complete Error", e);
             }
         }
 
@@ -137,7 +137,7 @@ namespace Terminals.Wizard
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Scan Subnet Error", e);
+                Logging.Error("Scan Subnet Error", e);
             }
 
             this.Invoke(_miv);
@@ -188,7 +188,7 @@ namespace Terminals.Wizard
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Scanner Port Reply", e);
+                Logging.Error("Scanner Port Reply", e);
             }
         }
 
@@ -206,7 +206,7 @@ namespace Terminals.Wizard
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Add Favorite Error", e);
+                Logging.Error("Add Favorite Error", e);
             }
         }
 
@@ -232,7 +232,7 @@ namespace Terminals.Wizard
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Update Connections", e);
+                Logging.Error("Update Connections", e);
             }
         }
 
@@ -257,7 +257,7 @@ namespace Terminals.Wizard
             }
             catch (Exception exc)
             {
-                Logging.Log.Info("Connections Count Label", exc);
+                Logging.Info("Connections Count Label", exc);
             }
         }
     }

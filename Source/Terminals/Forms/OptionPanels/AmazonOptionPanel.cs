@@ -142,7 +142,7 @@ namespace Terminals.Forms
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Amazon S3 exception occured", exception);
+                Logging.Error("Amazon S3 exception occured", exception);
                 return exception;
             }
         }

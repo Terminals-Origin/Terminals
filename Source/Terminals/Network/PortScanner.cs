@@ -85,7 +85,7 @@ namespace Terminals.Network
                             }
                             catch (Exception exc)
                             {
-                                Logging.Log.Error("Threaded Scan Machine Call", exc);
+                                Logging.Error("Threaded Scan Machine Call", exc);
                             }
                         }
                     }
@@ -115,7 +115,7 @@ namespace Terminals.Network
             }
             catch (Exception exception)
             {
-                Logging.Log.Info("Scanner caught an exception", exception);
+                Logging.Info("Scanner caught an exception", exception);
             }
             if (!this.IsDisposed) this.Invoke(this.updateConnections);
             Application.DoEvents();
@@ -145,7 +145,7 @@ namespace Terminals.Network
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Connecting to the network interfaces", exc);
+                Logging.Error("Connecting to the network interfaces", exc);
             }
         }
 

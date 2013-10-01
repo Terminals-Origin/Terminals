@@ -55,7 +55,7 @@ namespace Terminals.Security
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Error Decrypting Password", e);
+                Logging.Error("Error Decrypting Password", e);
                 return String.Empty;
             }
         }
@@ -102,7 +102,7 @@ namespace Terminals.Security
             }
             catch (Exception ec)
             {
-                Logging.Log.Error("Error Encrypting Password", ec);
+                Logging.Error("Error Encrypting Password", ec);
                 return String.Empty;
             }
         }

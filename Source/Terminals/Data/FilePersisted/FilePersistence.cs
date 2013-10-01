@@ -177,7 +177,7 @@ namespace Terminals.Data
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("File persistence was unable to load Favorites.xml", exception);
+                Logging.Error("File persistence was unable to load Favorites.xml", exception);
                 return new FavoritesFile();
             }
             finally
@@ -265,7 +265,7 @@ namespace Terminals.Data
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("File persistence was unable to save Favorites.xml", exception);
+                Logging.Error("File persistence was unable to save Favorites.xml", exception);
             }
             finally
             {

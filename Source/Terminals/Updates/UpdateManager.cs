@@ -51,7 +51,7 @@ namespace Terminals.Updates
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Failed during CheckForCodeplexRelease.", exception);
+                Logging.Error("Failed during CheckForCodeplexRelease.", exception);
                 return ReleaseInfo.NotAvailable;
             }
         }
@@ -188,7 +188,7 @@ namespace Terminals.Updates
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Failed during update.", exc);
+                Logging.Error("Failed during update.", exc);
             }
         }
 

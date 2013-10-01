@@ -26,7 +26,7 @@ namespace Terminals.CaptureManager
             }
             catch (Exception ec)
             {
-                Logging.Log.Error("Error trying to Delete", ec);
+                Logging.Error("Error trying to Delete", ec);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Terminals.CaptureManager
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Error trying to call Move (file)", exc);                
+                Logging.Error("Error trying to call Move (file)", exc);                
             }
         }
 

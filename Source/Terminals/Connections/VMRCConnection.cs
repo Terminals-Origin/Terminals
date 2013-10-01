@@ -53,7 +53,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Log.Fatal("Connecting to VMRC", exc);
+                Logging.Fatal("Connecting to VMRC", exc);
                 return false;
             }
         }
@@ -70,7 +70,7 @@ namespace Terminals.Connections
             else
             {
                 connected = false;
-                Logging.Log.Fatal("VMRC Connection Lost" + this.Favorite.Name);
+                Logging.Fatal("VMRC Connection Lost" + this.Favorite.Name);
                 this.connected = false;
 
                 if (ParentForm.InvokeRequired)
@@ -118,7 +118,7 @@ namespace Terminals.Connections
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Disconnect", e);
+                Logging.Error("Disconnect", e);
             }
         }
 

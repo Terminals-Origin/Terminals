@@ -32,7 +32,7 @@ namespace Terminals.Integration.Export
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("Export XML Failed", ex);
+                Logging.Error("Export XML Failed", ex);
             }
         }
 

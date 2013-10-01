@@ -33,7 +33,7 @@ namespace Terminals.Integration.Export
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Export to ExtraLogicAndroidRd failed.", exception);
+                Logging.Error("Export to ExtraLogicAndroidRd failed.", exception);
             }
         }
 

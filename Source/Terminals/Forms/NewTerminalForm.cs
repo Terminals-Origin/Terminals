@@ -885,7 +885,7 @@ namespace Terminals
             }
             catch (Exception e)
             {
-                Logging.Log.Info("Fill Favorite Failed", e);
+                Logging.Info("Fill Favorite Failed", e);
                 this.ShowErrorMessageBox(e.Message);
                 return false;
             }
@@ -908,12 +908,12 @@ namespace Terminals
         
         private static void EntityLogValidationErrors(DbEntityValidationException entityValidation)
         {
-            Logging.Log.Error("Entity exception", entityValidation);
+            Logging.Error("Entity exception", entityValidation);
             foreach (DbEntityValidationResult validationResult in entityValidation.EntityValidationErrors)
             {
                 foreach (DbValidationError propertyError in validationResult.ValidationErrors)
                 {
-                    Logging.Log.Error(string.Format("Validation error '{0}': {1}", propertyError.PropertyName, propertyError.ErrorMessage));
+                    Logging.Error(string.Format("Validation error '{0}': {1}", propertyError.PropertyName, propertyError.ErrorMessage));
                 }
             }
         }
@@ -1369,7 +1369,7 @@ namespace Terminals
             }
             catch (Exception exception)
             {
-                Logging.Log.Info("Set Terminal Image Failed", exception);
+                Logging.Info("Set Terminal Image Failed", exception);
                 this.currentToolBarFileName = String.Empty;
                 MessageBox.Show("You have chosen an invalid image. Try again.");
             }

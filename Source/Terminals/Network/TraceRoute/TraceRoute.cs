@@ -228,7 +228,7 @@ namespace Terminals.Network
             }
             catch (Exception ex)
             {
-                Logging.Log.Info(String.Empty, ex);
+                Logging.Info(String.Empty, ex);
                 return 0;
             }
         }

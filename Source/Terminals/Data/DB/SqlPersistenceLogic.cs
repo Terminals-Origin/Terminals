@@ -108,7 +108,7 @@ namespace Terminals.Data.DB
                 // UpgradeDatabaseVersion();
             }
 
-            Logging.Log.Fatal("SQL Persistence layer failed to load. Fall back to File persistence");
+            Logging.Fatal("SQL Persistence layer failed to load. Fall back to File persistence");
             Persistence.FallBackToPrimaryPersistence(this.Security);
             return false;
         }

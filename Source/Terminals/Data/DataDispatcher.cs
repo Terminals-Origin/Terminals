@@ -229,7 +229,7 @@ namespace Terminals.Data
         {
             callStackCounter++;
             // don't log the action params, because they may contain sensitive value (passwords etc.)
-            Logging.Log.Error(message, exception);
+            Logging.Error(message, exception);
             this.FireDataErrorOccured(sender, message);
         }
 

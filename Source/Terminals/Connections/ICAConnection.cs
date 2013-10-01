@@ -110,14 +110,14 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Log.Fatal("Connecting to ICA", exc);
+                Logging.Fatal("Connecting to ICA", exc);
                 return false;
             }
         }
 
         private void iIcaClient_OnDisconnect(object sender, EventArgs e)
         {
-            Logging.Log.Fatal("ICA Connection Lost" + this.Favorite.Name);
+            Logging.Fatal("ICA Connection Lost" + this.Favorite.Name);
             this.connected = false;
 
             if (ParentForm.InvokeRequired)
@@ -172,7 +172,7 @@ namespace Terminals.Connections
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Error on Disconnect", e);
+                Logging.Error("Error on Disconnect", e);
             }
         }
         private void SHCopyFiles(string[] sourceFiles, string destinationFolder)

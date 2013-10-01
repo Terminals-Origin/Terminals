@@ -27,36 +27,36 @@ namespace Terminals
             SetUnhandledExceptions();
             Info.SetApplicationVersion();
 
-            Logging.Log.Info(String.Format("-------------------------------Title: {0} started Version:{1} Date:{2}-------------------------------",
+            Logging.Info(String.Format("-------------------------------Title: {0} started Version:{1} Date:{2}-------------------------------",
                   Info.TitleVersion, Info.DLLVersion, Info.BuildDate));
-            Logging.Log.Info("Start state 1 Complete: Unhandled exceptions");
+            Logging.Info("Start state 1 Complete: Unhandled exceptions");
 
             LogGeneralProperties();
-            Logging.Log.Info("Start state 2 Complete: Log General properties");
+            Logging.Info("Start state 2 Complete: Log General properties");
 
             SetApplicationProperties();
-            Logging.Log.Info("Start state 3 Complete: Set application properties");
+            Logging.Info("Start state 3 Complete: Set application properties");
 
             CommandLineArgs commandLine = ParseCommandline();
-            Logging.Log.Info("Start state 4 Complete: Parse command line");
+            Logging.Info("Start state 4 Complete: Parse command line");
 
             if (!EnsureDataAreWriteAble())
                 return;
-            Logging.Log.Info("Start state 5 Complete: User account control");
+            Logging.Info("Start state 5 Complete: User account control");
             
             if (commandLine.SingleInstance && SingleInstanceApplication.Instance.NotifyExisting(commandLine))
                 return;
-            Logging.Log.Info("Start state 6 Complete: Set Single instance mode");
+            Logging.Info("Start state 6 Complete: Set Single instance mode");
 
             // do it before config update, because it may import favorites from previous version
             Persistence.AssignFallbackPrompt(PersistenceFallback);
             UpdateConfig.CheckConfigVersionUpdate();
-            Logging.Log.Info("Start state 7 Complete: Configuration upgrade");
+            Logging.Info("Start state 7 Complete: Configuration upgrade");
 
             ShowFirstRunWizard();
             StartMainForm(commandLine);
 
-            Logging.Log.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
+            Logging.Info(String.Format("-------------------------------{0} Stopped-------------------------------",
                 Info.TitleVersion));
         }
 
@@ -79,8 +79,8 @@ namespace Terminals
 
         private static void ShowApplicationExit(object messageToLog)
         {
-            Logging.Log.Fatal(messageToLog);
-            Logging.Log.Fatal("Application has to be terminated.");
+            Logging.Fatal(messageToLog);
+            Logging.Fatal("Application has to be terminated.");
             UnhandledTerminationForm.ShowRipDialog();
             Environment.Exit(-1);
         }
@@ -130,16 +130,16 @@ namespace Terminals
         /// </summary>
         private static void LogGeneralProperties()
         {
-            Logging.Log.Info(String.Format("CommandLine:{0}", Environment.CommandLine));
-            Logging.Log.Info(String.Format("CurrentDirectory:{0}", Environment.CurrentDirectory));
-            Logging.Log.Info(String.Format("MachineName:{0}", Environment.MachineName));
-            Logging.Log.Info(String.Format("OSVersion:{0}", Environment.OSVersion));
-            Logging.Log.Info(String.Format("ProcessorCount:{0}", Environment.ProcessorCount));
-            Logging.Log.Info(String.Format("UserInteractive:{0}", Environment.UserInteractive));
-            Logging.Log.Info(String.Format("Version:{0}", Environment.Version));
-            Logging.Log.Info(String.Format("WorkingSet:{0}", Environment.WorkingSet));
-            Logging.Log.Info(String.Format("Is64BitOperatingSystem:{0}", Native.Wow.Is64BitOperatingSystem));
-            Logging.Log.Info(String.Format("Is64BitProcess:{0}", Native.Wow.Is64BitProcess));
+            Logging.Info(String.Format("CommandLine:{0}", Environment.CommandLine));
+            Logging.Info(String.Format("CurrentDirectory:{0}", Environment.CurrentDirectory));
+            Logging.Info(String.Format("MachineName:{0}", Environment.MachineName));
+            Logging.Info(String.Format("OSVersion:{0}", Environment.OSVersion));
+            Logging.Info(String.Format("ProcessorCount:{0}", Environment.ProcessorCount));
+            Logging.Info(String.Format("UserInteractive:{0}", Environment.UserInteractive));
+            Logging.Info(String.Format("Version:{0}", Environment.Version));
+            Logging.Info(String.Format("WorkingSet:{0}", Environment.WorkingSet));
+            Logging.Info(String.Format("Is64BitOperatingSystem:{0}", Native.Wow.Is64BitOperatingSystem));
+            Logging.Info(String.Format("Is64BitProcess:{0}", Native.Wow.Is64BitProcess));
         }
 
         private static void SetApplicationProperties()

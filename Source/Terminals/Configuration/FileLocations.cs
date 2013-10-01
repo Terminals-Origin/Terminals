@@ -1,9 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using log4net;
-using log4net.Appender;
-using log4net.Repository.Hierarchy;
 
 namespace Terminals.Configuration
 {
@@ -72,15 +68,7 @@ namespace Terminals.Configuration
 
         internal static string LogDirectory
         {
-            get
-            {
-                // different configuration can be defined by setup or by user.
-                FileAppender rootAppender = FindLogAppender();
-                if (rootAppender != null)
-                    return rootAppender.File;
-                
-                return String.Empty;
-            }
+            get { return Logging.LogDirectory; }
         }
 
         internal static string ThumbsDirectoryFullPath
@@ -114,13 +102,6 @@ namespace Terminals.Configuration
         internal string Favorites { get; private set; }
 
         internal string Credentials { get; private set; }
-
-        private static FileAppender FindLogAppender()
-        {
-            return ((Hierarchy)LogManager.GetRepository()).Root.Appenders
-                                                          .OfType<FileAppender>()
-                                                          .FirstOrDefault();
-        }
 
         /// <summary>
         /// Sets custom file locations for general data files.
@@ -230,7 +211,7 @@ namespace Terminals.Configuration
             }
             catch (Exception ex)
             {
-                Logging.Log.FatalFormat("Access Denied {0}", ex.Message);
+                Logging.FatalFormat("Access Denied {0}", ex.Message);
                 return false;
             }
         }

@@ -41,7 +41,7 @@ namespace Terminals.Connections
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Error on Disconnect", e);
+                Logging.Error("Error on Disconnect", e);
             }
         }
 

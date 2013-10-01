@@ -44,7 +44,7 @@ namespace Terminals.Data.DB
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("Unable to update the database master password", ex);
+                Logging.Error("Unable to update the database master password", ex);
                 return new TestConnectionResult(ex.Message);
             }
         }

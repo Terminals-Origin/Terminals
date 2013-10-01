@@ -47,7 +47,7 @@ namespace Terminals.Network.Servers
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Connection Failure.", exc);
+                Logging.Error("Connection Failure.", exc);
             }
         }
 

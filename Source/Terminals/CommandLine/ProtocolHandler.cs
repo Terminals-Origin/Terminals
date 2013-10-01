@@ -20,7 +20,7 @@ namespace Terminals
             catch(Exception ex)
             {
                 //ignore any security errors and such
-                Logging.Log.Error("Error accessing registry", ex);
+                Logging.Error("Error accessing registry", ex);
             }
         }
 

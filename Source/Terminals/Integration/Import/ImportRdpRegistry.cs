@@ -33,7 +33,7 @@ namespace Terminals.Integration.Import
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Registry Import", e);
+                Logging.Error("Registry Import", e);
             }
             
             return new List<FavoriteConfigurationElement>();

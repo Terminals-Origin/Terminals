@@ -21,7 +21,7 @@ namespace Terminals.Network
             }
             catch (Exception exc)
             {
-                Logging.Log.Info("Error sending Magic Packet", exc);
+                Logging.Info("Error sending Magic Packet", exc);
                 MessageBox.Show("There was an error sending the Magic Packet" + exc.Message);
             }
         }

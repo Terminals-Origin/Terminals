@@ -181,7 +181,7 @@ namespace Terminals.Wizard
             catch (Exception)
             {
                 // nothing to recover, the icon is optional
-                Logging.Log.Info("Unable to create icon for command: " + fullThumbFileName);
+                Logging.Info("Unable to create icon for command: " + fullThumbFileName);
             }
         }
 

@@ -74,10 +74,11 @@ namespace Terminals.Connections
                 this.server = TerminalServer.LoadServer(favorite.ServerName);
                 this.isTerminalServer = this.server.IsATerminalServer;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                Logging.Log.Error(string.Format("Checked to see if {0} is a terminal server. {0} is not a terminal server",
-                  favorite.ServerName));
+                string message = string.Format("Checked to see if {0} is a terminal server. {0} is not a terminal server",
+                                               favorite.ServerName);
+                Logging.Error(message, exception);
             }
 
             if (this.OnTerminalServerStateDiscovery != null)

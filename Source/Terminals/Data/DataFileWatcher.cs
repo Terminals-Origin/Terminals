@@ -39,7 +39,7 @@ namespace Terminals.Data
 
         private void ConfigFileChanged(object sender, FileSystemEventArgs e)
         {
-            Logging.Log.DebugFormat("{0} file change by another application (or Terminals instance) detected!",
+            Logging.DebugFormat("{0} file change by another application (or Terminals instance) detected!",
                                     this.fullFileName);
             if (FileChanged != null && fileWatcher.SynchronizingObject != null)
                 FileChanged(this.fullFileName, new EventArgs());

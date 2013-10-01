@@ -135,7 +135,7 @@ namespace Terminals.Data.DB
                 catch (DbUpdateException)
                 {
                     // recovery will be done by next update
-                    Logging.Log.Error("Unable to update favorite protocol properties in database because of concurrency exception");
+                    Logging.Error("Unable to update favorite protocol properties in database because of concurrency exception");
                 }
                 catch (EntityException exception)
                 {
@@ -153,7 +153,7 @@ namespace Terminals.Data.DB
                 catch (DbUpdateException)
                 {
                     // recovery will be done by next update
-                    Logging.Log.Error("Unable to update favorite image in database because of concurrency exception");
+                    Logging.Error("Unable to update favorite image in database because of concurrency exception");
                 }
                 catch (EntityException exception)
                 {

@@ -52,7 +52,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Connecting to VNC", exc);
+                Logging.Error("Connecting to VNC", exc);
                 return false;
             }
         }
@@ -91,7 +91,7 @@ namespace Terminals.Connections
             }
             catch (Exception Exc)
             {
-                Logging.Log.Error("ConnectComplete to VNC", Exc);
+                Logging.Error("ConnectComplete to VNC", Exc);
             }
             // Change the Form's title to match desktop name
         }
@@ -105,7 +105,7 @@ namespace Terminals.Connections
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Disconnect", e);
+                Logging.Error("Disconnect", e);
             }
         }
 

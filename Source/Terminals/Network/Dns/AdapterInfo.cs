@@ -48,7 +48,7 @@ namespace Terminals.Network.DNS
                 }
                 catch(Exception exc)
                 {
-                    Terminals.Logging.Log.Error("DNS Server Lookup Failed (WMI)", exc);
+                    Logging.Error("DNS Server Lookup Failed (WMI)", exc);
                 }
 
                 return servers;

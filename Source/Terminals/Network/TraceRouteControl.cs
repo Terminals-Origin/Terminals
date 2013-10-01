@@ -247,12 +247,11 @@ namespace Terminals.Network
             {
                 // Get the PointPair that is under the mouse
                 PointPair pt = curve[iPt];
-
                 return String.Format("{0} is {1:f2} milliseconds at {2:f1}", pt.Tag, pt.Y, pt.X);
             }
             catch (Exception ex)
             {
-                Logging.Log.Error(ex);
+                Logging.Error("Unable to display customized tool tips in Trace route", ex);
             }
 
             return String.Empty;
