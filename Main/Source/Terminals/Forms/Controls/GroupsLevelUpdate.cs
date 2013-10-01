@@ -27,7 +27,8 @@ namespace Terminals.Forms.Controls
 
                 IEnumerable<IGroup> moveCandidates = this.MovedGroups();
                 toAdd.AddRange(moveCandidates);
-                return toAdd;
+                // if persistence sends added and updated at once, than we have to filter the already added
+                return toAdd.Distinct();
             }
         }
 
