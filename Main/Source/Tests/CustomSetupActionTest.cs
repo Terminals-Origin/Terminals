@@ -10,8 +10,8 @@ namespace Tests
     /// Because this is the only one test set for Setup, we dont create separate Tests assembly for setup.
     /// </summary>
     [TestClass]
-    [DeploymentItem(@"Tests\Data\" + LOG4_NET_FILE)]
-    [DeploymentItem(@"Terminals\" + APPCONFIG_FILE)]
+    [DeploymentItem(@"Terminals\" + LOG4_NET_FILE)]
+    [DeploymentItem(@"Tests\Data\" + APPCONFIG_FILE)]
     public class CustomSetupActionTest
     {
         private const string LOG4_NET_FILE = "Terminals.log4net.config";
