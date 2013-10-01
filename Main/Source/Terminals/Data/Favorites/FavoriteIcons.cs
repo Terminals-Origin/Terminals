@@ -97,7 +97,7 @@ namespace Terminals.Data
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("Error Loading menu item image", ex);
+                Logging.Error("Error Loading menu item image", ex);
             }
 
             return defaultIcon;

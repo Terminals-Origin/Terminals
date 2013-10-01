@@ -330,7 +330,7 @@ namespace Unified.Network.SNTP
 								catch(Exception e)
 								{
 									val = "N/A";
-									Terminals.Logging.Log.Error("Error parsing and DNS Lookup of an IP" + Address, e);
+									Terminals.Logging.Error("Error parsing and DNS Lookup of an IP" + Address, e);
 								}
 
 								break;
@@ -530,7 +530,7 @@ namespace Unified.Network.SNTP
 			catch (SocketException e)
 			{
 				//throw new Exception(e.Message);
-				Terminals.Logging.Log.Error("Socket Exception", e);
+				Terminals.Logging.Error("Socket Exception", e);
 			}
 		}
 

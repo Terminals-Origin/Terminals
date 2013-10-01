@@ -66,8 +66,8 @@ namespace Terminals.Network.WhoIs
 			}
 			catch(Exception e)
 			{
-				ret = "Could not connect to WhoIs Server.  Please try again later.\r\n\r\nDetails:\r\n" + e.ToString();
-				Terminals.Logging.Log.Error(ret, e);
+				ret = "Could not connect to WhoIs Server.  Please try again later.\r\n\r\nDetails:\r\n" + e;
+				Logging.Error(ret, e);
 			}
 			finally
 			{

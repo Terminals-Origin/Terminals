@@ -59,8 +59,8 @@ namespace Terminals.Network
             }
             catch(Exception exc)
             {
-                Terminals.Logging.Log.Info("Could not resolve host.", exc);
-                System.Windows.Forms.MessageBox.Show("Could not resolve host.");
+                Logging.Info("Could not resolve host.", exc);
+                MessageBox.Show("Could not resolve host.");
             }
 
         }

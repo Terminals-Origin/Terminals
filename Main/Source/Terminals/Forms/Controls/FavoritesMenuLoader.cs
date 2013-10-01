@@ -262,7 +262,7 @@ namespace Terminals
                 }
                 catch (Exception exc)
                 {
-                    Logging.Log.Error("Error Loading Favorites Toolbar", exc);
+                    Logging.Error("Error Loading Favorites Toolbar", exc);
                 }
             }
 

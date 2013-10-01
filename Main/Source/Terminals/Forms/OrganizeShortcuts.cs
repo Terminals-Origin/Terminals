@@ -69,7 +69,7 @@ namespace Terminals
                     }
                     catch(Exception exc)
                     {
-                        Logging.Log.Error("Saving icon picture box failed", exc);
+                        Logging.Error("Saving icon picture box failed", exc);
                         imageFullName = "";
                     }
                 }
@@ -142,7 +142,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("LoadIconsFromExe", exc);
+                Logging.Error("LoadIconsFromExe", exc);
             }
         }
         

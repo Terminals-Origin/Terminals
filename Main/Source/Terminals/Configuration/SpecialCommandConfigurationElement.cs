@@ -95,7 +95,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Could not LoadThumbnail for file:" + this.Thumbnail, exc); 
+                Logging.Error("Could not LoadThumbnail for file:" + this.Thumbnail, exc); 
             }
             return img;
         }

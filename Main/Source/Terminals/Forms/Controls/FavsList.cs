@@ -177,7 +177,7 @@ namespace Terminals
             }
             catch (ManagementException ex)
             {
-                Logging.Log.Info(ex.ToString(), ex);
+                Logging.Info(ex.ToString(), ex);
                 return shutdownFailMessage + "\r\nPlease check the log file for more details.";
             }
             catch (UnauthorizedAccessException)

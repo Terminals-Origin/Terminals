@@ -130,7 +130,7 @@ namespace Terminals.Network
                 catch (Exception ex)
                 {
                     msg = String.Format("An error occured trying to ping {0}", this.TextHost.Text);
-                    Terminals.Logging.Log.Info(msg, ex);
+                    Logging.Info(msg, ex);
                     this.pingRunning = false;
                 }
                 finally
@@ -217,7 +217,7 @@ namespace Terminals.Network
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Info(String.Empty, ex);
+                Logging.Info(String.Empty, ex);
             }
         }
 
@@ -284,7 +284,7 @@ namespace Terminals.Network
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Info("Error on Ping.PingCompleted", ex);
+                Logging.Info("Error on Ping.PingCompleted", ex);
             }
             finally
             {
@@ -442,7 +442,7 @@ namespace Terminals.Network
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Info(String.Empty, ex);
+                Logging.Info(String.Empty, ex);
             }
             
             return String.Empty;

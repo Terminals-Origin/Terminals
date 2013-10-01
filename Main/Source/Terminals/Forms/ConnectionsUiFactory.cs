@@ -48,7 +48,7 @@ namespace Terminals.Forms
             }
             catch (Exception exc)
             {
-                Logging.Log.Error(openErrorMessage, exc);
+                Logging.Error(openErrorMessage, exc);
                 this.terminalsControler.RemoveAndUnSelect(terminalTabPage);
                 terminalTabPage.Dispose();
             }
@@ -201,7 +201,7 @@ namespace Terminals.Forms
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Error Creating A Terminal Tab", exc);
+                Logging.Error("Error Creating A Terminal Tab", exc);
                 this.terminalsControler.UnSelect();
             }
         }

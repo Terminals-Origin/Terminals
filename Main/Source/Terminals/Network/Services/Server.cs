@@ -49,7 +49,7 @@ namespace Terminals.Network
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("StartServer", exc);
+                Logging.Error("StartServer", exc);
             }
         }
 

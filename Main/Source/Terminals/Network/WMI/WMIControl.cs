@@ -632,8 +632,8 @@ namespace WMITestClient
             }
             catch (Exception exc)
             {
-                Terminals.Logging.Log.Info("Query Button Failed", exc);
-                System.Windows.Forms.MessageBox.Show("Error Thrown:" + exc.Message);
+                Terminals.Logging.Info("Query Button Failed", exc);
+                MessageBox.Show("Error Thrown:" + exc.Message);
             }
 
             this.progressBar1.Value = 0;
@@ -810,7 +810,7 @@ namespace WMITestClient
                     }
                     catch (Exception exc)
                     {
-                        Terminals.Logging.Log.Error("Alt Attribute", exc); 
+                        Terminals.Logging.Error("Alt Attribute", exc); 
                         nAlt = nText;
                     }
 
@@ -821,7 +821,7 @@ namespace WMITestClient
                     }
                     catch (Exception exc)
                     {
-                        Terminals.Logging.Log.Error("Type Attributes", exc);
+                        Terminals.Logging.Error("Type Attributes", exc);
                         nType = nAlt;
                     }
 
@@ -847,7 +847,7 @@ namespace WMITestClient
                 }
                 catch (Exception ee)
                 {
-                    Terminals.Logging.Log.Error("Load Node Failed", ee);
+                    Terminals.Logging.Error("Load Node Failed", ee);
                 }
             }
 
@@ -881,7 +881,7 @@ namespace WMITestClient
             }
             catch (Exception xexc)
             {
-                Terminals.Logging.Log.Error("Load Basic Tree Failed", xexc);
+                Terminals.Logging.Error("Load Basic Tree Failed", xexc);
             }
 
             System.Xml.XmlNode n = x.SelectSingleNode("/tree");

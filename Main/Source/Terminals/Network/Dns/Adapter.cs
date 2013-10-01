@@ -159,7 +159,7 @@ namespace Terminals.Network.DNS
                 }
                 catch (Exception exc)
                 {
-                    Logging.Log.Error("see: http://terminals.codeplex.com/workitem/20748", exc);
+                    Logging.Error("see: http://terminals.codeplex.com/workitem/20748", exc);
                     return String.Empty;
                 }
 
@@ -596,7 +596,7 @@ namespace Terminals.Network.DNS
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("", ex);
+                LogPropertyConversion(ex, property);
                 return String.Empty;
             }
         }
@@ -610,7 +610,7 @@ namespace Terminals.Network.DNS
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("", ex);
+                LogPropertyConversion(ex, property);
                 return false;
             }
         }
@@ -624,7 +624,7 @@ namespace Terminals.Network.DNS
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("", ex);
+                LogPropertyConversion(ex, property);
                 return new String[] { };
             }
         }
@@ -638,7 +638,7 @@ namespace Terminals.Network.DNS
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("", ex);
+                LogPropertyConversion(ex, property);
                 return Convert.ToByte(0);
             }
         }
@@ -652,7 +652,7 @@ namespace Terminals.Network.DNS
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("", ex);
+                LogPropertyConversion(ex, property);
                 return DateTime.MinValue;
             }
         }
@@ -666,7 +666,7 @@ namespace Terminals.Network.DNS
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("", ex);
+                LogPropertyConversion(ex, property);
                 return Convert.ToUInt16(0);
             }
         }
@@ -680,7 +680,7 @@ namespace Terminals.Network.DNS
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("", ex);
+                LogPropertyConversion(ex, property);
                 return new UInt16[] { };
             }
         }
@@ -694,9 +694,15 @@ namespace Terminals.Network.DNS
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("", ex);
+                LogPropertyConversion(ex, property);
                 return 0;
             }
+        }
+
+        private static void LogPropertyConversion(Exception ex, string propertyName)
+        {
+            string message = string.Format("Unable to get property '{0}' value in DNS Adapter", propertyName);
+            Logging.Error(message, ex);
         }
 
         private static String ToStringList(String[] stringArray)

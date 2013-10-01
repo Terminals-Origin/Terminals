@@ -108,7 +108,7 @@ namespace Terminals
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("Screen Capture Failed", ex);
+                Logging.Error("Screen Capture Failed", ex);
                 MessageBox.Show(ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -147,7 +147,7 @@ namespace Terminals
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("Capture Handle Failed", ex);
+                Logging.Error("Capture Handle Failed", ex);
                 MessageBox.Show(ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -211,7 +211,7 @@ namespace Terminals
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("Capture Failed", ex);
+                Logging.Error("Capture Failed", ex);
                 MessageBox.Show(ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -233,7 +233,7 @@ namespace Terminals
                 }
                 catch (Exception ex)
                 {
-                    Logging.Log.Error("Print Failed", ex);
+                    Logging.Error("Print Failed", ex);
                     MessageBox.Show(ex.ToString(), "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -302,8 +302,8 @@ namespace Terminals
             }
             catch (Exception ex)
             {
-                string s = string.Format("Saving image to [{0}] in format [{1}].\n{2}", filename, format.ToString(), ex.ToString());
-                Logging.Log.Error(s, ex);
+                string s = string.Format("Saving image to [{0}] in format [{1}].\n{2}", filename, format.ToString(), ex);
+                Logging.Error(s, ex);
                 MessageBox.Show(s, "Capture failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

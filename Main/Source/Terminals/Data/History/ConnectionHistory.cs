@@ -112,7 +112,7 @@ namespace Terminals.History
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Error Loading History", exc);
+                Logging.Error("Error Loading History", exc);
             }
             finally
             {
@@ -125,7 +125,7 @@ namespace Terminals.History
             string fileName = FileLocations.HistoryFullFileName;
             if (!string.IsNullOrEmpty(fileName))
             {
-                Logging.Log.InfoFormat("Loading History from: {0}", fileName);
+                Logging.InfoFormat("Loading History from: {0}", fileName);
                 if (File.Exists(fileName))
                 {
                     LoadFile();
@@ -163,11 +163,11 @@ namespace Terminals.History
                 fileLock.WaitOne();
                 this.fileWatcher.StopObservation();
                 Serialize.SerializeXMLToDisk(this.currentHistory, FileLocations.HistoryFullFileName);
-                Logging.Log.Info(string.Format("History saved. Duration:{0} ms", stopwatch.ElapsedMilliseconds));
+                Logging.Info(string.Format("History saved. Duration:{0} ms", stopwatch.ElapsedMilliseconds));
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Error Saving History", exc);
+                Logging.Error("Error Saving History", exc);
             }
             finally
             {

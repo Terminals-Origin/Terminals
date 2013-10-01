@@ -44,12 +44,12 @@ namespace Terminals
                 this.Enabled = false;
                 if (exc is BadImageFormatException)
                 {
-                    Logging.Log.Info("Terminals Packet Capture is not configured to work with this system (Bad Image Format Exception)", exc);
+                    Logging.Info("Terminals Packet Capture is not configured to work with this system (Bad Image Format Exception)", exc);
                     MessageBox.Show("Terminals Packet Capture is not configured to work with this system (Bad Image Format Exception)");
                 }
                 else if (exc is DllNotFoundException)
                 {
-                    Logging.Log.Info("WinpPcap was not installed", exc);
+                    Logging.Info("WinpPcap was not installed", exc);
                     if (MessageBox.Show("It appears that WinPcap is not installed.  In order to use this feature within Terminals you must first install that product.  Do you wish to visit the download location right now?", "Download WinPcap?", MessageBoxButtons.OKCancel) == DialogResult.OK)
                     {
                         System.Diagnostics.Process.Start("http://www.winpcap.org/install/default.htm");
@@ -57,7 +57,7 @@ namespace Terminals
                 }
                 else
                 {
-                    Logging.Log.Info("WinpPcap was not installed correctly", exc);
+                    Logging.Info("WinpPcap was not installed correctly", exc);
                 }
             }
             this.PacketCapture_Resize(null, null);
@@ -85,7 +85,7 @@ namespace Terminals
             catch (Exception exc)
             {
                 MessageBox.Show("Failed to set the filter: " + this.FilterTextBox.Text);
-                Logging.Log.Info("Failed to set the filter: " + this.FilterTextBox.Text, exc);
+                Logging.Info("Failed to set the filter: " + this.FilterTextBox.Text, exc);
             }
             dev.PcapStartCapture();
 

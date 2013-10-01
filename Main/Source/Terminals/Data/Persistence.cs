@@ -18,7 +18,7 @@ namespace Terminals.Data
             }
             catch (Exception exception)
             {
-                Logging.Log.Fatal("Persistence layer failed to load", exception);
+                Logging.Fatal("Persistence layer failed to load", exception);
                 throw;
             }
         }

@@ -84,7 +84,7 @@ namespace Terminals.Data
             catch (Exception exception)
             {
                 string errorMessage = String.Format("Load credentials from {0} failed.", configFileName);
-                Logging.Log.Error(errorMessage, exception);
+                Logging.Error(errorMessage, exception);
                 return new List<ICredentialSet>();
             }
             finally
@@ -184,7 +184,7 @@ namespace Terminals.Data
             catch (Exception exception)
             {
                 string errorMessage = string.Format("Save credentials to {0} failed.", FileFullName);
-                Logging.Log.Error(errorMessage, exception);
+                Logging.Error(errorMessage, exception);
             }
             finally
             {

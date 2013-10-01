@@ -127,7 +127,7 @@ namespace Terminals.Configuration
                 }
                 catch (Exception exception)
                 {
-                    Logging.Log.Error("Config file access failed by save.", exception);
+                    Logging.Error("Config file access failed by save.", exception);
                 }
                 finally
                 {
@@ -153,7 +153,7 @@ namespace Terminals.Configuration
             }
             catch (Exception exc) // try to recover the file
             {
-                Logging.Log.Error("Get Configuration", exc);
+                Logging.Error("Get Configuration", exc);
                 BackUpConfigFile();
                 SaveDefaultConfigFile();
                 return OpenConfiguration();
@@ -266,20 +266,20 @@ namespace Terminals.Configuration
                                 }
                             }
                             catch (Exception exc)
-                            { // ignore the error
-                                Logging.Log.Error("Remapping Settings Inner", exc);
+                            {   // ignore the error
+                                Logging.Error("Remapping Settings Inner", exc);
                             }
                         }
                     }
                     catch (Exception exc) // ignore the error
                     {
-                        Logging.Log.Error("Remapping Settings Outer", exc);
+                        Logging.Error("Remapping Settings Outer", exc);
                     }
                 }
             }
             catch (Exception exc) // ignore the error
             {
-                Logging.Log.Error("Remapping Settings Outer Try", exc);
+                Logging.Error("Remapping Settings Outer Try", exc);
             }
 
             XmlNodeList favs = doc.SelectNodes("/configuration/settings/favorites/add");
@@ -316,13 +316,13 @@ namespace Terminals.Configuration
                                     }
                                     catch (Exception exc) // ignore the error
                                     {
-                                        Logging.Log.Error("Remapping Favorites 1", exc);
+                                        Logging.Error("Remapping Favorites 1", exc);
                                     }
                                 }
                             }
                             catch (Exception exc) // ignore the error
                             {
-                                Logging.Log.Error("Remapping Favorites 2", exc);
+                                Logging.Error("Remapping Favorites 2", exc);
                             }
                         }
 
@@ -330,13 +330,13 @@ namespace Terminals.Configuration
                     }
                     catch (Exception exc) // ignore the error
                     {
-                        Logging.Log.Error("Remapping Favorites 3", exc);
+                        Logging.Error("Remapping Favorites 3", exc);
                     }
                 }
             }
             catch (Exception exc) // ignore the error
             {
-                Logging.Log.Error("Remapping Favorites 4", exc);
+                Logging.Error("Remapping Favorites 4", exc);
             }
 
             return c;
@@ -358,7 +358,7 @@ namespace Terminals.Configuration
                     return null;
                 }
 
-                Logging.Log.Info("Telnet Section Failed", exc);
+                Logging.Info("Telnet Section Failed", exc);
 
                 try
                 {
@@ -371,7 +371,7 @@ namespace Terminals.Configuration
                 }
                 catch (Exception importException)
                 {
-                    Logging.Log.Info("Trying to import connections failed", importException);
+                    Logging.Info("Trying to import connections failed", importException);
 #if !DEBUG
                     string message = string.Format("Terminals was NOT able to automatically upgrade your existing connections.\r\nError:{0}",
                         importException.Message);

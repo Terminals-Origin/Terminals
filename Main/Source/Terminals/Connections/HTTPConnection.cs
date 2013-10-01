@@ -57,7 +57,7 @@ namespace Terminals.Connections
             }
             catch (Exception exc)
             {
-                Logging.Log.Fatal("Connecting to HTTP", exc);
+                Logging.Fatal("Connecting to HTTP", exc);
                 return false;
             }
             return true;

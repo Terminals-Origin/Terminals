@@ -579,7 +579,7 @@ namespace Terminals.Configuration
             {
                 if (!Directory.Exists(root))
                 {
-                    Logging.Log.Info(String.Format("Capture root folder does not exist:{0}. Lets try to create it now.", root));
+                    Logging.Info(String.Format("Capture root folder does not exist:{0}. Lets try to create it now.", root));
                     Directory.CreateDirectory(root);
                 }
             }
@@ -587,7 +587,7 @@ namespace Terminals.Configuration
             {
                 root = GetDefaultCaptureRootDirectory();
                 string logMessage = String.Format("Capture root could not be created, set it to the default value : {0}", root);
-                Logging.Log.Error(logMessage, exception);
+                Logging.Error(logMessage, exception);
                 SwitchToDefaultDirectory(root);
             }
 
@@ -603,7 +603,7 @@ namespace Terminals.Configuration
             }
             catch (Exception exception)
             {
-                Logging.Log.Error(@"Capture root could not be created again. Abort!", exception);
+                Logging.Error(@"Capture root could not be created again. Abort!", exception);
             }
         }
 

@@ -74,7 +74,7 @@ namespace Terminals.Updates
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Upgrade of Thumbs directory failed", exception);
+                Logging.Error("Upgrade of Thumbs directory failed", exception);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Terminals.Updates
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("Upgrade of data file failed", exception);
+                Logging.Error("Upgrade of data file failed", exception);
             }
         }
 

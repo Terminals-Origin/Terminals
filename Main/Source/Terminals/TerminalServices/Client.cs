@@ -65,7 +65,7 @@ namespace Terminals.TerminalServices
                 }
                 catch (Exception exc)
                 {
-                    Terminals.Logging.Log.Error("IP Address", exc);
+                    Logging.Error("IP Address", exc);
                 }
                 return new System.Net.IPAddress(0);
             }

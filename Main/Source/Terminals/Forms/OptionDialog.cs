@@ -116,7 +116,7 @@ namespace Terminals.Forms
             }
             catch (Exception ex)
             {
-                Logging.Log.Info(ex);
+                Logging.Info(ex);
             }
         }
 
@@ -160,7 +160,7 @@ namespace Terminals.Forms
             }
             catch (Exception exception)
             {
-                Logging.Log.Error(exception);
+                Logging.Error("Error saving application settings.", exception);
                 MessageBox.Show(String.Format("Error saving settings.\r\n{0}", exception.Message));
             }
             finally

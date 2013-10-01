@@ -77,7 +77,7 @@ namespace Terminals.Network
             catch (Exception exc)
             {
                 FireListComputersDone(false);
-                Logging.Log.Error("Could not list the computers on the domain: " + state, exc);
+                Logging.Error("Could not list the computers on the domain: " + state, exc);
             }
             finally
             {

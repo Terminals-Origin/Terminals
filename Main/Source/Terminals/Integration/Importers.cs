@@ -109,7 +109,7 @@ namespace Terminals.Integration.Import
             }
             catch (Exception exc) //do nothing
             {
-                Logging.Log.Error("Error loading Assembly from Bin Folder" + assemblyFileFullName, exc);
+                Logging.Error("Error loading Assembly from Bin Folder" + assemblyFileFullName, exc);
             }
         }
 
@@ -133,7 +133,7 @@ namespace Terminals.Integration.Import
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Error iterating Assemblies for Importer Classes", exc);
+                Logging.Error("Error iterating Assemblies for Importer Classes", exc);
             }
         }
 

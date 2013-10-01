@@ -63,7 +63,7 @@ namespace Terminals.Connections
             }
             catch(Exception exc)
             {
-                Logging.Log.Fatal("Connecting to RAS", exc);
+                Logging.Fatal("Connecting to RAS", exc);
                 return false;
             }
         }

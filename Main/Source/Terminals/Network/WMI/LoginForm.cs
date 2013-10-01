@@ -254,8 +254,8 @@ namespace WMITestClient
                     }
                     catch (Exception exc)
                     {
-                        Terminals.Logging.Log.Info("Login Failed", exc);
-                        System.Windows.Forms.MessageBox.Show(exc.Message);
+                        Terminals.Logging.Info("Login Failed", exc);
+                        MessageBox.Show(exc.Message);
                     }
 
                     if (success)

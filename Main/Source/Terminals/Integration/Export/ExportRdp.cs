@@ -55,7 +55,7 @@ namespace Terminals.Integration.Export
             }
             catch (Exception exception)
             {
-                Logging.Log.Error("RDP export failed.", exception);
+                Logging.Error("RDP export failed.", exception);
             }
         }
 

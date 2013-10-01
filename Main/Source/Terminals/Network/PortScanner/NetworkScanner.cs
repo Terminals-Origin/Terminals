@@ -12,7 +12,6 @@ using Terminals.Connections;
 using Terminals.Forms.Controls;
 using Terminals.Network;
 using Terminals.Scanner;
-using Unified;
 
 namespace Terminals
 {
@@ -63,7 +62,7 @@ namespace Terminals
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Network Scanner Failed to Initialize", e);
+                Logging.Error("Network Scanner Failed to Initialize", e);
             }
             return localIP;
         }
@@ -251,7 +250,7 @@ namespace Terminals
             }
             catch (Exception exc)
             {
-                Logging.Log.Info("Network Scanner failed to stop server and client at close", exc);
+                Logging.Info("Network Scanner failed to stop server and client at close", exc);
             }
         }
 

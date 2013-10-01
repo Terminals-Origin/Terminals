@@ -46,8 +46,8 @@ namespace Terminals.CaptureManager
             }
             catch (Exception ex)
             {
-                Terminals.Logging.Log.Info("There was an error uploading your screen shots to Flickr.", ex);
-                System.Windows.Forms.MessageBox.Show("There was an error uploading your screen shots to Flickr:\r\n" + ex.Message);
+                Logging.Info("There was an error uploading your screen shots to Flickr.", ex);
+                MessageBox.Show("There was an error uploading your screen shots to Flickr:\r\n" + ex.Message);
             }
         }
 

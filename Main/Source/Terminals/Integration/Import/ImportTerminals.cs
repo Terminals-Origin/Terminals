@@ -54,7 +54,7 @@ namespace Terminals.Integration.Import
             }
             catch (Exception ex)
             {
-                Logging.Log.Error("Import XML Failed", ex);
+                Logging.Error("Import XML Failed", ex);
             }
 
             return favorites;

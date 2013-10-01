@@ -82,7 +82,7 @@ namespace Terminals.Scanner
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("Attempting to Resolve host named failed", exc);
+                Logging.Error("Attempting to Resolve host named failed", exc);
             }
         }
 
@@ -100,7 +100,7 @@ namespace Terminals.Scanner
             }
             catch (Exception e)
             {
-                Logging.Log.Error("Scan Failed", e);
+                Logging.Error("Scan Failed", e);
             }
         }
 
@@ -163,11 +163,11 @@ namespace Terminals.Scanner
             }
             catch (CryptographicException ce)
             {
-                Logging.Log.Info(string.Empty, ce);
+                Logging.Info(string.Empty, ce);
             }
             catch (Exception exc)
             {
-                Logging.Log.Error("VNC Port Scan Failed", exc);
+                Logging.Error("VNC Port Scan Failed", exc);
                 return false;
             }
 
