@@ -325,16 +325,17 @@ namespace Terminals
         private void CopySelectedFavorite()
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            bool success = CopyFavorite(favorite);
-            if (success)
+            var copy = CopyFavorite(favorite);
+            if (copy != null)
                 this.UpdateFavoritesBindingSource();
         }
 
         /// <summary>
         /// Creates deep copy of provided favorite in persistence including its toolbar button and groups memebership.
-        /// Returns true if operation was successfull; otherwise false.
+        /// The copy is already added to the persistence.
+        /// Returns newly created favorite copy if operation was successfull; otherwise null.
         /// </summary>
-        internal static bool CopyFavorite(IFavorite favorite)
+        internal static IFavorite CopyFavorite(IFavorite favorite)
         {
             if (favorite != null)
             {
@@ -345,10 +346,10 @@ namespace Terminals
                 }
             }
 
-            return false;
+            return null;
         }
 
-        private static bool CopySelectedFavorite(IFavorite favorite, string newName)
+        private static IFavorite CopySelectedFavorite(IFavorite favorite, string newName)
         {
             IFavorite copy = favorite.Copy();
             copy.Name = newName;
@@ -358,8 +359,7 @@ namespace Terminals
             
             if (Settings.HasToolbarButton(favorite.Id))
                 Settings.AddFavoriteButton(copy.Id);
-
-            return true;
+            return copy;
         }
 
         private void RenameToolStripMenuItem_Click(object sender, EventArgs e)

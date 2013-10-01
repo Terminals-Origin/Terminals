@@ -52,8 +52,10 @@
             this.ImageList = this.imageListIcons;
             this.SelectedImageIndex = 0;
             this.ShowNodeToolTips = true;
+            this.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.FavoritesTreeView_ItemDrag);
             this.DragDrop += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragDrop);
             this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FavsTree_DragEnter);
+            this.DragOver += new System.Windows.Forms.DragEventHandler(this.FavoritesTreeView_DragOver);
             this.ResumeLayout(false);
 
         }

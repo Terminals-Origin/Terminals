@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
-using Terminals.Integration;
 
 namespace Terminals.Forms.Controls
 {
@@ -32,6 +31,17 @@ namespace Terminals.Forms.Controls
             get
             {
                 return this.SelectedNode as GroupTreeNode;
+            }
+        }
+
+        private IGroup SelectedGroup
+        {
+            get
+            {
+                if (this.SelectedGroupNode != null)
+                    return this.SelectedGroupNode.Group;
+
+                return null;
             }
         }
 
@@ -111,19 +121,29 @@ namespace Terminals.Forms.Controls
 
         private void FavsTree_DragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop, false))
-                e.Effect = DragDropEffects.All;
+            var dragDrop = new TreeViewDragDrop(e, this.SelectedGroup, this.SelectedFavorite);
+            e.Effect = dragDrop.Effect;
+        }
+
+        private void FavoritesTreeView_ItemDrag(object sender, ItemDragEventArgs e)
+        {
+            this.DoDragDrop(e.Item, TreeViewDragDrop.SUPPORTED_DROPS);
+        }
+
+        private void FavoritesTreeView_DragOver(object sender, DragEventArgs e)
+        {
+            // focus candidate of target node under cursor
+            var targetPoint = this.PointToClient(new Point(e.X, e.Y));
+            this.SelectedNode = this.GetNodeAt(targetPoint);
+            // the selected node will now play the role of drop target 
+            var dragDrop = new TreeViewDragDrop(e, this.SelectedGroup, this.SelectedFavorite);
+            e.Effect = dragDrop.Effect;
         }
 
         private void FavsTree_DragDrop(object sender, DragEventArgs e)
         {
-            var files = e.Data.GetData(DataFormats.FileDrop) as String[];
-            if (files != null)
-            {
-                List<FavoriteConfigurationElement> favoritesToImport = Integrations.Importers.ImportFavorites(files);
-                var managedImport = new ImportWithDialogs(this.FindForm());
-                managedImport.Import(favoritesToImport);
-            }
+            var dragDrop = new TreeViewDragDrop(e, this.SelectedGroup, this.SelectedFavorite);
+            dragDrop.Drop(this.FindForm());
         }
     }
 }
