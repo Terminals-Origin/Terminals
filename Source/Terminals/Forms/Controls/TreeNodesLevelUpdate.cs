@@ -52,7 +52,8 @@ namespace Terminals.Forms.Controls
 
         protected void ProcessNodes()
         {
-            foreach (TNode toProcess in this.nodes.OfType<TNode>())
+            // because making changes in the collection during procesing each node, call ToList to evaluate the collection
+            foreach (TNode toProcess in this.nodes.OfType<TNode>().ToList())
             {
                 this.CurrentNode = toProcess;
                 this.ProcessCurrentNode();
