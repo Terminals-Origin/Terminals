@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Windows.Forms;
 using Terminals.Connections;
 using Terminals.Data;
@@ -16,6 +15,8 @@ namespace Terminals.Forms
     internal class NewTerminalFormValidator
     {
         private readonly NewTerminalForm form;
+
+        private readonly IPersistence persistence = Persistence.Instance;
 
         private readonly Dictionary<string, Control> validationBindings = new Dictionary<string, Control>();
 
@@ -47,29 +48,22 @@ namespace Terminals.Forms
         /// </summary>
         private bool ValidatePersistenceConstraints()
         {
-            IFavorite favorite = Persistence.Instance.Factory.CreateFavorite();
+            IFavorite favorite = this.persistence.Factory.CreateFavorite();
             this.form.FillFavoriteFromControls(favorite);
-            List<ValidationState> results = Validations.Validate(favorite);
+            ValidationStates results = Validations.Validate(favorite);
             this.UpdateControlsErrorByResults(results);
             // check the results, not the bindings to be able to identify unbound property errors
-            return !results.Any();
+            return results.Empty;
         }
 
-        private void UpdateControlsErrorByResults(List<ValidationState> results)
+        private void UpdateControlsErrorByResults(ValidationStates results)
         {
             // loop through bindings to be able to reset the validaiton state for valid controls
             foreach (KeyValuePair<string, Control> binding in this.validationBindings)
             {
-                string message = SelectMessage(results, binding.Key);
+                string message = results[binding.Key];
                 this.form.SetErrorInfo(binding.Value, message);
             }
-        }
-
-        internal static string SelectMessage(List<ValidationState> results, string propertyName)
-        {
-            IEnumerable<string> messages = results.Where(result => result.PropertyName == propertyName)
-                                                  .Select(result => result.Message);
-            return string.Concat(messages);
         }
 
         internal void OnServerNameValidating(object sender, CancelEventArgs eventArgs)
@@ -145,20 +139,9 @@ namespace Terminals.Forms
         internal bool ValidateGrouName(TextBox txtGroupName)
         {
             string groupName = txtGroupName.Text;
-            string message = ValidateGroupName(groupName);
+            string message = new GroupValidator(this.persistence).ValidateNew(groupName);
             this.form.SetErrorInfo(txtGroupName, message);
             return string.IsNullOrEmpty(message);
-        }
-
-        /// <summary>
-        /// Returns error mesages obtained from validator
-        /// or empty string, if group name is valid in current persistence.
-        /// </summary>
-        internal static string ValidateGroupName(string groupName)
-        {
-            IGroup group = Persistence.Instance.Factory.CreateGroup(groupName);
-            List<ValidationState> results = Validations.ValidateGroupName(@group);
-            return SelectMessage(results, Validations.GROUP_NAME);
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Terminals.Data;
-using Terminals.Forms;
+using Terminals.Data.Validation;
 
 namespace Terminals
 {
@@ -34,21 +34,13 @@ namespace Terminals
 
         private static string ValidateNewGroupName(string newGroupName)
         {
-            string message = GetValidationMessage(newGroupName);
+            string message = new GroupValidator(Persistence.Instance).ValidateNew(newGroupName);
 
             if (string.IsNullOrEmpty(message))
                 return newGroupName;
 
             MessageBox.Show(message, "New Group name is not valid", MessageBoxButtons.OK, MessageBoxIcon.Error);
             return string.Empty;
-        }
-
-        private static string GetValidationMessage(string newGroupName)
-        {
-            if (Persistence.Instance.Groups[newGroupName] != null)
-                return "Group with the same name already exists";
-            
-            return NewTerminalFormValidator.ValidateGroupName(newGroupName);
         }
     }
 }

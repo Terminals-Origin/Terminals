@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
 using Terminals.Data.Validation;
-using Terminals.Forms;
 
 namespace Terminals.Credentials
 {
@@ -55,11 +52,11 @@ namespace Terminals.Credentials
         {
             ICredentialSet prototype = this.CreateNewCredential();
             var results = Validations.Validate(prototype);
-            string nameErrorMessage = NewTerminalFormValidator.SelectMessage(results, "Name");
+            string nameErrorMessage = results["Name"];
             this.errorProvider.SetError(this.NameTextbox, nameErrorMessage);
-            string userNameErrorMessage = NewTerminalFormValidator.SelectMessage(results, "UserName");
+            string userNameErrorMessage = results["UserName"];
             this.errorProvider.SetError(this.UsernameTextbox, userNameErrorMessage);
-            return !results.Any();
+            return results.Empty;
         }
 
         private bool UpdateCredential()

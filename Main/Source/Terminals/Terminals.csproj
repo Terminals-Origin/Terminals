@@ -192,6 +192,7 @@
     <Compile Include="Data\Validation\GroupMetadata.cs" />
     <Compile Include="Data\Validation\ValidationState.cs" />
     <Compile Include="Data\Validation\Validations.cs" />
+    <Compile Include="Data\Validation\ValidationStates.cs" />
     <Compile Include="Forms\ConnectionDefinition.cs" />
     <Compile Include="Forms\ConnectionsUiFactory.cs" />
     <Compile Include="Forms\Controls\FavoritesFoundEventArgs.cs" />
@@ -233,6 +234,7 @@
     </Compile>
     <Compile Include="Forms\Controls\TreeViewDragDrop.cs" />
     <Compile Include="Forms\FavoriteViewModel.cs" />
+    <Compile Include="Data\Validation\GroupValidator.cs" />
     <Compile Include="Forms\NewTerminalFormValidator.cs" />
     <Compile Include="Forms\UnhandledTerminationForm.cs">
       <SubType>Form</SubType>

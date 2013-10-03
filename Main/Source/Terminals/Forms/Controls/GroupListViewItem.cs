@@ -8,12 +8,6 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal class GroupListViewItem : ListViewItem
     {
-        internal GroupListViewItem(string groupName)
-            : base(groupName)
-        {
-            this.FavoritesGroup = Persistence.Instance.Factory.CreateGroup(groupName);
-        }
-
         internal GroupListViewItem(IGroup group)
             : base(group.Name)
         {

@@ -10,6 +10,7 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Data;
+using Terminals.Data.Validation;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Network;
@@ -23,9 +24,11 @@ namespace Terminals
         private static readonly string shutdownFailMessage = Program.Resources.GetString("UnableToRemoteShutdown");
         internal ConnectionsUiFactory ConnectionsUiFactory { private get; set; }
 
-        private static IFavorites PersistedFavorites
+        private IPersistence persistence = Persistence.Instance;
+
+        private IFavorites PersistedFavorites
         {
-            get { return Persistence.Instance.Favorites; }
+            get { return this.persistence.Favorites; }
         }
 
         public FavsList()
@@ -561,11 +564,19 @@ namespace Terminals
             }
         }
 
-        private static void RenameGroup(IGroup group, string newName)
+        private void RenameGroup(IGroup group, string newName)
         {
-            // todo validate the name
-            group.Name = newName;
-            Persistence.Instance.Groups.Update(group);
+            var groupValidator = new GroupValidator(this.persistence);
+            string message = groupValidator.ValidateCurrent(group, newName);
+            if (string.IsNullOrEmpty(message))
+            {
+                group.Name = newName;
+                Persistence.Instance.Groups.Update(group);
+            }
+            else
+            {
+                MessageBox.Show(message, "Group name is not valid", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void SearchPanel1_ResultListAfterLabelEdit(object sender, LabelEditEventArgs e)
@@ -587,7 +598,7 @@ namespace Terminals
             this.favsTree.BeginInvoke(new Action<IFavorite, string>(RenameFavorite), favoriteArguments);
         }
 
-        private static void RenameFavorite(IFavorite favorite, string newName)
+        private void RenameFavorite(IFavorite favorite, string newName)
         {
             // todo validate the name
             favorite.Name = newName;
