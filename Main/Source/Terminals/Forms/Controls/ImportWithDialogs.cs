@@ -12,8 +12,8 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal class ImportWithDialogs
     {
-        private const String IMPORT_SUFFIX = "_(imported)";
-        private readonly Form sourceForm;
+        internal const String IMPORT_SUFFIX = "_(imported)";
+        private readonly IImportUi importUi;
         private readonly IPersistence persistence;
 
         private IFavorites PersistedFavorites
@@ -22,41 +22,33 @@ namespace Terminals.Forms.Controls
         }
 
         internal ImportWithDialogs(Form sourceForm)
-            : this(sourceForm, Persistence.Instance)
+            : this(new FormsImportUi(sourceForm), Persistence.Instance)
         {
         }
-        
-        internal ImportWithDialogs(Form sourceForm, IPersistence persistence)
+
+        internal ImportWithDialogs(IImportUi importUi, IPersistence persistence)
         {
-            this.sourceForm = sourceForm;
+            this.importUi = importUi;
             this.persistence = persistence;
         }
+
         internal Boolean Import(List<FavoriteConfigurationElement> favoritesToImport)
         {
-            this.sourceForm.Cursor = Cursors.WaitCursor;
-            bool imported = ImportPreservingNames(favoritesToImport, AskIfOverwriteOrRename);
-            this.sourceForm.Cursor = Cursors.Default;
+            this.importUi.ReportStart();
+            bool imported = ImportPreservingNames(favoritesToImport);
+            this.importUi.ReportEnd();
             if (imported)
-                ShowImportResultMessage(favoritesToImport.Count);
+                this.importUi.ShowResultMessage(favoritesToImport.Count);
 
             return imported;
         }
 
-        private static void ShowImportResultMessage(Int32 importedItemsCount)
-        {
-            String message = "1 item was added to your favorites.";
-            if (importedItemsCount > 1)
-                message = String.Format("{0} items were added to your favorites.", importedItemsCount);
-            MessageBox.Show(message, "Terminals import result", MessageBoxButtons.OK);
-        }
-
-        private Boolean ImportPreservingNames(List<FavoriteConfigurationElement> favoritesToImport,
-            Func<int, DialogResult> askIfOverwriteOrRename)
+        private Boolean ImportPreservingNames(List<FavoriteConfigurationElement> favoritesToImport)
         {
             List<FavoriteConfigurationElement> uniqueToImport = GetUniqueItemsToImport(favoritesToImport);
             List<FavoriteConfigurationElement> conflictingFavorites = GetConflictingFavorites(uniqueToImport);
             // using delegate allows us to call this method from unit tests, without use of UI
-            DialogResult renameAnswer = askIfOverwriteOrRename(conflictingFavorites.Count);
+            DialogResult renameAnswer = this.importUi.AskIfOverwriteOrRename(conflictingFavorites.Count);
             if (renameAnswer == DialogResult.Yes)
                 RenameConflictingFavorites(conflictingFavorites);
 
@@ -119,7 +111,7 @@ namespace Terminals.Forms.Controls
             {
                 this.PersistedFavorites.Add(favorite);
             }
-            
+
             return favorite;
         }
 
@@ -141,27 +133,6 @@ namespace Terminals.Forms.Controls
         private bool NotUniqueInPersistence(string favoriteName)
         {
             return this.PersistedFavorites[favoriteName] != null;
-        }
-
-        private static DialogResult AskIfOverwriteOrRename(Int32 conflictingFavoritesCount)
-        {
-            DialogResult overwriteResult = DialogResult.No;
-
-            if (conflictingFavoritesCount > 0)
-            {
-                String messagePrefix = String.Format("There are {0} connections to import, which already exist.",
-                    conflictingFavoritesCount);
-                String message = messagePrefix +
-                            "\r\nDo you want to rename them?\r\n\r\nSelect" +
-                            "\r\n- Yes to rename the newly imported items with \"" + IMPORT_SUFFIX + "\" suffix" +
-                            "\r\n- No to overwrite existing items" +
-                            "\r\n- Cancel to interupt the import";
-
-                overwriteResult = MessageBox.Show(message, "Terminals - conflict found in import",
-                            MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-            }
-
-            return overwriteResult;
         }
     }
 }

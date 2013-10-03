@@ -203,7 +203,9 @@
       <DependentUpon>FavoritesSearchBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\FavoritesLevelUpdate.cs" />
+    <Compile Include="Forms\Controls\FormsImportUi.cs" />
     <Compile Include="Forms\Controls\GroupsLevelUpdate.cs" />
+    <Compile Include="Forms\Controls\IImportUi.cs" />
     <Compile Include="Forms\Controls\ReconnectingControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
