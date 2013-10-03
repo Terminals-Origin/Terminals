@@ -557,26 +557,32 @@ namespace Terminals
         private void TryRenameGroupNode(NodeLabelEditEventArgs e)
         {
             var groupNode = this.favsTree.SelectedGroupNode;
-            if (groupNode != null)
+            if (groupNode == null)
+                return;
+
+            this.RenameIfValid(groupNode.Group, e);
+        }
+
+        private void RenameIfValid(IGroup group, NodeLabelEditEventArgs e)
+        {
+            var groupValidator = new GroupValidator(this.persistence);
+            string errorMessage = groupValidator.ValidateCurrent(group, e.Label);
+            if (string.IsNullOrEmpty(errorMessage))
             {
-                var groupArguments = new object[] { groupNode.Group, e.Label };
-                this.favsTree.BeginInvoke(new Action<IGroup, string>(RenameGroup), groupArguments);
+                var groupArguments = new object[] {group, e.Label};
+                this.favsTree.BeginInvoke(new Action<IGroup, string>(this.RenameGroup), groupArguments);
+            }
+            else
+            {
+                e.CancelEdit = true;
+                MessageBox.Show(errorMessage, "Group name is not valid", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void RenameGroup(IGroup group, string newName)
         {
-            var groupValidator = new GroupValidator(this.persistence);
-            string message = groupValidator.ValidateCurrent(group, newName);
-            if (string.IsNullOrEmpty(message))
-            {
-                group.Name = newName;
-                Persistence.Instance.Groups.Update(group);
-            }
-            else
-            {
-                MessageBox.Show(message, "Group name is not valid", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            group.Name = newName;
+            this.persistence.Groups.Update(group);
         }
 
         private void SearchPanel1_ResultListAfterLabelEdit(object sender, LabelEditEventArgs e)
