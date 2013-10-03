@@ -117,6 +117,7 @@
     <Compile Include="FilePersisted\FilePersistedTestLab.cs" />
     <Compile Include="FilePersisted\GroupsTest.cs" />
     <Compile Include="FilePersisted\TestFileWatch.cs" />
+    <Compile Include="FilePersisted\TestImportUi.cs" />
     <Compile Include="Passwords\PasswordUpgradesTests.cs" />
     <Compile Include="FilePersisted\SearchEngineTest.cs" />
     <Compile Include="SqlPersisted\ComparersTest.cs" />
@@ -143,6 +144,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UserInterface\TreeListLoaderTestLab.cs" />
+    <Compile Include="UserInterface\TreeViewDragDropTests.cs" />
     <Compile Include="ValidationTests.cs" />
     <Compile Include="UpdateManagerTest.cs" />
   </ItemGroup>

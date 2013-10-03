@@ -130,7 +130,7 @@ namespace Tests.FilePersisted
 
             // 887 obtained by manual check of the xml elements
             Assert.AreEqual(887, toImport.Count, "Some items from Import file were not identified");
-            object result = InvokeTheImport(toImport, this.Persistence, strategy);
+            bool result = InvokeTheImport(toImport, this.Persistence, strategy);
             Assert.AreEqual(true, result, "Import wasn't successful");
             int expected = ExpectedFavoritesCount(toImport);
             Assert.AreEqual(expected, this.PersistenceFavoritesCount, "Imported favorites count doesn't match.");
@@ -141,12 +141,13 @@ namespace Tests.FilePersisted
             Assert.AreEqual(expectedGroups, this.ImportedGroupsCount, "Imported groups count doesn't match.");
         }
 
-        private static object InvokeTheImport(List<FavoriteConfigurationElement> toImport, IPersistence persistence,
+        private static bool InvokeTheImport(List<FavoriteConfigurationElement> toImport, IPersistence persistence,
             Func<int, DialogResult> strategy)
         {
-            var managedImport = new ImportWithDialogs(null, persistence);
-            var privateObject = new PrivateObject(managedImport);
-            return privateObject.Invoke("ImportPreservingNames", new object[] { toImport, strategy });
+            var moqInterface = new TestImportUi(strategy);
+            var managedImport = new ImportWithDialogs(moqInterface, persistence);
+            bool success = managedImport.Import(toImport);
+            return success;
         }
 
         private static int ExpectedFavoritesCount(List<FavoriteConfigurationElement> toImport)
