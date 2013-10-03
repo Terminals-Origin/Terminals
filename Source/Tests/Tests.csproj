@@ -136,6 +136,7 @@
     <Compile Include="SqlPersisted\TestsLab.cs" />
     <Compile Include="SqlPersisted\CredentialsTest.cs" />
     <Compile Include="CustomSetupActionTest.cs" />
+    <Compile Include="PersistenceValidationTests.cs" />
     <Compile Include="UserInterface\FavoritesTreeLoadingTest.cs" />
     <Compile Include="UserInterface\GroupsTreeLoadingTest.cs" />
     <Compile Include="UserInterface\TestTreeView.cs">

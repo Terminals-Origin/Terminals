@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Data;
@@ -32,7 +31,7 @@ namespace Tests
             favorite.Protocol = longText.Substring(0, 11);
             favorite.ServerName = longText;
             var results = Validations.Validate(favorite);
-            Assert.AreEqual(results.Count, 3, "Some properties arent validated properly for Favorite");
+            Assert.AreEqual(results.Count(), 3, "Some properties arent validated properly for Favorite");
         }
 
         [TestMethod]
@@ -54,7 +53,7 @@ namespace Tests
             favorite.ExecuteBeforeConnect.InitialDirectory = longText;
             var results = Validations.Validate(favorite);
 
-            Assert.AreEqual(results.Count, 9, "Some properties arent validated properly for DbFavorite");
+            Assert.AreEqual(results.Count(), 9, "Some properties arent validated properly for DbFavorite");
             var serverNameErrors = results.Count(result => result.PropertyName == "ServerName");
             Assert.AreEqual(serverNameErrors, 2, "DbFavorite ServerName wasnt validated properly");
             var protocolErrors = results.Count(result => result.PropertyName == "Protocol");
@@ -76,7 +75,7 @@ namespace Tests
             var credentailSet = new DbCredentialSet();
             credentailSet.Name = longText;
             var results = Validations.Validate(credentailSet);
-            Assert.AreEqual(results.Count, 2, "CredentailSet validation failed");
+            Assert.AreEqual(results.Count(), 2, "CredentailSet validation failed");
         }
 
         [TestMethod]
@@ -91,9 +90,9 @@ namespace Tests
 
         private static void AssertGroupValidation(DbGroup group)
         {
-            List<ValidationState> results = Validations.ValidateGroupName(group);
-            Assert.AreEqual(results.Count, 1, "Group name validation failed");
-            Assert.AreEqual(results[0].PropertyName, "Name", "Failed property is not a 'Name'");
+            ValidationStates results = Validations.ValidateGroupName(group);
+            Assert.AreEqual(results.Count(), 1, "Group name validation failed");
+            Assert.AreEqual(results.First().PropertyName, "Name", "Failed property is not a 'Name'");
         }
     }
 }

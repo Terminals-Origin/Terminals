@@ -146,8 +146,11 @@ namespace Terminals.Data
         /// </summary>
         /// <param name="groupName">Name of the group to search in persistence.</param>
         /// <returns>Not null value of Group obtained from persistence or newly created group</returns>
+        [Obsolete("Method not used any more")]
         internal static IGroup GetOrCreateNewGroup(string groupName)
         {
+            // todo remove unused method
+
             IGroup group = Persistence.Instance.Groups[groupName];
             if (group != null)
                 return group;

@@ -50,17 +50,18 @@ namespace Terminals.Data.Validation
             TypeDescriptor.AddProviderTransparent(association, itemType);
         }
 
-        internal static List<ValidationState> Validate(IFavorite favorite)
+        internal static ValidationStates Validate(IFavorite favorite)
         {
             List<ValidationState> results = ValidateObject(favorite);
             var executeResults = ValidateObject(favorite.ExecuteBeforeConnect);
             results.AddRange(executeResults);
-            return results;
+            return new ValidationStates(results);
         }
 
-        internal static List<ValidationState> Validate(ICredentialSet credentialSet)
+        internal static ValidationStates Validate(ICredentialSet credentialSet)
         {
-            return ValidateObject(credentialSet);
+            var results = ValidateObject(credentialSet);
+            return new ValidationStates(results);
         }
 
         internal static List<ValidationState> Validate(IGroup group)
@@ -75,13 +76,14 @@ namespace Terminals.Data.Validation
             return ConvertResultsToStates(results);
         }
 
-        internal static List<ValidationState> ValidateGroupName(IGroup toValidate)
+        internal static ValidationStates ValidateGroupName(IGroup toValidate)
         {
             var results = new List<ValidationResult>();
             var context = new ValidationContext(toValidate, null, null);
             context.MemberName = GROUP_NAME;
             Validator.TryValidateProperty(toValidate.Name, context, results);
-            return ConvertResultsToStates(results);
+            var states = ConvertResultsToStates(results);
+            return new ValidationStates(states);
         }
 
         private static List<ValidationState> ConvertResultsToStates(List<ValidationResult> results)
