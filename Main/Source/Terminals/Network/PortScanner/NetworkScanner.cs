@@ -1,14 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
-using System.Net.Sockets;
 using System.Windows.Forms;
 using System.Net.NetworkInformation;
-using Terminals.Configuration;
 using Terminals.Connections;
+using Terminals.Data;
 using Terminals.Forms.Controls;
 using Terminals.Network;
 using Terminals.Scanner;
@@ -18,7 +15,7 @@ namespace Terminals
     internal partial class NetworkScanner : Form
     {
         private NetworkScanManager manager;
-        private bool validation = false;
+        private bool validation;
 
         internal NetworkScanner()
         {
@@ -226,7 +223,7 @@ namespace Terminals
 
         private void ImportSelectedItems(List<FavoriteConfigurationElement> favoritesToImport)
         {
-            var managedImport = new ImportWithDialogs(this);
+            var managedImport = new ImportWithDialogs(this, Persistence.Instance);
             managedImport.Import(favoritesToImport);
         }
 

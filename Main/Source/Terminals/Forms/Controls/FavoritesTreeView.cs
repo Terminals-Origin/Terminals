@@ -121,7 +121,7 @@ namespace Terminals.Forms.Controls
 
         private void FavsTree_DragEnter(object sender, DragEventArgs e)
         {
-            var dragDrop = new TreeViewDragDrop(e, this.SelectedGroup, this.SelectedFavorite);
+            TreeViewDragDrop dragDrop = this.CreateTreeViewDragDrop(e);
             e.Effect = dragDrop.Effect;
         }
 
@@ -136,14 +136,21 @@ namespace Terminals.Forms.Controls
             var targetPoint = this.PointToClient(new Point(e.X, e.Y));
             this.SelectedNode = this.GetNodeAt(targetPoint);
             // the selected node will now play the role of drop target 
-            var dragDrop = new TreeViewDragDrop(e, this.SelectedGroup, this.SelectedFavorite);
+            TreeViewDragDrop dragDrop = this.CreateTreeViewDragDrop(e);
             e.Effect = dragDrop.Effect;
         }
 
         private void FavsTree_DragDrop(object sender, DragEventArgs e)
         {
-            var dragDrop = new TreeViewDragDrop(e, this.SelectedGroup, this.SelectedFavorite);
+            TreeViewDragDrop dragDrop = this.CreateTreeViewDragDrop(e);
             dragDrop.Drop(this.FindForm());
+        }
+
+        private TreeViewDragDrop CreateTreeViewDragDrop(DragEventArgs e)
+        {
+            var keyModifiers = new KeyModifiers();
+            return new TreeViewDragDrop(Persistence.Instance, e, keyModifiers,
+                this.SelectedGroup, this.SelectedFavorite);
         }
     }
 }

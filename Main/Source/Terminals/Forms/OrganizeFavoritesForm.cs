@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
-using Terminals.Configuration;
 using Terminals.Data;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
@@ -59,7 +58,7 @@ namespace Terminals
         {
             ICredentials storedCredentials = Persistence.Instance.Credentials;
             IEnumerable<FavoriteViewModel> sortedFavorites = source.Select(favorite => new FavoriteViewModel(favorite, storedCredentials));
-            return new SortableList<FavoriteViewModel>(sortedFavorites); 
+            return new SortableList<FavoriteViewModel>(sortedFavorites);
         }
 
         private void UpdateCountLabels()
@@ -145,7 +144,7 @@ namespace Terminals
             editedFavorite.Name = oldName; // to prevent find it self as oldFavorite
             var oldFavorite = PersistedFavorites[newName];
             // prevent conflict with another favorite than edited
-            if (oldFavorite != null && !editedFavorite.StoreIdEquals(oldFavorite)) 
+            if (oldFavorite != null && !editedFavorite.StoreIdEquals(oldFavorite))
             {
                 OverwriteByConflictingName(newName, oldFavorite, editedFavorite);
             }
@@ -161,7 +160,7 @@ namespace Terminals
         {
             if (!AskUserIfWantsToOverwrite(newName))
                 return;
-            
+
             Persistence.Instance.StartDelayedUpdate();
             // remember the edited favorite groups, because delete may also delete its groups,
             // if it is the last favorite in the group
@@ -199,7 +198,7 @@ namespace Terminals
 
         private void ImportFavoritesWithManagerImport(List<FavoriteConfigurationElement> favoritesToImport)
         {
-            var managedImport = new ImportWithDialogs(this);
+            var managedImport = new ImportWithDialogs(this, Persistence.Instance);
             bool imported = managedImport.Import(favoritesToImport);
             if (imported)
                 this.UpdateFavoritesBindingSource();
@@ -295,7 +294,7 @@ namespace Terminals
         internal static bool AskIfRealyDelete(string target)
         {
             string messsage = string.Format("Do your realy want to delete selected {0}?", target);
-            return  MessageBox.Show(messsage, "Terminals - Delete",
+            return MessageBox.Show(messsage, "Terminals - Delete",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
@@ -325,41 +324,10 @@ namespace Terminals
         private void CopySelectedFavorite()
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            var copy = CopyFavorite(favorite);
+            var copyCommand = new CopyFavorite(PersistedFavorites);
+            var copy = copyCommand.Copy(favorite);
             if (copy != null)
                 this.UpdateFavoritesBindingSource();
-        }
-
-        /// <summary>
-        /// Creates deep copy of provided favorite in persistence including its toolbar button and groups memebership.
-        /// The copy is already added to the persistence.
-        /// Returns newly created favorite copy if operation was successfull; otherwise null.
-        /// </summary>
-        internal static IFavorite CopyFavorite(IFavorite favorite)
-        {
-            if (favorite != null)
-            {
-                InputBoxResult result = InputBox.Show("Enter new name:", "Duplicate selected favorite as ...");
-                if (result.ReturnCode == DialogResult.OK && !string.IsNullOrEmpty(result.Text))
-                {
-                    return CopySelectedFavorite(favorite, result.Text);
-                }
-            }
-
-            return null;
-        }
-
-        private static IFavorite CopySelectedFavorite(IFavorite favorite, string newName)
-        {
-            IFavorite copy = favorite.Copy();
-            copy.Name = newName;
-            // todo validate the favorite name
-            PersistedFavorites.Add(copy);
-            PersistedFavorites.UpdateFavorite(copy, favorite.Groups);
-            
-            if (Settings.HasToolbarButton(favorite.Id))
-                Settings.AddFavoriteButton(copy.Id);
-            return copy;
         }
 
         private void RenameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -410,7 +378,7 @@ namespace Terminals
         private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            var definition = new ConnectionDefinition(new List<IFavorite>() {favorite});
+            var definition = new ConnectionDefinition(new List<IFavorite>() { favorite });
             this.connectionsUiFactory.Connect(definition);
         }
 
@@ -422,8 +390,8 @@ namespace Terminals
 
         private void FavoritesSearchBox_Canceled(object sender, EventArgs e)
         {
-           this.foundFavorites = new SortableList<IFavorite>();
-           this.UpdateFavoritesBindingSource();
+            this.foundFavorites = new SortableList<IFavorite>();
+            this.UpdateFavoritesBindingSource();
         }
 
         private void OrganizeFavoritesForm_Load(object sender, EventArgs e)

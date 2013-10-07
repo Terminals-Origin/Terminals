@@ -462,8 +462,11 @@ namespace Terminals
         private void DuplicateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             IFavorite selected = this.GetSelectedFavorite();
-            if (selected != null)
-                OrganizeFavoritesForm.CopyFavorite(selected);
+            if (selected == null)
+                return;
+
+            var copyCommand = new CopyFavorite(PersistedFavorites);
+            copyCommand.Copy(selected);
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)

@@ -140,6 +140,7 @@
     <Compile Include="PersistenceValidationTests.cs" />
     <Compile Include="UserInterface\FavoritesTreeLoadingTest.cs" />
     <Compile Include="UserInterface\GroupsTreeLoadingTest.cs" />
+    <Compile Include="UserInterface\TestKeyModifiers.cs" />
     <Compile Include="UserInterface\TestTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
