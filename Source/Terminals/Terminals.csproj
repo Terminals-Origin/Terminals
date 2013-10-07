@@ -206,6 +206,8 @@
     <Compile Include="Forms\Controls\FormsImportUi.cs" />
     <Compile Include="Forms\Controls\GroupsLevelUpdate.cs" />
     <Compile Include="Forms\Controls\IImportUi.cs" />
+    <Compile Include="Forms\Controls\IKeyModifiers.cs" />
+    <Compile Include="Forms\Controls\KeyModifiers.cs" />
     <Compile Include="Forms\Controls\ReconnectingControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -235,6 +237,7 @@
       <DependentUpon>TreeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\TreeViewDragDrop.cs" />
+    <Compile Include="Forms\CopyFavorite.cs" />
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Data\Validation\GroupValidator.cs" />
     <Compile Include="Forms\NewTerminalFormValidator.cs" />

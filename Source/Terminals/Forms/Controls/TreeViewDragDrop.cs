@@ -16,6 +16,12 @@ namespace Terminals.Forms.Controls
 
         private readonly IDataObject data;
 
+        private readonly IPersistence persistence;
+
+        internal CopyFavorite CopyCommnad { get; set; }
+
+        private readonly IKeyModifiers keyModifiers;
+
         private readonly IGroup targetGroup;
 
         private readonly IFavorite targetFavorite;
@@ -59,10 +65,14 @@ namespace Terminals.Forms.Controls
 
         private Action<Form> tryDrop= form => { };
 
-        internal TreeViewDragDrop(DragEventArgs dragArguments, IGroup targetGroup, IFavorite targetFavorite)
+        internal TreeViewDragDrop(IPersistence persistence, DragEventArgs dragArguments,
+            IKeyModifiers keyModifiers, IGroup targetGroup, IFavorite targetFavorite)
         {
             this.Effect = DragDropEffects.None;
             this.data = dragArguments.Data;
+            this.persistence = persistence;
+            this.CopyCommnad = new CopyFavorite(this.persistence.Favorites);
+            this.keyModifiers = keyModifiers;
             this.targetGroup = targetGroup;
             this.targetFavorite = targetFavorite;
             this.Configure(dragArguments.Effect);
@@ -102,19 +112,19 @@ namespace Terminals.Forms.Controls
 
         private DragDropEffects FavoriteDragDropType()
         {
-            // all operations can be performed only on target group
-            if (this.targetGroup == null)
+            // even, if target group is null, it means move to root
+            if (this.targetFavorite != null)
                 return DragDropEffects.None;
 
             return FavoriteDropTypeByModifier();
         }
 
-        private static DragDropEffects FavoriteDropTypeByModifier()
+        private DragDropEffects FavoriteDropTypeByModifier()
         {
-            if (Control.ModifierKeys.HasFlag(Keys.Control))
+            if (this.keyModifiers.WithControl)
                 return DragDropEffects.Copy;
 
-            if (Control.ModifierKeys.HasFlag(Keys.Shift))
+            if (this.keyModifiers.WithShift)
                 return DragDropEffects.Link;
 
             return DragDropEffects.Move;
@@ -125,17 +135,21 @@ namespace Terminals.Forms.Controls
             if (this.DontDropFavorite)
                 return;
 
-            IFavorite copy = OrganizeFavoritesForm.CopyFavorite(this.SourceFavorite);
+            IFavorite copy = this.CopyCommnad.Copy(this.SourceFavorite);
             if (copy != null)
-                Persistence.Instance.Favorites.UpdateFavorite(copy, new List<IGroup>() { this.targetGroup });
+                this.persistence.Favorites.UpdateFavorite(copy, new List<IGroup>() { this.targetGroup });
         }
 
         private void MoveFavorite()
         {
-            if (this.DontDropFavorite)
-                return;
+            if (this.SourceFavorite == null) return;
 
-            Persistence.Instance.Favorites.UpdateFavorite(this.SourceFavorite, new List<IGroup>() { this.targetGroup });
+            List<IGroup> targetGroups = new List<IGroup>();
+            // target group can be null => move to root
+            if (this.targetGroup != null)
+                targetGroups.Add(this.targetGroup);
+
+            this.persistence.Favorites.UpdateFavorite(this.SourceFavorite, targetGroups);
         }
 
         private void AddFavoriteToGroup()
@@ -146,7 +160,7 @@ namespace Terminals.Forms.Controls
             IFavorite toUpdate = this.SourceFavorite;
             List<IGroup> resultGroups = toUpdate.Groups.ToList();
             resultGroups.Add(this.targetGroup);
-            Persistence.Instance.Favorites.UpdateFavorite(toUpdate, resultGroups);
+            this.persistence.Favorites.UpdateFavorite(toUpdate, resultGroups);
         }
 
         private void ConfigureGroupDrop()
@@ -173,7 +187,7 @@ namespace Terminals.Forms.Controls
                 return;
 
             sourceGroup.Parent = this.targetGroup;
-            Persistence.Instance.Groups.Update(sourceGroup);
+            this.persistence.Groups.Update(sourceGroup);
         }
 
         private bool GroupDropOnItSelf(IGroup sourceGroup)
@@ -199,7 +213,7 @@ namespace Terminals.Forms.Controls
 
             List<FavoriteConfigurationElement> toImport = Integrations.Importers.ImportFavorites(files);
             this.ApplyTargetGroup(toImport);
-            var managedImport = new ImportWithDialogs(parentForm);
+            var managedImport = new ImportWithDialogs(parentForm, this.persistence);
             managedImport.Import(toImport);
         }
 
