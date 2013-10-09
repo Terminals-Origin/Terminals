@@ -8,6 +8,10 @@ namespace Tests
     /// <summary>
     /// Test, if custom setup properly upgrades log4net and terminals.exe config files.
     /// Because this is the only one test set for Setup, we dont create separate Tests assembly for setup.
+    /// 
+    /// NOTE:
+    /// Noticed some issues with direct reference to the SetupAction project.
+    /// Reference replaced by direct link to the file.
     /// </summary>
     [TestClass]
     [DeploymentItem(@"Terminals\" + LOG4_NET_FILE)]
