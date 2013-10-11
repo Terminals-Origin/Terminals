@@ -16,7 +16,7 @@ namespace Tests.SqlPersisted
     [DeploymentItem(@"..\Resources\Database\Terminals.mdf")]
     public class TestsLab
     {
-        private const string CONNECTION_STRING = @"Data Source=.\SQLEXPRESS;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;User Instance=True";
+      private const string CONNECTION_STRING = @"Data Source=(localdb)\v11.0;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;";
 
         protected const string FAVORITE_NAME = "test";
 
