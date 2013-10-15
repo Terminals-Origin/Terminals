@@ -6,7 +6,7 @@ namespace Terminals.Data
     /// Set of connection favorites used in similar meaning like directories in operation system.
     /// Allows logical organization of favorites.
     /// </summary>
-    internal interface IGroup : IStoreIdEquals<IGroup>
+    internal interface IGroup : IStoreIdEquals<IGroup>, INamedItem
     {
         /// <summary>
         /// Gets or sets the group in which this group is listed.
@@ -14,11 +14,6 @@ namespace Terminals.Data
         /// and will appear as one of root folders in first level of favorites tree.
         /// </summary>
         IGroup Parent { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unique name of the set.
-        /// </summary>
-        string Name { get; set; }
 
         /// <summary>
         /// Gets list of connection favorites listed in this group. 

@@ -140,7 +140,8 @@
     <Compile Include="SqlPersisted\TestsLab.cs" />
     <Compile Include="SqlPersisted\CredentialsTest.cs" />
     <Compile Include="CustomSetupActionTest.cs" />
-    <Compile Include="PersistenceValidationTests.cs" />
+    <Compile Include="Validation\FavoriteNameValidatorTests.cs" />
+    <Compile Include="Validation\GroupNameValidatorTests.cs" />
     <Compile Include="UserInterface\FavoritesTreeLoadingTest.cs" />
     <Compile Include="UserInterface\GroupsTreeLoadingTest.cs" />
     <Compile Include="UserInterface\TestKeyModifiers.cs" />
@@ -149,7 +150,8 @@
     </Compile>
     <Compile Include="UserInterface\TreeListLoaderTestLab.cs" />
     <Compile Include="UserInterface\TreeViewDragDropTests.cs" />
-    <Compile Include="ValidationTests.cs" />
+    <Compile Include="Validation\NameValidatorTestLab.cs" />
+    <Compile Include="Validation\ValidationTests.cs" />
     <Compile Include="UpdateManagerTest.cs" />
   </ItemGroup>
   <ItemGroup>

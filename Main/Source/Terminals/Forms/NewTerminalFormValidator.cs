@@ -16,12 +16,13 @@ namespace Terminals.Forms
     {
         private readonly NewTerminalForm form;
 
-        private readonly IPersistence persistence = Persistence.Instance;
+        private readonly IPersistence persistence;
 
         private readonly Dictionary<string, Control> validationBindings = new Dictionary<string, Control>();
 
-        public NewTerminalFormValidator(NewTerminalForm form)
+        public NewTerminalFormValidator(IPersistence persistence, NewTerminalForm form)
         {
+            this.persistence = persistence;
             this.form = form;
         }
 
@@ -139,7 +140,7 @@ namespace Terminals.Forms
         internal bool ValidateGrouName(TextBox txtGroupName)
         {
             string groupName = txtGroupName.Text;
-            string message = new GroupValidator(this.persistence).ValidateNew(groupName);
+            string message = new GroupNameValidator(this.persistence).ValidateNew(groupName);
             this.form.SetErrorInfo(txtGroupName, message);
             return string.IsNullOrEmpty(message);
         }

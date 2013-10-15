@@ -24,7 +24,7 @@ namespace Terminals
         private static readonly string shutdownFailMessage = Program.Resources.GetString("UnableToRemoteShutdown");
         internal ConnectionsUiFactory ConnectionsUiFactory { private get; set; }
 
-        private IPersistence persistence = Persistence.Instance;
+        private readonly IPersistence persistence = Persistence.Instance;
 
         private IFavorites PersistedFavorites
         {
@@ -98,7 +98,7 @@ namespace Terminals
 
         private void CreateFavoriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var frmNewTerminal = new NewTerminalForm(string.Empty))
+            using (var frmNewTerminal = new NewTerminalForm(Persistence.Instance, string.Empty))
             {
                 var groupNode = this.favsTree.SelectedGroupNode;
                 if (groupNode != null)
@@ -117,7 +117,7 @@ namespace Terminals
 
         private void ShowManageTerminalForm(IFavorite favorite)
         {
-            using (var frmNewTerminal = new NewTerminalForm(favorite))
+            using (var frmNewTerminal = new NewTerminalForm(Persistence.Instance, favorite))
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
 
@@ -465,7 +465,7 @@ namespace Terminals
             if (selected == null)
                 return;
 
-            var copyCommand = new CopyFavorite(PersistedFavorites);
+            var copyCommand = new CopyFavoriteUI(Persistence.Instance);
             copyCommand.Copy(selected);
         }
 
@@ -554,7 +554,7 @@ namespace Terminals
         private void TryRenameFavoriteNode(NodeLabelEditEventArgs e)
         {
             IFavorite favorite = this.favsTree.SelectedFavorite;
-            this.SheduleFavoriteRename(favorite, e.Label);
+            e.CancelEdit = this.SheduleFavoriteRename(favorite, e.Label);
         }
 
         private void TryRenameGroupNode(NodeLabelEditEventArgs e)
@@ -568,11 +568,11 @@ namespace Terminals
 
         private void RenameIfValid(IGroup group, NodeLabelEditEventArgs e)
         {
-            var groupValidator = new GroupValidator(this.persistence);
+            var groupValidator = new GroupNameValidator(this.persistence);
             string errorMessage = groupValidator.ValidateCurrent(group, e.Label);
             if (string.IsNullOrEmpty(errorMessage))
             {
-                var groupArguments = new object[] {group, e.Label};
+                var groupArguments = new object[] { group, e.Label };
                 this.favsTree.BeginInvoke(new Action<IGroup, string>(this.RenameGroup), groupArguments);
             }
             else
@@ -593,25 +593,35 @@ namespace Terminals
             IFavorite favorite = this.GetSelectedFavorite();
             // user canceled the rename
             if (string.IsNullOrEmpty(e.Label))
-                return;
-
-            this.SheduleFavoriteRename(favorite, e.Label);
+                e.CancelEdit = true;
+            else
+                e.CancelEdit = this.SheduleFavoriteRename(favorite, e.Label);
         }
 
-        private void SheduleFavoriteRename(IFavorite favorite, string newName)
+        /// <summary>
+        /// Because of incompatible event arguments class in tree and search panel,
+        /// we have to return the cancelation result, to be able cancel the edit in UI.
+        /// Returns true, if rename should be canceled.
+        /// </summary>
+        private bool SheduleFavoriteRename(IFavorite favorite, string newName)
         {
             if (favorite == null)
-                return;
+                return true;
 
+            var renameUi = new FavoriteRenameUI(this.persistence, this.RenameIfValid);
+            return renameUi.ValidateFavoriteName(favorite, newName);
+        }
+
+        private void RenameIfValid(IFavorite favorite, string newName)
+        {
             var favoriteArguments = new object[] { favorite, newName };
-            this.favsTree.BeginInvoke(new Action<IFavorite, string>(RenameFavorite), favoriteArguments);
+            this.favsTree.BeginInvoke(new Action<IFavorite, string>(this.RenameFavorite), favoriteArguments);
         }
 
         private void RenameFavorite(IFavorite favorite, string newName)
         {
-            // todo validate the name
             favorite.Name = newName;
-            PersistedFavorites.Update(favorite);
+            this.PersistedFavorites.Update(favorite);
         }
 
         private void SearchPanel_ResultListKeyUp(object sender, KeyEventArgs e)

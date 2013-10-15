@@ -1,0 +1,13 @@
+﻿namespace Terminals.Data
+{
+    /// <summary>
+    /// Item, which contains 'Name' property.
+    /// </summary>
+    internal interface INamedItem
+    {
+        /// <summary>
+        /// Gets or sets not null name of an item. This is usually validated against persistence to case sensitive unique.
+        /// </summary>
+        string Name { get; set; }
+    }
+}

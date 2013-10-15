@@ -18,7 +18,7 @@ namespace Terminals.Forms.Controls
 
         private readonly IPersistence persistence;
 
-        internal CopyFavorite CopyCommnad { get; set; }
+        internal CopyFavoriteUI CopyCommnad { get; set; }
 
         private readonly IKeyModifiers keyModifiers;
 
@@ -71,7 +71,7 @@ namespace Terminals.Forms.Controls
             this.Effect = DragDropEffects.None;
             this.data = dragArguments.Data;
             this.persistence = persistence;
-            this.CopyCommnad = new CopyFavorite(this.persistence.Favorites);
+            this.CopyCommnad = new CopyFavoriteUI(this.persistence);
             this.keyModifiers = keyModifiers;
             this.targetGroup = targetGroup;
             this.targetFavorite = targetFavorite;
