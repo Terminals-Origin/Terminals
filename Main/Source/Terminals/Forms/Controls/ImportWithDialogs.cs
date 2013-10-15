@@ -35,15 +35,16 @@ namespace Terminals.Forms.Controls
         internal Boolean Import(List<FavoriteConfigurationElement> favoritesToImport)
         {
             this.importUi.ReportStart();
-            bool imported = ImportPreservingNames(favoritesToImport);
+            int importedCount = ImportPreservingNames(favoritesToImport);
             this.importUi.ReportEnd();
+            bool imported = importedCount > 0;
             if (imported)
-                this.importUi.ShowResultMessage(favoritesToImport.Count);
+                this.importUi.ShowResultMessage(importedCount);
 
             return imported;
         }
 
-        private Boolean ImportPreservingNames(List<FavoriteConfigurationElement> favoritesToImport)
+        private int ImportPreservingNames(List<FavoriteConfigurationElement> favoritesToImport)
         {
             List<FavoriteConfigurationElement> uniqueToImport = GetUniqueItemsToImport(favoritesToImport);
             List<FavoriteConfigurationElement> conflictingFavorites = GetConflictingFavorites(uniqueToImport);
@@ -55,10 +56,10 @@ namespace Terminals.Forms.Controls
             if (renameAnswer != DialogResult.Cancel)
             {
                 PerformImport(uniqueToImport);
-                return true;
+                return uniqueToImport.Count;
             }
 
-            return false;
+            return 0;
         }
 
         private List<FavoriteConfigurationElement> GetConflictingFavorites(List<FavoriteConfigurationElement> favorites)
