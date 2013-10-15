@@ -30,14 +30,16 @@ namespace Terminals
         private String favoritePassword = string.Empty;
         internal const String HIDDEN_PASSWORD = "****************";
 
-        private static IGroups PersistedGroups
+        private readonly IPersistence persistence;
+
+        private IGroups PersistedGroups
         {
-            get { return Persistence.Instance.Groups; }
+            get { return this.persistence.Groups; }
         }
 
-        private static IFavorites PersistedFavorites
+        private IFavorites PersistedFavorites
         {
-            get { return Persistence.Instance.Favorites; }
+            get { return this.persistence.Favorites; }
         }
 
         internal string ServerNameText { get { return this.cmbServers.Text.Trim(); } }
@@ -48,15 +50,19 @@ namespace Terminals
 
         #region Constructors
 
-        public NewTerminalForm(String serverName)
+        public NewTerminalForm(IPersistence persistence, String serverName)
             : this()
         {
+            this.persistence = persistence;
+            this.InitializeValidations();
             this.Init(null, serverName);
         }
 
-        public NewTerminalForm(IFavorite favorite)
+        public NewTerminalForm(IPersistence persistence, IFavorite favorite)
             : this()
         {
+            this.persistence = persistence;
+            this.InitializeValidations();
             this.Init(favorite, String.Empty);
         }
 
@@ -65,14 +71,13 @@ namespace Terminals
             this.InitializeComponent();
             this.RedirectedDrives = new List<String>();
             this.RedirectDevices = false;
-            this.InitializeValidations();
+            this.SetErrorProviderIconsAlignment();
         }
 
         private void InitializeValidations()
         {
-            this.validator = new NewTerminalFormValidator(this);
+            this.validator = new NewTerminalFormValidator(this.persistence, this);
             this.AssignValidatingEvents();
-            this.SetErrorProviderIconsAlignment();
             this.RegisterValiationControls();
         }
 
@@ -516,7 +521,7 @@ namespace Terminals
                 var defaultSavedFavorite = Settings.GetDefaultFavorite();
                 if (defaultSavedFavorite != null)
                 {
-                    var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite, Persistence.Instance);
+                    var defaultFavorite = ModelConverterV1ToV2.ConvertToFavorite(defaultSavedFavorite, this.persistence);
                     this.FillControls(defaultFavorite);
                 }
                 else
@@ -547,12 +552,12 @@ namespace Terminals
             this.CredentialDropdown.Items.Clear();
             this.CredentialDropdown.Items.Add("(custom)");
             this.FillCredentialsComboboxWithStoredCredentials();
-            this.CredentialDropdown.SelectedItem = Persistence.Instance.Credentials[credential];
+            this.CredentialDropdown.SelectedItem = this.persistence.Credentials[credential];
         }
 
         private void FillCredentialsComboboxWithStoredCredentials()
         {
-            IEnumerable<ICredentialSet> credentials = Persistence.Instance.Credentials;
+            IEnumerable<ICredentialSet> credentials = this.persistence.Credentials;
             if (credentials != null)
             {
                 foreach (ICredentialSet item in credentials)
@@ -928,7 +933,7 @@ namespace Terminals
             if (!this.editedId.Equals(Guid.Empty))
                 favorite = PersistedFavorites[this.editedId];
             if (favorite == null)
-                favorite = Persistence.Instance.Factory.CreateFavorite();
+                favorite = this.persistence.Factory.CreateFavorite();
             this.Favorite = favorite;
             return favorite;
         }
@@ -1181,14 +1186,14 @@ namespace Terminals
                 rdpOptions.FullScreen = false;
             }
 
-            var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, Persistence.Instance);
+            var defaultFavorite = ModelConverterV2ToV1.ConvertToFavorite(favorite, this.persistence);
             Settings.SaveDefaultFavorite(defaultFavorite);
         }
 
         private void CommitFavoriteChanges(IFavorite favorite)
         {
             Settings.StartDelayedUpdate();
-            Persistence.Instance.StartDelayedUpdate();
+            this.persistence.StartDelayedUpdate();
             if (this.editedId == Guid.Empty)
             {
                 PersistedFavorites.Add(favorite);
@@ -1203,7 +1208,7 @@ namespace Terminals
 
             List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
             PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
-            Persistence.Instance.SaveAndFinishDelayedUpdate();
+            this.persistence.SaveAndFinishDelayedUpdate();
             Settings.SaveAndFinishDelayedUpdate();
         }
 
@@ -1268,8 +1273,8 @@ namespace Terminals
             string newGroupName = this.txtGroupName.Text;
             if (!this.validator.ValidateGrouName(this.txtGroupName))
                 return;
-
-            IGroup candidate = FavoritesFactory.GetOrCreateNewGroup(newGroupName);
+            // not unique name already handled by validation
+            IGroup candidate = this.persistence.Factory.CreateGroup(newGroupName);
             this.AddGroupIfNotAlreadyThere(candidate);
         }
 

@@ -181,6 +181,7 @@
     <Compile Include="Data\DB\CacheConnector.cs" />
     <Compile Include="Data\DB\ChangedVersionComparer.cs" />
     <Compile Include="Data\IDataFileWatcher.cs" />
+    <Compile Include="Data\Interfaces\INamedItem.cs" />
     <Compile Include="Data\Validation\CredentialSetMetadata.cs" />
     <Compile Include="Data\Validation\CustomValidationRules.cs" />
     <Compile Include="Data\Validation\DbBeforeConnectExecuteMetadata.cs" />
@@ -189,12 +190,15 @@
     <Compile Include="Data\DB\FavoritesBatchActions.cs" />
     <Compile Include="Data\Validation\DbGroupMetadata.cs" />
     <Compile Include="Data\Validation\FavoriteMetadata.cs" />
+    <Compile Include="Data\Validation\FavoriteNameValidator.cs" />
     <Compile Include="Data\Validation\GroupMetadata.cs" />
+    <Compile Include="Data\Validation\NameValidator.cs" />
     <Compile Include="Data\Validation\ValidationState.cs" />
     <Compile Include="Data\Validation\Validations.cs" />
     <Compile Include="Data\Validation\ValidationStates.cs" />
     <Compile Include="Forms\ConnectionDefinition.cs" />
     <Compile Include="Forms\ConnectionsUiFactory.cs" />
+    <Compile Include="Forms\Controls\FavoriteRenameUI.cs" />
     <Compile Include="Forms\Controls\FavoritesFoundEventArgs.cs" />
     <Compile Include="Forms\Controls\FavoritesSearchBox.cs">
       <SubType>UserControl</SubType>
@@ -237,9 +241,9 @@
       <DependentUpon>TreeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\TreeViewDragDrop.cs" />
-    <Compile Include="Forms\CopyFavorite.cs" />
+    <Compile Include="Forms\CopyFavoriteUI.cs" />
     <Compile Include="Forms\FavoriteViewModel.cs" />
-    <Compile Include="Data\Validation\GroupValidator.cs" />
+    <Compile Include="Data\Validation\GroupNameValidator.cs" />
     <Compile Include="Forms\NewTerminalFormValidator.cs" />
     <Compile Include="Forms\UnhandledTerminationForm.cs">
       <SubType>Form</SubType>

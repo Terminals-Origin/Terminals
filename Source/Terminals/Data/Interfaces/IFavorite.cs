@@ -7,18 +7,12 @@ namespace Terminals.Data
     /// <summary>
     /// Connection properties persisted for future reuse
     /// </summary>
-    internal interface IFavorite : IStoreIdEquals<IFavorite>
+    internal interface IFavorite : IStoreIdEquals<IFavorite>, INamedItem
     {
         /// <summary>
         /// Gets the unique identifier of this instance in associated store
         /// </summary>
         Guid Id { get; }
-
-        /// <summary>
-        /// Gets or sets the name of the connection, this will appear as default label in GUI.
-        /// The name should be always unique in application version 2.0.
-        /// </summary>
-        string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the protocol type. Accepted value is one of ConnectionManager values.

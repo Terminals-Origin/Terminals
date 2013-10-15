@@ -34,7 +34,7 @@ namespace Terminals
 
         private static string ValidateNewGroupName(string newGroupName)
         {
-            string message = new GroupValidator(Persistence.Instance).ValidateNew(newGroupName);
+            string message = new GroupNameValidator(Persistence.Instance).ValidateNew(newGroupName);
 
             if (string.IsNullOrEmpty(message))
                 return newGroupName;

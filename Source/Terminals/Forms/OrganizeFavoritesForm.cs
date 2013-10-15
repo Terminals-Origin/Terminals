@@ -70,10 +70,12 @@ namespace Terminals
 
         private void EditFavorite(IFavorite favorite)
         {
-            NewTerminalForm frmNewTerminal = new NewTerminalForm(favorite);
-            if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
+            using (var frmNewTerminal = new NewTerminalForm(Persistence.Instance, favorite))
             {
-                UpdateFavoritesBindingSource();
+                if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
+                {
+                    UpdateFavoritesBindingSource();
+                }
             }
         }
 
@@ -255,7 +257,7 @@ namespace Terminals
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (NewTerminalForm frmNewTerminal = new NewTerminalForm(String.Empty))
+            using (var frmNewTerminal = new NewTerminalForm(Persistence.Instance, String.Empty))
             {
                 if (frmNewTerminal.ShowDialog() != TerminalFormDialogResult.Cancel)
                 {
@@ -324,7 +326,7 @@ namespace Terminals
         private void CopySelectedFavorite()
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            var copyCommand = new CopyFavorite(PersistedFavorites);
+            var copyCommand = new CopyFavoriteUI(Persistence.Instance);
             var copy = copyCommand.Copy(favorite);
             if (copy != null)
                 this.UpdateFavoritesBindingSource();

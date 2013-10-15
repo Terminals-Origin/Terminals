@@ -114,7 +114,7 @@ namespace Terminals.Forms
 
         internal void CreateNewTerminal(String name = null)
         {
-            using (var frmNewTerminal = new NewTerminalForm(name))
+            using (var frmNewTerminal = new NewTerminalForm(Persistence.Instance, name))
             {
                 TerminalFormDialogResult result = frmNewTerminal.ShowDialog();
                 if (result != TerminalFormDialogResult.Cancel)
