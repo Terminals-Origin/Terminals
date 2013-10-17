@@ -4,17 +4,15 @@ using System.Xml;
 
 namespace Terminals.Integration.Import
 {
+    /// <summary>
+    /// Terminals native xml format import
+    /// </summary>
     internal class ImportTerminals : IImport
     {
         internal const string TERMINALS_FILEEXTENSION = ".xml";
         internal const string PROVIDER_NAME = "Terminals favorites";
         
         #region IImport members
-
-        List<FavoriteConfigurationElement> IImport.ImportFavorites(string Filename)
-        {
-            return ImportXML(Filename, true);
-        }
 
         public string Name
         {
@@ -25,48 +23,51 @@ namespace Terminals.Integration.Import
         {
             get { return TERMINALS_FILEEXTENSION; }
         }
-        
-        #endregion
 
         /// <summary>
         /// Loads a new collection of favorites from source file.
         /// The newly created favorites aren't imported into configuration.
         /// </summary>
-        internal static List<FavoriteConfigurationElement> ImportXML(string file, bool showOnToolbar)
+        List<FavoriteConfigurationElement> IImport.ImportFavorites(string filename)
         {
-            List<FavoriteConfigurationElement> favorites = ImportFavorites(file);
-            return favorites;
-        }
-
-        private static List<FavoriteConfigurationElement> ImportFavorites(string file)
-        {
-            List<FavoriteConfigurationElement> favorites = new List<FavoriteConfigurationElement>();
-            FavoriteConfigurationElement favorite = null;
             try
             {
-                using (XmlTextReader reader = new XmlTextReader(file))
-                {
-                    while (reader.Read())
-                    {
-                        favorite = ReadProperty(reader, favorites, favorite);
-                    }
-                }
+                return TryImport(filename);
             }
             catch (Exception ex)
             {
                 Logging.Error("Import XML Failed", ex);
+                return  new List<FavoriteConfigurationElement>();
+            }
+        }
+
+        private static List<FavoriteConfigurationElement> TryImport(string filename)
+        {
+            var favorites = new List<FavoriteConfigurationElement>();
+            // bacause reading more than one property into the same favorite, keep the favorite out of the read property method
+            FavoriteConfigurationElement favorite = null;
+
+            using (var reader = new XmlTextReader(filename))
+            {
+                var propertyReaded = new PropertyReader(reader);
+                while (propertyReaded.Read())
+                {
+                    favorite = ReadProperty(propertyReaded, favorites, favorite);
+                }
             }
 
             return favorites;
         }
 
-        private static FavoriteConfigurationElement ReadProperty(XmlTextReader reader,
+        #endregion
+
+        private static FavoriteConfigurationElement ReadProperty(PropertyReader reader,
             List<FavoriteConfigurationElement> favorites, FavoriteConfigurationElement favorite)
         {
             switch (reader.NodeType)
             {
                 case XmlNodeType.Element:
-                    switch (reader.Name)
+                    switch (reader.NodeName)
                     {
                         case "favorite":
                             favorite = new FavoriteConfigurationElement();
@@ -75,36 +76,33 @@ namespace Terminals.Integration.Import
                         case "userName":
                             favorite.UserName = reader.ReadString();
                             break;
-                        //case "encryptedPassword":
-                        //    fav.EncryptedPassword = reader.ReadString();
-                        //    break;
                         case "password":
                             favorite.Password = reader.ReadString();
                             break;
 
                         case "acceleratorPassthrough":
-                            favorite.AcceleratorPassthrough = ReadBool(reader.ReadString());
+                            favorite.AcceleratorPassthrough = reader.ReadBool();
                             break;
                         case "allowBackgroundInput":
-                            favorite.AllowBackgroundInput = ReadBool(reader.ReadString());
+                            favorite.AllowBackgroundInput = reader.ReadBool();
                             break;
                         case "authMethod":
-                            favorite.AuthMethod = ReadAuthMethod(reader.ReadString());
+                            favorite.AuthMethod = reader.ReadAuthMethod();
                             break;
                         case "bitmapPeristence":
-                            favorite.BitmapPeristence = ReadBool(reader.ReadString());
+                            favorite.BitmapPeristence = reader.ReadBool();
                             break;
                         case "connectionTimeout":
-                            favorite.ConnectionTimeout = ReadInt(reader.ReadString());
+                            favorite.ConnectionTimeout = reader.ReadInt();
                             break;
                         case "consolefont":
                             favorite.ConsoleFont = reader.ReadString();
                             break;
                         case "consolerows":
-                            favorite.ConsoleRows = ReadInt(reader.ReadString());
+                            favorite.ConsoleRows = reader.ReadInt();
                             break;
                         case "consolecols":
-                            favorite.ConsoleCols = ReadInt(reader.ReadString());
+                            favorite.ConsoleCols = reader.ReadInt();
                             break;
                         case "consolebackcolor":
                             favorite.ConsoleBackColor = reader.ReadString();
@@ -116,61 +114,61 @@ namespace Terminals.Integration.Import
                             favorite.ConsoleCursorColor = reader.ReadString();
                             break;
                         case "connectToConsole":
-                            favorite.ConnectToConsole = ReadBool(reader.ReadString());
+                            favorite.ConnectToConsole = reader.ReadBool();
                             break;
                         case "colors":
-                            favorite.Colors = ReadColors(reader.ReadString());
+                            favorite.Colors = reader.ReadColors();
                             break;
                         case "credential":
                             favorite.Credential = reader.ReadString();
                             break;
                         case "disableWindowsKey":
-                            favorite.DisableWindowsKey = ReadBool(reader.ReadString());
+                            favorite.DisableWindowsKey = reader.ReadBool();
                             break;
                         case "doubleClickDetect":
-                            favorite.DoubleClickDetect = ReadBool(reader.ReadString());
+                            favorite.DoubleClickDetect = reader.ReadBool();
                             break;
                         case "displayConnectionBar":
-                            favorite.DisplayConnectionBar = ReadBool(reader.ReadString());
+                            favorite.DisplayConnectionBar = reader.ReadBool();
                             break;
                         case "disableControlAltDelete":
-                            favorite.DisableControlAltDelete = ReadBool(reader.ReadString());
+                            favorite.DisableControlAltDelete = reader.ReadBool();
                             break;
                         case "domainName":
                             favorite.DomainName = reader.ReadString();
                             break;
                         case "desktopSizeHeight":
-                            favorite.DesktopSizeHeight = ReadInt(reader.ReadString());
+                            favorite.DesktopSizeHeight = reader.ReadInt();
                             break;
                         case "desktopSizeWidth":
-                            favorite.DesktopSizeWidth = ReadInt(reader.ReadString());
+                            favorite.DesktopSizeWidth = reader.ReadInt();
                             break;
                         case "desktopSize":
-                            favorite.DesktopSize = ReadDesktopSize(reader.ReadString());
+                            favorite.DesktopSize = reader.ReadDesktopSize();
                             break;
                         case "desktopShare":
                             favorite.DesktopShare = reader.ReadString();
                             break;
                         case "disableTheming":
-                            favorite.DisableTheming = ReadBool(reader.ReadString());
+                            favorite.DisableTheming = reader.ReadBool();
                             break;
                         case "disableMenuAnimations":
-                            favorite.DisableMenuAnimations = ReadBool(reader.ReadString());
+                            favorite.DisableMenuAnimations = reader.ReadBool();
                             break;
                         case "disableFullWindowDrag":
-                            favorite.DisableFullWindowDrag = ReadBool(reader.ReadString());
+                            favorite.DisableFullWindowDrag = reader.ReadBool();
                             break;
                         case "disableCursorBlinking":
-                            favorite.DisableCursorBlinking = ReadBool(reader.ReadString());
+                            favorite.DisableCursorBlinking = reader.ReadBool();
                             break;
                         case "disableCursorShadow":
-                            favorite.DisableCursorShadow = ReadBool(reader.ReadString());
+                            favorite.DisableCursorShadow = reader.ReadBool();
                             break;
                         case "disableWallPaper":
-                            favorite.DisableWallPaper = ReadBool(reader.ReadString());
+                            favorite.DisableWallPaper = reader.ReadBool();
                             break;
                         case "executeBeforeConnect":
-                            favorite.ExecuteBeforeConnect = ReadBool(reader.ReadString());
+                            favorite.ExecuteBeforeConnect = reader.ReadBool();
                             break;
                         case "executeBeforeConnectCommand":
                             favorite.ExecuteBeforeConnectCommand = reader.ReadString();
@@ -182,34 +180,34 @@ namespace Terminals.Integration.Import
                             favorite.ExecuteBeforeConnectInitialDirectory = reader.ReadString();
                             break;
                         case "executeBeforeConnectWaitForExit":
-                            favorite.ExecuteBeforeConnectWaitForExit = ReadBool(reader.ReadString());
+                            favorite.ExecuteBeforeConnectWaitForExit = reader.ReadBool();
                             break;
                         case "enableDesktopComposition":
-                            favorite.EnableDesktopComposition = ReadBool(reader.ReadString());
+                            favorite.EnableDesktopComposition = reader.ReadBool();
                             break;
                         case "enableFontSmoothing":
-                            favorite.EnableFontSmoothing = ReadBool(reader.ReadString());
+                            favorite.EnableFontSmoothing = reader.ReadBool();
                             break;
                         case "enableSecuritySettings":
-                            favorite.EnableSecuritySettings = ReadBool(reader.ReadString());
+                            favorite.EnableSecuritySettings = reader.ReadBool();
                             break;
                         case "enableEncryption":
-                            favorite.EnableEncryption = ReadBool(reader.ReadString());
+                            favorite.EnableEncryption = reader.ReadBool();
                             break;
                         case "enableCompression":
-                            favorite.EnableCompression = ReadBool(reader.ReadString());
+                            favorite.EnableCompression = reader.ReadBool();
                             break;
                         case "enableTLSAuthentication":
-                            favorite.EnableTLSAuthentication = ReadBool(reader.ReadString());
+                            favorite.EnableTLSAuthentication = reader.ReadBool();
                             break;
                         case "enableNLAAuthentication":
-                            favorite.EnableNLAAuthentication = ReadBool(reader.ReadString());
+                            favorite.EnableNLAAuthentication = reader.ReadBool();
                             break;
                         case "grabFocusOnConnect":
-                            favorite.GrabFocusOnConnect = ReadBool(reader.ReadString());
+                            favorite.GrabFocusOnConnect = reader.ReadBool();
                             break;
                         case "idleTimeout":
-                            favorite.IdleTimeout = ReadInt(reader.ReadString());
+                            favorite.IdleTimeout = reader.ReadInt();
                             break;
                         case "icaServerINI":
                             favorite.IcaServerINI = reader.ReadString();
@@ -230,13 +228,13 @@ namespace Terminals.Integration.Import
                             favorite.ICAApplicationPath = reader.ReadString();
                             break;
                         case "icaEnableEncryption":
-                            favorite.IcaEnableEncryption = ReadBool(reader.ReadString());
+                            favorite.IcaEnableEncryption = reader.ReadBool();
                             break;
                         case "keyTag":
                             favorite.KeyTag = reader.ReadString();
                             break;
                         case "newWindow":
-                            favorite.NewWindow = ReadBool(reader.ReadString());
+                            favorite.NewWindow = reader.ReadBool();
                             break;
                         case "notes":
                             favorite.Notes = reader.ReadString();
@@ -245,46 +243,46 @@ namespace Terminals.Integration.Import
                             favorite.Name = reader.ReadString();
                             break;
                         case "overallTimeout":
-                            favorite.OverallTimeout = ReadInt(reader.ReadString());
+                            favorite.OverallTimeout = reader.ReadInt();
                             break;
                         case "protocol":
                             favorite.Protocol = reader.ReadString();
                             break;
                         case "port":
-                            favorite.Port = ReadInt(reader.ReadString());
+                            favorite.Port = reader.ReadInt();
                             break;
                         case "redirectedDrives":
                             favorite.redirectedDrives = reader.ReadString();
                             break;
                         case "redirectPorts":
-                            favorite.RedirectPorts = ReadBool(reader.ReadString());
+                            favorite.RedirectPorts = reader.ReadBool();
                             break;
                         case "redirectPrinters":
-                            favorite.RedirectPrinters = ReadBool(reader.ReadString());
+                            favorite.RedirectPrinters = reader.ReadBool();
                             break;
                         case "redirectSmartCards":
-                            favorite.RedirectSmartCards = ReadBool(reader.ReadString());
+                            favorite.RedirectSmartCards = reader.ReadBool();
                             break;
                         case "redirectClipboard":
-                            favorite.RedirectClipboard = ReadBool(reader.ReadString());
+                            favorite.RedirectClipboard = reader.ReadBool();
                             break;
                         case "redirectDevices":
-                            favorite.RedirectDevices = ReadBool(reader.ReadString());
+                            favorite.RedirectDevices = reader.ReadBool();
                             break;
                         case "sounds":
-                            favorite.Sounds = ReadRemoteSounds(reader.ReadString());
+                            favorite.Sounds = reader.ReadRemoteSounds();
                             break;
                         case "serverName":
                             favorite.ServerName = reader.ReadString();
                             break;
                         case "shutdownTimeout":
-                            favorite.ShutdownTimeout = ReadInt(reader.ReadString());
+                            favorite.ShutdownTimeout = reader.ReadInt();
                             break;
                         case "ssh1":
-                            favorite.SSH1 = ReadBool(reader.ReadString());
+                            favorite.SSH1 = reader.ReadBool();
                             break;
                         case "securityFullScreen":
-                            favorite.SecurityFullScreen = ReadBool(reader.ReadString());
+                            favorite.SecurityFullScreen = reader.ReadBool();
                             break;
                         case "securityStartProgram":
                             favorite.SecurityStartProgram = reader.ReadString();
@@ -296,13 +294,13 @@ namespace Terminals.Integration.Import
                             favorite.Tags = reader.ReadString();
                             break;
                         case "telnet":
-                            favorite.Telnet = ReadBool(reader.ReadString());
+                            favorite.Telnet = reader.ReadBool();
                             break;
                         case "telnetBackColor":
                             favorite.TelnetBackColor = reader.ReadString();
                             break;
                         case "telnetCols":
-                            favorite.TelnetCols = ReadInt(reader.ReadString());
+                            favorite.TelnetCols = reader.ReadInt();
                             break;
                         case "telnetCursorColor":
                             favorite.TelnetCursorColor = reader.ReadString();
@@ -311,7 +309,7 @@ namespace Terminals.Integration.Import
                             favorite.TelnetFont = reader.ReadString();
                             break;
                         case "telnetRows":
-                            favorite.TelnetRows = ReadInt(reader.ReadString());
+                            favorite.TelnetRows = reader.ReadInt();
                             break;
                         case "telnetTextColor":
                             favorite.TelnetTextColor = reader.ReadString();
@@ -320,7 +318,7 @@ namespace Terminals.Integration.Import
                             favorite.ToolBarIcon = reader.ReadString();
                             break;
                         case "tsgwCredsSource":
-                            favorite.TsgwCredsSource = ReadInt(reader.ReadString());
+                            favorite.TsgwCredsSource = reader.ReadInt();
                             break;
                         case "tsgwDomain":
                             favorite.TsgwDomain = reader.ReadString();
@@ -332,10 +330,10 @@ namespace Terminals.Integration.Import
                             favorite.TsgwPassword = reader.ReadString();
                             break;
                         case "tsgwSeparateLogin":
-                            favorite.TsgwSeparateLogin = ReadBool(reader.ReadString());
+                            favorite.TsgwSeparateLogin = reader.ReadBool();
                             break;
                         case "tsgwUsageMethod":
-                            favorite.TsgwUsageMethod = ReadInt(reader.ReadString());
+                            favorite.TsgwUsageMethod = reader.ReadInt();
                             break;
                         case "tsgwUsername":
                             favorite.TsgwUsername = reader.ReadString();
@@ -344,71 +342,25 @@ namespace Terminals.Integration.Import
                             favorite.Url = reader.ReadString();
                             break;
                         case "vncAutoScale":
-                            favorite.VncAutoScale = ReadBool(reader.ReadString());
+                            favorite.VncAutoScale = reader.ReadBool();
                             break;
                         case "vncViewOnly":
-                            favorite.VncViewOnly = ReadBool(reader.ReadString());
+                            favorite.VncViewOnly = reader.ReadBool();
                             break;
                         case "vncDisplayNumber":
-                            favorite.VncDisplayNumber = ReadInt(reader.ReadString());
+                            favorite.VncDisplayNumber = reader.ReadInt();
                             break;
                         case "vmrcadministratormode":
-                            favorite.VMRCAdministratorMode = ReadBool(reader.ReadString());
+                            favorite.VMRCAdministratorMode = reader.ReadBool();
                             break;
                         case "vmrcreducedcolorsmode":
-                            favorite.VMRCReducedColorsMode = ReadBool(reader.ReadString());
+                            favorite.VMRCReducedColorsMode = reader.ReadBool();
                             break;
                     }
                     break;
             }
 
             return favorite;
-        }
-
-        private static bool ReadBool(String str)
-        {
-            bool tmp = false;
-            bool.TryParse(str, out tmp);
-            return tmp;
-        }
-
-        private static int ReadInt(String str)
-        {
-            int tmp = 0;
-            int.TryParse(str, out tmp);
-            return tmp;
-        }
-
-        private static DesktopSize ReadDesktopSize(String str)
-        {
-            DesktopSize tmp = DesktopSize.AutoScale;
-            if (!String.IsNullOrEmpty(str))
-                tmp = (DesktopSize)Enum.Parse(typeof(DesktopSize), str);
-            return tmp;
-        }
-
-        private static Colors ReadColors(String str)
-        {
-            Colors tmp = Colors.Bit16;
-            if (!String.IsNullOrEmpty(str))
-                tmp = (Colors)Enum.Parse(typeof(Colors), str);
-            return tmp;
-        }
-
-        private static RemoteSounds ReadRemoteSounds(String str)
-        {
-            RemoteSounds tmp = RemoteSounds.DontPlay;
-            if (!String.IsNullOrEmpty(str))
-                tmp = (RemoteSounds)Enum.Parse(typeof(RemoteSounds), str);
-            return tmp;
-        }
-
-        private static SSHClient.AuthMethod ReadAuthMethod(String str)
-        {
-            SSHClient.AuthMethod tmp = SSHClient.AuthMethod.Password;
-            if (!String.IsNullOrEmpty(str))
-                tmp = (SSHClient.AuthMethod)Enum.Parse(typeof(SSHClient.AuthMethod), str);
-            return tmp;
         }
     }
 }
