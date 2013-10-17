@@ -328,7 +328,7 @@ namespace Terminals
         private void CopySelectedFavorite()
         {
             IFavorite favorite = this.GetSelectedFavorite();
-            var copyCommand = new CopyFavoriteUI(Persistence.Instance);
+            var copyCommand = new CopyFavoriteCommand(Persistence.Instance);
             var copy = copyCommand.Copy(favorite);
             if (copy != null)
                 this.UpdateFavoritesBindingSource();

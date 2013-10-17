@@ -142,7 +142,7 @@ namespace Tests.UserInterface
         {
             TreeViewDragDrop dragdrop = this.CreateValidFavoriteDrop(DragDropEffects.Copy);
             Func<InputBoxResult> copyFunction = () => new InputBoxResult() {Text = "Copy", ReturnCode = DialogResult.OK};
-            dragdrop.CopyCommnad = new CopyFavoriteUI(this.Persistence, copyFunction);
+            dragdrop.CopyCommnad = new CopyFavoriteCommand(this.Persistence, copyFunction);
             dragdrop.Drop(null);
             this.AssertTargetGroupAfterFavoriteDrop(true);
         }
