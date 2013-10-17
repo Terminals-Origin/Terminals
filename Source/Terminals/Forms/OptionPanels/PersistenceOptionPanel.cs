@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data;
-using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -175,7 +173,8 @@ namespace Terminals.Forms
         private void SearchServersButtonClick(object sender, EventArgs e)
         {
             this.queryLabel.Visible = true;
-            var t = Task<DataTable>.Factory.StartNew(() => SqlDataSourceEnumerator.Instance.GetDataSources());
+            var searcher = new ServerInstancesSearcher();
+            var t = searcher.FindSqlServerInstancesAsync();
 
             t.ContinueWith((antecedent) =>
                 {
@@ -184,34 +183,13 @@ namespace Terminals.Forms
                 }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
-        private void FillServersComboboxItems(DataTable availableServers)
+        private void FillServersComboboxItems(List<string> availableServers)
         {
-            if (availableServers == null)
-                return;
-
             this.serversComboBox.Items.Clear();
-            foreach (DataRow row in availableServers.Rows)
+            foreach (string instance in availableServers)
             {
-                string serverName = row["ServerName"].ToString();
-                string instanceName = row["InstanceName"].ToString();
-                string version = row["Version"].ToString();
-                string display = FormatSqlInstanceDisplayName(serverName, instanceName, version);
-                this.serversComboBox.Items.Add(display);
+                this.serversComboBox.Items.Add(instance);
             }
-        }
-
-        private static string FormatSqlInstanceDisplayName(string serverName, string instanceName, string version)
-        {
-            string display = serverName;
-            if (!string.IsNullOrEmpty(instanceName))
-            {
-                display = display + "\\" + instanceName;
-            }
-            if (!string.IsNullOrEmpty(version))
-            {
-                display = display + " (" + version + ")";
-            }
-            return display;
         }
 
         private void ButtonFindDatabasesClick(object sender, EventArgs e)
