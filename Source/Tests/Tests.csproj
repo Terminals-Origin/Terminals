@@ -116,6 +116,7 @@
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Commands\UpdateFavoriteWithRenameCommandTests.cs" />
     <Compile Include="FilePersisted\FavoritesTest.cs" />
     <Compile Include="FilePersisted\FilePersistedTestLab.cs" />
     <Compile Include="FilePersisted\GroupsTest.cs" />
