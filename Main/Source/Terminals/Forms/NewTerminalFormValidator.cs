@@ -18,11 +18,14 @@ namespace Terminals.Forms
 
         private readonly IPersistence persistence;
 
+        private readonly FavoriteNameValidator nameValidator;
+
         private readonly Dictionary<string, Control> validationBindings = new Dictionary<string, Control>();
 
         public NewTerminalFormValidator(IPersistence persistence, NewTerminalForm form)
         {
             this.persistence = persistence;
+            this.nameValidator = new FavoriteNameValidator(persistence);
             this.form = form;
         }
 
@@ -53,8 +56,24 @@ namespace Terminals.Forms
             this.form.FillFavoriteFromControls(favorite);
             ValidationStates results = Validations.Validate(favorite);
             this.UpdateControlsErrorByResults(results);
+            bool nameValid = this.ValidateName(favorite);
             // check the results, not the bindings to be able to identify unbound property errors
-            return results.Empty;
+            return results.Empty && nameValid;
+        }
+
+        private bool ValidateName(IFavorite favorite)
+        {
+            string nameResultMessage = this.GetNameValidationMessage(favorite);
+            this.form.SetErrorInfo(this.validationBindings[Validations.NAME_PROPERTY], nameResultMessage);
+            return string.IsNullOrEmpty(nameResultMessage);
+        }
+
+        private string GetNameValidationMessage(IFavorite favorite)
+        {
+            if (this.form.EditingNew)
+                return this.nameValidator.ValidateNew(favorite.Name);
+
+            return this.nameValidator.ValidateCurrent(favorite, favorite.Name);
         }
 
         private void UpdateControlsErrorByResults(ValidationStates results)
@@ -137,7 +156,7 @@ namespace Terminals.Forms
             this.form.SetErrorInfo(textBox, errorMessage);
         }
 
-        internal bool ValidateGrouName(TextBox txtGroupName)
+        internal bool ValidateGroupName(TextBox txtGroupName)
         {
             string groupName = txtGroupName.Text;
             string message = new GroupNameValidator(this.persistence).ValidateNew(groupName);

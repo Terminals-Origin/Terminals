@@ -12,6 +12,7 @@ using Terminals.Configuration;
 using Terminals.Connections;
 using Terminals.Credentials;
 using Terminals.Data;
+using Terminals.Data.Validation;
 using Terminals.Forms;
 using Terminals.Forms.Controls;
 using Terminals.Network.Servers;
@@ -25,6 +26,9 @@ namespace Terminals
         private Dictionary<string, RASENTRY> dialupList = new Dictionary<string, RASENTRY>();
         private String currentToolBarFileName;
         private Guid editedId;
+
+        internal bool EditingNew { get { return this.editedId == Guid.Empty; } }
+
         private string oldName;
 
         private String favoritePassword = string.Empty;
@@ -97,12 +101,13 @@ namespace Terminals
             this.errorProvider.SetIconAlignment(this.cmbServers, ErrorIconAlignment.MiddleLeft);
             this.errorProvider.SetIconAlignment(this.httpUrlTextBox, ErrorIconAlignment.MiddleLeft);
             this.errorProvider.SetIconAlignment(this.NotesTextbox, ErrorIconAlignment.TopLeft);
+            this.errorProvider.SetIconAlignment(this.txtName, ErrorIconAlignment.MiddleLeft);
         }
 
         private void RegisterValiationControls()
         {
             this.validator.RegisterValidationControl("ServerName", this.cmbServers);
-            this.validator.RegisterValidationControl("Name", this.txtName);
+            this.validator.RegisterValidationControl(Validations.NAME_PROPERTY, this.txtName);
             this.validator.RegisterValidationControl("Port", this.txtPort);
             this.validator.RegisterValidationControl("Protocol", this.ProtocolComboBox);
             this.validator.RegisterValidationControl("Notes", this.NotesTextbox);
@@ -1194,7 +1199,7 @@ namespace Terminals
         {
             Settings.StartDelayedUpdate();
             this.persistence.StartDelayedUpdate();
-            if (this.editedId == Guid.Empty)
+            if (this.EditingNew)
             {
                 PersistedFavorites.Add(favorite);
                 if (this.ShowOnToolbar)
@@ -1271,7 +1276,7 @@ namespace Terminals
         private void AddGroup()
         {
             string newGroupName = this.txtGroupName.Text;
-            if (!this.validator.ValidateGrouName(this.txtGroupName))
+            if (!this.validator.ValidateGroupName(this.txtGroupName))
                 return;
             // not unique name already handled by validation
             IGroup candidate = this.persistence.Factory.CreateGroup(newGroupName);
