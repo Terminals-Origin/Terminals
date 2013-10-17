@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Terminals.Data;
+using Terminals.Data.Validation;
 
 namespace Terminals.Forms.Controls
 {
@@ -54,10 +55,7 @@ namespace Terminals.Forms.Controls
                 RenameConflictingFavorites(conflictingFavorites);
 
             if (renameAnswer != DialogResult.Cancel)
-            {
-                PerformImport(uniqueToImport);
-                return uniqueToImport.Count;
-            }
+                return this.ImportAllToPeristence(uniqueToImport);
 
             return 0;
         }
@@ -77,32 +75,60 @@ namespace Terminals.Forms.Controls
                 .ToList();
         }
 
-        private void PerformImport(List<FavoriteConfigurationElement> configFavoritesToImport)
+        private int ImportAllToPeristence(List<FavoriteConfigurationElement> configFavoritesToImport)
         {
             this.persistence.StartDelayedUpdate();
+            int importedCount = 0;
 
             foreach (FavoriteConfigurationElement configFavorite in configFavoritesToImport)
             {
-                IFavorite favorite = this.PrepareFavoriteToImport(configFavorite);
-                AddFavoriteIntoGroups(configFavorite, favorite);
+               var context = new ImportContext(configFavorite);
+               this.TryProcessFavorite(context);
+               if (context.Imported)
+                    importedCount++;
             }
 
             this.persistence.SaveAndFinishDelayedUpdate();
+            return importedCount;
         }
 
-        internal static void AddFavoriteIntoGroups(FavoriteConfigurationElement configFavorite, IFavorite favorite)
+        private void TryProcessFavorite(ImportContext context)
         {
-            foreach (string groupName in configFavorite.TagList)
+            context.ToPerisist = ModelConverterV1ToV2.ConvertToFavorite(context.ToImport, this.persistence);
+            ValidationStates results = Validations.Validate(context.ToPerisist);
+            if (results.Empty)
+                this.ProcessFavorite(context);
+            else
+                LogFavoriteImportError(results, context.ToPerisist);
+        }
+
+        private void ProcessFavorite(ImportContext context)
+        {
+            this.ImportToPersistence(context.ToPerisist);
+            AddFavoriteIntoGroups(context.ToImport, context.ToPerisist);
+            context.Imported = true;
+        }
+        
+        private static void LogFavoriteImportError(ValidationStates results, IFavorite favorite)
+        {
+            string allErrors = results.ToOneMessage();
+            string message = string.Format("Couldnt import invalid favorite: '{0}' because:\r\n{1}", favorite.Name, allErrors);
+            Logging.Warn(message);
+        }
+
+        internal static void AddFavoriteIntoGroups(FavoriteConfigurationElement toImport, IFavorite toPerisist)
+        {
+            foreach (string groupName in toImport.TagList)
             {
+                // todo add group name validation
                 IGroup group = FavoritesFactory.GetOrAddNewGroup(groupName);
-                group.AddFavorite(favorite);
+                group.AddFavorite(toPerisist);
             }
         }
 
-        private IFavorite PrepareFavoriteToImport(FavoriteConfigurationElement configFavorite)
+        private void ImportToPersistence(IFavorite favorite)
         {
-            var favorite = ModelConverterV1ToV2.ConvertToFavorite(configFavorite, this.persistence);
-            var oldFavorite = this.PersistedFavorites[favorite.Name];
+            IFavorite oldFavorite = this.PersistedFavorites[favorite.Name];
             if (oldFavorite != null) // force to override old favorite
             {
                 oldFavorite.UpdateFrom(favorite);
@@ -112,8 +138,6 @@ namespace Terminals.Forms.Controls
             {
                 this.PersistedFavorites.Add(favorite);
             }
-
-            return favorite;
         }
 
         private void RenameConflictingFavorites(List<FavoriteConfigurationElement> conflictingFavorites)
