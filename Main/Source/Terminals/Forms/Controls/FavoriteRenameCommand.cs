@@ -8,7 +8,7 @@ namespace Terminals
     /// <summary>
     /// Performs UI action to rename the favorite or shows an messgae box, if favorite is not valid
     /// </summary>
-    internal class FavoriteRenameUI
+    internal class FavoriteRenameCommand
     {
         private readonly IPersistence persistence;
 
@@ -16,7 +16,7 @@ namespace Terminals
 
         private readonly FavoriteNameValidator validator;
 
-        public FavoriteRenameUI(IPersistence persistence, Action<IFavorite, string> renameAction)
+        public FavoriteRenameCommand(IPersistence persistence, Action<IFavorite, string> renameAction)
         {
             this.persistence = persistence;
             this.renameAction = renameAction;

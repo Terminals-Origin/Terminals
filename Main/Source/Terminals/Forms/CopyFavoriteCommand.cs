@@ -6,13 +6,15 @@ using Terminals.Forms;
 
 namespace Terminals
 {
-    internal class CopyFavoriteUI
+    internal class CopyFavoriteCommand
     {
         private readonly Func<InputBoxResult> copyPrompt;
 
+        private IFavorite source;
+
         private readonly IPersistence persistence;
 
-        internal CopyFavoriteUI(IPersistence persistence, Func<InputBoxResult> copyPrompt = null)
+        internal CopyFavoriteCommand(IPersistence persistence, Func<InputBoxResult> copyPrompt = null)
         {
             this.persistence = persistence;
 
@@ -44,15 +46,13 @@ namespace Terminals
             return null;
         }
 
-        private IFavorite source;
-
         private IFavorite CopySelectedFavorite(IFavorite favorite, string newName)
         {
             this.source = favorite;
             IFavorite copy = favorite.Copy();
             // expecting the copy it self is valid, let validate only the name
             copy.Name = newName;
-            var renameUI = new FavoriteRenameUI(this.persistence, this.AddIfValid);
+            var renameUI = new FavoriteRenameCommand(this.persistence, this.AddIfValid);
             bool valid = renameUI.ValidateFavoriteName(copy, newName);
             
             if (valid)

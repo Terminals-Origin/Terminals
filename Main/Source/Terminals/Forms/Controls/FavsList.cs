@@ -465,7 +465,7 @@ namespace Terminals
             if (selected == null)
                 return;
 
-            var copyCommand = new CopyFavoriteUI(Persistence.Instance);
+            var copyCommand = new CopyFavoriteCommand(Persistence.Instance);
             copyCommand.Copy(selected);
         }
 
@@ -608,7 +608,7 @@ namespace Terminals
             if (favorite == null)
                 return true;
 
-            var renameUi = new FavoriteRenameUI(this.persistence, this.RenameIfValid);
+            var renameUi = new FavoriteRenameCommand(this.persistence, this.RenameIfValid);
             return renameUi.ValidateFavoriteName(favorite, newName);
         }
 

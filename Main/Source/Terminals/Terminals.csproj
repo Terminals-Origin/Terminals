@@ -199,7 +199,7 @@
     <Compile Include="Data\Validation\ValidationStates.cs" />
     <Compile Include="Forms\ConnectionDefinition.cs" />
     <Compile Include="Forms\ConnectionsUiFactory.cs" />
-    <Compile Include="Forms\Controls\FavoriteRenameUI.cs" />
+    <Compile Include="Forms\Controls\FavoriteRenameCommand.cs" />
     <Compile Include="Forms\Controls\FavoritesFoundEventArgs.cs" />
     <Compile Include="Forms\Controls\FavoritesSearchBox.cs">
       <SubType>UserControl</SubType>
@@ -243,7 +243,7 @@
       <DependentUpon>TreeView.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Controls\TreeViewDragDrop.cs" />
-    <Compile Include="Forms\CopyFavoriteUI.cs" />
+    <Compile Include="Forms\CopyFavoriteCommand.cs" />
     <Compile Include="Forms\FavoriteViewModel.cs" />
     <Compile Include="Data\Validation\GroupNameValidator.cs" />
     <Compile Include="Forms\NewTerminalFormValidator.cs" />
