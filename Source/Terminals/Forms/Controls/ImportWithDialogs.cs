@@ -105,7 +105,8 @@ namespace Terminals.Forms.Controls
         private void ProcessFavorite(ImportContext context)
         {
             this.ImportToPersistence(context.ToPerisist);
-            AddFavoriteIntoGroups(context.ToImport, context.ToPerisist);
+            IEnumerable<string> validGroupNames = this.SelectValidGroupNames(context.ToImport);
+            AddFavoriteIntoGroups(context.ToPerisist, validGroupNames);
             context.Imported = true;
         }
         
@@ -116,16 +117,21 @@ namespace Terminals.Forms.Controls
             Logging.Warn(message);
         }
 
-        internal static void AddFavoriteIntoGroups(FavoriteConfigurationElement toImport, IFavorite toPerisist)
+        private IEnumerable<string> SelectValidGroupNames(FavoriteConfigurationElement toImport)
         {
-            foreach (string groupName in toImport.TagList)
+            var validator = new GroupNameValidator(this.persistence);
+            return toImport.TagList.Where(groupName => string.IsNullOrEmpty(validator.ValidateNew(groupName)));
+        }
+
+        internal static void AddFavoriteIntoGroups(IFavorite toPerisist, IEnumerable<string> validGroupNames)
+        {
+            foreach (string groupName in validGroupNames)
             {
-                // todo add group name validation
                 IGroup group = FavoritesFactory.GetOrAddNewGroup(groupName);
                 group.AddFavorite(toPerisist);
             }
         }
-
+        
         private void ImportToPersistence(IFavorite favorite)
         {
             IFavorite oldFavorite = this.PersistedFavorites[favorite.Name];

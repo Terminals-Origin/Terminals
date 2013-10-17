@@ -132,7 +132,7 @@ namespace Terminals.Updates
             foreach (FavoriteConfigurationElement favoriteConfigElement in Settings.GetFavorites())
             {
                 IFavorite favorite = ModelConverterV1ToV2.ConvertToFavorite(favoriteConfigElement, this.persistence);
-                ImportWithDialogs.AddFavoriteIntoGroups(favoriteConfigElement, favorite);
+                ImportWithDialogs.AddFavoriteIntoGroups(favorite, favoriteConfigElement.TagList);
                 this.persistence.Favorites.Add(favorite);
             }
         }

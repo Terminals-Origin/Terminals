@@ -25,7 +25,7 @@
         /// <summary>
         /// Returns error mesages obtained from validator
         /// or empty string, if item name is valid in current persistence.
-        /// Use to check validity of newly created favorites.
+        /// Use to check validity of newly created items.
         /// </summary>
         internal string ValidateNew(string newName)
         {
