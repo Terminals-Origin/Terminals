@@ -1199,22 +1199,23 @@ namespace Terminals
         {
             Settings.StartDelayedUpdate();
             this.persistence.StartDelayedUpdate();
+
             if (this.EditingNew)
-            {
-                PersistedFavorites.Add(favorite);
-                if (this.ShowOnToolbar)
-                    Settings.AddFavoriteButton(favorite.Id);
-            }
+                this.AddToPersistence(favorite);
             else
-            {
-                OrganizeFavoritesForm.UpdateFavoritePreservingDuplicitNames(this.oldName, favorite.Name, favorite);
                 Settings.EditFavoriteButton(this.editedId, favorite.Id, this.ShowOnToolbar);
-            }
 
             List<IGroup> updatedGroups = this.GetNewlySelectedGroups();
             PersistedFavorites.UpdateFavorite(favorite, updatedGroups);
             this.persistence.SaveAndFinishDelayedUpdate();
             Settings.SaveAndFinishDelayedUpdate();
+        }
+
+        private void AddToPersistence(IFavorite favorite)
+        {
+            this.PersistedFavorites.Add(favorite);
+            if (this.ShowOnToolbar)
+                Settings.AddFavoriteButton(favorite.Id);
         }
 
         private void ShowErrorMessageBox(string message)
