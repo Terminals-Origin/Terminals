@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Terminals.Data.Validation
 {
@@ -17,11 +18,6 @@ namespace Terminals.Data.Validation
             get { return !this.results.Any(); }
         }
 
-        internal ValidationStates(IEnumerable<ValidationState> results)
-        {
-            this.results = results;
-        }
-
         internal string this[string propertyName]
         {
             get
@@ -31,6 +27,22 @@ namespace Terminals.Data.Validation
                                                    .Select(result => result.Message);
                 return String.Concat(messages);
             }
+        }
+        
+        internal ValidationStates(IEnumerable<ValidationState> results)
+        {
+            this.results = results;
+        }
+
+        internal string ToOneMessage()
+        {
+            var builder = new StringBuilder();
+            foreach (ValidationState result in results)
+            {
+                builder.AppendFormat("{0}: {1}\r\n", result.PropertyName, result.Message);
+            }
+
+            return builder.ToString();
         }
 
         public IEnumerator<ValidationState> GetEnumerator()

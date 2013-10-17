@@ -125,6 +125,7 @@ namespace Terminals
         {
             if (String.IsNullOrEmpty(this.editedFavorite.Name)) // cancel or nothing changed
                 editedFavorite.Name = this.editedFavoriteName;
+
             if (editedFavorite.Name.Equals(this.editedFavoriteName, StringComparison.CurrentCultureIgnoreCase))
             {
                 editedFavorite.Name = this.editedFavoriteName;
@@ -143,6 +144,7 @@ namespace Terminals
         /// <param name="editedFavorite">The currently edited favorite to update.</param>
         internal static void UpdateFavoritePreservingDuplicitNames(string oldName, string newName, IFavorite editedFavorite)
         {
+            // todo duplicit Rename logic which should be merged with the renameUI command
             editedFavorite.Name = oldName; // to prevent find it self as oldFavorite
             var oldFavorite = PersistedFavorites[newName];
             // prevent conflict with another favorite than edited
