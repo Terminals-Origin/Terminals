@@ -200,36 +200,63 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\Resources\TestData\EmptyCredentials.xml">
-      <Link>Data\EmptyCredentials.xml</Link>
+      <Link>EmptyCredentials.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Resources\TestData\Issue_21279_import_800_items.xml">
-      <Link>Data\Issue_21279_import_800_items.xml</Link>
+      <Link>Issue_21279_import_800_items.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Resources\Database\Terminals.mdf">
-      <Link>Data\Terminals.mdf</Link>
+      <Link>Terminals.mdf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\Resources\Database\Terminals_log.LDF">
-      <Link>Data\Terminals_log.LDF</Link>
+      <Link>Terminals_log.LDF</Link>
       <DependentUpon>Terminals.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Resources\TestData\NoMasterCredentials.xml">
+      <Link>NoMasterCredentials.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Resources\TestData\SecuredCredentials.xml">
+      <Link>SecuredCredentials.xml</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="..\Terminals\Resources\ControlPanel.png">
-      <Link>Data\ControlPanel.png</Link>
+      <Link>ControlPanel.png</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resources\TestData\EmptyTerminals.config">
-      <Link>Data\EmptyTerminals.config</Link>
+      <Link>EmptyTerminals.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\NoMasterTerminals.config">
+      <Link>NoMasterTerminals.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Resources\TestData\SecuredTerminals.config">
+      <Link>SecuredTerminals.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="..\..\Resources\TestData\Terminals.config">
-      <Link>Data\Terminals.config</Link>
+      <Link>Terminals.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="App.config" />
-    <None Include="Data\Terminals.exe.config">
+    <None Include="Terminals.exe.config">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
