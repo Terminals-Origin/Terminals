@@ -16,7 +16,9 @@ namespace Tests.SqlPersisted
     [DeploymentItem(@"..\Resources\Database\Terminals.mdf")]
     public class TestsLab
     {
-      private const string CONNECTION_STRING = @"Data Source=(localdb)\v11.0;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;";
+        private const string DBF_FILE_NAME = "Terminals.mdf";
+
+        private const string CONNECTION_STRING = @"Data Source=(localdb)\v11.0;AttachDbFilename={0}\Terminals.mdf;Integrated Security=True;";
 
         protected const string FAVORITE_NAME = "test";
 
@@ -86,7 +88,7 @@ namespace Tests.SqlPersisted
             this.PrimaryPersistence.Initialize();
             this.SecondaryPersistence = new SqlPersistence();
             this.SecondaryPersistence.Initialize();
-            
+
             this.ClearTestLab(); // because of failed previous tests
         }
 
@@ -97,7 +99,7 @@ namespace Tests.SqlPersisted
 
         private void RemoveDatabaseFileReadOnly()
         {
-            this.RemoveReadOnlyAttribute("Terminals.mdf");
+            this.RemoveReadOnlyAttribute(DBF_FILE_NAME);
             this.RemoveReadOnlyAttribute("Terminals_log.ldf");
         }
 
@@ -115,6 +117,8 @@ namespace Tests.SqlPersisted
             const string DELETE_COMMAND = @"DELETE FROM ";
             // first clear dependences from both Favorites and groups table because of constraints
             System.Data.Entity.Database checkQueries = this.CheckDatabase.Database;
+            this.SetTrustWorthyOn(checkQueries);
+
             checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "FavoritesInGroup");
             checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "History");
 
@@ -126,6 +130,16 @@ namespace Tests.SqlPersisted
 
             checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "CredentialBase");
             checkQueries.ExecuteSqlCommand(DELETE_COMMAND + "Credentials");
+        }
+
+        /// <summary>
+        /// Apply this command to be able run dotCover from test runner environment wiht host protection.
+        /// </summary>
+        private void SetTrustWorthyOn(System.Data.Entity.Database checkQueries)
+        {
+            string mdfFile = Path.Combine(this.TestContext.DeploymentDirectory, DBF_FILE_NAME);
+            string strustworthyCommand = string.Format(@"ALTER DATABASE ""{0}"" SET TRUSTWORTHY ON", mdfFile);
+            checkQueries.ExecuteSqlCommand(strustworthyCommand);
         }
 
         /// <summary>
